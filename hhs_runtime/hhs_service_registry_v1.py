@@ -4333,6 +4333,908 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.g3_reciprocal_symbol_codec.self_test",
+        module="hhs_runtime.hhs_pass220_g3_reciprocal_symbol_codec_v1",
+        function="reciprocal_symbol_codec_self_test",
+        service_type="pass220_exact_reciprocal_symbol_codec",
+        description=(
+            "Validate the exact G3 reciprocal symbol-string carrier: opaque "
+            "123321.111 proof cell, ordered x/y zero lock, y=1/x reciprocal "
+            "return phase, exact UTF-8 forward/reverse byte paths, Arabic "
+            "digit proof-cell lifts, and bounded single-path repair without "
+            "numeric parsing or canonical mutation authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_WITNESS_V1",
+        ],
+        validators=[
+            "validate_reciprocal_symbol_codec",
+            "reciprocal_symbol_codec_self_test",
+        ],
+        guards=[
+            "ordered_phase_constructors_preserved",
+            "typed_zero_phase_lock_preserved",
+            "reciprocal_phase_involution",
+            "symbol_string_round_trip_exact",
+            "numeric_parse_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_RECIPROCAL_SYMBOL_PATH_MISMATCH",
+            "REJECT_PHASE_ZERO_LOCK_MISMATCH",
+            "REJECT_SYMBOL_PROVENANCE_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_RECIPROCAL_SYMBOL_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_UTF8_STRING_EXACT_ROUNDTRIP_AND_SINGLE_PATH_REPAIR"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.g3_ieee_scalar_involution.self_test",
+        module="hhs_runtime.hhs_pass220_g3_ieee_scalar_involution_v1",
+        function="ieee_scalar_involution_self_test",
+        service_type="pass220_exact_ieee_scalar_involution",
+        description=(
+            "Validate exact IEEE binary16/32/64/128 scalar-state return: "
+            "integer-only field partition, exact finite dyadic projection, "
+            "signed-zero and NaN-payload bit identity, and reciprocal x/y "
+            "phase transport where phase changes but scalar bits do not."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I031_G3_IEEE_SCALAR_INVOLUTION_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I031_IEEE_SCALAR_INVOLUTION_WITNESS_V1",
+        ],
+        validators=[
+            "validate_ieee_scalar_involution",
+            "ieee_scalar_involution_self_test",
+        ],
+        guards=[
+            "ieee_storage_bits_immutable",
+            "ieee_field_partition_exact",
+            "finite_dyadic_projection_exact",
+            "reciprocal_phase_scalar_invariant",
+            "signed_zero_identity_preserved",
+            "nan_payload_identity_preserved",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_IEEE_FIELD_REBUILD_MISMATCH",
+            "REJECT_IEEE_RECIPROCAL_SCALAR_MUTATION",
+            "REJECT_IEEE_STORAGE_IDENTITY_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_IEEE_SCALAR_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "BINARY16_EXHAUSTIVE_BINARY32_64_128_PARAMETRIC_AND_VECTOR_PROOF"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.g3_full_phase_ieee_transport.self_test",
+        module="hhs_runtime.hhs_pass220_g3_full_phase_ieee_transport_v1",
+        function="full_phase_ieee_transport_self_test",
+        service_type="pass220_exact_full_phase_ieee_transport",
+        description=(
+            "Validate exact IEEE scalar transport through the complete ordered "
+            "x/y/z/w G3 phase tensor: x marks ingress, y=1/x marks return, "
+            "all four phase carriers and xy/yx/zw/wz channels drive the "
+            "nine-slot internal logic, while the IEEE storage word remains "
+            "bit-identical across every internal phase cell."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I032_G3_FULL_PHASE_IEEE_TRANSPORT_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I032_G3_FULL_PHASE_IEEE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_full_phase_ieee_transport",
+            "full_phase_ieee_transport_self_test",
+        ],
+        guards=[
+            "full_xyzw_phase_coverage",
+            "ordered_xy_yx_zw_wz_channels_preserved",
+            "nine_slot_g3_logic_trace_complete",
+            "ieee_scalar_bits_immutable_in_every_phase_slot",
+            "reciprocal_phase_tensor_involution",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_G3_FULL_PHASE_COVERAGE_MISMATCH",
+            "REJECT_G3_INTERNAL_SCALAR_MUTATION",
+            "REJECT_G3_RECIPROCAL_TENSOR_MISMATCH",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_FULL_PHASE_IEEE_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_9_SLOT_G3_TRACE_OVER_EXACT_IEEE_BINARY16_32_64_128"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.g3_4711_symbolic_numeric_constructor.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_g3_4711_symbolic_numeric_constructor_v1"
+        ),
+        function="g3_4711_symbolic_numeric_constructor_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the Pass 220 I033 G3 4/7/11 multirepresentational "
+            "constructor: symbolic UTF-8, exact IEEE storage, exact dyadic "
+            "projection, ordered x/y/z/w G3 phase tensor, fixed 5184-character "
+            "BigInt serialization, scalar BigInt projection, and reciprocal "
+            "provenance remain co-resident. The constructor contains local "
+            "constraints but acquires no canonical constraint, VM81, Hash72, "
+            "Hash216, or persistence authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I033_G3_4711_SYMBOLIC_NUMERIC_SOLVER_CONSTRUCTOR_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I033_G3_4711_MULTI_VIEW_WITNESS_V1",
+        ],
+        validators=[
+            "validate_g3_4711_symbolic_numeric_constructor",
+            "g3_4711_symbolic_numeric_constructor_self_test",
+        ],
+        guards=[
+            "g3_123_to_4711_relation_preserved",
+            "uniform_scalar_reduction_forbidden",
+            "co_resident_representation_views_required",
+            "symbol_reciprocal_roundtrip_required",
+            "ieee_raw_bit_roundtrip_required",
+            "exact_dyadic_view_retained",
+            "bigint_5184_roundtrip_required",
+            "constructor_local_constraints_only",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_G3_4711_SCALE_DRIFT",
+            "REJECT_CO_RESIDENT_VIEW_LOSS",
+            "REJECT_I033_RECIPROCAL_RETURN_MISMATCH",
+            "REJECT_I033_5184_ROUNDTRIP_MISMATCH",
+            "REJECT_I033_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_VALIDATED_CONSTRUCTOR_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "FINITE_CO_RESIDENT_I030_I031_I032_I001_COMPOSITION"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.holographic_gauge_dyadic_decoupling.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_holographic_gauge_dyadic_decoupling_v1"
+        ),
+        function="holographic_gauge_dyadic_decoupling_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I034 holographic gauge-resolution constructor: "
+            "P^4/c^4=a_norm^2 remains the exact canonical normalization lock; "
+            "(4,7,11) remains a typed G3 gauge coordinate tier; transition "
+            "friction b_G^2=7 is decoupled from dyadic phase base 2; the exact "
+            "symbolic operator 2^(P*a_norm^2/144), typed conformal invariant, "
+            "P:p:q provenance, and typed closure state remain intact without "
+            "canonical constraint, VM81, Hash72, Hash216, or persistence authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I034_GAUGE_DYADIC_WITNESS_V1",
+        ],
+        validators=[
+            "validate_holographic_gauge_dyadic_decoupling",
+            "holographic_gauge_dyadic_decoupling_self_test",
+        ],
+        guards=[
+            "p4_over_c4_equals_a_norm2",
+            "a_norm2_typed_unit_retained",
+            "g3_4711_gauge_coordinate_tier",
+            "gauge_depth_not_canonical_magnitude_multiplier",
+            "transition_friction_7",
+            "dyadic_phase_base_2",
+            "dyadic_friction_rebind_forbidden",
+            "symbolic_2_power_p_a_norm2_over_144_retained",
+            "typed_conformal_invariant_identity_preserved",
+            "p_p_q_provenance_preserved",
+            "typed_zero_closure_preserved",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I034_HOLOGRAPHIC_LOCK_DRIFT",
+            "REJECT_I034_GAUGE_SCALAR_INFLATION",
+            "REJECT_I034_DYADIC_FRICTION_REBIND",
+            "REJECT_I034_CONFORMAL_IDENTITY_DRIFT",
+            "REJECT_I034_TYPED_ZERO_COLLAPSE",
+            "REJECT_I034_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_GAUGE_CONSTRUCTOR_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_NONNEGATIVE_BIGINT_GAUGE_DEPTH_WITH_TYPED_LOCK"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.lane5_multimodal_shared_root.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_lane5_multimodal_shared_root_fabric_v1"
+        ),
+        function="lane5_multimodal_shared_root_self_test",
+        service_type="pass220_validated_multimodal_projection_constructor",
+        description=(
+            "Validate the I042 Lane 5 multimodal shared-root projection fabric: "
+            "language, image, audio, video, physics, and game modalities each "
+            "receive one deterministic Pass165 5,184-bit projection, Hash72 "
+            "witness, ordered Hash216 genome root, and the identical I041/I040/"
+            "I039 ancestry root. The exact 179971.179971 root seed and 1.001 "
+            "gate are rational-bound. All 30 directed cross-modal translations "
+            "preserve the shared root and both endpoint provenances. Pass166/"
+            "Pass218 language relations remain candidate-only; no model, "
+            "renderer, audio, vector, or modality path acquires canonical "
+            "mutation, Hash, learning, or persistence authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I042_MULTIMODAL_SHARED_ROOT_WITNESS_V1",
+        ],
+        validators=[
+            "validate_multimodal_knowledge_graph",
+            "lane5_multimodal_shared_root_self_test",
+        ],
+        guards=[
+            "one_exact_root_for_all_modalities",
+            "root_metadata_seed_179971_179971_exact_rational",
+            "invariant_gate_1_001_exact_rational",
+            "every_modality_exact_5184_bit_projection",
+            "every_modality_hash72_witness",
+            "every_modality_ordered_hash216_genome",
+            "language_exact_token_identities",
+            "pass166_relations_candidate_only",
+            "image_sprite216_q144_color_binding",
+            "audio_h36_exact_3_to_2_polyrhythm",
+            "video_exact_q144_timeline",
+            "physics_i040_projection_bound",
+            "game_i041_frame_bound",
+            "all_30_directed_cross_modal_translations",
+            "translation_shared_root_and_provenance_preserved",
+            "host_float_arithmetic_forbidden",
+            "probability_likelihood_mcmc_refit_forbidden",
+            "canonical_vm81_hash_learning_authority_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I042_SHARED_ROOT_SPLIT",
+            "REJECT_I042_5184_PROJECTION_LOSS",
+            "REJECT_I042_HASH216_GENOME_LOSS",
+            "REJECT_I042_MODALITY_PROVENANCE_LOSS",
+            "REJECT_I042_TRANSLATION_PAIR_GAP",
+            "REJECT_I042_LANGUAGE_AUTHORITY_ESCALATION",
+            "REJECT_I042_AUDIO_CLOCK_DRIFT",
+            "REJECT_I042_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I042_CANONICAL_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_MULTIMODAL_FABRIC_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "SIX_MODALITIES_X_5184_BITS_X_216_GENOME_POSITIONS_"
+            "WITH_30_DIRECTED_ROOT_PRESERVING_TRANSLATIONS"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.holofractal_relativistic_game_engine.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_holofractal_relativistic_game_engine_v1"
+        ),
+        function="holofractal_relativistic_game_engine_self_test",
+        service_type="pass220_validated_multimodal_game_projection_constructor",
+        description=(
+            "Validate the I041 exact game/render projection: Q144 cyclotomic "
+            "Euclidean rotations, Pass219 H36 144x36=5184 coordinate "
+            "factorization and 3x12 equal-temperament lane, all five exact "
+            "Platonic incidence closures, deterministic Sprite216 Hash72 "
+            "triplets, a 144-position reciprocal color wheel, typed shader IR, "
+            "and the I040/I039 exact relativistic projection all share the same "
+            "game-state ancestry. GPU/render floats remain projection-only and "
+            "cannot mutate VM81 or mint Hash authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I041_GAME_ENGINE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_game_engine_cycle",
+            "holofractal_relativistic_game_engine_self_test",
+        ],
+        guards=[
+            "q144_exact_phase_addressing",
+            "euclidean_trig_symbolic_q_zeta144",
+            "h36_144x36_equals_5184",
+            "h36_3x12_equal_temperament",
+            "vm81_81x64_equals_5184",
+            "hash72_72x72_equals_5184",
+            "operation64_phase8x8_rule64",
+            "all_five_platonic_incidence_closures",
+            "sprite216_three_hash72_carriers",
+            "color_wheel_q144_reciprocal_half_turn",
+            "shader_ir_exact_source_identity",
+            "gpu_float_projection_only",
+            "i040_relativistic_projection_bound",
+            "i039_shared_root_bound",
+            "host_float_forbidden_in_exact_state",
+            "probability_likelihood_mcmc_refit_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I041_Q144_DRIFT",
+            "REJECT_I041_TRIG_SYMBOLIC_DRIFT",
+            "REJECT_I041_H36_COORDINATE_DRIFT",
+            "REJECT_I041_PLATONIC_CLOSURE_FAILURE",
+            "REJECT_I041_SPRITE216_DRIFT",
+            "REJECT_I041_COLOR_RECIPROCAL_FAILURE",
+            "REJECT_I041_SHADER_IR_DRIFT",
+            "REJECT_I041_RELATIVISTIC_ROOT_DRIFT",
+            "REJECT_I041_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I041_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_GAME_PROJECTION_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_Q144_H36_5184_PLATONIC_SPRITE_SHADER_RELATIVISTIC_PROJECTION"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.desi_explicit_projection_corpus.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_desi_explicit_projection_corpus_v1"
+        ),
+        function="desi_explicit_projection_corpus_self_test",
+        service_type="pass220_validated_observational_projection_constructor",
+        description=(
+            "Validate the I040 explicit DESI observation map and fail-closed "
+            "corpus runner. z_eff binds to the I023 redshift/one-plus-z "
+            "surface; D_H/r_d binds to the normalized Hubble-distance surface "
+            "and exactly solves H*r_d/c0 by reciprocal; D_M/r_d binds to the "
+            "normalized transverse-comoving-distance surface and exactly solves "
+            "D_M/D_H and the D_V cube relation. Every released decimal keeps "
+            "its I038 palindromic IEEE/exact-residue/5,184-character BigInt "
+            "carrier, binds the I039 shared root, and is copied completely "
+            "across -,0,+ I037 phase manifolds. Any row failure rejects the "
+            "corpus rather than being averaged away."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I040_DESI_EXPLICIT_PROJECTION_CORPUS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I040_DESI_PROJECTION_WITNESS_V1",
+        ],
+        validators=[
+            "validate_desi_explicit_projection",
+            "run_fail_closed_desi_corpus",
+            "desi_explicit_projection_corpus_self_test",
+        ],
+        guards=[
+            "desi_to_hhs_observation_map_explicit",
+            "implicit_A_B_P_p_q_binding_forbidden",
+            "released_decimal_sources_preserved",
+            "i038_parallel_carriers_preserved",
+            "i039_shared_unification_root_bound",
+            "i037_equation_proof_root_bound",
+            "three_complete_phase_copies_bound",
+            "exact_hubble_reciprocal_solve",
+            "exact_alcock_paczynski_ratio_solve",
+            "exact_isotropic_bao_cube_relation",
+            "uncertainty_components_kept_separate",
+            "row_failure_not_averaged",
+            "corpus_fail_closed",
+            "bigint_5184_width_preserved",
+            "host_float_arithmetic_forbidden",
+            "probability_likelihood_mcmc_refit_forbidden",
+            "commutative_reordering_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I040_MISSING_OBSERVATION_FIELD",
+            "REJECT_I040_NONPOSITIVE_DISTANCE",
+            "REJECT_I040_EXPLICIT_MAP_DRIFT",
+            "REJECT_I040_I038_CARRIER_DRIFT",
+            "REJECT_I040_I039_ROOT_DRIFT",
+            "REJECT_I040_PHASE_COPY_DIVERGENCE",
+            "REJECT_I040_BIGINT_5184_LOSS",
+            "REJECT_I040_EXPLICIT_PROJECTION_CLOSURE",
+            "REJECT_I040_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I040_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_DESI_PROJECTION_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_DIMENSIONLESS_BAO_RELATIONAL_PROJECTION_WITH_FAIL_CLOSED_ROWS"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.quantum_geometric_unification_closure.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_quantum_geometric_unification_closure_v1"
+        ),
+        function="quantum_geometric_unification_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I039 shared-root quantum-geometric closure: the exact "
+            "I025 Schrodinger 72-state orbit and the I023/I024 relativistic "
+            "transfer share the identical nine-step phase orbit, one I037 "
+            "mandatory 24D equation/proof bundle root, one I038 palindromic "
+            "IEEE/5,184-character BigInt carrier, and one typed "
+            "Delta-e=0/Psi=0/Omega=true closure witness. Both projections "
+            "carry identical ancestry and remain read-only."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I039_QUANTUM_GEOMETRIC_UNIFICATION_CLOSURE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I039_UNIFICATION_WITNESS_V1",
+        ],
+        validators=[
+            "validate_quantum_geometric_unification_constructor",
+            "quantum_geometric_unification_self_test",
+        ],
+        guards=[
+            "quantum_relativistic_shared_state_root",
+            "quantum_relativistic_phase_orbit_identity",
+            "i025_exact_72_state_orbit",
+            "i023_exact_relativistic_transfer",
+            "i024_background_contract_bound",
+            "i037_mandatory_equation_proof_bundle_bound",
+            "i038_palindromic_ieee_bigint_parallel_carrier_bound",
+            "root_metadata_seed_preserved",
+            "bigint_5184_width_preserved",
+            "palindromic_symbol_and_ieee_return_closed",
+            "delta_e_zero",
+            "psi_zero",
+            "theta15_true",
+            "omega_true",
+            "algebraic_closure_true",
+            "host_float_arithmetic_forbidden",
+            "probability_likelihood_mcmc_forbidden",
+            "commutative_reordering_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I039_SHARED_ROOT_SPLIT",
+            "REJECT_I039_PHASE_ORBIT_DIVERGENCE",
+            "REJECT_I039_QUANTUM_CLOSURE_FAILURE",
+            "REJECT_I039_RELATIVISTIC_CLOSURE_FAILURE",
+            "REJECT_I039_I037_BUNDLE_DRIFT",
+            "REJECT_I039_BIGINT_5184_LOSS",
+            "REJECT_I039_PALINDROMIC_RETURN_FAILURE",
+            "REJECT_I039_TYPED_CLOSURE_FAILURE",
+            "REJECT_I039_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I039_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_UNIFICATION_CLOSURE_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_SHARED_ROOT_72_STATE_QUANTUM_NINE_STEP_RELATIVISTIC_CLOSURE"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.desi_lane5_parallel_exact_egress.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_desi_lane5_parallel_exact_egress_v1"
+        ),
+        function="desi_lane5_parallel_exact_egress_self_test",
+        service_type="pass220_validated_observational_egress_constructor",
+        description=(
+            "Validate the I038 DESI public-data exact observational egress: "
+            "released decimal strings remain exact rational source values while "
+            "an integer-only nearest-even binary64 image is carried in parallel "
+            "through the inherited palindromic symbolic/full-phase IEEE path, "
+            "the 5,184-character BigInt geometry, the I037 mandatory 24D "
+            "equation/proof bundle, and Lane 5 constructor composition. "
+            "Exact decimal-minus-IEEE residue is retained; measurement "
+            "uncertainty components are not converted into probability, "
+            "likelihood, MCMC, or implicit HHS-variable fitting."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I038_DESI_PUBLIC_RELEASE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_parallel_observation_carrier",
+            "validate_desi_dr2_lya_public_release_witness",
+            "desi_lane5_parallel_exact_egress_self_test",
+        ],
+        guards=[
+            "public_decimal_source_identity_preserved",
+            "integer_only_binary64_nearest_even",
+            "exact_decimal_ieee_residue_preserved",
+            "palindromic_symbolic_ieee_parallel_lane",
+            "bigint_5184_parallel_lane",
+            "i037_mandatory_equation_proof_bundle_bound",
+            "lane5_validated_constructor_composition_only",
+            "uncertainty_components_kept_separate",
+            "probability_likelihood_mcmc_forbidden_in_solve",
+            "implicit_desi_to_hhs_variable_mapping_forbidden",
+            "host_float_arithmetic_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I038_DECIMAL_SOURCE_DRIFT",
+            "REJECT_I038_IEEE_STORAGE_DRIFT",
+            "REJECT_I038_EXACT_RESIDUE_LOSS",
+            "REJECT_I038_BIGINT_5184_LOSS",
+            "REJECT_I038_I037_BUNDLE_DRIFT",
+            "REJECT_I038_PROBABILITY_PATH",
+            "REJECT_I038_IMPLICIT_VARIABLE_MAPPING",
+            "REJECT_I038_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_OBSERVATIONAL_EGRESS_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "FINITE_PUBLIC_OBSERVATION_EXACT_DECIMAL_IEEE_BIGINT_24D_PARALLEL_EGRESS"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.24d_mandatory_constraint_spacetime.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_24d_mandatory_constraint_spacetime_v1"
+        ),
+        function="twentyfour_d_constraint_spacetime_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I037 mandatory 24D noncommutative constraint-spacetime "
+            "constructor: three Lo Shu relational axes times eight ordered phase "
+            "channels form each complete 24D carrier; -,0,+ produce three full "
+            "copies and a 72-position phase cover; every copy carries the full "
+            "native equation and proof-lemma bundle plus epsilon residue carriers, "
+            "reciprocal variable exchange, P4/P8 sources, I036 nucleus identity, "
+            "and the Golay24 profile claim boundary without codec authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I037_24D_MANDATORY_CONSTRAINT_SPACETIME_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I037_24D_SPACETIME_WITNESS_V1",
+        ],
+        validators=[
+            "validate_24d_constraint_spacetime_constructor",
+            "twentyfour_d_constraint_spacetime_self_test",
+        ],
+        guards=[
+            "mandatory_equation_constructor_bundle_complete",
+            "mandatory_proof_lemma_bundle_complete",
+            "three_complete_24d_qutrit_copies",
+            "trinary_phase_tensor_source_preserved",
+            "variable_exchange_involution_preserved",
+            "p4_ordered_invariant_source_preserved",
+            "p8_trinary_fractal_scale_source_preserved",
+            "epsilon_phase_residue_carriers_complete",
+            "raw_phase_expression_not_erased",
+            "direct_and_flipped_exchange_frames_co_resident",
+            "golay24_profile_only_no_codec_authority",
+            "i036_holographic_nucleus_preserved",
+            "three_times_24_equals_72",
+            "72_plus_9_equals_81",
+            "81_times_64_equals_72_squared_equals_5184",
+            "host_float_arithmetic_forbidden",
+            "commutative_reordering_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I037_MANDATORY_EQUATION_LOSS",
+            "REJECT_I037_MANDATORY_LEMMA_LOSS",
+            "REJECT_I037_24D_CARRIER_DRIFT",
+            "REJECT_I037_TRINARY_COPY_LOSS",
+            "REJECT_I037_EPSILON_RESIDUE_LOSS",
+            "REJECT_I037_VARIABLE_EXCHANGE_DRIFT",
+            "REJECT_I037_GOLAY_AUTHORITY_ESCALATION",
+            "REJECT_I037_COMMUTATIVE_REORDER",
+            "REJECT_I037_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_24D_CONSTRAINT_SPACETIME_NO_VM81_MUTATION"
+        ),
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_THREE_BY_EIGHT_BY_THREE_PHASE_COVER_WITH_TYPED_SOURCE_CONSTRAINTS"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.genesis_reverse_offset_holographic_nucleus.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1"
+        ),
+        function="genesis_reverse_offset_holographic_nucleus_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I036 holographic Lo Shu nucleus constructor: the same "
+            "nine-cell nucleus is retained simultaneously as Genesis offsets "
+            "{-4..4}, Lo Shu magnitudes {1..9}, and reverse offsets "
+            "{-3,-1,1,3,5,7,9,11,13}; all three views reconstruct the same "
+            "cell addresses, preserve center and reflection closure, repeat over "
+            "nine VM81 nuclei, and retain 81*64=72^2=5184 without host floats "
+            "or canonical authority escalation."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I036_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I036_HOLOGRAPHIC_NUCLEUS_WITNESS_V1",
+        ],
+        validators=[
+            "validate_genesis_reverse_offset_constructor",
+            "genesis_reverse_offset_holographic_nucleus_self_test",
+        ],
+        guards=[
+            "genesis_offset_equals_magnitude_minus_5",
+            "reverse_offset_equals_2m_minus_5",
+            "three_views_mutually_reconstructible",
+            "same_lo_shu_cell_addresses_preserved",
+            "genesis_zero_line_closure",
+            "magnitude_and_reverse_line_15_closure",
+            "zero_five_five_center_preserved",
+            "reflection_pair_closure_preserved",
+            "nine_nuclei_form_vm81",
+            "vm81_times_64_equals_hash72_squared_equals_5184",
+            "host_float_arithmetic_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I036_GENESIS_OFFSET_DRIFT",
+            "REJECT_I036_REVERSE_OFFSET_DRIFT",
+            "REJECT_I036_CELL_ADDRESS_LOSS",
+            "REJECT_I036_HOLOGRAPHIC_RECONSTRUCTION_FAILURE",
+            "REJECT_I036_LINE_SUM_CLOSURE_FAILURE",
+            "REJECT_I036_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_HOLOGRAPHIC_NUCLEUS_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_NINE_CELL_THREE_VIEW_AFFINE_NUCLEUS_WITH_VM81_REPETITION"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.q144_dyadic_gauge_phase_transport.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_q144_dyadic_gauge_phase_transport_v1"
+        ),
+        function="q144_dyadic_gauge_phase_transport_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I035 Q144 dyadic gauge phase transport constructor: "
+            "the exact 144-cell phase lattice decomposes as 72 ordered G72 "
+            "teeth times two half-steps; 2/144=1/72 binds the inherited I021 "
+            "G72 generator to the exact Q144 step 2^(1/144); modular P mod 144 "
+            "preserves wrapped coordinates without erasing unwrapped exponent "
+            "and turn provenance; a full phase cycle emits dyadic coefficient "
+            "2 while the I034 holographic metric remains 1 and transition "
+            "friction remains 7. No host-float or canonical authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I035_Q144_DYADIC_GAUGE_PHASE_TRANSPORT_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I035_Q144_DYADIC_GAUGE_TRANSPORT_WITNESS_V1",
+        ],
+        validators=[
+            "validate_q144_dyadic_gauge_phase_transport",
+            "q144_dyadic_gauge_phase_transport_self_test",
+        ],
+        guards=[
+            "q144_exact_144_cell_phase_lattice",
+            "g72_exact_72_tooth_bridge",
+            "two_q144_half_steps_per_g72_tooth",
+            "two_over_144_equals_one_over_72",
+            "p_mod_144_wrap_preserves_unwrapped_provenance",
+            "full_q144_cycle_phase_coefficient_2",
+            "phase_coefficient_not_canonical_metric_inflation",
+            "i034_unit_gauge_lock_preserved",
+            "transition_friction_7_distinct_from_dyadic_base_2",
+            "i021_phase_matrix_closed",
+            "host_float_phase_evaluation_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I035_Q144_G72_BRIDGE_DRIFT",
+            "REJECT_I035_PHASE_ADDRESS_DRIFT",
+            "REJECT_I035_TURN_PROVENANCE_LOSS",
+            "REJECT_I035_PHASE_METRIC_CONFLATION",
+            "REJECT_I035_DYADIC_FRICTION_REBIND",
+            "REJECT_I035_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_Q144_DYADIC_GAUGE_CONSTRUCTOR_NO_VM81_MUTATION"
+        ),
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_INTEGER_P_Q144_WRAP_AND_NONNEGATIVE_BIGINT_GAUGE_DEPTH"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.multidimensional_constraint_manifold.self_test",
         module=(
             "hhs_runtime."

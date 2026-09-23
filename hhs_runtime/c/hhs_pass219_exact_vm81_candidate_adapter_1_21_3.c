@@ -232,6 +232,9 @@ static int hhs219_program_valid(const HHSExactPass219VM81ProgramV1 *program) {
         if (instruction->struct_size < sizeof(*instruction) ||
             instruction->version != hhs219_adapter_version_word() ||
             instruction->opcode >= HHS_EXACT_PASS219_VM81_OP_COUNT ||
+            /* Generic 1.21.3 execution has no authority to synthesize the
+               Lane 5 mediation context required by the G^3 microcode. */
+            instruction->opcode >= HHS_EXACT_PASS219_VM81_OP_G3_IEEE_INGRESS ||
             instruction->a >= HHS_EXACT_VM81_CELLS ||
             instruction->b >= HHS_EXACT_VM81_CELLS ||
             instruction->c >= HHS_EXACT_VM81_CELLS ||
@@ -285,6 +288,207 @@ static void hhs219_copy_instruction_to_kernel(
 
 static int hhs219_hash72_word_valid(const char value[HHS_EXACT_HASH72_STRLEN]) {
     return value != NULL && hash72_validate_word(value);
+}
+
+static int hhs220_i028_constructor_witness_valid(
+    const HHSExactPass220I028Lane5ConstructorWitnessV1 *witness
+) {
+    if (witness == NULL ||
+        witness->struct_size != sizeof(*witness) ||
+        witness->version != HHS_EXACT_PASS220_I028_LANE5_G3_VERSION)
+        return 0;
+    if (!hhs219_hash72_word_valid(witness->pipeline_root_hash72) ||
+        !hhs219_hash72_word_valid(witness->constructor_graph_root_hash72))
+        return 0;
+    if (witness->green_merged_pr_implementation != 1U ||
+        witness->green_exact_head_workflow != 1U ||
+        witness->canonical_contract != 1U ||
+        witness->canonical_whitepaper_proof != 1U ||
+        witness->formal_proof_receipt != 1U ||
+        witness->successful_benchmark_receipt != 1U ||
+        witness->restart_checkpoint != 1U ||
+        witness->commit_merge_lineage != 1U ||
+        witness->registered_repository_service != 1U ||
+        witness->hash216_validated_composition != 1U)
+        return 0;
+    if (witness->unmerged_evidence_canonical_authority != 0U ||
+        witness->lane5_canonical_mutation_authority != 0U ||
+        witness->lane5_hash72_mint_authority != 0U ||
+        witness->lane5_hash216_mint_authority != 0U ||
+        witness->lane5_persistence_authority != 0U)
+        return 0;
+    return 1;
+}
+
+uint32_t hhs_exact_pass220_i028_lane5_g3_version(void) {
+    return HHS_EXACT_PASS220_I028_LANE5_G3_VERSION;
+}
+
+HHSExactStatus hhs_exact_pass220_i028_lane5_g3_candidate(
+    const HHSExactVM81Frame *frame,
+    const HHSExactPass219Hash216TransitionViewV1 *source_transition,
+    const HHSExactPass219Holo4StateV1 *holo4_state,
+    const HHSExactPass220I028Lane5ConstructorWitnessV1 *constructor_witness,
+    uint8_t ieee_cell81,
+    uint8_t p4_cell81,
+    uint8_t c4_cell81,
+    HHSExactPass220I028Lane5G3CandidateV1 *out_candidate
+) {
+    uint8_t raw648[HHS_EXACT_VM81_FRAME_BYTES];
+    size_t raw648_length = 0U;
+    HHSExactVM81Frame hydrated_round_trip;
+    HHSExactPass219Holo4StateV1 routed_state;
+    VM81 vm;
+    HHSExactStatus status;
+
+    if (frame == NULL || source_transition == NULL || holo4_state == NULL ||
+        constructor_witness == NULL || out_candidate == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (ieee_cell81 >= HHS_EXACT_VM81_CELLS ||
+        p4_cell81 >= HHS_EXACT_VM81_CELLS ||
+        c4_cell81 >= HHS_EXACT_VM81_CELLS ||
+        ieee_cell81 == p4_cell81 ||
+        ieee_cell81 == c4_cell81 ||
+        p4_cell81 == c4_cell81)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    if (!hhs219_kernel_init_once())
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (!hhs220_i028_constructor_witness_valid(constructor_witness))
+        return HHS_EXACT_STATUS_CONSTRAINT_REJECTED;
+
+    /* Force the same public I149 hydrated 648-byte boundary used by ordinary
+       external frame ingress/egress and require byte-identical replay. */
+    status = hhs_exact_vm81_frame_export_le(
+        frame, raw648, sizeof(raw648), &raw648_length);
+    if (status != HHS_EXACT_STATUS_OK ||
+        raw648_length != HHS_EXACT_VM81_FRAME_BYTES)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    memset(&hydrated_round_trip, 0, sizeof(hydrated_round_trip));
+    status = hhs_exact_vm81_frame_import_le(
+        raw648, raw648_length, &hydrated_round_trip);
+    if (status != HHS_EXACT_STATUS_OK ||
+        memcmp(&hydrated_round_trip, frame, sizeof(*frame)) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    /* Run the actual inherited four-lane Holo4 route.  Work occurs on a copy
+       of the supplied candidate-learning state; caller state is not mutated. */
+    routed_state = *holo4_state;
+    status = hhs_exact_pass219_holo4_validate_state(&routed_state);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    memset(out_candidate, 0, sizeof(*out_candidate));
+    out_candidate->struct_size = (uint32_t)sizeof(*out_candidate);
+    out_candidate->version = HHS_EXACT_PASS220_I028_LANE5_G3_VERSION;
+    status = hhs_exact_pass219_holo4_route(
+        &hydrated_round_trip,
+        source_transition,
+        HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE,
+        0,
+        &routed_state,
+        &out_candidate->holo4_prepared,
+        &out_candidate->holo4_decision);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    if (out_candidate->holo4_prepared.candidate_only != 1U ||
+        out_candidate->holo4_prepared.exact_integer_only != 1U ||
+        out_candidate->holo4_prepared.all_cells_have_20_peers != 1U ||
+        out_candidate->holo4_prepared.reciprocal_phase_closure != 1U ||
+        out_candidate->holo4_prepared.nested_loshu_complete != 1U ||
+        out_candidate->holo4_prepared.hash216_positions_complete != 1U ||
+        out_candidate->holo4_prepared.canonical_mutation_authority != 0U ||
+        out_candidate->holo4_prepared.canonical_hash72_authority != 0U ||
+        out_candidate->holo4_prepared.canonical_hash216_authority != 0U ||
+        out_candidate->holo4_prepared.canonical_persistence_authority != 0U ||
+        out_candidate->holo4_prepared.floating_point_authority != 0U ||
+        out_candidate->holo4_decision.candidate_only != 1U ||
+        out_candidate->holo4_decision.exact_integer_only != 1U ||
+        out_candidate->holo4_decision.canonical_mutation_authority != 0U ||
+        out_candidate->holo4_decision.canonical_hash72_authority != 0U ||
+        out_candidate->holo4_decision.canonical_hash216_authority != 0U ||
+        out_candidate->holo4_decision.canonical_persistence_authority != 0U ||
+        out_candidate->holo4_decision.floating_point_authority != 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (memcmp(out_candidate->holo4_prepared.source_transition_identity216,
+               source_transition->transition_identity216,
+               HHS_EXACT_UQCEL_HASH216_STRLEN) != 0 ||
+        memcmp(out_candidate->holo4_decision.source_transition_identity216,
+               source_transition->transition_identity216,
+               HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    /* G^3 executes only after the real Holo4 route and rooted constructor
+       witness have closed.  The VM copy is local and cannot commit state. */
+    vm81_init(&vm,
+              hydrated_round_trip.words[ieee_cell81] ^
+                  hydrated_round_trip.words[p4_cell81] ^
+                  hydrated_round_trip.words[c4_cell81],
+              SEED_LOSHU);
+    memcpy(vm.cells, hydrated_round_trip.words, sizeof(vm.cells));
+    g3_bind_lane5_context(
+        &vm,
+        1U, /* public I149 raw648 hydration replayed exactly */
+        1U, /* real Holo4 four-lane route completed */
+        1U, /* this is the dedicated Lane 5 mediated entrypoint */
+        1U, /* rooted mandatory constructor witness validated */
+        1U, /* Lane 5 has no canonical mutation authority */
+        1U  /* external egress remains after Hash216 validation */
+    );
+    if (!g3_lane5_context_valid(&vm))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    if (!g3_run_ouroboros(
+            &vm,
+            hydrated_round_trip.words[ieee_cell81],
+            hydrated_round_trip.words[p4_cell81],
+            hydrated_round_trip.words[c4_cell81]))
+        return HHS_EXACT_STATUS_CONSTRAINT_REJECTED;
+
+    out_candidate->candidate_frame = hydrated_round_trip;
+    memcpy(out_candidate->source_transition_identity216,
+           source_transition->transition_identity216,
+           HHS_EXACT_UQCEL_HASH216_STRLEN);
+    memcpy(out_candidate->pipeline_root_hash72,
+           constructor_witness->pipeline_root_hash72,
+           HHS_EXACT_HASH72_STRLEN);
+    memcpy(out_candidate->constructor_graph_root_hash72,
+           constructor_witness->constructor_graph_root_hash72,
+           HHS_EXACT_HASH72_STRLEN);
+    out_candidate->ieee_in_bits = vm.g3.ieee_in_bits;
+    out_candidate->ieee_out_bits = vm.g3.ieee_out_bits;
+    out_candidate->p4_value = vm.g3.p4_value;
+    out_candidate->c4_value = vm.g3.c4_value;
+    out_candidate->bigint_register = vm.g3.bigint_register;
+    out_candidate->nucleus_zero_sum = vm.g3.nucleus_zero_sum;
+    out_candidate->g3_stage_mask = vm.g3.stage_mask;
+    out_candidate->bigint_lo_shu_value = vm.g3.bigint_lo_shu_value;
+    out_candidate->bigint_lo_shu_local_index =
+        vm.g3.bigint_lo_shu_local_index;
+    out_candidate->raw648_round_trip_exact = 1U;
+    out_candidate->holo4_four_lane_prepared = 1U;
+    out_candidate->mandatory_constructor_graph_bound = 1U;
+    out_candidate->g3_ouroboros_closed =
+        vm.g3.stage_mask == G3_STAGE_ALL && vm.g3.rejected == 0U ? 1U : 0U;
+    out_candidate->candidate_frame_unchanged =
+        memcmp(&out_candidate->candidate_frame, frame, sizeof(*frame)) == 0
+            ? 1U : 0U;
+    out_candidate->candidate_only = 1U;
+    out_candidate->exact_integer_only = 1U;
+    out_candidate->hash216_self_solving_validation_required = 1U;
+    out_candidate->external_egress_authority = 0U;
+    out_candidate->canonical_vm81_mutation_authority = 0U;
+    out_candidate->canonical_hash72_authority = 0U;
+    out_candidate->canonical_hash216_authority = 0U;
+    out_candidate->canonical_persistence_authority = 0U;
+    out_candidate->floating_point_authority = 0U;
+
+    if (out_candidate->g3_ouroboros_closed != 1U ||
+        out_candidate->candidate_frame_unchanged != 1U ||
+        out_candidate->ieee_out_bits != out_candidate->ieee_in_bits)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    return HHS_EXACT_STATUS_OK;
 }
 
 uint32_t hhs_exact_pass219_vm81_adapter_version(void) {

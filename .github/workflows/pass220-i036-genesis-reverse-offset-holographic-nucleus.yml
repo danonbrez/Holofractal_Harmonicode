@@ -1,0 +1,126 @@
+name: Pass 220 I036 Genesis Reverse-Offset Holographic Nucleus
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "evidence/pass220/i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I036_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS.md"
+      - "docs/whitepapers/HARMONICODE_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I036_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS_RESTART.md"
+      - ".github/workflows/pass220-i036-genesis-reverse-offset-holographic-nucleus.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "evidence/pass220/i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I036_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS.md"
+      - "docs/whitepapers/HARMONICODE_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I036_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS_RESTART.md"
+      - ".github/workflows/pass220-i036-genesis-reverse-offset-holographic-nucleus.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I036 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py \
+            tests/pass220/test_hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py
+
+      - name: Verify connected Wolfram 30 of 30 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i036_genesis_reverse_offset_holographic_nucleus_wolfram_20260923_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 30
+          assert data["failed"] == []
+          assert data["genesis_matrix"] == [[-1,4,-3],[-2,0,2],[3,-4,1]]
+          assert data["magnitude_matrix"] == [[4,9,2],[3,5,7],[8,1,6]]
+          assert data["reverse_matrix"] == [[3,13,-1],[1,5,9],[11,-3,7]]
+          assert data["schema"] in source
+          PY
+
+      - name: Run I036 holographic nucleus tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py
+
+      - name: Run inherited I001 normalization regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py
+
+      - name: Enforce exact I036 boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              "GENESIS_OFFSET_ALPHABET = tuple(range(-4, 5))",
+              "LO_SHU_MAGNITUDE_ALPHABET = tuple(range(1, 10))",
+              "REVERSE_OFFSET_ALPHABET = tuple(range(-3, 14, 2))",
+              "return m - CENTER_MAGNITUDE",
+              "return CENTER_MAGNITUDE + 2 * e",
+              "return 2 * m - CENTER_MAGNITUDE",
+              '"canonical_service": False',
+              '"canonical_constraint_creation_authority": False',
+              '"canonical_constraint_enforcement_authority": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = ("float(", "Decimal(", "numpy.")
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          PY

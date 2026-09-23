@@ -1,0 +1,176 @@
+name: Pass 220 I042 Lane 5 Multimodal Shared Root Fabric
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "hhs_runtime/pass165/ingestion.py"
+      - "hhs_runtime/pass218/relational_consumption_i21.py"
+      - "hhs_runtime/pass150/genome.py"
+      - "hhs_runtime/pass163/vmrc.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "tests/test_hhs_pass165_multimodal_ingress_v1.py"
+      - "tests/pass218/test_pass218_iteration21_relational_candidate_consumption.py"
+      - "docs/pass220/PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC.md"
+      - "docs/whitepapers/HARMONICODE_LANE5_MULTIMODAL_SHARED_ROOT_PROJECTION_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC_RESTART.md"
+      - ".github/workflows/pass220-i042-lane5-multimodal-shared-root-fabric.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "hhs_runtime/pass165/ingestion.py"
+      - "hhs_runtime/pass218/relational_consumption_i21.py"
+      - "hhs_runtime/pass150/genome.py"
+      - "hhs_runtime/pass163/vmrc.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "tests/test_hhs_pass165_multimodal_ingress_v1.py"
+      - "tests/pass218/test_pass218_iteration21_relational_candidate_consumption.py"
+      - "docs/pass220/PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC.md"
+      - "docs/whitepapers/HARMONICODE_LANE5_MULTIMODAL_SHARED_ROOT_PROJECTION_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC_RESTART.md"
+      - ".github/workflows/pass220-i042-lane5-multimodal-shared-root-fabric.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Compile I042 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py \
+            tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Run I042 multimodal shared-root tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Run I041 exact game-engine regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+
+      - name: Run I040 exact DESI projection regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py
+
+      - name: Run Pass165 multimodal projection regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/test_hhs_pass165_multimodal_ingress_v1.py
+
+      - name: Run Pass218 exact relational-candidate regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass218/test_pass218_iteration21_relational_candidate_consumption.py
+
+      - name: Execute I042 self test and verify finite geometry
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_lane5_multimodal_shared_root_fabric_v1 import (
+              lane5_multimodal_shared_root_self_test,
+          )
+
+          witness = lane5_multimodal_shared_root_self_test()
+          assert witness["ok"] is True
+          result = witness["result"]
+          assert result["modality_count"] == 6
+          assert result["projection_bits_per_modality"] == 5184
+          assert result["projection_bytes_per_modality"] == 648
+          assert result["hash216_positions_per_modality"] == 216
+          assert result["directed_cross_modal_translation_count"] == 30
+          assert result["audio_polyrhythm"] == {
+              "numerator": 3,
+              "denominator": 2,
+          }
+          assert result["exact_multimodal_fabric_closed"] is True
+          PY
+
+      - name: Enforce I042 exact authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              'ROOT_METADATA_SEED_TEXT = "179971.179971"',
+              'INVARIANT_GATE_TEXT = "1.001"',
+              '"ONE_EXACT_ROOT_FOR_ALL_MODALITIES"',
+              '"EVERY_MODALITY_HAS_EXACT_5184_BIT_PROJECTION"',
+              '"EVERY_MODALITY_HAS_ORDERED_HASH216_GENOME_ROOT"',
+              '"PASS166_RELATIONS_REMAIN_REVISABLE_CANDIDATES"',
+              '"AUDIO_BINDS_H36_AND_EXACT_3_TO_2_POLYRHYTHM"',
+              '"CROSS_MODAL_TRANSLATION_PRESERVES_SHARED_ROOT"',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+              '"canonical_learning_commit_authority": False',
+              '"model_weight_update_authority": False',
+              '"direct_canonical_persistence_authority": False',
+              '"host_float_arithmetic_used": False',
+              '"probability_used": False',
+              '"likelihood_used": False',
+              '"mcmc_used": False',
+              '"parameter_refit_performed": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = (
+              "math.sin",
+              "math.cos",
+              "numpy.",
+              "scipy.",
+              "random.",
+              "float(",
+              "Decimal(",
+          )
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          PY

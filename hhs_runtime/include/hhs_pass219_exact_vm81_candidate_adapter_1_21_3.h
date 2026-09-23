@@ -2,6 +2,7 @@
 #define HHS_PASS219_EXACT_VM81_CANDIDATE_ADAPTER_1_21_3_H
 
 #include "hhs_pass219_monolithic_constraint_abi_1_20.h"
+#include "hhs_pass219_core_holographic_four_lane_1_24.h"
 
 #include <stdint.h>
 
@@ -84,6 +85,20 @@ typedef enum HHSExactPass219VM81OpcodeV1 {
     HHS_EXACT_PASS219_VM81_OP_SWEEP81,
     HHS_EXACT_PASS219_VM81_OP_CLOSE81,
     HHS_EXACT_PASS219_VM81_OP_HALT,
+    /* Append-only G^3/Ouroboros identities.  Generic 1.21.3 execution
+       recognizes these numeric identities but must reject them unless a
+       dedicated Lane 5 mediated adapter supplies the required context. */
+    HHS_EXACT_PASS219_VM81_OP_G3_IEEE_INGRESS = 24,
+    HHS_EXACT_PASS219_VM81_OP_G3_PAL_FOLD,
+    HHS_EXACT_PASS219_VM81_OP_G3_RNA_TRANSCRIBE,
+    HHS_EXACT_PASS219_VM81_OP_G3_BIND_P4_C4,
+    HHS_EXACT_PASS219_VM81_OP_G3_CONSTRAIN_C5,
+    HHS_EXACT_PASS219_VM81_OP_G3_CONSTRAIN_C7,
+    HHS_EXACT_PASS219_VM81_OP_G3_SERIALIZE_A2_C1,
+    HHS_EXACT_PASS219_VM81_OP_G3_ZERO_SUM_CLOSE,
+    HHS_EXACT_PASS219_VM81_OP_G3_RNA_REVERSE,
+    HHS_EXACT_PASS219_VM81_OP_G3_IEEE_EGRESS,
+    HHS_EXACT_PASS219_VM81_OP_G3_OUROBOROS,
     HHS_EXACT_PASS219_VM81_OP_COUNT
 } HHSExactPass219VM81OpcodeV1;
 
@@ -184,6 +199,88 @@ typedef struct HHSExactPass219VM81ReplayV1 {
     uint8_t replay_verified;
     uint8_t reserved0[5];
 } HHSExactPass219VM81ReplayV1;
+
+#define HHS_EXACT_PASS220_I028_LANE5_G3_VERSION UINT32_C(0x0001001C)
+
+typedef struct HHSExactPass220I028Lane5ConstructorWitnessV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    char pipeline_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    char constructor_graph_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    uint8_t green_merged_pr_implementation;
+    uint8_t green_exact_head_workflow;
+    uint8_t canonical_contract;
+    uint8_t canonical_whitepaper_proof;
+    uint8_t formal_proof_receipt;
+    uint8_t successful_benchmark_receipt;
+    uint8_t restart_checkpoint;
+    uint8_t commit_merge_lineage;
+    uint8_t registered_repository_service;
+    uint8_t hash216_validated_composition;
+    uint8_t unmerged_evidence_canonical_authority;
+    uint8_t lane5_canonical_mutation_authority;
+    uint8_t lane5_hash72_mint_authority;
+    uint8_t lane5_hash216_mint_authority;
+    uint8_t lane5_persistence_authority;
+    uint8_t reserved0;
+} HHSExactPass220I028Lane5ConstructorWitnessV1;
+
+typedef struct HHSExactPass220I028Lane5G3CandidateV1 {
+    uint32_t struct_size;
+    uint32_t version;
+    HHSExactVM81Frame candidate_frame;
+    HHSExactPass219Holo4PreparedV1 holo4_prepared;
+    HHSExactPass219Holo4DecisionV1 holo4_decision;
+    char source_transition_identity216[HHS_EXACT_UQCEL_HASH216_STRLEN];
+    char pipeline_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    char constructor_graph_root_hash72[HHS_EXACT_HASH72_STRLEN];
+    uint64_t ieee_in_bits;
+    uint64_t ieee_out_bits;
+    uint64_t p4_value;
+    uint64_t c4_value;
+    uint64_t bigint_register;
+    int16_t nucleus_zero_sum;
+    uint16_t g3_stage_mask;
+    uint8_t bigint_lo_shu_value;
+    uint8_t bigint_lo_shu_local_index;
+    uint8_t raw648_round_trip_exact;
+    uint8_t holo4_four_lane_prepared;
+    uint8_t mandatory_constructor_graph_bound;
+    uint8_t g3_ouroboros_closed;
+    uint8_t candidate_frame_unchanged;
+    uint8_t candidate_only;
+    uint8_t exact_integer_only;
+    uint8_t hash216_self_solving_validation_required;
+    uint8_t external_egress_authority;
+    uint8_t canonical_vm81_mutation_authority;
+    uint8_t canonical_hash72_authority;
+    uint8_t canonical_hash216_authority;
+    uint8_t canonical_persistence_authority;
+    uint8_t floating_point_authority;
+    uint8_t reserved0[2];
+} HHSExactPass220I028Lane5G3CandidateV1;
+
+HHS_EXACT_API uint32_t hhs_exact_pass220_i028_lane5_g3_version(void);
+
+/*
+ * Execute the I028 G^3/Ouroboros candidate profile only after the same exact
+ * 648-byte frame has crossed the public I149 hydration membrane, an inherited
+ * predecessor Hash216 transition has driven the real Holo4 four-lane route,
+ * and a rooted Lane 5 constructor-graph witness is present.
+ *
+ * This surface is candidate-only.  It does not perform signed VM81 admission,
+ * mint Hash72/Hash216 authority, persist state, or authorize external egress.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass220_i028_lane5_g3_candidate(
+    const HHSExactVM81Frame *frame,
+    const HHSExactPass219Hash216TransitionViewV1 *source_transition,
+    const HHSExactPass219Holo4StateV1 *holo4_state,
+    const HHSExactPass220I028Lane5ConstructorWitnessV1 *constructor_witness,
+    uint8_t ieee_cell81,
+    uint8_t p4_cell81,
+    uint8_t c4_cell81,
+    HHSExactPass220I028Lane5G3CandidateV1 *out_candidate
+);
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_adapter_version(void);
 

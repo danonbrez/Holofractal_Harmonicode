@@ -1,0 +1,188 @@
+name: Pass 220 I038 DESI Lane 5 Parallel Exact Egress
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_full_phase_ieee_transport_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_ieee_scalar_involution_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_full_phase_ieee_transport_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_ieee_scalar_involution_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS.md"
+      - "docs/whitepapers/HARMONICODE_DESI_PARALLEL_EXACT_EGRESS_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "docs/operations/restart/PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS_RESTART.md"
+      - ".github/workflows/pass220-i038-desi-lane5-parallel-exact-egress.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_full_phase_ieee_transport_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_ieee_scalar_involution_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_full_phase_ieee_transport_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_ieee_scalar_involution_v1.py"
+      - "tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py"
+      - "evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS.md"
+      - "docs/whitepapers/HARMONICODE_DESI_PARALLEL_EXACT_EGRESS_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "docs/operations/restart/PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS_RESTART.md"
+      - ".github/workflows/pass220-i038-desi-lane5-parallel-exact-egress.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I038 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py \
+            tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+
+      - name: Verify connected Wolfram 40 of 40 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 40
+          assert data["failed"] == []
+          assert data["exact_values"]["z_eff"] == "233/100"
+          assert data["exact_values"]["D_H_over_r_d"] == "1079/125"
+          assert data["exact_values"]["D_M_over_r_d"] == "3899/100"
+          assert data["binary64_hex"]["D_H_over_r_d"] == "40214395810624dd"
+          assert data["binary64_hex"]["D_M_over_r_d"] == "40437eb851eb851f"
+          assert data["schema"] in source
+          PY
+
+      - name: Run I038 DESI exact-egress tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+
+      - name: Run I037 24D equation/proof regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+
+      - name: Run inherited I033 multirepresentational constructor regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py
+
+      - name: Run inherited I032 full-phase IEEE regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_full_phase_ieee_transport_v1.py
+
+      - name: Run inherited I031 exact IEEE regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_ieee_scalar_involution_v1.py
+
+      - name: Run inherited I001 BigInt normalization regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py
+
+      - name: Enforce I038 exact parallel boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              '"z_eff": "2.33"',
+              '"D_H_over_r_d": "8.632"',
+              '"D_H_stat_sigma": "0.098"',
+              '"D_H_sys_sigma": "0.026"',
+              '"D_M_over_r_d": "38.99"',
+              '"D_M_stat_sigma": "0.52"',
+              '"D_M_sys_sigma": "0.12"',
+              '"PALINDROMIC_SYMBOLIC_IEEE_BINARY64"',
+              '"BIGINT_5184"',
+              '"I037_24D_EQUATION_PROOF_BUNDLE"',
+              '"LANE5_VALIDATED_CONSTRUCTOR_COMPOSITION"',
+              '"probability_used_in_equation_solve": False',
+              '"likelihood_used_in_equation_solve": False',
+              '"mcmc_used_in_equation_solve": False',
+              '"host_float_arithmetic_used": False',
+              '"implicit_desi_to_hhs_variable_mapping": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = (
+              "float(",
+              "Decimal(",
+              "numpy.",
+              "random.",
+              "scipy.optimize",
+              "mcmc",
+          )
+          # "mcmc" is present only as an explicit false policy key; do not
+          # reject the descriptive guard token itself.
+          hits = [token for token in forbidden[:-1] if token in source]
+          assert not hits, hits
+          PY

@@ -1,0 +1,27 @@
+[Unit]
+Description=HHS Ubuntu Application VM Control Plane
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hhs
+Group=hhs
+WorkingDirectory=@@REPOSITORY_ROOT@@
+EnvironmentFile=/etc/hhs/application-vm.env
+ExecStart=@@PYTHON_BIN@@ -m uvicorn hhs_backend.application_vm_api_server:app --host ${HHS_APPLICATION_VM_HOST} --port ${HHS_APPLICATION_VM_PORT} --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=90
+TimeoutStopSec=20
+KillSignal=SIGTERM
+KillMode=mixed
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/hhs/application-vm
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

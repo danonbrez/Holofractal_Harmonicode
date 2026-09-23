@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_WOLFRAM_RECEIPT_V1",
+  "date": "2026-09-23",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 21,
+  "pass_count": 21,
+  "failed": [],
+  "input_path": "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.wl",
+  "output_path": "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.wl"
+}

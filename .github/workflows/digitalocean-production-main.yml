@@ -48,7 +48,8 @@ jobs:
             deployment/digitalocean/guarded_auto_update/install.sh
           python3 -m py_compile \
             deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py \
-            deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py
+            deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py \
+            deployment/digitalocean/guarded_auto_update/verify-recovery-state.py
           python3 - <<'PY'
           import runpy
           namespace = runpy.run_path("tests/test_hhs_guarded_auto_update_contract_v1.py")
@@ -274,34 +275,14 @@ jobs:
             sleep 2
           done
 
+          SERVICE_INACTIVE=0
           if ! systemctl is-active --quiet hhs.service; then
             if ss -H -ltn 'sport = :8080' | grep -q .; then
               echo "hhs.service is inactive but port 8080 is owned by another listener; refusing recovery." >&2
               ss -H -ltnp 'sport = :8080' >&2 || true
               exit 16
             fi
-            RECEIPT_LOG_VALUE="$STATE_ROOT/receipts.jsonl" python3 - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-          path = Path(os.environ['RECEIPT_LOG_VALUE'])
-          if not path.is_file():
-              raise SystemExit('exact-main recovery requires guarded-update receipts')
-          records = []
-          for line in path.read_text(encoding='utf-8').splitlines():
-              line = line.strip()
-              if not line:
-                  continue
-              try:
-                  records.append(json.loads(line))
-              except json.JSONDecodeError:
-                  continue
-          if not records or records[-1].get('outcome') != 'ROLLBACK_HEALTH_FAILED':
-              raise SystemExit(f"exact-main recovery requires terminal ROLLBACK_HEALTH_FAILED receipt, found {records[-1] if records else None}")
-          print('HHS_EXACT_MAIN_RECOVERY_RECEIPT_VERIFIED=1')
-          PY
-            RECOVERY_MODE=1
-            echo "HHS_EXACT_MAIN_RECOVERY_MODE=1"
+            SERVICE_INACTIVE=1
           fi
 
           systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
@@ -330,6 +311,19 @@ jobs:
 
           bootstrap_root=$(mktemp -d /tmp/hhs-production-bootstrap.XXXXXX)
           git worktree add --detach "$bootstrap_root" "$TARGET_SHA"
+
+          if [[ "$SERVICE_INACTIVE" == "1" ]]; then
+            current_head=$(git -C "$APP_ROOT" rev-parse HEAD)
+            recovery_report=$(python3 "$bootstrap_root/deployment/digitalocean/guarded_auto_update/verify-recovery-state.py" \
+              --receipt-log "$STATE_ROOT/receipts.jsonl" \
+              --current-head "$current_head" \
+              --repository-root "$APP_ROOT" \
+              --branch main)
+            printf '%s\n' "$recovery_report"
+            RECOVERY_MODE=1
+            echo "HHS_EXACT_MAIN_RECOVERY_RECEIPT_VERIFIED=1"
+            echo "HHS_EXACT_MAIN_RECOVERY_MODE=1"
+          fi
 
           HHS_UPDATE_STATE_ROOT="$STATE_ROOT" \
           HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime \

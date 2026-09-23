@@ -174,3 +174,12 @@ The current expanded mathematical reference is:
 The update includes the ordered noncommutative Brahmagupta correction, directed constraint orientation, fixed-width 5,184-character BigInt transcription, global non-cancellable Delta denominator, T64/operation64 geometry, exact IEEE pivot transcription, thread-lineage scope mathematics, the tripartite constraint surface, reciprocal VM81 phase-debt closure, and ordered Hash216 stack-root receipt binding.
 
 The connected Wolfram synthesis is 44/44 PASS and is preserved in evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.
+
+### Relational token manifold
+
+- `architecture/HHS_RELATIONAL_TOKEN_MANIFOLD_V1.md` — both-and human semantic
+  multiplicity / machine mathematical unity, exact character-string metadata,
+  Lo Shu + prime-modular projections, context, and shared graph topology.
+- `../contracts/pass219/PASS_219_RELATIONAL_TOKEN_MANIFOLD_1_0.json` —
+  machine-readable Pass 219 acceptance and authority contract.
+

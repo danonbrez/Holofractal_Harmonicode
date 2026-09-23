@@ -1268,3 +1268,339 @@ The paper consolidates the exact mathematics added after the earlier Lane 5 1.48
 A connected Wolfram Language synthesis executed 44 exact checks and returned 44/44 PASS. The source/output/receipt are stored under evidence/pass219/hhs_lane5_mathematical_synthesis_20260921_v1.*.
 
 The documentation distinguishes the latest main baseline from still-stacked runtime source and does not convert documentation evidence into canonical mutation authority.
+
+
+## A.32 Pass 220 I030 — G³ reciprocal symbol-string codec
+
+Pass 220 I030 adds an exact constructor-level codec theorem for finite UTF-8
+symbol strings. The proof cell `123321.111` is retained as an opaque token,
+not parsed as a host decimal value. Arabic digits `1..9` are represented as
+scaled proof-cell instances, while digit `0` is represented by the ordered
+typed phase lock
+
+~~~text
+Zx = ODiv(OProd(Phase[x], Phase[y], ProofCell("123321.111")), Phase[x])
+~~~
+
+with reciprocal return orientation
+
+~~~text
+Zy = ODiv(OProd(Phase[y], Phase[x], ProofCell("123321.111")), Phase[y])
+y = 1/x
+~~~
+
+No x/y cancellation or commutation is introduced.
+
+The same reciprocal transform is used at both boundaries. For an admitted
+source string `s`, `T(s)` constructs the forward/reverse carrier and
+`T(T(s)) == s` reconstructs the exact original spelling. Consequently,
+binary text, IEEE-like float spellings, BigInt/scientific notation, equations,
+leading zeroes, and other textual projections remain distinct symbol states
+unless an explicitly authorized higher projection identifies them.
+
+The carrier stores the forward UTF-8 byte path, its exact reverse, an integrity
+digest, per-symbol provenance, the x-oriented zero lock, and its y-oriented
+return lock. A bounded repair path can reconstruct the source when exactly one
+redundant byte path is damaged and the other path, digest, and symbol manifest
+remain intact; inconsistent or doubly damaged carriers fail closed.
+
+The companion Wolfram Language formalization
+`evidence/pass220/i030_g3_reciprocal_symbol_codec_wolfram_20260922_v1.wl`
+returns 17/17 PASS. It proves constructor-level phase involution for the locked
+zero and full 3x3 G³ proof tensor, keeps `xy` distinct from `yx`, verifies
+all numeral proof-cell lifts, and checks exact binary/float/Unicode string
+round trips without importing conventional multiplicative cancellation.
+
+The implementation is read-only and does not widen VM81 mutation,
+Hash72/Hash216 mint, persistence, floating-point, Lane 5 bypass, RNA bypass,
+Holo4 bypass, or PQC/admission authority. Full derivation:
+`docs/whitepapers/HARMONICODE_G3_RECIPROCAL_SYMBOL_STRING_CODEC_THEOREM.md`.
+
+
+## A.33 Pass 220 I031 — G³ exact IEEE scalar involution
+
+Pass 220 I031 strengthens the reciprocal symbol-string theorem to exact IEEE
+binary scalar storage identity. The scalar bit word is an invariant coordinate
+under reciprocal phase exchange:
+
+~~~text
+(B, x) -> (B, y), y=1/x
+(B, y) -> (B, x)
+~~~
+
+so the same reciprocal operation satisfies:
+
+~~~text
+T(T(B)) = B
+~~~
+
+for every admitted storage word.
+
+The implementation defines standard binary16, binary32, binary64, and
+binary128 layouts and proves their sign/exponent/fraction partition with exact
+integer arithmetic. For total width `1+e+f`, any storage integer `N` is
+reconstructed exactly from its disjoint fields:
+
+~~~text
+N = sign*2^(e+f) + exponent*2^f + fraction
+~~~
+
+The connected Wolfram proof establishes this parametrically for all four
+standard widths. It additionally exhausts all 65,536 binary16 storage states.
+
+Finite values receive an exact dyadic rational witness. For example, the
+binary64 storage pattern commonly rendered as `0.1` is:
+
+~~~text
+3FB999999999999A
+= 3602879701896397 / 36028797018963968
+~~~
+
+and differs exactly from mathematical `1/10` by
+`1/180143985094819840`. The transport theorem concerns the exact admitted
+IEEE scalar, so no decimal reparse or approximation step is used during the
+round trip.
+
+Signed zeros remain distinct because their storage sign bits are retained even
+though their rational projections both equal zero. Infinities and NaNs are
+preserved by complete bit identity rather than forced into finite rational
+semantics; NaN payload bits therefore round-trip exactly.
+
+The reciprocal phase layer changes only the x/y phase coordinate. It does not
+stretch, compress, round, rescale, or otherwise mutate the IEEE scalar
+coordinate. This gives the executable invariant:
+
+~~~text
+phase changes
+scalar bits do not
+~~~
+
+and aligns directly with the inherited I028 native G³ condition
+`ieee_out_bits == ieee_in_bits`.
+
+The Wolfram formalization
+`evidence/pass220/i031_g3_ieee_scalar_involution_wolfram_20260922_v1.wl`
+returns 17/17 PASS. The runtime and theorem remain read-only and do not widen
+VM81 mutation, Hash72/Hash216 mint, persistence, floating-point execution,
+Lane 5 bypass, RNA bypass, Holo4 bypass, or PQC/admission authority.
+
+Full derivation:
+`docs/whitepapers/HARMONICODE_G3_EXACT_IEEE_SCALAR_INVOLUTION_THEOREM.md`.
+
+
+## A.34 Pass 220 I032 — G³ full-phase IEEE transport
+
+Pass 220 I032 binds the exact IEEE scalar-state involution from I031 to the
+complete ordered HARMONICODE phase tensor. The external transport direction is
+still expressed by the reciprocal boundary pair
+
+~~~text
+x = ingress
+y = 1/x = egress
+~~~
+
+but the internal machine is not reduced to x/y alone. Internal logic is driven
+by the complete 3x3 G³ tensor over x/y/z/w, including all four ordered product
+channels:
+
+~~~text
+xy
+yx
+zw
+wz
+~~~
+
+with `xy != yx` and `zw != wz` preserved structurally.
+
+For an exact IEEE storage word `B`, every one of the nine G³ logic slots
+carries the same scalar bits together with its ordered forward phase expression
+and reciprocal return expression. The phase tensor changes internal logic
+orientation while the scalar payload remains invariant:
+
+~~~text
+phase changes
+scalar bits do not
+~~~
+
+The public reciprocal operation therefore has the typed form:
+
+~~~text
+B
+-> x-oriented full G3 carrier
+-> reciprocal x/y/z/w internal phase tensor
+-> y=1/x return boundary
+-> same B
+~~~
+
+and satisfies `T(T(B)) = B` at the exact storage boundary.
+
+The connected Wolfram formalization
+`evidence/pass220/i032_g3_full_phase_ieee_transport_wolfram_20260922_v1.wl`
+returns 22/22 PASS. It proves exact 3x3 dimensions, complete x/y/z/w coverage,
+all ordered product channels, reciprocal tensor involution, nine-slot scalar
+immutability, typed-zero reciprocity, and parametric IEEE field reconstruction
+for binary16/32/64/128.
+
+I032 remains a read-only proof/reference surface. It does not widen VM81
+mutation, Hash72/Hash216 mint, persistence, floating-point arithmetic, Lane 5,
+RNA, Holo4, PQC, or signed-admission authority.
+
+Full derivation:
+`docs/whitepapers/HARMONICODE_G3_FULL_PHASE_IEEE_TRANSPORT_THEOREM.md`.
+
+
+## Pass 220 I039 — Shared-root quantum/relativistic execution closure
+
+The post-I038 execution stack now binds the exact quantum and relativistic
+projections to one repository-visible shared-state root rather than treating
+them as unrelated downstream engines.
+
+The shared phase route is:
+
+```text
+8, 24, 40, 56, 72, 16, 32, 48, 64
+```
+
+I025 executes this route as the nine-state macrocycle repeated across eight
+cycles of the exact 72-state cyclotomic orbit. I023 consumes the same route for
+nine exact Friedmann transfer receipts. I039 requires identity of those routes
+and identical shared-state ancestry.
+
+The shared state additionally binds:
+
+```text
+I037 mandatory 24D equation/proof root
+I038 palindromic IEEE + exact dyadic residue + 5184-character BigInt carrier
+root metadata seed 179971.179971
+typed Delta e=0 / Psi=0 / Theta15=true / Omega=true closure
+```
+
+The root seed remains co-resident as exact decimal/rational source, raw IEEE
+storage, exact dyadic projection, exact decimal-minus-IEEE residue,
+palindromic reciprocal state, and fixed-width BigInt geometry. The IEEE lane
+therefore cannot silently replace or drift the exact source value.
+
+The executable closure is fail-closed on projection ancestry divergence,
+phase-route divergence, equation/proof-bundle loss, BigInt-width loss,
+reciprocal-return failure, typed closure failure, host floating arithmetic,
+probability/likelihood/MCMC solving, commutative reorder authorization, or
+canonical-authority escalation.
+
+
+## Pass 220 I040 — Exact DESI observation projection and corpus closure
+
+The post-I039 empirical path now contains an explicit observation map rather
+than an inferred variable fit.
+
+For the public DESI DR2 Ly-alpha BAO row, the frozen exact source is:
+
+```text
+z_eff = 2.33 = 233/100
+D_H/r_d = 8.632 = 1079/125
+D_M/r_d = 38.99 = 3899/100
+```
+
+The exact relational projection solves:
+
+```text
+1+z = 333/100
+H*r_d/c0 = 125/1079
+D_M/D_H = 19495/4316
+(D_V/r_d)^3 = 3821939746807/125000000
+```
+
+These observation-surface relations are carried through the existing I038
+parallel exact decimal / palindromic IEEE / exact residue / 5,184-character
+BigInt stack and bound to the I039 shared state root and I037 mandatory 24D
+equation/proof root.
+
+The same complete observation projection is copied to the `-`, `0`, and `+`
+24D manifolds. No trinary branch is permitted to drop a carrier, residue, or
+provenance field.
+
+The data-bound predicate is fail-closed:
+
+```text
+U_data(S_i) =
+  U_I039(S_i)
+  AND Pi_DESI(S_i)
+  AND parallel-carrier closure
+  AND 5184-width closure
+  AND three-copy phase closure.
+```
+
+Each corpus row returns `CLOSE` or `REJECT`. One rejected row rejects the
+corpus; failures are not averaged into other observations.
+
+
+## Pass 220 I041 — Q144/H36 holofractal relativistic game-engine closure
+
+The exact execution stack now exposes one multimodal game-frame state rather
+than separate graphics, music, and physics parameter spaces.
+
+The shared finite geometry is:
+
+```text
+144*36
+= 12*12*3*12
+= 81*64
+= 72*72
+= 5184.
+```
+
+A Q144 index supplies the exact cyclotomic Euclidean rotation in
+`Q(zeta_144)`. The corresponding H36 coordinate supplies its 36-bit lane,
+3x12 equal-temperament bank/pitch coordinate, VM81 cell/operation coordinate,
+8x8 ordered phase pair, and harmonic rule64. The same Q144 coordinate also
+selects the exact modular color-wheel phase and shader phase.
+
+The geometry layer derives the five regular convex Platonic topologies from
+`{p,q}` incidence closure, while the sprite layer deterministically expands
+the I040 projection root into ordered PREV72/STATE72/RECEIPT72 carriers. Their
+concatenation is the exact 216-symbol sprite descriptor before any renderer
+projection.
+
+The typed shader IR consumes this exact source state. Backend rasterization may
+lower exact values into GPU floating coordinates, but those values are not
+canonical authority and cannot mutate VM81 or replace the source geometry.
+
+Every game frame additionally carries the exact I040 DESI-derived relativistic
+observation state and the inherited I039 shared quantum/relativistic state
+root. The full 144-position cycle therefore binds Euclidean geometry, modular
+music, color, sprites, shader state, and relativistic physics as projections of
+one exact address manifold.
+
+
+## Pass 220 I042 — Lane 5 multimodal shared-root projection fabric
+
+The exact execution stack now exposes a single root across language, image,
+audio, video, physics, and game projections.
+
+The shared root binds the exact metadata seed and invariant gate:
+
+```text
+179971.179971 = 179971179971/1000000
+1.001         = 1001/1000
+```
+
+plus the already-closed I041/I040/I039 ancestry and simultaneous 5,184-state
+coordinate views:
+
+```text
+81*64 = 72*72 = 144*36 = 5184.
+```
+
+Each modality is projected deterministically through the inherited Pass165
+5,184-bit projection geometry, receives an exact Hash72 witness and a
+216-position ordered Hash216 genome identity, and retains the same shared root.
+
+Language binds exact token identity and the inherited Pass166/Pass218
+candidate-relational surface. Image binds Sprite216/Q144 color/shader identity.
+Audio binds H36/Q144 timing with an exact 3:2 event clock. Video binds the
+144-step exact timeline. Physics binds I040. Game binds I041.
+
+The graph contains one shared root, six modality nodes, six root-projection
+edges, and all thirty directed cross-modal source/target translations. Each
+translation records both endpoint projection receipts, Hash72 witnesses,
+Hash216 roots, and the common root. Thus modality translation is represented as
+explicit common-ancestry routing rather than an independent state authority.

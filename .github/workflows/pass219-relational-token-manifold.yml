@@ -1,0 +1,33 @@
+name: Pass 219 relational token manifold
+
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/pass219/relational_token_manifold.py"
+      - "contracts/pass219/PASS_219_RELATIONAL_TOKEN_MANIFOLD_1_0.json"
+      - "docs/architecture/HHS_RELATIONAL_TOKEN_MANIFOLD_V1.md"
+      - "docs/HARMONICODE_SPEC_v1.md"
+      - "tests/pass219/test_pass219_relational_token_manifold.py"
+      - "tools/validate_pass219_relational_token_manifold.py"
+      - ".github/workflows/pass219-relational-token-manifold.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  relational-token-manifold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile dependency-scoped surfaces
+        run: |
+          python -m py_compile             hhs_runtime/pass219/relational_token_manifold.py             tools/validate_pass219_relational_token_manifold.py             tests/pass219/test_pass219_relational_token_manifold.py
+      - name: Run relational token tests
+        run: python tests/pass219/test_pass219_relational_token_manifold.py
+      - name: Run canonical validator
+        run: python tools/validate_pass219_relational_token_manifold.py

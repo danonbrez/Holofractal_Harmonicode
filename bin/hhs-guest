@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+PYTHON_BIN="${HHS_GUEST_PYTHON_BIN:-python3}"
+exec "$PYTHON_BIN" -m hhs_runtime.pass220.ubuntu_guest_cli "$@"

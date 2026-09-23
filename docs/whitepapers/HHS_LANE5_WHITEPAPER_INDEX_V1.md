@@ -179,6 +179,210 @@ tests/pass219/test_pass219_harmonic36_hash216_m_exponent_lattice_1_0.c
 .github/workflows/pass219-h36-hash216-m-exponent-lattice-v1.yml
 ```
 
+## 8B. Mandatory 24D noncommutative qudit constraint spacetime
+
+[`HARMONICODE_24D_NONCOMMUTATIVE_QUDIT_CONSTRAINT_SPACETIME_THEOREM.md`](HARMONICODE_24D_NONCOMMUTATIVE_QUDIT_CONSTRAINT_SPACETIME_THEOREM.md)
+
+Pass 220 I037 binds the Lo Shu/q=-1 equation and proof surfaces directly into the executable local geometry:
+
+- one complete local carrier is `3 Lo Shu relational axes * 8 ordered phase channels = 24`;
+- three complete `-,0,+` qutrit copies form a redundant 72-position phase cover;
+- the ordered tensor `{yx,y+x,xy}`, `{yx-wz,x+y-z-w+xy+yx-zw-wz,zw-xy}`, `{wz,z+w,zw}` is retained verbatim;
+- full variable exchange `A:B/a:b/p:q/z:w <-> B:A/b:a/q:p/w:z` is an involutive constructor;
+- `P⁴=AB=c⁴=(a²+b²)²` and `A²+B²=P⁸={-,0,+}/∆` are carried as mandatory native constraint sources;
+- every 24D copy contains the complete mandatory equation and proof-lemma bundle rather than a partial slice;
+- every one of the 72 phase-cover positions carries an epsilon residue record retaining raw phase expression, normalized phase, reciprocal frames, fractal-scale source, and provenance;
+- I036 Genesis/magnitude/reverse-offset nucleus redundancy remains attached;
+- `3*24=72`, `72+9=81`, and `81*64=72²=5184` are exact finite closure lemmas;
+- the inherited Pass-217 Golay `[24,12,8]` surface is used only as the frozen 24-position carrier profile; no absent codec/decoder/physical-ROM authority is inferred.
+
+The executable constructor and evidence are:
+
+```text
+hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.wl
+```
+
+The phrase "24D noncommutative quantum-relativistic computational spacetime" is scoped here to the internal HHS software/qudit geometry. It does not by itself assert experimentally established physical quantum entanglement.
+
+## 8C. DESI public-data parallel exact observational egress
+
+[`HARMONICODE_DESI_PARALLEL_EXACT_EGRESS_THEOREM.md`](HARMONICODE_DESI_PARALLEL_EXACT_EGRESS_THEOREM.md)
+
+Pass 220 I038 begins the T_COSMO-07 empirical boundary using public DESI DR2
+Ly-alpha BAO measurements while preserving the HHS exact-computation stack:
+
+- released decimal strings are retained as exact rational observation sources;
+- nearest-even IEEE binary64 storage is constructed with integer arithmetic only;
+- the raw IEEE state is carried through the inherited palindromic symbolic/full-phase I031/I032/I033 path;
+- decimal-to-IEEE drift remains an exact rational residue rather than being discarded;
+- the same observation carries the inherited 5,184-character BigInt geometry in parallel;
+- every observation binds the I037 mandatory 24D equation/proof bundle root;
+- Lane 5 receives the result as a validated constructor input;
+- statistical and systematic measurement components remain separate exact boundary metadata;
+- no probability, likelihood, MCMC, parameter refit, or implicit DESI-to-HHS variable assignment is used by the equation-solve boundary.
+
+Initial public fixture:
+
+```text
+z_eff = 2.33
+D_H/r_d = 8.632 ; stat = 0.098 ; sys = 0.026
+D_M/r_d = 38.99 ; stat = 0.52 ; sys = 0.12
+```
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.wl
+```
+
+The next empirical constructor must declare the DESI-to-HHS variable/relational
+projection explicitly before evaluating I037 equation closure.
+
+## 8D. Quantum-geometric shared-root closure
+
+[`HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md`](HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md)
+
+Pass 220 I039 binds the merged quantum and relativistic execution surfaces to
+one exact constructor ancestry:
+
+- I025 Schrodinger full-orbit execution and I022/I023 cosmological transfer
+  share the exact phase route `8,24,40,56,72,16,32,48,64`;
+- the I025 full orbit is `8*9=72` exact cyclotomic states;
+- the relativistic path executes nine exact I023 transfer receipts on the same
+  route and carries the I024 background-continuity contract;
+- both projections carry one SHA-256 shared-state root;
+- the I037 mandatory 24D equation/proof bundle root is part of that state;
+- root metadata seed `179971.179971` is transported in parallel through the
+  I038 exact decimal/rational, palindromic IEEE, exact dyadic residue, fixed
+  5,184-character BigInt, and Lane 5 constructor path;
+- exact symbol and IEEE reciprocal return witnesses close the palindromic gate;
+- `Delta e=0`, `Psi=0`, `Theta15=true`, and `Omega=true` are executable
+  typed closure conditions;
+- split ancestry, phase-orbit divergence, lost equation/proof roots, lost
+  BigInt width, failed reciprocal return, float/probability paths, and authority
+  escalation all fail closed.
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py
+tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py
+evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.wl
+```
+
+## 8E. Explicit DESI observation projection and fail-closed corpus
+
+[`HARMONICODE_DESI_EXPLICIT_OBSERVATION_PROJECTION_THEOREM.md`](HARMONICODE_DESI_EXPLICIT_OBSERVATION_PROJECTION_THEOREM.md)
+
+Pass 220 I040 closes the explicit observational map required after I038/I039:
+
+- `z_eff` binds to the I023 redshift / one-plus-redshift target;
+- `D_H/r_d` binds to the normalized Hubble-distance surface and exactly solves
+  `H*r_d/c0 = 1/(D_H/r_d)`;
+- `D_M/r_d` binds to the normalized transverse-comoving-distance surface;
+- `D_M/D_H` and `(D_V/r_d)^3` are derived as exact rational relations;
+- every public numeric source retains the I038 exact decimal, palindromic IEEE,
+  exact dyadic residue, fixed 5,184-character BigInt, I037 bundle, and Lane 5
+  state;
+- one projection root is copied in full to all three I037 `-,0,+` 24D
+  manifolds;
+- the I039 shared unification root remains the common execution ancestry;
+- `U_data` is Boolean and fail-closed;
+- a single row rejection rejects the corpus; no averaging, likelihood, MCMC,
+  probability weighting, or parameter refit is permitted to hide failure.
+
+Initial exact derived values:
+
+```text
+z_eff = 233/100
+1+z = 333/100
+D_H/r_d = 1079/125
+D_M/r_d = 3899/100
+H*r_d/c0 = 125/1079
+D_M/D_H = 19495/4316
+(D_V/r_d)^3 = 3821939746807/125000000
+```
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py
+tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py
+evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.wl
+```
+
+## 8F. Q144/H36 holofractal relativistic game engine
+
+[`HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md`](HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md)
+
+Pass 220 I041 composes exact geometry, harmonic, sprite, shader, and
+relativistic state into one deterministic game-frame projection:
+
+- Q144 Euclidean rotation remains symbolic in `Q(zeta_144)`;
+- the native H36 coordinate factorization is mirrored exactly across all 5,184
+  addresses;
+- `144*36 = 12*12*3*12 = 81*64 = 72*72 = 5184`;
+- the H36 state exposes 3 ET banks, 12 pitch classes, all twelve
+  transpositions, 64 ordered phase pairs, and 64 harmonic-rule coordinates;
+- all five regular convex Platonic closures are derived from Schläfli incidence
+  constraints rather than authoritative vertex tables;
+- the I040 projection root deterministically produces a three-Hash72
+  Sprite216 descriptor;
+- the color wheel is an exact 144-position modular ring with reciprocal
+  half-turn `q -> q+72 mod 144`;
+- typed shader IR binds the exact Q144 rotation, Sprite216 seed, H36
+  music/rule coordinate, reciprocal color, and Platonic topology;
+- GPU/renderer floats are explicitly non-authoritative projections;
+- every frame inherits the I040 exact relativistic observation state and I039
+  shared quantum/relativistic root;
+- one Q144 coordinate drives trigonometry, music, color, and shader phase in the
+  same frame.
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py
+tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.wl
+```
+
+## 8G. Lane 5 multimodal shared-root projection fabric
+
+[`HARMONICODE_LANE5_MULTIMODAL_SHARED_ROOT_PROJECTION_THEOREM.md`](HARMONICODE_LANE5_MULTIMODAL_SHARED_ROOT_PROJECTION_THEOREM.md)
+
+Pass 220 I042 binds six modalities to one exact execution ancestry:
+
+- LANGUAGE, IMAGE, AUDIO, VIDEO, PHYSICS, and GAME each receive a deterministic
+  Pass165 token/chunk graph and 5,184-bit projection;
+- every modality carries a Hash72 witness and a 216-position ordered Hash216
+  genome root;
+- all six projections share one SHA-256 root over the exact
+  `179971.179971` seed, exact `1.001` gate, I041 cycle identity, I040
+  relativistic projection root, I039 shared quantum/relativistic root, and the
+  three equal 5,184 coordinate factorizations;
+- language binds the inherited Pass166 contract and Pass218
+  `REVISABLE_RELATIONAL_EVIDENCE` semantics without fabricating a live model;
+- image binds Sprite216/Q144 color/shader identity;
+- audio binds H36/Q144 and an exact 3:2 event clock on the 144-step cycle;
+- video binds an exact 144-frame `n/144` timeline;
+- physics binds the exact I040 projection;
+- game binds the exact I041 frame;
+- all `6*(6-1)=30` directed cross-modal translations retain one shared root
+  and both endpoint provenances;
+- no modality gains VM81, canonical Hash, learning-commit, model-weight, or
+  direct persistence authority.
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+```
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:

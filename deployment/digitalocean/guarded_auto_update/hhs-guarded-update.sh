@@ -138,6 +138,7 @@ sync_installed_assets() {
   [[ -f "$source/preserve-host-drift.sh" ]] && install -m 0755 "$source/preserve-host-drift.sh" /usr/local/lib/hhs-guarded-update/preserve-host-drift.sh
   [[ -f "$source/runtime-os-bundle.py" ]] && install -m 0755 "$source/runtime-os-bundle.py" /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py
   [[ -f "$source/normalize-service-permissions.py" ]] && install -m 0755 "$source/normalize-service-permissions.py" /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py
+  [[ -f "$source/verify-recovery-state.py" ]] && install -m 0755 "$source/verify-recovery-state.py" /usr/local/lib/hhs-guarded-update/verify-recovery-state.py
   [[ -f "$source/hhs-guarded-update.service" ]] && install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
   [[ -f "$source/hhs-guarded-update.timer" ]] && install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
   [[ -f "$hhs_service" ]] && install -m 0644 "$hhs_service" /etc/systemd/system/hhs.service

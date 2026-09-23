@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_PASS_220_I023_COSMO_FRIEDMANN_TRANSFER_WOLFRAM_20260921_V1",
+  "status": "PASS",
+  "check_count": 9,
+  "pass_count": 9,
+  "failed": [],
+  "phase_only_log_scale_increment": "lambda",
+  "phase_only_scale_ratio": "E^lambda",
+  "phase_only_redshift_log_step": "-lambda",
+  "exact_comoving_interval": "(c0*(1 - E^(-(tau*Sqrt[b + lambda^2/(tau^2*theta^2)]*theta))))/(E^ell*Sqrt[b + lambda^2/(tau^2*theta^2)])",
+  "zero_hubble_limit": "(c0*tau*theta)/E^ell",
+  "g72_representation": "Inactive[Power][2, 1/72]",
+  "checks": {
+    "phase_hubble_definition": true,
+    "egress_time_definition": true,
+    "zoh_log_scale_update": true,
+    "phase_only_log_scale_increment_tau_free": true,
+    "phase_only_scale_ratio_tau_free": true,
+    "phase_only_redshift_log_step_tau_free": true,
+    "exact_comoving_zoh_limit": true,
+    "hubble_distance_symbolic": true,
+    "g72_remains_inactive_symbolic": true
+  }
+}

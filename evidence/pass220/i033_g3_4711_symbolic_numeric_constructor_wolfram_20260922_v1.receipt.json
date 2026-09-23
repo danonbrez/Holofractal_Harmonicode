@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS_220_I033_G3_4711_SYMBOLIC_NUMERIC_CONSTRUCTOR_WOLFRAM_RECEIPT_V1",
+  "date": "2026-09-22",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 15,
+  "pass_count": 15,
+  "failed": [],
+  "input_path": "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.wl",
+  "output_path": "evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass220/i033_g3_4711_symbolic_numeric_constructor_wolfram_20260922_v1.wl"
+}

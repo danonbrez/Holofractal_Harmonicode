@@ -180,8 +180,28 @@ typedef enum {
     OP_SWEEP81,
     OP_CLOSE81,
     OP_HALT,
+
+    /* G^3 palindromic RNA / Ouroboros collapse family.
+       Append-only ABI extension: existing opcodes 0..23 remain frozen. */
+    OP_G3_IEEE_INGRESS = 24,
+    OP_G3_PAL_FOLD,
+    OP_G3_RNA_TRANSCRIBE,
+    OP_G3_BIND_P4_C4,
+    OP_G3_CONSTRAIN_C5,
+    OP_G3_CONSTRAIN_C7,
+    OP_G3_SERIALIZE_A2_C1,
+    OP_G3_ZERO_SUM_CLOSE,
+    OP_G3_RNA_REVERSE,
+    OP_G3_IEEE_EGRESS,
+    OP_G3_OUROBOROS,
+
     OP__COUNT
 } Opcode;
+
+_Static_assert(OP_HALT == 23, "frozen VM81 opcode ABI drift");
+_Static_assert(OP_G3_IEEE_INGRESS == 24, "G3 opcode base must be 24");
+_Static_assert(OP_G3_OUROBOROS == 34, "G3 fused opcode must be 34");
+_Static_assert(OP__COUNT == 35, "VM81 opcode count must be 35");
 
 typedef struct {
     uint8_t enabled;
@@ -236,6 +256,20 @@ static Instruction instruction_make(Opcode op, uint8_t a, uint8_t b,
 #define W_PHASE_TABLE_LOCKED   0x40000u
 #define W_HASH72_POSITIONAL    0x80000u
 
+/* G^3/Ouroboros stage witnesses occupy the previously unused high 12 bits. */
+#define W_G3_IEEE_INGRESS       0x00100000u
+#define W_G3_PAL_FOLD           0x00200000u
+#define W_G3_RNA_TRANSCRIBE     0x00400000u
+#define W_G3_BIND_P4_C4         0x00800000u
+#define W_G3_CONSTRAIN_C5       0x01000000u
+#define W_G3_CONSTRAIN_C7       0x02000000u
+#define W_G3_SERIALIZE_A2_C1    0x04000000u
+#define W_G3_ZERO_SUM_CLOSE     0x08000000u
+#define W_G3_RNA_REVERSE        0x10000000u
+#define W_G3_IEEE_EGRESS        0x20000000u
+#define W_G3_OUROBOROS          0x40000000u
+#define W_G3_REJECT             0x80000000u
+
 // ============================================================
 // RECEIPT / CONSTRAINT / STATE
 // ============================================================
@@ -265,6 +299,49 @@ typedef struct {
     char hash[HASH_LEN + 1];
     uint64_t step;
 } SeenState;
+
+#define G3_STAGE_IEEE_INGRESS    0x0001u
+#define G3_STAGE_PAL_FOLD        0x0002u
+#define G3_STAGE_RNA_TRANSCRIBE  0x0004u
+#define G3_STAGE_BIND_P4_C4      0x0008u
+#define G3_STAGE_CONSTRAIN_C5    0x0010u
+#define G3_STAGE_CONSTRAIN_C7    0x0020u
+#define G3_STAGE_SERIALIZE_C1    0x0040u
+#define G3_STAGE_ZERO_SUM        0x0080u
+#define G3_STAGE_RNA_REVERSE     0x0100u
+#define G3_STAGE_IEEE_EGRESS     0x0200u
+#define G3_STAGE_ALL             0x03FFu
+
+typedef struct {
+    uint64_t ieee_in_bits;
+    uint64_t palindrome_forward;
+    uint64_t palindrome_reverse;
+    uint64_t rna_carrier;
+    uint64_t p4_value;
+    uint64_t c4_value;
+    uint64_t bigint_register;
+    uint64_t reverse_rna;
+    uint64_t ieee_out_bits;
+    int16_t nucleus_zero_sum;
+    uint16_t stage_mask;
+    uint8_t bigint_lo_shu_value;
+    uint8_t bigint_lo_shu_local_index;
+    uint8_t rejected;
+} HHSG3State;
+
+/* G^3 is candidate microcode inside Lane 5, never an independent execution
+ * island.  These bits are supplied by the enclosing hydrated 648-byte/5184,
+ * Holo4, constructor-history and Hash216 pipeline.  They do not grant
+ * canonical mutation, Hash72 minting, Hash216 minting or persistence.
+ */
+typedef struct {
+    uint8_t raw648_hydrated;
+    uint8_t holo4_four_lane_prepared;
+    uint8_t lane5_mediated;
+    uint8_t mandatory_green_constructor_graph_bound;
+    uint8_t lane5_no_mutation_authority;
+    uint8_t external_egress_requires_hash216_validation;
+} HHSG3Lane5Context;
 
 typedef struct {
     // Canonical raw carrier: 81 x 64-bit x86_64-aligned words = 5184 bits.
@@ -299,6 +376,12 @@ typedef struct {
     uint64_t tensor_count;
     uint8_t manifold[MANIFOLD_DIM][MANIFOLD_DIM];
     uint8_t genomic[4];
+
+    /* G^3 typed boundary state.  The 5184-character BigInt physical offset
+       is intentionally not represented here; only the Lo Shu value-1 semantic
+       register identity is canonical at this layer. */
+    HHSG3State g3;
+    HHSG3Lane5Context g3_lane5;
 } VM81;
 
 _Static_assert(sizeof(((VM81 *)0)->cells) == VM81_FRAME_BYTES,
@@ -865,6 +948,240 @@ static void hhs_apply_ouroboros_closure(VM81 *vm) {
     sweep81(vm);
 }
 
+/* ============================================================
+ * G^3 PALINDROMIC RNA / OUROBOROS EXACT BOUNDARY
+ * ============================================================
+ *
+ * IEEE values are carried only as raw 64-bit boundary representations.
+ * No C floating type, conversion, comparison, or arithmetic participates.
+ *
+ * The palindrome belongs to the ordered phase route
+ *     x y z w x w z y x
+ * established by Pass 220 I015.  The raw boundary bits are therefore
+ * retained verbatim while the route is proven self-reversing.
+ *
+ * RNA transcription in this standalone C kernel is a typed exact carrier
+ * transition.  Full 5,184-character window scanning remains owned by the
+ * already-merged I019 native/Python membrane; this opcode layer does not
+ * synthesize a physical character offset for the Lo Shu value-1 register.
+ */
+
+static const uint8_t G3_PAL_PHASE_WORD[9] = {
+    HHS_PHASE_X, HHS_PHASE_Y, HHS_PHASE_Z,
+    HHS_PHASE_W, HHS_PHASE_X, HHS_PHASE_W,
+    HHS_PHASE_Z, HHS_PHASE_Y, HHS_PHASE_X
+};
+
+static int g3_lo_shu_index_for_value(uint8_t value) {
+    for (int i = 0; i < 9; i++)
+        if (LOSHU[i] == value)
+            return i;
+    return -1;
+}
+
+static int g3_palindrome_phase_selfcheck(void) {
+    for (int i = 0; i < 9; i++)
+        if (G3_PAL_PHASE_WORD[i] != G3_PAL_PHASE_WORD[8 - i])
+            return 0;
+    return 1;
+}
+
+static int g3_zero_centered_lo_shu_selfcheck(void) {
+    int16_t centered[9];
+    for (int i = 0; i < 9; i++)
+        centered[i] = (int16_t)LOSHU[i] - 5;
+
+    for (int r = 0; r < 3; r++) {
+        int16_t row = 0;
+        int16_t col = 0;
+        for (int k = 0; k < 3; k++) {
+            row = (int16_t)(row + centered[r * 3 + k]);
+            col = (int16_t)(col + centered[k * 3 + r]);
+        }
+        if (row != 0 || col != 0)
+            return 0;
+    }
+
+    if ((int16_t)(centered[0] + centered[4] + centered[8]) != 0)
+        return 0;
+    if ((int16_t)(centered[2] + centered[4] + centered[6]) != 0)
+        return 0;
+    return 1;
+}
+
+static int16_t g3_nucleus_zero_sum(void) {
+    int16_t sum = 0;
+    for (int i = 0; i < 9; i++)
+        sum = (int16_t)(sum + ((int16_t)LOSHU[i] - 5));
+    return sum;
+}
+
+static int g3_has(const VM81 *vm, uint16_t stage) {
+    return (vm->g3.stage_mask & stage) == stage;
+}
+
+static int g3_reject(VM81 *vm) {
+    vm->g3.rejected = 1u;
+    return 0;
+}
+
+static void g3_bind_lane5_context(
+    VM81 *vm,
+    uint8_t raw648_hydrated,
+    uint8_t holo4_four_lane_prepared,
+    uint8_t lane5_mediated,
+    uint8_t mandatory_green_constructor_graph_bound,
+    uint8_t lane5_no_mutation_authority,
+    uint8_t external_egress_requires_hash216_validation
+) {
+    vm->g3_lane5.raw648_hydrated = raw648_hydrated ? 1u : 0u;
+    vm->g3_lane5.holo4_four_lane_prepared =
+        holo4_four_lane_prepared ? 1u : 0u;
+    vm->g3_lane5.lane5_mediated = lane5_mediated ? 1u : 0u;
+    vm->g3_lane5.mandatory_green_constructor_graph_bound =
+        mandatory_green_constructor_graph_bound ? 1u : 0u;
+    vm->g3_lane5.lane5_no_mutation_authority =
+        lane5_no_mutation_authority ? 1u : 0u;
+    vm->g3_lane5.external_egress_requires_hash216_validation =
+        external_egress_requires_hash216_validation ? 1u : 0u;
+}
+
+static int g3_lane5_context_valid(const VM81 *vm) {
+    return vm->g3_lane5.raw648_hydrated == 1u &&
+           vm->g3_lane5.holo4_four_lane_prepared == 1u &&
+           vm->g3_lane5.lane5_mediated == 1u &&
+           vm->g3_lane5.mandatory_green_constructor_graph_bound == 1u &&
+           vm->g3_lane5.lane5_no_mutation_authority == 1u &&
+           vm->g3_lane5.external_egress_requires_hash216_validation == 1u;
+}
+
+static int g3_ieee_ingress(VM81 *vm, uint64_t raw_bits) {
+    if (!g3_lane5_context_valid(vm))
+        return g3_reject(vm);
+    memset(&vm->g3, 0, sizeof(vm->g3));
+    vm->g3.ieee_in_bits = raw_bits;
+    vm->g3.stage_mask = G3_STAGE_IEEE_INGRESS;
+    return 1;
+}
+
+static int g3_pal_fold(VM81 *vm) {
+    if (!g3_has(vm, G3_STAGE_IEEE_INGRESS) ||
+        !g3_palindrome_phase_selfcheck())
+        return g3_reject(vm);
+    vm->g3.palindrome_forward = vm->g3.ieee_in_bits;
+    vm->g3.palindrome_reverse = vm->g3.ieee_in_bits;
+    vm->g3.stage_mask |= G3_STAGE_PAL_FOLD;
+    return 1;
+}
+
+static int g3_rna_transcribe(VM81 *vm) {
+    if (!g3_has(vm, G3_STAGE_PAL_FOLD) ||
+        vm->g3.palindrome_forward != vm->g3.palindrome_reverse)
+        return g3_reject(vm);
+    vm->g3.rna_carrier = vm->g3.palindrome_forward;
+    vm->g3.stage_mask |= G3_STAGE_RNA_TRANSCRIBE;
+    return 1;
+}
+
+static int g3_bind_p4_c4(VM81 *vm, uint64_t p4, uint64_t c4) {
+    if (!g3_has(vm, G3_STAGE_RNA_TRANSCRIBE) || p4 != c4)
+        return g3_reject(vm);
+    vm->g3.p4_value = p4;
+    vm->g3.c4_value = c4;
+    vm->g3.stage_mask |= G3_STAGE_BIND_P4_C4;
+    return 1;
+}
+
+static int g3_constrain_c5(VM81 *vm) {
+    int idx = g3_lo_shu_index_for_value(5u);
+    if (!g3_has(vm, G3_STAGE_BIND_P4_C4) || idx < 0 ||
+        LOSHU[idx] != 5u)
+        return g3_reject(vm);
+    vm->g3.stage_mask |= G3_STAGE_CONSTRAIN_C5;
+    return 1;
+}
+
+static int g3_constrain_c7(VM81 *vm) {
+    int idx = g3_lo_shu_index_for_value(7u);
+    if (!g3_has(vm, G3_STAGE_CONSTRAIN_C5) || idx < 0 ||
+        LOSHU[idx] != 7u)
+        return g3_reject(vm);
+    vm->g3.stage_mask |= G3_STAGE_CONSTRAIN_C7;
+    return 1;
+}
+
+static int g3_serialize_a2_c1(VM81 *vm) {
+    int idx = g3_lo_shu_index_for_value(1u);
+    if (!g3_has(vm, G3_STAGE_CONSTRAIN_C7) || idx < 0 ||
+        LOSHU[idx] != 1u)
+        return g3_reject(vm);
+
+    vm->g3.bigint_register = vm->g3.rna_carrier;
+    vm->g3.bigint_lo_shu_value = 1u;
+    vm->g3.bigint_lo_shu_local_index = (uint8_t)idx;
+    vm->g3.stage_mask |= G3_STAGE_SERIALIZE_C1;
+    return 1;
+}
+
+static int g3_zero_sum_close(VM81 *vm) {
+    if (!g3_has(vm, G3_STAGE_SERIALIZE_C1) ||
+        vm->g3.bigint_register != vm->g3.rna_carrier)
+        return g3_reject(vm);
+
+    vm->g3.nucleus_zero_sum = g3_nucleus_zero_sum();
+    if (vm->g3.nucleus_zero_sum != 0 ||
+        !g3_zero_centered_lo_shu_selfcheck())
+        return g3_reject(vm);
+
+    vm->g3.stage_mask |= G3_STAGE_ZERO_SUM;
+    return 1;
+}
+
+static int g3_rna_reverse(VM81 *vm) {
+    if (!g3_has(vm, G3_STAGE_ZERO_SUM))
+        return g3_reject(vm);
+    vm->g3.reverse_rna = vm->g3.bigint_register;
+    if (vm->g3.reverse_rna != vm->g3.palindrome_reverse)
+        return g3_reject(vm);
+    vm->g3.stage_mask |= G3_STAGE_RNA_REVERSE;
+    return 1;
+}
+
+static int g3_ieee_egress(VM81 *vm) {
+    /* This is a candidate reverse-compilation identity witness only.
+       External emission remains outside this kernel and requires the enclosing
+       Lane 5 Hash216 self-solving validation and egress compiler. */
+    if (!g3_has(vm, G3_STAGE_RNA_REVERSE) ||
+        !g3_lane5_context_valid(vm))
+        return g3_reject(vm);
+    vm->g3.ieee_out_bits = vm->g3.reverse_rna;
+    if (vm->g3.ieee_out_bits != vm->g3.ieee_in_bits)
+        return g3_reject(vm);
+    vm->g3.stage_mask |= G3_STAGE_IEEE_EGRESS;
+    return 1;
+}
+
+static int g3_run_ouroboros(VM81 *vm, uint64_t raw_bits,
+                            uint64_t p4, uint64_t c4) {
+    HHSG3State rollback = vm->g3;
+    if (!g3_ieee_ingress(vm, raw_bits) ||
+        !g3_pal_fold(vm) ||
+        !g3_rna_transcribe(vm) ||
+        !g3_bind_p4_c4(vm, p4, c4) ||
+        !g3_constrain_c5(vm) ||
+        !g3_constrain_c7(vm) ||
+        !g3_serialize_a2_c1(vm) ||
+        !g3_zero_sum_close(vm) ||
+        !g3_rna_reverse(vm) ||
+        !g3_ieee_egress(vm) ||
+        vm->g3.stage_mask != G3_STAGE_ALL) {
+        vm->g3 = rollback;
+        vm->g3.rejected = 1u;
+        return 0;
+    }
+    return 1;
+}
+
 static void tensor_push(VM81 *vm, int64_t real_num, int64_t imag_num,
                         uint64_t den, uint8_t phase) {
     if (vm->tensor_count >= MAX_TENSORS || den == 0)
@@ -1119,6 +1436,139 @@ static void apply_instruction(VM81 *vm, Instruction *ins, uint32_t *witness,
             close81(vm);
             energy = ins->cg_id;
             break;
+
+        case OP_G3_IEEE_INGRESS:
+            if (!g3_ieee_ingress(vm, *A)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = vm->g3.ieee_in_bits;
+            *witness |= W_G3_IEEE_INGRESS;
+            energy = fold_word72(*C);
+            goto finalize;
+
+        case OP_G3_PAL_FOLD:
+            if (!g3_pal_fold(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = vm->g3.palindrome_forward;
+            *witness |= W_G3_PAL_FOLD;
+            energy = fold_word72(*C);
+            goto finalize;
+
+        case OP_G3_RNA_TRANSCRIBE:
+            if (!g3_rna_transcribe(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = vm->g3.rna_carrier;
+            *witness |= W_G3_RNA_TRANSCRIBE;
+            energy = fold_word72(*C);
+            goto finalize;
+
+        case OP_G3_BIND_P4_C4:
+            if (!g3_bind_p4_c4(vm, *A, *B)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = vm->g3.p4_value;
+            *witness |= W_G3_BIND_P4_C4;
+            energy = fold_word72(*C);
+            goto finalize;
+
+        case OP_G3_CONSTRAIN_C5:
+            if (!g3_constrain_c5(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = 5u;
+            *witness |= W_G3_CONSTRAIN_C5;
+            energy = 5u;
+            goto finalize;
+
+        case OP_G3_CONSTRAIN_C7:
+            if (!g3_constrain_c7(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = 7u;
+            *witness |= W_G3_CONSTRAIN_C7;
+            energy = 7u;
+            goto finalize;
+
+        case OP_G3_SERIALIZE_A2_C1:
+            if (!g3_serialize_a2_c1(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = vm->g3.bigint_register;
+            *witness |= W_G3_SERIALIZE_A2_C1;
+            energy = fold_word72(*C);
+            goto finalize;
+
+        case OP_G3_ZERO_SUM_CLOSE:
+            if (!g3_zero_sum_close(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = 0u;
+            *witness |= W_G3_ZERO_SUM_CLOSE;
+            energy = 0u;
+            goto finalize;
+
+        case OP_G3_RNA_REVERSE:
+            if (!g3_rna_reverse(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = vm->g3.reverse_rna;
+            *witness |= W_G3_RNA_REVERSE;
+            energy = fold_word72(*C);
+            goto finalize;
+
+        case OP_G3_IEEE_EGRESS:
+            if (!g3_ieee_egress(vm)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *C = vm->g3.ieee_out_bits;
+            *witness |= W_G3_IEEE_EGRESS;
+            energy = fold_word72(*C);
+            goto finalize;
+
+        case OP_G3_OUROBOROS: {
+            if (!g3_run_ouroboros(vm, *A, *B, *C)) {
+                *witness |= W_G3_REJECT;
+                vm->halted = 1;
+                return;
+            }
+            *A = vm->g3.ieee_out_bits;
+            *witness |= W_G3_IEEE_INGRESS |
+                        W_G3_PAL_FOLD |
+                        W_G3_RNA_TRANSCRIBE |
+                        W_G3_BIND_P4_C4 |
+                        W_G3_CONSTRAIN_C5 |
+                        W_G3_CONSTRAIN_C7 |
+                        W_G3_SERIALIZE_A2_C1 |
+                        W_G3_ZERO_SUM_CLOSE |
+                        W_G3_RNA_REVERSE |
+                        W_G3_IEEE_EGRESS |
+                        W_G3_OUROBOROS;
+            energy = fold_word72(*A);
+            goto finalize;
+        }
+
         case OP_BRANCH:
             if (ins->a < vm->program_len) {
                 new_pc = ins->a;
@@ -1205,6 +1655,21 @@ static void vm81_step(VM81 *vm) {
 
     project_hash72(vm, prev);
     apply_instruction(vm, ins, &witness, &id_w, &id_has);
+
+    /* A rejected G^3 stage is not an admitted VM81 transition.  Preserve
+       the prior receipt/hash identity, freeze the ledger, and do not advance
+       logical time. */
+    if (vm->g3.rejected) {
+        vm->last_receipt.cg_id = ins->cg_id;
+        vm->last_receipt.witness = witness | W_G3_REJECT | W_LEDGER_FROZEN;
+        vm->last_receipt.ledger_advanced = 0;
+        vm->last_receipt.step = vm->step;
+        vm->last_receipt.orbit_period = 0;
+        vm->last_receipt.identity_exact_witness = id_w;
+        vm->last_receipt.identity_has_data = id_has;
+        return;
+    }
+
     project_hash72(vm, state);
 
     uint64_t orbit = detect_orbit(vm, state, vm->step);
@@ -1259,6 +1724,18 @@ static void print_witness(uint32_t w) {
     if (w & W_NONCOMMUTATIVE)      printf(" NC");
     if (w & W_PHASE_TABLE_LOCKED)  printf(" U72");
     if (w & W_HASH72_POSITIONAL)   printf(" H72POS");
+    if (w & W_G3_IEEE_INGRESS)     printf(" G3:IEEE-IN");
+    if (w & W_G3_PAL_FOLD)         printf(" G3:PAL");
+    if (w & W_G3_RNA_TRANSCRIBE)   printf(" G3:RNA");
+    if (w & W_G3_BIND_P4_C4)       printf(" G3:P4=C4");
+    if (w & W_G3_CONSTRAIN_C5)     printf(" G3:C5");
+    if (w & W_G3_CONSTRAIN_C7)     printf(" G3:C7");
+    if (w & W_G3_SERIALIZE_A2_C1)  printf(" G3:C1");
+    if (w & W_G3_ZERO_SUM_CLOSE)   printf(" G3:SUM0");
+    if (w & W_G3_RNA_REVERSE)      printf(" G3:RNA^-1");
+    if (w & W_G3_IEEE_EGRESS)      printf(" G3:IEEE-OUT");
+    if (w & W_G3_OUROBOROS)        printf(" G3:OUROBOROS");
+    if (w & W_G3_REJECT)           printf(" G3:REJECT");
     if (w & W_CONSTRAINT_FIRED)    printf(" K");
     if (w & W_ORBIT_DETECTED)      printf(" ORB");
     if (w & W_SWEEP)               printf(" SWEEP");
@@ -1340,6 +1817,43 @@ static int verify_kernel_invariants(VM81 *vm) {
     vm81_deserialize_frame_le(&copy, frame);
     if (memcmp(copy.cells, vm->cells, sizeof(vm->cells)) != 0)
         return 0;
+
+    if (OP_HALT != 23 || OP_G3_IEEE_INGRESS != 24 ||
+        OP_G3_OUROBOROS != 34 || OP__COUNT != 35)
+        return 0;
+    if (!g3_palindrome_phase_selfcheck())
+        return 0;
+    if (g3_lo_shu_index_for_value(5u) != 4 ||
+        g3_lo_shu_index_for_value(7u) != 5 ||
+        g3_lo_shu_index_for_value(1u) != 7)
+        return 0;
+    if (g3_nucleus_zero_sum() != 0 ||
+        !g3_zero_centered_lo_shu_selfcheck())
+        return 0;
+
+    /* A fresh VM has no Lane 5 mediation context; direct G^3 execution must
+       therefore remain fail-closed until the enclosing candidate pipeline
+       supplies the mandatory context.  Also exercise the dedicated binder in
+       standalone verification so the exact kernel proves both rejection and
+       successful formation of the complete candidate-only Lane 5 context. */
+    if (g3_lane5_context_valid(vm))
+        return 0;
+    VM81 g3_context_copy = *vm;
+    g3_bind_lane5_context(
+        &g3_context_copy,
+        1u, /* exact raw648 hydration */
+        1u, /* Holo4 four-lane candidate prepared */
+        1u, /* Lane 5 mediated */
+        1u, /* mandatory green constructor graph bound */
+        1u, /* Lane 5 retains zero canonical mutation authority */
+        1u  /* external egress still requires Hash216 validation */
+    );
+    if (!g3_lane5_context_valid(&g3_context_copy))
+        return 0;
+    g3_context_copy.g3_lane5.lane5_mediated = 0u;
+    if (g3_lane5_context_valid(&g3_context_copy))
+        return 0;
+
     return 1;
 }
 

@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_PASS_220_I028_G3_OUROBOROS_WOLFRAM_20260922_V1",
+  "status": "PASS",
+  "check_count": 12,
+  "pass_count": 12,
+  "failed": [],
+  "opcode_values": [24,25,26,27,28,29,30,31,32,33,34],
+  "lo_shu": [[4,9,2],[3,5,7],[8,1,6]],
+  "zero_centered_lo_shu": [[-1,4,-3],[-2,0,2],[3,-4,1]],
+  "checks": {
+    "01_legacy_halt_precedes_g3": true,
+    "02_g3_values_exact_24_34": true,
+    "03_g3_values_unique": true,
+    "04_primitive_count_ten": true,
+    "05_fused_opcode_34": true,
+    "06_lo_shu_c5_position": true,
+    "07_lo_shu_c7_position": true,
+    "08_lo_shu_c1_position": true,
+    "09_zero_centered_all_lines": true,
+    "10_p4_c4_carrier_equality_no_p2_symbol": true,
+    "11_all_constituents_required": true,
+    "12_all_constituents_accept": true
+  }
+}
