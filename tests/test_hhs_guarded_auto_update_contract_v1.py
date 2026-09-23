@@ -21,6 +21,7 @@ def test_shell_and_python_deployment_assets_parse() -> None:
         DEPLOY / "build-runtime-os.sh",
         DEPLOY / "preserve-host-drift.sh",
         DEPLOY / "validate-candidate.sh",
+        DEPLOY / "verify-production-prerequisites.sh",
         DEPLOY / "install.sh",
         ROOT / "bin" / "post_compile",
     ]
@@ -253,7 +254,7 @@ def test_source_builder_remains_available_for_ci_and_development_without_fake_lo
 def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_receipt() -> None:
     installer = read("install.sh")
     example = read("hhs-guarded-update.env.example")
-    stable_build = "make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant"
+    stable_build = "make -B c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && HHS_DISABLE_C_AUTOBUILD=1 /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant"
     for token in [
         "HHS_RUNTIME_OS_BUNDLE_SHA",
         "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt",
@@ -268,6 +269,7 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
         "HHS PRODUCTION SERVICE DIAGNOSTICS",
         "HHS_POST_MERGE_COMMAND=$NATIVE_BUILD",
         "HHS_ROLLBACK_COMMAND=$NATIVE_BUILD",
+        "verify-production-prerequisites.sh",
         "HHS_HEALTH_TIMEOUT_SECONDS=$PRODUCTION_HEALTH_TIMEOUT",
     ]:
         assert token in installer
@@ -485,3 +487,25 @@ def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
     assert 'values["HHS_VALIDATE_TIMEOUT_SECONDS"] = str(' in source
     assert "max(minimum_validate_timeout, current_validate_timeout)" in source
     assert '"HHS_VALIDATE_TIMEOUT_SECONDS",' in source
+
+
+def test_production_prerequisite_gate_binds_native_and_runtime_os_before_uvicorn() -> None:
+    gate = read("verify-production-prerequisites.sh")
+    service = (
+        ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service"
+    ).read_text(encoding="utf-8")
+    updater = read("hhs-guarded-update.sh")
+    validator = read("validate-candidate.sh")
+
+    assert 'HHS_DISABLE_C_AUTOBUILD:-' in gate
+    assert "libhhs_runtime.so" in gate
+    assert "ctypes.CDLL" in gate
+    assert "require_runtime_os_build" in gate
+    assert "HHS_PRODUCTION_BOOT_PREREQUISITES_VERIFIED" in gate
+
+    assert "Environment=HHS_DISABLE_C_AUTOBUILD=1" in service
+    assert "ExecStartPre=/usr/local/lib/hhs-guarded-update/verify-production-prerequisites.sh" in service
+    assert service.index("ExecStartPre=") < service.index("ExecStart=")
+
+    assert "verify-production-prerequisites.sh" in updater
+    assert "HHS_DISABLE_C_AUTOBUILD=1" in validator
