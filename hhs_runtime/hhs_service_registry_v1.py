@@ -4624,6 +4624,84 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.holofractal_relativistic_game_engine.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_holofractal_relativistic_game_engine_v1"
+        ),
+        function="holofractal_relativistic_game_engine_self_test",
+        service_type="pass220_validated_multimodal_game_projection_constructor",
+        description=(
+            "Validate the I041 exact game/render projection: Q144 cyclotomic "
+            "Euclidean rotations, Pass219 H36 144x36=5184 coordinate "
+            "factorization and 3x12 equal-temperament lane, all five exact "
+            "Platonic incidence closures, deterministic Sprite216 Hash72 "
+            "triplets, a 144-position reciprocal color wheel, typed shader IR, "
+            "and the I040/I039 exact relativistic projection all share the same "
+            "game-state ancestry. GPU/render floats remain projection-only and "
+            "cannot mutate VM81 or mint Hash authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I041_GAME_ENGINE_WITNESS_V1",
+        ],
+        validators=[
+            "validate_game_engine_cycle",
+            "holofractal_relativistic_game_engine_self_test",
+        ],
+        guards=[
+            "q144_exact_phase_addressing",
+            "euclidean_trig_symbolic_q_zeta144",
+            "h36_144x36_equals_5184",
+            "h36_3x12_equal_temperament",
+            "vm81_81x64_equals_5184",
+            "hash72_72x72_equals_5184",
+            "operation64_phase8x8_rule64",
+            "all_five_platonic_incidence_closures",
+            "sprite216_three_hash72_carriers",
+            "color_wheel_q144_reciprocal_half_turn",
+            "shader_ir_exact_source_identity",
+            "gpu_float_projection_only",
+            "i040_relativistic_projection_bound",
+            "i039_shared_root_bound",
+            "host_float_forbidden_in_exact_state",
+            "probability_likelihood_mcmc_refit_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I041_Q144_DRIFT",
+            "REJECT_I041_TRIG_SYMBOLIC_DRIFT",
+            "REJECT_I041_H36_COORDINATE_DRIFT",
+            "REJECT_I041_PLATONIC_CLOSURE_FAILURE",
+            "REJECT_I041_SPRITE216_DRIFT",
+            "REJECT_I041_COLOR_RECIPROCAL_FAILURE",
+            "REJECT_I041_SHADER_IR_DRIFT",
+            "REJECT_I041_RELATIVISTIC_ROOT_DRIFT",
+            "REJECT_I041_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I041_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_GAME_PROJECTION_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_Q144_H36_5184_PLATONIC_SPRITE_SHADER_RELATIVISTIC_PROJECTION"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.desi_explicit_projection_corpus.self_test",
         module=(
             "hhs_runtime."
