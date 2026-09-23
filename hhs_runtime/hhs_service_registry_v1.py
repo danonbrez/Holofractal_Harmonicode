@@ -4624,6 +4624,88 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.desi_explicit_projection_corpus.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_desi_explicit_projection_corpus_v1"
+        ),
+        function="desi_explicit_projection_corpus_self_test",
+        service_type="pass220_validated_observational_projection_constructor",
+        description=(
+            "Validate the I040 explicit DESI observation map and fail-closed "
+            "corpus runner. z_eff binds to the I023 redshift/one-plus-z "
+            "surface; D_H/r_d binds to the normalized Hubble-distance surface "
+            "and exactly solves H*r_d/c0 by reciprocal; D_M/r_d binds to the "
+            "normalized transverse-comoving-distance surface and exactly solves "
+            "D_M/D_H and the D_V cube relation. Every released decimal keeps "
+            "its I038 palindromic IEEE/exact-residue/5,184-character BigInt "
+            "carrier, binds the I039 shared root, and is copied completely "
+            "across -,0,+ I037 phase manifolds. Any row failure rejects the "
+            "corpus rather than being averaged away."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I040_DESI_EXPLICIT_PROJECTION_CORPUS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I040_DESI_PROJECTION_WITNESS_V1",
+        ],
+        validators=[
+            "validate_desi_explicit_projection",
+            "run_fail_closed_desi_corpus",
+            "desi_explicit_projection_corpus_self_test",
+        ],
+        guards=[
+            "desi_to_hhs_observation_map_explicit",
+            "implicit_A_B_P_p_q_binding_forbidden",
+            "released_decimal_sources_preserved",
+            "i038_parallel_carriers_preserved",
+            "i039_shared_unification_root_bound",
+            "i037_equation_proof_root_bound",
+            "three_complete_phase_copies_bound",
+            "exact_hubble_reciprocal_solve",
+            "exact_alcock_paczynski_ratio_solve",
+            "exact_isotropic_bao_cube_relation",
+            "uncertainty_components_kept_separate",
+            "row_failure_not_averaged",
+            "corpus_fail_closed",
+            "bigint_5184_width_preserved",
+            "host_float_arithmetic_forbidden",
+            "probability_likelihood_mcmc_refit_forbidden",
+            "commutative_reordering_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I040_MISSING_OBSERVATION_FIELD",
+            "REJECT_I040_NONPOSITIVE_DISTANCE",
+            "REJECT_I040_EXPLICIT_MAP_DRIFT",
+            "REJECT_I040_I038_CARRIER_DRIFT",
+            "REJECT_I040_I039_ROOT_DRIFT",
+            "REJECT_I040_PHASE_COPY_DIVERGENCE",
+            "REJECT_I040_BIGINT_5184_LOSS",
+            "REJECT_I040_EXPLICIT_PROJECTION_CLOSURE",
+            "REJECT_I040_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I040_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_DESI_PROJECTION_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_DIMENSIONLESS_BAO_RELATIONAL_PROJECTION_WITH_FAIL_CLOSED_ROWS"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.quantum_geometric_unification_closure.self_test",
         module=(
             "hhs_runtime."
