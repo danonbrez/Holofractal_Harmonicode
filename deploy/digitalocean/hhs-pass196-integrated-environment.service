@@ -29,6 +29,7 @@ Environment=HHS_PASS204_STATE_ROOT=/var/lib/hhs/pass204
 Environment=HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3
 Environment=HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218
 Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current
+Environment=HHS_DISABLE_C_AUTOBUILD=1
 Environment=HHS_COGNITION_AUTO_TICK=0
 Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json
 Environment=HHS_RUNTIME_STATUS_TTL_SECONDS=15
@@ -36,6 +37,7 @@ Environment=HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS=60
 Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180
 Environment=HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=30
 Environment=HHS_RUNTIME_STATUS_PROBE=1
+ExecStartPre=/usr/local/lib/hhs-guarded-update/verify-production-prerequisites.sh
 ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.production_visual_server:app --host 127.0.0.1 --port 8080 --workers 1
 Restart=on-failure
 RestartSec=2

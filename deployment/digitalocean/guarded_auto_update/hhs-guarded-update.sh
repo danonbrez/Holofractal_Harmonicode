@@ -134,6 +134,7 @@ sync_installed_assets() {
   install -d -m 0755 /usr/local/lib/hhs-guarded-update
   [[ -f "$source/hhs-guarded-update.sh" ]] && install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
   [[ -f "$source/validate-candidate.sh" ]] && install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
+  [[ -f "$source/verify-production-prerequisites.sh" ]] && install -m 0755 "$source/verify-production-prerequisites.sh" /usr/local/lib/hhs-guarded-update/verify-production-prerequisites.sh
   [[ -f "$source/build-runtime-os.sh" ]] && install -m 0755 "$source/build-runtime-os.sh" /usr/local/lib/hhs-guarded-update/build-runtime-os.sh
   [[ -f "$source/preserve-host-drift.sh" ]] && install -m 0755 "$source/preserve-host-drift.sh" /usr/local/lib/hhs-guarded-update/preserve-host-drift.sh
   [[ -f "$source/runtime-os-bundle.py" ]] && install -m 0755 "$source/runtime-os-bundle.py" /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py

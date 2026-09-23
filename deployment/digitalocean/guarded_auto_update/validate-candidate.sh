@@ -38,6 +38,7 @@ run_stage "shell syntax" bash -n \
   deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
   deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
   deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
+  deployment/digitalocean/guarded_auto_update/verify-production-prerequisites.sh \
   deployment/digitalocean/guarded_auto_update/install.sh
 
 python_files=(
@@ -182,6 +183,7 @@ if [[ "$BOOT" == "1" ]]; then
   : >"$LOG_FILE"
   env -u HHS_RUNTIME_OS_ROOT \
     HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" \
+    HHS_DISABLE_C_AUTOBUILD=1 \
     HHS_PASS205_DB="$PASS205_DB" \
     "$PYTHON" -m uvicorn "$PRODUCTION_GATEWAY_ENTRYPOINT" \
       --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \

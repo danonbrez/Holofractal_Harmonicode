@@ -19,7 +19,7 @@ PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
 RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}
-NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
+NATIVE_BUILD='make -B c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && HHS_DISABLE_C_AUTOBUILD=1 /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
 [[ $EUID -eq 0 ]] || {
@@ -54,6 +54,7 @@ bash -n \
   "$SOURCE/build-runtime-os.sh" \
   "$SOURCE/preserve-host-drift.sh" \
   "$SOURCE/validate-candidate.sh" \
+  "$SOURCE/verify-production-prerequisites.sh" \
   "$SOURCE/install.sh"
 python3 -m py_compile "$SOURCE/runtime-os-bundle.py" "$SOURCE/normalize-service-permissions.py" "$RECOVERY_VERIFIER"
 
@@ -153,6 +154,7 @@ install -m 0755 "$SOURCE/hhs-guarded-update.sh" "$INSTALL_ROOT/hhs-guarded-updat
 install -m 0755 "$SOURCE/build-runtime-os.sh" "$INSTALL_ROOT/build-runtime-os.sh"
 install -m 0755 "$SOURCE/preserve-host-drift.sh" "$INSTALL_ROOT/preserve-host-drift.sh"
 install -m 0755 "$SOURCE/validate-candidate.sh" "$INSTALL_ROOT/validate-candidate.sh"
+install -m 0755 "$SOURCE/verify-production-prerequisites.sh" "$INSTALL_ROOT/verify-production-prerequisites.sh"
 install -m 0755 "$SOURCE/runtime-os-bundle.py" "$INSTALL_ROOT/runtime-os-bundle.py"
 install -m 0755 "$SOURCE/normalize-service-permissions.py" "$INSTALL_ROOT/normalize-service-permissions.py"
 install -m 0755 "$RECOVERY_VERIFIER" "$INSTALL_ROOT/verify-recovery-state.py"
