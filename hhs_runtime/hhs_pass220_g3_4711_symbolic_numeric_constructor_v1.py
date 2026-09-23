@@ -299,7 +299,7 @@ def validate_solver_constructor(
         "raw_ieee": ieee_result["raw"],
         "format": ieee_result["format"],
         "classification": ieee_result["classification"],
-        "exact_dyadic": ieee_result["exact_dyadic"],
+        "exact_dyadic": scalar_carrier["exact_dyadic"],
         "offsets": decoded_offsets,
         "bigint_5184_roundtrip": True,
         "scalar_bigint_roundtrip": True,
