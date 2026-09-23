@@ -1,0 +1,135 @@
+name: Pass 220 I034 Holographic Gauge Dyadic Decoupling
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING.md"
+      - "docs/whitepapers/HARMONICODE_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING_RESTART.md"
+      - ".github/workflows/pass220-i034-holographic-gauge-dyadic-decoupling.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py"
+      - "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i034_holographic_gauge_dyadic_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING.md"
+      - "docs/whitepapers/HARMONICODE_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING_RESTART.md"
+      - ".github/workflows/pass220-i034-holographic-gauge-dyadic-decoupling.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I034 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py \
+            tests/pass220/test_hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py
+
+      - name: Verify connected Wolfram 21 of 21 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i034_holographic_gauge_dyadic_wolfram_20260923_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i034_holographic_gauge_dyadic_wolfram_20260923_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 21
+          assert data["failed"] == []
+          assert data["base"] == [1, 2, 3]
+          assert data["lifted"] == [4, 7, 11]
+          assert data["ratio"] == [1, 1]
+          assert data["dyadic_base"] == 2
+          assert data["transition_friction"] == 7
+          assert data["q144"] == 144
+          assert data["schema"] in source
+          PY
+
+      - name: Run I034 gauge-decoupling tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py
+
+      - name: Run inherited I033 constructor regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_4711_symbolic_numeric_constructor_v1.py
+
+      - name: Enforce I034 typed authority and no-float boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_holographic_gauge_dyadic_decoupling_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              "CANONICAL_A_NORM2 = 1",
+              "CANONICAL_P4 = 9",
+              "CANONICAL_C4 = 9",
+              "DYADIC_BASE = 2",
+              "Q144_PHASE_DENOMINATOR = 144",
+              '"canonical_service": False',
+              '"canonical_constraint_creation_authority": False',
+              '"canonical_constraint_enforcement_authority": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+              '"physical_scalar_expansion_authority": False',
+              '"rebound_to_transition_friction": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = (
+              "float(",
+              "Decimal(",
+              "numpy.",
+          )
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          PY
