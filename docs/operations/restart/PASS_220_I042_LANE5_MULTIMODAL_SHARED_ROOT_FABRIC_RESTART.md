@@ -47,14 +47,32 @@ Date: 2026-09-23
 The connected Wolfram evaluator returned an internal tool failure twice during
 I042 development. No Wolfram result is claimed or fabricated.
 
+## Validation completed
+
+- dependency-scoped I042 workflow added;
+- dedicated exact-head workflow run `35874987852`: SUCCESS;
+- exact tested implementation head:
+  `d216cb695d754bfd2362cebc13428ce22600bef9`;
+- I042 tests passed;
+- I041 exact game-engine regression passed;
+- I040 exact DESI projection regression passed;
+- Pass165 multimodal projection regression passed;
+- Pass218 exact relational-candidate regression passed;
+- I042 self-test and exact finite-geometry checks passed;
+- exact authority boundary enforcement passed;
+- PR #566 opened against `main`.
+
+Unrelated legacy/global workflows on the branch reported failures outside the
+I042 dependency scope. They are not I042 acceptance evidence and remain
+repair-forward obligations of their owning workstreams.
+
+The connected Wolfram evaluator returned an internal tool failure during this
+cycle. No Wolfram result is claimed.
+
 ## Validation remaining
 
-- dependency-scoped I042 exact-head workflow;
-- I042 exact-head CI;
-- repair only impacted dependencies if required;
-- open PR;
-- merge after green exact-head evidence;
-- verify merged main.
+- merge PR #566;
+- verify merged `main` and the I042 runtime surface.
 
 ## Restart instruction
 
