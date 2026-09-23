@@ -144,3 +144,83 @@ reconciled with current `main`.
 7. A later integration cycle must supply a real digest-pinned Ubuntu image,
    prove real QEMU boot + SSH reachability, install/verify the existing
    `hhs-application-vm` service inside the guest, and only then attach the GUI.
+
+
+## I043 repair-forward checkpoint — 2026-09-23 17:17 America/New_York
+
+### Failed focused run isolated
+
+Exact prior head:
+
+`b59149cc19e4cd5b83133af3ca1a3cd24d7ef609`
+
+Focused workflow:
+
+- run: `35907631282`
+- job: `107339179463`
+- conclusion: **FAILURE**
+- compile: success
+- launcher syntax: success
+- authority-boundary grep gate: success
+- focused tests: **1 failed / 5 passed**
+
+Failure:
+
+```text
+test_fake_qemu_lifecycle_tracks_pid_and_fails_closed_on_stale_pid
+assert started["running"] is True
+```
+
+The CI duration (~310 seconds) exposed the root cause: the fake QEMU helper
+spawned `sleep 300` while inheriting the captured stdout/stderr pipes from the
+outer `subprocess.run()`. The helper process exited, but the child retained the
+pipes, delaying EOF until the sleep ended. The lifecycle probe also used
+`kill(pid, 0)` alone, which can classify a Linux zombie as live.
+
+### Repair
+
+Two dependency-scoped changes were committed:
+
+- `cc5205b37e6ccb196d510804c61d086f81346c58`
+  - runtime PID liveness now checks Linux `/proc/<pid>/stat`;
+  - process state `Z` is rejected as not live;
+  - non-Linux/racy `/proc` access falls back to the successful `kill(0)`
+    portability probe.
+
+- `1e809456eff3dd2310f382d399f65c9c887c34b4`
+  - fake QEMU child stdin/stdout/stderr are detached to `DEVNULL`;
+  - `close_fds=True` is explicit;
+  - the fake daemon no longer keeps CI capture pipes open.
+
+Current exact head:
+
+`1e809456eff3dd2310f382d399f65c9c887c34b4`
+
+PR #567 remains mergeable.
+
+### Exact-head rerun
+
+Focused workflow:
+
+- run: `35921517984`
+- job: `107386362056`
+- workflow: `Pass 220 I043 Ubuntu Guest Runtime PTY`
+- status at checkpoint: **in progress**
+
+The inherited Ubuntu Application VM control-plane gate on the failed prior head
+was green, and the broad Pass 217/218/219 jobs associated with that head were
+also green. The repair therefore remains scoped to I043 lifecycle testing/runtime
+PID semantics.
+
+### Next action
+
+1. Read run `35921517984`.
+2. If the focused I043 job is green, recheck PR #567 exact head and mergeability.
+3. Merge PR #567 only if the validated head is still
+   `1e809456eff3dd2310f382d399f65c9c887c34b4` (or a later documented repair
+   head with its own green focused run).
+4. Verify main contains the I043 contract/runtime/CLI/tests/workflow.
+5. Proceed to the real-guest integration gate: digest-pinned Ubuntu image,
+   QEMU boot, authenticated SSH reachability, installation/verification of the
+   inherited `hhs-application-vm` service inside the guest, then GUI/PTTY
+   adapter wiring.
