@@ -47,13 +47,24 @@ PASS
 failed = []
 ~~~
 
+## Pull request / CI checkpoint
+
+- PR: #556
+- PR URL: https://github.com/danonbrez/Holofractal_Harmonicode/pull/556
+- pre-checkpoint implementation head: 5f1718b105aa21a985eb801afad66640d2336d42
+- I033 workflow run on that head: 35807651687
+- workflow state when checkpointed: QUEUED
+- PR mergeability when checkpointed: TRUE
+
+Per the repository forward-progress policy, queued external CI does not block a
+restartable implementation checkpoint. No green result is claimed here.
+
 ## Validation remaining
 
-- run the dependency-scoped GitHub workflow on the exact branch head;
+- inspect the I033 exact-head workflow for the latest branch head when runner capacity is available;
 - repair forward only if I033 or an inherited dependency regression fails;
-- open/maintain the pull request against main;
-- merge only after the required I033 validation is green;
-- verify main after merge.
+- merge PR #556 only after the required I033 validation is green;
+- verify the resulting main commit after merge.
 
 ## Restart instruction
 
