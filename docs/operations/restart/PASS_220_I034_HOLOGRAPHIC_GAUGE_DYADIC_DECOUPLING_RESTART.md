@@ -11,7 +11,7 @@ Date: 2026-09-23
 - initial merge target: I033 dependency branch
 - final linear target after I033 merge: \`main\`
 
-## Dependency status at start
+## Dependency status
 
 PR #556 / I033 had one dependency-scoped CI defect:
 
@@ -25,7 +25,22 @@ The defect was repaired at:
 2dac63b56e38097b1b8eb2ad6bb2c560ba74cf9c
 ~~~
 
-by sourcing the exact dyadic view from the nested validated IEEE scalar carrier. The repaired I033 workflow was queued when I034 began.
+by sourcing the exact dyadic view from the nested validated IEEE scalar carrier.
+
+The repaired I033 exact-head workflow then completed green:
+
+~~~text
+run 35834630368
+SUCCESS
+~~~
+
+PR #556 was merged into main at:
+
+~~~text
+31629ff8244b432f4cbe74f069c0cc951abc552b
+~~~
+
+and the repaired I033 source was verified on main.
 
 ## Implemented
 
