@@ -1,0 +1,194 @@
+name: Pass 220 I039 Quantum Geometric Unification Closure
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_schrodinger_firing_order_v1.py"
+      - "hhs_runtime/hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "hhs_runtime/hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "hhs_runtime/hhs_pass220_background_continuity_v1.py"
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "hhs_runtime/hhs_authority_gate_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_schrodinger_firing_order_v1.py"
+      - "tests/pass220/test_hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "tests/pass220/test_hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "tests/pass220/test_hhs_pass220_background_continuity_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I039_QUANTUM_GEOMETRIC_UNIFICATION_CLOSURE.md"
+      - "docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I039_QUANTUM_GEOMETRIC_UNIFICATION_CLOSURE_RESTART.md"
+      - ".github/workflows/pass220-i039-quantum-geometric-unification-closure.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_schrodinger_firing_order_v1.py"
+      - "hhs_runtime/hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "hhs_runtime/hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "hhs_runtime/hhs_pass220_background_continuity_v1.py"
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "hhs_runtime/hhs_authority_gate_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_schrodinger_firing_order_v1.py"
+      - "tests/pass220/test_hhs_pass220_cosmological_clock_cadence_v1.py"
+      - "tests/pass220/test_hhs_pass220_exact_friedmann_transfer_v1.py"
+      - "tests/pass220/test_hhs_pass220_background_continuity_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I039_QUANTUM_GEOMETRIC_UNIFICATION_CLOSURE.md"
+      - "docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I039_QUANTUM_GEOMETRIC_UNIFICATION_CLOSURE_RESTART.md"
+      - ".github/workflows/pass220-i039-quantum-geometric-unification-closure.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I039 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py \
+            tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py
+
+      - name: Verify connected Wolfram 44 of 44 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i039_quantum_geometric_unification_closure_wolfram_20260923_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i039_quantum_geometric_unification_closure_wolfram_20260923_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 44
+          assert data["failed"] == []
+          assert data["phase_orbit"] == [8,24,40,56,72,16,32,48,64]
+          assert data["root_seed"] == "179971179971/1000000"
+          assert data["root_ieee_residue"] == "-1349/268435456000000"
+          assert data["schema"] in source
+          PY
+
+      - name: Run I039 unification closure tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py
+
+      - name: Run I025 Schrodinger exact-orbit regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_schrodinger_firing_order_v1.py
+
+      - name: Run I022 cosmological phase-orbit regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_cosmological_clock_cadence_v1.py
+
+      - name: Run I023 exact Friedmann regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_exact_friedmann_transfer_v1.py
+
+      - name: Run I024 background-continuity regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_background_continuity_v1.py
+
+      - name: Run I037 mandatory 24D regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+
+      - name: Run I038 parallel exact-egress regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+
+      - name: Enforce I039 shared-root boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_quantum_geometric_unification_closure_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              'ROOT_METADATA_SEED = "179971.179971"',
+              'RETURN_GATE_SOURCE = "(A_p/B_q)(B_q/A_p)≡1"',
+              '"QUANTUM_AND_RELATIVISTIC_PROJECTIONS_SHARE_ONE_STATE_ROOT"',
+              '"QUANTUM_AND_RELATIVISTIC_PHASE_ORBITS_IDENTICAL"',
+              '"I037_MANDATORY_24D_EQUATION_PROOF_BUNDLE_PRESERVED"',
+              '"I038_PALINDROMIC_IEEE_BIGINT_PARALLEL_CARRIER_PRESERVED"',
+              '"DELTA_E_ZERO"',
+              '"PSI_ZERO"',
+              '"OMEGA_TRUE"',
+              '"canonical_service": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+              '"host_float_arithmetic_used": False',
+              '"probability_used_in_equation_solve": False',
+              '"likelihood_used_in_equation_solve": False',
+              '"mcmc_used_in_equation_solve": False',
+              '"commutative_reordering_authorized": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = ("float(", "Decimal(", "numpy.", "scipy.optimize", "random.")
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          PY
