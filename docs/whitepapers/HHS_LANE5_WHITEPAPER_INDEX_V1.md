@@ -315,6 +315,41 @@ tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py
 evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.wl
 ```
 
+## 8F. Q144/H36 holofractal relativistic game engine
+
+[`HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md`](HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md)
+
+Pass 220 I041 composes exact geometry, harmonic, sprite, shader, and
+relativistic state into one deterministic game-frame projection:
+
+- Q144 Euclidean rotation remains symbolic in `Q(zeta_144)`;
+- the native H36 coordinate factorization is mirrored exactly across all 5,184
+  addresses;
+- `144*36 = 12*12*3*12 = 81*64 = 72*72 = 5184`;
+- the H36 state exposes 3 ET banks, 12 pitch classes, all twelve
+  transpositions, 64 ordered phase pairs, and 64 harmonic-rule coordinates;
+- all five regular convex Platonic closures are derived from Schläfli incidence
+  constraints rather than authoritative vertex tables;
+- the I040 projection root deterministically produces a three-Hash72
+  Sprite216 descriptor;
+- the color wheel is an exact 144-position modular ring with reciprocal
+  half-turn `q -> q+72 mod 144`;
+- typed shader IR binds the exact Q144 rotation, Sprite216 seed, H36
+  music/rule coordinate, reciprocal color, and Platonic topology;
+- GPU/renderer floats are explicitly non-authoritative projections;
+- every frame inherits the I040 exact relativistic observation state and I039
+  shared quantum/relativistic root;
+- one Q144 coordinate drives trigonometry, music, color, and shader phase in the
+  same frame.
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py
+tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.wl
+```
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
