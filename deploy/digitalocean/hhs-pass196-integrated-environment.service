@@ -33,8 +33,8 @@ Environment=HHS_COGNITION_AUTO_TICK=0
 Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json
 Environment=HHS_RUNTIME_STATUS_TTL_SECONDS=15
 Environment=HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS=60
-Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180
-Environment=HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=30
+Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180\nEnvironment=HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2
+Environment=HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90
 Environment=HHS_RUNTIME_STATUS_PROBE=1
 ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.production_visual_server:app --host 127.0.0.1 --port 8080 --workers 1
 Restart=on-failure
