@@ -109,13 +109,13 @@ Ubuntu Bash/PTTY.
 The host-facing launcher is:
 
 ```bash
-bin/hhs-guest verify
-bin/hhs-guest prepare
-bin/hhs-guest start
-bin/hhs-guest status
-bin/hhs-guest stop
-bin/hhs-guest restart
-bin/hhs-guest pty-exec -- bash -lc 'pwd && hhs-vm status'
+sh bin/hhs-guest verify
+sh bin/hhs-guest prepare
+sh bin/hhs-guest start
+sh bin/hhs-guest status
+sh bin/hhs-guest stop
+sh bin/hhs-guest restart
+sh bin/hhs-guest pty-exec -- bash -lc 'pwd && hhs-vm status'
 ```
 
 Configuration is supplied through environment variables:
