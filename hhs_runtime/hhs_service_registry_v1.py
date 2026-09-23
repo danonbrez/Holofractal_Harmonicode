@@ -4492,6 +4492,70 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.g3_4711_symbolic_numeric_constructor.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_g3_4711_symbolic_numeric_constructor_v1"
+        ),
+        function="g3_4711_symbolic_numeric_constructor_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the Pass 220 I033 G3 4/7/11 multirepresentational "
+            "constructor: symbolic UTF-8, exact IEEE storage, exact dyadic "
+            "projection, ordered x/y/z/w G3 phase tensor, fixed 5184-character "
+            "BigInt serialization, scalar BigInt projection, and reciprocal "
+            "provenance remain co-resident. The constructor contains local "
+            "constraints but acquires no canonical constraint, VM81, Hash72, "
+            "Hash216, or persistence authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I033_G3_4711_SYMBOLIC_NUMERIC_SOLVER_CONSTRUCTOR_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I033_G3_4711_MULTI_VIEW_WITNESS_V1",
+        ],
+        validators=[
+            "validate_g3_4711_symbolic_numeric_constructor",
+            "g3_4711_symbolic_numeric_constructor_self_test",
+        ],
+        guards=[
+            "g3_123_to_4711_relation_preserved",
+            "uniform_scalar_reduction_forbidden",
+            "co_resident_representation_views_required",
+            "symbol_reciprocal_roundtrip_required",
+            "ieee_raw_bit_roundtrip_required",
+            "exact_dyadic_view_retained",
+            "bigint_5184_roundtrip_required",
+            "constructor_local_constraints_only",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_G3_4711_SCALE_DRIFT",
+            "REJECT_CO_RESIDENT_VIEW_LOSS",
+            "REJECT_I033_RECIPROCAL_RETURN_MISMATCH",
+            "REJECT_I033_5184_ROUNDTRIP_MISMATCH",
+            "REJECT_I033_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_VALIDATED_CONSTRUCTOR_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "FINITE_CO_RESIDENT_I030_I031_I032_I001_COMPOSITION"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.multidimensional_constraint_manifold.self_test",
         module=(
             "hhs_runtime."
