@@ -36,15 +36,25 @@ Date: 2026-09-23
 
 ## Completed validation
 
-- connected Wolfram exact-rational/IEEE-residue proof: 40/40 PASS.
+- connected Wolfram exact-rational/IEEE-residue proof: 40/40 PASS;
+- dependency-scoped I038 workflow added;
+- dedicated exact-head workflow run `35864759205`: SUCCESS;
+- exact tested implementation head:
+  `e3587fa9dcf60fca454ac4af19d163ba48b17ead`;
+- PR #562 opened against `main`.
+
+Unrelated legacy/global workflows on the branch reported failures outside the
+I038 dependency scope. They are not used as I038 acceptance evidence and remain
+repair-forward obligations of their owning workstreams.
 
 ## Remaining validation
 
-- dependency-scoped I038 workflow;
-- I038 exact-head CI;
-- open PR;
-- merge after green exact-head;
-- verify merged main.
+- merge PR #562 using the green I038 exact-head evidence;
+- verify merged `main` and the I038 runtime surface.
+
+This restart-record-only refresh does not modify executable I038 behavior, so
+the green exact-head evidence at `e3587fa...` remains the dependency-scoped
+implementation validation.
 
 ## Next mathematical boundary
 
