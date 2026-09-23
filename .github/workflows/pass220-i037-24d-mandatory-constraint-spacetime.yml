@@ -1,0 +1,162 @@
+name: Pass 220 I037 Mandatory 24D Constraint Spacetime
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "hhs_runtime/hhs_pass220_multidimensional_constraint_manifold_v1.py"
+      - "hhs_runtime/hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "hhs_backend/runtime/hhs_pass217_machine_contracts_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py"
+      - "tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - "evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I037_24D_MANDATORY_CONSTRAINT_SPACETIME.md"
+      - "docs/whitepapers/HARMONICODE_24D_NONCOMMUTATIVE_QUDIT_CONSTRAINT_SPACETIME_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "docs/operations/restart/PASS_220_I037_24D_MANDATORY_CONSTRAINT_SPACETIME_RESTART.md"
+      - ".github/workflows/pass220-i037-24d-mandatory-constraint-spacetime.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "hhs_runtime/hhs_pass220_multidimensional_constraint_manifold_v1.py"
+      - "hhs_runtime/hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "hhs_backend/runtime/hhs_pass217_machine_contracts_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py"
+      - "tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py"
+      - "tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py"
+      - "evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I037_24D_MANDATORY_CONSTRAINT_SPACETIME.md"
+      - "docs/whitepapers/HARMONICODE_24D_NONCOMMUTATIVE_QUDIT_CONSTRAINT_SPACETIME_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "docs/operations/restart/PASS_220_I037_24D_MANDATORY_CONSTRAINT_SPACETIME_RESTART.md"
+      - ".github/workflows/pass220-i037-24d-mandatory-constraint-spacetime.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I037 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py \
+            tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+
+      - name: Verify connected Wolfram 40 of 40 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i037_24d_mandatory_constraint_spacetime_wolfram_20260923_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 40
+          assert data["failed"] == []
+          assert data["dimensions_per_qutrit"] == 24
+          assert data["qutrit_copies"] == 3
+          assert data["phase_cover"] == 72
+          assert data["vm81"] == 81
+          assert data["vm5184"] == 5184
+          assert data["p4"] == 9
+          assert data["p8"] == 81
+          assert data["schema"] in source
+          PY
+
+      - name: Run I037 mandatory 24D tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+
+      - name: Run inherited I036 nucleus regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1.py
+
+      - name: Run inherited I017 constraint-manifold regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py
+
+      - name: Run inherited phase-inverted Pythagorean regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass219/test_hhs_phase_inverted_pythagorean_geometry_v1.py
+
+      - name: Enforce I037 equation, residue, and authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              '"(-1,0,+1)={yx,y+x,xy},{yx-wz,(x+y-z-w+xy+yx-zw-wz),zw-xy},{wz,z+w,zw}"',
+              '"P⁴=AB=c⁴=(a²+b²)²"',
+              '"A²+B²=P⁸={-,0,+}/∆"',
+              '"(A:B,a:b,p:q,z:w)↔(B:A,b:a,q:p,w:z)"',
+              '"P²=P+(p+q)=pq=a²+b²+c²"',
+              '"c²=P⁴/(a²+b²)=a²+b²+c²=a²b²c²; c²-t³=a²"',
+              '"normalization_erases_raw_expression": False',
+              '"normalization_erases_exchange_provenance": False',
+              '"golay_profile_only": True',
+              '"golay_codec_authority": False',
+              '"canonical_service": False',
+              '"canonical_constraint_creation_authority": False',
+              '"canonical_constraint_enforcement_authority": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+              '"commutative_reordering_authorized": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = ("float(", "Decimal(", "numpy.")
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          PY
