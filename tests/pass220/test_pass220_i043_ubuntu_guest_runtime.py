@@ -41,7 +41,14 @@ pathlib.Path(sys.argv[-1]).write_bytes(b"FAKE-QCOW2-OVERLAY\\n")
 import pathlib, subprocess, sys
 args=sys.argv[1:]
 pidfile=pathlib.Path(args[args.index("-pidfile")+1])
-child=subprocess.Popen(["sleep","300"], start_new_session=True)
+child=subprocess.Popen(
+    ["sleep","300"],
+    stdin=subprocess.DEVNULL,
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+    close_fds=True,
+    start_new_session=True,
+)
 pidfile.parent.mkdir(parents=True, exist_ok=True)
 pidfile.write_text(str(child.pid)+"\\n", encoding="utf-8")
 """,
