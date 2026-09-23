@@ -186,3 +186,19 @@ It has no:
 - floating-point authority.
 
 The repository OS remains responsible for validated-constructor hydration.
+
+
+## Formal result
+
+Connected Wolfram verification:
+
+~~~text
+HHS_PASS_220_I038_DESI_LANE5_PARALLEL_EXACT_EGRESS_WOLFRAM_20260923_V1
+PASS
+40 / 40
+failed = []
+~~~
+
+The proof covers the seven public decimal values, their exact rational forms,
+their exact binary64 dyadic residues, and the inherited 24D / VM5184 finite
+closure identities without introducing a probabilistic solve path.
