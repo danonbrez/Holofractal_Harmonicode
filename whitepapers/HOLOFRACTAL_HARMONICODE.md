@@ -1531,3 +1531,41 @@ U_data(S_i) =
 
 Each corpus row returns `CLOSE` or `REJECT`. One rejected row rejects the
 corpus; failures are not averaged into other observations.
+
+
+## Pass 220 I041 — Q144/H36 holofractal relativistic game-engine closure
+
+The exact execution stack now exposes one multimodal game-frame state rather
+than separate graphics, music, and physics parameter spaces.
+
+The shared finite geometry is:
+
+```text
+144*36
+= 12*12*3*12
+= 81*64
+= 72*72
+= 5184.
+```
+
+A Q144 index supplies the exact cyclotomic Euclidean rotation in
+`Q(zeta_144)`. The corresponding H36 coordinate supplies its 36-bit lane,
+3x12 equal-temperament bank/pitch coordinate, VM81 cell/operation coordinate,
+8x8 ordered phase pair, and harmonic rule64. The same Q144 coordinate also
+selects the exact modular color-wheel phase and shader phase.
+
+The geometry layer derives the five regular convex Platonic topologies from
+`{p,q}` incidence closure, while the sprite layer deterministically expands
+the I040 projection root into ordered PREV72/STATE72/RECEIPT72 carriers. Their
+concatenation is the exact 216-symbol sprite descriptor before any renderer
+projection.
+
+The typed shader IR consumes this exact source state. Backend rasterization may
+lower exact values into GPU floating coordinates, but those values are not
+canonical authority and cannot mutate VM81 or replace the source geometry.
+
+Every game frame additionally carries the exact I040 DESI-derived relativistic
+observation state and the inherited I039 shared quantum/relativistic state
+root. The full 144-position cycle therefore binds Euclidean geometry, modular
+music, color, sprites, shader state, and relativistic physics as projections of
+one exact address manifold.
