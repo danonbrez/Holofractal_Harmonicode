@@ -1,0 +1,208 @@
+name: Pass 220 I041 Holofractal Relativistic Game Engine
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "hhs_runtime/hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "hhs_runtime/pass219/harmonic_geometry_circuit_i182.py"
+      - "hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h"
+      - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
+      - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "tests/pass220/test_hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py"
+      - "evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE.md"
+      - "docs/whitepapers/HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_RESTART.md"
+      - ".github/workflows/pass220-i041-holofractal-relativistic-game-engine.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "hhs_runtime/hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "hhs_runtime/pass219/harmonic_geometry_circuit_i182.py"
+      - "hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h"
+      - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
+      - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "tests/pass220/test_hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py"
+      - "evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE.md"
+      - "docs/whitepapers/HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_RESTART.md"
+      - ".github/workflows/pass220-i041-holofractal-relativistic-game-engine.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I041 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py \
+            tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+
+      - name: Verify connected Wolfram 48 of 48 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i041_holofractal_relativistic_game_engine_wolfram_20260923_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 48
+          assert data["failed"] == []
+          assert data["platonic"] == [
+              [4,6,4,2],
+              [8,12,6,2],
+              [6,12,8,2],
+              [20,30,12,2],
+              [12,30,20,2],
+          ]
+          assert data["h36_first"] == [0,0,0,0,0,0,0,0,0,0,0,0,1]
+          assert data["h36_last"] == [143,35,2,11,11,11,80,63,71,71,7,7,64]
+          assert data["schema"] in source
+          PY
+
+      - name: Run I041 game-engine tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+
+      - name: Run I040 exact DESI projection regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py
+
+      - name: Run I035 Q144 transport regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py
+
+      - name: Run I182 Platonic geometry regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass219/test_pass219_i182_harmonic_geometry_circuit.py
+
+      - name: Verify I041 mirrors native H36 coordinate formula
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          h = Path(
+              "hhs_runtime/include/"
+              "hhs_pass219_harmonic36_nested_vm_1_0.h"
+          ).read_text(encoding="utf-8")
+          c = Path(
+              "hhs_runtime/c/"
+              "hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
+          ).read_text(encoding="utf-8")
+
+          for token in (
+              "HHS_EXACT_PASS219_H36_WORD_BITS 36U",
+              "HHS_EXACT_PASS219_H36_WORD_COUNT 144U",
+              "HHS_EXACT_PASS219_H36_FRAME_BITS 5184U",
+              "HHS_EXACT_PASS219_H36_ET_CLASSES 12U",
+              "HHS_EXACT_PASS219_H36_ET_BANKS 3U",
+              "HHS_EXACT_PASS219_H36_RULE_COUNT 64U",
+          ):
+              assert token in h, token
+
+          for token in (
+              "out->word144 = (uint8_t)(linear5184 / HHS_EXACT_PASS219_H36_WORD_BITS);",
+              "out->bit36 = (uint8_t)(linear5184 % HHS_EXACT_PASS219_H36_WORD_BITS);",
+              "out->et_bank3 = (uint8_t)(out->bit36 / HHS_EXACT_PASS219_H36_ET_CLASSES);",
+              "out->et_pitch12 = (uint8_t)(out->bit36 % HHS_EXACT_PASS219_H36_ET_CLASSES);",
+              "out->q144_row12 = (uint8_t)(out->word144 / HHS_EXACT_PASS219_H36_ET_CLASSES);",
+              "out->q144_col12 = (uint8_t)(out->word144 % HHS_EXACT_PASS219_H36_ET_CLASSES);",
+              "out->phase_right8 = (uint8_t)(operation % HHS_EXACT_PHASE_BASIS_COUNT);",
+              "out->harmonic_rule64 = (uint8_t)(operation + 1U);",
+          ):
+              assert token in c, token
+          PY
+
+      - name: Enforce I041 exact/projection authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              '"EUCLIDEAN_TRIGONOMETRY_IS_SYMBOLIC_CYCLOTOMIC_Q_ZETA144"',
+              '"H36_144_TIMES_36_EQUALS_5184"',
+              '"ALL_FIVE_PLATONIC_SOLIDS_DERIVED_BY_EXACT_INCIDENCE"',
+              '"SPRITE216_IS_THREE_ORDERED_HASH72_CARRIERS"',
+              '"COLOR_WHEEL_HAS_144_EXACT_POSITIONS"',
+              '"GPU_FLOATS_ARE_PROJECTION_ONLY"',
+              '"I040_RELATIVISTIC_OBSERVATION_PROJECTION_BOUND"',
+              '"host_float_arithmetic_used_by_exact_cycle": False',
+              '"canonical_admission_authority": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = (
+              "math.sin",
+              "math.cos",
+              "numpy.",
+              "scipy.",
+              "random.",
+          )
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          PY
