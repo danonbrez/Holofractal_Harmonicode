@@ -1,0 +1,170 @@
+name: Pass 220 I040 DESI Explicit Projection Corpus
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I040_DESI_EXPLICIT_PROJECTION_CORPUS.md"
+      - "docs/whitepapers/HARMONICODE_DESI_EXPLICIT_OBSERVATION_PROJECTION_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I040_DESI_EXPLICIT_PROJECTION_CORPUS_RESTART.md"
+      - ".github/workflows/pass220-i040-desi-explicit-projection-corpus.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "hhs_runtime/hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py"
+      - "tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py"
+      - "evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.wl"
+      - "evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.output.json"
+      - "evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.receipt.json"
+      - "docs/pass220/PASS_220_I040_DESI_EXPLICIT_PROJECTION_CORPUS.md"
+      - "docs/whitepapers/HARMONICODE_DESI_EXPLICIT_OBSERVATION_PROJECTION_THEOREM.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "docs/operations/restart/PASS_220_I040_DESI_EXPLICIT_PROJECTION_CORPUS_RESTART.md"
+      - ".github/workflows/pass220-i040-desi-explicit-projection-corpus.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I040 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py \
+            tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py
+
+      - name: Verify connected Wolfram 44 of 44 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i040_desi_explicit_projection_corpus_wolfram_20260923_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i040_desi_explicit_projection_corpus_wolfram_20260923_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 44
+          assert data["failed"] == []
+          assert data["z_eff"] == "233/100"
+          assert data["one_plus_z"] == "333/100"
+          assert data["D_H_over_r_d"] == "1079/125"
+          assert data["D_M_over_r_d"] == "3899/100"
+          assert data["H_times_r_d_over_c0"] == "125/1079"
+          assert data["D_M_over_D_H"] == "19495/4316"
+          assert data["D_V_over_r_d_cubed"] == (
+              "3821939746807/125000000"
+          )
+          assert data["schema"] in source
+          PY
+
+      - name: Run I040 explicit projection/corpus tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py
+
+      - name: Run I039 shared-root unification regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py
+
+      - name: Run I038 exact parallel egress regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_desi_lane5_parallel_exact_egress_v1.py
+
+      - name: Run I037 mandatory 24D regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_24d_mandatory_constraint_spacetime_v1.py
+
+      - name: Enforce I040 explicit/fail-closed boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/"
+              "hhs_pass220_desi_explicit_projection_corpus_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required = (
+              '"z_eff -> I023.redshift_target"',
+              '"one_plus_z = 1 + z_eff"',
+              '"H_times_r_d_over_c0 = 1 / (D_H_over_r_d)"',
+              '"D_M_over_D_H = (D_M_over_r_d) / (D_H_over_r_d)"',
+              '"(D_V_over_r_d)^3 = z_eff * (D_M_over_r_d)^2 * (D_H_over_r_d)"',
+              '"implicit_A_B_P_p_q_binding": False',
+              '"row_failure_is_averaged_away": False',
+              '"row_failure_invalidates_corpus": True',
+              '"host_float_arithmetic_used": False',
+              '"probability_weighting_used": False',
+              '"likelihood_used": False',
+              '"mcmc_used": False',
+              '"parameter_refit_performed": False',
+              '"commutative_reordering_authorized": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+          )
+          for token in required:
+              assert token in source, token
+
+          forbidden = (
+              "float(",
+              "Decimal(",
+              "numpy.",
+              "scipy.optimize",
+              "random.",
+          )
+          hits = [token for token in forbidden if token in source]
+          assert not hits, hits
+          PY

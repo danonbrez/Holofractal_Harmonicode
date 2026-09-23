@@ -1,0 +1,14 @@
+{
+  "schema": "HHS_PASS_220_I040_DESI_EXPLICIT_PROJECTION_CORPUS_WOLFRAM_20260923_V1",
+  "status": "PASS",
+  "check_count": 44,
+  "pass_count": 44,
+  "failed": [],
+  "z_eff": "233/100",
+  "one_plus_z": "333/100",
+  "D_H_over_r_d": "1079/125",
+  "D_M_over_r_d": "3899/100",
+  "H_times_r_d_over_c0": "125/1079",
+  "D_M_over_D_H": "19495/4316",
+  "D_V_over_r_d_cubed": "3821939746807/125000000"
+}

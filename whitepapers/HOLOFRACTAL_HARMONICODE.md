@@ -1485,3 +1485,49 @@ phase-route divergence, equation/proof-bundle loss, BigInt-width loss,
 reciprocal-return failure, typed closure failure, host floating arithmetic,
 probability/likelihood/MCMC solving, commutative reorder authorization, or
 canonical-authority escalation.
+
+
+## Pass 220 I040 — Exact DESI observation projection and corpus closure
+
+The post-I039 empirical path now contains an explicit observation map rather
+than an inferred variable fit.
+
+For the public DESI DR2 Ly-alpha BAO row, the frozen exact source is:
+
+```text
+z_eff = 2.33 = 233/100
+D_H/r_d = 8.632 = 1079/125
+D_M/r_d = 38.99 = 3899/100
+```
+
+The exact relational projection solves:
+
+```text
+1+z = 333/100
+H*r_d/c0 = 125/1079
+D_M/D_H = 19495/4316
+(D_V/r_d)^3 = 3821939746807/125000000
+```
+
+These observation-surface relations are carried through the existing I038
+parallel exact decimal / palindromic IEEE / exact residue / 5,184-character
+BigInt stack and bound to the I039 shared state root and I037 mandatory 24D
+equation/proof root.
+
+The same complete observation projection is copied to the `-`, `0`, and `+`
+24D manifolds. No trinary branch is permitted to drop a carrier, residue, or
+provenance field.
+
+The data-bound predicate is fail-closed:
+
+```text
+U_data(S_i) =
+  U_I039(S_i)
+  AND Pi_DESI(S_i)
+  AND parallel-carrier closure
+  AND 5184-width closure
+  AND three-copy phase closure.
+```
+
+Each corpus row returns `CLOSE` or `REJECT`. One rejected row rejects the
+corpus; failures are not averaged into other observations.

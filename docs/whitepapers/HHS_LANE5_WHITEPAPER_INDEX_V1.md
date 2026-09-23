@@ -274,6 +274,47 @@ tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py
 evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.wl
 ```
 
+## 8E. Explicit DESI observation projection and fail-closed corpus
+
+[`HARMONICODE_DESI_EXPLICIT_OBSERVATION_PROJECTION_THEOREM.md`](HARMONICODE_DESI_EXPLICIT_OBSERVATION_PROJECTION_THEOREM.md)
+
+Pass 220 I040 closes the explicit observational map required after I038/I039:
+
+- `z_eff` binds to the I023 redshift / one-plus-redshift target;
+- `D_H/r_d` binds to the normalized Hubble-distance surface and exactly solves
+  `H*r_d/c0 = 1/(D_H/r_d)`;
+- `D_M/r_d` binds to the normalized transverse-comoving-distance surface;
+- `D_M/D_H` and `(D_V/r_d)^3` are derived as exact rational relations;
+- every public numeric source retains the I038 exact decimal, palindromic IEEE,
+  exact dyadic residue, fixed 5,184-character BigInt, I037 bundle, and Lane 5
+  state;
+- one projection root is copied in full to all three I037 `-,0,+` 24D
+  manifolds;
+- the I039 shared unification root remains the common execution ancestry;
+- `U_data` is Boolean and fail-closed;
+- a single row rejection rejects the corpus; no averaging, likelihood, MCMC,
+  probability weighting, or parameter refit is permitted to hide failure.
+
+Initial exact derived values:
+
+```text
+z_eff = 233/100
+1+z = 333/100
+D_H/r_d = 1079/125
+D_M/r_d = 3899/100
+H*r_d/c0 = 125/1079
+D_M/D_H = 19495/4316
+(D_V/r_d)^3 = 3821939746807/125000000
+```
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py
+tests/pass220/test_hhs_pass220_desi_explicit_projection_corpus_v1.py
+evidence/pass220/i040_desi_explicit_projection_corpus_wolfram_20260923_v1.wl
+```
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
