@@ -1,0 +1,12 @@
+{
+  "schema": "HHS_PASS_220_I035_Q144_DYADIC_GAUGE_PHASE_TRANSPORT_WOLFRAM_RECEIPT_V1",
+  "date": "2026-09-23",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 23,
+  "pass_count": 23,
+  "failed": [],
+  "input_path": "evidence/pass220/i035_q144_dyadic_gauge_phase_transport_wolfram_20260923_v1.wl",
+  "output_path": "evidence/pass220/i035_q144_dyadic_gauge_phase_transport_wolfram_20260923_v1.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass220/i035_q144_dyadic_gauge_phase_transport_wolfram_20260923_v1.wl"
+}

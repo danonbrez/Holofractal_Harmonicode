@@ -1,0 +1,13 @@
+{
+  "schema": "HHS_PASS_220_I035_Q144_DYADIC_GAUGE_PHASE_TRANSPORT_WOLFRAM_20260923_V1",
+  "status": "PASS",
+  "check_count": 23,
+  "pass_count": 23,
+  "failed": [],
+  "q144": 144,
+  "g72": 72,
+  "bridge": [1, 72],
+  "gauge_ratio": [1, 1],
+  "dyadic_base": 2,
+  "transition_friction": 7
+}
