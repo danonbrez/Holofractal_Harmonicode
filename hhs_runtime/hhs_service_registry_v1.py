@@ -4556,6 +4556,74 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.holographic_gauge_dyadic_decoupling.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_holographic_gauge_dyadic_decoupling_v1"
+        ),
+        function="holographic_gauge_dyadic_decoupling_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I034 holographic gauge-resolution constructor: "
+            "P^4/c^4=a_norm^2 remains the exact canonical normalization lock; "
+            "(4,7,11) remains a typed G3 gauge coordinate tier; transition "
+            "friction b_G^2=7 is decoupled from dyadic phase base 2; the exact "
+            "symbolic operator 2^(P*a_norm^2/144), typed conformal invariant, "
+            "P:p:q provenance, and typed closure state remain intact without "
+            "canonical constraint, VM81, Hash72, Hash216, or persistence authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I034_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I034_GAUGE_DYADIC_WITNESS_V1",
+        ],
+        validators=[
+            "validate_holographic_gauge_dyadic_decoupling",
+            "holographic_gauge_dyadic_decoupling_self_test",
+        ],
+        guards=[
+            "p4_over_c4_equals_a_norm2",
+            "a_norm2_typed_unit_retained",
+            "g3_4711_gauge_coordinate_tier",
+            "gauge_depth_not_canonical_magnitude_multiplier",
+            "transition_friction_7",
+            "dyadic_phase_base_2",
+            "dyadic_friction_rebind_forbidden",
+            "symbolic_2_power_p_a_norm2_over_144_retained",
+            "typed_conformal_invariant_identity_preserved",
+            "p_p_q_provenance_preserved",
+            "typed_zero_closure_preserved",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I034_HOLOGRAPHIC_LOCK_DRIFT",
+            "REJECT_I034_GAUGE_SCALAR_INFLATION",
+            "REJECT_I034_DYADIC_FRICTION_REBIND",
+            "REJECT_I034_CONFORMAL_IDENTITY_DRIFT",
+            "REJECT_I034_TYPED_ZERO_COLLAPSE",
+            "REJECT_I034_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_GAUGE_CONSTRUCTOR_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_NONNEGATIVE_BIGINT_GAUGE_DEPTH_WITH_TYPED_LOCK"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.multidimensional_constraint_manifold.self_test",
         module=(
             "hhs_runtime."
