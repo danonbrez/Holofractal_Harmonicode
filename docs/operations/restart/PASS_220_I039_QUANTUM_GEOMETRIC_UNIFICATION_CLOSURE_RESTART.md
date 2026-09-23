@@ -31,14 +31,29 @@ Date: 2026-09-23
 - service-registry declaration;
 - connected Wolfram 44/44 PASS evidence.
 
+## Validation completed
+
+- connected Wolfram proof: 44/44 PASS;
+- dependency-scoped I039 workflow added;
+- dedicated exact-head workflow run `35866749139`: SUCCESS;
+- exact tested implementation head:
+  `984d637218cabbd83435f4cdf523f45cc026cef6`;
+- I039 tests, I025, I022, I023, I024, I037, and I038 dependency regressions all passed;
+- shared-root static boundary enforcement passed;
+- PR #563 opened against `main`.
+
+Unrelated legacy/global branch workflows reported failures outside the I039
+dependency scope. They are not I039 acceptance evidence and remain
+repair-forward obligations of their owning workstreams.
+
 ## Validation remaining
 
-- dependency-scoped I039 exact-head workflow;
-- I039 exact-head CI;
-- repair only impacted dependencies if required;
-- open PR;
-- merge after green exact-head evidence;
-- verify merged main.
+- merge PR #563;
+- verify merged `main` and the I039 runtime surface.
+
+This restart-record-only refresh does not modify executable I039 behavior, so
+the green exact-head evidence at `984d637...` remains the dependency-scoped
+implementation validation.
 
 ## Restart instruction
 
