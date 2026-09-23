@@ -86,6 +86,7 @@ class GuestRuntimeConfig:
     ssh_user: str = "hhs"
     ssh_identity: Path | None = None
     known_hosts: Path | None = None
+    seed_image: Path | None = None
     qemu_bin: str | None = None
     qemu_img_bin: str | None = None
     ssh_bin: str | None = None
@@ -115,6 +116,7 @@ class GuestRuntimeConfig:
             raise GuestRuntimeError("HHS_GUEST_BASE_SHA256_REQUIRED")
         identity = os.environ.get("HHS_GUEST_SSH_IDENTITY")
         known_hosts = os.environ.get("HHS_GUEST_SSH_KNOWN_HOSTS")
+        seed_image = os.environ.get("HHS_GUEST_SEED_IMAGE")
         return cls(
             base_image=Path(base).expanduser().resolve(),
             expected_sha256=digest,
@@ -130,6 +132,9 @@ class GuestRuntimeConfig:
             ssh_identity=Path(identity).expanduser().resolve() if identity else None,
             known_hosts=(
                 Path(known_hosts).expanduser().resolve() if known_hosts else None
+            ),
+            seed_image=(
+                Path(seed_image).expanduser().resolve() if seed_image else None
             ),
             qemu_bin=os.environ.get("HHS_GUEST_QEMU_BIN"),
             qemu_img_bin=os.environ.get("HHS_GUEST_QEMU_IMG_BIN"),
@@ -312,7 +317,7 @@ class UbuntuGuestRuntime:
 
     def qemu_command(self) -> list[str]:
         qemu = _tool(self.config.qemu_bin, "qemu-system-x86_64")
-        return [
+        command = [
             qemu,
             "-name",
             self.config.guest_name,
@@ -324,23 +329,38 @@ class UbuntuGuestRuntime:
             str(self.config.cpus),
             "-drive",
             f"file={self.overlay},if=virtio,format=qcow2,cache=none",
-            "-netdev",
-            (
-                "user,id=hhsnet0,"
-                f"hostfwd=tcp:127.0.0.1:{self.config.ssh_port}-:22"
-            ),
-            "-device",
-            "virtio-net-pci,netdev=hhsnet0",
-            "-qmp",
-            f"unix:{self.qmp_socket},server=on,wait=off",
-            "-display",
-            "none",
-            "-serial",
-            "none",
-            "-daemonize",
-            "-pidfile",
-            str(self.pid_file),
         ]
+        if self.config.seed_image is not None:
+            seed = self.config.seed_image
+            if not seed.is_file():
+                raise GuestRuntimeError(f"HHS_GUEST_SEED_IMAGE_MISSING:{seed}")
+            command.extend(
+                [
+                    "-drive",
+                    f"file={seed},if=virtio,format=raw,readonly=on",
+                ]
+            )
+        command.extend(
+            [
+                "-netdev",
+                (
+                    "user,id=hhsnet0,"
+                    f"hostfwd=tcp:127.0.0.1:{self.config.ssh_port}-:22"
+                ),
+                "-device",
+                "virtio-net-pci,netdev=hhsnet0",
+                "-qmp",
+                f"unix:{self.qmp_socket},server=on,wait=off",
+                "-display",
+                "none",
+                "-serial",
+                "none",
+                "-daemonize",
+                "-pidfile",
+                str(self.pid_file),
+            ]
+        )
+        return command
 
     def _pid(self) -> int | None:
         if not self.pid_file.is_file():
@@ -397,6 +417,12 @@ class UbuntuGuestRuntime:
             "qmp_socket_present": self.qmp_socket.exists(),
             "overlay": str(self.overlay),
             "overlay_present": self.overlay.is_file(),
+            "seed_image": (
+                str(self.config.seed_image) if self.config.seed_image is not None else None
+            ),
+            "seed_image_present": bool(
+                self.config.seed_image is not None and self.config.seed_image.is_file()
+            ),
             "base": base,
             "ssh": {
                 "host": "127.0.0.1",
@@ -421,6 +447,9 @@ class UbuntuGuestRuntime:
             "base_image": str(self.config.base_image),
             "base_sha256": self.config.expected_sha256.lower(),
             "overlay": str(self.overlay),
+            "seed_image": (
+                str(self.config.seed_image) if self.config.seed_image is not None else None
+            ),
             "pid_file": str(self.pid_file),
             "qmp_socket": str(self.qmp_socket),
             "ssh_host": "127.0.0.1",
