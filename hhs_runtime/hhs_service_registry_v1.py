@@ -4624,6 +4624,74 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.genesis_reverse_offset_holographic_nucleus.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_genesis_reverse_offset_holographic_nucleus_v1"
+        ),
+        function="genesis_reverse_offset_holographic_nucleus_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I036 holographic Lo Shu nucleus constructor: the same "
+            "nine-cell nucleus is retained simultaneously as Genesis offsets "
+            "{-4..4}, Lo Shu magnitudes {1..9}, and reverse offsets "
+            "{-3,-1,1,3,5,7,9,11,13}; all three views reconstruct the same "
+            "cell addresses, preserve center and reflection closure, repeat over "
+            "nine VM81 nuclei, and retain 81*64=72^2=5184 without host floats "
+            "or canonical authority escalation."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I036_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I036_HOLOGRAPHIC_NUCLEUS_WITNESS_V1",
+        ],
+        validators=[
+            "validate_genesis_reverse_offset_constructor",
+            "genesis_reverse_offset_holographic_nucleus_self_test",
+        ],
+        guards=[
+            "genesis_offset_equals_magnitude_minus_5",
+            "reverse_offset_equals_2m_minus_5",
+            "three_views_mutually_reconstructible",
+            "same_lo_shu_cell_addresses_preserved",
+            "genesis_zero_line_closure",
+            "magnitude_and_reverse_line_15_closure",
+            "zero_five_five_center_preserved",
+            "reflection_pair_closure_preserved",
+            "nine_nuclei_form_vm81",
+            "vm81_times_64_equals_hash72_squared_equals_5184",
+            "host_float_arithmetic_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I036_GENESIS_OFFSET_DRIFT",
+            "REJECT_I036_REVERSE_OFFSET_DRIFT",
+            "REJECT_I036_CELL_ADDRESS_LOSS",
+            "REJECT_I036_HOLOGRAPHIC_RECONSTRUCTION_FAILURE",
+            "REJECT_I036_LINE_SUM_CLOSURE_FAILURE",
+            "REJECT_I036_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_HOLOGRAPHIC_NUCLEUS_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_NINE_CELL_THREE_VIEW_AFFINE_NUCLEUS_WITH_VM81_REPETITION"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.q144_dyadic_gauge_phase_transport.self_test",
         module=(
             "hhs_runtime."
