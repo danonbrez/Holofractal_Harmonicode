@@ -45,6 +45,7 @@ jobs:
             deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
             deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
             deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
+            deployment/digitalocean/guarded_auto_update/verify-production-prerequisites.sh \
             deployment/digitalocean/guarded_auto_update/install.sh
           python3 -m py_compile \
             deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py \
@@ -382,11 +383,19 @@ jobs:
           echo "HHS_PRODUCTION_SERVICE_PERMISSIONS_VERIFIED=1"
           systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
           systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
+          systemctl cat hhs.service | grep -Fq 'HHS_DISABLE_C_AUTOBUILD=1'
+          systemctl cat hhs.service | grep -Fq 'ExecStartPre=/usr/local/lib/hhs-guarded-update/verify-production-prerequisites.sh'
           systemctl cat hhs.service | grep -Fq 'HHS_COGNITION_AUTO_TICK=0'
           systemctl show hhs.service -p ExecStart --value | grep -Fq 'hhs_backend.production_visual_server:app'
           release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
             --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
           test "$(readlink -f "$BUNDLE_ROOT/current")" = "$release"
+          runuser -u hhs -- env \
+            HHS_REPOSITORY_ROOT="$APP_ROOT" \
+            HHS_RUNTIME_OS_ASSET_ROOT="$BUNDLE_ROOT/current" \
+            HHS_DISABLE_C_AUTOBUILD=1 \
+            PYTHONPATH="$APP_ROOT" \
+            /usr/local/lib/hhs-guarded-update/verify-production-prerequisites.sh
 
           listener_count=$(ss -H -ltnp 'sport = :8080' | wc -l)
           [[ "$listener_count" -eq 1 ]] || {
