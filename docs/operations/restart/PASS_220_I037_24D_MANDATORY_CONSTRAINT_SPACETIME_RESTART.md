@@ -39,16 +39,24 @@ Date: 2026-09-23
 - no canonical VM81/Hash72/Hash216 authority;
 - connected Wolfram 40/40 PASS evidence.
 
+## Validation completed
+
+- I037 service registry declaration added;
+- dependency-scoped exact-head workflow added;
+- Lane 5 white-paper index updated;
+- connected Wolfram proof: 40/40 PASS;
+- exact-head workflow run `35857128669`: SUCCESS;
+- PR #561 opened against `main`;
+- exact tested branch head before this restart-record refresh:
+  `9b6c73a87d2e1e34ffa59391e2a9adc660e1cb98`.
+
+Unrelated legacy/global workflows on the branch reported failures outside the I037 dependency scope. They are not used as evidence for I037 and remain repair-forward obligations of their owning workstreams.
+
 ## Validation remaining
 
-- register I037 in the service registry;
-- add dependency-scoped I037 exact-head workflow;
-- update Lane 5 white-paper index;
-- run exact-head CI;
-- repair only impacted dependencies if needed;
-- open PR against `main`;
-- merge only after I037 exact-head validation is green;
-- verify merged main.
+- rerun the dedicated I037 exact-head workflow on the restart-record refresh head;
+- merge PR #561 only if that exact-head run is green;
+- verify merged `main` and the I037 runtime file on the merge commit.
 
 ## Restart instruction
 
