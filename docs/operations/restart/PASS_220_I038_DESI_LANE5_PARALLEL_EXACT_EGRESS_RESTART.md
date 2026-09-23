@@ -34,9 +34,12 @@ Date: 2026-09-23
 - no implicit DESI -> HHS variable mapping;
 - no canonical authority escalation.
 
+## Completed validation
+
+- connected Wolfram exact-rational/IEEE-residue proof: 40/40 PASS.
+
 ## Remaining validation
 
-- connected Wolfram exact-rational/IEEE-residue proof;
 - dependency-scoped I038 workflow;
 - I038 exact-head CI;
 - open PR;
