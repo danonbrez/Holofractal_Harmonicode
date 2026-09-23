@@ -4624,6 +4624,85 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.quantum_geometric_unification_closure.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_quantum_geometric_unification_closure_v1"
+        ),
+        function="quantum_geometric_unification_self_test",
+        service_type="pass220_validated_operation_constructor",
+        description=(
+            "Validate the I039 shared-root quantum-geometric closure: the exact "
+            "I025 Schrodinger 72-state orbit and the I023/I024 relativistic "
+            "transfer share the identical nine-step phase orbit, one I037 "
+            "mandatory 24D equation/proof bundle root, one I038 palindromic "
+            "IEEE/5,184-character BigInt carrier, and one typed "
+            "Delta-e=0/Psi=0/Omega=true closure witness. Both projections "
+            "carry identical ancestry and remain read-only."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I039_QUANTUM_GEOMETRIC_UNIFICATION_CLOSURE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I039_UNIFICATION_WITNESS_V1",
+        ],
+        validators=[
+            "validate_quantum_geometric_unification_constructor",
+            "quantum_geometric_unification_self_test",
+        ],
+        guards=[
+            "quantum_relativistic_shared_state_root",
+            "quantum_relativistic_phase_orbit_identity",
+            "i025_exact_72_state_orbit",
+            "i023_exact_relativistic_transfer",
+            "i024_background_contract_bound",
+            "i037_mandatory_equation_proof_bundle_bound",
+            "i038_palindromic_ieee_bigint_parallel_carrier_bound",
+            "root_metadata_seed_preserved",
+            "bigint_5184_width_preserved",
+            "palindromic_symbol_and_ieee_return_closed",
+            "delta_e_zero",
+            "psi_zero",
+            "theta15_true",
+            "omega_true",
+            "algebraic_closure_true",
+            "host_float_arithmetic_forbidden",
+            "probability_likelihood_mcmc_forbidden",
+            "commutative_reordering_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I039_SHARED_ROOT_SPLIT",
+            "REJECT_I039_PHASE_ORBIT_DIVERGENCE",
+            "REJECT_I039_QUANTUM_CLOSURE_FAILURE",
+            "REJECT_I039_RELATIVISTIC_CLOSURE_FAILURE",
+            "REJECT_I039_I037_BUNDLE_DRIFT",
+            "REJECT_I039_BIGINT_5184_LOSS",
+            "REJECT_I039_PALINDROMIC_RETURN_FAILURE",
+            "REJECT_I039_TYPED_CLOSURE_FAILURE",
+            "REJECT_I039_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I039_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_UNIFICATION_CLOSURE_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_SHARED_ROOT_72_STATE_QUANTUM_NINE_STEP_RELATIVISTIC_CLOSURE"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.desi_lane5_parallel_exact_egress.self_test",
         module=(
             "hhs_runtime."

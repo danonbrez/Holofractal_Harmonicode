@@ -242,6 +242,38 @@ evidence/pass220/i038_desi_lane5_parallel_exact_egress_wolfram_20260923_v1.wl
 The next empirical constructor must declare the DESI-to-HHS variable/relational
 projection explicitly before evaluating I037 equation closure.
 
+## 8D. Quantum-geometric shared-root closure
+
+[`HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md`](HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md)
+
+Pass 220 I039 binds the merged quantum and relativistic execution surfaces to
+one exact constructor ancestry:
+
+- I025 Schrodinger full-orbit execution and I022/I023 cosmological transfer
+  share the exact phase route `8,24,40,56,72,16,32,48,64`;
+- the I025 full orbit is `8*9=72` exact cyclotomic states;
+- the relativistic path executes nine exact I023 transfer receipts on the same
+  route and carries the I024 background-continuity contract;
+- both projections carry one SHA-256 shared-state root;
+- the I037 mandatory 24D equation/proof bundle root is part of that state;
+- root metadata seed `179971.179971` is transported in parallel through the
+  I038 exact decimal/rational, palindromic IEEE, exact dyadic residue, fixed
+  5,184-character BigInt, and Lane 5 constructor path;
+- exact symbol and IEEE reciprocal return witnesses close the palindromic gate;
+- `Delta e=0`, `Psi=0`, `Theta15=true`, and `Omega=true` are executable
+  typed closure conditions;
+- split ancestry, phase-orbit divergence, lost equation/proof roots, lost
+  BigInt width, failed reciprocal return, float/probability paths, and authority
+  escalation all fail closed.
+
+Executable surfaces:
+
+```text
+hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py
+tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py
+evidence/pass220/i039_quantum_geometric_unification_closure_wolfram_20260923_v1.wl
+```
+
 ## 9. Normative sources
 
 These papers are subordinate to versioned/executable repository authority, including:
