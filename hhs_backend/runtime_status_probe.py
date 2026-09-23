@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any
@@ -107,24 +108,28 @@ async def invoke_get(app: Any, path: str) -> tuple[int, dict[str, Any]]:
     return status_code, payload
 
 
-async def run(paths: list[str]) -> int:
-    isolation = install_read_only_unified_ledger_projection()
-    from hhs_backend.visual_server import app
-
-    for path in paths:
+async def _probe_one(
+    app: Any,
+    path: str,
+    isolation: dict[str, Any],
+    semaphore: asyncio.Semaphore,
+    concurrency: int,
+) -> dict[str, Any]:
+    async with semaphore:
         started = time.perf_counter()
         try:
             status_code, payload = await invoke_get(app, path)
-            record = {
+            return {
                 "schema": "HHS_RUNTIME_STATUS_PROBE_RECORD_V1",
                 "path": path,
                 "status_code": status_code,
                 "duration_ms": round((time.perf_counter() - started) * 1000),
                 "payload": payload,
                 "ledger_isolation": isolation,
+                "probe_concurrency": concurrency,
             }
         except Exception as exc:  # the probe must report and continue
-            record = {
+            return {
                 "schema": "HHS_RUNTIME_STATUS_PROBE_RECORD_V1",
                 "path": path,
                 "status_code": 503,
@@ -135,7 +140,33 @@ async def run(paths: list[str]) -> int:
                     "error": f"{type(exc).__name__}: {exc}",
                 },
                 "ledger_isolation": isolation,
+                "probe_concurrency": concurrency,
             }
+
+
+async def run(paths: list[str], *, concurrency: int | None = None) -> int:
+    isolation = install_read_only_unified_ledger_projection()
+    from hhs_backend.visual_server import app
+
+    if concurrency is None:
+        raw = os.getenv("HHS_RUNTIME_STATUS_PROBE_CONCURRENCY", "2")
+        try:
+            concurrency = int(raw)
+        except ValueError:
+            concurrency = 2
+    concurrency = max(1, min(8, concurrency, max(1, len(paths))))
+    semaphore = asyncio.Semaphore(concurrency)
+
+    # Fan out only read-only status projections. asyncio.gather preserves input
+    # order, so external records remain deterministic even though independent
+    # route work overlaps.
+    records = await asyncio.gather(
+        *(
+            _probe_one(app, path, isolation, semaphore, concurrency)
+            for path in paths
+        )
+    )
+    for record in records:
         print(json.dumps(record, sort_keys=True, ensure_ascii=False), flush=True)
     return 0
 
