@@ -1,0 +1,170 @@
+name: Pass 220 I043 Lane 5 Alignment Physics Authority Closure
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_lane5_alignment_physics_authority_closure_v1.py"
+      - "hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "hhs_runtime/hhs_narrative_alignment_reasoning_engine_v1.py"
+      - "hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_lane5_alignment_physics_authority_closure_v1.py"
+      - "tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "docs/pass220/PASS_220_I043_LANE5_ALIGNMENT_PHYSICS_AUTHORITY_CLOSURE.md"
+      - "docs/operations/restart/PASS_220_I043_LANE5_ALIGNMENT_PHYSICS_AUTHORITY_CLOSURE_RESTART.md"
+      - ".github/workflows/pass220-i043-lane5-alignment-physics-authority-closure.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_lane5_alignment_physics_authority_closure_v1.py"
+      - "hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "hhs_runtime/hhs_narrative_alignment_reasoning_engine_v1.py"
+      - "hhs_runtime/hhs_narrative_alignment_reasoning_engine_v2.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_lane5_alignment_physics_authority_closure_v1.py"
+      - "tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+      - "tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "docs/pass220/PASS_220_I043_LANE5_ALIGNMENT_PHYSICS_AUTHORITY_CLOSURE.md"
+      - "docs/operations/restart/PASS_220_I043_LANE5_ALIGNMENT_PHYSICS_AUTHORITY_CLOSURE_RESTART.md"
+      - ".github/workflows/pass220-i043-lane5-alignment-physics-authority-closure.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Compile I043 authority surfaces
+        run: |
+          python -m py_compile             hhs_runtime/hhs_pass220_lane5_alignment_physics_authority_closure_v1.py             hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py             tests/pass220/test_hhs_pass220_lane5_alignment_physics_authority_closure_v1.py
+
+      - name: Run I043 joint-authority tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lane5_alignment_physics_authority_closure_v1.py
+
+      - name: Run inherited Pass 218/219 ethical bridge regressions
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py
+
+      - name: Run I039 exact math regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_quantum_geometric_unification_closure_v1.py
+
+      - name: Run I041 exact physics regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+
+      - name: Run I042 shared-root regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Execute I043 self test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_lane5_alignment_physics_authority_closure_v1 import (
+              lane5_alignment_physics_authority_self_test,
+          )
+
+          witness = lane5_alignment_physics_authority_self_test()
+          assert witness["ok"] is True
+          result = witness["result"]
+          assert result["joint_authority_closed"] is True
+          assert result["alignment_authority_closed"] is True
+          assert result["math_authority_closed"] is True
+          assert result["physics_authority_closed"] is True
+          assert result["fabric_authority_closed"] is True
+          assert result["ancestry_root_shared"] is True
+          assert result["misaligned_state_canonical_transition"] is False
+          assert result["current_repository_alignment_logic_preserved"] is True
+          assert result["canonical_vm81_mutation_authority"] is False
+          PY
+
+      - name: Enforce I043 authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          gate = Path(
+              "hhs_runtime/"
+              "hhs_pass220_lane5_alignment_physics_authority_closure_v1.py"
+          ).read_text(encoding="utf-8")
+          bridge = Path(
+              "hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py"
+          ).read_text(encoding="utf-8")
+
+          required_gate = (
+              "CURRENT_REPOSITORY_ALIGNMENT_LOGIC_IS_HIGHEST_AUTHORITY",
+              "CURRENT_REPOSITORY_MATH_IS_HIGHEST_AUTHORITY",
+              "CURRENT_REPOSITORY_PHYSICS_IS_HIGHEST_AUTHORITY",
+              "NO_ALIGNMENT_REIMPLEMENTATION_OR_RECLASSIFICATION",
+              "I039_EXACT_MATH_CLOSURE_REQUIRED",
+              "I041_EXACT_PHYSICS_CYCLE_REQUIRED",
+              "I042_SHARED_ROOT_FABRIC_REQUIRED",
+              "MISALIGNED_OR_UNRESOLVED_STATE_HAS_NO_CANONICAL_TRANSITION",
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+              '"direct_canonical_persistence_authority": False',
+          )
+          for token in required_gate:
+              assert token in gate, token
+
+          required_bridge = (
+              "require_lane5_alignment_physics_authority",
+              "Lane 5 alignment/math/physics authority",
+              "lane5_alignment_physics_authority",
+          )
+          for token in required_bridge:
+              assert token in bridge, token
+
+          forbidden_gate = (
+              "def evaluate_action(",
+              "def aggregate_invariant_results(",
+              "random.",
+              "numpy.",
+              "scipy.",
+              "float(",
+          )
+          hits = [token for token in forbidden_gate if token in gate]
+          assert not hits, hits
+          PY

@@ -4705,6 +4705,83 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.lane5_alignment_physics_authority.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_lane5_alignment_physics_authority_closure_v1"
+        ),
+        function="lane5_alignment_physics_authority_self_test",
+        service_type="pass220_joint_pre_admission_authority_witness",
+        description=(
+            "Validate the I043 Lane 5 conjunctive authority membrane. The "
+            "existing repository narrative/ethical alignment decision remains "
+            "authoritative and is bound without reclassification to I039 exact "
+            "math closure, I041 exact physics closure, and I042 shared-root "
+            "fabric ancestry before the inherited Pass 219 VM81 admission "
+            "bridge may invoke canonical runtime mutation."
+        ),
+        invariant_ids=[
+            "HHS-I001",
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I043_LANE5_ALIGNMENT_PHYSICS_AUTHORITY_CLOSURE_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I043_JOINT_AUTHORITY_WITNESS_V1",
+        ],
+        validators=[
+            "build_lane5_alignment_physics_authority_witness",
+            "require_lane5_alignment_physics_authority",
+            "lane5_alignment_physics_authority_self_test",
+        ],
+        guards=[
+            "current_repository_alignment_logic_highest_authority",
+            "current_repository_math_highest_authority",
+            "current_repository_physics_highest_authority",
+            "no_alignment_reimplementation_or_reclassification",
+            "all_ethics_invariants_pass",
+            "ethical_scope_preflight_closed",
+            "i039_exact_math_closure",
+            "i041_exact_physics_cycle",
+            "i042_shared_root_fabric",
+            "i039_i041_i042_ancestry_binding",
+            "misaligned_or_unresolved_state_no_canonical_transition",
+            "joint_authority_required_before_vm81_admission",
+            "canonical_vm81_hash_persistence_authority_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I043_ETHICAL_DECISION_NOT_EXECUTABLE",
+            "REJECT_I043_ETHICAL_INVARIANT_FAIL",
+            "REJECT_I043_ETHICAL_INVARIANT_UNRESOLVED",
+            "REJECT_I043_SCOPE_PREFLIGHT_OPEN",
+            "REJECT_I043_MATH_WITNESS_DRIFT",
+            "REJECT_I043_PHYSICS_WITNESS_DRIFT",
+            "REJECT_I043_FABRIC_WITNESS_DRIFT",
+            "REJECT_I043_ANCESTRY_ROOT_SPLIT",
+            "REJECT_I043_CANONICAL_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_JOINT_AUTHORITY_WITNESS_VM81_MUTATION_REMAINS_"
+            "IN_INHERITED_AUTHORIZED_TICK"
+        ),
+        persistence_policy=(
+            "JOINT_AUTHORITY_RECEIPT_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "TEN_ORDERED_ETHICAL_INVARIANTS_PLUS_I039_I041_I042_EXACT_"
+            "WITNESS_ANCESTRY"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.holofractal_relativistic_game_engine.self_test",
         module=(
             "hhs_runtime."

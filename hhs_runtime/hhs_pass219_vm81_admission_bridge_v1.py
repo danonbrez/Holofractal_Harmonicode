@@ -124,6 +124,23 @@ def admit_and_execute_local(
     if not allowed:
         return result
 
+    # Pass 220 I043 does not re-evaluate or replace the inherited ethical
+    # decision. It binds that exact trace to the repository's exact math,
+    # physics, and shared-root witnesses before any canonical runtime call.
+    try:
+        from hhs_runtime.hhs_pass220_lane5_alignment_physics_authority_closure_v1 import (
+            Pass220I043AuthorityError,
+            require_lane5_alignment_physics_authority,
+        )
+
+        joint_authority = require_lane5_alignment_physics_authority(refined)
+    except Pass220I043AuthorityError as exc:
+        raise VM81AdmissionBridgeError(
+            "Lane 5 alignment/math/physics authority did not close"
+        ) from exc
+
+    result["lane5_alignment_physics_authority"] = joint_authority
+
     if controller is None:
         # Lazy import ensures denied/held/simulation-only candidates do not
         # instantiate the authoritative runtime merely to be rejected.
@@ -131,7 +148,12 @@ def admit_and_execute_local(
 
         controller = HHSRuntimeController()
 
-    source = "HHS_PASS219_ETHICAL_ADMISSION:" + refined.trace_receipt_hash72
+    source = (
+        "HHS_PASS219_ETHICAL_ADMISSION:"
+        + refined.trace_receipt_hash72
+        + ":I043:"
+        + joint_authority["receipt_sha256"]
+    )
     execution = _validated_authorized_tick(controller.authorized_tick(source=source))
     result["vm81_execution"] = execution
     result["canonical_vm81_mutation_performed"] = True
