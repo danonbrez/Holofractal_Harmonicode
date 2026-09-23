@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS_220_I044_UBUNTU_GUEST_IMAGE_V1",
+  "release": "20260911",
+  "distribution": "Ubuntu",
+  "version": "24.04 LTS",
+  "architecture": "amd64",
+  "format": "qcow2",
+  "filename": "ubuntu-24.04-server-cloudimg-amd64.img",
+  "url": "https://cloud-images.ubuntu.com/releases/releases/noble/release-20260911/ubuntu-24.04-server-cloudimg-amd64.img",
+  "sha256": "612b2c0cc1bc413a6cb8c38fd611794caf0f2b436c50013d8b3794db12ad7354",
+  "source_sha256s": "https://cloud-images.ubuntu.com/releases/releases/noble/release-20260911/SHA256SUMS",
+  "authority": {
+    "external_image_is_guest_artifact_only": true,
+    "canonical_hhs_state_authority": false,
+    "vm81_authority": false,
+    "hash72_mint_authority": false,
+    "hash216_persistence_authority": false
+  }
+}
