@@ -274,38 +274,45 @@ if [[ -n "$POST_MERGE_COMMAND" ]]; then
 fi
 if ! activate_candidate_runtime_os; then rollback_live_checkout "Runtime OS activation failed"; exit 1; fi
 
-log "Sealing warm hydrated VM boot identity"
-WARM_BOOT_ROOT=/var/lib/hhs/warm-boot/releases
-install -d -o "$PRODUCTION_SERVICE_USER" -g "$PRODUCTION_SERVICE_GROUP" -m 0750 \
-  /var/lib/hhs/data \
-  /var/lib/hhs/data/runtime \
-  /var/lib/hhs/pass174 \
-  /var/lib/hhs/pass194 \
-  /var/lib/hhs/pass205 \
-  /var/lib/hhs/pass213 \
-  /var/lib/hhs/pass213/surface \
-  /var/lib/hhs/pass218 \
-  /var/lib/hhs/pass219 \
-  /var/lib/hhs/pass219/lane5 \
-  /var/lib/hhs/runtime-bootstrap \
-  /var/lib/hhs/warm-boot \
-  "$WARM_BOOT_ROOT"
-
-HHS_DATA_DIR=/var/lib/hhs/data \
-HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 \
-HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 \
-HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 \
-HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface \
-HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 \
-HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 \
-HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap \
-python3 "$REPO_ROOT/deployment/digitalocean/warm_boot_manifest.py" create \
-  --repo-root "$REPO_ROOT" \
-  --runtime-os-root "$BUNDLE_ROOT/current" \
-  --manifest-root "$WARM_BOOT_ROOT"
-chown "$PRODUCTION_SERVICE_USER:$PRODUCTION_SERVICE_GROUP" \
-  "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
-chmod 0640 "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
+if ! (
+  set -Eeuo pipefail
+  log "Sealing warm hydrated VM boot identity"
+  WARM_BOOT_ROOT=/var/lib/hhs/warm-boot/releases
+  install -d -o "$PRODUCTION_SERVICE_USER" -g "$PRODUCTION_SERVICE_GROUP" -m 0750 \
+    /var/lib/hhs/data \
+    /var/lib/hhs/data/runtime \
+    /var/lib/hhs/pass174 \
+    /var/lib/hhs/pass194 \
+    /var/lib/hhs/pass205 \
+    /var/lib/hhs/pass213 \
+    /var/lib/hhs/pass213/surface \
+    /var/lib/hhs/pass218 \
+    /var/lib/hhs/pass219 \
+    /var/lib/hhs/pass219/lane5 \
+    /var/lib/hhs/runtime-bootstrap \
+    /var/lib/hhs/warm-boot \
+    "$WARM_BOOT_ROOT"
+  
+  HHS_DATA_DIR=/var/lib/hhs/data \
+  HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 \
+  HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 \
+  HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 \
+  HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface \
+  HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 \
+  HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 \
+  HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap \
+  python3 "$REPO_ROOT/deployment/digitalocean/warm_boot_manifest.py" create \
+    --repo-root "$REPO_ROOT" \
+    --runtime-os-root "$BUNDLE_ROOT/current" \
+    --manifest-root "$WARM_BOOT_ROOT"
+  chown "$PRODUCTION_SERVICE_USER:$PRODUCTION_SERVICE_GROUP" \
+    "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
+  chmod 0640 "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
+  
+); then
+  rollback_live_checkout "warm-boot seal or durable-root initialization failed"
+  exit 1
+fi
 
 sync_installed_assets
 systemctl daemon-reload
