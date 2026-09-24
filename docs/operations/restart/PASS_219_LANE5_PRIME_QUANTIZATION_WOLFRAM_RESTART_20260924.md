@@ -812,3 +812,263 @@ Cycle 4 implementation head before this restart update:
 ```text
 9d3782368547d5af151adb2faebb888137aa8180
 ```
+
+
+## Cycle 5 — harmonic-modulus scalar face, Delta projection registry, T_BRIDGE-01B core
+
+Cycle 5 freezes the newly verified scalar-face semantics without weakening the
+existing native generator/projection boundaries.
+
+### Harmonic modulus typing
+
+The master-chain label written `u^72` / `u⁷²` is typed in this scalar
+projection as a closure assignment:
+
+```text
+U72 := b²/a⁴ = b²x⁴ = 2/ū²
+```
+
+where `ū` denotes the committed positive sextic-state algebraic root symbol.
+
+This cycle explicitly forbids:
+
+```text
+U72 -> ū^72
+```
+
+as an ordinary-power rewrite.
+
+The connected Wolfram proof checks the distinction on the committed positive
+root domain `ū>2`.
+
+### G72 native/operator split
+
+Existing Pass 220 authority is preserved:
+
+```text
+G72 native object = immutable ordered generator
+source term        = 2^(1/72)
+scalar preemption  = forbidden
+```
+
+Cycle 5 therefore registers only the projection face:
+
+```text
+pi_SigmaScalar(G72) = 2^(1/72)
+```
+
+and proves the exact bridge:
+
+```text
+(2/ū²)^(1/72)
+=
+2^(1/72) / ū^(1/36)
+```
+
+The native G72 route/tooth object is unchanged and retains no scalar mutation
+authority.
+
+### SPI scalar projection registry v9
+
+Added:
+
+```text
+hhs_spi_scalar_projection_registry_v9.py
+hhs_spi_scalar_projection_registry_tests_v9.py
+```
+
+v9 is an additive successor to v8 and freezes every v8 proof object unchanged.
+
+New proof IDs:
+
+```text
+SPI-HARMONIC-MODULUS-U72-CLOSURE-ASSIGNMENT
+SPI-G72-SCALAR-PROJECTION-FACE
+SPI-DELTA-SIGMA-M-CLOSURE-PROJECTION
+SPI-DELTA-SIGMA-R-ROOT-PHASE-PROJECTION
+```
+
+The first three are projection-only closed proofs.  The root/phase Delta state
+is intentionally registered as SYMBOLIC/OPEN because the repository's native
+`DELTA_P_ROOT` lowering remains unresolved.
+
+### Named Delta projection states
+
+The boxed-triple scalar face is registered as:
+
+```text
+Sigma_Delta_m:
+c² P(q-p)/(p+q)
+=
+a²+b²
+=
+(P²-pq) m c² / Delta
+```
+
+under:
+
+```text
+p=P-1
+q=P+1
+P²-pq=1
+c²=a²+b²
+nonzero scalar gate domain
+```
+
+The exact carrier is:
+
+```text
+(q-p)P/(p+q) = 1
+```
+
+and the licensed scalar gate reduces to:
+
+```text
+c² = m c² / Delta
+iff
+Delta = m
+```
+
+inside `Sigma_Delta_m` only.
+
+The root/phase state is separately named:
+
+```text
+Sigma_Delta_R:
+Delta
+->
+P*(Sqrt[(P-1)(P+1)+2/ū²])^(1/ū)
+```
+
+Cross-projection substitution is forbidden:
+
+```text
+Sigma_Delta_m Delta value
+!= globally substitutable into
+Sigma_Delta_R
+```
+
+without a separate exact bridge receipt.
+
+### T_BRIDGE-01B exact theorem core
+
+The formerly broad global statement is now split into an exact theorem core
+and a workload interval certificate.
+
+Let:
+
+```text
+epsilon_h = c h^p (1+r_h)
+h > 0
+p >= 1 integer
+c != 0
+|r_h| < 1
+```
+
+Then connected Wolfram proves:
+
+```text
+sgn(epsilon_h) = sgn(c)
+```
+
+and if the same relative-remainder bound holds at `h/2`:
+
+```text
+sgn(epsilon_h) = sgn(epsilon_h/2)
+```
+
+so the `{-1,0,+1}` sign registration is stable under halving until the
+relative factor crosses the zero membrane.
+
+For the admitted error envelope:
+
+```text
+B(h)=C h^p
+```
+
+the halving law is exact:
+
+```text
+B(h/2)=B(h)/2^p
+```
+
+Therefore the **envelope** contracts monotonically.  Cycle 5 does not claim
+that arbitrary sampled `epsilon(h)` itself is monotonically decreasing.
+
+Added exact-rational executable companion:
+
+```text
+hhs_runtime/pass219/lane5_t_bridge_01b_class_stability.py
+tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py
+```
+
+The runtime fails closed for:
+
+```text
+c = 0 outside the explicitly typed zero membrane
+|r| >= 1
+nonpositive h
+nonpositive/noninteger p
+an envelope constant too small to bound the supplied residue state
+```
+
+### Wolfram cycle-5 result
+
+Added:
+
+```text
+evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl
+evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json
+evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json
+```
+
+Connected Wolfram result:
+
+```text
+status      = PASS
+check_count = 15
+pass_count  = 15
+failed      = []
+```
+
+### Remaining exact obligations after cycle 5
+
+Still open:
+
+```text
+T_BRIDGE-01B workload-wide interval certificate
+  -> prove the admitted |r_h|<1 remainder bound over the committed orbital interval
+
+exact sextic polynomial/root-isolation certificate for ū
+  -> repository search did not locate the defining sextic polynomial
+
+Sigma_Delta_R native DELTA_P_ROOT lowering
+  -> state is named and preserved symbolically, not canonically closed
+
+cross-projection Sigma_Delta_m <-> Sigma_Delta_R bridge
+  -> no substitution without exact receipt
+
+Qe carry-through from the uniquely selected residue class into the full
+oriented scalar-projection admission path
+
+T_COSMO-07 unit budget / boxed-triple physical-unit binding
+
+global prime equivalence
+Riemann bridge
+Collatz asymptotic bridge
+```
+
+### Cycle 5 authority boundary
+
+No cycle-5 artifact has:
+
+```text
+VM81 mutation authority
+Hash72 minting authority
+Hash216 minting authority
+canonical persistence authority
+native G72 scalar-preemption authority
+ordinary ū^72 rewrite authority
+Delta cross-projection substitution authority
+floating-point canonical authority
+```
