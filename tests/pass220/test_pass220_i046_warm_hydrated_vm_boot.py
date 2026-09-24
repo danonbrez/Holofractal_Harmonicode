@@ -79,7 +79,7 @@ def test_manifest_create_then_restart_verify_adopts_without_build(
     assert verified["runtime_os_adopted"] is True
     assert verified["persistent_roots_adopted"] is True
     assert verified["persistent_state_adopted"] is False
-    assert verified["hydration_classification"] == "PERSISTENCE_PARTIAL"
+    assert verified["hydration_classification"] == "PERSISTENCE_PARTIAL_OR_UNSEALED"
     assert verified["protected_compiled_rom_recovery_verified"] is False
     assert verified["compile_on_restart"] is False
     assert verified["rehydrate_from_empty_on_restart"] is False
