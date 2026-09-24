@@ -1422,3 +1422,210 @@ Hash216 canonical mint authority    = FALSE
 canonical persistence authority     = FALSE
 floating-point canonical authority  = FALSE
 ```
+
+
+## Cycle 7 — Penrose four-complex/eight-real phase projection to Lo-Shu/Hash lineage
+
+Cycle 7 binds the existing PR #571 noncommutative phase geometry, Genesis
+Lo-Shu tensor, Poincare invariant, Hash72 coordinate system, and ordered
+Hash216 lineage to one explicit four-complex/eight-real twistor projection.
+
+### Exact Penrose projection surface
+
+The additive bridge retains the full four-complex carrier:
+
+```text
+Z = (omega^0, omega^1, pi_0', pi_1') in C^4 ~= R^8
+```
+
+with the Hermitian Minkowski coordinate matrix:
+
+```text
+X = [[t+z, x-i*y],
+     [x+i*y, t-z]]
+```
+
+and incidence relation:
+
+```text
+omega = i X pi
+```
+
+On real t,x,y,z, the exact connected Wolfram proof verifies:
+
+```text
+omega^dagger*pi + pi^dagger*omega = 0
+p = pi*pi^dagger
+det(p) = 0
+```
+
+The HHS runtime keeps all eight real coordinates.  The projective quotient is
+not applied to the canonical carrier.
+
+### 3-bit truth geometry -> eight Lo-Shu outer positions -> eight real phase coordinates
+
+The fixed local chart is:
+
+```text
+000 -> xy
+001 -> x+y
+010 -> yx
+011 -> xy-zw
+100 -> wz-yx
+101 -> wz
+110 -> z+w
+111 -> zw
+```
+
+and is bound one-to-one to:
+
+```text
+Re(omega^0)
+Re(omega^1)
+Re(pi_0')
+Re(pi_1')
+Im(omega^0)
+Im(omega^1)
+Im(pi_0')
+Im(pi_1')
+```
+
+This ordering is an HHS projection contract.  It does not claim that external
+twistor theory independently prescribes the HHS Lo-Shu/Hash72 ordering.
+
+The inherited noncommutative/nonassociative x/y/z/w tensor remains:
+
+```text
+[ xy,    x+y,                         yx    ]
+[ xy-zw, x+y-z-w+xy+yx-zw-wz,       wz-yx ]
+[ wz,    z+w,                         zw    ]
+```
+
+No commutative reorder or reassociation is introduced.
+
+### Nine nuclei -> Hash72
+
+Every one of the nine coupled Lo-Shu nuclei contributes the same eight-position
+local chart:
+
+```text
+9 * 8 = 72
+```
+
+with global coordinate:
+
+```text
+i = 8*nucleus_index + local_outer_index
+canonical_character = HASH72_ALPHABET[i]
+```
+
+Thus this bridge records the system-internal identity surface:
+
+```text
+u^72 = Hash72 = 72 Lo-Shu outer qudit coordinates
+```
+
+while preserving the condition that the outer boundary is not free: every
+coordinate remains coupled through the shared holographic nuclear manifold.
+Each coordinate also records 80 foreign qudits with explicit self-exclusion.
+
+### Ordered Hash216 lineage
+
+The transition witness is preserved exactly as:
+
+```text
+Hash216 =
+  Hash72_previous
+  || Hash72_next
+  || Hash72_receipt
+```
+
+so:
+
+```text
+3 * 72 = 216
+```
+
+and every ordered Hash216 coordinate receives its own SHA-256 witness:
+
+```text
+D_j = SHA256(Hash216[j]), 0 <= j < 216
+```
+
+The coordinate record retains lineage layer, Hash72 position, canonical
+character, state symbol, nucleus, 3-bit address, Lo-Shu tensor expression,
+eight-real phase coordinate, and SHA-256 digest.
+
+The supplied ordered closure surface is retained without scalar reordering:
+
+```text
+a^2+b^2=c^2=P^4/c^2=
+(Hash72_previous,Hash72_next,Hash72_receipt)
+```
+
+and the inherited relation remains:
+
+```text
+72^2 = 5184
+```
+
+### Eight-dimensional Poincare bridge
+
+Cycle 4's exact symplectic constructor already supports arbitrary degree count.
+Cycle 7 consumes:
+
+```text
+Omega_8 = [[0,I4],[-I4,0]]
+```
+
+through `canonical_omega(4)` and verifies exact antisymmetry.  This connects
+the retained eight-real twistor carrier to the same exact Poincare/symplectic
+proof surface without changing Cycle 4 authority.
+
+### Cycle 7 executable additions
+
+Added:
+
+```text
+hhs_runtime/pass219/lane5_penrose8_hash216_loshu_bridge.py
+tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py
+evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.wl
+evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json
+evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json
+```
+
+Connected Wolfram result:
+
+```text
+status      = PASS
+check_count = 9
+pass_count  = 9
+failed      = []
+```
+
+Verified exact blocks include:
+
+```text
+Hermitian X
+four-complex/eight-real reconstruction
+incidence null form
+rank-one/massless momentum determinant
+2^3 = 8
+9*8 = 72
+3*72 = 216
+72^2 = 5184
+```
+
+### Cycle 7 authority boundary
+
+The bridge remains read-only/proof authority:
+
+```text
+projective quotient applied                    = FALSE
+external physical equivalence beyond projection= FALSE
+VM81 mutation authority                        = FALSE
+Hash72 mint authority                          = FALSE
+Hash216 mint authority                         = FALSE
+canonical persistence authority                = FALSE
+floating-point canonical authority             = FALSE
+```

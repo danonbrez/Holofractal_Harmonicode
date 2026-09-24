@@ -47,6 +47,11 @@ on:
       - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl'
       - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
       - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
+      - 'hhs_runtime/pass219/lane5_penrose8_hash216_loshu_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.wl'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
@@ -95,6 +100,11 @@ on:
       - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl'
       - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
       - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
+      - 'hhs_runtime/pass219/lane5_penrose8_hash216_loshu_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.wl'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
@@ -196,6 +206,7 @@ jobs:
             tests/pass219/test_pass219_lane5_poincare_integral_bridge.py \
             tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py \
             tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py \
+            tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py \
             hhs_spi_scalar_projection_registry_tests_v9.py \
             tests/test_pass136_formal_gfe.py
 
@@ -363,6 +374,52 @@ jobs:
           assert receipt['legacy_self_solving_direct_execution_claimed'] is False
           assert receipt['canonical_runtime_mutation_authority'] is False
           print('lane5_self_solving_tbridge_wolfram_v6=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-7 Penrose8 / Hash72 / Hash216 evidence is sealed
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          output_path = Path(
+              'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
+          )
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
+          ).read_text())
+          output = json.loads(output_path.read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 9
+          assert receipt['pass_count'] == output['pass_count'] == 9
+          assert receipt['failed'] == output['failed'] == []
+          assert output['twistor_complex_dimension'] == 4
+          assert output['twistor_real_dimension'] == 8
+          assert output['incidence_relation'] == 'omega=i X pi'
+          assert output['checks']['incidence_null_form_zero'] is True
+          assert output['checks']['massless_momentum_det_zero'] is True
+          assert output['checks']['truth_table_2^3'] is True
+          assert output['checks']['nine_nuclei_times_eight'] is True
+          assert output['checks']['hash216_three_hash72'] is True
+          assert output['checks']['vm5184_hash72_square'] is True
+          assert output['hash72_geometry'] == (
+              '9*8=72=u^72=Hash72 outer-cell coordinate chart'
+          )
+          assert output['hash216_geometry'] == (
+              'previous72||next72||receipt72; 3*72=216'
+          )
+          assert receipt['output_sha256'] == hashlib.sha256(
+              output_path.read_bytes()
+          ).hexdigest()
+          assert receipt['hhs_projection_contract_only'] is True
+          assert receipt[
+              'external_physical_equivalence_beyond_projection_claimed'
+          ] is False
+          assert receipt['canonical_hash72_mint_authority'] is False
+          assert receipt['canonical_hash216_mint_authority'] is False
+          assert receipt['canonical_persistence_authority'] is False
+          assert receipt['floating_point_canonical_authority'] is False
+          print('lane5_penrose8_hash216_loshu_wolfram_v7=PASS')
           PY
 
       - name: Regress inherited Lane 5 authority
