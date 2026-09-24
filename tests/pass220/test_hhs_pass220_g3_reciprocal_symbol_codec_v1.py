@@ -13,6 +13,7 @@ from hhs_runtime.hhs_pass220_g3_reciprocal_symbol_codec_v1 import (
     G3_PROOF_TENSOR,
     PROOF_CELL_TOKEN,
     RETURN_ZERO,
+    SYMBOL_WINDOW_WIDTH,
     Pass220G3ReciprocalCodecError,
     digit_cell,
     encode_symbol_string,
@@ -99,6 +100,47 @@ def test_same_operation_round_trips_exact_symbol_spelling(source):
     assert g3_reciprocal_transform(g3_reciprocal_transform(source)) == source
 
 
+def test_nine_character_ieee_text_window_binds_all_g3_cells_bidirectionally():
+    source = "1.00e+000"
+    assert len(source) == SYMBOL_WINDOW_WIDTH == 9
+    carrier = encode_symbol_string(source)
+    windows = carrier["bidirectional_phase_windows"]
+    assert len(windows) == 1
+    window = windows[0]
+    assert window["text"] == source
+    assert window["complete_nine_character_window"] is True
+    assert window["occupied_slots"] == tuple(range(9))
+    assert window["unoccupied_slots"] == ()
+    flattened = tuple(cell for row in G3_PROOF_TENSOR for cell in row)
+    assert len(window["slots"]) == 9
+    for slot, record in enumerate(window["slots"]):
+        assert record["slot"] == slot
+        assert (record["row"], record["column"]) == divmod(slot, 3)
+        assert record["symbol"] == source[slot]
+        assert record["forward_expr"] == flattened[slot]
+        assert record["return_expr"] == reciprocal_phase_expr(flattened[slot])
+        assert record["forward_and_return_present"] is True
+
+
+def test_window_tail_is_exact_and_never_padded():
+    source = "1000.0001X"
+    carrier = encode_symbol_string(source)
+    windows = carrier["bidirectional_phase_windows"]
+    assert tuple(window["text"] for window in windows) == ("1000.0001", "X")
+    assert windows[0]["complete_nine_character_window"] is True
+    assert windows[1]["complete_nine_character_window"] is False
+    assert windows[1]["occupied_slots"] == (0,)
+    assert windows[1]["unoccupied_slots"] == tuple(range(1, 9))
+    assert "".join(window["text"] for window in windows) == source
+
+
+def test_corrected_expanded_projection_keeps_distinct_3_and_5_cells():
+    chain = EXPANDED_INGRESS_PROBES[2]
+    assert "(4,9,2,3,5,7,8,1,6)" in chain
+    assert "(4,9,2,35,7,8,1,6)" not in chain
+    assert chain.startswith("1000.0001=")
+
+
 def test_float_and_binary_representations_remain_distinct_strings():
     forms = ("1", "1.0", "1.00", "01.0", "1e0", "001")
     carriers = [encode_symbol_string(value) for value in forms]
@@ -174,6 +216,9 @@ def test_self_test_closes_exact_reciprocal_symbol_contract():
     assert result["witness"]["expanded_ingress_probes"] == EXPANDED_INGRESS_PROBES
     assert result["witness"]["expanded_ingress_probe_count"] == 3
     assert all(result["witness"]["expanded_ingress_probe_round_trips"])
+    assert result["witness"]["symbol_window_width"] == 9
+    assert result["witness"]["nine_character_ieee_text_window_complete"] is True
+    assert result["witness"]["expanded_1000_0001_window_complete"] is True
     assert result["canonical_vm81_mutation_authority"] is False
     assert result["canonical_hash72_authority"] is False
     assert result["canonical_hash216_authority"] is False

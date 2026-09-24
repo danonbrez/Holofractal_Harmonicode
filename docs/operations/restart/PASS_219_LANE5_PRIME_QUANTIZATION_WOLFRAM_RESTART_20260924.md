@@ -1953,10 +1953,32 @@ by the Cycle 8 ingress receipt:
 
 ((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)
 
-1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,35,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963
+1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,3,5,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963
 ~~~
 
 These are exact UTF-8 symbolic states. The repository does not host-number
-parse them, split the literal `35`, scalarize the equality chain, or commute
+parse them, merge the distinct `3,5` cells into `35`, scalarize the equality chain, or commute
 the ordered phase expression. The existing I030 encoder remains the authority;
 Cycle 8 consumes its fixture tuple rather than maintaining a divergent copy.
+
+
+## I030 nine-character phase-window correction
+
+The expanded fixture typo is repaired:
+
+~~~text
+(4,9,2,3,5,7,8,1,6)
+~~~
+
+not `(4,9,2,35,7,8,1,6)`.
+
+I030 now makes the inherited encoder geometry explicit: source spellings are
+processed as consecutive nine-character windows over the nine row-major cells
+of the x/y/z/w G3 tensor. Each occupied slot retains forward and reciprocal
+return phase expressions simultaneously. Complete nine-character examples
+include `1.00e+000` and `1000.0001`.
+
+A short final tail is exact and unpadded. I031/I032 continue to own raw IEEE
+storage-bit transport through the same nine-cell tensor. No host float
+arithmetic becomes canonical; textual float spelling and raw IEEE bits remain
+distinct co-resident representations.
