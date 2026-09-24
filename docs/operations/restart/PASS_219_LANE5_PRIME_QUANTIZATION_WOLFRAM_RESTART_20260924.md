@@ -182,3 +182,164 @@ repair-forward if needed -> merge/verify main
 ```
 
 No canonical runtime source was weakened or bypassed.
+
+
+## Cycle 2 — modular complex tensor phase algebra integration
+
+Cycle 2 consumed the two repository white-paper trees plus the Pass 136 Coq
+source/corpus and bound their already-documented semantics into the same Lane 5
+proof path.
+
+Primary source families:
+
+```text
+whitepapers/
+docs/whitepapers/
+formal/coq/HHS_GFE_Field_Quotient.v
+formal/lemmas/pass_144/LEMMA_CORPUS.json
+```
+
+Runtime authorities reused rather than duplicated:
+
+```text
+hhs_runtime/pass219/phase_geometry_learning.py
+hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py
+hhs_runtime/c/hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.inc
+```
+
+### Right-recursive ordered phase parser
+
+Added the read-only helper:
+
+```text
+right_recursive_fold_tree(word)
+```
+
+with the native tree rule:
+
+```text
+xy   -> [x,y]
+xyx  -> [x,[y,x]]
+yxy  -> [y,[x,y]]
+xyxy -> [x,[y,[x,y]]]
+```
+
+This is a parenthesization constructor only. It performs no phase rewrite,
+commutation, scalarization, VM81 mutation, or canonical receipt minting.
+
+The RML2 phase geometry runtime already hashes fold word and parenthesization
+separately. The new regression proves that right-recursive `xyxy` and
+left-associated `((xy)x)y` have the same ordered symbols but distinct
+parenthesization identities.
+
+### Nested relation / Boolean gate typing
+
+Cycle 2 keeps the repository's existing distinction:
+
+```text
+=   -> constraint/binding object in the preserved equation graph
+==  -> ordinary Boolean gate witness
+TRUE -> eligibility to propagate the intact constraint payload outward
+```
+
+The I121.9 global membrane remains authoritative for `==`: all required gates
+must be true under one shared symbol environment, with final cross-layer
+revalidation and no local canonical-symbol shadowing, before the whole equation
+identity propagates.
+
+The Wolfram formalization represents a nested `=` binding with an active bit
+of `1` and a retained constraint payload, while retaining true/false behavior
+for `==`. This avoids collapsing constraint-carrier presence into Boolean
+equality semantics.
+
+### Coq projection integration
+
+The completed Coq source remains scoped to the instantiated rational state
+quotient. Cycle 2 mirrors its exact projection identities in Wolfram:
+
+```text
+h = 1/alpha
+rho = alpha + 1/alpha - 2
+alpha*h - 1 = 0
+rho - alpha - h + 2 = 0
+rho(5/4) = 1/20
+```
+
+The Wolfram mirror does not redefine native HARMONICODE `/` and does not claim
+that Coq was kernel-executed in this cycle. The repository's Pass 136 source
+audit remains part of the dependency-scoped regression.
+
+### Wolfram result
+
+Added:
+
+```text
+evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl
+evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json
+evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.receipt.json
+```
+
+Connected Wolfram Language result:
+
+```text
+status      = PASS
+check_count = 29
+pass_count  = 29
+failed      = []
+```
+
+Closed checks include right-recursive parse identity, exact-tree `xyxy -> Delta`
+closure as a declared rule, exact-subtree `yx -> -xy` rewrite without sign
+extraction or reassociation, nested constraint payload retention, I121.9-style
+outer propagation requirements, Coq rational projection identities, the
+5/4 calibration, dyadic/5184 closure, unit-Delta macro closure, modular shell
+receipts, native slash edge behavior, and proof-preserving memoization identity
+versus occurrence identity.
+
+### Lane 5 dependency-scoped CI expansion
+
+The existing Lane 5 1.37 workflow now also runs:
+
+```text
+tests/pass219/test_pass219_phase_geometry_learning.py
+tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py
+tests/test_pass136_formal_gfe.py
+tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c
+```
+
+and verifies the Wolfram v2 receipt/output pair.
+
+This composes:
+
+```text
+right-recursive phase tree
+-> nonassociative parenthesization identity
+-> occurrence-preserving optimization
+-> nested Boolean membrane
+-> Lane 5 candidate path
+```
+
+without granting optimization, Wolfram, or Coq projection code any independent
+VM81/Hash72/Hash216 authority.
+
+### Cycle 2 changed files
+
+```text
+hhs_runtime/pass219/phase_geometry_learning.py
+tests/pass219/test_pass219_phase_geometry_learning.py
+evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl
+evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json
+evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.receipt.json
+.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml
+docs/operations/restart/PASS_219_LANE5_PRIME_QUANTIZATION_WOLFRAM_RESTART_20260924.md
+```
+
+Cycle 2 implementation head before this restart update:
+
+```text
+2e17382d7f3104073f8a205ddd838aeb70b5046c
+```
+
+The universal prime-equivalence theorem, exact Riemann bridge, and asymptotic
+Collatz bridge remain open and are not promoted by these syntax/projection
+closures.
