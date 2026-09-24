@@ -571,3 +571,244 @@ Cycle 3 implementation head before this restart update:
 ```text
 ba37616965516d245e2a506278af1cd09104775f
 ```
+
+
+## Cycle 4 — T_BRIDGE-01A Poincare integral invariant
+
+The phase-space images supplied for this cycle sharpen the bridge theorem from
+an empirical bounded-error statement to an exact symplectic/Poincare
+invariant statement.
+
+### Three distinct preservation levels
+
+The formalization keeps these surfaces separate:
+
+```text
+det(J)=1
+```
+
+means phase-volume preservation only.
+
+The stronger symplectic condition is:
+
+```text
+J^T Omega J = Omega
+```
+
+with state order:
+
+```text
+(q1,q2,p1,p2)
+```
+
+and:
+
+```text
+Omega =
+[ 0 0  1 0 ]
+[ 0 0  0 1 ]
+[-1 0  0 0 ]
+[ 0 -1 0 0 ]
+```
+
+This implies preservation of the canonical two-form:
+
+```text
+Phi^*(sum_i dq_i wedge dp_i)
+=
+sum_i dq_i wedge dp_i
+```
+
+which is the exact Poincare integral invariant used in this cycle.
+
+For two canonical pairs, the image-level projection statement is:
+
+```text
+oriented A1 + A2 = constant
+```
+
+while the individual projected areas may exchange:
+
+```text
+A1 != constant
+A2 != constant
+```
+
+A determinant-one four-dimensional witness is included to prove that
+phase-volume preservation alone is insufficient for symplecticity.
+
+### Carry[A=B] as a symplectic composition
+
+For symmetric exact inverse-mass matrix A and symmetric exact potential
+Hessian B, define:
+
+```text
+K_h =
+[ I    0 ]
+[-hB   I ]
+
+D_h =
+[ I   hA ]
+[ 0    I ]
+```
+
+The accepted carried update is:
+
+```text
+Phi_h = D_h K_h
+```
+
+corresponding to:
+
+```text
+kick p using q
+then
+drift q using the carried p
+```
+
+Connected Wolfram proves exactly:
+
+```text
+K_h^T Omega K_h = Omega
+D_h^T Omega D_h = Omega
+Phi_h^T Omega Phi_h = Omega
+det(Phi_h) = 1
+```
+
+Therefore:
+
+```text
+Carry[A=B]
+-> exact symplectic map
+-> exact Poincare integral invariant
+-> exact phase-volume preservation
+```
+
+### Ordered sequential noncommutativity
+
+The reverse sequential composition:
+
+```text
+K_h D_h
+```
+
+is generally different from:
+
+```text
+D_h K_h
+```
+
+so:
+
+```text
+D_h K_h != K_h D_h
+```
+
+generically.
+
+However, both compositions are symplectic because both are compositions of
+symplectic subflows. This refines the prior ordering statement:
+
+```text
+sequential order matters for the trajectory
+but either fully sequential symplectic-Euler ordering preserves Omega
+```
+
+The failure surface is the simultaneous old-state Euler map:
+
+```text
+q' = q + h A p
+p' = p - h B q
+```
+
+which connected Wolfram proves is generically not symplectic and not generally
+volume preserving.
+
+For one degree of freedom:
+
+```text
+det(symplectic Euler) = 1
+det(explicit old-state Euler) = 1 + h^2 a u
+```
+
+where a is the inverse-mass scalar and u is the potential-curvature scalar.
+
+### T_BRIDGE split
+
+The former T_BRIDGE-01 obligation is now split:
+
+```text
+T_BRIDGE-01A
+Carry[A=B]
+-> symplectic composition
+-> Poincare integral invariant
+-> phase-volume closure
+
+T_BRIDGE-01B
+step refinement
+-> bounded energy/shadow-Hamiltonian band
+-> sgn3(epsilon) class stability except through the zero membrane
+```
+
+Cycle 4 closes 01A exactly. 01B remains open.
+
+This separation preserves the earlier energy ledger:
+
+```text
+exact energy conservation per discrete step = false
+Poincare two-form conservation = exact
+phase volume conservation = exact
+shadow/bounded energy behavior = separate theorem
+```
+
+### Cycle 4 executable additions
+
+Added:
+
+```text
+hhs_runtime/pass219/lane5_poincare_integral_bridge.py
+tests/pass219/test_pass219_lane5_poincare_integral_bridge.py
+evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl
+evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json
+evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json
+```
+
+The runtime companion uses exact `Fraction` arithmetic and validates:
+
+```text
+kick symplectic
+drift symplectic
+carried composition symplectic
+reverse sequential composition symplectic
+sequential maps distinct
+det(carried)=1
+simultaneous old-state Euler rejected as non-symplectic
+det=1 non-symplectic witness rejected as insufficient
+```
+
+Connected Wolfram result:
+
+```text
+status      = PASS
+check_count = 16
+pass_count  = 16
+failed      = []
+```
+
+### Cycle 4 authority boundary
+
+Still not promoted:
+
+```text
+exact discrete Hamiltonian conservation
+T_BRIDGE-01B global energy-band/class-stability theorem
+canonical VM81 mutation authority
+Hash72/Hash216 authority
+physical empirical correspondence beyond the admitted solver projection
+```
+
+Cycle 4 implementation head before this restart update:
+
+```text
+9d3782368547d5af151adb2faebb888137aa8180
+```
