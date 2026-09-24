@@ -25,6 +25,11 @@ on:
       - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl'
       - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json'
       - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.receipt.json'
+      - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
@@ -51,6 +56,11 @@ on:
       - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl'
       - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json'
       - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.receipt.json'
+      - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
@@ -148,6 +158,7 @@ jobs:
           python -m pytest -q \
             tests/pass219/test_pass219_phase_geometry_learning.py \
             tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py \
+            tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py \
             tests/test_pass136_formal_gfe.py
 
       - name: Run nested Boolean constraint membrane conformance
@@ -183,6 +194,38 @@ jobs:
           assert output['riemann_bridge'] == 'OPEN'
           assert output['collatz_asymptotic_bridge'] == 'OPEN'
           print('lane5_modular_complex_tensor_phase_wolfram_v2=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-3 Genesis/U9/Qe evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 27
+          assert receipt['pass_count'] == output['pass_count'] == 27
+          assert receipt['failed'] == output['failed'] == []
+          assert output['vm81_construction'] == (
+              '72 phase-cover positions + 9-cell Genesis nucleus'
+          )
+          assert output['kronecker_scalar_construction_authority'] is False
+          assert output['u9_one_step_e0_scalar_eigenclaim'] == 'NOT_ASSERTED'
+          assert output['native_eigenvector0'] == (
+              'full ordered x,y,z,w tensor object'
+          )
+          assert output['symplectic_central_L'] == 'EXACT'
+          assert output['kepler_local_energy_defect'] == (
+              'O(h^2); no linear h term'
+          )
+          assert output['t_bridge_01_global_band_monotonicity'] == 'OPEN'
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_genesis_orientation_u9_qe_wolfram_v3=PASS')
           PY
 
       - name: Regress inherited Lane 5 authority
