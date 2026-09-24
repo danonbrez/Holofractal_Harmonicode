@@ -37,6 +37,7 @@ from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
     serialize_offsets_5184,
 )
 from hhs_runtime.hhs_pass220_g3_reciprocal_symbol_codec_v1 import (
+    EXPANDED_INGRESS_PROBES,
     g3_reciprocal_transform,
 )
 from hhs_runtime.pass219.lane5_penrose8_hash216_loshu_bridge import (
@@ -47,7 +48,7 @@ from hhs_runtime.pass219.lane5_penrose8_hash216_loshu_bridge import (
 )
 
 SCHEMA = "HHS_PASS219_LANE5_FEYNMAN_DISCRETE_ORBIT_BRIDGE_V1"
-VERSION = "1.0.0-cycle8"
+VERSION = "1.0.1-cycle8-expanded-ingress"
 WOLFRAM_SCHEMA = (
     "HHS_PASS_219_LANE5_FEYNMAN_DISCRETE_ORBIT_WOLFRAM_20260924_V8"
 )
@@ -64,8 +65,9 @@ GLUED_STEP_ACTION = (
 MIXED_REPRESENTATION_WEIGHT = "ExpSym(i*F2/u72)"
 CONFIGURATION_PATH_WEIGHT = "ExpSym(i*sum(S_step)/u72)"
 
-INGRESS_EGRESS_X_BINDING = "(123,321,123,321/(999999,1000000,1000001))=X"
-INGRESS_EGRESS_PHASE_BINDING = "((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)"
+INGRESS_EGRESS_X_BINDING = EXPANDED_INGRESS_PROBES[0]
+INGRESS_EGRESS_PHASE_BINDING = EXPANDED_INGRESS_PROBES[1]
+INGRESS_EGRESS_PROJECTION_CHAIN = EXPANDED_INGRESS_PROBES[2]
 ZERO_NORMALIZATION_SHORTHAND = "(0000000)"
 
 
@@ -306,10 +308,7 @@ def spectral_phase_receipt(k: int, winding: int = 1) -> dict[str, Any]:
 
 def ingress_egress_zero_normalization_receipt() -> dict[str, Any]:
     """Bind supplied exact source expressions to existing codecs and zero ABI."""
-    literals = (
-        INGRESS_EGRESS_X_BINDING,
-        INGRESS_EGRESS_PHASE_BINDING,
-    )
+    literals = EXPANDED_INGRESS_PROBES
     roundtrips = []
     carrier_receipts = []
     for source in literals:
@@ -341,6 +340,10 @@ def ingress_egress_zero_normalization_receipt() -> dict[str, Any]:
         "checks": checks,
         "source_literals": literals,
         "source_strings_parsed_as_numbers": False,
+        "expanded_ingress_probe_count": len(EXPANDED_INGRESS_PROBES),
+        "projection_chain_preserved_verbatim": (
+            literals[2] == INGRESS_EGRESS_PROJECTION_CHAIN
+        ),
         "reciprocal_carrier_receipt_sha256": carrier_receipts,
         "zero_normalization_shorthand": ZERO_NORMALIZATION_SHORTHAND,
         "zero_normalization_shorthand_is_canonical_serialization": False,

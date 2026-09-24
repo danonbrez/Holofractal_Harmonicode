@@ -6,6 +6,7 @@ from hhs_runtime.pass219.lane5_feynman_discrete_orbit_bridge import (
     CONFIGURATION_PATH_WEIGHT,
     HHS_WEIGHT_POLICY,
     INGRESS_EGRESS_PHASE_BINDING,
+    INGRESS_EGRESS_PROJECTION_CHAIN,
     INGRESS_EGRESS_X_BINDING,
     MIXED_REPRESENTATION_WEIGHT,
     PARTITION_TRACE_SYMBOL,
@@ -96,8 +97,11 @@ def test_existing_ingress_egress_codec_and_zero_bigint_are_reused() -> None:
     assert receipt["source_literals"] == (
         INGRESS_EGRESS_X_BINDING,
         INGRESS_EGRESS_PHASE_BINDING,
+        INGRESS_EGRESS_PROJECTION_CHAIN,
     )
     assert receipt["source_strings_parsed_as_numbers"] is False
+    assert receipt["expanded_ingress_probe_count"] == 3
+    assert receipt["projection_chain_preserved_verbatim"] is True
     assert receipt["canonical_zero_serialization_length"] == 5184
     assert receipt["scalar_bigint_zero"] == 0
     assert receipt["zero_normalization_shorthand"] == "(0000000)"

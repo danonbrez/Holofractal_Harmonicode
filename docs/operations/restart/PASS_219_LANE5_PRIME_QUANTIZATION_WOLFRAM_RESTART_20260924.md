@@ -1940,3 +1940,23 @@ floating-point canonical authority  = FALSE
 
 Existing zero-order-hold machinery is not promoted here into a continuum
 path-integral proof.
+
+
+## Cycle 8 expanded-ingress fixture correction
+
+The updated and expanded source strings supplied after Cycle 8 are now frozen
+as first-class I030 reciprocal-codec regression fixtures and imported directly
+by the Cycle 8 ingress receipt:
+
+~~~text
+(123,321,123,321/(999999,1000000,1000001))=X
+
+((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)
+
+1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,35,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963
+~~~
+
+These are exact UTF-8 symbolic states. The repository does not host-number
+parse them, split the literal `35`, scalarize the equality chain, or commute
+the ordered phase expression. The existing I030 encoder remains the authority;
+Cycle 8 consumes its fixture tuple rather than maintaining a divergent copy.

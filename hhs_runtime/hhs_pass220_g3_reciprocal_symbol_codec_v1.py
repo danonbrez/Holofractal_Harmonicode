@@ -15,7 +15,7 @@ import json
 from typing import Any, Dict, Mapping, Tuple, Union
 
 SCHEMA = "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_V1"
-VERSION = "1.0.0-checkpoint.30"
+VERSION = "1.0.1-checkpoint.30-expanded-ingress"
 PROFILE = "PASS220-I030-G3-RECIPROCAL-SYMBOL-CODEC-v1"
 CARRIER_SCHEMA = "HHS_PASS_220_I030_G3_SYMBOL_CARRIER_V1"
 WITNESS_SCHEMA = "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_WITNESS_V1"
@@ -24,6 +24,12 @@ PROOF_CELL_TOKEN = "123321.111"
 PHASE_NAMES = ("x", "y", "z", "w")
 PHASE_RECIPROCAL = {"x": "y", "y": "x", "z": "w", "w": "z"}
 RECIPROCAL_RELATIONS = ("y=1/x", "x=1/y", "w=1/z", "z=1/w")
+
+EXPANDED_INGRESS_PROBES = (
+    "(123,321,123,321/(999999,1000000,1000001))=X",
+    "((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)",
+    "1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,35,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963",
+)
 
 
 class Pass220G3ReciprocalCodecError(ValueError):
@@ -375,6 +381,7 @@ def reciprocal_symbol_codec_witness() -> Dict[str, Any]:
         "-0.0",
         "1.00e+000",
         "x+y=0; y=1/x; 0=Φ; Ω",
+        *EXPANDED_INGRESS_PROBES,
     )
     round_trips = tuple(
         g3_reciprocal_transform(g3_reciprocal_transform(text)) == text
@@ -402,6 +409,9 @@ def reciprocal_symbol_codec_witness() -> Dict[str, Any]:
         "digit_cells": digit_cells,
         "all_probe_round_trips": all(round_trips),
         "probe_round_trips": round_trips,
+        "expanded_ingress_probes": EXPANDED_INGRESS_PROBES,
+        "expanded_ingress_probe_count": len(EXPANDED_INGRESS_PROBES),
+        "expanded_ingress_probe_round_trips": round_trips[-len(EXPANDED_INGRESS_PROBES):],
         "one_operation_both_directions": True,
         "return_phase_constraint": "y=1/x",
         "source_strings_parsed_as_numbers": False,

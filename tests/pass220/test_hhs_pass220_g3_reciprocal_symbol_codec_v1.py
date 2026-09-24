@@ -8,6 +8,7 @@ from hhs_runtime.hhs_kernel_conformance_registration_interposer_v1 import (
 )
 from hhs_runtime.hhs_pass220_g3_reciprocal_symbol_codec_v1 import (
     CARRIER_SCHEMA,
+    EXPANDED_INGRESS_PROBES,
     FORWARD_ZERO,
     G3_PROOF_TENSOR,
     PROOF_CELL_TOKEN,
@@ -87,6 +88,7 @@ def test_all_arabic_digits_are_proof_cells_and_zero_is_phase_locked():
         "0011111111110000000000000000000000000000000000000000000000000000",
         "x+y=0; y=1/x; 0=Φ; Ω",
         "A/B:P^4:Hash216:x/y/z/w",
+        *EXPANDED_INGRESS_PROBES,
     ),
 )
 def test_same_operation_round_trips_exact_symbol_spelling(source):
@@ -169,6 +171,9 @@ def test_self_test_closes_exact_reciprocal_symbol_contract():
     assert result["witness"]["one_operation_both_directions"] is True
     assert result["witness"]["return_phase_constraint"] == "y=1/x"
     assert result["witness"]["all_probe_round_trips"] is True
+    assert result["witness"]["expanded_ingress_probes"] == EXPANDED_INGRESS_PROBES
+    assert result["witness"]["expanded_ingress_probe_count"] == 3
+    assert all(result["witness"]["expanded_ingress_probe_round_trips"])
     assert result["canonical_vm81_mutation_authority"] is False
     assert result["canonical_hash72_authority"] is False
     assert result["canonical_hash216_authority"] is False
@@ -224,3 +229,15 @@ def test_invalid_inputs_fail_closed():
         g3_reciprocal_transform(1.0)
     with pytest.raises(Pass220G3ReciprocalCodecError):
         validate_symbol_carrier({"schema": CARRIER_SCHEMA})
+
+
+def test_expanded_ingress_strings_remain_exact_opaque_symbol_states():
+    x_binding, phase_binding, projection_chain = EXPANDED_INGRESS_PROBES
+    assert x_binding == "(123,321,123,321/(999999,1000000,1000001))=X"
+    assert phase_binding == "((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)"
+    assert projection_chain == "1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,35,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963"
+    for source in EXPANDED_INGRESS_PROBES:
+        carrier = encode_symbol_string(source)
+        assert carrier["numeric_parse_performed"] is False
+        assert bytes.fromhex(carrier["forward_hex"]).decode("utf-8") == source
+        assert g3_reciprocal_transform(carrier) == source
