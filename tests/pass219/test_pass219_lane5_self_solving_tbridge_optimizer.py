@@ -6,6 +6,7 @@ import pytest
 
 from hhs_runtime.pass219.lane5_self_solving_tbridge_optimizer import (
     Lane5SelfSolvingOptimizerError,
+    cumulative_energy_band_from_verified_envelopes,
     energy_defect_membrane,
     genesis_root_certificate,
     genesis_root_polynomial,
@@ -102,3 +103,46 @@ def test_lane5_self_solving_optimizer_uses_guarded_plan_and_stays_candidate_only
     assert receipt["proof_preserving_optimizer"]["classification"] == (
         "PROOF_PRESERVING_READ_ONLY_OPTIMIZATION_ACTIVATED"
     )
+
+
+def test_cumulative_band_sums_verified_exact_enclosures() -> None:
+    receipt = cumulative_energy_band_from_verified_envelopes(
+        [
+            {
+                "enclosure_verified": True,
+                "source_receipt_sha256": "a" * 64,
+                "mu_over_r_upper": Fraction(2),
+                "abs_F_upper": Fraction(1, 100),
+                "R_lower": Fraction(9, 10),
+                "A_lower": Fraction(4, 5),
+            },
+            {
+                "enclosure_verified": True,
+                "source_receipt_sha256": "b" * 64,
+                "mu_over_r_upper": Fraction(3, 2),
+                "abs_F_upper": Fraction(1, 200),
+                "R_lower": Fraction(19, 20),
+                "A_lower": Fraction(9, 10),
+            },
+        ]
+    )
+    assert receipt["status"] == "PASS"
+    assert receipt["step_count"] == 2
+    assert receipt["trajectory_enclosures_generated_here"] is False
+    assert receipt["floating_point_authority"] is False
+
+
+def test_cumulative_band_rejects_unverified_enclosure() -> None:
+    with pytest.raises(Lane5SelfSolvingOptimizerError, match="not verified"):
+        cumulative_energy_band_from_verified_envelopes(
+            [
+                {
+                    "enclosure_verified": False,
+                    "source_receipt_sha256": "c" * 64,
+                    "mu_over_r_upper": 1,
+                    "abs_F_upper": 1,
+                    "R_lower": 1,
+                    "A_lower": 1,
+                }
+            ]
+        )
