@@ -277,7 +277,12 @@ def verify_manifest(*, repo_root: Path, manifest_root: Path) -> dict[str, Any]:
             raise WarmBootError(f"HHS_WARM_BOOT_STATE_ROOT_UNREADABLE:{name}:{root}")
 
     observed_persistence = _persistent_inventory(current_state)
-    _verify_persistence(payload.get("persistence_inventory", {}), observed_persistence)
+    sealed_persistence = payload.get("persistence_inventory", {})
+    _verify_persistence(sealed_persistence, observed_persistence)
+    fully_sealed = bool(
+        sealed_persistence.get("all_configured_artifacts_present")
+        and observed_persistence["all_configured_artifacts_present"]
+    )
 
     return {
         "schema": SCHEMA,
@@ -286,8 +291,10 @@ def verify_manifest(*, repo_root: Path, manifest_root: Path) -> dict[str, Any]:
         "native_runtime_adopted": True,
         "runtime_os_adopted": True,
         "persistent_roots_adopted": True,
-        "persistent_state_adopted": observed_persistence["all_configured_artifacts_present"],
-        "hydration_classification": observed_persistence["hydration_classification"],
+        "persistent_state_adopted": fully_sealed,
+        "hydration_classification": (
+            "PERSISTENCE_SEALED" if fully_sealed else "PERSISTENCE_PARTIAL_OR_UNSEALED"
+        ),
         "protected_compiled_rom_recovery_verified": False,
         "compile_on_restart": False,
         "rehydrate_from_empty_on_restart": False,
