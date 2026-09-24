@@ -8,7 +8,7 @@
 *)
 Module[
  {u,f,lo,hi,a,al,be,ga,r2,rr,aa,ff,dd,ar,br,gr,h,ffh,gh,gc,ge,
-  checks,failed,result},
+  gammaDefinition,checks,failed,result},
 
  f=2 u^3+3 u^2-8 u-16;
  lo=2133185666641251/10^15;
@@ -24,6 +24,7 @@ Module[
  gh=Cancel[ffh/h^2];
  gc=Factor[gh/.{ar->0,br->1,gr->1}];
  ge=Factor[gh/.{ar->0,br->1,gr->16/25}];
+ gammaDefinition="h^2*v_t^2/r^2=h^2*L^2/r^4 (L=r*v_t)";
 
  checks=<|
   "genesis_squared_relation_to_cubic"->
@@ -95,6 +96,8 @@ Module[
 
   "energy_normalization"->
     "alpha=h*(x.v)/r^2; beta=h^2*mu/r^3; gamma=h^2*v_t^2/r^2",
+
+  "gamma_definition"->gammaDefinition,
 
   "energy_radius_ratio"->
     "R^2=(1+alpha-beta)^2+gamma",

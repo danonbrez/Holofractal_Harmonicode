@@ -15,5 +15,7 @@
   "cumulative_multistep_energy_band": "OPEN",
   "legacy_self_solving_direct_execution_claimed": false,
   "self_solving_usage": "guarded Lane 5 capability-plan + proof-preserving candidate optimization",
-  "canonical_runtime_mutation_authority": false
+  "canonical_runtime_mutation_authority": false,
+  "gamma_definition": "h^2*v_t^2/r^2=h^2*L^2/r^4 (L=r*v_t)",
+  "gamma_convention_pinned": true
 }

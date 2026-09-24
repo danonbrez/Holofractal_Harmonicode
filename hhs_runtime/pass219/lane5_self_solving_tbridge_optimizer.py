@@ -37,12 +37,15 @@ from hhs_runtime.core_sandbox.hhs_pass219_proof_preserving_optimizer_1_21_12 imp
 )
 
 SCHEMA = "HHS_PASS219_LANE5_SELF_SOLVING_TBRIDGE_OPTIMIZER_V1"
-VERSION = "1.0.0-cycle6"
+VERSION = "1.0.1-cycle6-gamma-pin"
 SELF_SOLVING_SOURCE = "hhs_self_solving_constraint_pipeline_v1.py"
 
 ROOT_POLYNOMIAL = (Fraction(-16), Fraction(-8), Fraction(3), Fraction(2))
 ROOT_ISOLATION_LOW = Fraction(2133185666641251, 10**15)
 ROOT_ISOLATION_HIGH = Fraction(2133185666641252, 10**15)
+
+GAMMA_DEFINITION = "gamma=h^2*v_t^2/r^2=h^2*L^2/r^4"
+ANGULAR_MOMENTUM_CONVENTION = "L=r*v_t"
 
 
 class Lane5SelfSolvingOptimizerError(ValueError):
@@ -206,6 +209,8 @@ def energy_defect_membrane(
             "alpha": [a.numerator, a.denominator],
             "beta": [b.numerator, b.denominator],
             "gamma": [g.numerator, g.denominator],
+            "gamma_definition": GAMMA_DEFINITION,
+            "angular_momentum_convention": ANGULAR_MOMENTUM_CONVENTION,
             "A": [A.numerator, A.denominator],
             "R2": [r2_ratio.numerator, r2_ratio.denominator],
             "F": [F.numerator, F.denominator],
@@ -217,6 +222,62 @@ def energy_defect_membrane(
             "zero_membrane": "F=0",
             "admission": "A>0 and R2>0",
             "taylor_remainder_required": False,
+            "canonical_runtime_mutation_authority": False,
+        }
+    )
+
+
+def kepler_energy_membrane_from_state(
+    *,
+    h: Any,
+    r: Any,
+    mu: Any,
+    v_r: Any,
+    v_t: Any,
+    angular_momentum: Any,
+) -> dict[str, Any]:
+    """Construct the exact membrane from one fail-closed Kepler convention.
+
+    Canonical convention:
+        L = r*v_t
+        gamma = h^2*v_t^2/r^2 = h^2*L^2/r^4.
+
+    Gamma is constructed internally. Any L/v_t/r drift is rejected before F.
+    """
+    step = _q(h, "h")
+    radius = _q(r, "r")
+    grav = _q(mu, "mu")
+    radial = _q(v_r, "v_r")
+    tangential = _q(v_t, "v_t")
+    angular = _q(angular_momentum, "angular_momentum")
+    if radius <= 0:
+        raise Lane5SelfSolvingOptimizerError("r must be positive")
+    if angular != radius * tangential:
+        raise Lane5SelfSolvingOptimizerError(
+            "gamma convention drift: exact L=r*v_t required"
+        )
+
+    alpha = step * radial / radius
+    beta = step**2 * grav / radius**3
+    gamma_v = step**2 * tangential**2 / radius**2
+    gamma_L = step**2 * angular**2 / radius**4
+    if gamma_v != gamma_L:
+        raise Lane5SelfSolvingOptimizerError(
+            "gamma convention drift: r^-2/r^-4 equivalence failed"
+        )
+
+    membrane = energy_defect_membrane(alpha=alpha, beta=beta, gamma=gamma_v)
+    return _receipt(
+        {
+            "schema": "HHS_PASS219_KEPLER_GAMMA_CONVENTION_MEMBRANE_V1",
+            "status": membrane["status"],
+            "gamma_definition": GAMMA_DEFINITION,
+            "angular_momentum_convention": ANGULAR_MOMENTUM_CONVENTION,
+            "alpha": [alpha.numerator, alpha.denominator],
+            "beta": [beta.numerator, beta.denominator],
+            "gamma": [gamma_v.numerator, gamma_v.denominator],
+            "membrane": membrane,
+            "gamma_convention_verified": True,
             "canonical_runtime_mutation_authority": False,
         }
     )
@@ -268,6 +329,8 @@ def halving_class_transport(
             "schema": "HHS_PASS219_EXACT_HALVING_CLASS_TRANSPORT_V1",
             "status": "PASS" if decision != "UNRESOLVED" else "UNRESOLVED",
             "decision": decision,
+            "gamma_definition": GAMMA_DEFINITION,
+            "angular_momentum_convention": ANGULAR_MOMENTUM_CONVENTION,
             "full_step": full,
             "half_step": half,
             "continuity_rule": (
@@ -456,6 +519,8 @@ def self_solving_optimization_receipt(
                 ],
             },
             "root_certificate": root_cert,
+            "gamma_definition": GAMMA_DEFINITION,
+            "angular_momentum_convention": ANGULAR_MOMENTUM_CONVENTION,
             "circular_h_quarter_transport": circular,
             "eccentric_h_quarter_transport": eccentric,
             "checks": checks,

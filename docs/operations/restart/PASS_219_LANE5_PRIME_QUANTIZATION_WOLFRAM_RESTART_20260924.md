@@ -1629,3 +1629,148 @@ Hash216 mint authority                         = FALSE
 canonical persistence authority                = FALSE
 floating-point canonical authority             = FALSE
 ```
+
+
+## Cycle 6/7 independent verification hardening — gamma, identity class, center lock, gauge
+
+Independent cross-checks supplied after Cycle 7 confirmed the Cycle 6 sextic
+certificate, the exact F-membrane identity, the committed circular/eccentric
+sign sectors, and all nine Cycle 7 Wolfram claims.
+
+The cross-check also exposed one convention-sensitive failure that is now
+promoted into a fail-closed repository rule.
+
+### Gamma convention is now schema-pinned
+
+The only admitted carried Kepler convention is:
+
+```text
+L = r*v_t
+gamma = h^2*v_t^2/r^2 = h^2*L^2/r^4
+```
+
+The runtime now exposes `kepler_energy_membrane_from_state(...)`, which
+constructs gamma internally and rejects any exact `L != r*v_t` state before
+evaluating F. A non-unit-radius regression proves that the drifted expression
+
+```text
+h^2*L^2/r^2
+```
+
+does not equal canonical gamma. Unit-radius examples alone cannot detect this
+convention error.
+
+The sealed Cycle 6 output/receipt now carry:
+
+```text
+gamma_definition =
+"h^2*v_t^2/r^2=h^2*L^2/r^4 (L=r*v_t)"
+gamma_convention_pinned = true
+```
+
+### Cycle 7 identity class versus constraint class
+
+The Penrose incidence null closure is recorded as an algebraic identity on the
+admitted chart:
+
+```text
+omega = i X pi
+X = X^dagger
+=> omega^dagger*pi + pi^dagger*omega = 0
+```
+
+Likewise:
+
+```text
+p = pi*pi^dagger => det(p)=0
+```
+
+is identity-class for the rank-one momentum carrier. Neither is used as an
+independent HHS admission constraint.
+
+The HHS-specific 3-bit <-> outer-cell <-> eight-real ordering remains a
+constraint/projection binding.
+
+### Center lock remains outside the eight-real carrier
+
+The Cycle 7 chart contains exactly the eight outer tensor positions:
+
+```text
+xy, x+y, yx, xy-zw, wz-yx, wz, z+w, zw
+```
+
+The center:
+
+```text
+x+y-z-w+xy+yx-zw-wz
+```
+
+is explicitly typed:
+
+```text
+NUCLEUS_LOCK_NOT_8D_CARRIER_COORDINATE
+```
+
+and cannot enter the Penrose8 carrier chart.
+
+### U72 / Hash72 typing
+
+Repository Cycle 5 remains authoritative for scalar projection semantics:
+
+```text
+U72 := 2/ubar^2
+U72 -> ubar^72 ordinary-power rewrite = FORBIDDEN
+```
+
+Cycle 7 therefore records the geometric identity only in typed form:
+
+```text
+U72[typed closure/address object]
+=
+Hash72
+=
+72 Lo-Shu outer qudit coordinates
+```
+
+No ordinary scalar-power interpretation is introduced.
+
+### Retained C* gauge is frozen per exact receipt
+
+No universal numerical Genesis spinor constant is present in the repository
+authority used by this branch, so Cycle 7 does not invent one.
+
+Instead, each Penrose8 receipt freezes the exact supplied pi representative and
+hashes that representative into:
+
+```text
+z_gauge = EXACT_PI_REPRESENTATIVE_FROZEN_PER_RECEIPT
+gauge_root_sha256 = SHA256(exact pi representation)
+```
+
+The projective quotient remains unapplied and C* freedom remains explicitly
+retained, but any future gate that reads absolute Z magnitudes must require an
+identical gauge root. Cross-gauge absolute-magnitude comparison is forbidden.
+
+### Constant-authority rule
+
+For formalizing HHS constants and fixed conventions:
+
+```text
+committed repository code/docs/formal receipts
++ explicit user memory logs
+= allowed authority sources
+
+conflict -> committed repository wins
+missing exact constant -> remain symbolic/open
+invented numerical constant -> forbidden
+```
+
+This preserves the established repository-first authority while using explicit
+memory logs for continuity rather than inference.
+
+### CI repair-forward note
+
+The first Cycle 7 exact-head workflow reached 62 passing tests and failed only
+because the inherited Pass 136 Groebner subprocess imports SymPy while the Lane
+5 workflow installed pytest but not SymPy. The workflow now installs
+`python3-sympy`; no proof or runtime invariant was weakened or skipped.

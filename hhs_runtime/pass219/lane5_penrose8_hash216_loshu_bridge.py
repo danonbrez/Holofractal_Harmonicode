@@ -34,7 +34,7 @@ from hhs_runtime.pass219.lane5_genesis_orientation_u9_qe_bridge import (
 from hhs_runtime.pass219.lane5_poincare_integral_bridge import canonical_omega
 
 SCHEMA = "HHS_PASS219_LANE5_PENROSE8_HASH216_LOSHU_BRIDGE_V1"
-VERSION = "1.0.0-cycle7"
+VERSION = "1.0.1-cycle7-gauge-pin"
 
 TRUTH3_ADDRESSES = tuple(f"{i:03b}" for i in range(8))
 PENROSE8_REAL_PHASE_ORDER = (
@@ -56,6 +56,15 @@ LO_SHU_OUTER_EXPRESSIONS = tuple(
     EIGENVECTOR0_TENSOR[row][column]
     for row, column in LO_SHU_OUTER_POSITIONS
 )
+LO_SHU_CENTER_POSITION = (1, 1)
+LO_SHU_CENTER_EXPRESSION = EIGENVECTOR0_TENSOR[1][1]
+CENTER_ROLE = "NUCLEUS_LOCK_NOT_8D_CARRIER_COORDINATE"
+Z_GAUGE_POLICY = "EXACT_PI_REPRESENTATIVE_FROZEN_PER_RECEIPT"
+U72_TYPED_GEOMETRY = (
+    "U72[typed closure/address object] = Hash72 = "
+    "72 Lo-Shu outer qudit coordinates"
+)
+U72_SCALAR_PROJECTION_CLOSURE_ASSIGNMENT = "U72:=2/ubar^2"
 HASH216_LAYERS = ("previous", "next", "receipt")
 PYTHAGOREAN_LINEAGE_CLOSURE = (
     "a^2+b^2=c^2=P^4/c^2="
@@ -108,6 +117,30 @@ def _receipt(payload: dict[str, Any]) -> dict[str, Any]:
     core = dict(payload)
     core["receipt_sha256"] = sha256(_stable(core).encode("utf-8")).hexdigest()
     return core
+
+
+def pi_gauge_descriptor(pi0: Gaussian, pi1: Gaussian) -> dict[str, Any]:
+    """Freeze one exact C* representative for magnitude-sensitive receipts.
+
+    No universal numerical Genesis spinor constant is invented here. The exact
+    supplied pi representative is frozen into the receipt identity. Absolute
+    Z-magnitude comparisons across unequal gauge roots are forbidden.
+    """
+    p0 = _g(pi0[0], pi0[1])
+    p1 = _g(pi1[0], pi1[1])
+    payload = {
+        "z_gauge": Z_GAUGE_POLICY,
+        "pi": [_gjson(p0), _gjson(p1)],
+    }
+    root = sha256(_stable(payload).encode("utf-8")).hexdigest()
+    return {
+        **payload,
+        "gauge_root_sha256": root,
+        "retained_cstar_gauge_freedom": True,
+        "projective_quotient_applied": False,
+        "absolute_z_magnitude_gate_requires_gauge_root_match": True,
+        "cross_gauge_absolute_magnitude_authorized": False,
+    }
 
 
 def minkowski_hermitian_matrix(
@@ -206,6 +239,8 @@ def hash72_coordinate_chart() -> tuple[dict[str, Any], ...]:
         raise Penrose8Hash216BridgeError("Hash72/phase-cover cardinality drift")
     if GENESIS_NUCLEUS_CELLS != 9 or VM81_CELLS != 81:
         raise Penrose8Hash216BridgeError("VM81 Genesis cardinality drift")
+    if LO_SHU_CENTER_POSITION in LO_SHU_OUTER_POSITIONS:
+        raise Penrose8Hash216BridgeError("Lo-Shu center leaked into 8D carrier chart")
 
     chart: list[dict[str, Any]] = []
     for nucleus in range(GENESIS_NUCLEUS_CELLS):
@@ -245,6 +280,7 @@ def penrose8_projection_witness(
     momentum = massless_momentum_spinor(pi0, pi1)
     momentum_det = gaussian_det2(momentum)
     omega8 = canonical_omega(4)
+    gauge = pi_gauge_descriptor(pi0, pi1)
 
     checks = {
         "four_complex_components": len(Z) == 4,
@@ -254,6 +290,9 @@ def penrose8_projection_witness(
         "three_bit_truth_table_has_eight_states": len(TRUTH3_ADDRESSES) == 2**3 == 8,
         "outer_tensor_has_eight_positions": len(LO_SHU_OUTER_POSITIONS) == 8,
         "phase_coordinate_order_bijective": len(set(PENROSE8_REAL_PHASE_ORDER)) == 8,
+        "center_excluded_from_carrier": (
+            LO_SHU_CENTER_POSITION not in LO_SHU_OUTER_POSITIONS
+        ),
         "poincare_8d_omega_exact": (
             len(omega8) == 8
             and all(len(row) == 8 for row in omega8)
@@ -279,6 +318,23 @@ def penrose8_projection_witness(
             "twistor": [_gjson(v) for v in Z],
             "null_form": _gjson(null_form),
             "massless_momentum_det": _gjson(momentum_det),
+            "identity_class": {
+                "incidence_null_form_zero": (
+                    "ALGEBRAIC_IDENTITY_FROM_omega_equals_iXpi_AND_HERMITIAN_X"
+                ),
+                "massless_momentum_det_zero": (
+                    "ALGEBRAIC_IDENTITY_FROM_p_equals_pi_pi_dagger"
+                ),
+                "poincare_omega8_antisymmetry": "STRUCTURAL_IDENTITY",
+            },
+            "constraint_class": {
+                "three_bit_outer_cell_phase_chart": "HHS_COMMITTED_PROJECTION_BINDING",
+                "ordered_parenthesization": "HHS_NATIVE_CONSTRAINT",
+            },
+            "center_role": CENTER_ROLE,
+            "center_position": list(LO_SHU_CENTER_POSITION),
+            "center_expression": LO_SHU_CENTER_EXPRESSION,
+            "z_gauge": gauge,
             "projective_quotient_applied": False,
             "hhs_projection_contract_only": True,
             "external_physical_equivalence_beyond_projection_claimed": False,
@@ -306,6 +362,9 @@ def hash72_loshu_witness(value: str) -> dict[str, Any]:
             == TRUTH3_ADDRESSES
             for n in range(9)
         ),
+        "center_excluded_from_carrier": (
+            LO_SHU_CENTER_POSITION not in LO_SHU_OUTER_POSITIONS
+        ),
     }
     return _receipt(
         {
@@ -314,7 +373,13 @@ def hash72_loshu_witness(value: str) -> dict[str, Any]:
             "checks": checks,
             "hash72": value,
             "coordinate_chart": list(chart),
-            "native_equivalence": "u^72 = Hash72 = 72 Lo-Shu outer qudit coordinates",
+            "native_equivalence": U72_TYPED_GEOMETRY,
+            "u72_scalar_projection_closure_assignment": (
+                U72_SCALAR_PROJECTION_CLOSURE_ASSIGNMENT
+            ),
+            "ordinary_ubar_power_rewrite_authorized": False,
+            "center_role": CENTER_ROLE,
+            "center_expression": LO_SHU_CENTER_EXPRESSION,
             "outer_boundary_free": False,
             "holographic_nuclear_constraint": "one recursively coupled Lo-Shu nuclear manifold",
             "canonical_hash72_mint_authority": False,
@@ -418,7 +483,11 @@ def full_penrose8_hash216_bridge_receipt(
                     "3-bit truth address <-> Lo-Shu outer cell <-> "
                     "Penrose8 real phase coordinate"
                 ),
-                "global": "9 nuclei * 8 outer coordinates = 72 = u^72 = Hash72 geometry",
+                "global": (
+                    "9 nuclei * 8 outer coordinates = 72; "
+                    "U72 typed geometry = Hash72 = 72 Lo-Shu outer coordinates"
+                ),
+                "u72_scalar_projection": U72_SCALAR_PROJECTION_CLOSURE_ASSIGNMENT,
                 "transition": "Hash216 = previous72 || next72 || receipt72",
                 "digest": "216 * SHA256(state_symbol), indexed by ordered lineage coordinate",
                 "relation_surface": "72^2=5184",
@@ -429,6 +498,17 @@ def full_penrose8_hash216_bridge_receipt(
             "receipt_hash72_receipt_sha256": receipt_w["receipt_sha256"],
             "hash216_receipt_sha256": lineage["receipt_sha256"],
             "pythagorean_lineage_closure": PYTHAGOREAN_LINEAGE_CLOSURE,
+            "center_role": CENTER_ROLE,
+            "center_expression": LO_SHU_CENTER_EXPRESSION,
+            "u72_typed_geometry": U72_TYPED_GEOMETRY,
+            "u72_scalar_projection_closure_assignment": (
+                U72_SCALAR_PROJECTION_CLOSURE_ASSIGNMENT
+            ),
+            "ordinary_ubar_power_rewrite_authorized": False,
+            "z_gauge_policy": Z_GAUGE_POLICY,
+            "z_gauge_root_sha256": phase["z_gauge"]["gauge_root_sha256"],
+            "absolute_z_magnitude_gate_requires_gauge_root_match": True,
+            "cross_gauge_absolute_magnitude_authorized": False,
             "projective_quotient_applied": False,
             "hhs_projection_contract_only": True,
             "external_physical_equivalence_beyond_projection_claimed": False,

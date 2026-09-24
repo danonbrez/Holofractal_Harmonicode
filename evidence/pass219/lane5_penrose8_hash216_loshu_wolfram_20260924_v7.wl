@@ -61,11 +61,18 @@ result = <|
   "twistor_real_dimension" -> 8,
   "incidence_relation" -> "omega=i X pi",
   "null_form" -> "omega^dagger*pi+pi^dagger*omega=0",
+  "null_form_class" -> "ALGEBRAIC_IDENTITY",
   "massless_momentum" -> "p=pi*pi^dagger; det(p)=0",
-  "hash72_geometry" -> "9*8=72=u^72=Hash72 outer-cell coordinate chart",
+  "massless_momentum_det_class" -> "ALGEBRAIC_IDENTITY",
+  "center_role" -> "NUCLEUS_LOCK_NOT_8D_CARRIER_COORDINATE",
+  "hash72_geometry" -> "9*8=72; U72 typed geometry = Hash72 = 72 Lo-Shu outer-cell coordinates",
+  "u72_scalar_projection_closure_assignment" -> "U72:=2/ubar^2",
+  "ordinary_ubar_power_rewrite_authorized" -> False,
   "hash216_geometry" -> "previous72||next72||receipt72; 3*72=216",
   "vm5184_relation" -> "72^2=5184",
   "projective_quotient_applied" -> False,
+  "z_gauge_policy" -> "EXACT_PI_REPRESENTATIVE_FROZEN_PER_RECEIPT",
+  "cross_gauge_absolute_magnitude_authorized" -> False,
   "canonical_runtime_mutation_authority" -> False
 |>;
 

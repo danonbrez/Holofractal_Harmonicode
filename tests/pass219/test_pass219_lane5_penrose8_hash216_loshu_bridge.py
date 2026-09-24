@@ -7,10 +7,16 @@ import pytest
 
 from hhs_runtime.core.hash72_validator_v1 import HASH72_ALPHABET
 from hhs_runtime.pass219.lane5_penrose8_hash216_loshu_bridge import (
+    CENTER_ROLE,
+    LO_SHU_CENTER_EXPRESSION,
+    LO_SHU_CENTER_POSITION,
     LO_SHU_OUTER_EXPRESSIONS,
     PENROSE8_REAL_PHASE_ORDER,
     PYTHAGOREAN_LINEAGE_CLOSURE,
     TRUTH3_ADDRESSES,
+    U72_SCALAR_PROJECTION_CLOSURE_ASSIGNMENT,
+    U72_TYPED_GEOMETRY,
+    Z_GAUGE_POLICY,
     Penrose8Hash216BridgeError,
     full_penrose8_hash216_bridge_receipt,
     gaussian_det2,
@@ -20,6 +26,7 @@ from hhs_runtime.pass219.lane5_penrose8_hash216_loshu_bridge import (
     massless_momentum_spinor,
     minkowski_hermitian_matrix,
     penrose8_projection_witness,
+    pi_gauge_descriptor,
     self_test,
     twistor_null_form,
     twistor_real8,
@@ -54,6 +61,21 @@ def test_penrose_incidence_is_exact_null_and_massless() -> None:
     assert all(witness["checks"].values())
     assert witness["projective_quotient_applied"] is False
     assert witness["hhs_projection_contract_only"] is True
+    assert witness["identity_class"]["incidence_null_form_zero"].startswith(
+        "ALGEBRAIC_IDENTITY"
+    )
+    assert witness["identity_class"]["massless_momentum_det_zero"].startswith(
+        "ALGEBRAIC_IDENTITY"
+    )
+    assert witness["center_role"] == CENTER_ROLE
+    assert witness["center_position"] == list(LO_SHU_CENTER_POSITION)
+    assert witness["center_expression"] == LO_SHU_CENTER_EXPRESSION
+    assert witness["z_gauge"]["z_gauge"] == Z_GAUGE_POLICY
+    assert witness["z_gauge"]["retained_cstar_gauge_freedom"] is True
+    assert witness["z_gauge"][
+        "absolute_z_magnitude_gate_requires_gauge_root_match"
+    ] is True
+    assert witness["z_gauge"]["cross_gauge_absolute_magnitude_authorized"] is False
 
 
 def test_three_bit_addresses_bind_to_native_outer_tensor_and_penrose8_order() -> None:
@@ -64,6 +86,8 @@ def test_three_bit_addresses_bind_to_native_outer_tensor_and_penrose8_order() ->
         "xy", "x+y", "yx", "xy-zw", "wz-yx", "wz", "z+w", "zw"
     )
     assert len(PENROSE8_REAL_PHASE_ORDER) == 8
+    assert LO_SHU_CENTER_POSITION == (1, 1)
+    assert LO_SHU_CENTER_EXPRESSION == "x+y-z-w+xy+yx-zw-wz"
 
 
 def test_hash72_chart_is_nine_nuclei_times_eight_canonical_coordinates() -> None:
@@ -100,13 +124,41 @@ def test_hash216_is_ordered_three_hash72_with_216_sha256_coordinate_witnesses() 
     assert witness["ordered_equality_chain_scalar_rewrite_authorized"] is False
 
 
+def test_exact_pi_representative_freezes_gauge_per_receipt() -> None:
+    first = pi_gauge_descriptor(
+        (Fraction(1), Fraction(2)),
+        (Fraction(3), Fraction(-1)),
+    )
+    same = pi_gauge_descriptor(
+        (Fraction(1), Fraction(2)),
+        (Fraction(3), Fraction(-1)),
+    )
+    rescaled = pi_gauge_descriptor(
+        (Fraction(2), Fraction(4)),
+        (Fraction(6), Fraction(-2)),
+    )
+    assert first["gauge_root_sha256"] == same["gauge_root_sha256"]
+    assert first["gauge_root_sha256"] != rescaled["gauge_root_sha256"]
+    assert first["cross_gauge_absolute_magnitude_authorized"] is False
+
+
 def test_full_bridge_closes_without_runtime_or_hash_mint_authority() -> None:
     result = full_penrose8_hash216_bridge_receipt(*_triplet())
     assert result["status"] == "PASS"
     assert all(result["checks"].values())
     assert result["bindings"]["global"] == (
-        "9 nuclei * 8 outer coordinates = 72 = u^72 = Hash72 geometry"
+        "9 nuclei * 8 outer coordinates = 72; "
+        "U72 typed geometry = Hash72 = 72 Lo-Shu outer coordinates"
     )
+    assert result["u72_typed_geometry"] == U72_TYPED_GEOMETRY
+    assert result["u72_scalar_projection_closure_assignment"] == (
+        U72_SCALAR_PROJECTION_CLOSURE_ASSIGNMENT
+    )
+    assert result["ordinary_ubar_power_rewrite_authorized"] is False
+    assert result["center_role"] == CENTER_ROLE
+    assert result["z_gauge_policy"] == Z_GAUGE_POLICY
+    assert result["absolute_z_magnitude_gate_requires_gauge_root_match"] is True
+    assert result["cross_gauge_absolute_magnitude_authorized"] is False
     assert result["bindings"]["transition"] == (
         "Hash216 = previous72 || next72 || receipt72"
     )

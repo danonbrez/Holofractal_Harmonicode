@@ -5,12 +5,15 @@ from fractions import Fraction
 import pytest
 
 from hhs_runtime.pass219.lane5_self_solving_tbridge_optimizer import (
+    ANGULAR_MOMENTUM_CONVENTION,
+    GAMMA_DEFINITION,
     Lane5SelfSolvingOptimizerError,
     cumulative_energy_band_from_verified_envelopes,
     energy_defect_membrane,
     genesis_root_certificate,
     genesis_root_polynomial,
     halving_class_transport,
+    kepler_energy_membrane_from_state,
     self_solving_optimization_receipt,
 )
 
@@ -43,6 +46,7 @@ def test_exact_energy_defect_membrane_circular_h_quarter_is_positive() -> None:
     assert receipt["sgn3_local_energy_defect"] == 1
     assert receipt["taylor_remainder_required"] is False
     assert receipt["zero_membrane"] == "F=0"
+    assert receipt["gamma_definition"] == GAMMA_DEFINITION
 
 
 def test_exact_energy_defect_membrane_eccentric_h_quarter_is_negative() -> None:
@@ -53,6 +57,41 @@ def test_exact_energy_defect_membrane_eccentric_h_quarter_is_negative() -> None:
     )
     assert receipt["status"] == "PASS"
     assert receipt["sgn3_local_energy_defect"] == -1
+
+
+def test_gamma_convention_is_pinned_at_nonunit_radius() -> None:
+    receipt = kepler_energy_membrane_from_state(
+        h=Fraction(1, 4),
+        r=2,
+        mu=1,
+        v_r=0,
+        v_t=Fraction(3, 5),
+        angular_momentum=Fraction(6, 5),
+    )
+    assert receipt["status"] == "PASS"
+    assert receipt["gamma_definition"] == GAMMA_DEFINITION
+    assert receipt["angular_momentum_convention"] == ANGULAR_MOMENTUM_CONVENTION
+    assert Fraction(*receipt["gamma"]) == Fraction(9, 1600)
+
+    drifted_r2_formula = (
+        Fraction(1, 4) ** 2
+        * Fraction(6, 5) ** 2
+        / Fraction(2) ** 2
+    )
+    assert drifted_r2_formula == Fraction(9, 400)
+    assert drifted_r2_formula != Fraction(*receipt["gamma"])
+
+
+def test_gamma_convention_drift_fails_closed() -> None:
+    with pytest.raises(Lane5SelfSolvingOptimizerError, match="L=r\\*v_t"):
+        kepler_energy_membrane_from_state(
+            h=Fraction(1, 4),
+            r=2,
+            mu=1,
+            v_r=0,
+            v_t=Fraction(3, 5),
+            angular_momentum=Fraction(3, 5),
+        )
 
 
 def test_halving_class_transport_has_no_silent_flip() -> None:

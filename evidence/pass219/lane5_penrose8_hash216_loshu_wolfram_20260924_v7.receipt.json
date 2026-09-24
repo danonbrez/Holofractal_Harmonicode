@@ -14,7 +14,7 @@
   },
   "failed": [],
   "hash216_geometry": "previous72||next72||receipt72; 3*72=216",
-  "hash72_geometry": "9*8=72=u^72=Hash72 outer-cell coordinate chart",
+  "hash72_geometry": "9*8=72; U72 typed geometry = Hash72 = 72 Lo-Shu outer-cell coordinates",
   "incidence_relation": "omega=i X pi",
   "massless_momentum": "p=pi*pi^dagger; det(p)=0",
   "null_form": "omega^dagger*pi+pi^dagger*omega=0",
@@ -32,6 +32,17 @@
   "external_physical_equivalence_beyond_projection_claimed": false,
   "floating_point_canonical_authority": false,
   "hhs_projection_contract_only": true,
-  "output_sha256": "a6bb8d6cf16af5520733f730fceae3dbf46b250742c30c3bf2b708753f7fae64",
-  "wolfram_evaluation_observed": true
+  "output_sha256": "433d12f2e124681b57c169e8eead4743229b3e617488e57030440ba6eea3a23d",
+  "wolfram_evaluation_observed": true,
+  "massless_momentum_det_class": "ALGEBRAIC_IDENTITY",
+  "null_form_class": "ALGEBRAIC_IDENTITY",
+  "center_role": "NUCLEUS_LOCK_NOT_8D_CARRIER_COORDINATE",
+  "ordinary_ubar_power_rewrite_authorized": false,
+  "u72_scalar_projection_closure_assignment": "U72:=2/ubar^2",
+  "z_gauge_policy": "EXACT_PI_REPRESENTATIVE_FROZEN_PER_RECEIPT",
+  "cross_gauge_absolute_magnitude_authorized": false,
+  "center_lock_excluded_from_penrose8_chart": true,
+  "retained_cstar_gauge_freedom": true,
+  "absolute_z_magnitude_gate_requires_gauge_root_match": true,
+  "u72_native_role": "TYPED_CLOSURE_ADDRESS_OBJECT_NOT_ORDINARY_UBAR_POWER"
 }

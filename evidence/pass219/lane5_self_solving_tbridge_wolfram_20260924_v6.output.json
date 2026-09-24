@@ -19,5 +19,6 @@
   "circular_h_le_quarter_class": "+1",
   "eccentric_vt_4_over_5_h_le_quarter_class": "-1",
   "cumulative_multistep_energy_band": "OPEN: requires exact or validated-enclosure trajectory trace",
-  "canonical_runtime_mutation_authority": false
+  "canonical_runtime_mutation_authority": false,
+  "gamma_definition": "h^2*v_t^2/r^2=h^2*L^2/r^4 (L=r*v_t)"
 }

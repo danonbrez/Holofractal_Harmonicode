@@ -122,7 +122,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev python3-pytest
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-sympy
 
       - name: Static Lane 5 optimizer contract gate
         run: |
@@ -367,6 +367,10 @@ jobs:
               '2*a^6+3*a^4-8*a^2-16=0 with u=a^2'
           )
           assert output['energy_membrane_polynomial'] == 'F=A^2*R^2-1'
+          assert output['gamma_definition'] == (
+              'h^2*v_t^2/r^2=h^2*L^2/r^4 (L=r*v_t)'
+          )
+          assert receipt['gamma_convention_pinned'] is True
           assert output['local_order'].startswith('F=h^2*G(h)')
           assert output['circular_h_le_quarter_class'] == '+1'
           assert output['eccentric_vt_4_over_5_h_le_quarter_class'] == '-1'
@@ -402,9 +406,28 @@ jobs:
           assert output['checks']['nine_nuclei_times_eight'] is True
           assert output['checks']['hash216_three_hash72'] is True
           assert output['checks']['vm5184_hash72_square'] is True
-          assert output['hash72_geometry'] == (
-              '9*8=72=u^72=Hash72 outer-cell coordinate chart'
+          assert output['null_form_class'] == 'ALGEBRAIC_IDENTITY'
+          assert output['massless_momentum_det_class'] == 'ALGEBRAIC_IDENTITY'
+          assert output['center_role'] == (
+              'NUCLEUS_LOCK_NOT_8D_CARRIER_COORDINATE'
           )
+          assert output['hash72_geometry'] == (
+              '9*8=72; U72 typed geometry = Hash72 = '
+              '72 Lo-Shu outer-cell coordinates'
+          )
+          assert output['u72_scalar_projection_closure_assignment'] == (
+              'U72:=2/ubar^2'
+          )
+          assert output['ordinary_ubar_power_rewrite_authorized'] is False
+          assert output['z_gauge_policy'] == (
+              'EXACT_PI_REPRESENTATIVE_FROZEN_PER_RECEIPT'
+          )
+          assert output['cross_gauge_absolute_magnitude_authorized'] is False
+          assert receipt['center_lock_excluded_from_penrose8_chart'] is True
+          assert receipt['retained_cstar_gauge_freedom'] is True
+          assert receipt[
+              'absolute_z_magnitude_gate_requires_gauge_root_match'
+          ] is True
           assert output['hash216_geometry'] == (
               'previous72||next72||receipt72; 3*72=216'
           )
