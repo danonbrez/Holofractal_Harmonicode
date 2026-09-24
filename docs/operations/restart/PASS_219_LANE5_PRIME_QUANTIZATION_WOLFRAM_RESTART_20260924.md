@@ -1072,3 +1072,353 @@ ordinary ū^72 rewrite authority
 Delta cross-projection substitution authority
 floating-point canonical authority
 ```
+
+
+## Cycle 6 — Lane 5 self-solving proof optimization
+
+Cycle 6 routes the two remaining mathematical gaps through the repository's
+Lane 5 self-solving architecture without bypassing its guarded-plugin policy.
+
+### Self-solving execution boundary
+
+Repository policy still marks:
+
+```text
+hhs_self_solving_constraint_pipeline_v1.py
+```
+
+as guarded/plugin-ready source whose target function bodies are not directly
+executable without a dedicated semantic adapter.
+
+Cycle 6 therefore uses:
+
+```text
+hhs_runtime/hhs_plugin_capability_planner_v1.py
+```
+
+to bind the self-solving pipeline source into a safe invocation/capability plan,
+then composes that plan with:
+
+```text
+hhs_runtime/core_sandbox/
+  hhs_pass219_proof_preserving_optimizer_1_21_12.py
+```
+
+for read-only candidate optimization.
+
+This is the authorized Lane 5 path:
+
+```text
+desired closure state
+-> guarded self-solving source/capability witness
+-> proof-preserving candidate optimization
+-> Wolfram exact formalization
+-> exact Python receipt implementation
+-> CI/replay
+```
+
+The legacy plugin body is not executed directly and no second truth/mutation
+authority is introduced.
+
+### Exact Genesis root certificate — closed
+
+The self-solving candidate search takes the already-committed Genesis relations:
+
+```text
+b² = 2
+a² = u
+c² = u+2
+b²+c² = a²bc
+positive branch
+```
+
+and obtains:
+
+```text
+u+4 = u sqrt(2(u+2))
+```
+
+On `u>0`, both sides are positive, so squaring preserves the selected branch:
+
+```text
+(u+4)² = 2u²(u+2)
+```
+
+which is exactly:
+
+```text
+2u³ + 3u² - 8u - 16 = 0.
+```
+
+The positive root is isolated by exact rationals:
+
+```text
+2133185666641251 / 10^15
+<
+u
+<
+2133185666641252 / 10^15
+```
+
+with opposite exact endpoint signs.
+
+Uniqueness is exact because:
+
+```text
+f'(u) = 6u²+6u-8 >= 28 > 0
+for u >= 2.
+```
+
+Thus the root in `(2,3)` is unique.
+
+The corresponding sextic carrier under `u=a²` is:
+
+```text
+2a⁶ + 3a⁴ - 8a² - 16 = 0.
+```
+
+This closes the restart record's prior missing exact polynomial/root-isolation
+certificate.
+
+### Exact local energy-defect membrane — closed
+
+For one carried Kepler kick->drift step define:
+
+```text
+alpha = h (x.v)/r² = h v_r/r
+beta  = h² mu/r³
+gamma = h² v_t²/r² = h² L²/r⁴
+```
+
+and:
+
+```text
+R² = (1+alpha-beta)² + gamma
+A  = 1-alpha+beta/2
+F  = A²R² - 1.
+```
+
+Wolfram proves the exact identity:
+
+```text
+(DeltaH * r / mu)
+=
+A - 1/R
+=
+F / (R(AR+1)).
+```
+
+Therefore on the admitted sector:
+
+```text
+A > 0
+R > 0
+```
+
+the denominator is positive and:
+
+```text
+sgn(DeltaH) = sgn(F).
+```
+
+The local zero membrane is exactly:
+
+```text
+F = 0.
+```
+
+This eliminates the Taylor-remainder requirement for local sign
+classification.
+
+After:
+
+```text
+alpha = h ar
+beta  = h² br
+gamma = h² gr
+```
+
+Wolfram proves:
+
+```text
+F = h² G(h)
+```
+
+with no constant or linear term.
+
+For the exact initial circular projection:
+
+```text
+r=1
+v_r=0
+v_t=1
+mu=1
+```
+
+the reduced polynomial is:
+
+```text
+G_circ(h) = h²(1+3h²+h⁴)/4 > 0
+for 0<h<=1/4.
+```
+
+For the exact initial eccentric projection:
+
+```text
+r=1
+v_r=0
+v_t=4/5
+mu=1
+```
+
+the reduced polynomial is:
+
+```text
+G_ecc(h)
+=
+(-36-11h²+66h⁴+25h⁶)/100
+< 0
+for 0<h<=1/4.
+```
+
+Thus both initial workload classes are proved stable through the committed
+quarter-step refinement sector without a Taylor approximation.
+
+### Exact halving classifier
+
+Added:
+
+```text
+hhs_runtime/pass219/lane5_self_solving_tbridge_optimizer.py
+tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py
+```
+
+At a fixed exact state, halving maps:
+
+```text
+alpha -> alpha/2
+beta  -> beta/4
+gamma -> gamma/4.
+```
+
+The runtime classifies:
+
+```text
+SAME_CLASS
+ZERO_MEMBRANE
+MEMBRANE_BETWEEN_SCALES
+UNRESOLVED
+```
+
+Opposite endpoint signs cannot become a silent class flip: because `F(h)` is
+a polynomial, opposite signs at `h` and `h/2` require at least one
+`F=0` crossing between the two scales.
+
+### Cumulative finite-trace energy-band reducer
+
+Cycle 6 also adds an exact reducer for trajectory enclosures.
+
+For each verified step enclosure:
+
+```text
+mu/r <= M
+|F|   <= Fmax
+R     >= Rmin > 0
+A     >= Amin > 0
+```
+
+the exact defect identity gives:
+
+```text
+|DeltaH|
+<=
+M Fmax / (Rmin (Amin Rmin + 1)).
+```
+
+The reducer sums those exact rational step bounds by the triangle inequality
+and refuses unverified enclosure records.
+
+This closes the **band-composition theorem**.  The only remaining workload
+obligation is to feed it exact or validated-enclosure trajectory records for
+the committed long run.
+
+### Wolfram cycle-6 evidence
+
+Added:
+
+```text
+evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl
+evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json
+evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json
+```
+
+Connected Wolfram evaluation was split into exact sub-blocks to stay within
+the connector execution window.  The sealed combined ledger is:
+
+```text
+status      = PASS
+check_count = 16
+pass_count  = 16
+failed      = []
+```
+
+Verified blocks include:
+
+```text
+Genesis squared relation -> cubic
+exact rational root bracket
+unique positive root
+sextic carrier
+exact energy-defect rationalization
+exact F=0 membrane
+positive sign denominator
+F constant coefficient = 0
+F linear coefficient = 0
+F = h² G(h)
+circular exact G and sign interval
+eccentric exact G and sign interval
+```
+
+### Cycle 6 obligation delta
+
+Closed in cycle 6:
+
+```text
+exact sextic/cubic Genesis root polynomial
+exact positive-root isolation certificate
+local T_BRIDGE energy-defect sign without Taylor remainder
+exact fixed-state h -> h/2 zero-membrane classifier
+exact cumulative-band composition from verified step enclosures
+```
+
+Still open:
+
+```text
+produce validated exact/enclosure records for every step of the committed
+multi-step orbital workload and feed them to the cumulative-band reducer
+
+if trajectory-to-trajectory h vs h/2 correspondence is required, emit a
+receipt binding corresponding physical-time states before comparing their
+trinary classes
+
+Sigma_Delta_R native DELTA_P_ROOT lowering
+Sigma_Delta_m <-> Sigma_Delta_R exact bridge
+Qe carry-through through the full oriented admission path
+T_COSMO-07 unit budget
+global prime equivalence
+Riemann bridge
+Collatz asymptotic bridge
+```
+
+### Authority boundary
+
+Cycle 6 remains candidate/proof only:
+
+```text
+legacy self-solving direct execution = FALSE
+VM81 mutation authority             = FALSE
+Hash72 canonical mint authority     = FALSE
+Hash216 canonical mint authority    = FALSE
+canonical persistence authority     = FALSE
+floating-point canonical authority  = FALSE
+```
