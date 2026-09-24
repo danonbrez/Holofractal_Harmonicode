@@ -30,6 +30,11 @@ on:
       - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl'
       - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
       - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
+      - 'hhs_runtime/pass219/lane5_poincare_integral_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_poincare_integral_bridge.py'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
@@ -61,6 +66,11 @@ on:
       - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl'
       - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
       - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
+      - 'hhs_runtime/pass219/lane5_poincare_integral_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_poincare_integral_bridge.py'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
@@ -159,6 +169,7 @@ jobs:
             tests/pass219/test_pass219_phase_geometry_learning.py \
             tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py \
             tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py \
+            tests/pass219/test_pass219_lane5_poincare_integral_bridge.py \
             tests/test_pass136_formal_gfe.py
 
       - name: Run nested Boolean constraint membrane conformance
@@ -226,6 +237,36 @@ jobs:
           assert output['t_bridge_01_global_band_monotonicity'] == 'OPEN'
           assert receipt['canonical_runtime_mutation_authority'] is False
           print('lane5_genesis_orientation_u9_qe_wolfram_v3=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-4 Poincare invariant evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 16
+          assert receipt['pass_count'] == output['pass_count'] == 16
+          assert receipt['failed'] == output['failed'] == []
+          assert output['both_sequential_orders_symplectic'] is True
+          assert output['simultaneous_old_state_explicit_symplectic'] is False
+          assert output['volume_only_is_insufficient'] is True
+          assert output['poincare_integral_invariant'] == (
+              'Phi^*(sum_i dq_i wedge dp_i)=sum_i dq_i wedge dp_i'
+          )
+          assert output['four_d_projection_reading'] == (
+              'oriented A1+A2 is invariant; individual Ai may exchange'
+          )
+          assert output['t_bridge_01b_energy_band_class_stability'] == 'OPEN'
+          assert receipt['exact_energy_conservation_claimed'] is False
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_poincare_integral_invariant_wolfram_v4=PASS')
           PY
 
       - name: Regress inherited Lane 5 authority
