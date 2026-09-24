@@ -1,0 +1,23 @@
+{
+  "schema": "HHS_PASS_219_LANE5_SELF_SOLVING_TBRIDGE_WOLFRAM_20260924_V6",
+  "status": "PASS",
+  "check_count": 16,
+  "pass_count": 16,
+  "failed": [],
+  "root_polynomial": "2*u^3+3*u^2-8*u-16",
+  "root_isolation": "2133185666641251/10^15 < u < 2133185666641252/10^15",
+  "sextic_carrier": "2*a^6+3*a^4-8*a^2-16=0 with u=a^2",
+  "root_derivation": "u+4=u*sqrt(2*(u+2)); positive branch; square to (u+4)^2=2*u^2*(u+2)",
+  "energy_normalization": "alpha=h*(x.v)/r^2; beta=h^2*mu/r^3; gamma=h^2*v_t^2/r^2",
+  "energy_radius_ratio": "R^2=(1+alpha-beta)^2+gamma",
+  "energy_A": "A=1-alpha+beta/2",
+  "energy_membrane_polynomial": "F=A^2*R^2-1",
+  "energy_defect_identity": "(DeltaH*r/mu)=F/(R*(A*R+1))",
+  "energy_sign_rule": "A>0,R>0 => sgn(DeltaH)=sgn(F)",
+  "local_order": "F=h^2*G(h); exact, no Taylor remainder required for local sign classification",
+  "halving_rule": "opposite endpoint signs of polynomial F at h and h/2 require an F=0 membrane between scales",
+  "circular_h_le_quarter_class": "+1",
+  "eccentric_vt_4_over_5_h_le_quarter_class": "-1",
+  "cumulative_multistep_energy_band": "OPEN: requires exact or validated-enclosure trajectory trace",
+  "canonical_runtime_mutation_authority": false
+}
