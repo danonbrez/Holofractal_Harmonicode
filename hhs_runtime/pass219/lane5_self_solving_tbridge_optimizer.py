@@ -281,6 +281,93 @@ def halving_class_transport(
     )
 
 
+
+def cumulative_energy_band_from_verified_envelopes(
+    steps: list[dict[str, Any]] | tuple[dict[str, Any], ...],
+) -> dict[str, Any]:
+    """Sum a rigorous finite-trace energy band from verified exact enclosures.
+
+    For each carried kick->drift step the exact identity is
+
+        |Delta H|
+        = (mu/r) |F| / (R (A R + 1)).
+
+    A trace-enclosure producer may supply exact rational bounds
+
+        mu/r <= M,
+        |F| <= Fmax,
+        R >= Rmin > 0,
+        A >= Amin > 0.
+
+    Then
+
+        |Delta H| <= M Fmax / (Rmin (Amin Rmin + 1)).
+
+    This function checks and sums that implication exactly.  It deliberately
+    does not manufacture the state enclosures: each step must arrive with
+    enclosure_verified=true and a nonempty source receipt identity.
+    """
+    if not isinstance(steps, (list, tuple)) or not steps:
+        raise Lane5SelfSolvingOptimizerError(
+            "verified envelope step list must be nonempty"
+        )
+
+    bands: list[Fraction] = []
+    sources: list[str] = []
+    for index, step in enumerate(steps):
+        if not isinstance(step, dict):
+            raise Lane5SelfSolvingOptimizerError(
+                f"step {index} must be a mapping"
+            )
+        if step.get("enclosure_verified") is not True:
+            raise Lane5SelfSolvingOptimizerError(
+                f"step {index} enclosure is not verified"
+            )
+        source = str(step.get("source_receipt_sha256") or "")
+        if not source:
+            raise Lane5SelfSolvingOptimizerError(
+                f"step {index} source receipt is required"
+            )
+
+        M = _q(step.get("mu_over_r_upper"), f"step[{index}].mu_over_r_upper")
+        Fmax = _q(step.get("abs_F_upper"), f"step[{index}].abs_F_upper")
+        Rmin = _q(step.get("R_lower"), f"step[{index}].R_lower")
+        Amin = _q(step.get("A_lower"), f"step[{index}].A_lower")
+        if M < 0 or Fmax < 0 or Rmin <= 0 or Amin <= 0:
+            raise Lane5SelfSolvingOptimizerError(
+                f"step {index} invalid positive enclosure"
+            )
+
+        denominator = Rmin * (Amin * Rmin + 1)
+        bound = M * Fmax / denominator
+        bands.append(bound)
+        sources.append(source)
+
+    total = sum(bands, Fraction(0))
+    return _receipt(
+        {
+            "schema": "HHS_PASS219_CUMULATIVE_ENERGY_BAND_FROM_ENCLOSURES_V1",
+            "status": "PASS",
+            "step_count": len(bands),
+            "per_step_bounds": [
+                [value.numerator, value.denominator] for value in bands
+            ],
+            "cumulative_abs_energy_error_upper": [
+                total.numerator,
+                total.denominator,
+            ],
+            "source_receipt_sha256": sources,
+            "bound_rule": (
+                "|DeltaH_i| <= M_i*Fmax_i/"
+                "(Rmin_i*(Amin_i*Rmin_i+1)); sum by triangle inequality"
+            ),
+            "trajectory_enclosures_generated_here": False,
+            "floating_point_authority": False,
+            "canonical_runtime_mutation_authority": False,
+        }
+    )
+
+
 def self_solving_optimization_receipt(
     root: str | Path | None = None,
 ) -> dict[str, Any]:
