@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS_219_GENESIS_ORIENTATION_U9_QE_WOLFRAM_20260924_V3",
+  "status": "PASS",
+  "check_count": 27,
+  "pass_count": 27,
+  "failed": [],
+  "orientation_table": [[-1,1,-1],[-1,0,1],[1,-1,1]],
+  "magnitude_table": [[1,4,3],[2,0,2],[3,4,1]],
+  "vm81_construction": "72 phase-cover positions + 9-cell Genesis nucleus",
+  "kronecker_scalar_construction_authority": false,
+  "u9_role": "address-orbit permutation over nine tensor positions; full orbit closes",
+  "u9_one_step_e0_scalar_eigenclaim": "NOT_ASSERTED",
+  "native_eigenvector0": "full ordered x,y,z,w tensor object",
+  "symplectic_central_L": "EXACT",
+  "explicit_central_L": "(1-h^2*alpha)*L",
+  "kepler_local_energy_defect": "O(h^2); no linear h term",
+  "qe_commit_rule": "commit only after surrounding constraints select exactly one admissible Qe; otherwise unresolved",
+  "t_bridge_01_global_band_monotonicity": "OPEN",
+  "global_prime_equivalence": "OPEN",
+  "riemann_bridge": "OPEN",
+  "collatz_asymptotic_bridge": "OPEN"
+}
