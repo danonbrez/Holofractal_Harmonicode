@@ -42,6 +42,11 @@ on:
       - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl'
       - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
       - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
+      - 'hhs_runtime/pass219/lane5_self_solving_tbridge_optimizer.py'
+      - 'tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
@@ -85,6 +90,11 @@ on:
       - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl'
       - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
       - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
+      - 'hhs_runtime/pass219/lane5_self_solving_tbridge_optimizer.py'
+      - 'tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
@@ -185,6 +195,7 @@ jobs:
             tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py \
             tests/pass219/test_pass219_lane5_poincare_integral_bridge.py \
             tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py \
+            tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py \
             hhs_spi_scalar_projection_registry_tests_v9.py \
             tests/test_pass136_formal_gfe.py
 
@@ -323,6 +334,35 @@ jobs:
           assert receipt['native_u72_label_rewritten_as_ordinary_power'] is False
           assert receipt['canonical_runtime_mutation_authority'] is False
           print('lane5_scalar_face_delta_tbridge_wolfram_v5=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-6 self-solving T_BRIDGE evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 16
+          assert receipt['pass_count'] == output['pass_count'] == 16
+          assert receipt['failed'] == output['failed'] == []
+          assert output['root_polynomial'] == '2*u^3+3*u^2-8*u-16'
+          assert output['sextic_carrier'] == (
+              '2*a^6+3*a^4-8*a^2-16=0 with u=a^2'
+          )
+          assert output['energy_membrane_polynomial'] == 'F=A^2*R^2-1'
+          assert output['local_order'].startswith('F=h^2*G(h)')
+          assert output['circular_h_le_quarter_class'] == '+1'
+          assert output['eccentric_vt_4_over_5_h_le_quarter_class'] == '-1'
+          assert output['cumulative_multistep_energy_band'].startswith('OPEN')
+          assert receipt['legacy_self_solving_direct_execution_claimed'] is False
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_self_solving_tbridge_wolfram_v6=PASS')
           PY
 
       - name: Regress inherited Lane 5 authority
