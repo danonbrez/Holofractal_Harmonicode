@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS_219_SCALAR_FACE_DELTA_TBRIDGE_WOLFRAM_RECEIPT_20260924_V5",
+  "date": "2026-09-24",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 15,
+  "pass_count": 15,
+  "failed": [],
+  "input_path": "evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl",
+  "output_path": "evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl",
+  "authority": "FORMAL_PROJECTION_AND_CLASS_STABILITY_CORE_ONLY",
+  "native_g72_rewritten": false,
+  "native_u72_label_rewritten_as_ordinary_power": false,
+  "delta_projection_states_distinct": true,
+  "delta_cross_projection_substitution_authorized": false,
+  "actual_epsilon_monotonicity_claimed": false,
+  "monotone_envelope_claimed": true,
+  "t_bridge_01b_workload_interval_certificate": "OPEN",
+  "sextic_root_exact_polynomial_binding": "NOT_PRESENT_IN_REPOSITORY_SEARCH",
+  "canonical_runtime_mutation_authority": false
+}
