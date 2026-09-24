@@ -73,7 +73,7 @@ def test_existing_store_or_key_cannot_disappear_after_seal(
     _seal(repo, release, root)
 
     verified = warm.verify_manifest(repo_root=repo, manifest_root=root)
-    assert verified["hydration_classification"] == "PERSISTENCE_PARTIAL"
+    assert verified["hydration_classification"] == "PERSISTENCE_PARTIAL_OR_UNSEALED"
 
     key.write_bytes(b"unexpected-rotation")
     with pytest.raises(warm.WarmBootError, match="PERSISTENT_KEY_CHANGED"):
@@ -97,7 +97,7 @@ def test_all_inventory_files_mark_persistence_present_without_claiming_rom(
     _seal(repo, release, root)
     observed = warm.verify_manifest(repo_root=repo, manifest_root=root)
     assert observed["persistent_state_adopted"] is True
-    assert observed["hydration_classification"] == "PERSISTENCE_PRESENT"
+    assert observed["hydration_classification"] == "PERSISTENCE_SEALED"
     assert observed["protected_compiled_rom_recovery_verified"] is False
 
 
