@@ -35,6 +35,13 @@ on:
       - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl'
       - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
       - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
+      - 'hhs_spi_scalar_projection_registry_v9.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v9.py'
+      - 'hhs_runtime/pass219/lane5_t_bridge_01b_class_stability.py'
+      - 'tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
@@ -71,6 +78,13 @@ on:
       - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl'
       - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
       - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
+      - 'hhs_spi_scalar_projection_registry_v9.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v9.py'
+      - 'hhs_runtime/pass219/lane5_t_bridge_01b_class_stability.py'
+      - 'tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
@@ -170,6 +184,8 @@ jobs:
             tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py \
             tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py \
             tests/pass219/test_pass219_lane5_poincare_integral_bridge.py \
+            tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py \
+            hhs_spi_scalar_projection_registry_tests_v9.py \
             tests/test_pass136_formal_gfe.py
 
       - name: Run nested Boolean constraint membrane conformance
@@ -267,6 +283,46 @@ jobs:
           assert receipt['exact_energy_conservation_claimed'] is False
           assert receipt['canonical_runtime_mutation_authority'] is False
           print('lane5_poincare_integral_invariant_wolfram_v4=PASS')
+          PY
+
+      - name: Validate SPI v9 harmonic and Delta projection registry
+        env:
+          PYTHONPATH: .
+        run: |
+          python hhs_spi_scalar_projection_registry_v9.py
+          python hhs_spi_scalar_projection_registry_tests_v9.py
+
+      - name: Verify Wolfram cycle-5 scalar-face / Delta / T_BRIDGE evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 15
+          assert receipt['pass_count'] == output['pass_count'] == 15
+          assert receipt['failed'] == output['failed'] == []
+          assert output['harmonic_modulus_symbol'] == (
+              'U72 := 2/ubar^2; not ordinary ubar^72'
+          )
+          assert output['g72_native_status'] == (
+              'immutable ordered generator; scalar preemption forbidden'
+          )
+          assert output['g72_scalar_projection_face'] == '2^(1/72)'
+          assert output['delta_constructor_identity_global'] is False
+          assert output['delta_projection_cross_substitution_authorized'] is False
+          assert output['actual_epsilon_monotonicity_claimed'] is False
+          assert output['monotone_envelope_claimed'] is True
+          assert output['t_bridge_01b_workload_interval_certificate'] == 'OPEN'
+          assert receipt['native_g72_rewritten'] is False
+          assert receipt['native_u72_label_rewritten_as_ordinary_power'] is False
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_scalar_face_delta_tbridge_wolfram_v5=PASS')
           PY
 
       - name: Regress inherited Lane 5 authority
