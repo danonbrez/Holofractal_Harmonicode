@@ -1774,3 +1774,169 @@ The first Cycle 7 exact-head workflow reached 62 passing tests and failed only
 because the inherited Pass 136 Groebner subprocess imports SymPy while the Lane
 5 workflow installed pytest but not SymPy. The workflow now installs
 `python3-sympy`; no proof or runtime invariant was weakened or skipped.
+
+
+## Cycle 8 — finite discrete Feynman layer / Carry admission
+
+Cycle 8 composes the already-verified U9 orbit, Poincare/Carry layer, typed
+U72 scalar projection, Penrose8 gauge root, reciprocal symbol ingress/egress,
+and fixed-width Lo-Shu BigInt normalization.
+
+### R1 — exact finite histories
+
+For the exact nine-address permutation operator U9:
+
+```text
+U9^n has exactly 9 nonzero entries for every n.
+```
+
+Precisely, each source address has one reachable endpoint and one constructor
+history after n steps; all other source/endpoint pairs have zero admitted
+constructor histories. Thus the finite path sum collapses exactly on reachable
+pairs. This does not claim one history for each of all 81 endpoint pairs.
+
+### R2 — carried type-2 generator and discrete action
+
+For `H(P,q)=P^2/(2m)+V(q)`:
+
+```text
+F2(q,P)=qP+hH(P,q)
+p=dF2/dq=P+hV'(q)
+Q=dF2/dP=q+hP/m
+P=p-hV'(q)
+Q=q+h(p-hV'(q))/m
+```
+
+For a glued q-to-q path:
+
+```text
+S_step=P(Q-q)-hH(P,q)=PQ-F2(q,P)
+```
+
+so the stationary relations recover the carried equations. This preserves the
+mixed-representation weight `ExpSym(i F2/u72)` while using
+`ExpSym(i sum(S_step)/u72)` for the already-glued path action.
+
+### R3 — partition trace
+
+Cycle 8 uses `partition_trace`, not `Z`, because `Z` remains the Penrose
+twistor.
+
+```text
+Tr(U9^n)=9 iff n mod 9 == 0
+Tr(U9^n)=0 otherwise
+```
+
+Thus `partition_trace(1)=0` and `partition_trace(9)=9`. It is a real-time
+spectral trace / partition-function analog, not a thermal partition function.
+
+### R4 — fail-closed non-carried sector
+
+For simultaneous old-state Euler:
+
+```text
+Q=q+h p/m
+P=p-hV'(q)
+```
+
+the type-2 cross-derivative mismatch after eliminating p is:
+
+```text
+dQ/dq-dp/dP=h^2 V''(q)/m
+```
+
+or `h^2 V''(q)` at unit mass. Nonzero mismatch proves that no local exact
+type-2 generator exists for that map.
+
+Cycle 8 therefore applies:
+
+```text
+NO_EXACT_CANONICAL_F2 => NO_ADMITTED_HHS_FEYNMAN_WEIGHT
+```
+
+This is an HHS admission rule, not a universal claim of literal zero amplitude
+in every external formulation. Zero mismatch passes only the necessary
+integrability test; it does not manufacture a global generator.
+
+### Spectral binding
+
+I025 remains native:
+
+```text
+E_k=u72*(2*pi*k/9)/(tau*theta), k=0..8, degeneracy=8.
+```
+
+Under the Cycle-5 scalar projection only:
+
+```text
+U72:=2/ubar^2
+E_k -> 4*pi*k/(9*ubar^2*tau*theta)
+```
+
+No ordinary `ubar^72` rewrite is licensed. The eightfold degeneracy is bound
+to the Cycle-7 eight-outer-cell carrier as a projection receipt; the center
+remains `NUCLEUS_LOCK_NOT_8D_CARRIER_COORDINATE`.
+
+### Gauge
+
+Cycle 8 inherits:
+
+```text
+z_gauge=EXACT_PI_REPRESENTATIVE_FROZEN_PER_RECEIPT
+```
+
+Magnitude-sensitive phase gates must match the exact gauge root; cross-gauge
+absolute-magnitude comparison stays forbidden.
+
+### Existing ingress/egress and zero normalization
+
+The existing reciprocal symbol codec carries these exact opaque UTF-8 sources:
+
+```text
+(123,321,123,321/(999999,1000000,1000001))=X
+
+((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)
+```
+
+They are not host-number parsed.
+
+The existing I001 serializer supplies the zero-normalized Lo-Shu/VM81 carrier:
+
+```text
+81 offsets = 0
+scalar bigint = 0
+serialized width = 5184 characters
+```
+
+The shorthand `(0000000)` is display shorthand only; canonical storage remains
+the 81x64 exact rational-scientific serialization.
+
+### Connected Wolfram Cycle 8
+
+```text
+status = PASS
+check_count = 11
+pass_count = 11
+failed = []
+```
+
+The 11 exact checks cover U9 history sparsity/permutation closure, the n=1 and
+n=9 traces, the complete first trace cycle, both F2 derivatives, carried-map
+elimination, glued-action stationarity, the explicit-Euler cross mismatch, and
+the Cycle-5 scalar spectrum face.
+
+### Scope / authority
+
+```text
+continuum path integral             = NOT CLAIMED
+thermal partition function          = NOT CLAIMED
+literal external zero amplitude     = NOT CLAIMED
+VM81 mutation authority             = FALSE
+Hash72 mint authority               = FALSE
+Hash216 mint authority              = FALSE
+canonical persistence authority     = FALSE
+floating-point canonical authority  = FALSE
+```
+
+Existing zero-order-hold machinery is not promoted here into a continuum
+path-integral proof.

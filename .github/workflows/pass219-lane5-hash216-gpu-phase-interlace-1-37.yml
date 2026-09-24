@@ -52,6 +52,12 @@ on:
       - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.wl'
       - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
       - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
+      - 'hhs_runtime/pass219/lane5_feynman_discrete_orbit_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_feynman_discrete_orbit_bridge.py'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.wl'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.output.json'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.receipt.json'
+      - 'docs/operations/restart/PASS_219_LANE5_PRIME_QUANTIZATION_WOLFRAM_RESTART_20260924.md'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
@@ -105,6 +111,12 @@ on:
       - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.wl'
       - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
       - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
+      - 'hhs_runtime/pass219/lane5_feynman_discrete_orbit_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_feynman_discrete_orbit_bridge.py'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.wl'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.output.json'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.receipt.json'
+      - 'docs/operations/restart/PASS_219_LANE5_PRIME_QUANTIZATION_WOLFRAM_RESTART_20260924.md'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
@@ -207,6 +219,7 @@ jobs:
             tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py \
             tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py \
             tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py \
+            tests/pass219/test_pass219_lane5_feynman_discrete_orbit_bridge.py \
             hhs_spi_scalar_projection_registry_tests_v9.py \
             tests/test_pass136_formal_gfe.py
 
@@ -443,6 +456,51 @@ jobs:
           assert receipt['canonical_persistence_authority'] is False
           assert receipt['floating_point_canonical_authority'] is False
           print('lane5_penrose8_hash216_loshu_wolfram_v7=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-8 discrete Feynman / Carry evidence is sealed
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          output_path = Path(
+              'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.output.json'
+          )
+          output = json.loads(output_path.read_text())
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.receipt.json'
+          ).read_text())
+          assert output['status'] == receipt['status'] == 'PASS'
+          assert output['check_count'] == receipt['check_count'] == 11
+          assert output['pass_count'] == receipt['pass_count'] == 11
+          assert output['failed'] == receipt['failed'] == []
+          assert output['nonzero_counts_n0_to_18'] == [9] * 19
+          assert output['partition_trace_n1_to_9'] == [0,0,0,0,0,0,0,0,9]
+          assert output['checks']['r2_F2_kick_relation'] is True
+          assert output['checks']['r2_F2_drift_relation'] is True
+          assert output['checks']['r2_discrete_action_stationarity'] is True
+          assert output['checks']['r4_explicit_cross_mismatch'] is True
+          assert output['checks']['spectrum_scalar_face'] is True
+          assert output['weight_policy'] == (
+              'NO_EXACT_CANONICAL_F2 => NO_ADMITTED_HHS_FEYNMAN_WEIGHT'
+          )
+          assert output['continuum_path_integral_claimed'] is False
+          assert output['partition_trace_class'] == (
+              'REAL_TIME_SPECTRAL_TRACE_NOT_THERMAL_PARTITION_FUNCTION'
+          )
+          assert receipt['weightlessness_scope'] == (
+              'HHS_ADMISSION_ONLY_NOT_UNIVERSAL_EXTERNAL_ZERO_AMPLITUDE'
+          )
+          assert receipt['output_sha256'] == hashlib.sha256(
+              output_path.read_bytes()
+          ).hexdigest()
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          assert receipt['canonical_hash72_mint_authority'] is False
+          assert receipt['canonical_hash216_mint_authority'] is False
+          assert receipt['canonical_persistence_authority'] is False
+          assert receipt['floating_point_canonical_authority'] is False
+          print('lane5_feynman_discrete_orbit_wolfram_v8=PASS')
           PY
 
       - name: Regress inherited Lane 5 authority
