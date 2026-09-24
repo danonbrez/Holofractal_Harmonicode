@@ -343,3 +343,231 @@ Cycle 2 implementation head before this restart update:
 The universal prime-equivalence theorem, exact Riemann bridge, and asymptotic
 Collatz bridge remain open and are not promoted by these syntax/projection
 closures.
+
+
+## Cycle 3 — Genesis orientation, U9 address orbit, Qe binding
+
+Cycle 3 resolves the two structural ambiguities left by cycle 2 without
+scalarizing the native tensor.
+
+### Repository-authoritative 81-cell construction
+
+The repository's current Pass 220 construction is:
+
+```text
+3*24 = 72 phase-cover positions
+72+9 = 81
+81*64 = 72^2 = 5184
+```
+
+The retained nine-cell object is the I036 Genesis/Lo-Shu nucleus. Therefore
+this cycle does **not** promote a Kronecker square of the centered Lo Shu matrix
+to canonical VM81 authority.
+
+The exact centered nucleus remains:
+
+```text
+-1 +4 -3
+-2  0 +2
++3 -4 +1
+```
+
+with exact orientation table:
+
+```text
+-1 +1 -1
+-1  0 +1
++1 -1 +1
+```
+
+and magnitude table:
+
+```text
+1 4 3
+2 0 2
+3 4 1
+```
+
+The 180-degree reciprocal relation is exact:
+
+```text
+rotate180(L0) = -L0
+```
+
+and the ordered tensor reciprocal position pairs are preserved:
+
+```text
+xy      <-> zw
+x+y     <-> z+w
+yx      <-> wz
+xy-zw   <-> wz-yx
+center  = x+y-z-w+xy+yx-zw-wz
+```
+
+### Native Eigenvector-0 versus conventional Fourier U9
+
+The user-supplied/native Eigenvector-0 remains the complete ordered tensor:
+
+```text
+[ xy,    x+y,                         yx    ]
+[ xy-zw, x+y-z-w+xy+yx-zw-wz,       wz-yx ]
+[ wz,    z+w,                         zw    ]
+```
+
+The existing Pass 220 I025 `U9` is retained exactly as the shift-by-one
+nine-position permutation. Cycle 3 uses it only as an **address-orbit
+operator** over the nine tensor positions:
+
+```text
+U9^9 = I9
+```
+
+The complete nine-step address orbit returns the full tensor object and visits
+nine distinct ordered address states. One-step `U9(E0)=lambda*E0` is not
+asserted, and the conventional Fourier `k=0` vector is not substituted for
+the native tensor object.
+
+This closes the earlier Fourier/eigenvector type collision by keeping:
+
+```text
+native Eigenvector-0 object
+!= conventional Fourier mode representation
+```
+
+while preserving the exact I025 U9 orbit as a projection/address operator.
+
+### Exact ordered mechanics theorem
+
+Connected Wolfram proves for a central acceleration:
+
+```text
+a = alpha*x
+```
+
+and the sequential kick -> drift update:
+
+```text
+v' = v + h*alpha*x
+x' = x + h*v'
+```
+
+that angular momentum is exact:
+
+```text
+L' = L
+```
+
+For simultaneous old-state explicit Euler:
+
+```text
+x' = x + h*v
+v' = v + h*alpha*x
+```
+
+the exact factor is:
+
+```text
+L' = (1-h^2*alpha)*L
+```
+
+and the position-update difference is:
+
+```text
+x_sequential - x_explicit = h^2*alpha*x
+```
+
+For the Kepler Hamiltonian, the exact local energy expansion has no linear
+`h` term:
+
+```text
+H_{n+1}-H_n = O(h^2)
+```
+
+This does not promote the long-time bounded-energy observation to a universal
+global theorem. `T_BRIDGE-01` global band monotonicity/class stability remains
+open.
+
+### Qe constraint selection
+
+Added a fail-closed exact selector over the already-declared native slash
+surface:
+
+```text
+N/D := D mod N^Qe
+```
+
+The runtime does not treat `Qe` as a free constructor. It receives the
+candidate exponent set surviving surrounding tensor/path constraints and
+computes the admissible residue class.
+
+Commit rule:
+
+```text
+exactly one admissible Qe -> COMMIT selected Qe
+zero or multiple Qe       -> UNRESOLVED
+```
+
+Witness:
+
+```text
+N=2, D=2, target residue=0, Qe in 1..8
+admissible Qe = {1}
+-> COMMIT Qe=1
+
+N=2, D=2, target residue=2, Qe in 1..8
+admissible Qe = {2,3,4,5,6,7,8}
+-> UNRESOLVED
+```
+
+This binds the execution mechanism without inventing a global Qe value.
+
+### Cycle 3 Wolfram result
+
+Added:
+
+```text
+evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl
+evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json
+evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json
+```
+
+Connected Wolfram result:
+
+```text
+status      = PASS
+check_count = 27
+pass_count  = 27
+failed      = []
+```
+
+### Runtime/test additions
+
+Added:
+
+```text
+hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py
+tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py
+```
+
+The existing Lane 5 1.37 workflow now includes this regression and verifies the
+sealed cycle-3 Wolfram receipt.
+
+### Cycle 3 authority boundary
+
+Still not promoted:
+
+```text
+Kronecker scalar VM81 construction
+one-step U9 scalar eigenclaim for E0
+Fourier k=0 substitution for native Eigenvector-0
+global T_BRIDGE-01 band monotonicity
+global prime equivalence
+Riemann bridge
+Collatz asymptotic bridge
+```
+
+Cycle 3 implementation head before this restart update:
+
+```text
+ba37616965516d245e2a506278af1cd09104775f
+```
