@@ -20,6 +20,24 @@ from typing import Any
 
 SCHEMA = "HHS_PASS_220_I046_WARM_HYDRATED_VM_BOOT_V1"
 
+# Mutable databases evolve through canonical admission and are never hashed
+# on restart. Previously sealed keys must retain identity across reopens.
+PERSISTENT_COMPONENTS: dict[str, tuple[str, ...]] = {
+    "pass174": ("hash216_vectors.sqlite3", "hash216_vectors.key"),
+    "pass194": (
+        "pass194.sqlite3", "pass194_vectors.sqlite3", "pass194_vectors.key",
+    ),
+    "pass205_db": ("continuation.sqlite3",),
+    "pass213_surface": (
+        "public-projections.sqlite3", "projection.key", "capability.key",
+    ),
+    "lane5": (
+        "lane5_composition_memory.sqlite3",
+        "lane5_composition_vectors.sqlite3",
+        "lane5_composition_vectors.key",
+    ),
+}
+
 
 class WarmBootError(RuntimeError):
     pass
@@ -93,6 +111,60 @@ def _root_directory(name: str, value: str) -> Path:
     return path
 
 
+def _persistent_inventory(state: dict[str, str]) -> dict[str, Any]:
+    """Inspect existing persistent artifacts without creating a database/key."""
+    components: dict[str, dict[str, Any]] = {}
+    all_present = True
+    for namespace, names in PERSISTENT_COMPONENTS.items():
+        root = _root_directory(namespace, state[namespace])
+        entries: dict[str, dict[str, Any]] = {}
+        for name in names:
+            path = root / name
+            exists = path.is_file()
+            if not exists:
+                all_present = False
+            size = path.stat().st_size if exists else 0
+            if exists and size == 0:
+                raise WarmBootError(
+                    f"HHS_WARM_BOOT_PERSISTENCE_ARTIFACT_EMPTY:{namespace}:{name}"
+                )
+            entry: dict[str, Any] = {"present": exists}
+            if exists and name.endswith(".key"):
+                entry["sha256"] = _sha256(path)
+            entries[name] = entry
+        components[namespace] = entries
+    return {
+        "components": components,
+        "hydration_classification": (
+            "PERSISTENCE_PRESENT" if all_present else "PERSISTENCE_PARTIAL"
+        ),
+        "all_configured_artifacts_present": all_present,
+        # A public projection DB does not prove protected compiled-ROM recovery.
+        "protected_compiled_rom_recovery_verified": False,
+    }
+
+
+def _verify_persistence(
+    expected: dict[str, Any], current: dict[str, Any]
+) -> None:
+    if expected.get("components") is None:
+        raise WarmBootError("HHS_WARM_BOOT_PERSISTENCE_INVENTORY_MISSING")
+    for namespace, entries in expected["components"].items():
+        actual_entries = current["components"].get(namespace, {})
+        for name, recorded in entries.items():
+            actual = actual_entries.get(name, {})
+            if recorded.get("present") and not actual.get("present"):
+                raise WarmBootError(
+                    f"HHS_WARM_BOOT_PERSISTENT_ARTIFACT_LOST:{namespace}:{name}"
+                )
+            if recorded.get("sha256") and (
+                recorded["sha256"] != actual.get("sha256")
+            ):
+                raise WarmBootError(
+                    f"HHS_WARM_BOOT_PERSISTENT_KEY_CHANGED:{namespace}:{name}"
+                )
+
+
 def _artifact_payload(repo_root: Path, runtime_os_root: Path) -> dict[str, Any]:
     native = _runtime_library(repo_root)
     index = runtime_os_root / "index.html"
@@ -133,6 +205,7 @@ def create_manifest(
         "repository_root": str(repo_root.resolve()),
         "artifacts": _artifact_payload(repo_root, runtime_os_root),
         "state_roots": state,
+        "persistence_inventory": _persistent_inventory(state),
         "boot_policy": {
             "autobuild_forbidden": True,
             "compile_on_restart": False,
@@ -203,13 +276,19 @@ def verify_manifest(*, repo_root: Path, manifest_root: Path) -> dict[str, Any]:
         if not os.access(root, os.R_OK | os.X_OK):
             raise WarmBootError(f"HHS_WARM_BOOT_STATE_ROOT_UNREADABLE:{name}:{root}")
 
+    observed_persistence = _persistent_inventory(current_state)
+    _verify_persistence(payload.get("persistence_inventory", {}), observed_persistence)
+
     return {
         "schema": SCHEMA,
         "repository_sha": head,
         "manifest": str(manifest_path),
         "native_runtime_adopted": True,
         "runtime_os_adopted": True,
-        "persistent_state_adopted": True,
+        "persistent_roots_adopted": True,
+        "persistent_state_adopted": observed_persistence["all_configured_artifacts_present"],
+        "hydration_classification": observed_persistence["hydration_classification"],
+        "protected_compiled_rom_recovery_verified": False,
         "compile_on_restart": False,
         "rehydrate_from_empty_on_restart": False,
         "canonical_state_authority": False,
