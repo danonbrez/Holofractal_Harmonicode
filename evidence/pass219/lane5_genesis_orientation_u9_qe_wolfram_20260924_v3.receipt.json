@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS_219_GENESIS_ORIENTATION_U9_QE_WOLFRAM_RECEIPT_20260924_V3",
+  "date": "2026-09-24",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 27,
+  "pass_count": 27,
+  "failed": [],
+  "input_path": "evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl",
+  "output_path": "evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl",
+  "authority": "FORMAL_PROJECTION_AND_ORDER_PROOF_ONLY",
+  "native_eigenvector0": "full ordered x,y,z,w tensor object",
+  "u9_fourier_substitution_authorized": false,
+  "kronecker_scalar_construction_authority": false,
+  "vm81_construction": "72+9=81",
+  "canonical_runtime_mutation_authority": false,
+  "t_bridge_01_global_band_monotonicity": "OPEN",
+  "global_prime_equivalence": "OPEN",
+  "riemann_bridge": "OPEN",
+  "collatz_asymptotic_bridge": "OPEN"
+}
