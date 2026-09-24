@@ -40,7 +40,8 @@ Environment=HHS_COGNITION_AUTO_TICK=0
 Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json
 Environment=HHS_RUNTIME_STATUS_TTL_SECONDS=15
 Environment=HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS=60
-Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180\nEnvironment=HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2
+Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180
+Environment=HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2
 Environment=HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90
 Environment=HHS_RUNTIME_STATUS_PROBE=1
 ExecStartPre=/opt/hhs/venv/bin/python /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify --repo-root /opt/hhs/app --manifest-root /var/lib/hhs/warm-boot/releases
