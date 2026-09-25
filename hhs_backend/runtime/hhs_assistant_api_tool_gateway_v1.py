@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+import json
 import re
 import time
 from pathlib import Path
@@ -15,7 +16,7 @@ from typing import Any, Awaitable, Callable, Dict, List, Mapping
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 
-VERSION = "HHS_ASSISTANT_API_TOOL_GATEWAY_V1"
+VERSION = "HHS_ASSISTANT_API_TOOL_GATEWAY_V2"
 AUTHORITY = "HHS_ASSISTANT_READ_ONLY_API_TOOL_AUTHORITY_V1"
 TOOL_RECEIPT_SCHEMA = "HHS_ASSISTANT_API_TOOL_RECEIPT_V1"
 TOOL_REGISTRY_SCHEMA = "HHS_ASSISTANT_API_TOOL_REGISTRY_V1"
@@ -99,6 +100,23 @@ DEFAULT_HHS_ASSISTANT_TOOLS: List[Dict[str, Any]] = [
         },
         required=["query"],
     ),
+    _function_tool(
+        "hhs_language_model_fabric",
+        "Read the unified chatbot model fabric, selected primary model, fallbacks, and semantic-memory contributors.",
+    ),
+    _function_tool(
+        "hhs_lane5_capability_status",
+        "Read the bounded Lane 5 executable capability self-model/reverse-discovery status without promoting or mutating canonical state.",
+    ),
+    _function_tool(
+        "hhs_lane5_capability_search",
+        "Search the bounded Lane 5 repository capability graph for candidate/read-only capability evidence.",
+        properties={
+            "query": {"type": "string", "minLength": 2},
+            "limit": {"type": "integer", "minimum": 1, "maximum": 12},
+        },
+        required=["query"],
+    ),
 ]
 
 
@@ -137,6 +155,112 @@ async def _pass152_capabilities(_: Mapping[str, Any]) -> Dict[str, Any]:
     from hhs_backend.api.pass152_elastic_closure_routes import pass152_capabilities
     result = pass152_capabilities()
     return await result if inspect.isawaitable(result) else result
+
+
+async def _language_model_fabric(_: Mapping[str, Any]) -> Dict[str, Any]:
+    from hhs_backend.runtime.hhs_production_assistant_v1 import (
+        DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+    )
+    health = await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.health()
+    return {
+        "schema": "HHS_UNIFIED_LANGUAGE_MODEL_FABRIC_TOOL_RESULT_V1",
+        "ok": bool(health.get("online")),
+        "selected_provider_id": health.get("selected_provider_id"),
+        "selected_model_id": health.get("selected_model_id"),
+        "effective_mode": health.get("effective_mode"),
+        "fabric": health.get("unified_model_fabric") or {},
+        "runtime_mutation_admitted": False,
+    }
+
+
+def _lane5_status_sync() -> Dict[str, Any]:
+    from hhs_backend.runtime.hhs_pass219_lane5_repository_capability_reverse_discovery_1_44 import (
+        build_repository_capability_reverse_discovery,
+    )
+    model = build_repository_capability_reverse_discovery()
+    return {
+        "schema": "HHS_ASSISTANT_LANE5_CAPABILITY_STATUS_V1",
+        "ok": True,
+        "counts": dict(model.get("counts") or {}),
+        "model_root_sha256": model.get("model_root_sha256"),
+        "public_catalog_root_hash72": model.get("public_catalog_root_hash72"),
+        "native_export_root_sha256": model.get("native_export_root_sha256"),
+        "python_registry_root_sha256": model.get("python_registry_root_sha256"),
+        "dependency_root_sha256": model.get("dependency_root_sha256"),
+        "canonical_boundary_export": model.get("canonical_boundary_export"),
+        "scope": dict(model.get("scope") or {}),
+        "promotion_policy": dict(model.get("promotion_policy") or {}),
+        "authority": dict(model.get("authority") or {}),
+        "candidate_only": True,
+        "runtime_mutation_admitted": False,
+        "automatic_hash216_composition_promoted": False,
+        "automatic_superedge_promotion_admitted": False,
+    }
+
+
+async def _lane5_capability_status(_: Mapping[str, Any]) -> Dict[str, Any]:
+    return await asyncio.to_thread(_lane5_status_sync)
+
+
+def _lane5_search_sync(query: str, limit: int) -> Dict[str, Any]:
+    from hhs_backend.runtime.hhs_pass219_lane5_repository_capability_reverse_discovery_1_44 import (
+        build_repository_capability_reverse_discovery,
+    )
+    normalized = str(query or "").strip()
+    if len(normalized) < 2:
+        raise ValueError("Lane 5 capability query must contain at least two characters")
+    bounded_limit = max(1, min(12, int(limit or 6)))
+    terms = _query_terms(normalized)
+    if not terms:
+        terms = [normalized.casefold()]
+    model = build_repository_capability_reverse_discovery()
+    matches: List[Dict[str, Any]] = []
+    for node in model.get("nodes") or []:
+        if not isinstance(node, Mapping):
+            continue
+        text = json.dumps(dict(node), sort_keys=True, ensure_ascii=False).casefold()
+        score = sum(text.count(term) for term in terms)
+        if normalized.casefold() in text:
+            score += 8
+        if not score:
+            continue
+        matches.append({
+            "score": score,
+            "node_id": node.get("node_id"),
+            "source_kind": node.get("source_kind"),
+            "authority_class": node.get("authority_class"),
+            "capability_id": node.get("capability_id"),
+            "export_name": node.get("export_name"),
+            "operation_key": node.get("operation_key"),
+            "path": node.get("path") or node.get("declaring_header"),
+            "hash216_composition_eligible": node.get("hash216_composition_eligible"),
+            "superedge_promotion_eligible": node.get("superedge_promotion_eligible"),
+        })
+    matches.sort(key=lambda item: (-int(item["score"]), str(item.get("node_id") or "")))
+    selected = matches[:bounded_limit]
+    return {
+        "schema": "HHS_ASSISTANT_LANE5_CAPABILITY_SEARCH_V1",
+        "ok": True,
+        "query": normalized,
+        "terms": terms,
+        "result_count": len(selected),
+        "results": selected,
+        "counts": dict(model.get("counts") or {}),
+        "model_root_sha256": model.get("model_root_sha256"),
+        "canonical_boundary_export": model.get("canonical_boundary_export"),
+        "candidate_only": True,
+        "read_only": True,
+        "runtime_mutation_admitted": False,
+        "automatic_promotion_admitted": False,
+    }
+
+
+async def _lane5_capability_search(arguments: Mapping[str, Any]) -> Dict[str, Any]:
+    return await asyncio.to_thread(
+        _lane5_search_sync,
+        str(arguments.get("query") or ""),
+        int(arguments.get("limit") or 6),
+    )
 
 
 def _query_terms(query: str) -> List[str]:
@@ -254,6 +378,9 @@ _READ_ONLY_EXECUTORS: Dict[str, Callable[[Mapping[str, Any]], Awaitable[Dict[str
     "hhs_pass152_status": _pass152_status,
     "hhs_pass152_capabilities": _pass152_capabilities,
     "hhs_repository_search": _repository_search,
+    "hhs_language_model_fabric": _language_model_fabric,
+    "hhs_lane5_capability_status": _lane5_capability_status,
+    "hhs_lane5_capability_search": _lane5_capability_search,
 }
 
 
