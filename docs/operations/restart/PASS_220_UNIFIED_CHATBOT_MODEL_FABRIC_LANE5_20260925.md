@@ -9,6 +9,8 @@ Date: 2026-09-25
 - branch: `pass220/unified-chatbot-lane5-model-fabric-20260925`
 - implementation head before documentation: `f03139926208810e97a371622637809c99e457b5`
 - merge target: `main`
+- pull request: `#589` — `https://github.com/danonbrez/Holofractal_Harmonicode/pull/589`
+- exact PR head before this restart-record update: `230baca6fe33ddfeaec9d90224412b7489bff505`
 
 ## Trigger
 
@@ -74,6 +76,18 @@ A container-side raw-GitHub compile attempt was made, but the container had no D
 
 ## Validation remaining
 
+Pull request #589 triggered repository CI at exact PR head `230baca6fe33ddfeaec9d90224412b7489bff505`.
+
+Observed queued checks include:
+
+```text
+Pass 220 I003-I010 integration     run 36195013074
+LiteRT-LM Gemma 4 Assistant       run 36195013017
+Runtime OS Production Root        run 36195013060
+```
+
+`Guarded Continuous Integration` run `36195013016` was skipped; it is not used as positive acceptance evidence for this bounded change.
+
 Repository CI on the pull-request exact head:
 
 ```text
@@ -114,9 +128,8 @@ CI is required to establish exact-head repository validation. The local containe
 
 ## Next action
 
-1. open PR to `main`;
-2. allow the existing dependency-scoped Pass 220 workflow to run on the exact PR head;
-3. repair forward only changed-surface failures;
-4. when green and mergeable, merge;
-5. verify `main` contains the unified model fabric + Lane 5 assistant tooling;
-6. production deployment should then verify the runtime `/api/assistant/health` reports the expected declared primary hydrated model and the assistant can answer a nontrivial prompt through that model.
+1. allow the existing dependency-scoped Pass 220 workflow to finish on PR #589;
+2. repair forward only changed-surface failures;
+3. when green and mergeable, merge PR #589;
+4. verify `main` contains the unified model fabric + Lane 5 assistant tooling;
+5. production deployment should then verify the runtime `/api/assistant/health` reports the expected declared primary hydrated model and the assistant can answer a nontrivial prompt through that model.
