@@ -17,6 +17,7 @@ Environment=HHS_REPOSITORY_ROOT=/opt/hhs/app
 Environment=HHS_DISABLE_C_AUTOBUILD=1
 Environment=HHS_DATA_DIR=/var/lib/hhs/data
 Environment=HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime
+Environment=HHS_RUNTIME_CERTIFICATION_DIR=/var/lib/hhs/runtime-certification
 Environment=HHS_FILESYSTEM_LEDGER_PATH=/var/lib/hhs/data/runtime/hhs_filesystem_ledger.json
 Environment=HHS_GRAPHICS_HYDRATION_ROOT=/var/lib/hhs/graphics-hydration
 Environment=HHS_PASS196_STATE_ROOT=/var/lib/hhs/pass196
