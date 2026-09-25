@@ -1,0 +1,26 @@
+[Unit]
+Description=HHS Lane 5 BIOS Unified VM Supervisor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=root
+Group=root
+WorkingDirectory=/opt/hhs/app
+Environment=HHS_REPO_ROOT=/opt/hhs/app
+ExecStart=/usr/local/lib/hhs-unified-vm/manage-unified-vm.sh start
+ExecStop=/usr/local/lib/hhs-unified-vm/manage-unified-vm.sh stop
+TimeoutStartSec=15min
+TimeoutStopSec=90
+KillMode=process
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/hhs/ubuntu-guest /run /tmp
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
