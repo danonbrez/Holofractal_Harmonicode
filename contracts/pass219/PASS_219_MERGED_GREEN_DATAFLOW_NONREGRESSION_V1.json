@@ -119,5 +119,64 @@
     "direct_pushes_to_main_must_be_disabled": true,
     "required_status_check_must_be_enabled": true,
     "repository_ruleset_required": true
+  },
+  "self_integrity": {
+    "policy_paths": [
+      "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json",
+      "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md",
+      "tools/pass219/pass219_merged_green_dataflow_guard_v1.py",
+      "tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py",
+      ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml"
+    ],
+    "manifest_set_fields_must_be_monotonic": [
+      "protected_roots",
+      "always_protected_paths",
+      "mandatory_invariants",
+      "mandatory_validation_profiles",
+      "sensitive_symbols",
+      "source_extensions"
+    ],
+    "manifest_true_maps_must_not_weaken": [
+      "enforcement",
+      "github_merge_layer"
+    ],
+    "protected_pass_ceiling_may_not_decrease": true,
+    "proof_directory_may_not_change": true,
+    "proof_schema_may_not_change": true,
+    "required_check_name_may_not_change": true,
+    "existing_policy_change_requires_repair_forward": true,
+    "guard_script_required_anchors": [
+      "def is_protected_path(",
+      "def authority_sensitive_growth(",
+      "def validate_proof_document(",
+      "def build_impacted(",
+      "def validate(",
+      "PROTECTED_CHANGE_WITHOUT_SUCCESSOR_PROOF",
+      "BACKWARD_COMPAT_REMOVED_IDENTIFIERS",
+      "UNMAPPED_REMOVED_IDENTIFIER"
+    ],
+    "workflow_required_anchors": [
+      "pull_request:",
+      "branches:",
+      "- main",
+      "merged-green-dataflow-lineage-guard",
+      "Select authoritative base guard",
+      "git worktree add --detach",
+      "Run base-authoritative lineage guard",
+      "Require an associated merged PR for protected main pushes",
+      "Pass 206 frozen-core and approved-successor regression",
+      "Pass 219 cumulative membrane regression",
+      "Build cumulative exact ABI",
+      "Prove singleton VM81 authority and receipt ordering surface",
+      "Regress Hash216 positional lineage and RNA VM5184 cell wall"
+    ],
+    "contract_required_anchors": [
+      "MergedGreenDataflow(p)",
+      "ValidatedSuccessorProof(CurrentPullRequest, p)",
+      "BACKWARD_COMPATIBLE_ITERATION",
+      "REPAIR_FORWARD_REFINEMENT",
+      "Base-guard authority",
+      "GitHub merge-layer requirement"
+    ]
   }
 }
