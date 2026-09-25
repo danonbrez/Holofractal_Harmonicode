@@ -1,0 +1,187 @@
+name: Pass 219 Lane 5 Circular Attractor Benchmark
+
+on:
+  push:
+    branches:
+      - pass219-lane5-circular-attractor-benchmark-1-0
+    paths:
+      - 'benchmarks/pass219/pass219_lane5_circular_attractor_global_optimizer_benchmark.cpp'
+      - 'benchmarks/pass219/analyze_pass219_lane5_circular_attractor_global_optimizer.py'
+      - 'contracts/pass219/PASS_219_LANE5_CIRCULAR_ATTRACTOR_GLOBAL_OPTIMIZER_BENCHMARK_1_0.md'
+      - 'docs/operations/restart/PASS_219_LANE5_CIRCULAR_ATTRACTOR_BENCHMARK_RESTART_20260925.md'
+      - '.github/workflows/pass219-lane5-circular-attractor-benchmark.yml'
+      - 'contracts/pass219/PASS_219_LOCAL_CIRCULAR_PHASE_FIBER_INVARIANT_1_0.md'
+      - 'tests/pass219/test_pass219_local_circular_phase_fiber_formalization.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_direct_witness_routing_1_46.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc'
+      - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+  pull_request:
+    paths:
+      - 'benchmarks/pass219/pass219_lane5_circular_attractor_global_optimizer_benchmark.cpp'
+      - 'benchmarks/pass219/analyze_pass219_lane5_circular_attractor_global_optimizer.py'
+      - 'contracts/pass219/PASS_219_LANE5_CIRCULAR_ATTRACTOR_GLOBAL_OPTIMIZER_BENCHMARK_1_0.md'
+      - 'docs/operations/restart/PASS_219_LANE5_CIRCULAR_ATTRACTOR_BENCHMARK_RESTART_20260925.md'
+      - '.github/workflows/pass219-lane5-circular-attractor-benchmark.yml'
+      - 'contracts/pass219/PASS_219_LOCAL_CIRCULAR_PHASE_FIBER_INVARIANT_1_0.md'
+      - 'tests/pass219/test_pass219_local_circular_phase_fiber_formalization.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_direct_witness_routing_1_46.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc'
+      - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
+      - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  circular-attractor-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: '.'
+      PYTHONHASHSEED: '0'
+
+    steps:
+      - name: Checkout exact benchmark head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify updated-system lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 85f7e072c966500e1da2d3b24d36d17ba9850b0b HEAD
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install focused dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify circular-fiber theorem binding
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_local_circular_phase_fiber_formalization.py \
+            tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py
+
+      - name: Compile cumulative exact ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass219-circular-attractor artifacts/pass219/circular-attractor
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-circular-attractor/exact.o
+
+      - name: Build inherited exact ABI link support
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tools/pass219/build_exact_abi_link_support.sh \
+            /tmp/pass219-circular-attractor/link-support full
+
+      - name: Preserve inherited direct-witness routing
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c \
+            /tmp/pass219-circular-attractor/exact.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_hash216.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-circular-attractor/direct-witness-test
+          /tmp/pass219-circular-attractor/direct-witness-test
+
+      - name: Preserve global 25over3 latency policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c \
+            /tmp/pass219-circular-attractor/exact.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_hash216.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-circular-attractor/latency-policy-test
+          /tmp/pass219-circular-attractor/latency-policy-test
+
+      - name: Compile circular-attractor benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/pass219_lane5_circular_attractor_global_optimizer_benchmark.cpp \
+            /tmp/pass219-circular-attractor/exact.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_hash216.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
+            -o /tmp/pass219-circular-attractor/benchmark
+
+      - name: Run circular-attractor benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          /tmp/pass219-circular-attractor/benchmark \
+            artifacts/pass219/circular-attractor/native_benchmark.json
+          python -m json.tool \
+            artifacts/pass219/circular-attractor/native_benchmark.json >/dev/null
+
+      - name: Analyze exact work and observed latency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python benchmarks/pass219/analyze_pass219_lane5_circular_attractor_global_optimizer.py \
+            artifacts/pass219/circular-attractor/native_benchmark.json \
+            artifacts/pass219/circular-attractor/analysis.json
+          python -m json.tool artifacts/pass219/circular-attractor/analysis.json >/dev/null
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/circular-attractor/analysis.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['result'] == 'PASS'
+          assert d['quarter_phase_coverage'] is True
+          assert d['exact_selected_route_equality'] is True
+          assert d['exact_full_validation_reduction'] is True
+          assert d['minimum_validation_reduction_exact_x'] == 64
+          assert d['maximum_validation_reduction_exact_x'] == 4096
+          assert d['negative_controls']['invalid_best_falls_back_to_exhaustive'] is True
+          assert d['negative_controls']['authority_escalation_candidate_rejected'] is True
+          assert d['authority']['canonical_vm81_mutation_authority'] is False
+          assert d['authority']['canonical_hash72_authority'] is False
+          assert d['authority']['canonical_hash216_authority'] is False
+          PY
+
+      - name: Publish benchmark summary
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('artifacts/pass219/circular-attractor/analysis.json', encoding='utf-8'))
+          print('## Lane 5 circular-attractor benchmark')
+          print(f"- classification: {d['classification']}")
+          print(f"- cases: {d['case_count']}")
+          print(f"- exact full-validation reduction: {d['minimum_validation_reduction_exact_x']}x to {d['maximum_validation_reduction_exact_x']}x")
+          print(f"- observed speedup x1000 min/median/max: {d['global_observed_speedup_x1000_min']} / {d['global_observed_speedup_x1000_median']} / {d['global_observed_speedup_x1000_max']}")
+          print(f"- all observed wall speedups >1x: {d['all_observed_wall_speedups_gt_1']}")
+          print('- exhaustive/attractor selected route equality: true')
+          print('- invalid-best fallback: true')
+          print('- authority escalation rejection: true')
+          print('- timing canonical: false')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-circular-attractor-benchmark
+          path: artifacts/pass219/circular-attractor/*.json
+          if-no-files-found: error
