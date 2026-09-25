@@ -185,6 +185,39 @@ A pull request that modifies this contract, the manifest, the guard, its tests,
 or its workflow is itself a protected change and requires a successor proof
 under the prior base rule.
 
+## Policy self-preservation
+
+The nonregression mechanism is itself an inherited protected data flow.
+
+Once this v1 policy exists on authoritative `main`, a later change to its
+manifest, contract, guard, tests, or workflow MUST be classified as
+`REPAIR_FORWARD_REFINEMENT` and validated under the predecessor policy.
+
+The predecessor guard recomputes monotonicity against the successor manifest.
+A successor MUST NOT:
+
+```text
+decrease protected_pass_ceiling
+remove a protected root
+remove an always-protected path
+remove a mandatory inherited invariant
+remove a mandatory validation profile
+remove a sensitive authority symbol
+remove a protected source extension
+turn a previously true fail-closed enforcement flag false
+change the successor-proof directory
+change the successor-proof schema in place
+rename the required status check in place
+remove the required base-guard, direct-push, or inherited-validation anchors
+```
+
+Stronger successors may add protected roots, paths, invariants, validation
+profiles, sensitive symbols, negative tests, or additional fail-closed checks.
+
+A future v2 may coexist additively, but v1 may not be silently weakened or
+deleted as part of the same transition. Any retirement of v1 therefore requires
+an explicitly validated equal-or-stronger successor lineage.
+
 ## Push audit
 
 The workflow also evaluates pushes to `main`.
