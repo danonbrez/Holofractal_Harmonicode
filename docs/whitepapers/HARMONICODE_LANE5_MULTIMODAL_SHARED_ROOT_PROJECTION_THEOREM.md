@@ -128,3 +128,66 @@ I042 accepts exactly when:
 ```text
 K(S)=true.
 ```
+
+
+## 8. Hash216 genus-3 surface theorem
+
+The ordered transition object has the exact tensor index:
+
+```text
+W216[l,f,s]
+l in {PREVIOUS,CHANGE,RECEIPT}
+f in Z_8
+s in Z_9.
+```
+
+Thus each lane contains:
+
+```text
+8*9=72
+```
+
+surface slots and the full object contains:
+
+```text
+3*8*9=216.
+```
+
+The fixed primal surface has:
+
+```text
+V=24
+E=36
+F=8
+p=9
+q=3.
+```
+
+Its incidence equations are:
+
+```text
+pF = 9*8 = 72 = 2E
+qV = 3*24 = 72 = 2E.
+```
+
+Euler closure gives:
+
+```text
+chi = V-E+F = -4
+chi = 2-2g
+g = 3.
+```
+
+The face adjacency relation contains all 28 unordered pairs of the eight
+faces. The remaining eight of the 36 edges are repeated face-pair adjacencies,
+so every face is a neighbor of every other face while each face still has nine
+boundary edges.
+
+I042 binds the exact incidence-table root into the common multimodal root:
+
+```text
+R = SHA256(..., genus3_surface_root, ...).
+```
+
+Therefore every language/image/audio/video/physics/game Hash216 projection
+inherits the same genus-3 polyhedral constraint geometry.
