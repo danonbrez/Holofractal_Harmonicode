@@ -189,8 +189,9 @@ payload={
     "pty_proof": "HHS_I044_PTY_OK" in pty["output_utf8"],
     "canonical_state_authority": False,
     "new_vm81_authority": False,
-    "frontend_attached": True,
-    "frontend_attachment": "HOST_STATIC_PRESENTATION_TO_GUEST_IDE_TRANSPORT",
+    "frontend_transport_ready": True,
+    "frontend_attached": False,
+    "frontend_attachment_pending": "NGINX_CUTOVER_TO_GUEST_TRANSPORT",
     "verified_at": datetime.now(timezone.utc).isoformat(),
 }
 if not (
