@@ -1,0 +1,103 @@
+name: Pass 220 I047 Main History Hash216 Hydration
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/pass191/main_history_hash216_hydration.py"
+      - "tools/hydrate_main_history_hash216.py"
+      - "deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh"
+      - "deployment/digitalocean/guarded_auto_update/validate-candidate.sh"
+      - "tests/test_hhs_main_history_hash216_hydration_v1.py"
+      - "tests/test_hhs_guarded_auto_update_contract_v1.py"
+      - "docs/operations/restart/PASS_220_I047_MAIN_HISTORY_HASH216_HYDRATION_20260925.md"
+      - ".github/workflows/pass220-i047-main-history-hash216-hydration.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/pass191/main_history_hash216_hydration.py"
+      - "tools/hydrate_main_history_hash216.py"
+      - "deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh"
+      - "deployment/digitalocean/guarded_auto_update/validate-candidate.sh"
+      - "tests/test_hhs_main_history_hash216_hydration_v1.py"
+      - "tests/test_hhs_guarded_auto_update_contract_v1.py"
+      - "docs/operations/restart/PASS_220_I047_MAIN_HISTORY_HASH216_HYDRATION_20260925.md"
+      - ".github/workflows/pass220-i047-main-history-hash216-hydration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-history-hydration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+
+      - name: Compile hydration surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass191/main_history_hash216_hydration.py \
+            tools/hydrate_main_history_hash216.py \
+            tests/test_hhs_main_history_hash216_hydration_v1.py
+
+      - name: Validate deployment shell
+        run: |
+          bash -n \
+            deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh \
+            deployment/digitalocean/guarded_auto_update/validate-candidate.sh
+
+      - name: Run exact reversible hydration tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/test_hhs_main_history_hash216_hydration_v1.py
+
+      - name: Run guarded deployment contract regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/test_hhs_guarded_auto_update_contract_v1.py
+
+      - name: Enforce authority and replay boundaries
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path("hhs_runtime/pass191/main_history_hash216_hydration.py").read_text(encoding="utf-8")
+          deployment = Path("deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh").read_text(encoding="utf-8")
+
+          required_source = (
+              'SCHEMA = "HHS_MAIN_HISTORY_GREEN_PR_HASH216_HYDRATION_V1"',
+              'FRAME_BYTES = 648',
+              'FRAME_HEADER_BYTES = 8',
+              'PersistentEncryptedVectorStore',
+              'Hash216Array.build',
+              '"historical_ci_status_requeried": False',
+              '"canonical_mutation_authority": False',
+              '"canonical_hash72_commit_authority": False',
+              '"READ_ONLY_HYDRATED_LOGIC_INDEX"',
+              'verify_manifest(store, manifest)',
+          )
+          for token in required_source:
+              assert token in source, token
+
+          required_deployment = (
+              'tools/hydrate_main_history_hash216.py',
+              '--ref "$CANDIDATE_SHA"',
+              'rollback_live_checkout "main-history Hash216 hydration failed"',
+          )
+          for token in required_deployment:
+              assert token in deployment, token
+          PY
