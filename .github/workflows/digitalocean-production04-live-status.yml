@@ -69,3 +69,5 @@ jobs:
 # Probe after systemd serialization repair deploy
 
 # Probe after PR577 exact-main runtime boot failure
+
+# Probe during ff7006 artifact-root deployment
