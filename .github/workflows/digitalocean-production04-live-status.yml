@@ -71,6 +71,12 @@ jobs:
                   if any(token in lower for token in ("sqlite", "db_path", "database_path", "path(", "environ", "hhs_")):
                       print(f"{lineno}: {line}")
           PY
+          echo "=== current runtime health ==="
+          ls -l /var/lib/hhs/data/runtime/hhs_agent_immutable_index.sqlite3* 2>/dev/null || true
+          curl -fsS --max-time 5 http://127.0.0.1:8080/api/system/status || true
+          echo
+          curl -fsS --max-time 5 http://127.0.0.1:8080/api/interface/status || true
+          echo
           echo "=== warm boot verify as service user ==="
           runuser -u hhs -- env HHS_DISABLE_C_AUTOBUILD=1 HHS_DATA_DIR=/var/lib/hhs/data HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap /opt/hhs/venv/bin/python /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify --repo-root /opt/hhs/app --manifest-root /var/lib/hhs/warm-boot/releases || true
           REMOTE
@@ -92,3 +98,5 @@ jobs:
 # Inspect immutable-agent SQLite storage contract
 
 # Probe cf2764 immutable-agent DB deployment
+
+# Probe immutable SQL creation and local API health
