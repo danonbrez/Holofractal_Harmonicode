@@ -101,6 +101,14 @@ jobs:
           print('protected_change_count=' + str(d['protected_change_count']))
           PY
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install guard test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
       - name: Run guard unit and negative tests
         run: |
           python -m pytest -q --tb=short \
