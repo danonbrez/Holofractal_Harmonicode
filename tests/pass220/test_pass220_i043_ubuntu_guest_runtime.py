@@ -132,6 +132,13 @@ def test_qemu_command_is_loopback_only_and_preserves_authority_boundary(
     assert status["new_hash72_mint_authority"] is False
     assert status["new_hash216_persistence_authority"] is False
     assert status["existing_application_vm_control_plane_inside_guest"] is True
+    assert status["pass219_system_contract_authority"] is True
+    assert status["pass220_descendant_projection_only"] is True
+    assert status["lane5_cpp_bios_agi_optimization_control_center"] is True
+    assert (
+        status["optimization_execution_model"]
+        == "CALLABLE_BOUNDED_CIRCUITS_NOT_AMBIENT_LOOP"
+    )
 
 
 def test_fake_qemu_lifecycle_tracks_pid_and_fails_closed_on_stale_pid(
