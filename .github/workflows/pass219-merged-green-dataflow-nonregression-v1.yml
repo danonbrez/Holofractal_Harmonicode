@@ -41,10 +41,15 @@ jobs:
             base="${{ github.event.pull_request.base.sha }}"
             head="${{ github.event.pull_request.head.sha }}"
           elif [ "${{ github.event_name }}" = "push" ]; then
-            base="${{ github.event.before }}"
             head="${{ github.sha }}"
-            if [ "${base}" = "0000000000000000000000000000000000000000" ]; then
-              base="$(git rev-parse "${head}^")"
+            if [ "${{ github.ref_name }}" = "main" ]; then
+              base="${{ github.event.before }}"
+              if [ "${base}" = "0000000000000000000000000000000000000000" ]; then
+                base="$(git rev-parse "${head}^")"
+              fi
+            else
+              git fetch origin main
+              base="$(git rev-parse origin/main)"
             fi
           else
             git fetch origin main
@@ -114,11 +119,13 @@ jobs:
           python -m pytest -q --tb=short \
             tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py
 
-      - name: Install proof-validation build dependencies
+      - name: Install proof-validation dependencies
         if: steps.lineage.outputs.proof_required == 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check \
+            pytest fastapi httpx cryptography uvicorn
 
       - name: Pass 206 frozen-core and approved-successor regression
         if: steps.lineage.outputs.proof_required == 'true'
