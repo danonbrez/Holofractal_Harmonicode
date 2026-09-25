@@ -485,3 +485,25 @@ def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
     assert 'values["HHS_VALIDATE_TIMEOUT_SECONDS"] = str(' in source
     assert "max(minimum_validate_timeout, current_validate_timeout)" in source
     assert '"HHS_VALIDATE_TIMEOUT_SECONDS",' in source
+
+
+
+def test_promotion_hydrates_main_history_into_inherited_hash216_store() -> None:
+    source = read("hhs-guarded-update.sh")
+    required = [
+        "HHS_MAIN_HISTORY_HYDRATION_STATE_ROOT",
+        "HHS_HISTORY_HYDRATION_PYTHON",
+        "tools/hydrate_main_history_hash216.py",
+        '--ref "$CANDIDATE_SHA"',
+        "--vector-database /var/lib/hhs/pass174/hash216_vectors.sqlite3",
+        "--vector-key /var/lib/hhs/pass174/hash216_vectors.key",
+        'runuser -u "$PRODUCTION_SERVICE_USER"',
+        'rollback_live_checkout "main-history Hash216 hydration failed"',
+    ]
+    for token in required:
+        assert token in source
+
+    hydration = source.index("tools/hydrate_main_history_hash216.py")
+    warm_boot = source.index("deployment/digitalocean/warm_boot_manifest.py")
+    service_start = source.index("if ! start_units;")
+    assert hydration < warm_boot < service_start
