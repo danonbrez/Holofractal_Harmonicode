@@ -11,7 +11,8 @@ repository: danonbrez/Holofractal_Harmonicode
 base commit: cf2764c24e85ff4980d599f528218f1328b81627
 branch: fix/pass220-i030-loshu-nine-cell-probe-20260925
 merge target: main
-implementation commit: f7e73b4d9637f343973456daef29eceb1c8498a8
+initial implementation commit: f7e73b4d9637f343973456daef29eceb1c8498a8
+completed test repair commit: 94d7305b3f9a2299a50fdd44551775e01c52816b
 ```
 
 ## Root cause
@@ -32,13 +33,15 @@ This caused the I030 workflow to fail at
 `test_expanded_ingress_strings_remain_exact_opaque_symbol_states`.
 I031, I032, and I033 then failed only through their inherited I030 regression step.
 
-Observed failing I030 run/job:
+Observed original failing I030 run/job:
 
 ```text
 run: 36125132868
 job: 108039383213
 result: 1 failed, 28 passed
 ```
+
+The first repair commit replaced the first matching stale literal rather than both semantic assertion sites. PR run `36140618769` therefore exposed two test-only failures: a contradictory presence/absence assertion and the still-stale final equality. Commit `94d7305b3f9a2299a50fdd44551775e01c52816b` repairs both explicitly. Runtime remains unchanged.
 
 ## Changed files
 
@@ -57,6 +60,7 @@ Completed:
 - verified current main runtime EXPANDED_INGRESS_PROBES contains the nine-cell Lo Shu sequence
 - verified current main test contains the stale eight-item/missing-separator literal
 - traced I031-I033 failures to the inherited I030 regression step
+- traced PR #581 first-run failures to two test-only assertion sites and repaired both without runtime changes
 ```
 
 Remaining:
