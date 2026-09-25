@@ -1,0 +1,53 @@
+name: DigitalOcean Production 04 Live Status
+
+on:
+  push:
+    branches:
+      - ops/digitalocean-network-recovery-20260925
+    paths:
+      - '.github/workflows/digitalocean-production04-live-status.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  status:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Read production-04 bootstrap status
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/key"
+          chmod 0600 "$HOME/.ssh/key"
+          cat > "$HOME/.ssh/known_hosts" <<'EOF'
+          159.65.178.254 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH5i+oF94fHuX4ucCM1igqqqYbo6FQp11QX8hFmIna83
+          EOF
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh -i "$HOME/.ssh/key" -o BatchMode=yes -o ConnectTimeout=15             -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts"             root@159.65.178.254 'bash -s' <<'REMOTE'
+          set -u
+          echo "=== uptime ==="
+          uptime || true
+          echo "=== bootstrap processes ==="
+          ps -eo pid,etime,cmd --sort=etime | grep -E 'apt|dpkg|pip|make|gcc|python|certbot|nginx|hhs_gui|git clone|git fetch' | grep -v grep || true
+          echo "=== repository ==="
+          if [[ -d /opt/hhs/app/.git ]]; then
+            git -C /opt/hhs/app rev-parse HEAD || true
+            git -C /opt/hhs/app status --short || true
+          else
+            echo "repository-not-yet-created"
+          fi
+          echo "=== artifacts ==="
+          test -s /opt/hhs/app/hhs_runtime/builds/libhhs_runtime.so && echo "native-so-present" || true
+          test -s /var/lib/hhs/runtime-os/current/index.html && echo "runtime-os-index-present" || true
+          ls -la /var/lib/hhs/warm-boot/releases 2>/dev/null | tail -n 8 || true
+          echo "=== services ==="
+          systemctl is-active hhs.service 2>/dev/null || true
+          systemctl is-active nginx 2>/dev/null || true
+          systemctl is-active hhs-certbot-renew.timer 2>/dev/null || true
+          ss -ltnp 2>/dev/null | grep -E ':(22|80|443|8080)\b' || true
+          REMOTE
