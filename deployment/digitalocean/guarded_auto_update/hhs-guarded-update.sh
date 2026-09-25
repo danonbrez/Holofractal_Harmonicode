@@ -27,6 +27,8 @@ BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
 PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-/usr/local/lib/hhs-guarded-update/normalize-service-permissions.py}
+HISTORY_HYDRATION_PYTHON=${HHS_HISTORY_HYDRATION_PYTHON:-/opt/hhs/venv/bin/python}
+HISTORY_HYDRATION_STATE_ROOT=${HHS_MAIN_HISTORY_HYDRATION_STATE_ROOT:-/var/lib/hhs/pass174/main-history-hydration}
 
 CANDIDATE_ROOT="$STATE_ROOT/candidates"
 RECEIPT_LOG="$STATE_ROOT/receipts.jsonl"
@@ -214,7 +216,7 @@ on_exit() {
 trap on_exit EXIT
 
 [[ $EUID -eq 0 ]] || fail "Run through the root-owned systemd service or as root"
-for command in git flock curl python3 systemctl; do command -v "$command" >/dev/null || fail "$command is required"; done
+for command in git flock curl python3 systemctl runuser; do command -v "$command" >/dev/null || fail "$command is required"; done
 [[ -d "$REPO_ROOT/.git" ]] || fail "Repository not found at $REPO_ROOT"
 install -d -m 0750 "$STATE_ROOT" "$CANDIDATE_ROOT"
 install -d -m 0755 "$(dirname "$LOCK_FILE")" "$BUNDLE_ROOT" "$BUNDLE_ROOT/releases" "$BUNDLE_ROOT/incoming"
@@ -290,6 +292,26 @@ install -d -o "$PRODUCTION_SERVICE_USER" -g "$PRODUCTION_SERVICE_GROUP" -m 0750 
   /var/lib/hhs/runtime-bootstrap \
   /var/lib/hhs/warm-boot \
   "$WARM_BOOT_ROOT"
+
+log "Hydrating exact main-admitted PR invariant/contract logic into inherited Hash216 vector storage"
+[[ -x "$HISTORY_HYDRATION_PYTHON" ]] || {
+  rollback_live_checkout "main-history Hash216 hydration interpreter missing"
+  exit 1
+}
+if ! (
+  cd "$REPO_ROOT" &&
+  runuser -u "$PRODUCTION_SERVICE_USER" -- env \
+    HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 \
+    "$HISTORY_HYDRATION_PYTHON" tools/hydrate_main_history_hash216.py \
+      --repository-root "$REPO_ROOT" \
+      --ref "$CANDIDATE_SHA" \
+      --state-root "$HISTORY_HYDRATION_STATE_ROOT" \
+      --vector-database /var/lib/hhs/pass174/hash216_vectors.sqlite3 \
+      --vector-key /var/lib/hhs/pass174/hash216_vectors.key
+); then
+  rollback_live_checkout "main-history Hash216 hydration failed"
+  exit 1
+fi
 
 HHS_DATA_DIR=/var/lib/hhs/data \
 HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 \
