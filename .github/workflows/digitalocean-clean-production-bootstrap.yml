@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      HHS_HOST: 165.227.64.72
+      HHS_HOST: 159.65.178.254
       HHS_USER: root
       TARGET_SHA: de12fa97d42b0bf08c1441e8315bb20387d8fbd2
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
@@ -57,11 +57,11 @@ jobs:
           printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
           chmod 0600 "$HOME/.ssh/hhs-production"
           cat > "$HOME/.ssh/known_hosts" <<'EOF'
-          165.227.64.72 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIp4MwUh7NIX+KEYbM8968culSKopXAfNiAge2U8NL3W
+          159.65.178.254 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH5i+oF94fHuX4ucCM1igqqqYbo6FQp11QX8hFmIna83
           EOF
           chmod 0600 "$HOME/.ssh/known_hosts"
           ssh-keygen -F "${HHS_HOST}" -f "$HOME/.ssh/known_hosts"
-          ssh-keygen -lf "$HOME/.ssh/known_hosts" | grep -F 'SHA256:Z9rIaw4O8+weedjalm54dl/cD/YFS+jpE2ecaYLdEJ8'
+          ssh-keygen -lf "$HOME/.ssh/known_hosts" | grep -F 'SHA256:na708pj1IEWgYCzaG8wz8NdgVl82IFO4d/6lTy7z6hM'
 
       - name: Verify deploy credential on clean host
         shell: bash
