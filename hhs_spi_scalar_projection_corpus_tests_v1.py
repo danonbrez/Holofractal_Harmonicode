@@ -31,19 +31,19 @@ def _all_candidates(manifest):
     ]
 
 
-def test_source_inventory_exact_six_paths():
+def test_source_inventory_exact_seven_paths():
     inventory = validate_source_inventory(ROOT)
     assert inventory["ok"] is True, inventory["errors"]
-    assert inventory["expected_path_count"] == 6
-    assert inventory["discovered_path_count"] == 6
+    assert inventory["expected_path_count"] == 7
+    assert inventory["discovered_path_count"] == 7
     assert set(EXPECTED_HARMONICODE_SOURCES) == {
         record["path"] for record in inventory["records"]
     }
 
 
-def test_source_inventory_exact_five_unique_bodies():
+def test_source_inventory_exact_six_unique_bodies():
     inventory = validate_source_inventory(ROOT)
-    assert inventory["unique_source_hash_count"] == 5
+    assert inventory["unique_source_hash_count"] == 6
     groups = inventory["duplicate_source_groups"]
     assert len(groups) == 1, groups
     assert groups[0]["paths"] == [CANONICAL_SOURCE_PATH, CANONICAL_ALIAS_PATH]
@@ -191,8 +191,8 @@ def test_candidate_receipts_are_deterministic():
 
 
 TESTS = [
-    test_source_inventory_exact_six_paths,
-    test_source_inventory_exact_five_unique_bodies,
+    test_source_inventory_exact_seven_paths,
+    test_source_inventory_exact_six_unique_bodies,
     test_frozen_authority_hashes,
     test_every_unique_source_parses_without_error,
     test_parser_limit_is_explicit_not_overclaimed,
