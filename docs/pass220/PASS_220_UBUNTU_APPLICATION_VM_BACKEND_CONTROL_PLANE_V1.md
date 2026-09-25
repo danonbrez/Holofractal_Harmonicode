@@ -8,15 +8,20 @@ operable **before frontend composition**.
 The ordering is mandatory:
 
 ```text
-Ubuntu application VM
--> repository/runtime authority
--> Bash/CLI
--> secure public OpenAPI
+Ubuntu guest/runtime substrate
+-> Bash/CLI + secure public OpenAPI transport
+-> Pass 220 application adapter
+-> Pass 219 cumulative inherited authority
+-> Lane 5 C++ BIOS / AGI optimization control center
+-> signed environmental VM81 canonical admission
 -> verified receipts/replay
 -> later FastAPI/GUI frontend adapter
 ```
 
-The web frontend is explicitly not part of this authority surface.
+Pass 220 is a descendant integration/projection surface. Running the application
+adapter inside Ubuntu does not promote Ubuntu, Pass 190, the public API, or the
+frontend into repository/runtime authority. The web frontend is explicitly not
+a canonical authority surface.
 
 ## Local Bash surface
 
@@ -122,8 +127,14 @@ This integration creates no new:
 - capability-token schema;
 - capability signature algorithm.
 
-It composes existing Pass 184/190 authority through a backend-first application
-boundary.
+It composes inherited Pass 184/190 capability and application surfaces as
+subordinate adapters into the cumulative Pass 219 authority manifold. Those
+surfaces do not outrank or bypass Pass 219, Lane 5 mediation, or signed
+environmental VM81 admission.
+
+Runtime availability is distinct from cognitive execution: Lane 5 reasoning and
+optimization remain callable bounded circuits and are not started continuously
+merely because the Ubuntu VM, API service, or frontend is running.
 
 ## Installation
 
