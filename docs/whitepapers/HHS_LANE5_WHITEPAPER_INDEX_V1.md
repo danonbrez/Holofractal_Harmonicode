@@ -360,6 +360,10 @@ Pass 220 I042 binds six modalities to one exact execution ancestry:
   Pass165 token/chunk graph and 5,184-bit projection;
 - every modality carries a Hash72 witness and a 216-position ordered Hash216
   genome root;
+- Hash216 is indexed as a fixed `3x8x9` genus-3 polyhedral surface:
+  three PREVIOUS/CHANGE/RECEIPT Hash72 lanes over eight flat nonagonal faces,
+  with 24 vertices, 36 edges, trivalent vertices, Euler characteristic -4,
+  and complete face-neighbor relation;
 - all six projections share one SHA-256 root over the exact
   `179971.179971` seed, exact `1.001` gate, I041 cycle identity, I040
   relativistic projection root, I039 shared quantum/relativistic root, and the
