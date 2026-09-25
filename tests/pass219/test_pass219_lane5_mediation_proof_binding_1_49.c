@@ -10,6 +10,10 @@
     } \
 } while (0)
 
+static const uint32_t GLOBAL_GATE_OFFSETS[
+    HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT
+] = {96U, 240U, 266U, 274U, 285U};
+
 static void make_capability_descriptor(
     HHSExactPass219Lane5CapabilitySelfModelDescriptorV1 *descriptor
 ) {
@@ -51,23 +55,79 @@ static void make_capability_descriptor(
     descriptor->requires_signed_environmental_vm81_admission = 1U;
 }
 
-static int bind_zero_witness(
-    HHSExactPass219Lane5ZeroSumClosureWitnessV1 *witness,
+static HHSExactPass219Lane5DirectWitnessRouteV1 make_direct_route(
     const HHSExactPass219Lane5MediationRequestV1 *request
 ) {
-    memset(witness, 0, sizeof(*witness));
-    witness->struct_size = (uint32_t)sizeof(*witness);
-    witness->version = HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_VERSION;
-    witness->namespace_id = HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_NAMESPACE;
-    witness->request_signature64 = request->request_signature64;
-    witness->candidate_signature64 = request->candidate_signature64;
-    witness->parent_hash216_signature64 = request->parent_hash216_signature64;
-    witness->rna_prepared_signature64 = request->rna_prepared_signature64;
-    witness->rna_decision_signature64 = request->rna_decision_signature64;
-    witness->capability_registry_signature64 =
-        request->capability_registry_signature64;
-    return hhs_exact_pass219_lane5_zero_sum_witness_seal(witness) ==
-           HHS_EXACT_STATUS_OK;
+    HHSExactPass219Lane5DirectWitnessRouteV1 route;
+    memset(&route, 0, sizeof(route));
+    route.struct_size = (uint32_t)sizeof(route);
+    route.version = HHS_EXACT_PASS219_LANE5_DIRECT_WITNESS_ROUTING_VERSION;
+    route.previous_signature64 = request->parent_hash216_signature64;
+    route.current_signature64 = request->candidate_signature64;
+    route.provenance_signature64 = request->request_signature64;
+    route.goal_signature64 = request->candidate_signature64;
+    route.forbidden_boundary_signature64 = UINT64_C(0xF00D);
+    route.reciprocal_inverse_signature64 = UINT64_C(0xBEEF);
+    route.candidate_signature64 = request->candidate_signature64;
+    route.route_signature64 = UINT64_C(0x9001);
+    route.represented_span = UINT64_C(5184);
+    route.evidence_count = 5U;
+    route.contradiction_check_count = 2U;
+    route.integer_route_cost = UINT64_C(8);
+    route.materialized_intermediate_states = 0U;
+    route.phase_slot = 18U;
+    route.inverse_phase_slot = 54U;
+    route.trinary_collapse = 0;
+    route.binary_collapse = 0U;
+    route.nested_zero_slot = 1U;
+    route.replay_witness_verified = 1U;
+    route.exact_goal_reached = 1U;
+    route.contradiction_free = 1U;
+    route.goal_forbidden_conflict = 0U;
+    route.reciprocal_phase_verified = 1U;
+    route.bigint_serialization_addressed = 1U;
+    route.candidate_only = 1U;
+    route.requires_signed_environmental_vm81_admission = 1U;
+    return route;
+}
+
+static void make_global_input(
+    HHSExactPass219GlobalMembraneInputV1 *input
+) {
+    HHSExactPass219GlobalMembraneDescriptorV1 descriptor;
+    uint32_t i;
+
+    memset(&descriptor, 0, sizeof(descriptor));
+    CHECK(hhs_exact_pass219_global_membrane_descriptor(&descriptor) ==
+          HHS_EXACT_STATUS_OK);
+
+    memset(input, 0, sizeof(*input));
+    input->struct_size = (uint32_t)sizeof(*input);
+    input->version = hhs_exact_pass219_global_membrane_version();
+    memcpy(input->combined_source_sha256,
+           descriptor.combined_source_sha256,
+           HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+    for (i = 0U; i < HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES; ++i)
+        input->global_symbol_environment_root[i] = (uint8_t)(i + 1U);
+    input->gate_count = HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT;
+    input->global_symbol_environment_complete = 1U;
+    input->cross_layer_revalidation_complete = 1U;
+    input->local_symbol_shadowing_detected = 0U;
+
+    for (i = 0U; i < HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT; ++i) {
+        HHSExactPass219GlobalGateWitnessV1 *gate = &input->gates[i];
+        gate->struct_size = (uint32_t)sizeof(*gate);
+        gate->version = hhs_exact_pass219_global_membrane_version();
+        gate->gate_index = i;
+        gate->source_offset = GLOBAL_GATE_OFFSETS[i];
+        gate->boolean_result = 1U;
+        memcpy(gate->combined_source_sha256,
+               descriptor.combined_source_sha256,
+               HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+        memcpy(gate->global_symbol_environment_root,
+               input->global_symbol_environment_root,
+               HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+    }
 }
 
 int main(void) {
@@ -82,14 +142,20 @@ int main(void) {
     HHSExactPass219Lane5CapabilitySelfModelReceiptV1 capability_receipt;
     HHSExactPass219Lane5MediationRequestV1 request;
     HHSExactPass219Lane5MediationReceiptV1 legacy_receipt;
-    HHSExactPass219Lane5ZeroSumClosureWitnessV1 zero_witness;
+    HHSExactPass219Lane5DirectWitnessRouteV1 direct_route;
+    HHSExactPass219Lane5DirectWitnessReceiptV1 direct_receipt;
+    HHSExactPass219GlobalMembraneInputV1 global_input;
+    HHSExactPass219GlobalMembraneResultV1 global_result;
     HHSExactPass219Lane5MediationProofBundleV1 proof;
     HHSExactPass219Lane5ProvenMediationReceiptV1 receipt;
     HHSExactVM81Frame tampered_frame;
     HHSExactPass219Hash216TransitionViewV1 tampered_ref;
     HHSExactPass219Lane5CapabilitySelfModelReceiptV1 tampered_capability;
     HHSExactPass219Holo4DecisionV1 tampered_decision;
-    HHSExactPass219Lane5ZeroSumClosureWitnessV1 bad_zero;
+    HHSExactPass219Lane5DirectWitnessRouteV1 tampered_route;
+    HHSExactPass219Lane5DirectWitnessReceiptV1 tampered_route_receipt;
+    HHSExactPass219GlobalMembraneInputV1 rejected_global_input;
+    HHSExactPass219GlobalMembraneResultV1 rejected_global_result;
     HHSExactPass219Lane5MediationRequestV1 bad_request;
     uint8_t one = 1U;
     uint64_t signature = 0U;
@@ -102,12 +168,14 @@ int main(void) {
     CHECK(hhs_exact_pass219_lane5_mediation_proof_binding_authority(&authority) ==
           HHS_EXACT_STATUS_OK);
     CHECK(authority.legacy_1_34_proof_flags_authoritative == 0U);
-    CHECK(authority.request_identity_recomputed == 1U);
+    CHECK(authority.legacy_mediation_recomputed == 1U);
     CHECK(authority.exact_vm5184_recomputed == 1U);
     CHECK(authority.rna_cpp_cell_wall_replayed == 1U);
     CHECK(authority.hash216_sha256_positions_verified == 1U);
     CHECK(authority.capability_registry_recomputed == 1U);
-    CHECK(authority.exact_zero_sum_residual_vector_required == 1U);
+    CHECK(authority.direct_witness_route_recomputed == 1U);
+    CHECK(authority.global_constraint_membrane_recomputed == 1U);
+    CHECK(authority.exact_zero_sum_residual_vector_derived == 1U);
     CHECK(authority.candidate_only == 1U);
     CHECK(authority.canonical_vm81_mutation_authority == 0U);
     CHECK(authority.requires_signed_environmental_vm81_admission == 1U);
@@ -158,7 +226,6 @@ int main(void) {
     request.hydration_signature64 = prepared.tensor_signature64;
     request.compression_signature64 = UINT64_C(0x9106);
     request.capability_registry_signature64 = capability_receipt.receipt_signature64;
-    request.learning_iteration_signature64 = UINT64_C(0x9108);
     request.rna_prepared_signature64 = prepared.graph_signature64;
     request.rna_decision_signature64 = decision.decision_signature64;
     CHECK(hhs_exact_pass219_lane5_mediation_hash216_reference_signature(
@@ -169,6 +236,18 @@ int main(void) {
     request.capability_reference_signature64[1] =
         capability_descriptor.entry_signature64[1];
 
+    direct_route = make_direct_route(&request);
+    memset(&direct_receipt, 0, sizeof(direct_receipt));
+    CHECK(hhs_exact_pass219_lane5_direct_witness_route_validate(
+              &direct_route, &direct_receipt) == HHS_EXACT_STATUS_OK);
+    request.learning_iteration_signature64 = direct_receipt.route_receipt_signature64;
+
+    make_global_input(&global_input);
+    memset(&global_result, 0, sizeof(global_result));
+    CHECK(hhs_exact_pass219_global_membrane_evaluate(
+              &global_input, &global_result) == HHS_EXACT_STATUS_OK);
+    CHECK(global_result.decision == HHS_EXACT_PASS219_GLOBAL_MEMBRANE_PROPAGATE);
+
     memset(&legacy_receipt, 0, sizeof(legacy_receipt));
     CHECK(hhs_exact_pass219_lane5_mediate_candidate(&request, &legacy_receipt) ==
           HHS_EXACT_STATUS_OK);
@@ -177,8 +256,6 @@ int main(void) {
     CHECK(legacy_receipt.exact_vm5184_bound == 0U);
     CHECK(legacy_receipt.rna_cell_wall_bound == 0U);
     CHECK(legacy_receipt.zero_sum_closure_passed == 0U);
-
-    CHECK(bind_zero_witness(&zero_witness, &request));
 
     memset(&proof, 0, sizeof(proof));
     proof.struct_size = (uint32_t)sizeof(proof);
@@ -195,18 +272,32 @@ int main(void) {
     proof.hash216_references = refs;
     proof.capability_descriptor = &capability_descriptor;
     proof.capability_receipt = &capability_receipt;
-    proof.zero_sum_witness = &zero_witness;
+    proof.direct_witness_route = &direct_route;
+    proof.direct_witness_receipt = &direct_receipt;
+    proof.global_membrane_input = &global_input;
+    proof.global_membrane_result = &global_result;
 
     memset(&receipt, 0, sizeof(receipt));
     CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
               &request, &proof, &receipt) == HHS_EXACT_STATUS_OK);
-    CHECK(receipt.request_recomputed == 1U);
+    CHECK(receipt.legacy_mediation_recomputed == 1U);
     CHECK(receipt.exact_vm5184_bound == 1U);
     CHECK(receipt.rna_cell_wall_bound == 1U);
     CHECK(receipt.hash216_references_validated == 1U);
     CHECK(receipt.capability_registry_validated == 1U);
+    CHECK(receipt.direct_witness_route_validated == 1U);
+    CHECK(receipt.global_constraint_membrane_validated == 1U);
     CHECK(receipt.zero_sum_closure_passed == 1U);
     CHECK(receipt.all_proofs_bound == 1U);
+    CHECK(receipt.zero_sum_witness.state_change_residual == 0);
+    CHECK(receipt.zero_sum_witness.dependency_change_residual == 0);
+    CHECK(receipt.zero_sum_witness.phase_change_residual == 0);
+    CHECK(receipt.zero_sum_witness.resource_work_residual == 0);
+    CHECK(receipt.zero_sum_witness.lineage_residual == 0);
+    CHECK(receipt.zero_sum_witness.inverse_recovery_residual == 0);
+    CHECK(receipt.zero_sum_witness.local_constraint_residual == 0);
+    CHECK(receipt.zero_sum_witness.global_constraint_residual == 0);
+    CHECK(receipt.zero_sum_witness.witness_signature64 != 0U);
     CHECK(receipt.candidate_only == 1U);
     CHECK(receipt.canonical_mutation_authority == 0U);
     CHECK(receipt.canonical_hash72_authority == 0U);
@@ -249,37 +340,52 @@ int main(void) {
 
     bad_request = request;
     bad_request.capability_reference_signature64[0] = UINT64_C(0x1999);
-    CHECK(bind_zero_witness(&bad_zero, &bad_request));
-    proof.zero_sum_witness = &bad_zero;
     CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
               &bad_request, &proof, &receipt) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
 
-    bad_zero = zero_witness;
-    bad_zero.state_change_residual = INT64_C(1);
-    CHECK(hhs_exact_pass219_lane5_zero_sum_witness_seal(&bad_zero) ==
-          HHS_EXACT_STATUS_OK);
-    proof.zero_sum_witness = &bad_zero;
-    CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
-              &request, &proof, &receipt) == HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
-
-    bad_zero = zero_witness;
-    bad_zero.witness_signature64 ^= UINT64_C(1);
-    proof.zero_sum_witness = &bad_zero;
+    tampered_route = direct_route;
+    tampered_route.current_signature64 ^= UINT64_C(1);
+    memset(&tampered_route_receipt, 0, sizeof(tampered_route_receipt));
+    CHECK(hhs_exact_pass219_lane5_direct_witness_route_validate(
+              &tampered_route, &tampered_route_receipt) == HHS_EXACT_STATUS_OK);
+    proof.direct_witness_route = &tampered_route;
+    proof.direct_witness_receipt = &tampered_route_receipt;
     CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
               &request, &proof, &receipt) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
-    proof.zero_sum_witness = &zero_witness;
+    proof.direct_witness_route = &direct_route;
+    proof.direct_witness_receipt = &direct_receipt;
+
+    rejected_global_input = global_input;
+    rejected_global_input.gates[2].boolean_result = 0U;
+    memset(&rejected_global_result, 0, sizeof(rejected_global_result));
+    CHECK(hhs_exact_pass219_global_membrane_evaluate(
+              &rejected_global_input, &rejected_global_result) == HHS_EXACT_STATUS_OK);
+    CHECK(rejected_global_result.decision == HHS_EXACT_PASS219_GLOBAL_MEMBRANE_REJECT);
+    proof.global_membrane_input = &rejected_global_input;
+    proof.global_membrane_result = &rejected_global_result;
+    CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
+              &request, &proof, &receipt) == HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
+    proof.global_membrane_input = &global_input;
+    proof.global_membrane_result = &global_result;
+
+    CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
+              &request, &proof, &receipt) == HHS_EXACT_STATUS_OK);
+    CHECK(receipt.zero_sum_witness.state_change_residual == 0);
+    CHECK(receipt.zero_sum_witness.global_constraint_residual == 0);
 
     CHECK(hhs_exact_pass219_lane5_mediation_hash216_reference_signature(
               &parent, &signature) == HHS_EXACT_STATUS_OK);
     CHECK(signature == request.parent_hash216_signature64);
 
     printf(
-        "PASS219_LANE5_MEDIATION_PROOF_BINDING_1_49_PASS proof=%llu frame=%llu parent=%llu hash216=%llu capability=%llu zero=%llu\n",
+        "PASS219_LANE5_MEDIATION_PROOF_BINDING_1_49_PASS proof=%llu frame=%llu parent=%llu hash216=%llu capability=%llu route=%llu global=%llu zero=%llu\n",
         (unsigned long long)proven_signature,
         (unsigned long long)request.candidate_signature64,
         (unsigned long long)request.parent_hash216_signature64,
         (unsigned long long)request.hash216_reference_signature64[0],
         (unsigned long long)capability_receipt.receipt_signature64,
-        (unsigned long long)zero_witness.witness_signature64);
+        (unsigned long long)direct_receipt.route_receipt_signature64,
+        (unsigned long long)receipt.global_membrane_signature64,
+        (unsigned long long)receipt.zero_sum_witness.witness_signature64);
     return 0;
 }
