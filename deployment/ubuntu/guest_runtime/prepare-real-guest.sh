@@ -8,9 +8,14 @@ MANIFEST="${HHS_GUEST_IMAGE_MANIFEST:-$SOURCE_ROOT/deployment/ubuntu/guest_runti
 ROOT="${HHS_GUEST_INTEGRATION_ROOT:-/var/lib/hhs/ubuntu-guest}"
 RELEASE_ROOT="$ROOT/releases"
 STATE_ROOT="$RELEASE_ROOT/$TARGET_SHA"
+PERSISTENT_VM="${HHS_GUEST_PERSISTENT_VM:-0}"
+RUNTIME_STATE_ROOT="$STATE_ROOT"
+if [[ "$PERSISTENT_VM" == "1" ]]; then
+  RUNTIME_STATE_ROOT="$ROOT/machine"
+fi
 IMAGE_ROOT="$ROOT/images"
-KEY_ROOT="$STATE_ROOT/keys"
-SEED_ROOT="$STATE_ROOT/seed"
+KEY_ROOT="$RUNTIME_STATE_ROOT/keys"
+SEED_ROOT="$RUNTIME_STATE_ROOT/seed"
 SSH_PORT="${HHS_GUEST_SSH_PORT:-2222}"
 RUNTIME_HTTP_PORT="${HHS_GUEST_RUNTIME_HTTP_PORT:-18080}"
 GUEST_RUNTIME_HTTP_PORT="${HHS_GUEST_RUNTIME_GUEST_PORT:-8080}"
@@ -67,7 +72,7 @@ for tool in qemu-system-x86_64 qemu-img cloud-localds ssh; do
 done
 
 install -d -m 0750 "$ROOT" "$RELEASE_ROOT" "$IMAGE_ROOT"
-install -d -m 0700 "$STATE_ROOT" "$KEY_ROOT" "$SEED_ROOT"
+install -d -m 0700 "$STATE_ROOT" "$RUNTIME_STATE_ROOT" "$KEY_ROOT" "$SEED_ROOT"
 
 BASE_IMAGE="$IMAGE_ROOT/$IMAGE_FILENAME"
 if [[ -f "$BASE_IMAGE" ]]; then
@@ -221,8 +226,12 @@ payload={
 output.write_text("#cloud-config\n" + json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 PY
 
+INSTANCE_ID="hhs-i044-$TARGET_SHA"
+if [[ "$PERSISTENT_VM" == "1" ]]; then
+  INSTANCE_ID="hhs-unified-lane5-machine"
+fi
 cat > "$META_DATA" <<EOF
-instance-id: hhs-i044-$TARGET_SHA
+instance-id: $INSTANCE_ID
 local-hostname: hhs-ubuntu-guest
 EOF
 
@@ -234,9 +243,9 @@ ENV_FILE="$STATE_ROOT/runtime.env"
 cat > "$ENV_FILE" <<EOF
 HHS_GUEST_BASE_IMAGE=$BASE_IMAGE
 HHS_GUEST_BASE_SHA256=$IMAGE_SHA256
-HHS_GUEST_STATE_ROOT=$STATE_ROOT
+HHS_GUEST_STATE_ROOT=$RUNTIME_STATE_ROOT
 HHS_GUEST_BASE_FORMAT=qcow2
-HHS_GUEST_NAME=hhs-ubuntu-$TARGET_SHA
+HHS_GUEST_NAME=hhs-ubuntu-unified
 HHS_GUEST_MEMORY_MIB=$MEMORY_MIB
 HHS_GUEST_CPUS=$CPUS
 HHS_GUEST_SSH_PORT=$SSH_PORT
@@ -252,7 +261,7 @@ HHS_GUEST_PYTHON_BIN=python3
 EOF
 chmod 0600 "$ENV_FILE"
 
-python3 - "$STATE_ROOT/preparation.receipt.json" "$TARGET_SHA" "$IMAGE_URL" "$IMAGE_SHA256" "$BASE_IMAGE" "$SEED_IMAGE" "$KNOWN_HOSTS" <<'PY'
+python3 - "$STATE_ROOT/preparation.receipt.json" "$TARGET_SHA" "$IMAGE_URL" "$IMAGE_SHA256" "$BASE_IMAGE" "$SEED_IMAGE" "$KNOWN_HOSTS" "$RUNTIME_STATE_ROOT" "$PERSISTENT_VM" <<'PY'
 import hashlib, json, sys
 from datetime import datetime, timezone
 from pathlib import Path
