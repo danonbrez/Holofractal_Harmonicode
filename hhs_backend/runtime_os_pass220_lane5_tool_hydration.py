@@ -62,9 +62,11 @@ class Pass220Lane5ToolWarmLifecycle:
         self._receipt: dict[str, Any] | None = None
         self._failure: dict[str, str] | None = None
         self._started = False
+        self._warming = False
 
     def startup(self) -> dict[str, Any]:
         self._started = True
+        self._warming = True
         try:
             receipt = warm_pass219_220_tool_vector_store(
                 self.repository_root,
@@ -87,6 +89,8 @@ class Pass220Lane5ToolWarmLifecycle:
                 "failure_type": type(exc).__name__,
                 "reason": str(exc),
             }
+        finally:
+            self._warming = False
         return self.status()
 
     def shutdown(self) -> dict[str, Any]:
@@ -94,10 +98,16 @@ class Pass220Lane5ToolWarmLifecycle:
 
     def status(self) -> dict[str, Any]:
         if self._receipt is None:
+            state = (
+                "WARMING_NONBLOCKING"
+                if self._warming
+                else ("FAIL_CLOSED_UNAVAILABLE" if self._started else "NOT_STARTED")
+            )
             return {
                 "schema": "HHS_PASS_220_LANE5_GLOBAL_TOOL_WARM_STATUS_V1",
                 "started": self._started,
-                "state": "FAIL_CLOSED_UNAVAILABLE" if self._started else "NOT_STARTED",
+                "state": state,
+                "warming": self._warming,
                 "available_to_lane5": False,
                 "lane5_selection_changed": False,
                 "candidate_only": True,
@@ -182,8 +192,19 @@ def install_pass220_lane5_tool_warm_hydration(
     @asynccontextmanager
     async def pass220_lane5_tool_warm_lifespan(app_instance):
         async with inherited_lifespan(app_instance):
-            await asyncio.to_thread(lifecycle.startup)
-            yield
+            # Deployment warming is deliberately post-start and nonblocking.
+            # Lane 5 tool availability remains fail-closed until the task seals
+            # the complete candidate-only vector graph.
+            warm_task = asyncio.create_task(
+                asyncio.to_thread(lifecycle.startup),
+                name="hhs-pass220-lane5-tool-warm",
+            )
+            try:
+                yield
+            finally:
+                # A normal shutdown waits for the bounded repository hydration
+                # task so persistent vector writes are not abandoned mid-record.
+                await warm_task
 
     app.router.lifespan_context = pass220_lane5_tool_warm_lifespan
     return lifecycle
