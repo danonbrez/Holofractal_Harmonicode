@@ -91,6 +91,17 @@ done
 timeout 2700s "${SSH[@]}" 'sudo cloud-init status --wait --long'
 "${SSH[@]}" 'test -f /var/lib/hhs/guest-bootstrap/ready'
 
+PERSISTENT_VM="${HHS_GUEST_PERSISTENT_VM:-0}"
+if [[ "$PERSISTENT_VM" == "1" ]]; then
+  CURRENT_GUEST_SHA="$("${SSH[@]}" 'git -C /opt/holofractal-harmonicode rev-parse HEAD')"
+  if [[ "$CURRENT_GUEST_SHA" != "$TARGET_SHA" ]]; then
+    "${SSH[@]}" "sudo git -C /opt/holofractal-harmonicode fetch --depth=1 origin '$TARGET_SHA' && sudo git -C /opt/holofractal-harmonicode checkout --detach '$TARGET_SHA'"
+    "${SSH[@]}" "sudo env REPO_ROOT=/opt/holofractal-harmonicode HHS_APPLICATION_VM_REQUIRE_GUI=0 HHS_APPLICATION_VM_INSTALL_GUI=0 bash /opt/holofractal-harmonicode/deployment/ubuntu/application_vm/install.sh"
+    "${SSH[@]}" "sudo env REPO_ROOT=/opt/holofractal-harmonicode bash /opt/holofractal-harmonicode/deployment/ubuntu/guest_runtime/install-unified-guest-ide.sh"
+    "${SSH[@]}" "git -C /opt/holofractal-harmonicode rev-parse HEAD | sudo tee /var/lib/hhs/guest-bootstrap/repository-sha >/dev/null"
+  fi
+fi
+
 GUEST_SHA="$("${SSH[@]}" 'cat /var/lib/hhs/guest-bootstrap/repository-sha')"
 [[ "$GUEST_SHA" == "$TARGET_SHA" ]] \
   || fail "guest repository mismatch: expected=$TARGET_SHA actual=$GUEST_SHA"
@@ -200,6 +211,8 @@ payload={
     "schema": "HHS_PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_RECEIPT_V1",
     "target_sha": target,
     "base_sha256": prep["base_sha256"],
+    "persistent_vm": prep.get("persistent_vm", False),
+    "runtime_state_root": prep.get("runtime_state_root"),
     "guest_running": runtime["running"],
     "guest_pid": runtime["pid"],
     "ssh_loopback_only": runtime["ssh"]["loopback_only"],
