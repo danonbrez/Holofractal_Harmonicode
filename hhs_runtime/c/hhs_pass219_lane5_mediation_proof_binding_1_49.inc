@@ -1,5 +1,7 @@
 #include "../include/hhs_pass219_lane5_mediation_proof_binding_1_49.h"
 
+#include <openssl/evp.h>
+
 #include <string.h>
 
 static uint64_t hhs_l5pb_mix_u64(uint64_t hash, uint64_t value) {
@@ -19,6 +21,48 @@ static uint64_t hhs_l5pb_mix_bytes(uint64_t hash, const void *data, size_t lengt
         hash *= UINT64_C(1099511628211);
     }
     return hash;
+}
+
+static size_t hhs_l5pb_append(
+    uint8_t *out,
+    size_t capacity,
+    size_t cursor,
+    const void *data,
+    size_t length
+) {
+    if (out == NULL || data == NULL || cursor > capacity || length > capacity - cursor)
+        return SIZE_MAX;
+    if (length != 0U)
+        memcpy(out + cursor, data, length);
+    return cursor + length;
+}
+
+static size_t hhs_l5pb_append_u32_be(
+    uint8_t *out,
+    size_t capacity,
+    size_t cursor,
+    uint32_t value
+) {
+    const uint8_t bytes[4] = {
+        (uint8_t)(value >> 24U),
+        (uint8_t)(value >> 16U),
+        (uint8_t)(value >> 8U),
+        (uint8_t)value
+    };
+    return hhs_l5pb_append(out, capacity, cursor, bytes, sizeof(bytes));
+}
+
+static size_t hhs_l5pb_append_u64_be(
+    uint8_t *out,
+    size_t capacity,
+    size_t cursor,
+    uint64_t value
+) {
+    uint8_t bytes[8];
+    size_t i;
+    for (i = 0U; i < 8U; ++i)
+        bytes[7U - i] = (uint8_t)(value >> (8U * i));
+    return hhs_l5pb_append(out, capacity, cursor, bytes, sizeof(bytes));
 }
 
 static int hhs_l5pb_zero_sum_all_zero(
@@ -136,6 +180,7 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_binding_authority(
     authority.capability_registry_recomputed = 1U;
     authority.direct_witness_route_recomputed = 1U;
     authority.global_constraint_membrane_recomputed = 1U;
+    authority.global_environment_request_bound = 1U;
     authority.exact_zero_sum_residual_vector_derived = 1U;
     authority.deterministic_proof_binding = 1U;
     authority.candidate_only = 1U;
@@ -210,6 +255,132 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_hash216_reference_signature(
     return HHS_EXACT_STATUS_OK;
 }
 
+HHSExactStatus hhs_exact_pass219_lane5_mediation_environment_root(
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    const HHSExactPass219Lane5DirectWitnessReceiptV1 *direct_witness_receipt,
+    uint8_t out_root[HHS_EXACT_PASS219_LANE5_MEDIATION_ENVIRONMENT_ROOT_BYTES]
+) {
+    static const uint8_t domain[] =
+        "HHS-P219-LANE5-MEDIATION-ENVIRONMENT-ROOT-1.49";
+    HHSExactPass219Lane5MediationReceiptV1 base;
+    uint8_t material[2048];
+    size_t cursor = 0U;
+    uint32_t i;
+    unsigned int digest_length = 0U;
+    HHSExactStatus status;
+
+    if (request == NULL || direct_witness_receipt == NULL || out_root == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    memset(out_root, 0, HHS_EXACT_PASS219_LANE5_MEDIATION_ENVIRONMENT_ROOT_BYTES);
+
+    memset(&base, 0, sizeof(base));
+    status = hhs_exact_pass219_lane5_mediate_candidate(request, &base);
+    if (status != HHS_EXACT_STATUS_OK ||
+        base.decision != HHS_EXACT_PASS219_LANE5_DECISION_CANDIDATE_READY ||
+        direct_witness_receipt->struct_size !=
+            (uint32_t)sizeof(*direct_witness_receipt) ||
+        direct_witness_receipt->version !=
+            HHS_EXACT_PASS219_LANE5_DIRECT_WITNESS_ROUTING_VERSION ||
+        direct_witness_receipt->namespace_id !=
+            HHS_EXACT_PASS219_LANE5_DIRECT_WITNESS_ROUTING_NAMESPACE ||
+        direct_witness_receipt->accepted != 1U ||
+        direct_witness_receipt->candidate_only != 1U ||
+        direct_witness_receipt->canonical_mutation_authority != 0U ||
+        direct_witness_receipt->canonical_hash72_authority != 0U ||
+        direct_witness_receipt->canonical_hash216_authority != 0U ||
+        direct_witness_receipt->canonical_persistence_authority != 0U ||
+        direct_witness_receipt->pqc_key_authority != 0U ||
+        direct_witness_receipt->receipt_clock_authority != 0U ||
+        direct_witness_receipt->requires_signed_environmental_vm81_admission != 1U ||
+        direct_witness_receipt->route_receipt_signature64 !=
+            request->learning_iteration_signature64)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    cursor = hhs_l5pb_append(
+        material, sizeof(material), cursor, domain, sizeof(domain) - 1U);
+    cursor = hhs_l5pb_append_u32_be(
+        material, sizeof(material), cursor, request->learning_stage);
+    cursor = hhs_l5pb_append_u32_be(
+        material, sizeof(material), cursor, request->hash216_reference_count);
+    cursor = hhs_l5pb_append_u32_be(
+        material, sizeof(material), cursor, request->capability_reference_count);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, base.mediation_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->request_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->candidate_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->parent_hash216_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->bigint_address_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->hydration_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->compression_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->capability_registry_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->learning_iteration_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->rna_prepared_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor, request->rna_decision_signature64);
+
+    for (i = 0U; i < request->hash216_reference_count && cursor != SIZE_MAX; ++i)
+        cursor = hhs_l5pb_append_u64_be(
+            material, sizeof(material), cursor,
+            request->hash216_reference_signature64[i]);
+    for (i = 0U; i < request->capability_reference_count && cursor != SIZE_MAX; ++i)
+        cursor = hhs_l5pb_append_u64_be(
+            material, sizeof(material), cursor,
+            request->capability_reference_signature64[i]);
+
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor,
+        direct_witness_receipt->descriptor_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor,
+        direct_witness_receipt->route_receipt_signature64);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor,
+        direct_witness_receipt->represented_span);
+    cursor = hhs_l5pb_append_u64_be(
+        material, sizeof(material), cursor,
+        direct_witness_receipt->integer_route_cost);
+    cursor = hhs_l5pb_append_u32_be(
+        material, sizeof(material), cursor,
+        direct_witness_receipt->phase_slot);
+    cursor = hhs_l5pb_append_u32_be(
+        material, sizeof(material), cursor,
+        direct_witness_receipt->inverse_phase_slot);
+    cursor = hhs_l5pb_append(
+        material, sizeof(material), cursor,
+        &direct_witness_receipt->trinary_collapse,
+        sizeof(direct_witness_receipt->trinary_collapse));
+    cursor = hhs_l5pb_append(
+        material, sizeof(material), cursor,
+        &direct_witness_receipt->binary_collapse,
+        sizeof(direct_witness_receipt->binary_collapse));
+    cursor = hhs_l5pb_append(
+        material, sizeof(material), cursor,
+        &direct_witness_receipt->nested_zero_slot,
+        sizeof(direct_witness_receipt->nested_zero_slot));
+
+    if (cursor == SIZE_MAX)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (EVP_Digest(
+            material,
+            cursor,
+            out_root,
+            &digest_length,
+            EVP_sha256(),
+            NULL) != 1 ||
+        digest_length != HHS_EXACT_PASS219_LANE5_MEDIATION_ENVIRONMENT_ROOT_BYTES)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    return HHS_EXACT_STATUS_OK;
+}
+
 HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
     const HHSExactPass219Lane5MediationRequestV1 *request,
     const HHSExactPass219Lane5MediationProofBundleV1 *proof,
@@ -225,6 +396,7 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
     uint64_t frame_signature = 0U;
     uint64_t parent_signature = 0U;
     uint64_t hash216_set_signature = UINT64_C(1469598103934665603);
+    uint8_t expected_environment_root[HHS_EXACT_PASS219_LANE5_MEDIATION_ENVIRONMENT_ROOT_BYTES];
     uint64_t global_signature;
     uint64_t proof_signature = UINT64_C(1469598103934665603);
     uint32_t i;
@@ -344,6 +516,16 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
             request->request_signature64 ||
         request->learning_iteration_signature64 !=
             replay_route.route_receipt_signature64)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    memset(expected_environment_root, 0, sizeof(expected_environment_root));
+    status = hhs_exact_pass219_lane5_mediation_environment_root(
+        request, &replay_route, expected_environment_root);
+    if (status != HHS_EXACT_STATUS_OK ||
+        memcmp(
+            proof->global_membrane_input->global_symbol_environment_root,
+            expected_environment_root,
+            sizeof(expected_environment_root)) != 0)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     memset(&replay_global, 0, sizeof(replay_global));
