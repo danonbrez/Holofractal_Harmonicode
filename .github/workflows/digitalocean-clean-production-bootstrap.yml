@@ -22,7 +22,7 @@ jobs:
     env:
       HHS_HOST: 159.65.178.254
       HHS_USER: root
-      TARGET_SHA: a3b57549dc6595955d3e1d5552c7ebf80741db8b
+      TARGET_SHA: c5c49314dd69b696da0a8c5a0532b050aa5f475c
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
       - name: Check out exact main
