@@ -14,6 +14,8 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-24.04
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
     timeout-minutes: 5
     steps:
       - name: Probe production candidates from GitHub runner
@@ -32,6 +34,12 @@ jobs:
             echo "-- route --"
             ip route get "$host" || true
           done
+          echo "=== DEPLOY SECRET PUBLIC FINGERPRINT ==="
+          install -d -m 0700 /tmp/hhs-secret-key
+          printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > /tmp/hhs-secret-key/private
+          chmod 0600 /tmp/hhs-secret-key/private
+          ssh-keygen -y -f /tmp/hhs-secret-key/private > /tmp/hhs-secret-key/public
+          ssh-keygen -lf /tmp/hhs-secret-key/public
           echo "=== CLEAN HOST SSH KEY ==="
           mkdir -p /tmp/hhs-probe
           ssh-keyscan -T 8 -t ed25519 165.227.64.72 > /tmp/hhs-probe/known_hosts
