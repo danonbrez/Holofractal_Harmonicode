@@ -15,8 +15,10 @@ production Linux host
   -> Ubuntu guest
   -> strict loopback SSH + real PTY
   -> exact HHS repository SHA inside guest
-  -> inherited hhs-application-vm / Pass 190
-  -> Lane 5 / VM81 canonical admission
+  -> inherited hhs-application-vm / Pass 190 adapter
+  -> Pass 219 cumulative inherited authority
+  -> Lane 5 C++ BIOS / AGI optimization control center
+  -> signed environmental VM81 canonical admission
 ```
 
 No I044 component is a new HHS canonical state authority.
@@ -127,9 +129,15 @@ new_vm81_authority = false
 frontend_attached = false
 ```
 
-The QEMU host layer, Ubuntu guest, cloud-init metadata, SSH transport, and PTY
-are conventional execution/transport surfaces. Canonical HHS mutations remain
-downstream of the inherited Lane 5 / Pass 190 / VM81 path.
+The QEMU host layer, Ubuntu guest, cloud-init metadata, SSH transport, PTY, and
+Pass 190 application service are conventional execution/transport/application
+surfaces subordinate to Pass 219. Canonical HHS mutations remain downstream of
+the Pass 219 -> Lane 5 -> signed environmental VM81 path.
+
+Lane 5 is the Pass 219 C++ BIOS and AGI optimization control center. Its
+reasoning/optimization circuits are callable bounded circuits; guest boot,
+service startup, PTY availability, or frontend attachment does not imply a
+continuous autonomous optimization loop.
 
 ## CI and production execution
 
@@ -170,5 +178,6 @@ Droplet was created and the existing Droplet was not powered on from this cycle.
 
 Once the real guest is proven, the next cycle may attach the Native Visual IDE
 terminal/status adapter to the guest transport. That adapter must consume the
-authenticated guest/PTY boundary and must not reinterpret the existing Pass 190
+authenticated guest/PTY boundary, preserve the Pass 219 -> Lane 5 -> signed
+VM81 authority hierarchy, and must not reinterpret the existing Pass 190
 `/v1/vm/shell` endpoint as a general Linux terminal.
