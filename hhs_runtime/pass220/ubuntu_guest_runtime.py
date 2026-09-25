@@ -1,9 +1,11 @@
 """Pass 220 I043 host-side Ubuntu guest lifecycle and PTY transport.
 
-This module sits *beneath* the existing Ubuntu application-VM control plane.
-It owns guest artifact identity, QEMU lifecycle, and authenticated SSH/PTTY
-transport only. It never commits VM81/Hash72/Hash216 state and never replaces
-the Pass 190 operation authority running inside the guest.
+This module provides Pass 220 host-side guest substrate beneath the Ubuntu
+application adapter. It owns guest artifact identity, QEMU lifecycle, and
+authenticated SSH/PTTY transport only. It never commits VM81/Hash72/Hash216
+state and never displaces the cumulative Pass 219 authority. Pass 190 remains
+an inherited application/capability adapter into Pass 219 rather than an
+independent operation authority.
 """
 from __future__ import annotations
 
@@ -249,7 +251,7 @@ class GuestPTYSession:
 
 
 class UbuntuGuestRuntime:
-    """Host-side guest artifact, lifecycle, and transport authority."""
+    """Host-side guest artifact, lifecycle, and transport controller."""
 
     def __init__(self, config: GuestRuntimeConfig) -> None:
         self.config = config
@@ -433,6 +435,10 @@ class UbuntuGuestRuntime:
             "hypervisor": "QEMU",
             "accelerator_policy": "KVM_THEN_TCG",
             "existing_application_vm_control_plane_inside_guest": True,
+            "pass219_system_contract_authority": True,
+            "pass220_descendant_projection_only": True,
+            "lane5_cpp_bios_agi_optimization_control_center": True,
+            "optimization_execution_model": "CALLABLE_BOUNDED_CIRCUITS_NOT_AMBIENT_LOOP",
             "canonical_state_authority": False,
             "new_vm81_authority": False,
             "new_hash72_mint_authority": False,
