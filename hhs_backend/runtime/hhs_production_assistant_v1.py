@@ -1,13 +1,15 @@
-"""Production HHS assistant provider hierarchy.
+"""Production HHS unified chatbot provider fabric.
 
 Provider order:
-1. configured Gemma model through LiteRT-LM, only when the configured alias is
-   present in the provider model registry;
-2. repository-native HHS local-text provider through the same LiteRT-compatible
-   conversation, tool, policy, receipt, and result-ingress pipeline, only when
-   Pass 148/151 and an active offline-ready Pass 166 Word2Vec model are ready;
-3. a closed provider-unavailable turn. No canned or simulated assistant answer
-   is generated when neither provider is installation-closed.
+1. all registered LiteRT-LM text models, ordered by the declared primary/priority
+   configuration while sharing one witnessed conversation thread;
+2. the repository-native HHS text provider, including its causal model when
+   loaded and its exact semantic/Pass 166 memory path as fallback;
+3. registered Pass 153 open-model generation through the same assistant receipt
+   and result-ingress pipeline;
+4. a closed provider-unavailable turn when no callable member is ready.
+
+The routing layer does not widen VM81, Hash72, Hash216, or Lane 5 authority.
 """
 from __future__ import annotations
 
@@ -416,9 +418,9 @@ class ProductionAssistantService:
             "ok": False,
             "status": "REJECT_ASSISTANT_TURN_WITHOUT_READY_PROVIDER",
             "error": (
-                "No production language provider is ready. The configured Gemma alias "
-                "must be registered in LiteRT-LM, or the native HHS provider must have "
-                "Pass 148/151 ready with an active offline-ready Pass 166 Word2Vec model."
+                "No unified chatbot language member is ready. At least one registered "
+                "LiteRT-LM model, the native HHS language provider, or a registered "
+                "Pass 153 open model must be callable."
             ),
             "thread_id": thread_id,
             "user_message": dict(user_message),
@@ -426,6 +428,11 @@ class ProductionAssistantService:
             "provider_hierarchy": [
                 getattr(self.model_service, "provider_id", None),
                 getattr(self.native_service, "provider_id", None),
+                (
+                    getattr(self.pass153_service, "provider_id", None)
+                    if self.pass153_service is not None
+                    else None
+                ),
             ],
             "gemma_health": dict(gemma_health),
             "native_health": dict(native_health),
