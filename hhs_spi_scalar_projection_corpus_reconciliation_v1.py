@@ -31,7 +31,7 @@ from hhs_spi_scalar_projection_corpus_v1 import repository_coverage_manifest
 
 FORMAT = "HHS_SPI_CORPUS_PROJECTION_RECONCILIATION_V1"
 VERSION = "1.0.0"
-EXPECTED_BASE_MANIFEST_SHA256 = "fc421b2f84d7186693ba02e40515d7dcf471efe4fd6ade3b3a3ab662e36ef5a7"
+EXPECTED_BASE_MANIFEST_SHA256 = "41cbbce77c7fbe5cb39c4aa1bd5a6797d0e6b1fba1f4582a4ccf744de0d870b5"
 
 PROFILES: Dict[str, Dict[str, Any]] = {
     "(pq+u⁷²)^x": {
@@ -203,6 +203,99 @@ PROFILES: Dict[str, Dict[str, Any]] = {
         "derivation": ("preserve squared phase coordinate without assigning scalar magnitude",),
         "lost_information": ("Q-valued magnitude is intentionally not supplied",),
         "notes": ("Unicode source spelling; no scalar x value is inferred.",),
+    },
+    "(10^9)^List": {
+        "projection_id": "SPI-CORPUS-LEXICAL-PARTIAL-LIST-EXP-v1",
+        "coverage_state": SYMBOLIC,
+        "result": None,
+        "profile": "PARSER-LIMIT-WITNESS-v1",
+        "premises": ("raw source span retained",),
+        "derivation": (
+            "scanner sees the prefix (10^9)^List inside a typed List constructor",
+            "do not infer list exponent semantics from the partial lexical match",
+        ),
+        "lost_information": ("complete List constructor AST unavailable in parser v1",),
+        "notes": ("Parser limitation; no scalar exponent is asserted.",),
+    },
+    "e^t": {
+        "projection_id": "SPI-CORPUS-E-T-SYMBOLIC-EXP-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "e^t"},
+        "profile": "SYMBOLIC-EXPONENTIAL-v1",
+        "premises": ("e and t remain typed source symbols",),
+        "derivation": ("preserve e^t as an ordered symbolic exponential",),
+        "lost_information": ("no host-E or numeric-time scalar value is assigned",),
+        "notes": ("Source-preserving symbolic projection only.",),
+    },
+    "e^(y*Pi)": {
+        "projection_id": "SPI-CORPUS-TERMINAL-E-YPI-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "e^(y*Pi)"},
+        "profile": "SYMBOLIC-TERMINAL-EXPONENTIAL-v1",
+        "premises": ("terminal phase surface retained verbatim",),
+        "derivation": ("retain the terminal exponential as a typed symbolic object",),
+        "lost_information": ("no host exponential/angle evaluation is authorized",),
+        "notes": ("Does not scalarize the terminal ordered-constraint segment.",),
+    },
+    "s^2": {
+        "projection_id": "SPI-CORPUS-S2-SYMBOLIC-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "s^2"},
+        "profile": "ORDERED-SCALE-SQUARE-v1",
+        "premises": ("s remains a typed scale carrier",),
+        "derivation": ("preserve squared scale coordinate without assigning a scalar magnitude",),
+        "lost_information": ("Q-valued scale magnitude is intentionally not supplied",),
+        "notes": ("No scalar s value is inferred.",),
+    },
+    "y^2": {
+        "projection_id": "SPI-CORPUS-Y2-PHASE-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "y^2"},
+        "profile": "ORDERED-PHASE-SQUARE-v1",
+        "premises": ("y remains a native ordered phase carrier",),
+        "derivation": ("preserve squared phase coordinate without assigning scalar magnitude",),
+        "lost_information": ("Q-valued magnitude is intentionally not supplied",),
+        "notes": ("No scalar y value is inferred.",),
+    },
+    "y^4": {
+        "projection_id": "SPI-CORPUS-Y4-PHASE-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "y^4"},
+        "profile": "ORDERED-PHASE-QUARTIC-v1",
+        "premises": ("y remains a native ordered phase carrier",),
+        "derivation": ("preserve quartic phase coordinate without assigning scalar magnitude",),
+        "lost_information": ("Q-valued magnitude is intentionally not supplied",),
+        "notes": ("No scalar y value is inferred.",),
+    },
+    "w^2": {
+        "projection_id": "SPI-CORPUS-W2-PHASE-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "w^2"},
+        "profile": "ORDERED-PHASE-SQUARE-v1",
+        "premises": ("w remains a native ordered phase carrier",),
+        "derivation": ("preserve squared phase coordinate without assigning scalar magnitude",),
+        "lost_information": ("Q-valued magnitude is intentionally not supplied",),
+        "notes": ("No scalar w value is inferred.",),
+    },
+    "w^4": {
+        "projection_id": "SPI-CORPUS-W4-PHASE-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "w^4"},
+        "profile": "ORDERED-PHASE-QUARTIC-v1",
+        "premises": ("w remains a native ordered phase carrier",),
+        "derivation": ("preserve quartic phase coordinate without assigning scalar magnitude",),
+        "lost_information": ("Q-valued magnitude is intentionally not supplied",),
+        "notes": ("No scalar w value is inferred.",),
+    },
+    "(u==2.133185666641251470403352397272)^72": {
+        "projection_id": "SPI-CORPUS-U-RELATION-72-v1",
+        "coverage_state": SYMBOLIC,
+        "result": {"formal": "(u==2.133185666641251470403352397272)^72"},
+        "profile": "TYPED-RELATIONAL-POWER-CARRIER-v1",
+        "premises": ("u relation remains a typed constructor object",),
+        "derivation": ("preserve relation under exponent-72 carrier without Boolean evaluation",),
+        "lost_information": ("ordinary scalar/Boolean power semantics are intentionally not supplied",),
+        "notes": ("Host True/False collapse is forbidden.",),
     },
 }
 
