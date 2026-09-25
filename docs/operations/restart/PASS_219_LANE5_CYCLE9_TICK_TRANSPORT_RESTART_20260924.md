@@ -193,3 +193,51 @@ If interrupted:
 4. merge only after exact-head validation is green;
 5. verify `main` contains the merged Cycle 9 head;
 6. continue with the workload enclosure or typed Delta shared-domain bridge.
+
+
+## Repository-visible delivery checkpoint
+
+Pull request:
+
+```text
+#572 Pass 219 Lane 5 Cycle 9: proof-preserving tick transport
+```
+
+Exact PR head before this checkpoint record:
+
+```text
+f52ab663fb3a4d0d2527375f0e96bc8c8ea7c16d
+```
+
+Cycle 9 dependency-scoped workflow:
+
+```text
+run    = 36093013537
+status = QUEUED
+result = no failure observed
+```
+
+Completed validation independent of the queued GitHub runner:
+
+```text
+connected Wolfram Language:
+  11/11 PASS
+
+exact Python Fraction replay:
+  73 endpoints
+  72 transitions
+  all constraint residuals zero
+  all licensed rational-bridge residuals zero
+  PASS
+```
+
+A local network checkout was attempted only as an additional convenience check,
+but the execution container had no DNS access to github.com. This is an
+environment-network limitation, not repository evidence and not a project
+failure. The authoritative branch and PR were created through the connected
+GitHub repository service.
+
+Per forward-progress policy, queued external CI does not invalidate the
+restartable implementation checkpoint. Do not merge until the Cycle 9
+dependency-scoped run is terminal green; if it fails, repair only the
+demonstrated Cycle 9/inherited Cycle-5/6 dependency surface.
