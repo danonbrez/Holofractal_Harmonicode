@@ -80,22 +80,28 @@ def _tls_runtime_block(text: str) -> tuple[int, int]:
     return matches[0]
 
 
-def patch_runtime_backend(text: str) -> tuple[str, bool]:
+def patch_runtime_backend(text: str, *, target: str = "guest") -> tuple[str, bool]:
     start, end = _tls_runtime_block(text)
     block = text[start : end + 1]
-    if GUEST_BACKEND in block:
-        if LEGACY_BACKEND in block:
-            raise RuntimeError("HHS_I047_MIXED_HOST_GUEST_BACKENDS")
+    if target not in {"guest", "host"}:
+        raise RuntimeError(f"HHS_I047_PROXY_TARGET_INVALID:{target}")
+    if LEGACY_BACKEND in block and GUEST_BACKEND in block:
+        raise RuntimeError("HHS_I047_MIXED_HOST_GUEST_BACKENDS")
+    desired = GUEST_BACKEND if target == "guest" else LEGACY_BACKEND
+    current = GUEST_BACKEND if GUEST_BACKEND in block else LEGACY_BACKEND
+    if current == desired:
         return text, False
-    if block.count(LEGACY_BACKEND) != 1:
+    if block.count(current) != 1:
         raise RuntimeError(
-            f"HHS_I047_LEGACY_BACKEND_COUNT_INVALID:{block.count(LEGACY_BACKEND)}"
+            f"HHS_I047_BACKEND_COUNT_INVALID:{current}:{block.count(current)}"
         )
-    patched = block.replace(LEGACY_BACKEND, GUEST_BACKEND, 1)
+    patched = block.replace(current, desired, 1)
     marker = "    # HHS_PASS_220_I047_UNIFIED_GUEST_DYNAMIC_BACKEND\n"
-    location = re.search(r"(?m)^\s*location\s+/\s*\{", patched)
-    if location is not None and marker not in patched:
-        patched = patched[: location.start()] + marker + patched[location.start() :]
+    patched = patched.replace(marker, "")
+    if target == "guest":
+        location = re.search(r"(?m)^\s*location\s+/\s*\{", patched)
+        if location is not None:
+            patched = patched[: location.start()] + marker + patched[location.start() :]
     return text[:start] + patched + text[end + 1 :], True
 
 
@@ -151,15 +157,16 @@ def configure(
     snippet_source: Path,
     snippet_destination: Path,
     reload_nginx: bool = True,
+    target: str = "guest",
 ) -> dict[str, object]:
     if not site.is_file():
         raise RuntimeError(f"HHS_I047_NGINX_SITE_MISSING:{site}")
     if not snippet_source.is_file():
         raise RuntimeError(f"HHS_I047_NGINX_SNIPPET_MISSING:{snippet_source}")
 
-    health = verify_guest_transport()
+    health = verify_guest_transport() if target == "guest" else {}
     original_site = site.read_text(encoding="utf-8")
-    updated_site, changed = patch_runtime_backend(original_site)
+    updated_site, changed = patch_runtime_backend(original_site, target=target)
 
     original_snippet = (
         snippet_destination.read_text(encoding="utf-8")
@@ -199,9 +206,10 @@ def configure(
         "site_backup": str(site_backup),
         "snippet": str(snippet_destination),
         "changed": changed,
-        "guest_dynamic_backend": "127.0.0.1:18080",
-        "guest_application_vm_backend": "127.0.0.1:18720",
-        "host_application_compute_authority": False,
+        "target": target,
+        "dynamic_backend": "127.0.0.1:18080" if target == "guest" else "127.0.0.1:8080",
+        "application_vm_backend": "127.0.0.1:18720" if target == "guest" else "127.0.0.1:8720",
+        "host_application_compute_authority": target == "host",
         "canonical_state_authority": False,
         "guest_health_verified": bool(health),
     }
@@ -213,16 +221,22 @@ def main() -> int:
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--snippet-destination", default=DEFAULT_SNIPPET)
     parser.add_argument("--no-reload", action="store_true")
+    parser.add_argument("--target", choices=("guest", "host"), default="guest")
     args = parser.parse_args()
 
     repository_root = Path(args.repository_root).resolve()
     site = Path(args.site).resolve() if args.site else discover_site()
+    snippet_source = (
+        repository_root / "deployment/ubuntu/guest_runtime/nginx-hhs-unified-guest-vm.conf"
+        if args.target == "guest"
+        else repository_root / "deployment/ubuntu/application_vm/nginx-hhs-application-vm.conf"
+    )
     receipt = configure(
         site=site,
-        snippet_source=repository_root
-        / "deployment/ubuntu/guest_runtime/nginx-hhs-unified-guest-vm.conf",
+        snippet_source=snippet_source,
         snippet_destination=Path(args.snippet_destination),
         reload_nginx=not args.no_reload,
+        target=args.target,
     )
     print(json.dumps(receipt, sort_keys=True))
     return 0
