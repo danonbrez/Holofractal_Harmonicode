@@ -35,8 +35,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-          cache-dependency-path: hhs_gui/package-lock.json
 
       - name: Build exact frontend bundle
         shell: bash
