@@ -22,7 +22,7 @@ jobs:
     env:
       HHS_HOST: 159.65.178.254
       HHS_USER: root
-      TARGET_SHA: 3278b587b99ebe56486a30d0a0624830705539cd
+      TARGET_SHA: ff7006c3481a6c49532060a1556a699cc67f092d
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
       - name: Check out exact main
@@ -137,6 +137,7 @@ jobs:
             /var/lib/hhs/pass213/surface
             /var/lib/hhs/pass218
             /var/lib/hhs/pass219/lane5
+            /var/lib/hhs/runtime-api
             /var/lib/hhs/runtime-bootstrap
             /var/lib/hhs/runtime-os/current
             /var/lib/hhs/warm-boot/releases
