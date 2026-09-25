@@ -1,298 +1,98 @@
-name: Pass 220 Ubuntu Application VM Production
+name: Pass 220 Ubuntu Application VM Unified Production Contract
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "hhs_runtime/pass220/**"
+      - "hhs_backend/application_vm_api_server.py"
+      - "hhs_backend/pass220_unified_guest_server.py"
+      - "deployment/ubuntu/application_vm/**"
+      - "deployment/ubuntu/guest_runtime/**"
+      - "deployment/digitalocean/guarded_auto_update/**"
+      - ".github/workflows/digitalocean-production-main.yml"
+      - ".github/workflows/pass220-ubuntu-application-vm-production.yml"
+      - "tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py"
+      - "tests/pass220/test_pass220_i047_unified_lane5_production_vm.py"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/pass220/**"
+      - "hhs_backend/application_vm_api_server.py"
+      - "hhs_backend/pass220_unified_guest_server.py"
+      - "deployment/ubuntu/application_vm/**"
+      - "deployment/ubuntu/guest_runtime/**"
+      - "deployment/digitalocean/guarded_auto_update/**"
+      - ".github/workflows/digitalocean-production-main.yml"
+      - ".github/workflows/pass220-ubuntu-application-vm-production.yml"
+      - "tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py"
+      - "tests/pass220/test_pass220_i047_unified_lane5_production_vm.py"
   workflow_dispatch:
 
 permissions:
   contents: read
 
-concurrency:
-  group: hhs-pass220-ubuntu-application-vm-production
-  cancel-in-progress: true
-
 jobs:
-  deploy-application-vm:
+  unified-production-contract:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 25
     env:
-      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '165.227.220.193' }}
-      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
-      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
-      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
-      TARGET_SHA: ${{ github.sha }}
+      HHS_DISABLE_C_AUTOBUILD: "1"
 
     steps:
-      - name: Check out exact application VM source
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ env.TARGET_SHA }}
-          fetch-depth: 1
+      - uses: actions/checkout@v4
 
-      - name: Set up dependency-scoped Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install dependency-scoped Python requirements
-        shell: bash
-        run: python -m pip install fastapi uvicorn httpx pytest
+      - name: Install dependency-scoped requirements
+        run: python -m pip install fastapi uvicorn httpx pytest pyyaml cryptography requests
 
-      - name: Validate backend-only production surfaces
+      - name: Build and verify inherited native runtime
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile \
-            hhs_runtime/pass220/application_vm_control_plane.py \
-            hhs_runtime/pass220/application_vm_cli.py \
-            hhs_backend/application_vm_api_server.py \
-            deployment/ubuntu/application_vm/configure_production_nginx.py
-          bash -n deployment/ubuntu/application_vm/install.sh
-          bash -n deployment/ubuntu/application_vm/verify.sh
-          sh -n bin/hhs-vm
           make -B c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_runtime_init$'
-          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_validate_abi$'
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_exact_abi_validate$'
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_hash216_compute$'
           ! ldd hhs_runtime/builds/libhhs_runtime.so | grep -q 'not found'
-          HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python - <<'PY'
+          PYTHONPATH="$PWD" python - <<'PY'
           import hhs_python.runtime.hhs_ctypes_bridge
           import hhs_python.runtime.hhs_exact_ctypes_bridge
           import hhs_backend.application_vm_api_server
-          print("HHS_APPLICATION_VM_PREBUILT_NATIVE_PRODUCTION_PREFLIGHT_VERIFIED")
-          PY
-          HHS_DISABLE_C_AUTOBUILD=1 pytest -q tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
-
-      - name: Configure pinned SSH target
-        shell: bash
-        run: |
-          set -euo pipefail
-          [[ -n "${HHS_SSH_PRIVATE_KEY}" ]] || { echo "::error::Missing HHS_DIGITALOCEAN_SSH_PRIVATE_KEY"; exit 2; }
-          [[ -n "${HHS_PINNED_KNOWN_HOSTS}" ]] || { echo "::error::Missing HHS_DIGITALOCEAN_KNOWN_HOSTS"; exit 3; }
-          install -d -m 0700 "$HOME/.ssh"
-          printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
-          chmod 0600 "$HOME/.ssh/hhs-production"
-          printf '%s\n' "${HHS_PINNED_KNOWN_HOSTS}" > "$HOME/.ssh/known_hosts"
-          chmod 0600 "$HOME/.ssh/known_hosts"
-          ssh-keygen -F "${HHS_PRODUCTION_HOST}" -f "$HOME/.ssh/known_hosts" >/dev/null
-          cat > "$HOME/.ssh/config" <<EOF
-          Host ${HHS_PRODUCTION_HOST}
-            IdentityFile $HOME/.ssh/hhs-production
-            BatchMode yes
-            StrictHostKeyChecking yes
-            UserKnownHostsFile $HOME/.ssh/known_hosts
-            UpdateHostKeys no
-          EOF
-          chmod 0600 "$HOME/.ssh/config"
-
-      - name: Deploy independent Ubuntu application VM release
-        shell: bash
-        run: |
-          set -euo pipefail
-          ssh \
-            -i "$HOME/.ssh/hhs-production" \
-            -o BatchMode=yes \
-            -o ConnectTimeout=15 \
-            -o ServerAliveInterval=30 \
-            -o ServerAliveCountMax=20 \
-            -o StrictHostKeyChecking=yes \
-            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
-            "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
-          set -Eeuo pipefail
-          umask 027
-
-          SOURCE_REPO=/opt/hhs/app
-          STATE_ROOT=/var/lib/hhs/application-vm
-          RELEASE_ROOT="$STATE_ROOT/releases"
-          CURRENT_LINK="$STATE_ROOT/current"
-          LOCK_FILE=/run/lock/hhs-application-vm-deploy.lock
-          TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
-          RELEASE="$RELEASE_ROOT/$TARGET_SHA"
-          PREVIOUS=""
-
-          [[ $EUID -eq 0 ]] || { echo "application VM deployment requires root" >&2; exit 10; }
-          git -C "$SOURCE_REPO" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
-            || { echo "production source repository missing at $SOURCE_REPO" >&2; exit 11; }
-
-          install -d -m 0755 "$(dirname "$LOCK_FILE")"
-          exec 8>"$LOCK_FILE"
-          flock -w 30 8 || { echo "application VM deployment lock is busy" >&2; exit 12; }
-
-          if [[ -L "$CURRENT_LINK" ]]; then
-            PREVIOUS="$(readlink -f "$CURRENT_LINK" || true)"
-          fi
-
-          git -C "$SOURCE_REPO" fetch --prune origin main
-          git -C "$SOURCE_REPO" cat-file -e "$TARGET_SHA^{commit}" \
-            || { echo "target commit unavailable after fetch: $TARGET_SHA" >&2; exit 13; }
-
-          install -d -o hhs -g hhs -m 0750 "$STATE_ROOT"
-          install -d -o root -g hhs -m 0755 "$RELEASE_ROOT"
-
-          if [[ -e "$RELEASE" ]]; then
-            if git -C "$RELEASE" rev-parse --verify HEAD >/dev/null 2>&1 \
-              && [[ "$(git -C "$RELEASE" rev-parse HEAD)" == "$TARGET_SHA" ]]; then
-              echo "HHS_APPLICATION_VM_RELEASE_REUSED=$RELEASE"
-            else
-              git -C "$SOURCE_REPO" worktree remove --force "$RELEASE" >/dev/null 2>&1 || rm -rf "$RELEASE"
-            fi
-          fi
-
-          if [[ ! -e "$RELEASE" ]]; then
-            git -C "$SOURCE_REPO" worktree add --detach "$RELEASE" "$TARGET_SHA"
-          fi
-
-          [[ "$(git -C "$RELEASE" rev-parse HEAD)" == "$TARGET_SHA" ]]
-          [[ -z "$(git -C "$RELEASE" status --porcelain=v1 --untracked-files=normal)" ]]
-
-          rollback() {
-            status=$?
-            trap - ERR
-            set +e
-            echo "HHS_APPLICATION_VM_DEPLOY_FAILED=$TARGET_SHA" >&2
-            systemctl status hhs-application-vm.service --no-pager --full >&2 || true
-            journalctl -u hhs-application-vm.service -n 300 --no-pager >&2 || true
-            if [[ -n "$PREVIOUS" && -d "$PREVIOUS" && "$PREVIOUS" != "$RELEASE" ]]; then
-              echo "HHS_APPLICATION_VM_ROLLBACK_TO=$PREVIOUS" >&2
-              REPO_ROOT="$PREVIOUS" \
-              HHS_APPLICATION_VM_REQUIRE_GUI=1 \
-              HHS_APPLICATION_VM_INSTALL_GUI=0 \
-                bash "$PREVIOUS/deployment/ubuntu/application_vm/install.sh" || true
-              python3 "$PREVIOUS/deployment/ubuntu/application_vm/configure_production_nginx.py" \
-                --repository-root "$PREVIOUS" || true
-            fi
-            exit "$status"
-          }
-          trap rollback ERR
-
-          REPO_ROOT="$RELEASE" \
-          HHS_APPLICATION_VM_REQUIRE_GUI=1 \
-          HHS_APPLICATION_VM_INSTALL_GUI=1 \
-            bash "$RELEASE/deployment/ubuntu/application_vm/install.sh"
-
-          python3 "$RELEASE/deployment/ubuntu/application_vm/configure_production_nginx.py" \
-            --repository-root "$RELEASE"
-
-          systemctl is-active --quiet hhs-application-vm.service
-          systemctl is-active --quiet nginx
-          systemctl cat hhs-application-vm.service | grep -Fq "WorkingDirectory=$RELEASE"
-          systemctl show hhs-application-vm.service -p ExecStart --value \
-            | grep -Fq 'hhs_backend.application_vm_api_server:app'
-
-          runuser -u hhs -- env \
-            HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env \
-            bash "$RELEASE/deployment/ubuntu/application_vm/verify.sh"
-
-          listener=$(ss -H -ltn 'sport = :8720')
-          [[ -n "$listener" ]]
-          if printf '%s\n' "$listener" | awk '{print $4}' | grep -Ev '^(127\.0\.0\.1|\[::1\]):' >/dev/null; then
-            echo "port 8720 is not loopback-only" >&2
-            printf '%s\n' "$listener" >&2
-            exit 14
-          fi
-
-          ln -sfnT "$RELEASE" "$CURRENT_LINK"
-          trap - ERR
-          echo "HHS_APPLICATION_VM_BACKEND_RELEASE_VERIFIED=$TARGET_SHA"
-          echo "HHS_APPLICATION_VM_BACKEND_RELEASE_PATH=$RELEASE"
-          REMOTE
-
-      - name: Verify public secure OpenAPI boundary
-        shell: bash
-        run: |
-          set -euo pipefail
-          BASE="https://${HHS_PRODUCTION_HOST}/vm-api"
-
-          curl --fail --silent --show-error --retry 5 --retry-delay 3 \
-            --connect-timeout 10 --max-time 30 \
-            "$BASE/health" >/tmp/hhs-application-vm-public-health.json
-          curl --fail --silent --show-error --retry 5 --retry-delay 3 \
-            --connect-timeout 10 --max-time 30 \
-            "$BASE/openapi.json" >/tmp/hhs-application-vm-public-openapi.json
-
-          unauth_code=$(curl --silent --show-error \
-            --connect-timeout 10 --max-time 30 \
-            --output /tmp/hhs-application-vm-public-unauth.json \
-            --write-out '%{http_code}' \
-            "$BASE/v1/vm/status")
-          [[ "$unauth_code" == "401" ]]
-
-          token=$(ssh \
-            -i "$HOME/.ssh/hhs-production" \
-            -o BatchMode=yes \
-            -o StrictHostKeyChecking=yes \
-            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
-            "runuser -u hhs -- env HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env hhs-vm token issue --principal github-production-verifier --scope runtime.mutate --scope workspace:read --scope workspace:write --scope artifact:read --scope artifact:write --ttl 180" \
-            | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])')
-
-          curl --fail --silent --show-error \
-            --connect-timeout 10 --max-time 30 \
-            -H "Authorization: HHS-Capability $token" \
-            "$BASE/v1/vm/status" >/tmp/hhs-application-vm-public-status.json
-          unset token
-
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          health=json.loads(Path("/tmp/hhs-application-vm-public-health.json").read_text())
-          openapi=json.loads(Path("/tmp/hhs-application-vm-public-openapi.json").read_text())
-          status=json.loads(Path("/tmp/hhs-application-vm-public-status.json").read_text())
-          assert health["ok"] is True
-          assert health["security_configured"] is True
-          assert health["ubuntu"] is True
-          assert health["ubuntu_desktop_components_present"] is True
-          assert health["frontend_attached"] is False
-          assert openapi["x-hhs-application-vm"]["backend_first"] is True
-          assert openapi["x-hhs-application-vm"]["remote_token_issuance"] is False
-          assert "HhsCapabilityToken" in openapi["components"]["securitySchemes"]
-          assert status["single_vm81_authority_preserved"] is True
-          assert status["frontend_attached"] is False
-          print("HHS_APPLICATION_VM_PUBLIC_SECURE_OPENAPI_VERIFIED")
+          import hhs_backend.pass220_unified_guest_server
+          print("HHS_I047_UNIFIED_COMPONENT_IMPORTS_VERIFIED")
           PY
 
-      - name: Seal backend deployment receipt
+      - name: Validate unified production shell and Python surfaces
         shell: bash
         run: |
           set -euo pipefail
-          ssh \
-            -i "$HOME/.ssh/hhs-production" \
-            -o BatchMode=yes \
-            -o StrictHostKeyChecking=yes \
-            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
-            "TARGET_SHA='${TARGET_SHA}' bash -s" <<'REMOTE'
-          set -euo pipefail
-          python3 - "$TARGET_SHA" <<'PY'
-          import json
-          import sys
-          from datetime import datetime, timezone
-          from pathlib import Path
+          bash -n deployment/ubuntu/guest_runtime/prepare-real-guest.sh
+          bash -n deployment/ubuntu/guest_runtime/run-real-guest-integration.sh
+          bash -n deployment/ubuntu/guest_runtime/install-unified-guest-ide.sh
+          bash -n deployment/ubuntu/guest_runtime/manage-unified-vm.sh
+          bash -n deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh
+          bash -n deployment/digitalocean/guarded_auto_update/install.sh
+          python -m py_compile             hhs_runtime/pass220/ubuntu_guest_runtime.py             hhs_backend/pass220_unified_guest_server.py             deployment/ubuntu/guest_runtime/configure-unified-guest-proxy.py             deployment/digitalocean/configure_runtime_os_static_first.py
 
-          sha = sys.argv[1]
-          state = Path("/var/lib/hhs/application-vm")
-          current = (state / "current").resolve()
-          if current.name != sha:
-              raise SystemExit(f"current application VM release mismatch: {current}")
-          payload = {
-              "schema": "HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1",
-              "target_sha": sha,
-              "release": str(current),
-              "bash_cli": "/usr/local/bin/hhs-vm",
-              "loopback": "127.0.0.1:8720",
-              "public_openapi": "https://165.227.220.193/vm-api/openapi.json",
-              "frontend_attached": False,
-              "verified_at": datetime.now(timezone.utc).isoformat(),
-          }
-          tmp = state / "last-success.json.tmp"
-          final = state / "last-success.json"
-          tmp.write_text(
-              json.dumps(payload, sort_keys=True, indent=2) + "\\n",
-              encoding="utf-8",
-          )
-          tmp.replace(final)
-          print(json.dumps(payload, sort_keys=True))
-          PY
-          REMOTE
+      - name: Run dependency-scoped unified VM regressions
+        run: |
+          python -m pytest -q             tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py             tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py             tests/pass220/test_pass220_i044_real_ubuntu_guest_integration.py             tests/pass220/test_pass220_i047_unified_lane5_production_vm.py
+
+      - name: Enforce no independent production host application deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'HHS Lane 5 BIOS Unified VM Supervisor' deployment/ubuntu/guest_runtime/hhs-unified-vm.service
+          ! grep -Fq 'uvicorn' deployment/ubuntu/guest_runtime/hhs-unified-vm.service
+          grep -Fq 'run-real-guest-integration.sh' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh
+          grep -Fq 'configure-unified-guest-proxy.py' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh
+          grep -Fq 'host application listener on 8080 remains after unified VM cutover' .github/workflows/digitalocean-production-main.yml
+          ! grep -Fq 'Deploy independent Ubuntu application VM release' .github/workflows/pass220-ubuntu-application-vm-production.yml
+          echo "HHS_I047_NO_PARALLEL_HOST_APPLICATION_DEPLOYMENT=1"
