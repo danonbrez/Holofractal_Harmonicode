@@ -179,3 +179,42 @@ that omit the policy are `WIRED_BUT_STALE` until repaired forward.
 
 The policy never creates an additional VM81 mutation authority, persistence
 authority, Hash72 authority, or Hash216 authority.
+
+## Merged-green dataflow nonregression default
+
+The cumulative inheritance rule now includes a machine-enforced merged-green
+dataflow floor.
+
+For Pass 219 and every upstream pass:
+
+```text
+MergedGreenDataflow(p)
+AND ChangedOrRemovedOrBypassed(p)
+=>
+ValidatedSuccessorProof(CurrentPullRequest, p)
+```
+
+A later pass, refactor, optimization, migration, application, or cleanup cannot
+silently narrow a previously merged green flow.
+
+Protected edits require either a backward-compatible iteration proof or a
+repair-forward refinement proof. The proof is bound to the actual merge base,
+predecessor/successor Git blobs, preserved identifiers, authority invariants,
+receipt/replay continuity, negative tests, and the fixed inherited validation
+profiles.
+
+The authoritative machine contract and guard are:
+
+```text
+contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json
+contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md
+tools/pass219/pass219_merged_green_dataflow_guard_v1.py
+.github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml
+```
+
+A new sensitive authority call site is treated as a protected change even when
+introduced in a new file, preventing bypass by adding a parallel path rather
+than editing the predecessor.
+
+This rule is cumulative and does not replace Pass 206. A surface protected by
+Pass 206 and this merged-green floor must satisfy both.
