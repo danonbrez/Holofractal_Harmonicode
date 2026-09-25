@@ -42,7 +42,9 @@
     "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md",
     "tools/pass219/pass219_merged_green_dataflow_guard_v1.py",
     "tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py",
-    ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml"
+    ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml",
+    ".github/rulesets/HHS_MAIN_MERGED_GREEN_DATAFLOW_RULESET_V1.json",
+    "contracts/pass219/PASS_219_MAIN_BRANCH_MERGE_RULES_V1.md"
   ],
   "proof_directory": "artifacts/pass219/merged_green_successor_proofs",
   "proof_schema": "HHS_PASS219_MERGED_GREEN_DATAFLOW_SUCCESSOR_PROOF_V1",
@@ -126,7 +128,9 @@
       "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md",
       "tools/pass219/pass219_merged_green_dataflow_guard_v1.py",
       "tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py",
-      ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml"
+      ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml",
+      ".github/rulesets/HHS_MAIN_MERGED_GREEN_DATAFLOW_RULESET_V1.json",
+      "contracts/pass219/PASS_219_MAIN_BRANCH_MERGE_RULES_V1.md"
     ],
     "manifest_set_fields_must_be_monotonic": [
       "protected_roots",
@@ -177,6 +181,35 @@
       "REPAIR_FORWARD_REFINEMENT",
       "Base-guard authority",
       "GitHub merge-layer requirement"
+    ],
+    "ruleset_required_anchors": [
+      "\"name\": \"HHS Main Merged-Green Dataflow Protection\"",
+      "\"branch\": \"main\"",
+      "\"direct_push_allowed\": false",
+      "\"force_push_allowed\": false",
+      "\"branch_deletion_allowed\": false",
+      "\"pull_request_required\": true",
+      "\"branch_must_be_up_to_date_before_merge\": true",
+      "\"merged-green-dataflow-lineage-guard\"",
+      "\"protected_change_requires_successor_proof\": true",
+      "\"base_branch_guard_authoritative\": true",
+      "\"PASS206_CORE_FREEZE\"",
+      "\"PASS219_CUMULATIVE_MEMBRANE\"",
+      "\"EXACT_ABI_BUILD\"",
+      "\"VM81_SINGLE_AUTHORITY\"",
+      "\"HASH72_HASH216_LINEAGE\"",
+      "\"RNA_VM5184_CELL_WALL\""
+    ],
+    "merge_rules_required_anchors": [
+      "MergedGreenDataflow(p)",
+      "ValidatedSuccessorProof(CurrentPullRequest, p)",
+      "BACKWARD_COMPATIBLE_ITERATION",
+      "REPAIR_FORWARD_REFINEMENT",
+      "merged-green-dataflow-lineage-guard",
+      "PROTECTED_MAIN_PUSH_WITHOUT_ASSOCIATED_MERGED_PULL_REQUEST",
+      "No mandatory approval count is specified",
+      "No signed-commit requirement is introduced",
+      "DO NOT MERGE"
     ]
   }
 }
