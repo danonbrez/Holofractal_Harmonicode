@@ -1,0 +1,26 @@
+name: DigitalOcean Production 04 Host Key Capture
+
+on:
+  push:
+    branches:
+      - ops/digitalocean-network-recovery-20260925
+    paths:
+      - '.github/workflows/digitalocean-production04-hostkey-capture.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Capture ED25519 host key only
+        shell: bash
+        run: |
+          set -euo pipefail
+          host=159.65.178.254
+          timeout 8 bash -c "cat < /dev/null > /dev/tcp/$host/22"
+          ssh-keyscan -T 8 -t ed25519 "$host" > /tmp/known_hosts
+          cat /tmp/known_hosts
+          ssh-keygen -lf /tmp/known_hosts
