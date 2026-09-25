@@ -4668,6 +4668,9 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
             "every_modality_exact_5184_bit_projection",
             "every_modality_hash72_witness",
             "every_modality_ordered_hash216_genome",
+            "hash216_genus3_surface_3x8x9",
+            "hash216_surface_8_flat_nonagons_24_vertices_36_edges",
+            "hash216_surface_every_face_neighbors_every_other_face",
             "language_exact_token_identities",
             "pass166_relations_candidate_only",
             "image_sprite216_q144_color_binding",
@@ -4686,6 +4689,8 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
             "REJECT_I042_SHARED_ROOT_SPLIT",
             "REJECT_I042_5184_PROJECTION_LOSS",
             "REJECT_I042_HASH216_GENOME_LOSS",
+            "REJECT_I042_HASH216_GENUS3_TOPOLOGY_DRIFT",
+            "REJECT_I042_HASH216_FACE_ADJACENCY_DRIFT",
             "REJECT_I042_MODALITY_PROVENANCE_LOSS",
             "REJECT_I042_TRANSLATION_PAIR_GAP",
             "REJECT_I042_LANGUAGE_AUTHORITY_ESCALATION",
@@ -4699,7 +4704,7 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
             "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
         ),
         boundedness_policy=(
-            "SIX_MODALITIES_X_5184_BITS_X_216_GENOME_POSITIONS_"
+            "SIX_MODALITIES_X_5184_BITS_X_HASH216_3X8X9_GENUS3_SURFACE_"
             "WITH_30_DIRECTED_ROOT_PRESERVING_TRANSLATIONS"
         ),
     )
