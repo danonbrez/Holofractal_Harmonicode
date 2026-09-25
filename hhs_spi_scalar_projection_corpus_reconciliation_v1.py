@@ -208,7 +208,7 @@ PROFILES: Dict[str, Dict[str, Any]] = {
         "projection_id": "SPI-CORPUS-LEXICAL-PARTIAL-LIST-EXP-v1",
         "coverage_state": SYMBOLIC,
         "result": None,
-        "profile": "PARSER-LIMIT-WITNESS-v1",
+        "profile": "LEXICAL-CONSTRUCTOR-WITNESS-v1",
         "premises": ("raw source span retained",),
         "derivation": (
             "scanner sees the prefix (10^9)^List inside a typed List constructor",
