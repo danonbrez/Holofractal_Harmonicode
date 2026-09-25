@@ -17,6 +17,9 @@ on:
       - "hhs_backend/runtime/**"
       - "hhs_python/runtime/**"
       - "deployment/digitalocean/guarded_auto_update/**"
+      - "hhs_runtime_api_server_v1.py"
+      - "tests/test_hhs_production_runtime_artifact_root_v1.py"
+      - "tests/test_hhs_digitalocean_ledger_recovery_boundary_v1.py"
       - "deployment/digitalocean/pass205_state/**"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_runtime_os_production_root.py"
@@ -43,6 +46,9 @@ on:
       - "hhs_backend/runtime/**"
       - "hhs_python/runtime/**"
       - "deployment/digitalocean/guarded_auto_update/**"
+      - "hhs_runtime_api_server_v1.py"
+      - "tests/test_hhs_production_runtime_artifact_root_v1.py"
+      - "tests/test_hhs_digitalocean_ledger_recovery_boundary_v1.py"
       - "deployment/digitalocean/pass205_state/**"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_runtime_os_production_root.py"
@@ -250,7 +256,9 @@ jobs:
         run: |
           timeout 600s python -m pytest -q \
             tests/test_runtime_os_production_root.py \
-            tests/test_production_visual_server.py
+            tests/test_production_visual_server.py \
+            tests/test_hhs_production_runtime_artifact_root_v1.py \
+            tests/test_hhs_digitalocean_ledger_recovery_boundary_v1.py
 
       - name: Upload Runtime OS production build
         uses: actions/upload-artifact@v4
