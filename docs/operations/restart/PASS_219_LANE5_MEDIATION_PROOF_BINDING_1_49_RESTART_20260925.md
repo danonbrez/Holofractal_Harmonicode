@@ -2,7 +2,7 @@
 
 Date: 2026-09-25
 
-Status: **IMPLEMENTED / RESTARTABLE / DEPENDENCY-SCOPED CI PENDING**
+Status: **IMPLEMENTED / RESTARTABLE / EXACT-HEAD CI PENDING**
 
 ## Repository state
 
@@ -10,14 +10,19 @@ Status: **IMPLEMENTED / RESTARTABLE / DEPENDENCY-SCOPED CI PENDING**
 repository: danonbrez/Holofractal_Harmonicode
 base main: ea3948afecb40a35b61eb7473f094eee6fd63cb0
 branch: repair/pass219-lane5-mediation-proof-binding-1-49-20260925
+PR: #583
 merge target: main
+canonical workflow repair head before this checkpoint:
+  5f748a39720afbee2a55b310502c623643872d2e
 ~~~
 
-Base main already contains the merged I030 Lo Shu repair and I042 genus-3 Hash216 repair-forward.
+The branch is based directly on the verified main state after the I042 merge
+and remains intentionally additive.
 
 ## Root defect
 
-The legacy 1.34 mediator accepted nonzero identity/signature fields and then set these receipt fields to true without replaying their underlying evidence:
+The legacy Lane 5 1.34 mediator accepted nonzero identities/signatures and then
+asserted these receipt fields without replaying the underlying evidence:
 
 ~~~text
 hash216_references_validated
@@ -27,22 +32,98 @@ rna_cell_wall_bound
 zero_sum_closure_passed
 ~~~
 
-That contradicted the global Lane 5 contract's requirement that closure be represented through exact repository-defined invariants and witnesses.
+That contradicted the Lane 5 global contract requirement that closure be
+represented by exact repository-defined invariants and witnesses.
 
-## Repair
+## Implemented repair
 
-1. Legacy 1.34 remains callable for deterministic request/mediation identity binding.
-2. Its five proof-dependent fields now remain zero.
-3. New additive 1.49 proof binding reuses existing authority surfaces:
-   - exact 648-byte VM5184 frame export;
-   - public RNA VM5184 route, which replays the C++ RNA cell wall;
-   - inherited Hash216 verifier including all 216 positional SHA-256 records;
-   - 1.43 capability self-model validator;
-   - exact eight-component signed-integer zero-sum residual witness.
-4. Only the 1.49 proven receipt may set the five proof flags true.
-5. 1.49 remains candidate-only and cannot mutate VM81, mint Hash72/Hash216, persist canonical state, own PQC keys, or own a receipt clock.
-6. The singleton public canonical mutation seam remains:
-   hhs_exact_pass219_vm81_environment_admit_signed
+### Legacy 1.34
+
+1.34 remains callable as the deterministic identity/mediation-signature stage,
+but the five proof-dependent fields now remain zero.
+
+### New 1.49 proof binding
+
+Only 1.49 may set the proof fields after replay/recomputation of:
+
+1. exact 648-byte VM5184 frame identity;
+2. RNA VM5184 -> C++ cell-wall Holo4 prepared/decision evidence;
+3. every Hash216 reference including all 216 ordered positional SHA-256 index
+   records;
+4. the 1.43 executable capability self-model receipt plus referenced-entry
+   membership;
+5. the 1.46 direct-witness route receipt, including contradiction-free,
+   reciprocal/inverse, exact-goal, integer route-cost and candidate-only
+   invariants;
+6. the I121.9 global constraint membrane over one complete shared symbol
+   environment.
+
+### Request-bound global environment
+
+A separately valid all-true global membrane is not sufficient.
+
+1.49 derives a 32-byte SHA-256 environment root from the same mediation object:
+
+~~~text
+domain
++ legacy mediation signature
++ learning stage
++ request/candidate/parent signatures
++ bigint/hydration/compression signatures
++ capability-registry signature
++ learning-iteration signature
++ RNA prepared/decision signatures
++ every ordered Hash216 reference signature
++ every ordered capability reference signature
++ validated 1.46 route descriptor/receipt identity
++ route span/cost/phase/collapse identity
+~~~
+
+The global membrane input must carry that exact root. A valid membrane from
+another request or candidate therefore fails substitution.
+
+### Derived zero-sum closure
+
+There is no public API that accepts a caller-authored zero residual vector.
+
+After all executable validators succeed, 1.49 derives and seals the exact
+eight-component closure witness:
+
+~~~text
+state_change_residual       = 0
+dependency_change_residual  = 0
+phase_change_residual       = 0
+resource_work_residual      = 0
+lineage_residual            = 0
+inverse_recovery_residual   = 0
+local_constraint_residual   = 0
+global_constraint_residual  = 0
+~~~
+
+The derived witness is bound to the request, candidate, parent Hash216, RNA,
+capability registry, 1.46 route receipt and request-bound global membrane.
+
+## Authority preserved
+
+~~~text
+candidate_only = TRUE
+canonical_vm81_mutation_authority = FALSE
+canonical_hash72_authority = FALSE
+canonical_hash216_authority = FALSE
+canonical_persistence_authority = FALSE
+pqc_key_authority = FALSE
+receipt_clock_authority = FALSE
+floating_point_canonical_authority = FALSE
+requires_signed_environmental_vm81_admission = TRUE
+~~~
+
+The singleton public production canonical mutation seam remains:
+
+~~~text
+hhs_exact_pass219_vm81_environment_admit_signed
+~~~
+
+1.49 does not invoke, replace, wrap or bypass that seam.
 
 ## Changed files
 
@@ -60,44 +141,27 @@ docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md
 docs/operations/restart/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49_RESTART_20260925.md
 ~~~
 
-## Native acceptance surface
+## Negative controls
 
-Positive proof binding requires exact equality among:
-
-~~~text
-request candidate signature
-<-> 648-byte VM5184 replay signature
-
-request parent/reference signatures
-<-> validated Hash216 transition identity + ordered positional SHA-256 records
-
-request RNA signatures
-<-> replayed C++ cell-wall Holo4 graph/tensor/decision evidence
-
-request capability references
-<-> recomputed accepted 1.43 capability model and entry identities
-
-zero-sum witness
-<-> eight exact typed zero residuals bound to request/candidate/parent/RNA/capability identities
-~~~
-
-Negative controls cover frame substitution, Hash216 corruption, RNA decision substitution, capability receipt substitution, unregistered capability references, nonzero closure residuals, and closure witness-signature corruption.
-
-## Validation commands encoded in workflow
+The 1.49 native test rejects:
 
 ~~~text
-make clean
-make c-abi
-
-cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic   -Ihhs_runtime/include   tests/pass219/test_pass219_lane5_mediation_proof_binding_1_49.c   -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++
-
-# plus inherited 1.34, RNA VM5184 1.33, capability self-model 1.43,
-# and Lane 5 exact boundary 1.35 regression tests.
+candidate-frame substitution
+Hash216 identity/index corruption
+RNA decision substitution
+capability receipt substitution
+unregistered capability reference
+direct-witness route identity substitution
+global mandatory-gate rejection
+valid all-true global membrane with substituted environment root
 ~~~
 
-## First CI repair-forward
+Legacy 1.34 is separately regressed to prove that all five proof-dependent
+fields remain zero until 1.49 succeeds.
 
-Initial dedicated run:
+## CI history and workflow repair
+
+Initial run:
 
 ~~~text
 run: 36145494411
@@ -105,27 +169,67 @@ job: 108105499950
 result: FAILURE
 ~~~
 
-The cumulative build itself passed, including the canonical GNUmakefile C++ RNA/cell-wall objects. The failure occurred at the new export audit because the aggregate header/source registrations contained a literal backslash-n token from the contents-API patch. The compiler treated the second include as extra preprocessor tokens, so the 1.49 implementation was not compiled into the shared library.
+The cumulative build passed, but the first aggregate registration contained a
+literal backslash-n token, so 1.49 was not compiled into the shared library and
+the export audit failed.
 
-Repair commits:
+Repair commits included:
 
 ~~~text
-6a1826a4cf0a8a4b28231e8b63e09da81d40df83  fix aggregate header registration newline
-ee7004f543184872f42f85aee80cd52bbdd4556e  fix aggregate source registration newline
+6a1826a4cf0a8a4b28231e8b63e09da81d40df83
+ee7004f543184872f42f85aee80cd52bbdd4556e
 ~~~
 
-No proof semantics, authority fields, ABI types, or tests were weakened. The VM81 authority version script requires no expansion because it localizes only the inherited canonical mutation primitives; candidate-only exports remain global by default.
+Subsequent partial workflow edits accumulated duplicate/truncated YAML blocks.
+That was a repository-edit transport defect, not a runtime/proof defect.
+
+The workflow was therefore replaced atomically through Git blob/tree/commit
+objects at:
+
+~~~text
+5f748a39720afbee2a55b310502c623643872d2e
+~~~
+
+Verified properties of that workflow:
+
+~~~text
+native proof-binding step count = 1
+export-audit step count = 1
+environment-root export check = present
+truncated grep commands = absent
+~~~
+
+## Exact-head validation encoded
+
+~~~text
+make clean
+make c-abi
+
+dynamic export audit
+1.49 positive/negative native proof binding
+legacy 1.34 identity-stage regression
+RNA VM5184 1.33 regression
+capability self-model 1.43 regression
+direct-witness 1.46 regression
+global constraint membrane I121.9 regression
+Lane 5 exact boundary 1.35 regression
+~~~
 
 ## Validation remaining
 
-- exact aggregate C/C++ build;
-- dynamic export audit;
-- 1.49 positive/negative native test;
-- inherited 1.34 deterministic mediation regression;
-- inherited RNA VM5184/C++ cell-wall regression;
-- inherited 1.43 capability-registry regression;
-- inherited 1.35 Lane 5 boundary regression.
+1. Run the canonical 1.49 workflow on this checkpoint head.
+2. Repair only dependency-scoped implementation/test failures.
+3. Freeze the exact successful run/job and proof output.
+4. Recompare PR #583 with current main.
+5. If behind, reconcile current main and rerun only impacted validation.
+6. Merge PR #583.
+7. Verify the resulting main merge commit.
+8. Audit the environmental handoff so canonical admission consumes the proven
+   1.49 mediation receipt rather than the legacy 1.34 unproven flags.
 
-## Next action
+## Restart instruction
 
-Open a PR from this exact branch. Repair only dependency-scoped failures. After green 1.49 validation, merge to main, verify the exact main merge commit, then audit the environmental handoff for mandatory consumption of the 1.49 proven mediation receipt.
+Resume from PR #583 and the branch above. First action is to inspect the exact
+head's dedicated **Pass 219 Lane 5 Mediation Proof Binding 1.49** run. Do not
+weaken the proof contract to satisfy CI; repair implementation, build,
+workflow, or test divergence forward.
