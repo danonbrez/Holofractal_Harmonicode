@@ -15,6 +15,12 @@ on:
       - 'tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c'
       - '.github/workflows/pass219-lane5-mediation-proof-binding-1-49.yml'
       - 'docs/operations/restart/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49_RESTART_20260925.md'
+      - 'contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md'
+      - 'docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md'
+      - 'docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md'
+      - 'docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md'
+      - 'hhs_runtime/pass220/ubuntu_guest_runtime.py'
+      - 'tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py'
   pull_request:
     branches:
       - main
@@ -29,6 +35,12 @@ on:
       - 'tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c'
       - '.github/workflows/pass219-lane5-mediation-proof-binding-1-49.yml'
       - 'docs/operations/restart/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49_RESTART_20260925.md'
+      - 'contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md'
+      - 'docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md'
+      - 'docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md'
+      - 'docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md'
+      - 'hhs_runtime/pass220/ubuntu_guest_runtime.py'
+      - 'tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py'
   workflow_dispatch:
 
 permissions:
@@ -103,6 +115,52 @@ jobs:
 
           print('lane5_mediation_proof_binding_static=PASS')
           PY
+
+      - name: Enforce Pass 219 cumulative authority hierarchy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          contract = Path('contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md').read_text()
+          backend = Path('docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md').read_text()
+          i043 = Path('docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md').read_text()
+          i044 = Path('docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md').read_text()
+          runtime = Path('hhs_runtime/pass220/ubuntu_guest_runtime.py').read_text()
+
+          for needle in (
+              'Pass 219 is the cumulative system-contract authority',
+              'Lane 5 is the C++ BIOS and AGI optimization control center',
+              'callable, bounded execution circuits',
+              'Pass220+ = descendant integration/projection surfaces',
+          ):
+              assert needle in contract, needle
+
+          for doc in (backend, i043, i044):
+              assert 'Pass 219' in doc
+              assert 'Lane 5' in doc
+              assert 'signed environmental VM81' in doc
+
+          for forbidden in (
+              'application/runtime authority **inside** an Ubuntu environment',
+              'Pass 190 operation authority running inside the guest',
+              'Ubuntu application VM\n-> repository/runtime authority',
+          ):
+              assert forbidden not in contract + backend + i043 + i044 + runtime, forbidden
+
+          for needle in (
+              '"pass219_system_contract_authority": True',
+              '"pass220_descendant_projection_only": True',
+              '"lane5_cpp_bios_agi_optimization_control_center": True',
+              '"optimization_execution_model": "CALLABLE_BOUNDED_CIRCUITS_NOT_AMBIENT_LOOP"',
+          ):
+              assert needle in runtime, needle
+
+          print('pass219_cumulative_authority_hierarchy=PASS')
+          PY
+
+      - name: Regress Pass 220 guest authority descriptor
+        run: |
+          pytest -q tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py
 
       - name: Build cumulative exact ABI
         run: |
