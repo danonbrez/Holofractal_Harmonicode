@@ -80,9 +80,19 @@ route_receipt_signature64 = request.learning_iteration_signature64
 
 ### 6. Global constraint membrane
 
-The inherited I121.9 Harmonicode global constraint membrane MUST be replayed
-over the supplied complete gate bundle. Its result MUST be byte-identical to
-the supplied result and MUST close as:
+Before global-membrane evaluation, 1.49 MUST derive a 32-byte SHA-256
+environment root from the same mediation object. The root domain binds the
+legacy mediation signature, learning stage, complete ordered request signature
+set, every referenced Hash216 signature, every referenced capability
+signature, and the validated 1.46 direct-witness receipt. The supplied global
+symbol environment root MUST equal this derived root exactly.
+
+Therefore a separately valid all-true global membrane cannot be substituted
+from another request, candidate, lineage, capability graph, or direct route.
+
+The inherited I121.9 Harmonicode global constraint membrane MUST then be
+replayed over the supplied complete gate bundle. Its result MUST be
+byte-identical to the supplied result and MUST close as:
 
 ~~~text
 decision = PROPAGATE
@@ -144,6 +154,7 @@ AND RNACellWallReplay(x)
 AND AllHash216PositionsVerified(x)
 AND CapabilityRegistryRecomputed(x)
 AND DirectWitnessRouteRecomputed(x)
+AND GlobalEnvironmentRequestBound(x)
 AND GlobalConstraintMembraneRecomputed(x)
 AND DerivedExactZeroSumResidualVector(x)
 ~~~
@@ -187,6 +198,7 @@ capability receipt substitution
 capability reference absent from validated registry
 direct-witness route identity substitution
 global membrane rejection / false mandatory gate
+valid global membrane with a substituted environment root
 legacy 1.34 proof flags asserted without 1.49 evidence
 ~~~
 
