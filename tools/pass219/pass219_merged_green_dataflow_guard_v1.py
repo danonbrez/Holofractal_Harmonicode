@@ -386,17 +386,32 @@ def validate_proof_document(
                     )
 
         predecessor_identifiers = extract_identifiers(base_text, base_path)
+        successor_identifiers = extract_identifiers(head_text, path)
+        retained_identifiers = predecessor_identifiers & successor_identifiers
+
         preserved = row.get("preserved_identifiers", [])
         if not isinstance(preserved, list):
             errors.append(f"{proof_path}:{path}:PRESERVED_IDENTIFIERS_INVALID")
             preserved = []
-        if predecessor_identifiers and not preserved:
-            errors.append(f"{proof_path}:{path}:PRESERVED_IDENTIFIERS_MISSING")
+
         replacement_paths = [
             p
             for p in row.get("replacement_paths", [])
             if isinstance(p, str) and git_path_exists(head, p)
         ]
+
+        preserved_set = {
+            identifier
+            for identifier in preserved
+            if isinstance(identifier, str) and identifier
+        }
+        if retained_identifiers and not retained_identifiers.issubset(preserved_set):
+            missing_retained = sorted(retained_identifiers - preserved_set)
+            errors.append(
+                f"{proof_path}:{path}:RETAINED_IDENTIFIERS_NOT_DECLARED:"
+                + ",".join(missing_retained)
+            )
+
         for identifier in preserved:
             if not isinstance(identifier, str) or not identifier:
                 errors.append(f"{proof_path}:{path}:PRESERVED_IDENTIFIER_INVALID")
