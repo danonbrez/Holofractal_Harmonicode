@@ -32,6 +32,7 @@ extern "C" {
 #define HHS_EXACT_PASS219_I168_OP_REPLAY               UINT16_C(0x0400)
 #define HHS_EXACT_PASS219_I168_OP_REVERSE              UINT16_C(0x0800)
 #define HHS_EXACT_PASS219_I168_ALL_OPS                 UINT16_C(0x0FFF)
+#define HHS_EXACT_PASS219_I168_CANDIDATE_OPS           UINT16_C(0x0E7F)
 
 typedef enum HHSExactPass219I168DecisionV1 {
     HHS_EXACT_PASS219_I168_UNRESOLVED = 0,
@@ -76,7 +77,8 @@ typedef struct HHSExactPass219I168RuntimeBindingV1 {
     uint8_t hash216_persistence_authority;
 
     uint16_t vm5184_address;
-    uint16_t reserved0;
+    uint8_t candidate_only_execution_verified;
+    uint8_t requires_environmental_lane5_admission;
     uint64_t forward_vm81_steps;
     uint64_t replay_vm81_steps;
     uint64_t reverse_vm81_steps;

@@ -147,6 +147,9 @@ static int run_signed(
     CHECK(signature.external_key_authority == 0U);
     CHECK(signature.external_signature_authority == 0U);
     CHECK(signature.signature_is_canonical_receipt == 0U);
+    CHECK(firewall.lane5_mediated == 1U);
+    CHECK(firewall.lane5_zero_sum_closure_passed == 1U);
+    CHECK(firewall.lane5_candidate_only == 1U);
 
     if (!provider_available) {
         CHECK(status == HHS_EXACT_STATUS_INVARIANT_FAILURE);
@@ -230,6 +233,9 @@ static int run_bad_profile() {
               &committed, &admission, &firewall, &signature, &environment) ==
           HHS_EXACT_STATUS_INVARIANT_FAILURE);
     CHECK(firewall.decision == HHS_EXACT_PASS219_VM81_PQC_DECISION_HALTED);
+    CHECK(firewall.lane5_mediated == 1U);
+    CHECK(firewall.lane5_zero_sum_closure_passed == 1U);
+    CHECK(firewall.lane5_candidate_only == 1U);
     CHECK(firewall.inherited_rna_authority_invoked == 0U);
     CHECK(environment.decision == HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN);
     CHECK(frame_is_zero(committed));

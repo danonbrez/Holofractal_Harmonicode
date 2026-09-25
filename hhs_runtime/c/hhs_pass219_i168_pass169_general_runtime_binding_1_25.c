@@ -60,7 +60,7 @@ HHSExactStatus hhs_exact_pass219_i168_bind_canonical(
     out_binding->version = hhs219_i168_version_word();
     out_binding->decision = HHS_EXACT_PASS219_I168_UNRESOLVED;
     out_binding->reason = HHS_EXACT_PASS219_I168_REASON_SOURCE_PROVENANCE;
-    out_binding->required_operation_mask = HHS_EXACT_PASS219_I168_ALL_OPS;
+    out_binding->required_operation_mask = HHS_EXACT_PASS219_I168_CANDIDATE_OPS;
     out_binding->floating_point_authority = 0U;
     out_binding->hash216_persistence_authority = 0U;
     out_binding->fallback_used = 0U;
@@ -150,15 +150,19 @@ HHSExactStatus hhs_exact_pass219_i168_bind_canonical(
     mask |= HHS_EXACT_PASS219_I168_OP_EVALUATE_CANDIDATE;
 
     out_binding->reason = HHS_EXACT_PASS219_I168_REASON_VM81_ADMISSION_COMMIT;
-    if (forward.exact_vm81_admission_verified != 1U ||
-        forward.atomic_commit_verified != 1U) {
+    if (forward.exact_vm81_admission_verified != 0U ||
+        forward.atomic_commit_verified != 0U ||
+        forward.candidate_only_execution_verified != 1U ||
+        forward.requires_environmental_lane5_admission != 1U) {
         out_binding->decision = HHS_EXACT_PASS219_I168_REJECTED;
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
-    out_binding->exact_vm81_admission_verified = 1U;
-    out_binding->atomic_commit_verified = 1U;
-    mask |= HHS_EXACT_PASS219_I168_OP_ADMIT;
-    mask |= HHS_EXACT_PASS219_I168_OP_COMMIT;
+    out_binding->exact_vm81_admission_verified = 0U;
+    out_binding->atomic_commit_verified = 0U;
+    out_binding->candidate_only_execution_verified = 1U;
+    out_binding->requires_environmental_lane5_admission = 1U;
+    /* ADMIT and COMMIT are intentionally absent: only the public
+     * Lane-5-mediated environmental authority may perform them. */
 
     out_binding->reason = HHS_EXACT_PASS219_I168_REASON_RECEIPT_REPLAY;
     if (forward.hash72_receipt_verified != 1U ||
@@ -185,6 +189,7 @@ HHSExactStatus hhs_exact_pass219_i168_bind_canonical(
         reverse.decision != HHS_EXACT_PASS219_I163_VERIFIED ||
         reverse.source_provenance_exact != 1U ||
         reverse.forward_commit_verified != 1U ||
+        reverse.candidate_snapshot_only_verified != 1U ||
         reverse.reverse_runtime_verified != 1U ||
         reverse.reverse_transition_receipt_verified != 1U ||
         reverse.reverse_transition_deterministic != 1U ||
@@ -218,23 +223,25 @@ HHSExactStatus hhs_exact_pass219_i168_bind_canonical(
 
     out_binding->reason = HHS_EXACT_PASS219_I168_REASON_AUTHORITY;
     out_binding->live_runtime_abi_verified = 1U;
-    out_binding->canonical_computation_through_runtime_abi = 1U;
+    out_binding->canonical_computation_through_runtime_abi = 0U;
     out_binding->single_vm81_commit_authority = 1U;
     out_binding->operation_verified_mask = mask;
 
-    if (mask != HHS_EXACT_PASS219_I168_ALL_OPS ||
+    if (mask != HHS_EXACT_PASS219_I168_CANDIDATE_OPS ||
         out_binding->source_identity_exact != 1U ||
         out_binding->pass159_frontend_chain_complete != 1U ||
         out_binding->typed_proof_verified != 1U ||
         out_binding->interpreter_compiler_match != 1U ||
-        out_binding->exact_vm81_admission_verified != 1U ||
-        out_binding->atomic_commit_verified != 1U ||
+        out_binding->exact_vm81_admission_verified != 0U ||
+        out_binding->atomic_commit_verified != 0U ||
+        out_binding->candidate_only_execution_verified != 1U ||
+        out_binding->requires_environmental_lane5_admission != 1U ||
         out_binding->hash72_receipts_verified != 1U ||
         out_binding->hash216_identities_verified != 1U ||
         out_binding->deterministic_replay_verified != 1U ||
         out_binding->reverse_restores_prior_state_verified != 1U ||
         out_binding->live_runtime_abi_verified != 1U ||
-        out_binding->canonical_computation_through_runtime_abi != 1U ||
+        out_binding->canonical_computation_through_runtime_abi != 0U ||
         out_binding->single_vm81_commit_authority != 1U ||
         out_binding->fallback_used != 0U ||
         out_binding->floating_point_authority != 0U ||

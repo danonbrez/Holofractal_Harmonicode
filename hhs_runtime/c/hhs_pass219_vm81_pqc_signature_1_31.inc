@@ -357,8 +357,6 @@ HHSExactStatus hhs_exact_pass219_vm81_pqc_admit_signed(
     const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
     int8_t lo_shu_group,
     uint16_t g243,
-    uint8_t feedback_lane,
-    int8_t feedback_trinary,
     HHSExactVM81Frame *out_committed_frame,
     HHSExactPass219RNAAdmissionV1 *out_admission,
     HHSExactPass219VM81PQCFirewallReceiptV1 *out_firewall_receipt,
@@ -491,6 +489,217 @@ HHSExactStatus hhs_exact_pass219_vm81_pqc_admit_signed(
         out_firewall_receipt->candidate_hash72,
         out_firewall_receipt->cell_wall_path_hash216,
         parent_hash216_reference, &prepared, &decision,
+        out_firewall_receipt->pqc_tag,
+        signature_message, sizeof(signature_message), &signature_message_length,
+        out_signature_receipt->signed_message_sha256);
+    if (status != HHS_EXACT_STATUS_OK) {
+        OPENSSL_cleanse(key, sizeof(key));
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_GENERATION_FAILED,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    status = hhs_p219_pqc_signature_sign_verify(
+        signature_algorithm, key,
+        signature_message, signature_message_length,
+        out_signature_receipt);
+    OPENSSL_cleanse(key, sizeof(key));
+    OPENSSL_cleanse(signature_message, sizeof(signature_message));
+    if (status != HHS_EXACT_STATUS_OK) {
+        const uint32_t reason =
+            out_signature_receipt->decision == HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_PROVIDER_UNAVAILABLE
+                ? HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_PROVIDER_UNAVAILABLE
+                : (out_signature_receipt->decision == HHS_EXACT_PASS219_VM81_PQC_SIGNATURE_VERIFY_FAILED
+                    ? HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_VERIFICATION_FAILED
+                    : HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_GENERATION_FAILED);
+        return hhs_p219_pqc_halt_result(reason, out_committed_frame, out_firewall_receipt);
+    }
+
+    /* The asymmetric signature is verified before hidden RNA/VM81 authority is invoked. */
+    memset(&staged_committed, 0, sizeof(staged_committed));
+    memset(&staged_admission, 0, sizeof(staged_admission));
+    memset(&child_index_context, 0, sizeof(child_index_context));
+    out_firewall_receipt->inherited_rna_authority_invoked = 1U;
+    status = hhs_exact_pass219_rna_admit_composed(
+        input, candidate_frame, lo_shu_group, g243,
+        hhs_p219_pqc_index_resolver, &child_index_context,
+        &staged_committed, &staged_admission);
+    memcpy(out_admission, &staged_admission, sizeof(staged_admission));
+
+    if (status != HHS_EXACT_STATUS_OK) {
+        HHSExactVM81Frame zero_frame;
+        memset(&zero_frame, 0, sizeof(zero_frame));
+        if (memcmp(&staged_committed, &zero_frame, sizeof(zero_frame)) != 0 ||
+            (status != HHS_EXACT_STATUS_CONSTRAINT_REJECTED &&
+             status != HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN))
+            return hhs_p219_pqc_halt_result(
+                HHS_EXACT_PASS219_VM81_PQC_HALT_CHILD_HASH216_INVARIANT,
+                out_committed_frame, out_firewall_receipt);
+        out_firewall_receipt->decision =
+            HHS_EXACT_PASS219_VM81_PQC_DECISION_CANONICAL_REJECTED;
+        return status;
+    }
+
+    if (child_index_context.expected_position != HHS_EXACT_PASS219_HASH216_OCCURRENCES ||
+        hhs_exact_pass219_vm81_pqc_hash216_reference_verify(
+            &staged_admission.transition) != HHS_EXACT_STATUS_OK ||
+        memcmp(&staged_committed, candidate_frame, sizeof(staged_committed)) != 0)
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_CHILD_HASH216_INVARIANT,
+            out_committed_frame, out_firewall_receipt);
+
+    memcpy(out_firewall_receipt->child_hash216_identity,
+           staged_admission.transition.transition_identity216,
+           HHS_EXACT_UQCEL_HASH216_STRLEN);
+    out_firewall_receipt->child_hash216_verified = 1U;
+    out_firewall_receipt->decision = HHS_EXACT_PASS219_VM81_PQC_DECISION_COMMITTED;
+    memcpy(out_committed_frame, &staged_committed, sizeof(staged_committed));
+    return HHS_EXACT_STATUS_OK;
+}
+
+/*
+ * Internal continuation for the public environmental authority path.  The
+ * caller must supply the exact C++ cell-wall evidence already mediated by
+ * Lane 5, so canonical signing/commit cannot silently reroute around that
+ * mediation seam.
+ */
+static HHSExactStatus hhs_p219_pqc_admit_signed_with_cell_wall_evidence(
+    uint32_t pass_number,
+    uint32_t signature_algorithm,
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *parent_hash216_reference,
+    const HHSExactPass219Holo4PreparedV1 *prepared,
+    const HHSExactPass219Holo4DecisionV1 *decision,
+    int8_t lo_shu_group,
+    uint16_t g243,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    HHSExactVM81Frame *out_committed_frame,
+    HHSExactPass219RNAAdmissionV1 *out_admission,
+    HHSExactPass219VM81PQCFirewallReceiptV1 *out_firewall_receipt,
+    HHSExactPass219VM81PQCSignatureReceiptV1 *out_signature_receipt
+) {
+    HHSExactVM81Frame staged_committed;
+    HHSExactPass219RNAAdmissionV1 staged_admission;
+    HHSP219PQCIndexContext child_index_context;
+    uint8_t key[HHS_EXACT_PASS219_VM81_PQC_KEY_BYTES];
+    uint8_t signature_message[2048];
+    size_t signature_message_length = 0U;
+    uint64_t sequence;
+    HHSExactStatus status;
+
+    if (out_committed_frame == NULL || out_admission == NULL ||
+        out_firewall_receipt == NULL || out_signature_receipt == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    memset(out_committed_frame, 0, sizeof(*out_committed_frame));
+    memset(out_admission, 0, sizeof(*out_admission));
+    hhs_p219_pqc_zero_receipt(out_firewall_receipt, pass_number);
+    hhs_p219_pqc_signature_zero_receipt(out_signature_receipt, signature_algorithm);
+
+    if (hhs_p219_pqc_signature_algorithm_name(signature_algorithm, &signature_message_length) == NULL)
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PQC_SIGNATURE_PROFILE,
+            out_committed_frame, out_firewall_receipt);
+    signature_message_length = 0U;
+
+    if (atomic_load(&hhs_p219_pqc_halted) != 0U) {
+        out_firewall_receipt->halt_reason = atomic_load(&hhs_p219_pqc_halt_reason);
+        out_firewall_receipt->decision = HHS_EXACT_PASS219_VM81_PQC_DECISION_HALTED;
+        out_firewall_receipt->halted = 1U;
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+    if (input == NULL || candidate_frame == NULL || parent_hash216_reference == NULL)
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_CELL_WALL_PATH,
+            out_committed_frame, out_firewall_receipt);
+    if (pass_number < HHS_EXACT_PASS219_VM81_PQC_MIN_PASS)
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PASS_PATH,
+            out_committed_frame, out_firewall_receipt);
+    if (!hhs_p219_pqc_load_key(key))
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_KEY,
+            out_committed_frame, out_firewall_receipt);
+    if (hhs_exact_pass219_vm81_pqc_hash216_reference_verify(parent_hash216_reference) !=
+        HHS_EXACT_STATUS_OK) {
+        OPENSSL_cleanse(key, sizeof(key));
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_HASH216_REFERENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    out_firewall_receipt->parent_hash216_verified = 1U;
+    memcpy(out_firewall_receipt->parent_hash216_identity,
+           parent_hash216_reference->transition_identity216,
+           HHS_EXACT_UQCEL_HASH216_STRLEN);
+
+    if (memcmp(input->previous_hash72,
+               parent_hash216_reference->receipt_hash72,
+               HHS_EXACT_HASH72_STRLEN) != 0) {
+        OPENSSL_cleanse(key, sizeof(key));
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_HASH_LINEAGE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    if (prepared == NULL || decision == NULL ||
+        !hhs_p219_pqc_route_evidence_valid(prepared, decision, parent_hash216_reference)) {
+        OPENSSL_cleanse(key, sizeof(key));
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_CELL_WALL_PATH,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    sequence = atomic_fetch_add(&hhs_p219_pqc_sequence, UINT64_C(1)) + UINT64_C(1);
+    out_firewall_receipt->instruction_sequence = sequence;
+    out_firewall_receipt->rna_cell_wall_routed = 1U;
+    out_firewall_receipt->graph_signature64 = prepared->graph_signature64;
+    out_firewall_receipt->tensor_signature64 = prepared->tensor_signature64;
+    out_firewall_receipt->decision_signature64 = decision->decision_signature64;
+    out_firewall_receipt->selected_lane = decision->selected_lane;
+
+    status = hhs_p219_pqc_candidate_hash72(
+        candidate_frame, out_firewall_receipt->candidate_hash72);
+    if (status != HHS_EXACT_STATUS_OK) {
+        OPENSSL_cleanse(key, sizeof(key));
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_CANDIDATE_HASH,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    status = hhs_p219_pqc_build_path_hash(
+        pass_number, sequence,
+        out_firewall_receipt->candidate_hash72,
+        parent_hash216_reference, prepared, decision,
+        out_firewall_receipt->cell_wall_path_hash216);
+    if (status != HHS_EXACT_STATUS_OK) {
+        OPENSSL_cleanse(key, sizeof(key));
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_CELL_WALL_PATH,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    status = hhs_p219_pqc_authenticate(
+        key, pass_number, sequence, candidate_frame,
+        out_firewall_receipt->candidate_hash72,
+        out_firewall_receipt->cell_wall_path_hash216,
+        parent_hash216_reference, prepared, decision,
+        out_firewall_receipt->pqc_tag);
+    if (status != HHS_EXACT_STATUS_OK) {
+        OPENSSL_cleanse(key, sizeof(key));
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_INVALID_PQC_AUTHENTICATOR,
+            out_committed_frame, out_firewall_receipt);
+    }
+    out_firewall_receipt->pqc_authenticated = 1U;
+
+    status = hhs_p219_pqc_signature_build_message(
+        pass_number, signature_algorithm, sequence,
+        candidate_frame,
+        out_firewall_receipt->candidate_hash72,
+        out_firewall_receipt->cell_wall_path_hash216,
+        parent_hash216_reference, prepared, decision,
         out_firewall_receipt->pqc_tag,
         signature_message, sizeof(signature_message), &signature_message_length,
         out_signature_receipt->signed_message_sha256);

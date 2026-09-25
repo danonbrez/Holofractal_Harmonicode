@@ -98,7 +98,10 @@ typedef struct HHSExactPass219Pass169AuthorityProofV1 {
     uint8_t local_symbol_shadowing_detected;
     uint8_t canonical_monolithic_proof;
     uint8_t floating_point_authority;
-    uint8_t reserved0[5];
+    uint8_t candidate_only_execution_verified;
+    uint8_t requires_environmental_lane5_admission;
+    uint8_t canonical_admission_lane5_mediated;
+    uint8_t reserved0[2];
 } HHSExactPass219Pass169AuthorityProofV1;
 
 typedef struct HHSExactPass219Pass169BindingResultV1 {
@@ -118,7 +121,9 @@ typedef struct HHSExactPass219Pass169BindingResultV1 {
     uint8_t vm81_mutation_authority;
     uint8_t hash72_commit_authority;
     uint8_t persistence_mutation_authority;
-    uint8_t reserved0[4];
+    uint8_t provider_candidate_only_execution;
+    uint8_t requires_environmental_lane5_admission;
+    uint8_t reserved0[2];
     char proof_hash216[HHS_EXACT_PASS219_PASS169_BINDING_HASH216_STRLEN];
     char transition_hash216[HHS_EXACT_PASS219_PASS169_BINDING_HASH216_STRLEN];
     char receipt_hash72[HHS_EXACT_PASS219_PASS169_BINDING_HASH72_STRLEN];

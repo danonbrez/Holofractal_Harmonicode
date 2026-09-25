@@ -41,7 +41,8 @@ typedef enum HHSExactPass219VM81PQCHaltReasonV1 {
     HHS_EXACT_PASS219_VM81_PQC_HALT_PQC_SIGNATURE_VERIFICATION_FAILED = 14,
     HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE = 15,
     HHS_EXACT_PASS219_VM81_PQC_HALT_RECOVERY_HALTED = 16,
-    HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_SIGNATURE_FAILED = 17
+    HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_SIGNATURE_FAILED = 17,
+    HHS_EXACT_PASS219_VM81_PQC_HALT_LANE5_MEDIATION = 18
 } HHSExactPass219VM81PQCHaltReasonV1;
 
 typedef enum HHSExactPass219VM81PQCFirewallDecisionV1 {
@@ -76,7 +77,11 @@ typedef struct HHSExactPass219VM81PQCFirewallReceiptV1 {
     uint8_t canonical_receipt_owned_by_inherited_authority;
     uint8_t firewall_is_canonical_authority;
     uint8_t halted;
-    uint8_t reserved1[7];
+    /* ABI-compatible use of the first three formerly-reserved bytes. */
+    uint8_t lane5_mediated;
+    uint8_t lane5_zero_sum_closure_passed;
+    uint8_t lane5_candidate_only;
+    uint8_t reserved1[4];
 } HHSExactPass219VM81PQCFirewallReceiptV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_vm81_pqc_firewall_version(void);

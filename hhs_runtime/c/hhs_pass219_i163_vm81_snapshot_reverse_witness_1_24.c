@@ -62,7 +62,7 @@ int hhs219_i163_vm81_snapshot_reverse_witness(
     HHSExactUQCELAdmissionV1 admission;
     HHSExactVM81Frame prior;
     HHSExactVM81Frame candidate;
-    HHSExactVM81Frame committed;
+    HHSExactVM81Frame staged_candidate;
     HHSExactVM81Frame reversed;
     uint8_t source_sha[32];
     HHSExactStatus status;
@@ -74,7 +74,7 @@ int hhs219_i163_vm81_snapshot_reverse_witness(
     memset(&input, 0, sizeof(input));
     memset(&admission, 0, sizeof(admission));
     memset(&prior, 0, sizeof(prior));
-    memset(&committed, 0, sizeof(committed));
+    memset(&staged_candidate, 0, sizeof(staged_candidate));
     memset(&reversed, 0, sizeof(reversed));
     hhs219_i163_build_candidate(&candidate);
 
@@ -98,18 +98,17 @@ int hhs219_i163_vm81_snapshot_reverse_witness(
     memset(input.previous_hash72, '0', HHS_EXACT_HASH72_LEN);
     input.previous_hash72[HHS_EXACT_HASH72_LEN] = '\0';
 
-    status = hhs_exact_vm81_admit_uqcel(
-        &input, &candidate, &committed, &admission);
+    status = hhs_exact_uqcel_candidate_receipt(
+        &input, &candidate, &admission);
     if (status != HHS_EXACT_STATUS_OK ||
         admission.decision != HHS_EXACT_UQCEL_DECISION_ADMIT ||
-        admission.frame_committed != 1U ||
-        memcmp(&candidate, &committed, sizeof(candidate)) != 0)
+        admission.frame_committed != 0U)
         return 0;
 
-    /* I163 is a transaction proof, not persistent canonical mutation.  The
-     * prior frame is retained as a receipt-bound snapshot and restored only
-     * after the forward admission has completed successfully. */
-    reversed = committed;
+    /* Candidate-only reverse proof: stage the exact frame locally, then restore
+     * the prior snapshot. Canonical VM81 admission is intentionally absent. */
+    staged_candidate = candidate;
+    reversed = staged_candidate;
     memcpy(&reversed, &prior, sizeof(reversed));
     if (memcmp(&reversed, &prior, sizeof(prior)) != 0)
         return 0;

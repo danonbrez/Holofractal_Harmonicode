@@ -48,7 +48,8 @@ typedef enum HHSExactPass219VM81EnvironmentReasonV1 {
     HHS_EXACT_PASS219_VM81_ENV_REASON_HASH216_REGISTRY = 6,
     HHS_EXACT_PASS219_VM81_ENV_REASON_CANDIDATE_IDENTITY = 7,
     HHS_EXACT_PASS219_VM81_ENV_REASON_ENVIRONMENT_SIGNATURE = 8,
-    HHS_EXACT_PASS219_VM81_ENV_REASON_LATCHED = 9
+    HHS_EXACT_PASS219_VM81_ENV_REASON_LATCHED = 9,
+    HHS_EXACT_PASS219_VM81_ENV_REASON_LANE5_MEDIATION = 10
 } HHSExactPass219VM81EnvironmentReasonV1;
 
 typedef struct HHSExactPass219VM81Hash216RegistryEntryV1 {
@@ -143,9 +144,11 @@ hhs_exact_pass219_vm81_environment_checkpoint_seal(
 );
 
 /*
- * Production 1.32 successor.  It verifies and PQ-signs the environmental
- * witness before delegating to the hidden 1.31 signed firewall.  Recovery and
- * environment code never owns VM81 or canonical receipt authority.
+ * Production 1.32 successor.  The candidate MUST first traverse the C++ RNA
+ * cell wall and Lane 5 global mediation.  Only the exact mediated evidence may
+ * proceed to the environmental witness/PQ-signature gate and the hidden RNA/
+ * VM81 canonical commit seam.  Recovery and environment code never owns VM81,
+ * Hash72, Hash216, or canonical receipt authority.
  */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     uint32_t pass_number,

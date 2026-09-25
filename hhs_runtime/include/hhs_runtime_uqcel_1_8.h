@@ -148,6 +148,18 @@ HHS_EXACT_API HHSExactStatus hhs_exact_uqcel_receipt_material(
     size_t capacity,
     size_t *out_length
 );
+/*
+ * Candidate-only exact receipt derivation.  This runs the inherited UQCEL
+ * validation and derives the same Hash72/Hash216 evidence as admission, but it
+ * never copies the candidate into committed VM81 state and always leaves
+ * frame_committed == 0.  Canonical execution must use the Lane-5-mediated
+ * environmental authority path.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_uqcel_candidate_receipt(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    HHSExactUQCELAdmissionV1 *out_admission
+);
 HHS_EXACT_API HHSExactStatus hhs_exact_vm81_admit_uqcel(
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
