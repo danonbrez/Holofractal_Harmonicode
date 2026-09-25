@@ -136,7 +136,7 @@ def test_static_first_projection_does_not_claim_hhs_authority() -> None:
         ROOT / "deployment/digitalocean/configure_runtime_os_static_first.py"
     ).read_text(encoding="utf-8")
     assert "CANONICAL_AUTHORITY=0" in source
-    assert "Backend/API authority remains on :8080" in source
+    assert "Backend/API authority remains on the configured loopback guest/legacy upstream." in source
     assert "VM81" in source
     assert "Hash72" in source
     assert "Hash216" in source
