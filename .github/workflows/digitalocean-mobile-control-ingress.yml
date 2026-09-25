@@ -66,7 +66,7 @@ jobs:
           grep -R -q 'Paste' hhs_gui/dist/assets
           grep -R -q 'Acquire + verify' hhs_gui/dist/assets
           grep -R -q 'Replay offline' hhs_gui/dist/assets
-          grep -Fq "165.227.220.193" .github/workflows/digitalocean-production-main.yml
+          grep -Fq "159.65.178.254" .github/workflows/digitalocean-production-main.yml
           grep -Fq "StrictHostKeyChecking=yes" .github/workflows/digitalocean-production-main.yml
           grep -Fq "Stale pinned production SSH host key" .github/workflows/digitalocean-production-main.yml
           ! grep -Fq "137.184.223.84" .github/workflows/digitalocean-production-main.yml
