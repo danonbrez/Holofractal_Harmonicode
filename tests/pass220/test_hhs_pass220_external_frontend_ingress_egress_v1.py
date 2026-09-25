@@ -13,20 +13,21 @@ LIFECYCLE = ROOT / "hhs_backend/api/development_lifecycle_routes.py"
 WARM = ROOT / "hhs_backend/runtime_os_pass220_lane5_tool_hydration.py"
 
 
-def _python_constant(path: Path, name: str) -> int:
-    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-    for node in tree.body:
-        if isinstance(node, (ast.Assign, ast.AnnAssign)):
-            target = node.targets[0] if isinstance(node, ast.Assign) else node.target
-            if isinstance(target, ast.Name) and target.id == name:
-                value = ast.literal_eval(node.value)
-                return int(value)
-    raise AssertionError(f"{name} not found in {path}")
+def _python_mib_constant(path: Path, name: str) -> int:
+    source = path.read_text(encoding="utf-8")
+    match = re.search(
+        rf"^{re.escape(name)}\\s*=\\s*(\\d+)\\s*\\*\\s*1024\\s*\\*\\s*1024\\s*$",
+        source,
+        flags=re.MULTILINE,
+    )
+    if not match:
+        raise AssertionError(f"{name} MiB constant not found in {path}")
+    return int(match.group(1)) * 1024 * 1024
 
 
 def test_external_frontend_ingress_bound_matches_canonical_pass165_limit() -> None:
     control = CONTROL.read_text(encoding="utf-8")
-    canonical = _python_constant(PASS165, "MAX_SOURCE_BYTES")
+    canonical = _python_mib_constant(PASS165, "MAX_SOURCE_BYTES")
     match = re.search(
         r"const\s+MAX_INGRESS_BYTES\s*=\s*(\d+)\s*\*\s*1024\s*\*\s*1024",
         control,
