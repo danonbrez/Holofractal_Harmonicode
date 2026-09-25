@@ -20,7 +20,8 @@ id "$SERVICE_USER" >/dev/null 2>&1 || fail "service user missing: $SERVICE_USER"
 
 "$PIP_BIN" install --disable-pip-version-check   fastapi==0.128.2 starlette==0.50.0 'httpx>=0.27,<1.0'   'uvicorn[standard]>=0.30,<1.0' 'cryptography>=46.0,<47.0'   requests pyyaml networkx websockets anyio sqlalchemy aiosqlite   numpy sympy >/dev/null
 
-install -d -o "$SERVICE_USER" -g "$SERVICE_USER" -m 0750   /var/lib/hhs/data   /var/lib/hhs/data/runtime   /var/lib/hhs/pass174   /var/lib/hhs/pass194   /var/lib/hhs/pass205   /var/lib/hhs/pass213/surface   /var/lib/hhs/pass218   /var/lib/hhs/pass219/lane5   /var/lib/hhs/runtime-bootstrap
+install -d -o "$SERVICE_USER" -g "$SERVICE_USER" -m 0750   /var/lib/hhs/data   /var/lib/hhs/data/runtime   /var/lib/hhs/pass174   /var/lib/hhs/pass194   /var/lib/hhs/pass205   /var/lib/hhs/pass213/surface   /var/lib/hhs/pass218   /var/lib/hhs/pass219/lane5   /var/lib/hhs/runtime-bootstrap \
+  /var/lib/hhs/runtime-os
 
 install -d -o root -g "$SERVICE_USER" -m 0750 /etc/hhs
 cat > /etc/hhs/unified-guest-ide.env <<EOF
@@ -38,6 +39,7 @@ HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface
 HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218
 HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5
 HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap
+HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current
 HHS_COGNITION_AUTO_TICK=0
 EOF
 chown root:"$SERVICE_USER" /etc/hhs/unified-guest-ide.env
