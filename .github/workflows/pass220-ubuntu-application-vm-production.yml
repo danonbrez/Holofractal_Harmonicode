@@ -49,7 +49,12 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependency-scoped requirements
-        run: python -m pip install fastapi uvicorn httpx pytest pyyaml cryptography requests
+        run: >-
+          python -m pip install
+          fastapi==0.128.2 starlette==0.50.0
+          'httpx>=0.27,<1.0' 'uvicorn[standard]>=0.30,<1.0'
+          cryptography pyyaml requests pytest
+          networkx websockets anyio sqlalchemy aiosqlite numpy sympy
 
       - name: Build and verify inherited native runtime
         shell: bash
