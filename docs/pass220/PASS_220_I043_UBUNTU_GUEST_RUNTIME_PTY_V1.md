@@ -2,9 +2,10 @@
 
 ## Purpose
 
-Pass 220's existing Ubuntu Application VM control plane is preserved as the HHS
-application/runtime authority **inside** an Ubuntu environment. I043 adds the
-missing host-side guest substrate beneath it.
+Pass 220's existing Ubuntu Application VM control plane is preserved as a
+transport/application adapter inside an Ubuntu environment. It is not the HHS
+system authority. I043 adds the missing host-side guest substrate beneath that
+adapter while preserving Pass 219 as the cumulative inherited authority.
 
 The authority order is:
 
@@ -13,13 +14,20 @@ Host Linux
   -> I043 guest artifact + QEMU lifecycle
   -> Ubuntu guest
   -> authenticated SSH + PTY transport
-  -> existing hhs-application-vm / Pass 190 control plane
-  -> Lane 5 candidate/control kernel
-  -> VM81 canonical admission
+  -> existing hhs-application-vm / Pass 190 adapter
+  -> Pass 219 cumulative inherited authority
+  -> Lane 5 C++ BIOS / AGI optimization control center
+  -> signed environmental VM81 canonical admission
 ```
 
 I043 does not create a second VM81, Hash72 clock, Hash216 persistence path,
-Lane 5 kernel, operation registry, or HHS capability format.
+Lane 5 kernel, operation registry, or HHS capability format. It also does not
+promote Pass 220, Pass 190, Ubuntu, SSH/PTTY, or a frontend above Pass 219.
+
+Lane 5 cognitive/optimization circuits remain callable and bounded. Booting the
+guest or opening a PTY does not continuously execute those circuits; an admitted
+operation or explicitly configured admitted event invokes only the required
+circuit through the inherited Pass 219 authority path.
 
 ## Guest artifact authority
 
@@ -149,6 +157,9 @@ transport yet.
 Frontend work must not begin by treating the existing Pass 190 shell endpoint as
 a terminal substitute. A subsequent adapter may attach only after an actual
 digest-verified guest is booted and the authenticated PTY path is reachable.
+That adapter must preserve the Pass 219 -> Lane 5 -> signed VM81 authority path;
+it must not substitute the host shell, guest transport, Pass 190 adapter, or a
+frontend-local loop for the authoritative runtime.
 
 ## Acceptance
 
