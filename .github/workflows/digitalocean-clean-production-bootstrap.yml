@@ -1,0 +1,221 @@
+name: DigitalOcean Clean Production Bootstrap
+
+on:
+  push:
+    branches:
+      - ops/digitalocean-network-recovery-20260925
+    paths:
+      - '.github/workflows/digitalocean-clean-production-bootstrap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hhs-digitalocean-clean-production-bootstrap
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      HHS_HOST: 165.227.64.72
+      HHS_USER: root
+      TARGET_SHA: de12fa97d42b0bf08c1441e8315bb20387d8fbd2
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Check out exact main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 1
+
+      - name: Build Runtime OS frontend
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: hhs_gui/package-lock.json
+
+      - name: Build exact frontend bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd hhs_gui
+          npm ci
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+          tar -C dist -czf /tmp/hhs_gui_dist.tgz .
+
+      - name: Configure exact pinned SSH target
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "${HHS_SSH_PRIVATE_KEY}" ]]
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          cat > "$HOME/.ssh/known_hosts" <<'EOF'
+          165.227.64.72 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIp4MwUh7NIX+KEYbM8968culSKopXAfNiAge2U8NL3W
+          EOF
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh-keygen -F "${HHS_HOST}" -f "$HOME/.ssh/known_hosts"
+          ssh-keygen -lf "$HOME/.ssh/known_hosts" | grep -F 'SHA256:Z9rIaw4O8+weedjalm54dl/cD/YFS+jpE2ecaYLdEJ8'
+
+      - name: Verify deploy credential on clean host
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-production"             -o BatchMode=yes             -o ConnectTimeout=15             -o StrictHostKeyChecking=yes             -o UserKnownHostsFile="$HOME/.ssh/known_hosts"             "${HHS_USER}@${HHS_HOST}" 'printf "HHS_CLEAN_HOST_SSH_VERIFIED\n"'
+
+      - name: Transfer Runtime OS first-paint bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          scp -i "$HOME/.ssh/hhs-production"             -o BatchMode=yes             -o StrictHostKeyChecking=yes             -o UserKnownHostsFile="$HOME/.ssh/known_hosts"             /tmp/hhs_gui_dist.tgz "${HHS_USER}@${HHS_HOST}:/root/hhs_gui_dist_${TARGET_SHA}.tgz"
+
+      - name: Bootstrap exact production runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-production"             -o BatchMode=yes             -o ServerAliveInterval=30             -o ServerAliveCountMax=40             -o StrictHostKeyChecking=yes             -o UserKnownHostsFile="$HOME/.ssh/known_hosts"             "${HHS_USER}@${HHS_HOST}"             "TARGET_SHA='${TARGET_SHA}' HHS_IP='${HHS_HOST}' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          export DEBIAN_FRONTEND=noninteractive
+          TARGET_SHA=${TARGET_SHA:?}
+          HHS_IP=${HHS_IP:?}
+          REPO=/opt/hhs/app
+          VENV=/opt/hhs/venv
+          FRONTEND_TAR="/root/hhs_gui_dist_${TARGET_SHA}.tgz"
+
+          apt-get update
+          apt-get install -y             git python3 python3-venv python3-pip             build-essential binutils gzip libssl-dev pkg-config             curl nginx rsync jq ca-certificates openssl
+
+          id hhs >/dev/null 2>&1 ||             useradd --system --home /var/lib/hhs --create-home --shell /usr/sbin/nologin hhs
+
+          install -d -m 0755 /opt/hhs
+          if [[ ! -d "$REPO/.git" ]]; then
+            rm -rf "$REPO"
+            git clone https://github.com/danonbrez/Holofractal_Harmonicode.git "$REPO"
+          fi
+          git -C "$REPO" fetch --prune origin main
+          git -C "$REPO" cat-file -e "$TARGET_SHA^{commit}"
+          git -C "$REPO" checkout -B main "$TARGET_SHA"
+          git -C "$REPO" reset --hard "$TARGET_SHA"
+          git -C "$REPO" clean -fdx
+          [[ "$(git -C "$REPO" rev-parse HEAD)" == "$TARGET_SHA" ]]
+
+          python3 -m venv "$VENV"
+          "$VENV/bin/python" -m pip install --upgrade pip setuptools wheel
+          "$VENV/bin/python" -m pip install -r "$REPO/requirements.txt"
+
+          cd "$REPO"
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0             "$VENV/bin/python" tools/install_production_language_assets.py               --install-if-configured --require-assistant
+
+          STATE_DIRS=(
+            /var/lib/hhs/data
+            /var/lib/hhs/data/runtime
+            /var/lib/hhs/graphics-hydration
+            /var/lib/hhs/pass174
+            /var/lib/hhs/pass194
+            /var/lib/hhs/pass196
+            /var/lib/hhs/pass197
+            /var/lib/hhs/pass198
+            /var/lib/hhs/pass199
+            /var/lib/hhs/pass200a
+            /var/lib/hhs/pass200b
+            /var/lib/hhs/pass200c
+            /var/lib/hhs/pass205
+            /var/lib/hhs/pass213/surface
+            /var/lib/hhs/pass218
+            /var/lib/hhs/pass219/lane5
+            /var/lib/hhs/runtime-bootstrap
+            /var/lib/hhs/runtime-os/current
+            /var/lib/hhs/warm-boot/releases
+          )
+          for path in "${STATE_DIRS[@]}"; do
+            install -d -o hhs -g hhs -m 0750 "$path"
+          done
+
+          tar -xzf "$FRONTEND_TAR" -C /var/lib/hhs/runtime-os/current
+          test -s /var/lib/hhs/runtime-os/current/index.html
+          test -d /var/lib/hhs/runtime-os/current/assets
+          chown -R hhs:hhs /var/lib/hhs/runtime-os/current
+
+          python3 deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py             --repo-root "$REPO" --service-user hhs --service-group hhs
+
+          HHS_DISABLE_C_AUTOBUILD=1             "$VENV/bin/python" deployment/digitalocean/warm_boot_manifest.py create               --repo-root "$REPO"               --runtime-os-root /var/lib/hhs/runtime-os/current               --manifest-root /var/lib/hhs/warm-boot/releases
+
+          install -m 0644 deploy/digitalocean/hhs-pass196-integrated-environment.service             /etc/systemd/system/hhs.service
+          systemctl daemon-reload
+          systemctl enable hhs.service
+          systemctl restart hhs.service
+
+          for _ in $(seq 1 90); do
+            if curl -fsS --max-time 5 http://127.0.0.1:8080/api/system/status               >/tmp/hhs-system-status.json; then
+              break
+            fi
+            sleep 2
+          done
+          curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status             >/tmp/hhs-system-status.json
+
+          install -d -m 0755 /var/www/certbot/.well-known/acme-challenge
+          rm -f /etc/nginx/sites-enabled/default
+          cat >/etc/nginx/sites-available/hhs <<NGINX
+          server {
+              listen 80;
+              listen [::]:80;
+              server_name $HHS_IP;
+              location ^~ /.well-known/acme-challenge/ {
+                  root /var/www/certbot;
+              }
+              location / {
+                  proxy_pass http://127.0.0.1:8080;
+                  proxy_http_version 1.1;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto http;
+              }
+          }
+          NGINX
+          ln -sfn /etc/nginx/sites-available/hhs /etc/nginx/sites-enabled/hhs
+          nginx -t
+          systemctl enable --now nginx
+          systemctl reload nginx
+
+          python3 -m venv /opt/certbot
+          /opt/certbot/bin/python -m pip install --upgrade pip
+          /opt/certbot/bin/python -m pip install 'certbot>=5.4,<6'
+
+          /opt/certbot/bin/certbot certonly             --non-interactive             --agree-tos             --register-unsafely-without-email             --preferred-profile shortlived             --webroot             --webroot-path /var/www/certbot             --ip-address "$HHS_IP"             --cert-name hhs-production-ip
+
+          HHS_IP="$HHS_IP"           HHS_APP_ROOT="$REPO"           HHS_APP_USER=hhs           HHS_CERT_NAME=hhs-production-ip           HHS_CERTBOT=/opt/certbot/bin/certbot           HHS_SKIP_FRONTEND_DEPLOY=1             bash scripts/complete_hhs_production_https_mobile.sh
+
+          curl -fsS --max-time 20 "https://$HHS_IP/api/system/status"             >/tmp/hhs-public-system-status.json
+          git -C "$REPO" rev-parse HEAD
+          systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet nginx
+          systemctl is-active --quiet hhs-certbot-renew.timer
+          echo "HHS_CLEAN_PRODUCTION_BOOTSTRAP_VERIFIED=$TARGET_SHA"
+          REMOTE
+
+      - name: Verify public clean-host surface from GitHub
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 5 --retry-delay 3             --connect-timeout 10 --max-time 30             "https://${HHS_HOST}/api/system/status"             >/tmp/hhs-public-system-status.json
+          curl --fail --silent --show-error --retry 5 --retry-delay 3             --connect-timeout 10 --max-time 30             "https://${HHS_HOST}/api/interface/status"             >/tmp/hhs-public-interface-status.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('/tmp/hhs-public-system-status.json').read_text())
+          b=json.loads(Path('/tmp/hhs-public-interface-status.json').read_text())
+          assert isinstance(a, dict)
+          assert isinstance(b, dict)
+          print('HHS_CLEAN_PRODUCTION_PUBLIC_HTTPS_VERIFIED')
+          PY
