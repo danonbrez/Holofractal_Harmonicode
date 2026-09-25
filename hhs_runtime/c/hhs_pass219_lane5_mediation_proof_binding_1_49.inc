@@ -53,6 +53,64 @@ static uint64_t hhs_l5pb_zero_sum_signature(
     hash = hhs_l5pb_mix_u64(hash, witness->rna_prepared_signature64);
     hash = hhs_l5pb_mix_u64(hash, witness->rna_decision_signature64);
     hash = hhs_l5pb_mix_u64(hash, witness->capability_registry_signature64);
+    hash = hhs_l5pb_mix_u64(hash, witness->direct_witness_receipt_signature64);
+    hash = hhs_l5pb_mix_u64(hash, witness->global_membrane_signature64);
+    return hash;
+}
+
+static uint64_t hhs_l5pb_global_membrane_signature(
+    const HHSExactPass219GlobalMembraneInputV1 *input,
+    const HHSExactPass219GlobalMembraneResultV1 *result
+) {
+    uint64_t hash = UINT64_C(1469598103934665603);
+    uint32_t i;
+
+    hash = hhs_l5pb_mix_u64(hash, input->struct_size);
+    hash = hhs_l5pb_mix_u64(hash, input->version);
+    hash = hhs_l5pb_mix_bytes(
+        hash, input->combined_source_sha256,
+        HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+    hash = hhs_l5pb_mix_bytes(
+        hash, input->global_symbol_environment_root,
+        HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+    hash = hhs_l5pb_mix_u64(hash, input->gate_count);
+    hash = hhs_l5pb_mix_u64(hash, input->global_symbol_environment_complete);
+    hash = hhs_l5pb_mix_u64(hash, input->cross_layer_revalidation_complete);
+    hash = hhs_l5pb_mix_u64(hash, input->local_symbol_shadowing_detected);
+
+    for (i = 0U; i < HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT; ++i) {
+        const HHSExactPass219GlobalGateWitnessV1 *gate = &input->gates[i];
+        hash = hhs_l5pb_mix_u64(hash, gate->struct_size);
+        hash = hhs_l5pb_mix_u64(hash, gate->version);
+        hash = hhs_l5pb_mix_u64(hash, gate->gate_index);
+        hash = hhs_l5pb_mix_u64(hash, gate->source_offset);
+        hash = hhs_l5pb_mix_u64(hash, gate->boolean_result);
+        hash = hhs_l5pb_mix_bytes(
+            hash, gate->combined_source_sha256,
+            HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+        hash = hhs_l5pb_mix_bytes(
+            hash, gate->global_symbol_environment_root,
+            HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+    }
+
+    hash = hhs_l5pb_mix_u64(hash, result->struct_size);
+    hash = hhs_l5pb_mix_u64(hash, result->version);
+    hash = hhs_l5pb_mix_u64(hash, result->decision);
+    hash = hhs_l5pb_mix_u64(hash, result->reason_mask);
+    hash = hhs_l5pb_mix_u64(hash, result->first_false_gate);
+    hash = hhs_l5pb_mix_u64(hash, result->source_identity_exact);
+    hash = hhs_l5pb_mix_u64(hash, result->occurrence_provenance_exact);
+    hash = hhs_l5pb_mix_u64(hash, result->shared_global_symbol_environment_exact);
+    hash = hhs_l5pb_mix_u64(hash, result->all_nested_boolean_gates_true);
+    hash = hhs_l5pb_mix_u64(hash, result->cross_layer_revalidation_complete);
+    hash = hhs_l5pb_mix_u64(hash, result->whole_equation_propagated);
+    hash = hhs_l5pb_mix_u64(hash, result->local_symbol_shadowing_authorized);
+    hash = hhs_l5pb_mix_u64(hash, result->pass169_whole_expression_authority_required);
+    hash = hhs_l5pb_mix_u64(hash, result->canonical_monolithic_proof);
+    hash = hhs_l5pb_mix_u64(hash, result->floating_point_authority);
+    hash = hhs_l5pb_mix_u64(hash, result->vm81_mutation_authority);
+    hash = hhs_l5pb_mix_u64(hash, result->hash72_commit_authority);
+    hash = hhs_l5pb_mix_u64(hash, result->persistence_mutation_authority);
     return hash;
 }
 
@@ -71,12 +129,14 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_binding_authority(
     authority.version = HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_VERSION;
     authority.namespace_id = HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_NAMESPACE;
     authority.legacy_1_34_proof_flags_authoritative = 0U;
-    authority.request_identity_recomputed = 1U;
+    authority.legacy_mediation_recomputed = 1U;
     authority.exact_vm5184_recomputed = 1U;
     authority.rna_cpp_cell_wall_replayed = 1U;
     authority.hash216_sha256_positions_verified = 1U;
     authority.capability_registry_recomputed = 1U;
-    authority.exact_zero_sum_residual_vector_required = 1U;
+    authority.direct_witness_route_recomputed = 1U;
+    authority.global_constraint_membrane_recomputed = 1U;
+    authority.exact_zero_sum_residual_vector_derived = 1U;
     authority.deterministic_proof_binding = 1U;
     authority.candidate_only = 1U;
     authority.canonical_vm81_mutation_authority = 0U;
@@ -150,22 +210,6 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_hash216_reference_signature(
     return HHS_EXACT_STATUS_OK;
 }
 
-HHSExactStatus hhs_exact_pass219_lane5_zero_sum_witness_seal(
-    HHSExactPass219Lane5ZeroSumClosureWitnessV1 *witness
-) {
-    uint64_t signature;
-    if (witness == NULL ||
-        witness->struct_size != (uint32_t)sizeof(*witness) ||
-        witness->version != HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_VERSION ||
-        witness->namespace_id != HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_NAMESPACE)
-        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    signature = hhs_l5pb_zero_sum_signature(witness);
-    if (signature == 0U)
-        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    witness->witness_signature64 = signature;
-    return HHS_EXACT_STATUS_OK;
-}
-
 HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
     const HHSExactPass219Lane5MediationRequestV1 *request,
     const HHSExactPass219Lane5MediationProofBundleV1 *proof,
@@ -175,10 +219,13 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
     HHSExactPass219Holo4PreparedV1 replay_prepared;
     HHSExactPass219Holo4DecisionV1 replay_decision;
     HHSExactPass219Lane5CapabilitySelfModelReceiptV1 replay_capability;
-    HHSExactPass219Lane5ZeroSumClosureWitnessV1 zero_copy;
+    HHSExactPass219Lane5DirectWitnessReceiptV1 replay_route;
+    HHSExactPass219GlobalMembraneResultV1 replay_global;
+    HHSExactPass219Lane5ZeroSumClosureWitnessV1 zero_witness;
     uint64_t frame_signature = 0U;
     uint64_t parent_signature = 0U;
     uint64_t hash216_set_signature = UINT64_C(1469598103934665603);
+    uint64_t global_signature;
     uint64_t proof_signature = UINT64_C(1469598103934665603);
     uint32_t i;
     HHSExactStatus status;
@@ -196,7 +243,8 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
         proof->rna_prepared == NULL || proof->rna_decision == NULL ||
         proof->hash216_references == NULL ||
         proof->capability_descriptor == NULL || proof->capability_receipt == NULL ||
-        proof->zero_sum_witness == NULL ||
+        proof->direct_witness_route == NULL || proof->direct_witness_receipt == NULL ||
+        proof->global_membrane_input == NULL || proof->global_membrane_result == NULL ||
         proof->hash216_reference_count != request->hash216_reference_count)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
 
@@ -276,30 +324,71 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
             return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
 
-    if (proof->zero_sum_witness->struct_size !=
-            (uint32_t)sizeof(*proof->zero_sum_witness) ||
-        proof->zero_sum_witness->version !=
-            HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_VERSION ||
-        proof->zero_sum_witness->namespace_id !=
-            HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_NAMESPACE ||
-        !hhs_l5pb_zero_sum_all_zero(proof->zero_sum_witness) ||
-        proof->zero_sum_witness->request_signature64 != request->request_signature64 ||
-        proof->zero_sum_witness->candidate_signature64 != request->candidate_signature64 ||
-        proof->zero_sum_witness->parent_hash216_signature64 !=
+    memset(&replay_route, 0, sizeof(replay_route));
+    status = hhs_exact_pass219_lane5_direct_witness_route_validate(
+        proof->direct_witness_route, &replay_route);
+    if (status != HHS_EXACT_STATUS_OK ||
+        memcmp(&replay_route, proof->direct_witness_receipt, sizeof(replay_route)) != 0 ||
+        replay_route.accepted != 1U ||
+        replay_route.replay_witness_verified != 1U ||
+        replay_route.exact_goal_reached != 1U ||
+        replay_route.contradiction_free != 1U ||
+        replay_route.reciprocal_phase_verified != 1U ||
+        proof->direct_witness_route->previous_signature64 !=
             request->parent_hash216_signature64 ||
-        proof->zero_sum_witness->rna_prepared_signature64 !=
-            request->rna_prepared_signature64 ||
-        proof->zero_sum_witness->rna_decision_signature64 !=
-            request->rna_decision_signature64 ||
-        proof->zero_sum_witness->capability_registry_signature64 !=
-            request->capability_registry_signature64)
+        proof->direct_witness_route->current_signature64 !=
+            request->candidate_signature64 ||
+        proof->direct_witness_route->candidate_signature64 !=
+            request->candidate_signature64 ||
+        proof->direct_witness_route->provenance_signature64 !=
+            request->request_signature64 ||
+        request->learning_iteration_signature64 !=
+            replay_route.route_receipt_signature64)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    memset(&replay_global, 0, sizeof(replay_global));
+    status = hhs_exact_pass219_global_membrane_evaluate(
+        proof->global_membrane_input, &replay_global);
+    if (status != HHS_EXACT_STATUS_OK ||
+        memcmp(&replay_global, proof->global_membrane_result, sizeof(replay_global)) != 0 ||
+        replay_global.decision != HHS_EXACT_PASS219_GLOBAL_MEMBRANE_PROPAGATE ||
+        replay_global.source_identity_exact != 1U ||
+        replay_global.occurrence_provenance_exact != 1U ||
+        replay_global.shared_global_symbol_environment_exact != 1U ||
+        replay_global.all_nested_boolean_gates_true != 1U ||
+        replay_global.cross_layer_revalidation_complete != 1U ||
+        replay_global.whole_equation_propagated != 1U ||
+        replay_global.local_symbol_shadowing_authorized != 0U ||
+        replay_global.pass169_whole_expression_authority_required != 1U ||
+        replay_global.canonical_monolithic_proof != 0U ||
+        replay_global.floating_point_authority != 0U ||
+        replay_global.vm81_mutation_authority != 0U ||
+        replay_global.hash72_commit_authority != 0U ||
+        replay_global.persistence_mutation_authority != 0U)
         return HHS_EXACT_STATUS_CONSTRAINT_REJECTED;
 
-    zero_copy = *proof->zero_sum_witness;
-    zero_copy.witness_signature64 = 0U;
-    status = hhs_exact_pass219_lane5_zero_sum_witness_seal(&zero_copy);
-    if (status != HHS_EXACT_STATUS_OK ||
-        zero_copy.witness_signature64 != proof->zero_sum_witness->witness_signature64)
+    global_signature = hhs_l5pb_global_membrane_signature(
+        proof->global_membrane_input, &replay_global);
+    if (global_signature == 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    memset(&zero_witness, 0, sizeof(zero_witness));
+    zero_witness.struct_size = (uint32_t)sizeof(zero_witness);
+    zero_witness.version = HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_VERSION;
+    zero_witness.namespace_id = HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_NAMESPACE;
+    zero_witness.request_signature64 = request->request_signature64;
+    zero_witness.candidate_signature64 = request->candidate_signature64;
+    zero_witness.parent_hash216_signature64 = request->parent_hash216_signature64;
+    zero_witness.rna_prepared_signature64 = request->rna_prepared_signature64;
+    zero_witness.rna_decision_signature64 = request->rna_decision_signature64;
+    zero_witness.capability_registry_signature64 =
+        request->capability_registry_signature64;
+    zero_witness.direct_witness_receipt_signature64 =
+        replay_route.route_receipt_signature64;
+    zero_witness.global_membrane_signature64 = global_signature;
+    zero_witness.witness_signature64 = hhs_l5pb_zero_sum_signature(&zero_witness);
+    if (!hhs_l5pb_zero_sum_all_zero(&zero_witness) ||
+        zero_witness.witness_signature64 == 0U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     proof_signature = hhs_l5pb_mix_u64(proof_signature, base.mediation_signature64);
@@ -309,7 +398,10 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
     proof_signature = hhs_l5pb_mix_u64(
         proof_signature, replay_capability.receipt_signature64);
     proof_signature = hhs_l5pb_mix_u64(
-        proof_signature, proof->zero_sum_witness->witness_signature64);
+        proof_signature, replay_route.route_receipt_signature64);
+    proof_signature = hhs_l5pb_mix_u64(proof_signature, global_signature);
+    proof_signature = hhs_l5pb_mix_u64(
+        proof_signature, zero_witness.witness_signature64);
     proof_signature = hhs_l5pb_mix_u64(
         proof_signature, replay_prepared.graph_signature64);
     proof_signature = hhs_l5pb_mix_u64(
@@ -325,18 +417,22 @@ HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
     out_receipt->hash216_reference_count = request->hash216_reference_count;
     out_receipt->capability_reference_count = request->capability_reference_count;
     out_receipt->base_receipt = base;
+    out_receipt->zero_sum_witness = zero_witness;
     out_receipt->candidate_frame_signature64 = frame_signature;
     out_receipt->parent_hash216_signature64 = parent_signature;
     out_receipt->hash216_reference_set_signature64 = hash216_set_signature;
     out_receipt->capability_receipt_signature64 = replay_capability.receipt_signature64;
-    out_receipt->zero_sum_witness_signature64 =
-        proof->zero_sum_witness->witness_signature64;
+    out_receipt->direct_witness_receipt_signature64 =
+        replay_route.route_receipt_signature64;
+    out_receipt->global_membrane_signature64 = global_signature;
     out_receipt->proof_binding_signature64 = proof_signature;
-    out_receipt->request_recomputed = 1U;
+    out_receipt->legacy_mediation_recomputed = 1U;
     out_receipt->exact_vm5184_bound = 1U;
     out_receipt->rna_cell_wall_bound = 1U;
     out_receipt->hash216_references_validated = 1U;
     out_receipt->capability_registry_validated = 1U;
+    out_receipt->direct_witness_route_validated = 1U;
+    out_receipt->global_constraint_membrane_validated = 1U;
     out_receipt->zero_sum_closure_passed = 1U;
     out_receipt->all_proofs_bound = 1U;
     out_receipt->candidate_only = 1U;
