@@ -1,0 +1,30 @@
+name: Production Systemd Environment Serialization Validation
+
+on:
+  push:
+    branches:
+      - fix/production-systemd-env-newline-20260925
+    paths:
+      - '.github/workflows/production-systemd-env-serialization.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate systemd environment serialization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -q pytest
+          python -m pytest -q             tests/test_production_systemd_environment_serialization.py             tests/test_production_mutable_state_roots.py             tests/test_runtime_lock_certifier_production_state.py
+          ! grep -F '\nEnvironment=' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -Fx 'Environment=HHS_RUNTIME_STATUS_PROBE_TIMEOUT_SECONDS=180' deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -Fx 'Environment=HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2' deploy/digitalocean/hhs-pass196-integrated-environment.service
