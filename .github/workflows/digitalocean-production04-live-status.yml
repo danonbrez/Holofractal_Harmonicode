@@ -61,3 +61,5 @@ jobs:
           REMOTE
 
 # Probe after safe-directory repair
+
+# Probe after main state-root repair deploy
