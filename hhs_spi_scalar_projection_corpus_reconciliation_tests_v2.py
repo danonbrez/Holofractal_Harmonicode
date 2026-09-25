@@ -20,8 +20,8 @@ def test_counts_preserved():
     manifest = _manifest()
     assert manifest["resolved_candidate_counts"] == {
         "MISSING_PROJECTION": 0,
-        "PROVEN": 429,
-        "SYMBOLIC": 43,
+        "PROVEN": 588,
+        "SYMBOLIC": 81,
         "UNSUPPORTED_DOMAIN": 0,
     }
 
@@ -61,7 +61,7 @@ def test_chain_associativity_stays_unselected():
 def test_scalar_completion_remains_open():
     manifest = _manifest()
     assert manifest["scalar_value_complete"] is False
-    assert manifest["open_symbolic_occurrence_count"] == 43
+    assert manifest["open_symbolic_occurrence_count"] == 81
 
 
 def test_authority_boundary_unchanged():
