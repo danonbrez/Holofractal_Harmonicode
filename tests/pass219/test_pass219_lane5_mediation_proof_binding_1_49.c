@@ -92,7 +92,9 @@ static HHSExactPass219Lane5DirectWitnessRouteV1 make_direct_route(
 }
 
 static int make_global_input(
-    HHSExactPass219GlobalMembraneInputV1 *input
+    HHSExactPass219GlobalMembraneInputV1 *input,
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    const HHSExactPass219Lane5DirectWitnessReceiptV1 *direct_receipt
 ) {
     HHSExactPass219GlobalMembraneDescriptorV1 descriptor;
     uint32_t i;
@@ -108,8 +110,11 @@ static int make_global_input(
     memcpy(input->combined_source_sha256,
            descriptor.combined_source_sha256,
            HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
-    for (i = 0U; i < HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES; ++i)
-        input->global_symbol_environment_root[i] = (uint8_t)(i + 1U);
+    if (hhs_exact_pass219_lane5_mediation_environment_root(
+            request,
+            direct_receipt,
+            input->global_symbol_environment_root) != HHS_EXACT_STATUS_OK)
+        return 0;
     input->gate_count = HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT;
     input->global_symbol_environment_complete = 1U;
     input->cross_layer_revalidation_complete = 1U;
@@ -158,6 +163,8 @@ int main(void) {
     HHSExactPass219Lane5DirectWitnessReceiptV1 tampered_route_receipt;
     HHSExactPass219GlobalMembraneInputV1 rejected_global_input;
     HHSExactPass219GlobalMembraneResultV1 rejected_global_result;
+    HHSExactPass219GlobalMembraneInputV1 substituted_global_input;
+    HHSExactPass219GlobalMembraneResultV1 substituted_global_result;
     HHSExactPass219Lane5MediationRequestV1 bad_request;
     uint8_t one = 1U;
     uint64_t signature = 0U;
@@ -177,6 +184,7 @@ int main(void) {
     CHECK(authority.capability_registry_recomputed == 1U);
     CHECK(authority.direct_witness_route_recomputed == 1U);
     CHECK(authority.global_constraint_membrane_recomputed == 1U);
+    CHECK(authority.global_environment_request_bound == 1U);
     CHECK(authority.exact_zero_sum_residual_vector_derived == 1U);
     CHECK(authority.candidate_only == 1U);
     CHECK(authority.canonical_vm81_mutation_authority == 0U);
@@ -244,7 +252,7 @@ int main(void) {
               &direct_route, &direct_receipt) == HHS_EXACT_STATUS_OK);
     request.learning_iteration_signature64 = direct_receipt.route_receipt_signature64;
 
-    CHECK(make_global_input(&global_input));
+    CHECK(make_global_input(&global_input, &request, &direct_receipt));
     memset(&global_result, 0, sizeof(global_result));
     CHECK(hhs_exact_pass219_global_membrane_evaluate(
               &global_input, &global_result) == HHS_EXACT_STATUS_OK);
@@ -367,6 +375,25 @@ int main(void) {
     proof.global_membrane_result = &rejected_global_result;
     CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
               &request, &proof, &receipt) == HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
+    proof.global_membrane_input = &global_input;
+    proof.global_membrane_result = &global_result;
+
+    substituted_global_input = global_input;
+    substituted_global_input.global_symbol_environment_root[0] ^= UINT8_C(1);
+    for (i = 0U; i < HHS_EXACT_PASS219_GLOBAL_MEMBRANE_BOOLEAN_GATE_COUNT; ++i)
+        memcpy(
+            substituted_global_input.gates[i].global_symbol_environment_root,
+            substituted_global_input.global_symbol_environment_root,
+            HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
+    memset(&substituted_global_result, 0, sizeof(substituted_global_result));
+    CHECK(hhs_exact_pass219_global_membrane_evaluate(
+              &substituted_global_input, &substituted_global_result) == HHS_EXACT_STATUS_OK);
+    CHECK(substituted_global_result.decision ==
+          HHS_EXACT_PASS219_GLOBAL_MEMBRANE_PROPAGATE);
+    proof.global_membrane_input = &substituted_global_input;
+    proof.global_membrane_result = &substituted_global_result;
+    CHECK(hhs_exact_pass219_lane5_mediation_proof_bind(
+              &request, &proof, &receipt) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
     proof.global_membrane_input = &global_input;
     proof.global_membrane_result = &global_result;
 
