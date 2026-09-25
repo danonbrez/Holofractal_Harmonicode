@@ -8,6 +8,7 @@ on:
       - 'hhs_backend/api/pass174_runtime_routes.py'
       - 'hhs_backend/api/development_lifecycle_routes.py'
       - 'hhs_backend/runtime_os_pass220_lane5_tool_hydration.py'
+      - 'hhs_verification/pass220/__init__.py'
       - 'hhs_verification/pass220/external_frontend_ingress_egress_benchmark_v1.py'
       - 'tests/pass220/test_hhs_pass220_external_frontend_ingress_egress_v1.py'
       - 'contracts/pass220/PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_LOSSLESS_NONBLOCKING_V1.md'
@@ -73,6 +74,13 @@ jobs:
         run: |
           timeout 300s python -m pip install --upgrade pip
           timeout 300s python -m pip install             fastapi==0.128.2             starlette==0.50.0             'httpx>=0.27,<1.0'             'uvicorn[standard]>=0.30,<1.0'             'cryptography>=46.0,<47.0'             requests             pytest             playwright
+
+      - name: Compile new Python validation surfaces
+        run: |
+          python -m py_compile \
+            hhs_verification/pass220/external_frontend_ingress_egress_benchmark_v1.py \
+            tests/pass220/test_hhs_pass220_external_frontend_ingress_egress_v1.py \
+            hhs_backend/runtime_os_pass220_lane5_tool_hydration.py
 
       - name: Build exact native runtime
         shell: bash
