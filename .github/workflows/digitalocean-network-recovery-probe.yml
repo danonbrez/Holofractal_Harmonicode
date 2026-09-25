@@ -32,3 +32,8 @@ jobs:
             echo "-- route --"
             ip route get "$host" || true
           done
+          echo "=== CLEAN HOST SSH KEY ==="
+          mkdir -p /tmp/hhs-probe
+          ssh-keyscan -T 8 -t ed25519 165.227.64.72 > /tmp/hhs-probe/known_hosts
+          cat /tmp/hhs-probe/known_hosts
+          ssh-keygen -lf /tmp/hhs-probe/known_hosts
