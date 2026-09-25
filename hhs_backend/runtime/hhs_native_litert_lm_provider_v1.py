@@ -394,13 +394,32 @@ class HHSNativeLiteRTLMTransport:
         assistant_mode: str,
     ) -> List[Dict[str, Any]]:
         mode = normalize_assistant_mode(assistant_mode)
+        text = query.casefold()
+        unified_tool_request = bool(
+            "lane5" in text
+            or "lane 5" in text
+            or any(
+                phrase in text
+                for phrase in (
+                    "model fabric",
+                    "language model fabric",
+                    "language models",
+                    "which model",
+                    "active model",
+                    "selected model",
+                )
+            )
+        )
         if mode == ASSISTANT_MODE_GENERAL_CHAT:
             return []
-        if mode == ASSISTANT_MODE_BOTH and not _looks_like_development_request(query):
+        if (
+            mode == ASSISTANT_MODE_BOTH
+            and not _looks_like_development_request(query)
+            and not unified_tool_request
+        ):
             return []
 
         available = _available_tool_names(tools)
-        text = query.casefold()
         selections: List[tuple[str, Dict[str, Any]]] = []
 
         def add(name: str, arguments: Optional[Mapping[str, Any]] = None) -> None:
