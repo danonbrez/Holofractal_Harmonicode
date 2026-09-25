@@ -50,4 +50,12 @@ jobs:
           systemctl is-active nginx 2>/dev/null || true
           systemctl is-active hhs-certbot-renew.timer 2>/dev/null || true
           ss -ltnp 2>/dev/null | grep -E ':(22|80|443|8080)\b' || true
+          echo "=== hhs service status ==="
+          systemctl status hhs.service --no-pager --full || true
+          echo "=== hhs service properties ==="
+          systemctl show hhs.service -p ActiveState -p SubState -p Result -p ExecMainStatus -p ExecStartPre -p ExecStart -p User -p Group -p Environment --no-pager || true
+          echo "=== hhs service journal ==="
+          journalctl -u hhs.service -n 250 --no-pager || true
+          echo "=== warm boot verify as service user ==="
+          runuser -u hhs -- env HHS_DISABLE_C_AUTOBUILD=1 HHS_DATA_DIR=/var/lib/hhs/data HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap /opt/hhs/venv/bin/python /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify --repo-root /opt/hhs/app --manifest-root /var/lib/hhs/warm-boot/releases || true
           REMOTE
