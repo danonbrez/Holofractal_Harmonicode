@@ -91,15 +91,16 @@ static HHSExactPass219Lane5DirectWitnessRouteV1 make_direct_route(
     return route;
 }
 
-static void make_global_input(
+static int make_global_input(
     HHSExactPass219GlobalMembraneInputV1 *input
 ) {
     HHSExactPass219GlobalMembraneDescriptorV1 descriptor;
     uint32_t i;
 
     memset(&descriptor, 0, sizeof(descriptor));
-    CHECK(hhs_exact_pass219_global_membrane_descriptor(&descriptor) ==
-          HHS_EXACT_STATUS_OK);
+    if (hhs_exact_pass219_global_membrane_descriptor(&descriptor) !=
+        HHS_EXACT_STATUS_OK)
+        return 0;
 
     memset(input, 0, sizeof(*input));
     input->struct_size = (uint32_t)sizeof(*input);
@@ -128,6 +129,7 @@ static void make_global_input(
                input->global_symbol_environment_root,
                HHS_EXACT_PASS219_GLOBAL_MEMBRANE_SHA256_BYTES);
     }
+    return 1;
 }
 
 int main(void) {
@@ -242,7 +244,7 @@ int main(void) {
               &direct_route, &direct_receipt) == HHS_EXACT_STATUS_OK);
     request.learning_iteration_signature64 = direct_receipt.route_receipt_signature64;
 
-    make_global_input(&global_input);
+    CHECK(make_global_input(&global_input));
     memset(&global_result, 0, sizeof(global_result));
     CHECK(hhs_exact_pass219_global_membrane_evaluate(
               &global_input, &global_result) == HHS_EXACT_STATUS_OK);
