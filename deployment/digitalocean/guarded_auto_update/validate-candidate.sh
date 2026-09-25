@@ -58,6 +58,9 @@ for path in \
   hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py \
   hhs_python/runtime/hhs_pass205_continuation_bridge.py \
   scripts/pass205_production_validation.py \
+  hhs_runtime/pass191/main_history_hash216_hydration.py \
+  tools/hydrate_main_history_hash216.py \
+  tests/test_hhs_main_history_hash216_hydration_v1.py \
   tests/test_runtime_os_production_root.py \
   tests/test_hhs_pass205_continuation_runtime_v1.py; do
   [[ -f "$path" ]] && python_files+=("$path")
@@ -87,6 +90,7 @@ for path in \
   tests/test_hhs_production_service_permissions_v2.py \
   tests/test_hhs_full_application_ide_root_v1.py \
   tests/test_hhs_repository_history_surface_v1.py \
+  tests/test_hhs_main_history_hash216_hydration_v1.py \
   tests/test_hhs_pass205_continuation_runtime_v1.py; do
   [[ -f "$path" ]] && pytest_targets+=("$path")
 done
