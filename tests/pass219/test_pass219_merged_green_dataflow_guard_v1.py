@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -13,6 +14,7 @@ MANIFEST_PATH = ROOT / "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGR
 spec = importlib.util.spec_from_file_location("pass219_merged_green_guard", GUARD_PATH)
 assert spec is not None and spec.loader is not None
 guard = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = guard
 spec.loader.exec_module(guard)
 
 MANIFEST = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
