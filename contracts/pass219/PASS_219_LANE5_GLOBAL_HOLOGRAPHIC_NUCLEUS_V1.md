@@ -29,6 +29,39 @@ C++ CoreHolographicRNACellWall
 
 Lane 5 MAY reason over, retrieve, associate, compose, hydrate, rank, optimize, simulate, and route any validated knowledge accessible through these surfaces. Lane 5 SHALL NOT own canonical VM81 mutation, Hash72 minting, canonical Hash216 minting, canonical persistence, or an independent receipt clock.
 
+## 1A. Cumulative Pass 219 authority and callable-circuit law
+
+Pass 219 is the cumulative system-contract authority for this runtime generation. It inherits every accepted prior-pass system constraint and is the mandatory parent authority for Pass 220 and later descendant passes unless a versioned Pass 219 contract explicitly replaces or refines a rule.
+
+A descendant pass MAY add transport, interface, application, projection, or workload surfaces, but it SHALL NOT demote, bypass, reclassify, or supersede Pass 219. In particular, Ubuntu/QEMU/SSH/PTTY transport, Pass 190 application adapters, frontend shells, service catalogs, schedulers, models, and host tooling are subordinate integration surfaces and MUST NOT be promoted above the Pass 219 authority manifold.
+
+Within Pass 219, Lane 5 is the C++ BIOS and AGI optimization control center of the Pass 219 RNA cellular manifold. This control-center role owns candidate orchestration, proof-preserving optimization, composition, routing, and mediation; it does not transfer the singleton canonical mutation authority away from signed environmental VM81 admission.
+
+Persistent Pass 219 state and runtime availability SHALL NOT be interpreted as continuous autonomous cognitive execution. Lane 5 optimization/reasoning circuits are callable, bounded execution circuits:
+
+```text
+no admitted invocation
+    -> no Lane 5 cognitive/optimization circuit execution
+
+admitted operation or explicitly configured admitted event
+    -> invoke required Lane 5 circuit
+    -> bounded recursive/iterative optimization
+    -> closure or explicit fail-closed result
+    -> proof/receipt/result
+    -> return
+```
+
+Booting an Ubuntu guest, exposing Bash/PTTY, starting the application adapter, or attaching a browser frontend MUST NOT by itself start an ambient optimization loop. Security policy SHALL govern circuit invocation, capabilities, evidence, and commit authority; it SHALL NOT replace or route around the authoritative Pass 219/Lane 5 runtime merely because callable recursive optimization exists.
+
+The system-authority distinction is therefore:
+
+```text
+Pass219 = cumulative inherited system-contract authority
+Lane5   = Pass219 C++ BIOS + AGI optimization/control center
+VM81    = singleton canonical mutation/admission authority inside Pass219
+Pass220+ = descendant integration/projection surfaces
+```
+
 ## 2. Governing data flow
 
 Every global candidate intended for kernel execution SHALL compose through this order:
