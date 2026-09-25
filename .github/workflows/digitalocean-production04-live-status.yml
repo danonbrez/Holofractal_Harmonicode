@@ -71,3 +71,5 @@ jobs:
 # Probe after PR577 exact-main runtime boot failure
 
 # Probe during ff7006 artifact-root deployment
+
+# Probe ff7006 post-start health
