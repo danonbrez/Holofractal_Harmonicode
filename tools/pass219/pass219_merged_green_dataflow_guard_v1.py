@@ -11,7 +11,8 @@ from dataclasses import dataclass
 from typing import Any, Iterable
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-DEFAULT_MANIFEST = ROOT / "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json"
+MANIFEST_REPO_PATH = "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json"
+DEFAULT_MANIFEST = ROOT / MANIFEST_REPO_PATH
 
 ALLOWED_STATUS = {"A", "M", "D", "R", "C", "T"}
 
@@ -239,6 +240,115 @@ def _require_bool_map(
             errors.append(f"{prefix}:{key}:MUST_BE_TRUE")
 
 
+def manifest_monotonicity_errors(
+    base_manifest: dict[str, Any],
+    head_manifest: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    cfg = base_manifest.get("self_integrity", {})
+
+    if int(head_manifest.get("protected_pass_ceiling", -1)) < int(
+        base_manifest.get("protected_pass_ceiling", -1)
+    ):
+        errors.append("POLICY_PROTECTED_PASS_CEILING_DECREASED")
+
+    for field in cfg.get("manifest_set_fields_must_be_monotonic", []):
+        before = set(base_manifest.get(field, []))
+        after = set(head_manifest.get(field, []))
+        missing = sorted(before - after)
+        if missing:
+            errors.append(
+                f"POLICY_MONOTONIC_SET_SHRANK:{field}:" + ",".join(missing)
+            )
+
+    for field in cfg.get("manifest_true_maps_must_not_weaken", []):
+        before = base_manifest.get(field, {})
+        after = head_manifest.get(field, {})
+        if not isinstance(before, dict) or not isinstance(after, dict):
+            errors.append(f"POLICY_TRUE_MAP_INVALID:{field}")
+            continue
+        for key, value in before.items():
+            if value is True and after.get(key) is not True:
+                errors.append(f"POLICY_TRUE_FLAG_WEAKENED:{field}:{key}")
+
+    if cfg.get("proof_directory_may_not_change", False):
+        if head_manifest.get("proof_directory") != base_manifest.get("proof_directory"):
+            errors.append("POLICY_PROOF_DIRECTORY_CHANGED")
+
+    if cfg.get("proof_schema_may_not_change", False):
+        if head_manifest.get("proof_schema") != base_manifest.get("proof_schema"):
+            errors.append("POLICY_PROOF_SCHEMA_CHANGED")
+
+    if cfg.get("required_check_name_may_not_change", False):
+        before = base_manifest.get("github_merge_layer", {}).get("required_check_name")
+        after = head_manifest.get("github_merge_layer", {}).get("required_check_name")
+        if before != after:
+            errors.append("POLICY_REQUIRED_CHECK_NAME_CHANGED")
+
+    return errors
+
+
+def validate_policy_self_integrity(
+    base: str,
+    head: str,
+    manifest: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    cfg = manifest.get("self_integrity", {})
+    policy_paths = list(cfg.get("policy_paths", []))
+
+    for path in policy_paths:
+        if not git_path_exists(head, path):
+            errors.append(f"POLICY_SELF_PATH_MISSING:{path}")
+
+    head_manifest_text = git_text(head, MANIFEST_REPO_PATH)
+    if head_manifest_text is None:
+        errors.append("POLICY_HEAD_MANIFEST_MISSING")
+        return errors
+    try:
+        head_manifest = json.loads(head_manifest_text)
+    except json.JSONDecodeError as exc:
+        errors.append(f"POLICY_HEAD_MANIFEST_INVALID_JSON:{exc}")
+        return errors
+
+    base_manifest_text = git_text(base, MANIFEST_REPO_PATH)
+    if base_manifest_text is not None:
+        try:
+            base_manifest = json.loads(base_manifest_text)
+        except json.JSONDecodeError as exc:
+            errors.append(f"POLICY_BASE_MANIFEST_INVALID_JSON:{exc}")
+            return errors
+        errors.extend(manifest_monotonicity_errors(base_manifest, head_manifest))
+
+    anchor_targets = (
+        (
+            "tools/pass219/pass219_merged_green_dataflow_guard_v1.py",
+            cfg.get("guard_script_required_anchors", []),
+            "GUARD",
+        ),
+        (
+            ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml",
+            cfg.get("workflow_required_anchors", []),
+            "WORKFLOW",
+        ),
+        (
+            "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md",
+            cfg.get("contract_required_anchors", []),
+            "CONTRACT",
+        ),
+    )
+    for path, anchors, label in anchor_targets:
+        text = git_text(head, path)
+        if text is None:
+            errors.append(f"POLICY_{label}_MISSING:{path}")
+            continue
+        for anchor in anchors:
+            if anchor not in text:
+                errors.append(f"POLICY_{label}_ANCHOR_MISSING:{anchor}")
+
+    return errors
+
+
 def validate_proof_document(
     proof_path: str,
     proof: dict[str, Any],
@@ -296,6 +406,8 @@ def validate_proof_document(
         return errors, covered
 
     mode = proof.get("mode")
+    self_cfg = manifest.get("self_integrity", {})
+    self_paths = set(self_cfg.get("policy_paths", []))
     seen_paths: set[str] = set()
 
     for row in rows:
@@ -331,6 +443,14 @@ def validate_proof_document(
 
         if change.status in {"D", "R"} and mode != "REPAIR_FORWARD_REFINEMENT":
             errors.append(f"{proof_path}:{path}:DELETION_OR_RENAME_REQUIRES_REPAIR_FORWARD")
+
+        if (
+            self_cfg.get("existing_policy_change_requires_repair_forward", False)
+            and path in self_paths
+            and git_blob(base, base_path) is not None
+            and mode != "REPAIR_FORWARD_REFINEMENT"
+        ):
+            errors.append(f"{proof_path}:{path}:POLICY_CHANGE_REQUIRES_REPAIR_FORWARD")
 
         base_text = git_text(base, base_path)
         head_text = git_text(head, path)
@@ -459,6 +579,7 @@ def validate(
     actual_merge_base = merge_base(base, head)
     changes = parse_changes(base, head)
     impacted, sensitive_growth = build_impacted(changes, base, head, manifest)
+    self_integrity_errors = validate_policy_self_integrity(base, head, manifest)
 
     result: dict[str, Any] = {
         "schema": "HHS_PASS219_MERGED_GREEN_DATAFLOW_GUARD_RESULT_V1",
@@ -478,8 +599,8 @@ def validate(
         ],
         "proof_required": bool(impacted),
         "proof_paths": [],
-        "errors": [],
-        "status": "PASS",
+        "errors": list(self_integrity_errors),
+        "status": "FAIL" if self_integrity_errors else "PASS",
     }
 
     if not impacted:
