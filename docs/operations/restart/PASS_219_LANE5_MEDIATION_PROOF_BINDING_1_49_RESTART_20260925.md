@@ -237,46 +237,39 @@ weaken the proof contract to satisfy CI; repair implementation, build,
 workflow, or test divergence forward.
 
 
-## Pass 219 cumulative-authority hierarchy repair
+## VM81 single-authority architecture correction
 
-A descendant Pass 220 documentation/runtime regression had begun treating the
-Ubuntu application/Pass 190 surface as if it were the HHS runtime authority.
-That contradicts the inherited Pass 219 architecture.
-
-This checkpoint removes that violation and freezes the hierarchy as:
+The prior checkpoint incorrectly elevated Pass 219 itself to system authority.
+That was a documentation regression. The inherited repository architecture and
+current correction freeze the machine model as:
 
 ~~~text
-Pass 219 = cumulative inherited system-contract authority
-Lane 5 = Pass 219 C++ BIOS + AGI optimization/control center
-signed environmental VM81 = singleton canonical mutation/admission seam
-Pass 220+ = descendant integration/projection surfaces
-Ubuntu/QEMU/SSH/PTTY/Pass190/frontend = subordinate transport/application surfaces
+VM81 runtime / 5184-native virtual hardware = ONLY AUTHORITY
+Lane 5 = VM81 C++ BIOS + AGI optimization/control center
+cumulative pass system = integrated operating system + callable service registry
+Hash72 = admitted transition receipt closure
+Hash216 = permanent validation / lineage / replay storage
+internal Linux VM = Ubuntu guest installed on VM81 virtual hardware
+frontend = ordinary ABI / API / opcode / terminal / GUI interface environment
 ~~~
 
-Lane 5 reasoning/optimization is also frozen as callable bounded circuit
-execution. Persistent state/runtime availability does not imply a constant
-autonomous cognitive loop. Guest boot, PTY availability, service startup, or
-frontend attachment cannot itself start cognitive optimization.
+Pass numbers organize and extend the integrated OS/service image; they are not
+authorities above the VM81 runtime.
 
-Changed files for this repair:
+The existing I043/I044 host-side QEMU/SSH/PTTY work is retained only as a
+compatibility/bootstrap integration harness. It does not satisfy the canonical
+internal Linux VM requirement until a repository-visible VM81 hardware/ABI
+binding proves Ubuntu executes on VM81 virtual hardware. Therefore frontend
+attachment is not the next canonical gate; VM81-backed Ubuntu guest proof is.
 
-~~~text
-contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md
-docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md
-docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md
-docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md
-hhs_runtime/pass220/ubuntu_guest_runtime.py
-tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py
-.github/workflows/pass219-lane5-mediation-proof-binding-1-49.yml
-docs/operations/restart/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49_RESTART_20260925.md
-~~~
+Lane 5 optimization/reasoning remains callable and bounded rather than an
+ambient constant cognitive loop.
 
-Dependency-scoped validation encoded in the dedicated 1.49 workflow now checks
-the authority vocabulary, rejects the superseded Pass 190/Ubuntu authority
-phrasing, verifies the executable guest authority descriptor, and runs the I043
-guest-runtime regression test before the cumulative C ABI proof-binding suite.
+The dedicated 1.49 workflow now rejects the incorrect Pass-219-as-authority
+wording and enforces the VM81/Lane5/pass-system/Hash216/Ubuntu/frontend roles
+above. The I043 executable descriptor also reports the host QEMU path as
+bootstrap compatibility only and marks the canonical internal Linux VM as not
+yet proven.
 
-Exact-head CI remains pending; per repository policy, queued external CI does
-not invalidate this restartable checkpoint. The next action is to inspect only
-the dedicated hierarchy/proof-binding failures, repair forward if required, and
-merge only after the proof-binding path is green.
+Exact-head CI is pending. Repair only dependency-scoped divergence; do not merge
+until the dedicated proof-binding and architecture gate are green.
