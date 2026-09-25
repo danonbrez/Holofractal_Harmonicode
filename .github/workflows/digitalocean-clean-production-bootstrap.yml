@@ -41,7 +41,7 @@ jobs:
         run: |
           set -euo pipefail
           cd hhs_gui
-          npm ci
+          npm install --no-audit --no-fund
           npm run typecheck
           npm run build
           test -s dist/index.html
