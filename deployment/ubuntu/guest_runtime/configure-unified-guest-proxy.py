@@ -158,6 +158,7 @@ def configure(
     snippet_destination: Path,
     reload_nginx: bool = True,
     target: str = "guest",
+    target_sha: str = "",
 ) -> dict[str, object]:
     if not site.is_file():
         raise RuntimeError(f"HHS_I047_NGINX_SITE_MISSING:{site}")
@@ -202,6 +203,7 @@ def configure(
 
     return {
         "schema": "HHS_PASS_220_I047_UNIFIED_GUEST_PROXY_RECEIPT_V1",
+        "target_sha": target_sha,
         "site": str(site),
         "site_backup": str(site_backup),
         "snippet": str(snippet_destination),
@@ -211,6 +213,8 @@ def configure(
         "application_vm_backend": "127.0.0.1:18720" if target == "guest" else "127.0.0.1:8720",
         "host_application_compute_authority": target == "host",
         "canonical_state_authority": False,
+        "frontend_attached": target == "guest",
+        "lane5_vm81_guest_authority_required": target == "guest",
         "guest_health_verified": bool(health),
     }
 
@@ -222,6 +226,7 @@ def main() -> int:
     parser.add_argument("--snippet-destination", default=DEFAULT_SNIPPET)
     parser.add_argument("--no-reload", action="store_true")
     parser.add_argument("--target", choices=("guest", "host"), default="guest")
+    parser.add_argument("--target-sha", default="")
     args = parser.parse_args()
 
     repository_root = Path(args.repository_root).resolve()
@@ -237,6 +242,7 @@ def main() -> int:
         snippet_destination=Path(args.snippet_destination),
         reload_nginx=not args.no_reload,
         target=args.target,
+        target_sha=args.target_sha,
     )
     print(json.dumps(receipt, sort_keys=True))
     return 0
