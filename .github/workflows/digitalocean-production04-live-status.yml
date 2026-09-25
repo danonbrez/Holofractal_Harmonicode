@@ -90,3 +90,5 @@ jobs:
 # Probe ff7006 post-start health
 
 # Inspect immutable-agent SQLite storage contract
+
+# Probe cf2764 immutable-agent DB deployment
