@@ -63,3 +63,5 @@ jobs:
 # Probe after safe-directory repair
 
 # Probe after main state-root repair deploy
+
+# Probe after mutable-state repair deploy
