@@ -15,6 +15,9 @@ on:
       - "hhs_backend/runtime_os_visual_server.py"
       - "hhs_backend/runtime_os_application_server.py"
       - "hhs_backend/production_visual_server.py"
+      - "hhs_backend/pass220_unified_guest_server.py"
+      - "hhs_runtime/pass220/ubuntu_guest_runtime.py"
+      - "deployment/ubuntu/guest_runtime/**"
       - "deployment/digitalocean/guarded_auto_update/**"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
@@ -348,7 +351,7 @@ jobs:
             echo "=== EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS ===" >&2
             systemctl status hhs.service --no-pager --full >&2 || true
             systemctl show hhs.service -p ActiveState -p SubState -p MainPID -p ExecStart -p WorkingDirectory -p Environment --no-pager >&2 || true
-            ss -ltnp | grep ':8080' >&2 || true
+            ss -ltnp | grep -E ':(8080|18080|18720)' >&2 || true
             journalctl -u hhs.service -n 500 --no-pager >&2 || true
             exit 24
           fi
@@ -380,24 +383,47 @@ jobs:
           runuser -u hhs -- test -x "$APP_ROOT/hhs_backend"
           runuser -u hhs -- test -r "$APP_ROOT/hhs_backend/__init__.py"
           echo "HHS_PRODUCTION_SERVICE_PERMISSIONS_VERIFIED=1"
-          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
-          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
-          systemctl cat hhs.service | grep -Fq 'HHS_COGNITION_AUTO_TICK=0'
-          systemctl show hhs.service -p ExecStart --value | grep -Fq 'hhs_backend.production_visual_server:app'
+          systemctl cat hhs.service | grep -Fq 'HHS Lane 5 BIOS Unified VM Supervisor'
+          systemctl show hhs.service -p ExecStart --value | grep -Fq '/usr/local/lib/hhs-unified-vm/manage-unified-vm.sh start'
+          ! systemctl show hhs.service -p ExecStart --value | grep -Fq 'uvicorn'
+          guest_release=$(readlink -f /var/lib/hhs/ubuntu-guest/current)
+          test "$(basename "$guest_release")" = "$TARGET_SHA"
+          python3 - "$guest_release/integration.receipt.json" "$TARGET_SHA" <<'PY'
+          import json, sys
+          from pathlib import Path
+          payload=json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert payload["target_sha"] == sys.argv[2], payload
+          assert payload["guest_running"] is True, payload
+          assert payload["single_vm81_authority_preserved"] is True, payload
+          assert payload["guest_ide_ok"] is True, payload
+          assert payload["runtime_os_attached"] is True, payload
+          assert payload["frontend_transport_ready"] is True, payload
+          assert payload["canonical_state_authority"] is False, payload
+          assert payload["new_vm81_authority"] is False, payload
+          print("HHS_I047_EXACT_MAIN_GUEST_RECEIPT_VERIFIED")
+          PY
           release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
             --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
           test "$(readlink -f "$BUNDLE_ROOT/current")" = "$release"
 
-          listener_count=$(ss -H -ltnp 'sport = :8080' | wc -l)
-          [[ "$listener_count" -eq 1 ]] || {
-            echo "expected exactly one production listener on 8080, found $listener_count" >&2
+          legacy_listener_count=$(ss -H -ltnp 'sport = :8080' | wc -l)
+          [[ "$legacy_listener_count" -eq 0 ]] || {
+            echo "host application listener on 8080 remains after unified VM cutover" >&2
             ss -H -ltnp 'sport = :8080' >&2 || true
             exit 23
           }
+          guest_listener_count=$(ss -H -ltnp 'sport = :18080' | wc -l)
+          guest_api_listener_count=$(ss -H -ltnp 'sport = :18720' | wc -l)
+          [[ "$guest_listener_count" -eq 1 && "$guest_api_listener_count" -eq 1 ]] || {
+            echo "expected guest loopback listeners on 18080 and 18720" >&2
+            ss -H -ltnp 'sport = :18080' >&2 || true
+            ss -H -ltnp 'sport = :18720' >&2 || true
+            exit 23
+          }
 
-          curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
-          curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
-          curl -fsS --max-time 10 http://127.0.0.1:8080/ >/tmp/hhs-exact-main-root.html
+          curl -fsS --max-time 10 http://127.0.0.1:18080/api/system/status >/dev/null
+          curl -fsS --max-time 10 http://127.0.0.1:18080/api/interface/status >/tmp/hhs-exact-main-interface.json
+          curl -fsS --max-time 10 http://127.0.0.1:18080/ >/tmp/hhs-exact-main-root.html
           grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-exact-main-root.html
           EXPECTED_RUNTIME_OS_RELEASE="$release" python3 - <<'PY'
           import json, os
