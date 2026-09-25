@@ -4,6 +4,7 @@
 #include "hhs_pass219_lane5_unbounded_workload_scaling_1_48.h"
 #include "hhs_pass219_rna_vm5184_abi_1_33.h"
 #include "hhs_pass219_lane5_executable_capability_self_model_1_43.h"
+#include "hhs_pass219_harmonicode_global_constraint_membrane_1_21_9.h"
 
 #include <stdint.h>
 
@@ -20,12 +21,14 @@ typedef struct HHSExactPass219Lane5MediationProofBindingAuthorityV1 {
     uint32_t version;
     uint32_t namespace_id;
     uint8_t legacy_1_34_proof_flags_authoritative;
-    uint8_t request_identity_recomputed;
+    uint8_t legacy_mediation_recomputed;
     uint8_t exact_vm5184_recomputed;
     uint8_t rna_cpp_cell_wall_replayed;
     uint8_t hash216_sha256_positions_verified;
     uint8_t capability_registry_recomputed;
-    uint8_t exact_zero_sum_residual_vector_required;
+    uint8_t direct_witness_route_recomputed;
+    uint8_t global_constraint_membrane_recomputed;
+    uint8_t exact_zero_sum_residual_vector_derived;
     uint8_t deterministic_proof_binding;
     uint8_t candidate_only;
     uint8_t canonical_vm81_mutation_authority;
@@ -36,7 +39,7 @@ typedef struct HHSExactPass219Lane5MediationProofBindingAuthorityV1 {
     uint8_t receipt_clock_authority;
     uint8_t floating_point_canonical_authority;
     uint8_t requires_signed_environmental_vm81_admission;
-    uint8_t reserved0[7];
+    uint8_t reserved0[5];
 } HHSExactPass219Lane5MediationProofBindingAuthorityV1;
 
 typedef struct HHSExactPass219Lane5ZeroSumClosureWitnessV1 {
@@ -57,6 +60,8 @@ typedef struct HHSExactPass219Lane5ZeroSumClosureWitnessV1 {
     uint64_t rna_prepared_signature64;
     uint64_t rna_decision_signature64;
     uint64_t capability_registry_signature64;
+    uint64_t direct_witness_receipt_signature64;
+    uint64_t global_membrane_signature64;
     uint64_t witness_signature64;
 } HHSExactPass219Lane5ZeroSumClosureWitnessV1;
 
@@ -76,7 +81,10 @@ typedef struct HHSExactPass219Lane5MediationProofBundleV1 {
     const HHSExactPass219Hash216TransitionViewV1 *hash216_references;
     const HHSExactPass219Lane5CapabilitySelfModelDescriptorV1 *capability_descriptor;
     const HHSExactPass219Lane5CapabilitySelfModelReceiptV1 *capability_receipt;
-    const HHSExactPass219Lane5ZeroSumClosureWitnessV1 *zero_sum_witness;
+    const HHSExactPass219Lane5DirectWitnessRouteV1 *direct_witness_route;
+    const HHSExactPass219Lane5DirectWitnessReceiptV1 *direct_witness_receipt;
+    const HHSExactPass219GlobalMembraneInputV1 *global_membrane_input;
+    const HHSExactPass219GlobalMembraneResultV1 *global_membrane_result;
 } HHSExactPass219Lane5MediationProofBundleV1;
 
 typedef struct HHSExactPass219Lane5ProvenMediationReceiptV1 {
@@ -86,17 +94,21 @@ typedef struct HHSExactPass219Lane5ProvenMediationReceiptV1 {
     uint32_t hash216_reference_count;
     uint32_t capability_reference_count;
     HHSExactPass219Lane5MediationReceiptV1 base_receipt;
+    HHSExactPass219Lane5ZeroSumClosureWitnessV1 zero_sum_witness;
     uint64_t candidate_frame_signature64;
     uint64_t parent_hash216_signature64;
     uint64_t hash216_reference_set_signature64;
     uint64_t capability_receipt_signature64;
-    uint64_t zero_sum_witness_signature64;
+    uint64_t direct_witness_receipt_signature64;
+    uint64_t global_membrane_signature64;
     uint64_t proof_binding_signature64;
-    uint8_t request_recomputed;
+    uint8_t legacy_mediation_recomputed;
     uint8_t exact_vm5184_bound;
     uint8_t rna_cell_wall_bound;
     uint8_t hash216_references_validated;
     uint8_t capability_registry_validated;
+    uint8_t direct_witness_route_validated;
+    uint8_t global_constraint_membrane_validated;
     uint8_t zero_sum_closure_passed;
     uint8_t all_proofs_bound;
     uint8_t candidate_only;
@@ -105,7 +117,7 @@ typedef struct HHSExactPass219Lane5ProvenMediationReceiptV1 {
     uint8_t canonical_hash216_authority;
     uint8_t canonical_persistence_authority;
     uint8_t requires_environmental_admission;
-    uint8_t reserved0[3];
+    uint8_t reserved0;
 } HHSExactPass219Lane5ProvenMediationReceiptV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_lane5_mediation_proof_binding_version(void);
@@ -122,10 +134,6 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediation_frame_signature(
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediation_hash216_reference_signature(
     const HHSExactPass219Hash216TransitionViewV1 *reference,
     uint64_t *out_signature64
-);
-
-HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_zero_sum_witness_seal(
-    HHSExactPass219Lane5ZeroSumClosureWitnessV1 *witness
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
