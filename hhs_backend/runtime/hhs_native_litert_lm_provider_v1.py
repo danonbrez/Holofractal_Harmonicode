@@ -417,6 +417,36 @@ class HHSNativeLiteRTLMTransport:
         if explicit_runtime_service:
             add("hhs_runtime_services")
             add("hhs_runtime_service_status")
+        if any(
+            phrase in text
+            for phrase in (
+                "model fabric",
+                "language model fabric",
+                "language models",
+                "which model",
+                "active model",
+                "selected model",
+            )
+        ):
+            add("hhs_language_model_fabric")
+
+        lane5_requested = "lane5" in text or "lane 5" in text
+        if lane5_requested:
+            add("hhs_lane5_capability_status")
+            if any(
+                token in text
+                for token in (
+                    "capability",
+                    "capabilities",
+                    "search",
+                    "find",
+                    "tool",
+                    "operation",
+                    "registry",
+                    "repository",
+                )
+            ):
+                add("hhs_lane5_capability_search", {"query": query, "limit": 8})
         if any(token in text for token in ("runtime state", "vm81 state", "kernel state")):
             add("hhs_runtime_state")
         if any(token in text for token in ("kernel invariant", "invariants", "conformance")):
