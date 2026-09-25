@@ -1,0 +1,32 @@
+{
+  "schema": "HHS_PASS_219_LANE5_TICK_TRANSPORT_WOLFRAM_20260924_V9",
+  "status": "PASS",
+  "check_count": 11,
+  "pass_count": 11,
+  "failed": [],
+  "base_P0": "2133185666641251/1000000000000000",
+  "tick_map": "{P,p,q}->{P+1,p+1,q+1}",
+  "inverse_tick_map": "{P,p,q}->{P-1,p-1,q-1}",
+  "groebner_basis": "{2+p-q,1+P-q}",
+  "forward_remainders": [
+    0,
+    0,
+    0
+  ],
+  "inverse_remainders": [
+    0,
+    0,
+    0
+  ],
+  "source_block_count": 72,
+  "endpoint_state_count": 73,
+  "forward_transition_count": 72,
+  "final_endpoint": [
+    "74133185666641251/1000000000000000",
+    "73133185666641251/1000000000000000",
+    "75133185666641251/1000000000000000"
+  ],
+  "cross_projection_bridge_inferred": false,
+  "t_bridge_workload_interval_inferred": false,
+  "canonical_runtime_mutation_authority": false
+}

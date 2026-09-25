@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS_219_LANE5_TICK_TRANSPORT_WOLFRAM_RECEIPT_20260924_V9",
+  "status": "PASS",
+  "check_count": 11,
+  "pass_count": 11,
+  "failed": [],
+  "base_main_sha": "4d217165d7e4cab54891f95e560d710c754fe8b1",
+  "wolfram_source_sha256": "3496036ab033dc62a6514202b68d20b5c74e73de1ed644b739585a98b13ea009",
+  "output_sha256": "4cb32983a5b3dc2673fa37b732762e2f4e26c1ed1f65cb6bebf28e9b09956f92",
+  "source_block_count": 72,
+  "endpoint_state_count": 73,
+  "forward_transition_count": 72,
+  "proof_scope": "exact P/p/q tick and inverse symmetry plus licensed rational bridge",
+  "opaque_qe_provenance_carry_runtime_companion": true,
+  "cross_projection_bridge_inferred": false,
+  "t_bridge_workload_interval_inferred": false,
+  "canonical_runtime_mutation_authority": false,
+  "canonical_hash72_mint_authority": false,
+  "canonical_hash216_mint_authority": false,
+  "canonical_persistence_authority": false,
+  "floating_point_authority": false
+}
