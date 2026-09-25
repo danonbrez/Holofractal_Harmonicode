@@ -89,7 +89,7 @@ jobs:
           FRONTEND_TAR="/root/hhs_gui_dist_${TARGET_SHA}.tgz"
 
           apt-get update
-          apt-get install -y             git python3 python3-venv python3-pip             build-essential binutils gzip libssl-dev pkg-config             curl nginx rsync jq ca-certificates openssl
+          apt-get install -y             git python3 python3-venv python3-pip             build-essential binutils gzip libssl-dev pkg-config             curl nginx rsync jq ca-certificates openssl nodejs
 
           id hhs >/dev/null 2>&1 ||             useradd --system --home /var/lib/hhs --create-home --shell /usr/sbin/nologin hhs
 
