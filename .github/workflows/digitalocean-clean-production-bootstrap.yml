@@ -94,6 +94,8 @@ jobs:
           id hhs >/dev/null 2>&1 ||             useradd --system --home /var/lib/hhs --create-home --shell /usr/sbin/nologin hhs
 
           install -d -m 0755 /opt/hhs
+          systemctl stop hhs.service 2>/dev/null || true
+          systemctl reset-failed hhs.service 2>/dev/null || true
           if [[ ! -d "$REPO/.git" ]]; then
             rm -rf "$REPO"
             git clone https://github.com/danonbrez/Holofractal_Harmonicode.git "$REPO"
@@ -104,6 +106,10 @@ jobs:
           git -C "$REPO" reset --hard "$TARGET_SHA"
           git -C "$REPO" clean -fdx
           [[ "$(git -C "$REPO" rev-parse HEAD)" == "$TARGET_SHA" ]]
+          if ! git config --system --get-all safe.directory | grep -Fxq "$REPO"; then
+            git config --system --add safe.directory "$REPO"
+          fi
+          runuser -u hhs -- git -C "$REPO" rev-parse HEAD | grep -Fxq "$TARGET_SHA"
 
           python3 -m venv "$VENV"
           "$VENV/bin/python" -m pip install --upgrade pip setuptools wheel
