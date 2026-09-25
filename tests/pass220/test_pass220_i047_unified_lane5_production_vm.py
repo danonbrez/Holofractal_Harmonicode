@@ -137,8 +137,10 @@ def test_i047_guarded_promotion_orders_guest_before_public_cutover() -> None:
     cutover = updater.index("Cutting public dynamic transport from host Python to unified guest")
     promoted = updater.index('write_receipt "promotion" "PROMOTED"', cutover)
     assert guest < sync < start < health < cutover < promoted
+    assert "HHS_GUEST_PERSISTENT_VM=1" in updater
     assert "HHS_GUEST_REQUIRE_RUNTIME_OS=1" in updater
     assert "configure-unified-guest-proxy.py" in updater
+    assert "systemctl disable --now hhs-application-vm.service" in updater
 
 
 def test_i047_exact_main_acceptance_rejects_host_application_listener() -> None:
@@ -148,7 +150,22 @@ def test_i047_exact_main_acceptance_rejects_host_application_listener() -> None:
     assert "http://127.0.0.1:18080/api/interface/status" in workflow
     assert "runtime_os_attached" in workflow
     assert "single_vm81_authority_preserved" in workflow
+    assert "legacy host application VM listener on 8720 remains after unified VM cutover" in workflow
 
+
+
+def test_i047_production_uses_one_persistent_guest_disk_across_sha_receipts() -> None:
+    prepare = (ROOT / "deployment/ubuntu/guest_runtime/prepare-real-guest.sh").read_text(encoding="utf-8")
+    integration = (ROOT / "deployment/ubuntu/guest_runtime/run-real-guest-integration.sh").read_text(encoding="utf-8")
+    assert 'PERSISTENT_VM="${HHS_GUEST_PERSISTENT_VM:-0}"' in prepare
+    assert 'RUNTIME_STATE_ROOT="$ROOT/machine"' in prepare
+    assert 'instance-id: $INSTANCE_ID' in prepare
+    assert 'INSTANCE_ID="hhs-unified-lane5-machine"' in prepare
+    assert 'HHS_GUEST_STATE_ROOT=$RUNTIME_STATE_ROOT' in prepare
+    assert 'PERSISTENT_VM="${HHS_GUEST_PERSISTENT_VM:-0}"' in integration
+    assert "git -C /opt/holofractal-harmonicode checkout --detach" in integration
+    assert "application_vm/install.sh" in integration
+    assert "install-unified-guest-ide.sh" in integration
 
 def test_i047_independent_host_application_vm_deployment_is_retired() -> None:
     workflow = (ROOT / ".github/workflows/pass220-ubuntu-application-vm-production.yml").read_text(encoding="utf-8")
