@@ -347,7 +347,7 @@ guest_proxy="$REPO_ROOT/$UNIFIED_GUEST_PROXY_REL"
 [[ -f "$guest_proxy" ]] || { rollback_live_checkout "unified guest proxy configurator missing"; exit 1; }
 
 log "Booting and verifying exact-SHA unified Ubuntu guest"
-if ! TARGET_SHA="$CANDIDATE_SHA"   SOURCE_ROOT="$REPO_ROOT"   HHS_GUEST_INTEGRATION_ROOT="$UNIFIED_GUEST_ROOT"   bash "$guest_integration"; then
+if ! TARGET_SHA="$CANDIDATE_SHA" SOURCE_ROOT="$REPO_ROOT" HHS_GUEST_INTEGRATION_ROOT="$UNIFIED_GUEST_ROOT" HHS_GUEST_REQUIRE_RUNTIME_OS=1 HHS_RUNTIME_OS_BUNDLE_ROOT="$BUNDLE_ROOT" bash "$guest_integration"; then
   rollback_live_checkout "unified Ubuntu guest integration failed"
   exit 1
 fi
