@@ -137,7 +137,7 @@ def test_window_tail_is_exact_and_never_padded():
 def test_corrected_expanded_projection_keeps_distinct_3_and_5_cells():
     chain = EXPANDED_INGRESS_PROBES[2]
     assert "(4,9,2,3,5,7,8,1,6)" in chain
-    assert "(4,9,2,35,7,8,1,6)" not in chain
+    assert "(4,9,2,3,5,7,8,1,6)" not in chain
     assert chain.startswith("1000.0001=")
 
 
