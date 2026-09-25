@@ -64,6 +64,7 @@ jobs:
               'Direct witness route',
               'Global constraint membrane',
               'Derived global zero-sum closure',
+              'valid all-true global membrane cannot be substituted',
               'zero-sum witness is **not accepted from the caller**',
               'hhs_exact_pass219_vm81_environment_admit_signed',
           ):
@@ -74,6 +75,7 @@ jobs:
               'hash216_sha256_positions_verified',
               'direct_witness_route_recomputed',
               'global_constraint_membrane_recomputed',
+              'global_environment_request_bound',
               'exact_zero_sum_residual_vector_derived',
               'HHSExactPass219Lane5ZeroSumClosureWitnessV1 zero_sum_witness',
               'hhs_exact_pass219_lane5_mediation_proof_bind',
@@ -83,6 +85,7 @@ jobs:
           for needle in (
               'hhs_exact_pass219_lane5_direct_witness_route_validate',
               'hhs_exact_pass219_global_membrane_evaluate',
+              'hhs_exact_pass219_lane5_mediation_environment_root',
               'hhs_l5pb_zero_sum_all_zero',
               'out_receipt->zero_sum_witness = zero_witness;',
           ):
@@ -112,8 +115,153 @@ jobs:
           grep -q ' hhs_exact_pass219_lane5_mediation_proof_binding_version$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_lane5_mediation_proof_binding_authority$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_lane5_mediation_frame_signature$' /tmp/hhs.symbols
-          grep -q ' hhs_exact_pass219_lane5_mediation_hash216_reference_signature$' /tmp/hhs.symbols
-          grep -q ' hhs_exact_pass219_lane5_mediation_proof_bind$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_hash216_reference_signature
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_route_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_global_membrane_evaluate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native proof-binding positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_mediation_proof_binding_1_49.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-proof-binding
+          /tmp/test-lane5-proof-binding | tee /tmp/lane5-proof-binding.log
+          grep -q 'PASS219_LANE5_MEDIATION_PROOF_BINDING_1_49_PASS' /tmp/lane5-proof-binding.log
+
+      - name: Regress legacy Lane 5 identity-binding stage
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus
+
+      - name: Regress RNA VM5184 and capability validators
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_rna_vm5184_abi_1_33.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-rna-vm5184
+          /tmp/test-rna-vm5184
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-capability-self-model
+          /tmp/test-capability-self-model
+
+      - name: Regress direct-witness and global-constraint proof sources
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-direct-witness
+          /tmp/test-direct-witness
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-global-membrane
+          /tmp/test-global-membrane
+
+      - name: Regress Lane 5 exact boundary preflight
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-boundary
+          /tmp/test-lane5-boundary
+ /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_environment_root
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_route_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_global_membrane_evaluate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native proof-binding positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_mediation_proof_binding_1_49.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-proof-binding
+          /tmp/test-lane5-proof-binding | tee /tmp/lane5-proof-binding.log
+          grep -q 'PASS219_LANE5_MEDIATION_PROOF_BINDING_1_49_PASS' /tmp/lane5-proof-binding.log
+
+      - name: Regress legacy Lane 5 identity-binding stage
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus
+
+      - name: Regress RNA VM5184 and capability validators
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_rna_vm5184_abi_1_33.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-rna-vm5184
+          /tmp/test-rna-vm5184
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-capability-self-model
+          /tmp/test-capability-self-model
+
+      - name: Regress direct-witness and global-constraint proof sources
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-direct-witness
+          /tmp/test-direct-witness
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-global-membrane
+          /tmp/test-global-membrane
+
+      - name: Regress Lane 5 exact boundary preflight
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-boundary
+          /tmp/test-lane5-boundary
+ /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_proof_bind
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_route_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_global_membrane_evaluate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native proof-binding positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_mediation_proof_binding_1_49.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-proof-binding
+          /tmp/test-lane5-proof-binding | tee /tmp/lane5-proof-binding.log
+          grep -q 'PASS219_LANE5_MEDIATION_PROOF_BINDING_1_49_PASS' /tmp/lane5-proof-binding.log
+
+      - name: Regress legacy Lane 5 identity-binding stage
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus
+
+      - name: Regress RNA VM5184 and capability validators
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_rna_vm5184_abi_1_33.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-rna-vm5184
+          /tmp/test-rna-vm5184
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-capability-self-model
+          /tmp/test-capability-self-model
+
+      - name: Regress direct-witness and global-constraint proof sources
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-direct-witness
+          /tmp/test-direct-witness
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-global-membrane
+          /tmp/test-global-membrane
+
+      - name: Regress Lane 5 exact boundary preflight
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/test-lane5-boundary
+          /tmp/test-lane5-boundary
+ /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_lane5_direct_witness_route_validate$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_global_membrane_evaluate$' /tmp/hhs.symbols
           grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
