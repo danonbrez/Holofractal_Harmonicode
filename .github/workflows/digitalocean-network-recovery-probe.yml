@@ -41,6 +41,7 @@ jobs:
           ssh-keygen -y -f /tmp/hhs-secret-key/private > /tmp/hhs-secret-key/public
           ssh-keygen -lf /tmp/hhs-secret-key/public
           cat /tmp/hhs-secret-key/public
+          cat /tmp/hhs-secret-key/public
           echo "=== CLEAN HOST SSH KEY ==="
           mkdir -p /tmp/hhs-probe
           ssh-keyscan -T 8 -t ed25519 165.227.64.72 > /tmp/hhs-probe/known_hosts
