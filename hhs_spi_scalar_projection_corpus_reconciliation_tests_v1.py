@@ -103,7 +103,7 @@ def test_new_ordered_constraint_profiles_remain_symbolic_and_fail_closed():
         profile = PROFILES[expression]
         assert profile["coverage_state"] == SYMBOLIC
     relational = PROFILES["(u==2.133185666641251470403352397272)^72"]
-    assert "Boolean" in relational["notes"][0]
+    assert "True/False" in relational["notes"][0]
     assert relational["result"] == {
         "formal": "(u==2.133185666641251470403352397272)^72"
     }
