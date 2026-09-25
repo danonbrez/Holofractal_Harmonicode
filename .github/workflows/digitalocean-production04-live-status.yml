@@ -56,6 +56,21 @@ jobs:
           systemctl show hhs.service -p ActiveState -p SubState -p Result -p ExecMainStatus -p ExecStartPre -p ExecStart -p User -p Group -p Environment --no-pager || true
           echo "=== hhs service journal ==="
           journalctl -u hhs.service -n 250 --no-pager || true
+          echo "=== immutable agent SQL source path contract ==="
+          cd /opt/hhs/app
+          /opt/hhs/venv/bin/python - <<'PY'
+          from hhs_backend.runtime._immutable_agent_source_capsule_v1 import source
+          for rel in (
+              "hhs_backend/runtime/immutable_agent_sql_index_v1.py",
+              "hhs_backend/runtime/immutable_agent_index_hooks_v1.py",
+          ):
+              print(f"--- {rel} ---")
+              decoded = source(rel).decode("utf-8")
+              for lineno, line in enumerate(decoded.splitlines(), 1):
+                  lower = line.lower()
+                  if any(token in lower for token in ("sqlite", "db_path", "database_path", "path(", "environ", "hhs_")):
+                      print(f"{lineno}: {line}")
+          PY
           echo "=== warm boot verify as service user ==="
           runuser -u hhs -- env HHS_DISABLE_C_AUTOBUILD=1 HHS_DATA_DIR=/var/lib/hhs/data HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap /opt/hhs/venv/bin/python /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify --repo-root /opt/hhs/app --manifest-root /var/lib/hhs/warm-boot/releases || true
           REMOTE
@@ -73,3 +88,5 @@ jobs:
 # Probe during ff7006 artifact-root deployment
 
 # Probe ff7006 post-start health
+
+# Inspect immutable-agent SQLite storage contract
