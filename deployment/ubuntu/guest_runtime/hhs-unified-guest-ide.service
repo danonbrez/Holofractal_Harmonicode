@@ -1,0 +1,28 @@
+[Unit]
+Description=HHS Unified Lane 5 Ubuntu Guest IDE
+After=network-online.target hhs-application-vm.service
+Wants=network-online.target
+Requires=hhs-application-vm.service
+
+[Service]
+Type=simple
+User=hhs
+Group=hhs
+WorkingDirectory=/opt/holofractal-harmonicode
+EnvironmentFile=/etc/hhs/unified-guest-ide.env
+ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.application_ide_server:app --host 0.0.0.0 --port 8080 --workers 1
+Restart=on-failure
+RestartSec=3
+TimeoutStartSec=180
+TimeoutStopSec=30
+KillSignal=SIGTERM
+KillMode=mixed
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/hhs
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
