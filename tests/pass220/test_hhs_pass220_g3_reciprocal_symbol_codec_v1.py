@@ -137,7 +137,7 @@ def test_window_tail_is_exact_and_never_padded():
 def test_corrected_expanded_projection_keeps_distinct_3_and_5_cells():
     chain = EXPANDED_INGRESS_PROBES[2]
     assert "(4,9,2,3,5,7,8,1,6)" in chain
-    assert "(4,9,2,3,5,7,8,1,6)" not in chain
+    assert "(4,9,2,35,7,8,1,6)" not in chain
     assert chain.startswith("1000.0001=")
 
 
@@ -280,7 +280,7 @@ def test_expanded_ingress_strings_remain_exact_opaque_symbol_states():
     x_binding, phase_binding, projection_chain = EXPANDED_INGRESS_PROBES
     assert x_binding == "(123,321,123,321/(999999,1000000,1000001))=X"
     assert phase_binding == "((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)"
-    assert projection_chain == "1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,35,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963"
+    assert projection_chain == "1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,3,5,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963"
     for source in EXPANDED_INGRESS_PROBES:
         carrier = encode_symbol_string(source)
         assert carrier["numeric_parse_performed"] is False
