@@ -14,7 +14,7 @@ merge target: main
 pull request: #584
 pull request URL: https://github.com/danonbrez/Holofractal_Harmonicode/pull/584
 last protected implementation/proof head before this checkpoint record:
-  cad447e0e7b46edf02c8d3303046a14818e40016
+  7c9129f52f03d2b24dd37cd13aebcda3266bbc86
 ```
 
 Prerequisite open Lane 5 proof-binding PR:
@@ -36,6 +36,44 @@ ValidatedSuccessorProof(CurrentPullRequest, p)
 
 Scope is Pass 219 and every upstream pass represented inside the cumulative
 Pass 219 runtime image.
+
+## Written main-branch rules
+
+The repository now contains both the declarative machine ruleset and the
+normative human-readable merge rules derived from current history/contracts:
+
+```text
+.github/rulesets/HHS_MAIN_MERGED_GREEN_DATAFLOW_RULESET_V1.json
+contracts/pass219/PASS_219_MAIN_BRANCH_MERGE_RULES_V1.md
+```
+
+These rules encode, without adding unsupported review requirements:
+
+```text
+pull request required
+direct push forbidden
+force push forbidden
+main deletion forbidden
+branch must be current with main
+conversation resolution required
+required status check:
+  merged-green-dataflow-lineage-guard
+queued/pending/cancelled/failed required check => DO NOT MERGE
+protected change => exact successor proof
+backward-compatible iteration => no predecessor identifier removal
+repair-forward refinement => explicit replacement + compatibility adapter
+fixed inherited validation profiles => mandatory
+policy/ruleset weakening => forbidden
+```
+
+No mandatory human approval count was invented because the current HHS
+contracts define executable proof/validation rather than a review quorum.
+No signed-commit rule was invented because the current repository contracts do
+not establish that as an inherited acceptance condition.
+
+Both rule files are now included in `always_protected_paths` and the policy
+self-integrity set. Future modification/deletion therefore requires
+`REPAIR_FORWARD_REFINEMENT` under the predecessor guard.
 
 ## Implemented repository surfaces
 
@@ -229,7 +267,7 @@ PR #584 exact-head workflow:
 ```text
 workflow: Pass 219 Merged-Green Dataflow Nonregression v1
 job: merged-green-dataflow-lineage-guard
-latest observed run before checkpoint: 36152860151
+latest observed run before checkpoint: 36158089968
 latest observed job: 108130192135
 state: queued
 ```
