@@ -14,6 +14,8 @@ PR: #583
 merge target: main
 canonical workflow repair head before this checkpoint:
   5f748a39720afbee2a55b310502c623643872d2e
+authority-hierarchy repair parent:
+  5775fb4d4e39e66fe093afdbd6f8deb07f626537
 ~~~
 
 The branch is based directly on the verified main state after the I042 merge
@@ -233,3 +235,48 @@ Resume from PR #583 and the branch above. First action is to inspect the exact
 head's dedicated **Pass 219 Lane 5 Mediation Proof Binding 1.49** run. Do not
 weaken the proof contract to satisfy CI; repair implementation, build,
 workflow, or test divergence forward.
+
+
+## Pass 219 cumulative-authority hierarchy repair
+
+A descendant Pass 220 documentation/runtime regression had begun treating the
+Ubuntu application/Pass 190 surface as if it were the HHS runtime authority.
+That contradicts the inherited Pass 219 architecture.
+
+This checkpoint removes that violation and freezes the hierarchy as:
+
+~~~text
+Pass 219 = cumulative inherited system-contract authority
+Lane 5 = Pass 219 C++ BIOS + AGI optimization/control center
+signed environmental VM81 = singleton canonical mutation/admission seam
+Pass 220+ = descendant integration/projection surfaces
+Ubuntu/QEMU/SSH/PTTY/Pass190/frontend = subordinate transport/application surfaces
+~~~
+
+Lane 5 reasoning/optimization is also frozen as callable bounded circuit
+execution. Persistent state/runtime availability does not imply a constant
+autonomous cognitive loop. Guest boot, PTY availability, service startup, or
+frontend attachment cannot itself start cognitive optimization.
+
+Changed files for this repair:
+
+~~~text
+contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md
+docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md
+docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md
+docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md
+hhs_runtime/pass220/ubuntu_guest_runtime.py
+tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py
+.github/workflows/pass219-lane5-mediation-proof-binding-1-49.yml
+docs/operations/restart/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49_RESTART_20260925.md
+~~~
+
+Dependency-scoped validation encoded in the dedicated 1.49 workflow now checks
+the authority vocabulary, rejects the superseded Pass 190/Ubuntu authority
+phrasing, verifies the executable guest authority descriptor, and runs the I043
+guest-runtime regression test before the cumulative C ABI proof-binding suite.
+
+Exact-head CI remains pending; per repository policy, queued external CI does
+not invalidate this restartable checkpoint. The next action is to inspect only
+the dedicated hierarchy/proof-binding failures, repair forward if required, and
+merge only after the proof-binding path is green.
