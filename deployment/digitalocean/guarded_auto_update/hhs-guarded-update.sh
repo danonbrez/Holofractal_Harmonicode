@@ -227,7 +227,10 @@ rollback_live_checkout() {
     [[ -f "$rollback_service" ]] && install -m 0644 "$rollback_service" /etc/systemd/system/hhs.service
   fi
   if [[ ! -f "$REPO_ROOT/$UNIFIED_VM_SERVICE_REL" && -f "$rollback_controller_root/$UNIFIED_GUEST_PROXY_REL" ]]; then
-    python3 "$rollback_controller_root/$UNIFIED_GUEST_PROXY_REL"       --repository-root "$rollback_controller_root"       --target host || true
+    if systemctl list-unit-files hhs-application-vm.service >/dev/null 2>&1; then
+      systemctl enable --now hhs-application-vm.service >/dev/null 2>&1 || true
+    fi
+    python3 "$rollback_controller_root/$UNIFIED_GUEST_PROXY_REL" --repository-root "$rollback_controller_root" --target host || true
   fi
   systemctl daemon-reload
   start_units
@@ -360,6 +363,17 @@ if ! wait_for_health; then rollback_live_checkout "unified guest health check fa
 log "Cutting public dynamic transport from host Python to unified guest"
 if ! python3 "$guest_proxy" --repository-root "$REPO_ROOT" --target guest --target-sha "$CANDIDATE_SHA" > "$UNIFIED_GUEST_ROOT/current/production-topology.receipt.json"; then
   rollback_live_checkout "unified guest nginx cutover failed"
+  exit 1
+fi
+
+if systemctl list-unit-files hhs-application-vm.service >/dev/null 2>&1; then
+  systemctl disable --now hhs-application-vm.service >/dev/null 2>&1 || {
+    rollback_live_checkout "legacy host application VM service could not be retired"
+    exit 1
+  }
+fi
+if systemctl is-active --quiet hhs-application-vm.service; then
+  rollback_live_checkout "legacy host application VM service remained active"
   exit 1
 fi
 
