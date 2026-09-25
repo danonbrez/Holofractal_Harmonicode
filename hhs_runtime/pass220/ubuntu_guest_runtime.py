@@ -85,6 +85,8 @@ class GuestRuntimeConfig:
     ssh_port: int = 2222
     runtime_http_port: int = 18080
     guest_runtime_http_port: int = 8080
+    application_api_port: int = 18720
+    guest_application_api_port: int = 8720
     ssh_user: str = "hhs"
     ssh_identity: Path | None = None
     known_hosts: Path | None = None
@@ -109,7 +111,11 @@ class GuestRuntimeConfig:
             raise GuestRuntimeError("HHS_GUEST_RUNTIME_HTTP_PORT_INVALID")
         if not 1 <= self.guest_runtime_http_port <= 65535:
             raise GuestRuntimeError("HHS_GUEST_RUNTIME_GUEST_PORT_INVALID")
-        if self.runtime_http_port == self.ssh_port:
+        if not 1024 <= self.application_api_port <= 65535:
+            raise GuestRuntimeError("HHS_GUEST_APPLICATION_API_PORT_INVALID")
+        if not 1 <= self.guest_application_api_port <= 65535:
+            raise GuestRuntimeError("HHS_GUEST_APPLICATION_API_GUEST_PORT_INVALID")
+        if len({self.ssh_port, self.runtime_http_port, self.application_api_port}) != 3:
             raise GuestRuntimeError("HHS_GUEST_HOST_PORT_COLLISION")
         if not self.ssh_user or any(ch.isspace() for ch in self.ssh_user):
             raise GuestRuntimeError("HHS_GUEST_SSH_USER_INVALID")
@@ -138,6 +144,8 @@ class GuestRuntimeConfig:
             ssh_port=int(os.environ.get("HHS_GUEST_SSH_PORT", "2222")),
             runtime_http_port=int(os.environ.get("HHS_GUEST_RUNTIME_HTTP_PORT", "18080")),
             guest_runtime_http_port=int(os.environ.get("HHS_GUEST_RUNTIME_GUEST_PORT", "8080")),
+            application_api_port=int(os.environ.get("HHS_GUEST_APPLICATION_API_PORT", "18720")),
+            guest_application_api_port=int(os.environ.get("HHS_GUEST_APPLICATION_API_GUEST_PORT", "8720")),
             ssh_user=os.environ.get("HHS_GUEST_SSH_USER", "hhs"),
             ssh_identity=Path(identity).expanduser().resolve() if identity else None,
             known_hosts=(
@@ -356,7 +364,8 @@ class UbuntuGuestRuntime:
                 (
                     "user,id=hhsnet0,"
                     f"hostfwd=tcp:127.0.0.1:{self.config.ssh_port}-:22,"
-                    f"hostfwd=tcp:127.0.0.1:{self.config.runtime_http_port}-:{self.config.guest_runtime_http_port}"
+                    f"hostfwd=tcp:127.0.0.1:{self.config.runtime_http_port}-:{self.config.guest_runtime_http_port},"
+                    f"hostfwd=tcp:127.0.0.1:{self.config.application_api_port}-:{self.config.guest_application_api_port}"
                 ),
                 "-device",
                 "virtio-net-pci,netdev=hhsnet0",
