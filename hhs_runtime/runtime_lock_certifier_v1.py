@@ -38,10 +38,12 @@ from typing import Dict, List, Optional, Any
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-CERT_DIR = (
-    REPO_ROOT
-    / "runtime_certification"
-)
+CERT_DIR = pathlib.Path(
+    os.environ.get(
+        "HHS_RUNTIME_CERTIFICATION_DIR",
+        str(REPO_ROOT / "runtime_certification"),
+    )
+).expanduser().resolve()
 
 CERT_DIR.mkdir(
     exist_ok=True,
