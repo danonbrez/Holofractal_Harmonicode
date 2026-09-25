@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '165.227.220.193' }}
+      HHS_PRODUCTION_HOST: ${{ vars.HHS_DIGITALOCEAN_HOST || '159.65.178.254' }}
       HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
       HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
