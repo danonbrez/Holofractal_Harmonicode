@@ -377,6 +377,7 @@ jobs:
           }
           systemctl is-active --quiet hhs.service
           systemctl is-active --quiet hhs-guarded-update.timer
+          ! systemctl is-active --quiet hhs-application-vm.service
           runuser -u hhs -- test -x /opt
           runuser -u hhs -- test -x /opt/hhs
           runuser -u hhs -- test -x "$APP_ROOT"
@@ -423,6 +424,12 @@ jobs:
           [[ "$legacy_listener_count" -eq 0 ]] || {
             echo "host application listener on 8080 remains after unified VM cutover" >&2
             ss -H -ltnp 'sport = :8080' >&2 || true
+            exit 23
+          }
+          legacy_application_api_count=$(ss -H -ltnp 'sport = :8720' | wc -l)
+          [[ "$legacy_application_api_count" -eq 0 ]] || {
+            echo "legacy host application VM listener on 8720 remains after unified VM cutover" >&2
+            ss -H -ltnp 'sport = :8720' >&2 || true
             exit 23
           }
           guest_listener_count=$(ss -H -ltnp 'sport = :18080' | wc -l)
