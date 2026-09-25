@@ -415,7 +415,7 @@ def run_visible_fixture(
             "buffer": raw,
         }
     )
-    panel.get_by_text(fixture["name"], exact=True).wait_for(timeout=10000)
+    panel.get_by_text(fixture["name"], exact=True).first.wait_for(timeout=10000)
 
     button = panel.get_by_role("button", name="Hydrate vector store", exact=True)
     started = time.perf_counter_ns()
@@ -704,7 +704,7 @@ def run_frontend_oversize_preflight(page: Page, base_url: str, panel, file_input
             "size": CANONICAL_MAX_SOURCE_BYTES + 1,
         },
     )
-    panel.get_by_text("oversize.bin", exact=True).wait_for(timeout=10000)
+    panel.get_by_text("oversize.bin", exact=True).first.wait_for(timeout=10000)
     panel.get_by_role("button", name="Hydrate vector store", exact=True).click()
     page.wait_for_timeout(300)
     after = len(sdlc_requests)
