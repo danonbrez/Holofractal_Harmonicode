@@ -1,0 +1,105 @@
+{
+  "schema": "HHS_PASS219_MERGED_GREEN_DATAFLOW_SUCCESSOR_PROOF_V1",
+  "version": "1.0.0",
+  "mode": "BACKWARD_COMPATIBLE_ITERATION",
+  "merge_base": "ea3948afecb40a35b61eb7473f094eee6fd63cb0",
+  "defect_or_iteration": "Install a stronger cumulative nonregression membrane. No predecessor runtime data flow is removed or replaced; the change adds repository enforcement, agent guidance, and CI proof requirements.",
+  "receipt_continuity": "No runtime receipt path is modified by this policy installation. Existing Pass 206, VM81, Hash72, Hash216, RNA VM5184, and environmental-admission validation remains unchanged and is rerun by the fixed profiles.",
+  "rollback_plan": "Revert this policy PR as one additive policy layer only if the guard itself is defective; do not roll back or rewrite any inherited Pass 219/upstream runtime data flow.",
+  "invariants": {
+    "singleton_vm81_authority_preserved": true,
+    "hash72_commit_order_preserved": true,
+    "hash216_post_receipt_order_preserved": true,
+    "ordered_noncommutative_semantics_preserved": true,
+    "exact_no_float_authority_preserved": true,
+    "rna_cell_wall_preserved": true,
+    "pass219_cumulative_registration_preserved": true,
+    "receipt_replay_continuity_preserved": true,
+    "no_authority_bypass": true,
+    "no_dataflow_orphaning": true
+  },
+  "validation_profiles": [
+    "PASS206_CORE_FREEZE",
+    "PASS219_CUMULATIVE_MEMBRANE",
+    "EXACT_ABI_BUILD",
+    "VM81_SINGLE_AUTHORITY",
+    "HASH72_HASH216_LINEAGE",
+    "RNA_VM5184_CELL_WALL"
+  ],
+  "regression_tests": [
+    "tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py",
+    "tests/pass206/test_pass206_cumulative_enforcement_v1.py",
+    "tests/pass219/test_pass219_rna_vm5184_abi_1_33.c",
+    "tests/pass219/test_pass219_vm81_pqc_firewall_1_30.cpp",
+    "tests/pass219/test_pass219_vm81_environmental_recovery_1_32.cpp"
+  ],
+  "negative_tests": [
+    "tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py",
+    "tests/pass206/test_pass206_cumulative_enforcement_v1.py"
+  ],
+  "protected_changes": [
+    {
+      "path": ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml",
+      "change_status": "A",
+      "predecessor_blob": null,
+      "successor_blob": "1be47406bfb52320f97b6a6dca240b58a903f965",
+      "preserved_identifiers": [],
+      "replacement_paths": [],
+      "superseded_identifiers": []
+    },
+    {
+      "path": "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json",
+      "change_status": "A",
+      "predecessor_blob": null,
+      "successor_blob": "1196b17514f6793f7cde7a403e29a2a1bc6b2ab1",
+      "preserved_identifiers": [],
+      "replacement_paths": [],
+      "superseded_identifiers": []
+    },
+    {
+      "path": "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md",
+      "change_status": "A",
+      "predecessor_blob": null,
+      "successor_blob": "d5f92131c89fa0bac6ff8d83d3f36b035d98d062",
+      "preserved_identifiers": [],
+      "replacement_paths": [],
+      "superseded_identifiers": []
+    },
+    {
+      "path": "tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py",
+      "change_status": "A",
+      "predecessor_blob": null,
+      "successor_blob": "fa2627769e5282ba2ddd24debf0fa3424cabdc06",
+      "preserved_identifiers": [],
+      "replacement_paths": [],
+      "superseded_identifiers": []
+    },
+    {
+      "path": "tools/pass219/pass219_merged_green_dataflow_guard_v1.py",
+      "change_status": "A",
+      "predecessor_blob": null,
+      "successor_blob": "29f99828f2e0366e644d08b5103c9a5e70c939cd",
+      "preserved_identifiers": [],
+      "replacement_paths": [],
+      "superseded_identifiers": []
+    },
+    {
+      "path": "AGENTS.md",
+      "change_status": "M",
+      "predecessor_blob": "994332aa797365c2f5a2d64efe6f5a7dce8be05d",
+      "successor_blob": "ec6de741241b19789619742e5de7a1ab35d3fb45",
+      "preserved_identifiers": [],
+      "replacement_paths": [],
+      "superseded_identifiers": []
+    },
+    {
+      "path": "docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md",
+      "change_status": "M",
+      "predecessor_blob": "4a13e0c421e557f5d1438e3bc7b8390b5b38bfa6",
+      "successor_blob": "6c6c76ce22817543ebd4b337eeb9f918ca9f1639",
+      "preserved_identifiers": [],
+      "replacement_paths": [],
+      "superseded_identifiers": []
+    }
+  ]
+}
