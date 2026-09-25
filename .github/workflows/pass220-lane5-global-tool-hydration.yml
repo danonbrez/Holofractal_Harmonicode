@@ -1,0 +1,190 @@
+name: Pass 220 Lane 5 Global Tool Hydration
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass220_lane5_global_tool_hydration_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_lane5_global_tool_surface_v1.hpp'
+      - 'hhs_runtime/cpp/hhs_pass220_lane5_global_tool_surface_v1.cpp'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'hhs_backend/runtime_os_pass220_lane5_tool_hydration.py'
+      - 'hhs_backend/runtime_os_visual_server.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'tools/pass220/hhs_pass220_lane5_global_tool_warm.py'
+      - 'tools/pass220/hhs_pass220_lane5_global_tool_surface_validate.cpp'
+      - 'tests/pass220/test_hhs_pass220_lane5_global_tool_hydration_v1.py'
+      - 'tests/pass220/test_hhs_pass220_lane5_global_tool_surface_v1.cpp'
+      - 'contracts/pass220/PASS_220_LANE5_GLOBAL_PASS219_220_TOOL_HYDRATION_V1.md'
+      - 'docs/operations/restart/PASS_220_LANE5_GLOBAL_TOOL_HYDRATION_RESTART_20260925.md'
+      - '.github/workflows/pass220-lane5-global-tool-hydration.yml'
+  push:
+    branches:
+      - main
+      - pass220-lane5-global-tool-hydration-1-0
+    paths:
+      - 'hhs_runtime/hhs_pass220_lane5_global_tool_hydration_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_lane5_global_tool_surface_v1.hpp'
+      - 'hhs_runtime/cpp/hhs_pass220_lane5_global_tool_surface_v1.cpp'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'hhs_backend/runtime_os_pass220_lane5_tool_hydration.py'
+      - 'hhs_backend/runtime_os_visual_server.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'tools/pass220/hhs_pass220_lane5_global_tool_warm.py'
+      - 'tools/pass220/hhs_pass220_lane5_global_tool_surface_validate.cpp'
+      - 'tests/pass220/test_hhs_pass220_lane5_global_tool_hydration_v1.py'
+      - 'tests/pass220/test_hhs_pass220_lane5_global_tool_surface_v1.cpp'
+      - 'contracts/pass220/PASS_220_LANE5_GLOBAL_PASS219_220_TOOL_HYDRATION_V1.md'
+      - 'docs/operations/restart/PASS_220_LANE5_GLOBAL_TOOL_HYDRATION_RESTART_20260925.md'
+      - '.github/workflows/pass220-lane5-global-tool-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  global-tool-hydration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONPATH: '.'
+      PYTHONHASHSEED: '0'
+      HHS_TEST_AUTHORITATIVE_GIT_REF: 'origin/main'
+
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch authoritative main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git merge-base --is-ancestor 156d4138f2640c6fd8937f96ffb5c030ae9b7952 HEAD
+
+      - name: Prove Lane 5 selector remains byte-unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code 156d4138f2640c6fd8937f96ffb5c030ae9b7952 HEAD --             hhs_runtime/include/hhs_pass219_lane5_direct_witness_routing_1_46.h             hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc             hhs_runtime/include/hhs_pass219_lane5_unbounded_workload_scaling_1_48.h             hhs_runtime/c/hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc             hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped packages
+        run: python -m pip install --disable-pip-version-check pytest cryptography fastapi pydantic
+
+      - name: Python compile
+        run: |
+          python -m py_compile             hhs_runtime/hhs_pass220_lane5_global_tool_hydration_v1.py             hhs_backend/runtime_os_pass220_lane5_tool_hydration.py             tools/pass220/hhs_pass220_lane5_global_tool_warm.py
+
+      - name: Run new global hydration tests and inherited graph constraints
+        run: |
+          python -m pytest -q --tb=short             tests/pass220/test_hhs_pass220_lane5_global_tool_hydration_v1.py             tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py             tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py             tests/pass219/test_pass219_local_circular_phase_fiber_formalization.py
+
+      - name: Build authoritative warm inventory and persist vector cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/lane5-global-tools /tmp/pass220-lane5-global-tools
+          python tools/pass220/hhs_pass220_lane5_global_tool_warm.py             --repository-root "$PWD"             --git-ref origin/main             --state-root /tmp/pass220-lane5-global-tools/state             --output-json artifacts/pass220/lane5-global-tools/warm.json             --output-cpp-manifest artifacts/pass220/lane5-global-tools/tools.tsv
+
+      - name: Verify complete warm graph
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          p='artifacts/pass220/lane5-global-tools/warm.json'
+          d=json.load(open(p, encoding='utf-8'))
+          g=d['graph']
+          assert d['all_tools_warmed'] is True
+          assert d['lane5_selection_changed'] is False
+          assert d['canonical_vm81_mutation_authority'] is False
+          assert d['canonical_hash72_authority'] is False
+          assert d['canonical_hash216_authority'] is False
+          assert d['canonical_persistence_authority'] is False
+          assert g['registered_service_count'] > 0
+          assert g['merged_pull_request_count'] > 0
+          assert g['tool_count'] == g['registered_service_count'] + g['merged_pull_request_count']
+          assert all(g['coverage'].values())
+          assert all(len(n['hash216']) == 216 for n in g['nodes'])
+          assert all(n['projection_bits'] == 5184 for n in g['nodes'])
+          assert any(219 in n['pass_scopes'] for n in g['nodes'])
+          assert any(220 in n['pass_scopes'] for n in g['nodes'])
+          print(json.dumps({
+              'registered_service_count': g['registered_service_count'],
+              'merged_pull_request_count': g['merged_pull_request_count'],
+              'tool_count': g['tool_count'],
+              'graph_root_sha256': g['graph_root_sha256'],
+              'newly_admitted_count': d['newly_admitted_count'],
+              'reused_count': d['reused_count'],
+          }, sort_keys=True))
+          PY
+
+      - name: Prove restart warm reuses every unchanged vector
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/pass220/hhs_pass220_lane5_global_tool_warm.py             --repository-root "$PWD"             --git-ref origin/main             --state-root /tmp/pass220-lane5-global-tools/state             --output-json artifacts/pass220/lane5-global-tools/warm-replay.json             --output-cpp-manifest artifacts/pass220/lane5-global-tools/tools-replay.tsv
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/pass220/lane5-global-tools/warm-replay.json', encoding='utf-8'))
+          assert d['all_tools_warmed'] is True
+          assert d['newly_admitted_count'] == 0
+          assert d['reused_count'] == d['warmed_tool_count']
+          assert d['graph']['coverage']['lane5_selection_unchanged'] is True
+          PY
+          cmp artifacts/pass220/lane5-global-tools/tools.tsv               artifacts/pass220/lane5-global-tools/tools-replay.tsv
+
+      - name: Compile and run generic C++ tool membrane tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             hhs_runtime/cpp/hhs_pass220_lane5_global_tool_surface_v1.cpp             tests/pass220/test_hhs_pass220_lane5_global_tool_surface_v1.cpp             -o /tmp/pass220-lane5-global-tools/tool-surface-test
+          /tmp/pass220-lane5-global-tools/tool-surface-test
+
+      - name: Validate every hydrated descriptor through C++ membrane
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             hhs_runtime/cpp/hhs_pass220_lane5_global_tool_surface_v1.cpp             tools/pass220/hhs_pass220_lane5_global_tool_surface_validate.cpp             -o /tmp/pass220-lane5-global-tools/tool-manifest-validator
+          /tmp/pass220-lane5-global-tools/tool-manifest-validator             artifacts/pass220/lane5-global-tools/tools.tsv             | tee artifacts/pass220/lane5-global-tools/cpp-validation.json
+          python -m json.tool artifacts/pass220/lane5-global-tools/cpp-validation.json >/dev/null
+
+      - name: Verify service and deployment wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'pass220.lane5_global_tool_hydration.self_test'             hhs_runtime/hhs_service_registry_v1.py
+          grep -q 'install_pass220_lane5_tool_warm_hydration'             hhs_backend/runtime_os_visual_server.py
+          grep -q 'install_pass220_lane5_tool_warm_hydration'             hhs_backend/runtime_os_application_server_full.py
+          grep -q 'LANE5_ROUTE_SELECTION_ALGORITHM_UNCHANGED'             hhs_runtime/hhs_pass220_lane5_global_tool_hydration_v1.py
+          grep -q 'CIRCULAR_PHASE_FIBER_IS_GLOBAL_CONSTRAINT_NOT_SELECTOR_REPLACEMENT'             hhs_runtime/hhs_pass220_lane5_global_tool_hydration_v1.py
+
+      - name: Publish summary
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('artifacts/pass220/lane5-global-tools/warm.json', encoding='utf-8'))
+          r=json.load(open('artifacts/pass220/lane5-global-tools/warm-replay.json', encoding='utf-8'))
+          g=d['graph']
+          print('## Pass 220 Lane 5 global tool hydration')
+          print(f"- registered Pass219/220 services warmed: {g['registered_service_count']}")
+          print(f"- authoritative merged Pass219/220 PRs warmed: {g['merged_pull_request_count']}")
+          print(f"- total 5184 knowledge-graph tools: {g['tool_count']}")
+          print(f"- graph root: {g['graph_root_sha256']}")
+          print(f"- restart cache reuse: {r['reused_count']}/{r['warmed_tool_count']}")
+          print('- every tool C++ membrane validated: true')
+          print('- Lane 5 selection changed: false')
+          print('- canonical authority granted to warm cache: false')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass220-lane5-global-tool-hydration
+          path: artifacts/pass220/lane5-global-tools/*
+          if-no-files-found: error
