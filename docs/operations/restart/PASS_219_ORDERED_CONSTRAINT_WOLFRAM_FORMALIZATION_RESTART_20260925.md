@@ -64,3 +64,16 @@ Inspect the PR-head workflow run. If green, this checkpoint is merge-ready subje
 - Pass 169 source identity / ordered-constraint requirements remain inherited.
 - Pass 219 RNA/VM81/Hash72/Hash216 canonical authority remains unchanged.
 - This iteration is additive proof infrastructure only; it does not create a second evaluator or canonical commit path.
+
+
+## Repair-forward after first PR CI
+
+The first PR-head run exposed one dependency-scoped integration fault in the inherited SPI repository corpus census: the new canonical `.harmonicode` source increased the repository inventory from six paths/five unique bodies to seven paths/six unique bodies.
+
+Repair-forward changes:
+- registered `contracts/pass219/PASS_219_ORDERED_CONSTRAINT_WOLFRAM_FORMALIZATION_1_0.harmonicode` in `EXPECTED_HARMONICODE_SOURCES` with its frozen byte length and SHA-256;
+- changed the SPI census acceptance counts from `6/5` to `7/6`;
+- updated only the corresponding focused corpus tests;
+- no HARMONICODE source bytes, Wolfram proof semantics, VM81 authority, Hash72 authority, or Hash216 authority were changed.
+
+The failed CI step was therefore an inventory integration regression, not a failure of the ordered-constraint theorem.
