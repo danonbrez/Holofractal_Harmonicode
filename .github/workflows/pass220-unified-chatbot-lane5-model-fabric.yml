@@ -1,0 +1,96 @@
+name: Pass 220 Unified Chatbot Lane 5 Model Fabric
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py'
+      - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
+      - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - 'tests/test_hhs_litert_lm_hhs_api_tools_v1.py'
+      - 'tests/test_hhs_production_public_app_v1.py'
+      - 'docs/pass220/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5.md'
+      - 'docs/operations/restart/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5_20260925.md'
+      - '.github/workflows/pass220-unified-chatbot-lane5-model-fabric.yml'
+  push:
+    branches:
+      - main
+      - pass220/unified-chatbot-lane5-model-fabric-20260925
+    paths:
+      - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py'
+      - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
+      - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - 'tests/test_hhs_litert_lm_hhs_api_tools_v1.py'
+      - 'tests/test_hhs_production_public_app_v1.py'
+      - 'docs/pass220/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5.md'
+      - 'docs/operations/restart/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5_20260925.md'
+      - '.github/workflows/pass220-unified-chatbot-lane5-model-fabric.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unified-chatbot-lane5:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependency-scoped Python requirements
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Build inherited HHS native kernel
+        run: |
+          make c-kernel
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile unified chatbot surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py \
+            hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
+            hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
+            hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
+            hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py \
+            hhs_backend/runtime/hhs_production_assistant_v1.py \
+            hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
+            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
+            tests/test_hhs_production_public_app_v1.py
+
+      - name: Run unified chatbot dependency-scoped regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+          HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC: '0'
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py \
+            tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
+            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
+            tests/test_hhs_production_public_app_v1.py

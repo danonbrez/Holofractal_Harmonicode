@@ -394,13 +394,32 @@ class HHSNativeLiteRTLMTransport:
         assistant_mode: str,
     ) -> List[Dict[str, Any]]:
         mode = normalize_assistant_mode(assistant_mode)
+        text = query.casefold()
+        unified_tool_request = bool(
+            "lane5" in text
+            or "lane 5" in text
+            or any(
+                phrase in text
+                for phrase in (
+                    "model fabric",
+                    "language model fabric",
+                    "language models",
+                    "which model",
+                    "active model",
+                    "selected model",
+                )
+            )
+        )
         if mode == ASSISTANT_MODE_GENERAL_CHAT:
             return []
-        if mode == ASSISTANT_MODE_BOTH and not _looks_like_development_request(query):
+        if (
+            mode == ASSISTANT_MODE_BOTH
+            and not _looks_like_development_request(query)
+            and not unified_tool_request
+        ):
             return []
 
         available = _available_tool_names(tools)
-        text = query.casefold()
         selections: List[tuple[str, Dict[str, Any]]] = []
 
         def add(name: str, arguments: Optional[Mapping[str, Any]] = None) -> None:
@@ -417,6 +436,36 @@ class HHSNativeLiteRTLMTransport:
         if explicit_runtime_service:
             add("hhs_runtime_services")
             add("hhs_runtime_service_status")
+        if any(
+            phrase in text
+            for phrase in (
+                "model fabric",
+                "language model fabric",
+                "language models",
+                "which model",
+                "active model",
+                "selected model",
+            )
+        ):
+            add("hhs_language_model_fabric")
+
+        lane5_requested = "lane5" in text or "lane 5" in text
+        if lane5_requested:
+            add("hhs_lane5_capability_status")
+            if any(
+                token in text
+                for token in (
+                    "capability",
+                    "capabilities",
+                    "search",
+                    "find",
+                    "tool",
+                    "operation",
+                    "registry",
+                    "repository",
+                )
+            ):
+                add("hhs_lane5_capability_search", {"query": query, "limit": 8})
         if any(token in text for token in ("runtime state", "vm81 state", "kernel state")):
             add("hhs_runtime_state")
         if any(token in text for token in ("kernel invariant", "invariants", "conformance")):
