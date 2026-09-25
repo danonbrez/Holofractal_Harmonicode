@@ -402,6 +402,19 @@ jobs:
           assert payload["new_vm81_authority"] is False, payload
           print("HHS_I047_EXACT_MAIN_GUEST_RECEIPT_VERIFIED")
           PY
+          python3 - "$guest_release/production-topology.receipt.json" "$TARGET_SHA" <<'PY'
+          import json, sys
+          from pathlib import Path
+          payload=json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert payload["target_sha"] == sys.argv[2], payload
+          assert payload["target"] == "guest", payload
+          assert payload["frontend_attached"] is True, payload
+          assert payload["host_application_compute_authority"] is False, payload
+          assert payload["canonical_state_authority"] is False, payload
+          assert payload["lane5_vm81_guest_authority_required"] is True, payload
+          assert payload["guest_health_verified"] is True, payload
+          print("HHS_I047_PUBLIC_GUEST_ATTACHMENT_VERIFIED")
+          PY
           release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
             --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
           test "$(readlink -f "$BUNDLE_ROOT/current")" = "$release"
