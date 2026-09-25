@@ -79,6 +79,11 @@ EXPECTED_HARMONICODE_SOURCES: Dict[str, Dict[str, Any]] = {
         "sha256": "7eb0cc5707a4a58a5a8e4879e0e2e3bdab22c15fe4503fb3a3b0e16596343d42",
         "bytes": 354,
     },
+    "contracts/pass219/PASS_219_ORDERED_CONSTRAINT_WOLFRAM_FORMALIZATION_1_0.harmonicode": {
+        "tier": "CONTRACT_NATIVE_SOURCE",
+        "sha256": "d6d7da60e3e9520c0ec802fa8ec63121ffbee9313263012d021907e210bc652c",
+        "bytes": 1321,
+    },
 }
 
 _ALIAS_BINDINGS: Sequence[Dict[str, Any]] = (
@@ -643,10 +648,10 @@ def validate_repository_corpus(repo_root: Path) -> Dict[str, Any]:
         }
 
     errors = []
-    if manifest["inventory"]["path_count"] != 6:
-        errors.append("expected exactly six registered .harmonicode source paths")
-    if manifest["inventory"]["unique_source_hash_count"] != 5:
-        errors.append("expected exactly five unique .harmonicode source bodies")
+    if manifest["inventory"]["path_count"] != 7:
+        errors.append("expected exactly seven registered .harmonicode source paths")
+    if manifest["inventory"]["unique_source_hash_count"] != 6:
+        errors.append("expected exactly six unique .harmonicode source bodies")
     if manifest["parser_error_count"] != 0:
         errors.append(f"parser errors present: {manifest['parser_error_count']}")
     if not manifest["coverage_policy"]["all_unregistered_fail_closed"]:
