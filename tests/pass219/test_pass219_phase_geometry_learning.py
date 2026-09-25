@@ -19,6 +19,7 @@ from hhs_runtime.pass219.phase_geometry_learning import (
     evaluate_phase_circuit,
     evaluate_phase_geometric_candidate,
     learn_phase_geometric_frontier,
+    right_recursive_fold_tree,
 )
 from hhs_runtime.pass219.recursive_manifold_learning import (
     CANDIDATE_SCHEMA,
@@ -251,6 +252,36 @@ def test_fold_order_and_nonassociative_parenthesization_are_identity() -> None:
     assert ordered["fold_word_sha256"] != reordered["fold_word_sha256"]
     assert left["fold_word"] == right["fold_word"] == ["x", "y", "z", "w"]
     assert left["parenthesization_sha256"] != right["parenthesization_sha256"]
+
+
+def test_right_recursive_phase_word_parser_uses_suffix_modulus_tree() -> None:
+    tree_xy = right_recursive_fold_tree("xy")
+    tree_xyx = right_recursive_fold_tree("xyx")
+    tree_yxy = right_recursive_fold_tree("yxy")
+    tree_xyxy = right_recursive_fold_tree("xyxy")
+
+    assert tree_xy == ["x", "y"]
+    assert tree_xyx == ["x", ["y", "x"]]
+    assert tree_yxy == ["y", ["x", "y"]]
+    assert tree_xyxy == ["x", ["y", ["x", "y"]]]
+
+    right = evaluate_octonion_string(
+        _string("right-recursive", "root", fold_tree=tree_xyxy),
+        expected_parent_circuit_id="root",
+    )
+    left = evaluate_octonion_string(
+        _string("left-associated", "root", fold_tree=[[["x", "y"], "x"], "y"]),
+        expected_parent_circuit_id="root",
+    )
+    assert right["fold_word"] == left["fold_word"] == ["x", "y", "x", "y"]
+    assert right["parenthesization_sha256"] != left["parenthesization_sha256"]
+    assert right["commutative_reorder_permitted"] is False
+    assert right["nonassociative_rewrite_permitted"] is False
+
+    with pytest.raises(PhaseGeometryError, match="NONEMPTY"):
+        right_recursive_fold_tree("")
+    with pytest.raises(PhaseGeometryError, match="SYMBOL_UNSUPPORTED"):
+        right_recursive_fold_tree("xyq")
 
 
 def test_nested_entangled_circuits_preserve_child_order_and_depth() -> None:

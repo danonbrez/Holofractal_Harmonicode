@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_PASS_219_MODULAR_COMPLEX_TENSOR_PHASE_WOLFRAM_RECEIPT_20260924_V2",
+  "date": "2026-09-24",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 29,
+  "pass_count": 29,
+  "failed": [],
+  "input_path": "evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl",
+  "output_path": "evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl",
+  "source_families": [
+    "whitepapers/",
+    "docs/whitepapers/",
+    "formal/coq/HHS_GFE_Field_Quotient.v",
+    "formal/lemmas/pass_144/LEMMA_CORPUS.json"
+  ],
+  "authority": "FORMAL_PROJECTION_AND_SYNTAX_PROOF_ONLY",
+  "coq_kernel_execution_claimed": false,
+  "canonical_runtime_mutation_authority": false,
+  "global_prime_equivalence": "OPEN",
+  "riemann_bridge": "OPEN",
+  "collatz_asymptotic_bridge": "OPEN"
+}

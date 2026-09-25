@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS_219_LANE5_PRIME_QUANTIZATION_WOLFRAM_20260924_V1",
+  "status": "PASS",
+  "check_count": 19,
+  "pass_count": 19,
+  "failed": [],
+  "native_nonassociative_policy": "held binary term trees; no automatic reassociation",
+  "seed": [1, 1, 2],
+  "closure": [1, 2, 3],
+  "delta_scalar_branch": 1,
+  "macro_pair": {
+    "p": "P-1",
+    "q": "P+1"
+  },
+  "qe_status": "constraint-bound; not globally fixed by this Wolfram projection",
+  "global_prime_equivalence": "OPEN",
+  "riemann_bridge": "OPEN",
+  "collatz_asymptotic_bridge": "OPEN"
+}

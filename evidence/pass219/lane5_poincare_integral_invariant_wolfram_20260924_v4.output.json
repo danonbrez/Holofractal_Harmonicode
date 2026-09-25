@@ -1,0 +1,20 @@
+{
+  "schema": "HHS_PASS_219_T_BRIDGE_01A_POINCARE_INVARIANT_WOLFRAM_20260924_V4",
+  "status": "PASS",
+  "check_count": 16,
+  "pass_count": 16,
+  "failed": [],
+  "state_order": "(q1,q2,p1,p2)",
+  "omega": "{{0, 0, 1, 0}, {0, 0, 0, 1}, {-1, 0, 0, 0}, {0, -1, 0, 0}}",
+  "carry_order": "kick(p using q) -> drift(q using carried p)",
+  "sequential_orders_commute": false,
+  "both_sequential_orders_symplectic": true,
+  "simultaneous_old_state_explicit_symplectic": false,
+  "poincare_integral_invariant": "Phi^*(sum_i dq_i wedge dp_i)=sum_i dq_i wedge dp_i",
+  "four_d_projection_reading": "oriented A1+A2 is invariant; individual Ai may exchange",
+  "volume_only_is_insufficient": true,
+  "one_d_symplectic_euler_det": "1",
+  "one_d_explicit_euler_det": "1+h^2*a*u",
+  "t_bridge_01b_energy_band_class_stability": "OPEN",
+  "canonical_runtime_mutation_authority": false
+}

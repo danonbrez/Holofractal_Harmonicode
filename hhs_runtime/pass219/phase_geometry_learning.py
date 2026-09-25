@@ -212,6 +212,30 @@ def _normalize_fold_tree(
     return [left, right], left_word + right_word
 
 
+def right_recursive_fold_tree(word: str) -> Any:
+    """Parse one ordered x/y/z/w word with a singular head and suffix modulus.
+
+    HARMONICODE phase multiplication is not free-associative. For a word
+    s0 s1 ... sn this helper constructs the binary tree
+
+        [s0, [s1, [... [s(n-1), sn] ...]]]
+
+    so xyx is x(yx) and xyxy is x(y(xy)). The helper only constructs the
+    read-only parenthesization identity; it does not evaluate phase relations,
+    rewrite yx, or grant canonical runtime authority.
+    """
+
+    if not isinstance(word, str) or not word:
+        raise PhaseGeometryError("RIGHT_RECURSIVE_PHASE_WORD_NONEMPTY_REQUIRED")
+    if len(word) > MAX_VALIDATION_NESTING_DEPTH:
+        raise PhaseGeometryError("RIGHT_RECURSIVE_PHASE_WORD_DEPTH_EXCEEDED")
+    if any(symbol not in ROTOR_GEOMETRY for symbol in word):
+        raise PhaseGeometryError("RIGHT_RECURSIVE_PHASE_WORD_SYMBOL_UNSUPPORTED")
+    if len(word) == 1:
+        return word
+    return [word[0], right_recursive_fold_tree(word[1:])]
+
+
 def evaluate_octonion_string(
     value: Mapping[str, Any],
     *,

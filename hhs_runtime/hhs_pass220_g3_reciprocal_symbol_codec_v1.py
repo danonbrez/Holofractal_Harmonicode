@@ -15,7 +15,7 @@ import json
 from typing import Any, Dict, Mapping, Tuple, Union
 
 SCHEMA = "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_CODEC_V1"
-VERSION = "1.0.0-checkpoint.30"
+VERSION = "1.0.2-checkpoint.30-window9-ieee"
 PROFILE = "PASS220-I030-G3-RECIPROCAL-SYMBOL-CODEC-v1"
 CARRIER_SCHEMA = "HHS_PASS_220_I030_G3_SYMBOL_CARRIER_V1"
 WITNESS_SCHEMA = "HHS_PASS_220_I030_G3_RECIPROCAL_SYMBOL_WITNESS_V1"
@@ -24,6 +24,13 @@ PROOF_CELL_TOKEN = "123321.111"
 PHASE_NAMES = ("x", "y", "z", "w")
 PHASE_RECIPROCAL = {"x": "y", "y": "x", "z": "w", "w": "z"}
 RECIPROCAL_RELATIONS = ("y=1/x", "x=1/y", "w=1/z", "z=1/w")
+SYMBOL_WINDOW_WIDTH = 9
+
+EXPANDED_INGRESS_PROBES = (
+    "(123,321,123,321/(999999,1000000,1000001))=X",
+    "((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))×((123,321,123,321÷999,999)×(123,321,123,321÷1,000,001))^(−x²yx,y²-xy,z²=wz,w²=-zw)",
+    "1000.0001=(1,0,0,0,0,0,0,0,1)=(-4,-3,-2,-1,0,+1,+2,+3,+4)=(4,9,2,3,5,7,8,1,6)=123321.111+111.123321=246642.246642=369963.369963",
+)
 
 
 class Pass220G3ReciprocalCodecError(ValueError):
@@ -179,6 +186,53 @@ def _symbol_cells(text: str) -> Tuple[Dict[str, Any], ...]:
     return tuple(_symbol_cell(symbol, index) for index, symbol in enumerate(text))
 
 
+def _flatten_g3_tensor() -> Tuple[Any, ...]:
+    return tuple(cell for row in G3_PROOF_TENSOR for cell in row)
+
+
+def _symbol_windows_9(text: str) -> Tuple[Dict[str, Any], ...]:
+    """Bind non-overlapping 9-character windows to the nine G3 tensor cells.
+
+    Complete windows occupy all nine cells. A final short tail is preserved
+    without padding or invented symbols and records the remaining unoccupied
+    tensor slots explicitly. Each occupied slot carries forward and reciprocal
+    return phase expressions at the same time.
+    """
+    if not isinstance(text, str):
+        raise Pass220G3ReciprocalCodecError("window source must be a string")
+    tensor_cells = _flatten_g3_tensor()
+    windows = []
+    for window_index, start in enumerate(range(0, len(text), SYMBOL_WINDOW_WIDTH)):
+        segment = text[start : start + SYMBOL_WINDOW_WIDTH]
+        slots = []
+        for local_slot, symbol in enumerate(segment):
+            row, column = divmod(local_slot, 3)
+            forward_expr = tensor_cells[local_slot]
+            slots.append({
+                "slot": local_slot,
+                "row": row,
+                "column": column,
+                "source_position": start + local_slot,
+                "symbol": symbol,
+                "symbol_utf8_hex": symbol.encode("utf-8").hex(),
+                "forward_expr": forward_expr,
+                "return_expr": reciprocal_phase_expr(forward_expr),
+                "forward_and_return_present": True,
+            })
+        windows.append({
+            "window_index": window_index,
+            "start": start,
+            "stop": start + len(segment),
+            "text": segment,
+            "character_count": len(segment),
+            "complete_nine_character_window": len(segment) == SYMBOL_WINDOW_WIDTH,
+            "occupied_slots": tuple(range(len(segment))),
+            "unoccupied_slots": tuple(range(len(segment), SYMBOL_WINDOW_WIDTH)),
+            "slots": tuple(slots),
+        })
+    return tuple(windows)
+
+
 def encode_symbol_string(text: str) -> Dict[str, Any]:
     """Construct the reciprocal carrier for one exact UTF-8 symbol string."""
     if not isinstance(text, str):
@@ -208,6 +262,9 @@ def encode_symbol_string(text: str) -> Dict[str, Any]:
         "forward_zero": FORWARD_ZERO,
         "return_zero": RETURN_ZERO,
         "symbol_cells": _symbol_cells(text),
+        "symbol_window_width": SYMBOL_WINDOW_WIDTH,
+        "bidirectional_phase_windows": _symbol_windows_9(text),
+        "simultaneous_forward_return_witness": True,
         "numeric_parse_performed": False,
         "floating_point_authority": False,
         "canonical_vm81_mutation_authority": False,
@@ -291,6 +348,14 @@ def validate_symbol_carrier(carrier: Mapping[str, Any]) -> Dict[str, Any]:
         raise Pass220G3ReciprocalCodecError("symbol count mismatch")
     if tuple(carrier.get("symbol_cells", ())) != _symbol_cells(text):
         raise Pass220G3ReciprocalCodecError("symbol-cell provenance mismatch")
+    if carrier.get("symbol_window_width") != SYMBOL_WINDOW_WIDTH:
+        raise Pass220G3ReciprocalCodecError("9-character window width mismatch")
+    if tuple(carrier.get("bidirectional_phase_windows", ())) != _symbol_windows_9(text):
+        raise Pass220G3ReciprocalCodecError("9-character phase-window mismatch")
+    if carrier.get("simultaneous_forward_return_witness") is not True:
+        raise Pass220G3ReciprocalCodecError(
+            "forward/return window witnesses must coexist"
+        )
     if carrier.get("numeric_parse_performed") is not False:
         raise Pass220G3ReciprocalCodecError("numeric parsing is forbidden")
 
@@ -299,6 +364,7 @@ def validate_symbol_carrier(carrier: Mapping[str, Any]) -> Dict[str, Any]:
         "text": text,
         "valid_paths": ("forward", "return"),
         "receipt_valid": True,
+        "window_count": len(_symbol_windows_9(text)),
         "phase_involution": (
             reciprocal_phase_expr(reciprocal_phase_expr(FORWARD_ZERO))
             == FORWARD_ZERO
@@ -338,6 +404,8 @@ def repair_single_path_and_decode(carrier: Mapping[str, Any]) -> Dict[str, Any]:
     text = _decode_verified_payload(next(iter(payloads)))
     if tuple(carrier.get("symbol_cells", ())) != _symbol_cells(text):
         raise Pass220G3ReciprocalCodecError("symbol-cell provenance mismatch")
+    if tuple(carrier.get("bidirectional_phase_windows", ())) != _symbol_windows_9(text):
+        raise Pass220G3ReciprocalCodecError("9-character phase-window mismatch")
     return {
         "ok": True,
         "text": text,
@@ -375,6 +443,7 @@ def reciprocal_symbol_codec_witness() -> Dict[str, Any]:
         "-0.0",
         "1.00e+000",
         "x+y=0; y=1/x; 0=Φ; Ω",
+        *EXPANDED_INGRESS_PROBES,
     )
     round_trips = tuple(
         g3_reciprocal_transform(g3_reciprocal_transform(text)) == text
@@ -402,6 +471,23 @@ def reciprocal_symbol_codec_witness() -> Dict[str, Any]:
         "digit_cells": digit_cells,
         "all_probe_round_trips": all(round_trips),
         "probe_round_trips": round_trips,
+        "expanded_ingress_probes": EXPANDED_INGRESS_PROBES,
+        "expanded_ingress_probe_count": len(EXPANDED_INGRESS_PROBES),
+        "expanded_ingress_probe_round_trips": round_trips[-len(EXPANDED_INGRESS_PROBES):],
+        "symbol_window_width": SYMBOL_WINDOW_WIDTH,
+        "nine_character_ieee_text_probe": "1.00e+000",
+        "nine_character_ieee_text_window_complete": (
+            len(_symbol_windows_9("1.00e+000")) == 1
+            and _symbol_windows_9("1.00e+000")[0][
+                "complete_nine_character_window"
+            ]
+        ),
+        "expanded_1000_0001_window_complete": (
+            len(_symbol_windows_9("1000.0001")) == 1
+            and _symbol_windows_9("1000.0001")[0][
+                "complete_nine_character_window"
+            ]
+        ),
         "one_operation_both_directions": True,
         "return_phase_constraint": "y=1/x",
         "source_strings_parsed_as_numbers": False,
@@ -421,6 +507,8 @@ def validate_reciprocal_symbol_codec() -> Dict[str, Any]:
         witness["g3_tensor_phase_involution"],
         witness["zero_phase_involution"],
         witness["all_probe_round_trips"],
+        witness["nine_character_ieee_text_window_complete"],
+        witness["expanded_1000_0001_window_complete"],
         zero["kind"] == "phase_zero",
         zero["forward_zero"] == FORWARD_ZERO,
         zero["return_zero"] == RETURN_ZERO,
