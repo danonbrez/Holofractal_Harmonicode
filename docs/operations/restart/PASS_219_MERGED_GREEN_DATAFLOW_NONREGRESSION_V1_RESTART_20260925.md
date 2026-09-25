@@ -2,18 +2,30 @@
 
 Date: 2026-09-25
 
-Status: **IMPLEMENTED / BOOTSTRAP PROOF PENDING / PR NOT YET OPEN**
+Status: **IMPLEMENTED / PR OPEN / EXACT-HEAD CI QUEUED / NOT MERGED**
 
 ## Repository state
 
 ```text
 repository: danonbrez/Holofractal_Harmonicode
-base main: ea3948afecb40a35b61eb7473f094eee6fd63cb0
+base main at branch creation: ea3948afecb40a35b61eb7473f094eee6fd63cb0
 branch: policy/pass219-merged-green-dataflow-nonregression-v1-20260925
 merge target: main
+pull request: #584
+pull request URL: https://github.com/danonbrez/Holofractal_Harmonicode/pull/584
+last protected implementation/proof head before this checkpoint record:
+  cad447e0e7b46edf02c8d3303046a14818e40016
 ```
 
-## User rule encoded
+Prerequisite open Lane 5 proof-binding PR:
+
+```text
+PR: #583
+policy: Pass 219 Lane 5 Mediation Proof Binding 1.49
+state at checkpoint: open / mergeable / dedicated exact-head job queued
+```
+
+## Governing rule
 
 ```text
 MergedGreenDataflow(p)
@@ -22,10 +34,10 @@ AND ChangedOrRemovedOrBypassed(p)
 ValidatedSuccessorProof(CurrentPullRequest, p)
 ```
 
-Scope is Pass 219 and all upstream passes represented inside the cumulative
-Pass 219 system.
+Scope is Pass 219 and every upstream pass represented inside the cumulative
+Pass 219 runtime image.
 
-## Implemented surfaces
+## Implemented repository surfaces
 
 ```text
 contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json
@@ -33,104 +45,227 @@ contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md
 tools/pass219/pass219_merged_green_dataflow_guard_v1.py
 tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py
 .github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml
+artifacts/pass219/merged_green_successor_proofs/BOOTSTRAP_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json
 AGENTS.md
 docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md
 docs/operations/restart/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1_RESTART_20260925.md
 ```
 
-## Enforcement model
+## Enforced change classes
 
-The guard protects the Pass 206 frozen core, cumulative exact ABI, explicitly
-named authority/architecture files, and pass-numbered runtime/contract/test/
-benchmark/tool/workflow/artifact/evidence paths at or below Pass 219.
-
-Any protected modification, deletion, or rename requires a typed successor
-proof.
-
-New source files that add sensitive authority-symbol occurrences also require
-proof even when their path is otherwise new.
-
-Proof classes:
+Protected data-flow changes are admitted only as:
 
 ```text
 BACKWARD_COMPATIBLE_ITERATION
 REPAIR_FORWARD_REFINEMENT
 ```
 
-Backward-compatible iterations may not remove predecessor identifiers.
+Backward-compatible iteration:
 
-Repair-forward refinements must map each removed identifier to an explicit
-replacement and compatibility adapter in the successor tree.
+- exact predecessor/successor Git blobs are bound;
+- no predecessor HHS callable/type identity may disappear;
+- inherited authority/receipt/exactness invariants remain true;
+- fixed inherited validation profiles must execute.
 
-## Base-authoritative PR evaluation
+Repair-forward refinement:
 
-After this policy reaches main, pull requests execute the guard and manifest
-from the base commit using a detached Git worktree.
+- exact predecessor/successor Git blobs are bound;
+- deletion or rename requires replacement paths;
+- every removed HHS identifier requires a replacement identity and repository-
+  visible compatibility adapter;
+- defect, migration/continuity, rollback, negative tests and validation profiles
+  are explicit.
 
-Therefore a PR cannot weaken the guard in the same change used to alter a
-protected data flow.
+## Protected surface discovery
 
-The installation PR has one explicit bootstrap exception because its base does
-not yet contain the guard. The bootstrap still validates itself through the
-same machine logic and an exact-blob successor proof.
+The machine manifest protects:
 
-## Fixed proof validation
+1. Pass 206 frozen core and approved successor lineage;
+2. cumulative exact ABI/build/authority architecture files;
+3. pass-numbered runtime/backend/Python/native-project/contracts/tests/
+   benchmarks/tools/workflows/artifacts/evidence at Pass <= 219;
+4. root HHS_PASS_<n> identities at Pass <= 219;
+5. new source files that increase sensitive-authority symbol occurrences;
+6. this nonregression policy itself.
 
-When protected changes are present, the workflow runs:
+New proof JSON files under
+`artifacts/pass219/merged_green_successor_proofs/` may be introduced by the
+PR that needs them. Once merged, those evidence files become protected from
+later mutation/deletion.
+
+## Self-monotonic policy
+
+The policy cannot weaken itself in place.
+
+Once present on main, any change to the policy manifest, contract, guard,
+tests, or workflow requires `REPAIR_FORWARD_REFINEMENT` under the predecessor
+guard.
+
+The predecessor guard rejects a successor that:
 
 ```text
-Pass 206 frozen-core/successor regression
-Pass 219 cumulative membrane regression
-cumulative exact ABI build
-singleton VM81 dynamic-authority audit
-RNA VM5184 / Hash216 positional-lineage regression
-VM81 PQC firewall regression
-environmental recovery regression
+decreases protected_pass_ceiling
+removes protected roots
+removes always-protected paths
+removes mandatory invariants
+removes mandatory validation profiles
+removes sensitive symbols
+removes protected source extensions
+turns true fail-closed flags false
+changes the proof directory
+changes the proof schema in place
+renames the required status check
+removes base-guard/direct-push/fixed-validation anchors
 ```
 
-These profiles are fixed by repository policy, not selected as arbitrary shell
-commands by a successor proof.
+Equal-or-stronger additions are permitted.
+
+## Base-authoritative evaluation
+
+Future PRs execute the guard and manifest from the authoritative base commit in
+a detached worktree.
+
+Therefore changing the guard in the same PR does not change the rules used to
+judge that PR.
+
+The installation PR uses the explicit bootstrap path because its base does not
+yet contain the guard.
+
+## Bootstrap proof
+
+Exact bootstrap successor proof:
+
+```text
+artifacts/pass219/merged_green_successor_proofs/BOOTSTRAP_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json
+```
+
+It binds the actual base merge point and Git blobs for:
+
+```text
+workflow
+machine manifest
+normative contract
+guard implementation
+guard negative tests
+AGENTS.md
+cumulative global-default architecture
+```
+
+The proof is `BACKWARD_COMPATIBLE_ITERATION` because the installation adds an
+enforcement membrane without removing or replacing inherited runtime behavior.
+
+## Fixed validation profiles
+
+A protected change requires all of:
+
+```text
+PASS206_CORE_FREEZE
+PASS219_CUMULATIVE_MEMBRANE
+EXACT_ABI_BUILD
+VM81_SINGLE_AUTHORITY
+HASH72_HASH216_LINEAGE
+RNA_VM5184_CELL_WALL
+```
+
+Workflow implementations run:
+
+```text
+tests/pass206/test_pass206_cumulative_enforcement_v1.py
+tests/pass219/test_pass219_cumulative_pass_membrane_i116.py
+make clean && make c-abi
+dynamic singleton VM81 export audit
+tests/pass219/test_pass219_rna_vm5184_abi_1_33.c
+tests/pass219/test_pass219_vm81_pqc_firewall_1_30.cpp
+tests/pass219/test_pass219_vm81_environmental_recovery_1_32.cpp
+```
+
+These commands are fixed by repository policy rather than accepted as arbitrary
+proof-authored shell commands.
+
+## Main direct-push audit
+
+For a protected push to `main`, structural proof is not enough.
+
+The workflow queries the GitHub commit-to-pull-request relation and requires
+the head commit to be associated with an actually merged PR targeting `main`.
+
+A protected direct push therefore fails with:
+
+```text
+PROTECTED_MAIN_PUSH_WITHOUT_ASSOCIATED_MERGED_PULL_REQUEST
+```
+
+This is an after-push audit. Hard prevention before the ref update requires the
+GitHub hosting ruleset described below.
 
 ## GitHub hosting-layer state
 
-Repository rulesets query on 2026-09-25 returned:
+Repository rulesets query during implementation returned:
 
 ```text
 []
 ```
 
-The connected GitHub integration does not expose administration write access
-for branch-protection/ruleset mutation.
+The connected GitHub integration does not expose administration write
+permission for branch-protection/ruleset mutation.
 
-Therefore this implementation creates the authoritative repository contract,
-all-PR fail-closed status check, and main-push drift audit. Full hosting-layer
-prevention additionally requires a repository admin to configure `main` so:
+Required hosting configuration for `main` is machine-recorded as:
 
 ```text
-pull requests are required
-direct pushes are disabled
-merged-green-dataflow-lineage-guard is a required status check
-branch must be up to date before merge
-ordinary development cannot bypass the required check
+require pull requests
+disable direct pushes
+required status check = merged-green-dataflow-lineage-guard
+require branch to be up to date before merge
+ordinary development may not bypass the required check
 ```
 
-The exact required check name is machine-recorded in the JSON contract.
+Repository contract + CI enforcement are implemented. GitHub-side physical
+merge prevention requires an administrator to enable those settings.
 
-## Remaining work
+## Validation state
 
-1. Generate the installation bootstrap successor proof from the exact current
-   branch blobs.
-2. Run the guard against base/main and the exact branch head.
-3. Open the PR.
-4. Run the dedicated workflow.
-5. Repair only dependency-scoped failures.
-6. Merge only after the guard and fixed inherited validation profiles are green.
-7. Verify the main merge commit.
-8. Once PR #583 / Lane 5 1.49 merges, verify that its newly merged Pass 219
-   surfaces are automatically protected by the path/sensitive-symbol rules.
+PR #584 exact-head workflow:
 
-## Restart instruction
+```text
+workflow: Pass 219 Merged-Green Dataflow Nonregression v1
+job: merged-green-dataflow-lineage-guard
+latest observed run before checkpoint: 36152860151
+latest observed job: 108130192135
+state: queued
+```
 
-Resume from the branch above. Do not recreate the policy from prose. First
-generate the bootstrap proof from the current Git blobs, then run/open the
-dedicated nonregression validation path.
+No semantic or implementation failure has been observed from that exact-head
+job because it has not yet executed.
+
+Prerequisite PR #583 latest observed dedicated state before checkpoint:
+
+```text
+workflow: Pass 219 Lane 5 Mediation Proof Binding 1.49
+run: 36151853795
+job: 108126798630
+state: queued
+```
+
+## Required merge order
+
+1. Let PR #583's dedicated 1.49 proof execute.
+2. If #583 is green, merge #583 and verify authoritative main.
+3. Reconcile PR #584 onto that verified main.
+4. Recompute the #584 bootstrap merge-base/blob proof only where the main
+   reconciliation changes protected identities.
+5. Rerun #584 guard plus only impacted inherited profiles.
+6. Merge #584 only when the guard is green.
+7. Verify main and confirm the newly merged 1.49 Pass 219 files are protected by
+   the <=219 path and sensitive-symbol rules.
+
+This ordering prevents the new policy from retroactively blocking the already
+open prerequisite 1.49 repair before it reaches main, while ensuring 1.49 is
+inside the protected baseline immediately afterward.
+
+## Next action
+
+Inspect PR #583's exact-head dedicated job first.
+
+Do not merge either PR while its required dependency-scoped proof remains
+queued or red. Do not weaken the contracts to satisfy CI. Repair only concrete
+implementation, test, build, or workflow divergence.
