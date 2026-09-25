@@ -358,7 +358,7 @@ if ! start_units; then rollback_live_checkout "unified VM supervisor start faile
 if ! wait_for_health; then rollback_live_checkout "unified guest health check failed"; exit 1; fi
 
 log "Cutting public dynamic transport from host Python to unified guest"
-if ! python3 "$guest_proxy" --repository-root "$REPO_ROOT" --target guest; then
+if ! python3 "$guest_proxy" --repository-root "$REPO_ROOT" --target guest --target-sha "$CANDIDATE_SHA" > "$UNIFIED_GUEST_ROOT/current/production-topology.receipt.json"; then
   rollback_live_checkout "unified guest nginx cutover failed"
   exit 1
 fi
