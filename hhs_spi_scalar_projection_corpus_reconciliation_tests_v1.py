@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parent
 def test_profiles_valid():
     result = validate_profiles()
     assert result["ok"] is True, result
-    assert result["profile_count"] == 16
+    assert result["profile_count"] == 25
 
 
 def test_profile_set_closes_exact_raw_missing_families():
@@ -34,15 +34,15 @@ def test_profile_set_closes_exact_raw_missing_families():
 def test_resolved_counts_exact():
     manifest = reconciliation_manifest(ROOT)
     assert manifest["base_candidate_counts"] == {
-        "MISSING_PROJECTION": 56,
-        "PROVEN": 389,
-        "SYMBOLIC": 27,
+        "MISSING_PROJECTION": 93,
+        "PROVEN": 548,
+        "SYMBOLIC": 28,
         "UNSUPPORTED_DOMAIN": 0,
     }
     assert manifest["resolved_candidate_counts"] == {
         "MISSING_PROJECTION": 0,
-        "PROVEN": 429,
-        "SYMBOLIC": 43,
+        "PROVEN": 588,
+        "SYMBOLIC": 81,
         "UNSUPPORTED_DOMAIN": 0,
     }
 
@@ -51,7 +51,7 @@ def test_classification_complete_but_scalar_values_open():
     manifest = reconciliation_manifest(ROOT)
     assert manifest["classification_complete"] is True
     assert manifest["scalar_value_complete"] is False
-    assert manifest["open_symbolic_occurrence_count"] == 43
+    assert manifest["open_symbolic_occurrence_count"] == 81
 
 
 def test_u360_closes_from_u72():
@@ -86,6 +86,27 @@ def test_x_square_does_not_invent_scalar_magnitude():
         profile = PROFILES[expression]
         assert profile["coverage_state"] == SYMBOLIC
         assert profile["result"] == {"formal": "x^2"}
+
+
+def test_new_ordered_constraint_profiles_remain_symbolic_and_fail_closed():
+    for expression in (
+        "(10^9)^List",
+        "e^t",
+        "e^(y*Pi)",
+        "s^2",
+        "y^2",
+        "y^4",
+        "w^2",
+        "w^4",
+        "(u==2.133185666641251470403352397272)^72",
+    ):
+        profile = PROFILES[expression]
+        assert profile["coverage_state"] == SYMBOLIC
+    relational = PROFILES["(u==2.133185666641251470403352397272)^72"]
+    assert "Boolean" in relational["notes"][0]
+    assert relational["result"] == {
+        "formal": "(u==2.133185666641251470403352397272)^72"
+    }
 
 
 def test_lexical_partial_profiles_do_not_claim_algebra():
@@ -128,6 +149,7 @@ TESTS = [
     test_i4_unit_and_i2_i3_remain_phase_classes,
     test_structural_generator_and_polynomial_powers_are_parametric,
     test_x_square_does_not_invent_scalar_magnitude,
+    test_new_ordered_constraint_profiles_remain_symbolic_and_fail_closed,
     test_lexical_partial_profiles_do_not_claim_algebra,
     test_reconciliation_has_no_canonical_authority,
     test_resolution_receipts_deterministic,
