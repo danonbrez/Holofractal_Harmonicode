@@ -336,6 +336,16 @@ def validate_policy_self_integrity(
             cfg.get("contract_required_anchors", []),
             "CONTRACT",
         ),
+        (
+            ".github/rulesets/HHS_MAIN_MERGED_GREEN_DATAFLOW_RULESET_V1.json",
+            cfg.get("ruleset_required_anchors", []),
+            "RULESET",
+        ),
+        (
+            "contracts/pass219/PASS_219_MAIN_BRANCH_MERGE_RULES_V1.md",
+            cfg.get("merge_rules_required_anchors", []),
+            "MERGE_RULES",
+        ),
     )
     for path, anchors, label in anchor_targets:
         text = git_text(head, path)
