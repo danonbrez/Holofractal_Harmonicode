@@ -1,0 +1,29 @@
+name: DigitalOcean Deploy Key Public Binding
+
+on:
+  push:
+    branches:
+      - ops/digitalocean-network-recovery-20260925
+    paths:
+      - '.github/workflows/digitalocean-deploy-key-public-binding.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  derive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    env:
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+    steps:
+      - name: Derive safe public deploy key
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -d -m 0700 /tmp/key
+          printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > /tmp/key/private
+          chmod 0600 /tmp/key/private
+          ssh-keygen -y -f /tmp/key/private > /tmp/key/public
+          ssh-keygen -lf /tmp/key/public
+          cat /tmp/key/public
