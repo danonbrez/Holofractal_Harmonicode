@@ -116,7 +116,7 @@ jobs:
           print('lane5_mediation_proof_binding_static=PASS')
           PY
 
-      - name: Enforce Pass 219 cumulative authority hierarchy
+      - name: Enforce VM81 single-authority machine architecture
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -126,36 +126,42 @@ jobs:
           i043 = Path('docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md').read_text()
           i044 = Path('docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md').read_text()
           runtime = Path('hhs_runtime/pass220/ubuntu_guest_runtime.py').read_text()
+          docs = contract + backend + i043 + i044 + runtime
 
           for needle in (
-              'Pass 219 is the cumulative system-contract authority',
-              'Lane 5 is the C++ BIOS and AGI optimization control center',
-              'callable, bounded execution circuits',
-              'Pass220+ = descendant integration/projection surfaces',
+              'VM81 runtime is the sole canonical computational authority',
+              'Lane 5 is the BIOS of VM81',
+              "Hash216 is VM81's permanent validation storage",
+              'integrated operating-system image and callable service registry',
+              'Ubuntu is the intended guest installation',
+              'ABI, API, VM81 opcode, terminal, desktop, and GUI surfaces',
+              'callable and bounded',
           ):
               assert needle in contract, needle
 
-          for doc in (backend, i043, i044):
-              assert 'Pass 219' in doc
-              assert 'Lane 5' in doc
-              assert 'signed environmental VM81' in doc
-
           for forbidden in (
+              'Pass 219 is the cumulative system-contract authority',
+              '"pass219_system_contract_authority": True',
               'application/runtime authority **inside** an Ubuntu environment',
               'Pass 190 operation authority running inside the guest',
-              'Ubuntu application VM\n-> repository/runtime authority',
           ):
-              assert forbidden not in contract + backend + i043 + i044 + runtime, forbidden
+              assert forbidden not in docs, forbidden
 
           for needle in (
-              '"pass219_system_contract_authority": True',
-              '"pass220_descendant_projection_only": True',
-              '"lane5_cpp_bios_agi_optimization_control_center": True',
-              '"optimization_execution_model": "CALLABLE_BOUNDED_CIRCUITS_NOT_AMBIENT_LOOP"',
+              '"vm81_runtime_only_authority": True',
+              '"lane5_role": "CXX_BIOS_AGI_OPTIMIZATION_CONTROL_CENTER"',
+              '"pass_system_role": "INTEGRATED_OS_AND_CALLABLE_SERVICE_REGISTRY"',
+              '"hash216_role": "PERMANENT_VALIDATION_STORAGE"',
+              '"ubuntu_role": "GUEST_OS_INSTALLATION_ON_VM81_VIRTUAL_HARDWARE"',
+              '"frontend_role": "ABI_API_OPCODE_GUI_INTERFACE_ENVIRONMENT"',
+              '"host_qemu_role": "BOOTSTRAP_COMPATIBILITY_NOT_CANONICAL_VM81_HARDWARE"',
+              '"canonical_internal_linux_vm_proven": False',
           ):
               assert needle in runtime, needle
 
-          print('pass219_cumulative_authority_hierarchy=PASS')
+          assert 'successful QEMU/SSH/PTTY execution alone MUST NOT be promoted' in i044
+          assert 'final internal-VM requirement by itself' in i043
+          print('vm81_single_authority_machine_architecture=PASS')
           PY
 
       - name: Regress Pass 220 guest authority descriptor
