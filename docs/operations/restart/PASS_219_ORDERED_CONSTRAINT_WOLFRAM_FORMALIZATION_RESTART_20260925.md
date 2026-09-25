@@ -77,3 +77,31 @@ Repair-forward changes:
 - no HARMONICODE source bytes, Wolfram proof semantics, VM81 authority, Hash72 authority, or Hash216 authority were changed.
 
 The failed CI step was therefore an inventory integration regression, not a failure of the ordered-constraint theorem.
+
+
+## SPI reconciliation repair-forward
+
+The seventh source changed the deterministic raw SPI corpus manifest to:
+
+`41cbbce77c7fbe5cb39c4aa1bd5a6797d0e6b1fba1f4582a4ccf744de0d870b5`
+
+and the repaired v1 reconciliation manifest to:
+
+`a65d69d9b07c278664fba92c8befd56f957b5be68c984f9f8a5227482d16a4b1`.
+
+The new source contributed source-level power candidates that were handled fail-closed:
+- inherited profiles continue to cover `I^3` and `x^2`;
+- `s^2`, `e^t`, `y^2/y^4`, `w^2/w^4`, the terminal `e^(y*Pi)`, the typed relational `(u==...)^72`, and the lexical `(10^9)^List` constructor prefix are registered as symbolic/source-preserving profiles;
+- the relational carrier is explicitly forbidden from host `True/False` collapse;
+- no missing candidate is promoted to a scalar value merely to satisfy coverage.
+
+Repaired corpus counts are:
+
+```text
+raw:       PROVEN=548 SYMBOLIC=28 MISSING_PROJECTION=93
+reconciled PROVEN=588 SYMBOLIC=81 MISSING_PROJECTION=0
+```
+
+The existing nested-AST v2 migration remains scoped to its original five parser-limit occurrences. The new `(10^9)^List` prefix is typed as a lexical-constructor witness rather than being falsely classified as one of those already-migrated AST families.
+
+Updated v2 bindings now consume the repaired raw and reconciliation manifests. This is dependency-scoped integration work only; the frozen 1,321-byte HARMONICODE source and its Wolfram theorem receipt remain unchanged.
