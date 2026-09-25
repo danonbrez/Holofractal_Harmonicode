@@ -12,6 +12,8 @@ IMAGE_ROOT="$ROOT/images"
 KEY_ROOT="$STATE_ROOT/keys"
 SEED_ROOT="$STATE_ROOT/seed"
 SSH_PORT="${HHS_GUEST_SSH_PORT:-2222}"
+RUNTIME_HTTP_PORT="${HHS_GUEST_RUNTIME_HTTP_PORT:-18080}"
+GUEST_RUNTIME_HTTP_PORT="${HHS_GUEST_RUNTIME_GUEST_PORT:-8080}"
 MEMORY_MIB="${HHS_GUEST_MEMORY_MIB:-2048}"
 CPUS="${HHS_GUEST_CPUS:-2}"
 REPO_URL="${HHS_GUEST_REPOSITORY_URL:-https://github.com/danonbrez/Holofractal_Harmonicode.git}"
@@ -194,11 +196,21 @@ payload={
             "bash",
             "-lc",
             (
+                f"REPO_ROOT={q(repo_root)} "
+                f"bash {q(repo_root + '/deployment/ubuntu/guest_runtime/install-unified-guest-ide.sh')}"
+            ),
+        ],
+        [
+            "bash",
+            "-lc",
+            (
                 "install -d -m 0755 /var/lib/hhs/guest-bootstrap && "
                 f"git -C {q(repo_root)} rev-parse HEAD "
                 "> /var/lib/hhs/guest-bootstrap/repository-sha && "
                 "curl -fsS http://127.0.0.1:8720/health "
                 "> /var/lib/hhs/guest-bootstrap/application-vm-health.json && "
+                "curl -fsS http://127.0.0.1:8080/api/health "
+                "> /var/lib/hhs/guest-bootstrap/guest-ide-health.json && "
                 "touch /var/lib/hhs/guest-bootstrap/ready"
             ),
         ],
@@ -226,6 +238,8 @@ HHS_GUEST_NAME=hhs-ubuntu-$TARGET_SHA
 HHS_GUEST_MEMORY_MIB=$MEMORY_MIB
 HHS_GUEST_CPUS=$CPUS
 HHS_GUEST_SSH_PORT=$SSH_PORT
+HHS_GUEST_RUNTIME_HTTP_PORT=$RUNTIME_HTTP_PORT
+HHS_GUEST_RUNTIME_GUEST_PORT=$GUEST_RUNTIME_HTTP_PORT
 HHS_GUEST_SSH_USER=hhs
 HHS_GUEST_SSH_IDENTITY=$CLIENT_KEY
 HHS_GUEST_SSH_KNOWN_HOSTS=$KNOWN_HOSTS
