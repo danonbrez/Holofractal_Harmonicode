@@ -400,6 +400,50 @@ def assert_lossless_result(
     }
 
 
+def run_quick_build(page: Page, base_url: str) -> dict[str, Any]:
+    panel = page.get_by_test_id("mobile-quick-build-panel")
+    source = (
+        "a²=1\nb²=2\nc²=3\n"
+        "72+9\n"
+        "quick_build_exact=81\n"
+        "unicode_marker=Δ→Ω\n"
+    )
+    raw = source.encode("utf-8")
+    panel.get_by_test_id("mobile-quick-build-source").fill(source)
+    panel.get_by_label("Source file").fill("quick-lossless.hhs")
+    started = time.perf_counter_ns()
+    with page.expect_response(
+        lambda response: response.url == base_url + "/api/v1/pass174/sdlc/run"
+        and response.request.method == "POST",
+        timeout=180000,
+    ) as response_info:
+        panel.get_by_test_id("mobile-quick-build-run").click()
+    response = response_info.value
+    elapsed_ns = time.perf_counter_ns() - started
+    body = response.json()
+    assert response.status == 200
+    fixture = {
+        "name": "quick-lossless.hhs",
+        "mime": "text/plain",
+        "modality": "HARMONICODE_SOURCE",
+        "expected_detected": "SOURCE_CODE",
+        "bytes": raw,
+        "require_compute": True,
+    }
+    proof = assert_lossless_result(body, fixture)
+    panel.get_by_text(str(body["classification"]), exact=True).wait_for(timeout=30000)
+    return {
+        "source_bytes": len(raw),
+        "source_sha256": proof["source_sha256"],
+        "projection_hash72": proof["projection_hash72"],
+        "elapsed_ns": elapsed_ns,
+        "elapsed_ms": elapsed_ns // 1_000_000,
+        "exact_egress_bytes_equal": True,
+        "compute_stages_closed": True,
+        "frontend_transport": "MOBILE_QUICK_BUILD",
+    }
+
+
 def run_visible_fixture(
     page: Page,
     base_url: str,
@@ -788,6 +832,8 @@ def run_browser(base_url: str, evidence_dir: Path) -> dict[str, Any]:
         page.wait_for_selector('[data-testid="production-mobile-control-center"]', timeout=90000)
         frontend_interactive_ms = (time.perf_counter_ns() - navigation_started) // 1_000_000
 
+        quick_build = run_quick_build(page, base_url)
+
         panel = page.get_by_test_id("production-mobile-control-center")
         file_input = panel.locator('input[type="file"]').first
         assert file_input.count() == 1
@@ -821,6 +867,7 @@ def run_browser(base_url: str, evidence_dir: Path) -> dict[str, Any]:
 
     return {
         "frontend_interactive_ms": frontend_interactive_ms,
+        "quick_build": quick_build,
         "fixture_count": len(fixtures),
         "fixtures": fixtures,
         "all_fixture_egress_lossless": all(row["exact_egress_bytes_equal"] for row in fixtures),
