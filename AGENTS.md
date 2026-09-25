@@ -231,3 +231,41 @@ For a new task:
 6. implement without creating an alternate authority path;
 7. rerun dependency-scoped checks;
 8. update documentation when ownership, public surfaces, commands, status boundaries, or terminology change.
+
+## 12. Merged-green dataflow nonregression
+
+Pass 219 and every upstream pass are cumulative inherited data flows.
+
+Once a data flow is committed to `main` through a merged green pull request,
+do not remove, simplify, narrow, rename, replace, or bypass it in a later change
+unless the same pull request carries a validated successor proof under:
+
+`contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md`
+
+Protected changes are permitted only as:
+
+`BACKWARD_COMPATIBLE_ITERATION`
+
+or:
+
+`REPAIR_FORWARD_REFINEMENT`
+
+The machine guard is:
+
+`tools/pass219/pass219_merged_green_dataflow_guard_v1.py`
+
+and the required status-check name is:
+
+`merged-green-dataflow-lineage-guard`
+
+The guard runs from the authoritative base commit on pull requests. Do not
+weaken, replace, or bypass the guard in the same change that modifies a
+protected data flow.
+
+A repair-forward refinement must preserve repository-visible predecessor
+lineage, map every removed identifier to a replacement and compatibility
+adapter, preserve receipt/replay continuity, and pass the fixed inherited
+validation profiles.
+
+Direct pushes to `main` are not an acceptable substitute for a validated
+successor pull request.
