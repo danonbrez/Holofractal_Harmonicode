@@ -15,6 +15,7 @@ extern "C" {
 #define HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_VERSION UINT32_C(0x00010031)
 #define HHS_EXACT_PASS219_LANE5_MEDIATION_PROOF_BINDING_NAMESPACE UINT32_C(0x00021931)
 #define HHS_EXACT_PASS219_LANE5_ZERO_SUM_RESIDUAL_COUNT UINT32_C(8)
+#define HHS_EXACT_PASS219_LANE5_MEDIATION_ENVIRONMENT_ROOT_BYTES UINT32_C(32)
 
 typedef struct HHSExactPass219Lane5MediationProofBindingAuthorityV1 {
     uint32_t struct_size;
@@ -28,6 +29,7 @@ typedef struct HHSExactPass219Lane5MediationProofBindingAuthorityV1 {
     uint8_t capability_registry_recomputed;
     uint8_t direct_witness_route_recomputed;
     uint8_t global_constraint_membrane_recomputed;
+    uint8_t global_environment_request_bound;
     uint8_t exact_zero_sum_residual_vector_derived;
     uint8_t deterministic_proof_binding;
     uint8_t candidate_only;
@@ -39,7 +41,7 @@ typedef struct HHSExactPass219Lane5MediationProofBindingAuthorityV1 {
     uint8_t receipt_clock_authority;
     uint8_t floating_point_canonical_authority;
     uint8_t requires_signed_environmental_vm81_admission;
-    uint8_t reserved0[5];
+    uint8_t reserved0[4];
 } HHSExactPass219Lane5MediationProofBindingAuthorityV1;
 
 typedef struct HHSExactPass219Lane5ZeroSumClosureWitnessV1 {
@@ -134,6 +136,12 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediation_frame_signature(
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediation_hash216_reference_signature(
     const HHSExactPass219Hash216TransitionViewV1 *reference,
     uint64_t *out_signature64
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediation_environment_root(
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    const HHSExactPass219Lane5DirectWitnessReceiptV1 *direct_witness_receipt,
+    uint8_t out_root[HHS_EXACT_PASS219_LANE5_MEDIATION_ENVIRONMENT_ROOT_BYTES]
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediation_proof_bind(
