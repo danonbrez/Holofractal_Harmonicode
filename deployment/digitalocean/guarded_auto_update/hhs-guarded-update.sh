@@ -13,7 +13,7 @@ DRIFT_RECONCILER=${HHS_HOST_DRIFT_RECONCILER:-/usr/local/lib/hhs-guarded-update/
 VALIDATE_TIMEOUT=${HHS_VALIDATE_TIMEOUT_SECONDS:-3600}
 HEALTH_TIMEOUT=${HHS_HEALTH_TIMEOUT_SECONDS:-180}
 HEALTH_INTERVAL=${HHS_HEALTH_INTERVAL_SECONDS:-2}
-HEALTH_URLS=${HHS_HEALTH_URLS:-http://127.0.0.1:8080/api/system/status}
+HEALTH_URLS=${HHS_HEALTH_URLS:-}
 EXPECTED_REPOSITORY=${HHS_EXPECTED_REPOSITORY:-danonbrez/Holofractal_Harmonicode}
 KEEP_CANDIDATES=${HHS_KEEP_CANDIDATES:-3}
 POST_MERGE_COMMAND=${HHS_POST_MERGE_COMMAND:-bash bin/post_compile}
@@ -27,6 +27,12 @@ BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
 PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-/usr/local/lib/hhs-guarded-update/normalize-service-permissions.py}
+UNIFIED_GUEST_ROOT=${HHS_GUEST_INTEGRATION_ROOT:-/var/lib/hhs/ubuntu-guest}
+UNIFIED_VM_SERVICE_REL=deployment/ubuntu/guest_runtime/hhs-unified-vm.service
+UNIFIED_VM_MANAGER_REL=deployment/ubuntu/guest_runtime/manage-unified-vm.sh
+UNIFIED_GUEST_INTEGRATION_REL=deployment/ubuntu/guest_runtime/run-real-guest-integration.sh
+UNIFIED_GUEST_PROXY_REL=deployment/ubuntu/guest_runtime/configure-unified-guest-proxy.py
+LEGACY_SERVICE_REL=deploy/digitalocean/hhs-pass196-integrated-environment.service
 
 CANDIDATE_ROOT="$STATE_ROOT/candidates"
 RECEIPT_LOG="$STATE_ROOT/receipts.jsonl"
@@ -94,10 +100,18 @@ start_units() {
 }
 
 wait_for_health() {
-  local deadline=$((SECONDS + HEALTH_TIMEOUT)) url
+  local deadline=$((SECONDS + HEALTH_TIMEOUT)) url urls
+  urls="$HEALTH_URLS"
+  if [[ -z "$urls" ]]; then
+    if systemctl cat hhs.service 2>/dev/null | grep -Fq 'HHS Lane 5 BIOS Unified VM Supervisor'; then
+      urls="http://127.0.0.1:18080/api/health http://127.0.0.1:18720/health"
+    else
+      urls="http://127.0.0.1:8080/api/system/status"
+    fi
+  fi
   while (( SECONDS < deadline )); do
     local healthy=1
-    for url in $HEALTH_URLS; do
+    for url in $urls; do
       if ! curl --fail --silent --show-error --max-time 10 "$url" >/dev/null; then healthy=0; break; fi
     done
     (( healthy == 1 )) && return 0
@@ -128,9 +142,14 @@ sync_installed_assets() {
   local controller_root=${1:-$REPO_ROOT}
   local service_root=${2:-$controller_root}
   local source="$controller_root/deployment/digitalocean/guarded_auto_update"
-  local hhs_service="$service_root/deploy/digitalocean/hhs-pass196-integrated-environment.service"
+  local legacy_service="$service_root/$LEGACY_SERVICE_REL"
+  local unified_service="$service_root/$UNIFIED_VM_SERVICE_REL"
+  local hhs_service="$legacy_service"
+  if [[ -f "$unified_service" ]]; then
+    hhs_service="$unified_service"
+  fi
   [[ -d "$source" ]] || return 0
-  log "Synchronizing guarded updater from $controller_root and production service from $service_root"
+  log "Synchronizing guarded updater from $controller_root and production service from $hhs_service"
   install -d -m 0755 /usr/local/lib/hhs-guarded-update
   [[ -f "$source/hhs-guarded-update.sh" ]] && install -m 0755 "$source/hhs-guarded-update.sh" /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
   [[ -f "$source/validate-candidate.sh" ]] && install -m 0755 "$source/validate-candidate.sh" /usr/local/lib/hhs-guarded-update/validate-candidate.sh
@@ -141,6 +160,10 @@ sync_installed_assets() {
   [[ -f "$source/verify-recovery-state.py" ]] && install -m 0755 "$source/verify-recovery-state.py" /usr/local/lib/hhs-guarded-update/verify-recovery-state.py
   [[ -f "$source/hhs-guarded-update.service" ]] && install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
   [[ -f "$source/hhs-guarded-update.timer" ]] && install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
+  if [[ -f "$controller_root/$UNIFIED_VM_MANAGER_REL" ]]; then
+    install -d -m 0755 /usr/local/lib/hhs-unified-vm
+    install -m 0755 "$controller_root/$UNIFIED_VM_MANAGER_REL" /usr/local/lib/hhs-unified-vm/manage-unified-vm.sh
+  fi
   [[ -f "$hhs_service" ]] && install -m 0644 "$hhs_service" /etc/systemd/system/hhs.service
 }
 
@@ -175,6 +198,14 @@ rollback_live_checkout() {
   local rollback_controller_root="$CURRENT_CANDIDATE"
   log "Promotion failed: $reason"
   stop_units || true
+  if [[ -L "$UNIFIED_GUEST_ROOT/current" && -r "$UNIFIED_GUEST_ROOT/current/runtime.env" ]]; then
+    (
+      set -a
+      source "$UNIFIED_GUEST_ROOT/current/runtime.env"
+      set +a
+      PYTHONPATH="$rollback_controller_root" "$rollback_controller_root/bin/hhs-guest" stop >/dev/null 2>&1 || true
+    )
+  fi
   restore_previous_runtime_os
   git -C "$REPO_ROOT" reset --hard "$PREVIOUS_SHA"
   if [[ -n "$ROLLBACK_COMMAND" ]]; then
@@ -194,6 +225,9 @@ rollback_live_checkout() {
     log "Validated rollback controller worktree unavailable; retaining installed controller assets"
     local rollback_service="$REPO_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
     [[ -f "$rollback_service" ]] && install -m 0644 "$rollback_service" /etc/systemd/system/hhs.service
+  fi
+  if [[ ! -f "$REPO_ROOT/$UNIFIED_VM_SERVICE_REL" && -f "$rollback_controller_root/$UNIFIED_GUEST_PROXY_REL" ]]; then
+    python3 "$rollback_controller_root/$UNIFIED_GUEST_PROXY_REL"       --repository-root "$rollback_controller_root"       --target host || true
   fi
   systemctl daemon-reload
   start_units
@@ -307,12 +341,29 @@ chown "$PRODUCTION_SERVICE_USER:$PRODUCTION_SERVICE_GROUP" \
   "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
 chmod 0640 "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
 
+guest_integration="$REPO_ROOT/$UNIFIED_GUEST_INTEGRATION_REL"
+guest_proxy="$REPO_ROOT/$UNIFIED_GUEST_PROXY_REL"
+[[ -f "$guest_integration" ]] || { rollback_live_checkout "unified guest integration missing"; exit 1; }
+[[ -f "$guest_proxy" ]] || { rollback_live_checkout "unified guest proxy configurator missing"; exit 1; }
+
+log "Booting and verifying exact-SHA unified Ubuntu guest"
+if ! TARGET_SHA="$CANDIDATE_SHA"   SOURCE_ROOT="$REPO_ROOT"   HHS_GUEST_INTEGRATION_ROOT="$UNIFIED_GUEST_ROOT"   bash "$guest_integration"; then
+  rollback_live_checkout "unified Ubuntu guest integration failed"
+  exit 1
+fi
+
 sync_installed_assets
 systemctl daemon-reload
-if ! start_units; then rollback_live_checkout "service start failed"; exit 1; fi
-if ! wait_for_health; then rollback_live_checkout "post-promotion health check failed"; exit 1; fi
+if ! start_units; then rollback_live_checkout "unified VM supervisor start failed"; exit 1; fi
+if ! wait_for_health; then rollback_live_checkout "unified guest health check failed"; exit 1; fi
 
-write_receipt "promotion" "PROMOTED" "candidate and exact Runtime OS bundle activated and health-verified"
+log "Cutting public dynamic transport from host Python to unified guest"
+if ! python3 "$guest_proxy" --repository-root "$REPO_ROOT" --target guest; then
+  rollback_live_checkout "unified guest nginx cutover failed"
+  exit 1
+fi
+
+write_receipt "promotion" "PROMOTED" "candidate activated as exact-SHA Lane5/VM81 Ubuntu guest and public dynamic transport cut over"
 log "Promotion complete: $CANDIDATE_SHA"
 
 mapfile -t old_candidates < <(find "$CANDIDATE_ROOT" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' | sort -nr | awk '{print $2}' | tail -n "+$((KEEP_CANDIDATES + 1))")
