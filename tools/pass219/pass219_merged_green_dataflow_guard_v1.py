@@ -385,25 +385,33 @@ def validate_proof_document(
                         f"{proof_path}:{path}:{identifier}:ADAPTER_NOT_FOUND:{adapter}"
                     )
 
-        preserved = row.get("preserved_identifiers")
-        if not isinstance(preserved, list) or not preserved:
+        predecessor_identifiers = extract_identifiers(base_text, base_path)
+        preserved = row.get("preserved_identifiers", [])
+        if not isinstance(preserved, list):
+            errors.append(f"{proof_path}:{path}:PRESERVED_IDENTIFIERS_INVALID")
+            preserved = []
+        if predecessor_identifiers and not preserved:
             errors.append(f"{proof_path}:{path}:PRESERVED_IDENTIFIERS_MISSING")
-        else:
-            replacement_paths = [
-                p
-                for p in row.get("replacement_paths", [])
-                if isinstance(p, str) and git_path_exists(head, p)
-            ]
-            for identifier in preserved:
-                if not isinstance(identifier, str) or not identifier:
-                    errors.append(f"{proof_path}:{path}:PRESERVED_IDENTIFIER_INVALID")
-                    continue
-                if identifier not in (head_text or "") and not head_contains_identifier(
-                    head, identifier, replacement_paths
-                ):
-                    errors.append(
-                        f"{proof_path}:{path}:PRESERVED_IDENTIFIER_NOT_FOUND:{identifier}"
-                    )
+        replacement_paths = [
+            p
+            for p in row.get("replacement_paths", [])
+            if isinstance(p, str) and git_path_exists(head, p)
+        ]
+        for identifier in preserved:
+            if not isinstance(identifier, str) or not identifier:
+                errors.append(f"{proof_path}:{path}:PRESERVED_IDENTIFIER_INVALID")
+                continue
+            if identifier not in predecessor_identifiers:
+                errors.append(
+                    f"{proof_path}:{path}:PRESERVED_IDENTIFIER_NOT_IN_PREDECESSOR:{identifier}"
+                )
+                continue
+            if identifier not in (head_text or "") and not head_contains_identifier(
+                head, identifier, replacement_paths
+            ):
+                errors.append(
+                    f"{proof_path}:{path}:PRESERVED_IDENTIFIER_NOT_FOUND:{identifier}"
+                )
 
     return errors, covered
 
