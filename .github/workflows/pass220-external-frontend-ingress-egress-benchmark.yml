@@ -165,6 +165,8 @@ jobs:
           assert d['lane5_selection_changed'] is False
           assert d['frontend_runtime_authority'] is False
           assert d['canonical_source_limit_bytes'] == 16 * 1024 * 1024
+          assert b['quick_build']['exact_egress_bytes_equal'] is True
+          assert b['quick_build']['compute_stages_closed'] is True
           assert b['fixture_count'] >= 9
           assert b['all_fixture_egress_lossless'] is True
           assert b['all_fixture_reingress_stable'] is True
