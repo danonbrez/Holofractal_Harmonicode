@@ -95,6 +95,27 @@ cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic   -Ihhs_runtime/include   tests/
 # and Lane 5 exact boundary 1.35 regression tests.
 ~~~
 
+## First CI repair-forward
+
+Initial dedicated run:
+
+~~~text
+run: 36145494411
+job: 108105499950
+result: FAILURE
+~~~
+
+The cumulative build itself passed, including the canonical GNUmakefile C++ RNA/cell-wall objects. The failure occurred at the new export audit because the aggregate header/source registrations contained a literal backslash-n token from the contents-API patch. The compiler treated the second include as extra preprocessor tokens, so the 1.49 implementation was not compiled into the shared library.
+
+Repair commits:
+
+~~~text
+6a1826a4cf0a8a4b28231e8b63e09da81d40df83  fix aggregate header registration newline
+ee7004f543184872f42f85aee80cd52bbdd4556e  fix aggregate source registration newline
+~~~
+
+No proof semantics, authority fields, ABI types, or tests were weakened. The VM81 authority version script requires no expansion because it localizes only the inherited canonical mutation primitives; candidate-only exports remain global by default.
+
 ## Validation remaining
 
 - exact aggregate C/C++ build;
