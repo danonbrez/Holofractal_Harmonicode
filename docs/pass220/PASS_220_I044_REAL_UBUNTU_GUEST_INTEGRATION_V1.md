@@ -5,7 +5,7 @@
 I044 converts the merged I043 guest lifecycle/PTY substrate into an executable
 real-Ubuntu integration path.
 
-The architecture is:
+I044 exercises a host-side compatibility/bootstrap route:
 
 ```text
 production Linux host
@@ -14,14 +14,25 @@ production Linux host
   -> NoCloud seed
   -> Ubuntu guest
   -> strict loopback SSH + real PTY
-  -> exact HHS repository SHA inside guest
-  -> inherited hhs-application-vm / Pass 190 adapter
-  -> Pass 219 cumulative inherited authority
-  -> Lane 5 C++ BIOS / AGI optimization control center
-  -> signed environmental VM81 canonical admission
 ```
 
-No I044 component is a new HHS canonical state authority.
+That path is not the canonical internal-machine architecture. The required
+canonical topology is:
+
+```text
+VM81 runtime / 5184-native virtual hardware  [ONLY AUTHORITY]
+  -> Lane 5 C++ BIOS / AGI optimization control center
+  -> cumulative pass system OS + callable service registry
+  -> internal Ubuntu Linux guest
+  -> Bash / ABI / API / opcode / GUI interface environment
+  -> VM81 admission for mutations
+  -> Hash72 receipt closure
+  -> Hash216 permanent validation storage
+```
+
+No I044 component is a new HHS authority, and successful QEMU/SSH/PTTY execution
+alone MUST NOT be promoted as proof that Ubuntu is running on VM81 virtual
+hardware.
 
 ## Pinned guest artifact
 
@@ -129,15 +140,19 @@ new_vm81_authority = false
 frontend_attached = false
 ```
 
-The QEMU host layer, Ubuntu guest, cloud-init metadata, SSH transport, PTY, and
-Pass 190 application service are conventional execution/transport/application
-surfaces subordinate to Pass 219. Canonical HHS mutations remain downstream of
-the Pass 219 -> Lane 5 -> signed environmental VM81 path.
+The QEMU host layer, cloud-init metadata, SSH transport, PTY, Pass 190 service,
+and frontend are compatibility/interface surfaces only. VM81 is the sole
+authority. Lane 5 is its BIOS and AGI optimization control center; the cumulative
+pass system is its integrated operating system and callable service registry;
+Hash216 is its permanent validation storage.
 
-Lane 5 is the Pass 219 C++ BIOS and AGI optimization control center. Its
-reasoning/optimization circuits are callable bounded circuits; guest boot,
-service startup, PTY availability, or frontend attachment does not imply a
-continuous autonomous optimization loop.
+The canonical Ubuntu role is guest OS installed on VM81 virtual hardware.
+Therefore I044's current host-QEMU route remains a bootstrap/integration harness
+until an explicit VM81 hardware/ABI binding proves that guest execution relation.
+
+Lane 5 reasoning/optimization circuits are callable bounded circuits; guest
+boot, service startup, PTY availability, or frontend attachment does not imply
+a continuous autonomous optimization loop.
 
 ## CI and production execution
 
@@ -176,8 +191,9 @@ Droplet was created and the existing Droplet was not powered on from this cycle.
 
 ## Next gate after I044 real-host acceptance
 
-Once the real guest is proven, the next cycle may attach the Native Visual IDE
-terminal/status adapter to the guest transport. That adapter must consume the
-authenticated guest/PTY boundary, preserve the Pass 219 -> Lane 5 -> signed
-VM81 authority hierarchy, and must not reinterpret the existing Pass 190
-`/v1/vm/shell` endpoint as a general Linux terminal.
+The next canonical gate is not frontend attachment. It is proof that Ubuntu is
+installed and executing as the internal Linux guest on VM81 virtual hardware.
+Only after that VM81-backed guest relation is green should the Native Visual IDE
+attach as a normal ABI/API/opcode/GUI interface environment. The frontend must
+not reinterpret the Pass 190 `/v1/vm/shell` endpoint or the host QEMU harness
+as the VM81 machine itself.
