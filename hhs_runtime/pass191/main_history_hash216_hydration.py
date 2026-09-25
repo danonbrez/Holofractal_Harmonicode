@@ -535,8 +535,6 @@ def hydrate_main_history(
             "non_pr_or_root_commit_count": non_pr_commit_count,
             "artifact_count": len(artifacts),
             "frame_count": frame_count,
-            "new_frames": new_frames,
-            "reused_frames": reused_frames,
             "exact_logic_bytes": total_logic_bytes,
             "frame_bytes": FRAME_BYTES,
             "frame_payload_bytes": FRAME_PAYLOAD_BYTES,
