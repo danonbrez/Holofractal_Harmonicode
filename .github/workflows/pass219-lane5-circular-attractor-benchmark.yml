@@ -16,6 +16,7 @@ on:
       - 'hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc'
       - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
       - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
   pull_request:
     paths:
       - 'benchmarks/pass219/pass219_lane5_circular_attractor_global_optimizer_benchmark.cpp'
@@ -29,6 +30,7 @@ on:
       - 'hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc'
       - 'hhs_runtime/include/hhs_pass219_global_latency_policy_25_3_1_0.h'
       - 'hhs_runtime/c/hhs_pass219_global_latency_policy_25_3_1_0.inc'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
   workflow_dispatch:
 
 permissions:
@@ -64,47 +66,84 @@ jobs:
 
       - name: Verify circular-fiber theorem binding
         run: |
-          python -m pytest -q             tests/pass219/test_pass219_local_circular_phase_fiber_formalization.py             tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py
+          python -m pytest -q \
+            tests/pass219/test_pass219_local_circular_phase_fiber_formalization.py \
+            tests/pass220/test_hhs_pass220_multidimensional_constraint_manifold_v1.py
 
       - name: Compile cumulative exact ABI
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/pass219-circular-attractor artifacts/pass219/circular-attractor
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass219-circular-attractor/exact.o
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass219-circular-attractor/exact.o
+
+      - name: Build inherited exact ABI link support
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tools/pass219/build_exact_abi_link_support.sh \
+            /tmp/pass219-circular-attractor/link-support full
 
       - name: Preserve inherited direct-witness routing
         shell: bash
         run: |
           set -euo pipefail
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c             /tmp/pass219-circular-attractor/exact.o             -o /tmp/pass219-circular-attractor/direct-witness-test
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c \
+            /tmp/pass219-circular-attractor/exact.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_hash216.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-circular-attractor/direct-witness-test
           /tmp/pass219-circular-attractor/direct-witness-test
 
       - name: Preserve global 25over3 latency policy
         shell: bash
         run: |
           set -euo pipefail
-          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c             /tmp/pass219-circular-attractor/exact.o             -o /tmp/pass219-circular-attractor/latency-policy-test
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_latency_policy_25_3_1_0.c \
+            /tmp/pass219-circular-attractor/exact.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_hash216.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-circular-attractor/latency-policy-test
           /tmp/pass219-circular-attractor/latency-policy-test
 
       - name: Compile circular-attractor benchmark
         shell: bash
         run: |
           set -euo pipefail
-          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             benchmarks/pass219/pass219_lane5_circular_attractor_global_optimizer_benchmark.cpp             /tmp/pass219-circular-attractor/exact.o             -o /tmp/pass219-circular-attractor/benchmark
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass219/pass219_lane5_circular_attractor_global_optimizer_benchmark.cpp \
+            /tmp/pass219-circular-attractor/exact.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_hash216.o \
+            /tmp/pass219-circular-attractor/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
+            -o /tmp/pass219-circular-attractor/benchmark
 
       - name: Run circular-attractor benchmark
         shell: bash
         run: |
           set -euo pipefail
-          /tmp/pass219-circular-attractor/benchmark             artifacts/pass219/circular-attractor/native_benchmark.json
-          python -m json.tool             artifacts/pass219/circular-attractor/native_benchmark.json >/dev/null
+          /tmp/pass219-circular-attractor/benchmark \
+            artifacts/pass219/circular-attractor/native_benchmark.json
+          python -m json.tool \
+            artifacts/pass219/circular-attractor/native_benchmark.json >/dev/null
 
       - name: Analyze exact work and observed latency
         shell: bash
         run: |
           set -euo pipefail
-          python benchmarks/pass219/analyze_pass219_lane5_circular_attractor_global_optimizer.py             artifacts/pass219/circular-attractor/native_benchmark.json             artifacts/pass219/circular-attractor/analysis.json
+          python benchmarks/pass219/analyze_pass219_lane5_circular_attractor_global_optimizer.py \
+            artifacts/pass219/circular-attractor/native_benchmark.json \
+            artifacts/pass219/circular-attractor/analysis.json
           python -m json.tool artifacts/pass219/circular-attractor/analysis.json >/dev/null
           python - <<'PY'
           import json
