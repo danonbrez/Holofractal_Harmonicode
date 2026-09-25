@@ -67,3 +67,5 @@ jobs:
 # Probe after mutable-state repair deploy
 
 # Probe after systemd serialization repair deploy
+
+# Probe after PR577 exact-main runtime boot failure
