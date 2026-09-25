@@ -71,6 +71,9 @@ jobs:
                   if any(token in lower for token in ("sqlite", "db_path", "database_path", "path(", "environ", "hhs_")):
                       print(f"{lineno}: {line}")
           PY
+          echo "=== host tooling ==="
+          command -v node || true
+          node --version 2>/dev/null || true
           echo "=== current runtime health ==="
           ls -l /var/lib/hhs/data/runtime/hhs_agent_immutable_index.sqlite3* 2>/dev/null || true
           curl -fsS --max-time 5 http://127.0.0.1:8080/api/system/status || true
@@ -100,3 +103,5 @@ jobs:
 # Probe cf2764 immutable-agent DB deployment
 
 # Probe immutable SQL creation and local API health
+
+# Probe Node/TLS during final HTTPS closure
