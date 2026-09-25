@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import importlib.util
 import json
 import sys
@@ -241,3 +242,25 @@ def test_proof_blob_mismatch_is_fail_closed(monkeypatch: pytest.MonkeyPatch) -> 
     )
     assert "proof.json:hhs_runtime/c/hhs_pass219_demo.inc:PREDECESSOR_BLOB_MISMATCH" in errors
     assert "proof.json:hhs_runtime/c/hhs_pass219_demo.inc:SUCCESSOR_BLOB_MISMATCH" in errors
+
+
+def test_policy_manifest_cannot_weaken_protection() -> None:
+    weaker = copy.deepcopy(MANIFEST)
+    weaker["protected_pass_ceiling"] = 218
+    weaker["sensitive_symbols"] = weaker["sensitive_symbols"][1:]
+    errors = guard.manifest_monotonicity_errors(MANIFEST, weaker)
+    assert "POLICY_PROTECTED_PASS_CEILING_DECREASED" in errors
+    assert any(
+        error.startswith("POLICY_MONOTONIC_SET_SHRANK:sensitive_symbols:")
+        for error in errors
+    )
+
+
+def test_policy_manifest_may_only_strengthen_monotonically() -> None:
+    stronger = copy.deepcopy(MANIFEST)
+    stronger["protected_roots"] = list(stronger["protected_roots"]) + ["new_protected_root"]
+    stronger["sensitive_symbols"] = list(stronger["sensitive_symbols"]) + [
+        "hhs_exact_future_sensitive_surface"
+    ]
+    errors = guard.manifest_monotonicity_errors(MANIFEST, stronger)
+    assert errors == []
