@@ -115,7 +115,13 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
         px2_manifold.outer_prefix_exact != 1U ||
         px2_manifold.outer_denominator_exact != 1U ||
         px2_manifold.ordered_markers_exact != 1U ||
-        px2_manifold.delta_bx_boundary_preserved != 1U ||
+        px2_manifold.correction_raw_hash_verified != 1U ||
+        px2_manifold.correction_parse_hash_verified != 1U ||
+        px2_manifold.correction_raw_source_preserved != 1U ||
+        px2_manifold.correction_balanced_parse_preserved != 1U ||
+        px2_manifold.correction_native_order_preserved != 1U ||
+        px2_manifold.correction_scalar_projection_closed != 1U ||
+                px2_manifold.delta_bx_boundary_preserved != 1U ||
         px2_manifold.scalar_simplification_authority != 0U ||
         px2_manifold.equality_reversal_authority != 0U ||
         px2_manifold.delta_cancellation_authority != 0U ||
