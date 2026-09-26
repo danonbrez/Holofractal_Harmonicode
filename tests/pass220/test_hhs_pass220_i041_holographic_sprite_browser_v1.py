@@ -46,3 +46,18 @@ def test_lane5_browser_preserves_animation_projection_invariants_without_randomn
         "authority=projection-only; no VM81/Hash72/Hash216 mutation",
     ):
         assert token in source, token
+
+
+def test_lane5_browser_exposes_manual_animation_and_renderer_bypass_benchmark():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'window.HHS_LANE5_TEST={',
+        'schema:"HHS_PASS_220_I041_HTML_TEST_API_V1"',
+        'schema:"HHS_PASS_220_I041_HTML_RENDER_BOTTLENECK_BENCHMARK_V1"',
+        'rendererRemovedControl:true',
+        'dominantNonRenderComponent',
+        'gl.finish()',
+        'projectionTick(targetTick',
+        'benchmark:runBottleneckBenchmark',
+    ):
+        assert token in source, token

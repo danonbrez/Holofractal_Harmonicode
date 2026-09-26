@@ -97,3 +97,25 @@ None known at checkpoint creation.
 - repair: move the holographic dependent constants after HASH72_LEN and
   SPRITE216_LEN; no pathway formula, animation law, or authority boundary
   changed.
+
+
+## HTML-driven HD MP4 / renderer-bypass acceptance extension
+
+Added:
+- deterministic manual HTML test API;
+- exact numbered animation-step control independent of requestAnimationFrame;
+- state-only renderer-bypass timing;
+- synchronized WebGL draw timing;
+- per-component path/uniform/SO(4)-tesseract timing;
+- separately normalized Hash72 phase-word timing;
+- dominant non-render bottleneck classification;
+- Playwright-driven 1280x720 deterministic frame capture;
+- reuse of the existing HHS H.264 encode/ffprobe verification functions;
+- workflow artifact containing MP4, receipt, and representative frames.
+
+New file:
+- benchmarks/pass220/benchmark_i041_html_render_bottleneck.py
+
+The CI timing claim is host-specific.  Existing Fold7 hardware evidence remains
+the physical mobile latency authority; the HTML surface is now capable of the
+same renderer-bypass experiment on that device.

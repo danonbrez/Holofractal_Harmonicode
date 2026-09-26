@@ -361,3 +361,53 @@ derivation mirrors the native game engine, so a seed/rank pair selects the same
 GPU trigonometry, golden-ratio evaluation, color conversion, perspective, and
 point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
+
+
+## HTML-driven renderer-bypass / HD MP4 acceptance
+
+The deterministic browser projection now exposes a manual test API:
+
+~~~text
+window.HHS_LANE5_TEST
+~~~
+
+The API can drive exact numbered projection ticks independently of
+requestAnimationFrame.  The same HTML animation is benchmarked in two modes:
+
+1. state-only, with no draw call;
+2. the same state update followed by a synchronized WebGL draw.
+
+Per-tick timing is separated into path addressing, shader-uniform update,
+SO(4)/tesseract update, and synchronized render cost.  Hash72 phase-word
+generation is timed independently and normalized over its inherited 72-tick
+refresh interval.  The receipt identifies the dominant non-render component,
+so the test answers what becomes the limiting projection-side operation when
+rasterization is removed.
+
+The HD acceptance harness is:
+
+~~~text
+benchmarks/pass220/benchmark_i041_html_render_bottleneck.py
+~~~
+
+It drives the HTML directly through Playwright, captures deterministic 1280x720
+canvas frames, and reuses the existing HHS MP4 transport functions from
+native_projects/hhs_vm81_game_level10/tools/render_terminal_capture.py:
+
+~~~text
+encode_video
+inspect_video
+verify_video
+~~~
+
+The resulting H.264 MP4, receipt, and representative first/middle/last frames
+are uploaded as the workflow artifact:
+
+~~~text
+pass220-i041-html-hd-mp4-bottleneck
+~~~
+
+Timing from CI is host-specific and is not substituted for the existing Fold7
+hardware evidence.  The same HTML benchmark surface can be executed on the
+Samsung hardware lane for physical GPU comparison.  Browser/GPU values remain
+projection-only and cannot mutate VM81, Hash72, or Hash216 state.

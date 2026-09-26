@@ -48,6 +48,7 @@ const MASK64 = (1n << 64n) - 1n;
 let scene, camera, renderer, controls, geometry;
 let layer1, layer2, material1, material2, tess;
 let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
+let manualTestMode = false;
 let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
 let lastPhaseWord = "";
 
@@ -250,6 +251,168 @@ function updateHud(address,rank,bott){
     "authority=projection-only; no VM81/Hash72/Hash216 mutation";
 }
 
+
+function projectionTick(targetTick, options={}){
+  const renderFrame=Boolean(options.renderFrame);
+  const gpuSync=Boolean(options.gpuSync);
+  const updateHudText=Boolean(options.updateHudText);
+  tick=targetTick;
+
+  const pathStart=performance.now();
+  const rank=tick%NODE_COUNT;
+  const address=pathAddress(rank);
+  const q=tick%Q144;
+  const bott=Math.floor(q/Q144_OCTANT)%PHASE_GROUPS;
+  const seconds=tick/60;
+  const pathEnd=performance.now();
+
+  for(const m of [material1,material2]){
+    m.uniforms.uTime.value=seconds;
+    m.uniforms.uPathAddress.value=address;
+    m.uniforms.uBottOctant.value=bott;
+    m.uniforms.uTopologyInvert.value=topoInvert;
+  }
+  const uniformEnd=performance.now();
+
+  updateTesseract(seconds);
+  const tesseractEnd=performance.now();
+
+  let renderMs=0;
+  if(renderFrame){
+    const renderStart=performance.now();
+    renderer.render(scene,camera);
+    if(gpuSync){
+      const gl=renderer.getContext();
+      if(gl && typeof gl.finish==="function") gl.finish();
+    }
+    renderMs=performance.now()-renderStart;
+    rendered++;
+  }
+  if(updateHudText) updateHud(address,rank,bott);
+
+  return {
+    tick,rank,address,bott,
+    pathMs:pathEnd-pathStart,
+    uniformMs:uniformEnd-pathEnd,
+    tesseractMs:tesseractEnd-uniformEnd,
+    renderMs,
+    totalMs:performance.now()-pathStart
+  };
+}
+
+function summarizeTiming(rows){
+  const sum=key=>rows.reduce((acc,row)=>acc+row[key],0);
+  const ticks=rows.length;
+  const totalMs=sum("totalMs");
+  const componentMs={
+    path:sum("pathMs"),
+    uniforms:sum("uniformMs"),
+    tesseract:sum("tesseractMs"),
+    render:sum("renderMs")
+  };
+  return {
+    ticks,
+    totalMs,
+    averageTickMs:totalMs/ticks,
+    ticksPerSecond:ticks/(totalMs/1000),
+    componentMs,
+    componentPerTickMs:Object.fromEntries(
+      Object.entries(componentMs).map(([key,value])=>[key,value/ticks])
+    )
+  };
+}
+
+async function benchmarkPhaseWords(samples){
+  const count=Math.max(1,Math.floor(samples));
+  const start=performance.now();
+  let checksum=0;
+  for(let i=0;i<count;i++){
+    const rank=i%NODE_COUNT;
+    const address=pathAddress(rank);
+    const word=await hash72FromSeed(path.seed,"PATH72:"+rank+":"+address);
+    checksum=(checksum+word.charCodeAt(i%HASH72_LEN))%65536;
+  }
+  const totalMs=performance.now()-start;
+  return {
+    samples:count,totalMs,averageWordMs:totalMs/count,checksum,
+    normalizedPerTickMs:(totalMs/count)/72
+  };
+}
+
+async function runBottleneckBenchmark(options={}){
+  const stateTicks=Math.max(64,Math.floor(options.stateTicks||4096));
+  const renderTicks=Math.max(16,Math.floor(options.renderTicks||256));
+  const warmup=Math.max(8,Math.floor(options.warmup||64));
+  const phaseSamples=Math.max(4,Math.floor(options.phaseSamples||24));
+  const gpuSync=options.gpuSync!==false;
+
+  const wasManual=manualTestMode, wasPaused=paused;
+  manualTestMode=true;
+  paused=true;
+
+  for(let i=0;i<warmup;i++) projectionTick(i,{renderFrame:false});
+  const stateRows=[];
+  for(let i=0;i<stateTicks;i++) stateRows.push(projectionTick(i,{renderFrame:false}));
+
+  const renderRows=[];
+  for(let i=0;i<renderTicks;i++){
+    renderRows.push(projectionTick(i,{renderFrame:true,gpuSync}));
+  }
+
+  const phaseWords=await benchmarkPhaseWords(phaseSamples);
+  const stateOnly=summarizeTiming(stateRows);
+  const statePlusRender=summarizeTiming(renderRows);
+  const normalized={
+    path:stateOnly.componentPerTickMs.path,
+    uniforms:stateOnly.componentPerTickMs.uniforms,
+    tesseract:stateOnly.componentPerTickMs.tesseract,
+    hash72PhaseWord:phaseWords.normalizedPerTickMs
+  };
+  const dominantNonRenderComponent=Object.entries(normalized)
+    .reduce((best,row)=>row[1]>best[1]?row:best,["none",-1])[0];
+
+  manualTestMode=wasManual;
+  paused=wasPaused;
+  return {
+    schema:"HHS_PASS_220_I041_HTML_RENDER_BOTTLENECK_BENCHMARK_V1",
+    seed:path.seed,
+    nodeCount:NODE_COUNT,
+    stateSpace:"72^72",
+    stateOnly,
+    statePlusRender,
+    phaseWords,
+    normalizedNonRenderPerTickMs:normalized,
+    dominantNonRenderComponent,
+    synchronizedRenderTiming:gpuSync,
+    rendererRemovedControl:true,
+    exactStateAuthority:false,
+    projectionOnly:true
+  };
+}
+
+async function setTestSeed(seed){
+  path=await derivePath(seed);
+  tick=0;
+  lastPhaseWord="";
+  await refreshPhaseWord(pathAddress(0),0);
+  return {...path};
+}
+
+function installTestApi(){
+  window.HHS_LANE5_TEST={
+    schema:"HHS_PASS_220_I041_HTML_TEST_API_V1",
+    ready:true,
+    nodeCount:NODE_COUNT,
+    stateSpace:"72^72",
+    setManualMode(value){manualTestMode=Boolean(value);paused=manualTestMode;return manualTestMode;},
+    setSeed:setTestSeed,
+    step(targetTick,options={}){manualTestMode=true;paused=true;return projectionTick(targetTick,options);},
+    benchmark:runBottleneckBenchmark,
+    snapshot(){return {tick,path:{...path},rendered,rafCount,manualTestMode,topoInvert};},
+    canvas(){return renderer.domElement;}
+  };
+}
+
 async function applySeed(){
   const seed=document.getElementById("seed").value.trim()||"HHS-I041-LANE5-5184";
   path=await derivePath(seed);
@@ -276,6 +439,7 @@ function init(){
   layer2=new THREE.Points(geometry,material2);
   scene.add(layer1); scene.add(layer2);
   tess=buildTesseract();
+  installTestApi();
 
   addEventListener("resize",()=>{
     camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
@@ -294,29 +458,16 @@ function init(){
 
 function animate(){
   requestAnimationFrame(animate);
+  if(manualTestMode) return;
   controls.update();
   rafCount++;
   if(!paused) tick++;
-  const rank=tick%NODE_COUNT;
-  const address=pathAddress(rank);
-  const q=tick%Q144;
-  const bott=Math.floor(q/Q144_OCTANT)%PHASE_GROUPS;
-  const seconds=tick/60;
-
-  for(const m of [material1,material2]){
-    m.uniforms.uTime.value=seconds;
-    m.uniforms.uPathAddress.value=address;
-    m.uniforms.uBottOctant.value=bott;
-    m.uniforms.uTopologyInvert.value=topoInvert;
-  }
-  updateTesseract(seconds);
-
-  if(tick%72===0) refreshPhaseWord(address,rank);
-  if((tick%QUARTIC_RENDER_PERIOD)===0){
-    renderer.render(scene,camera);
-    rendered++;
-  }
-  updateHud(address,rank,bott);
+  const result=projectionTick(tick,{
+    renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0,
+    gpuSync:false,
+    updateHudText:true
+  });
+  if(tick%72===0) refreshPhaseWord(result.address,result.rank);
 }
 
 (async()=>{
