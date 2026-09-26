@@ -264,3 +264,18 @@ External CI remains nonblocking under repository policy. No green claim is permi
 4. If browser integration is continued, add a projection-only adapter rather than mutating canonical I041 authority.
 5. Merge PR #591 only after required checks satisfy repository policy.
 6. Verify authoritative `main` after merge.
+
+
+## Repair-forward — intentional negative proof invariant
+
+- prior PR run 36260752009 failed in the workflow proof preflight.
+- the frozen source remains exactly 344 UTF-8 bytes with SHA-256
+  014216202745bbc0fa021b9eefa6e8fdbaf5510f544cb5a44a3012b2c96b2cd9.
+- the proof receipt remains PASS.
+- root cause: the workflow used `all(proof["checks"].values())`, but the
+  receipt intentionally carries `canonical_c2_overwritten: false` as the
+  passing witness that canonical c²=3 was NOT overwritten by c²_metric=-3.
+- repair gates all positive checks separately and explicitly requires
+  `canonical_c2_overwritten is False`.
+- no 1.66 equation, proof receipt, source identity, native runtime code, or
+  authority boundary changed.

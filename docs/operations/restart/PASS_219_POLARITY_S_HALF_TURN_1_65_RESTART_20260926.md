@@ -295,3 +295,14 @@ Signed environmental VM81 admission remains the single canonical mutation seam.
 3. Preserve the ordered polarity source and `u^36` half-turn semantics.
 4. Merge PR #591 only after required checks satisfy repository policy.
 5. Verify authoritative `main` after merge.
+
+
+## Repair-forward — contract projection marker
+
+- prior PR run 36260752918 failed only because the Markdown contract omitted
+  the literal `SCALAR_PROOF_ONLY` marker required by the regression.
+- frozen Wolfram polarity proof passed before the failure.
+- repair adds the normative marker beside the already-existing statement that
+  the x² witness is scalar-proof evidence only.
+- no native polarity definition, sign vector, u^36 half-turn, reciprocal
+  correction, runtime ABI, or authority boundary changed.

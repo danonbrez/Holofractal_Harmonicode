@@ -72,7 +72,13 @@ jobs:
           assert len(source.encode("utf-8")) == 344
           assert hashlib.sha256(source.encode()).hexdigest() == proof["source_sha256"]
           assert proof["status"] == "PASS"
-          assert all(proof["checks"].values())
+          positive_checks = {
+              key: value
+              for key, value in proof["checks"].items()
+              if key != "canonical_c2_overwritten"
+          }
+          assert all(positive_checks.values())
+          assert proof["checks"]["canonical_c2_overwritten"] is False
           assert proof["signed_metric_projection"]["canonical"]["c2"] == 3
           assert proof["signed_metric_projection"]["c2_metric"] == -3
           assert proof["native_global_rewrite_authority"] is False

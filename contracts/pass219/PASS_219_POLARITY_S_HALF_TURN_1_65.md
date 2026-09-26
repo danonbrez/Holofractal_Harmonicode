@@ -124,6 +124,15 @@ on the corresponding nonzero denominator domain.
 
 This is scalar-proof evidence only. It does not replace the native source manifold.
 
+Normative projection tag:
+
+```text
+SCALAR_PROOF_ONLY
+```
+
+This tag grants no native scalar rewrite authority; it identifies the separately
+authorized proof-only projection and nothing else.
+
 ## 6. Inherited inner manifold
 
 The supplied `x²*y==...==1/x` nested manifold is inherited from the frozen 1.64 source identity.
