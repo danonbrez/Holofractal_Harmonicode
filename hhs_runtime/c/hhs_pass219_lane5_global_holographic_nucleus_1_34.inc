@@ -57,6 +57,8 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
     HHSExactPass219Lane5MediationReceiptV1 *out_receipt
 ) {
     HHSExactPass219Lane5MediationReceiptV1 receipt;
+    HHSExactPass219HNANGlobalReceiptV1 hnan_global;
+    HHSExactStatus hnan_status;
     uint64_t closure = UINT64_C(1469598103934665603);
     uint64_t mediation = UINT64_C(1469598103934665603);
     uint32_t i;
@@ -64,6 +66,36 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
     if (out_receipt == NULL)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     memset(out_receipt, 0, sizeof(*out_receipt));
+
+    /*
+     * Pass 219 Lane 5 global HNAN preflight.
+     *
+     * Candidate mediation is not allowed to proceed if the ordered typed
+     * relationship among zero/EmptySet/HNAN, x/y/z/w, Delta, symbolic
+     * infinity, Bx^5184, and u^0 no longer closes under the registered
+     * source-preserving rules.  This is a constraint preflight only; it
+     * grants no canonical mutation or receipt authority.
+     */
+    memset(&hnan_global, 0, sizeof(hnan_global));
+    hnan_status = hhs_exact_pass219_hnan_global_system_verify(&hnan_global);
+    if (hnan_status != HHS_EXACT_STATUS_OK ||
+        hnan_global.decision != HHS_EXACT_HNAN_DECISION_VERIFIED ||
+        hnan_global.verified_rule_mask != HHS_EXACT_PASS219_HNAN_GLOBAL_ALL_RULES ||
+        hnan_global.jordan_depth2_verified != 1U ||
+        hnan_global.minimal_polynomial_degree4_verified != 1U ||
+        hnan_global.ordered_zero_closure_preserved != 1U ||
+        hnan_global.global_delta_denominator_preserved != 1U ||
+        hnan_global.delta_cancellation_forbidden != 1U ||
+        hnan_global.unbounded_carrier_symbolic != 1U ||
+        hnan_global.u72_to_u0_closure_preserved != 1U ||
+        hnan_global.xy_yx_distinct != 1U ||
+        hnan_global.zw_wz_distinct != 1U ||
+        hnan_global.canonical_vm81_mutation_authority != 0U ||
+        hnan_global.canonical_hash72_authority != 0U ||
+        hnan_global.canonical_hash216_authority != 0U ||
+        hnan_global.floating_point_canonical_authority != 0U) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
     if (request == NULL ||
         request->struct_size != (uint32_t)sizeof(*request) ||
         request->version != HHS_EXACT_PASS219_LANE5_NUCLEUS_VERSION ||
