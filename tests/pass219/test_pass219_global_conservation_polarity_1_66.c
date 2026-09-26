@@ -7,7 +7,7 @@
 int main(void) {
     HHSExactPass219ConservationAuthorityV1 authority;
     HHSExactPass219ConservationReceiptV1 receipt;
-    uint8_t source[HHS_EXACT_PASS219_CONSERVATION_1_66_SOURCE_BYTES];
+    uint8_t source[HHS_EXACT_PASS219_CONSERVATION_1_66_SOURCE_BYTES + 1U];
     size_t source_len = 0U;
 
     memset(&authority, 0, sizeof(authority));
@@ -28,11 +28,8 @@ int main(void) {
     assert(hhs_exact_pass219_conservation_1_66_source(
         source, sizeof(source), &source_len) == HHS_EXACT_STATUS_OK);
     assert(source_len == HHS_EXACT_PASS219_CONSERVATION_1_66_SOURCE_BYTES);
-    assert(memmem(
-        source,
-        source_len,
-        "ratio!=qr_symbol",
-        strlen("ratio!=qr_symbol")) != NULL);
+    source[source_len] = 0U;
+    assert(strstr((const char *)source, "ratio!=qr_symbol") != NULL);
 
     memset(&receipt, 0, sizeof(receipt));
     assert(hhs_exact_pass219_conservation_1_66_verify(&receipt) ==
