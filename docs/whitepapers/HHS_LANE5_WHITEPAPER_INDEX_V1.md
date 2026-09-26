@@ -497,3 +497,25 @@ This paper extends the equation set through the current stacked Lane 5 1.62 sour
 - ordered parent/result unresolved-stack Hash216 receipt binding.
 
 The connected 2026-09-21 Wolfram synthesis returned 44/44 PASS.
+
+
+## 12. HNAN Jordan global constraint-resolution theorem
+
+[HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md](HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md)
+
+Pass 219 Lane 5 successor 1.63 promotes the exact HNAN/Jordan closure into a system-wide typed contradiction-resolution membrane.
+
+It proves and binds:
+
+- `M01 ~ J2(0) direct-sum (-1) direct-sum (2)`;
+- the exact hydrated characteristic polynomial and recurrence;
+- the generic hydrated depth-two nilpotent channel and exceptional `r=±s` loci;
+- the ordered `0=∅=AB/P⁴∅=HNAN` closure;
+- `0 -> x+y+z+w` as a typed view;
+- `u^72 -> u^0` phase closure;
+- `∞ -> Delta -> x` directed reciprocity;
+- `∞Delta -> Bx^5184` and `P -> Bx^5184/Delta`;
+- noncommutative `xy/yx` and `zw/wz` distinctions;
+- fail-closed resolution for cancellation, equality reversal, type erasure, host float infinity, and scalar HNAN substitution.
+
+The resolver is compiled into the exact C Runtime ABI and is mandatory before both Lane 5 mediation and signed environmental VM81 admission.
