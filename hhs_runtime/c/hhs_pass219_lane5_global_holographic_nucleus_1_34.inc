@@ -59,8 +59,10 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
     HHSExactPass219Lane5MediationReceiptV1 receipt;
     HHSExactPass219HNANGlobalReceiptV1 hnan_global;
     HHSExactPass219PX2ManifoldReceiptV1 px2_manifold;
+    HHSExactPass219PolaritySReceiptV1 polarity_s;
     HHSExactStatus hnan_status;
     HHSExactStatus px2_status;
+    HHSExactStatus polarity_status;
     uint64_t closure = UINT64_C(1469598103934665603);
     uint64_t mediation = UINT64_C(1469598103934665603);
     uint32_t i;
@@ -129,6 +131,37 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
         px2_manifold.canonical_vm81_mutation_authority != 0U ||
         px2_manifold.canonical_hash72_authority != 0U ||
         px2_manifold.canonical_hash216_authority != 0U) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
+    /*
+     * Pass 219 1.65 polarity half-turn preflight.
+     * s=-1 is the inherited u^36 self-inverse phase rotation for the
+     * ordered xy/yx, zw/wz, and p-q:q-p polarity pairs.
+     */
+    memset(&polarity_s, 0, sizeof(polarity_s));
+    polarity_status = hhs_exact_pass219_polarity_s_verify(-1, &polarity_s);
+    if (polarity_status != HHS_EXACT_STATUS_OK ||
+        polarity_s.decision != HHS_EXACT_PASS219_POLARITY_S_DECISION_VERIFIED ||
+        polarity_s.s_value != -1 ||
+        polarity_s.phase_steps != HHS_EXACT_PASS219_POLARITY_S_HALF_TURN ||
+        polarity_s.source_definitions_verified != 1U ||
+        polarity_s.negative_s_surface_verified != 1U ||
+        polarity_s.parent_1_64_verified != 1U ||
+        polarity_s.chiral_pairs_opposed != 1U ||
+        polarity_s.half_turn_verified != 1U ||
+        polarity_s.half_turn_self_inverse != 1U ||
+        polarity_s.p_q_pair_rotation_verified != 1U ||
+        polarity_s.correction_link_verified != 1U ||
+        polarity_s.scalar_projection_closed != 1U ||
+        polarity_s.scalar_projection_witness_only != 1U ||
+        polarity_s.commutation_authority != 0U ||
+        polarity_s.reciprocal_cancellation_authority != 0U ||
+        polarity_s.equality_reversal_authority != 0U ||
+        polarity_s.floating_point_canonical_authority != 0U ||
+        polarity_s.canonical_vm81_mutation_authority != 0U ||
+        polarity_s.canonical_hash72_authority != 0U ||
+        polarity_s.canonical_hash216_authority != 0U) {
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
     if (request == NULL ||
