@@ -1037,3 +1037,55 @@ evidence/pass219/lane5_hnan_global_constraint_1_63_wolfram_20260926_v1.output.js
 ```
 
 This paper is subordinate to later versioned executable repository contracts if they explicitly replace or refine these relations.
+
+
+## 23. Pass 219 Lane 5 successor 1.64 — reciprocal correction
+
+The subsequent P^(x²) manifold adds the ordered correction surface supplied after the 1.63 HNAN/Jordan closure.
+
+Raw source provenance is retained exactly:
+
+```text
+((p/q)*(q/p))/(P²-pq)=(q-p))P/(p+q)
+```
+
+Because the literal source contains one additional closing parenthesis, executable typing preserves a separate balanced parse:
+
+```text
+((p/q)*(q/p))/(P²-pq)=((q-p)*P)/(p+q)
+```
+
+or:
+
+[
+\frac{(p/q)(q/p)}{P^2-pq}
+=
+\frac{(q-p)P}{p+q}.
+]
+
+No native reciprocal cancellation is inferred from this relation.
+
+Under the separately registered commutative nonzero scalar projection with
+
+```text
+p=P-1
+q=P+1
+P!=0,+/-1,
+```
+
+Wolfram verifies exactly:
+
+```text
+LHS -> 1
+RHS -> 1
+difference -> 0
+status -> PASS.
+```
+
+This scalar witness is proof-only and does not rewrite the native ordered manifold.
+
+The 1.64 verifier is mandatory at both the Lane 5 candidate-mediation boundary and the signed environmental VM81 admission boundary. Its normative contract is:
+
+```text
+contracts/pass219/PASS_219_P_X2_GLOBAL_RECIPROCAL_MANIFOLD_1_64.md
+```
