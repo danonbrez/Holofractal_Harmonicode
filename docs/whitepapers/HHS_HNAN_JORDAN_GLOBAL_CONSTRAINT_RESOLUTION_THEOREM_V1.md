@@ -1089,3 +1089,60 @@ The 1.64 verifier is mandatory at both the Lane 5 candidate-mediation boundary a
 ```text
 contracts/pass219/PASS_219_P_X2_GLOBAL_RECIPROCAL_MANIFOLD_1_64.md
 ```
+
+
+## 24. Pass 219 Lane 5 successor 1.65 — polarity s half-turn
+
+The 1.65 successor defines the ordered polarity surface:
+
+```text
+xy=s/zw
+yx=-s/zw
+zw=s/xy
+wz=-s/xy
+```
+
+and preserves the supplied negative-s source:
+
+```text
+-s=x²(((p÷q)−(q÷p))+((q÷p)−(p÷q))×(q−p)−(p−q))
+```
+
+The inherited RML5 `u^36` self-inverse chiral half-turn is reused as the phase operator; no new rotation primitive is created.
+
+The ordered sign inventories are:
+
+```text
+s=+1 : (+,-,+,-)
+s=-1 : (-,+,-,+)
+```
+
+for `(xy,yx,zw,wz)`.
+
+On the inherited unit shell:
+
+```text
+(p-q):(q-p)=(-2):(+2)
+```
+
+and `s=-1` rotates the ordered pair by the same half-turn to:
+
+```text
+(+2):(-2).
+```
+
+The operation is self-inverse and preserves chiral opposition.
+
+The 1.64 reciprocal correction remains the parent witness. A separate commutative scalar projection proves the correction sides equal `1` and projects the negative-s factor exactly, but grants no native cancellation or commutation authority.
+
+Normative contract:
+
+```text
+contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.md
+```
+
+Machine source:
+
+```text
+contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.hhs
+```
