@@ -173,3 +173,16 @@ Hash216 authority
 ```
 
 The signed environmental VM81 path remains the only canonical mutation seam.
+
+
+## 9. Successor conservation layer
+
+Pass 219 Lane 5 successor 1.66 composes this polarity half-turn with the Pell negative-defect witness, the positive unit shell, the 72-phase seed, and the master conservation conditional.
+
+Normative successor:
+
+```text
+contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.md
+```
+
+The successor explicitly forbids cross-gate substitution and keeps ordinary quotient, quadratic-reciprocity symbol, and polarity `s` as distinct typed operators unless a specific gate binds them.
