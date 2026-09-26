@@ -558,6 +558,7 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     HHSExactPass219VM81EnvironmentReceiptV1 *out_environment_receipt
 ) {
     uint8_t key[HHS_EXACT_PASS219_VM81_PQC_KEY_BYTES];
+    HHSExactPass219HNANGlobalReceiptV1 hnan_global;
     HHSExactStatus status;
     if (out_committed_frame == NULL || out_admission == NULL ||
         out_firewall_receipt == NULL || out_signature_receipt == NULL ||
@@ -568,6 +569,34 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     hhs_p219_pqc_zero_receipt(out_firewall_receipt, pass_number);
     hhs_p219_pqc_signature_zero_receipt(out_signature_receipt, signature_algorithm);
     hhs_p219_env_zero_receipt(out_environment_receipt, signature_algorithm);
+
+    /*
+     * Global HNAN constraint preflight is part of the signed VM81 boundary.
+     * A runtime whose typed global relation table no longer verifies cannot
+     * commit canonical state, even when all cryptographic/environmental
+     * witnesses would otherwise succeed.
+     */
+    memset(&hnan_global, 0, sizeof(hnan_global));
+    status = hhs_exact_pass219_hnan_global_system_verify(&hnan_global);
+    if (status != HHS_EXACT_STATUS_OK ||
+        hnan_global.decision != HHS_EXACT_HNAN_DECISION_VERIFIED ||
+        hnan_global.verified_rule_mask != HHS_EXACT_PASS219_HNAN_GLOBAL_ALL_RULES ||
+        hnan_global.jordan_depth2_verified != 1U ||
+        hnan_global.ordered_zero_closure_preserved != 1U ||
+        hnan_global.global_delta_denominator_preserved != 1U ||
+        hnan_global.delta_cancellation_forbidden != 1U ||
+        hnan_global.unbounded_carrier_symbolic != 1U ||
+        hnan_global.u72_to_u0_closure_preserved != 1U ||
+        hnan_global.xy_yx_distinct != 1U ||
+        hnan_global.zw_wz_distinct != 1U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
 
     if (!hhs_p219_pqc_load_key(key)) {
         out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_KERNEL_ROOT_UNAVAILABLE;
