@@ -119,3 +119,15 @@ New file:
 The CI timing claim is host-specific.  Existing Fold7 hardware evidence remains
 the physical mobile latency authority; the HTML surface is now capable of the
 same renderer-bypass experiment on that device.
+
+
+## Repair-forward note — quartic render-gate source assertion
+
+- failed I041 PR run: 36273055106
+- engine tests: 17/17 PASS before the browser-source failure.
+- failure: source regression still searched for the pre-refactor token
+  if((tick%QUARTIC_RENDER_PERIOD)===0).
+- implementation still preserved the same quartic gate as
+  renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0.
+- repair: update the source assertion only; no runtime or animation semantics
+  changed.

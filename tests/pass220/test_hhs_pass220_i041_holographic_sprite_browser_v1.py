@@ -42,7 +42,7 @@ def test_lane5_browser_preserves_animation_projection_invariants_without_randomn
         "aGroup*PI/4.0 + uLayer*PI/2.0",
         "p.xy=vec2(-p.y,p.x)",
         "float h2=h1/PHI",
-        "if((tick%QUARTIC_RENDER_PERIOD)===0)",
+        "renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0",
         "authority=projection-only; no VM81/Hash72/Hash216 mutation",
     ):
         assert token in source, token
