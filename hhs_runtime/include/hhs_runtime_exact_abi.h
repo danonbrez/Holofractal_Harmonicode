@@ -98,6 +98,7 @@
 #include "hhs_pass219_lane5_global_holographic_nucleus_1_34.h"
 #include "hhs_pass219_lane5_hnan_global_constraint_1_63.h"
 #include "hhs_pass219_p_x2_global_reciprocal_manifold_1_64.h"
+#include "hhs_pass219_polarity_s_half_turn_1_65.h"
 #include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h"
 #include "hhs_pass219_delta_reciprocal_constructor_1_36.h"
 #include "hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.h"
