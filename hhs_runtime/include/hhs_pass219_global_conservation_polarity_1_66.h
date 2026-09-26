@@ -3,6 +3,7 @@
 
 #include "hhs_runtime_exact_abi_v1_1_base.h"
 
+#include <stddef.h>
 #include <stdint.h>
 
 #ifdef __cplusplus
