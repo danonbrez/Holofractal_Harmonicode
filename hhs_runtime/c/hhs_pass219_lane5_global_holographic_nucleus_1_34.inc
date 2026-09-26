@@ -60,9 +60,11 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
     HHSExactPass219HNANGlobalReceiptV1 hnan_global;
     HHSExactPass219PX2ManifoldReceiptV1 px2_manifold;
     HHSExactPass219PolaritySReceiptV1 polarity_s;
+    HHSExactPass219ConservationReceiptV1 conservation_1_66;
     HHSExactStatus hnan_status;
     HHSExactStatus px2_status;
     HHSExactStatus polarity_status;
+    HHSExactStatus conservation_status;
     uint64_t closure = UINT64_C(1469598103934665603);
     uint64_t mediation = UINT64_C(1469598103934665603);
     uint32_t i;
@@ -162,6 +164,45 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
         polarity_s.canonical_vm81_mutation_authority != 0U ||
         polarity_s.canonical_hash72_authority != 0U ||
         polarity_s.canonical_hash216_authority != 0U) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
+    /*
+     * Pass 219 1.66 global conservation/polarity resolver.
+     * Distinct projection gates stay distinct: ordinary quotient, QR symbol,
+     * polarity s, Pell branch, unit shell, and signed metric projection may
+     * not be silently cross-substituted.
+     */
+    memset(&conservation_1_66, 0, sizeof(conservation_1_66));
+    conservation_status =
+        hhs_exact_pass219_conservation_1_66_verify(&conservation_1_66);
+    if (conservation_status != HHS_EXACT_STATUS_OK ||
+        conservation_1_66.decision !=
+            HHS_EXACT_PASS219_CONSERVATION_DECISION_VERIFIED ||
+        conservation_1_66.source_hash_verified != 1U ||
+        conservation_1_66.parent_1_65_verified != 1U ||
+        conservation_1_66.operator_typing_verified != 1U ||
+        conservation_1_66.pell_branch_verified != 1U ||
+        conservation_1_66.reciprocal_correction_verified != 1U ||
+        conservation_1_66.negative_s_factor_verified != 1U ||
+        conservation_1_66.phase72_seed_verified != 1U ||
+        conservation_1_66.congruent_projection_verified != 1U ||
+        conservation_1_66.unit_shell_verified != 1U ||
+        conservation_1_66.master_delta_m_projection_verified != 1U ||
+        conservation_1_66.signed_metric_null_cone_verified != 1U ||
+        conservation_1_66.canonical_c2_preserved != 1U ||
+        conservation_1_66.polarity_balance_projection_verified != 1U ||
+        conservation_1_66.unit_shell_x_plus_y_zero_verified != 1U ||
+        conservation_1_66.scalar_projection_witness_only != 1U ||
+        conservation_1_66.cross_gate_substitution_authority != 0U ||
+        conservation_1_66.canonical_constant_rewrite_authority != 0U ||
+        conservation_1_66.commutation_authority != 0U ||
+        conservation_1_66.equality_reversal_authority != 0U ||
+        conservation_1_66.delta_cancellation_authority != 0U ||
+        conservation_1_66.floating_point_canonical_authority != 0U ||
+        conservation_1_66.canonical_vm81_mutation_authority != 0U ||
+        conservation_1_66.canonical_hash72_authority != 0U ||
+        conservation_1_66.canonical_hash216_authority != 0U) {
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
     if (request == NULL ||
