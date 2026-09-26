@@ -544,3 +544,8 @@ wz=-s/xy
 ```
 
 to the inherited RML5 `u^36` chiral half-turn. For `s=-1`, both chiral sign pairs invert together and the ordered `p-q:q-p` unit-shell pair rotates from `(-2):(+2)` to `(+2):(-2)`. The operator is self-inverse, preserves pair opposition, and carries no scalar substitution or canonical mutation authority.
+
+
+### Global conservation/polarity resolver 1.66
+
+Pass 219 Lane 5 1.66 adds a gate-scoped conservation membrane over the HNAN/Jordan, reciprocal-manifold, and polarity layers. It preserves distinct operator types and branch identities, verifies the Pell negative-defect witness in exact `Q(sqrt(2),sqrt(3))` arithmetic, preserves the separate positive unit shell, verifies the 72-phase seed, records the conditional scalar `Delta=m` witness, and models the null-cone statement with a signed metric projection instead of rewriting canonical `c²=3`.
