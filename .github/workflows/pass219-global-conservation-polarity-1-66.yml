@@ -1,0 +1,108 @@
+name: Pass 219 Global Conservation Polarity 1.66
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.hhs'
+      - 'contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.md'
+      - 'hhs_runtime/include/hhs_pass219_global_conservation_polarity_1_66.h'
+      - 'hhs_runtime/c/hhs_pass219_global_conservation_polarity_1_66.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc'
+      - 'evidence/pass219/global_conservation_polarity_wolfram_20260926_v1.output.json'
+      - 'tests/pass219/test_pass219_global_conservation_polarity_1_66.c'
+      - 'tests/pass219/test_pass219_global_conservation_polarity_1_66.py'
+      - '.github/workflows/pass219-global-conservation-polarity-1-66.yml'
+  push:
+    branches:
+      - main
+      - pass219/hnan-4x4-recursive-gate-20260926
+    paths:
+      - 'contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.hhs'
+      - 'contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.md'
+      - 'hhs_runtime/include/hhs_pass219_global_conservation_polarity_1_66.h'
+      - 'hhs_runtime/c/hhs_pass219_global_conservation_polarity_1_66.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc'
+      - 'evidence/pass219/global_conservation_polarity_wolfram_20260926_v1.output.json'
+      - 'tests/pass219/test_pass219_global_conservation_polarity_1_66.c'
+      - 'tests/pass219/test_pass219_global_conservation_polarity_1_66.py'
+      - '.github/workflows/pass219-global-conservation-polarity-1-66.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conservation-polarity-1-66:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install pytest
+
+      - name: Validate frozen symbolic proof
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.hhs"
+          ).read_text(encoding="utf-8")
+          proof = json.loads(
+              Path(
+                  "evidence/pass219/"
+                  "global_conservation_polarity_wolfram_20260926_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert len(source.encode("utf-8")) == 344
+          assert hashlib.sha256(source.encode()).hexdigest() == proof["source_sha256"]
+          assert proof["status"] == "PASS"
+          assert all(proof["checks"].values())
+          assert proof["signed_metric_projection"]["canonical"]["c2"] == 3
+          assert proof["signed_metric_projection"]["c2_metric"] == -3
+          assert proof["native_global_rewrite_authority"] is False
+          PY
+
+      - name: Run 1.66 and parent regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/pass219/test_pass219_global_conservation_polarity_1_66.py             tests/pass219/test_pass219_polarity_s_half_turn_1_65.py             tests/pass219/test_pass219_p_x2_global_reciprocal_manifold_1_64.py             tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.py
+
+      - name: Build shared exact VM81 Runtime
+        run: make -f GNUmakefile c-kernel
+
+      - name: Verify callable 1.66 exports
+        run: |
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so             | grep -F 'hhs_exact_pass219_conservation_1_66_version'
+          nm -D hhs_runtime/builds/libhhs_runtime.so             | grep -F 'hhs_exact_pass219_conservation_1_66_verify'
+
+      - name: Compile native 1.66 conformance
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror             -Ihhs_runtime/include             tests/pass219/test_pass219_global_conservation_polarity_1_66.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto             -o /tmp/test_pass219_conservation_1_66
+
+      - name: Run native 1.66 conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_conservation_1_66
+
+      - name: Verify both authority boundaries
+        run: |
+          grep -F 'hhs_exact_pass219_conservation_1_66_verify'             hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+          grep -F 'hhs_exact_pass219_conservation_1_66_verify'             hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc
+          grep -F 'canonical_c2_preserved'             hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+          grep -F 'canonical_c2_preserved'             hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc
