@@ -559,6 +559,7 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
 ) {
     uint8_t key[HHS_EXACT_PASS219_VM81_PQC_KEY_BYTES];
     HHSExactPass219HNANGlobalReceiptV1 hnan_global;
+    HHSExactPass219PX2ManifoldReceiptV1 px2_manifold;
     HHSExactStatus status;
     if (out_committed_frame == NULL || out_admission == NULL ||
         out_firewall_receipt == NULL || out_signature_receipt == NULL ||
@@ -589,6 +590,26 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
         hnan_global.u72_to_u0_closure_preserved != 1U ||
         hnan_global.xy_yx_distinct != 1U ||
         hnan_global.zw_wz_distinct != 1U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    memset(&px2_manifold, 0, sizeof(px2_manifold));
+    status = hhs_exact_pass219_px2_manifold_verify(&px2_manifold);
+    if (status != HHS_EXACT_STATUS_OK ||
+        px2_manifold.decision != HHS_EXACT_PASS219_PX2_DECISION_VERIFIED ||
+        px2_manifold.source_hash_verified != 1U ||
+        px2_manifold.parentheses_balanced != 1U ||
+        px2_manifold.typed_relation_edges_preserved != 1U ||
+        px2_manifold.outer_prefix_exact != 1U ||
+        px2_manifold.outer_denominator_exact != 1U ||
+        px2_manifold.ordered_markers_exact != 1U ||
+        px2_manifold.delta_bx_boundary_preserved != 1U) {
         atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
         out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
         out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
