@@ -277,20 +277,21 @@ def test_installer_accepts_versioned_git_worktree_releases() -> None:
     assert '[[ -d "$REPO_ROOT/.git" ]]' not in installer
 
 
-def test_production_workflow_is_backend_first_and_frontend_independent() -> None:
+def test_production_workflow_is_unified_guest_contract_not_parallel_host_deploy() -> None:
     workflow = (
         ROOT / ".github/workflows/pass220-ubuntu-application-vm-production.yml"
     ).read_text(encoding="utf-8")
 
     assert "workflow_run:" not in workflow
     assert "push:" in workflow
-    assert "SOURCE_REPO=/opt/hhs/app" in workflow
-    assert 'RELEASE_ROOT="$STATE_ROOT/releases"' in workflow
-    assert 'git -C "$SOURCE_REPO" worktree add --detach "$RELEASE" "$TARGET_SHA"' in workflow
-    assert "DigitalOcean Production Exact Main" not in workflow
-    assert "systemctl is-active --quiet hhs.service" not in workflow
-    assert "HHS_APPLICATION_VM_PUBLIC_SECURE_OPENAPI_VERIFIED" in workflow
-    assert "HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1" in workflow
+    assert "Unified Production Contract" in workflow
+    assert "Deploy independent Ubuntu application VM release" not in workflow
+    assert "SOURCE_REPO=/opt/hhs/app" not in workflow
+    assert "ssh " not in workflow
+    assert "scp " not in workflow
+    assert "HHS_I047_NO_PARALLEL_HOST_APPLICATION_DEPLOYMENT=1" in workflow
+    assert "run-real-guest-integration.sh" in workflow
+    assert "configure-unified-guest-proxy.py" in workflow
 
 
 def test_installer_prebuilds_native_runtime_before_service_restart() -> None:

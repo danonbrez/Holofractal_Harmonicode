@@ -38,7 +38,11 @@ run_stage "shell syntax" bash -n \
   deployment/digitalocean/guarded_auto_update/build-runtime-os.sh \
   deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
   deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
-  deployment/digitalocean/guarded_auto_update/install.sh
+  deployment/digitalocean/guarded_auto_update/install.sh \
+  deployment/ubuntu/guest_runtime/prepare-real-guest.sh \
+  deployment/ubuntu/guest_runtime/run-real-guest-integration.sh \
+  deployment/ubuntu/guest_runtime/install-unified-guest-ide.sh \
+  deployment/ubuntu/guest_runtime/manage-unified-vm.sh
 
 python_files=(
   deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py
@@ -59,7 +63,11 @@ for path in \
   hhs_python/runtime/hhs_pass205_continuation_bridge.py \
   scripts/pass205_production_validation.py \
   tests/test_runtime_os_production_root.py \
-  tests/test_hhs_pass205_continuation_runtime_v1.py; do
+  tests/test_hhs_pass205_continuation_runtime_v1.py \
+  hhs_runtime/pass220/ubuntu_guest_runtime.py \
+  hhs_backend/pass220_unified_guest_server.py \
+  deployment/ubuntu/guest_runtime/configure-unified-guest-proxy.py \
+  tests/pass220/test_pass220_i047_unified_lane5_production_vm.py; do
   [[ -f "$path" ]] && python_files+=("$path")
 done
 run_stage "python compilation" "$PYTHON" -m py_compile "${python_files[@]}"
