@@ -519,3 +519,14 @@ It proves and binds:
 - fail-closed resolution for cancellation, equality reversal, type erasure, host float infinity, and scalar HNAN substitution.
 
 The resolver is compiled into the exact C Runtime ABI and is mandatory before both Lane 5 mediation and signed environmental VM81 admission.
+
+
+### P^(x²) global reciprocal manifold 1.64
+
+`PASS_219_P_X2_GLOBAL_RECIPROCAL_MANIFOLD_1_64` extends the HNAN/Jordan global constraint membrane with the source-preserved P^(x²) nested manifold and the ordered reciprocal correction
+
+```text
+((p/q)*(q/p))/(P²-pq)=((q-p)*P)/(p+q)
+```
+
+while retaining the literal user source separately. The correction is verified under the registered scalar unit-residue projection but remains non-cancellable and ordered in native HARMONICODE execution.
