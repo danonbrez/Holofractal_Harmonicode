@@ -1,0 +1,95 @@
+name: Pass 219 Prime Memristive Fifth Lane Replay Prefetch I7
+
+on:
+  push:
+    branches:
+      - agent/pass219-prime-memristive-fifth-lane-i7-20260912
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out I7 branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Verify I7 replay prefetch authority contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          header = Path('hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_6.hpp').read_text()
+          contract = Path('contracts/pass219/PASS_219_PRIME_MEMRISTIVE_FIFTH_LANE_REPLAY_PREFETCH_I7.md').read_text()
+          holo4 = Path('hhs_runtime/include/hhs_pass219_core_holographic_four_lane_1_24.h').read_text()
+          assert '#define HHS_EXACT_PASS219_HOLO4_LANE_COUNT UINT32_C(4)' in holo4
+          for needle in (
+              'transition_association_only{true}',
+              'predictive_prefetch_only{true}',
+              'hash216_reference_only{true}',
+              'canonical_mutation_authority{false}',
+              'canonical_hash72_authority{false}',
+              'canonical_hash216_authority{false}',
+              'canonical_persistence_authority{false}',
+              'requires_inherited_vm81_hash216_admission{true}',
+              'class PrimeLaneReplayConditionedPrefetchV7',
+              'observe_transition(',
+              'query_with_fallback(',
+          ):
+              assert needle in header, needle
+          for needle in (
+              'transition_association_only = true',
+              'predictive_prefetch_only = true',
+              'prefetch_score(T,A)',
+              'prefetch unavailable',
+              'prefetch result != canonical admission',
+              'HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4',
+          ):
+              assert needle in contract, needle
+          print('prime_memristive_fifth_lane_i7_contract_gate=PASS')
+          PY
+
+      - name: Build inherited exact ABI
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_state_init'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_hash216_transition_init'
+
+      - name: Run inherited I6 Hash216 neighborhood replay benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_1_5.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test-pass219-prime-memristive-fifth-lane-i6
+          /tmp/test-pass219-prime-memristive-fifth-lane-i6
+
+      - name: Run I7 replay-conditioned neighborhood prefetch benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_1_6.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test-pass219-prime-memristive-fifth-lane-i7
+          /tmp/test-pass219-prime-memristive-fifth-lane-i7
+
+      - name: Verify inherited four-lane authority remains green
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_holographic_four_lane_1_24.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -o /tmp/test-core-holo4
+          /tmp/test-core-holo4

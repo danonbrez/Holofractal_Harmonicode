@@ -1,0 +1,123 @@
+name: Pass 219 Multi-Source Convergence I14
+
+on:
+  push:
+    branches:
+      - agent/pass219-prime-memristive-fifth-lane-i11-bigint-address-20260912
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_multisource_convergence_i14.h'
+      - 'tests/pass219/test_pass219_multisource_convergence_i14.cpp'
+      - 'contracts/pass219/PASS_219_MULTISOURCE_CONVERGENCE_I14.*'
+      - '.github/workflows/pass219-multisource-convergence-i14.yml'
+      - 'docs/operations/restart/PASS_219_MULTISOURCE_CONVERGENCE_I14_RESTART_20260913.md'
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_multisource_convergence_i14.h'
+      - 'tests/pass219/test_pass219_multisource_convergence_i14.cpp'
+      - 'contracts/pass219/PASS_219_MULTISOURCE_CONVERGENCE_I14.*'
+      - '.github/workflows/pass219-multisource-convergence-i14.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          openssl version
+
+      - name: Verify I14 static convergence contract
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_MULTISOURCE_CONVERGENCE_I14.json >/dev/null
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+          m = json.loads(Path('contracts/pass219/PASS_219_MULTISOURCE_CONVERGENCE_I14.json').read_text())
+          h = Path('hhs_runtime/include/hhs_pass219_multisource_convergence_i14.h').read_text()
+          c = Path('contracts/pass219/PASS_219_MULTISOURCE_CONVERGENCE_I14.md').read_text()
+          assert m['inherits']['i13_checkpoint'] == 'b8d908915cf91b70691746c3a46d01a14efdead8'
+          assert m['convergence']['minimum_sources'] == 2
+          assert m['convergence']['model_agreement_is_sufficient'] is False
+          assert m['convergence']['committed_vm81_frame_equality_required'] is True
+          assert m['convergence']['admitted_child_hash216_equality_required'] is True
+          assert m['authority']['new_dynamic_mutation_symbol'] is False
+          assert m['authority']['new_canonical_hash216_authority'] is False
+          for needle in ('hhs_exact_pass219_multisource_convergence_i14', 'source_route_binding_hash216', 'deduplication_authorized', 'HHS_EXACT_PASS219_MULTISOURCE_NOT_CONVERGED'):
+              assert needle in h, needle
+          for needle in ('Deduplication is therefore downstream of VM81/Hash216 equality', 'model agreement', 'source-route cryptographic binding'):
+              assert needle in c, needle
+          code = re.sub(r'/\*.*?\*/', '', h, flags=re.S)
+          code = re.sub(r'//.*', '', code)
+          assert not re.search(r'\b(float|double)\b', code)
+          assert 'static inline HHSExactStatus hhs_exact_pass219_multisource_convergence_i14' in h
+          print('pass219_multisource_i14_static=PASS')
+          PY
+
+      - name: Build inherited exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Verify singleton mutation export remains unchanged
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-i14.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs-i14.symbols
+          ! grep -q ' hhs_exact_pass219_multisource_convergence_i14$' /tmp/hhs-i14.symbols
+          ! grep -q ' hhs_exact_pass219_i14_source_route_binding$' /tmp/hhs-i14.symbols
+
+      - name: Compile and run I14 convergence verifier
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_multisource_convergence_i14.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-multisource-i14
+          /tmp/test-pass219-multisource-i14
+
+      - name: Re-run inherited I13 membrane
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_pqc_membrane_speculative_hydration_i13.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-pqc-membrane-i13
+          /tmp/test-pass219-pqc-membrane-i13
+
+      - name: Verify generation-integrity seal remains valid
+        run: |
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --require-sealed
+
+      - name: Publish I14 summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 I14 multi-source convergence
+          - independent frozen-source hashes: required
+          - per-source source-route Hash216 binding: retained
+          - model agreement alone: insufficient
+          - committed VM81 frame equality: required
+          - admitted child Hash216 identity equality: required
+          - divergent valid routes: NOT_CONVERGED, no deduplication
+          - new mutation/Hash216/persistence authority: none
+          - live multi-source claim: only when PQC provider is available and both I13 admissions succeed
+          EOF
