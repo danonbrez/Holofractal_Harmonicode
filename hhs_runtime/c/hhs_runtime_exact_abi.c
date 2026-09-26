@@ -114,6 +114,7 @@
 #include "hhs_pass219_vm81_pqc_firewall_1_30.inc"
 #include "hhs_pass219_vm81_pqc_signature_1_31.inc"
 #include "hhs_pass219_lane5_hnan_global_constraint_1_63.inc"
+#include "hhs_pass219_p_x2_global_reciprocal_manifold_1_64.inc"
 #include "hhs_pass219_vm81_environmental_recovery_1_32.inc"
 #include "hhs_pass219_lane5_global_holographic_nucleus_1_34.inc"
 #include "hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc"
