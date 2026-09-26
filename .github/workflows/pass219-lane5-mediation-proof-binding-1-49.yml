@@ -1,0 +1,267 @@
+name: Pass 219 Lane 5 Mediation Proof Binding 1.49
+
+on:
+  push:
+    branches:
+      - repair/pass219-lane5-mediation-proof-binding-1-49-20260925
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_mediation_proof_binding_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_mediation_proof_binding_1_49.inc'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_mediation_proof_binding_1_49.c'
+      - 'tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c'
+      - '.github/workflows/pass219-lane5-mediation-proof-binding-1-49.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49_RESTART_20260925.md'
+      - 'contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md'
+      - 'docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md'
+      - 'docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md'
+      - 'docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md'
+      - 'hhs_runtime/pass220/ubuntu_guest_runtime.py'
+      - 'tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_mediation_proof_binding_1_49.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_mediation_proof_binding_1_49.inc'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass219/test_pass219_lane5_mediation_proof_binding_1_49.c'
+      - 'tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c'
+      - '.github/workflows/pass219-lane5-mediation-proof-binding-1-49.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49_RESTART_20260925.md'
+      - 'contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md'
+      - 'docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md'
+      - 'docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md'
+      - 'docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md'
+      - 'hhs_runtime/pass220/ubuntu_guest_runtime.py'
+      - 'tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Static proof-binding contract gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          contract = Path('contracts/pass219/PASS_219_LANE5_MEDIATION_PROOF_BINDING_1_49.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_lane5_mediation_proof_binding_1_49.h').read_text()
+          impl = Path('hhs_runtime/c/hhs_pass219_lane5_mediation_proof_binding_1_49.inc').read_text()
+          legacy = Path('hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc').read_text()
+
+          for needle in (
+              'Exact VM5184',
+              'RNA / C++ cell wall',
+              'Hash216',
+              'Capability registry',
+              'Direct witness route',
+              'Global constraint membrane',
+              'Derived global zero-sum closure',
+              'valid all-true global membrane cannot be substituted',
+              'zero-sum witness is **not accepted from the caller**',
+              'hhs_exact_pass219_vm81_environment_admit_signed',
+          ):
+              assert needle in contract, needle
+
+          for needle in (
+              'legacy_1_34_proof_flags_authoritative',
+              'hash216_sha256_positions_verified',
+              'direct_witness_route_recomputed',
+              'global_constraint_membrane_recomputed',
+              'global_environment_request_bound',
+              'exact_zero_sum_residual_vector_derived',
+              'HHSExactPass219Lane5ZeroSumClosureWitnessV1 zero_sum_witness',
+              'hhs_exact_pass219_lane5_mediation_environment_root',
+              'hhs_exact_pass219_lane5_mediation_proof_bind',
+          ):
+              assert needle in header, needle
+
+          for needle in (
+              'hhs_exact_pass219_lane5_direct_witness_route_validate',
+              'hhs_exact_pass219_global_membrane_evaluate',
+              'hhs_exact_pass219_lane5_mediation_environment_root',
+              'hhs_l5pb_zero_sum_all_zero',
+              'out_receipt->zero_sum_witness = zero_witness;',
+          ):
+              assert needle in impl, needle
+
+          for needle in (
+              'receipt.hash216_references_validated = 0U;',
+              'receipt.capability_registry_validated = 0U;',
+              'receipt.exact_vm5184_bound = 0U;',
+              'receipt.rna_cell_wall_bound = 0U;',
+              'receipt.zero_sum_closure_passed = 0U;',
+          ):
+              assert needle in legacy, needle
+
+          print('lane5_mediation_proof_binding_static=PASS')
+          PY
+
+      - name: Enforce VM81 single-authority machine architecture
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          contract = Path('contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md').read_text()
+          backend = Path('docs/pass220/PASS_220_UBUNTU_APPLICATION_VM_BACKEND_CONTROL_PLANE_V1.md').read_text()
+          i043 = Path('docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md').read_text()
+          i044 = Path('docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md').read_text()
+          runtime = Path('hhs_runtime/pass220/ubuntu_guest_runtime.py').read_text()
+          docs = contract + backend + i043 + i044 + runtime
+
+          for needle in (
+              'VM81 runtime is the sole canonical computational authority',
+              'Lane 5 is the BIOS of VM81',
+              "Hash216 is VM81's permanent validation storage",
+              'integrated operating-system image and callable service registry',
+              'Ubuntu is the intended guest installation',
+              'ABI, API, VM81 opcode, terminal, desktop, and GUI surfaces',
+              'callable and bounded',
+          ):
+              assert needle in contract, needle
+
+          for forbidden in (
+              'Pass 219 is the cumulative system-contract authority',
+              '"pass219_system_contract_authority": True',
+              'application/runtime authority **inside** an Ubuntu environment',
+              'Pass 190 operation authority running inside the guest',
+          ):
+              assert forbidden not in docs, forbidden
+
+          for needle in (
+              '"vm81_runtime_only_authority": True',
+              '"lane5_role": "CXX_BIOS_AGI_OPTIMIZATION_CONTROL_CENTER"',
+              '"pass_system_role": "INTEGRATED_OS_AND_CALLABLE_SERVICE_REGISTRY"',
+              '"hash216_role": "PERMANENT_VALIDATION_STORAGE"',
+              '"ubuntu_role": "GUEST_OS_INSTALLATION_ON_VM81_VIRTUAL_HARDWARE"',
+              '"frontend_role": "ABI_API_OPCODE_GUI_INTERFACE_ENVIRONMENT"',
+              '"host_qemu_role": "BOOTSTRAP_COMPATIBILITY_NOT_CANONICAL_VM81_HARDWARE"',
+              '"canonical_internal_linux_vm_proven": False',
+          ):
+              assert needle in runtime, needle
+
+          assert 'successful QEMU/SSH/PTTY execution alone MUST NOT be promoted' in i044
+          assert 'final internal-VM requirement by itself' in i043
+          print('vm81_single_authority_machine_architecture=PASS')
+          PY
+
+      - name: Regress Pass 220 guest authority descriptor
+        run: |
+          pytest -q tests/pass220/test_pass220_i043_ubuntu_guest_runtime.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Audit proof-binding exports and singleton canonical mutator
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_proof_binding_version$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_proof_binding_authority$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_frame_signature$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_hash216_reference_signature$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_environment_root$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_mediation_proof_bind$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_lane5_direct_witness_route_validate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_global_membrane_evaluate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit$' /tmp/hhs.symbols
+          ! grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$' /tmp/hhs.symbols
+
+      - name: Run native proof-binding positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_mediation_proof_binding_1_49.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-proof-binding
+          /tmp/test-lane5-proof-binding | tee /tmp/lane5-proof-binding.log
+          grep -q 'PASS219_LANE5_MEDIATION_PROOF_BINDING_1_49_PASS' /tmp/lane5-proof-binding.log
+
+      - name: Regress legacy Lane 5 identity-binding stage
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_global_holographic_nucleus_1_34.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-nucleus
+          /tmp/test-lane5-nucleus
+
+      - name: Regress RNA VM5184 and capability validators
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_vm5184_abi_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-rna-vm5184
+          /tmp/test-rna-vm5184
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_executable_capability_self_model_1_43.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-capability-self-model
+          /tmp/test-capability-self-model
+
+      - name: Regress direct-witness and global-constraint proof sources
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_direct_witness_routing_1_46.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-direct-witness
+          /tmp/test-direct-witness
+
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-global-membrane
+          /tmp/test-global-membrane
+
+      - name: Regress Lane 5 exact boundary preflight
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-lane5-boundary
+          /tmp/test-lane5-boundary

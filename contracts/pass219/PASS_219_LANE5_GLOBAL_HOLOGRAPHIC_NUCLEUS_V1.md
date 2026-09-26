@@ -29,6 +29,70 @@ C++ CoreHolographicRNACellWall
 
 Lane 5 MAY reason over, retrieve, associate, compose, hydrate, rank, optimize, simulate, and route any validated knowledge accessible through these surfaces. Lane 5 SHALL NOT own canonical VM81 mutation, Hash72 minting, canonical Hash216 minting, canonical persistence, or an independent receipt clock.
 
+## 1A. VM81 single-authority hardware/OS/BIOS/interface law
+
+The VM81 runtime is the sole canonical computational authority. No pass number,
+service registry, BIOS layer, storage layer, Linux guest, API, ABI, opcode
+surface, GUI, model, agent, scheduler, host process, or transport may be
+promoted into a second authority.
+
+The integrated architecture is:
+
+```text
+VM81 runtime / 5184-native virtual hardware
+    ├── Lane 5 C++ BIOS + AGI optimization control center
+    ├── cumulative pass system = integrated operating system
+    │       + callable service/capability registry
+    ├── Hash72 receipt closure
+    ├── Hash216 permanent validated lineage/proof storage
+    └── internal Linux virtual machine
+            └── Ubuntu guest installation
+                    └── ordinary ABI / API / opcode / GUI interface environment
+```
+
+The numbered pass system is therefore not an authority above VM81. It is the
+integrated operating-system image and callable service registry carried forward
+by the one VM81 runtime. Pass 219 integrates the inherited system constraints
+needed by the current runtime generation; Pass 220+ extend that same operating
+system and registry without creating a new kernel or authority.
+
+Lane 5 is the BIOS of VM81: the C++ control/optimization center that prepares,
+hydrates, composes, reasons over, optimizes, and mediates candidate execution.
+It does not own canonical state independently of VM81.
+
+Hash216 is VM81's permanent validation storage: admitted Hash72 closure is
+preserved as ordered 216-character lineage with positional SHA-256 indexing,
+replay/provenance context, retrieval, hydration, and validated continuation.
+Hash216 records proof of VM81-admitted history; it never authorizes a mutation
+by itself.
+
+The internal Linux VM is a guest operating system running on VM81 virtual
+hardware. Ubuntu is the intended guest installation. A host-side QEMU/SSH/PTTY
+harness may be used as a compatibility/bootstrap test surface, but it SHALL NOT
+be documented or accepted as the canonical internal VM unless its execution is
+proved to be backed by the VM81 hardware/ABI path.
+
+The frontend is an ordinary interface environment over this machine:
+ABI, API, VM81 opcode, terminal, desktop, and GUI surfaces expose or request
+operations from the integrated pass OS/service registry. They are not a
+replacement runtime.
+
+Persistent state/runtime availability SHALL NOT be interpreted as continuous
+autonomous cognitive execution. Lane 5 reasoning/optimization is callable and
+bounded:
+
+```text
+no admitted call/event -> no cognitive/optimization circuit execution
+admitted call/event
+    -> invoke required circuit
+    -> bounded recursion/iteration
+    -> closure or explicit fail-closed result
+    -> VM81 admission when mutation is requested
+    -> Hash72 closure
+    -> Hash216 permanent validation record
+    -> return
+```
+
 ## 2. Governing data flow
 
 Every global candidate intended for kernel execution SHALL compose through this order:
@@ -198,7 +262,7 @@ composition edge
 hydration continuation
 ```
 
-The validated Hash216 vector store is Lane 5's durable read-only knowledge substrate. Lane 5 MAY retrieve and compose validated records and their graph relations, but a vector match alone SHALL never authorize canonical mutation.
+Hash216 is VM81's permanent validation storage and Lane 5's validated read-only knowledge substrate. It preserves admitted lineage/proof records for replay, retrieval, hydration, and continuation. Lane 5 MAY retrieve and compose validated records and their graph relations, but a vector match alone SHALL never authorize canonical mutation.
 
 ## 8. BigInt global coordinate serialization
 

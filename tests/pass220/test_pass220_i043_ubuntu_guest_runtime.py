@@ -132,6 +132,18 @@ def test_qemu_command_is_loopback_only_and_preserves_authority_boundary(
     assert status["new_hash72_mint_authority"] is False
     assert status["new_hash216_persistence_authority"] is False
     assert status["existing_application_vm_control_plane_inside_guest"] is True
+    assert status["vm81_runtime_only_authority"] is True
+    assert status["lane5_role"] == "CXX_BIOS_AGI_OPTIMIZATION_CONTROL_CENTER"
+    assert status["pass_system_role"] == "INTEGRATED_OS_AND_CALLABLE_SERVICE_REGISTRY"
+    assert status["hash216_role"] == "PERMANENT_VALIDATION_STORAGE"
+    assert status["ubuntu_role"] == "GUEST_OS_INSTALLATION_ON_VM81_VIRTUAL_HARDWARE"
+    assert status["frontend_role"] == "ABI_API_OPCODE_GUI_INTERFACE_ENVIRONMENT"
+    assert status["host_qemu_role"] == "BOOTSTRAP_COMPATIBILITY_NOT_CANONICAL_VM81_HARDWARE"
+    assert status["canonical_internal_linux_vm_proven"] is False
+    assert (
+        status["optimization_execution_model"]
+        == "CALLABLE_BOUNDED_CIRCUITS_NOT_AMBIENT_LOOP"
+    )
 
 
 def test_fake_qemu_lifecycle_tracks_pid_and_fails_closed_on_stale_pid(

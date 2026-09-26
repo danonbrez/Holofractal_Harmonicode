@@ -5,18 +5,23 @@
 This cycle makes the integrated HHS/HARMONICODE application VM independently
 operable **before frontend composition**.
 
-The ordering is mandatory:
+The canonical machine relationship is:
 
 ```text
-Ubuntu application VM
--> repository/runtime authority
--> Bash/CLI
--> secure public OpenAPI
--> verified receipts/replay
--> later FastAPI/GUI frontend adapter
+VM81 runtime / virtual hardware  [ONLY AUTHORITY]
+-> Lane 5 C++ BIOS / AGI optimization control center
+-> cumulative pass system OS + callable service registry
+-> internal Ubuntu Linux guest
+-> Bash / ABI / API / opcode / GUI interface environment
+-> VM81 admission for any canonical mutation
+-> Hash72 receipt closure
+-> Hash216 permanent validation storage
 ```
 
-The web frontend is explicitly not part of this authority surface.
+This Pass 220 backend is an interface/application surface of that integrated
+machine. Ubuntu, Pass 190, OpenAPI, Bash, and the frontend are not authorities.
+A host-side deployment or transport harness must not be substituted for the
+canonical VM81-backed internal Ubuntu guest.
 
 ## Local Bash surface
 
@@ -122,8 +127,14 @@ This integration creates no new:
 - capability-token schema;
 - capability signature algorithm.
 
-It composes existing Pass 184/190 authority through a backend-first application
-boundary.
+It composes inherited Pass 184/190 capability and application surfaces into the
+cumulative pass-system operating system and callable service registry. VM81
+remains the only authority; Lane 5 remains its BIOS; Hash216 remains permanent
+validation storage.
+
+Runtime availability is distinct from cognitive execution: Lane 5 reasoning and
+optimization remain callable bounded circuits and are not started continuously
+merely because Ubuntu, an API service, or the frontend is running.
 
 ## Installation
 

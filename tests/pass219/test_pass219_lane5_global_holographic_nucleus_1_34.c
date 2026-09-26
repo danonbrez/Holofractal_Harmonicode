@@ -82,11 +82,11 @@ int main(void) {
     CHECK(receipt_a.decision == HHS_EXACT_PASS219_LANE5_DECISION_CANDIDATE_READY);
     CHECK(receipt_a.closure_signature64 != 0U);
     CHECK(receipt_a.mediation_signature64 != 0U);
-    CHECK(receipt_a.hash216_references_validated == 1U);
-    CHECK(receipt_a.capability_registry_validated == 1U);
-    CHECK(receipt_a.exact_vm5184_bound == 1U);
-    CHECK(receipt_a.rna_cell_wall_bound == 1U);
-    CHECK(receipt_a.zero_sum_closure_passed == 1U);
+    CHECK(receipt_a.hash216_references_validated == 0U);
+    CHECK(receipt_a.capability_registry_validated == 0U);
+    CHECK(receipt_a.exact_vm5184_bound == 0U);
+    CHECK(receipt_a.rna_cell_wall_bound == 0U);
+    CHECK(receipt_a.zero_sum_closure_passed == 0U);
     CHECK(receipt_a.candidate_only == 1U);
     CHECK(receipt_a.canonical_mutation_authority == 0U);
     CHECK(receipt_a.canonical_hash72_authority == 0U);

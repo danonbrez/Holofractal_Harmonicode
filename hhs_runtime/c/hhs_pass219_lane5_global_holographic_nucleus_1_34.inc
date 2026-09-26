@@ -137,11 +137,11 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
     receipt.rna_decision_signature64 = request->rna_decision_signature64;
     receipt.closure_signature64 = closure;
     receipt.mediation_signature64 = mediation;
-    receipt.hash216_references_validated = 1U;
-    receipt.capability_registry_validated = 1U;
-    receipt.exact_vm5184_bound = 1U;
-    receipt.rna_cell_wall_bound = 1U;
-    receipt.zero_sum_closure_passed = 1U;
+    receipt.hash216_references_validated = 0U;
+    receipt.capability_registry_validated = 0U;
+    receipt.exact_vm5184_bound = 0U;
+    receipt.rna_cell_wall_bound = 0U;
+    receipt.zero_sum_closure_passed = 0U;
     receipt.candidate_only = 1U;
     receipt.canonical_mutation_authority = 0U;
     receipt.canonical_hash72_authority = 0U;

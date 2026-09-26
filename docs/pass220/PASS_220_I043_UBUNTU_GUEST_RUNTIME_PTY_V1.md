@@ -2,24 +2,31 @@
 
 ## Purpose
 
-Pass 220's existing Ubuntu Application VM control plane is preserved as the HHS
-application/runtime authority **inside** an Ubuntu environment. I043 adds the
-missing host-side guest substrate beneath it.
+I043 provides a host-side QEMU/SSH/PTTY compatibility and bootstrap harness for
+an Ubuntu image. It is **not** the canonical internal Linux VM architecture.
 
-The authority order is:
+The canonical machine is:
 
 ```text
-Host Linux
-  -> I043 guest artifact + QEMU lifecycle
-  -> Ubuntu guest
-  -> authenticated SSH + PTY transport
-  -> existing hhs-application-vm / Pass 190 control plane
-  -> Lane 5 candidate/control kernel
-  -> VM81 canonical admission
+VM81 runtime / 5184-native virtual hardware  [ONLY AUTHORITY]
+  -> Lane 5 C++ BIOS / AGI optimization control center
+  -> cumulative pass system OS + callable service registry
+  -> internal Linux virtual machine
+  -> Ubuntu guest installation
+  -> ordinary Bash / ABI / API / opcode / GUI interfaces
 ```
 
-I043 does not create a second VM81, Hash72 clock, Hash216 persistence path,
-Lane 5 kernel, operation registry, or HHS capability format.
+Hash216 is VM81's permanent validation storage after admitted Hash72 receipt
+closure.
+
+The existing QEMU lifecycle can validate image identity, guest boot, SSH and PTY
+semantics, but it cannot satisfy the final internal-VM requirement by itself.
+Promotion to the canonical Ubuntu guest requires an explicit proof that the
+guest executes on the VM81 virtual-hardware/ABI path rather than as a parallel
+host-side machine.
+
+Lane 5 cognitive/optimization circuits are callable and bounded. Booting Ubuntu
+or opening a PTY does not continuously execute them.
 
 ## Guest artifact authority
 
@@ -149,6 +156,11 @@ transport yet.
 Frontend work must not begin by treating the existing Pass 190 shell endpoint as
 a terminal substitute. A subsequent adapter may attach only after an actual
 digest-verified guest is booted and the authenticated PTY path is reachable.
+That adapter must preserve VM81 as the only authority, Lane 5 as its BIOS, the
+pass system as its integrated OS/service registry, and Hash216 as permanent
+validation storage. It must not substitute the host shell, QEMU harness,
+transport, Pass 190 adapter, or a frontend-local loop for the VM81-backed
+machine.
 
 ## Acceptance
 
@@ -163,7 +175,9 @@ I043 acceptance is dependency-scoped and requires:
 7. tests demonstrate that the new layer carries no HHS canonical-state authority;
 8. focused CI passes on the exact branch head.
 
-A GitHub-hosted runner unit test does not establish that a production Ubuntu
-guest image has booted. Real boot, SSH reachability, installation of the existing
-application control plane inside the guest, and GUI attachment remain separate
-integration gates.
+These checks accept only the compatibility/bootstrap harness. They do not prove
+the canonical internal Linux VM requirement. Final acceptance additionally
+requires a repository-visible VM81 hardware/ABI binding proving that Ubuntu is
+installed and executing as the guest OS on VM81, with the pass system OS/service
+registry and Lane 5 BIOS underneath it. GUI attachment is then an ordinary
+interface gate over that guest.
