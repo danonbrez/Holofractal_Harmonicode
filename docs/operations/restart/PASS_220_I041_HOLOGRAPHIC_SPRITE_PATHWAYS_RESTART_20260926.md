@@ -72,3 +72,15 @@ reopen already-green unrelated pass evidence.
 ## Blockers
 
 None known at checkpoint creation.
+
+
+## Repair-forward note — workflow compile invocation
+
+- failed exact-head push run: 36271690503
+- failing step: Compile I041 surfaces
+- cause: missing shell continuation before the newly added browser test path,
+  which caused Bash to execute the Python file as a command.
+- runtime/game-engine implementation was not executed by that failed run.
+- repair: restore the backslash after
+  test_hhs_pass220_holofractal_relativistic_game_engine_v1.py and re-run the
+  dependency-scoped workflow from the repair commit.

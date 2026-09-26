@@ -75,7 +75,7 @@ jobs:
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py \
-            tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+            tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py \
             tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
 
       - name: Verify connected Wolfram 48 of 48 receipt
