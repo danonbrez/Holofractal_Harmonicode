@@ -122,3 +122,49 @@ def test_wolfram_evidence_closed():
     assert evidence["failed"] == []
     assert evidence["xy_yx_distinct"] is True
     assert evidence["zw_wz_distinct"] is True
+
+
+def test_exact_jordan_refinement_receipt_closes():
+    receipt = jordan_refinement_receipt()
+    assert receipt["status"] == "PASS"
+    assert all(receipt["checks"].values())
+    assert receipt["rank_m01"] == 3
+    assert receipt["nullity_m01"] == 1
+    assert receipt["nullity_m01_squared"] == 2
+    assert (
+        receipt["characteristic_polynomial"]
+        == "lambda^2*(lambda-2)*(lambda+1)"
+    )
+    assert receipt["minimal_polynomial"] == receipt["characteristic_polynomial"]
+    assert receipt["jordan_structure"] == M01_JORDAN_STRUCTURE
+    assert receipt["generic_lift_conditions"] == MXY_GENERIC_CONDITIONS
+    assert receipt["special_loci"]["r=s"]["nullity_for_r_nonzero"] == 3
+    assert receipt["special_loci"]["r=-s"]["nullity_for_r_nonzero"] == 2
+    assert receipt["hnan_zero_closure_source"] == HNAN_ZERO_CLOSURE_SOURCE
+    assert HNAN_ZERO_CLOSURE_SOURCE == "0=∅=AB/P⁴∅=HNAN"
+    assert receipt["zero_closure_scalar_cancellation_authorized"] is False
+
+
+def test_jordan_wolfram_evidence_closed_and_generic_scope_exact():
+    evidence = json.loads(
+        Path(
+            "evidence/pass219/"
+            "hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert evidence["status"] == "PASS"
+    assert evidence["rank_m01"] == 3
+    assert evidence["nullity_m01"] == 1
+    assert evidence["nullity_m01_squared"] == 2
+    assert evidence["degree4_recurrence_exact"] is True
+    assert evidence["lower_degree_recurrence_excluded_by_independence"] is True
+    assert evidence["jordan_zero_chain_depth_2"] is True
+    assert evidence["minimal_polynomial_equals_characteristic_polynomial"] is True
+    assert evidence["lifted_recurrence_exact"] is True
+    assert evidence["generic_lift_conditions"] == ["r!=s", "r+s!=0"]
+    assert evidence["generic_nullity_mxy"] == 1
+    assert evidence["generic_nullity_mxy_squared"] == 2
+    assert evidence["generic_krylov_rank_I_M_M2_M3"] == 4
+    assert evidence["r_equals_s_nullity"] == 3
+    assert evidence["r_equals_minus_s_nullity"] == 2
+    assert evidence["sum_invariant_n1_to_n4"] == [True, True, True, True]
