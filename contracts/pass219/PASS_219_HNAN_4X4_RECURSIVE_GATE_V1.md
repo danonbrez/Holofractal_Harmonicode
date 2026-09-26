@@ -143,7 +143,175 @@ recursive memoization speedup ~= 3.59x
 semantic parity = true
 ```
 
-## 8. Authority boundary
+## 8. Jordan-chain refinement
+
+Exact symbolic verification fixes the binary tensor structure more sharply than the raw eigenvalue multiset.
+
+For
+
+```text
+M01 =
+[0 0 0 1]
+[1 0 1 1]
+[1 1 1 0]
+[0 1 0 0]
+```
+
+the exact invariants are:
+
+```text
+rank(M01)      = 3
+nullity(M01)   = 1
+nullity(M01^2) = 2
+
+chi_M01(lambda) = lambda^2 (lambda-2)(lambda+1)
+mu_M01(lambda)  = lambda^2 (lambda-2)(lambda+1)
+```
+
+The equality of minimal and characteristic polynomials is witnessed by:
+
+1. the exact degree-4 recurrence
+
+```text
+M01^4 = M01^3 + 2 M01^2
+```
+
+2. exact linear independence of
+
+```text
+I, M01, M01^2, M01^3
+```
+
+so no polynomial recurrence of degree below four closes the tensor.
+
+The zero sector is therefore one depth-2 Jordan chain, not two independent zero eigendirections:
+
+```text
+M01 ~ J2(0) direct-sum (-1) direct-sum (2)
+```
+
+The system-internal mode inventory is recorded as:
+
+```text
+{nilpotent chain depth 2}
+direct-sum
+{phase inversion -1}
+direct-sum
+{balanced doubling 2}
+```
+
+The HNAN boundary correspondence is:
+
+```text
+J2(0) <-> ordered 1/0 HNAN boundary
+```
+
+This is a typed system-internal correspondence. It does not authorize replacing the HNAN quotient with ordinary scalar division.
+
+## 9. Lifted Jordan structure
+
+With
+
+```text
+Mxy = r J + (s-r) M01
+r = y/(4x^4)
+s = xy
+```
+
+the exact characteristic polynomial remains:
+
+```text
+lambda^2
+(lambda-(r-s))
+(lambda-2(r+s))
+```
+
+and the recurrence is:
+
+```text
+Mxy^4
+=
+(3r+s) Mxy^3
+-
+2(r^2-s^2) Mxy^2
+```
+
+The same single depth-2 zero Jordan chain is inherited on the generic surface
+
+```text
+r != s
+r+s != 0
+```
+
+where exact symbolic verification gives:
+
+```text
+nullity(Mxy)   = 1
+nullity(Mxy^2) = 2
+rank{I,Mxy,Mxy^2,Mxy^3} = 4
+```
+
+The two lifted semisimple channels are:
+
+```text
+r-s
+2(r+s)
+```
+
+or under the x/y state substitution:
+
+```text
+y/(4x^4) - xy
+2(y/(4x^4) + xy)
+```
+
+The generic qualifier is mandatory. Exact exceptional surfaces are retained rather than erased:
+
+```text
+r=s, r!=0:
+  chi = lambda^3(lambda-4r)
+  rank = 1
+  nullity = 3
+
+r=-s, r!=0:
+  chi = lambda^3(lambda-2r)
+  rank = 2
+  nullity = 2
+```
+
+Thus the double-zero factor persists algebraically everywhere, while the full generic Jordan decomposition can degenerate on these special loci.
+
+The exact total-sum invariant has also been rechecked through n=4:
+
+```text
+sum_ij (Mxy^n)_ij
+=
+2^(n+2) (r+s)^n
+```
+
+with n=1 yielding `8(r+s)`.
+
+## 10. Ordered zero closure
+
+The receipt chain preserves the supplied source exactly:
+
+```text
+0=∅=AB/P⁴∅=HNAN
+```
+
+This string is stored as an ordered system-internal closure surface. It is not simplified by host arithmetic, not reordered, and not used to infer scalar cancellability of `∅` or `AB/P⁴∅`.
+
+The existing HNAN definition remains:
+
+```text
+HNAN(1,0)
+=
+(x+y-z-w+xy+yx-zw-wz)/∅
+```
+
+The Jordan refinement adds structural evidence for the depth-2 boundary channel without replacing the previously frozen gate definition.
+
+## 11. Authority boundary
 
 This gate is an exact structural/candidate formalization surface only.
 
