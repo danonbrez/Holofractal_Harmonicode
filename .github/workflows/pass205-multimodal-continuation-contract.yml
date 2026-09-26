@@ -99,7 +99,7 @@ jobs:
     env:
       PYTHONFAULTHANDLER: '1'
       PYTHONUNBUFFERED: '1'
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-continuation.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-continuation.sqlite3
     steps:
       - name: Checkout exact tree
         uses: actions/checkout@v4
@@ -139,7 +139,7 @@ jobs:
       - name: Execute hosted Pass 205 production validation
         run: |
           mkdir -p evidence/pass205-ci
-          python scripts/pass205_production_validation.py \
+          PYTHONPATH="$PWD" python scripts/pass205_production_validation.py \
             --db "${HHS_PASS205_DB}" \
             --evidence evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
 

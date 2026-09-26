@@ -142,7 +142,6 @@ Next action:
 4. inspect the production workflow and host receipt;
 5. only after the backend gate is green begin the frontend adapter cycle.
 
-
 ## 2026-09-22 native runtime build repair
 
 A production deployment gap was confirmed at current main

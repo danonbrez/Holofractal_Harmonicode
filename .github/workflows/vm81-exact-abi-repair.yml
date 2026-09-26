@@ -52,10 +52,10 @@ jobs:
       - name: Strict-compile exact ABI source
         run: |
           set -euo pipefail
-          gcc -O2 -std=c11 -Wall -Wextra -Werror -fPIC -shared \
-            hhs_runtime/c/hhs_runtime_exact_abi.c \
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -fPIC \
             -Ihhs_runtime/include \
-            -o /tmp/libhhs_runtime_exact.so
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/hhs_runtime_exact_abi.o
           ! grep -Eq '\b(float|double)\b|<math\.h>|\b(sqrt|sin|cos|pow|log|exp)\s*\(' \
             hhs_runtime/include/hhs_runtime_exact_abi.h \
             hhs_runtime/c/hhs_runtime_exact_abi.c

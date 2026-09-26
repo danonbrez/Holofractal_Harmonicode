@@ -106,6 +106,7 @@ jobs:
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_pass219_main_authority_composition_1_21_4.c \
             -o /tmp/pass219-main-authority/composition.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-main-authority/link-support cell-wall-only
 
       - name: Execute main-aligned source pipeline plus exact VM81 candidate replay
         run: |
@@ -117,8 +118,10 @@ jobs:
             /tmp/pass219-main-authority/adapter.o \
             /tmp/pass219-main-authority/exact.o \
             /tmp/pass219-main-authority/hash216.o \
+            /tmp/pass219-main-authority/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
             -L/tmp/pass159-main-authority -lhhs_pass159 \
             -Wl,-rpath,/tmp/pass159-main-authority \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-main-authority/test-main-authority
           /tmp/pass219-main-authority/test-main-authority
 
@@ -130,8 +133,11 @@ jobs:
             tests/pass219/test_pass219_pass159_vm81_proof_bridge_1_21_2.c \
             /tmp/pass219-main-authority/pass159-bridge.o \
             /tmp/pass219-main-authority/exact.o \
+            /tmp/pass219-main-authority/hash216.o \
+            /tmp/pass219-main-authority/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
             -L/tmp/pass159-main-authority -lhhs_pass159 \
             -Wl,-rpath,/tmp/pass159-main-authority \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-main-authority/test-pass159
           /tmp/pass219-main-authority/test-pass159
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
@@ -139,5 +145,8 @@ jobs:
             tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c \
             /tmp/pass219-main-authority/adapter.o \
             /tmp/pass219-main-authority/exact.o \
+            /tmp/pass219-main-authority/hash216.o \
+            /tmp/pass219-main-authority/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-main-authority/test-candidate
           /tmp/pass219-main-authority/test-candidate

@@ -52,10 +52,14 @@ jobs:
           set -euo pipefail
           make -B c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
-          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_runtime_init$'
-          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_validate_abi$'
-          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_exact_abi_validate$'
-          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_hash216_compute$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_runtime_init
+
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_validate_abi
+
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_exact_abi_validate
+
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E ' hhs_hash216_compute
+
           ! ldd hhs_runtime/builds/libhhs_runtime.so | grep -q 'not found'
           HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python - <<'PY'
           import hhs_python.runtime.hhs_ctypes_bridge
