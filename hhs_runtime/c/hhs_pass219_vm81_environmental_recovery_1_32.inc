@@ -561,6 +561,7 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     HHSExactPass219HNANGlobalReceiptV1 hnan_global;
     HHSExactPass219PX2ManifoldReceiptV1 px2_manifold;
     HHSExactPass219PolaritySReceiptV1 polarity_s;
+    HHSExactPass219ConservationReceiptV1 conservation_1_66;
     HHSExactStatus status;
     if (out_committed_frame == NULL || out_admission == NULL ||
         out_firewall_receipt == NULL || out_signature_receipt == NULL ||
@@ -656,6 +657,44 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
         polarity_s.canonical_vm81_mutation_authority != 0U ||
         polarity_s.canonical_hash72_authority != 0U ||
         polarity_s.canonical_hash216_authority != 0U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    memset(&conservation_1_66, 0, sizeof(conservation_1_66));
+    status = hhs_exact_pass219_conservation_1_66_verify(&conservation_1_66);
+    if (status != HHS_EXACT_STATUS_OK ||
+        conservation_1_66.decision !=
+            HHS_EXACT_PASS219_CONSERVATION_DECISION_VERIFIED ||
+        conservation_1_66.source_hash_verified != 1U ||
+        conservation_1_66.parent_1_65_verified != 1U ||
+        conservation_1_66.operator_typing_verified != 1U ||
+        conservation_1_66.pell_branch_verified != 1U ||
+        conservation_1_66.reciprocal_correction_verified != 1U ||
+        conservation_1_66.negative_s_factor_verified != 1U ||
+        conservation_1_66.phase72_seed_verified != 1U ||
+        conservation_1_66.congruent_projection_verified != 1U ||
+        conservation_1_66.unit_shell_verified != 1U ||
+        conservation_1_66.master_delta_m_projection_verified != 1U ||
+        conservation_1_66.signed_metric_null_cone_verified != 1U ||
+        conservation_1_66.canonical_c2_preserved != 1U ||
+        conservation_1_66.polarity_balance_projection_verified != 1U ||
+        conservation_1_66.unit_shell_x_plus_y_zero_verified != 1U ||
+        conservation_1_66.scalar_projection_witness_only != 1U ||
+        conservation_1_66.cross_gate_substitution_authority != 0U ||
+        conservation_1_66.canonical_constant_rewrite_authority != 0U ||
+        conservation_1_66.commutation_authority != 0U ||
+        conservation_1_66.equality_reversal_authority != 0U ||
+        conservation_1_66.delta_cancellation_authority != 0U ||
+        conservation_1_66.floating_point_canonical_authority != 0U ||
+        conservation_1_66.canonical_vm81_mutation_authority != 0U ||
+        conservation_1_66.canonical_hash72_authority != 0U ||
+        conservation_1_66.canonical_hash216_authority != 0U) {
         atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
         out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
         out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
