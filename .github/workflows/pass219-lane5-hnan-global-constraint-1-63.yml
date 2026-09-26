@@ -1,0 +1,116 @@
+name: Pass 219 Lane 5 HNAN Global Constraint 1.63
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc'
+      - 'contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_GRAPH_1_63.json'
+      - 'contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_1_63.md'
+      - 'contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md'
+      - 'contracts/pass219/PASS_219_HNAN_4X4_RECURSIVE_GATE_V1.md'
+      - 'docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/lane5_hnan_global_constraint_1_63_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/lane5_hnan_global_constraint_1_63_wolfram_20260926_v1.output.json'
+      - 'tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.c'
+      - 'tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.py'
+      - '.github/workflows/pass219-lane5-hnan-global-constraint-1-63.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_1_63_RESTART_20260926.md'
+  push:
+    branches:
+      - main
+      - pass219/hnan-4x4-recursive-gate-20260926
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc'
+      - 'contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_GRAPH_1_63.json'
+      - 'contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_1_63.md'
+      - 'contracts/pass219/PASS_219_LANE5_GLOBAL_HOLOGRAPHIC_NUCLEUS_V1.md'
+      - 'contracts/pass219/PASS_219_HNAN_4X4_RECURSIVE_GATE_V1.md'
+      - 'docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'evidence/pass219/lane5_hnan_global_constraint_1_63_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/lane5_hnan_global_constraint_1_63_wolfram_20260926_v1.output.json'
+      - 'tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.c'
+      - 'tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.py'
+      - '.github/workflows/pass219-lane5-hnan-global-constraint-1-63.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_1_63_RESTART_20260926.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hnan-global-constraint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped Python test dependency
+        run: python -m pip install pytest
+
+      - name: Validate frozen Wolfram proof receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "evidence/pass219/"
+              "lane5_hnan_global_constraint_1_63_wolfram_20260926_v1.output.json"
+          )
+          proof = json.loads(path.read_text(encoding="utf-8"))
+          assert proof["status"] == "PASS"
+          assert proof["check_count"] == 25
+          assert proof["pass_count"] == 25
+          assert proof["failed"] == []
+          assert proof["zero_closure"] == [
+              "ZERO", "EMPTYSET", "AB_P4_EMPTYSET", "HNAN"
+          ]
+          assert proof["reciprocal_chain"] == ["INFINITY", "DELTA", "X"]
+          assert proof["generic_lift_conditions"] == ["r!=s", "r+s!=0"]
+          PY
+
+      - name: Run repository proof and binding regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.py             tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py             tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py
+
+      - name: Build shared exact VM81 Runtime
+        run: make -f GNUmakefile c-kernel
+
+      - name: Verify callable HNAN Runtime exports
+        run: |
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so             | grep -F 'hhs_exact_pass219_hnan_global_system_verify'
+          nm -D hhs_runtime/builds/libhhs_runtime.so             | grep -F 'hhs_exact_pass219_hnan_resolve'
+          nm -D hhs_runtime/builds/libhhs_runtime.so             | grep -F 'hhs_exact_pass219_vm81_environment_admit_signed'
+
+      - name: Compile native global-constraint conformance
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto             -o /tmp/test_pass219_lane5_hnan_global_constraint_1_63
+
+      - name: Run native global-constraint conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_lane5_hnan_global_constraint_1_63
+
+      - name: Verify double preflight wiring
+        run: |
+          grep -F 'hhs_exact_pass219_hnan_global_system_verify'             hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+          grep -F 'hhs_exact_pass219_hnan_global_system_verify'             hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc

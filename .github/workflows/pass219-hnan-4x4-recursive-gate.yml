@@ -1,0 +1,111 @@
+name: Pass 219 HNAN 4x4 Recursive Gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
+      - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py'
+      - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py'
+      - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_4x4_recursive_gate_python_benchmark_20260926_v1.json'
+      - 'contracts/pass219/PASS_219_HNAN_4X4_RECURSIVE_GATE_V1.md'
+      - 'docs/operations/restart/PASS_219_HNAN_4X4_RECURSIVE_GATE_RESTART_20260926.md'
+      - '.github/workflows/pass219-hnan-4x4-recursive-gate.yml'
+  push:
+    branches:
+      - main
+      - pass219/hnan-4x4-recursive-gate-20260926
+    paths:
+      - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
+      - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py'
+      - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py'
+      - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_4x4_recursive_gate_python_benchmark_20260926_v1.json'
+      - 'contracts/pass219/PASS_219_HNAN_4X4_RECURSIVE_GATE_V1.md'
+      - 'docs/operations/restart/PASS_219_HNAN_4X4_RECURSIVE_GATE_RESTART_20260926.md'
+      - '.github/workflows/pass219-hnan-4x4-recursive-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hnan-4x4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install pytest
+
+      - name: Compile HNAN surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py \
+            tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
+            benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py
+
+      - name: Run HNAN and inherited center regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
+            tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py
+
+      - name: Verify frozen Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.output.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert data["status"] == "PASS"
+          assert data["check_count"] == 16
+          assert data["pass_count"] == 16
+          assert data["failed"] == []
+          assert data["xy_yx_distinct"] is True
+          assert data["zw_wz_distinct"] is True
+
+          jordan = Path(
+              "evidence/pass219/"
+              "hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json"
+          )
+          proof = json.loads(jordan.read_text(encoding="utf-8"))
+          assert proof["status"] == "PASS"
+          assert proof["rank_m01"] == 3
+          assert proof["nullity_m01"] == 1
+          assert proof["nullity_m01_squared"] == 2
+          assert proof["degree4_recurrence_exact"] is True
+          assert proof["lower_degree_recurrence_excluded_by_independence"] is True
+          assert proof["jordan_zero_chain_depth_2"] is True
+          assert proof["minimal_polynomial_equals_characteristic_polynomial"] is True
+          assert proof["generic_lift_conditions"] == ["r!=s", "r+s!=0"]
+          assert proof["generic_nullity_mxy"] == 1
+          assert proof["generic_nullity_mxy_squared"] == 2
+          assert proof["r_equals_s_nullity"] == 3
+          assert proof["r_equals_minus_s_nullity"] == 2
+          assert proof["sum_invariant_n1_to_n4"] == [True, True, True, True]
+          PY
+
+      - name: Run optimization benchmark with semantic parity
+        run: |
+          PYTHONPATH="$PWD" python \
+            benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py \
+            --iterations 100000 \
+            | tee /tmp/pass219-hnan-benchmark.json
