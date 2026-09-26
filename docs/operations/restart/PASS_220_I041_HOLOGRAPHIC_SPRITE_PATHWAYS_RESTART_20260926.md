@@ -191,3 +191,19 @@ Authority:
   Markdown line; the normative sentence was wrapped after "MUST NOT".
 - repair: assert the invariant phrase independent of Markdown line wrapping.
 - no browser, shader, math, or authority semantics changed.
+
+
+## Repair-forward note — MP4 runner dependency
+
+- failed exact-head I041 runs: 36275390233 (push), 36275385470 (PR).
+- engine tests: PASS.
+- deterministic browser tests: PASS.
+- canonical-seed exact browser math receipt: PASS.
+- downstream I042 shared-root workflow: PASS.
+- only failing step: HTML HD MP4 encoding.
+- root cause: runner did not provide ffmpeg/ffprobe; existing
+  render_terminal_capture.py correctly failed closed at require_tool("ffmpeg").
+- repair: I041 workflow now installs ffmpeg explicitly and verifies both
+  ffmpeg and ffprobe before compile/test/render.
+- no HHS mathematics, browser animation, shader, pixel compositor, or
+  authority boundary changed.
