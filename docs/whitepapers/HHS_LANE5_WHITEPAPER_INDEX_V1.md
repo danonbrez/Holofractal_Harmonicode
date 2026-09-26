@@ -530,3 +530,17 @@ The resolver is compiled into the exact C Runtime ABI and is mandatory before bo
 ```
 
 while retaining the literal user source separately. The correction is verified under the registered scalar unit-residue projection but remains non-cancellable and ordered in native HARMONICODE execution.
+
+
+### Polarity s half-turn 1.65
+
+Pass 219 Lane 5 1.65 binds
+
+```text
+xy=s/zw
+yx=-s/zw
+zw=s/xy
+wz=-s/xy
+```
+
+to the inherited RML5 `u^36` chiral half-turn. For `s=-1`, both chiral sign pairs invert together and the ordered `p-q:q-p` unit-shell pair rotates from `(-2):(+2)` to `(+2):(-2)`. The operator is self-inverse, preserves pair opposition, and carries no scalar substitution or canonical mutation authority.
