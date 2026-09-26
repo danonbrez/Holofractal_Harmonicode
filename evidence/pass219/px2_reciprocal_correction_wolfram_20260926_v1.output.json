@@ -1,0 +1,16 @@
+{
+  "schema": "HHS_PASS219_PX2_RECIPROCAL_CORRECTION_SCALAR_PROJECTION_V1",
+  "status": "PASS",
+  "raw_source": "((p/q)*(q/p))/(P²-pq)=(q-p))P/(p+q)",
+  "balanced_ordered_parse": "((p/q)*(q/p))/(P²-pq)=((q-p)*P)/(p+q)",
+  "raw_source_sha256": "1f55c500664f18d0853e0ed53ee6b4cedadfd48cebc6f08861f94c1ad673ea8a",
+  "balanced_parse_sha256": "247c3cddfe7562802679ba07b899b4ba50cea573ad2f474497f7b91986031ee9",
+  "native_rewrite_authority": false,
+  "projection": "registered commutative nonzero scalar projection",
+  "domain": ["P!=0", "P!=1", "P!=-1"],
+  "substitution": ["p=P-1", "q=P+1"],
+  "projected_lhs": "1",
+  "projected_rhs": "1",
+  "difference": "0",
+  "closes": true
+}
