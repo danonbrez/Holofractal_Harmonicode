@@ -325,3 +325,26 @@ It does not grant:
 - ordered-product commutation authority.
 
 Any later binding into canonical mutation must pass the inherited signed VM81 admission path and all applicable Pass 219/220 membranes.
+
+
+## 12. Global Lane 5 successor binding
+
+This local gate contract is incorporated without replacement into Pass 219 Lane 5 successor 1.63.
+
+The global successor is:
+
+```text
+contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_GRAPH_1_63.json
+hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h
+hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc
+```
+
+White-paper proof:
+
+```text
+docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md
+```
+
+The global resolver inherits this contract's exact HNAN numerator order, Jordan witnesses, generic hydrated conditions, and authority prohibitions. It adds mandatory typed relations for `0`, `x/y/z/w`, `Delta`, symbolic infinity, `Bx^5184`, `u^0`, and their repository-defined directed views.
+
+No local HNAN proof is weakened by the system-wide binding.
