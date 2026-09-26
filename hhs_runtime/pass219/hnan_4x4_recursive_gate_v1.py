@@ -19,7 +19,7 @@ import json
 from typing import Any, Iterable, Sequence
 
 SCHEMA = "HHS_PASS219_HNAN_4X4_RECURSIVE_GATE_V1"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 SERIALIZED_4X4 = (
     0, 0, 0, 1,
