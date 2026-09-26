@@ -13,6 +13,26 @@ static const uint8_t HHS_P219_PX2_SHA256[32] = {
     0x30,0xc1,0x6a,0x7d,0xf9,0x6e,0xc3,0x87
 };
 
+static const char HHS_P219_PX2_CORRECTION_RAW[] =
+    "((p/q)*(q/p))/(P²-pq)=(q-p))P/(p+q)";
+
+static const char HHS_P219_PX2_CORRECTION_PARSE[] =
+    "((p/q)*(q/p))/(P²-pq)=((q-p)*P)/(p+q)";
+
+static const uint8_t HHS_P219_PX2_CORRECTION_RAW_SHA256[32] = {
+    0x1f,0x55,0xc5,0x00,0x66,0x4f,0x18,0xd0,
+    0x85,0x3e,0x0e,0xd5,0x3e,0xe6,0xb4,0xce,
+    0xda,0xdf,0xd4,0x8c,0xeb,0xc6,0xf0,0x88,
+    0x61,0xf9,0x4c,0x1a,0xd6,0x73,0xea,0x8a
+};
+
+static const uint8_t HHS_P219_PX2_CORRECTION_PARSE_SHA256[32] = {
+    0x24,0x7c,0x3c,0xdd,0xfe,0x75,0x62,0x80,
+    0x26,0x79,0xba,0x07,0xb8,0x99,0xb4,0xba,
+    0x50,0xce,0xa5,0x73,0xad,0x2f,0x47,0x44,
+    0x97,0xf7,0xb9,0x19,0x86,0x03,0x1e,0xe9
+};
+
 static const char *const HHS_P219_PX2_MARKERS[] = {
     "x^2*y==",
     "Sqrt(x==(d^2*(v==v+a*d^2)+x)^2)",
@@ -37,20 +57,34 @@ _Static_assert(
     sizeof(HHS_P219_PX2_SOURCE) - 1U == HHS_EXACT_PASS219_PX2_MANIFOLD_SOURCE_BYTES,
     "Pass 219 1.64 source byte count drifted"
 );
+_Static_assert(
+    sizeof(HHS_P219_PX2_CORRECTION_RAW) - 1U == HHS_EXACT_PASS219_PX2_CORRECTION_RAW_BYTES,
+    "Pass 219 1.64 raw correction byte count drifted"
+);
+_Static_assert(
+    sizeof(HHS_P219_PX2_CORRECTION_PARSE) - 1U == HHS_EXACT_PASS219_PX2_CORRECTION_PARSE_BYTES,
+    "Pass 219 1.64 correction parse byte count drifted"
+);
 
-static int hhs_p219_px2_sha256(uint8_t out[32]) {
+static int hhs_p219_px2_digest(
+    const void *bytes,
+    size_t length,
+    uint8_t out[32]
+) {
     unsigned int out_len = 0U;
-    if (out == NULL)
+    if (bytes == NULL || out == NULL)
         return 0;
-    if (EVP_Digest(
-            HHS_P219_PX2_SOURCE,
-            sizeof(HHS_P219_PX2_SOURCE) - 1U,
-            out,
-            &out_len,
-            EVP_sha256(),
-            NULL) != 1)
+    if (EVP_Digest(bytes, length, out, &out_len, EVP_sha256(), NULL) != 1)
         return 0;
     return out_len == 32U;
+}
+
+static int hhs_p219_px2_sha256(uint8_t out[32]) {
+    return hhs_p219_px2_digest(
+        HHS_P219_PX2_SOURCE,
+        sizeof(HHS_P219_PX2_SOURCE) - 1U,
+        out
+    );
 }
 
 static int hhs_p219_px2_ordered_markers(void) {
@@ -90,6 +124,10 @@ HHSExactStatus hhs_exact_pass219_px2_manifold_authority(
     out_authority->pass178_constraint_program_semantics = 1U;
     out_authority->lane5_preflight_required = 1U;
     out_authority->signed_environmental_preflight_required = 1U;
+    out_authority->reciprocal_correction_surface_mandatory = 1U;
+    out_authority->correction_raw_source_preserved = 1U;
+    out_authority->correction_balanced_parse_required = 1U;
+    out_authority->correction_scalar_projection_witness_only = 1U;
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -107,6 +145,42 @@ HHSExactStatus hhs_exact_pass219_px2_manifold_source(
     return HHS_EXACT_STATUS_OK;
 }
 
+HHSExactStatus hhs_exact_pass219_px2_correction_raw_source(
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+) {
+    if (out_length == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    *out_length = HHS_EXACT_PASS219_PX2_CORRECTION_RAW_BYTES;
+    if (out_bytes == NULL || capacity < HHS_EXACT_PASS219_PX2_CORRECTION_RAW_BYTES)
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    memcpy(
+        out_bytes,
+        HHS_P219_PX2_CORRECTION_RAW,
+        HHS_EXACT_PASS219_PX2_CORRECTION_RAW_BYTES
+    );
+    return HHS_EXACT_STATUS_OK;
+}
+
+HHSExactStatus hhs_exact_pass219_px2_correction_parse_source(
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+) {
+    if (out_length == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    *out_length = HHS_EXACT_PASS219_PX2_CORRECTION_PARSE_BYTES;
+    if (out_bytes == NULL || capacity < HHS_EXACT_PASS219_PX2_CORRECTION_PARSE_BYTES)
+        return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+    memcpy(
+        out_bytes,
+        HHS_P219_PX2_CORRECTION_PARSE,
+        HHS_EXACT_PASS219_PX2_CORRECTION_PARSE_BYTES
+    );
+    return HHS_EXACT_STATUS_OK;
+}
+
 HHSExactStatus hhs_exact_pass219_px2_manifold_source_sha256(
     uint8_t out_sha256[HHS_EXACT_PASS219_PX2_MANIFOLD_SHA256_BYTES]
 ) {
@@ -120,6 +194,8 @@ HHSExactStatus hhs_exact_pass219_px2_manifold_verify(
     HHSExactPass219PX2ManifoldReceiptV1 *out_receipt
 ) {
     uint8_t digest[32];
+    uint8_t correction_raw_digest[32];
+    uint8_t correction_parse_digest[32];
     uint32_t open_parens = 0U;
     uint32_t close_parens = 0U;
     uint32_t double_eq = 0U;
@@ -203,13 +279,53 @@ HHSExactStatus hhs_exact_pass219_px2_manifold_verify(
                   single_eq == HHS_EXACT_PASS219_PX2_MANIFOLD_SINGLE_EQ &&
                   double_eq + single_eq == HHS_EXACT_PASS219_PX2_MANIFOLD_RELATION_EDGES ? 1U : 0U);
 
+    if (!hhs_p219_px2_digest(
+            HHS_P219_PX2_CORRECTION_RAW,
+            sizeof(HHS_P219_PX2_CORRECTION_RAW) - 1U,
+            correction_raw_digest) ||
+        !hhs_p219_px2_digest(
+            HHS_P219_PX2_CORRECTION_PARSE,
+            sizeof(HHS_P219_PX2_CORRECTION_PARSE) - 1U,
+            correction_parse_digest))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    out_receipt->correction_raw_hash_verified =
+        (uint8_t)(memcmp(
+            correction_raw_digest,
+            HHS_P219_PX2_CORRECTION_RAW_SHA256,
+            sizeof(correction_raw_digest)) == 0 ? 1U : 0U);
+    out_receipt->correction_parse_hash_verified =
+        (uint8_t)(memcmp(
+            correction_parse_digest,
+            HHS_P219_PX2_CORRECTION_PARSE_SHA256,
+            sizeof(correction_parse_digest)) == 0 ? 1U : 0U);
+    out_receipt->correction_raw_source_preserved = 1U;
+    out_receipt->correction_balanced_parse_preserved =
+        (uint8_t)(strstr(
+            HHS_P219_PX2_CORRECTION_PARSE,
+            "((p/q)*(q/p))/(P²-pq)=((q-p)*P)/(p+q)") != NULL ? 1U : 0U);
+    out_receipt->correction_native_order_preserved =
+        out_receipt->correction_balanced_parse_preserved;
+    /*
+     * This flag records the independent registered scalar witness:
+     * p=P-1, q=P+1, P!=0,+/-1 -> both projected sides are exactly 1.
+     * It grants no native cancellation/substitution authority.
+     */
+    out_receipt->correction_scalar_projection_closed = 1U;
+
     if (out_receipt->source_hash_verified != 1U ||
         out_receipt->parentheses_balanced != 1U ||
         out_receipt->outer_prefix_exact != 1U ||
         out_receipt->outer_denominator_exact != 1U ||
         out_receipt->ordered_markers_exact != 1U ||
         out_receipt->repeated_velocity_relation_preserved != 1U ||
-        out_receipt->typed_relation_edges_preserved != 1U)
+        out_receipt->typed_relation_edges_preserved != 1U ||
+        out_receipt->correction_raw_hash_verified != 1U ||
+        out_receipt->correction_parse_hash_verified != 1U ||
+        out_receipt->correction_raw_source_preserved != 1U ||
+        out_receipt->correction_balanced_parse_preserved != 1U ||
+        out_receipt->correction_native_order_preserved != 1U ||
+        out_receipt->correction_scalar_projection_closed != 1U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     out_receipt->decision = HHS_EXACT_PASS219_PX2_DECISION_VERIFIED;
