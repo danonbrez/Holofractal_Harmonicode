@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HHS Lane 5 — 5184 Holographic Sprite Pathway</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:#cfe8ff;font-family:monospace}
+    canvas{display:block}
+    #hud{position:fixed;left:10px;top:10px;z-index:10;max-width:520px;padding:10px 12px;background:rgba(0,8,24,.78);border:1px solid #284664;border-radius:6px;white-space:pre-wrap;font-size:12px;line-height:1.35}
+    #ctl{position:fixed;right:10px;top:10px;z-index:11;width:310px;padding:10px;background:rgba(0,8,24,.82);border:1px solid #284664;border-radius:6px}
+    #ctl input,#ctl button{box-sizing:border-box;width:100%;margin-top:6px;background:#091729;color:#cfe8ff;border:1px solid #345;padding:7px}
+    #ctl label{display:block;margin-top:5px}
+  </style>
+</head>
+<body>
+<div id="hud">initializing deterministic 5184 pathway…</div>
+<div id="ctl">
+  <strong>Lane 5 projection controls</strong>
+  <label>seed</label>
+  <input id="seed" value="HHS-I041-LANE5-5184">
+  <button id="applySeed">reseed deterministic path</button>
+  <button id="toggleTopo">reciprocal topology: seed</button>
+  <button id="pause">pause</button>
+  <div style="margin-top:7px">Underlying graph: 5184 = 72² nodes. Each visited node carries one deterministic Hash72 state word from a 72^72 word space. GPU floats are projection-only.</div>
+</div>
+<script>
+"use strict";
+
+/* Browser projection adapter for
+   hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py.
+   It intentionally has NO VM81 / Hash72 / Hash216 mutation authority. */
+const NODE_COUNT = 5184;
+const HASH72_SIDE = 72;
+const HASH72_LEN = 72;
+const Q144 = 144;
+const PHASE_GROUPS = 8;
+const Q144_OCTANT = 18;
+const Q144_QUARTER = 36;
+const Q144_HALF = 72;
+const QUARTIC_RENDER_PERIOD = 4;
+const HASH72 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
+const PHI = (1 + Math.sqrt(5)) / 2;
+const MASK64 = (1n << 64n) - 1n;
+
+let scene, camera, renderer, controls, geometry;
+let layer1, layer2, material1, material2, tess;
+let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
+let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
+let lastPhaseWord = "";
+
+function gcd(a,b){ while(b!==0){ const t=a%b; a=b; b=t; } return Math.abs(a); }
+
+async function sha256Bytes(text){
+  const data = new TextEncoder().encode(text);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return new Uint8Array(digest);
+}
+function firstU64BE(bytes){
+  let out=0n;
+  for(let i=0;i<8;i++) out=(out<<8n)|BigInt(bytes[i]);
+  return out & MASK64;
+}
+async function seedU64(seed,label){
+  return firstU64BE(await sha256Bytes(seed+":"+label));
+}
+async function derivePath(seed){
+  const start = Number((await seedU64(seed,"PATH_START")) % BigInt(NODE_COUNT));
+  let stride = Number((await seedU64(seed,"PATH_STRIDE")) % BigInt(NODE_COUNT));
+  if(stride===0) stride=1;
+  while(gcd(stride,NODE_COUNT)!==1){ stride=(stride+1)%NODE_COUNT; if(stride===0) stride=1; }
+  let inverse=1;
+  for(let k=1;k<NODE_COUNT;k++){ if((stride*k)%NODE_COUNT===1){ inverse=k; break; } }
+  return {seed,start,stride,inverseStride:inverse};
+}
+function pathAddress(rank){
+  return (path.start + path.stride*(rank%NODE_COUNT)) % NODE_COUNT;
+}
+async function hash72FromSeed(seed,label){
+  let out="";
+  for(let counter=0;out.length<HASH72_LEN;counter++){
+    const bytes=await sha256Bytes(seed+":"+label+":"+counter);
+    for(const b of bytes){ out+=HASH72[b%HASH72_LEN]; if(out.length===HASH72_LEN) break; }
+  }
+  return out;
+}
+function coord5184(address){
+  const word144=Math.floor(address/36), bit36=address%36, op64=address%64;
+  return {
+    linear5184:address,
+    word144,
+    bit36,
+    vm81Cell81:Math.floor(address/64),
+    operation64:op64,
+    hash72Row72:Math.floor(address/72),
+    hash72Col72:address%72,
+    phaseLeft8:Math.floor(op64/8),
+    phaseRight8:op64%8
+  };
+}
+
+function buildGeometry(){
+  const pos=new Float32Array(NODE_COUNT*3);
+  const addr=new Float32Array(NODE_COUNT);
+  const group=new Float32Array(NODE_COUNT);
+  const q144=new Float32Array(NODE_COUNT);
+  const right=new Float32Array(NODE_COUNT);
+
+  for(let i=0;i<NODE_COUNT;i++){
+    const c=coord5184(i);
+    const j=c.vm81Cell81*8+c.phaseRight8;   // 0..647, 648 nodes per phase family
+    const a=j*PHI*Math.PI*2;
+    const r=Math.sqrt(j)*3;                 // inherited golden spiral law
+    pos[i*3]=r*Math.cos(a);
+    pos[i*3+1]=r*Math.sin(a);
+    pos[i*3+2]=Math.sin(j/5)*5*(c.phaseLeft8%2===0?1:-1);
+    addr[i]=i;
+    group[i]=c.phaseLeft8;
+    q144[i]=c.word144;
+    right[i]=c.phaseRight8;
+  }
+
+  geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.BufferAttribute(pos,3));
+  geometry.setAttribute("aAddress",new THREE.BufferAttribute(addr,1));
+  geometry.setAttribute("aGroup",new THREE.BufferAttribute(group,1));
+  geometry.setAttribute("aQ144",new THREE.BufferAttribute(q144,1));
+  geometry.setAttribute("aPhaseRight",new THREE.BufferAttribute(right,1));
+}
+
+const vertexShader=[
+"precision highp float;",
+"attribute float aAddress;",
+"attribute float aGroup;",
+"attribute float aQ144;",
+"attribute float aPhaseRight;",
+"uniform float uTime;",
+"uniform float uPathAddress;",
+"uniform float uBottOctant;",
+"uniform float uLayer;",
+"uniform float uTopologyInvert;",
+"varying float vHue;",
+"varying float vGlow;",
+"const float PI=3.141592653589793;",
+"const float PHI=1.618033988749895;",
+"void main(){",
+"  vec3 p=position;",
+"  float shift=aGroup*PI/4.0 + uLayer*PI/2.0;",
+"  float orbitT=uTime*0.5;",
+"  p += vec3(sin(orbitT+shift)*6.0, cos(orbitT*0.005+shift)*6.0, sin(orbitT*PHI+shift)*6.0);",
+"  if(uLayer>0.5){ p.xy=vec2(-p.y,p.x); }",
+"  float phase=aQ144/144.0*2.0*PI + uTime*0.02;",
+"  float w=sin(phase);",
+"  float h1=uTime*0.20;",
+"  float h2=h1/PHI;",
+"  float c1=cos(h1),s1=sin(h1),c2=cos(h2),s2=sin(h2);",
+"  float x1=c1*p.x-s1*w;",
+"  float w1=s1*p.x+c1*w;",
+"  float y1=c2*p.y-s2*p.z;",
+"  float z1=s2*p.y+c2*p.z;",
+"  float persp=2.6/(2.2-w1);",
+"  p=vec3(x1,y1,z1)*persp;",
+"  float dg=mod(aGroup-uBottOctant+8.0,8.0);",
+"  if(uTopologyInvert>0.5 && abs(dg-4.0)<0.25){ p*=0.82; }",
+"  vec4 mv=modelViewMatrix*vec4(p,1.0);",
+"  gl_Position=projectionMatrix*mv;",
+"  float selected=1.0-step(0.25,abs(aAddress-uPathAddress));",
+"  float swept=1.0-step(0.25,abs(aGroup-uBottOctant));",
+"  gl_PointSize=(2.0+5.0*selected+1.5*swept)*(180.0/max(1.0,-mv.z));",
+"  vHue=mod((aQ144+uLayer*72.0+aPhaseRight)/144.0,1.0);",
+"  vGlow=0.25+0.45*swept+0.75*selected;",
+"}"
+].join("\n");
+
+const fragmentShader=[
+"precision highp float;",
+"varying float vHue;",
+"varying float vGlow;",
+"vec3 hsv2rgb(vec3 c){",
+"  vec3 p=abs(fract(c.xxx+vec3(0.0,2.0/3.0,1.0/3.0))*6.0-3.0);",
+"  return c.z*mix(vec3(1.0),clamp(p-1.0,0.0,1.0),c.y);",
+"}",
+"void main(){",
+"  vec2 d=gl_PointCoord-vec2(0.5);",
+"  if(dot(d,d)>0.25) discard;",
+"  vec3 rgb=hsv2rgb(vec3(vHue,1.0,min(1.0,0.35+vGlow)));",
+"  gl_FragColor=vec4(rgb,min(1.0,0.35+vGlow));",
+"}"
+].join("\n");
+
+function makeMaterial(layer){
+  return new THREE.ShaderMaterial({
+    vertexShader,fragmentShader,transparent:true,depthWrite:false,
+    blending:THREE.AdditiveBlending,
+    uniforms:{
+      uTime:{value:0},uPathAddress:{value:0},uBottOctant:{value:0},
+      uLayer:{value:layer},uTopologyInvert:{value:0}
+    }
+  });
+}
+
+function buildTesseract(){
+  const verts=[];
+  for(let v=0;v<16;v++) verts.push([v&1?1:-1,v&2?1:-1,v&4?1:-1,v&8?1:-1]);
+  const edges=[];
+  for(let v=0;v<16;v++) for(let b=0;b<4;b++){ const u=v^(1<<b); if(u>v) edges.push([v,u]); }
+  const arr=new Float32Array(edges.length*6);
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute("position",new THREE.BufferAttribute(arr,3));
+  const lines=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:0x8ad8ff,transparent:true,opacity:.65}));
+  scene.add(lines);
+  return {verts,edges,arr,lines};
+}
+function updateTesseract(t){
+  const h1=t*.20,h2=h1/PHI,c1=Math.cos(h1),s1=Math.sin(h1),c2=Math.cos(h2),s2=Math.sin(h2);
+  const pr=tess.verts.map(v=>{
+    const x1=c1*v[0]-s1*v[3],w1=s1*v[0]+c1*v[3];
+    const y1=c2*v[1]-s2*v[2],z1=s2*v[1]+c2*v[2];
+    const s=2.6/(2.2-w1);
+    return [x1*s,y1*s,z1*s];
+  });
+  tess.edges.forEach((e,k)=>{
+    const a=pr[e[0]],b=pr[e[1]],o=k*6;
+    tess.arr[o]=a[0];tess.arr[o+1]=a[1];tess.arr[o+2]=a[2];
+    tess.arr[o+3]=b[0];tess.arr[o+4]=b[1];tess.arr[o+5]=b[2];
+  });
+  tess.lines.geometry.attributes.position.needsUpdate=true;
+}
+
+async function refreshPhaseWord(address,rank){
+  lastPhaseWord=await hash72FromSeed(path.seed,"PATH72:"+rank+":"+address);
+}
+
+function updateHud(address,rank,bott){
+  const c=coord5184(address);
+  document.getElementById("hud").textContent=
+    "HHS Lane 5 holographic shader projection\n"+
+    "nodes=5184 (72x72)  Hash72 word-space=72^72\n"+
+    "seed="+path.seed+"\n"+
+    "start="+path.start+" stride="+path.stride+" inverse="+path.inverseStride+"\n"+
+    "tick="+tick+" rank="+rank+" address="+address+
+    " row="+c.hash72Row72+" col="+c.hash72Col72+"\n"+
+    "VM81 cell="+c.vm81Cell81+" op64="+c.operation64+
+    " phase="+c.phaseLeft8+":"+c.phaseRight8+" bott="+bott+"\n"+
+    "phase72="+(lastPhaseWord?lastPhaseWord.slice(0,36)+"…":"computing…")+"\n"+
+    "render gate=1/4 rendered="+rendered+"/"+rafCount+
+    " topology="+(topoInvert?"reciprocal-inverted":"seed")+"\n"+
+    "authority=projection-only; no VM81/Hash72/Hash216 mutation";
+}
+
+async function applySeed(){
+  const seed=document.getElementById("seed").value.trim()||"HHS-I041-LANE5-5184";
+  path=await derivePath(seed);
+  tick=0; lastPhaseWord="";
+  await refreshPhaseWord(pathAddress(0),0);
+}
+
+function init(){
+  scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x000000);
+  camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,1000);
+  camera.position.set(0,0,95);
+  renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(innerWidth,innerHeight);
+  document.body.appendChild(renderer.domElement);
+  controls=new THREE.OrbitControls(camera,renderer.domElement);
+  controls.enableDamping=true;
+
+  buildGeometry();
+  material1=makeMaterial(0);
+  material2=makeMaterial(1);
+  layer1=new THREE.Points(geometry,material1);
+  layer2=new THREE.Points(geometry,material2);
+  scene.add(layer1); scene.add(layer2);
+  tess=buildTesseract();
+
+  addEventListener("resize",()=>{
+    camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+  document.getElementById("applySeed").addEventListener("click",applySeed);
+  document.getElementById("toggleTopo").addEventListener("click",()=>{
+    topoInvert=topoInvert?0:1;
+    document.getElementById("toggleTopo").textContent="reciprocal topology: "+(topoInvert?"inverted":"seed");
+  });
+  document.getElementById("pause").addEventListener("click",()=>{
+    paused=!paused;document.getElementById("pause").textContent=paused?"resume":"pause";
+  });
+  animate();
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  rafCount++;
+  if(!paused) tick++;
+  const rank=tick%NODE_COUNT;
+  const address=pathAddress(rank);
+  const q=tick%Q144;
+  const bott=Math.floor(q/Q144_OCTANT)%PHASE_GROUPS;
+  const seconds=tick/60;
+
+  for(const m of [material1,material2]){
+    m.uniforms.uTime.value=seconds;
+    m.uniforms.uPathAddress.value=address;
+    m.uniforms.uBottOctant.value=bott;
+    m.uniforms.uTopologyInvert.value=topoInvert;
+  }
+  updateTesseract(seconds);
+
+  if(tick%72===0) refreshPhaseWord(address,rank);
+  if((tick%QUARTIC_RENDER_PERIOD)===0){
+    renderer.render(scene,camera);
+    rendered++;
+  }
+  updateHud(address,rank,bott);
+}
+
+(async()=>{
+  path=await derivePath(path.seed);
+  await refreshPhaseWord(pathAddress(0),0);
+  init();
+})();
+</script>
+</body>
+</html>

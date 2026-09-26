@@ -61,6 +61,14 @@ VM81_CELLS = 81
 HASH72_SIDE = 72
 PHASE_BASIS_COUNT = 8
 
+HOLOGRAPHIC_NODE_COUNT = H36_FRAME_BITS
+HOLOGRAPHIC_STATE_WORD_LEN = HASH72_LEN
+HASH72_STATE_SPACE = "72^72"
+Q144_OCTANT_STEPS = Q144_CELLS // PHASE_BASIS_COUNT
+Q144_QUARTER_TURN = Q144_CELLS // 4
+Q144_HALF_TURN = Q144_CELLS // 2
+QUARTIC_RENDER_PERIOD = 4
+
 HASH72_ALPHABET = (
     "0123456789"
     "abcdefghijklmnopqrstuvwxyz"
@@ -99,6 +107,13 @@ LOCAL_CONSTRAINTS: Tuple[str, ...] = (
     "NO_HOST_FLOAT_IN_EXACT_GAME_STATE",
     "NO_PROBABILITY_LIKELIHOOD_MCMC_REFIT",
     "NO_CANONICAL_AUTHORITY_ESCALATION",
+    "HOLOGRAPHIC_PATH_IS_DETERMINISTIC_FULL_CYCLE_5184",
+    "HASH72_PHASE_WORD_STATE_SPACE_IS_72_POW_72",
+    "EIGHT_PHASE_ANIMATION_USES_Q144_EXACT_OFFSETS",
+    "LAYER2_IS_ORTHOGONAL_QUARTER_TURN_PROJECTION",
+    "RECIPROCAL_PHASE_IS_Q144_HALF_TURN",
+    "QUARTIC_RENDER_SKIP_IS_PROJECTION_ONLY",
+    "BROWSER_SHADER_HAS_NO_CANONICAL_MUTATION_AUTHORITY",
 )
 
 
@@ -366,6 +381,272 @@ def holofractal_sprite216(seed: str) -> Dict[str, Any]:
     })
 
 
+
+
+def _gcd_exact(a: int, b: int) -> int:
+    x = abs(_exact_int(a, name="a"))
+    y = abs(_exact_int(b, name="b"))
+    while y:
+        x, y = y, x % y
+    return x
+
+
+def _seed_u64(seed: str, label: str) -> int:
+    if not isinstance(seed, str) or not seed:
+        raise Pass220I041GameEngineError("path seed must be a non-empty string")
+    if not isinstance(label, str) or not label:
+        raise Pass220I041GameEngineError("path label must be a non-empty string")
+    digest = sha256(f"{seed}:{label}".encode("utf-8")).digest()
+    return int.from_bytes(digest[:8], byteorder="big", signed=False)
+
+
+def holographic_path_parameters(seed: str) -> Dict[str, Any]:
+    """Derive one replay-stable Hamiltonian traversal of all 5,184 addresses.
+
+    The affine stride is forced coprime to 5,184, so rank 0..5,183 visits
+    every 72x72 address exactly once before repeating.  The seed chooses the
+    permutation; it does not grant mutation authority.
+    """
+    start = _seed_u64(seed, "PATH_START") % HOLOGRAPHIC_NODE_COUNT
+    stride = _seed_u64(seed, "PATH_STRIDE") % HOLOGRAPHIC_NODE_COUNT
+    if stride == 0:
+        stride = 1
+    while _gcd_exact(stride, HOLOGRAPHIC_NODE_COUNT) != 1:
+        stride = (stride + 1) % HOLOGRAPHIC_NODE_COUNT
+        if stride == 0:
+            stride = 1
+    inverse_stride = pow(stride, -1, HOLOGRAPHIC_NODE_COUNT)
+    return _receipt({
+        "schema": "HHS_PASS_220_I041_HOLOGRAPHIC_PATH_PARAMETERS_V1",
+        "seed": seed,
+        "node_count": HOLOGRAPHIC_NODE_COUNT,
+        "hash72_side": HASH72_SIDE,
+        "hash72_state_word_len": HOLOGRAPHIC_STATE_WORD_LEN,
+        "hash72_state_space": HASH72_STATE_SPACE,
+        "start": start,
+        "stride": stride,
+        "inverse_stride": inverse_stride,
+        "stride_coprime_to_5184": (
+            _gcd_exact(stride, HOLOGRAPHIC_NODE_COUNT) == 1
+        ),
+        "deterministic": True,
+        "probability_used": False,
+        "host_float_arithmetic_used": False,
+        "canonical_mutation_authority": False,
+    })
+
+
+def holographic_path_address(seed: str, rank: int) -> int:
+    rank_i = _exact_int(rank, name="rank")
+    if rank_i < 0:
+        raise Pass220I041GameEngineError("rank must be nonnegative")
+    params = holographic_path_parameters(seed)
+    return (
+        params["start"] + params["stride"] * rank_i
+    ) % HOLOGRAPHIC_NODE_COUNT
+
+
+def holographic_path_node(seed: str, tick: int) -> Dict[str, Any]:
+    tick_i = _exact_int(tick, name="tick")
+    if tick_i < 0:
+        raise Pass220I041GameEngineError("tick must be nonnegative")
+    rank = tick_i % HOLOGRAPHIC_NODE_COUNT
+    address = holographic_path_address(seed, rank)
+    coordinate = h36_coordinate(address)
+    phase_word72 = _hash72_from_seed(
+        seed,
+        f"PATH72:{rank}:{address}",
+    )
+    phase_indices = tuple(HASH72_ALPHABET.index(c) for c in phase_word72)
+    time_q144 = tick_i % Q144_CELLS
+    return _receipt({
+        "schema": "HHS_PASS_220_I041_HOLOGRAPHIC_PATH_NODE_V1",
+        "seed": seed,
+        "tick": tick_i,
+        "rank5184": rank,
+        "linear5184": address,
+        "coordinate": coordinate,
+        "time_q144": time_q144,
+        "node_q144_word": coordinate["word144"],
+        "bott_octant8": (time_q144 // Q144_OCTANT_STEPS) % PHASE_BASIS_COUNT,
+        "reciprocal_q144": (time_q144 + Q144_HALF_TURN) % Q144_CELLS,
+        "orthogonal_layer2_q144": (
+            time_q144 + Q144_QUARTER_TURN
+        ) % Q144_CELLS,
+        "phase_word72": phase_word72,
+        "phase_word72_length": len(phase_word72),
+        "phase_fold_mod72": sum(phase_indices) % HASH72_LEN,
+        "phase_word_sha256": sha256(phase_word72.encode("utf-8")).hexdigest(),
+        "state_space": HASH72_STATE_SPACE,
+        "host_float_arithmetic_used": False,
+        "canonical_mutation_authority": False,
+    })
+
+
+def holographic_path_cycle_witness(seed: str) -> Dict[str, Any]:
+    params = holographic_path_parameters(seed)
+    addresses = tuple(
+        (
+            params["start"] + params["stride"] * rank
+        ) % HOLOGRAPHIC_NODE_COUNT
+        for rank in range(HOLOGRAPHIC_NODE_COUNT)
+    )
+    route_bytes = ",".join(str(value) for value in addresses).encode("ascii")
+    return _receipt({
+        "schema": "HHS_PASS_220_I041_HOLOGRAPHIC_PATH_CYCLE_V1",
+        "seed": seed,
+        "parameters": params,
+        "node_count": HOLOGRAPHIC_NODE_COUNT,
+        "unique_addresses": len(set(addresses)),
+        "min_address": min(addresses),
+        "max_address": max(addresses),
+        "first8": addresses[:8],
+        "last8": addresses[-8:],
+        "route_sha256": sha256(route_bytes).hexdigest(),
+        "full_cycle_closed": (
+            len(set(addresses)) == HOLOGRAPHIC_NODE_COUNT
+            and min(addresses) == 0
+            and max(addresses) == HOLOGRAPHIC_NODE_COUNT - 1
+        ),
+        "next_after_full_cycle": (
+            params["start"]
+            + params["stride"] * HOLOGRAPHIC_NODE_COUNT
+        ) % HOLOGRAPHIC_NODE_COUNT,
+        "returns_to_start": (
+            (
+                params["start"]
+                + params["stride"] * HOLOGRAPHIC_NODE_COUNT
+            ) % HOLOGRAPHIC_NODE_COUNT
+            == params["start"]
+        ),
+        "hash72_state_space": HASH72_STATE_SPACE,
+        "probability_used": False,
+        "host_float_arithmetic_used": False,
+        "canonical_mutation_authority": False,
+    })
+
+
+def holographic_animation_state(tick: int, seed: str) -> Dict[str, Any]:
+    """Exact descriptor for the browser animation/shader projection.
+
+    The browser may evaluate the listed trigonometric and golden-ratio terms
+    as floats, but the game-engine record retains only exact integer phase
+    addresses and symbolic algebraic identities.
+    """
+    tick_i = _exact_int(tick, name="tick")
+    if tick_i < 0:
+        raise Pass220I041GameEngineError("tick must be nonnegative")
+    node = holographic_path_node(seed, tick_i)
+    q144 = node["time_q144"]
+    bott = node["bott_octant8"]
+    groups = tuple({
+        "phase_group8": group,
+        "group_q144": (q144 + group * Q144_OCTANT_STEPS) % Q144_CELLS,
+        "reciprocal_group8": (group + 4) % PHASE_BASIS_COUNT,
+        "reciprocal_q144": (
+            q144 + group * Q144_OCTANT_STEPS + Q144_HALF_TURN
+        ) % Q144_CELLS,
+        "layer2_orthogonal_q144": (
+            q144 + group * Q144_OCTANT_STEPS + Q144_QUARTER_TURN
+        ) % Q144_CELLS,
+        "tesseract_cell8": group,
+        "swept_this_octant": group == bott,
+    } for group in range(PHASE_BASIS_COUNT))
+    return _receipt({
+        "schema": "HHS_PASS_220_I041_HOLOGRAPHIC_ANIMATION_STATE_V1",
+        "tick": tick_i,
+        "seed": seed,
+        "pathway_node": node,
+        "phase_groups8": groups,
+        "bott_octant8": bott,
+        "golden_spiral_projection": {
+            "angle_step_exact": "2*pi*phi",
+            "radius_exact": "sqrt(j)*3",
+            "phi_exact": "(1+sqrt(5))/2",
+            "same_seed_geometry_for_both_layers": True,
+        },
+        "layer2_projection": {
+            "phase_offset_q144": Q144_QUARTER_TURN,
+            "quarter_turn": True,
+            "xy_map": "[x,y]->[-y,x]",
+            "determinant": 1,
+        },
+        "reciprocal_projection": {
+            "half_turn_q144": Q144_HALF_TURN,
+            "phase_group_offset8": 4,
+            "topology_pair": "concave<->convex reciprocal dual",
+        },
+        "so4_projection": {
+            "plane_xw": "theta",
+            "plane_yz": "theta/phi",
+            "shared_element_for_all_5184_nodes": True,
+            "tesseract_cells": 8,
+            "tesseract_vertices": 16,
+            "tesseract_edges": 32,
+        },
+        "quartic_render_gate": {
+            "period": QUARTIC_RENDER_PERIOD,
+            "render": (tick_i % QUARTIC_RENDER_PERIOD) == 0,
+            "skipped_frames_write_no_projection": True,
+            "simulation_tick_continues": True,
+        },
+        "render_backend_float_projection_allowed": True,
+        "gpu_float_is_canonical_authority": False,
+        "canonical_vm81_mutation_authority": False,
+        "canonical_hash72_authority": False,
+        "canonical_hash216_authority": False,
+    })
+
+
+def holographic_shader_projection_ir(
+    animation: Mapping[str, Any],
+) -> Dict[str, Any]:
+    if not isinstance(animation, Mapping):
+        raise Pass220I041GameEngineError("animation must be a mapping")
+    if animation.get("schema") != (
+        "HHS_PASS_220_I041_HOLOGRAPHIC_ANIMATION_STATE_V1"
+    ):
+        raise Pass220I041GameEngineError("animation schema mismatch")
+    if not _receipt_matches(animation):
+        raise Pass220I041GameEngineError("animation receipt mismatch")
+    node = animation["pathway_node"]
+    coordinate = node["coordinate"]
+    return _receipt({
+        "schema": "HHS_PASS_220_I041_HOLOGRAPHIC_SHADER_PROJECTION_IR_V1",
+        "node_buffer": {
+            "node_count": HOLOGRAPHIC_NODE_COUNT,
+            "layout": "72x72",
+            "linear_address": coordinate["linear5184"],
+            "hash72_row72": coordinate["hash72_row72"],
+            "hash72_col72": coordinate["hash72_col72"],
+            "vm81_cell81": coordinate["vm81_cell81"],
+            "vm81_operation64": coordinate["vm81_operation64"],
+            "phase_left8": coordinate["phase_left8"],
+            "phase_right8": coordinate["phase_right8"],
+        },
+        "pathway": {
+            "rank5184": node["rank5184"],
+            "phase_word72": node["phase_word72"],
+            "state_space": HASH72_STATE_SPACE,
+        },
+        "vertex_projection": {
+            "golden_spiral": animation["golden_spiral_projection"],
+            "phase_groups8": animation["phase_groups8"],
+            "layer2": animation["layer2_projection"],
+            "so4": animation["so4_projection"],
+            "quartic_render_gate": animation["quartic_render_gate"],
+        },
+        "fragment_projection": {
+            "q144_color_index": node["time_q144"],
+            "reciprocal_q144_color_index": node["reciprocal_q144"],
+            "path_highlight_linear5184": node["linear5184"],
+        },
+        "backend_targets": ("GLSL", "WebGL2", "SPIR-V-compatible backend"),
+        "gpu_buffers_are_projection_only": True,
+        "shader_executes_canonical_mutation": False,
+        "canonical_admission_authority": False,
+    })
+
 def shader_ir(
     *,
     q144_index: int,
@@ -426,6 +707,11 @@ def build_relativistic_game_frame(
     music = h36_music_state(q144, bit)
     color = color_wheel_q144(q144)
     sprite = holofractal_sprite216(projection["projection_root_sha256"])
+    animation = holographic_animation_state(
+        tick_i,
+        projection["projection_root_sha256"],
+    )
+    holographic_shader = holographic_shader_projection_ir(animation)
     solid = asdict(derive_platonic_closure(*platonic_pair))
     shader = shader_ir(
         q144_index=q144,
@@ -449,6 +735,8 @@ def build_relativistic_game_frame(
             **solid,
         },
         "holofractal_sprite216": sprite,
+        "holographic_animation": animation,
+        "holographic_shader_projection_ir": holographic_shader,
         "shader_ir": shader,
         "relativistic_physics": {
             "i040_projection_root_sha256": projection["projection_root_sha256"],
@@ -531,6 +819,9 @@ def build_game_engine_cycle() -> Dict[str, Any]:
     platonic = platonic_scene_geometry()
     h36 = h36_full_coverage_witness()
     sprite = holofractal_sprite216(projection["projection_root_sha256"])
+    pathway = holographic_path_cycle_witness(
+        projection["projection_root_sha256"]
+    )
 
     return _receipt({
         "schema": CYCLE_SCHEMA,
@@ -552,6 +843,7 @@ def build_game_engine_cycle() -> Dict[str, Any]:
         "h36_full_coverage": h36,
         "platonic_scene": platonic,
         "sprite216": sprite,
+        "holographic_pathway": pathway,
         "relativistic_projection_root_sha256": projection[
             "projection_root_sha256"
         ],
@@ -620,6 +912,13 @@ def validate_game_engine_cycle(cycle: Mapping[str, Any]) -> Dict[str, Any]:
         raise Pass220I041GameEngineError("Platonic Euler closure failure")
     if cycle["sprite216"].get("sprite216_length") != 216:
         raise Pass220I041GameEngineError("Sprite216 length drift")
+    pathway = cycle.get("holographic_pathway", {})
+    if pathway.get("unique_addresses") != HOLOGRAPHIC_NODE_COUNT:
+        raise Pass220I041GameEngineError("holographic path coverage drift")
+    if pathway.get("full_cycle_closed") is not True:
+        raise Pass220I041GameEngineError("holographic path cycle open")
+    if pathway.get("returns_to_start") is not True:
+        raise Pass220I041GameEngineError("holographic path replay closure lost")
     if cycle.get("dimension_closure") != {
         "144x36": 5184,
         "81x64": 5184,
@@ -653,6 +952,8 @@ def validate_game_engine_cycle(cycle: Mapping[str, Any]) -> Dict[str, Any]:
         "et_banks3": 3,
         "et_pitch_classes12": 12,
         "vm81_cells": 81,
+        "holographic_path_nodes": HOLOGRAPHIC_NODE_COUNT,
+        "hash72_phase_word_state_space": HASH72_STATE_SPACE,
         "shared_relativistic_projection_root_sha256": cycle[
             "relativistic_projection_root_sha256"
         ],

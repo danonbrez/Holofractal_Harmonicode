@@ -10,6 +10,8 @@ on:
       - "hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h"
       - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
       - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
+      - "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html"
+      - "tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
       - "tests/pass220/test_hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
@@ -33,6 +35,8 @@ on:
       - "hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h"
       - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
       - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
+      - "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html"
+      - "tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
       - "tests/pass220/test_hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
@@ -72,6 +76,7 @@ jobs:
           python -m py_compile \
             hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py \
             tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+            tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
 
       - name: Verify connected Wolfram 48 of 48 receipt
         run: |
@@ -110,6 +115,13 @@ jobs:
         run: >
           python -m pytest -q
           tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+
+      - name: Run I041 deterministic holographic browser projection tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
 
       - name: Run I040 exact DESI projection regression
         env:

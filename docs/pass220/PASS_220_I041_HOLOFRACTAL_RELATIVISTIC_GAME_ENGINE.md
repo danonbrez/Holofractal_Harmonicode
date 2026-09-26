@@ -305,3 +305,59 @@ PASS
 48 / 48
 failed = []
 ~~~
+
+
+## Deterministic 5,184-node holographic sprite pathway (2026-09-26)
+
+I041 now exposes one deterministic traversal of the canonical 72x72 address
+surface:
+
+~~~text
+node_count = 5184
+address = (start + stride * rank) mod 5184
+gcd(stride, 5184) = 1
+~~~
+
+The seed is hashed with SHA-256 to derive the start and stride.  Because the
+stride is coprime to 5,184, ranks 0..5,183 visit every address exactly once and
+rank 5,184 returns to the start.  No probability source or host random generator
+participates.
+
+Each visited address also derives one deterministic 72-character Hash72 phase
+word.  The per-word state-space declaration is therefore:
+
+~~~text
+72^72
+~~~
+
+This does not change the number of simultaneously addressable Lane 5 nodes:
+the live graph is still exactly 5,184 nodes.  The 72^72 quantity is the
+possible state-word space carried by a node/path step.
+
+The exact game-engine animation descriptor binds the supplied browser animation
+logic to integer/symbolic state:
+
+- eight phase groups, spaced by 18 Q144 steps;
+- reciprocal half-turn at +72 Q144;
+- Layer-2 orthogonal quarter-turn at +36 Q144;
+- Bott octant sweep over all eight groups;
+- golden spiral law with symbolic phi = (1+sqrt(5))/2;
+- shared SO(4) xw / yz projection descriptor and eight tesseract cells;
+- reciprocal concave/convex topology pairing;
+- quartic 1-in-4 render gate with the simulation tick continuing on skipped
+  projection frames.
+
+The browser reference implementation is:
+
+~~~text
+applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html
+~~~
+
+It uses a single 5,184-node BufferGeometry and two shader projection passes for
+the orthogonal layers.  It contains no Math.random path.  Browser SHA-256 seed
+derivation mirrors the native game engine, so a seed/rank pair selects the same
+5,184 address and Hash72 phase word in both implementations.
+
+GPU trigonometry, golden-ratio evaluation, color conversion, perspective, and
+point rasterization remain projection-only.  They do not mint Hash72/Hash216,
+mutate VM81, or persist canonical state.
