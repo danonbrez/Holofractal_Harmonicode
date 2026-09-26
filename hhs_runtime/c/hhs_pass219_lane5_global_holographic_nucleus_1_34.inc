@@ -58,7 +58,9 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
 ) {
     HHSExactPass219Lane5MediationReceiptV1 receipt;
     HHSExactPass219HNANGlobalReceiptV1 hnan_global;
+    HHSExactPass219PX2ManifoldReceiptV1 px2_manifold;
     HHSExactStatus hnan_status;
+    HHSExactStatus px2_status;
     uint64_t closure = UINT64_C(1469598103934665603);
     uint64_t mediation = UINT64_C(1469598103934665603);
     uint32_t i;
@@ -94,6 +96,33 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
         hnan_global.canonical_hash72_authority != 0U ||
         hnan_global.canonical_hash216_authority != 0U ||
         hnan_global.floating_point_canonical_authority != 0U) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+
+    /*
+     * Pass 219 Lane 5 source-preserving P^(x^2) manifold preflight.
+     * This verifies source identity, relation topology, modular/phase ordering,
+     * and the ((Delta/-P)*Bx^(-5184)) outer boundary without simplifying any
+     * nested == relation into unrestricted scalar equality.
+     */
+    memset(&px2_manifold, 0, sizeof(px2_manifold));
+    px2_status = hhs_exact_pass219_px2_manifold_verify(&px2_manifold);
+    if (px2_status != HHS_EXACT_STATUS_OK ||
+        px2_manifold.decision != HHS_EXACT_PASS219_PX2_DECISION_VERIFIED ||
+        px2_manifold.source_hash_verified != 1U ||
+        px2_manifold.parentheses_balanced != 1U ||
+        px2_manifold.typed_relation_edges_preserved != 1U ||
+        px2_manifold.outer_prefix_exact != 1U ||
+        px2_manifold.outer_denominator_exact != 1U ||
+        px2_manifold.ordered_markers_exact != 1U ||
+        px2_manifold.delta_bx_boundary_preserved != 1U ||
+        px2_manifold.scalar_simplification_authority != 0U ||
+        px2_manifold.equality_reversal_authority != 0U ||
+        px2_manifold.delta_cancellation_authority != 0U ||
+        px2_manifold.floating_point_canonical_authority != 0U ||
+        px2_manifold.canonical_vm81_mutation_authority != 0U ||
+        px2_manifold.canonical_hash72_authority != 0U ||
+        px2_manifold.canonical_hash216_authority != 0U) {
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     }
     if (request == NULL ||
