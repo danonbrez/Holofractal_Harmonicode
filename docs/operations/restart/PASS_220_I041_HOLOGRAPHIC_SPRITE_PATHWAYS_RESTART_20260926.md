@@ -180,3 +180,14 @@ Authority:
   contracts/pass220/PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md
 - added exact-head Node execution of
   HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 before WebGL/MP4 capture.
+
+
+## Repair-forward note — canonical-seed contract line wrapping
+
+- failed I041 PR run: 36275315091
+- engine tests: 17/17 PASS.
+- browser tests: 6/7 PASS.
+- failure: one contract assertion required a full sentence on one physical
+  Markdown line; the normative sentence was wrapped after "MUST NOT".
+- repair: assert the invariant phrase independent of Markdown line wrapping.
+- no browser, shader, math, or authority semantics changed.

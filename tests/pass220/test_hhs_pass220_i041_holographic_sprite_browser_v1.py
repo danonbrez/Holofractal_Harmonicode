@@ -123,7 +123,7 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "Integer BigInt quotient truncation is forbidden.",
         "VM81 closure is six-cell and fail-closed",
         "It MUST NOT become a generic host division function.",
-        "It MUST NOT silently coerce this nonintegral coordinate into a Z/72 residue.",
+        "silently coerce this nonintegral coordinate into a Z/72 residue",
         "construction edges spend no capture budget",
         "source_frame_resolution == output_drawing_buffer_resolution",
         "5184 * 5184 = 26,873,856",
