@@ -63,3 +63,22 @@ def test_whitepaper_and_global_nucleus_contract_bind_same_algorithm():
         assert literal in paper
     assert "HNAN global constraint and contradiction resolver" in nucleus
     assert "signed environmental VM81 admission" in nucleus
+
+
+def test_normative_global_contract_matches_runtime_policy():
+    contract = (
+        ROOT / "contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_1_63.md"
+    ).read_text(encoding="utf-8")
+    required = (
+        "0=∅=AB/P⁴∅=HNAN",
+        "u^72 -> u^0",
+        "P=(Bx^5184)/Delta",
+        "INFINITY -> DELTA",
+        "DELTA -> X",
+        "hhs_exact_pass219_lane5_mediate_candidate",
+        "hhs_exact_pass219_vm81_environment_admit_signed",
+        "hhs_exact_pass219_hnan_global_system_verify",
+        "canonical_vm81_mutation_authority = FALSE",
+    )
+    for literal in required:
+        assert literal in contract
