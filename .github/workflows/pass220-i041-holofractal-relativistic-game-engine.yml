@@ -11,6 +11,7 @@ on:
       - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
       - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
       - "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html"
+      - "contracts/pass220/PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md"
       - "tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py"
       - "benchmarks/pass220/benchmark_i041_html_render_bottleneck.py"
       - "hhs_runtime/hhs_service_registry_v1.py"
@@ -37,6 +38,7 @@ on:
       - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
       - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
       - "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html"
+      - "contracts/pass220/PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md"
       - "tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py"
       - "benchmarks/pass220/benchmark_i041_html_render_bottleneck.py"
       - "hhs_runtime/hhs_service_registry_v1.py"
@@ -128,6 +130,30 @@ jobs:
         run: >
           python -m pytest -q
           tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
+
+      - name: Verify canonical-seed exact browser math receipt
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const html = fs.readFileSync(
+            "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html",
+            "utf8"
+          );
+          const match = html.match(/<script>\s*"use strict";([\s\S]*?)<\/script>/);
+          if (!match) throw new Error("I041 main browser script not found");
+          const source = '"use strict";' + match[1];
+          const cutoff = source.lastIndexOf("(async()=>");
+          if (cutoff < 0) throw new Error("I041 browser boot IIFE not found");
+          const preboot = source.slice(0, cutoff);
+          new Function(preboot);
+          const receipt = new Function(
+            preboot + "; return canonicalSeedMathRepairReceipt();"
+          )();
+          if (receipt.status !== "PASS") {
+            throw new Error("canonical seed math repair receipt failed: " + JSON.stringify(receipt));
+          }
+          console.log(JSON.stringify(receipt));
+          NODE
 
       - name: Render HTML-driven HD MP4 and measure renderer-bypass bottleneck
         run: >

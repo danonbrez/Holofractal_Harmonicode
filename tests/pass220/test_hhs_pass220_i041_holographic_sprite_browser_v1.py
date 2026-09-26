@@ -107,3 +107,26 @@ def test_holographic_pixel_sprite_compositor_preserves_source_resolution_and_tra
         "sameResolution:",
     ):
         assert token in source, token
+
+
+
+CONTRACT = Path(
+    "contracts/pass220/"
+    "PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md"
+)
+
+
+def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries():
+    source = CONTRACT.read_text(encoding="utf-8")
+    for token in (
+        "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041",
+        "Integer BigInt quotient truncation is forbidden.",
+        "VM81 closure is six-cell and fail-closed",
+        "It MUST NOT become a generic host division function.",
+        "It MUST NOT silently coerce this nonintegral coordinate into a Z/72 residue.",
+        "construction edges spend no capture budget",
+        "source_frame_resolution == output_drawing_buffer_resolution",
+        "5184 * 5184 = 26,873,856",
+        "HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS",
+    ):
+        assert token in source, token

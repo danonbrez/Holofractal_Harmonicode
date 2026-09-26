@@ -165,3 +165,18 @@ Repository-contract repairs encoded in the browser:
 Authority:
 - browser/GPU remains projection-only;
 - no VM81/Hash72/Hash216 mutation or persistence authority is added.
+
+
+## Repair-forward note — deterministic source assertion
+
+- failed I041 PR run: 36275224934
+- engine tests: 17/17 PASS.
+- browser tests: 5/6 PASS.
+- failure: the HTML contained the literal forbidden random-call name only
+  inside CANONICAL_SEED_REPAIRS prose; there was no executable random call.
+- repair: rewrite the prose as "host PRNG calls forbidden"; deterministic
+  implementation unchanged.
+- added normative seed contract:
+  contracts/pass220/PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md
+- added exact-head Node execution of
+  HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 before WebGL/MP4 capture.
