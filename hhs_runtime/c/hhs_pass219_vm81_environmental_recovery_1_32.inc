@@ -560,6 +560,7 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     uint8_t key[HHS_EXACT_PASS219_VM81_PQC_KEY_BYTES];
     HHSExactPass219HNANGlobalReceiptV1 hnan_global;
     HHSExactPass219PX2ManifoldReceiptV1 px2_manifold;
+    HHSExactPass219PolaritySReceiptV1 polarity_s;
     HHSExactStatus status;
     if (out_committed_frame == NULL || out_admission == NULL ||
         out_firewall_receipt == NULL || out_signature_receipt == NULL ||
@@ -623,6 +624,38 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
         px2_manifold.canonical_vm81_mutation_authority != 0U ||
         px2_manifold.canonical_hash72_authority != 0U ||
         px2_manifold.canonical_hash216_authority != 0U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    memset(&polarity_s, 0, sizeof(polarity_s));
+    status = hhs_exact_pass219_polarity_s_verify(-1, &polarity_s);
+    if (status != HHS_EXACT_STATUS_OK ||
+        polarity_s.decision != HHS_EXACT_PASS219_POLARITY_S_DECISION_VERIFIED ||
+        polarity_s.s_value != -1 ||
+        polarity_s.phase_steps != HHS_EXACT_PASS219_POLARITY_S_HALF_TURN ||
+        polarity_s.source_definitions_verified != 1U ||
+        polarity_s.negative_s_surface_verified != 1U ||
+        polarity_s.parent_1_64_verified != 1U ||
+        polarity_s.chiral_pairs_opposed != 1U ||
+        polarity_s.half_turn_verified != 1U ||
+        polarity_s.half_turn_self_inverse != 1U ||
+        polarity_s.p_q_pair_rotation_verified != 1U ||
+        polarity_s.correction_link_verified != 1U ||
+        polarity_s.scalar_projection_closed != 1U ||
+        polarity_s.scalar_projection_witness_only != 1U ||
+        polarity_s.commutation_authority != 0U ||
+        polarity_s.reciprocal_cancellation_authority != 0U ||
+        polarity_s.equality_reversal_authority != 0U ||
+        polarity_s.floating_point_canonical_authority != 0U ||
+        polarity_s.canonical_vm81_mutation_authority != 0U ||
+        polarity_s.canonical_hash72_authority != 0U ||
+        polarity_s.canonical_hash216_authority != 0U) {
         atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
         out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
         out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
