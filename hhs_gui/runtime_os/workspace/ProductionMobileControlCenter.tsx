@@ -5,7 +5,7 @@ import ProductionAssistantChat from "./ProductionAssistantChat"
 type Json = Record<string, any>
 type Surface = "program" | "workspace" | "authority"
 
-const MAX_INGRESS_BYTES = 24 * 1024 * 1024
+const MAX_INGRESS_BYTES = 16 * 1024 * 1024
 const MAX_ASSISTANT_CONTEXT_CHARS = 32768
 const record = (value: unknown): Json => value && typeof value === "object" ? value as Json : {}
 const text = (value: unknown, fallback = ""): string => typeof value === "string" ? value : fallback
@@ -181,7 +181,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
   const ingest = async (): Promise<void> => {
     if (!selected) return
     if (selected.size > MAX_INGRESS_BYTES) {
-      setError(`File is ${(selected.size / 1024 / 1024).toFixed(1)} MB; this mobile ingress surface is bounded to 24 MB per file.`)
+      setError(`File is ${(selected.size / 1024 / 1024).toFixed(1)} MB; this mobile ingress surface is bounded to the canonical Pass 165 limit of 16 MB per file.`)
       return
     }
     setBusy(true)

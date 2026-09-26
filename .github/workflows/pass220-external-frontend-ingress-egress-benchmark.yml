@@ -1,0 +1,299 @@
+name: Pass 220 External Frontend Lossless Nonblocking Benchmark
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx'
+      - 'hhs_backend/api/pass174_runtime_routes.py'
+      - 'hhs_backend/api/development_lifecycle_routes.py'
+      - 'hhs_backend/runtime_os_pass220_lane5_tool_hydration.py'
+      - 'hhs_verification/pass220/__init__.py'
+      - 'hhs_verification/pass220/external_frontend_ingress_egress_benchmark_v1.py'
+      - 'tests/pass220/test_hhs_pass220_external_frontend_ingress_egress_v1.py'
+      - 'contracts/pass220/PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_LOSSLESS_NONBLOCKING_V1.md'
+      - 'docs/operations/restart/PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_BENCHMARK_RESTART_20260925.md'
+      - '.github/workflows/pass220-external-frontend-ingress-egress-benchmark.yml'
+  push:
+    branches:
+      - main
+      - pass220-lane5-global-tool-hydration-1-0
+    paths:
+      - 'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx'
+      - 'hhs_backend/api/pass174_runtime_routes.py'
+      - 'hhs_backend/api/development_lifecycle_routes.py'
+      - 'hhs_backend/runtime_os_pass220_lane5_tool_hydration.py'
+      - 'hhs_verification/pass220/external_frontend_ingress_egress_benchmark_v1.py'
+      - 'tests/pass220/test_hhs_pass220_external_frontend_ingress_egress_v1.py'
+      - 'contracts/pass220/PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_LOSSLESS_NONBLOCKING_V1.md'
+      - 'docs/operations/restart/PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_BENCHMARK_RESTART_20260925.md'
+      - '.github/workflows/pass220-external-frontend-ingress-egress-benchmark.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass220-external-frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  external-frontend-lossless-nonblocking:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      PYTHONPATH: '.'
+      PYTHONHASHSEED: '0'
+      HHS_COGNITION_AUTO_TICK: '0'
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS: '0.25'
+      HHS_PASS220_EXTERNAL_FRONTEND_EVIDENCE: '/tmp/pass220-external-frontend'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify base and Lane 5 selector non-replacement
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git merge-base --is-ancestor 156d4138f2640c6fd8937f96ffb5c030ae9b7952 HEAD
+          git diff --exit-code 156d4138f2640c6fd8937f96ffb5c030ae9b7952 HEAD --             hhs_runtime/include/hhs_pass219_lane5_direct_witness_routing_1_46.h             hhs_runtime/c/hhs_pass219_lane5_direct_witness_routing_1_46.inc             hhs_runtime/include/hhs_pass219_lane5_unbounded_workload_scaling_1_48.h             hhs_runtime/c/hhs_pass219_lane5_unbounded_workload_scaling_1_48.inc             hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependency-scoped test runtime
+        run: |
+          timeout 300s python -m pip install --upgrade pip
+          timeout 300s python -m pip install             fastapi==0.128.2             starlette==0.50.0             'httpx>=0.27,<1.0'             'uvicorn[standard]>=0.30,<1.0'             'cryptography>=46.0,<47.0'             requests             pytest             playwright
+
+      - name: Compile new Python validation surfaces
+        run: |
+          python -m py_compile \
+            hhs_verification/pass220/external_frontend_ingress_egress_benchmark_v1.py \
+            tests/pass220/test_hhs_pass220_external_frontend_ingress_egress_v1.py \
+            hhs_backend/runtime_os_pass220_lane5_tool_hydration.py
+
+      - name: Build exact native runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 600s bash bin/post_compile
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          sha256sum hhs_runtime/builds/libhhs_runtime.so             | tee /tmp/pass220-external-frontend-c-runtime.sha256
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so             | grep -q ' hhs_exact_vm81_frame_import_le$'
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so             | grep -q ' hhs_exact_vm81_frame_export_le$'
+
+      - name: Native 648-byte and RNA ingress-egress exactness suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass220-native
+          for source in             tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c             tests/pass219/test_pass219_rna_transcription_1_10.c
+          do
+            name="$(basename "$source" .c)"
+            gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic               -Ihhs_runtime/include "$source"               -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread               -Wl,-rpath,"$PWD/hhs_runtime/builds"               -o "/tmp/pass220-native/$name"
+            "/tmp/pass220-native/$name"
+          done
+          HHS_DISABLE_C_AUTOBUILD=1 python - <<'PY'
+          from hhs_python.runtime.hhs_exact_ctypes_bridge import HHSExactRuntimeBridge
+          raw = bytes(((i * 37 + 11) & 255) for i in range(648))
+          assert HHSExactRuntimeBridge.frame_roundtrip(raw) == raw
+          assert HHSExactRuntimeBridge.x86_bytecode_roundtrip(raw) == raw
+          print("PASS220_EXTERNAL_FRONTEND_NATIVE_648_ROUNDTRIP_PASS")
+          PY
+
+      - name: Python ingress, hydration, route, and global-constraint regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 420s python -m pytest -q --tb=short             tests/pass220/test_hhs_pass220_external_frontend_ingress_egress_v1.py             tests/pass219/test_pass219_global_raw5184_compatibility_hydration_v1.py             tests/test_hhs_pass165_multimodal_ingress_v1.py             tests/test_hhs_pass174_lifecycle_route_reachability_v1.py             tests/pass220/test_hhs_pass220_lane5_global_tool_hydration_v1.py             tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py             tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py
+
+      - name: Typecheck and build exact external Runtime OS frontend
+        working-directory: hhs_gui
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          test -s dist/index.html
+          test -d dist/assets
+          node scripts/live-gui-e2e-source-verify.mjs
+
+      - name: Verify built frontend retains exact external ingress routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -R -q '/api/v1/pass174/sdlc/run' hhs_gui/dist/assets
+          grep -R -q '/api/v1/pass174/hash216/query' hhs_gui/dist/assets
+          grep -R -q 'Hydrate vector store' hhs_gui/dist/assets
+          grep -R -q 'Read persisted vector' hhs_gui/dist/assets
+          grep -Fq 'const MAX_INGRESS_BYTES = 16 * 1024 * 1024'             hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx
+          grep -Fq 'WARMING_NONBLOCKING'             hhs_backend/runtime_os_pass220_lane5_tool_hydration.py
+          grep -Fq 'asyncio.create_task'             hhs_backend/runtime_os_pass220_lane5_tool_hydration.py
+
+      - name: Install bounded Chromium
+        run: timeout 600s python -m playwright install --with-deps chromium
+
+      - name: Run real production external frontend lossless/nonblocking benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HHS_PASS220_EXTERNAL_FRONTEND_EVIDENCE"
+          timeout 900s python -m             hhs_verification.pass220.external_frontend_ingress_egress_benchmark_v1             --evidence-dir "$HHS_PASS220_EXTERNAL_FRONTEND_EVIDENCE"
+
+      - name: Validate benchmark acceptance record
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/pass220-external-frontend/external-frontend-lossless-nonblocking.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          b = d['browser']
+          assert d['ok'] is True
+          assert d['lossless_information_preservation'] is True
+          assert d['external_frontend_nonblocking'] is True
+          assert d['lane5_selection_changed'] is False
+          assert d['frontend_runtime_authority'] is False
+          assert d['canonical_source_limit_bytes'] == 16 * 1024 * 1024
+          assert b['quick_build']['exact_egress_bytes_equal'] is True
+          assert b['quick_build']['compute_stages_closed'] is True
+          assert b['fixture_count'] >= 9
+          assert b['all_fixture_egress_lossless'] is True
+          assert b['all_fixture_reingress_stable'] is True
+          assert b['all_fixture_vector_readback'] is True
+          assert b['nonblocking']['event_loop_responsive'] is True
+          assert b['nonblocking']['server_status_responsive'] is True
+          assert b['nonblocking']['status_probes_while_ingress_in_flight'] >= 1
+          assert b['concurrent']['all_completed'] is True
+          assert b['concurrent']['all_lossless'] is True
+          assert b['oversize_preflight']['blocked_before_network'] is True
+          assert b['oversize_preflight']['sdlc_requests_emitted'] == 0
+          assert b['negative']['media_spoof_status'] == 422
+          assert b['negative']['unknown_api_status'] == 404
+          assert not b['page_errors']
+          assert not b['relevant_request_failures']
+          print(json.dumps({
+              'fixture_count': b['fixture_count'],
+              'frontend_interactive_ms': b['frontend_interactive_ms'],
+              'status_probe_p95_ms': b['nonblocking']['status_probe_p95_ms'],
+              'browser_frame_max_gap_ms': b['nonblocking']['browser_animation_frame_max_gap_ms'],
+              'concurrent_request_count': b['concurrent']['request_count'],
+              'elapsed_ms': d['elapsed_ms'],
+          }, sort_keys=True))
+          PY
+
+      - name: Retain prior full production multimodal browser integration suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pass220-external-frontend/pass185-phase4
+          timeout 600s python -m             hhs_verification.pass185.phase4_production_multimodal_acceptance             --evidence-dir /tmp/pass220-external-frontend/pass185-phase4
+
+      - name: Retain production root and frontend regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 300s python -m pytest -q --tb=short             tests/test_runtime_os_production_root.py             tests/test_hhs_production_public_app_v1.py             tests/test_hhs_workspace_multimodal_ingress_gui_pass049_v1.py             tests/pass220/test_hhs_pass220_i006_mobile_llm_control_surface.py
+
+      - name: Seal benchmark evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HHS_PASS220_EXTERNAL_FRONTEND_EVIDENCE"
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('/tmp/pass220-external-frontend')
+          payload = {
+              'schema': 'HHS_PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_VALIDATION_SEAL_V1',
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'base_main': '156d4138f2640c6fd8937f96ffb5c030ae9b7952',
+              'lane5_selector_changed': False,
+              'frontend_runtime_authority': False,
+              'benchmark_timing_is_canonical_authority': False,
+              'evidence': {},
+              'source_blobs': {},
+          }
+          sources = [
+              'hhs_gui/runtime_os/workspace/ProductionMobileControlCenter.tsx',
+              'hhs_backend/api/pass174_runtime_routes.py',
+              'hhs_backend/api/development_lifecycle_routes.py',
+              'hhs_backend/runtime_os_pass220_lane5_tool_hydration.py',
+              'hhs_verification/pass220/external_frontend_ingress_egress_benchmark_v1.py',
+              'tests/pass220/test_hhs_pass220_external_frontend_ingress_egress_v1.py',
+              'contracts/pass220/PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_LOSSLESS_NONBLOCKING_V1.md',
+          ]
+          for source in sources:
+              path = Path(source)
+              if path.is_file():
+                  payload['source_blobs'][source] = subprocess.check_output(
+                      ['git', 'hash-object', source], text=True
+                  ).strip()
+          for evidence in sorted(root.glob('**/*.json')):
+              try:
+                  data = json.loads(evidence.read_text(encoding='utf-8'))
+              except Exception:
+                  continue
+              payload['evidence'][str(evidence.relative_to(root))] = {
+                  'ok': data.get('ok'),
+                  'classification': data.get('classification'),
+                  'sha256': hashlib.sha256(evidence.read_bytes()).hexdigest(),
+              }
+          encoded = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+          payload['receipt_sha256'] = hashlib.sha256(encoded).hexdigest()
+          (root / 'validation-seal.json').write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Publish benchmark summary
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          path = Path('/tmp/pass220-external-frontend/external-frontend-lossless-nonblocking.json')
+          print('## Pass 220 external frontend ingress/egress benchmark')
+          if not path.is_file():
+              print('- benchmark record: unavailable; inspect job logs/evidence')
+          else:
+              d = json.loads(path.read_text(encoding='utf-8'))
+              b = d['browser']
+              print(f"- exact modality/stress fixtures: {b['fixture_count']}")
+              print(f"- exact egress byte equality: {b['all_fixture_egress_lossless']}")
+              print(f"- egress -> browser re-ingress stable: {b['all_fixture_reingress_stable']}")
+              print(f"- persisted vector readback: {b['all_fixture_vector_readback']}")
+              print(f"- frontend interactive: {b['frontend_interactive_ms']} ms")
+              print(f"- in-flight status probe p95: {b['nonblocking']['status_probe_p95_ms']} ms")
+              print(f"- browser max animation-frame gap: {b['nonblocking']['browser_animation_frame_max_gap_ms']} ms")
+              print(f"- concurrent requests closed: {b['concurrent']['request_count']}")
+              print(f"- >16 MiB rejected before POST: {b['oversize_preflight']['blocked_before_network']}")
+              print('- Lane 5 selector changed: false')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-external-frontend-lossless-nonblocking
+          path: |
+            /tmp/pass220-external-frontend/**
+            /tmp/pass220-external-frontend-c-runtime.sha256
+          if-no-files-found: warn
+          retention-days: 30
