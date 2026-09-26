@@ -84,3 +84,16 @@ None known at checkpoint creation.
 - repair: restore the backslash after
   test_hhs_pass220_holofractal_relativistic_game_engine_v1.py and re-run the
   dependency-scoped workflow from the repair commit.
+
+
+## Repair-forward note — constant initialization order
+
+- failed I041 PR run: 36271742206
+- failed I042 downstream PR run: 36271742139
+- failure: module collection raised NameError because
+  HOLOGRAPHIC_STATE_WORD_LEN referenced HASH72_LEN before the inherited
+  HASH72_LEN declaration executed.
+- compile and Wolfram 48/48 steps passed before collection.
+- repair: move the holographic dependent constants after HASH72_LEN and
+  SPRITE216_LEN; no pathway formula, animation law, or authority boundary
+  changed.
