@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS219_LANE5_HNAN_GLOBAL_CONSTRAINT_1_63_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 25,
+  "pass_count": 25,
+  "failed": [],
+  "zero_closure": ["ZERO","EMPTYSET","AB_P4_EMPTYSET","HNAN"],
+  "reciprocal_chain": ["INFINITY","DELTA","X"],
+  "hnan_order": ["x","y","-z","-w","xy","yx","-zw","-wz"],
+  "characteristic_polynomial": "(-2 + lam)*lam^2*(1 + lam)",
+  "lifted_characteristic_polynomial": "lam^2*(lam - 2*r - 2*s)*(lam - r + s)",
+  "generic_lift_conditions": ["r!=s","r+s!=0"],
+  "forbidden_rewrites": [
+    "scalarize_ZERO_EMPTYSET_HNAN",
+    "reverse_ordered_closure",
+    "cancel_DELTA",
+    "INFINITY_to_float",
+    "commute_XY_YX",
+    "commute_ZW_WZ",
+    "replace_HNAN_with_scalar_division"
+  ]
+}
