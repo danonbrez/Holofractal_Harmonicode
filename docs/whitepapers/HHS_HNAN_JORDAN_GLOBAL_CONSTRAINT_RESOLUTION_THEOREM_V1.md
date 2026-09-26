@@ -1146,3 +1146,73 @@ Machine source:
 ```text
 contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.hhs
 ```
+
+
+## 25. Pass 219 Lane 5 successor 1.66 — global conservation/polarity resolver
+
+The 1.66 successor composes the 1.63 HNAN/Jordan boundary, 1.64 reciprocal manifold, and 1.65 polarity half-turn into a gate-scoped contradiction-resolution layer.
+
+The master scalar-projection surface is:
+
+[
+c^2\frac{P(q-p)}{p+q}
+=
+\frac{(P^2-pq)mc^2}{\Delta}
+=
+a^2+b^2,
+]
+
+with the inherited parent law:
+
+[
+P^2-pq=\frac{(q-p)P}{p+q}.
+]
+
+On the explicitly nonzero scalar domain this conditionally gives (Delta=m), but no native Delta-cancellation authority is created.
+
+The exact negative-defect witness is:
+
+[
+p=\sqrt6+\sqrt2,quad
+q=\sqrt6-\sqrt2,quad
+P=\sqrt3,
+]
+
+for which:
+
+[
+pq=4,quad P^2-pq=-1,quad
+\frac pq=2+\sqrt3,quad
+\frac qp=2-\sqrt3,
+]
+
+and both the parent defect law and reciprocal correction close at (-1).
+
+The canonical positive seed remains:
+
+[
+(a^2,b^2,c^2)=(1,2,3).
+]
+
+The null-cone statement is represented separately as a signed metric projection with (c^2_{m metric}=-3), so the canonical constant (c^2=3) is never overwritten.
+
+The same seed verifies exactly:
+
+[
+\left(b^{b^2/12}\right)^{72}=2^6,qquad
+b^6c^4=72.
+]
+
+The positive unit shell (p=P-1, q=P+1) remains a distinct gate from the Pell witness. Cross-gate substitution is forbidden unless explicitly licensed.
+
+Normative contract:
+
+```text
+contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.md
+```
+
+Machine source:
+
+```text
+contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.hhs
+```
