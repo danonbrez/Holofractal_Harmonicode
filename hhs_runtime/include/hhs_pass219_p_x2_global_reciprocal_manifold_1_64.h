@@ -19,6 +19,10 @@ extern "C" {
 #define HHS_EXACT_PASS219_PX2_MANIFOLD_SINGLE_EQ UINT32_C(1)
 #define HHS_EXACT_PASS219_PX2_MANIFOLD_RELATION_EDGES UINT32_C(13)
 #define HHS_EXACT_PASS219_PX2_MANIFOLD_SHA256_BYTES UINT32_C(32)
+#define HHS_EXACT_PASS219_PX2_CORRECTION_RAW_BYTES UINT32_C(36)
+#define HHS_EXACT_PASS219_PX2_CORRECTION_RAW_CHARS UINT32_C(35)
+#define HHS_EXACT_PASS219_PX2_CORRECTION_PARSE_BYTES UINT32_C(38)
+#define HHS_EXACT_PASS219_PX2_CORRECTION_PARSE_CHARS UINT32_C(37)
 
 enum {
     HHS_EXACT_PASS219_PX2_DECISION_INVALID = 0,
@@ -42,6 +46,10 @@ typedef struct HHSExactPass219PX2ManifoldAuthorityV1 {
     uint8_t pass178_constraint_program_semantics;
     uint8_t lane5_preflight_required;
     uint8_t signed_environmental_preflight_required;
+    uint8_t reciprocal_correction_surface_mandatory;
+    uint8_t correction_raw_source_preserved;
+    uint8_t correction_balanced_parse_required;
+    uint8_t correction_scalar_projection_witness_only;
     uint8_t scalar_simplification_authority;
     uint8_t equality_reversal_authority;
     uint8_t delta_cancellation_authority;
@@ -74,6 +82,12 @@ typedef struct HHSExactPass219PX2ManifoldReceiptV1 {
     uint8_t xyzw_nested_surface_preserved;
     uint8_t delta_bx_boundary_preserved;
     uint8_t typed_relation_edges_preserved;
+    uint8_t correction_raw_hash_verified;
+    uint8_t correction_parse_hash_verified;
+    uint8_t correction_raw_source_preserved;
+    uint8_t correction_balanced_parse_preserved;
+    uint8_t correction_native_order_preserved;
+    uint8_t correction_scalar_projection_closed;
     uint8_t scalar_simplification_authority;
     uint8_t equality_reversal_authority;
     uint8_t delta_cancellation_authority;
@@ -81,7 +95,7 @@ typedef struct HHSExactPass219PX2ManifoldReceiptV1 {
     uint8_t canonical_vm81_mutation_authority;
     uint8_t canonical_hash72_authority;
     uint8_t canonical_hash216_authority;
-    uint8_t reserved0[6];
+    uint8_t reserved0[4];
 } HHSExactPass219PX2ManifoldReceiptV1;
 
 HHS_EXACT_API uint32_t hhs_exact_pass219_px2_manifold_version(void);
@@ -91,6 +105,18 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_px2_manifold_authority(
 );
 
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_px2_manifold_source(
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_px2_correction_raw_source(
+    uint8_t *out_bytes,
+    size_t capacity,
+    size_t *out_length
+);
+
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_px2_correction_parse_source(
     uint8_t *out_bytes,
     size_t capacity,
     size_t *out_length
