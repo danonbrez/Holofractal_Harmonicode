@@ -411,3 +411,87 @@ Timing from CI is host-specific and is not substituted for the existing Fold7
 hardware evidence.  The same HTML benchmark surface can be executed on the
 Samsung hardware lane for physical GPU comparison.  Browser/GPU values remain
 projection-only and cannot mutate VM81, Hash72, or Hash216 state.
+
+
+## Canonical HTML seed and holographic pixel-sprite display contract
+
+The governing visual/behavioral seed for the browser projection is the
+user-supplied monolithic surface titled:
+
+~~~text
+Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041
+~~~
+
+The optimized I041 browser page is a derived execution adapter, not a semantic
+replacement.  It preserves the seed's golden-spiral geometry, eight phase
+groups, reciprocal half-turn, orthogonal Layer-2 quarter-turn, shared SO(4)
+tesseract projection, Bott sweep, and quartic projection cadence.
+
+Where the seed's executable helper arithmetic conflicts with repository
+contracts, the repository contracts win.  The browser adapter now repairs the
+following boundaries explicitly:
+
+1. Q(sqrt(2),sqrt(3)) division uses BigInt **rational coefficients**.  The
+   earlier integer-coefficient `num[i] / norm` shortcut is forbidden because
+   it can truncate the exact inverse of the 1.66 polarity factor.
+2. The VM81 closure mirror is fail-closed and requires all six folded cells.
+   It verifies `P^2-pq == n^4 == xy`, matching
+   `HARMONICODE_VM_RUNTIME.c::check_gate_closure`; omitted x/y cells cannot
+   bypass the membrane.
+3. HNAN is represented as the ordered typed `1/0` transition with
+   `EmptySet` denominator.  Ordinary nonzero browser division remains a
+   separate projection helper and has no HNAN or canonical authority.
+4. The Cycle-9 `P,p,q` transport stays exact rational.  The non-integral
+   root-isolation coordinate is not silently coerced into a Z/72 residue.
+5. Browser randomness is deterministic; `Math.random` is forbidden.
+6. Projection fingerprints remain noncanonical and cannot be promoted to
+   Hash72/Hash216 identity.
+7. Constructor bookkeeping inherited from the seed must distinguish
+   budget-spending capture bonds from budget-free construction edges so a
+   later break cannot mint phase budget.
+8. Diagnostic receipts must operate on isolated/snapshotted state rather than
+   mutating the live authoritative simulation merely to prove a receipt.
+
+### Full-resolution holographic pixel-sprite compositor
+
+The same rendered Lane-5 frame is now both the driving frame and the input to a
+screen-space holographic compositor.  The renderer first produces the source
+frame into an RGBA target at the **same drawing-buffer resolution** as the
+display.  A second projection-only pass then applies the pixel-sprite field.
+
+For each physical output pixel:
+
+~~~text
+source pixel = dense bright nucleus
+neighbor samples = translucent hyperspherical halo contributions
+final pixel = source + nucleus modulation + overlapping halo
+~~~
+
+The source pixel is therefore always geometrically behind its halo.  The halo
+may cross into adjacent pixel cells, but its empty/background region has alpha
+zero and cannot replace the driving pixel with an opaque quad.
+
+The virtual addressing declaration is:
+
+~~~text
+5184 x 5184 = 26,873,856 virtual particle/pixel relationships
+~~~
+
+while the actual displayed raster remains exactly the source/render target
+resolution.  Changing from 720p to 1080p or 4K changes only the projection
+sampling resolution, not the underlying 5,184-address topology.
+
+The tuning surface exposes live controls for:
+
+- nucleus gain;
+- halo radius in output pixels;
+- halo gain;
+- deterministic phase amplitude;
+- deterministic phase speed;
+- source / nucleus / halo / composite diagnostic views.
+
+The MP4 acceptance harness queries both
+`HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1` and
+`HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1` before capture.  HD export
+fails closed if source and output resolutions diverge, the nucleus/halo
+contract is absent, or any canonical-seed math repair fails.

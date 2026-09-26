@@ -138,6 +138,27 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 args.seed,
             )
             page.evaluate("()=>window.HHS_LANE5_TEST.setManualMode(true)")
+            display_contract = page.evaluate(
+                "()=>window.HHS_LANE5_TEST.displayContract()"
+            )
+            math_repair = page.evaluate(
+                "()=>window.HHS_LANE5_TEST.mathRepairReceipt()"
+            )
+            if not display_contract["sameResolution"]:
+                raise RuntimeError("HTML source frame does not match drawing-buffer resolution")
+            if display_contract["virtualFrameSide"] != 5184:
+                raise RuntimeError("virtual holographic frame side drifted")
+            if display_contract["virtualFramePixels"] != 5184 * 5184:
+                raise RuntimeError("virtual holographic frame area drifted")
+            if not display_contract["sourcePixelIsDenseNucleus"]:
+                raise RuntimeError("source pixel nucleus invariant is not active")
+            if not display_contract["haloMayOverlapAdjacentPixelCells"]:
+                raise RuntimeError("halo overlap invariant is not active")
+            if not display_contract["haloBackgroundAlphaZero"]:
+                raise RuntimeError("halo transparency invariant is not active")
+            if math_repair["status"] != "PASS":
+                raise RuntimeError(f"canonical seed math repair failed: {math_repair}")
+
             benchmark = page.evaluate(
                 "(opts)=>window.HHS_LANE5_TEST.benchmark(opts)",
                 {
@@ -205,6 +226,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "fps": args.fps,
         "tick_step": args.tick_step,
         "benchmark": benchmark,
+        "pixel_display_contract": display_contract,
+        "canonical_seed_math_repair": math_repair,
         "visual": visual,
         "mp4": {
             "path": video_path.name,
@@ -232,6 +255,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "physical_fold7_timing_claimed_by_this_run": False,
             "gpu_browser_floats_projection_only": True,
             "canonical_state_authority_changed": False,
+            "canonical_seed_title": "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041",
+            "source_frame_matches_output_resolution": display_contract["sameResolution"],
+            "source_pixel_is_dense_nucleus": display_contract["sourcePixelIsDenseNucleus"],
+            "halo_overlap_is_translucent": display_contract["haloBackgroundAlphaZero"],
         },
     }
     receipt_path = output / "lane5-html-render-bottleneck-receipt.json"

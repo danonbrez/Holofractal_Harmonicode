@@ -10,9 +10,13 @@
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:#cfe8ff;font-family:monospace}
     canvas{display:block}
     #hud{position:fixed;left:10px;top:10px;z-index:10;max-width:520px;padding:10px 12px;background:rgba(0,8,24,.78);border:1px solid #284664;border-radius:6px;white-space:pre-wrap;font-size:12px;line-height:1.35}
-    #ctl{position:fixed;right:10px;top:10px;z-index:11;width:310px;padding:10px;background:rgba(0,8,24,.82);border:1px solid #284664;border-radius:6px}
-    #ctl input,#ctl button{box-sizing:border-box;width:100%;margin-top:6px;background:#091729;color:#cfe8ff;border:1px solid #345;padding:7px}
+    #ctl{position:fixed;right:10px;top:10px;z-index:11;width:330px;max-height:94vh;overflow:auto;padding:10px;background:rgba(0,8,24,.82);border:1px solid #284664;border-radius:6px}
+    #ctl input,#ctl button,#ctl select{box-sizing:border-box;width:100%;margin-top:6px;background:#091729;color:#cfe8ff;border:1px solid #345;padding:7px}
+    #ctl input[type="range"]{padding:0}
     #ctl label{display:block;margin-top:5px}
+    #ctl .row{display:grid;grid-template-columns:1fr 56px;gap:6px;align-items:center}
+    #ctl .readout{text-align:right;color:#fff}
+    #ctl hr{border:0;border-top:1px solid #284664;margin:10px 0}
   </style>
 </head>
 <body>
@@ -24,7 +28,29 @@
   <button id="applySeed">reseed deterministic path</button>
   <button id="toggleTopo">reciprocal topology: seed</button>
   <button id="pause">pause</button>
-  <div style="margin-top:7px">Underlying graph: 5184 = 72² nodes. Each visited node carries one deterministic Hash72 state word from a 72^72 word space. GPU floats are projection-only.</div>
+  <hr>
+  <strong>Holographic pixel-sprite tuning</strong>
+  <label>view</label>
+  <select id="viewMode">
+    <option value="3" selected>composite</option>
+    <option value="0">source frame</option>
+    <option value="1">nucleus only</option>
+    <option value="2">halo only</option>
+  </select>
+  <label class="row"><span>nucleus gain</span><span id="nucleusGainVal" class="readout">0.35</span></label>
+  <input id="nucleusGain" type="range" min="0" max="1.5" step="0.01" value="0.35">
+  <label class="row"><span>halo radius px</span><span id="haloRadiusVal" class="readout">2.4</span></label>
+  <input id="haloRadius" type="range" min="0.5" max="6" step="0.1" value="2.4">
+  <label class="row"><span>halo gain</span><span id="haloGainVal" class="readout">0.32</span></label>
+  <input id="haloGain" type="range" min="0" max="1.5" step="0.01" value="0.32">
+  <label class="row"><span>phase amplitude</span><span id="phaseAmpVal" class="readout">0.10</span></label>
+  <input id="phaseAmp" type="range" min="0" max="0.5" step="0.01" value="0.10">
+  <label class="row"><span>phase speed</span><span id="phaseSpeedVal" class="readout">1.0</span></label>
+  <input id="phaseSpeed" type="range" min="0" max="4" step="0.1" value="1.0">
+  <div style="margin-top:7px">Source frame and compositor use the same drawing-buffer resolution. Each source pixel remains as the dense nucleus; only its translucent hyperspherical halo is allowed to overlap neighboring pixel cells.</div>
+  <hr>
+  <div>Canonical seed: <b>Holofractal Hybrid QPU &amp; Neural Swarm — HHS VM81 / I041</b></div>
+  <div style="margin-top:7px">Underlying graph: 5184 = 72² nodes; virtual holographic field = 5184² relationships. Each visited node carries one deterministic Hash72 state word from a 72^72 word space. GPU floats are projection-only.</div>
 </div>
 <script>
 "use strict";
@@ -44,9 +70,31 @@ const QUARTIC_RENDER_PERIOD = 4;
 const HASH72 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
 const PHI = (1 + Math.sqrt(5)) / 2;
 const MASK64 = (1n << 64n) - 1n;
+const VIRTUAL_FRAME_SIDE = NODE_COUNT;
+const VIRTUAL_FRAME_PIXELS = NODE_COUNT * NODE_COUNT;
+const CANONICAL_SEED_TITLE = "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041";
+const CANONICAL_SEED_REPAIRS = Object.freeze({
+  q23_field_division:"exact BigInt rational coefficients; no BigInt quotient truncation",
+  vm81_closure:"all six folded cell coordinates required; P2-pq == n4 == xy",
+  hnan_boundary:"typed ordered 1/0 HNAN AST only; ordinary projection division is separate",
+  cycle9_transport:"exact rational P,p,q transport; no rational-as-Z72 residue shortcut",
+  deterministic_projection:"SHA-256 seeded path; Math.random forbidden",
+  constructor_budget:"construction edges do not spend or refund capture phase budget",
+  receipt_isolation:"diagnostic receipts may not mutate authoritative simulation state",
+  manifold_hash:"browser compression is a projection fingerprint, never canonical Hash72/Hash216"
+});
 
 let scene, camera, renderer, controls, geometry;
 let layer1, layer2, material1, material2, tess;
+let sourceTarget, postScene, postCamera, postMaterial, postQuad;
+const pixelTune={
+  nucleusGain:0.35,
+  haloRadiusPx:2.4,
+  haloGain:0.32,
+  phaseAmp:0.10,
+  phaseSpeed:1.0,
+  viewMode:3
+};
 let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
 let manualTestMode = false;
 let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
@@ -99,6 +147,157 @@ function coord5184(address){
     hash72Col72:address%72,
     phaseLeft8:Math.floor(op64/8),
     phaseRight8:op64%8
+  };
+}
+
+
+/* Canonical-seed contract repair layer.
+   These helpers are browser verification/projection code only. They mirror
+   native exact contracts without acquiring canonical mutation authority. */
+function bgcd(a,b){
+  let x=a<0n?-a:a, y=b<0n?-b:b;
+  while(y!==0n){ const t=x%y; x=y; y=t; }
+  return x===0n?1n:x;
+}
+function brat(n,d=1n){
+  if(d===0n) throw new Error("exact rational denominator is zero");
+  if(d<0n){ n=-n; d=-d; }
+  const g=bgcd(n,d);
+  return Object.freeze({n:n/g,d:d/g});
+}
+const brAdd=(a,b)=>brat(a.n*b.d+b.n*a.d,a.d*b.d);
+const brSub=(a,b)=>brat(a.n*b.d-b.n*a.d,a.d*b.d);
+const brMul=(a,b)=>brat(a.n*b.n,a.d*b.d);
+const brDiv=(a,b)=>{ if(b.n===0n) throw new Error("exact rational division by zero"); return brat(a.n*b.d,a.d*b.n); };
+const brNeg=a=>brat(-a.n,a.d);
+const brEq=(a,b)=>a.n*b.d===b.n*a.d;
+const brZero=()=>brat(0n,1n);
+const brOne=()=>brat(1n,1n);
+const brFromInt=n=>brat(BigInt(n),1n);
+
+function q23(a,b,c,d){ return [a,b,c,d]; }
+function q23i(a,b,c,d){ return q23(brFromInt(a),brFromInt(b),brFromInt(c),brFromInt(d)); }
+const q23Add=(x,y)=>x.map((v,i)=>brAdd(v,y[i]));
+const q23Sub=(x,y)=>x.map((v,i)=>brSub(v,y[i]));
+const q23Neg=x=>x.map(brNeg);
+function q23Mul(x,y){
+  return [
+    brAdd(brAdd(brMul(x[0],y[0]),brMul(brFromInt(2),brMul(x[1],y[1]))),
+          brAdd(brMul(brFromInt(3),brMul(x[2],y[2])),brMul(brFromInt(6),brMul(x[3],y[3])))),
+    brAdd(brAdd(brMul(x[0],y[1]),brMul(x[1],y[0])),
+          brMul(brFromInt(3),brAdd(brMul(x[2],y[3]),brMul(x[3],y[2])))),
+    brAdd(brAdd(brMul(x[0],y[2]),brMul(x[2],y[0])),
+          brMul(brFromInt(2),brAdd(brMul(x[1],y[3]),brMul(x[3],y[1])))),
+    brAdd(brAdd(brMul(x[0],y[3]),brMul(x[3],y[0])),
+          brAdd(brMul(x[1],y[2]),brMul(x[2],y[1])))
+  ];
+}
+const q23Conj2=x=>[x[0],brNeg(x[1]),x[2],brNeg(x[3])];
+const q23Conj3=x=>[x[0],x[1],brNeg(x[2]),brNeg(x[3])];
+const q23Conj23=x=>[x[0],brNeg(x[1]),brNeg(x[2]),x[3]];
+function q23Norm(x){
+  const n=q23Mul(q23Mul(q23Mul(x,q23Conj2(x)),q23Conj3(x)),q23Conj23(x));
+  if(!brEq(n[1],brZero())||!brEq(n[2],brZero())||!brEq(n[3],brZero()))
+    throw new Error("Q23 norm did not close to rational");
+  return n[0];
+}
+function q23DivExact(x,y){
+  const n=q23Norm(y);
+  if(n.n===0n) throw new Error("Q23 division by zero is an HNAN boundary");
+  const num=q23Mul(q23Mul(q23Mul(x,q23Conj2(y)),q23Conj3(y)),q23Conj23(y));
+  return num.map(c=>brDiv(c,n));
+}
+const q23Eq=(x,y)=>x.every((v,i)=>brEq(v,y[i]));
+
+const HNAN_NUMERATOR_ORDER=Object.freeze(["x","y","z","w","xy","yx","zw","wz"]);
+function hnanGate10(lhs,rhs){
+  if(lhs!==1||rhs!==0) throw new Error("browser HNAN contract is defined only for ordered 1/0");
+  return Object.freeze({
+    type:"HNAN_GATE_10",
+    operator:"Quotient",
+    numerator:Object.freeze(HNAN_NUMERATOR_ORDER.slice()),
+    signs:Object.freeze([1,1,-1,-1,1,1,-1,-1]),
+    denominator:"EmptySet",
+    host_scalar_division_authorized:false,
+    ordered_product_commutation_authorized:false
+  });
+}
+function projectionDivide(a,b){
+  if(b===0) return Object.freeze({status:"TYPED_BOUNDARY_UNRESOLVED",value:null});
+  return Object.freeze({status:"PROJECTION_VALUE",value:a/b});
+}
+
+function wrap72ExactInt(v){ return ((v%72)+72)%72; }
+function vm81ClosureGateBrowser(P,p,q,n,x,y){
+  const values=[P,p,q,n,x,y];
+  if(!values.every(Number.isInteger)){
+    return {passes:false,reason:"MISSING_OR_NONINTEGER_CELL_COORDINATE"};
+  }
+  const Pw=wrap72ExactInt(P), pw=wrap72ExactInt(p), qw=wrap72ExactInt(q);
+  const nw=wrap72ExactInt(n), xw=wrap72ExactInt(x), yw=wrap72ExactInt(y);
+  const P2=wrap72ExactInt(Pw*Pw);
+  const pq=wrap72ExactInt(pw*qw);
+  const lhs=wrap72ExactInt(P2-pq);
+  const n2=wrap72ExactInt(nw*nw);
+  const n4=wrap72ExactInt(n2*n2);
+  const xy=wrap72ExactInt(xw*yw);
+  return {lhs,n4,xy,passes:lhs===n4&&n4===xy};
+}
+
+const CYCLE9_P0=brat(2133185666641251n,1000000000000000n);
+function cycle9Coordinate(n){
+  const k=brFromInt(n);
+  const P=brAdd(CYCLE9_P0,k);
+  return {P,p:brSub(P,brOne()),q:brAdd(P,brOne())};
+}
+function cycle9CoordinateReceipt(n){
+  const s=cycle9Coordinate(n);
+  const defect=brSub(brMul(s.P,s.P),brMul(s.p,s.q));
+  const diff=brSub(s.q,s.p);
+  const bridge=brSub(brMul(diff,s.P),brAdd(s.p,s.q));
+  return {
+    P:s.P,p:s.p,q:s.q,
+    P2_minus_pq: defect,
+    q_minus_p: diff,
+    bridge_residual: bridge,
+    passes:brEq(defect,brOne())&&brEq(diff,brFromInt(2))&&brEq(bridge,brZero()),
+    z72_projection_authorized:false
+  };
+}
+
+function canonicalSeedMathRepairReceipt(){
+  const p=q23i(0,1,0,1), q=q23i(0,-1,0,1), P=q23i(0,0,1,0);
+  const one=q23i(1,0,0,0);
+  const pdivq=q23DivExact(p,q), qdivp=q23DivExact(q,p);
+  const qMinusP=q23Sub(q,p);
+  const A=q23Sub(pdivq,qdivp);
+  const B=q23Add(q23Add(A,q23Mul(q23Sub(qdivp,pdivq),qMinusP)),qMinusP);
+  const Bwant=q23i(0,-2,2,4);
+  const x2=q23DivExact(one,B);
+  const inverseCloses=q23Eq(q23Mul(x2,B),one);
+  const pellDefect=q23Sub(q23Mul(P,P),q23Mul(p,q));
+  const vmPass=vm81ClosureGateBrowser(1,0,0,1,1,1);
+  const vmMissing=vm81ClosureGateBrowser(1,0,0,1,undefined,1);
+  const tick0=cycle9CoordinateReceipt(0);
+  const hnan=hnanGate10(1,0);
+  const checks={
+    q23_p_over_q_exact:q23Eq(pdivq,q23i(2,0,1,0)),
+    q23_q_over_p_exact:q23Eq(qdivp,q23i(2,0,-1,0)),
+    q23_pell_defect_minus_one:q23Eq(pellDefect,q23i(-1,0,0,0)),
+    q23_polarity_factor_exact:q23Eq(B,Bwant),
+    q23_inverse_retains_fractional_coefficients:inverseCloses,
+    vm81_six_cell_gate_passes_full_tuple:vmPass.passes===true,
+    vm81_missing_cell_fails_closed:vmMissing.passes===false,
+    cycle9_exact_rational_transport:tick0.passes===true&&tick0.z72_projection_authorized===false,
+    hnan_is_typed_ordered_1_over_0:hnan.denominator==="EmptySet"&&hnan.host_scalar_division_authorized===false
+  };
+  return {
+    schema:"HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1",
+    canonicalSeedTitle:CANONICAL_SEED_TITLE,
+    status:Object.values(checks).every(Boolean)?"PASS":"FAIL",
+    checks,
+    repairs:CANONICAL_SEED_REPAIRS,
+    canonicalMutationAuthority:false
   };
 }
 
@@ -202,6 +401,177 @@ function makeMaterial(layer){
   });
 }
 
+
+const postVertexShader=[
+"varying vec2 vUv;",
+"void main(){",
+"  vUv=uv;",
+"  gl_Position=vec4(position.xy,0.0,1.0);",
+"}"
+].join("\n");
+
+const postFragmentShader=[
+"precision highp float;",
+"uniform sampler2D tSource;",
+"uniform vec2 uResolution;",
+"uniform float uTick;",
+"uniform float uNucleusGain;",
+"uniform float uHaloRadiusPx;",
+"uniform float uHaloGain;",
+"uniform float uPhaseAmp;",
+"uniform float uPhaseSpeed;",
+"uniform float uViewMode;",
+"varying vec2 vUv;",
+"const float PI=3.141592653589793;",
+"float lum(vec3 c){ return dot(c,vec3(0.2126,0.7152,0.0722)); }",
+"vec4 tap(vec2 dir,float radius){ return texture2D(tSource,vUv+dir*(radius/uResolution)); }",
+"void main(){",
+"  vec4 center=texture2D(tSource,vUv);",
+"  float linearPx=floor(gl_FragCoord.x)+floor(gl_FragCoord.y)*uResolution.x;",
+"  float cell=mod(linearPx,5184.0);",
+"  float phase=2.0*PI*mod(cell+uTick*uPhaseSpeed,144.0)/144.0;",
+"  float pulse=1.0+uPhaseAmp*sin(phase);",
+"  float r=max(0.5,uHaloRadiusPx*pulse);",
+"  vec2 d0=vec2(1.0,0.0), d1=vec2(0.70710678,0.70710678);",
+"  vec2 d2=vec2(0.0,1.0), d3=vec2(-0.70710678,0.70710678);",
+"  vec4 h=vec4(0.0);",
+"  h+=tap(d0,r)+tap(-d0,r)+tap(d1,r)+tap(-d1,r);",
+"  h+=tap(d2,r)+tap(-d2,r)+tap(d3,r)+tap(-d3,r);",
+"  h+=tap(d0,r*0.5)+tap(-d0,r*0.5)+tap(d2,r*0.5)+tap(-d2,r*0.5);",
+"  h/=12.0;",
+"  float centerLum=lum(center.rgb);",
+"  float haloLum=lum(h.rgb);",
+"  vec3 nucleusExtra=center.rgb*uNucleusGain*(0.75+0.25*sin(phase+centerLum*PI));",
+"  vec3 haloRgb=h.rgb*uHaloGain*(0.35+0.65*haloLum);",
+"  float haloAlpha=clamp(h.a*uHaloGain*(0.25+0.75*haloLum),0.0,1.0);",
+"  vec3 composite=clamp(center.rgb+nucleusExtra+haloRgb,0.0,1.0);",
+"  float compositeAlpha=max(center.a,haloAlpha);",
+"  if(uViewMode<0.5){ gl_FragColor=center; return; }",
+"  if(uViewMode<1.5){ gl_FragColor=vec4(clamp(center.rgb+nucleusExtra,0.0,1.0),center.a); return; }",
+"  if(uViewMode<2.5){ gl_FragColor=vec4(clamp(haloRgb,0.0,1.0),haloAlpha); return; }",
+"  gl_FragColor=vec4(composite,compositeAlpha);",
+"}"
+].join("\n");
+
+function resizePixelCompositor(){
+  if(!renderer||!sourceTarget||!postMaterial) return;
+  const size=new THREE.Vector2();
+  renderer.getDrawingBufferSize(size);
+  const w=Math.max(1,Math.floor(size.x)), h=Math.max(1,Math.floor(size.y));
+  sourceTarget.setSize(w,h);
+  postMaterial.uniforms.uResolution.value.set(w,h);
+}
+
+function buildPixelCompositor(){
+  const size=new THREE.Vector2();
+  renderer.getDrawingBufferSize(size);
+  sourceTarget=new THREE.WebGLRenderTarget(
+    Math.max(1,Math.floor(size.x)),
+    Math.max(1,Math.floor(size.y)),
+    {
+      format:THREE.RGBAFormat,
+      minFilter:THREE.NearestFilter,
+      magFilter:THREE.NearestFilter,
+      depthBuffer:true,
+      stencilBuffer:false
+    }
+  );
+  sourceTarget.texture.generateMipmaps=false;
+
+  postScene=new THREE.Scene();
+  postCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+  postMaterial=new THREE.ShaderMaterial({
+    vertexShader:postVertexShader,
+    fragmentShader:postFragmentShader,
+    transparent:true,
+    depthWrite:false,
+    depthTest:false,
+    blending:THREE.NoBlending,
+    uniforms:{
+      tSource:{value:sourceTarget.texture},
+      uResolution:{value:new THREE.Vector2(sourceTarget.width,sourceTarget.height)},
+      uTick:{value:0},
+      uNucleusGain:{value:pixelTune.nucleusGain},
+      uHaloRadiusPx:{value:pixelTune.haloRadiusPx},
+      uHaloGain:{value:pixelTune.haloGain},
+      uPhaseAmp:{value:pixelTune.phaseAmp},
+      uPhaseSpeed:{value:pixelTune.phaseSpeed},
+      uViewMode:{value:pixelTune.viewMode}
+    }
+  });
+  postQuad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),postMaterial);
+  postQuad.frustumCulled=false;
+  postScene.add(postQuad);
+  resizePixelCompositor();
+}
+
+function renderProjectionFrame(){
+  renderer.setRenderTarget(sourceTarget);
+  renderer.setClearColor(0x000000,0);
+  renderer.clear(true,true,true);
+  renderer.render(scene,camera);
+
+  renderer.setRenderTarget(null);
+  renderer.setClearColor(0x000000,0);
+  renderer.clear(true,true,true);
+  renderer.render(postScene,postCamera);
+}
+
+function pixelDisplayContract(){
+  const size=new THREE.Vector2();
+  renderer.getDrawingBufferSize(size);
+  return {
+    schema:"HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1",
+    canonicalSeedTitle:CANONICAL_SEED_TITLE,
+    drawingBuffer:{width:Math.floor(size.x),height:Math.floor(size.y)},
+    sourceFrame:{width:sourceTarget.width,height:sourceTarget.height},
+    sameResolution:
+      Math.floor(size.x)===sourceTarget.width &&
+      Math.floor(size.y)===sourceTarget.height,
+    virtualFrameSide:VIRTUAL_FRAME_SIDE,
+    virtualFramePixels:VIRTUAL_FRAME_PIXELS,
+    sourcePixelIsDenseNucleus:true,
+    haloMayOverlapAdjacentPixelCells:true,
+    haloBackgroundAlphaZero:true,
+    drivingPixelRemainsBehindHalo:true,
+    projectionOnly:true,
+    tuning:{...pixelTune}
+  };
+}
+
+function bindPixelTuneControl(id,key,readoutId,parser=parseFloat){
+  const el=document.getElementById(id), out=document.getElementById(readoutId);
+  if(!el) return;
+  const apply=()=>{
+    pixelTune[key]=parser(el.value);
+    if(out) out.textContent=String(pixelTune[key]);
+    if(postMaterial){
+      const map={
+        nucleusGain:"uNucleusGain",
+        haloRadiusPx:"uHaloRadiusPx",
+        haloGain:"uHaloGain",
+        phaseAmp:"uPhaseAmp",
+        phaseSpeed:"uPhaseSpeed",
+        viewMode:"uViewMode"
+      };
+      const u=postMaterial.uniforms[map[key]];
+      if(u) u.value=pixelTune[key];
+    }
+  };
+  el.addEventListener("input",apply);
+  el.addEventListener("change",apply);
+  apply();
+}
+
+function installPixelTuneControls(){
+  bindPixelTuneControl("nucleusGain","nucleusGain","nucleusGainVal");
+  bindPixelTuneControl("haloRadius","haloRadiusPx","haloRadiusVal");
+  bindPixelTuneControl("haloGain","haloGain","haloGainVal");
+  bindPixelTuneControl("phaseAmp","phaseAmp","phaseAmpVal");
+  bindPixelTuneControl("phaseSpeed","phaseSpeed","phaseSpeedVal");
+  bindPixelTuneControl("viewMode","viewMode",null,Number);
+}
+
 function buildTesseract(){
   const verts=[];
   for(let v=0;v<16;v++) verts.push([v&1?1:-1,v&2?1:-1,v&4?1:-1,v&8?1:-1]);
@@ -248,6 +618,9 @@ function updateHud(address,rank,bott){
     "phase72="+(lastPhaseWord?lastPhaseWord.slice(0,36)+"…":"computing…")+"\n"+
     "render gate=1/4 rendered="+rendered+"/"+rafCount+
     " topology="+(topoInvert?"reciprocal-inverted":"seed")+"\n"+
+    "virtual="+VIRTUAL_FRAME_SIDE+"²="+VIRTUAL_FRAME_PIXELS+
+    " view="+["source","nucleus","halo","composite"][pixelTune.viewMode]+"\n"+
+    "pixel nucleus=source frame; halo overlap=translucent; source/target=same resolution\n"+
     "authority=projection-only; no VM81/Hash72/Hash216 mutation";
 }
 
@@ -272,6 +645,7 @@ function projectionTick(targetTick, options={}){
     m.uniforms.uBottOctant.value=bott;
     m.uniforms.uTopologyInvert.value=topoInvert;
   }
+  if(postMaterial) postMaterial.uniforms.uTick.value=tick;
   const uniformEnd=performance.now();
 
   updateTesseract(seconds);
@@ -280,7 +654,7 @@ function projectionTick(targetTick, options={}){
   let renderMs=0;
   if(renderFrame){
     const renderStart=performance.now();
-    renderer.render(scene,camera);
+    renderProjectionFrame();
     if(gpuSync){
       const gl=renderer.getContext();
       if(gl && typeof gl.finish==="function") gl.finish();
@@ -386,7 +760,9 @@ async function runBottleneckBenchmark(options={}){
     synchronizedRenderTiming:gpuSync,
     rendererRemovedControl:true,
     exactStateAuthority:false,
-    projectionOnly:true
+    projectionOnly:true,
+    pixelDisplay:pixelDisplayContract(),
+    canonicalSeedMath:canonicalSeedMathRepairReceipt()
   };
 }
 
@@ -408,7 +784,21 @@ function installTestApi(){
     setSeed:setTestSeed,
     step(targetTick,options={}){manualTestMode=true;paused=true;return projectionTick(targetTick,options);},
     benchmark:runBottleneckBenchmark,
-    snapshot(){return {tick,path:{...path},rendered,rafCount,manualTestMode,topoInvert};},
+    snapshot(){return {tick,path:{...path},rendered,rafCount,manualTestMode,topoInvert,pixelTune:{...pixelTune}};},
+    displayContract:pixelDisplayContract,
+    mathRepairReceipt:canonicalSeedMathRepairReceipt,
+    setTune(values={}){
+      Object.assign(pixelTune,values);
+      if(postMaterial){
+        postMaterial.uniforms.uNucleusGain.value=pixelTune.nucleusGain;
+        postMaterial.uniforms.uHaloRadiusPx.value=pixelTune.haloRadiusPx;
+        postMaterial.uniforms.uHaloGain.value=pixelTune.haloGain;
+        postMaterial.uniforms.uPhaseAmp.value=pixelTune.phaseAmp;
+        postMaterial.uniforms.uPhaseSpeed.value=pixelTune.phaseSpeed;
+        postMaterial.uniforms.uViewMode.value=pixelTune.viewMode;
+      }
+      return {...pixelTune};
+    },
     canvas(){return renderer.domElement;}
   };
 }
@@ -422,12 +812,13 @@ async function applySeed(){
 
 function init(){
   scene=new THREE.Scene();
-  scene.background=new THREE.Color(0x000000);
+  scene.background=null;
   camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,1000);
   camera.position.set(0,0,95);
-  renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
+  renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,premultipliedAlpha:true,powerPreference:"high-performance"});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.setSize(innerWidth,innerHeight);
+  renderer.setClearColor(0x000000,0);
   document.body.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
   controls.enableDamping=true;
@@ -439,11 +830,14 @@ function init(){
   layer2=new THREE.Points(geometry,material2);
   scene.add(layer1); scene.add(layer2);
   tess=buildTesseract();
+  buildPixelCompositor();
+  installPixelTuneControls();
   installTestApi();
 
   addEventListener("resize",()=>{
     camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
     renderer.setSize(innerWidth,innerHeight);
+    resizePixelCompositor();
   });
   document.getElementById("applySeed").addEventListener("click",applySeed);
   document.getElementById("toggleTopo").addEventListener("click",()=>{

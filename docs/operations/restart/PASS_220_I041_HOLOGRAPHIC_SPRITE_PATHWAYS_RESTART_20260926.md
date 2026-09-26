@@ -131,3 +131,37 @@ same renderer-bypass experiment on that device.
   renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0.
 - repair: update the source assertion only; no runtime or animation semantics
   changed.
+
+
+## Canonical-seed / holographic pixel-sprite integration
+
+Canonical visual seed:
+- Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041
+
+Implemented on the optimized browser adapter:
+- full-resolution RGBA source render target;
+- source target always matches the renderer drawing buffer;
+- dense source-pixel nucleus retained behind the effect;
+- translucent overlapping halo field with alpha-zero empty background;
+- deterministic per-pixel phase addressing derived from the same 5184/Q144
+  projection clock;
+- source/nucleus/halo/composite diagnostic views;
+- live nucleus, halo, and phase tuning controls;
+- virtual 5184^2 relationship declaration without changing physical raster
+  dimensions;
+- MP4 harness preflight for pixel-display contract and math-repair receipt.
+
+Repository-contract repairs encoded in the browser:
+- exact-rational Q(sqrt2,sqrt3) coefficient division;
+- six-cell VM81 closure fail-closed on missing x/y;
+- typed ordered HNAN 1/0 separated from ordinary projection division;
+- exact Cycle-9 rational transport with no rational-to-Z72 shortcut;
+- deterministic projection only, no Math.random;
+- projection fingerprints explicitly noncanonical;
+- constructor budget-spend/refund distinction retained as a required porting
+  invariant for any later reintroduction of the monolith's bond subsystem;
+- diagnostic receipts required to be state-isolated.
+
+Authority:
+- browser/GPU remains projection-only;
+- no VM81/Hash72/Hash216 mutation or persistence authority is added.

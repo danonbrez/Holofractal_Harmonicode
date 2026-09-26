@@ -61,3 +61,49 @@ def test_lane5_browser_exposes_manual_animation_and_renderer_bypass_benchmark():
         'benchmark:runBottleneckBenchmark',
     ):
         assert token in source, token
+
+
+
+def test_canonical_seed_contract_repairs_are_explicit_and_fail_closed():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'const CANONICAL_SEED_TITLE = "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041";',
+        "function q23DivExact(x,y)",
+        "num.map(c=>brDiv(c,n))",
+        "function vm81ClosureGateBrowser(P,p,q,n,x,y)",
+        'reason:"MISSING_OR_NONINTEGER_CELL_COORDINATE"',
+        "passes:lhs===n4&&n4===xy",
+        "function hnanGate10(lhs,rhs)",
+        'denominator:"EmptySet"',
+        "host_scalar_division_authorized:false",
+        "function cycle9CoordinateReceipt(n)",
+        "z72_projection_authorized:false",
+        'schema:"HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1"',
+    ):
+        assert token in source, token
+    assert "num[0]/N" not in source
+    assert "num[1]/N" not in source
+
+
+def test_holographic_pixel_sprite_compositor_preserves_source_resolution_and_transparency():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        "const VIRTUAL_FRAME_PIXELS = NODE_COUNT * NODE_COUNT;",
+        "new THREE.WebGLRenderTarget",
+        "minFilter:THREE.NearestFilter",
+        "magFilter:THREE.NearestFilter",
+        "function renderProjectionFrame()",
+        "renderer.setClearColor(0x000000,0)",
+        "scene.background=null;",
+        'uniform float uNucleusGain;',
+        'uniform float uHaloRadiusPx;',
+        'uniform float uHaloGain;',
+        "vec3 composite=clamp(center.rgb+nucleusExtra+haloRgb,0.0,1.0);",
+        "float compositeAlpha=max(center.a,haloAlpha);",
+        "sourcePixelIsDenseNucleus:true",
+        "haloMayOverlapAdjacentPixelCells:true",
+        "haloBackgroundAlphaZero:true",
+        "drivingPixelRemainsBehindHalo:true",
+        "sameResolution:",
+    ):
+        assert token in source, token
