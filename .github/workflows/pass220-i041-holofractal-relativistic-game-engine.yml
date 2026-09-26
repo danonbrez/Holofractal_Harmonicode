@@ -10,6 +10,10 @@ on:
       - "hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h"
       - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
       - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
+      - "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html"
+      - "contracts/pass220/PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md"
+      - "tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py"
+      - "benchmarks/pass220/benchmark_i041_html_render_bottleneck.py"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
       - "tests/pass220/test_hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
@@ -33,6 +37,10 @@ on:
       - "hhs_runtime/include/hhs_pass219_harmonic36_nested_vm_1_0.h"
       - "hhs_runtime/c/hhs_pass219_harmonic36_nested_vm_data_1_0.inc"
       - "hhs_runtime/python/hhs_sprite_map_engine_v1.py"
+      - "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html"
+      - "contracts/pass220/PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md"
+      - "tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py"
+      - "benchmarks/pass220/benchmark_i041_html_render_bottleneck.py"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py"
       - "tests/pass220/test_hhs_pass220_q144_dyadic_gauge_phase_transport_v1.py"
@@ -65,13 +73,18 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependency-scoped requirements
-        run: python -m pip install --disable-pip-version-check pytest
+        run: python -m pip install --disable-pip-version-check pytest pillow playwright
+
+      - name: Install Chromium for HTML render acceptance
+        run: python -m playwright install chromium
 
       - name: Compile I041 surfaces
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py \
-            tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+            tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py \
+            tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py \
+            benchmarks/pass220/benchmark_i041_html_render_bottleneck.py
 
       - name: Verify connected Wolfram 48 of 48 receipt
         run: |
@@ -110,6 +123,61 @@ jobs:
         run: >
           python -m pytest -q
           tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+
+      - name: Run I041 deterministic holographic browser projection tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
+
+      - name: Verify canonical-seed exact browser math receipt
+        run: |
+          node <<'NODE'
+          const fs = require("fs");
+          const html = fs.readFileSync(
+            "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html",
+            "utf8"
+          );
+          const match = html.match(/<script>\s*"use strict";([\s\S]*?)<\/script>/);
+          if (!match) throw new Error("I041 main browser script not found");
+          const source = '"use strict";' + match[1];
+          const cutoff = source.lastIndexOf("(async()=>");
+          if (cutoff < 0) throw new Error("I041 browser boot IIFE not found");
+          const preboot = source.slice(0, cutoff);
+          new Function(preboot);
+          const receipt = new Function(
+            preboot + "; return canonicalSeedMathRepairReceipt();"
+          )();
+          if (receipt.status !== "PASS") {
+            throw new Error("canonical seed math repair receipt failed: " + JSON.stringify(receipt));
+          }
+          console.log(JSON.stringify(receipt));
+          NODE
+
+      - name: Render HTML-driven HD MP4 and measure renderer-bypass bottleneck
+        run: >
+          python benchmarks/pass220/benchmark_i041_html_render_bottleneck.py
+          --output artifacts/pass220/i041-html-render-bottleneck
+          --width 1280
+          --height 720
+          --fps 24
+          --frames 48
+          --tick-step 4
+          --state-ticks 4096
+          --render-ticks 256
+          --warmup 64
+          --phase-samples 24
+
+      - name: Upload I041 HTML HD MP4 bottleneck evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i041-html-hd-mp4-bottleneck
+          path: |
+            artifacts/pass220/i041-html-render-bottleneck/lane5-html-holographic-720p.mp4
+            artifacts/pass220/i041-html-render-bottleneck/lane5-html-render-bottleneck-receipt.json
+            artifacts/pass220/i041-html-render-bottleneck/samples/*.png
+          if-no-files-found: error
 
       - name: Run I040 exact DESI projection regression
         env:

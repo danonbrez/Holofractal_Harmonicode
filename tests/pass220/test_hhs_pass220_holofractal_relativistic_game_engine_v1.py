@@ -8,6 +8,8 @@ from hhs_runtime.hhs_kernel_conformance_registration_interposer_v1 import (
 )
 from hhs_runtime.hhs_pass220_holofractal_relativistic_game_engine_v1 import (
     HASH72_LEN,
+    HASH72_STATE_SPACE,
+    HOLOGRAPHIC_NODE_COUNT,
     LOCAL_CONSTRAINTS,
     Pass220I041GameEngineError,
     build_game_engine_cycle,
@@ -17,6 +19,11 @@ from hhs_runtime.hhs_pass220_holofractal_relativistic_game_engine_v1 import (
     h36_coordinate,
     h36_full_coverage_witness,
     h36_music_state,
+    holographic_animation_state,
+    holographic_path_cycle_witness,
+    holographic_path_node,
+    holographic_path_parameters,
+    holographic_shader_projection_ir,
     holofractal_relativistic_game_engine_self_test,
     holofractal_relativistic_game_engine_witness,
     holofractal_sprite216,
@@ -210,6 +217,88 @@ def test_holofractal_sprite216_is_deterministic_and_exact_before_render_projecti
     assert first["host_float_arithmetic_used_by_exact_descriptor"] is False
 
 
+
+
+def test_holographic_pathway_is_seeded_replay_stable_full_cycle_5184():
+    seed = "lane5-path-seed"
+    first = holographic_path_parameters(seed)
+    second = holographic_path_parameters(seed)
+    different = holographic_path_parameters("lane5-path-seed-2")
+
+    assert first == second
+    assert first != different
+    assert first["node_count"] == HOLOGRAPHIC_NODE_COUNT == 5184
+    assert first["hash72_side"] == 72
+    assert first["hash72_state_word_len"] == 72
+    assert first["hash72_state_space"] == HASH72_STATE_SPACE == "72^72"
+    assert first["stride_coprime_to_5184"] is True
+    assert first["probability_used"] is False
+    assert first["host_float_arithmetic_used"] is False
+
+    cycle = holographic_path_cycle_witness(seed)
+    assert cycle["unique_addresses"] == 5184
+    assert cycle["min_address"] == 0
+    assert cycle["max_address"] == 5183
+    assert cycle["full_cycle_closed"] is True
+    assert cycle["returns_to_start"] is True
+    assert cycle["next_after_full_cycle"] == first["start"]
+
+
+def test_holographic_path_node_binds_5184_address_to_hash72_word():
+    seed = "lane5-node-seed"
+    a = holographic_path_node(seed, 777)
+    b = holographic_path_node(seed, 777)
+    c = holographic_path_node(seed, 778)
+
+    assert a == b
+    assert a != c
+    assert 0 <= a["linear5184"] < 5184
+    assert a["coordinate"]["linear5184"] == a["linear5184"]
+    assert len(a["phase_word72"]) == 72
+    assert a["phase_word72_length"] == 72
+    assert a["state_space"] == "72^72"
+    assert 0 <= a["phase_fold_mod72"] < 72
+    assert a["host_float_arithmetic_used"] is False
+    assert a["canonical_mutation_authority"] is False
+
+
+def test_holographic_animation_preserves_eight_phase_and_quartic_projection_logic():
+    state = holographic_animation_state(36, "animation-seed")
+    assert state["bott_octant8"] == 2
+    assert len(state["phase_groups8"]) == 8
+    assert state["phase_groups8"][0]["group_q144"] == 36
+    assert state["phase_groups8"][0]["reciprocal_q144"] == 108
+    assert state["phase_groups8"][0]["layer2_orthogonal_q144"] == 72
+    assert state["phase_groups8"][2]["swept_this_octant"] is True
+    assert state["golden_spiral_projection"]["phi_exact"] == "(1+sqrt(5))/2"
+    assert state["layer2_projection"]["xy_map"] == "[x,y]->[-y,x]"
+    assert state["layer2_projection"]["determinant"] == 1
+    assert state["so4_projection"]["tesseract_cells"] == 8
+    assert state["quartic_render_gate"]["render"] is True
+    assert holographic_animation_state(37, "animation-seed")[
+        "quartic_render_gate"
+    ]["render"] is False
+    assert state["gpu_float_is_canonical_authority"] is False
+
+
+def test_holographic_shader_ir_is_projection_only_and_uses_same_path_node():
+    animation = holographic_animation_state(143, "shader-path-seed")
+    ir = holographic_shader_projection_ir(animation)
+    node = animation["pathway_node"]
+
+    assert ir["node_buffer"]["node_count"] == 5184
+    assert ir["node_buffer"]["layout"] == "72x72"
+    assert ir["node_buffer"]["linear_address"] == node["linear5184"]
+    assert ir["pathway"]["rank5184"] == node["rank5184"]
+    assert ir["pathway"]["phase_word72"] == node["phase_word72"]
+    assert ir["pathway"]["state_space"] == "72^72"
+    assert ir["fragment_projection"]["path_highlight_linear5184"] == node[
+        "linear5184"
+    ]
+    assert ir["gpu_buffers_are_projection_only"] is True
+    assert ir["shader_executes_canonical_mutation"] is False
+    assert ir["canonical_admission_authority"] is False
+
 def test_shader_ir_binds_same_q144_music_color_sprite_state():
     sprite = holofractal_sprite216("shader-seed")
     music = h36_music_state(73, 17)
@@ -281,6 +370,8 @@ def test_full_game_engine_cycle_closes():
     assert result["et_banks3"] == 3
     assert result["et_pitch_classes12"] == 12
     assert result["vm81_cells"] == 81
+    assert result["holographic_path_nodes"] == 5184
+    assert result["hash72_phase_word_state_space"] == "72^72"
     assert result["exact_cycle_closed"] is True
 
     assert cycle["all_q144_indices_exactly_once"] is True
@@ -294,6 +385,9 @@ def test_full_game_engine_cycle_closes():
         "3x12": 36,
         "8x8": 64,
     }
+    assert cycle["holographic_pathway"]["unique_addresses"] == 5184
+    assert cycle["holographic_pathway"]["full_cycle_closed"] is True
+    assert cycle["holographic_pathway"]["returns_to_start"] is True
     assert cycle["render_backend_is_projection_only"] is True
     assert cycle["host_float_arithmetic_used_by_exact_cycle"] is False
     assert cycle["canonical_admission_authority"] is False
