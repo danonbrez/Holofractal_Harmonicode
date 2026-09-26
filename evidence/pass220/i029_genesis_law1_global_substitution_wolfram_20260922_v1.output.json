@@ -1,0 +1,26 @@
+{
+  "schema": "HHS_PASS_220_I029_GENESIS_LAW1_GLOBAL_SUBSTITUTION_WOLFRAM_20260922_V1",
+  "status": "PASS",
+  "check_count": 12,
+  "pass_count": 12,
+  "failed": [],
+  "checks": {
+    "ordered_delta_e_preserved": true,
+    "zero_is_distinct_object": true,
+    "zero_over_delta_preserved": true,
+    "collapse_chain_order_preserved": true,
+    "law1_constraint_count_12": true,
+    "genesis_5184_positions": true,
+    "every_genesis_position_000": true,
+    "global_epsilons_cancelled": true,
+    "phase_lock_requires_all_global_guards": true,
+    "one_active_epsilon_blocks_phase_lock": true,
+    "local_equality_alone_no_substitution": true,
+    "no_commutation_or_cancellation_rule_present": true
+  },
+  "notes": [
+    "The first evaluation returned 11/12 because the negative-test replacement fixture zeroed ep[17] before setting it active.",
+    "The fixture was repaired with an explicit 72-entry oneActiveValues vector; the theorem then closed 12/12.",
+    "Ordered custom heads are held and no commutation or cancellation rule is installed."
+  ]
+}

@@ -4283,6 +4283,68 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.genesis_law1_global_substitution.self_test",
+        module="hhs_runtime.hhs_pass220_genesis_law1_global_substitution_v1",
+        function="genesis_law1_self_test",
+        service_type="pass220_exact_global_substitution_membrane",
+        description=(
+            "Validate the Genesis 0^5184 logical trit descriptor, inherited "
+            "fixed-width serializer zero normalization, ordered Deltae closure, "
+            "Law-of-1 correspondence path, Lane-5 root binding, and fail-closed "
+            "global-only substitution authority without commuting or cancelling "
+            "the native tensor algebra."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+            "HHS-I029",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I029_GENESIS_LAW1_GLOBAL_SUBSTITUTION_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I029_GENESIS_ZERO_REGISTER_WITNESS_V1",
+            "HHS_PASS_220_I029_ORDERED_DELTA_E_WITNESS_V1",
+            "HHS_PASS_220_I029_GLOBAL_SUBSTITUTION_DECISION_V1",
+        ],
+        validators=[
+            "genesis_serializer_witness",
+            "ordered_delta_e_witness",
+            "evaluate_global_substitution_authority",
+            "genesis_law1_self_test",
+        ],
+        guards=[
+            "all_global_epsilons_phase_cancelled",
+            "complete_global_branch_tree_equivalence",
+            "deterministic_replay_equivalence",
+            "lossless_interchangeability",
+            "ordered_provenance_preservation",
+            "serialization_receipt_preservation",
+            "repository_pr_proof_evidence",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_ACTIVE_GLOBAL_EPSILON",
+            "REJECT_PARTIAL_OR_LOCAL_SUBSTITUTION",
+            "REJECT_BRANCH_TREE_MISMATCH",
+            "REJECT_REPLAY_MISMATCH",
+            "REJECT_UNPROVEN_COMMUTATION_OR_CANCELLATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "READ_ONLY_GLOBAL_SUBSTITUTION_PROOF_NO_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "GENESIS_OR_PHASE_LOCK_PLUS_COMPLETE_GLOBAL_BRANCH_EQUIVALENCE"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.palindromic_ordered_phase.self_test",
         module="hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1",
         function="palindromic_ordered_phase_self_test",
