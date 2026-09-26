@@ -609,7 +609,13 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
         px2_manifold.outer_prefix_exact != 1U ||
         px2_manifold.outer_denominator_exact != 1U ||
         px2_manifold.ordered_markers_exact != 1U ||
-        px2_manifold.delta_bx_boundary_preserved != 1U) {
+        px2_manifold.correction_raw_hash_verified != 1U ||
+        px2_manifold.correction_parse_hash_verified != 1U ||
+        px2_manifold.correction_raw_source_preserved != 1U ||
+        px2_manifold.correction_balanced_parse_preserved != 1U ||
+        px2_manifold.correction_native_order_preserved != 1U ||
+        px2_manifold.correction_scalar_projection_closed != 1U ||
+                px2_manifold.delta_bx_boundary_preserved != 1U) {
         atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
         out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
         out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
