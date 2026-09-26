@@ -154,3 +154,16 @@ Hash216 authority
 ```
 
 Canonical mutation remains behind signed environmental VM81 admission.
+
+
+## 7. Successor polarity layer
+
+Pass 219 Lane 5 successor 1.65 adds the ordered polarity parameter `s` without replacing this 1.64 manifold.
+
+Normative successor:
+
+```text
+contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.md
+```
+
+The successor requires this complete 1.64 verifier and then binds `s=-1` to the inherited `u^36` self-inverse half-turn for the ordered `xy/yx`, `zw/wz`, and `p-q:q-p` polarity pairs.
