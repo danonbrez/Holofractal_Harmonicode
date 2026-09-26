@@ -172,3 +172,127 @@ The inherited signed VM81 admission path remains the only canonical mutation bou
 ## Exact next action
 
 Inspect the dedicated PR #591 workflow at the restart-record head. If it is green, merge under repository policy and verify `main`. If it fails, repair only the HNAN dependency frontier and preserve the frozen Wolfram semantics and benchmark parity requirement.
+
+
+## Jordan refinement — 2026-09-26
+
+A second exact symbolic pass refined the zero-mode inventory.
+
+Connected Wolfram verification:
+
+```text
+characteristic polynomial:
+  lambda^2 (lambda-2)(lambda+1)
+
+rank(M01)      = 3
+nullity(M01)   = 1
+nullity(M01^2) = 2
+
+M01^4 = M01^3 + 2 M01^2
+rank{I,M01,M01^2,M01^3} = 4
+
+zero Jordan chain depth = 2
+minimal polynomial = characteristic polynomial
+```
+
+Therefore the binary tensor is recorded structurally as:
+
+```text
+J2(0) direct-sum (-1) direct-sum (2)
+```
+
+rather than as two independent zero modes.
+
+The lifted exact characteristic polynomial remains:
+
+```text
+lambda^2
+(lambda-(r-s))
+(lambda-2(r+s))
+```
+
+with the same single depth-2 zero Jordan chain on the generic surface:
+
+```text
+r!=s
+r+s!=0
+```
+
+Exact generic witnesses:
+
+```text
+nullity(Mxy)   = 1
+nullity(Mxy^2) = 2
+rank{I,Mxy,Mxy^2,Mxy^3} = 4
+```
+
+Exact exceptional surfaces are retained:
+
+```text
+r=s, r!=0:
+  chi = lambda^3(lambda-4r)
+  rank = 1
+  nullity = 3
+
+r=-s, r!=0:
+  chi = lambda^3(lambda-2r)
+  rank = 2
+  nullity = 2
+```
+
+The sum invariant was rechecked exactly for n=1..4.
+
+The HNAN receipt now preserves the system-internal correspondence:
+
+```text
+J2(0) <-> ordered 1/0 HNAN boundary
+```
+
+and the supplied ordered zero-closure source verbatim:
+
+```text
+0=∅=AB/P⁴∅=HNAN
+```
+
+No host scalar cancellation or symmetric-equality rewrite is authorized by that source string.
+
+### Refinement files
+
+Added:
+
+```text
+evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.wl
+evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json
+```
+
+Modified:
+
+```text
+hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py
+tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py
+contracts/pass219/PASS_219_HNAN_4X4_RECURSIVE_GATE_V1.md
+.github/workflows/pass219-hnan-4x4-recursive-gate.yml
+```
+
+The first automated refinement patch exposed a repository integration fault: tests referenced the new receipt symbols before the module insertion had landed. This was repaired forward by atomically replacing the module body and then repairing the test imports. No gate semantics were weakened.
+
+### Exact refinement evidence
+
+Wolfram schema:
+
+```text
+HHS_PASS219_HNAN_JORDAN_REFINEMENT_WOLFRAM_V1
+status = PASS
+```
+
+The runtime receipt independently recomputes, using exact Python integer/Fraction arithmetic:
+
+- `rank(M01)=3`;
+- `nullity(M01)=1`;
+- `nullity(M01^2)=2`;
+- the degree-4 recurrence;
+- exact linear independence of `I,M01,M01^2,M01^3`;
+- preservation of `0=∅=AB/P⁴∅=HNAN` as an ordered source token.
+
+The symbolic lifted polynomial, generic conditions, and exceptional surfaces are pinned to the frozen Wolfram evidence and tested in CI.
+
