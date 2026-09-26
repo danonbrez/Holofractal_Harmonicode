@@ -11,6 +11,8 @@ on:
       - 'benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.wl'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json'
       - 'evidence/pass219/hnan_4x4_recursive_gate_python_benchmark_20260926_v1.json'
       - 'contracts/pass219/PASS_219_HNAN_4X4_RECURSIVE_GATE_V1.md'
       - 'docs/operations/restart/PASS_219_HNAN_4X4_RECURSIVE_GATE_RESTART_20260926.md'
@@ -27,6 +29,8 @@ on:
       - 'benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.wl'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.wl'
+      - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json'
       - 'evidence/pass219/hnan_4x4_recursive_gate_python_benchmark_20260926_v1.json'
       - 'contracts/pass219/PASS_219_HNAN_4X4_RECURSIVE_GATE_V1.md'
       - 'docs/operations/restart/PASS_219_HNAN_4X4_RECURSIVE_GATE_RESTART_20260926.md'
@@ -77,6 +81,26 @@ jobs:
           assert data["failed"] == []
           assert data["xy_yx_distinct"] is True
           assert data["zw_wz_distinct"] is True
+
+          jordan = Path(
+              "evidence/pass219/"
+              "hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json"
+          )
+          proof = json.loads(jordan.read_text(encoding="utf-8"))
+          assert proof["status"] == "PASS"
+          assert proof["rank_m01"] == 3
+          assert proof["nullity_m01"] == 1
+          assert proof["nullity_m01_squared"] == 2
+          assert proof["degree4_recurrence_exact"] is True
+          assert proof["lower_degree_recurrence_excluded_by_independence"] is True
+          assert proof["jordan_zero_chain_depth_2"] is True
+          assert proof["minimal_polynomial_equals_characteristic_polynomial"] is True
+          assert proof["generic_lift_conditions"] == ["r!=s", "r+s!=0"]
+          assert proof["generic_nullity_mxy"] == 1
+          assert proof["generic_nullity_mxy_squared"] == 2
+          assert proof["r_equals_s_nullity"] == 3
+          assert proof["r_equals_minus_s_nullity"] == 2
+          assert proof["sum_invariant_n1_to_n4"] == [True, True, True, True]
           PY
 
       - name: Run optimization benchmark with semantic parity
