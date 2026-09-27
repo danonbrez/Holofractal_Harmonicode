@@ -6,14 +6,14 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [e0f7a240f4fabf9482f1da07d214a6ffe83c2945](https://github.com/danonbrez/Holofractal_Harmonicode/commit/e0f7a240f4fabf9482f1da07d214a6ffe83c2945)
-- Git tree: 227c4070006524cc14af6658d49c0987cbdb2f1c
+- Source commit: [e8d6b5fab35b77a21c48ba5b90305de314186cf6](https://github.com/danonbrez/Holofractal_Harmonicode/commit/e8d6b5fab35b77a21c48ba5b90305de314186cf6)
+- Git tree: 7f3b94714e2371550b12135c5646e437d111e789
 - Tracked tree entries: 9,401
 - Tracked files in Git tree: 8,658
 - Content-bound indexed files: 8,609
 - Projection artifacts excluded from content root: 49
 - Text files deep-scanned: 8,192
-- Internal dependency edges: 72,225
+- Internal dependency edges: 72,228
 - Containment edges: 9,349
 - Lane 5 capability nodes: 2,068
 
@@ -21,7 +21,7 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpx8dqlM>OFHn-HbGi5Z89ufQJsN6bOSvvErbZwa41LufH<ho(3d>NgGglTlA5xNS<b4U4?Jq*2O3Apt7QD9Kg<YbDB0TgpopQD(s*98cNMXAQm86hhinbc0mc<vhr+z7li?ix3B?/HM8saz6K
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCp9K9ug38wqDFOQuDuKKGpDfwcMmjiDVkHgsqBUKkoa>s*OPsaEQImk1POAA*0zu4J?>UN2juA)tn4*P/Zogp-PtPAUsc-Mr6cfrGNCCN)qxvTqx2<J)(Xs3LzkQlrfbrH!YWVEFtBSUx0ekog
 
 ### directory_node_root_hash216
 
@@ -33,7 +33,7 @@ Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+s+(U/jJR
 
 ### dependency_edge_root_hash216
 
-GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-swjtLPSMs+rZetuh-B>tAC>C>22n*jrSi-Cckznw*SFzmzTmPoeeNor0(zj<gq2(f8-UmHK-yCUiOMs)0(RYfj)DZzLc9z<7K!Jh(nEOHAyu4p)2VPEoehTaAfjVmT*bOf6DpeCIr5I?*7)X
+GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-?hXDB54rdbl!<79Liz!3sMOuH(y-+0tlFQDKWf/UxD0pLg(x7u*d1mPrdyLhvdZa2xT7nJ4/F!U-E6+wb<L9RkNO?e5<5HGefWnYm<1t9bwe6du1f-34V/Ci0?2<wP1Ftp(AJjfd>WJ3MoOd
 
 ### lane5_capability_binding_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d6rbC/t!l
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLS8t<vELqMW?bP(!(1Clw*4tUch!xyi!?1SCh/PvA>TXVvWcIktdktlwvOszUaQd6h?VHFynAAV3uVQm9rM4Z0B?Zde3b?LJb1iOc>S95/pkZW2M/u3UcqQ3-V8IQ1MC7HvzX?V*qYF(pR>hW
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLP7GEXB10lE/k-)8oM-3*BNo+bf9qOA*)EMCg7LP9sBAn6M9e1!W7bSs2fmdl5uG>kqr1j1f3Mx6CpSf8!j8(*DovavYGsez5dB5(+b9JyfjeTmvNevxAPJY>aTQA>ogzO!riIU-I<q5Q)7Z/
 
 ## Lane 5 evidence binding
 
