@@ -48,7 +48,7 @@
   }
 
   function fnv1a64(bytes){
-    let h=1469598103934665603n;
+    let h=14695981039346656037n;
     for(let i=0;i<bytes.length;i++){
       if(i>=FINGERPRINT_OFFSET && i<FINGERPRINT_OFFSET+8) continue;
       h^=BigInt(bytes[i]);
@@ -73,9 +73,14 @@
     if(commandCount<1 || expected!==buffer.byteLength || view.getUint32(24,true)!==expected) throw new RenderPacketError("HHS179_PACKET_BOUNDS","command count/byte length mismatch");
     if(view.getUint32(40,true)===0 || view.getUint32(44,true)===0) throw new RenderPacketError("HHS179_PACKET_TARGET","target dimensions must be nonzero");
     if(view.getBigUint64(72,true)===0n) throw new RenderPacketError("HHS179_PACKET_TIME","exact time denominator must be nonzero");
+    if(view.getUint32(52,true)!==0) throw new RenderPacketError("HHS179_PACKET_LAYOUT","reserved header field must remain zero");
     const flags=view.getUint32(32,true);
     if((flags&FLAG_SEALED)===0) throw new RenderPacketError("HHS179_PACKET_UNSEALED","packet must be sealed");
     if((flags&FLAG_PROJECTION_ONLY)===0) throw new RenderPacketError("HHS179_PACKET_AUTHORITY","packet must remain projection-only");
+    if((flags&FLAG_COMPATIBILITY_UNADMITTED)===0){
+      const nonzero=(start,n)=>{ for(let i=start;i<start+n;i++) if(bytes[i]!==0) return true; return false; };
+      if(!nonzero(80,216)||!nonzero(296,216)||!nonzero(728,216)||!nonzero(944,72)) throw new RenderPacketError("HHS179_PACKET_IDENTITY","admitted packet identities are required");
+    }
     let compositeDepth=0;
     const commands=[];
     for(let i=0;i<commandCount;i++){
