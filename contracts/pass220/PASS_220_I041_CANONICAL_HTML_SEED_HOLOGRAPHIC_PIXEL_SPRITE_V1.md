@@ -119,6 +119,51 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Self-hosted exact algebra and Lane 5 logic
+
+The HTML may embed the repository equations and Lane 5 scheduling rules needed
+to execute and verify its projection path without requiring a remote HHS
+runtime call.
+
+The embedded exact surface must be source-identifiable and must preserve:
+
+```text
+144*36 = 12*12*3*12 = 81*64 = 72*72 = 5184
+
+Rot_72(k): j -> (j+k) mod 72
+Rot_72(k1) o Rot_72(k2) = Rot_72((k1+k2) mod 72)
+Rot_72(k)^(-1) = Rot_72((-k) mod 72)
+Rot_72(72) = identity
+
+Q144 field = Q(zeta_144)
+cos(k) = (zeta_144^k + zeta_144^-k)/2
+sin(k) = (zeta_144^k - zeta_144^-k)/(2*i)
+```
+
+Lane 5 optimization retains the repository authority rule:
+
+```text
+optimize discovery / scheduling / reuse / projection
+without changing the exact canonical result
+```
+
+The in-page scheduler therefore carries exact integer/rational time and phase
+state. It may avoid materializing represented intermediate states and may use
+constant auxiliary scheduling state, but it cannot skip canonical simulation
+updates or acquire mutation authority.
+
+Any conversion to IEEE/WebGL values occurs only through an explicit projection
+membrane. Irrational geometry remains symbolic/algebraic on the exact side
+rather than being replaced by decimal rational approximations.
+
+The browser implementation exposes
+`HHS_I041_SELF_HOSTED_EXACT_MANIFOLD_V1` and declares:
+
+```text
+canonicalFloatAuthority = false
+renderFloatProjectionOnly = true
+```
+
 ## Passive follow-particle observer
 
 The follow-particle view is observation-only. It must not become a control
