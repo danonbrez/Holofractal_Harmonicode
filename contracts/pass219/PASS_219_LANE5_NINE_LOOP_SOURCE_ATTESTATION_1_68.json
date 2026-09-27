@@ -1,0 +1,39 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68",
+  "version": "1.68.0",
+  "parent": "HHS_PASS219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67",
+  "source": {
+    "page": "https://smsharma.io/cosmic-nine-loops/",
+    "manifest": "https://smsharma.io/cosmic-nine-loops/MANIFEST.sha256",
+    "sample": "https://smsharma.io/cosmic-nine-loops/samples/E9_sample_coefficients.txt",
+    "zenodo_doi": "10.5281/zenodo.22949278"
+  },
+  "sample_contract": {
+    "weight": 18,
+    "alphabet": ["ah", "bh", "ch", "dh", "eh", "fh", "yu", "yv", "yw"],
+    "prime_moduli": [2147483647, 2147483629],
+    "nonzero_rows": 20400,
+    "zero_rows": 230,
+    "total_rows": 20630,
+    "all_nonzero_rationals_certified": true,
+    "seed": 7
+  },
+  "ingestion": {
+    "streaming_required": true,
+    "raw_bytes_sha256_required": true,
+    "manifest_membership_required": true,
+    "exact_rational_reconstruction_required": true,
+    "float_authority": false,
+    "candidate_only": true
+  },
+  "composition": {
+    "bind_parent_1_67_hash216": true,
+    "bind_sample_raw_sha256": true,
+    "bind_sample_counts": true,
+    "bind_exact_residue_replay": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false
+  }
+}
