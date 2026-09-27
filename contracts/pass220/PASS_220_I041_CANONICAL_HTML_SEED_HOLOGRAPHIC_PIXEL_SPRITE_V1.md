@@ -20,6 +20,37 @@ is a derived execution adapter.  It MAY optimize rendering and data layout but
 MUST preserve the seed's ordered animation geometry unless a native repository
 contract requires a repair.
 
+## Optimization order and foundation no-drift rule
+
+The supplied monolithic HTML is the **foundation**, not a disposable visual
+reference. Repository optimization MUST proceed in this order:
+
+```text
+canonical monolithic seed
+-> observationally equivalent code/data-layout optimization
+-> dependency-scoped preservation validation
+-> only then feature additions
+```
+
+Before adding a new improvement, the optimized surface MUST preserve the
+foundation's geometry and physics behavior. A geometry or physics equation,
+interaction rule, phase relation, orbit, topology, integrator, collision/bond
+law, or rendering cadence MUST NOT be changed merely for convenience,
+simplification, or performance.
+
+A geometry/physics change is admissible only when a native repository contract
+requires a corrective refinement and the affected dependency-scoped tests
+demonstrate the new implementation preserves the intended invariant.
+
+Optimization that does not require a physics change includes allocation
+elimination, deterministic cache reuse, indexing/data-layout improvements,
+batched projection work, and UI/diagnostic cadence reduction. These
+optimizations must not acquire canonical mutation authority.
+
+The browser adapter MUST expose
+`HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1` and the MP4/browser acceptance
+path MUST fail closed unless that receipt is `PASS`.
+
 ## Preserved visual/animation invariants
 
 The adapter MUST preserve:
