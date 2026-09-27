@@ -1,7 +1,31 @@
 #include "hhs_pass179_render_command_v1.h"
 
 #include <limits.h>
-#include <string.h>
+
+static void *hhs179_memset(void *dst, int value, size_t n) {
+    uint8_t *d = (uint8_t *)dst;
+    size_t i;
+    for (i = 0U; i < n; ++i) d[i] = (uint8_t)value;
+    return dst;
+}
+
+static void *hhs179_memcpy(void *dst, const void *src, size_t n) {
+    uint8_t *d = (uint8_t *)dst;
+    const uint8_t *s = (const uint8_t *)src;
+    size_t i;
+    for (i = 0U; i < n; ++i) d[i] = s[i];
+    return dst;
+}
+
+static int hhs179_memcmp(const void *lhs, const void *rhs, size_t n) {
+    const uint8_t *a = (const uint8_t *)lhs;
+    const uint8_t *b = (const uint8_t *)rhs;
+    size_t i;
+    for (i = 0U; i < n; ++i) {
+        if (a[i] != b[i]) return (a[i] < b[i]) ? -1 : 1;
+    }
+    return 0;
+}
 
 #define OFF_MAGIC 0U
 #define OFF_SCHEMA_VERSION 8U
@@ -95,7 +119,7 @@ static HHS179RenderStatusV1 validate_structure(const uint8_t *buffer, size_t siz
 
     if (buffer == NULL) return HHS179_RENDER_ERR_ARGUMENT;
     if (size < HHS179_RENDER_PACKET_HEADER_BYTES) return HHS179_RENDER_ERR_BOUNDS;
-    if (memcmp(buffer + OFF_MAGIC, HHS179_MAGIC, sizeof(HHS179_MAGIC)) != 0) return HHS179_RENDER_ERR_VERSION;
+    if (hhs179_memcmp(buffer + OFF_MAGIC, HHS179_MAGIC, sizeof(HHS179_MAGIC)) != 0) return HHS179_RENDER_ERR_VERSION;
     if (get_u32le(buffer + OFF_SCHEMA_VERSION) != HHS179_RENDER_PACKET_SCHEMA_VERSION) return HHS179_RENDER_ERR_VERSION;
     if (get_u32le(buffer + OFF_HEADER_BYTES) != HHS179_RENDER_PACKET_HEADER_BYTES) return HHS179_RENDER_ERR_VERSION;
     if (get_u32le(buffer + OFF_COMMAND_BYTES) != HHS179_RENDER_COMMAND_BYTES) return HHS179_RENDER_ERR_VERSION;
@@ -177,8 +201,8 @@ HHS179RenderStatusV1 hhs179_render_packet_init(
     if (init->target_width == 0U || init->target_height == 0U || init->exact_time_den == 0U) return HHS179_RENDER_ERR_BOUNDS;
     flags = (init->flags | HHS179_RENDER_PACKET_FLAG_PROJECTION_ONLY) & ~HHS179_RENDER_PACKET_FLAG_SEALED;
 
-    memset(buffer, 0, required);
-    memcpy(buffer + OFF_MAGIC, HHS179_MAGIC, sizeof(HHS179_MAGIC));
+    hhs179_memset(buffer, 0, required);
+    hhs179_memcpy(buffer + OFF_MAGIC, HHS179_MAGIC, sizeof(HHS179_MAGIC));
     put_u32le(buffer + OFF_SCHEMA_VERSION, HHS179_RENDER_PACKET_SCHEMA_VERSION);
     put_u32le(buffer + OFF_HEADER_BYTES, HHS179_RENDER_PACKET_HEADER_BYTES);
     put_u32le(buffer + OFF_COMMAND_BYTES, HHS179_RENDER_COMMAND_BYTES);
@@ -193,13 +217,13 @@ HHS179RenderStatusV1 hhs179_render_packet_init(
     put_u64le(buffer + OFF_FRAME_INDEX, init->frame_index);
     put_u64le(buffer + OFF_TIME_NUM, (uint64_t)init->exact_time_num);
     put_u64le(buffer + OFF_TIME_DEN, init->exact_time_den);
-    memcpy(buffer + OFF_SCENE_HASH216, init->scene_snapshot_hash216, HHS179_RENDER_HASH216_BYTES);
-    memcpy(buffer + OFF_FRAME_HASH216, init->frame_hash216, HHS179_RENDER_HASH216_BYTES);
-    memcpy(buffer + OFF_PRIOR_HASH216, init->prior_frame_hash216, HHS179_RENDER_HASH216_BYTES);
-    memcpy(buffer + OFF_RESOURCE_HASH216, init->resource_manifest_hash216, HHS179_RENDER_HASH216_BYTES);
-    memcpy(buffer + OFF_CAMERA_HASH72, init->camera_hash72, HHS179_RENDER_HASH72_BYTES);
-    memcpy(buffer + OFF_SOFTWARE_DIGEST, init->software_digest_sha256, HHS179_RENDER_SHA256_BYTES);
-    memcpy(buffer + OFF_BACKEND_EVIDENCE, init->backend_evidence_sha256, HHS179_RENDER_SHA256_BYTES);
+    hhs179_memcpy(buffer + OFF_SCENE_HASH216, init->scene_snapshot_hash216, HHS179_RENDER_HASH216_BYTES);
+    hhs179_memcpy(buffer + OFF_FRAME_HASH216, init->frame_hash216, HHS179_RENDER_HASH216_BYTES);
+    hhs179_memcpy(buffer + OFF_PRIOR_HASH216, init->prior_frame_hash216, HHS179_RENDER_HASH216_BYTES);
+    hhs179_memcpy(buffer + OFF_RESOURCE_HASH216, init->resource_manifest_hash216, HHS179_RENDER_HASH216_BYTES);
+    hhs179_memcpy(buffer + OFF_CAMERA_HASH72, init->camera_hash72, HHS179_RENDER_HASH72_BYTES);
+    hhs179_memcpy(buffer + OFF_SOFTWARE_DIGEST, init->software_digest_sha256, HHS179_RENDER_SHA256_BYTES);
+    hhs179_memcpy(buffer + OFF_BACKEND_EVIDENCE, init->backend_evidence_sha256, HHS179_RENDER_SHA256_BYTES);
     return HHS179_RENDER_OK;
 }
 
@@ -271,6 +295,6 @@ HHS179RenderStatusV1 hhs179_render_commands_export(
     status = hhs179_render_packet_validate(sealed_packet, sealed_size);
     if (status != HHS179_RENDER_OK) return status;
     if (out_buffer == NULL || out_capacity < sealed_size) return HHS179_RENDER_ERR_CAPACITY;
-    memcpy(out_buffer, sealed_packet, sealed_size);
+    hhs179_memcpy(out_buffer, sealed_packet, sealed_size);
     return HHS179_RENDER_OK;
 }
