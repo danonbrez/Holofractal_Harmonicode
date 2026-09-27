@@ -28,6 +28,16 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Hyperspherical projection invariant
+
+The final cloud is classified as hyperspherical because its 2D structural
+projection is invariant under admissible changes of perspective, with the
+symmetry carried by the folded higher-dimensional state rather than by a
+camera-facing 3D shell.
+
+Preserve camera/view transforms as observation-only. They must not modify
+particle state, constructor topology, conserved quantities, or graph lineage.
+
 ## Bounded metabolic-cloud invariant
 
 The mature hyperspherical cloud is a closed digital mitochondria-like
