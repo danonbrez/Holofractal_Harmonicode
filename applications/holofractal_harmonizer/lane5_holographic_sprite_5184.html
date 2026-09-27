@@ -6,6 +6,7 @@
   <title>HHS Lane 5 — 5184 Holographic Sprite Pathway</title>
   <script src="../../hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js"></script>
   <script src="../../hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js"></script>
+  <script src="../../hhs_gui/rendering/hhs_harmonicode_render_packet_wasm_v1.js"></script>
   <style>
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:#cfe8ff;font-family:monospace}
     canvas{display:block}
@@ -115,6 +116,7 @@ let scene, camera, renderer, controls, geometry;
 let layer1, layer2, material1, material2, tess, boundarySphere;
 let sourceTarget, postScene, postCamera, postMaterial, postQuad;
 let renderResources=null;
+let nativePacketBuilder=null;
 const RENDER_RESOURCE=Object.freeze({
   CAMERA:1n,
   SOURCE_TARGET:2n,
@@ -579,7 +581,8 @@ function buildLane5ProjectionPacket(){
   const w=Math.max(1,Math.floor(size.x)), h=Math.max(1,Math.floor(size.y));
   const O=HHSRenderPacket.OPCODE;
   const projectionMicros=Math.trunc(simTimeTicks*1000000);
-  return HHSRenderPacket.buildCompatibilityPacket({
+  if(!nativePacketBuilder) throw new Error("native render packet WASM bridge is not ready");
+  return nativePacketBuilder.build({
     frameIndex:BigInt(rendered),
     exactTimeNum:BigInt(projectionMicros),
     exactTimeDen:60000000n,
@@ -646,6 +649,9 @@ function pixelDisplayContract(){
     immutableRenderCommandStream:true,
     renderPacketSchema:"HHS_PASS_179_RENDER_COMMAND_PACKET_V1",
     renderPacketBinaryAuthority:"C11",
+    renderPacketProducedByNativeWasm:true,
+    renderPacketWasmSha256:nativePacketBuilder?nativePacketBuilder.wasmSha256:null,
+    renderPacketJavaScriptSerialization:false,
     renderPacketCompatibilityUnadmitted:true,
     renderPacketCanonicalIdentity:false,
     tuning:{...pixelTune}
@@ -1077,10 +1083,14 @@ function animate(now){
 }
 
 (async()=>{
+  nativePacketBuilder=await HHSRenderPacketWasm.create();
   path=await derivePath(path.seed);
   await refreshPhaseWord(pathAddress(0),0);
   init();
-})();
+})().catch(error=>{
+  console.error(error);
+  document.getElementById("hud").textContent="HHS native render packet bootstrap failed: "+String(error&&error.message||error);
+});
 </script>
 </body>
 </html>
