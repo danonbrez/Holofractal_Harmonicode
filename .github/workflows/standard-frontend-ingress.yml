@@ -9,6 +9,8 @@ on:
       - "hhs_backend/api/standard_ingress_compat_routes.py"
       - "hhs_backend/runtime/multimodal_workspace_ingress_v1.py"
       - "hhs_backend/runtime/hhs_workspace_authority_loop_v1.py"
+      - "hhs_runtime/hhs_kernel_conformance_surface_map_v1.py"
+      - "contracts/pass220/PASS_220_STANDARD_LEGACY_INGRESS_COMPAT_1_0.json"
       - "hhs_backend/server.py"
       - "deploy/digitalocean/hhs-pass196.env.example"
       - "tests/test_hhs_standard_frontend_ingress_v1.py"
@@ -22,6 +24,8 @@ on:
       - "hhs_backend/api/standard_ingress_compat_routes.py"
       - "hhs_backend/runtime/multimodal_workspace_ingress_v1.py"
       - "hhs_backend/runtime/hhs_workspace_authority_loop_v1.py"
+      - "hhs_runtime/hhs_kernel_conformance_surface_map_v1.py"
+      - "contracts/pass220/PASS_220_STANDARD_LEGACY_INGRESS_COMPAT_1_0.json"
       - "hhs_backend/server.py"
       - "deploy/digitalocean/hhs-pass196.env.example"
       - "tests/test_hhs_standard_frontend_ingress_v1.py"
@@ -55,6 +59,7 @@ jobs:
             hhs_backend/api/standard_ingress_compat_routes.py \
             hhs_backend/runtime/multimodal_workspace_ingress_v1.py \
             hhs_backend/runtime/hhs_workspace_authority_loop_v1.py \
+            hhs_runtime/hhs_kernel_conformance_surface_map_v1.py \
             hhs_backend/server.py
 
       - name: Run standard and legacy frontend ingress contracts
