@@ -1,5 +1,9 @@
 from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i116_pass214 import (
     EXACT_VM81_RUNTIME_GIT_BLOB,
+    PASS214_PRE_I028_EXACT_VM81_RUNTIME_GIT_BLOB,
+    PASS220_I028_MERGE_COMMIT,
+    PASS220_I028_VALIDATED_HEAD,
+    PASS220_I028_VALIDATION_RUN,
     PASS214_BIND_SYMBOL,
     PASS214_CAPABILITIES,
     PASS214_CLASSIFICATION,
@@ -54,7 +58,11 @@ def main() -> None:
     assert semantic["semantic_reconciliation"]["reusable_registry_entries"] == 306
     assert semantic["isolation_accounting"]["remaining_reusable_extraction_backlog"] == 1383
     assert semantic["first_reusable_module_promotion"]["canonical_mutation_authority"] == "NONE"
+    assert evidence["pre_i028_exact_vm81_kernel_git_blob"] == PASS214_PRE_I028_EXACT_VM81_RUNTIME_GIT_BLOB
     assert evidence["exact_vm81_kernel_git_blob"] == EXACT_VM81_RUNTIME_GIT_BLOB
+    assert evidence["i028_validated_head"] == PASS220_I028_VALIDATED_HEAD
+    assert evidence["i028_merge_commit"] == PASS220_I028_MERGE_COMMIT
+    assert evidence["i028_validation_run"] == PASS220_I028_VALIDATION_RUN
 
     declaration = pass214_membrane_surface_declaration()
     manifest = pass214_membrane_manifest()

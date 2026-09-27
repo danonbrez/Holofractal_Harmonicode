@@ -24,6 +24,7 @@ WORKFLOWS: dict[str, dict[str, bool]] = {
     ".github/workflows/pass205-repair-validation-base.yml": {"pull": True, "push_main": True},
     ".github/workflows/pass205-multimodal-continuation-contract.yml": {"pull": True, "push_main": True},
     ".github/workflows/pass205-production-runtime.yml": {"pull": True, "push_main": True},
+    ".github/workflows/pass219-cumulative-pass214-membrane-i116.yml": {"pull": True, "push_main": True},
     ".github/workflows/pass219-cumulative-pass205-membrane-i119.yml": {"pull": True, "push_main": True},
     ".github/workflows/pass219-lane5-exact-boundary-quantum-thermo-1-35.yml": {"pull": True, "push_main": True},
 }

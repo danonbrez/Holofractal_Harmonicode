@@ -24,6 +24,13 @@ on:
       - 'docs/operations/restart/PASS_219_I119_PASS205_MEMBRANE_RESTART.md'
       - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
       - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass214.py'
+      - 'tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py'
+      - 'scripts/run_pass214_vm81_ir_adapter_validation.sh'
+      - 'tests/test_hhs_pass214_vm81_ir_adapter_v1.py'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'evidence/pass220/PASS_078_SUCCESSOR_LINEAGE_V1.json'
+      - 'evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json'
   pull_request:
     branches: [main]
     paths:
@@ -45,6 +52,13 @@ on:
       - 'docs/operations/restart/PASS_219_I119_PASS205_MEMBRANE_RESTART.md'
       - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
       - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass214.py'
+      - 'tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py'
+      - 'scripts/run_pass214_vm81_ir_adapter_validation.sh'
+      - 'tests/test_hhs_pass214_vm81_ir_adapter_v1.py'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'evidence/pass220/PASS_078_SUCCESSOR_LINEAGE_V1.json'
+      - 'evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json'
 
 concurrency:
   group: pass219-i119-pass205-membrane-${{ github.ref }}

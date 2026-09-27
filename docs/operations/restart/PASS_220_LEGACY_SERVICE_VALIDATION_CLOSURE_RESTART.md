@@ -91,3 +91,23 @@ Current deviations are accepted only through explicit successor evidence:
 - The two unchanged Pass 078 header surfaces must remain byte-identical to the historical manifest.
 
 A later change to any of these files reopens the consensus dependency cone and must provide a new explicit successor proof; the Pass 078 historical manifest itself is not rewritten.
+
+## Pass 214 cumulative membrane successor repair
+
+Latest I119 exact and synthetic jobs completed all repaired exact-ABI link stages and then failed only at Pass 205 membrane preflight with:
+
+`PASS214_EXACT_VM81_REBIND_IDENTITY_DRIFT`
+
+The stale Pass 214 cumulative membrane still required the pre-I028 whole-file VM81 blob to appear literally in the repaired adapter script/test.
+
+Repair-forward now preserves that blob as historical predecessor evidence while binding the current VM81 source to the validated I028 successor:
+
+- pre-I028 exact VM81 blob: `81d9699b2d28d5d6a09ea4763653f3ba9eda9e15`;
+- current I028 VM81 blob: `92afd8d0e26119b6db6420740c05db25a37d389a`;
+- I028 validated head: `8a750bb56d14fc9847166736bbbf2ca0660bff7f`;
+- I028 merge: `86a66d32ba3c17430887cb4ff9fa0da7dbb4bf6f`;
+- I028 exact-head run: `35723417642` SUCCESS.
+
+The membrane now enforces the legacy opcode prefix 0..23, append-only 24..34 static assertions, the I028 12/12 proof receipt, and the governed adapter's no-direct-mutation guard. The historical Pass 214 benchmark/reuse roots remain unchanged.
+
+The standalone I116 workflow is also repaired to dependency-scoped main closure and the canonical exact-ABI link-support composition.
