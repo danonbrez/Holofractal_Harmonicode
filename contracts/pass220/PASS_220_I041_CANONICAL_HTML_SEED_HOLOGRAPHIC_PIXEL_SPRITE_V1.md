@@ -20,6 +20,65 @@ is a derived execution adapter.  It MAY optimize rendering and data layout but
 MUST preserve the seed's ordered animation geometry unless a native repository
 contract requires a repair.
 
+## Two-fork execution architecture
+
+The canonical monolithic simulation remains one simulation with two allowed
+execution descendants. They are forks of the same foundation, not two
+independent applications.
+
+### Fork A — optimized realtime simulation
+
+Fork A is the full user-supplied simulation optimized **in place**. It retains
+the complete simulation state and transition system, including the inherited
+swarm coupling, barycentric/ionic field, collision chain, bond/constructor
+logic, memory windows, virtual decay, Layer-2 coupling/decay pool, HNAN gates,
+receipts, controls, and geometry.
+
+Its target is realtime or near-realtime execution through implementation
+optimization: data-oriented storage, spatial-neighbor acceleration, allocation
+elimination, batched updates, cached immutable relations, reduced diagnostic
+DOM work, and compatible GPU/worker projection acceleration.
+
+Fork A MUST NOT obtain speed by deleting or substituting the simulation's
+physics/geometry/state-transition rules.
+
+The repository target path for the materialized Fork-A source is:
+
+```text
+applications/holofractal_harmonizer/holofractal_hybrid_qpu_neural_swarm_vm81_i041_realtime.html
+```
+
+That path MUST be populated from the canonical monolithic seed itself; the
+projection adapter MUST NOT be used as the source from which Fork A is rebuilt.
+
+### Fork B — MP4/render observation fork
+
+The existing optimized surface:
+
+```text
+applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html
+```
+
+is Fork B. Its role is deterministic observation, renderer-bypass measurement,
+HD/MP4 capture, and projection experimentation when the complete Fork-A
+simulation cannot yet be displayed at realtime speed.
+
+Fork B MAY execute or replay frames slower than wall-clock realtime. It is not
+permitted to redefine the simulated physics merely to produce realtime
+graphics, and it is not evidence that omitted Fork-A state transitions have
+been executed.
+
+The required relationship is:
+
+```text
+canonical simulation semantics
+        |-> Fork A: same simulation, optimized execution
+        |-> Fork B: same-state observation / MP4 projection
+```
+
+A performance comparison between the forks MUST distinguish simulation-step
+cost from projection/render cost.
+
 ## Optimization order and foundation no-drift rule
 
 The supplied monolithic HTML is the **foundation**, not a disposable visual
