@@ -89,3 +89,11 @@ def test_precommit_hook_uses_package_module_invocation():
     installer = Path("tools/install_hhs_pre_commit_hook.py").read_text(encoding="utf-8")
     assert "python -m hhs_runtime.hhs_commit_acceptance_gate_v1" in installer
     assert "python hhs_runtime/hhs_commit_acceptance_gate_v1.py" not in installer
+
+
+def test_commit_acceptance_gate_retains_subprocess_failure_evidence():
+    source = Path("hhs_runtime/hhs_commit_acceptance_gate_v1.py").read_text(encoding="utf-8")
+    assert '"returncode": r.returncode' in source
+    assert '"stdout": r.stdout' in source
+    assert '"stderr": r.stderr' in source
+    assert '"script": s' in source

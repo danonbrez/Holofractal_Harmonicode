@@ -99,3 +99,10 @@ Repository evidence establishes explicit later successors:
 The new `PASS_078_KERNEL_SUCCESSOR_LINEAGE_V1.json` preserves the Pass 078 baseline and allows only exact, explicitly validated successors. The validator requires exact current size/SHA-256/Git blob, ancestral validated and merge commits, and repository-visible evidence files. Unlisted drift remains a `FROZEN_FILE_MISMATCH`.
 
 Consensus checkout now uses full history so ancestry is proved locally rather than assumed.
+
+
+## Diagnostic-preservation repair
+
+Exact-head Consensus validation advanced past the repository import and Pass 078 successor-lineage blockers, then failed at `hhs_runtime_certification_v2.py`. The acceptance gate's subprocess wrapper discarded stdout/stderr from its raised failure and exposed only the script filename.
+
+Repair: retain subprocess return code/stdout/stderr in the rejection record. Pass/fail semantics remain identical; the change only makes the next inherited blocker reproducible and inspectable.
