@@ -259,9 +259,17 @@
     let outDecl="";
     if(/\bgl_FragColor\b/.test(src)){
       src=src.replace(/\bgl_FragColor\b/g,"hhs_FragColor");
-      outDecl="out vec4 hhs_FragColor;\n";
+      outDecl="out vec4 hhs_FragColor;";
     }
-    return "#version 300 es\n"+outDecl+src;
+    if(outDecl){
+      const precision=/precision\s+(?:lowp|mediump|highp)\s+float\s*;/;
+      if(precision.test(src)){
+        src=src.replace(precision,(m)=>m+"\n"+outDecl);
+      }else{
+        src="precision highp float;\n"+outDecl+"\n"+src;
+      }
+    }
+    return "#version 300 es\n"+src;
   }
 
   function compileShader(gl,type,source){
