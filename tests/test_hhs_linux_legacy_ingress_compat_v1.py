@@ -117,6 +117,8 @@ def test_malformed_json_falls_back_to_reversible_binary_instead_of_422():
     ingress = body["authority_decision"]["result"]
     assert ingress["packet"]["declared_modality"] == "BINARY"
     assert ingress["packet"]["transport_encoding"] == "BASE64_REVERSIBLE"
+    assert ingress["packet"]["compatibility_metadata"]["transport"] == "JSON_RAW_FALLBACK"
+    assert "JSONDecodeError" in ingress["packet"]["compatibility_metadata"]["parse_error"]
 
 
 def test_urlencoded_form_is_translated_to_json_object():
