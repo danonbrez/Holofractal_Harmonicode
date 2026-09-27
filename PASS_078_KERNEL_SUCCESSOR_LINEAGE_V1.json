@@ -1,0 +1,63 @@
+{
+  "schema": "HHS_PASS_078_KERNEL_SUCCESSOR_LINEAGE_V1",
+  "pass_id": "PASS_078",
+  "policy": "BASELINE_IDENTITY_OR_EXACT_VALIDATED_SUCCESSOR",
+  "baseline_manifest": "PASS_078_KERNEL_FREEZE_MANIFEST.json",
+  "required_current_policy": {
+    "baseline_binding_must_match_manifest": true,
+    "exact_current_sha256_required": true,
+    "exact_current_size_required": true,
+    "exact_current_git_blob_required": true,
+    "validated_head_must_be_ancestor": true,
+    "repair_merge_must_be_ancestor": true,
+    "evidence_files_must_exist": true,
+    "unlisted_drift_rejected": true
+  },
+  "approved_successors": [
+    {
+      "repository_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+      "baseline_sha256": "d77a455747e7740114ea346ad136a1d03ed57cc12685d7ba047d526be119b884",
+      "baseline_size": 55641,
+      "approved_current_sha256": "91ec97378f793e1f00d251538c9ed732222edf40896ed4c24c4d0e2733a46e53",
+      "approved_current_size": 75116,
+      "approved_current_git_blob": "92afd8d0e26119b6db6420740c05db25a37d389a",
+      "successor_pass": 220,
+      "successor_iteration": "I028",
+      "semantic_boundary": "LEGACY_OPCODE_PREFIX_0_23_PRESERVED_APPEND_ONLY_G3_24_34",
+      "validated_implementation_head": "8a750bb56d14fc9847166736bbbf2ca0660bff7f",
+      "repair_merge_commit": "86a66d32ba3c17430887cb4ff9fa0da7dbb4bf6f",
+      "repair_pr": 547,
+      "validation_run": 35723417642,
+      "evidence_files": [
+        ".github/workflows/pass220-i028-g3-ouroboros-vm81-opcodes.yml",
+        "docs/pass220/PASS_220_I028_G3_OUROBOROS_VM81_OPCODES.md",
+        "docs/operations/restart/PASS_220_I028_G3_OUROBOROS_VM81_OPCODES_RESTART.md",
+        "evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json",
+        "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py",
+        "tests/pass220/test_hhs_pass220_g3_ouroboros_vm81_native_v1.c"
+      ]
+    },
+    {
+      "repository_path": "hhs_runtime/c/hhs_runtime_abi.c",
+      "baseline_sha256": "354b713650919712575910b8041bf456c3e9475119b22c9b06836923705f33cf",
+      "baseline_size": 18806,
+      "approved_current_sha256": "58188c6927d03a486d5b4dfb8d5f94356d4de2a01e1c83808d46670984d3be3f",
+      "approved_current_size": 17053,
+      "approved_current_git_blob": "6a3ed4a10c5d83fa77bb4d118819fc230d32248a",
+      "successor_pass": 206,
+      "successor_iteration": "CORE_SUCCESSOR_REPAIR",
+      "semantic_boundary": "LEGACY_V1_LAYOUT_PRESERVED_EXACT_V1_1_EXTENSION_LINKED_ADDITIVELY",
+      "validated_implementation_head": "3235f9066219bf2e665503d9f94aa11701d4c20e",
+      "repair_merge_commit": "284bf652d9635cc0c940f79dfe6aff6f8b787c3c",
+      "repair_pr": 254,
+      "validation_run": 31941882432,
+      "validation_job": 95152163266,
+      "evidence_files": [
+        "artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json",
+        "docs/operations/recovery_receipts/VM81_EXACT_ABI_REPAIR_2026-08-16.md",
+        ".github/workflows/vm81-exact-abi-repair.yml",
+        "tests/pass206/test_pass206_cumulative_enforcement_v1.py"
+      ]
+    }
+  ]
+}
