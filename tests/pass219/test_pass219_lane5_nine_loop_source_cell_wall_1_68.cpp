@@ -37,12 +37,15 @@ static hhs::lane5::NineLoopSourceAttestationInput exact_input() {
     using namespace hhs::lane5;
     NineLoopSourceAttestationInput input{};
     input.parent_metadata = parent_metadata();
-    CHECK(
+    const HHSExactStatus parent_status =
         NineLoopForeignEquivalenceCellWall::derive_candidate_hash216(
             input.parent_metadata,
             input.parent_candidate_hash216
-        ) == HHS_EXACT_STATUS_OK
-    );
+        );
+    if (parent_status != HHS_EXACT_STATUS_OK) {
+        std::fprintf(stderr, "failed to derive parent Hash216\n");
+        std::abort();
+    }
     std::strcpy(
         input.manifest_sha256,
         "f96534526482f03e638ee030b1a88968348901f70967bb89618c76420a21ffe5"
