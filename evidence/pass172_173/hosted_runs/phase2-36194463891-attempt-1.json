@@ -1,0 +1,21 @@
+{
+  "branch": "pass220-lane5-global-tool-hydration-1-0",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "83cfd03a245dbb0aa045a50709a32726644db963e9fcba8633cb4046d113e848",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 36194463891,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "77444d2d22f889daca937ba56c03387ad4cc2b97"
+}

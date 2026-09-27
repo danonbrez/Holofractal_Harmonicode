@@ -5476,6 +5476,79 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.lane5_global_tool_hydration.self_test",
+        module="hhs_runtime.hhs_pass220_lane5_global_tool_hydration_v1",
+        function="global_tool_hydration_self_test",
+        service_type="pass220_lane5_global_5184_tool_hydration",
+        description=(
+            "Validate the global Lane 5 Pass 219/220 tool-hydration constraint "
+            "surface without replacing the Lane 5 selector. Every registered "
+            "Pass 219/220 service and authoritative merged Pass 219/220 pull "
+            "request is represented as a candidate-only exact 5,184-bit "
+            "multimodal knowledge-graph tool with ordered 3xHash72 Hash216 "
+            "identity, the shared I042 root, and a valid generic C++ Lane 5 "
+            "tool surface. Warm encrypted vector memory remains derived cache "
+            "only and cannot mint VM81, Hash72, Hash216, or persistence authority."
+        ),
+        invariant_ids=[
+            "HHS-I001",
+            "HHS-I005",
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+            "HHS-I016",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_LANE5_GLOBAL_PASS219_220_TOOL_HYDRATION_V1",
+            "HHS_PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_LANE5_PASS219_220_WARM_VECTOR_RECEIPT_V1",
+            "HHS_PASS_220_LANE5_PASS219_220_5184_TOOL_GRAPH_V1",
+            "HHS_PASS_220_LANE5_5184_KNOWLEDGE_TOOL_V1",
+        ],
+        validators=[
+            "build_pass219_220_warm_tool_graph",
+            "global_tool_hydration_self_test",
+        ],
+        guards=[
+            "lane5_route_selection_algorithm_unchanged",
+            "circular_phase_fiber_global_constraint_not_selector_replacement",
+            "complete_registered_pass219_pass220_service_inventory",
+            "complete_authoritative_merged_pass219_pass220_pr_inventory",
+            "every_tool_exact_5184_bit_projection",
+            "every_tool_ordered_3xhash72_hash216_identity",
+            "every_tool_cpp_lane5_surface_bound",
+            "every_tool_i042_shared_multimodal_root_bound",
+            "vector_store_candidate_cache_only",
+            "repository_source_history_remain_authority",
+            "no_vm81_hash72_hash216_persistence_authority_escalation",
+            "warm_replay_never_bypasses_lane5_vm81_admission",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_PASS220_LANE5_SELECTOR_REPLACEMENT",
+            "REJECT_PASS220_LANE5_TOOL_SERVICE_COVERAGE_GAP",
+            "REJECT_PASS220_LANE5_TOOL_MERGED_PR_COVERAGE_GAP",
+            "REJECT_PASS220_LANE5_TOOL_5184_PROJECTION_DRIFT",
+            "REJECT_PASS220_LANE5_TOOL_HASH216_WIDTH_DRIFT",
+            "REJECT_PASS220_LANE5_TOOL_CPP_SURFACE_DRIFT",
+            "REJECT_PASS220_LANE5_TOOL_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_GLOBAL_LANE5_TOOL_GRAPH_NO_VM81_MUTATION",
+        persistence_policy=(
+            "DERIVED_ENCRYPTED_HASH216_VECTOR_CACHE_ONLY_NO_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "FINITE_REPOSITORY_REGISTERED_SERVICE_AND_FIRST_PARENT_MERGED_PR_INVENTORY"
+        ),
+    )
+
     return registry
 
 

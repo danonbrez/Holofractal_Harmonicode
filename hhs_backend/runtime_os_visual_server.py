@@ -10,6 +10,11 @@ from hhs_backend.runtime_os_pass218_lifecycle import (
     PASS218_RUNTIME_STATUS_PATH,
     install_pass218_runtime_os_lifecycle,
 )
+from hhs_backend.runtime_os_pass220_lane5_tool_hydration import (
+    PASS220_LANE5_TOOL_GRAPH_PATH,
+    PASS220_LANE5_TOOL_STATUS_PATH,
+    install_pass220_lane5_tool_warm_hydration,
+)
 from hhs_backend.runtime_os_projection import (
     DEFAULT_PUBLIC_MOUNT_NAME,
     RUNTIME_OS_ASSETS,
@@ -37,11 +42,15 @@ app.description = (
     "Runtime OS workspace. Runtime execution remains owned by the inherited HHS backend."
 )
 PASS218_RUNTIME_OS_LIFECYCLE = install_pass218_runtime_os_lifecycle(app)
+PASS220_LANE5_TOOL_WARM_LIFECYCLE = install_pass220_lane5_tool_warm_hydration(app)
 project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)
 
 __all__ = [
     "PASS218_RUNTIME_OS_LIFECYCLE",
     "PASS218_RUNTIME_STATUS_PATH",
+    "PASS220_LANE5_TOOL_GRAPH_PATH",
+    "PASS220_LANE5_TOOL_STATUS_PATH",
+    "PASS220_LANE5_TOOL_WARM_LIFECYCLE",
     "PUBLIC_MOUNT_NAME",
     "RUNTIME_OS_ASSETS",
     "RUNTIME_OS_INDEX",

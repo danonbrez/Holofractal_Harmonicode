@@ -228,6 +228,11 @@ from hhs_backend.runtime_os_pass218_lifecycle import (
     install_pass218_runtime_os_lifecycle,
     resolve_pass218_state_root,
 )
+from hhs_backend.runtime_os_pass220_lane5_tool_hydration import (
+    PASS220_LANE5_TOOL_GRAPH_PATH,
+    PASS220_LANE5_TOOL_STATUS_PATH,
+    install_pass220_lane5_tool_warm_hydration,
+)
 from hhs_backend.runtime_os_projection import (
     RUNTIME_OS_ASSETS,
     RUNTIME_OS_INDEX,
@@ -480,6 +485,10 @@ PASS218_I18_CLOSURE_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I17_EXECUTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I16_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
 PASS218_I15_CONSUMPTION_CONTROL_PLANE = PASS218_I19_POSTCONDITION_CONTROL_PLANE
+PASS220_LANE5_TOOL_WARM_LIFECYCLE = install_pass220_lane5_tool_warm_hydration(
+    app,
+    repository_root=REPOSITORY_ROOT,
+)
 project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)
 
 # The inherited application layer records its own historical Harmonizer
@@ -496,6 +505,9 @@ pass174.PASS174_BOOT_STATE.update({
 })
 
 __all__ = [
+    "PASS220_LANE5_TOOL_GRAPH_PATH",
+    "PASS220_LANE5_TOOL_STATUS_PATH",
+    "PASS220_LANE5_TOOL_WARM_LIFECYCLE",
     "PASS218_AUTHORITY_ACTION_PREPARE_PATH",
     "PASS218_AUTHORITY_ALERTS_PATH",
     "PASS218_AUTHORITY_CONTROL_PLANE",
