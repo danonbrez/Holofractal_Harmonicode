@@ -1,0 +1,33 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68_EVIDENCE_V1",
+  "date": "2026-09-27",
+  "source_page": "https://smsharma.io/cosmic-nine-loops/",
+  "source_manifest": "https://smsharma.io/cosmic-nine-loops/MANIFEST.sha256",
+  "source_sample": "https://smsharma.io/cosmic-nine-loops/samples/E9_sample_coefficients.txt",
+  "workflow_run": 36324844133,
+  "workflow_conclusion": "success",
+  "manifest_sha256": "f96534526482f03e638ee030b1a88968348901f70967bb89618c76420a21ffe5",
+  "sample_sha256": "a78557e58efb3e12cccb647974131a3f694322bebb97607a5648db0484099b18",
+  "summary_sha256": "fbda1f90205bcf4f02b154aba25346aa83768e6cbbccbeeceaef9187eb691088",
+  "sample": {
+    "weight": 18,
+    "alphabet": ["ah", "bh", "ch", "dh", "eh", "fh", "yu", "yv", "yw"],
+    "prime_moduli": [2147483647, 2147483629],
+    "nonzero_rows": 20400,
+    "zero_rows": 230,
+    "total_rows": 20630,
+    "unique_words": 20630,
+    "all_nonzero_rationals_exact": true,
+    "all_zero_rows_exact": true,
+    "manifest_member_verified": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "floating_point_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false
+  },
+  "native_1_68_validation": "PENDING_CURRENT_BRANCH_CI"
+}

@@ -2,6 +2,8 @@
 
 HHS is a deterministic, receipt-governed programming environment that combines Harmonicode source semantics, VM81 execution and admission, Hash72 receipt lineage, Hash216 ordered identity, native C ABI surfaces, Python runtime control, backend APIs, visual development, replay, persistence, and governed multimodal tooling.
 
+> **Repository navigation:** [REPOSITORY_INDEX.md](REPOSITORY_INDEX.md) — canonical map of runtime, contracts, pass documentation, validation, deployment, and visual/application surfaces.
+
 Sure! Here's a high-level explanation of what the **HHS Lane 5 White-Paper Index V1** represents as a whole, and what the system and its documents mean **in context**:
 
 --- 
