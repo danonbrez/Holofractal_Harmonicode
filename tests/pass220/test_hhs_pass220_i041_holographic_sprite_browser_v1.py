@@ -111,6 +111,19 @@ def test_holographic_pixel_sprite_compositor_preserves_source_resolution_and_tra
 
 
 
+def test_renderer_is_explicitly_fork_b_and_never_the_canonical_simulation_replacement():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'fork:"B"',
+        'name:"MP4_RENDER_OBSERVATION_FORK"',
+        'canonicalSimulationReplacement:false',
+        'consumesCanonicalSimulationSemantics:true',
+        'renderer_is_observation_fork:',
+        'forkRole:I041_FORK_ROLE',
+    ):
+        assert token in source, token
+
+
 def test_canonical_seed_optimization_is_foundation_first_and_allocation_safe():
     source = HTML.read_text(encoding="utf-8")
     for token in (
@@ -151,5 +164,10 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1",
         "canonical monolithic seed",
         "observationally equivalent code/data-layout optimization",
+        "Fork A — optimized realtime simulation",
+        "Fork B — MP4/render observation fork",
+        "same simulation, optimized execution",
+        "same-state observation / MP4 projection",
+        "holofractal_hybrid_qpu_neural_swarm_vm81_i041_realtime.html",
     ):
         assert token in source, token
