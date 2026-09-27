@@ -83,6 +83,7 @@ jobs:
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
             -o /tmp/pass219-vm81-1-21-3/adapter.o
+          bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-vm81-1-21-3/link-support full
 
       - name: Prove runtime library tracks exact ABI aggregate changes
         run: |
@@ -109,6 +110,9 @@ jobs:
             tests/pass219/test_pass219_exact_vm81_candidate_adapter_1_21_3.c \
             /tmp/pass219-vm81-1-21-3/adapter.o \
             /tmp/pass219-vm81-1-21-3/exact.o \
+            /tmp/pass219-vm81-1-21-3/link-support/hhs_hash216.o \
+            /tmp/pass219-vm81-1-21-3/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-vm81-1-21-3/test-adapter
           /tmp/pass219-vm81-1-21-3/test-adapter
 
@@ -140,11 +144,17 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_monolithic_constraint_abi_1_20.c \
             /tmp/pass219-vm81-1-21-3/exact.o \
+            /tmp/pass219-vm81-1-21-3/link-support/hhs_hash216.o \
+            /tmp/pass219-vm81-1-21-3/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-vm81-1-21-3/test-monolithic
           /tmp/pass219-vm81-1-21-3/test-monolithic
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_octonion_runtime_1_19.c \
             /tmp/pass219-vm81-1-21-3/exact.o \
+            /tmp/pass219-vm81-1-21-3/link-support/hhs_hash216.o \
+            /tmp/pass219-vm81-1-21-3/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-vm81-1-21-3/test-octonion
           /tmp/pass219-vm81-1-21-3/test-octonion
 

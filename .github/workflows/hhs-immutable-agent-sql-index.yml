@@ -24,7 +24,7 @@ jobs:
   immutable-agent-index:
     runs-on: ubuntu-latest
     env:
-      HHS_AGENT_INDEX_DB: ${{ runner.temp }}/hhs-agent-index.sqlite3
+      HHS_AGENT_INDEX_DB: /tmp/hhs-agent-index.sqlite3
       HHS_COGNITION_AUTO_TICK: "1"
     steps:
       - uses: actions/checkout@v4

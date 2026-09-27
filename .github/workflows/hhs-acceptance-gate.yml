@@ -14,8 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
-      - run: python hhs_runtime/hhs_commit_acceptance_gate_v1.py
-      - run: python hhs_runtime/hhs_distributed_verification_v1.py
+      - run: python -m hhs_runtime.hhs_commit_acceptance_gate_v1
+      - run: python -m hhs_runtime.hhs_distributed_verification_v1
       - uses: actions/upload-artifact@v4
         with:
           name: receipt-${{ matrix.node }}
@@ -25,16 +25,17 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with: {path: receipts}
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - run: |
           python - << 'EOF'
-import json,glob
-from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
-recs=[json.load(open(f)) for f in glob.glob('receipts/**/*.json',recursive=True)]
-res=evaluate_consensus(recs)
-print(res)
-assert res.status=='CONSENSUS_ACCEPTED'
-EOF
+          import json,glob
+          from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
+          recs=[json.load(open(f)) for f in glob.glob('receipts/**/*.json',recursive=True)]
+          res=evaluate_consensus(recs)
+          print(res)
+          assert res.status=='CONSENSUS_ACCEPTED'
+          EOF
