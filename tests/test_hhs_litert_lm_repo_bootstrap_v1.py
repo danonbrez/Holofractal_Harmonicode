@@ -8,12 +8,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_litert_lm_is_a_declared_repository_dependency() -> None:
+def test_litert_lm_is_retained_as_optional_external_compatibility_dependency() -> None:
     provider_requirements = (ROOT / "requirements-litert-lm.txt").read_text(encoding="utf-8")
     root_requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
 
     assert "litert-lm==0.14.0" in provider_requirements
-    assert "-r requirements-litert-lm.txt" in root_requirements
+    assert "-r requirements-litert-lm.txt" not in root_requirements
+    assert "optional compatibility/deployment" in root_requirements
 
 
 def test_repository_launchers_are_shell_valid() -> None:
@@ -31,7 +32,9 @@ def test_primary_start_path_models_gpu_provider_topologies() -> None:
 
     assert 'HHS_LITERT_LM_PORT:-9379' in launcher
     assert 'HHS_LITERT_LM_BACKEND:-gpu' in launcher
-    assert 'HHS_LITERT_LM_PROVIDER_MODE:-auto' in launcher
+    assert 'HHS_LITERT_LM_PROVIDER_MODE:-native' in launcher
+    assert 'native|auto|local|external|disabled' in launcher
+    assert 'Using repository-native LiteRT-compatible language provider' in launcher
     assert 'HHS_LITERT_LM_STRICT_STARTUP:-0' in launcher
     assert 'probe_litert_lm_accelerator.py' in launcher
     assert 'bootstrap_litert_lm.sh" --print-bin' in launcher

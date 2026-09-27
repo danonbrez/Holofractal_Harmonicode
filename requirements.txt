@@ -70,10 +70,13 @@ click>=8.1,<9.0
 typer>=0.12,<1.0
 
 # ------------------------------------------------------------
-# Local Gemma 4 inference provider
+# Native HHS language provider (default)
 # ------------------------------------------------------------
-
--r requirements-litert-lm.txt
+#
+# The official LiteRT-LM CLI/server is an optional compatibility/deployment
+# membrane. Install it explicitly with:
+#   python -m pip install -r requirements-litert-lm.txt
+# Default HHS runtime installation does not require the external package.
 
 # ------------------------------------------------------------
 # Logging / diagnostics

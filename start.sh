@@ -13,7 +13,7 @@ export HHS_LITERT_LM_MODEL="${HHS_LITERT_LM_MODEL:-gemma4-12b}"
 export HHS_LITERT_LM_BACKEND="${HHS_LITERT_LM_BACKEND:-gpu}"
 export HHS_VULKAN_RUNTIME_ROOT="${HHS_VULKAN_RUNTIME_ROOT:-${ROOT_DIR}/.hhs/runtime/graphics/vulkan}"
 export PYTHONPATH="$ROOT_DIR${PYTHONPATH:+:$PYTHONPATH}"
-LITERT_LM_PROVIDER_MODE="${HHS_LITERT_LM_PROVIDER_MODE:-auto}"
+LITERT_LM_PROVIDER_MODE="${HHS_LITERT_LM_PROVIDER_MODE:-native}"
 LITERT_LM_STRICT_STARTUP="${HHS_LITERT_LM_STRICT_STARTUP:-0}"
 LITERT_LM_LOG_DIR="${HHS_ASSISTANT_LOG_DIR:-${ROOT_DIR}/logs/litert-lm}"
 VULKAN_AUTO_INSTALL="${HHS_VULKAN_AUTO_INSTALL:-1}"
@@ -28,7 +28,7 @@ if [[ "${HHS_START_LITERT_LM:-1}" == "0" ]]; then
 fi
 
 case "$LITERT_LM_PROVIDER_MODE" in
-  auto|local|external|disabled) ;;
+  native|auto|local|external|disabled) ;;
   *)
     echo "[HHS] Invalid HHS_LITERT_LM_PROVIDER_MODE=${LITERT_LM_PROVIDER_MODE}" >&2
     exit 64
@@ -219,7 +219,14 @@ use_reachable_provider() {
   echo "[HHS] Requested inference backend: ${HHS_LITERT_LM_BACKEND}"
 }
 
+export HHS_LITERT_LM_PROVIDER_MODE="$LITERT_LM_PROVIDER_MODE"
+
 case "$LITERT_LM_PROVIDER_MODE" in
+  native)
+    export HHS_LITERT_LM_PROVIDER_READY=0
+    echo "[HHS] Using repository-native LiteRT-compatible language provider"
+    echo "[HHS] External litert-lm CLI/server supervision is disabled in native mode"
+    ;;
   disabled)
     echo "[HHS] LiteRT-LM provider supervision disabled"
     ;;

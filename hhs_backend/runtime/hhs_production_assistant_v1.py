@@ -59,6 +59,17 @@ class ProductionAssistantService:
         pass153_service: Any = None,
         model_service_factory: Any = None,
     ) -> None:
+        self.provider_mode = str(
+            os.getenv("HHS_LITERT_LM_PROVIDER_MODE", "native")
+        ).strip().lower()
+        if self.provider_mode not in {
+            "native", "auto", "local", "external", "disabled"
+        }:
+            raise ValueError(
+                "HHS_LITERT_LM_PROVIDER_MODE must be native, auto, local, "
+                "external, or disabled"
+            )
+        self.native_first = self.provider_mode == "native" and model_service is None
         self.model_service = model_service or DEFAULT_HHS_API_ASSISTANT_SERVICE
         self.threads = self.model_service.threads
         self._model_service_factory = model_service_factory
@@ -319,6 +330,9 @@ class ProductionAssistantService:
                 else "HHS_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
             ),
             "provider_id": PROVIDER_ID,
+            "provider_mode": self.provider_mode,
+            "native_first": self.native_first,
+            "external_litert_compatibility_selected": not self.native_first,
             "selected_provider_id": selected,
             "selected_model_id": fabric.get("primary_model_id"),
             "effective_mode": (
@@ -371,22 +385,45 @@ class ProductionAssistantService:
         return status
 
     async def health(self) -> Dict[str, Any]:
-        tasks = [
-            self._provider_health("gemma", self.model_service, force=True),
-            self._provider_health("native", self.native_service, force=True),
-        ]
-        if self.pass153_service is not None:
-            tasks.append(
-                self._provider_health("pass153", self.pass153_service, force=True)
+        if self.native_first:
+            gemma_health = {
+                "ok": False,
+                "online": False,
+                "status": "EXTERNAL_LITERT_COMPATIBILITY_NOT_SELECTED",
+                "provider_mode": self.provider_mode,
+                "registered_model_ids": [],
+            }
+            native_health = await self._provider_health(
+                "native", self.native_service, force=True
             )
-        results = await asyncio.gather(*tasks)
-        gemma_health = results[0]
-        native_health = results[1]
-        pass153_health = results[2] if len(results) > 2 else {
-            "ok": False,
-            "online": False,
-            "status": "PASS153_PROVIDER_UNAVAILABLE",
-        }
+            pass153_health = (
+                await self._provider_health(
+                    "pass153", self.pass153_service, force=True
+                )
+                if self.pass153_service is not None
+                else {
+                    "ok": False,
+                    "online": False,
+                    "status": "PASS153_PROVIDER_UNAVAILABLE",
+                }
+            )
+        else:
+            tasks = [
+                self._provider_health("gemma", self.model_service, force=True),
+                self._provider_health("native", self.native_service, force=True),
+            ]
+            if self.pass153_service is not None:
+                tasks.append(
+                    self._provider_health("pass153", self.pass153_service, force=True)
+                )
+            results = await asyncio.gather(*tasks)
+            gemma_health = results[0]
+            native_health = results[1]
+            pass153_health = results[2] if len(results) > 2 else {
+                "ok": False,
+                "online": False,
+                "status": "PASS153_PROVIDER_UNAVAILABLE",
+            }
         self._health_cache["gemma"] = dict(gemma_health)
         self._health_cache["native"] = dict(native_health)
         self._health_cache["pass153"] = dict(pass153_health)
@@ -460,7 +497,20 @@ class ProductionAssistantService:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
 
-        litert_health = await self._provider_health("gemma", self.model_service)
+        litert_health = (
+            {
+                "ok": False,
+                "online": False,
+                "status": "EXTERNAL_LITERT_COMPATIBILITY_NOT_SELECTED",
+                "provider_mode": self.provider_mode,
+                "registered_model_ids": [],
+            }
+            if self.native_first
+            else await self._provider_health("gemma", self.model_service)
+        )
+        if self.native_first:
+            self._health_cache["gemma"] = dict(litert_health)
+            self._health_cache_at["gemma"] = time.monotonic()
         native_health = await self._provider_health("native", self.native_service)
         pass153_health = (
             await self._provider_health("pass153", self.pass153_service)

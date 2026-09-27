@@ -1,0 +1,72 @@
+{
+  "schema": "HHS_PASS_220_LITERT1_NATIVE_MODEL_RUNTIME_V1",
+  "version": 1,
+  "inherits": {
+    "pass153": "HHS_PASS_153_LITERT_OPEN_MODEL_AGENT_ENVIRONMENT_VERIFIED",
+    "python2": "HHS_PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1",
+    "numpy1": "HHS_PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE_V1"
+  },
+  "dependency_inversion": {
+    "default_internal_runtime": "HHS_NATIVE",
+    "root_requirements_include_litert_lm": false,
+    "external_litert_lm_version": "0.14.0",
+    "external_dependency_role": "OPTIONAL_COMPATIBILITY_AND_DEPLOYMENT",
+    "external_local_mode_retained": true,
+    "external_remote_mode_retained": true,
+    "openai_compatible_http_contract_retained": true,
+    "pass153_interpreter_adapter_retained": true
+  },
+  "native_model_registry": {
+    "language": "C11",
+    "cpp_class": "hhs::litert::NativeModelRuntimeRegistration",
+    "maximum_tensors": 16,
+    "maximum_rank": 8,
+    "backends": ["native", "cpu", "gpu", "npu", "external"],
+    "tensor_roles": ["input", "output"],
+    "tensor_dtypes": [
+      "bool", "int8", "uint8", "int16", "uint16",
+      "int32", "uint32", "int64", "uint64",
+      "float16", "float32", "float64", "bfloat16"
+    ],
+    "source_sha256_required": true,
+    "model_hash216_identity_required": true,
+    "deterministic_registration_fingerprint": true
+  },
+  "rna_class_binding": {
+    "module": "hhs.litert",
+    "class": "LiteRTModelRuntime",
+    "members": [
+      "__init__",
+      "model_identity",
+      "input_tensors",
+      "output_tensors",
+      "invoke",
+      "list_models",
+      "chat_completion"
+    ],
+    "python_and_future_mojo_share_identity": true,
+    "registration_is_pass219_cell_wall_bound": true,
+    "instance_mutation_requires_rna_admission": true
+  },
+  "provider_boot": {
+    "default_provider_mode": "native",
+    "native_mode_probes_external_server_first": false,
+    "explicit_modes": ["native", "auto", "local", "external", "disabled"],
+    "explicit_model_service_injection_preserved": true
+  },
+  "authority": {
+    "model_output": "ADVISORY_ONLY",
+    "native_model_registry_may_mutate_vm81": false,
+    "native_model_registry_may_commit_hash72": false,
+    "native_model_registry_may_persist_hash216": false,
+    "floating_point_metadata_is_canonical_numeric_authority": false
+  },
+  "next": {
+    "tensor_buffer_storage": "NUMPY1_HARMONICODE_ARRAYS",
+    "tensor_float_operations": "NUMPY1_EXACT_PRE_ROUND_PLUS_IEEE_EGRESS",
+    "operator_graph": "NATIVE_LITERT2_EXECUTION_GRAPH",
+    "tokenizer": "NATIVE_LITERT_COMPATIBILITY_LAYER",
+    "model_import": "EXTERNAL_LITERT_AND_HHS_NATIVE_IMPORTERS_TO_COMMON_REGISTRY",
+    "mojo_acceleration": "SAME_RNA_CLASS_AND_MODEL_IDENTITY"
+  }
+}
