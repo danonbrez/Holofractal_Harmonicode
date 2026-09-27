@@ -90,11 +90,14 @@ def main() -> int:
         "supplied_tensor_u9": {
             "u9_order": supplied_u9["u9_order"],
             "u9_power_9_is_identity": supplied_u9["u9_power_9_is_identity"],
-            "nine_distinct_preclosure_states": supplied_u9[
-                "nine_distinct_preclosure_states"
+            "nine_distinct_preclosure_positional_states": supplied_u9[
+                "nine_distinct_preclosure_positional_states"
             ],
-            "full_orbit_returns_literal_tensor_exactly": supplied_u9[
-                "full_orbit_returns_literal_tensor_exactly"
+            "full_orbit_returns_tagged_source_exactly": supplied_u9[
+                "full_orbit_returns_tagged_source_exactly"
+            ],
+            "payload_verbatim_all_powers": supplied_u9[
+                "payload_verbatim_all_powers"
             ],
             "dense_vector_u9_identity_all_powers": supplied_u9[
                 "dense_vector_u9_identity_all_powers"
@@ -116,11 +119,12 @@ def main() -> int:
     tensor_ok = all(
         (
             supplied_u9["u9_power_9_is_identity"],
-            supplied_u9["nine_distinct_preclosure_states"],
-            supplied_u9["full_orbit_returns_literal_tensor_exactly"],
+            supplied_u9["nine_distinct_preclosure_positional_states"],
+            supplied_u9["full_orbit_returns_tagged_source_exactly"],
+            supplied_u9["payload_verbatim_all_powers"],
+            supplied_u9["slot_provenance_preserved_all_powers"],
             supplied_u9["dense_vector_u9_identity_all_powers"],
             supplied_u9["direct_iterative_u9_identity_all_powers"],
-            supplied_u9["literal_cells_preserved_all_powers"],
             supplied_u9["inverse_roundtrip_all_powers"],
         )
     )

@@ -13,6 +13,7 @@ address-permutation convention, and Pass 220 I033 palindromic constructor.
 from __future__ import annotations
 
 from fractions import Fraction
+from hashlib import sha256
 from math import gcd
 from typing import Any, Mapping, Sequence
 
@@ -40,21 +41,10 @@ CHANNEL_FACTORS = {"xy": 1, "yx": -1, "zw": 2, "wz": -2}
 CHANNEL_LABELS = {"xy": "Aa", "yx": "Ba", "zw": "Ab", "wz": "Bb"}
 SCALAR_SYMBOLS = tuple(value for row in CENTERED_LO_SHU for value in row)
 
-ORDERED_TENSOR_LITERAL = (
-    ("(x*y)", "x+y", "(y*x)"),
-    (
-        "(x*y)-(z*w)",
-        "x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z)",
-        "(w*z)-(y*x)",
-    ),
-    ("(w*z)", "z+w", "(z*w)"),
-)
-_PRODUCT_TOKEN_PROJECTION = (
-    ("(x*y)", "xy"),
-    ("(y*x)", "yx"),
-    ("(z*w)", "zw"),
-    ("(w*z)", "wz"),
-)
+SUPPLIED_U9_CIRCUIT_TENSOR = """(x*y*List(x*((z*179971179971)/(w*1000000)),y*((w*179971179971)/(z*179971)),z*((z*179971179971)/(w*1000001)),w*((w*179971179971)/(z*179971.179971)))^(z^4==x^2*z^2))*(z*w*List(x*((x*179971179971)/(y*1000000)),y*((y*179971179971)/(x*179971)),z*((x*179971179971)/(y*1000001)),w*((y*179971179971)/(x*179971.179971)))^(x^2==x*z))==(MatrixTimes(MatrixTimes(-x,MatrixPower(List(List(e==(-3)^(1/(Pi*x)))),-Pi)),MatrixPower(List(List(e==(-3)^(1/(Pi*x)))),Pi))==MatrixTimes(x^2,MatrixPower(List(List(e==(-3)^(1/(Pi*x)))),Pi*x))==x*y)/(List((179971179971^((z^4==x^2*z^2)+(x^2==x*z))*w*x*(x^2/y)^(x^2==x*z)*y*z*((x*z)/w)^(z^4==x^2*z^2))/10^(6*((z^4==x^2*z^2)+(x^2==x*z))),(1000001^((z^4==x^2*z^2)+(x^2==x*z))*w*x*y*(y^2/x)^(x^2==x*z))*(((w*y)/z)^(z^4==x^2*z^2)*z),(179971^((z^4==x^2*z^2)+(x^2==x*z))*w*x*y*z*((x*z)/y)^(x^2==x*z))*(z^2/w)^(z^4==x^2*z^2),(10^(6*((z^4==x^2*z^2)+(x^2==x*z)))*w*x*y*((w*y)/x)^(x^2==x*z))*((w^2/z)^(z^4==x^2*z^2)*z))==1)"""
+SUPPLIED_U9_CIRCUIT_TENSOR_SHA256 = sha256(
+    SUPPLIED_U9_CIRCUIT_TENSOR.encode("utf-8")
+).hexdigest()
 
 
 
@@ -173,32 +163,19 @@ def scalar_offset_vector_inverse(
 
 
 
-def _flatten_tensor(tensor: Sequence[Sequence[str]]) -> tuple[str, ...]:
-    rows = tuple(tuple(str(cell) for cell in row) for row in tensor)
-    if len(rows) != 3 or any(len(row) != 3 for row in rows):
-        raise HHSNumPyFourPhaseExperimentError(
-            "HHS_NUMPY1_ORDERED_TENSOR_3X3_REQUIRED"
-        )
-    return tuple(value for row in rows for value in row)
-
-
-def _reshape_tensor(values: Sequence[str]) -> tuple[tuple[str, ...], ...]:
-    source = tuple(values)
-    if len(source) != BLOCK_WIDTH:
-        raise HHSNumPyFourPhaseExperimentError(
-            "HHS_NUMPY1_ORDERED_TENSOR_U9_WIDTH_REQUIRED"
-        )
+def _u9_tagged_circuit_slots() -> tuple[tuple[int, str], ...]:
+    """Nine positional/provenance slots carrying the exact circuit tensor."""
     return tuple(
-        tuple(source[start : start + 3])
-        for start in range(0, BLOCK_WIDTH, 3)
+        (slot_index, SUPPLIED_U9_CIRCUIT_TENSOR)
+        for slot_index in range(MACROCYCLE_ORDER)
     )
 
 
-def _dense_symbolic_apply(
-    values: Sequence[str],
+def _dense_object_apply(
+    values: Sequence[Any],
     permutation: Sequence[int],
-) -> tuple[str, ...]:
-    """Dense U9 control arm without evaluating or rewriting any cell."""
+) -> tuple[Any, ...]:
+    """Dense U9 control arm without evaluating or rewriting payload objects."""
     matrix = _permutation_matrix(permutation)
     source = tuple(values)
     output = []
@@ -210,36 +187,37 @@ def _dense_symbolic_apply(
         ]
         if len(selected) != 1:
             raise HHSNumPyFourPhaseExperimentError(
-                "HHS_NUMPY1_ORDERED_TENSOR_DENSE_SELECTION_INVALID"
+                "HHS_NUMPY1_U9_CIRCUIT_DENSE_SELECTION_INVALID"
             )
         output.append(selected[0])
     return tuple(output)
 
 
 def supplied_tensor_u9_witness() -> dict[str, Any]:
-    """Run the literal supplied circuit tensor through the exact U9 orbit.
+    """Run the full supplied circuit tensor as one opaque payload under U9.
 
-    The tensor strings are opaque ordered circuit cells. U9 is allowed only to
-    permute their nine addresses. No cell expression is projected, simplified,
-    commuted, normalized, factored, or rewritten.
+    U9 acts only on nine tagged positional/provenance slots.  The tensor itself
+    is never parsed, evaluated, simplified, commuted, reordered, factored, or
+    projected by this experiment.
     """
-    source = _flatten_tensor(ORDERED_TENSOR_LITERAL)
+    source = _u9_tagged_circuit_slots()
     u9 = macrocycle_permutation()
     identity = tuple(range(1, MACROCYCLE_ORDER + 1))
 
-    states = [source]
-    cases = []
+    orbit = [source]
+    iterative = source
+    power_cases = []
     all_dense_vector_equal = True
     all_direct_iterative_equal = True
-    all_cells_preserved = True
+    all_payload_verbatim = True
+    all_slot_provenance = True
     all_inverse = True
-    current = source
 
     for power in range(1, MACROCYCLE_ORDER + 1):
-        current = apply_permutation(current, u9)
+        iterative = apply_permutation(iterative, u9)
         direct_permutation = permutation_power(u9, power)
         direct = apply_permutation(source, direct_permutation)
-        dense = _dense_symbolic_apply(source, direct_permutation)
+        dense = _dense_object_apply(source, direct_permutation)
         inverse_permutation = permutation_power(
             u9,
             (MACROCYCLE_ORDER - power) % MACROCYCLE_ORDER,
@@ -247,8 +225,14 @@ def supplied_tensor_u9_witness() -> dict[str, Any]:
         recovered = apply_permutation(direct, inverse_permutation)
 
         dense_vector_equal = dense == direct
-        direct_iterative_equal = direct == current
-        cells_preserved = sorted(direct) == sorted(source)
+        direct_iterative_equal = direct == iterative
+        payload_verbatim = all(
+            payload == SUPPLIED_U9_CIRCUIT_TENSOR
+            for _, payload in direct
+        )
+        slot_provenance = sorted(
+            slot_index for slot_index, _ in direct
+        ) == list(range(MACROCYCLE_ORDER))
         inverse_exact = recovered == source
 
         all_dense_vector_equal = (
@@ -257,59 +241,131 @@ def supplied_tensor_u9_witness() -> dict[str, Any]:
         all_direct_iterative_equal = (
             all_direct_iterative_equal and direct_iterative_equal
         )
-        all_cells_preserved = all_cells_preserved and cells_preserved
+        all_payload_verbatim = all_payload_verbatim and payload_verbatim
+        all_slot_provenance = all_slot_provenance and slot_provenance
         all_inverse = all_inverse and inverse_exact
 
-        states.append(current)
-        cases.append(
+        orbit.append(iterative)
+        power_cases.append(
             {
                 "u9_power": power,
                 "permutation": direct_permutation,
-                "tensor_state": _reshape_tensor(direct),
-                "dense_substitution_state": _reshape_tensor(dense),
+                "output_slot_order": tuple(
+                    slot_index for slot_index, _ in direct
+                ),
                 "dense_equals_vector": dense_vector_equal,
                 "direct_equals_iterative": direct_iterative_equal,
-                "all_literal_cells_preserved": cells_preserved,
+                "payload_verbatim_all_positions": payload_verbatim,
+                "slot_provenance_preserved": slot_provenance,
                 "inverse_recovers_source": inverse_exact,
             }
         )
 
-    first_nine = tuple(states[:-1])
+    channel_cases = []
+    all_channel_equal = True
+    all_channel_inverse = True
+    all_channel_payload = True
+    all_channel_provenance = True
+    powers_by_channel: dict[str, set[int]] = {
+        channel: set() for channel in CHANNELS
+    }
+
+    for plan in PHASE_PLAN:
+        for channel in CHANNELS:
+            control = plan["channels"][channel]
+            powers_by_channel[channel].add(control["permutation_power"])
+            arm_a = _dense_object_apply(source, control["permutation"])
+            arm_b = apply_permutation(source, control["permutation"])
+            recovered = apply_permutation(
+                arm_b,
+                control["inverse_permutation"],
+            )
+            equal = arm_a == arm_b
+            inverse = recovered == source
+            payload_verbatim = all(
+                payload == SUPPLIED_U9_CIRCUIT_TENSOR
+                for _, payload in arm_b
+            )
+            provenance = sorted(
+                slot_index for slot_index, _ in arm_b
+            ) == list(range(MACROCYCLE_ORDER))
+
+            all_channel_equal = all_channel_equal and equal
+            all_channel_inverse = all_channel_inverse and inverse
+            all_channel_payload = all_channel_payload and payload_verbatim
+            all_channel_provenance = all_channel_provenance and provenance
+
+            channel_cases.append(
+                {
+                    "block_index": plan["block_index"],
+                    "scalar_symbol": plan["scalar_symbol"],
+                    "channel": channel,
+                    "phase_label": control["label"],
+                    "permutation_power": control["permutation_power"],
+                    "output_slot_order": tuple(
+                        slot_index for slot_index, _ in arm_b
+                    ),
+                    "dense_equals_vector": equal,
+                    "inverse_recovers_source": inverse,
+                    "payload_verbatim_all_positions": payload_verbatim,
+                    "slot_provenance_preserved": provenance,
+                }
+            )
+
+    first_nine = tuple(orbit[:-1])
+    all_u9_powers_covered = all(
+        powers == set(range(MACROCYCLE_ORDER))
+        for powers in powers_by_channel.values()
+    )
+
     return {
-        "schema": "HHS_PASS220_NUMPY1_SUPPLIED_CIRCUIT_TENSOR_U9_V1",
-        "literal_tensor": ORDERED_TENSOR_LITERAL,
-        "u9_role": "ADDRESS_ORBIT_PERMUTATION_OVER_NINE_LITERAL_CIRCUIT_CELLS",
+        "schema": "HHS_PASS220_NUMPY1_SUPPLIED_CIRCUIT_TENSOR_U9_V2",
+        "supplied_circuit_tensor": SUPPLIED_U9_CIRCUIT_TENSOR,
+        "supplied_circuit_tensor_sha256": SUPPLIED_U9_CIRCUIT_TENSOR_SHA256,
+        "tensor_is_indivisible_payload": True,
+        "u9_role": (
+            "ADDRESS_ORBIT_PERMUTATION_OVER_NINE_TAGGED_POSITIONS_"
+            "CARRYING_ONE_EXACT_CIRCUIT_TENSOR"
+        ),
         "u9_permutation": u9,
         "u9_order": MACROCYCLE_ORDER,
         "u9_power_9_is_identity": (
             permutation_power(u9, MACROCYCLE_ORDER) == identity
         ),
-        "one_step_not_identity": states[1] != source,
-        "nine_distinct_preclosure_states": (
+        "one_step_not_identity_by_slot_provenance": orbit[1] != source,
+        "nine_distinct_preclosure_positional_states": (
             len(set(first_nine)) == MACROCYCLE_ORDER
         ),
-        "full_orbit_returns_literal_tensor_exactly": states[-1] == source,
-        "full_orbit_tensor": _reshape_tensor(states[-1]),
-        "state_count_including_closure": len(states),
-        "cases": tuple(cases),
+        "full_orbit_returns_tagged_source_exactly": orbit[-1] == source,
+        "state_count_including_closure": len(orbit),
+        "power_cases": tuple(power_cases),
         "dense_vector_u9_identity_all_powers": all_dense_vector_equal,
-        "direct_iterative_u9_identity_all_powers": all_direct_iterative_equal,
-        "literal_cells_preserved_all_powers": all_cells_preserved,
+        "direct_iterative_u9_identity_all_powers": (
+            all_direct_iterative_equal
+        ),
+        "payload_verbatim_all_powers": all_payload_verbatim,
+        "slot_provenance_preserved_all_powers": all_slot_provenance,
         "inverse_roundtrip_all_powers": all_inverse,
-        "x_times_y_and_y_times_x_remain_distinct_literal_cells": (
-            source[0] != source[2]
+        "channel_case_count": len(channel_cases),
+        "expected_channel_case_count": len(PHASE_PLAN) * len(CHANNELS),
+        "all_u9_powers_covered_per_channel": all_u9_powers_covered,
+        "phase_channel_powers": {
+            channel: tuple(sorted(powers))
+            for channel, powers in powers_by_channel.items()
+        },
+        "channel_cases": tuple(channel_cases),
+        "dense_vector_identity_all_channel_cases": all_channel_equal,
+        "inverse_roundtrip_all_channel_cases": all_channel_inverse,
+        "payload_verbatim_all_channel_cases": all_channel_payload,
+        "slot_provenance_preserved_all_channel_cases": (
+            all_channel_provenance
         ),
-        "w_times_z_and_z_times_w_remain_distinct_literal_cells": (
-            source[6] != source[8]
-        ),
-        "center_cell_literal_exact": (
-            source[4]
-            == "x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z)"
-        ),
+        "internal_algebra_parsed": False,
+        "internal_algebra_evaluated": False,
+        "internal_algebra_simplified": False,
+        "internal_terms_reordered": False,
+        "internal_operations_commuted": False,
         "notation_projection_used": False,
-        "algebraic_simplification_used": False,
-        "commutation_used": False,
-        "term_reordering_inside_cell_used": False,
         "canonical_vm81_mutation_authority": False,
         "canonical_hash72_authority": False,
         "canonical_hash216_authority": False,
@@ -319,29 +375,41 @@ def supplied_tensor_u9_witness() -> dict[str, Any]:
 def supplied_tensor_u9_acceptance(witness: Mapping[str, Any]) -> bool:
     return all(
         (
+            witness.get("tensor_is_indivisible_payload") is True,
             witness.get("u9_order") == 9,
             witness.get("u9_power_9_is_identity") is True,
-            witness.get("one_step_not_identity") is True,
-            witness.get("nine_distinct_preclosure_states") is True,
-            witness.get("full_orbit_returns_literal_tensor_exactly") is True,
+            witness.get("one_step_not_identity_by_slot_provenance") is True,
+            witness.get(
+                "nine_distinct_preclosure_positional_states"
+            )
+            is True,
+            witness.get("full_orbit_returns_tagged_source_exactly") is True,
             witness.get("state_count_including_closure") == 10,
             witness.get("dense_vector_u9_identity_all_powers") is True,
             witness.get("direct_iterative_u9_identity_all_powers") is True,
-            witness.get("literal_cells_preserved_all_powers") is True,
+            witness.get("payload_verbatim_all_powers") is True,
+            witness.get("slot_provenance_preserved_all_powers") is True,
             witness.get("inverse_roundtrip_all_powers") is True,
+            witness.get("channel_case_count")
+            == witness.get("expected_channel_case_count")
+            == 36,
+            witness.get("all_u9_powers_covered_per_channel") is True,
+            witness.get("dense_vector_identity_all_channel_cases") is True,
+            witness.get("inverse_roundtrip_all_channel_cases") is True,
+            witness.get("payload_verbatim_all_channel_cases") is True,
             witness.get(
-                "x_times_y_and_y_times_x_remain_distinct_literal_cells"
+                "slot_provenance_preserved_all_channel_cases"
             )
             is True,
-            witness.get(
-                "w_times_z_and_z_times_w_remain_distinct_literal_cells"
-            )
-            is True,
-            witness.get("center_cell_literal_exact") is True,
+            witness.get("internal_algebra_parsed") is False,
+            witness.get("internal_algebra_evaluated") is False,
+            witness.get("internal_algebra_simplified") is False,
+            witness.get("internal_terms_reordered") is False,
+            witness.get("internal_operations_commuted") is False,
             witness.get("notation_projection_used") is False,
-            witness.get("algebraic_simplification_used") is False,
-            witness.get("commutation_used") is False,
-            witness.get("term_reordering_inside_cell_used") is False,
+            witness.get("canonical_vm81_mutation_authority") is False,
+            witness.get("canonical_hash72_authority") is False,
+            witness.get("canonical_hash216_authority") is False,
         )
     )
 
@@ -485,9 +553,10 @@ def experiment_acceptance(witness: Mapping[str, Any]) -> bool:
 __all__ = [
     "CHANNELS",
     "CHANNEL_LABELS",
-    "ORDERED_TENSOR_LITERAL",
     "PHASE_PLAN",
     "SCALAR_SYMBOLS",
+    "SUPPLIED_U9_CIRCUIT_TENSOR",
+    "SUPPLIED_U9_CIRCUIT_TENSOR_SHA256",
     "experiment_acceptance",
     "four_phase_ab_witness_for_scalar",
     "four_phase_ab_witness_from_offsets",

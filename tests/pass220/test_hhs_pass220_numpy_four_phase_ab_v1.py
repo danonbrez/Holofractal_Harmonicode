@@ -4,8 +4,8 @@ import pytest
 
 from hhs_runtime.hhs_pass220_numpy_four_phase_ab_v1 import (
     CHANNELS,
-    ORDERED_TENSOR_LITERAL,
     PHASE_PLAN,
+    SUPPLIED_U9_CIRCUIT_TENSOR,
     experiment_acceptance,
     four_phase_ab_witness_for_scalar,
     supplied_tensor_u9_acceptance,
@@ -114,62 +114,74 @@ def test_experiment_does_not_claim_canonical_authority() -> None:
     assert witness["semantics"]["scalar_symbol_role"] == "PERMUTATION_CONTROL_NOT_PAYLOAD_SCALARIZATION"
 
 
-def test_supplied_circuit_tensor_runs_under_exact_u9_constraints() -> None:
+def test_full_supplied_circuit_tensor_is_preserved_verbatim() -> None:
+    expected = """(x*y*List(x*((z*179971179971)/(w*1000000)),y*((w*179971179971)/(z*179971)),z*((z*179971179971)/(w*1000001)),w*((w*179971179971)/(z*179971.179971)))^(z^4==x^2*z^2))*(z*w*List(x*((x*179971179971)/(y*1000000)),y*((y*179971179971)/(x*179971)),z*((x*179971179971)/(y*1000001)),w*((y*179971179971)/(x*179971.179971)))^(x^2==x*z))==(MatrixTimes(MatrixTimes(-x,MatrixPower(List(List(e==(-3)^(1/(Pi*x)))),-Pi)),MatrixPower(List(List(e==(-3)^(1/(Pi*x)))),Pi))==MatrixTimes(x^2,MatrixPower(List(List(e==(-3)^(1/(Pi*x)))),Pi*x))==x*y)/(List((179971179971^((z^4==x^2*z^2)+(x^2==x*z))*w*x*(x^2/y)^(x^2==x*z)*y*z*((x*z)/w)^(z^4==x^2*z^2))/10^(6*((z^4==x^2*z^2)+(x^2==x*z))),(1000001^((z^4==x^2*z^2)+(x^2==x*z))*w*x*y*(y^2/x)^(x^2==x*z))*(((w*y)/z)^(z^4==x^2*z^2)*z),(179971^((z^4==x^2*z^2)+(x^2==x*z))*w*x*y*z*((x*z)/y)^(x^2==x*z))*(z^2/w)^(z^4==x^2*z^2),(10^(6*((z^4==x^2*z^2)+(x^2==x*z)))*w*x*y*((w*y)/x)^(x^2==x*z))*((w^2/z)^(z^4==x^2*z^2)*z))==1)"""
+    assert SUPPLIED_U9_CIRCUIT_TENSOR == expected
+
+
+def test_full_supplied_circuit_tensor_runs_as_indivisible_payload_under_u9() -> None:
     witness = supplied_tensor_u9_witness()
 
+    assert witness["tensor_is_indivisible_payload"] is True
     assert witness["u9_order"] == 9
     assert witness["u9_power_9_is_identity"] is True
-    assert witness["one_step_not_identity"] is True
-    assert witness["nine_distinct_preclosure_states"] is True
-    assert witness["full_orbit_returns_literal_tensor_exactly"] is True
-    assert witness["full_orbit_tensor"] == ORDERED_TENSOR_LITERAL
+    assert witness["one_step_not_identity_by_slot_provenance"] is True
+    assert witness["nine_distinct_preclosure_positional_states"] is True
+    assert witness["full_orbit_returns_tagged_source_exactly"] is True
     assert witness["state_count_including_closure"] == 10
+    assert witness["payload_verbatim_all_powers"] is True
+    assert witness["slot_provenance_preserved_all_powers"] is True
+    assert witness["inverse_roundtrip_all_powers"] is True
     assert supplied_tensor_u9_acceptance(witness) is True
 
 
-def test_supplied_circuit_tensor_u9_preserves_literal_noncommutative_cells() -> None:
+def test_full_supplied_circuit_tensor_internal_algebra_is_never_rewritten() -> None:
     witness = supplied_tensor_u9_witness()
 
-    assert witness[
-        "x_times_y_and_y_times_x_remain_distinct_literal_cells"
-    ] is True
-    assert witness[
-        "w_times_z_and_z_times_w_remain_distinct_literal_cells"
-    ] is True
-    assert witness["center_cell_literal_exact"] is True
+    assert witness["internal_algebra_parsed"] is False
+    assert witness["internal_algebra_evaluated"] is False
+    assert witness["internal_algebra_simplified"] is False
+    assert witness["internal_terms_reordered"] is False
+    assert witness["internal_operations_commuted"] is False
     assert witness["notation_projection_used"] is False
-    assert witness["algebraic_simplification_used"] is False
-    assert witness["commutation_used"] is False
-    assert witness["term_reordering_inside_cell_used"] is False
 
-    source_cells = sorted(cell for row in ORDERED_TENSOR_LITERAL for cell in row)
-    for case in witness["cases"]:
-        state_cells = sorted(
-            cell for row in case["tensor_state"] for cell in row
-        )
-        assert state_cells == source_cells
-        assert case["all_literal_cells_preserved"] is True
+    for case in witness["power_cases"]:
+        assert case["payload_verbatim_all_positions"] is True
+        assert case["slot_provenance_preserved"] is True
 
 
-def test_supplied_circuit_tensor_dense_and_vector_u9_are_identical() -> None:
+def test_full_supplied_circuit_tensor_dense_and_vector_u9_are_identical() -> None:
     witness = supplied_tensor_u9_witness()
 
     assert witness["dense_vector_u9_identity_all_powers"] is True
     assert witness["direct_iterative_u9_identity_all_powers"] is True
-    assert witness["inverse_roundtrip_all_powers"] is True
-
-    for case in witness["cases"]:
+    for case in witness["power_cases"]:
         assert case["dense_equals_vector"] is True
         assert case["direct_equals_iterative"] is True
         assert case["inverse_recovers_source"] is True
 
 
-def test_supplied_u9_tensor_is_required_by_numpy_experiment_acceptance() -> None:
+def test_full_supplied_circuit_tensor_covers_all_u9_powers_in_four_channels() -> None:
+    witness = supplied_tensor_u9_witness()
+
+    assert witness["channel_case_count"] == 36
+    assert witness["expected_channel_case_count"] == 36
+    assert witness["all_u9_powers_covered_per_channel"] is True
+    assert witness["dense_vector_identity_all_channel_cases"] is True
+    assert witness["inverse_roundtrip_all_channel_cases"] is True
+    assert witness["payload_verbatim_all_channel_cases"] is True
+    assert witness["slot_provenance_preserved_all_channel_cases"] is True
+    for channel in CHANNELS:
+        assert witness["phase_channel_powers"][channel] == tuple(range(9))
+
+
+def test_full_supplied_u9_tensor_is_required_by_numpy_experiment_acceptance() -> None:
     witness = four_phase_ab_witness_for_scalar(
         HHSNumPyScalar.from_float64_bits(0x400921FB54442D18)
     )
     assert witness["supplied_tensor_u9_acceptance"] is True
-    assert witness["supplied_tensor_u9_witness"][
-        "full_orbit_returns_literal_tensor_exactly"
-    ] is True
+    assert (
+        witness["supplied_tensor_u9_witness"]["supplied_circuit_tensor"]
+        == SUPPLIED_U9_CIRCUIT_TENSOR
+    )
     assert experiment_acceptance(witness) is True
