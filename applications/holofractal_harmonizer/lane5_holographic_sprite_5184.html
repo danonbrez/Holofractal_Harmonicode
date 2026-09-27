@@ -534,6 +534,12 @@ const vertexShader=[
 "uniform float uBottOctant;",
 "uniform float uLayer;",
 "uniform float uTopologyInvert;",
+"uniform float uSpacetimeRadius;",
+"uniform float uOrbitRadius;",
+"uniform float uOrbitRate;",
+"uniform float uOrbitSlowRate;",
+"uniform float uTesseractRate;",
+"uniform float uQ144PhaseRate;",
 "varying float vHue;",
 "varying float vGlow;",
 "const float PI=3.141592653589793;",
@@ -541,20 +547,21 @@ const vertexShader=[
 "void main(){",
 "  vec3 p=position;",
 "  float shift=aGroup*PI/4.0 + uLayer*PI/2.0;",
-"  float orbitT=uTime*0.5;",
-"  p += vec3(sin(orbitT+shift)*6.0, cos(orbitT*0.005+shift)*6.0, sin(orbitT*PHI+shift)*6.0);",
+"  float orbitT=uTime*uOrbitRate;",
+"  p += vec3(sin(orbitT+shift)*uOrbitRadius, cos(uTime*uOrbitSlowRate+shift)*uOrbitRadius, sin(orbitT*PHI+shift)*uOrbitRadius);",
 "  if(uLayer>0.5){ p.xy=vec2(-p.y,p.x); }",
-"  float phase=aQ144/144.0*2.0*PI + uTime*0.02;",
+"  float phase=aQ144/144.0*2.0*PI + uTime*uQ144PhaseRate;",
 "  float w=sin(phase);",
-"  float h1=uTime*0.20;",
-"  float h2=h1/PHI_RENDER;",
+"  float h1=uTime*uTesseractRate;",
+"  float h2=h1/PHI;",
 "  float c1=cos(h1),s1=sin(h1),c2=cos(h2),s2=sin(h2);",
 "  float x1=c1*p.x-s1*w;",
 "  float w1=s1*p.x+c1*w;",
 "  float y1=c2*p.y-s2*p.z;",
 "  float z1=s2*p.y+c2*p.z;",
-"  float persp=2.6/(2.2-w1);",
-"  p=vec3(x1,y1,z1)*persp;",
+"  p=vec3(x1,y1,z1);",
+"  float radius=length(p);",
+"  if(radius>uSpacetimeRadius){ p*=uSpacetimeRadius/max(radius,0.000001); }",
 "  float dg=mod(aGroup-uBottOctant+8.0,8.0);",
 "  if(uTopologyInvert>0.5 && abs(dg-4.0)<0.25){ p*=0.82; }",
 "  vec4 mv=modelViewMatrix*vec4(p,1.0);",
@@ -563,7 +570,7 @@ const vertexShader=[
 "  float swept=1.0-step(0.25,abs(aGroup-uBottOctant));",
 "  gl_PointSize=(2.0+5.0*selected+1.5*swept)*(180.0/max(1.0,-mv.z));",
 "  vHue=mod((aQ144+uLayer*72.0+aPhaseRight)/144.0,1.0);",
-"  vGlow=0.25+0.45*swept+0.75*selected;",
+"  vGlow=0.25+0.45*swept+0.75*selected+0.10*min(1.0,abs(w1));",
 "}"
 ].join("\n");
 
@@ -589,7 +596,13 @@ function makeMaterial(layer){
     blending:THREE.AdditiveBlending,
     uniforms:{
       uTime:{value:0},uPathAddress:{value:0},uBottOctant:{value:0},
-      uLayer:{value:layer},uTopologyInvert:{value:0}
+      uLayer:{value:layer},uTopologyInvert:{value:0},
+      uSpacetimeRadius:{value:SPACETIME_RADIUS},
+      uOrbitRadius:{value:dynamicsProjection().orbitRadius},
+      uOrbitRate:{value:dynamicsProjection().orbitRate},
+      uOrbitSlowRate:{value:dynamicsProjection().orbitSlowRate},
+      uTesseractRate:{value:dynamicsProjection().tesseractRate},
+      uQ144PhaseRate:{value:dynamicsProjection().q144PhaseRate}
     }
   });
 }
