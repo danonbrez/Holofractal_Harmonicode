@@ -1,0 +1,55 @@
+{
+  "schema": "HHS_PASS_220_LITERT2_NATIVE_EXECUTION_GRAPH_V1",
+  "version": 1,
+  "inherits": {
+    "litert1": "HHS_PASS_220_LITERT1_NATIVE_MODEL_RUNTIME_V1",
+    "numpy1": "HHS_PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE_V1",
+    "python2": "HHS_PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1"
+  },
+  "native_graph": {
+    "language": "C11",
+    "cpp_class": "hhs::litert::NativeExecutionGraph",
+    "maximum_tensors": 32,
+    "maximum_operations": 64,
+    "maximum_rank": 8,
+    "topological_order_required": true,
+    "unique_tensor_ids": true,
+    "unique_operation_ids": true,
+    "declared_output_shape_must_match_numpy_broadcast": true,
+    "deterministic_graph_fingerprint": true
+  },
+  "execution": {
+    "numeric_backend": "NUMPY1_HARMONICODE",
+    "admitted_dtypes": ["int64", "float64"],
+    "admitted_operations": ["add", "subtract", "multiply"],
+    "host_numpy_runtime_required": false,
+    "host_litert_runtime_required": false,
+    "float64_result_bits_follow_numpy1": true,
+    "int64_wrap_follows_numpy1": true,
+    "bigint_5184_output_witness": true
+  },
+  "metadata_vs_execution": {
+    "float32_metadata_registrable_in_litert1": true,
+    "float32_execution_admitted_in_litert2": false,
+    "quantized_metadata_registrable_in_litert1": true,
+    "quantized_execution_admitted_in_litert2": false,
+    "reason": "exact dtype-specific execution semantics not yet implemented"
+  },
+  "authority": {
+    "c_graph_topology_authority": true,
+    "c_graph_numeric_authority": false,
+    "numpy1_numeric_authority": true,
+    "host_float_canonical_authority": false,
+    "vm81_mutation_authority": false,
+    "hash72_commit_authority": false,
+    "hash216_persistence_authority": false
+  },
+  "next": {
+    "float32_exact_rounding": "LITERT3_DTYPE_EXTENSION",
+    "quantized_integer_ops": "LITERT3_QUANTIZED_EXTENSION",
+    "matmul": "LITERT3_OPERATOR_EXTENSION",
+    "tokenizer": "LITERT3_NATIVE_TOKENIZER",
+    "model_import_graph_lowering": "LITERT3_IMPORTER",
+    "mojo": "ACCELERATOR_BINDING_AFTER_EXACT_OPERATOR_EQUIVALENCE"
+  }
+}
