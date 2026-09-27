@@ -119,6 +119,31 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Initial toroidal disk-galaxy seed
+
+The canonical swarm does not begin as an isotropic random sphere. Its initial
+state is an ordered toroidal disk-galaxy distribution.
+
+The inherited seed geometry uses a growing radial spiral, golden-ratio angular
+advance, and bounded vertical phase displacement to produce a thick rotating
+disk before later physics layers act.
+
+The required initial-condition ordering is:
+
+```text
+toroidal disk-galaxy seed
+-> per-particle unique smooth spherical pathway
+-> conserved toroidal swarm momentum / field rotation
+-> reciprocal ionic / charge coupling
+-> tesseract / SO(4) transformation
+-> gravitational / curvature warping
+-> constructor / formation growth
+```
+
+This initial disk topology is canonical. A replacement initializer that starts
+from a uniform random sphere, Cartesian box, or independent straight-line
+particle cloud changes the simulation before any later physics layer runs.
+
 ## Pre-warp unique-pathway invariant
 
 Before tesseract/SO(4) projection and gravitational warping are applied, every
