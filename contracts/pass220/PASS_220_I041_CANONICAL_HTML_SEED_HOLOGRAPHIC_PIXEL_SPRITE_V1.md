@@ -119,6 +119,32 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Passive follow-particle observer
+
+The follow-particle view is observation-only. It must not become a control
+surface for the particle or simulation.
+
+Required behavior:
+
+```text
+read particle position / velocity / acceleration
+-> derive camera pose from current curved trajectory
+-> disable user orbit / pan / zoom while following
+-> render the already-computed toroidal spiraling path
+-> write nothing back to particle physics
+```
+
+The camera follows the native trajectory; it does not synthesize a chase-line
+trajectory, steer the particle, apply forces, modify velocity, or reorient the
+simulation manifold.
+
+The canonical follow frame uses the particle's instantaneous tangent together
+with the local spherical radial normal so the camera transports along the
+curved toroidal path rather than flattening it into a global Cartesian axis.
+
+Exiting follow mode may restore interactive camera controls, but interaction is
+disabled for the duration of canonical particle follow.
+
 ## Folded hyperspherical projection invariance
 
 The mature cloud is hyperspherical because its observable 2D projection is
