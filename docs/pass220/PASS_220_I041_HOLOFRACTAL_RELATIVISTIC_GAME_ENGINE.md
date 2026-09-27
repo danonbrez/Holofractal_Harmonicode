@@ -363,6 +363,30 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Self-evolving constructor-theory state
+
+I041's expensive construction/formation work is intentional simulation
+semantics. The bounded mass/particle field is designed to evolve charged
+particles together with ionic and reciprocal/antimatter channels into a
+recursive fractal constructor graph.
+
+That graph is a shared state substrate for multiple consumers:
+
+~~~text
+canonical particle/field state
+    -> construction + formation
+    -> fractal/Mandelbrot-style relationship growth
+    -> provenance-bearing knowledge graph
+       |-> game-engine state
+       |-> holographic sprite/pixel state
+       |-> self-play/search/optimization state
+       |-> Lane 5 visual projection
+~~~
+
+The consumers do not own separate physics. They read/project the same evolving
+state. Construction/formation CPU cost is consequently part of what I041 is
+meant to compute, not a defect to erase.
+
 ## Presentation boundary
 
 The canonical HTML renderer is realtime-capable. The dominant slowdown appears
