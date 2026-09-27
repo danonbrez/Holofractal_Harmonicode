@@ -9,6 +9,11 @@ from hhs_runtime.pass219.hnan_4x4_recursive_gate_v1 import (
     HNAN_CENTER_EXPRESSION,
     HNAN_GATE_10,
     HNAN_NUMERATOR,
+    HNAN_LO_SHU_TENSOR,
+    HNAN_LO_SHU_TENSOR_SOURCE,
+    HNAN_EPSILON,
+    HNAN_TERMINAL_XY_EPSILON,
+    HNAN_TERMINAL_SOURCE,
     HNAN_ZERO_CLOSURE_SOURCE,
     M01_JORDAN_STRUCTURE,
     MXY_GENERIC_CONDITIONS,
@@ -24,6 +29,7 @@ from hhs_runtime.pass219.hnan_4x4_recursive_gate_v1 import (
     HNANGateError,
     deserialize_4x4,
     hnan_gate,
+    hnan_loshu_resolution_receipt,
     invariant_receipt,
     jordan_refinement_receipt,
     materialize_xy_view,
@@ -72,6 +78,44 @@ def test_hnan_gate_preserves_ordered_channels_and_emptyset_denominator():
     assert HNAN_GATE_10 != ("Quotient", STATE_1, STATE_0)
 
 
+def test_hnan_loshu_tensor_is_exact_and_center_binds_gate_numerator():
+    assert HNAN_LO_SHU_TENSOR == (
+        (XY, ("Sum", "x", "y"), YX),
+        (
+            ("Sum", XY, ("Negate", ZW)),
+            HNAN_NUMERATOR,
+            ("Sum", WZ, ("Negate", YX)),
+        ),
+        (WZ, ("Sum", "z", "w"), ZW),
+    )
+    assert HNAN_LO_SHU_TENSOR_SOURCE == (
+        ("xy", "x+y", "yx"),
+        ("xy-zw", HNAN_CENTER_EXPRESSION, "wz-yx"),
+        ("wz", "z+w", "zw"),
+    )
+    assert HNAN_LO_SHU_TENSOR[1][1] == HNAN_NUMERATOR
+    assert HNAN_LO_SHU_TENSOR[0][0] == XY
+    assert HNAN_LO_SHU_TENSOR[0][2] == YX
+    assert HNAN_LO_SHU_TENSOR[2][0] == WZ
+    assert HNAN_LO_SHU_TENSOR[2][2] == ZW
+
+
+def test_hnan_resolution_terminates_at_xy_plus_epsilon_not_bare_xy():
+    receipt = hnan_loshu_resolution_receipt()
+    assert receipt["status"] == "PASS"
+    assert all(receipt["checks"].values())
+    assert HNAN_TERMINAL_SOURCE == "xy+epsilon"
+    assert HNAN_TERMINAL_XY_EPSILON == ("Sum", XY, HNAN_EPSILON)
+    assert HNAN_TERMINAL_XY_EPSILON != XY
+    assert receipt["projection"] == XY
+    assert receipt["terminal"] == HNAN_TERMINAL_XY_EPSILON
+    assert receipt["bare_xy_terminal_authorized"] is False
+    assert receipt["epsilon_elision_authorized"] is False
+    assert receipt["ordered_product_commutation_authorized"] is False
+    assert receipt["host_scalar_epsilon_authorized"] is False
+    assert len(receipt["receipt_sha256"]) == 64
+
+
 def test_hnan_gate_fails_closed_for_undefined_binary_pairs():
     for pair in ((0, 0), (0, 1), (1, 1), (False, 0), (1, True)):
         with pytest.raises(HNANGateError):
@@ -103,14 +147,18 @@ def test_receipt_closes_without_canonical_authority():
     assert receipt["canonical_hash216_authority"] is False
     assert receipt["host_scalar_division_authorized"] is False
     assert receipt["ordered_product_commutation_authorized"] is False
+    assert receipt["hnan_terminal_source"] == "xy+epsilon"
+    assert receipt["hnan_loshu_resolution"]["status"] == "PASS"
     assert len(receipt["receipt_sha256"]) == 64
 
 
-def test_existing_lane5_center_expression_is_identical():
+def test_existing_lane5_center_expression_and_full_tensor_are_identical():
     source = Path(
         "hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py"
     ).read_text(encoding="utf-8")
     assert f'"{HNAN_CENTER_EXPRESSION}"' in source
+    for row in HNAN_LO_SHU_TENSOR_SOURCE:
+        assert all(f'"{cell}"' in source for cell in row)
 
 
 def test_wolfram_evidence_closed():

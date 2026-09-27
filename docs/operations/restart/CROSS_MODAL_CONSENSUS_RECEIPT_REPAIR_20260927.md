@@ -308,3 +308,25 @@ Next action:
 3. run only impacted exact-head validation;
 4. merge #622 and verify main;
 5. reconcile #618 and close direct-main Hash216 publication.
+
+
+## Current-main reconciliation — 2026-09-27
+
+Pre-reconciliation exact-head validation on `51966291353b2a11e028c4b366277309ffbc6b75`:
+- HHS Consensus Gate `36354673554`: success;
+- HHS Hash216 Repository Dependency Index `36354673536`: success.
+
+Authoritative main at reconciliation: `80cac0031a0d3377627a7dcfb81be1f8c0b2ae69`.
+
+Three-way comparison from common base `5e1602ae41e72940cc89cf25513201aaded2ead1` found:
+- #622 repair surface: 14 files;
+- current-main surface since the common base: 55 files;
+- overlapping files: 0.
+
+Reconciliation therefore uses the authoritative current-main tree and overlays the exact validated #622 blobs without conflict, preserving both histories in a two-parent merge checkpoint.
+
+Next action:
+1. inspect only the impacted exact-head Consensus and Hash216 runs once;
+2. if both are green, merge PR #622 and verify authoritative main;
+3. reconcile PR #618 onto verified main and validate PR-only Hash216 publication;
+4. merge #618, verify no direct publication to main, then proceed to sequential production and NumPy A/B work.

@@ -23,7 +23,7 @@ import json
 from typing import Any, Iterable, Sequence
 
 SCHEMA = "HHS_PASS219_HNAN_4X4_RECURSIVE_GATE_V1"
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 SERIALIZED_4X4 = (
     0, 0, 0, 1,
@@ -60,6 +60,33 @@ HNAN_NUMERATOR = (
     ("Negate", WZ),
 )
 HNAN_GATE_10 = ("Quotient", HNAN_NUMERATOR, "EmptySet")
+
+# Canonical ordered x/y/z/w Lo Shu tensor used by the HNAN resolver.
+# Products are intentionally represented as ordered AST nodes; XY != YX and
+# ZW != WZ remain mandatory invariants.
+HNAN_LO_SHU_TENSOR = (
+    (XY, ("Sum", "x", "y"), YX),
+    (("Sum", XY, ("Negate", ZW)), HNAN_NUMERATOR,
+     ("Sum", WZ, ("Negate", YX))),
+    (WZ, ("Sum", "z", "w"), ZW),
+)
+HNAN_LO_SHU_TENSOR_SOURCE = (
+    ("xy", "x+y", "yx"),
+    ("xy-zw", HNAN_CENTER_EXPRESSION, "wz-yx"),
+    ("wz", "z+w", "zw"),
+)
+
+# xy is only the visible projection of the resolved tensor.  The typed
+# residual epsilon remains part of the terminal state until a separate native
+# constraint explicitly proves epsilon == 0.
+HNAN_EPSILON = (
+    "Residual",
+    "epsilon",
+    ("HNANLoShuTensor", HNAN_LO_SHU_TENSOR),
+    ("RelativeToProjection", XY),
+)
+HNAN_TERMINAL_XY_EPSILON = ("Sum", XY, HNAN_EPSILON)
+HNAN_TERMINAL_SOURCE = "xy+epsilon"
 
 HNAN_ZERO_CLOSURE_SOURCE = "0=∅=AB/P⁴∅=HNAN"
 M01_JORDAN_STRUCTURE = (
@@ -140,6 +167,59 @@ def hnan_gate(lhs: int, rhs: int) -> tuple[Any, ...]:
             "HNAN gate is defined here only for ordered transition 1/0"
         )
     return HNAN_GATE_10
+
+
+def hnan_loshu_resolution_receipt() -> dict[str, Any]:
+    """Validate the ordered HNAN Lo Shu tensor and xy+epsilon closure."""
+    tensor = HNAN_LO_SHU_TENSOR
+    checks = {
+        "tensor_shape_3x3": tuple(map(len, tensor)) == (3, 3, 3),
+        "top_row_order_exact": tensor[0] == (
+            XY,
+            ("Sum", "x", "y"),
+            YX,
+        ),
+        "middle_row_order_exact": tensor[1] == (
+            ("Sum", XY, ("Negate", ZW)),
+            HNAN_NUMERATOR,
+            ("Sum", WZ, ("Negate", YX)),
+        ),
+        "bottom_row_order_exact": tensor[2] == (
+            WZ,
+            ("Sum", "z", "w"),
+            ZW,
+        ),
+        "center_is_hnan_numerator": tensor[1][1] == HNAN_NUMERATOR,
+        "xy_yx_distinct": XY != YX,
+        "zw_wz_distinct": ZW != WZ,
+        "terminal_is_xy_plus_epsilon":
+            HNAN_TERMINAL_XY_EPSILON == ("Sum", XY, HNAN_EPSILON),
+        "terminal_is_not_bare_xy": HNAN_TERMINAL_XY_EPSILON != XY,
+        "epsilon_is_typed_residual": HNAN_EPSILON[:2] == (
+            "Residual",
+            "epsilon",
+        ),
+    }
+    payload = {
+        "schema": "HHS_PASS219_HNAN_LO_SHU_XY_EPSILON_RECEIPT_V1",
+        "status": "PASS" if all(checks.values()) else "FAIL",
+        "checks": checks,
+        "tensor_source": [list(row) for row in HNAN_LO_SHU_TENSOR_SOURCE],
+        "tensor_ast": HNAN_LO_SHU_TENSOR,
+        "center_expression": HNAN_CENTER_EXPRESSION,
+        "projection": XY,
+        "epsilon": HNAN_EPSILON,
+        "terminal": HNAN_TERMINAL_XY_EPSILON,
+        "terminal_source": HNAN_TERMINAL_SOURCE,
+        "bare_xy_terminal_authorized": False,
+        "epsilon_elision_authorized": False,
+        "ordered_product_commutation_authorized": False,
+        "host_scalar_epsilon_authorized": False,
+    }
+    payload["receipt_sha256"] = sha256(
+        _stable(payload).encode("utf-8")
+    ).hexdigest()
+    return payload
 
 
 def _freeze(node: Any) -> Any:
@@ -409,6 +489,7 @@ def jordan_refinement_receipt() -> dict[str, Any]:
 
 def invariant_receipt() -> dict[str, Any]:
     jordan = jordan_refinement_receipt()
+    loshu = hnan_loshu_resolution_receipt()
     checks = {
         "serialized_length_16": len(SERIALIZED_4X4) == 16,
         "matrix_shape_4x4": tuple(map(len, TENSOR_01)) == (4, 4, 4, 4),
@@ -423,6 +504,7 @@ def invariant_receipt() -> dict[str, Any]:
         "cached_reference_parity":
             materialize_xy_view() == materialize_xy_view_reference(),
         "jordan_refinement_pass": jordan["status"] == "PASS",
+        "hnan_loshu_xy_epsilon_pass": loshu["status"] == "PASS",
     }
     payload = {
         "schema": SCHEMA,
@@ -436,6 +518,8 @@ def invariant_receipt() -> dict[str, Any]:
         "hnan_gate_10": HNAN_GATE_10,
         "hnan_zero_closure_source": HNAN_ZERO_CLOSURE_SOURCE,
         "jordan_refinement": jordan,
+        "hnan_loshu_resolution": loshu,
+        "hnan_terminal_source": HNAN_TERMINAL_SOURCE,
         "canonical_vm81_mutation_authority": False,
         "canonical_hash72_authority": False,
         "canonical_hash216_authority": False,
@@ -452,6 +536,11 @@ __all__ = [
     "HNAN_CENTER_EXPRESSION",
     "HNAN_GATE_10",
     "HNAN_NUMERATOR",
+    "HNAN_LO_SHU_TENSOR",
+    "HNAN_LO_SHU_TENSOR_SOURCE",
+    "HNAN_EPSILON",
+    "HNAN_TERMINAL_XY_EPSILON",
+    "HNAN_TERMINAL_SOURCE",
     "HNAN_ZERO_CLOSURE_SOURCE",
     "M01_JORDAN_STRUCTURE",
     "MXY_GENERIC_CHANNELS",
@@ -468,6 +557,7 @@ __all__ = [
     "HNANGateError",
     "deserialize_4x4",
     "hnan_gate",
+    "hnan_loshu_resolution_receipt",
     "invariant_receipt",
     "jordan_refinement_receipt",
     "materialize_xy_view",

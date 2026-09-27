@@ -1,4 +1,4 @@
-# Pass 219 — HNAN 4x4 Recursive Two-View Gate Contract v1
+# Pass 219 — HNAN 4x4 Recursive Two-View Gate Contract v1.2
 
 Status: ADDITIVE FORMALIZATION / EXECUTABLE STRUCTURAL GATE / NO NEW CANONICAL AUTHORITY
 
@@ -81,6 +81,75 @@ EIGENVECTOR0_TENSOR[1][1]
 ```
 
 This cycle binds the new `1/0` gate to that inherited ordered phase center. It does not create a second center tensor or alternate phase algebra.
+
+### 4.1 Mandatory x/y/z/w Lo Shu tensor resolution
+
+The center expression is not sufficient by itself to close an HNAN solution. The
+gate SHALL resolve through the complete ordered 3x3 x/y/z/w Lo Shu tensor:
+
+```text
+List(
+  List((x*y), x+y, (y*x)),
+  List(
+    (x*y)-(z*w),
+    x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z),
+    (w*z)-(y*x)
+  ),
+  List((w*z), z+w, (z*w))
+)
+```
+
+Equivalent matrix display:
+
+```text
+[ xy      x+y                         yx    ]
+[ xy-zw   x+y-z-w+xy+yx-zw-wz        wz-yx ]
+[ wz      z+w                         zw    ]
+```
+
+The products are ordered channels:
+
+```text
+xy != yx
+zw != wz
+```
+
+and no resolver may commute, reorder, scalar-cancel, or erase those channels.
+
+The HNAN center cell is exactly the ordered HNAN numerator. The other eight
+cells are mandatory boundary constraints for resolution, not optional
+annotations.
+
+The visible `xy` channel is only a projection. The terminal resolved state is:
+
+```text
+xy + epsilon
+```
+
+where `epsilon` is a typed HNAN tensor residual relative to the `xy`
+projection. It is not host floating-point error, rounding noise, or an
+implicitly discardable scalar. Bare `xy` is not an authorized terminal state.
+The residual may be removed only by a separate native constraint that explicitly
+establishes `epsilon == 0`.
+
+Executable enforcement is provided by:
+
+```text
+HNAN_LO_SHU_TENSOR
+HNAN_EPSILON
+HNAN_TERMINAL_XY_EPSILON
+hnan_loshu_resolution_receipt()
+```
+
+in:
+
+```text
+hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py
+```
+
+The invariant receipt SHALL fail if the 3x3 tensor is reordered, if its center
+does not equal the HNAN numerator, if ordered products collapse, if the terminal
+is reduced to bare `xy`, or if epsilon is silently elided.
 
 ## 5. Recursive two-view evaluation
 
