@@ -97,3 +97,11 @@ def test_commit_acceptance_gate_retains_subprocess_failure_evidence():
     assert '"stdout": r.stdout' in source
     assert '"stderr": r.stderr' in source
     assert '"script": s' in source
+
+
+def test_runtime_certification_uses_topology_aware_smoke_successor():
+    source = Path("hhs_runtime_certification_v2.py").read_text(encoding="utf-8")
+    assert "from hhs_runtime_smoke_tests_v1 import run_smoke_suite" in source
+    assert "HHSSmokeTestSuiteV1" not in source
+    assert "smoke = run_smoke_suite()" in source
+    assert 'smoke.get("summary", {}).get("all_ok") is True' in source

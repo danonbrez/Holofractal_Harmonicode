@@ -204,3 +204,32 @@ For each, preserve the same compatibility membrane used for native library/LiteR
 - no bypass of canonical VM81 authority.
 
 Do not start those Hugging Face/OpenAPI tranches before LiteRT is complete unless explicitly re-ordered by the user.
+
+
+## Successor smoke-suite repair — executed failure frontier
+
+The checkpointed PR head `2b9afb742d1707d20d06cea07fe9f7dada373e60` completed HHS Consensus Gate run `36341626895` with a concrete inherited failure in verify job `108682723372`:
+
+```text
+ImportError: cannot import name 'HHSSmokeTestSuiteV1' from 'hhs_runtime_smoke_tests_v1'
+```
+
+Repository history shows commit `8a2691c535016a23f954f4fa4a24f8fd05f1f16a` intentionally replaced the legacy `HHSSmokeTestSuiteV1` class with the topology-aware `run_smoke_suite()` registry. The certification script remained a stale caller.
+
+Repair-forward action:
+- do not restore the removed legacy class;
+- update `hhs_runtime_certification_v2.py` to call `run_smoke_suite()`;
+- consume the successor report at `summary.all_ok`;
+- add regression coverage forbidding reintroduction of `HHSSmokeTestSuiteV1` in the certification caller.
+
+Observed repository state before this repair:
+- current main: `7ef287dafae9accda91c540f6f9cb974e05a0f0e`;
+- PR #619 head before this commit: `2b9afb742d1707d20d06cea07fe9f7dada373e60`;
+- Hash216 dependency index on that head: success, run `36341626871`;
+- HHS Consensus Gate on that head: failure, run `36341626895`.
+
+Next action after this commit:
+1. inspect the newly triggered current-head Consensus run once when it reaches a terminal state;
+2. if red, repair only the newly exposed inherited dependency frontier;
+3. if queued, stop rather than repeatedly polling;
+4. after Consensus is green, reconcile substantive current-main drift before merge.
