@@ -81,6 +81,14 @@ const I041_FORK_ROLE = Object.freeze({
   mayRenderSlowerThanRealtime:true,
   purpose:"observe/capture the same canonical simulation evolution when full realtime execution is too expensive"
 });
+const I041_SPRITEMAP_BINDING = Object.freeze({
+  addressTopologySeedBound:true,
+  canonicalAnimatedSeedBound:false,
+  currentTrajectoryAuthority:"NONE",
+  currentMode:"PROJECTION_PIPELINE_PREVIEW",
+  requiredCanonicalFrameSchema:"HHS_I041_CANONICAL_SPHERICAL_FRAME_V1",
+  rule:"a holographic animated spritemap is canonical only when every rendered frame consumes the same bounded-spherical simulation state produced by Fork A or an exact replay of that state"
+});
 const FOUNDATION_OPTIMIZATION_CONTRACT = Object.freeze({
   order:"canonical monolithic seed -> observationally equivalent optimization -> feature additions",
   geometryPhysicsRule:"preserve foundation geometry and physics unless a native repository contract requires a repair",
@@ -676,6 +684,7 @@ function updateHud(address,rank,bott){
     "virtual="+VIRTUAL_FRAME_SIDE+"²="+VIRTUAL_FRAME_PIXELS+
     " view="+["source","nucleus","halo","composite"][pixelTune.viewMode]+"\n"+
     "pixel nucleus=source frame; halo overlap=translucent; source/target=same resolution\n"+
+    "spritemap="+(I041_SPRITEMAP_BINDING.canonicalAnimatedSeedBound?"canonical-frame-bound":"preview-unbound")+"\n"+
     "authority=projection-only; no VM81/Hash72/Hash216 mutation";
 }
 
@@ -835,6 +844,7 @@ function foundationPreservationReceipt(){
   const checks={
     canonical_seed_identity:CANONICAL_SEED_TITLE==="Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041",
     renderer_is_observation_fork:I041_FORK_ROLE.fork==="B"&&I041_FORK_ROLE.canonicalSimulationReplacement===false,
+    projection_preview_not_mislabeled_as_animated_seed:I041_SPRITEMAP_BINDING.canonicalAnimatedSeedBound===false&&I041_SPRITEMAP_BINDING.currentTrajectoryAuthority==="NONE",
     lane5_topology:NODE_COUNT===5184&&HASH72_SIDE===72&&HASH72_SIDE*HASH72_SIDE===NODE_COUNT,
     eight_phase_groups:PHASE_GROUPS===8,
     q144_octant_quarter_half:Q144===144&&Q144_OCTANT===18&&Q144_QUARTER===36&&Q144_HALF===72,
@@ -850,6 +860,7 @@ function foundationPreservationReceipt(){
     status:Object.values(checks).every(Boolean)?"PASS":"FAIL",
     checks,
     forkRole:I041_FORK_ROLE,
+    spritemapBinding:I041_SPRITEMAP_BINDING,
     optimizationContract:FOUNDATION_OPTIMIZATION_CONTRACT,
     optimizationChanges:[
       "extended-Euclid modular inverse",
