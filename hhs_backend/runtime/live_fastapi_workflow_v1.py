@@ -58,16 +58,29 @@ class LiveFastAPIRuntimeWorkflow:
         if self._running:
             return self.status()
         self._running = True
-        if self.cognition_runtime is not None:
-            try:
+        try:
+            if self.cognition_runtime is not None:
                 await asyncio.to_thread(self.cognition_runtime.initialize)
-            except Exception as exc:
-                self._errors.append(f"cognition_initialize:{exc}")
-                self._errors = self._errors[-16:]
-                raise
-        if self.auto_start:
-            self._task = asyncio.create_task(self._run_loop())
-        return self.status()
+
+            # Startup must publish one canonical kernel emission even when the
+            # production service intentionally disables continuous auto-tick.
+            # This gives every projection channel a real receipt/state source
+            # without granting the browser or a background loop mutation
+            # authority. Subsequent ticks remain explicit unless auto_start is
+            # enabled.
+            if self._last_emission is None:
+                await self.tick_once({
+                    "source": "live_fastapi_workflow.startup_prime",
+                })
+
+            if self.auto_start:
+                self._task = asyncio.create_task(self._run_loop())
+            return self.status()
+        except Exception as exc:
+            self._running = False
+            self._errors.append(f"startup:{type(exc).__name__}:{exc}")
+            self._errors = self._errors[-16:]
+            raise
 
     async def stop(self) -> Dict[str, Any]:
         self._running = False
@@ -129,10 +142,20 @@ class LiveFastAPIRuntimeWorkflow:
                 cognition_status = self.cognition_runtime.status()
             except Exception as exc:  # pragma: no cover
                 cognition_status = {"ok": False, "error": str(exc)}
+        last_emission = dict(self._last_emission or {})
+        authority_ready = bool(
+            self._running
+            and self._tick_count > 0
+            and last_emission.get("receipt_hash72")
+            and last_emission.get("runtime_state_hash72")
+            and last_emission.get("ok")
+        )
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_STATUS_V1",
             "version": VERSION,
             "running": self._running,
+            "authority_ready": authority_ready,
+            "startup_prime_complete": bool(self._last_emission),
             "background_task_active": self._task is not None and not self._task.done(),
             "tick_count": self._tick_count,
             "last_emission": self._last_emission,
@@ -152,22 +175,27 @@ def live_fastapi_workflow_self_test() -> Dict[str, Any]:
             cognition_runtime=HHSRuntimeCognitionCoordinator(),
             auto_start=False,
         )
-        await workflow.start()
-        emission = await workflow.tick_once({"source": "self_test"})
+        startup_status = await workflow.start()
+        emission = dict(startup_status.get("last_emission") or {})
+        cognition_ok = bool(emission.get("cognition", {}).get("processed"))
         await workflow.stop()
         workflow_status = workflow.status()
-        cognition_ok = bool(emission.get("cognition", {}).get("processed"))
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_SELF_TEST_V1",
             "version": VERSION,
-            # Preserve the inherited Pass 045 terminal condition. Cognition is
-            # additive and receives its own independently testable result.
+            # Start itself must prime exactly one canonical emission even when
+            # auto_start=False. The stopped projection remains evidence of the
+            # completed startup prime but is no longer authority-ready.
             "ok": bool(
                 emission.get("ok")
+                and startup_status.get("authority_ready")
+                and startup_status.get("tick_count") == 1
+                and not startup_status.get("background_task_active")
                 and workflow_status.get("tick_count") == 1
             ),
             "cognition_ok": cognition_ok,
             "emission": emission,
+            "startup_status": startup_status,
             "status": workflow_status,
         }
 
