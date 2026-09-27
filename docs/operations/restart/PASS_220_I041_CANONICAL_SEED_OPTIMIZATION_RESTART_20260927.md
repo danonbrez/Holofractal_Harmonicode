@@ -22,6 +22,25 @@ is the foundation. Optimization precedes feature additions. Geometry and physics
 are preserved unless a native repository contract requires a corrective
 refinement and dependency-scoped validation proves the affected invariant.
 
+## Fork architecture clarified
+
+- Fork A: full canonical monolithic simulation, optimized in place for
+  realtime/near-realtime execution. It must retain all simulation physics,
+  geometry, state transitions, receipts, controls, and coupling subsystems.
+- Fork B: `lane5_holographic_sprite_5184.html`, the deterministic
+  MP4/render-observation path. It may run/capture slower than wall-clock
+  realtime and exists specifically so the complete simulation can be observed
+  before Fork A reaches realtime performance.
+- Fork B is not the source implementation for Fork A and is not allowed to
+  stand in for simulation state transitions that it does not execute.
+- Repository search on this checkpoint found no executable copy of the supplied
+  monolithic functions such as `updateSwarmCoupling`,
+  `PhaseThermodynamicsTest`, `virtualDecayReceipt`, or
+  `BondGeometriesTest`. Materializing the user's supplied monolithic HTML as
+  Fork A is therefore the next source-completeness requirement.
+- Intended Fork-A repository path:
+  `applications/holofractal_harmonizer/holofractal_hybrid_qpu_neural_swarm_vm81_i041_realtime.html`.
+
 ## Implemented
 
 - added `FOUNDATION_OPTIMIZATION_CONTRACT` to the browser adapter;
@@ -82,6 +101,9 @@ refinement and dependency-scoped validation proves the affected invariant.
 
 ## Next action
 
-Open a PR to main so the I041 workflow can run on the exact branch head. Repair
-forward only failures attributable to this change set; do not weaken the
-foundation-preservation contract to make CI pass.
+Materialize the complete user-supplied monolithic HTML as Fork A at the named
+realtime path, then optimize that source dependency-by-dependency without
+changing its simulation semantics. Use Fork B for deterministic MP4/render
+observation and performance decomposition while Fork A remains slower than
+realtime. Repair forward CI failures attributable to this change set; do not
+weaken the foundation-preservation or fork-separation contracts.
