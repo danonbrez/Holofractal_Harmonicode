@@ -793,6 +793,56 @@ function installPixelTuneControls(){
   bindPixelTuneControl("viewMode","viewMode",null,Number);
 }
 
+function bindDynamicsControl(id,key,readoutId){
+  const el=document.getElementById(id), out=document.getElementById(readoutId);
+  const apply=()=>{
+    const ratio=exactRatioFromText(el.value);
+    dynamicsTuneExact[key]=brToString(ratio);
+    if(out) out.textContent=brToString(ratio);
+  };
+  el.addEventListener("input",apply);
+  el.addEventListener("change",apply);
+  apply();
+}
+function installDynamicsControls(){
+  bindDynamicsControl("orbitRadius","orbitRadius","orbitRadiusVal");
+  bindDynamicsControl("orbitRate","orbitRate","orbitRateVal");
+  bindDynamicsControl("orbitSlowRate","orbitSlowRate","orbitSlowRateVal");
+  bindDynamicsControl("tesseractRate","tesseractRate","tesseractRateVal");
+  bindDynamicsControl("q144PhaseRate","q144PhaseRate","q144PhaseRateVal");
+}
+function installPanelToggles(){
+  const hud=document.getElementById("hud"), ctl=document.getElementById("ctl");
+  const hudToggle=document.getElementById("toggleHudPanel"), ctlToggle=document.getElementById("toggleCtlPanel");
+  hudToggle.addEventListener("click",()=>{
+    const hidden=hud.classList.toggle("panelHidden");
+    hudToggle.textContent=hidden?"show HUD":"hide HUD";
+  });
+  ctlToggle.addEventListener("click",()=>{
+    const hidden=ctl.classList.toggle("panelHidden");
+    ctlToggle.textContent=hidden?"show controls":"hide controls";
+  });
+}
+function setSimulationSpeedExact(value){
+  simulationSpeedExact=exactRatioFromText(value);
+  if(simulationSpeedExact.n<1n || projectionFloatRational(simulationSpeedExact)>2)
+    throw new Error("simulation speed outside admitted inspection range");
+  const el=document.getElementById("simulationSpeed"), out=document.getElementById("simulationSpeedVal");
+  if(el) el.value=String(projectionFloatRational(simulationSpeedExact));
+  if(out) out.textContent=brToString(simulationSpeedExact)+"×";
+  return brToString(simulationSpeedExact);
+}
+function exactSingleStep(){
+  const base=brFloor(simulationTickExact||brZero());
+  simulationTickExact=brat(base+1n,1n);
+  tick=Number(base+1n);
+  return projectionTick(tick,{
+    renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0,
+    gpuSync:false,
+    updateHudText:true
+  });
+}
+
 function buildSphericalBoundary(){
   return Object.freeze({
     radius:SPACETIME_RADIUS,
@@ -843,7 +893,10 @@ function updateHud(address,rank,bott){
     " phase="+c.phaseLeft8+":"+c.phaseRight8+" bott="+bott+"\n"+
     "phase72="+(lastPhaseWord?lastPhaseWord.slice(0,36)+"…":"computing…")+"\n"+
     "render gate=1/4 rendered="+rendered+"/"+rafCount+
+    " sim-speed="+(simulationSpeedExact?brToString(simulationSpeedExact):"1/10")+"x paused="+paused+
     " topology="+(topoInvert?"reciprocal-inverted":"seed")+"\n"+
+    "3D spherical spacetime R="+SPACETIME_RADIUS+
+    " tesseract=phase-driven; camera-warp=false; wireframe=false\n"+
     "virtual="+VIRTUAL_FRAME_SIDE+"²="+VIRTUAL_FRAME_PIXELS+
     " view="+["source","nucleus","halo","composite"][pixelTune.viewMode]+"\n"+
     "pixel nucleus=source frame; halo overlap=translucent; source/target=same resolution\n"+
@@ -869,11 +922,17 @@ function projectionTick(targetTick, options={}){
   const exactRotation=q144RotationExact(q);
   const pathEnd=performance.now();
 
+  const dyn=dynamicsProjection();
   for(const m of [material1,material2]){
     m.uniforms.uTime.value=seconds;
     m.uniforms.uPathAddress.value=address;
     m.uniforms.uBottOctant.value=bott;
     m.uniforms.uTopologyInvert.value=topoInvert;
+    m.uniforms.uOrbitRadius.value=dyn.orbitRadius;
+    m.uniforms.uOrbitRate.value=dyn.orbitRate;
+    m.uniforms.uOrbitSlowRate.value=dyn.orbitSlowRate;
+    m.uniforms.uTesseractRate.value=dyn.tesseractRate;
+    m.uniforms.uQ144PhaseRate.value=dyn.q144PhaseRate;
   }
   if(postMaterial) postMaterial.uniforms.uTick.value=tick;
   const uniformEnd=performance.now();
