@@ -16,6 +16,12 @@ This file is the curated navigation map for the Holofractal Harmonicode (HHS) re
 | [`CHANGELOG.md`](CHANGELOG.md) | Repository-level change history |
 | [`docs/README.md`](docs/README.md) | Documentation entry point |
 
+## Full Hash216 file and dependency graph
+
+The repository-wide generated deep index is [REPOSITORY_HASH216_DEPENDENCY_TREE.md](REPOSITORY_HASH216_DEPENDENCY_TREE.md). It binds the Pass 214 complete Git-tree census, Pass 173 dependency observations, Pass 191 three-Hash72 Hash216 identities, and Lane 5 repository capability topology into a reproducible read-only file/dependency graph.
+
+Generation, authority checks, evidence upload, and refresh are defined by [.github/workflows/repository-hash216-dependency-index.yml](.github/workflows/repository-hash216-dependency-index.yml).
+
 ## Canonical execution stack
 
 ### Runtime authority
