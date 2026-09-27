@@ -12,9 +12,9 @@ def test_lane5_browser_projection_is_single_5184_graph_with_two_projection_passe
     assert "const NODE_COUNT = 5184;" in source
     assert "const HASH72_SIDE = 72;" in source
     assert "72^72" in source
-    assert "new THREE.Points(geometry,material1)" in source
-    assert "new THREE.Points(geometry,material2)" in source
-    assert "new THREE.ShaderMaterial" in source
+    assert "new HHS3D.Points(geometry,material1)" in source
+    assert "new HHS3D.Points(geometry,material2)" in source
+    assert "new HHS3D.ShaderMaterial" in source
 
 
 def test_lane5_browser_path_matches_native_seeded_affine_cycle_contract():
@@ -82,7 +82,7 @@ def test_lane5_browser_uses_3d_spherical_boundary_and_inspection_clock():
         assert token in source, token
     assert "float persp=2.6/(2.2-w1);" not in source
     assert "p=vec3(x1,y1,z1)*persp;" not in source
-    assert "new THREE.SphereGeometry" not in source
+    assert "new HHS3D.SphereGeometry" not in source
     assert "wireframe:true" not in source
 
 
@@ -153,9 +153,9 @@ def test_holographic_pixel_sprite_compositor_preserves_source_resolution_and_tra
     source = HTML.read_text(encoding="utf-8")
     for token in (
         "const VIRTUAL_FRAME_PIXELS = NODE_COUNT * NODE_COUNT;",
-        "new THREE.WebGLRenderTarget",
-        "minFilter:THREE.NearestFilter",
-        "magFilter:THREE.NearestFilter",
+        "new HHS3D.WebGLRenderTarget",
+        "minFilter:HHS3D.NearestFilter",
+        "magFilter:HHS3D.NearestFilter",
         "function renderProjectionFrame()",
         "renderer.setClearColor(0x000000,0)",
         "scene.background=null;",
