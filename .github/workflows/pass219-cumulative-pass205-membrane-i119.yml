@@ -33,11 +33,14 @@ jobs:
       matrix:
         target: [exact, synthetic]
     env:
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-i119.sqlite3
       HHS_PASS208_GPU_ENABLED: '0'
       HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
       HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
     steps:
+      - name: Bind runner-local HHS_PASS205_DB
+        shell: bash
+        run: echo "HHS_PASS205_DB=$RUNNER_TEMP/pass205-i119.sqlite3" >> "$GITHUB_ENV"
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'pull_request' && (matrix.target == 'exact' && github.event.pull_request.head.sha || format('refs/pull/{0}/merge', github.event.pull_request.number)) || github.sha }}
