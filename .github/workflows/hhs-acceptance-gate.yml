@@ -31,14 +31,14 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/download-artifact@v4
-        with: {path: receipts}
+        with: {path: _hhs_consensus_artifacts}
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
       - run: |
           python - << 'EOF'
           import json,glob
           from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
-          recs=[json.load(open(f)) for f in glob.glob('receipts/**/*.json',recursive=True)]
+          recs=[json.load(open(f)) for f in glob.glob('_hhs_consensus_artifacts/**/*.json',recursive=True)]
           res=evaluate_consensus(recs)
           print(res)
           assert res.status=='CONSENSUS_ACCEPTED'

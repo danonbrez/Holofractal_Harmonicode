@@ -105,3 +105,10 @@ def test_runtime_certification_uses_topology_aware_smoke_successor():
     assert "HHSSmokeTestSuiteV1" not in source
     assert "smoke = run_smoke_suite()" in source
     assert 'smoke.get("summary", {}).get("all_ok") is True' in source
+
+
+def test_consensus_job_reads_only_downloaded_verification_artifacts():
+    workflow = Path(".github/workflows/hhs-acceptance-gate.yml").read_text(encoding="utf-8")
+    assert "with: {path: _hhs_consensus_artifacts}" in workflow
+    assert "glob.glob('_hhs_consensus_artifacts/**/*.json',recursive=True)" in workflow
+    assert "glob.glob('receipts/**/*.json',recursive=True)" not in workflow

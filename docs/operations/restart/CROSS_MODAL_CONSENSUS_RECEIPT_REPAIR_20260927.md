@@ -187,3 +187,37 @@ Next action:
 2. if queued/not registered, stop;
 3. if red, repair only the next exposed inherited frontier;
 4. if green, reconcile #622 onto then-current main and run only impacted exact-head validation before merge.
+
+
+## Consensus artifact isolation repair — 2026-09-27
+
+Exact-head run `36350469355` reached the downstream consensus job after all three verify jobs completed successfully. The aggregator reported:
+
+```text
+ConsensusDecision(total_agents=15, verified_agents=0, required_threshold=15, status='CONSENSUS_REJECTED')
+```
+
+Root cause:
+- the downstream job now correctly checks out the repository so `hhs_runtime.hhs_multi_agent_consensus_v2_gate` can import;
+- downloaded artifacts were placed under `receipts/`;
+- the repository itself also contains JSON under `receipts/`;
+- `glob('receipts/**/*.json')` therefore mixed repository receipt fixtures/history with the three downloaded distributed-verification artifacts.
+
+Repair:
+- download CI artifacts into the dedicated `_hhs_consensus_artifacts/` directory;
+- evaluate consensus only over JSON found under that directory;
+- add regression coverage that forbids the repository-wide `receipts/**/*.json` glob.
+
+This does not weaken the 100% consensus threshold. It restores the intended three-agent input set.
+
+Observed state:
+- exact-head verify matrix: passed;
+- exact-head Hash216 run `36350469315`: success;
+- exact-head downstream Consensus: failed only from artifact namespace contamination;
+- authoritative main had advanced beyond this branch and must still be reconciled after this attributable frontier closes.
+
+Next action:
+1. inspect the new exact-head Consensus and Hash216 runs once;
+2. when green, reconcile the branch to then-current main;
+3. rerun only impacted exact-head checks;
+4. merge #622 and verify main.
