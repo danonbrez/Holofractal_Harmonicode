@@ -363,6 +363,51 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Quartic closure execution semantics
+
+The inherited quartic gate is projection-only. For ticks 0,1,2,3 the
+simulation/state constructor advances through all four ticks; only tick 0
+(modulo 4) writes the raster projection:
+
+~~~text
+state_update(0) -> render
+state_update(1) -> no projection write
+state_update(2) -> no projection write
+state_update(3) -> no projection write
+state_update(4) -> render
+~~~
+
+This is already encoded by
+`QUARTIC_RENDER_SKIP_IS_PROJECTION_ONLY`,
+`skipped_frames_write_no_projection=True`, and
+`simulation_tick_continues=True`. The 3/4 skip must never be reinterpreted
+as deleting 3/4 of physics/state evolution.
+
+## Opaque canonical-HTML Lane 5 ingress
+
+Lane 5 also accepts the original canonical HTML as an unmodified document.
+This path does not require the HTML to embed `window.HHS_LANE5_TEST`.
+
+The external harness:
+
+~~~text
+benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+~~~
+
+serves the selected repository HTML byte-for-byte, supplies the viewport and
+drawing-buffer target externally, confirms WebGL/canvas health, captures at a
+four-RAF cadence by default, and verifies the source SHA-256 is unchanged after
+rendering.
+
+Default raw-ingress resolution is 1920x1080. 4K uses the same path with
+`--width 3840 --height 2160`. No simulation equation, state transition, or
+animation geometry is rewritten to obtain the larger raster.
+
+Runtime/page/console failure, missing WebGL, wrong drawing-buffer dimensions,
+blank capture, MP4 verification failure, or source-byte mutation are
+fail-closed conditions for this acceptance path. Environment/dependency/GPU
+limits must be reported as such; they do not authorize replacement dynamics.
+
 ## HTML-driven renderer-bypass / HD MP4 acceptance
 
 The deterministic browser projection now exposes a manual test API:
