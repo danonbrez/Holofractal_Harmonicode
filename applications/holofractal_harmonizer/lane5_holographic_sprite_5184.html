@@ -17,9 +17,15 @@
     #ctl .row{display:grid;grid-template-columns:1fr 56px;gap:6px;align-items:center}
     #ctl .readout{text-align:right;color:#fff}
     #ctl hr{border:0;border-top:1px solid #284664;margin:10px 0}
+    .panelToggle{position:fixed;z-index:20;width:auto!important;margin:0!important;padding:6px 9px!important;background:rgba(0,8,24,.88)!important;border:1px solid #345!important;border-radius:5px;color:#cfe8ff;cursor:pointer}
+    #toggleHudPanel{left:10px;bottom:10px}
+    #toggleCtlPanel{right:10px;bottom:10px}
+    .panelHidden{display:none!important}
   </style>
 </head>
 <body>
+<button id="toggleHudPanel" class="panelToggle">hide HUD</button>
+<button id="toggleCtlPanel" class="panelToggle">hide controls</button>
 <div id="hud">initializing deterministic 5184 pathway…</div>
 <div id="ctl">
   <strong>Lane 5 projection controls</strong>
@@ -28,6 +34,23 @@
   <button id="applySeed">reseed deterministic path</button>
   <button id="toggleTopo">reciprocal topology: seed</button>
   <button id="pause">pause</button>
+  <button id="stepOnce">step +1 simulation tick</button>
+  <label class="row"><span>simulation speed</span><span id="simulationSpeedVal" class="readout">1/10×</span></label>
+  <input id="simulationSpeed" type="range" min="0.01" max="2" step="0.01" value="0.10">
+  <div style="margin-top:7px">Simulation/projection time uses an exact rational tick accumulator. Browser timing has no canonical authority.</div>
+  <hr>
+  <strong>Orbital / tesseract phase dynamics</strong>
+  <label class="row"><span>orbit radius</span><span id="orbitRadiusVal" class="readout">6</span></label>
+  <input id="orbitRadius" type="range" min="0" max="18" step="0.1" value="6.0">
+  <label class="row"><span>orbit rate</span><span id="orbitRateVal" class="readout">1/2</span></label>
+  <input id="orbitRate" type="range" min="0" max="2" step="0.01" value="0.50">
+  <label class="row"><span>slow-axis rate</span><span id="orbitSlowRateVal" class="readout">1/200</span></label>
+  <input id="orbitSlowRate" type="range" min="0" max="0.05" step="0.001" value="0.005">
+  <label class="row"><span>tesseract phase rate</span><span id="tesseractRateVal" class="readout">1/5</span></label>
+  <input id="tesseractRate" type="range" min="0" max="1" step="0.01" value="0.20">
+  <label class="row"><span>Q144 phase rate</span><span id="q144PhaseRateVal" class="readout">1/50</span></label>
+  <input id="q144PhaseRate" type="range" min="0" max="0.2" step="0.005" value="0.02">
+  <div style="margin-top:7px">These controls project exact rational phase parameters into the WebGL membrane; they do not acquire physics authority.</div>
   <hr>
   <strong>Holographic pixel-sprite tuning</strong>
   <label>view</label>
@@ -119,6 +142,7 @@ const SELF_HOSTED_HHS_EXACT = Object.freeze({
 });
 const VIRTUAL_FRAME_SIDE = NODE_COUNT;
 const VIRTUAL_FRAME_PIXELS = NODE_COUNT * NODE_COUNT;
+const SPACETIME_RADIUS = 90;
 const CANONICAL_SEED_TITLE = "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041";
 const I041_FORK_ROLE = Object.freeze({
   fork:"B",
@@ -151,11 +175,14 @@ const CANONICAL_SEED_REPAIRS = Object.freeze({
   deterministic_projection:"SHA-256 seeded path; host PRNG calls forbidden",
   constructor_budget:"construction edges do not spend or refund capture phase budget",
   receipt_isolation:"diagnostic receipts may not mutate authoritative simulation state",
-  manifold_hash:"browser compression is a projection fingerprint, never canonical Hash72/Hash216"
+  manifold_hash:"browser compression is a projection fingerprint, never canonical Hash72/Hash216",
+  spherical_display_boundary:"visible dynamics are confined to a 3D spherical spacetime boundary",
+  tesseract_phase_without_camera_warp:"SO(4)/tesseract state drives bounded x-w / y-z phase evolution but cannot perspective-warp the camera",
+  inspection_clock:"simulation/projection time uses exact rational state; browser timing is observation-only"
 });
 
 let scene, camera, renderer, controls, geometry;
-let layer1, layer2, material1, material2, tess;
+let layer1, layer2, material1, material2, tess, boundarySphere;
 let sourceTarget, postScene, postCamera, postMaterial, postQuad;
 const pixelTune={
   nucleusGain:0.35,
@@ -165,6 +192,15 @@ const pixelTune={
   phaseSpeed:1.0,
   viewMode:3
 };
+const dynamicsTuneExact={
+  orbitRadius:"6",
+  orbitRate:"1/2",
+  orbitSlowRate:"1/200",
+  tesseractRate:"1/5",
+  q144PhaseRate:"1/50"
+};
+let simulationSpeedExact=null;
+let simulationTickExact=null;
 let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
 let manualTestMode = false;
 let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
