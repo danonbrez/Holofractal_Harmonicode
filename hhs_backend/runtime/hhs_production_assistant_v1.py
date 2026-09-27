@@ -69,7 +69,7 @@ class ProductionAssistantService:
                 "HHS_LITERT_LM_PROVIDER_MODE must be native, auto, local, "
                 "external, or disabled"
             )
-        self.native_first = self.provider_mode == "native"
+        self.native_first = self.provider_mode == "native" and model_service is None
         self.model_service = model_service or DEFAULT_HHS_API_ASSISTANT_SERVICE
         self.threads = self.model_service.threads
         self._model_service_factory = model_service_factory
