@@ -6,6 +6,7 @@ on:
       - 'native_projects/hhs_pass220_gfx1_native_render_commands/**'
       - 'hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js'
       - 'hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js'
+      - 'hhs_gui/rendering/hhs_harmonicode_render_packet_wasm_v1.js'
       - 'applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html'
       - 'tests/pass220/test_hhs_harmonicode_three_webgl_v1.py'
       - 'tests/pass220/test_hhs_pass179_render_command_stream_v1.py'
@@ -17,6 +18,7 @@ on:
       - 'native_projects/hhs_pass220_gfx1_native_render_commands/**'
       - 'hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js'
       - 'hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js'
+      - 'hhs_gui/rendering/hhs_harmonicode_render_packet_wasm_v1.js'
       - 'applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html'
       - 'tests/pass220/test_hhs_harmonicode_three_webgl_v1.py'
       - 'tests/pass220/test_hhs_pass179_render_command_stream_v1.py'
@@ -35,6 +37,10 @@ jobs:
         run: python -m pip install --disable-pip-version-check pytest
       - name: Compile and run native C11 command ABI
         run: make -C native_projects/hhs_pass220_gfx1_native_render_commands clean test
+      - name: Rebuild and instantiate freestanding WASM bridge
+        run: |
+          make -C native_projects/hhs_pass220_gfx1_native_render_commands wasm
+          node -e 'const fs=require("fs"); WebAssembly.instantiate(fs.readFileSync("native_projects/hhs_pass220_gfx1_native_render_commands/build/hhs_pass179_render_command_v1.wasm"),{}).then(({instance})=>{if(instance.exports.hhs179_wasm_abi_version()!==1)process.exit(2);});'
       - name: Run packet, renderer, and inherited Lane 5 gates
         run: |
           python -m pytest -q \
