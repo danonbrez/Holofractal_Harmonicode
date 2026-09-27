@@ -24,9 +24,11 @@ jobs:
   validate-pass205-repair:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
-    env:
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-repair.sqlite3
     steps:
+      - name: Bind runner-local HHS_PASS205_DB
+        shell: bash
+        run: echo "HHS_PASS205_DB=$RUNNER_TEMP/pass205-repair.sqlite3" >> "$GITHUB_ENV"
+
       - name: Checkout exact merge tree
         uses: actions/checkout@v4
 
