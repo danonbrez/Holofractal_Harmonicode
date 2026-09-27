@@ -503,6 +503,13 @@
       gl.drawArrays(object.isPoints?gl.POINTS:gl.TRIANGLES,0,position.count);
     }
 
+    renderObject(object,camera){
+      if(!(camera instanceof Camera)) throw new HHS3DError("HHS3D_CAMERA_REQUIRED","renderObject requires HHS3D camera");
+      if(!object || (!object.isPoints && !object.isMesh)) throw new HHS3DError("HHS3D_OBJECT_REQUIRED","renderObject requires HHS3D.Points or HHS3D.Mesh");
+      this._draw(object,camera);
+      return this;
+    }
+
     render(scene,camera){
       if(!(scene instanceof Scene)) throw new HHS3DError("HHS3D_SCENE_REQUIRED","render requires HHS3D.Scene");
       if(!(camera instanceof Camera)) throw new HHS3DError("HHS3D_CAMERA_REQUIRED","render requires HHS3D camera");
