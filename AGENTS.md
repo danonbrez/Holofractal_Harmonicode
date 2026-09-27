@@ -20,10 +20,12 @@ README.md
 → REPOSITORY_INDEX.md
 → REPOSITORY_HASH216_DEPENDENCY_TREE.md
 → artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json
+→ artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json
+  + artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json
   + docs/repository_index/files/*.md
 ```
 
-Agents may enter the index directly through [`REPOSITORY_INDEX.md`](REPOSITORY_INDEX.md) or through the [`README.md`](README.md) repository-navigation link. The generated Hash216 tree and file-link shards are the repository-wide discovery surface; they do not replace the applicable canonical contracts or runtime authority.
+Agents may enter the index directly through [`REPOSITORY_INDEX.md`](REPOSITORY_INDEX.md) or through the [`README.md`](README.md) repository-navigation link. The generated Hash216 tree, Lane 5 hydration knowledge graph, database receipt, and file-link shards are the repository-wide discovery/hydration surface; they do not replace the applicable canonical contracts or runtime authority.
 
 Current pass-specific anchors:
 
