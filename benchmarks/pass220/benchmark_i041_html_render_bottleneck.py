@@ -19,6 +19,7 @@ import json
 import shutil
 import sys
 import threading
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
@@ -45,6 +46,18 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
         return
 
 
+def _exact_positive_fraction(value: str) -> Fraction:
+    try:
+        parsed = Fraction(str(value))
+    except (ValueError, ZeroDivisionError) as exc:
+        raise argparse.ArgumentTypeError(
+            f"tick step must be an exact positive rational: {value}"
+        ) from exc
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("tick step must be positive")
+    return parsed
+
+
 def browser_executable() -> str | None:
     configured = None
     for name in (
@@ -59,7 +72,12 @@ def browser_executable() -> str | None:
     return configured
 
 
-def frame_metrics(frame_dir: Path, expected: int) -> dict[str, Any]:
+def frame_metrics(
+    frame_dir: Path,
+    expected: int,
+    *,
+    expected_canonical_states: int,
+) -> dict[str, Any]:
     paths = sorted(frame_dir.glob("frame_*.png"))
     if len(paths) != expected:
         raise RuntimeError(f"HD frame count mismatch: {len(paths)} != {expected}")
@@ -78,9 +96,12 @@ def frame_metrics(frame_dir: Path, expected: int) -> dict[str, Any]:
             if stddev < 3.0:
                 raise RuntimeError(f"frame is effectively blank: {path.name}")
         hashes.add(sha256_file(path))
-    if len(hashes) < max(3, expected * 3 // 4):
+    required_unique = max(3, expected_canonical_states * 3 // 4)
+    if len(hashes) < required_unique:
         raise RuntimeError(
-            f"insufficient animation variation: {len(hashes)} unique of {expected}"
+            "insufficient animation variation: "
+            f"{len(hashes)} unique frames; required {required_unique} "
+            f"from {expected_canonical_states} expected canonical states"
         )
     return {
         "frame_count": len(paths),
@@ -199,7 +220,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             )
             canvas = page.locator("canvas").first
             for index in range(args.frames):
-                target_tick = index * args.tick_step
+                exact_target = index * args.tick_step
+                target_tick = exact_target.numerator // exact_target.denominator
                 state = page.evaluate(
                     """(tick)=>window.HHS_LANE5_TEST.step(tick,{
                         renderFrame:true,gpuSync:true,updateHudText:false
@@ -223,7 +245,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         server.server_close()
         thread.join(timeout=5)
 
-    visual = frame_metrics(frames, args.frames)
+    expected_canonical_states = (
+        ((args.frames - 1) * args.tick_step).numerator
+        // ((args.frames - 1) * args.tick_step).denominator
+        + 1
+    )
+    visual = frame_metrics(
+        frames,
+        args.frames,
+        expected_canonical_states=expected_canonical_states,
+    )
     if (visual["width"], visual["height"]) != (args.width, args.height):
         raise RuntimeError(
             f"captured canvas is not requested HD size: "
@@ -252,7 +283,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "html_driver": str(HTML_REL),
         "resolution": {"width": args.width, "height": args.height},
         "fps": args.fps,
-        "tick_step": args.tick_step,
+        "tick_step": {
+            "numerator": args.tick_step.numerator,
+            "denominator": args.tick_step.denominator,
+            "text": str(args.tick_step),
+        },
+        "expected_canonical_states": expected_canonical_states,
+        "canonical_state_sampling": "FLOOR_EXACT_RATIONAL_TO_INTEGER_TICK",
         "benchmark": benchmark,
         "pixel_display_contract": display_contract,
         "canonical_seed_math_repair": math_repair,
@@ -322,7 +359,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=720)
     parser.add_argument("--fps", type=int, default=24)
     parser.add_argument("--frames", type=int, default=48)
-    parser.add_argument("--tick-step", type=int, default=4)
+    parser.add_argument(
+        "--tick-step",
+        type=_exact_positive_fraction,
+        default=Fraction(4, 1),
+    )
     parser.add_argument("--state-ticks", type=int, default=4096)
     parser.add_argument("--render-ticks", type=int, default=256)
     parser.add_argument("--warmup", type=int, default=64)
