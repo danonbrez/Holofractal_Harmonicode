@@ -141,7 +141,7 @@ HHSExactStatus NineLoopForeignEquivalenceCellWall::evaluate(
     const char expected_hash216[HHS_HASH216_LEN + 1],
     NineLoopEquivalenceReceipt& out
 ) const noexcept {
-    std::memset(&out, 0, sizeof(out));
+    out = NineLoopEquivalenceReceipt{};
     out.version = kNineLoopEquivalenceVersion;
     out.namespace_id = kNineLoopEquivalenceNamespace;
     out.candidate_only = 1U;
