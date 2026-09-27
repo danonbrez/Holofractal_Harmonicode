@@ -11,7 +11,22 @@ on:
       - 'bin/post_compile'
       - 'tests/test_hhs_pass205_*'
       - '.github/workflows/pass205-repair-validation-base.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_python/runtime/**'
+      - 'hhs_backend/runtime/hhs_pass205_*'
+      - 'hhs_backend/api/a0_pass205_transport_bootstrap.py'
+      - 'hhs_backend/api/a_pass205_governed_bootstrap.py'
+      - 'deployment/digitalocean/pass205_state/**'
+      - 'bin/post_compile'
+      - 'tests/test_hhs_pass205_*'
+      - '.github/workflows/pass205-repair-validation-base.yml'
   workflow_dispatch:
+
+concurrency:
+  group: pass205-repair-validation-base-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -25,7 +40,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-repair.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-repair.sqlite3
     steps:
       - name: Checkout exact merge tree
         uses: actions/checkout@v4

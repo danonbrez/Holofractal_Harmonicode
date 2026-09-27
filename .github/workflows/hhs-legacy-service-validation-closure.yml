@@ -1,0 +1,152 @@
+name: HHS Legacy Service Validation Closure
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/ci/HHS_LEGACY_SERVICE_VALIDATION_CLOSURE_V1.md'
+      - 'scripts/validate_legacy_service_workflow_closure_v1.py'
+      - '.github/workflows/hhs-legacy-service-validation-closure.yml'
+      - '.github/workflows/hhs-acceptance-gate.yml'
+      - '.github/workflows/hhs-agi-runtime-wiring.yml'
+      - '.github/workflows/hhs-immutable-agent-sql-index.yml'
+      - '.github/workflows/pass165-mmvs.yml'
+      - '.github/workflows/pass166-word2vec.yml'
+      - '.github/workflows/pass166-validation-relay.yml'
+      - '.github/workflows/pass174-heroku-boot-resilience.yml'
+      - '.github/workflows/pass205-repair-validation-base.yml'
+      - '.github/workflows/pass205-multimodal-continuation-contract.yml'
+      - '.github/workflows/pass205-production-runtime.yml'
+      - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
+      - '.github/workflows/pass219-lane5-exact-boundary-quantum-thermo-1-35.yml'
+      - 'hhs_storage/runtime_state_compatibility_v1.py'
+      - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
+      - 'hhs_python/runtime/hhs_runtime_emulator.py'
+      - 'hhs_backend/runtime/live_cognition_runtime_v1.py'
+      - 'hhs_backend/runtime/immutable_agent_sql_index_v1.py'
+      - 'hhs_backend/runtime/immutable_agent_index_hooks_v1.py'
+      - 'hhs_backend/runtime/live_fastapi_workflow_v1.py'
+      - 'hhs_backend/api/cognition_routes.py'
+      - 'hhs_runtime/pass165/**'
+      - 'hhs_backend/api/pass165_multimodal_ingress_routes.py'
+      - 'hhs_backend/pass165_server.py'
+      - 'native_projects/hhs_pass165_mmvs/**'
+      - 'tests/test_hhs_pass165_*'
+      - 'hhs_runtime/pass166/**'
+      - 'hhs_backend/api/pass166_word2vec_routes.py'
+      - 'hhs_backend/pass166_server.py'
+      - 'native_projects/hhs_pass166_word2vec/**'
+      - 'tests/test_hhs_pass166_*'
+      - 'hhs_runtime/pass174/**'
+      - 'hhs_backend/pass174_server.py'
+      - 'hhs_backend/api/pass174_runtime_routes.py'
+      - 'tests/test_hhs_pass174_*'
+      - 'hhs_runtime/c/hhs_pass205_*'
+      - 'hhs_python/runtime/hhs_pass205_*'
+      - 'hhs_backend/runtime/hhs_pass205_*'
+      - 'hhs_backend/api/*pass205*'
+      - 'deployment/digitalocean/pass205_state/**'
+      - 'tests/test_hhs_pass205_*'
+      - 'scripts/pass205_*'
+      - 'contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass205_1_19.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i119_pass205.py'
+      - 'tests/pass219/test_pass219_inherited_pass205_1_19.*'
+      - 'tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py'
+      - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - 'hhs_runtime/hhs_commit_acceptance_gate_v1.py'
+      - 'hhs_runtime/hhs_distributed_verification_v1.py'
+      - 'hhs_runtime/hhs_multi_agent_consensus_v2_gate.py'
+  push:
+    branches: [main]
+    paths:
+      - 'contracts/ci/HHS_LEGACY_SERVICE_VALIDATION_CLOSURE_V1.md'
+      - 'scripts/validate_legacy_service_workflow_closure_v1.py'
+      - '.github/workflows/hhs-legacy-service-validation-closure.yml'
+      - '.github/workflows/hhs-acceptance-gate.yml'
+      - '.github/workflows/hhs-agi-runtime-wiring.yml'
+      - '.github/workflows/hhs-immutable-agent-sql-index.yml'
+      - '.github/workflows/pass165-mmvs.yml'
+      - '.github/workflows/pass166-word2vec.yml'
+      - '.github/workflows/pass166-validation-relay.yml'
+      - '.github/workflows/pass174-heroku-boot-resilience.yml'
+      - '.github/workflows/pass205-repair-validation-base.yml'
+      - '.github/workflows/pass205-multimodal-continuation-contract.yml'
+      - '.github/workflows/pass205-production-runtime.yml'
+      - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
+      - '.github/workflows/pass219-lane5-exact-boundary-quantum-thermo-1-35.yml'
+      - 'hhs_storage/runtime_state_compatibility_v1.py'
+      - 'hhs_runtime/hhs_lazy_service_registry_v1.py'
+      - 'hhs_python/runtime/hhs_runtime_emulator.py'
+      - 'hhs_backend/runtime/live_cognition_runtime_v1.py'
+      - 'hhs_backend/runtime/immutable_agent_sql_index_v1.py'
+      - 'hhs_backend/runtime/immutable_agent_index_hooks_v1.py'
+      - 'hhs_backend/runtime/live_fastapi_workflow_v1.py'
+      - 'hhs_backend/api/cognition_routes.py'
+      - 'hhs_runtime/pass165/**'
+      - 'hhs_backend/api/pass165_multimodal_ingress_routes.py'
+      - 'hhs_backend/pass165_server.py'
+      - 'native_projects/hhs_pass165_mmvs/**'
+      - 'tests/test_hhs_pass165_*'
+      - 'hhs_runtime/pass166/**'
+      - 'hhs_backend/api/pass166_word2vec_routes.py'
+      - 'hhs_backend/pass166_server.py'
+      - 'native_projects/hhs_pass166_word2vec/**'
+      - 'tests/test_hhs_pass166_*'
+      - 'hhs_runtime/pass174/**'
+      - 'hhs_backend/pass174_server.py'
+      - 'hhs_backend/api/pass174_runtime_routes.py'
+      - 'tests/test_hhs_pass174_*'
+      - 'hhs_runtime/c/hhs_pass205_*'
+      - 'hhs_python/runtime/hhs_pass205_*'
+      - 'hhs_backend/runtime/hhs_pass205_*'
+      - 'hhs_backend/api/*pass205*'
+      - 'deployment/digitalocean/pass205_state/**'
+      - 'tests/test_hhs_pass205_*'
+      - 'scripts/pass205_*'
+      - 'contracts/pass219/PASS_219_LANE5_EXACT_BOUNDARY_QUANTUM_THERMO_MANIFOLD_V1.md'
+      - 'hhs_runtime/include/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_exact_boundary_quantum_thermo_1_35.inc'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.*'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass205_1_19.inc'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i119_pass205.py'
+      - 'tests/pass219/test_pass219_inherited_pass205_1_19.*'
+      - 'tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py'
+      - 'tests/pass219/test_pass219_lane5_exact_boundary_quantum_thermo_1_35.c'
+      - 'hhs_runtime/hhs_commit_acceptance_gate_v1.py'
+      - 'hhs_runtime/hhs_distributed_verification_v1.py'
+      - 'hhs_runtime/hhs_multi_agent_consensus_v2_gate.py'
+  workflow_dispatch:
+
+concurrency:
+  group: hhs-legacy-service-validation-closure-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  closure-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install workflow parser
+        run: python -m pip install --disable-pip-version-check 'pyyaml>=6.0,<7.0'
+      - name: Validate frozen dependency-scoped closure
+        run: |
+          python scripts/validate_legacy_service_workflow_closure_v1.py \
+            --output "$RUNNER_TEMP/HHS_LEGACY_SERVICE_VALIDATION_CLOSURE_V1.json"
+      - name: Upload closure receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: hhs-legacy-service-validation-closure-${{ github.run_id }}
+          path: ${{ runner.temp }}/HHS_LEGACY_SERVICE_VALIDATION_CLOSURE_V1.json
+          if-no-files-found: error
+          retention-days: 30

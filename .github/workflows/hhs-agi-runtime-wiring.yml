@@ -45,6 +45,10 @@ on:
       - ".github/workflows/hhs-agi-runtime-wiring.yml"
   workflow_dispatch:
 
+concurrency:
+  group: hhs-agi-runtime-wiring-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -57,7 +61,7 @@ jobs:
       HHS_LEDGER_FSYNC: "0"
       HHS_COGNITION_AUTO_TICK: "1"
       HHS_COGNITION_REPLAY_HORIZON: "4"
-      HHS_AGENT_INDEX_DB: ${{ runner.temp }}/hhs-agent-index.sqlite3
+      HHS_AGENT_INDEX_DB: /tmp/hhs-agent-index.sqlite3
 
     steps:
       - name: Checkout

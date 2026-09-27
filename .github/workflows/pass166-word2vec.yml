@@ -16,7 +16,27 @@ on:
       - 'docs/HHS_PASS_166_WORD2VEC_RUNTIME.md'
       - 'evidence/pass166/**'
       - '.github/workflows/pass166-word2vec.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass166/**'
+      - 'hhs_backend/api/pass166_word2vec_routes.py'
+      - 'hhs_backend/pass166_server.py'
+      - 'native_projects/hhs_pass166_word2vec/**'
+      - 'tests/test_hhs_pass166_word2vec_v1.py'
+      - 'tests/test_hhs_pass166_supply_chain_v1.py'
+      - 'tools/hhs_model.py'
+      - 'tools/pass166_terminal_evidence.py'
+      - 'HHS_PASS_166_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_166_IMPLEMENTATION_STATUS.md'
+      - 'docs/HHS_PASS_166_WORD2VEC_RUNTIME.md'
+      - 'evidence/pass166/**'
+      - '.github/workflows/pass166-word2vec.yml'
   workflow_dispatch:
+
+concurrency:
+  group: pass166-word2vec-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -27,7 +47,7 @@ jobs:
     timeout-minutes: 20
     env:
       PYTHONHASHSEED: '0'
-      HHS_PASS166_STORAGE_DIR: '${{ runner.temp }}/hhs-pass166-default'
+      HHS_PASS166_STORAGE_DIR: '/tmp/hhs-pass166-default'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

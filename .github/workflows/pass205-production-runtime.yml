@@ -30,6 +30,10 @@ on:
       - '.github/workflows/pass205-production-runtime.yml'
   workflow_dispatch:
 
+concurrency:
+  group: pass205-production-runtime-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -42,7 +46,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-continuation.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-continuation.sqlite3
     steps:
       - name: Checkout exact tree
         uses: actions/checkout@v4

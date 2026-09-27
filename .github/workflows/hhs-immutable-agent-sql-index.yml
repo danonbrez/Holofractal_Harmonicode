@@ -16,6 +16,18 @@ on:
       - "HHS_IMMUTABLE_AGENT_SQL_INDEX_CONTRACT_V1.md"
   pull_request:
     branches: [main]
+    paths:
+      - ".github/bootstrap_immutable_agent_index/**"
+      - ".github/workflows/hhs-immutable-agent-sql-index.yml"
+      - "hhs_backend/runtime/immutable_agent_sql_index_v1.py"
+      - "hhs_backend/runtime/immutable_agent_index_hooks_v1.py"
+      - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
+      - "tests/test_hhs_immutable_agent_sql_index_v1.py"
+      - "HHS_IMMUTABLE_AGENT_SQL_INDEX_CONTRACT_V1.md"
+
+concurrency:
+  group: hhs-immutable-agent-sql-index-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -24,7 +36,7 @@ jobs:
   immutable-agent-index:
     runs-on: ubuntu-latest
     env:
-      HHS_AGENT_INDEX_DB: ${{ runner.temp }}/hhs-agent-index.sqlite3
+      HHS_AGENT_INDEX_DB: /tmp/hhs-agent-index.sqlite3
       HHS_COGNITION_AUTO_TICK: "1"
     steps:
       - uses: actions/checkout@v4
