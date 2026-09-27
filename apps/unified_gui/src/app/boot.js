@@ -330,7 +330,9 @@ globalThis.HHSPhysics = {
 };
 globalThis.HHSRender = {
   setProfile: (profile) => HHSApp.render.setProfile(profile),
-  focusParticle: (index) => HHSApp.render.focusParticle(index),
+  followParticle: (index) => HHSApp.render.followParticle(index),
+  clearParticleFollow: () => HHSApp.render.clearParticleFollow(),
+  focusParticle: (index) => HHSApp.render.followParticle(index),
   focusVM81: (cell) => HHSApp.physics.addresses.filter((particle) => particle.vm81_cell === cell),
   captureDiagnostics: () => HHSApp.render.diagnostics(),
 };
