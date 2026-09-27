@@ -1,0 +1,73 @@
+{
+  "schema": "HHS_PASS_220_FASTAPI1_NATIVE_ROUTE_KERNEL_V1",
+  "version": 1,
+  "external_compatibility_target": "FastAPI/ASGI",
+  "migration_order": [
+    "FASTAPI_NATIVE_ROUTE_KERNEL",
+    "FASTAPI_NATIVE_REQUEST_RESPONSE_SCHEMA",
+    "PYDANTIC_COMPATIBILITY_MEMBRANE",
+    "NUMPY_NATIVE_PALINDROMIC_SYMBOLIC_BIGINT_ENGINE",
+    "PYTHON_NATIVE_EXECUTION_LAYER"
+  ],
+  "native_core": {
+    "language": "C11",
+    "dynamic_allocation": false,
+    "maximum_routes": 512,
+    "maximum_path_bytes": 384,
+    "maximum_capture_bytes": 1024,
+    "route_order_semantics": "REGISTRATION_ORDER",
+    "path_forms": [
+      "STATIC",
+      "{param}",
+      "{param:path}"
+    ],
+    "methods": [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS",
+      "HEAD",
+      "WEBSOCKET"
+    ]
+  },
+  "first_migrated_family": {
+    "name": "runtime_graphics",
+    "routes": [
+      "GET /api/runtime/graphics/status",
+      "GET /api/runtime/graphics/vulkan",
+      "GET /api/runtime/graphics/capabilities"
+    ],
+    "shared_framework_independent_service": "hhs_backend.runtime.hhs_runtime_graphics_service_v1",
+    "fastapi_membrane": "hhs_backend.api.runtime_graphics_routes",
+    "native_asgi_membrane": "hhs_backend.runtime.hhs_native_fastapi_graphics_v1"
+  },
+  "equivalence_obligations": {
+    "status_code": true,
+    "content_type": true,
+    "json_body_bytes": true,
+    "not_found_behavior": true,
+    "method_not_allowed_behavior": true,
+    "path_capture_behavior": true,
+    "input_output_type_fidelity": true
+  },
+  "authority": {
+    "native_route_kernel_may_mutate_canonical_state": false,
+    "python_asgi_membrane_may_mutate_canonical_state": false,
+    "fastapi_membrane_may_mutate_canonical_state": false,
+    "vm81_admission_authority": false,
+    "hash72_commit_authority": false,
+    "hash216_persistence_authority": false
+  },
+  "current_boundary": {
+    "fastapi_dependency_fully_removed": false,
+    "fastapi_retained_as_external_compatibility_membrane": true,
+    "native_route_resolution_implemented": true,
+    "native_json_serializer_implemented": false,
+    "native_request_body_parser_implemented": false,
+    "native_openapi_schema_implemented": false,
+    "native_websocket_transport_implemented": false,
+    "native_lifespan_implemented": false
+  }
+}
