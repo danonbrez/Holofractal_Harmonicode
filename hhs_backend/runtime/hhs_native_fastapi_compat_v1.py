@@ -219,6 +219,32 @@ class HHSNativeASGIApplication:
             self.kernel.register(method, path, handler_id)
         return handler_id
 
+    def route(
+        self,
+        path: str,
+        *,
+        methods: tuple[str, ...],
+    ):
+        def decorator(handler: Handler) -> Handler:
+            self.add_api_route(path, handler, methods=methods)
+            return handler
+        return decorator
+
+    def get(self, path: str):
+        return self.route(path, methods=("GET",))
+
+    def post(self, path: str):
+        return self.route(path, methods=("POST",))
+
+    def put(self, path: str):
+        return self.route(path, methods=("PUT",))
+
+    def patch(self, path: str):
+        return self.route(path, methods=("PATCH",))
+
+    def delete(self, path: str):
+        return self.route(path, methods=("DELETE",))
+
     async def _invoke(
         self,
         handler: Handler,
@@ -240,6 +266,31 @@ class HHSNativeASGIApplication:
         resolution = self.kernel.resolve(method, path)
 
         if resolution is None:
+            allowed: list[str] = []
+            for candidate in (
+                "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"
+            ):
+                if candidate == method:
+                    continue
+                if self.kernel.resolve(candidate, path) is not None:
+                    allowed.append(candidate)
+            if allowed:
+                body = _json_bytes({"detail": "Method Not Allowed"})
+                headers = [
+                    (b"allow", ", ".join(allowed).encode("ascii")),
+                    (b"content-length", str(len(body)).encode("ascii")),
+                    (b"content-type", b"application/json"),
+                ]
+                await send(
+                    {
+                        "type": "http.response.start",
+                        "status": 405,
+                        "headers": headers,
+                    }
+                )
+                await send({"type": "http.response.body", "body": body})
+                return
+
             body = _json_bytes({"detail": "Not Found"})
             await send(
                 {
