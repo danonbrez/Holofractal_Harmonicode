@@ -51,11 +51,20 @@ Dependency-scoped Python tests in that run: `12 passed`.
 
 Pass 219 1.67 parent workflow run `36324599803` completed successfully after the C++ receipt-initialization repair, and PR #600 was merged to main.
 
-## Validation pending at checkpoint
+## Validation / repair-forward state
 
-The successor 1.68 workflow run `36325046527` is queued. It adds:
+The first frozen-digest successor run exposed a narrow implementation defect: the module referenced frozen digest constants that had not been inserted into its namespace. That was repaired at commit `a4364de1b8be28fd3a5541fc456b8d9a76f6e609`.
+
+A further native hardening pass at commit `fea08abde10f54b98d5b272e53fa7666e8b74e7c` changed source-identity comparison to bounded byte comparison and made the public native Hash216 derivation reject non-frozen/malformed source metadata before string formatting.
+
+Current dedicated workflow run:
+
+`36325234175 — Pass 219 Lane 5 Nine-Loop Source Attestation 1.68`
+
+is queued for the hardened head. It validates:
 
 - frozen digest enforcement;
+- full 20,630-row live source replay;
 - shared exact runtime build including the new C++ 1.68 object;
 - native 1.68 conformance compilation;
 - native deterministic Hash216 replay;
@@ -71,6 +80,12 @@ Per the repository responsiveness policy, this external Actions queue does not b
 
 This pass source-attests the distributed 20,630-word sample. It does not yet stream and independently validate every multi-gigabyte Cosmic9 artifact, the full 424 x 5,431 coordinate matrices, or every 107,053 septuple-determining comparison row.
 
+## Pull request
+
+- PR #602: `Pass 219 Lane 5 1.68: source-attested nine-loop sample corpus`
+- GitHub mergeability at hardened branch state: `true`
+- Base: verified `main` containing merged Pass 219 1.67
+
 ## Next action
 
-Read workflow `36325046527`. If it fails, repair only the impacted 1.68 native/build surface. If it passes, confirm PR mergeability, merge 1.68 to main, verify main, then advance to bounded large-artifact manifest/stream validation.
+Read workflow `36325234175`. If it fails, repair only the impacted 1.68 native/build surface. If it passes, recheck PR #602 head/mergeability, merge 1.68 to main, verify main, then advance to bounded large-artifact manifest/stream validation.
