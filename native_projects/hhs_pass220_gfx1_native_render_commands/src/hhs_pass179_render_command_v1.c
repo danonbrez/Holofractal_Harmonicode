@@ -153,7 +153,7 @@ static HHS179RenderStatusV1 validate_structure(const uint8_t *buffer, size_t siz
 }
 
 uint64_t hhs179_render_packet_projection_fingerprint(const uint8_t *buffer, size_t size) {
-    uint64_t h = UINT64_C(1469598103934665603);
+    uint64_t h = UINT64_C(14695981039346656037);
     size_t i;
     if (buffer == NULL || size < HHS179_RENDER_PACKET_HEADER_BYTES) return 0U;
     for (i = 0U; i < size; ++i) {
