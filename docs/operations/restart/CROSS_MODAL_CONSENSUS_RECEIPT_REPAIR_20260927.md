@@ -271,3 +271,40 @@ Next action:
 3. run only impacted exact-head validation;
 4. merge #622 and verify main;
 5. reconcile #618 and remove direct Hash216 publication to main.
+
+
+## Filesystem aggregate canonicalization repair — 2026-09-27
+
+Exact-head Consensus run `36353424931` on `ac80ca038072fec375bd4a2017fb90bfd9e45ecb` showed that the parent-chain repair is active:
+- `chain_authority = HHS_FILESYSTEM_HASH72_APPEND_CHAIN_AUTHORITY_V1`;
+- 3,397 legacy entries were deterministically rebound;
+- entry parent links, entry hashes, and the stored tip all validated.
+
+The sole remaining filesystem-ledger failure was:
+
+```text
+reason: ledger_hash72 mismatch
+stored:     3srX9kn/AsgzEM=2Uaky=krv
+recomputed: nhFm677√I^+22≠8fj0GKL)Sb
+```
+
+Root cause: the aggregate ledger hash consumed the raw Python list-of-dicts representation. The ledger is persisted with `json.dumps(..., sort_keys=True)`, so dict key order on reload differs from the in-memory insertion order used when the aggregate was first committed. Entry hashes are unaffected because their cores are explicitly ordered; only the aggregate commitment drifted across serialization.
+
+Repair:
+- aggregate Hash72 now consumes canonical JSON with sorted keys and compact separators;
+- parent-chain authority, entry-hash recomputation, tip validation, and fail-closed tamper rejection are unchanged;
+- regression appends entries, reloads the sorted JSON from disk, and requires stored/recomputed aggregate Hash72 identity.
+
+Observed external state before this repair:
+- Hash216 run `36353425033`: success;
+- Consensus verify jobs: acceptance gate success;
+- distributed receipts: failed only on aggregate filesystem `ledger_hash72`;
+- downstream unanimous consensus therefore remained rejected;
+- authoritative main observed at `75a7da5fc907b2e4034a713d0f5f56b7af99c7c7`.
+
+Next action:
+1. inspect this new exact head once;
+2. if green, reconcile #622 onto then-current main;
+3. run only impacted exact-head validation;
+4. merge #622 and verify main;
+5. reconcile #618 and close direct-main Hash216 publication.

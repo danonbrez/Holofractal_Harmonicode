@@ -69,3 +69,16 @@ def test_verifier_recomputes_entry_hash_and_rejects_payload_tamper(tmp_path):
 
     assert result["ok"] is False
     assert any(row["reason"] == "entry_hash72 mismatch" for row in result["invalid"])
+
+
+def test_aggregate_hash_survives_sorted_json_persistence(tmp_path):
+    ledger = tmp_path / "ledger.json"
+    append_filesystem_ledger_entry(ledger, _entry(tmp_path, "persist-a.txt"))
+    append_filesystem_ledger_entry(ledger, _entry(tmp_path, "persist-b.txt"))
+
+    persisted = json.loads(ledger.read_text(encoding="utf-8"))
+    result = verify_filesystem_ledger(ledger)
+
+    assert result["ok"] is True, result
+    assert result["ledger_hash72"] == persisted["ledger_hash72"]
+    assert result["recomputed_ledger_hash72"] == persisted["ledger_hash72"]

@@ -84,7 +84,19 @@ def _rebind_entry(entry: Mapping[str, Any], parent_hash72: str) -> Dict[str, Any
 
 
 def _ledger_hash72(entries: List[Dict[str, Any]], tip_hash72: str) -> str:
-    return hash72_digest(("hhs_filesystem_ledger_v1", entries, tip_hash72), width=24)
+    # The aggregate commitment must survive JSON persistence. Hash a canonical
+    # serialization rather than Python dict insertion order, because the ledger
+    # is written with sort_keys=True and reloaded before distributed verification.
+    canonical_entries = json.dumps(
+        entries,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hash72_digest(
+        ("hhs_filesystem_ledger_v1", canonical_entries, tip_hash72),
+        width=24,
+    )
 
 
 def _migrate_legacy_flat_chain(data: Dict[str, Any]) -> Dict[str, Any]:
