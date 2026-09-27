@@ -475,8 +475,8 @@ jobs:
           git fetch origin main
           remote_head="$(git rev-parse origin/main)"
           if [ "$remote_head" != "$EXPECTED_HEAD" ]; then
-            echo "main advanced from $EXPECTED_HEAD to $remote_head; refusing stale generated projection"
-            exit 1
+            echo "::notice title=Stale Hash216 projection skipped::main advanced from $EXPECTED_HEAD to $remote_head; refusing stale generated projection without marking the safe no-op as a workflow failure"
+            exit 0
           fi
           git add REPOSITORY_HASH216_DEPENDENCY_TREE.md artifacts/repository_index docs/repository_index/files
           if git diff --cached --quiet; then
