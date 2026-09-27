@@ -28,6 +28,19 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Follow-particle view invariant
+
+Canonical follow mode is passive and noninteractive. It reads only the selected
+particle's current engine state, disables OrbitControls, and transports the
+camera using the native trajectory tangent plus local spherical radial normal.
+
+It must never steer the particle, mutate physics, or replace the toroidal
+spiraling path with a straight camera-generated trajectory.
+
+Implementation surfaces:
+- apps/unified_gui/src/render/scene.js
+- apps/unified_gui/src/app/boot.js
+
 ## Hyperspherical projection invariant
 
 The final cloud is classified as hyperspherical because its 2D structural
