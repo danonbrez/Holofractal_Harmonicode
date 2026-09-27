@@ -44,6 +44,7 @@ Environment=HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap
 Environment=HHS_WARM_BOOT_MANIFEST_ROOT=/var/lib/hhs/warm-boot/releases
 Environment=HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current
 Environment=HHS_COGNITION_AUTO_TICK=0
+Environment=HHS_LIVE_SEMANTIC_COMPOSITION_CACHE_PATH=/var/lib/hhs/data/runtime/hhs_live_semantic_composition_cache_pass217.json
 Environment=HHS_RUNTIME_STATUS_CACHE=/var/lib/hhs/runtime-bootstrap/status-cache.json
 Environment=HHS_RUNTIME_STATUS_TTL_SECONDS=15
 Environment=HHS_RUNTIME_STATUS_PROBE_INTERVAL_SECONDS=60
