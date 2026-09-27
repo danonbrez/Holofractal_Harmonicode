@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>HHS Lane 5 — 5184 Holographic Sprite Pathway</title>
   <script src="../../hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js"></script>
+  <script src="../../hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js"></script>
   <style>
     html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:#cfe8ff;font-family:monospace}
     canvas{display:block}
@@ -113,6 +114,15 @@ const CANONICAL_SEED_REPAIRS = Object.freeze({
 let scene, camera, renderer, controls, geometry;
 let layer1, layer2, material1, material2, tess, boundarySphere;
 let sourceTarget, postScene, postCamera, postMaterial, postQuad;
+let renderResources=null;
+const RENDER_RESOURCE=Object.freeze({
+  CAMERA:1n,
+  SOURCE_TARGET:2n,
+  LAYER1:3n,
+  LAYER2:4n,
+  POST_CAMERA:5n,
+  POST_QUAD:6n
+});
 const pixelTune={
   nucleusGain:0.35,
   haloRadiusPx:2.4,
@@ -552,16 +562,54 @@ function buildPixelCompositor(){
   resizePixelCompositor();
 }
 
-function renderProjectionFrame(){
-  renderer.setRenderTarget(sourceTarget);
-  renderer.setClearColor(0x000000,0);
-  renderer.clear(true,true,true);
-  renderer.render(scene,camera);
+function installRenderPacketResources(){
+  renderResources=new HHSRenderPacket.ResourceRegistry()
+    .register(RENDER_RESOURCE.CAMERA,camera)
+    .register(RENDER_RESOURCE.SOURCE_TARGET,sourceTarget)
+    .register(RENDER_RESOURCE.LAYER1,layer1)
+    .register(RENDER_RESOURCE.LAYER2,layer2)
+    .register(RENDER_RESOURCE.POST_CAMERA,postCamera)
+    .register(RENDER_RESOURCE.POST_QUAD,postQuad);
+}
 
-  renderer.setRenderTarget(null);
+function buildLane5ProjectionPacket(){
+  if(!renderResources) throw new Error("HHS render resources are not registered");
+  const size=new HHS3D.Vector2();
+  renderer.getDrawingBufferSize(size);
+  const w=Math.max(1,Math.floor(size.x)), h=Math.max(1,Math.floor(size.y));
+  const O=HHSRenderPacket.OPCODE;
+  const projectionMicros=Math.trunc(simTimeTicks*1000000);
+  return HHSRenderPacket.buildCompatibilityPacket({
+    frameIndex:BigInt(rendered),
+    exactTimeNum:BigInt(projectionMicros),
+    exactTimeDen:60000000n,
+    targetWidth:w,
+    targetHeight:h,
+    projectionProfile:1,
+    commands:[
+      {opcode:O.BEGIN_FRAME},
+      {opcode:O.SET_TARGET,resourceId:RENDER_RESOURCE.SOURCE_TARGET},
+      {opcode:O.SET_VIEWPORT,arg0:BigInt(w),arg1:BigInt(h)},
+      {opcode:O.SET_CAMERA,resourceId:RENDER_RESOURCE.CAMERA},
+      {opcode:O.CLEAR,arg0:3n},
+      {opcode:O.DRAW_POINTS,resourceId:RENDER_RESOURCE.LAYER1},
+      {opcode:O.DRAW_POINTS,resourceId:RENDER_RESOURCE.LAYER2},
+      {opcode:O.BEGIN_COMPOSITE_PASS},
+      {opcode:O.SET_TARGET,resourceId:0n},
+      {opcode:O.SET_VIEWPORT,arg0:BigInt(w),arg1:BigInt(h)},
+      {opcode:O.SET_CAMERA,resourceId:RENDER_RESOURCE.POST_CAMERA},
+      {opcode:O.CLEAR,arg0:3n},
+      {opcode:O.DRAW_MESHES,resourceId:RENDER_RESOURCE.POST_QUAD},
+      {opcode:O.END_COMPOSITE_PASS},
+      {opcode:O.END_FRAME}
+    ]
+  });
+}
+
+function renderProjectionFrame(){
   renderer.setClearColor(0x000000,0);
-  renderer.clear(true,true,true);
-  renderer.render(postScene,postCamera);
+  const packet=buildLane5ProjectionPacket();
+  HHSRenderPacket.execute(renderer,packet,renderResources);
 }
 
 function pixelDisplayContract(){
@@ -593,6 +641,11 @@ function pixelDisplayContract(){
     supportsPause:true,
     supportsSingleStep:true,
     projectionOnly:true,
+    immutableRenderCommandStream:true,
+    renderPacketSchema:"HHS_PASS_179_RENDER_COMMAND_PACKET_V1",
+    renderPacketBinaryAuthority:"C11",
+    renderPacketCompatibilityUnadmitted:true,
+    renderPacketCanonicalIdentity:false,
     tuning:{...pixelTune}
   };
 }
@@ -963,6 +1016,7 @@ function init(){
   boundarySphere=buildSphericalBoundary();
   tess=buildTesseract();
   buildPixelCompositor();
+  installRenderPacketResources();
   installPixelTuneControls();
   installDynamicsControls();
   installPanelToggles();
