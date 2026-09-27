@@ -11,6 +11,8 @@ HEADER = NATIVE / "include" / "hhs_pass179_render_command_v1.h"
 SOURCE = NATIVE / "src" / "hhs_pass179_render_command_v1.c"
 C_TEST = NATIVE / "tests" / "hhs_pass179_render_command_v1_test.c"
 JS_PACKET = ROOT / "hhs_gui" / "rendering" / "hhs_harmonicode_render_packet_v1.js"
+JS_WASM = ROOT / "hhs_gui" / "rendering" / "hhs_harmonicode_render_packet_wasm_v1.js"
+WASM_BUILD = NATIVE / "tools" / "build_wasm.sh"
 JS_RENDERER = ROOT / "hhs_gui" / "rendering" / "hhs_harmonicode_three_webgl_v1.js"
 LANE5 = ROOT / "applications" / "holofractal_harmonizer" / "lane5_holographic_sprite_5184.html"
 
@@ -130,10 +132,15 @@ def test_lane5_frame_submission_uses_immutable_packet_executor() -> None:
 
     assert "../../hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js" in html
     assert "new HHSRenderPacket.ResourceRegistry()" in html
-    assert "HHSRenderPacket.buildCompatibilityPacket({" in html
+    assert "../../hhs_gui/rendering/hhs_harmonicode_render_packet_wasm_v1.js" in html
+    assert "nativePacketBuilder=await HHSRenderPacketWasm.create()" in html
+    assert "nativePacketBuilder.build({" in html
+    assert "HHSRenderPacket.buildCompatibilityPacket({" not in html
     assert "HHSRenderPacket.execute(renderer,packet,renderResources)" in html
     assert "immutableRenderCommandStream:true" in html
     assert 'renderPacketBinaryAuthority:"C11"' in html
+    assert "renderPacketProducedByNativeWasm:true" in html
+    assert "renderPacketJavaScriptSerialization:false" in html
     assert "renderPacketCompatibilityUnadmitted:true" in html
     assert "renderPacketCanonicalIdentity:false" in html
     assert "renderer.render(scene,camera)" not in html
@@ -156,3 +163,116 @@ def test_lane5_frame_submission_uses_immutable_packet_executor() -> None:
     assert "canonicalMutationAuthority:false" in packet
     assert "hash72CommitAuthority:false" in packet
     assert "hash216IdentityAuthority:false" in packet
+
+
+def test_freestanding_wasm_bridge_rebuilds_and_instantiates(tmp_path: Path) -> None:
+    clang = shutil.which("clang")
+    node = shutil.which("node")
+    if not clang or not node:
+        pytest.skip("clang or Node.js unavailable")
+    subprocess.run(
+        ["sh", str(WASM_BUILD)],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+        env={**__import__("os").environ, "WASM_CC": clang},
+    )
+    wasm = NATIVE / "build" / "hhs_pass179_render_command_v1.wasm"
+    assert wasm.is_file()
+    script = r"""
+const fs=require("fs");
+const bytes=fs.readFileSync(process.argv[1]);
+WebAssembly.instantiate(bytes,{}).then(({instance})=>{
+  const e=instance.exports;
+  if(e.hhs179_wasm_abi_version()!==1) process.exit(2);
+  if(e.hhs179_wasm_command_capacity()!==64) process.exit(3);
+  if(!e.memory || e.memory.buffer.byteLength<131072) process.exit(4);
+  process.stdout.write("PASS");
+}).catch(error=>{ console.error(error); process.exit(5); });
+"""
+    result = subprocess.run(
+        [node, "-e", script, str(wasm)],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert result.stdout == "PASS"
+
+
+def test_embedded_native_wasm_builder_enforces_identity_boundary() -> None:
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("Node.js unavailable")
+    script = r"""
+require(process.argv[1]);
+const packet=global.HHSRenderPacket;
+const wasm=require(process.argv[2]);
+(async()=>{
+  const builder=await wasm.create();
+  const O=packet.OPCODE;
+  const commands=[
+    {opcode:O.BEGIN_FRAME},
+    {opcode:O.SET_CAMERA,resourceId:1n},
+    {opcode:O.DRAW_POINTS,resourceId:2n},
+    {opcode:O.END_FRAME}
+  ];
+  let missingIdentityRejected=false;
+  try{
+    builder.build({
+      compatibilityUnadmitted:false,
+      targetWidth:640,targetHeight:480,
+      frameIndex:1n,exactTimeNum:1n,exactTimeDen:60n,
+      commands
+    });
+  }catch(error){
+    missingIdentityRejected=
+      error.code==="HHS179_WASM_BUILD" &&
+      /: 6$/.test(error.message);
+  }
+  if(!missingIdentityRejected) process.exit(2);
+
+  const identities={
+    scene:new Uint8Array(216).fill(1),
+    frame:new Uint8Array(216).fill(2),
+    resources:new Uint8Array(216).fill(3),
+    camera:new Uint8Array(72).fill(4)
+  };
+  const nativePacket=builder.build({
+    compatibilityUnadmitted:false,
+    targetWidth:640,targetHeight:480,
+    frameIndex:2n,exactTimeNum:2n,exactTimeDen:60n,
+    identities,commands
+  });
+  const decoded=packet.validate(nativePacket);
+  if(decoded.compatibilityUnadmitted) process.exit(3);
+  if(decoded.commands.length!==4) process.exit(4);
+
+  const compatPacket=builder.build({
+    compatibilityUnadmitted:true,
+    targetWidth:640,targetHeight:480,
+    frameIndex:3n,exactTimeNum:3n,exactTimeDen:60n,
+    commands
+  });
+  if(!packet.validate(compatPacket).compatibilityUnadmitted) process.exit(5);
+  process.stdout.write(JSON.stringify({
+    status:"PASS",
+    wasmSha256:builder.wasmSha256,
+    admittedCommands:decoded.commands.length
+  }));
+})().catch(error=>{ console.error(error); process.exit(6); });
+"""
+    result = subprocess.run(
+        [node, "-e", script, str(JS_PACKET), str(JS_WASM)],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    data = json.loads(result.stdout)
+    assert data["status"] == "PASS"
+    assert data["admittedCommands"] == 4
+    assert data["wasmSha256"] == (
+        "31c34c0d79a5532a340bca5b46347154c6098f9787f2f5f9a147f91b018015af"
+    )
