@@ -363,6 +363,23 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Initial toroidal disk-galaxy state
+
+The visible swarm begins as an ordered thick disk / toroidal-galaxy seed rather
+than an isotropic particle cloud. The inherited browser geometry expresses that
+with a radial spiral law, golden-ratio angular progression, and bounded
+phase-dependent vertical displacement.
+
+~~~text
+disk-galaxy seed
+-> unique smooth spherical paths
+-> toroidal momentum-conserving circulation
+-> downstream reciprocal, tesseract, gravity and constructor layers
+~~~
+
+The later layers transform this organized rotating seed; they do not create the
+disk topology from a random cloud.
+
 ## Unique spherical pathway before warp layers
 
 Each particle owns a distinct smooth trajectory through the sphere before any
