@@ -609,25 +609,26 @@ class RuntimeWSManager:
 
         try:
 
+            if self.current_event is not None:
+                snapshot = self.build_channel_projection_payload(
+                    self.current_event,
+                    "/ws/replay",
+                )
+                snapshot["source_event_type"] = "replay_snapshot"
+                snapshot_payload = dict(snapshot.get("payload") or {})
+                snapshot_payload["replay_cache"] = self.replay_cache
+                snapshot["payload"] = snapshot_payload
+            else:
+                snapshot = {
+                    "event_type": "replay",
+                    "channel": "/ws/replay",
+                    "source_event_type": "replay_snapshot",
+                    "authority": GUI_KERNEL_AUTHORITY,
+                    "payload": {"replay_cache": self.replay_cache},
+                }
+
             await websocket.send_text(
-
-                json.dumps({
-
-                    "event_type":
-                        "replay",
-
-                    "channel":
-                        "/ws/replay",
-
-                    "source_event_type":
-                        "replay_snapshot",
-
-                    "authority":
-                        GUI_KERNEL_AUTHORITY,
-
-                    "payload":
-                        {"replay_cache": self.replay_cache}
-                })
+                json.dumps(snapshot)
             )
 
         except Exception:
