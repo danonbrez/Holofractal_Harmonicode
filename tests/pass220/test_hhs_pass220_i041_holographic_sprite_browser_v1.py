@@ -42,10 +42,36 @@ def test_lane5_browser_preserves_animation_projection_invariants_without_randomn
         "aGroup*PI/4.0 + uLayer*PI/2.0",
         "p.xy=vec2(-p.y,p.x)",
         "float h2=h1/PHI",
-        "renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0",
+        "const quarticGate=(tick%QUARTIC_RENDER_PERIOD)===0;",
         "authority=projection-only; no VM81/Hash72/Hash216 mutation",
     ):
         assert token in source, token
+
+
+def test_lane5_browser_uses_3d_spherical_boundary_and_inspection_clock():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        "const SPACETIME_RADIUS = 90.0;",
+        "new THREE.SphereGeometry(SPACETIME_RADIUS,64,32)",
+        "uSpacetimeRadius:{value:SPACETIME_RADIUS}",
+        "if(radius>uSpacetimeRadius){ p*=uSpacetimeRadius/max(radius,0.000001); }",
+        "tesseractDiagnosticOnly:true",
+        "cameraWarpFromTesseract:false",
+        'id="simulationSpeed"',
+        'id="stepOnce"',
+        "simulationSpeed = 0.10",
+        "simTimeTicks+=dt*60.0*simulationSpeed",
+        "renderFrame:true",
+        "singleStep(){",
+        "controls.enablePan=false",
+    ):
+        assert token in source, token
+
+    # The SO(4)/tesseract descriptor may remain as an internal diagnostic,
+    # but it must not project particle coordinates through a 4D perspective.
+    assert "float persp=2.6/(2.2-w1);" not in source
+    assert "p=vec3(x1,y1,z1)*persp;" not in source
+    assert "scene.add(lines);" not in source
 
 
 def test_lane5_browser_exposes_manual_animation_and_renderer_bypass_benchmark():

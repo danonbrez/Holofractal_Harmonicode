@@ -30,8 +30,11 @@ The adapter MUST preserve:
 - reciprocal phase/color relation;
 - Layer-2 orthogonal +pi/2 / quarter-turn geometry;
 - golden-spiral seed geometry;
-- shared SO(4) xw/yz projection descriptor;
-- tesseract 16 vertices / 32 edges / 8 cubic cells;
+- shared SO(4) xw/yz descriptor retained as internal diagnostic state only;
+- tesseract 16 vertices / 32 edges / 8 cubic cells retained internally but never
+  applied as a visible-camera or particle-coordinate warp;
+- visible simulation geometry remains three-dimensional inside an explicit
+  spherical spacetime boundary;
 - Bott eight-group sweep;
 - quartic one-in-four projection cadence while state ticks continue;
 - deterministic pathway replay from a named seed;
@@ -108,6 +111,28 @@ capture slot when broken.
 
 Projection fingerprints MUST remain explicitly noncanonical.
 
+### 3D spherical spacetime and inspection clock
+
+The browser display is a three-dimensional spherical spacetime inspection
+surface. The SO(4)/tesseract descriptor may be computed for diagnostics, but it
+MUST NOT divide or perspective-warp visible particle coordinates and MUST NOT
+move or warp the camera.
+
+Required browser invariants:
+
+```text
+visible_geometry_dimensions == 3
+spherical_spacetime_boundary == true
+tesseract_diagnostic_only == true
+camera_warp_from_tesseract == false
+```
+
+Simulation time MUST be independently controllable from render cadence. The UI
+MUST expose slow motion, pause/resume, and exact one-tick stepping. Changing the
+simulation-speed control changes simulation-time progression only; it MUST NOT
+throttle camera/UI rendering or replace deterministic manual stepping.
+
+
 ## Holographic pixel-sprite display invariant
 
 The renderer first produces one full-resolution RGBA source frame.  The
@@ -150,6 +175,8 @@ The HTML MUST expose live projection-only tuning for at least:
 - halo gain;
 - deterministic phase amplitude;
 - deterministic phase speed;
+- simulation speed with slow-motion support;
+- pause/resume and exact one-tick stepping;
 - source-only, nucleus-only, halo-only, and composite views.
 
 ## Acceptance
@@ -159,6 +186,10 @@ Before MP4 capture, the browser harness MUST verify:
 ```text
 HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS
 HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sameResolution == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sphericalSpacetimeBoundary == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.visibleGeometryDimensions == 3
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.tesseractDiagnosticOnly == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.cameraWarpFromTesseract == false
 ```
 
 MP4/video evidence remains projection evidence.  It grants no VM81 mutation,
