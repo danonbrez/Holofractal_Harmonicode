@@ -21,6 +21,12 @@ from hhs_backend.runtime.multimodal_workspace_ingress_v1 import (
     MIME_MODALITY_MAP,
     SUPPORTED_MODALITIES,
 )
+from hhs_runtime.pass187.adapters import (
+    http_get as linux_http_get,
+    read_file as linux_read_file,
+    run_process as linux_run_process,
+    unix_socket_roundtrip as linux_unix_socket_roundtrip,
+)
 
 VERSION = "HHS_STANDARD_LEGACY_INGRESS_COMPAT_V1"
 DEFAULT_MAX_INGRESS_BYTES = 64 * 1024 * 1024
@@ -33,6 +39,15 @@ LEGACY_ROUTE_ALIASES = (
     "/api/ingress",
 )
 
+LINUX_ADAPTER_BINDINGS = {
+    "FILESYSTEM": f"{linux_read_file.__module__}.{linux_read_file.__name__}",
+    "STDIN_STDOUT_PROCESS": f"{linux_run_process.__module__}.{linux_run_process.__name__}",
+    "UNIX_DOMAIN_SOCKET": (
+        f"{linux_unix_socket_roundtrip.__module__}.{linux_unix_socket_roundtrip.__name__}"
+    ),
+    "HTTP_CLIENT": f"{linux_http_get.__module__}.{linux_http_get.__name__}",
+}
+
 LINUX_COMPATIBILITY_SURFACES = (
     "HTTP_REQUEST_BODY",
     "JSON",
@@ -40,10 +55,7 @@ LINUX_COMPATIBILITY_SURFACES = (
     "URLENCODED_FORM",
     "MULTIPART_FORM",
     "RAW_BYTES",
-    "FILESYSTEM",
-    "STDIN_STDOUT_PROCESS",
-    "UNIX_DOMAIN_SOCKET",
-    "HTTP_CLIENT",
+    *LINUX_ADAPTER_BINDINGS.keys(),
 )
 
 
@@ -290,6 +302,8 @@ def compatibility_status() -> dict[str, Any]:
         "legacy_modality_aliases": dict(sorted(LEGACY_MODALITY_ALIASES.items())),
         "mime_translation_count": len(MIME_MODALITY_MAP),
         "linux_compatibility_surfaces": list(LINUX_COMPATIBILITY_SURFACES),
+        "linux_adapter_bindings": dict(LINUX_ADAPTER_BINDINGS),
+        "linux_backend_profile": "PASS187_EXECUTABLE_UBUNTU_LINUX_ADAPTERS",
         "max_body_bytes": _configured_max_bytes(),
         "unknown_type_policy": "PRESERVE_AS_REVERSIBLE_BINARY",
         "frontend_authority": "REQUEST_ONLY_NO_CANONICAL_COMMIT_AUTHORITY",
@@ -389,6 +403,7 @@ def build_standard_ingress_router(authority_loop: Any) -> APIRouter:
 
 __all__ = [
     "LEGACY_ROUTE_ALIASES",
+    "LINUX_ADAPTER_BINDINGS",
     "LINUX_COMPATIBILITY_SURFACES",
     "VERSION",
     "build_standard_ingress_router",
