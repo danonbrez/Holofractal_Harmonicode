@@ -233,3 +233,33 @@ Next action after this commit:
 2. if red, repair only the newly exposed inherited dependency frontier;
 3. if queued, stop rather than repeatedly polling;
 4. after Consensus is green, reconcile substantive current-main drift before merge.
+
+
+## Cross-modal receipt constructor repair — current frontier
+
+HHS Consensus Gate run `36344792697` on head `29ea7a707ca4bcffdb2a346109febaf3ab4aed8f` completed red. Verify job `108691695625` reached `hhs_realtime_phase_certification_v1.py` and failed with:
+
+```text
+TypeError: CrossModalConsensusReceipt.__init__() takes 27 positional arguments but 28 were given
+```
+
+Historical commit `fea70604878e7d6757723296838ac4ae2b5859b3` replaced legacy `agreed_phase_hash72` with `anchor_phase_index` / `phase_max_distance`, but the positional constructor retained the old slot as an extra `None`.
+
+Repair:
+- remove the stale legacy slot;
+- construct `CrossModalConsensusReceipt` with explicit keyword fields so future schema evolution cannot silently shift phase/trust/invariant fields;
+- add regression coverage for the exact successor schema and fail-closed empty consensus construction.
+
+Authority semantics are unchanged. The repair only restores the already-declared successor receipt mapping.
+
+State observed before this repair:
+- main: `5e1602ae41e72940cc89cf25513201aaded2ead1`;
+- PR #619 head: `29ea7a707ca4bcffdb2a346109febaf3ab4aed8f`;
+- current-head Hash216 run `36344792689`: success;
+- current-head Consensus run `36344792697`: failure at the receipt-constructor frontier.
+
+Next action:
+1. inspect the new-head Consensus and Hash216 runs once;
+2. if either is queued, stop at the checkpoint boundary;
+3. if Consensus is red, repair only the next exposed inherited frontier;
+4. if green, reconcile substantive main drift (including LiteRT1) before merge.
