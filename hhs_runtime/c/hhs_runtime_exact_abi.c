@@ -18,6 +18,7 @@
 #include "hhs_pass192_fibonacci_compression_1_9.inc"
 #include "hhs_pass219_rna_transcription_1_10.inc"
 #include "hhs_pass219_rna_rule_grammar_1_11.inc"
+#include "hhs_pass220_python_rna_class_registration_2_0.inc"
 #include "hhs_pass219_rna_admission_lowering_1_12.inc"
 #include "hhs_pass219_rna_state_retrieval_1_13.inc"
 #include "hhs_pass219_rna_execution_composer_1_14.inc"
