@@ -1,0 +1,70 @@
+{
+  "schema": "HHS_PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE_V1",
+  "version": 1,
+  "external_compatibility_target": "NumPy",
+  "native_array_kernel": {
+    "language": "C11",
+    "maximum_rank": 8,
+    "shape_validation": true,
+    "broadcasting": "NUMPY_TRAILING_DIMENSION_RULE",
+    "linear_index_order": "C_ROW_MAJOR",
+    "broadcast_index_projection": true,
+    "dynamic_allocation": false
+  },
+  "scalar_engine": {
+    "canonical_arithmetic": "EXACT_INTEGER_AND_FRACTION",
+    "float64_ingress": "RAW_IEEE_BINARY64_BITS",
+    "float64_decode": "PASS220_I031_EXACT_DYADIC",
+    "float64_phase_transport": "PASS220_I032_FULL_PHASE",
+    "float64_palindromic_constructor": "PASS220_I033",
+    "float64_rounding": "PASS220_I038_INTEGER_ONLY_NEAREST_EVEN",
+    "int64_ingress": "SIGNED_RANGE_CHECKED",
+    "int64_arithmetic": "EXACT_PRE_WRAP_THEN_NUMPY_INT64_WRAP"
+  },
+  "bigint_binding": {
+    "serialized_characters_per_scalar": 5184,
+    "vm81_cells": 81,
+    "offset_alphabet": "0..8",
+    "float64_identity_source": "64_BIT_IEEE_PATTERN",
+    "int64_identity_source": "SIGNED_ZIGZAG_INTEGER",
+    "identity_to_offsets": "BASE9_LITTLE_ENDIAN_PADDED_TO_81",
+    "offsets_to_5184": "PASS220_LO_SHU_RATIONAL_SCIENTIFIC_SERIALIZER",
+    "reversible": true,
+    "value_bound": true
+  },
+  "supported_numpy1_surface": {
+    "dtypes": ["int64", "float64"],
+    "constructors": ["array", "asarray"],
+    "ufuncs": ["add", "subtract", "multiply"],
+    "broadcasting": true,
+    "tolist_egress": true,
+    "float64_ieee_bit_egress": true
+  },
+  "equivalence_obligations": {
+    "shape": true,
+    "dtype": true,
+    "broadcasting": true,
+    "float64_result_bits": true,
+    "signed_zero": true,
+    "int64_overflow": true,
+    "mixed_int64_float64_promotion": true,
+    "observable_egress_values": true
+  },
+  "authority": {
+    "numpy_internal_dependency_required": false,
+    "host_float_arithmetic_canonical_authority": false,
+    "vm81_mutation_authority": false,
+    "hash72_commit_authority": false,
+    "hash216_persistence_authority": false
+  },
+  "next_surface": [
+    "division_and_numpy_zero_division_semantics",
+    "nonfinite_nan_infinity_payload_preservation",
+    "dtype_inference_and_casting",
+    "reshape_transpose_strides_views",
+    "reductions",
+    "matmul",
+    "ufunc_dispatch",
+    "full_numpy_ingress_egress_compatibility"
+  ]
+}
