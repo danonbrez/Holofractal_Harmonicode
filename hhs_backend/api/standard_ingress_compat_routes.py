@@ -31,6 +31,7 @@ from hhs_runtime.pass187.adapters import (
 VERSION = "HHS_STANDARD_LEGACY_INGRESS_COMPAT_V1"
 DEFAULT_MAX_INGRESS_BYTES = 64 * 1024 * 1024
 MAX_CONFIGURED_INGRESS_BYTES = 256 * 1024 * 1024
+DEFAULT_MAX_FORM_FIELDS = 4096
 
 LEGACY_ROUTE_ALIASES = (
     "/api/runtime/ingress",
@@ -233,7 +234,12 @@ def _decode_standard_body(
     if media_type == "application/x-www-form-urlencoded":
         try:
             text = body.decode(_charset(content_type))
-            parsed = parse_qs(text, keep_blank_values=True, strict_parsing=False)
+            parsed = parse_qs(
+                text,
+                keep_blank_values=True,
+                strict_parsing=False,
+                max_num_fields=DEFAULT_MAX_FORM_FIELDS,
+            )
             return {
                 "mode": "URLENCODED_FORM",
                 "payload": parsed,
@@ -242,7 +248,7 @@ def _decode_standard_body(
                 "media_type": content_type,
                 "parse_error": None,
             }
-        except (LookupError, UnicodeDecodeError) as exc:
+        except (LookupError, UnicodeDecodeError, ValueError) as exc:
             return {
                 "mode": "URLENCODED_RAW_FALLBACK",
                 "payload": body,
@@ -305,6 +311,7 @@ def compatibility_status() -> dict[str, Any]:
         "linux_adapter_bindings": dict(LINUX_ADAPTER_BINDINGS),
         "linux_backend_profile": "PASS187_EXECUTABLE_UBUNTU_LINUX_ADAPTERS",
         "max_body_bytes": _configured_max_bytes(),
+        "max_form_fields": DEFAULT_MAX_FORM_FIELDS,
         "unknown_type_policy": "PRESERVE_AS_REVERSIBLE_BINARY",
         "frontend_authority": "REQUEST_ONLY_NO_CANONICAL_COMMIT_AUTHORITY",
         "native_backend_authority": "HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1",
