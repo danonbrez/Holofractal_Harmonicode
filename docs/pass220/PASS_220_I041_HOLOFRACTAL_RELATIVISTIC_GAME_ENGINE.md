@@ -365,13 +365,21 @@ mutate VM81, or persist canonical state.
 
 ## Presentation boundary
 
-The canonical HTML physics/state evolution is not considered incorrect because
-WebGL or requestAnimationFrame cannot display every state at the desired visual
-quality in wall-clock realtime.
+The canonical HTML renderer is realtime-capable. The dominant slowdown appears
+when CPU-side construction/formation logic becomes expensive enough that the
+next simulation state is not ready for the browser's presentation deadline.
 
-The browser limitations are projection-side: raster quality, antialiasing,
-drawing-buffer resolution, frame pacing, GPU throughput, and dropped display
-frames. Lane 5 exists to absorb those costs without changing canonical state.
+Rendering and simulation cost must therefore remain separate:
+
+~~~text
+GPU/WebGL projection cost      != construction/formation CPU cost
+render frame miss              may be caused by delayed CPU state production
+~~~
+
+Raster quality, antialiasing, drawing-buffer resolution, and WebGL projection
+remain presentation concerns. Construction/formation, bonds, topology growth,
+and related state transitions remain canonical simulation work and must not be
+removed merely to improve wall-clock frame delivery.
 
 The high-resolution simplified fork demonstrates that the toroidal/swarm
 geometry and 5,184-address projection can survive the Lane 5 rendering path.
