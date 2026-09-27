@@ -305,3 +305,193 @@ PASS
 48 / 48
 failed = []
 ~~~
+
+
+## Deterministic 5,184-node holographic sprite pathway (2026-09-26)
+
+I041 now exposes one deterministic traversal of the canonical 72x72 address
+surface:
+
+~~~text
+node_count = 5184
+address = (start + stride * rank) mod 5184
+gcd(stride, 5184) = 1
+~~~
+
+The seed is hashed with SHA-256 to derive the start and stride.  Because the
+stride is coprime to 5,184, ranks 0..5,183 visit every address exactly once and
+rank 5,184 returns to the start.  No probability source or host random generator
+participates.
+
+Each visited address also derives one deterministic 72-character Hash72 phase
+word.  The per-word state-space declaration is therefore:
+
+~~~text
+72^72
+~~~
+
+This does not change the number of simultaneously addressable Lane 5 nodes:
+the live graph is still exactly 5,184 nodes.  The 72^72 quantity is the
+possible state-word space carried by a node/path step.
+
+The exact game-engine animation descriptor binds the supplied browser animation
+logic to integer/symbolic state:
+
+- eight phase groups, spaced by 18 Q144 steps;
+- reciprocal half-turn at +72 Q144;
+- Layer-2 orthogonal quarter-turn at +36 Q144;
+- Bott octant sweep over all eight groups;
+- golden spiral law with symbolic phi = (1+sqrt(5))/2;
+- shared SO(4) xw / yz projection descriptor and eight tesseract cells;
+- reciprocal concave/convex topology pairing;
+- quartic 1-in-4 render gate with the simulation tick continuing on skipped
+  projection frames.
+
+The browser reference implementation is:
+
+~~~text
+applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html
+~~~
+
+It uses a single 5,184-node BufferGeometry and two shader projection passes for
+the orthogonal layers.  It contains no Math.random path.  Browser SHA-256 seed
+derivation mirrors the native game engine, so a seed/rank pair selects the same
+5,184 address and Hash72 phase word in both implementations.
+
+GPU trigonometry, golden-ratio evaluation, color conversion, perspective, and
+point rasterization remain projection-only.  They do not mint Hash72/Hash216,
+mutate VM81, or persist canonical state.
+
+
+## HTML-driven renderer-bypass / HD MP4 acceptance
+
+The deterministic browser projection now exposes a manual test API:
+
+~~~text
+window.HHS_LANE5_TEST
+~~~
+
+The API can drive exact numbered projection ticks independently of
+requestAnimationFrame.  The same HTML animation is benchmarked in two modes:
+
+1. state-only, with no draw call;
+2. the same state update followed by a synchronized WebGL draw.
+
+Per-tick timing is separated into path addressing, shader-uniform update,
+SO(4)/tesseract update, and synchronized render cost.  Hash72 phase-word
+generation is timed independently and normalized over its inherited 72-tick
+refresh interval.  The receipt identifies the dominant non-render component,
+so the test answers what becomes the limiting projection-side operation when
+rasterization is removed.
+
+The HD acceptance harness is:
+
+~~~text
+benchmarks/pass220/benchmark_i041_html_render_bottleneck.py
+~~~
+
+It drives the HTML directly through Playwright, captures deterministic 1280x720
+canvas frames, and reuses the existing HHS MP4 transport functions from
+native_projects/hhs_vm81_game_level10/tools/render_terminal_capture.py:
+
+~~~text
+encode_video
+inspect_video
+verify_video
+~~~
+
+The resulting H.264 MP4, receipt, and representative first/middle/last frames
+are uploaded as the workflow artifact:
+
+~~~text
+pass220-i041-html-hd-mp4-bottleneck
+~~~
+
+Timing from CI is host-specific and is not substituted for the existing Fold7
+hardware evidence.  The same HTML benchmark surface can be executed on the
+Samsung hardware lane for physical GPU comparison.  Browser/GPU values remain
+projection-only and cannot mutate VM81, Hash72, or Hash216 state.
+
+
+## Canonical HTML seed and holographic pixel-sprite display contract
+
+The governing visual/behavioral seed for the browser projection is the
+user-supplied monolithic surface titled:
+
+~~~text
+Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041
+~~~
+
+The optimized I041 browser page is a derived execution adapter, not a semantic
+replacement.  It preserves the seed's golden-spiral geometry, eight phase
+groups, reciprocal half-turn, orthogonal Layer-2 quarter-turn, shared SO(4)
+tesseract projection, Bott sweep, and quartic projection cadence.
+
+Where the seed's executable helper arithmetic conflicts with repository
+contracts, the repository contracts win.  The browser adapter now repairs the
+following boundaries explicitly:
+
+1. Q(sqrt(2),sqrt(3)) division uses BigInt **rational coefficients**.  The
+   earlier integer-coefficient `num[i] / norm` shortcut is forbidden because
+   it can truncate the exact inverse of the 1.66 polarity factor.
+2. The VM81 closure mirror is fail-closed and requires all six folded cells.
+   It verifies `P^2-pq == n^4 == xy`, matching
+   `HARMONICODE_VM_RUNTIME.c::check_gate_closure`; omitted x/y cells cannot
+   bypass the membrane.
+3. HNAN is represented as the ordered typed `1/0` transition with
+   `EmptySet` denominator.  Ordinary nonzero browser division remains a
+   separate projection helper and has no HNAN or canonical authority.
+4. The Cycle-9 `P,p,q` transport stays exact rational.  The non-integral
+   root-isolation coordinate is not silently coerced into a Z/72 residue.
+5. Browser randomness is deterministic; `Math.random` is forbidden.
+6. Projection fingerprints remain noncanonical and cannot be promoted to
+   Hash72/Hash216 identity.
+7. Constructor bookkeeping inherited from the seed must distinguish
+   budget-spending capture bonds from budget-free construction edges so a
+   later break cannot mint phase budget.
+8. Diagnostic receipts must operate on isolated/snapshotted state rather than
+   mutating the live authoritative simulation merely to prove a receipt.
+
+### Full-resolution holographic pixel-sprite compositor
+
+The same rendered Lane-5 frame is now both the driving frame and the input to a
+screen-space holographic compositor.  The renderer first produces the source
+frame into an RGBA target at the **same drawing-buffer resolution** as the
+display.  A second projection-only pass then applies the pixel-sprite field.
+
+For each physical output pixel:
+
+~~~text
+source pixel = dense bright nucleus
+neighbor samples = translucent hyperspherical halo contributions
+final pixel = source + nucleus modulation + overlapping halo
+~~~
+
+The source pixel is therefore always geometrically behind its halo.  The halo
+may cross into adjacent pixel cells, but its empty/background region has alpha
+zero and cannot replace the driving pixel with an opaque quad.
+
+The virtual addressing declaration is:
+
+~~~text
+5184 x 5184 = 26,873,856 virtual particle/pixel relationships
+~~~
+
+while the actual displayed raster remains exactly the source/render target
+resolution.  Changing from 720p to 1080p or 4K changes only the projection
+sampling resolution, not the underlying 5,184-address topology.
+
+The tuning surface exposes live controls for:
+
+- nucleus gain;
+- halo radius in output pixels;
+- halo gain;
+- deterministic phase amplitude;
+- deterministic phase speed;
+- source / nucleus / halo / composite diagnostic views.
+
+The MP4 acceptance harness queries both
+`HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1` and
+`HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1` before capture.  HD export
+fails closed if source and output resolutions diverge, the nucleus/halo
+contract is absent, or any canonical-seed math repair fails.

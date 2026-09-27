@@ -1,0 +1,96 @@
+serialized={0,0,0,1,1,0,1,1,1,1,1,0,0,1,0,0};
+tensor01=Partition[serialized,4];
+
+state0={"Quotient","y",{"Product","4",{"Power","x",4}}};
+state1={"Product","x","y"};
+xy={"Product","x","y"};
+yx={"Product","y","x"};
+zw={"Product","z","w"};
+wz={"Product","w","z"};
+
+hnanNumerator={
+  "Sum",
+  "x",
+  "y",
+  {"Negate","z"},
+  {"Negate","w"},
+  {"Product","x","y"},
+  {"Product","y","x"},
+  {"Negate",{"Product","z","w"}},
+  {"Negate",{"Product","w","z"}}
+};
+hnanGate={"Quotient",hnanNumerator,"EmptySet"};
+
+tensorXY=tensor01/.{0->state0,1->state1};
+roundTrip=tensorXY/.{state0->0,state1->1};
+
+checks=<|
+"serialized_length_16"->(Length[serialized]===16),
+"matrix_shape_4x4"->(Dimensions[tensor01]==={4,4}),
+"row_major_exact"->(Flatten[tensor01]===serialized),
+"zero_count_8"->(Count[serialized,0]===8),
+"one_count_8"->(Count[serialized,1]===8),
+"state0_exact"->(state0==={"Quotient","y",{"Product","4",{"Power","x",4}}}),
+"state1_exact"->(state1==={"Product","x","y"}),
+"xy_yx_distinct"->UnsameQ[xy,yx],
+"zw_wz_distinct"->UnsameQ[zw,wz],
+"two_view_shape_preserved"->(Dimensions[tensorXY]==={4,4,3}),
+"two_view_round_trip"->(roundTrip===tensor01),
+"two_view_state0_count_8"->(Count[tensorXY,state0,{2}]===8),
+"two_view_state1_count_8"->(Count[tensorXY,state1,{2}]===8),
+"hnan_numerator_order_exact"->(
+  hnanNumerator==={
+    "Sum","x","y",{"Negate","z"},{"Negate","w"},
+    {"Product","x","y"},{"Product","y","x"},
+    {"Negate",{"Product","z","w"}},
+    {"Negate",{"Product","w","z"}}
+  }
+),
+"hnan_denominator_emptyset_typed"->(Last[hnanGate]==="EmptySet"),
+"hnan_not_scalar_state_division"->UnsameQ[
+  hnanGate,
+  {"Quotient",state1,state0}
+]
+|>;
+
+iterations=20000;
+cachedXY=tensorXY;
+baseTime=First[
+  AbsoluteTiming[
+    Do[tensor01/.{0->state0,1->state1},{iterations}]
+  ]
+];
+cachedTime=First[
+  AbsoluteTiming[
+    Do[cachedXY,{iterations}]
+  ]
+];
+failed=Keys[
+  Select[checks,Function[v,UnsameQ[v,True]]]
+];
+
+result=<|
+"schema"->"HHS_PASS219_HNAN_4X4_WOLFRAM_FORMALIZATION_V1",
+"status"->If[failed==={},"PASS","FAIL"],
+"check_count"->Length[checks],
+"pass_count"->Count[Values[checks],True],
+"failed"->failed,
+"serialized"->serialized,
+"tensor01"->tensor01,
+"state0_ast"->state0,
+"state1_ast"->state1,
+"hnan_numerator_ast"->hnanNumerator,
+"hnan_gate_ast"->hnanGate,
+"xy_yx_distinct"->UnsameQ[xy,yx],
+"zw_wz_distinct"->UnsameQ[zw,wz],
+"benchmark_iterations"->iterations,
+"baseline_materialize_seconds"->baseTime,
+"cached_materialize_seconds"->cachedTime,
+"cached_speedup"->If[
+  cachedTime>0,
+  baseTime/cachedTime,
+  Indeterminate
+]
+|>;
+
+Print[ExportString[result,"RawJSON"]];

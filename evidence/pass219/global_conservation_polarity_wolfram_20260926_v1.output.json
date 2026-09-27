@@ -1,0 +1,75 @@
+{
+  "schema": "HHS_PASS219_GLOBAL_CONSERVATION_POLARITY_PROOF_1_66_V1",
+  "status": "PASS",
+  "source_sha256": "014216202745bbc0fa021b9eefa6e8fdbaf5510f544cb5a44a3012b2c96b2cd9",
+  "checks": {
+    "pell_defect_minus_one": true,
+    "ratio_product_one": true,
+    "tail_minus_one": true,
+    "reciprocal_correction_closes": true,
+    "parent_defect_tail_closes": true,
+    "ratio_pair_fundamental_unit": true,
+    "negative_s_factor_exact": true,
+    "u72_gate_b2_2": true,
+    "b6c4_is_72": true,
+    "congruent_value_minus_2sqrt3": true,
+    "unit_shell_defect_plus_one": true,
+    "unit_shell_sum_2P": true,
+    "unit_shell_q_minus_p_2": true,
+    "master_delta_equals_m_conditional": true,
+    "signed_metric_null_cone": true,
+    "canonical_c2_overwritten": false
+  },
+  "operator_typing": {
+    "ordinary_ratio": "exact rational quotient projection",
+    "qr_symbol": "Legendre/Jacobi symbol is a separate typed operator",
+    "polarity_s": "independent +/-1 phase selector unless an explicit gate binds it"
+  },
+  "pell_branch": {
+    "p": "sqrt(6)+sqrt(2)",
+    "q": "sqrt(6)-sqrt(2)",
+    "P": "sqrt(3)",
+    "pq": "4",
+    "defect": "-1",
+    "p_over_q": "2+sqrt(3)",
+    "q_over_p": "2-sqrt(3)",
+    "ratio_product": "1",
+    "tail": "-1"
+  },
+  "negative_s_surface": {
+    "factor": "2*sqrt(3)+4*sqrt(6)-2*sqrt(2)",
+    "x_squared": "1/(2*sqrt(3)+4*sqrt(6)-2*sqrt(2))",
+    "x_squared_numeric": "0.0958438882952581100896257375214113656072155494239442318466"
+  },
+  "phase72_witness": {
+    "b_squared": 2,
+    "c_squared": 3,
+    "b_gate": 64,
+    "b6c4": 72
+  },
+  "congruent_projection": {
+    "value": "-2*sqrt(3)",
+    "m_roots": [
+      "(1+sqrt(1-8sqrt(3)))/2",
+      "(1-sqrt(1-8sqrt(3)))/2"
+    ]
+  },
+  "unit_shell_projection": {
+    "p": "P-1",
+    "q": "P+1",
+    "p_plus_q": "2P",
+    "q_minus_p": "2",
+    "P_squared_minus_pq": "1"
+  },
+  "master_conditional": {
+    "assumptions": ["defect=tail", "defect!=0", "c2!=0", "Delta!=0"],
+    "solution": "Delta=m"
+  },
+  "signed_metric_projection": {
+    "canonical": {"a2": 1, "b2": 2, "c2": 3},
+    "c2_metric": -3,
+    "null_sum": 0,
+    "canonical_c2_overwritten": false
+  },
+  "native_global_rewrite_authority": false
+}

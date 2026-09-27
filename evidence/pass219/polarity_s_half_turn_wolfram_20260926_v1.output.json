@@ -1,0 +1,28 @@
+{
+  "schema": "HHS_PASS219_POLARITY_S_HALF_TURN_WOLFRAM_V1",
+  "status": "PASS",
+  "native_definitions": [
+    "xy=s/zw",
+    "yx=-s/zw",
+    "zw=s/xy",
+    "wz=-s/xy"
+  ],
+  "negative_s_source": "-s=x²(((p÷q)−(q÷p))+((q÷p)−(p÷q))×(q−p)−(p−q))",
+  "definitions_sha256": "aae1a7813f37e7392c99922434c4f27f5b49c310b9965d2bcf1daf25119ca9f8",
+  "negative_s_sha256": "0ee6a7719d43182b4267c1fad581d991b01e5616b0f5c94fed5e6430ba9e7e89",
+  "correction": "((p/q)*(q/p))/(P^2-pq)=((q-p)*P)/(p+q)",
+  "unit_shell": ["p=P-1", "q=P+1", "p-q=-2", "q-p=2"],
+  "correction_projected_lhs": "1",
+  "correction_projected_rhs": "1",
+  "polarity_factor_projected": "(-2 + 2*P*(2 + P))/(-1 + P^2)",
+  "s_minus_one_projected_x_squared": "(-1 + P^2)/(-2 + 2*P*(2 + P))",
+  "s_plus_one_sign_vector": [1,-1,1,-1],
+  "s_minus_one_sign_vector": [-1,1,-1,1],
+  "p_minus_q_q_minus_p_before": [-2,2],
+  "p_minus_q_q_minus_p_after_s_minus_one": [2,-2],
+  "phase_operator": "u^36",
+  "phase_steps": 36,
+  "rotation_self_inverse": true,
+  "opposition_preserved": true,
+  "native_scalar_rewrite_authority": false
+}

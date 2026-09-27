@@ -497,3 +497,55 @@ This paper extends the equation set through the current stacked Lane 5 1.62 sour
 - ordered parent/result unresolved-stack Hash216 receipt binding.
 
 The connected 2026-09-21 Wolfram synthesis returned 44/44 PASS.
+
+
+## 12. HNAN Jordan global constraint-resolution theorem
+
+[HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md](HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md)
+
+Pass 219 Lane 5 successor 1.63 promotes the exact HNAN/Jordan closure into a system-wide typed contradiction-resolution membrane.
+
+It proves and binds:
+
+- `M01 ~ J2(0) direct-sum (-1) direct-sum (2)`;
+- the exact hydrated characteristic polynomial and recurrence;
+- the generic hydrated depth-two nilpotent channel and exceptional `r=±s` loci;
+- the ordered `0=∅=AB/P⁴∅=HNAN` closure;
+- `0 -> x+y+z+w` as a typed view;
+- `u^72 -> u^0` phase closure;
+- `∞ -> Delta -> x` directed reciprocity;
+- `∞Delta -> Bx^5184` and `P -> Bx^5184/Delta`;
+- noncommutative `xy/yx` and `zw/wz` distinctions;
+- fail-closed resolution for cancellation, equality reversal, type erasure, host float infinity, and scalar HNAN substitution.
+
+The resolver is compiled into the exact C Runtime ABI and is mandatory before both Lane 5 mediation and signed environmental VM81 admission.
+
+
+### P^(x²) global reciprocal manifold 1.64
+
+`PASS_219_P_X2_GLOBAL_RECIPROCAL_MANIFOLD_1_64` extends the HNAN/Jordan global constraint membrane with the source-preserved P^(x²) nested manifold and the ordered reciprocal correction
+
+```text
+((p/q)*(q/p))/(P²-pq)=((q-p)*P)/(p+q)
+```
+
+while retaining the literal user source separately. The correction is verified under the registered scalar unit-residue projection but remains non-cancellable and ordered in native HARMONICODE execution.
+
+
+### Polarity s half-turn 1.65
+
+Pass 219 Lane 5 1.65 binds
+
+```text
+xy=s/zw
+yx=-s/zw
+zw=s/xy
+wz=-s/xy
+```
+
+to the inherited RML5 `u^36` chiral half-turn. For `s=-1`, both chiral sign pairs invert together and the ordered `p-q:q-p` unit-shell pair rotates from `(-2):(+2)` to `(+2):(-2)`. The operator is self-inverse, preserves pair opposition, and carries no scalar substitution or canonical mutation authority.
+
+
+### Global conservation/polarity resolver 1.66
+
+Pass 219 Lane 5 1.66 adds a gate-scoped conservation membrane over the HNAN/Jordan, reciprocal-manifold, and polarity layers. It preserves distinct operator types and branch identities, verifies the Pell negative-defect witness in exact `Q(sqrt(2),sqrt(3))` arithmetic, preserves the separate positive unit shell, verifies the 72-phase seed, records the conditional scalar `Delta=m` witness, and models the null-cone statement with a signed metric projection instead of rewriting canonical `c²=3`.

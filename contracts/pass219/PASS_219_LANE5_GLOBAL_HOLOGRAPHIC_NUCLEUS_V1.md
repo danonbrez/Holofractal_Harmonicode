@@ -504,3 +504,107 @@ Language
 ```
 
 Lane 5 MAY think across the complete validated HHS manifold. Only the inherited signed VM81 authority may decide what becomes canonical reality.
+
+
+## 21. HNAN global constraint and contradiction resolver
+
+Pass 219 Lane 5 successor 1.63 installs the HNAN global constraint and contradiction resolver as a mandatory exact preflight over the global candidate manifold.
+
+The resolver binds the existing typed relations:
+
+```text
+0=∅=AB/P⁴∅=HNAN
+0=x+y+z+w=I+I^3
+u^72 -> u^0
+u^0=xy/zw=P^2-pq=a^2/Delta=0^4
+(P=√(pq+(P⁴/AB)))/∆
+P=(Bx^5184)/∆
+∞∆=Bx^5184
+R(∞)=∆
+R(∆)=x
+x=Gamma_x
+Gamma_x=u^(18/72mod72)*u^36
+```
+
+together with the exact HNAN/Jordan relation:
+
+```text
+M01 ~ J2(0) direct-sum (-1) direct-sum (2)
+
+J2(0)
+  <-> typed HNAN boundary correspondence
+
+1/0
+  -> (x+y-z-w+xy+yx-zw-wz)/∅
+```
+
+The resolver SHALL preserve source order, typed identity, noncommutative channel identity, the global Delta denominator, symbolic infinity, and the distinction between registered typed views and unrestricted scalar equality.
+
+The global rule set SHALL reject:
+
+```text
+Delta cancellation
+EmptySet cancellation
+ordered-equality reversal
+host scalar substitution across typed closure edges
+float-infinity authority
+xy/yx commutation
+zw/wz commutation
+HNAN replacement by host scalar division
+```
+
+Unknown/unregistered relations SHALL remain `UNRESOLVED` and SHALL NOT be approximated into acceptance.
+
+The mandatory C surfaces are:
+
+```text
+hhs_exact_pass219_hnan_global_version
+hhs_exact_pass219_hnan_global_authority
+hhs_exact_pass219_hnan_global_rule
+hhs_exact_pass219_hnan_resolve
+hhs_exact_pass219_hnan_resolve_set
+hhs_exact_pass219_hnan_global_system_verify
+```
+
+The complete mandatory rule mask is:
+
+```text
+15 rules
+mask = 0x7FFF
+```
+
+The resolver is executed at both system boundaries:
+
+```text
+HHSExactVM81Frame / RNA candidate
+  -> HNAN global preflight
+  -> Lane 5 mediation
+  -> signed environmental VM81 admission
+  -> HNAN global preflight
+  -> canonical VM81 admission
+```
+
+The second preflight occurs inside `hhs_exact_pass219_vm81_environment_admit_signed`. Therefore a drifted or incomplete global HNAN relation table cannot enter canonical state even if later cryptographic/environmental checks would otherwise succeed.
+
+The resolver remains candidate/constraint authority only:
+
+```text
+canonical_vm81_mutation_authority = FALSE
+canonical_hash72_authority = FALSE
+canonical_hash216_authority = FALSE
+floating_point_canonical_authority = FALSE
+```
+
+The signed environmental VM81 admission path remains the sole canonical mutation seam.
+
+Normative graph:
+
+```text
+contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_GRAPH_1_63.json
+```
+
+Formal proof:
+
+```text
+docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md
+```

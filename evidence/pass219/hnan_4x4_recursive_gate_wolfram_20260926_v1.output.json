@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS219_HNAN_4X4_WOLFRAM_FORMALIZATION_V1",
+  "status": "PASS",
+  "check_count": 16,
+  "pass_count": 16,
+  "failed": [],
+  "serialized": [0,0,0,1,1,0,1,1,1,1,1,0,0,1,0,0],
+  "tensor01": [[0,0,0,1],[1,0,1,1],[1,1,1,0],[0,1,0,0]],
+  "state0_ast": ["Quotient","y",["Product","4",["Power","x",4]]],
+  "state1_ast": ["Product","x","y"],
+  "hnan_numerator_ast": ["Sum","x","y",["Negate","z"],["Negate","w"],["Product","x","y"],["Product","y","x"],["Negate",["Product","z","w"]],["Negate",["Product","w","z"]]],
+  "hnan_gate_ast": ["Quotient",["Sum","x","y",["Negate","z"],["Negate","w"],["Product","x","y"],["Product","y","x"],["Negate",["Product","z","w"]],["Negate",["Product","w","z"]]],"EmptySet"],
+  "xy_yx_distinct": true,
+  "zw_wz_distinct": true,
+  "benchmark_iterations": 20000,
+  "baseline_materialize_seconds": 0.130669,
+  "cached_materialize_seconds": 0.000648,
+  "cached_speedup": 201.64969135802468
+}
