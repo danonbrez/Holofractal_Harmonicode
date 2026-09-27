@@ -201,6 +201,7 @@ const dynamicsTuneExact={
 };
 let simulationSpeedExact=null;
 let simulationTickExact=null;
+let lastWallMicros=0n;
 let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
 let manualTestMode = false;
 let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
@@ -825,7 +826,7 @@ function installPanelToggles(){
 }
 function setSimulationSpeedExact(value){
   simulationSpeedExact=exactRatioFromText(value);
-  if(simulationSpeedExact.n<1n || projectionFloatRational(simulationSpeedExact)>2)
+  if(simulationSpeedExact.n<=0n || simulationSpeedExact.n>2n*simulationSpeedExact.d)
     throw new Error("simulation speed outside admitted inspection range");
   const el=document.getElementById("simulationSpeed"), out=document.getElementById("simulationSpeedVal");
   if(el) el.value=String(projectionFloatRational(simulationSpeedExact));
@@ -1109,7 +1110,24 @@ function installTestApi(){
     setSeed:setTestSeed,
     step(targetTick,options={}){manualTestMode=true;paused=true;return projectionTick(targetTick,options);},
     benchmark:runBottleneckBenchmark,
-    snapshot(){return {tick,path:{...path},rendered,rafCount,manualTestMode,topoInvert,pixelTune:{...pixelTune}};},
+    snapshot(){return {
+      tick,
+      simulationTickExact:simulationTickExact?brToString(simulationTickExact):"0",
+      simulationSpeedExact:simulationSpeedExact?brToString(simulationSpeedExact):"1/10",
+      path:{...path},rendered,rafCount,manualTestMode,topoInvert,
+      pixelTune:{...pixelTune},dynamicsTuneExact:exactDynamicsReceipt(),
+      spacetimeRadius:SPACETIME_RADIUS,tesseractPhaseDriven:true,
+      cameraWarpFromTesseract:false,sphericalWireframeVisible:false
+    };},
+    setSimulationSpeed(value){return setSimulationSpeedExact(value);},
+    singleStep(){paused=true;return exactSingleStep();},
+    setDynamics(values={}){
+      for(const [key,value] of Object.entries(values)){
+        if(!(key in dynamicsTuneExact)) throw new Error("unknown dynamics key: "+key);
+        dynamicsTuneExact[key]=brToString(exactRatioFromText(value));
+      }
+      return exactDynamicsReceipt();
+    },
     displayContract:pixelDisplayContract,
     mathRepairReceipt:canonicalSeedMathRepairReceipt,
     foundationPreservationReceipt,
@@ -1135,15 +1153,16 @@ function installTestApi(){
 async function applySeed(){
   const seed=document.getElementById("seed").value.trim()||"HHS-I041-LANE5-5184";
   path=await derivePath(seed);
-  tick=0; lastPhaseWord="";
+  tick=0; simulationTickExact=brZero(); lastWallMicros=0n; lastPhaseWord="";
   await refreshPhaseWord(pathAddress(0),0);
 }
 
 function init(){
+  initExactInspectionClock();
   scene=new THREE.Scene();
   scene.background=null;
   camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,1000);
-  camera.position.set(0,0,95);
+  camera.position.set(0,0,128);
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,premultipliedAlpha:true,powerPreference:"high-performance"});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   renderer.setSize(innerWidth,innerHeight);
@@ -1151,6 +1170,10 @@ function init(){
   document.body.appendChild(renderer.domElement);
   controls=new THREE.OrbitControls(camera,renderer.domElement);
   controls.enableDamping=true;
+  controls.enablePan=false;
+  controls.target.set(0,0,0);
+  controls.minDistance=18;
+  controls.maxDistance=180;
 
   buildGeometry();
   material1=makeMaterial(0);
@@ -1158,9 +1181,12 @@ function init(){
   layer1=new THREE.Points(geometry,material1);
   layer2=new THREE.Points(geometry,material2);
   scene.add(layer1); scene.add(layer2);
+  boundarySphere=buildSphericalBoundary();
   tess=buildTesseract();
   buildPixelCompositor();
   installPixelTuneControls();
+  installDynamicsControls();
+  installPanelToggles();
   installTestApi();
 
   addEventListener("resize",()=>{
@@ -1173,24 +1199,56 @@ function init(){
     topoInvert=topoInvert?0:1;
     document.getElementById("toggleTopo").textContent="reciprocal topology: "+(topoInvert?"inverted":"seed");
   });
+  const speedEl=document.getElementById("simulationSpeed");
+  const speedApply=()=>setSimulationSpeedExact(speedEl.value);
+  speedEl.addEventListener("input",speedApply);
+  speedEl.addEventListener("change",speedApply);
+  speedApply();
   document.getElementById("pause").addEventListener("click",()=>{
     paused=!paused;document.getElementById("pause").textContent=paused?"resume":"pause";
   });
-  animate();
+  document.getElementById("stepOnce").addEventListener("click",()=>{
+    paused=true;
+    document.getElementById("pause").textContent="resume";
+    const stepped=exactSingleStep();
+    if(tick%72===0) refreshPhaseWord(stepped.address,stepped.rank);
+  });
+  requestAnimationFrame(animate);
 }
 
-function animate(){
+function animate(now){
   requestAnimationFrame(animate);
-  if(manualTestMode) return;
+  const wallMicros=BigInt(Math.round((Number.isFinite(now)?now:performance.now())*1000));
+  if(manualTestMode){ lastWallMicros=wallMicros; return; }
   controls.update();
   rafCount++;
-  if(!paused) tick++;
-  const result=projectionTick(tick,{
-    renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0,
-    gpuSync:false,
-    updateHudText:true
-  });
-  if(tick%72===0) refreshPhaseWord(result.address,result.rank);
+  if(lastWallMicros===0n) lastWallMicros=wallMicros;
+  let deltaMicros=wallMicros-lastWallMicros;
+  lastWallMicros=wallMicros;
+  if(deltaMicros<0n) deltaMicros=0n;
+  if(deltaMicros>100000n) deltaMicros=100000n;
+
+  const priorTick=tick;
+  if(!paused){
+    const wallTickDelta=brat(deltaMicros*60n,1000000n);
+    simulationTickExact=brAdd(simulationTickExact,brMul(wallTickDelta,simulationSpeedExact));
+  }
+  const targetTick=Number(brFloor(simulationTickExact));
+
+  if(targetTick===priorTick){
+    updateHud(pathAddress(tick%NODE_COUNT),tick%NODE_COUNT,tick%PHASE_GROUPS);
+    return;
+  }
+
+  let result=null;
+  for(let next=priorTick+1;next<=targetTick;next++){
+    result=projectionTick(next,{
+      renderFrame:(next%QUARTIC_RENDER_PERIOD)===0,
+      gpuSync:false,
+      updateHudText:next===targetTick
+    });
+    if(next%72===0) refreshPhaseWord(result.address,result.rank);
+  }
 }
 
 (async()=>{
