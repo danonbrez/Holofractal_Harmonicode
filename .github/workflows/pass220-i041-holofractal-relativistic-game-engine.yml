@@ -162,25 +162,26 @@ jobs:
           console.log(JSON.stringify(receipt));
           NODE
 
-      - name: Render HTML-driven HD MP4 and measure renderer-bypass bottleneck
+      - name: Render 20-second smooth HTML-driven HD MP4 and measure renderer-bypass bottleneck
         run: >
           python benchmarks/pass220/benchmark_i041_html_render_bottleneck.py
           --output artifacts/pass220/i041-html-render-bottleneck
           --width 1280
           --height 720
-          --fps 24
-          --frames 48
-          --tick-step 4
+          --fps 30
+          --frames 600
+          --tick-step 1
           --state-ticks 4096
           --render-ticks 256
           --warmup 64
           --phase-samples 24
 
-      - name: Upload I041 HTML HD MP4 bottleneck evidence
+      - name: Upload I041 repaired HTML and long HD MP4 evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass220-i041-html-hd-mp4-bottleneck
+          name: pass220-i041-repaired-html-long-hd-mp4
           path: |
+            applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html
             artifacts/pass220/i041-html-render-bottleneck/lane5-html-holographic-720p.mp4
             artifacts/pass220/i041-html-render-bottleneck/lane5-html-render-bottleneck-receipt.json
             artifacts/pass220/i041-html-render-bottleneck/samples/*.png
