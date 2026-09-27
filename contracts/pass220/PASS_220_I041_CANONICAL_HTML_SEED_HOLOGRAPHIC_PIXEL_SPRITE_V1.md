@@ -67,95 +67,57 @@ holographic spritemap seed**.
 The MP4 pipeline is allowed to be slower than realtime. Its responsibility is
 frame fidelity, not independent dynamics.
 
-## Two-fork execution architecture
+## Canonical execution rule — math/runtime repair only
 
-The canonical monolithic simulation remains one simulation with two allowed
-execution descendants. They are forks of the same foundation, not two
-independent applications.
+The monolithic simulation is already the designed system. This work does not
+create a reduced dynamics model and does not require a second simplified
+application to make rendering tractable.
 
-### Fork A — optimized realtime simulation
-
-Fork A is the full user-supplied simulation optimized **in place**. It retains
-the complete simulation state and transition system, including the inherited
-swarm coupling, barycentric/ionic field, collision chain, bond/constructor
-logic, memory windows, virtual decay, Layer-2 coupling/decay pool, HNAN gates,
-receipts, controls, and geometry.
-
-Its target is realtime or near-realtime execution through implementation
-optimization: data-oriented storage, spatial-neighbor acceleration, allocation
-elimination, batched updates, cached immutable relations, reduced diagnostic
-DOM work, and compatible GPU/worker projection acceleration.
-
-Fork A MUST NOT obtain speed by deleting or substituting the simulation's
-physics/geometry/state-transition rules.
-
-The repository target path for the materialized Fork-A source is:
+The governing implementation rule is:
 
 ```text
-applications/holofractal_harmonizer/holofractal_hybrid_qpu_neural_swarm_vm81_i041_realtime.html
+execute all specified modules
++ preserve all specified equations, ordering, types, provenance and state
++ repair mathematical/runtime faults where implementation diverges
++ route the resulting canonical state through the inherited Lane 5 renderer
+= accepted execution
 ```
 
-That path MUST be populated from the canonical monolithic seed itself; the
-projection adapter MUST NOT be used as the source from which Fork A is rebuilt.
+No subsystem may be removed, approximated, collapsed, scalarized, substituted,
+or bypassed merely to improve performance. In particular, the swarm field,
+spherical boundary membranes, barycentric/ionic coupling, collision-chain
+logic, bonds and constructor, memory/budget state, virtual decay, Layer-2
+coupling/decay pool, fourth-coordinate/SO(4) state, HNAN behavior, receipts,
+and controls remain part of the simulation.
 
-### Fork B — MP4/render observation fork
+The allowed corrective scope is mathematical/runtime repair: exact arithmetic,
+typed denominator handling, correct ordered algebra, valid cell/address
+mapping, preservation of noncommutative order, closure-gate correctness,
+finite-state/runtime safety, and other changes required to make the specified
+system execute without violating its own contracts.
 
-The existing optimized surface:
+### Lane 5 rendering role
+
+Lane 5 is the existing rendering optimization path. It consumes the canonical
+simulation state; it does not define a cheaper replacement trajectory.
+
+The required flow is:
 
 ```text
-applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html
+complete canonical simulation state at tick n
+        -> Lane 5 projection/render optimization
+        -> realtime display when available
+        -> deterministic MP4/offline capture when display cost exceeds realtime
 ```
 
-is Fork B. Its role is deterministic observation, renderer-bypass measurement,
-HD/MP4 capture, and projection experimentation when the complete Fork-A
-simulation cannot yet be displayed at realtime speed.
-
-Fork B MAY execute or replay frames slower than wall-clock realtime. It is not
-permitted to redefine the simulated physics merely to produce realtime
-graphics, and it is not evidence that omitted Fork-A state transitions have
-been executed.
-
-The required relationship is:
-
-```text
-canonical simulation semantics
-        |-> Fork A: same simulation, optimized execution
-        |-> Fork B: same-state observation / MP4 projection
-```
-
-A performance comparison between the forks MUST distinguish simulation-step
-cost from projection/render cost.
-
-## Optimization order and foundation no-drift rule
-
-The supplied monolithic HTML is the **foundation**, not a disposable visual
-reference. Repository optimization MUST proceed in this order:
-
-```text
-canonical monolithic seed
--> observationally equivalent code/data-layout optimization
--> dependency-scoped preservation validation
--> only then feature additions
-```
-
-Before adding a new improvement, the optimized surface MUST preserve the
-foundation's geometry and physics behavior. A geometry or physics equation,
-interaction rule, phase relation, orbit, topology, integrator, collision/bond
-law, or rendering cadence MUST NOT be changed merely for convenience,
-simplification, or performance.
-
-A geometry/physics change is admissible only when a native repository contract
-requires a corrective refinement and the affected dependency-scoped tests
-demonstrate the new implementation preserves the intended invariant.
-
-Optimization that does not require a physics change includes allocation
-elimination, deterministic cache reuse, indexing/data-layout improvements,
-batched projection work, and UI/diagnostic cadence reduction. These
-optimizations must not acquire canonical mutation authority.
+Realtime rendering and MP4 rendering are two observation modes of the same
+simulation. Rendering speed may differ from simulation time, but rendered
+geometry/state for a given tick must not.
 
 The browser adapter MUST expose
-`HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1` and the MP4/browser acceptance
-path MUST fail closed unless that receipt is `PASS`.
+`HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1`, and the browser/MP4 acceptance
+path MUST fail closed if that receipt indicates simulation reduction,
+geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
 ## Preserved visual/animation invariants
 
