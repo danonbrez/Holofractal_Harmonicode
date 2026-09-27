@@ -220,8 +220,16 @@ def evaluate_temporal_admissibility(
     observed_at_ns: int | None = None,
     recursion_depth: int = 0,
 ) -> TemporalPhaseReceipt:
-    win = window or make_temporal_window()
-    observed = observed_at_ns if observed_at_ns is not None else now_ns()
+    if window is None:
+        win = make_temporal_window()
+        # An implicit window represents an observation made at window creation.
+        # Do not let Hash72 construction time consume that window before the
+        # caller can evaluate it. Explicit windows/timestamps keep their
+        # original wall-clock stale-data semantics.
+        observed = win.created_at_ns if observed_at_ns is None else observed_at_ns
+    else:
+        win = window
+        observed = observed_at_ns if observed_at_ns is not None else now_ns()
     t_hash = transition_hash(transition_payload)
     phase = xyzw_phase_signature(transition_payload)
     expired = observed > win.execute_before_ns or observed < win.execute_after_ns

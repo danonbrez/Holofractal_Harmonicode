@@ -150,3 +150,40 @@ Next action:
 2. if queued/not registered, stop at the restartable boundary;
 3. if red, repair only the newly exposed inherited frontier;
 4. if green, merge #622 and verify authoritative main before reconciling #618.
+
+
+## QGU implicit-window self-expiry repair — 2026-09-27
+
+Exact-head HHS Consensus Gate run `36346469303` on `048ccbd1be0e80b404abb4679798e2d10baec25c` completed red while Hash216 run `36346469506` completed green.
+
+The constructor and inherited Consensus repairs executed successfully. The new failure frontier is temporal admission inside the realtime certification:
+
+```text
+locked_witnesses_commit_through_shell
+→ all shell projections temporal_status = EXPIRED
+→ CrossModalShellGateV1 quarantines
+```
+
+The live phase-lock stage already passed its explicit observation/window timestamps. The shell is the only caller using the QGU guard's implicit window path. In that path, `make_temporal_window()` captures `created_at_ns` before computing its Hash72 window commitment; the subsequent implicit `now_ns()` can therefore fall outside the 20 ms TTL solely because constructing the window itself consumed the budget.
+
+Repair:
+- when both window and observation timestamp are implicit, treat the observation as occurring at the newly created window's own `created_at_ns`;
+- preserve existing wall-clock evaluation for explicit windows and explicit observation timestamps;
+- keep explicit stale-window rejection fail-closed.
+
+Regression coverage:
+- simulate a 100 ms clock jump during implicit window construction and require the result not to self-expire;
+- prove an explicit 20 ms window observed 100 ms later still returns `EXPIRED`.
+
+No phase, quorum, Hash72, recursion, noise-floor, or explicit stale-data rule is weakened.
+
+Repository state observed before this repair:
+- PR #622 head: `048ccbd1be0e80b404abb4679798e2d10baec25c`;
+- authoritative main: `30c9f7cf5c878f47e9845b809391993dde3f5c82`;
+- #622 is behind current main and must still be reconciled after its attributable Consensus frontier is green.
+
+Next action:
+1. inspect the new exact-head Consensus/Hash216 runs once;
+2. if queued/not registered, stop;
+3. if red, repair only the next exposed inherited frontier;
+4. if green, reconcile #622 onto then-current main and run only impacted exact-head validation before merge.
