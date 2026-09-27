@@ -6,7 +6,7 @@ second runtime, VM81, receipt, or persistence authority.
 """
 from __future__ import annotations
 
-from base64 import b64encode
+from base64 import b64decode, b64encode
 from email import policy
 from email.parser import BytesParser
 import json
@@ -165,7 +165,7 @@ def _parse_multipart(body: bytes, content_type: str) -> dict[str, Any]:
         file_record = files[0]
         return {
             "mode": "MULTIPART_SINGLE_FILE",
-            "payload": bytes.fromhex("") if False else __import__("base64").b64decode(file_record["data_b64"]),
+            "payload": b64decode(file_record["data_b64"]),
             "source_name": str(file_record.get("filename") or "upload.bin"),
             "declared_modality": fields.get("declared_modality") or fields.get("source_modality"),
             "media_type": str(file_record.get("content_type") or "application/octet-stream"),
