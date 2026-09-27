@@ -365,17 +365,51 @@ app = FastAPI(
 # MIDDLEWARE
 # ============================================================================
 
+def _configured_cors_origins() -> list[str]:
+    """Return the explicit browser-origin allowlist for cross-origin clients.
+
+    Same-origin Runtime OS requests do not require CORS. External standard
+    frontends may opt in through HHS_CORS_ALLOWED_ORIGINS using a comma-separated
+    list of exact scheme/host/port origins. Wildcard origins are rejected because
+    production credentials and authority-bearing requests must never be combined
+    with an unrestricted browser origin.
+    """
+
+    raw = os.environ.get("HHS_CORS_ALLOWED_ORIGINS", "")
+    origins: list[str] = []
+    seen: set[str] = set()
+    for item in raw.split(","):
+        origin = item.strip().rstrip("/")
+        if not origin:
+            continue
+        if origin == "*":
+            raise RuntimeError("HHS_PRODUCTION_CORS_WILDCARD_FORBIDDEN")
+        if origin not in seen:
+            origins.append(origin)
+            seen.add(origin)
+    return origins
+
+
+CORS_ALLOWED_ORIGINS = _configured_cors_origins()
+
 app.add_middleware(
 
     CORSMiddleware,
 
-    allow_origins=["*"],
+    allow_origins=CORS_ALLOWED_ORIGINS,
 
     allow_credentials=True,
 
-    allow_methods=["*"],
+    allow_methods=["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 
     allow_headers=["*"],
+
+    expose_headers=[
+        "content-disposition",
+        "etag",
+        "x-hhs-runtime-cache",
+        "x-hhs-runtime-cache-age-ms",
+    ],
 )
 
 # ============================================================================
