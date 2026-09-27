@@ -607,12 +607,14 @@ function buildLane5ProjectionPacket(){
 }
 
 function renderProjectionFrame(){
+  resizePixelCompositor();
   renderer.setClearColor(0x000000,0);
   const packet=buildLane5ProjectionPacket();
   HHSRenderPacket.execute(renderer,packet,renderResources);
 }
 
 function pixelDisplayContract(){
+  resizePixelCompositor();
   const size=new HHS3D.Vector2();
   renderer.getDrawingBufferSize(size);
   return {
