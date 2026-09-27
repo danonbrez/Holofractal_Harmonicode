@@ -61,3 +61,9 @@ The special Pass 166 validation relay remains branch-scoped because it writes ev
 This repair is closed only after the pull request executes the affected service workflows successfully. After merge, unchanged service dependency surfaces inherit that evidence rather than replaying on unrelated commits.
 
 The central closure audit validates the workflow structure and emits a machine-readable receipt. It does not replace the substantive service workflows.
+
+## Repair-era pathway redirection
+
+A historical CI pathway whose named implementation files no longer exist must not be silently skipped. Its validation entrypoint is redirected to the current integrated service that replaced it, and the current service must replay the inherited compatibility obligation.
+
+For Pass 205, repair-era deployment/governance filenames are redirected to the current deterministic continuation ABI plus the warm hydrated VM boot binding. The old workflow identity remains available as a compatibility validation entrypoint, while its computation is provided by the current downstream implementation.

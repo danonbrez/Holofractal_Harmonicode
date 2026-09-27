@@ -50,3 +50,16 @@ No repository blocker is known before opening the PR. External GitHub Actions va
 ## Next action
 
 Open the pull request, inspect all dependency-scoped service results, repair forward any real regression, then merge only after the closure set is green or a restartable checkpoint explicitly records a still-running external CI obligation.
+
+## Repair-forward findings from PR #593
+
+The repaired workflows reached runners and exposed four substantive compatibility obligations:
+
+1. Pass 166 inherited the Pass 165 real-MP4 tests but did not install ffmpeg.
+2. Pass 205 repair validation referenced repair-era files absent from the current tree; it is redirected to the current continuation ABI and warm-boot state binding.
+3. I119 strict C11 compilation exposed pre-C2X array-qualifier conversion in inherited HNAN 1.63 matrix multiplication; the helper is flattened to pointer indexing without changing matrix arithmetic.
+4. The consensus gate invoked package modules by filesystem path, which removed the repository root from Python import resolution; it now uses module execution.
+
+The Runtime OS Pass 205 gate is redirected to the same current continuation/warm-boot surface instead of conditionally skipping when obsolete repair-era modules are absent.
+
+During PR validation, the existing immutable-index workflow materialized its staged implementation and advanced the branch with commit `c3692693a8d03dad51fd9b3810fe72a1c4c41bee`. That workflow-produced commit is retained as inherited branch state. Repair-forward runtime compatibility was then committed as `505554288474fd19dcabbc0df2c0b273bdcdb123`.
