@@ -601,6 +601,7 @@ class HHSAssistantService:
             "usage": dict(raw.get("usage") or {}),
             "model": raw.get("model"),
             "response_id": raw.get("id"),
+            "provider_metadata": dict(raw.get("hhs_native_trace") or {}),
         }
 
     async def _execute_turn(
@@ -719,6 +720,11 @@ class HHSAssistantService:
                     "provider_result_ingress_root_hash72"
                 ),
                 "provider_result_ingress_ok": bool(ingress.get("ok")),
+                "native_response_stream_root_hash72": (
+                    (completion.get("provider_metadata") or {})
+                    .get("response_stream_manifest", {})
+                    .get("stream_root_hash72")
+                ),
                 "runtime_mutation_admitted": False,
             },
         )
@@ -739,6 +745,20 @@ class HHSAssistantService:
             "policy_gate_decision": policy,
             "provider_invocation_receipt": receipt,
             "provider_result_ingress": ingress,
+            "native_response_stream": (
+                {
+                    "serialized_response": (
+                        completion.get("provider_metadata") or {}
+                    ).get("serialized_response"),
+                    "manifest": (
+                        completion.get("provider_metadata") or {}
+                    ).get("response_stream_manifest"),
+                }
+                if (completion.get("provider_metadata") or {}).get(
+                    "response_stream_manifest"
+                )
+                else None
+            ),
             "runtime_mutation_admitted": False,
             "model_output_is_canonical_without_runtime_admission": False,
             "custom_system_instruction_applied": bool(custom_instruction),
