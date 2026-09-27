@@ -28,6 +28,15 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Pre-warp pathway ordering
+
+Each particle has a unique smooth path through the spherical manifold before
+tesseract/SO(4) and gravitational warping are applied. The pre-warp transport
+is collision-free and already carries the toroidal/field rotation.
+
+Do not use collision resolution, tesseract projection, or gravitational warp
+to synthesize the base trajectory. Those are downstream layers.
+
 ## Toroidal momentum invariant
 
 Primitive particle motion is toroidal and conserves swarm momentum. Straight
