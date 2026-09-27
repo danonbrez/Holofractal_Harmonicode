@@ -18,7 +18,7 @@ def test_live_kernel_event_bridge_emits_real_kernel_state():
     assert result["runtime_state_hash72"]
 
 
-def test_live_fastapi_workflow_startup_prime_without_background_tick():
+def test_live_fastapi_workflow_manual_tick():
     result = live_fastapi_workflow_self_test()
     assert result["ok"] is True
     assert result["startup_status"]["authority_ready"] is True
