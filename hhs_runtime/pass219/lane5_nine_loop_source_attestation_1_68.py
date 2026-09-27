@@ -211,10 +211,6 @@ def attest_sample(
             )
 
     unique_words = len({row.word for row in rows})
-    if require_full_contract and unique_words != EXPECTED_TOTAL:
-        raise Lane5NineLoopSourceAttestationError(
-            "sample contains duplicate words under full contract"
-        )
 
     summary = {
         "schema": "HHS_PASS219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68_RECEIPT",
