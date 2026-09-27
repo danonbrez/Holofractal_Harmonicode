@@ -363,6 +363,21 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Presentation boundary
+
+The canonical HTML physics/state evolution is not considered incorrect because
+WebGL or requestAnimationFrame cannot display every state at the desired visual
+quality in wall-clock realtime.
+
+The browser limitations are projection-side: raster quality, antialiasing,
+drawing-buffer resolution, frame pacing, GPU throughput, and dropped display
+frames. Lane 5 exists to absorb those costs without changing canonical state.
+
+The high-resolution simplified fork demonstrates that the toroidal/swarm
+geometry and 5,184-address projection can survive the Lane 5 rendering path.
+Its simplified dynamics remain noncanonical; only its projection viability is
+inherited.
+
 ## Quartic closure execution semantics
 
 The inherited quartic gate is projection-only. For ticks 0,1,2,3 the
