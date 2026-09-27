@@ -8,6 +8,8 @@ on:
       - 'hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js'
       - 'hhs_gui/rendering/hhs_harmonicode_render_packet_wasm_v1.js'
       - 'applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html'
+      - 'hhs_runtime/hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py'
+      - 'tests/pass220/test_hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py'
       - 'tests/pass220/test_hhs_harmonicode_three_webgl_v1.py'
       - 'tests/pass220/test_hhs_pass179_render_command_stream_v1.py'
       - 'tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py'
@@ -20,6 +22,8 @@ on:
       - 'hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js'
       - 'hhs_gui/rendering/hhs_harmonicode_render_packet_wasm_v1.js'
       - 'applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html'
+      - 'hhs_runtime/hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py'
+      - 'tests/pass220/test_hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py'
       - 'tests/pass220/test_hhs_harmonicode_three_webgl_v1.py'
       - 'tests/pass220/test_hhs_pass179_render_command_stream_v1.py'
       - 'tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py'
@@ -46,4 +50,5 @@ jobs:
           python -m pytest -q \
             tests/pass220/test_hhs_pass179_render_command_stream_v1.py \
             tests/pass220/test_hhs_harmonicode_three_webgl_v1.py \
-            tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
+            tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py \
+            tests/pass220/test_hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py
