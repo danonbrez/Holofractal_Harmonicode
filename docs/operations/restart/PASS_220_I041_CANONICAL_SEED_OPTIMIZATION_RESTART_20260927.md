@@ -229,3 +229,46 @@ Use the complete supplied simulation as the execution source, identify concrete
 math/runtime faults, and repair them in place. Do not optimize by deleting or
 replacing behavior. Feed the corrected canonical state directly into Lane 5
 for display and MP4 capture.
+
+
+## Checkpoint update — self-hosted exact HTML runtime
+
+Head before this restart update:
+`379924030a4c57a8d04d1b4da96eb95c99a5ba43`
+
+Implemented:
+- embedded source-identified HHS white-paper equations in the I041 HTML;
+- exact BigInt/rational Lane 5 tick scheduling;
+- symbolic Q144 rotation matrices over `Q(zeta_144)`;
+- explicit rational-to-IEEE WebGL projection membrane;
+- `HHS_I041_SELF_HOSTED_EXACT_MANIFOLD_V1`;
+- passive particle-follow observer using engine trajectory tangent + local radial normal;
+- regression assertions for exact self-hosted algebra and passive follow behavior.
+
+Canonical arithmetic rule:
+```text
+BigInt / rational / phase residue / symbolic matrix / tensor state
+-> explicit projection membrane
+-> WebGL float presentation only
+```
+
+Repository source-completeness note:
+the complete monolithic construction/formation HTML source is still not present
+as an executable repository file. The self-hosted exact layer was therefore
+applied to the available Lane 5 projection surface; missing original physics
+was not reconstructed from guesses.
+
+Integration state:
+- PR: #596
+- branch: `pass220/i041-canonical-seed-optimization-20260927`
+- merge target: `main`
+- current main observed during checkpoint: `31d89bfaec1521ae35fc4dc248be4c2dd84a67f4`
+- compare status: diverged
+- branch ahead of main: 58 commits
+- branch behind main: 12 commits
+- PR mergeable: false
+
+Do not force-reset the branch. Next integration action is to reconcile the
+12-commit main drift against the nine changed I041 files, preserve all
+canonical I041 invariants, run dependency-scoped validation, and then update
+the PR head.
