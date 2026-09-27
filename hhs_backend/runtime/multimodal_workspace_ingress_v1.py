@@ -419,6 +419,10 @@ def create_ingressed_workspace_object(packet: Mapping[str, Any], payload: Any) -
             "source_commitment_hash72": packet.get("source_commitment_hash72"),
             "adapter_id": packet.get("adapter_id"),
             "lossy_projection": bool(adapter.get("lossy")),
+            "source_declared_modality": packet.get("source_declared_modality"),
+            "source_media_type": packet.get("source_media_type"),
+            "compatibility_translation": packet.get("compatibility_translation"),
+            "transport_encoding": packet.get("transport_encoding"),
         },
     )
     obj["ingress_packet_hash72"] = packet.get("ingress_packet_hash72")
