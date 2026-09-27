@@ -163,6 +163,36 @@ def test_canonical_execution_contract_is_math_repair_only():
 
 
 
+FOLLOW_SCENE = Path("apps/unified_gui/src/render/scene.js")
+FOLLOW_BOOT = Path("apps/unified_gui/src/app/boot.js")
+
+
+def test_particle_follow_is_passive_noninteractive_and_uses_native_curved_path():
+    scene = FOLLOW_SCENE.read_text(encoding="utf-8")
+    boot = FOLLOW_BOOT.read_text(encoding="utf-8")
+    for token in (
+        "followParticle(index)",
+        "this.controls.enabled = false",
+        "this.controls.enableRotate = false",
+        "this.controls.enablePan = false",
+        "this.controls.enableZoom = false",
+        "const particle = this.engine.getParticle(this.followParticleIndex);",
+        "const [vx, vy, vz] = particle.velocity;",
+        ".addScaledVector(this._followTangent, -this.followDistance)",
+        ".addScaledVector(this._followRadial, this.followHeight)",
+        'physics_mutation: false',
+        'trajectory_model: "NATIVE_CURVED_TOROIDAL_PATH"',
+        'follow_physics_mutation: false',
+    ):
+        assert token in scene, token
+    for token in (
+        "followParticle: (index) => HHSApp.render.followParticle(index)",
+        "clearParticleFollow: () => HHSApp.render.clearParticleFollow()",
+        "focusParticle: (index) => HHSApp.render.followParticle(index)",
+    ):
+        assert token in boot, token
+
+
 RAW_INGRESS = Path(
     "benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py"
 )
