@@ -363,6 +363,24 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Unique spherical pathway before warp layers
+
+Each particle owns a distinct smooth trajectory through the sphere before any
+tesseract/SO(4) or gravitational-warp operator is applied.
+
+~~~text
+particle-specific spherical path
+-> smooth field/toroidal rotation
+-> collision-free pre-warp transport
+-> tesseract/SO(4) layer
+-> gravitational/curvature warp
+-> downstream construction/formation behavior
+~~~
+
+The later layers transform an existing path; they do not define the primitive
+motion. This ordering must remain visible in runtime state and projection
+receipts.
+
 ## Toroidal swarm momentum conservation
 
 The canonical particle substrate begins with toroidal, momentum-conserving
