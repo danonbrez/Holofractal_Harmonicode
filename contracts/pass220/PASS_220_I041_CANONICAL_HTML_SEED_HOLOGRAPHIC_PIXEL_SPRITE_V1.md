@@ -119,6 +119,52 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Canonical simulation purpose — self-evolving constructor manifold
+
+The CPU-heavy construction/formation subsystem is not incidental rendering
+overhead. It is a principal output of the canonical simulation.
+
+The intended simulation composes, as one coupled state system:
+
+```text
+mass confinement / bounded spherical field
++ charged particle population
++ ionic reciprocal population
++ antimatter-reciprocal phase/coupling channels
++ collision / bond / constructor formation
++ recursive fractal / Mandelbrot-style growth
++ provenance-bearing relationship graph
+-> self-evolving constructor-theory knowledge graph
+```
+
+That evolving graph is intentionally multi-use. The same canonical state may
+project into:
+
+- game-engine world/physics state;
+- dynamic holographic sprite/pixel state;
+- constructor/formation knowledge-graph state;
+- self-play/search/optimization state.
+
+These are projections and consumers of one simulation, not independent
+replacement applications.
+
+Construction and formation cost is therefore semantically meaningful work. A
+performance pass MUST NOT classify the subsystem as expendable merely because
+it dominates CPU time. The system is specifically designed to spend compute on
+the recursive constructor/formation process.
+
+The canonical dependency direction is:
+
+```text
+particle / mass / charge / reciprocal dynamics
+        -> constructor + formation transitions
+        -> recursive fractal relationship graph
+        -> Lane 5 projection / game-engine / sprite / self-play consumers
+```
+
+Lane 5 may accelerate observation of this state but cannot substitute a
+different constructor graph or reduced particle dynamics.
+
 ## Presentation-only defect boundary
 
 For the canonical monolithic HTML, the renderer itself is capable of realtime
