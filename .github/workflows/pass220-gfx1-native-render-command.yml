@@ -1,0 +1,41 @@
+name: Pass 220 GFX1 Native Render Command Stream
+
+on:
+  pull_request:
+    paths:
+      - 'native_projects/hhs_pass220_gfx1_native_render_commands/**'
+      - 'hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js'
+      - 'hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js'
+      - 'applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html'
+      - 'tests/pass220/test_hhs_harmonicode_three_webgl_v1.py'
+      - 'tests/pass220/test_hhs_pass179_render_command_stream_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py'
+      - '.github/workflows/pass220-gfx1-native-render-command.yml'
+  push:
+    branches: [ main ]
+    paths:
+      - 'native_projects/hhs_pass220_gfx1_native_render_commands/**'
+      - 'hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js'
+      - 'hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js'
+      - 'applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html'
+      - 'tests/pass220/test_hhs_harmonicode_three_webgl_v1.py'
+      - 'tests/pass220/test_hhs_pass179_render_command_stream_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py'
+      - '.github/workflows/pass220-gfx1-native-render-command.yml'
+
+jobs:
+  native-render-command:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and run native C11 command ABI
+        run: make -C native_projects/hhs_pass220_gfx1_native_render_commands clean test
+      - name: Run packet, renderer, and inherited Lane 5 gates
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass179_render_command_stream_v1.py \
+            tests/pass220/test_hhs_harmonicode_three_webgl_v1.py \
+            tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
