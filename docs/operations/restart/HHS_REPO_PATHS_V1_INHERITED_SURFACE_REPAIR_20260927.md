@@ -106,3 +106,101 @@ Consensus checkout now uses full history so ancestry is proved locally rather th
 Exact-head Consensus validation advanced past the repository import and Pass 078 successor-lineage blockers, then failed at `hhs_runtime_certification_v2.py`. The acceptance gate's subprocess wrapper discarded stdout/stderr from its raised failure and exposed only the script filename.
 
 Repair: retain subprocess return code/stdout/stderr in the rejection record. Pass/fail semantics remain identical; the change only makes the next inherited blocker reproducible and inspectable.
+
+
+## Restartable checkpoint — queued validation boundary
+
+Checkpoint date: 2026-09-27
+
+### Repository state
+
+- authoritative main: `d46b2ad3271834449dd69b140dafc5803680a2fa`
+- repair branch: `repair/restore-hhs-repo-paths-v1-20260927`
+- repair PR: #619
+- checkpoint parent head: `b0d06fa7164dbe1f72ebc7359cb279ea3bf48d4c`
+- merge target: `main`
+- PR mergeable at checkpoint: `null`
+- PR mergeable state at checkpoint: `unknown`
+
+### Implemented in this repair branch
+
+1. Consensus Gate package import repair:
+   - verification entry points use `python -m hhs_runtime...`;
+   - downstream consensus job checks out the repository;
+   - full history is available where successor ancestry is validated.
+2. Pass 078 immutable-manifest repair:
+   - original Pass 078 baseline remains unchanged;
+   - `PASS_078_KERNEL_SUCCESSOR_LINEAGE_V1.json` binds only exact validated successors;
+   - unlisted drift remains fail-closed.
+3. Pre-commit parity:
+   - generated hook invokes the acceptance gate through package-module execution.
+4. Consensus diagnostics:
+   - subprocess return code, stdout, and stderr are preserved in acceptance failures.
+5. Regression coverage:
+   - repo-path interface;
+   - caller imports;
+   - Consensus workflow import-root behavior;
+   - Pass 078 explicit successor acceptance;
+   - pre-commit invocation;
+   - subprocess diagnostic preservation.
+
+### Exact validation state
+
+The current repair head has authoritative GitHub Actions queued. Do not repeatedly poll these queued runs.
+
+Queued HHS Consensus Gate run:
+- workflow run: `36340165721`
+- verify (1): `108678562670`
+- verify (2): `108678562642`
+- verify (3): `108678562408`
+
+Queued HHS Hash216 Repository Dependency Index run:
+- workflow run: `36340165669`
+- deep-index job: `108678562059`
+
+No green result is claimed for those queued jobs at this checkpoint.
+
+### Last executed failure frontier
+
+Before the current-head queued run, Consensus advanced beyond:
+
+- the missing `hhs_repo_paths_v1.py` import failure;
+- the package import-root defect;
+- the obsolete Pass 078 byte-freeze mismatch.
+
+The next observed blocker on the superseded head was:
+- `hhs_runtime_certification_v2.py`
+
+The acceptance gate now preserves that subprocess's stdout/stderr so the next executed run will expose the exact inherited defect rather than only the filename.
+
+### Restart rule
+
+On the next prompt:
+
+1. read current main and PR #619;
+2. if the queued current-head Consensus run has completed, inspect its final result once;
+3. if still queued, do not probe repeatedly — preserve this checkpoint and return control;
+4. if red, repair only the newly exposed inherited dependency frontier;
+5. if green, reconcile any substantive main drift, require a fresh applicable exact-head validation if needed, then merge #619;
+6. only after the Consensus repair is green/merged, bring #618 forward without changing its PR-only Hash216 publication guard;
+7. merge #618 only after its Hash216 gate, explicit no-direct-main-push regression, Consensus Gate, and applicable required checks are green;
+8. verify main contains no `git push origin HEAD:main` in `.github/workflows/repository-hash216-dependency-index.yml`.
+
+### Post-LiteRT queued architecture tranche
+
+After the LiteRT integration reaches closure, apply the same plug-and-play native integration discipline to:
+
+1. Hugging Face native systems/capabilities;
+2. OpenAPI native systems/capabilities.
+
+For each, preserve the same compatibility membrane used for native library/LiteRT work:
+
+- external input/output contract fidelity;
+- encoder/decoder ingress-egress stability;
+- native internal constructors and execution;
+- Lane 5 candidate-only learning/discovery unless separately admitted;
+- exact Hash72/Hash216 evidence and dependency binding;
+- restartable validation receipts;
+- no bypass of canonical VM81 authority.
+
+Do not start those Hugging Face/OpenAPI tranches before LiteRT is complete unless explicitly re-ordered by the user.
