@@ -15,6 +15,7 @@ from typing import Any, Iterable, Sequence, Tuple
 
 from hhs_runtime.hhs_pass220_desi_lane5_parallel_exact_egress_v1 import (
     fraction_to_binary64_bits,
+    parse_exact_decimal,
 )
 from hhs_runtime.hhs_pass220_g3_4711_symbolic_numeric_constructor_v1 import (
     build_solver_constructor,
@@ -275,6 +276,15 @@ class HHSNumPyScalar:
         )
 
     @classmethod
+    def from_exact_fraction_float64(
+        cls,
+        value: Fraction,
+    ) -> "HHSNumPyScalar":
+        exact = Fraction(value)
+        bits = fraction_to_binary64_bits(exact)
+        return cls.from_float64_bits(bits, pre_round_exact=exact)
+
+    @classmethod
     def from_int64(cls, value: int) -> "HHSNumPyScalar":
         if isinstance(value, bool) or not isinstance(value, int):
             raise HHSNumPyCompatibilityError("HHS_NUMPY1_INT64_INGRESS_REQUIRES_INT")
@@ -389,14 +399,54 @@ def _promoted_dtype(left: str, right: str) -> str:
     return "int64"
 
 
+def _promote_scalar_to_float64(value: HHSNumPyScalar) -> HHSNumPyScalar:
+    if value.dtype == "float64":
+        return value
+    if value.dtype != "int64":
+        raise HHSNumPyCompatibilityError("HHS_NUMPY1_DTYPE_UNSUPPORTED")
+    return HHSNumPyScalar.from_exact_fraction_float64(value.exact_value)
+
+
+def _signed_zero_bits(
+    left: HHSNumPyScalar,
+    right: HHSNumPyScalar,
+    operation: str,
+) -> int:
+    left_f = _promote_scalar_to_float64(left)
+    right_f = _promote_scalar_to_float64(right)
+    assert left_f.ieee_bits is not None
+    assert right_f.ieee_bits is not None
+    left_sign = (left_f.ieee_bits >> 63) & 1
+    right_sign = (right_f.ieee_bits >> 63) & 1
+
+    if operation == "multiply":
+        return (left_sign ^ right_sign) << 63
+    if operation == "add":
+        if left_f.exact_value == 0 and right_f.exact_value == 0:
+            return (left_sign & right_sign) << 63
+        return 0
+    if operation == "subtract":
+        if left_f.exact_value == 0 and right_f.exact_value == 0:
+            return (left_sign & (right_sign ^ 1)) << 63
+        return 0
+    return 0
+
+
 def _binary_scalar(
     left: HHSNumPyScalar,
     right: HHSNumPyScalar,
     operation: str,
 ) -> HHSNumPyScalar:
     dtype = _promoted_dtype(left.dtype, right.dtype)
-    a = left.exact_value
-    b = right.exact_value
+    if dtype == "float64":
+        left_value = _promote_scalar_to_float64(left)
+        right_value = _promote_scalar_to_float64(right)
+        a = left_value.exact_value
+        b = right_value.exact_value
+    else:
+        a = left.exact_value
+        b = right.exact_value
+
     if operation == "add":
         exact = a + b
     elif operation == "subtract":
@@ -420,7 +470,11 @@ def _binary_scalar(
             }
         )
 
-    bits = fraction_to_binary64_bits(exact)
+    bits = (
+        _signed_zero_bits(left, right, operation)
+        if exact == 0
+        else fraction_to_binary64_bits(exact)
+    )
     return HHSNumPyScalar.from_float64_bits(bits, pre_round_exact=exact)
 
 
@@ -485,21 +539,39 @@ class HHSNumPyEngine:
         scalars = []
         for item in flat:
             if dtype_name == "float64":
-                scalars.append(
-                    item
-                    if isinstance(item, HHSNumPyScalar) and item.dtype == "float64"
-                    else HHSNumPyScalar.from_float64(float(item))
-                )
+                if isinstance(item, HHSNumPyScalar):
+                    scalars.append(_promote_scalar_to_float64(item))
+                elif isinstance(item, float):
+                    scalars.append(HHSNumPyScalar.from_float64(item))
+                elif isinstance(item, int) and not isinstance(item, bool):
+                    scalars.append(
+                        HHSNumPyScalar.from_exact_fraction_float64(
+                            Fraction(item, 1)
+                        )
+                    )
+                elif isinstance(item, str):
+                    scalars.append(
+                        HHSNumPyScalar.from_exact_fraction_float64(
+                            parse_exact_decimal(item)
+                        )
+                    )
+                else:
+                    raise HHSNumPyCompatibilityError(
+                        "HHS_NUMPY1_FLOAT64_INGRESS_TYPE_UNSUPPORTED"
+                    )
             else:
                 if isinstance(item, bool):
                     raise HHSNumPyCompatibilityError(
                         "HHS_NUMPY1_BOOL_TO_INT64_NOT_YET_ADMITTED"
                     )
-                scalars.append(
-                    item
-                    if isinstance(item, HHSNumPyScalar) and item.dtype == "int64"
-                    else HHSNumPyScalar.from_int64(int(item))
-                )
+                if isinstance(item, HHSNumPyScalar) and item.dtype == "int64":
+                    scalars.append(item)
+                elif isinstance(item, int) and not isinstance(item, bool):
+                    scalars.append(HHSNumPyScalar.from_int64(item))
+                else:
+                    raise HHSNumPyCompatibilityError(
+                        "HHS_NUMPY1_INT64_INGRESS_TYPE_UNSUPPORTED"
+                    )
         return HHSNumPyArray(
             engine=self,
             shape=shape,
