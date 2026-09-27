@@ -16,6 +16,7 @@ import subprocess
 from typing import Iterable
 
 BACKEND_MARKER = "proxy_pass http://127.0.0.1:8080"
+GUEST_BACKEND_MARKER = "proxy_pass http://127.0.0.1:18080"
 START_MARKER = "# HHS_RUNTIME_OS_STATIC_FIRST_V1_BEGIN"
 END_MARKER = "# HHS_RUNTIME_OS_STATIC_FIRST_V1_END"
 
@@ -56,7 +57,7 @@ def _find_tls_runtime_block(text: str) -> tuple[int, int]:
         block = text[start : end + 1]
         if not re.search(r"(?m)^\s*listen\s+(?:\[[^\]]+\]:)?443\b[^;]*;", block):
             continue
-        if BACKEND_MARKER not in block:
+        if BACKEND_MARKER not in block and GUEST_BACKEND_MARKER not in block:
             continue
         candidates.append((start, end))
     if len(candidates) != 1:
@@ -70,7 +71,7 @@ def _snippet(runtime_root: Path) -> str:
     root = runtime_root.as_posix()
     return f"""
     {START_MARKER}
-    # Presentation-only fast path. Backend/API authority remains on :8080.
+    # Presentation-only fast path. Backend/API authority remains on the configured loopback guest/legacy upstream.
     location = / {{
         root {root};
         try_files /index.html =503;
@@ -119,7 +120,7 @@ def discover_site(search_roots: Iterable[Path]) -> Path:
                 text = resolved.read_text(encoding="utf-8")
             except (UnicodeDecodeError, OSError):
                 continue
-            if BACKEND_MARKER in text and re.search(
+            if (BACKEND_MARKER in text or GUEST_BACKEND_MARKER in text) and re.search(
                 r"(?m)^\s*listen\s+(?:\[[^\]]+\]:)?443\b[^;]*;", text
             ):
                 matches.append(resolved)

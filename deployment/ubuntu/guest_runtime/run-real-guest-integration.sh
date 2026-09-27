@@ -91,21 +91,64 @@ done
 timeout 2700s "${SSH[@]}" 'sudo cloud-init status --wait --long'
 "${SSH[@]}" 'test -f /var/lib/hhs/guest-bootstrap/ready'
 
+PERSISTENT_VM="${HHS_GUEST_PERSISTENT_VM:-0}"
+if [[ "$PERSISTENT_VM" == "1" ]]; then
+  CURRENT_GUEST_SHA="$("${SSH[@]}" 'git -C /opt/holofractal-harmonicode rev-parse HEAD')"
+  if [[ "$CURRENT_GUEST_SHA" != "$TARGET_SHA" ]]; then
+    "${SSH[@]}" "sudo git -C /opt/holofractal-harmonicode fetch --depth=1 origin '$TARGET_SHA' && sudo git -C /opt/holofractal-harmonicode checkout --detach '$TARGET_SHA'"
+    "${SSH[@]}" "sudo env REPO_ROOT=/opt/holofractal-harmonicode HHS_APPLICATION_VM_REQUIRE_GUI=0 HHS_APPLICATION_VM_INSTALL_GUI=0 bash /opt/holofractal-harmonicode/deployment/ubuntu/application_vm/install.sh"
+    "${SSH[@]}" "sudo env REPO_ROOT=/opt/holofractal-harmonicode bash /opt/holofractal-harmonicode/deployment/ubuntu/guest_runtime/install-unified-guest-ide.sh"
+    "${SSH[@]}" "git -C /opt/holofractal-harmonicode rev-parse HEAD | sudo tee /var/lib/hhs/guest-bootstrap/repository-sha >/dev/null"
+  fi
+fi
+
 GUEST_SHA="$("${SSH[@]}" 'cat /var/lib/hhs/guest-bootstrap/repository-sha')"
 [[ "$GUEST_SHA" == "$TARGET_SHA" ]] \
   || fail "guest repository mismatch: expected=$TARGET_SHA actual=$GUEST_SHA"
 
+REQUIRE_RUNTIME_OS="${HHS_GUEST_REQUIRE_RUNTIME_OS:-0}"
+HOST_RUNTIME_OS_ROOT="${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}/current"
+RUNTIME_OS_ATTACHED=0
+if [[ -s "$HOST_RUNTIME_OS_ROOT/index.html" && -d "$HOST_RUNTIME_OS_ROOT/assets" ]]; then
+  GUEST_RUNTIME_OS_RELEASE="/var/lib/hhs/runtime-os/releases/$TARGET_SHA"
+  "${SSH[@]}" "sudo rm -rf '$GUEST_RUNTIME_OS_RELEASE' && sudo install -d -o hhs -g hhs -m 0750 '$GUEST_RUNTIME_OS_RELEASE' /var/lib/hhs/runtime-os/releases"
+  tar -C "$HOST_RUNTIME_OS_ROOT" -cf - . | "${SSH[@]}" \
+    "sudo tar -C '$GUEST_RUNTIME_OS_RELEASE' -xf - && sudo chown -R hhs:hhs '$GUEST_RUNTIME_OS_RELEASE' && sudo ln -sfnT '$GUEST_RUNTIME_OS_RELEASE' /var/lib/hhs/runtime-os/current && sudo systemctl restart hhs-unified-guest-ide.service"
+  RUNTIME_OS_ATTACHED=1
+elif [[ "$REQUIRE_RUNTIME_OS" == "1" ]]; then
+  fail "production guest requires exact Runtime OS bundle at $HOST_RUNTIME_OS_ROOT"
+fi
+
+
 "${SSH[@]}" 'sudo systemctl is-active --quiet hhs-application-vm.service'
+"${SSH[@]}" 'sudo systemctl is-active --quiet hhs-unified-guest-ide.service'
 "${SSH[@]}" 'curl -fsS http://127.0.0.1:8720/health' > "$STATE_ROOT/application-vm-health.json"
 "${SSH[@]}" \
   'HHS_APPLICATION_VM_ENV_FILE=/etc/hhs/application-vm.env hhs-vm status' \
   > "$STATE_ROOT/application-vm-status.json"
+"${SSH[@]}" 'curl -fsS http://127.0.0.1:8080/api/health' > "$STATE_ROOT/guest-ide-health.json"
+if [[ "$RUNTIME_OS_ATTACHED" == "1" ]]; then
+  "${SSH[@]}" 'curl -fsS http://127.0.0.1:8080/api/interface/status' > "$STATE_ROOT/runtime-os-interface.json"
+else
+  printf '%s\n' '{"runtime_os_attached":false}' > "$STATE_ROOT/runtime-os-interface.json"
+fi
+curl -fsS --max-time 10 \
+  "http://127.0.0.1:${HHS_GUEST_RUNTIME_HTTP_PORT}/api/health" \
+  > "$STATE_ROOT/host-forwarded-guest-ide-health.json"
 
-python3 - "$STATE_ROOT/application-vm-health.json" "$STATE_ROOT/application-vm-status.json" <<'PY'
+python3 - \
+  "$STATE_ROOT/application-vm-health.json" \
+  "$STATE_ROOT/application-vm-status.json" \
+  "$STATE_ROOT/guest-ide-health.json" \
+  "$STATE_ROOT/host-forwarded-guest-ide-health.json" \
+  "$STATE_ROOT/runtime-os-interface.json" <<'PY'
 import json, sys
 from pathlib import Path
 health=json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
 status=json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+guest_ide=json.loads(Path(sys.argv[3]).read_text(encoding="utf-8"))
+forwarded=json.loads(Path(sys.argv[4]).read_text(encoding="utf-8"))
+interface=json.loads(Path(sys.argv[5]).read_text(encoding="utf-8"))
 assert health["ok"] is True
 assert health["ubuntu"] is True
 assert health["security_configured"] is True
@@ -113,7 +156,14 @@ assert health["new_vm81_authority"] is False
 assert status["single_vm81_authority_preserved"] is True
 assert status["fastapi_frontend_authority"] is False
 assert status["frontend_attached"] is False
-print("HHS_I044_GUEST_APPLICATION_VM_VERIFIED")
+assert guest_ide["runtime_ready"] is True
+assert guest_ide["frontend_runtime_authority"] is False
+assert forwarded["runtime_ready"] is True
+assert forwarded["frontend_runtime_authority"] is False
+if interface.get("runtime_os_attached") is not False:
+    assert interface["interface"] == "HHS_VISUAL_RUNTIME_OS_WORKSPACE"
+    assert interface["frontend_is_runtime_authority"] is False
+print("HHS_I047_GUEST_IDE_TRANSPORT_VERIFIED")
 PY
 
 guest pty-exec --timeout 30 -- bash -lc \
@@ -139,6 +189,9 @@ python3 - \
   "$STATE_ROOT/runtime-status.json" \
   "$STATE_ROOT/application-vm-health.json" \
   "$STATE_ROOT/application-vm-status.json" \
+  "$STATE_ROOT/guest-ide-health.json" \
+  "$STATE_ROOT/host-forwarded-guest-ide-health.json" \
+  "$STATE_ROOT/runtime-os-interface.json" \
   "$STATE_ROOT/pty-proof.json" <<'PY'
 import hashlib, json, sys
 from datetime import datetime, timezone
@@ -150,21 +203,35 @@ prep=json.loads(Path(sys.argv[3]).read_text(encoding="utf-8"))
 runtime=json.loads(Path(sys.argv[4]).read_text(encoding="utf-8"))
 health=json.loads(Path(sys.argv[5]).read_text(encoding="utf-8"))
 app=json.loads(Path(sys.argv[6]).read_text(encoding="utf-8"))
-pty=json.loads(Path(sys.argv[7]).read_text(encoding="utf-8"))
+guest_ide=json.loads(Path(sys.argv[7]).read_text(encoding="utf-8"))
+forwarded=json.loads(Path(sys.argv[8]).read_text(encoding="utf-8"))
+interface=json.loads(Path(sys.argv[9]).read_text(encoding="utf-8"))
+pty=json.loads(Path(sys.argv[10]).read_text(encoding="utf-8"))
 payload={
     "schema": "HHS_PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_RECEIPT_V1",
     "target_sha": target,
     "base_sha256": prep["base_sha256"],
+    "persistent_vm": prep.get("persistent_vm", False),
+    "runtime_state_root": prep.get("runtime_state_root"),
     "guest_running": runtime["running"],
     "guest_pid": runtime["pid"],
     "ssh_loopback_only": runtime["ssh"]["loopback_only"],
     "application_vm_ok": health["ok"],
     "single_vm81_authority_preserved": app["single_vm81_authority_preserved"],
+    "guest_ide_ok": guest_ide["runtime_ready"],
+    "guest_ide_frontend_runtime_authority": guest_ide["frontend_runtime_authority"],
+    "host_forwarded_guest_ide_ok": forwarded["runtime_ready"],
+    "runtime_os_attached": interface.get("interface") == "HHS_VISUAL_RUNTIME_OS_WORKSPACE",
+    "runtime_http_host": "127.0.0.1",
+    "runtime_http_port": int(__import__("os").environ["HHS_GUEST_RUNTIME_HTTP_PORT"]),
+    "runtime_http_loopback_only": True,
     "pty_exit_status": pty["exit_status"],
     "pty_proof": "HHS_I044_PTY_OK" in pty["output_utf8"],
     "canonical_state_authority": False,
     "new_vm81_authority": False,
+    "frontend_transport_ready": True,
     "frontend_attached": False,
+    "frontend_attachment_pending": "NGINX_CUTOVER_TO_GUEST_TRANSPORT",
     "verified_at": datetime.now(timezone.utc).isoformat(),
 }
 if not (
@@ -172,6 +239,11 @@ if not (
     and payload["ssh_loopback_only"]
     and payload["application_vm_ok"]
     and payload["single_vm81_authority_preserved"]
+    and payload["guest_ide_ok"]
+    and payload["guest_ide_frontend_runtime_authority"] is False
+    and payload["host_forwarded_guest_ide_ok"]
+    and (payload["runtime_os_attached"] or __import__("os").environ.get("HHS_GUEST_REQUIRE_RUNTIME_OS", "0") != "1")
+    and payload["runtime_http_loopback_only"]
     and payload["pty_exit_status"] == 0
     and payload["pty_proof"]
 ):

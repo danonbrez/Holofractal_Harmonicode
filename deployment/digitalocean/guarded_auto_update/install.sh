@@ -5,7 +5,14 @@ umask 027
 REPO_ROOT=${REPO_ROOT:-/opt/hhs/app}
 SOURCE_ROOT=${SOURCE_ROOT:-$REPO_ROOT}
 SOURCE="$SOURCE_ROOT/deployment/digitalocean/guarded_auto_update"
-CANONICAL_HHS_SERVICE="$SOURCE_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
+LEGACY_HHS_SERVICE="$SOURCE_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
+UNIFIED_HHS_SERVICE="$SOURCE_ROOT/deployment/ubuntu/guest_runtime/hhs-unified-vm.service"
+UNIFIED_VM_MANAGER="$SOURCE_ROOT/deployment/ubuntu/guest_runtime/manage-unified-vm.sh"
+UNIFIED_GUEST_CURRENT=${HHS_GUEST_INTEGRATION_ROOT:-/var/lib/hhs/ubuntu-guest}/current
+CANONICAL_HHS_SERVICE="$LEGACY_HHS_SERVICE"
+if [[ -L "$UNIFIED_GUEST_CURRENT" && -f "$UNIFIED_HHS_SERVICE" ]]; then
+  CANONICAL_HHS_SERVICE="$UNIFIED_HHS_SERVICE"
+fi
 INSTALL_ROOT=${INSTALL_ROOT:-/usr/local/lib/hhs-guarded-update}
 ENV_FILE=${ENV_FILE:-/etc/hhs/guarded-update.env}
 STATE_ROOT=${STATE_ROOT:-/var/lib/hhs-guarded-update}
@@ -66,7 +73,11 @@ normalize_production_checkout() {
 wait_for_production_health() {
   local deadline=$((SECONDS + PRODUCTION_HEALTH_TIMEOUT))
   while (( SECONDS < deadline )); do
-    if curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null; then
+    if systemctl cat hhs.service 2>/dev/null | grep -Fq 'HHS Lane 5 BIOS Unified VM Supervisor'; then
+      if curl -fsS --max-time 10 http://127.0.0.1:18080/api/health >/dev/null         && curl -fsS --max-time 10 http://127.0.0.1:18720/health >/dev/null; then
+        return 0
+      fi
+    elif curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null; then
       return 0
     fi
     sleep 2
@@ -164,6 +175,14 @@ if [[ "$ENABLE_PROMOTION" == "1" ]]; then
     exit 9
   }
   install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service
+  if [[ "$CANONICAL_HHS_SERVICE" == "$UNIFIED_HHS_SERVICE" ]]; then
+    [[ -f "$UNIFIED_VM_MANAGER" ]] || {
+      echo "Unified VM manager missing: $UNIFIED_VM_MANAGER" >&2
+      exit 9
+    }
+    install -d -m 0755 /usr/local/lib/hhs-unified-vm
+    install -m 0755 "$UNIFIED_VM_MANAGER" /usr/local/lib/hhs-unified-vm/manage-unified-vm.sh
+  fi
 fi
 
 if [[ ! -f "$ENV_FILE" ]]; then
@@ -173,7 +192,7 @@ HHS_GIT_REMOTE=origin
 HHS_GIT_BRANCH=main
 HHS_EXPECTED_REPOSITORY=danonbrez/Holofractal_Harmonicode
 HHS_SYSTEMD_UNITS=hhs.service
-HHS_HEALTH_URLS=http://127.0.0.1:8080/api/system/status
+HHS_HEALTH_URLS=
 HHS_VALIDATE_TIMEOUT_SECONDS=3600
 HHS_HEALTH_TIMEOUT_SECONDS=$PRODUCTION_HEALTH_TIMEOUT
 HHS_VALIDATE_NATIVE=1
@@ -240,6 +259,7 @@ if promotion:
     values["HHS_RUNTIME_OS_BUNDLE_TOOL"] = bundle_tool
     values["HHS_RUNTIME_OS_BUNDLE_SHA"] = bundle_sha
     values["HHS_HEALTH_TIMEOUT_SECONDS"] = health_timeout
+    values["HHS_HEALTH_URLS"] = ""
     values["HHS_POST_MERGE_COMMAND"] = native
     values["HHS_ROLLBACK_COMMAND"] = native
 
@@ -256,6 +276,7 @@ for key, literal in order:
 for key in (
     "HHS_VALIDATE_TIMEOUT_SECONDS",
     "HHS_HEALTH_TIMEOUT_SECONDS",
+    "HHS_HEALTH_URLS",
     "HHS_RUNTIME_OS_BUNDLE_MODE",
     "HHS_RUNTIME_OS_BUNDLE_ROOT",
     "HHS_RUNTIME_OS_BUNDLE_TOOL",
