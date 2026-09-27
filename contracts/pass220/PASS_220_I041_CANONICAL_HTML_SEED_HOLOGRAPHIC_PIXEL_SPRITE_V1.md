@@ -119,6 +119,34 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Folded hyperspherical projection invariance
+
+The mature cloud is hyperspherical because its observable 2D projection is
+invariant under viewpoint changes induced by the higher-dimensional folded
+symmetry. Camera orientation is an observation parameter, not a state variable
+that changes the cloud's canonical geometry.
+
+The required relation is:
+
+```text
+higher-dimensional symmetric state
+-> folded hyperspherical manifold
+-> arbitrary admissible viewpoint / camera orientation
+-> equivalent 2D projected structure
+```
+
+Perspective changes may alter raster coordinates, occlusion ordering, apparent
+scale, or phase-aligned presentation details, but they must not alter the
+canonical topology, conserved relationships, constructor lineage, particle
+identity, or state adjacency represented by the projection.
+
+Therefore the hyperspherical claim is not "a 3D ball looks round." It is that
+the higher-dimensional folded symmetry makes the 2D observable structurally
+equivalent across admissible perspectives.
+
+Lane 5 and browser cameras are projection operators only. They cannot inject
+view-dependent physics into the canonical state.
+
 ## Bounded digital-mitochondria end-state
 
 The mature bounded hyperspherical cloud acts as a digital cellular
