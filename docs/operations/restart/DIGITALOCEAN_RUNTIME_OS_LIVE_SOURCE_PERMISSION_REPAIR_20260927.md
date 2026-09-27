@@ -6,7 +6,7 @@
 - Base main at branch creation: `e8d6b5fab35b77a21c48ba5b90305de314186cf6`
 - Repair branch: `agent/runtime-os-live-source-permission-repair-20260927`
 - Merge target: `main`
-- Main advanced after branch creation to `dbabb537f8b32dfab464179cf2a785c5244fb86d` with the generated Hash216 repository-index refresh. The repair branch is one commit behind that generated documentation update and must be integrated through the PR merge before exact-main deployment.
+- Main advanced after branch creation through `6fdd761c3bb392d1c2d49f41e925fad34c712653` with generated Hash216 repository-index refreshes. Those generated main-only documentation commits are outside the repair surface and must be integrated by PR merge before exact-main deployment.
 - Production surface observed: Runtime OS served from the DigitalOcean host shown in the operator screenshots.
 
 ## Observed production symptoms
@@ -87,6 +87,9 @@ No systemd filesystem hardening was relaxed. `ProtectSystem=full`, `ReadWritePat
   - production-style `HHS_RUNTIME_OUTPUT_DIR` must redirect the default live semantic cache outside `demo_reports`.
 - `tests/test_hhs_guarded_auto_update_contract_v1.py`
   - the production systemd unit must retain the read-only repository boundary while placing the semantic cache under the writable runtime-state root.
+- `.github/workflows/hhs-agi-runtime-wiring.yml`
+  - changes to the live workflow/WebSocket transport trigger the runtime-wiring gate;
+  - the gate executes the complete Pass 045 live-runtime test file, including late-client projection coverage.
 
 ## Commit chain on repair branch
 
@@ -98,6 +101,10 @@ No systemd filesystem hardening was relaxed. `ProtectSystem=full`, `ReadWritePat
 - `bb7bfc10c5f7967d1c82d763203417818e25f0e4` — late-client projection regression test
 - `faafb9e8128e17e5b8c7af8765c482828dad9e7a` — semantic-cache runtime-output test
 - `7628f72c6e134f3107d81b485a2ae07320f23095` — production systemd cache-boundary test
+- `3fdbc7ee38ae38295ef113972f228c1164a82745` — preserve inherited Pass 045 CI selector compatibility
+- `fff329a431ef5516569ebd75bba61950a4a11d3b` — bind replay snapshot to the current kernel source
+- `0d3804559d8460c8365295fa2689e211724e770d` — replay snapshot regression coverage
+- `1c3e50831e40ca4dc14dd2fce6ea433145788700` — run the complete Pass 045 live-projection test file in AGI runtime CI
 
 ## Dependency-scoped validation
 
