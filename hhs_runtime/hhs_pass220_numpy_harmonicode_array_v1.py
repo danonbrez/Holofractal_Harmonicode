@@ -288,11 +288,10 @@ class HHSNumPyScalar:
     def from_int64(cls, value: int) -> "HHSNumPyScalar":
         if isinstance(value, bool) or not isinstance(value, int):
             raise HHSNumPyCompatibilityError("HHS_NUMPY1_INT64_INGRESS_REQUIRES_INT")
-        wrapped = _wrap_int64(value)
-        zigzag = _int64_zigzag(wrapped)
+        zigzag = _int64_zigzag(value)
         offsets = _integer_to_base9_offsets(zigzag)
         serialized = serialize_offsets_5184(offsets)
-        exact = Fraction(wrapped, 1)
+        exact = Fraction(value, 1)
         return cls(
             dtype="int64",
             exact_value=exact,
