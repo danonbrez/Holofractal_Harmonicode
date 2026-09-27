@@ -57,9 +57,12 @@ jobs:
       HHS_LEDGER_FSYNC: "0"
       HHS_COGNITION_AUTO_TICK: "1"
       HHS_COGNITION_REPLAY_HORIZON: "4"
-      HHS_AGENT_INDEX_DB: ${{ runner.temp }}/hhs-agent-index.sqlite3
 
     steps:
+      - name: Bind runner-local HHS_AGENT_INDEX_DB
+        shell: bash
+        run: echo "HHS_AGENT_INDEX_DB=$RUNNER_TEMP/hhs-agent-index.sqlite3" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
