@@ -19,13 +19,13 @@ def test_static_first_nginx_serves_only_root_and_assets_without_backend() -> Non
     source = """
 server {
     listen 80;
-    server_name 165.227.220.193;
-    return 308 https://165.227.220.193$request_uri;
+    server_name 159.65.178.254;
+    return 308 https://159.65.178.254$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name 165.227.220.193;
+    server_name 159.65.178.254;
 
     location / {
         proxy_pass http://127.0.0.1:8080;

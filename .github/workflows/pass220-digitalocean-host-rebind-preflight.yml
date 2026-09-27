@@ -1,0 +1,58 @@
+name: Pass 220 DigitalOcean Host Rebind Preflight
+
+on:
+  push:
+    branches:
+      - pass220/digitalocean-production-host-rebind-20260925
+    paths:
+      - '.github/workflows/pass220-digitalocean-host-rebind-preflight.yml'
+      - '.github/workflows/digitalocean-production-main.yml'
+      - '.github/workflows/pass220-ubuntu-application-vm-production.yml'
+      - '.github/workflows/digitalocean-mobile-control-ingress.yml'
+      - '.github/workflows/pass220-i044-real-ubuntu-guest.yml'
+      - 'tests/pass220/test_pass220_i045_startup_first_paint_parallel.py'
+      - 'tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-ssh-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      HHS_PRODUCTION_HOST: '159.65.178.254'
+      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
+    steps:
+      - name: Require existing audited SSH authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "$HHS_SSH_PRIVATE_KEY" ]]
+          [[ -n "$HHS_PINNED_KNOWN_HOSTS" ]]
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          if ! ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null; then
+            echo "::error title=New production host is not pinned::HHS_DIGITALOCEAN_KNOWN_HOSTS has no audited entry for $HHS_PRODUCTION_HOST."
+            exit 4
+          fi
+
+      - name: Verify new production SSH endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=12 \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o UpdateHostKeys=no \
+            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" \
+            "printf 'HHS_PRODUCTION_REBIND_SSH_OK\\n'"
