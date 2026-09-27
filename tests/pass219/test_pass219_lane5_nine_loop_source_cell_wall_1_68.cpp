@@ -1,6 +1,7 @@
 #include "hhs_pass219_lane5_nine_loop_source_cell_wall_1_68.hpp"
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 #define CHECK(expr) do { \
