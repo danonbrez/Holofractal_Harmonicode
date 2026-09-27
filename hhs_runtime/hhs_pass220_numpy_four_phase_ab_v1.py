@@ -23,12 +23,12 @@ from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
 )
 from hhs_runtime.hhs_pass220_numpy_harmonicode_array_v1 import HHSNumPyScalar
 from hhs_runtime.hhs_pass220_schrodinger_firing_order_v1 import (
+    MACROCYCLE_ORDER,
     macrocycle_permutation,
     permutation_power,
 )
 from hhs_runtime.pass219.lane5_genesis_orientation_u9_qe_bridge import (
     CENTERED_LO_SHU,
-    EIGENVECTOR0_TENSOR,
     apply_permutation,
 )
 
@@ -173,41 +173,32 @@ def scalar_offset_vector_inverse(
 
 
 
-def project_literal_tensor_notation(
-    tensor: Sequence[Sequence[str]] = ORDERED_TENSOR_LITERAL,
-) -> tuple[tuple[str, ...], ...]:
-    """Project explicit multiplication spelling to existing ordered channel tokens.
-
-    This is a lexical notation projection only.  It does not commute, simplify,
-    factor, reorder, or scalarize any expression.
-    """
+def _flatten_tensor(tensor: Sequence[Sequence[str]]) -> tuple[str, ...]:
     rows = tuple(tuple(str(cell) for cell in row) for row in tensor)
     if len(rows) != 3 or any(len(row) != 3 for row in rows):
         raise HHSNumPyFourPhaseExperimentError(
             "HHS_NUMPY1_ORDERED_TENSOR_3X3_REQUIRED"
         )
-    projected = []
-    for row in rows:
-        out_row = []
-        for expression in row:
-            text = expression
-            for literal, token in _PRODUCT_TOKEN_PROJECTION:
-                text = text.replace(literal, token)
-            out_row.append(text)
-        projected.append(tuple(out_row))
-    return tuple(projected)
-
-
-def _flatten_tensor(tensor: Sequence[Sequence[str]]) -> tuple[str, ...]:
-    rows = tuple(tuple(row) for row in tensor)
     return tuple(value for row in rows for value in row)
+
+
+def _reshape_tensor(values: Sequence[str]) -> tuple[tuple[str, ...], ...]:
+    source = tuple(values)
+    if len(source) != BLOCK_WIDTH:
+        raise HHSNumPyFourPhaseExperimentError(
+            "HHS_NUMPY1_ORDERED_TENSOR_U9_WIDTH_REQUIRED"
+        )
+    return tuple(
+        tuple(source[start : start + 3])
+        for start in range(0, BLOCK_WIDTH, 3)
+    )
 
 
 def _dense_symbolic_apply(
     values: Sequence[str],
     permutation: Sequence[int],
 ) -> tuple[str, ...]:
-    """Dense control arm over symbolic positions without evaluating expressions."""
+    """Dense U9 control arm without evaluating or rewriting any cell."""
     matrix = _permutation_matrix(permutation)
     source = tuple(values)
     output = []
@@ -225,92 +216,135 @@ def _dense_symbolic_apply(
     return tuple(output)
 
 
-def ordered_tensor_ab_witness() -> dict[str, Any]:
-    """Exercise the supplied ordered 3x3 tensor over every phase control."""
-    literal_projected = project_literal_tensor_notation()
-    authoritative = tuple(tuple(row) for row in EIGENVECTOR0_TENSOR)
-    source = _flatten_tensor(authoritative)
-    projected_source = _flatten_tensor(literal_projected)
+def supplied_tensor_u9_witness() -> dict[str, Any]:
+    """Run the literal supplied circuit tensor through the exact U9 orbit.
 
+    The tensor strings are opaque ordered circuit cells. U9 is allowed only to
+    permute their nine addresses. No cell expression is projected, simplified,
+    commuted, normalized, factored, or rewritten.
+    """
+    source = _flatten_tensor(ORDERED_TENSOR_LITERAL)
+    u9 = macrocycle_permutation()
+    identity = tuple(range(1, MACROCYCLE_ORDER + 1))
+
+    states = [source]
     cases = []
-    all_equal = True
+    all_dense_vector_equal = True
+    all_direct_iterative_equal = True
+    all_cells_preserved = True
     all_inverse = True
-    all_terms_preserved = True
-    for plan in PHASE_PLAN:
-        for channel in CHANNELS:
-            control = plan["channels"][channel]
-            arm_a = _dense_symbolic_apply(source, control["permutation"])
-            arm_b = apply_permutation(source, control["permutation"])
-            recovered = apply_permutation(
-                arm_b,
-                control["inverse_permutation"],
-            )
-            equal = arm_a == arm_b
-            inverse = recovered == source
-            terms_preserved = sorted(arm_b) == sorted(source)
-            all_equal = all_equal and equal
-            all_inverse = all_inverse and inverse
-            all_terms_preserved = all_terms_preserved and terms_preserved
-            cases.append(
-                {
-                    "block_index": plan["block_index"],
-                    "scalar_symbol": plan["scalar_symbol"],
-                    "channel": channel,
-                    "phase_label": control["label"],
-                    "permutation_power": control["permutation_power"],
-                    "arm_a_dense_tensor": arm_a,
-                    "arm_b_scalar_offset_order": arm_b,
-                    "arm_a_equals_arm_b": equal,
-                    "inverse_roundtrip_exact": inverse,
-                    "ordered_terms_preserved": terms_preserved,
-                }
-            )
+    current = source
 
+    for power in range(1, MACROCYCLE_ORDER + 1):
+        current = apply_permutation(current, u9)
+        direct_permutation = permutation_power(u9, power)
+        direct = apply_permutation(source, direct_permutation)
+        dense = _dense_symbolic_apply(source, direct_permutation)
+        inverse_permutation = permutation_power(
+            u9,
+            (MACROCYCLE_ORDER - power) % MACROCYCLE_ORDER,
+        )
+        recovered = apply_permutation(direct, inverse_permutation)
+
+        dense_vector_equal = dense == direct
+        direct_iterative_equal = direct == current
+        cells_preserved = sorted(direct) == sorted(source)
+        inverse_exact = recovered == source
+
+        all_dense_vector_equal = (
+            all_dense_vector_equal and dense_vector_equal
+        )
+        all_direct_iterative_equal = (
+            all_direct_iterative_equal and direct_iterative_equal
+        )
+        all_cells_preserved = all_cells_preserved and cells_preserved
+        all_inverse = all_inverse and inverse_exact
+
+        states.append(current)
+        cases.append(
+            {
+                "u9_power": power,
+                "permutation": direct_permutation,
+                "tensor_state": _reshape_tensor(direct),
+                "dense_substitution_state": _reshape_tensor(dense),
+                "dense_equals_vector": dense_vector_equal,
+                "direct_equals_iterative": direct_iterative_equal,
+                "all_literal_cells_preserved": cells_preserved,
+                "inverse_recovers_source": inverse_exact,
+            }
+        )
+
+    first_nine = tuple(states[:-1])
     return {
-        "schema": "HHS_PASS220_NUMPY1_ORDERED_TENSOR_AB_WITNESS_V1",
+        "schema": "HHS_PASS220_NUMPY1_SUPPLIED_CIRCUIT_TENSOR_U9_V1",
         "literal_tensor": ORDERED_TENSOR_LITERAL,
-        "notation_projected_tensor": literal_projected,
-        "authoritative_genesis_tensor": authoritative,
-        "literal_projection_matches_authoritative_exactly": (
-            projected_source == source
+        "u9_role": "ADDRESS_ORBIT_PERMUTATION_OVER_NINE_LITERAL_CIRCUIT_CELLS",
+        "u9_permutation": u9,
+        "u9_order": MACROCYCLE_ORDER,
+        "u9_power_9_is_identity": (
+            permutation_power(u9, MACROCYCLE_ORDER) == identity
         ),
-        "x_times_y_distinct_from_y_times_x": source[0] != source[2],
-        "w_times_z_distinct_from_z_times_w": source[6] != source[8],
-        "center_expression_exact": (
-            authoritative[1][1]
-            == "x+y-z-w+xy+yx-zw-wz"
+        "one_step_not_identity": states[1] != source,
+        "nine_distinct_preclosure_states": (
+            len(set(first_nine)) == MACROCYCLE_ORDER
         ),
-        "case_count": len(cases),
-        "expected_case_count": len(PHASE_PLAN) * len(CHANNELS),
+        "full_orbit_returns_literal_tensor_exactly": states[-1] == source,
+        "full_orbit_tensor": _reshape_tensor(states[-1]),
+        "state_count_including_closure": len(states),
         "cases": tuple(cases),
-        "semantic_identity_all_cases": all_equal,
-        "inverse_roundtrip_all_cases": all_inverse,
-        "ordered_terms_preserved_all_cases": all_terms_preserved,
+        "dense_vector_u9_identity_all_powers": all_dense_vector_equal,
+        "direct_iterative_u9_identity_all_powers": all_direct_iterative_equal,
+        "literal_cells_preserved_all_powers": all_cells_preserved,
+        "inverse_roundtrip_all_powers": all_inverse,
+        "x_times_y_and_y_times_x_remain_distinct_literal_cells": (
+            source[0] != source[2]
+        ),
+        "w_times_z_and_z_times_w_remain_distinct_literal_cells": (
+            source[6] != source[8]
+        ),
+        "center_cell_literal_exact": (
+            source[4]
+            == "x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z)"
+        ),
+        "notation_projection_used": False,
         "algebraic_simplification_used": False,
         "commutation_used": False,
-        "term_reordering_inside_expression_used": False,
+        "term_reordering_inside_cell_used": False,
         "canonical_vm81_mutation_authority": False,
         "canonical_hash72_authority": False,
         "canonical_hash216_authority": False,
     }
 
 
-def ordered_tensor_acceptance(witness: Mapping[str, Any]) -> bool:
+def supplied_tensor_u9_acceptance(witness: Mapping[str, Any]) -> bool:
     return all(
         (
-            witness.get("literal_projection_matches_authoritative_exactly") is True,
-            witness.get("x_times_y_distinct_from_y_times_x") is True,
-            witness.get("w_times_z_distinct_from_z_times_w") is True,
-            witness.get("center_expression_exact") is True,
-            witness.get("case_count") == witness.get("expected_case_count") == 36,
-            witness.get("semantic_identity_all_cases") is True,
-            witness.get("inverse_roundtrip_all_cases") is True,
-            witness.get("ordered_terms_preserved_all_cases") is True,
+            witness.get("u9_order") == 9,
+            witness.get("u9_power_9_is_identity") is True,
+            witness.get("one_step_not_identity") is True,
+            witness.get("nine_distinct_preclosure_states") is True,
+            witness.get("full_orbit_returns_literal_tensor_exactly") is True,
+            witness.get("state_count_including_closure") == 10,
+            witness.get("dense_vector_u9_identity_all_powers") is True,
+            witness.get("direct_iterative_u9_identity_all_powers") is True,
+            witness.get("literal_cells_preserved_all_powers") is True,
+            witness.get("inverse_roundtrip_all_powers") is True,
+            witness.get(
+                "x_times_y_and_y_times_x_remain_distinct_literal_cells"
+            )
+            is True,
+            witness.get(
+                "w_times_z_and_z_times_w_remain_distinct_literal_cells"
+            )
+            is True,
+            witness.get("center_cell_literal_exact") is True,
+            witness.get("notation_projection_used") is False,
             witness.get("algebraic_simplification_used") is False,
             witness.get("commutation_used") is False,
-            witness.get("term_reordering_inside_expression_used") is False,
+            witness.get("term_reordering_inside_cell_used") is False,
         )
     )
+
 
 def _ratio(numerator: int, denominator: int) -> str:
     common = gcd(numerator, denominator)
@@ -408,7 +442,7 @@ def four_phase_ab_witness_for_scalar(scalar: HHSNumPyScalar) -> dict[str, Any]:
 
     offsets = deserialize_offsets_5184(scalar.bigint_5184)
     witness = four_phase_ab_witness_from_offsets(offsets)
-    ordered_tensor = ordered_tensor_ab_witness()
+    supplied_u9 = supplied_tensor_u9_witness()
     palindrome = scalar.palindromic_symbolic_witness()
     recovered_bits = scalar.recover_ingress_identity()
 
@@ -423,8 +457,10 @@ def four_phase_ab_witness_for_scalar(scalar: HHSNumPyScalar) -> dict[str, Any]:
         "existing_palindromic_constructor_schema": palindrome.get("schema"),
         "palindromic_authority_delegated_to_existing_constructor": True,
         "four_way_palindromic_phase_serialization": True,
-        "ordered_tensor_witness": ordered_tensor,
-        "ordered_tensor_acceptance": ordered_tensor_acceptance(ordered_tensor),
+        "supplied_tensor_u9_witness": supplied_u9,
+        "supplied_tensor_u9_acceptance": supplied_tensor_u9_acceptance(
+            supplied_u9
+        ),
         "host_float_arithmetic_used": False,
     }
 
@@ -437,7 +473,7 @@ def experiment_acceptance(witness: Mapping[str, Any]) -> bool:
             witness.get("zero_spacers_retained_all_channels") is True,
             witness.get("exact_ieee_roundtrip") is True,
             witness.get("existing_palindromic_constructor_validation_ok") is True,
-            witness.get("ordered_tensor_acceptance") is True,
+            witness.get("supplied_tensor_u9_acceptance") is True,
             witness.get("logical_cost", {}).get("arm_b_less_logical_storage") is True,
             witness.get("canonical_vm81_mutation_authority") is False,
             witness.get("canonical_hash72_authority") is False,
@@ -455,10 +491,9 @@ __all__ = [
     "experiment_acceptance",
     "four_phase_ab_witness_for_scalar",
     "four_phase_ab_witness_from_offsets",
-    "ordered_tensor_ab_witness",
-    "ordered_tensor_acceptance",
     "phase_plan",
-    "project_literal_tensor_notation",
+    "supplied_tensor_u9_acceptance",
+    "supplied_tensor_u9_witness",
     "scalar_offset_vector_inverse",
     "scalar_offset_vector_transform",
     "substitution_tensor_transform",

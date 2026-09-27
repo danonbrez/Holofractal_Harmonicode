@@ -8,9 +8,8 @@ from hhs_runtime.hhs_pass220_numpy_four_phase_ab_v1 import (
     PHASE_PLAN,
     experiment_acceptance,
     four_phase_ab_witness_for_scalar,
-    ordered_tensor_ab_witness,
-    ordered_tensor_acceptance,
-    project_literal_tensor_notation,
+    supplied_tensor_u9_acceptance,
+    supplied_tensor_u9_witness,
     scalar_offset_vector_inverse,
     scalar_offset_vector_transform,
     substitution_tensor_transform,
@@ -115,36 +114,62 @@ def test_experiment_does_not_claim_canonical_authority() -> None:
     assert witness["semantics"]["scalar_symbol_role"] == "PERMUTATION_CONTROL_NOT_PAYLOAD_SCALARIZATION"
 
 
-def test_supplied_ordered_tensor_projects_exactly_to_existing_genesis_tensor() -> None:
-    projected = project_literal_tensor_notation()
-    assert projected == (
-        ("xy", "x+y", "yx"),
-        ("xy-zw", "x+y-z-w+xy+yx-zw-wz", "wz-yx"),
-        ("wz", "z+w", "zw"),
-    )
-    assert ORDERED_TENSOR_LITERAL[0][0] == "(x*y)"
-    assert ORDERED_TENSOR_LITERAL[0][2] == "(y*x)"
-    assert projected[0][0] != projected[0][2]
-    assert projected[2][0] != projected[2][2]
+def test_supplied_circuit_tensor_runs_under_exact_u9_constraints() -> None:
+    witness = supplied_tensor_u9_witness()
+
+    assert witness["u9_order"] == 9
+    assert witness["u9_power_9_is_identity"] is True
+    assert witness["one_step_not_identity"] is True
+    assert witness["nine_distinct_preclosure_states"] is True
+    assert witness["full_orbit_returns_literal_tensor_exactly"] is True
+    assert witness["full_orbit_tensor"] == ORDERED_TENSOR_LITERAL
+    assert witness["state_count_including_closure"] == 10
+    assert supplied_tensor_u9_acceptance(witness) is True
 
 
-def test_supplied_ordered_tensor_runs_all_36_phase_control_cases_losslessly() -> None:
-    witness = ordered_tensor_ab_witness()
-    assert witness["case_count"] == 36
-    assert witness["literal_projection_matches_authoritative_exactly"] is True
-    assert witness["semantic_identity_all_cases"] is True
-    assert witness["inverse_roundtrip_all_cases"] is True
-    assert witness["ordered_terms_preserved_all_cases"] is True
+def test_supplied_circuit_tensor_u9_preserves_literal_noncommutative_cells() -> None:
+    witness = supplied_tensor_u9_witness()
+
+    assert witness[
+        "x_times_y_and_y_times_x_remain_distinct_literal_cells"
+    ] is True
+    assert witness[
+        "w_times_z_and_z_times_w_remain_distinct_literal_cells"
+    ] is True
+    assert witness["center_cell_literal_exact"] is True
+    assert witness["notation_projection_used"] is False
     assert witness["algebraic_simplification_used"] is False
     assert witness["commutation_used"] is False
-    assert witness["term_reordering_inside_expression_used"] is False
-    assert ordered_tensor_acceptance(witness) is True
+    assert witness["term_reordering_inside_cell_used"] is False
+
+    source_cells = sorted(cell for row in ORDERED_TENSOR_LITERAL for cell in row)
+    for case in witness["cases"]:
+        state_cells = sorted(
+            cell for row in case["tensor_state"] for cell in row
+        )
+        assert state_cells == source_cells
+        assert case["all_literal_cells_preserved"] is True
 
 
-def test_supplied_tensor_is_part_of_scalar_experiment_acceptance() -> None:
+def test_supplied_circuit_tensor_dense_and_vector_u9_are_identical() -> None:
+    witness = supplied_tensor_u9_witness()
+
+    assert witness["dense_vector_u9_identity_all_powers"] is True
+    assert witness["direct_iterative_u9_identity_all_powers"] is True
+    assert witness["inverse_roundtrip_all_powers"] is True
+
+    for case in witness["cases"]:
+        assert case["dense_equals_vector"] is True
+        assert case["direct_equals_iterative"] is True
+        assert case["inverse_recovers_source"] is True
+
+
+def test_supplied_u9_tensor_is_required_by_numpy_experiment_acceptance() -> None:
     witness = four_phase_ab_witness_for_scalar(
         HHSNumPyScalar.from_float64_bits(0x400921FB54442D18)
     )
-    assert witness["ordered_tensor_acceptance"] is True
-    assert witness["ordered_tensor_witness"]["center_expression_exact"] is True
+    assert witness["supplied_tensor_u9_acceptance"] is True
+    assert witness["supplied_tensor_u9_witness"][
+        "full_orbit_returns_literal_tensor_exactly"
+    ] is True
     assert experiment_acceptance(witness) is True

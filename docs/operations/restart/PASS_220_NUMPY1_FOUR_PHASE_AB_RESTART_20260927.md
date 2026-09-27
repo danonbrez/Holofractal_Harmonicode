@@ -126,3 +126,41 @@ Next action:
 - inspect the new exact-head PR #624 validation once;
 - repair only attributable failures;
 - preserve this checkpoint if main advances and repair forward merge conflicts.
+
+
+## Scope correction — supplied circuit tensor under U9 constraints
+
+The prior extension incorrectly made a notation projection to the existing
+`EIGENVECTOR0_TENSOR` the primary test.  That is no longer the acceptance
+surface.
+
+The supplied circuit tensor is now consumed verbatim as the nine-cell U9 state:
+
+```text
+[
+  [(x*y), x+y, (y*x)],
+  [(x*y)-(z*w), x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z), (w*z)-(y*x)],
+  [(w*z), z+w, (z*w)]
+]
+```
+
+Repository U9 authority is applied directly:
+
+```text
+U9 = macrocycle_permutation() = shift-by-one on 9 addresses
+U9^9 = I
+```
+
+Required constraints:
+1. one U9 step is not identity;
+2. powers U9^0..U9^8 produce nine distinct address states;
+3. U9^9 returns the exact original literal circuit tensor;
+4. direct U9^k and iterative U9 application are identical for every power;
+5. dense substitution-matrix U9 and direct permutation-vector U9 are identical;
+6. inverse U9 power recovers the exact original tensor for every state;
+7. every state contains exactly the same nine literal circuit cells;
+8. no notation projection, simplification, commutation, factorization, or
+   within-cell term reordering is used.
+
+This U9 witness is now mandatory for overall NumPy experiment acceptance.
+The earlier lexical comparison is no longer the governing tensor test.
