@@ -1,4 +1,4 @@
-from base64 import b64decode
+import json
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -187,3 +187,37 @@ def test_pass187_linux_adapters_remain_repository_visible():
         "def http_get(",
     ):
         assert surface in source
+
+
+
+def test_pass220_compatibility_contract_maps_aliases_to_one_canonical_operation():
+    contract = json.loads(
+        Path(
+            "contracts/pass220/PASS_220_STANDARD_LEGACY_INGRESS_COMPAT_1_0.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert contract["canonical_operation"]["operation_id"] == "workspace.ingress.register"
+    assert contract["canonical_operation"]["canonical_http_path"] == "/api/runtime/workspace/command"
+    assert contract["translation_policy"]["block_unknown_external_types"] is False
+    assert contract["translation_policy"]["unknown_external_type_fallback"] == "BINARY"
+    assert contract["authority_invariants"]["compatibility_aliases_map_to_one_canonical_operation"] is True
+    assert contract["authority_invariants"]["native_backend_remains_authoritative"] is True
+    assert {
+        row["path"] for row in contract["compatibility_aliases"]
+    } == set(LEGACY_ROUTE_ALIASES)
+
+
+def test_compatibility_routes_are_declared_in_kernel_surface_map():
+    source = Path("hhs_runtime/hhs_kernel_conformance_surface_map_v1.py").read_text(
+        encoding="utf-8"
+    )
+    for path in (
+        "/api/runtime/ingress",
+        "/api/runtime/ingress/legacy",
+        "/api/runtime/ingress/upload",
+        "/api/ingress",
+        "/api/runtime/ingress/compatibility",
+    ):
+        assert path in source
+    assert "workspace.ingress.compatibility.submit" in source
+    assert "ingress.register" in source
