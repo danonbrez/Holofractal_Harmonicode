@@ -62,7 +62,11 @@ def test_late_websocket_clients_receive_latest_committed_kernel_projection():
             await connect(socket)
             assert socket.accepted is True
             assert len(socket.messages) == 1
-            projections[channel] = socket.messages[0]
+            if channel == "/ws/replay":
+                await manager.send_replay_snapshot(socket)
+                assert len(socket.messages) == 2
+                assert socket.messages[-1]["source_event_type"] == "replay_snapshot"
+            projections[channel] = socket.messages[-1]
 
         return manager.metrics(), projections
 
