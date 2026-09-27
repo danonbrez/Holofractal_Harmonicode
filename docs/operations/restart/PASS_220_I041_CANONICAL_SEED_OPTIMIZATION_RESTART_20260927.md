@@ -28,6 +28,13 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Initial-condition invariant
+
+The canonical swarm begins as a toroidal disk-galaxy distribution, not a random
+sphere or Cartesian particle cloud. Preserve the ordered radial spiral,
+phase-organized thickness, and toroidal rotational momentum before downstream
+physics and constructor layers are applied.
+
 ## Pre-warp pathway ordering
 
 Each particle has a unique smooth path through the spherical manifold before
