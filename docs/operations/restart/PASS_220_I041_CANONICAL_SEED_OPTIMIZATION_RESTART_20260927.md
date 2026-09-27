@@ -28,6 +28,21 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Canonical purpose of the heavy CPU path
+
+The construction/formation workload is intentional. The simulation models a
+bounded mass/charge system in which charged particles and ionic/
+antimatter-reciprocal channels recursively form bonds, structures and a
+Mandelbrot/fractal constructor-theory relationship graph.
+
+That same evolving graph is intended to drive game-engine behavior, dynamic
+holographic sprite pixels, and self-play/search optimization. Those are
+consumers of one canonical state.
+
+Therefore the CPU-heavy path is not an optimization target in the sense of
+removing work. Any later acceleration must preserve the same particle,
+reciprocal, bond, constructor, formation and provenance transitions.
+
 ## Realtime bottleneck classification
 
 The original HTML renderer is realtime-capable. The principal slowdown is
