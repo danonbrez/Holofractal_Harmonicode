@@ -12,6 +12,7 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'hhs_backend/runtime/hhs_native_response_block_stream_v1.py'
       - 'hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_accelerated_transport_v1.py'
       - 'hhs_backend/runtime/hhs_vulkan_loader_runtime_v1.py'
@@ -76,6 +77,7 @@ jobs:
             hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
             hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
             hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
+            hhs_backend/runtime/hhs_native_response_block_stream_v1.py \
             hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py \
             hhs_backend/runtime/hhs_litert_lm_accelerated_transport_v1.py \
             hhs_backend/runtime/hhs_vulkan_loader_runtime_v1.py \
@@ -88,6 +90,7 @@ jobs:
             tests/test_hhs_litert_lm_assistant_v1.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_native_response_block_stream_v1.py \
             tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
             tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
             tests/test_hhs_litert_lm_gpu_runtime_v1.py \
@@ -107,6 +110,7 @@ jobs:
             tests/test_hhs_litert_lm_assistant_v1.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            tests/pass220/test_hhs_pass220_native_response_block_stream_v1.py \
             tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
             tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
             tests/test_hhs_litert_lm_gpu_runtime_v1.py \
