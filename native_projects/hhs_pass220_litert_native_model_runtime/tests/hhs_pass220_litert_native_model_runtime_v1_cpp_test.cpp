@@ -1,6 +1,7 @@
 #include "hhs_pass220_litert_native_model_runtime_v1.hpp"
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 
 int main() {
