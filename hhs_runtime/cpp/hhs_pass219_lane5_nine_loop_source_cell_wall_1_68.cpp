@@ -25,9 +25,15 @@ bool hash216_text_valid(const char value[HHS_HASH216_LEN + 1]) noexcept {
 }
 
 bool exact_source_identity(const NineLoopSourceAttestationInput& input) noexcept {
-    return std::strcmp(input.manifest_sha256, kManifestSha256) == 0 &&
-           std::strcmp(input.sample_sha256, kSampleSha256) == 0 &&
-           std::strcmp(input.summary_sha256, kSummarySha256) == 0;
+    return std::memcmp(
+               input.manifest_sha256, kManifestSha256, sizeof(kManifestSha256)
+           ) == 0 &&
+           std::memcmp(
+               input.sample_sha256, kSampleSha256, sizeof(kSampleSha256)
+           ) == 0 &&
+           std::memcmp(
+               input.summary_sha256, kSummarySha256, sizeof(kSummarySha256)
+           ) == 0;
 }
 
 bool exact_counts(const NineLoopSourceAttestationInput& input) noexcept {
@@ -45,7 +51,12 @@ HHSExactStatus NineLoopSourceAttestationCellWall::derive_candidate_hash216(
 ) noexcept {
     if (out_hash216 == nullptr)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    if (!hash216_text_valid(input.parent_candidate_hash216))
+    if (!hash216_text_valid(input.parent_candidate_hash216) ||
+        !exact_source_identity(input) ||
+        !exact_counts(input) ||
+        input.manifest_member_verified != 1U ||
+        input.all_nonzero_rationals_exact != 1U ||
+        input.all_zero_rows_exact != 1U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     char material[1024]{};
