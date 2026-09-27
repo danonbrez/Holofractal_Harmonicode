@@ -19,6 +19,11 @@ from hhs_runtime.pass191.repository_hydration import _hash216
 
 SCHEMA = "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_KNOWLEDGE_GRAPH_1_69"
 DB_SCHEMA = "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_HASH216_DATABASE_1_69"
+LANE5_REPOSITORY_KNOWLEDGE_OPERATIONS = (
+    "lane5.repository_hydration_knowledge.status",
+    "lane5.repository_hydration_knowledge.search",
+    "lane5.repository_hydration_knowledge.neighbors",
+)
 FACTORY_PREFIXES = ("build_", "create_", "construct_", "hydrate_", "make_", "new_", "register_")
 TEXT_SUFFIXES = {".py",".pyi",".c",".h",".cc",".cpp",".cxx",".hpp",".hh",".js",".mjs",".cjs",".jsx",".ts",".tsx",".md",".rst",".adoc",".json",".yaml",".yml",".toml",".harmonicode"}
 FORMAL_SUFFIXES = {".md",".rst",".adoc",".json",".harmonicode"}

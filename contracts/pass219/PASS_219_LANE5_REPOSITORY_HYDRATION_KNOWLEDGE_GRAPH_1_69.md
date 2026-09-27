@@ -16,6 +16,8 @@ CONSTRUCTOR nodes are deterministic observations of Python classes and factory f
 
 Discovery does not convert a symbol into execution authority.
 
+The module also declares `LANE5_REPOSITORY_KNOWLEDGE_OPERATIONS` as a literal operation registry. Pass 214's structural registry scanner therefore feeds the map's `status`, `search`, and `neighbors` surfaces back into Lane 5 1.44 reverse discovery. On each subsequent deep scan, the knowledge system is consequently represented inside its own capability map without granting execution or mutation authority.
+
 ## Relations
 
 DECLARED_IN_FILE binds a capability or constructor to the already Hash216-bound repository file identity.

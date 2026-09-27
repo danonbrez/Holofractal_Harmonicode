@@ -30,6 +30,7 @@ Date: 2026-09-27
 - Bounded capability/constructor search and neighbor traversal.
 - Fail-closed projection verification and authority checks.
 - Deep-index workflow integration, database hydration receipt, and generated-artifact self-exclusion.
+- Declarative `LANE5_REPOSITORY_KNOWLEDGE_OPERATIONS` registry so Pass 214 -> Lane 5 1.44 discovers the map's own bounded `status`, `search`, and `neighbors` surfaces as capability observations on the next scan.
 
 ## Validation completed before repository commit
 

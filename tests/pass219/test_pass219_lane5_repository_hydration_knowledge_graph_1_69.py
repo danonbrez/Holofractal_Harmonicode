@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69 import (
+    LANE5_REPOSITORY_KNOWLEDGE_OPERATIONS,
     Lane5RepositoryHydrationKnowledgeDatabase,
     build_repository_hydration_knowledge_graph,
 )
@@ -67,6 +68,14 @@ def case(tmp_path: Path):
         }],
     }
     return tmp_path, graph, lane5
+
+
+def test_declares_first_class_lane5_operation_registry():
+    assert LANE5_REPOSITORY_KNOWLEDGE_OPERATIONS == (
+        "lane5.repository_hydration_knowledge.status",
+        "lane5.repository_hydration_knowledge.search",
+        "lane5.repository_hydration_knowledge.neighbors",
+    )
 
 
 def test_projection_lifts_capabilities_constructors_and_bindings(case):
