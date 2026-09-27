@@ -63,3 +63,39 @@ Repair-forward changes:
 - extend the regression to lock both behaviors.
 
 This changes gate invocation only; it does not alter runtime/path semantics or weaken Consensus Gate checks.
+
+
+## Pass 078 successor-lineage repair
+
+After package-import repair, Consensus Gate advanced to the immutable-manifest gate and rejected two evolved runtime sources:
+
+- `hhs_runtime/HARMONICODE_VM_RUNTIME.c`
+- `hhs_runtime/c/hhs_runtime_abi.c`
+
+This is not being repaired by replacing the Pass 078 baseline hashes.
+
+Repository evidence establishes explicit later successors:
+
+### VM81 runtime
+
+- current Git blob: `92afd8d0e26119b6db6420740c05db25a37d389a`
+- current SHA-256: `91ec97378f793e1f00d251538c9ed732222edf40896ed4c24c4d0e2733a46e53`
+- Pass 220 I028 final PR head: `8a750bb56d14fc9847166736bbbf2ca0660bff7f`
+- dedicated exact-head run: `35723417642` — success
+- merge PR: #547
+- merge commit: `86a66d32ba3c17430887cb4ff9fa0da7dbb4bf6f`
+- semantic boundary: legacy opcodes 0..23 preserved; G3 24..34 append-only.
+
+### Runtime ABI implementation
+
+- current Git blob: `6a3ed4a10c5d83fa77bb4d118819fc230d32248a`
+- current SHA-256: `58188c6927d03a486d5b4dfb8d5f94356d4de2a01e1c83808d46670984d3be3f`
+- already bound by `artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json`
+- repair PR: #254
+- repair merge: `284bf652d9635cc0c940f79dfe6aff6f8b787c3c`
+- validated head: `3235f9066219bf2e665503d9f94aa11701d4c20e`
+- semantic boundary: legacy v1 layout preserved; exact v1.1 extension linked additively.
+
+The new `PASS_078_KERNEL_SUCCESSOR_LINEAGE_V1.json` preserves the Pass 078 baseline and allows only exact, explicitly validated successors. The validator requires exact current size/SHA-256/Git blob, ancestral validated and merge commits, and repository-visible evidence files. Unlisted drift remains a `FROZEN_FILE_MISMATCH`.
+
+Consensus checkout now uses full history so ancestry is proved locally rather than assumed.

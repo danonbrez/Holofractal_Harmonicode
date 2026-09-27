@@ -39,7 +39,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
 echo "[HHS] Running commit acceptance gate..."
-python hhs_runtime/hhs_commit_acceptance_gate_v1.py
+python -m hhs_runtime.hhs_commit_acceptance_gate_v1
 """
     hook_path.write_text(hook_body, encoding="utf-8")
     mode = hook_path.stat().st_mode

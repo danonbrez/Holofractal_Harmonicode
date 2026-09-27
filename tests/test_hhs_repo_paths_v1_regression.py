@@ -69,3 +69,23 @@ def test_consensus_workflow_preserves_repository_import_root():
     assert "python hhs_runtime/hhs_commit_acceptance_gate_v1.py" not in workflow
     assert "python hhs_runtime/hhs_distributed_verification_v1.py" not in workflow
     assert workflow.count("uses: actions/checkout@v4") >= 2
+
+
+def test_pass078_manifest_accepts_only_bound_current_successors():
+    from hhs_runtime.hhs_immutable_manifest_v1 import validate_manifest
+
+    decision = validate_manifest()
+    assert decision["ok"] is True, decision
+    assert decision["status"] == "VERIFIED_WITH_EXPLICIT_SUCCESSORS"
+    assert decision["approved_successor_count"] == 2
+    by_path = {row["path"]: row for row in decision["checked_files"]}
+    assert by_path["hhs_runtime/HARMONICODE_VM_RUNTIME.c"]["match_mode"] == "EXPLICIT_VALIDATED_SUCCESSOR"
+    assert by_path["hhs_runtime/c/hhs_runtime_abi.c"]["match_mode"] == "EXPLICIT_VALIDATED_SUCCESSOR"
+    assert by_path["hhs_runtime/include/HARMONICODE_VM_RUNTIME.h"]["match_mode"] == "PASS078_BASELINE_IDENTITY"
+    assert by_path["hhs_runtime/c/hhs_runtime_abi.h"]["match_mode"] == "PASS078_BASELINE_IDENTITY"
+
+
+def test_precommit_hook_uses_package_module_invocation():
+    installer = Path("tools/install_hhs_pre_commit_hook.py").read_text(encoding="utf-8")
+    assert "python -m hhs_runtime.hhs_commit_acceptance_gate_v1" in installer
+    assert "python hhs_runtime/hhs_commit_acceptance_gate_v1.py" not in installer
