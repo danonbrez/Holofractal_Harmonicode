@@ -78,6 +78,10 @@ class WorkspaceAuthorityLoop:
                     )
                     or None
                 ),
+                compatibility_metadata={
+                    "transport": payload_dict.get("compatibility_transport"),
+                    "parse_error": payload_dict.get("compatibility_parse_error"),
+                },
             )
             if result.get("ok") and result.get("registration", {}).get("project"):
                 self.projects[result["registration"]["project"]["project_id"]] = result["registration"]["project"]
