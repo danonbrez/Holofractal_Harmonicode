@@ -162,7 +162,7 @@ jobs:
           console.log(JSON.stringify(receipt));
           NODE
 
-      - name: Render 20-second smooth HTML-driven HD MP4 and measure renderer-bypass bottleneck
+      - name: Render 20-second 0.125x inspection MP4 and measure renderer-bypass bottleneck
         run: >
           python benchmarks/pass220/benchmark_i041_html_render_bottleneck.py
           --output artifacts/pass220/i041-html-render-bottleneck
@@ -170,7 +170,7 @@ jobs:
           --height 720
           --fps 30
           --frames 600
-          --tick-step 1
+          --tick-step 0.25
           --state-ticks 4096
           --render-ticks 256
           --warmup 64
