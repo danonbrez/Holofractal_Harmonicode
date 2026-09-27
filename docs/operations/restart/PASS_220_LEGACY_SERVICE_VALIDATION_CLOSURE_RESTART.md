@@ -73,3 +73,21 @@ I119 and the Pass 205 production workflow now use the repository-canonical helpe
 `tools/pass219/build_exact_abi_link_support.sh`
 
 and link the Hash216/PQC support objects plus OpenSSL in the established order. No Pass 205, HNAN, PQC, VM81, Hash72, or Hash216 algorithm was changed by this link repair.
+
+## Pass 078 temporal freeze repair
+
+The consensus gate exposed a stale whole-current-tree interpretation of the Pass 078 freeze manifest.
+
+Repair-forward preserves the original manifest unchanged and validates its four byte identities at historical anchor:
+
+`66c614ae1de0c1b1651451e2c406307a8dee83ed`
+
+Current deviations are accepted only through explicit successor evidence:
+
+- `hhs_runtime/c/hhs_runtime_abi.c` must equal the Pass 206 approved additive ABI successor blob `6a3ed4a10c5d83fa77bb4d118819fc230d32248a`.
+- `hhs_runtime/HARMONICODE_VM_RUNTIME.c` must equal the I028 validated successor blob `92afd8d0e26119b6db6420740c05db25a37d389a`.
+- I028 PR #547 merged at `86a66d32ba3c17430887cb4ff9fa0da7dbb4bf6f`; final head `8a750bb56d14fc9847166736bbbf2ca0660bff7f` passed dedicated run `35723417642`.
+- VM81 opcodes 0..23 remain frozen and I028 24..34 remain append-only.
+- The two unchanged Pass 078 header surfaces must remain byte-identical to the historical manifest.
+
+A later change to any of these files reopens the consensus dependency cone and must provide a new explicit successor proof; the Pass 078 historical manifest itself is not rewritten.
