@@ -119,6 +119,35 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Toroidal momentum foundation
+
+The base swarm kinematics are toroidal and momentum-conserving. Straight-line
+motion is not a primitive of the canonical simulation.
+
+The foundational ordering is:
+
+```text
+toroidal momentum-conserving swarm transport
+    -> curved local trajectories / reciprocal circulation
+    -> mass / charge / ionic / boundary interactions
+    -> higher physics-layer constraints
+    -> locally straight or approximately linear segments only as an emergent projection
+```
+
+Accordingly:
+
+- toroidal circulation and momentum conservation are first-order invariants;
+- a renderer or optimization MUST NOT replace the base motion with independent
+  straight-line particle propagation;
+- apparent linear motion is admissible only when produced by the existing
+  layered physics as a local/emergent limit of the curved state evolution;
+- construction/formation logic inherits the toroidal momentum state rather than
+  rebuilding particle motion from Cartesian line segments.
+
+This invariant applies before Lane 5 projection. Lane 5 may rasterize or sample
+the resulting trajectory, but it may not linearize the canonical path to reduce
+cost.
+
 ## Canonical simulation purpose — self-evolving constructor manifold
 
 The CPU-heavy construction/formation subsystem is not incidental rendering
