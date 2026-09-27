@@ -121,28 +121,29 @@ geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
 ## Presentation-only defect boundary
 
-For the canonical monolithic HTML, the simulation/physics model is not treated
-as defective merely because the browser cannot present every state at full
-visual quality in realtime.
+For the canonical monolithic HTML, the renderer itself is capable of realtime
+presentation. The primary wall-clock bottleneck is CPU-side simulation work
+when the construction/formation subsystem becomes computationally dense.
 
-The known problem class is presentation-side:
+The known problem classes are therefore separated:
 
 ```text
-canonical simulation state     = authoritative
-WebGL/browser raster quality   = projection concern
-requestAnimationFrame pacing   = projection concern
-dropped/display-skipped frames = projection concern
-HD/4K offline capture          = observation solution
+canonical simulation state          = authoritative
+WebGL/browser raster quality        = projection concern
+WebGL presentation throughput       = realtime-capable
+construction/formation CPU workload = primary simulation-time bottleneck
+requestAnimationFrame misses        = downstream symptom when CPU state production stalls
+HD/4K offline capture               = observation fallback / evidence path
 ```
 
-Accordingly, degraded antialiasing, browser/WebGL raster differences, missed
-display deadlines, or unavoidable frame skipping do not authorize changes to
-the simulation equations or state evolution.
+A missed display deadline does not imply that the rendering geometry is too
+heavy. It may simply mean the CPU did not finish the next construction/
+formation state before the browser's presentation deadline.
 
-Lane 5 is responsible for decoupling canonical simulation time from display
-time. It may render the same state sequence more slowly than realtime at a
-higher output resolution, provided state order and quartic closure are
-preserved.
+Lane 5 remains responsible for projection/rendering efficiency and may render
+the same canonical state sequence realtime or offline. It MUST NOT compensate
+for CPU construction/formation cost by changing the simulation equations,
+state transitions, geometry, or formation logic.
 
 The simplified fork is retained as evidence that the core toroidal/swarm
 geometry survives the Lane 5 high-resolution projection path. That evidence
