@@ -69,7 +69,7 @@ jobs:
           EXT = ('','.py','.pyi','.js','.mjs','.cjs','.jsx','.ts','.tsx','.json','.md','.h','.hpp','.c','.cc','.cpp','.css','.html','.sh','.yaml','.yml','.toml')
           INDEX = ('__init__.py','index.js','index.mjs','index.ts','index.tsx','README.md')
           CINC = re.compile(r'(?m)^\s*#\s*include\s*[<"]([^>"]+)[>"]')
-          JSIMP = re.compile(r'(?:\bfrom\s*|\bimport\s*\(|\brequire\s*\()\s*[\'"]([^\'"]+)[\'"]|(?m)^\s*import\s*[\'"]([^\'"]+)[\'"]')
+          JSIMP = re.compile(r'(?:\bfrom\s*|\bimport\s*\(|\brequire\s*\()\s*[\'"]([^\'"]+)[\'"]|^\s*import\s*[\'"]([^\'"]+)[\'"]', re.M)
           MDLINK = re.compile(r'!?\[[^\]]*\]\(([^)]+)\)')
           HTMLLINK = re.compile(r'(?:src|href)\s*=\s*[\'"]([^\'"]+)[\'"]', re.I)
           PATHREF = re.compile(r'(?<![A-Za-z0-9_])((?:\.?\.?/)?[A-Za-z0-9_.+@()~-]+(?:/[A-Za-z0-9_.+@()~-]+)+\.[A-Za-z0-9_.+-]+)')
