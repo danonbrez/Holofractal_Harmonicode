@@ -1,0 +1,43 @@
+name: Pass 220 FastAPI1 Native Route Kernel
+
+on:
+  pull_request:
+    paths:
+      - 'native_projects/hhs_pass220_fastapi_native_route_kernel/**'
+      - 'hhs_backend/runtime/hhs_native_fastapi_compat_v1.py'
+      - 'hhs_backend/runtime/hhs_native_fastapi_graphics_v1.py'
+      - 'hhs_backend/runtime/hhs_runtime_graphics_service_v1.py'
+      - 'hhs_backend/api/runtime_graphics_routes.py'
+      - 'tests/pass220/test_hhs_pass220_fastapi1_native_route_kernel_v1.py'
+      - 'docs/pass220/PASS_220_FASTAPI1_NATIVE_ROUTE_KERNEL.md'
+      - '.github/workflows/pass220-fastapi1-native-route-kernel.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'native_projects/hhs_pass220_fastapi_native_route_kernel/**'
+      - 'hhs_backend/runtime/hhs_native_fastapi_compat_v1.py'
+      - 'hhs_backend/runtime/hhs_native_fastapi_graphics_v1.py'
+      - 'hhs_backend/runtime/hhs_runtime_graphics_service_v1.py'
+      - 'hhs_backend/api/runtime_graphics_routes.py'
+      - 'tests/pass220/test_hhs_pass220_fastapi1_native_route_kernel_v1.py'
+      - 'docs/pass220/PASS_220_FASTAPI1_NATIVE_ROUTE_KERNEL.md'
+      - '.github/workflows/pass220-fastapi1-native-route-kernel.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fastapi-native-route-kernel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compatibility-test dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+      - name: Compile and run strict C11 native route kernel
+        run: make -C native_projects/hhs_pass220_fastapi_native_route_kernel clean all test
+      - name: Run FastAPI versus native ASGI parity
+        run: python -m pytest -q tests/pass220/test_hhs_pass220_fastapi1_native_route_kernel_v1.py
