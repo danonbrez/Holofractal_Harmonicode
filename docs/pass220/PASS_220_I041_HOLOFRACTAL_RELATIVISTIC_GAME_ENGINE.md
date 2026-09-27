@@ -363,6 +363,26 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Digital cellular mitochondria role
+
+As the swarm matures into the bounded hyperspherical cloud, the state behaves
+as a closed digital metabolic cell. Energy/momentum and particles circulate
+through free, bound, reciprocal, constructor, and recycled states instead of
+being treated as disposable animation objects.
+
+~~~text
+free particle state
+-> field / reciprocal interaction
+-> bond / constructor incorporation
+-> structure work
+-> release / decay / reciprocal recovery
+-> recycled free state
+~~~
+
+The knowledge graph therefore records not only structure formation but the
+energy/particle provenance that made each constructor possible. This recycling
+loop is part of the simulation's persistence model.
+
 ## Initial toroidal disk-galaxy state
 
 The visible swarm begins as an ordered thick disk / toroidal-galaxy seed rather
