@@ -4,9 +4,13 @@ import pytest
 
 from hhs_runtime.hhs_pass220_numpy_four_phase_ab_v1 import (
     CHANNELS,
+    ORDERED_TENSOR_LITERAL,
     PHASE_PLAN,
     experiment_acceptance,
     four_phase_ab_witness_for_scalar,
+    ordered_tensor_ab_witness,
+    ordered_tensor_acceptance,
+    project_literal_tensor_notation,
     scalar_offset_vector_inverse,
     scalar_offset_vector_transform,
     substitution_tensor_transform,
@@ -109,3 +113,38 @@ def test_experiment_does_not_claim_canonical_authority() -> None:
     assert witness["semantics"]["substitution_tensor_is_control_candidate_only"] is True
     assert witness["semantics"]["scalar_offset_vectorization_is_candidate_only"] is True
     assert witness["semantics"]["scalar_symbol_role"] == "PERMUTATION_CONTROL_NOT_PAYLOAD_SCALARIZATION"
+
+
+def test_supplied_ordered_tensor_projects_exactly_to_existing_genesis_tensor() -> None:
+    projected = project_literal_tensor_notation()
+    assert projected == (
+        ("xy", "x+y", "yx"),
+        ("xy-zw", "x+y-z-w+xy+yx-zw-wz", "wz-yx"),
+        ("wz", "z+w", "zw"),
+    )
+    assert ORDERED_TENSOR_LITERAL[0][0] == "(x*y)"
+    assert ORDERED_TENSOR_LITERAL[0][2] == "(y*x)"
+    assert projected[0][0] != projected[0][2]
+    assert projected[2][0] != projected[2][2]
+
+
+def test_supplied_ordered_tensor_runs_all_36_phase_control_cases_losslessly() -> None:
+    witness = ordered_tensor_ab_witness()
+    assert witness["case_count"] == 36
+    assert witness["literal_projection_matches_authoritative_exactly"] is True
+    assert witness["semantic_identity_all_cases"] is True
+    assert witness["inverse_roundtrip_all_cases"] is True
+    assert witness["ordered_terms_preserved_all_cases"] is True
+    assert witness["algebraic_simplification_used"] is False
+    assert witness["commutation_used"] is False
+    assert witness["term_reordering_inside_expression_used"] is False
+    assert ordered_tensor_acceptance(witness) is True
+
+
+def test_supplied_tensor_is_part_of_scalar_experiment_acceptance() -> None:
+    witness = four_phase_ab_witness_for_scalar(
+        HHSNumPyScalar.from_float64_bits(0x400921FB54442D18)
+    )
+    assert witness["ordered_tensor_acceptance"] is True
+    assert witness["ordered_tensor_witness"]["center_expression_exact"] is True
+    assert experiment_acceptance(witness) is True

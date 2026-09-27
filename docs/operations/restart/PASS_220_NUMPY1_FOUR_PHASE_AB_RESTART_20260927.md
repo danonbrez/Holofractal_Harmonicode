@@ -82,3 +82,47 @@ the existing ingress/egress, RNA, VM81, Hash72, Hash216, or temporal gates.
    scalar-offset representation should be promoted into NumPy1 internals;
 4. after promotion/selection, continue native library import metadata mapping
    and the HARMONICODE interpreter workstream.
+
+
+## Supplied ordered 3×3 tensor extension — 2026-09-27
+
+The experiment now also tests the user-supplied tensor verbatim:
+
+```text
+[
+  [(x*y), x+y, (y*x)],
+  [(x*y)-(z*w), x+y-z-w+(x*y)+(y*x)-(z*w)-(w*z), (w*z)-(y*x)],
+  [(w*z), z+w, (z*w)]
+]
+```
+
+The implementation preserves this as a literal ordered symbolic object.  A
+lexical notation projection maps only the four explicit product spellings:
+
+```text
+(x*y) -> xy
+(y*x) -> yx
+(z*w) -> zw
+(w*z) -> wz
+```
+
+No algebraic simplification, commutation, factorization, or expression-term
+reordering is authorized.  The projected tensor must equal the existing
+repository-authoritative `EIGENVECTOR0_TENSOR` exactly.
+
+The tensor is then exercised under every one of the nine scalar-symbol controls
+and all four ordered Aa/Ba/Ab/Bb channels: 9 × 4 = 36 cases.  For every case:
+
+1. dense substitution-tensor arm A must equal scalar/permutation arm B;
+2. inverse permutation must recover all nine original ordered expressions;
+3. the expression multiset must be preserved exactly;
+4. `xy != yx` and `wz != zw` remain explicit;
+5. the center remains exactly `x+y-z-w+xy+yx-zw-wz`.
+
+The tensor witness is now part of NumPy scalar experiment acceptance and is also
+recorded in the measured benchmark artifact.
+
+Next action:
+- inspect the new exact-head PR #624 validation once;
+- repair only attributable failures;
+- preserve this checkpoint if main advances and repair forward merge conflicts.

@@ -11,6 +11,7 @@ import time
 from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import deserialize_offsets_5184
 from hhs_runtime.hhs_pass220_numpy_four_phase_ab_v1 import (
     CHANNELS,
+    ordered_tensor_ab_witness,
     scalar_offset_vector_transform,
     substitution_tensor_transform,
 )
@@ -80,11 +81,27 @@ def main() -> int:
             "vector_faster_on_median": vector["median_ns"] < dense["median_ns"],
         }
 
+    ordered_tensor = ordered_tensor_ab_witness()
     payload = {
         "schema": SCHEMA,
         "sample_ieee_bits": [f"{bits:016x}" for bits in SAMPLE_BITS],
         "repeats": args.repeats,
         "semantic_identity": exact_equal,
+        "ordered_tensor": {
+            "case_count": ordered_tensor["case_count"],
+            "literal_projection_matches_authoritative_exactly": ordered_tensor[
+                "literal_projection_matches_authoritative_exactly"
+            ],
+            "semantic_identity_all_cases": ordered_tensor[
+                "semantic_identity_all_cases"
+            ],
+            "inverse_roundtrip_all_cases": ordered_tensor[
+                "inverse_roundtrip_all_cases"
+            ],
+            "ordered_terms_preserved_all_cases": ordered_tensor[
+                "ordered_terms_preserved_all_cases"
+            ],
+        },
         "channels": rows,
         "timing_is_canonical": False,
         "benchmark_role": "CANDIDATE_SELECTION_ONLY",
@@ -95,7 +112,15 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(payload, indent=2, sort_keys=True))
-    return 0 if exact_equal else 1
+    tensor_ok = all(
+        (
+            ordered_tensor["literal_projection_matches_authoritative_exactly"],
+            ordered_tensor["semantic_identity_all_cases"],
+            ordered_tensor["inverse_roundtrip_all_cases"],
+            ordered_tensor["ordered_terms_preserved_all_cases"],
+        )
+    )
+    return 0 if exact_equal and tensor_ok else 1
 
 
 if __name__ == "__main__":
