@@ -17,9 +17,15 @@
     #ctl .row{display:grid;grid-template-columns:1fr 56px;gap:6px;align-items:center}
     #ctl .readout{text-align:right;color:#fff}
     #ctl hr{border:0;border-top:1px solid #284664;margin:10px 0}
+    .panelToggle{position:fixed;z-index:20;width:auto!important;margin:0!important;padding:6px 9px!important;background:rgba(0,8,24,.88)!important;border:1px solid #345!important;border-radius:5px;color:#cfe8ff;cursor:pointer}
+    #toggleHudPanel{left:10px;bottom:10px}
+    #toggleCtlPanel{right:10px;bottom:10px}
+    .panelHidden{display:none!important}
   </style>
 </head>
 <body>
+<button id="toggleHudPanel" class="panelToggle">hide HUD</button>
+<button id="toggleCtlPanel" class="panelToggle">hide controls</button>
 <div id="hud">initializing deterministic 5184 pathway…</div>
 <div id="ctl">
   <strong>Lane 5 projection controls</strong>
@@ -32,6 +38,19 @@
   <label class="row"><span>simulation speed</span><span id="simulationSpeedVal" class="readout">0.10×</span></label>
   <input id="simulationSpeed" type="range" min="0.01" max="2" step="0.01" value="0.10">
   <div style="margin-top:7px">Simulation time is decoupled from render cadence. Slow motion changes dynamics time only; camera/UI rendering remains smooth.</div>
+  <hr>
+  <strong>Orbital / tesseract phase dynamics</strong>
+  <label class="row"><span>orbit radius</span><span id="orbitRadiusVal" class="readout">6.0</span></label>
+  <input id="orbitRadius" type="range" min="0" max="18" step="0.1" value="6.0">
+  <label class="row"><span>orbit rate</span><span id="orbitRateVal" class="readout">0.50</span></label>
+  <input id="orbitRate" type="range" min="0" max="2" step="0.01" value="0.50">
+  <label class="row"><span>slow-axis rate</span><span id="orbitSlowRateVal" class="readout">0.005</span></label>
+  <input id="orbitSlowRate" type="range" min="0" max="0.05" step="0.001" value="0.005">
+  <label class="row"><span>tesseract phase rate</span><span id="tesseractRateVal" class="readout">0.20</span></label>
+  <input id="tesseractRate" type="range" min="0" max="1" step="0.01" value="0.20">
+  <label class="row"><span>Q144 phase rate</span><span id="q144PhaseRateVal" class="readout">0.02</span></label>
+  <input id="q144PhaseRate" type="range" min="0" max="0.2" step="0.005" value="0.02">
+  <div style="margin-top:7px">These restore the pre-repair orbital and x–w / y–z phase drivers while the final visible coordinate remains bounded in 3D.</div>
   <hr>
   <strong>Holographic pixel-sprite tuning</strong>
   <label>view</label>
@@ -88,7 +107,7 @@ const CANONICAL_SEED_REPAIRS = Object.freeze({
   receipt_isolation:"diagnostic receipts may not mutate authoritative simulation state",
   manifold_hash:"browser compression is a projection fingerprint, never canonical Hash72/Hash216",
   spherical_display_boundary:"visible dynamics are confined to a 3D spherical spacetime boundary",
-  tesseract_diagnostic_only:"SO(4)/tesseract state is diagnostic only and cannot warp camera or visible particle coordinates",
+  tesseract_phase_without_camera_warp:"SO(4)/tesseract state drives bounded x-w / y-z phase evolution but cannot perspective-warp the camera",
   inspection_clock:"simulation-time speed is decoupled from render cadence with pause and exact single-step"
 });
 
@@ -102,6 +121,13 @@ const pixelTune={
   phaseAmp:0.10,
   phaseSpeed:1.0,
   viewMode:3
+};
+const dynamicsTune={
+  orbitRadius:6.0,
+  orbitRate:0.50,
+  orbitSlowRate:0.005,
+  tesseractRate:0.20,
+  q144PhaseRate:0.02
 };
 let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
 let simTimeTicks = 0.0, simulationSpeed = 0.10, lastWallTime = 0.0;
@@ -351,6 +377,11 @@ const vertexShader=[
 "uniform float uLayer;",
 "uniform float uTopologyInvert;",
 "uniform float uSpacetimeRadius;",
+"uniform float uOrbitRadius;",
+"uniform float uOrbitRate;",
+"uniform float uOrbitSlowRate;",
+"uniform float uTesseractRate;",
+"uniform float uQ144PhaseRate;",
 "varying float vHue;",
 "varying float vGlow;",
 "const float PI=3.141592653589793;",
@@ -358,14 +389,19 @@ const vertexShader=[
 "void main(){",
 "  vec3 p=position;",
 "  float shift=aGroup*PI/4.0 + uLayer*PI/2.0;",
-"  float orbitT=uTime*0.5;",
-"  p += vec3(sin(orbitT+shift)*6.0, cos(orbitT*0.005+shift)*6.0, sin(orbitT*PHI+shift)*6.0);",
+"  float orbitT=uTime*uOrbitRate;",
+"  p += vec3(sin(orbitT+shift)*uOrbitRadius, cos(uTime*uOrbitSlowRate+shift)*uOrbitRadius, sin(orbitT*PHI+shift)*uOrbitRadius);",
 "  if(uLayer>0.5){ p.xy=vec2(-p.y,p.x); }",
-"  float h1=uTime*0.20;",
+"  float phase=aQ144/144.0*2.0*PI + uTime*uQ144PhaseRate;",
+"  float w=sin(phase);",
+"  float h1=uTime*uTesseractRate;",
 "  float h2=h1/PHI;",
 "  float c1=cos(h1),s1=sin(h1),c2=cos(h2),s2=sin(h2);",
-"  p.xy=mat2(c1,-s1,s1,c1)*p.xy;",
-"  p.xz=mat2(c2,-s2,s2,c2)*p.xz;",
+"  float x1=c1*p.x-s1*w;",
+"  float w1=s1*p.x+c1*w;",
+"  float y1=c2*p.y-s2*p.z;",
+"  float z1=s2*p.y+c2*p.z;",
+"  p=vec3(x1,y1,z1);",
 "  float radius=length(p);",
 "  if(radius>uSpacetimeRadius){ p*=uSpacetimeRadius/max(radius,0.000001); }",
 "  float dg=mod(aGroup-uBottOctant+8.0,8.0);",
@@ -376,7 +412,7 @@ const vertexShader=[
 "  float swept=1.0-step(0.25,abs(aGroup-uBottOctant));",
 "  gl_PointSize=(2.0+5.0*selected+1.5*swept)*(180.0/max(1.0,-mv.z));",
 "  vHue=mod((aQ144+uLayer*72.0+aPhaseRight)/144.0,1.0);",
-"  vGlow=0.25+0.45*swept+0.75*selected;",
+"  vGlow=0.25+0.45*swept+0.75*selected+0.10*min(1.0,abs(w1));",
 "}"
 ].join("\n");
 
@@ -403,7 +439,12 @@ function makeMaterial(layer){
     uniforms:{
       uTime:{value:0},uPathAddress:{value:0},uBottOctant:{value:0},
       uLayer:{value:layer},uTopologyInvert:{value:0},
-      uSpacetimeRadius:{value:SPACETIME_RADIUS}
+      uSpacetimeRadius:{value:SPACETIME_RADIUS},
+      uOrbitRadius:{value:dynamicsTune.orbitRadius},
+      uOrbitRate:{value:dynamicsTune.orbitRate},
+      uOrbitSlowRate:{value:dynamicsTune.orbitSlowRate},
+      uTesseractRate:{value:dynamicsTune.tesseractRate},
+      uQ144PhaseRate:{value:dynamicsTune.q144PhaseRate}
     }
   });
 }
@@ -544,9 +585,12 @@ function pixelDisplayContract(){
     sphericalSpacetimeBoundary:true,
     spacetimeRadius:SPACETIME_RADIUS,
     visibleGeometryDimensions:3,
-    tesseractDiagnosticOnly:true,
+    tesseractPhaseDriven:true,
+    tesseractVisibleGuide:false,
     cameraWarpFromTesseract:false,
+    sphericalWireframeVisible:false,
     simulationSpeed,
+    dynamicsTune:{...dynamicsTune},
     supportsPause:true,
     supportsSingleStep:true,
     projectionOnly:true,
@@ -588,15 +632,11 @@ function installPixelTuneControls(){
 }
 
 function buildSphericalBoundary(){
-  const geo=new THREE.SphereGeometry(SPACETIME_RADIUS,64,32);
-  const mat=new THREE.MeshBasicMaterial({
-    color:0x5aa7d8,wireframe:true,transparent:true,opacity:0.12,
-    depthWrite:false,side:THREE.DoubleSide
+  return Object.freeze({
+    radius:SPACETIME_RADIUS,
+    visibleGuide:false,
+    enforcement:"shader-radius-clamp"
   });
-  const mesh=new THREE.Mesh(geo,mat);
-  mesh.frustumCulled=false;
-  scene.add(mesh);
-  return mesh;
 }
 
 function buildTesseract(){
@@ -646,7 +686,7 @@ function updateHud(address,rank,bott){
     " sim-speed="+simulationSpeed.toFixed(2)+"x paused="+paused+
     " topology="+(topoInvert?"reciprocal-inverted":"seed")+"\n"+
     "3D spherical spacetime R="+SPACETIME_RADIUS+
-    " tesseract=diagnostic-only; camera-warp=false\n"+
+    " tesseract=phase-driven; camera-warp=false; wireframe=false\n"+
     "virtual="+VIRTUAL_FRAME_SIDE+"²="+VIRTUAL_FRAME_PIXELS+
     " view="+["source","nucleus","halo","composite"][pixelTune.viewMode]+"\n"+
     "pixel nucleus=source frame; halo overlap=translucent; source/target=same resolution\n"+
@@ -674,6 +714,11 @@ function projectionTick(targetTick, options={}){
     m.uniforms.uPathAddress.value=address;
     m.uniforms.uBottOctant.value=bott;
     m.uniforms.uTopologyInvert.value=topoInvert;
+    m.uniforms.uOrbitRadius.value=dynamicsTune.orbitRadius;
+    m.uniforms.uOrbitRate.value=dynamicsTune.orbitRate;
+    m.uniforms.uOrbitSlowRate.value=dynamicsTune.orbitSlowRate;
+    m.uniforms.uTesseractRate.value=dynamicsTune.tesseractRate;
+    m.uniforms.uQ144PhaseRate.value=dynamicsTune.q144PhaseRate;
   }
   if(postMaterial) postMaterial.uniforms.uTick.value=simTimeTicks;
   const uniformEnd=performance.now();
@@ -814,7 +859,7 @@ function installTestApi(){
     setSeed:setTestSeed,
     step(targetTick,options={}){manualTestMode=true;paused=true;return projectionTick(targetTick,options);},
     benchmark:runBottleneckBenchmark,
-    snapshot(){return {tick,simTimeTicks,simulationSpeed,path:{...path},rendered,rafCount,manualTestMode,topoInvert,pixelTune:{...pixelTune},spacetimeRadius:SPACETIME_RADIUS,tesseractDiagnosticOnly:true};},
+    snapshot(){return {tick,simTimeTicks,simulationSpeed,path:{...path},rendered,rafCount,manualTestMode,topoInvert,pixelTune:{...pixelTune},dynamicsTune:{...dynamicsTune},spacetimeRadius:SPACETIME_RADIUS,tesseractPhaseDriven:true,cameraWarpFromTesseract:false,sphericalWireframeVisible:false};},
     setSimulationSpeed(value){
       const v=Number(value);
       if(!Number.isFinite(v)) throw new Error("simulation speed must be finite");
@@ -832,6 +877,10 @@ function installTestApi(){
     },
     displayContract:pixelDisplayContract,
     mathRepairReceipt:canonicalSeedMathRepairReceipt,
+    setDynamics(values={}){
+      Object.assign(dynamicsTune,values);
+      return {...dynamicsTune};
+    },
     setTune(values={}){
       Object.assign(pixelTune,values);
       if(postMaterial){
@@ -846,6 +895,40 @@ function installTestApi(){
     },
     canvas(){return renderer.domElement;}
   };
+}
+
+function bindDynamicsControl(id,key,readoutId,digits=2){
+  const el=document.getElementById(id), out=document.getElementById(readoutId);
+  const apply=()=>{
+    dynamicsTune[key]=Number(el.value);
+    if(out) out.textContent=dynamicsTune[key].toFixed(digits);
+  };
+  el.addEventListener("input",apply);
+  el.addEventListener("change",apply);
+  apply();
+}
+
+function installDynamicsControls(){
+  bindDynamicsControl("orbitRadius","orbitRadius","orbitRadiusVal",1);
+  bindDynamicsControl("orbitRate","orbitRate","orbitRateVal",2);
+  bindDynamicsControl("orbitSlowRate","orbitSlowRate","orbitSlowRateVal",3);
+  bindDynamicsControl("tesseractRate","tesseractRate","tesseractRateVal",2);
+  bindDynamicsControl("q144PhaseRate","q144PhaseRate","q144PhaseRateVal",3);
+}
+
+function installPanelToggles(){
+  const hud=document.getElementById("hud");
+  const ctl=document.getElementById("ctl");
+  const hudToggle=document.getElementById("toggleHudPanel");
+  const ctlToggle=document.getElementById("toggleCtlPanel");
+  hudToggle.addEventListener("click",()=>{
+    const hidden=hud.classList.toggle("panelHidden");
+    hudToggle.textContent=hidden?"show HUD":"hide HUD";
+  });
+  ctlToggle.addEventListener("click",()=>{
+    const hidden=ctl.classList.toggle("panelHidden");
+    ctlToggle.textContent=hidden?"show controls":"hide controls";
+  });
 }
 
 async function applySeed(){
@@ -882,6 +965,8 @@ function init(){
   tess=buildTesseract();
   buildPixelCompositor();
   installPixelTuneControls();
+  installDynamicsControls();
+  installPanelToggles();
   installTestApi();
 
   addEventListener("resize",()=>{

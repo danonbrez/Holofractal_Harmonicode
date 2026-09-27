@@ -52,11 +52,12 @@ def test_lane5_browser_uses_3d_spherical_boundary_and_inspection_clock():
     source = HTML.read_text(encoding="utf-8")
     for token in (
         "const SPACETIME_RADIUS = 90.0;",
-        "new THREE.SphereGeometry(SPACETIME_RADIUS,64,32)",
+        'enforcement:"shader-radius-clamp"',
         "uSpacetimeRadius:{value:SPACETIME_RADIUS}",
         "if(radius>uSpacetimeRadius){ p*=uSpacetimeRadius/max(radius,0.000001); }",
-        "tesseractDiagnosticOnly:true",
+        "tesseractPhaseDriven:true",
         "cameraWarpFromTesseract:false",
+        "sphericalWireframeVisible:false",
         'id="simulationSpeed"',
         'id="stepOnce"',
         "simulationSpeed = 0.10",
@@ -67,11 +68,48 @@ def test_lane5_browser_uses_3d_spherical_boundary_and_inspection_clock():
     ):
         assert token in source, token
 
-    # The SO(4)/tesseract descriptor may remain as an internal diagnostic,
-    # but it must not project particle coordinates through a 4D perspective.
+    # The 4D state drives bounded phase/orbit evolution, but never a 4D
+    # camera/perspective divisor.
+    for token in (
+        "float phase=aQ144/144.0*2.0*PI + uTime*uQ144PhaseRate;",
+        "float w=sin(phase);",
+        "float x1=c1*p.x-s1*w;",
+        "float w1=s1*p.x+c1*w;",
+        "float y1=c2*p.y-s2*p.z;",
+        "float z1=s2*p.y+c2*p.z;",
+        "p=vec3(x1,y1,z1);",
+    ):
+        assert token in source, token
     assert "float persp=2.6/(2.2-w1);" not in source
     assert "p=vec3(x1,y1,z1)*persp;" not in source
-    assert "scene.add(lines);" not in source
+    assert "new THREE.SphereGeometry" not in source
+    assert "wireframe:true" not in source
+
+
+def test_lane5_browser_restores_orbital_phase_parameters_and_hide_toggles():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'id="toggleHudPanel"',
+        'id="toggleCtlPanel"',
+        'id="orbitRadius"',
+        'id="orbitRate"',
+        'id="orbitSlowRate"',
+        'id="tesseractRate"',
+        'id="q144PhaseRate"',
+        "orbitRadius:6.0",
+        "orbitRate:0.50",
+        "orbitSlowRate:0.005",
+        "tesseractRate:0.20",
+        "q144PhaseRate:0.02",
+        "p += vec3(sin(orbitT+shift)*uOrbitRadius",
+        "cos(uTime*uOrbitSlowRate+shift)*uOrbitRadius",
+        "sin(orbitT*PHI+shift)*uOrbitRadius",
+        "installDynamicsControls();",
+        "installPanelToggles();",
+        'hud.classList.toggle("panelHidden")',
+        'ctl.classList.toggle("panelHidden")',
+    ):
+        assert token in source, token
 
 
 def test_lane5_browser_exposes_manual_animation_and_renderer_bypass_benchmark():

@@ -160,10 +160,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 raise RuntimeError("3D spherical spacetime boundary is not active")
             if display_contract["visibleGeometryDimensions"] != 3:
                 raise RuntimeError("visible geometry is not three-dimensional")
-            if not display_contract["tesseractDiagnosticOnly"]:
-                raise RuntimeError("tesseract is not diagnostic-only")
+            if not display_contract["tesseractPhaseDriven"]:
+                raise RuntimeError("tesseract phase driver is not active")
+            if display_contract["tesseractVisibleGuide"]:
+                raise RuntimeError("tesseract visual guide must remain hidden")
             if display_contract["cameraWarpFromTesseract"]:
                 raise RuntimeError("tesseract camera warp is active")
+            if display_contract["sphericalWireframeVisible"]:
+                raise RuntimeError("spherical wireframe guide must remain hidden")
             if not display_contract["supportsPause"] or not display_contract["supportsSingleStep"]:
                 raise RuntimeError("inspection pause/single-step controls are unavailable")
             if math_repair["status"] != "PASS":
@@ -272,8 +276,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "halo_overlap_is_translucent": display_contract["haloBackgroundAlphaZero"],
             "spherical_spacetime_boundary": display_contract["sphericalSpacetimeBoundary"],
             "visible_geometry_dimensions": display_contract["visibleGeometryDimensions"],
-            "tesseract_diagnostic_only": display_contract["tesseractDiagnosticOnly"],
+            "tesseract_phase_driven": display_contract["tesseractPhaseDriven"],
+            "tesseract_visible_guide": display_contract["tesseractVisibleGuide"],
             "camera_warp_from_tesseract": display_contract["cameraWarpFromTesseract"],
+            "spherical_wireframe_visible": display_contract["sphericalWireframeVisible"],
+            "dynamics_tune": display_contract["dynamicsTune"],
             "inspection_speed_control": True,
             "pause_and_single_step": True,
         },

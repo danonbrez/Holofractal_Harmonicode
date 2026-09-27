@@ -30,11 +30,13 @@ The adapter MUST preserve:
 - reciprocal phase/color relation;
 - Layer-2 orthogonal +pi/2 / quarter-turn geometry;
 - golden-spiral seed geometry;
-- shared SO(4) xw/yz descriptor retained as internal diagnostic state only;
-- tesseract 16 vertices / 32 edges / 8 cubic cells retained internally but never
-  applied as a visible-camera or particle-coordinate warp;
+- shared SO(4) xw/yz descriptor drives bounded particle phase evolution;
+- tesseract 16 vertices / 32 edges / 8 cubic cells remain internal state and may
+  drive x-w / y-z phase behavior, but MUST NOT apply a 4D perspective divisor
+  to the visible camera or final rendered particle coordinate;
 - visible simulation geometry remains three-dimensional inside an explicit
-  spherical spacetime boundary;
+  spherical spacetime boundary; the boundary condition does not require a
+  visible wireframe guide;
 - Bott eight-group sweep;
 - quartic one-in-four projection cadence while state ticks continue;
 - deterministic pathway replay from a named seed;
@@ -123,7 +125,8 @@ Required browser invariants:
 ```text
 visible_geometry_dimensions == 3
 spherical_spacetime_boundary == true
-tesseract_diagnostic_only == true
+spherical_wireframe_visible == false
+tesseract_phase_driven == true
 camera_warp_from_tesseract == false
 ```
 
@@ -131,6 +134,37 @@ Simulation time MUST be independently controllable from render cadence. The UI
 MUST expose slow motion, pause/resume, and exact one-tick stepping. Changing the
 simulation-speed control changes simulation-time progression only; it MUST NOT
 throttle camera/UI rendering or replace deterministic manual stepping.
+
+The pre-repair orbital/tesseract projection constants are part of the inspection
+surface and MUST remain live controls rather than being removed during UI
+simplification:
+
+```text
+orbit_radius = 6.0
+orbit_rate = 0.50
+orbit_slow_axis_rate = 0.005
+tesseract_phase_rate = 0.20
+q144_phase_rate = 0.02
+```
+
+Their bounded render path is:
+
+```text
+orbit translation
+-> Layer-2 quarter turn
+-> Q144 w-phase
+-> x-w / y-z tesseract phase rotation
+-> discard w as a camera coordinate
+-> 3D spherical boundary clamp
+-> ordinary 3D camera projection
+```
+
+No `2.6/(2.2-w)`-style 4D perspective divisor is permitted in the visible
+particle/camera path.
+
+The HUD and control panel MUST each expose persistent hide/show toggles. Hiding
+a panel changes only UI visibility; it MUST NOT remove, reset, or disable any
+simulation parameter.
 
 
 ## Holographic pixel-sprite display invariant
@@ -177,7 +211,13 @@ The HTML MUST expose live projection-only tuning for at least:
 - deterministic phase speed;
 - simulation speed with slow-motion support;
 - pause/resume and exact one-tick stepping;
+- orbit radius, orbit rate, slow-axis rate, tesseract phase rate, and Q144 phase rate;
+- persistent hide/show toggles for HUD and controls;
 - source-only, nucleus-only, halo-only, and composite views.
+
+Existing controls are additive state. A visual simplification pass MUST NOT
+delete an existing control or its parameter binding unless a later explicit
+contract replaces it.
 
 ## Acceptance
 
@@ -188,7 +228,8 @@ HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS
 HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sameResolution == true
 HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sphericalSpacetimeBoundary == true
 HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.visibleGeometryDimensions == 3
-HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.tesseractDiagnosticOnly == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sphericalWireframeVisible == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.tesseractPhaseDriven == true
 HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.cameraWarpFromTesseract == false
 ```
 
