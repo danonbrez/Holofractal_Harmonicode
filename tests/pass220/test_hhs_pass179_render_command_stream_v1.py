@@ -88,7 +88,10 @@ def test_browser_packet_builder_validator_rejects_post_seal_mutation() -> None:
     if not node:
         pytest.skip("Node.js unavailable")
     script = r"""
-const p=require(process.argv[1]);
+const fs=require("fs");
+const vm=require("vm");
+vm.runInThisContext(fs.readFileSync(process.argv[1],"utf8"),{filename:process.argv[1]});
+const p=global.HHSRenderPacket;
 const O=p.OPCODE;
 const packet=p.buildCompatibilityPacket({
   targetWidth:1920,
@@ -206,9 +209,12 @@ def test_embedded_native_wasm_builder_enforces_identity_boundary() -> None:
     if not node:
         pytest.skip("Node.js unavailable")
     script = r"""
-require(process.argv[1]);
+const fs=require("fs");
+const vm=require("vm");
+vm.runInThisContext(fs.readFileSync(process.argv[1],"utf8"),{filename:process.argv[1]});
+vm.runInThisContext(fs.readFileSync(process.argv[2],"utf8"),{filename:process.argv[2]});
 const packet=global.HHSRenderPacket;
-const wasm=require(process.argv[2]);
+const wasm=global.HHSRenderPacketWasm;
 (async()=>{
   const builder=await wasm.create();
   const O=packet.OPCODE;
