@@ -36,6 +36,21 @@ def test_shell_and_python_deployment_assets_parse() -> None:
     )
 
 
+def test_production_service_routes_live_semantic_cache_to_writable_runtime_state() -> None:
+    production_service = (
+        ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service"
+    ).read_text(encoding="utf-8")
+
+    assert "Environment=HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime" in production_service
+    assert (
+        "Environment=HHS_LIVE_SEMANTIC_COMPOSITION_CACHE_PATH="
+        "/var/lib/hhs/data/runtime/hhs_live_semantic_composition_cache_pass217.json"
+    ) in production_service
+    assert "Environment=HHS_COGNITION_AUTO_TICK=0" in production_service
+    assert "ProtectSystem=full" in production_service
+    assert "ReadWritePaths=/var/lib/hhs" in production_service
+
+
 def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> None:
     with tempfile.TemporaryDirectory(prefix="hhs-runtime-os-bundle-") as tmp:
         root = Path(tmp)
