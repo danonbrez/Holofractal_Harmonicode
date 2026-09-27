@@ -53,11 +53,19 @@ was created from branch head `55935cf736156e22103b860455db1673d3d30bc8` and was 
 
 Container-side network cloning was attempted for an independent local build but the execution environment could not resolve `github.com`; no local repository build result is claimed.
 
+## Pull request / mergeability
+
+- Pull request: #600 — Pass 219 Lane 5 1.67: nine-loop foreign equivalence constructor
+- Base at PR creation: `main @ 6eef21a42e36dfe881ff1e5e2e39c9cf322416e7`
+- GitHub mergeability result: `true`
+- Branch is behind the moving main history, but GitHub reports a clean merge against the current PR base.
+- Dedicated PR workflow run `36324012120` was queued at this checkpoint.
+
 ## Remaining validation
 
-1. Read the dedicated workflow result.
+1. Read the dedicated workflow result when the external Actions queue executes it.
 2. If failed, inspect the failed job log and repair only the impacted 1.67 surface.
-3. Confirm PR mergeability against current `main`.
+3. Recheck mergeability only if `main` moves again or the branch changes.
 4. Do not claim full external-artifact equivalence until upstream amplitude artifacts are actually ingested and bound to a manifest SHA-256.
 
 ## Current proof boundary
@@ -79,4 +87,4 @@ Still intentionally unresolved:
 
 ## Next action
 
-Use the PR/workflow result as the next restart point. Repair-forward on any dependency-scoped failure; otherwise leave the PR ready for merge to main.
+Use PR #600 and its latest dedicated workflow run as the next restart point. Repair-forward on any dependency-scoped failure; otherwise leave the mergeable PR ready for merge to main.
