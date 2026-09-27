@@ -205,6 +205,14 @@ def attest_sample(
         manifest_member_verified = True
 
     if require_full_contract:
+        if raw_sha256 != EXPECTED_SAMPLE_SHA256:
+            raise Lane5NineLoopSourceAttestationError(
+                "sample raw SHA-256 does not match frozen 1.68 source identity"
+            )
+        if manifest_text is None or manifest_sha256 != EXPECTED_MANIFEST_SHA256:
+            raise Lane5NineLoopSourceAttestationError(
+                "upstream manifest SHA-256 does not match frozen 1.68 source identity"
+            )
         if (nonzero, zero, len(rows)) != (EXPECTED_NONZERO, EXPECTED_ZERO, EXPECTED_TOTAL):
             raise Lane5NineLoopSourceAttestationError(
                 "sample row counts do not match frozen 1.68 contract"
@@ -237,6 +245,10 @@ def attest_sample(
         summary, sort_keys=True, separators=(",", ":"), allow_nan=False
     ).encode("utf-8")
     summary["summary_sha256"] = hashlib.sha256(summary_bytes).hexdigest()
+    if require_full_contract and summary["summary_sha256"] != EXPECTED_FULL_SUMMARY_SHA256:
+        raise Lane5NineLoopSourceAttestationError(
+            "full sample summary SHA-256 does not match frozen 1.68 receipt"
+        )
     return summary
 
 
