@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS_220_PYTHON1_NATIVE_BIGINT_EXECUTION_V1",
+  "version": 1,
+  "external_compatibility_target": "CPython 3.12",
+  "inherits": {
+    "pass190_python_compatibility_registry": "HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1",
+    "fastapi_native_boundary": "PASS_220_FASTAPI1",
+    "numpy_native_numeric_boundary": "PASS_220_NUMPY1"
+  },
+  "native_kernel": {
+    "language": "C11",
+    "python_c_api_dependency": false,
+    "dynamic_allocation": false,
+    "maximum_source_bytes": 65536,
+    "maximum_variables": 64,
+    "maximum_identifier_bytes": 64,
+    "maximum_bigint_decimal_digits": 5184
+  },
+  "supported_python1_subset": {
+    "statements": [
+      "expression_statement",
+      "simple_name_assignment"
+    ],
+    "expressions": [
+      "integer_literal",
+      "name_load",
+      "parentheses",
+      "unary_plus",
+      "unary_minus",
+      "addition",
+      "subtraction",
+      "multiplication"
+    ],
+    "precedence": "CPYTHON_COMPATIBLE_FOR_SUPPORTED_OPERATORS",
+    "integer_semantics": "SIGNED_ARBITRARY_PRECISION_WITH_5184_DIGIT_NATIVE_BOUND"
+  },
+  "runtime_membrane": {
+    "module": "hhs_runtime.hhs_pass220_python_native_execution_v1",
+    "ctypes_transport_only": true,
+    "ast_execution": false,
+    "eval": false,
+    "exec": false,
+    "compile": false,
+    "python_int_conversion": "EGRESS_PROJECTION_ONLY"
+  },
+  "differential_oracle": {
+    "cpython": "TEST_ONLY",
+    "requires_result_equivalence": true,
+    "requires_exception_class_equivalence_for_supported_errors": true
+  },
+  "fail_closed_unadmitted_surface": [
+    "imports",
+    "function_calls",
+    "function_definitions",
+    "classes",
+    "containers",
+    "attribute_access",
+    "subscripts",
+    "comparisons",
+    "boolean_logic",
+    "control_flow",
+    "division",
+    "floor_division",
+    "modulo",
+    "exponentiation",
+    "float_literals",
+    "complex_literals",
+    "exceptions",
+    "generators",
+    "async",
+    "context_managers"
+  ],
+  "next_python_bridge": {
+    "float_and_array_semantics": "PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE_V1",
+    "registered_builtin_calls": "PASS190_OPERATION_FABRIC",
+    "required_rule": "NO_HOST_PYTHON_NUMERIC_AUTHORITY_REINTRODUCTION"
+  },
+  "authority": {
+    "host_python_evaluator_is_execution_authority": false,
+    "host_python_arithmetic_is_canonical_authority": false,
+    "native_parser_may_commit_vm81": false,
+    "native_parser_may_commit_hash72": false,
+    "native_parser_may_persist_hash216": false
+  }
+}
