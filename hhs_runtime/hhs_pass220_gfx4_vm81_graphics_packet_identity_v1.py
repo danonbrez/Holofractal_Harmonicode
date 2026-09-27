@@ -173,11 +173,20 @@ def build_vm81_admitted_graphics_packet_identity(
         str(receipt.get("receipt_hash72") or ""),
         72,
     )
+    # Pass 163 names this root operation_hash216 because it commits a
+    # 216-position Hash216Genome, while Hash216Genome.root() deliberately
+    # serializes that position manifold to one SHA-256 hex root (64 chars).
     operation_hash216 = _hash_len(
-        "vm81_operation_hash216",
+        "vm81_operation_hash216_root",
         str(receipt.get("operation_hash216") or ""),
-        216,
+        64,
     )
+    try:
+        bytes.fromhex(operation_hash216)
+    except ValueError as exc:
+        raise GFX4GraphicsIdentityError(
+            "P220_GFX4_VM81_OPERATION_ROOT_HEX_INVALID"
+        ) from exc
     output_hash72 = _hash_len(
         "vm81_output_hash72",
         str(receipt.get("output_hash72") or ""),
