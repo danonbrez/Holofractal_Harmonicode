@@ -363,6 +363,30 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Self-hosted exact projection algebra
+
+The I041 HTML now embeds the exact repository identities required by its
+projection pathway: 5,184 factorization, Rot72 cyclic transport, symbolic Q144
+cyclotomic rotation, exact rational time, and Lane 5 scheduling/authority
+rules.
+
+The execution split is:
+
+~~~text
+BigInt / rational / phase residue / symbolic matrix state
+-> explicit projection membrane
+-> IEEE values required by WebGL
+~~~
+
+For example, simulation/projection time is retained as the exact rational
+`tick/60`; only the renderer receives its approximate numeric projection.
+Likewise Q144 rotation retains a symbolic matrix over `Q(zeta_144)`; browser
+trigonometric evaluation is presentation-only.
+
+This keeps the HTML mathematically self-contained while retaining the rule
+that Lane 5 optimization may change scheduling or reuse, never the canonical
+result.
+
 ## Passive particle-follow projection
 
 Particle-follow mode is a noninteractive observer. It reads the particle's
