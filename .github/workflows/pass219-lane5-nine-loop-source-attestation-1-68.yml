@@ -70,6 +70,9 @@ jobs:
           assert receipt["all_zero_rows_exact"] is True
           assert receipt["floating_point_authority"] is False
           assert receipt["candidate_only"] is True
+          assert receipt["manifest_sha256"] == "f96534526482f03e638ee030b1a88968348901f70967bb89618c76420a21ffe5"
+          assert receipt["raw_sha256"] == "a78557e58efb3e12cccb647974131a3f694322bebb97607a5648db0484099b18"
+          assert receipt["summary_sha256"] == "fbda1f90205bcf4f02b154aba25346aa83768e6cbbccbeeceaef9187eb691088"
 
           print("PASS219_1_68_RECEIPT=" + json.dumps(receipt, sort_keys=True))
           with open("/tmp/cosmic9/receipt.json", "w", encoding="utf-8") as f:
@@ -81,3 +84,19 @@ jobs:
         run: |
           echo "MANIFEST_SHA256=$(sha256sum /tmp/cosmic9/MANIFEST.sha256 | awk '{print $1}')"
           echo "SAMPLE_SHA256=$(sha256sum /tmp/cosmic9/E9_sample_coefficients.txt | awk '{print $1}')"
+
+      - name: Build shared exact VM81 runtime with 1.68 source cell wall
+        run: make -f GNUmakefile c-kernel
+
+      - name: Compile native 1.68 conformance
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_nine_loop_source_cell_wall_1_68.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread \
+            -o /tmp/test_pass219_lane5_nine_loop_source_1_68
+
+      - name: Run native 1.68 conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_lane5_nine_loop_source_1_68
