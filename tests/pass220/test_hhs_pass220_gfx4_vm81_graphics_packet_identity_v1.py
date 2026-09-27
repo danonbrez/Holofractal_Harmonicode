@@ -59,7 +59,8 @@ def test_gfx4_vm81_admitted_packet_identity_advances_singleton_authority():
     assert vm81.state_hash72 != before_hash72
     admission = identity["vm81_admission"]
     assert len(admission["receipt_hash72"]) == 72
-    assert len(admission["operation_hash216"]) == 216
+    assert len(admission["operation_hash216"]) == 64
+    bytes.fromhex(admission["operation_hash216"])
     assert admission["output_hash72"] == vm81.state_hash72
 
 

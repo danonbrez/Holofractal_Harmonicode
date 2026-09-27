@@ -295,7 +295,8 @@ def test_raw_lane5_ingress_accepts_unaltered_html_and_quartic_capture():
         'parser.add_argument("--width", type=int, default=1920)',
         'parser.add_argument("--height", type=int, default=1080)',
         'page.on("pageerror"',
-        'page.on("console"',
+        '"console"',
+        'console_errors.append(msg.text)',
     ):
         assert token in source, token
 
@@ -334,6 +335,7 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "HHS_I041_CANONICAL_SPHERICAL_FRAME_V1",
         "PROJECTION_PIPELINE_PREVIEW",
         "not yet the canonical animated",
-        "holofractal_hybrid_qpu_neural_swarm_vm81_i041_realtime.html",
+        "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html",
+        "benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py",
     ):
         assert token in source, token
