@@ -1,6 +1,7 @@
 #include "hhs_pass220_python_rna_class_registration_2_0.hpp"
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 
 int main() {
