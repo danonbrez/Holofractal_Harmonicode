@@ -48,6 +48,10 @@ def test_lane5_browser_self_hosts_exact_whitepaper_algebra_and_scheduler():
         "function q144RotationExact(k)",
         "function lane5ExactSchedule(targetTick)",
         "timeSeconds:brat(t,60n)",
+        "function exactRatioFromText(value)",
+        "function brFloor(a)",
+        "simulationSpeedExact=null",
+        "simulationTickExact=null",
         "canonicalResultChanged:false",
         'canonicalArithmetic:"BIGINT_RATIONAL_SYMBOLIC_Q144_TENSOR"',
         "selfHostedExactContract(){return SELF_HOSTED_HHS_EXACT;}",
@@ -60,7 +64,8 @@ def test_lane5_browser_preserves_animation_projection_invariants_without_randomn
     source = HTML.read_text(encoding="utf-8")
     assert "Math.random" not in source
     for token in (
-        "const PHI = (1 + Math.sqrt(5)) / 2;",
+        'const PHI_EXACT = Object.freeze({',
+        "const PHI_RENDER = (1 + Math.sqrt(5)) / 2;",
         "const Q144_OCTANT = 18;",
         "const Q144_QUARTER = 36;",
         "const Q144_HALF = 72;",
@@ -68,8 +73,63 @@ def test_lane5_browser_preserves_animation_projection_invariants_without_randomn
         "aGroup*PI/4.0 + uLayer*PI/2.0",
         "p.xy=vec2(-p.y,p.x)",
         "float h2=h1/PHI",
-        "renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0",
+        "renderFrame:(next%QUARTIC_RENDER_PERIOD)===0",
         "authority=projection-only; no VM81/Hash72/Hash216 mutation",
+    ):
+        assert token in source, token
+
+
+def test_lane5_browser_uses_exact_spherical_inspection_clock_and_hidden_guides():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        "const SPACETIME_RADIUS = 90;",
+        'enforcement:"shader-radius-clamp"',
+        "uSpacetimeRadius:{value:SPACETIME_RADIUS}",
+        "if(radius>uSpacetimeRadius){ p*=uSpacetimeRadius/max(radius,0.000001); }",
+        "tesseractPhaseDriven:true",
+        "tesseractVisibleGuide:false",
+        "cameraWarpFromTesseract:false",
+        "sphericalWireframeVisible:false",
+        'id="simulationSpeed"',
+        'id="stepOnce"',
+        "simulationTickExact=brAdd(simulationTickExact,brMul(wallTickDelta,simulationSpeedExact));",
+        "const wallTickDelta=brat(deltaMicros*60n,1000000n);",
+        "renderFrame:(next%QUARTIC_RENDER_PERIOD)===0",
+        "controls.enablePan=false",
+    ):
+        assert token in source, token
+
+    assert "simTimeTicks+=dt*60.0*simulationSpeed" not in source
+    assert "float persp=2.6/(2.2-w1);" not in source
+    assert "p=vec3(x1,y1,z1)*persp;" not in source
+    assert "new THREE.SphereGeometry" not in source
+    assert "wireframe:true" not in source
+
+
+def test_lane5_browser_restores_exact_orbital_phase_parameters_and_hide_toggles():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'id="toggleHudPanel"',
+        'id="toggleCtlPanel"',
+        'id="orbitRadius"',
+        'id="orbitRate"',
+        'id="orbitSlowRate"',
+        'id="tesseractRate"',
+        'id="q144PhaseRate"',
+        'orbitRadius:"6"',
+        'orbitRate:"1/2"',
+        'orbitSlowRate:"1/200"',
+        'tesseractRate:"1/5"',
+        'q144PhaseRate:"1/50"',
+        "p += vec3(sin(orbitT+shift)*uOrbitRadius",
+        "cos(uTime*uOrbitSlowRate+shift)*uOrbitRadius",
+        "sin(orbitT*PHI+shift)*uOrbitRadius",
+        "installDynamicsControls();",
+        "installPanelToggles();",
+        'hud.classList.toggle("panelHidden")',
+        'ctl.classList.toggle("panelHidden")',
+        "function exactRatioFromText(value)",
+        "dynamicsTuneExact[key]=brToString(ratio)",
     ):
         assert token in source, token
 
