@@ -14,6 +14,7 @@ on:
       - 'docs/pass205/**'
       - 'evidence/pass205/**'
       - '.github/workflows/pass205-production-runtime.yml'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
   push:
     branches: [main]
     paths:
@@ -28,6 +29,7 @@ on:
       - 'docs/pass205/**'
       - 'evidence/pass205/**'
       - '.github/workflows/pass205-production-runtime.yml'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
   workflow_dispatch:
 
 concurrency:
@@ -89,14 +91,22 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-i119-pass205/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh \
+            /tmp/pass219-i119-pass205/link-support full
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass205_1_19.c \
             /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-i119-pass205/pass205-c
           /tmp/pass219-i119-pass205/pass205-c
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass205_1_19.cpp \
             /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
             -o /tmp/pass219-i119-pass205/pass205-cpp
           /tmp/pass219-i119-pass205/pass205-cpp
 

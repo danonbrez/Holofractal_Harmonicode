@@ -63,3 +63,13 @@ The repaired workflows reached runners and exposed four substantive compatibilit
 The Runtime OS Pass 205 gate is redirected to the same current continuation/warm-boot surface instead of conditionally skipping when obsolete repair-era modules are absent.
 
 During PR validation, the existing immutable-index workflow materialized its staged implementation and advanced the branch with commit `c3692693a8d03dad51fd9b3810fe72a1c4c41bee`. That workflow-produced commit is retained as inherited branch state. Repair-forward runtime compatibility was then committed as `505554288474fd19dcabbc0df2c0b273bdcdb123`.
+
+## I119 inherited exact-link repair
+
+PR validation progressed beyond the strict-C11 source compile and then failed because the I119 workflow hand-linked the current aggregate exact ABI without its inherited support objects. This is the same link-composition defect previously repaired for I182.
+
+I119 and the Pass 205 production workflow now use the repository-canonical helper:
+
+`tools/pass219/build_exact_abi_link_support.sh`
+
+and link the Hash216/PQC support objects plus OpenSSL in the established order. No Pass 205, HNAN, PQC, VM81, Hash72, or Hash216 algorithm was changed by this link repair.

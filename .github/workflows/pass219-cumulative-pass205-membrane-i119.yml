@@ -19,6 +19,7 @@ on:
       - 'tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py'
       - 'docs/operations/restart/PASS_219_I119_PASS205_MEMBRANE_RESTART.md'
       - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
   pull_request:
     branches: [main]
     paths:
@@ -35,6 +36,7 @@ on:
       - 'tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py'
       - 'docs/operations/restart/PASS_219_I119_PASS205_MEMBRANE_RESTART.md'
       - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
 
 concurrency:
   group: pass219-i119-pass205-membrane-${{ github.ref }}
@@ -107,10 +109,27 @@ jobs:
           mkdir -p /tmp/pass219-i119-pass205
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i119-pass205/exact.o
 
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i119-pass205/link-support full
+
       - name: Run Pass 205 C and C++ conformance
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass205_1_19.c /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/c && /tmp/pass219-i119-pass205/c
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass205_1_19.cpp /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/cpp && /tmp/pass219-i119-pass205/cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.c \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-i119-pass205/c
+          /tmp/pass219-i119-pass205/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.cpp \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
+            -o /tmp/pass219-i119-pass205/cpp
+          /tmp/pass219-i119-pass205/cpp
 
       - name: Preserve Pass 206 and Pass 219B exact ABI successors
         run: |
