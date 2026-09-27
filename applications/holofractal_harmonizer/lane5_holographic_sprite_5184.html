@@ -280,6 +280,37 @@ const brZero=()=>brat(0n,1n);
 const brOne=()=>brat(1n,1n);
 const brFromInt=n=>brat(BigInt(n),1n);
 const brToString=a=>a.d===1n?String(a.n):String(a.n)+"/"+String(a.d);
+function exactRatioFromText(value){
+  const text=String(value).trim();
+  if(/^-?\d+\/\d+$/.test(text)){
+    const [n,d]=text.split("/");
+    return brat(BigInt(n),BigInt(d));
+  }
+  if(/^-?\d+(?:\.\d+)?$/.test(text)){
+    const sign=text.startsWith("-")?-1n:1n;
+    const body=text.replace(/^-/,"");
+    const [whole,frac=""]=body.split(".");
+    const scale=10n**BigInt(frac.length);
+    return brat(sign*(BigInt(whole||"0")*scale+BigInt(frac||"0")),scale);
+  }
+  throw new Error("exact decimal/rational text required");
+}
+function brFloor(a){
+  if(a.n>=0n) return a.n/a.d;
+  return -((-a.n+a.d-1n)/a.d);
+}
+function dynamicsProjection(){
+  return Object.fromEntries(Object.entries(dynamicsTuneExact).map(
+    ([key,value])=>[key,projectionFloatRational(exactRatioFromText(value))]
+  ));
+}
+function exactDynamicsReceipt(){
+  return Object.freeze({...dynamicsTuneExact});
+}
+function initExactInspectionClock(){
+  simulationSpeedExact=exactRatioFromText(document.getElementById("simulationSpeed")?.value||"0.10");
+  simulationTickExact=brat(0n,1n);
+}
 function projectionFloatRational(a){
   /* Sole rational -> IEEE projection membrane for browser/WebGL presentation. */
   return Number(a.n)/Number(a.d);
