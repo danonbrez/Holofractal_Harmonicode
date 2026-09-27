@@ -323,6 +323,7 @@ def build_ingress_packet(
     projection_policy: str = "PRESERVE_UNRESOLVED_SOURCE",
     media_type: Optional[str] = None,
     compatibility_translation: Optional[Mapping[str, Any]] = None,
+    compatibility_metadata: Optional[Mapping[str, Any]] = None,
     transport_encoding: str = "NATIVE_JSON_VALUE",
     source_size_bytes: Optional[int] = None,
 ) -> Dict[str, Any]:
@@ -333,12 +334,14 @@ def build_ingress_packet(
     )
     adapter = INITIAL_ADAPTERS.get(declared_modality)
     translation = dict(compatibility_translation or {})
+    compatibility = dict(compatibility_metadata or {})
     source_commitment = hash72("HHS_WORKSPACE_INGRESS_SOURCE_COMMITMENT_V1", {
         "source_name": source_name,
         "declared_modality": declared_modality,
         "media_type": media_type,
         "transport_encoding": transport_encoding,
         "compatibility_translation": translation,
+        "compatibility_metadata": compatibility,
         "payload": payload,
     })
     packet = {
@@ -354,6 +357,7 @@ def build_ingress_packet(
         "source_declared_modality": translation.get("original_declared_modality"),
         "source_media_type": translation.get("original_media_type") or media_type,
         "compatibility_translation": translation or None,
+        "compatibility_metadata": compatibility or None,
         "legacy_translation_applied": bool(translation.get("translated")),
         "transport_encoding": transport_encoding,
         "source_commitment_hash72": source_commitment,
@@ -422,6 +426,7 @@ def create_ingressed_workspace_object(packet: Mapping[str, Any], payload: Any) -
             "source_declared_modality": packet.get("source_declared_modality"),
             "source_media_type": packet.get("source_media_type"),
             "compatibility_translation": packet.get("compatibility_translation"),
+            "compatibility_metadata": packet.get("compatibility_metadata"),
             "transport_encoding": packet.get("transport_encoding"),
         },
     )
@@ -439,6 +444,7 @@ def ingest_workspace_source(
     payload: Any,
     declared_modality: Optional[str] = None,
     media_type: Optional[str] = None,
+    compatibility_metadata: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
     translation = translate_legacy_modality(
         source_name=source_name,
@@ -456,6 +462,7 @@ def ingest_workspace_source(
         detected_modality=canonical_modality,
         media_type=media_type,
         compatibility_translation=translation,
+        compatibility_metadata=compatibility_metadata,
         transport_encoding=str(normalized_payload["transport_encoding"]),
         source_size_bytes=int(normalized_payload["source_size_bytes"]),
     )
