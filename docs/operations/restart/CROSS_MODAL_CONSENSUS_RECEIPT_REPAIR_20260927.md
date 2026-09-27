@@ -221,3 +221,53 @@ Next action:
 2. when green, reconcile the branch to then-current main;
 3. rerun only impacted exact-head checks;
 4. merge #622 and verify main.
+
+
+## Filesystem Hash72 chain-authority repair — 2026-09-27
+
+Exact-head Consensus run `36351448671` on `35b53aa3d3b6c15bd981f5a6970ed7fb34ebe595` isolated the downloaded artifact set correctly and evaluated exactly three agents:
+
+```text
+total_agents=3
+verified_agents=0
+required_threshold=3
+CONSENSUS_REJECTED
+```
+
+All three verify jobs completed, but their distributed receipts were `FAILED` because `verify_filesystem_ledger()` found thousands of historical parent-link mismatches:
+
+```text
+actual: H72-FS-GENESIS
+expected: <prior entry Hash72>
+reason: parent_hash72 mismatch
+```
+
+The unified Hash72 ledger remained valid. Inspection of the filesystem ledger writer showed the inherited defect: every path observation was constructed with the default genesis parent, while the verifier correctly required an append-only parent chain. The persisted ledger history contains this legacy flat-genesis form.
+
+Repair-forward behavior:
+1. append-time filesystem-ledger authority now owns the parent link;
+2. the first subsequent append deterministically rebinds legacy entries in their original order;
+3. observation payload, ordering, paths, events, sizes, content commitments, and recorded timestamps are preserved;
+4. a repository-visible deterministic migration receipt records the prior ledger hash and rebound count;
+5. subsequent appends are O(1) against the persisted tip rather than repeatedly rebuilding history;
+6. verification now recomputes every entry Hash72 from its stored payload + parent, validates the tip, and validates the aggregate ledger Hash72.
+
+The verifier is not weakened. It is stricter than before because payload tampering can no longer pass with a trusted stored `entry_hash72`.
+
+Regression coverage locks:
+- append authority parent chaining;
+- deterministic migration of legacy flat-genesis history;
+- fail-closed rejection when an entry payload is modified without a matching Hash72 recomputation.
+
+Current external state before this repair:
+- Hash216 exact-head run `36351448675`: success;
+- Consensus verify nodes: success;
+- downstream Consensus: rejected because all three filesystem-ledger receipts were invalid;
+- authoritative main observed at `ee42d27bdd0f4b12853bcde2fe4ed2dd7103d9ec`.
+
+Next action:
+1. inspect the new exact-head Consensus + Hash216 runs once;
+2. if green, reconcile #622 to then-current main;
+3. run only impacted exact-head validation;
+4. merge #622 and verify main;
+5. reconcile #618 and remove direct Hash216 publication to main.
