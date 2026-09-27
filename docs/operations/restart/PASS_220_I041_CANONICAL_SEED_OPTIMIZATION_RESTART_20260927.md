@@ -28,6 +28,21 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Self-hosted exact-runtime checkpoint
+
+The Lane 5 HTML now embeds the repository equations needed for local execution
+and verification:
+
+- exact 5,184 cardinality identities;
+- Rot72 group action and inverse/closure;
+- symbolic Q144 rotation over Q(zeta_144);
+- BigInt rational tick/time transport;
+- Lane 5 constant-state scheduling and candidate-only/no-authority rules.
+
+Canonical float authority remains false. The only rational-to-IEEE conversion
+is the explicit WebGL projection membrane. This avoids replacing algebraic
+irrationals with decimal approximations while keeping the page self-contained.
+
 ## Follow-particle view invariant
 
 Canonical follow mode is passive and noninteractive. It reads only the selected
