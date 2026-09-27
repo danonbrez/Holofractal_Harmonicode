@@ -28,6 +28,30 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Quartic closure clarified
+
+The inherited quartic closure skips three of four **render/projection writes**,
+not three of four simulation updates. The complete physics/state update runs on
+every tick. Default offline capture advances four RAF ticks between captured
+frames so each captured image lands on a fresh quartic render without changing
+the simulation.
+
+## Raw HTML acceptance
+
+Lane 5 must accept the original canonical HTML without rewriting its source.
+The raw-ingress harness serves the file byte-for-byte, sets the target viewport
+externally, checks WebGL/canvas dimensions and runtime errors, captures the
+canvas at quartic cadence, and verifies the source hash is unchanged after the
+run.
+
+Harness:
+
+`benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py`
+
+Defaults are 1920x1080 and a 4-RAF capture step; 4K can be requested through
+the same harness. This is an observation-path acceptance test, not a new
+simulation implementation.
+
 ## Lane 5
 
 Lane 5 already owns projection/render optimization. It must consume the same
