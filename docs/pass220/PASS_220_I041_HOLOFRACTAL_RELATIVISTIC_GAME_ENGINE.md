@@ -363,6 +363,22 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Toroidal swarm momentum conservation
+
+The canonical particle substrate begins with toroidal, momentum-conserving
+swarm motion. Independent straight-line trajectories are not primitive state.
+
+~~~text
+toroidal circulation + conserved swarm momentum
+-> mass / charge / ionic reciprocal coupling
+-> spherical boundary response
+-> collisions / bonds / constructor formation
+-> higher physics-layer constraints
+-> locally linear-looking motion only when it emerges from those layers
+~~~
+
+Lane 5, browser, and game-engine projections must preserve that ordering.
+
 ## Self-evolving constructor-theory state
 
 I041's expensive construction/formation work is intentional simulation
