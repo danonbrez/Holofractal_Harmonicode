@@ -30,6 +30,32 @@ def test_lane5_browser_path_matches_native_seeded_affine_cycle_contract():
         assert token in source, token
 
 
+def test_lane5_browser_self_hosts_exact_whitepaper_algebra_and_scheduler():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'schema:"HHS_I041_SELF_HOSTED_EXACT_MANIFOLD_V1"',
+        '"whitepapers/HOLOFRACTAL_HARMONICODE.md"',
+        '"docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md"',
+        '"docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"',
+        'cardinality:"144*36 = 12*12*3*12 = 81*64 = 72*72 = 5184"',
+        'action:"Rot_72(k): j -> (j+k) mod 72"',
+        'closure:"Rot_72(72) = identity"',
+        'field:"Q(zeta_144)"',
+        'optimizerMemory:"O(1)"',
+        'canonicalFloatAuthority:false',
+        'renderFloatProjectionOnly:true',
+        "function projectionFloatRational(a)",
+        "function q144RotationExact(k)",
+        "function lane5ExactSchedule(targetTick)",
+        "timeSeconds:brat(t,60n)",
+        "canonicalResultChanged:false",
+        'canonicalArithmetic:"BIGINT_RATIONAL_SYMBOLIC_Q144_TENSOR"',
+        "selfHostedExactContract(){return SELF_HOSTED_HHS_EXACT;}",
+    ):
+        assert token in source, token
+    assert "const seconds=tick/60;" not in source
+
+
 def test_lane5_browser_preserves_animation_projection_invariants_without_randomness():
     source = HTML.read_text(encoding="utf-8")
     assert "Math.random" not in source
@@ -235,6 +261,8 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS",
         "HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1",
         "Canonical execution rule — math/runtime repair only",
+        "Folded hyperspherical projection invariance",
+        "Passive follow-particle observer",
         "execute all specified modules",
         "Lane 5 is the existing rendering optimization path",
         "Quartic closure and raw canonical-HTML ingress",
