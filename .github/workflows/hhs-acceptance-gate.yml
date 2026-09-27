@@ -12,10 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
-      - run: python hhs_runtime/hhs_commit_acceptance_gate_v1.py
-      - run: python hhs_runtime/hhs_distributed_verification_v1.py
+      - run: python -m hhs_runtime.hhs_commit_acceptance_gate_v1
+      - run: python -m hhs_runtime.hhs_distributed_verification_v1
       - uses: actions/upload-artifact@v4
         with:
           name: receipt-${{ matrix.node }}
@@ -25,6 +27,9 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/download-artifact@v4
         with: {path: receipts}
       - uses: actions/setup-python@v5
