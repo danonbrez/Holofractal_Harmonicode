@@ -21,6 +21,10 @@ from hhs_backend.runtime.hhs_pass220_native_causal_lm_generation_v1 import (
     NativeCausalLMGenerationService,
     NativeCausalLMNotReady,
 )
+from hhs_backend.runtime.hhs_native_response_block_stream_v1 import (
+    NativeResponseBlockStream,
+    NativeResponseBlockStreamError,
+)
 from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
     ASSISTANT_MODE_BOTH,
@@ -147,6 +151,7 @@ class HHSNativeLiteRTLMTransport:
     ) -> None:
         self._word2vec_service = word2vec_service
         self._generation_service = generation_service
+        self._response_stream_service: Any = None
         self._prototype_cycle: Any = None
         self._prototype_dataset: Optional[Dict[str, Any]] = None
         self._prototype_model_id: Optional[str] = None
@@ -168,6 +173,13 @@ class HHSNativeLiteRTLMTransport:
         if self._generation_service is None:
             self._generation_service = NativeCausalLMGenerationService()
         return self._generation_service
+
+    def _response_stream(self) -> NativeResponseBlockStream:
+        if self._response_stream_service is None:
+            self._response_stream_service = NativeResponseBlockStream(
+                self._causal_generation()
+            )
+        return self._response_stream_service
 
     def _prototype_context(self, query: str, *, top_k: int = 3) -> tuple[str, Dict[str, Any]]:
         service = self._word2vec()
@@ -567,6 +579,71 @@ class HHSNativeLiteRTLMTransport:
         return lines
 
     @classmethod
+    def _tool_text_payloads(cls, value: Any, *, limit: int = 8) -> List[str]:
+        preferred = {"content", "text", "answer", "message", "summary", "response", "result"}
+        found: List[str] = []
+
+        def visit(node: Any, key: Optional[str] = None) -> None:
+            if len(found) >= limit:
+                return
+            if isinstance(node, str):
+                if key in preferred and node.strip() and node not in found:
+                    found.append(node)
+                return
+            if isinstance(node, Mapping):
+                for child_key, child_value in node.items():
+                    visit(child_value, str(child_key).casefold())
+                    if len(found) >= limit:
+                        return
+            elif isinstance(node, list):
+                for child in node:
+                    visit(child, key)
+                    if len(found) >= limit:
+                        return
+
+        visit(value)
+        return found
+
+    @staticmethod
+    def _tool_evidence_context(
+        receipts: Sequence[Mapping[str, Any]],
+        *,
+        max_characters: int = 65536,
+    ) -> str:
+        if not receipts:
+            return ""
+        header = (
+            "[governed HHS tool evidence]\n"
+            "Use the evidence below to answer the original user request in plain English. "
+            "Do not replace the answer with receipt/status reporting. Preserve uncertainty "
+            "and authority boundaries present in the evidence.\n"
+        )
+        parts: List[str] = [header]
+        used = len(header)
+        for index, receipt in enumerate(receipts):
+            encoded = json.dumps(
+                dict(receipt),
+                sort_keys=True,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                default=str,
+            )
+            prefix = f"[tool-receipt-{index}]\n"
+            suffix = f"\n[/tool-receipt-{index}]\n"
+            remaining = max_characters - used - len(prefix) - len(suffix)
+            if remaining <= 0:
+                break
+            if len(encoded) > remaining:
+                encoded = encoded[:remaining]
+            block = prefix + encoded + suffix
+            parts.append(block)
+            used += len(block)
+            if used >= max_characters:
+                break
+        parts.append("[/governed HHS tool evidence]")
+        return "".join(parts)
+
+    @classmethod
     def _tool_evidence_lines(cls, receipts: Sequence[Mapping[str, Any]]) -> List[str]:
         sections: List[str] = []
         for receipt in receipts:
@@ -588,6 +665,12 @@ class HHSNativeLiteRTLMTransport:
                 )
                 continue
             if isinstance(response, Mapping):
+                textual_payloads = cls._tool_text_payloads(response)
+                if textual_payloads:
+                    sections.append(
+                        f"{tool_name}:\n" + "\n\n".join(textual_payloads)
+                    )
+                    continue
                 scalar_lines: List[str] = []
                 for key, value in response.items():
                     if isinstance(value, (str, int, float, bool)) or value is None:
@@ -821,30 +904,55 @@ class HHSNativeLiteRTLMTransport:
             )
         )
         causal_failure: Optional[str] = None
-        if ordinary_conversation:
+        should_generate = ordinary_conversation or bool(receipts)
+        if should_generate:
             try:
-                retrieval_context, prototype_trace = self._prototype_context(query)
-                generated = self._causal_generation().generate(
+                prototype_context = ""
+                prototype_trace: Dict[str, Any] = {
+                    "available": False,
+                    "reason": "NOT_REQUESTED",
+                    "candidate_count": 0,
+                }
+                if ordinary_conversation:
+                    prototype_context, prototype_trace = self._prototype_context(query)
+
+                tool_context = self._tool_evidence_context(receipts)
+                retrieval_parts = [
+                    part for part in (prototype_context, tool_context) if part
+                ]
+                retrieval_context = "\n\n".join(retrieval_parts)
+                generated = self._response_stream().generate(
                     message_list,
                     retrieval_context=retrieval_context or None,
                 )
                 answer = str(generated["response"])
+                stream_manifest = dict(generated.get("manifest") or {})
                 trace = {
                     "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
                     "assistant_mode": mode,
-                    "generation_path": "NATIVE_CAUSAL_LM_RAG",
+                    "generation_path": "NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM",
                     "general_chat_prompt_response_cycle": True,
-                    "causal_generation_receipt": dict(generated.get("receipt") or {}),
-                    "causal_generation_status": dict(generated.get("status") or {}),
                     "prototype_retrieval": prototype_trace,
-                    "tool_receipt_count": 0,
+                    "tool_receipt_count": len(receipts),
+                    "tool_evidence_synthesized_into_plain_english": bool(receipts),
+                    "response_stream_manifest": stream_manifest,
+                    "serialized_response": str(
+                        generated.get("serialized_response") or ""
+                    ),
+                    "response_block_count": int(stream_manifest.get("block_count") or 0),
+                    "embedded_metadata_delimiters": True,
+                    "human_rendering_is_payload_projection": True,
+                    "generated_payload_rewritten": False,
                     "runtime_mutation_admitted": False,
                 }
                 trace["trace_root_hash72"] = hash72(
                     "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
                     trace,
                 )
-                completion_tokens = _word_count(answer)
+                completion_tokens = sum(
+                    int((block or {}).get("generated_token_count") or 0)
+                    for block in (generated.get("blocks") or [])
+                )
                 return {
                     "id": _completion_id(),
                     "object": "chat.completion",
@@ -856,16 +964,17 @@ class HHSNativeLiteRTLMTransport:
                             "role": "assistant",
                             "content": answer,
                         },
-                        "finish_reason": "stop",
+                        "finish_reason": str(generated.get("finish_reason") or "stop"),
                     }],
                     "usage": {
                         "prompt_tokens": _word_count(query),
-                        "completion_tokens": completion_tokens,
-                        "total_tokens": _word_count(query) + completion_tokens,
+                        "completion_tokens": completion_tokens or _word_count(answer),
+                        "total_tokens": _word_count(query)
+                        + (completion_tokens or _word_count(answer)),
                     },
                     "hhs_native_trace": trace,
                 }
-            except NativeCausalLMNotReady as exc:
+            except (NativeCausalLMNotReady, NativeResponseBlockStreamError) as exc:
                 causal_failure = f"{type(exc).__name__}: {exc}"
             except Exception as exc:
                 causal_failure = f"{type(exc).__name__}: {exc}"

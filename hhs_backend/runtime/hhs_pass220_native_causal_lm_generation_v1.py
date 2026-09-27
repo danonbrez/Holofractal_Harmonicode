@@ -20,7 +20,7 @@ from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 VERSION = "HHS_PASS_220_I009_NATIVE_CAUSAL_LM_GENERATION_V1"
 STATUS_SCHEMA = "HHS_PASS_220_I009_NATIVE_CAUSAL_LM_STATUS_V1"
 RECEIPT_SCHEMA = "HHS_PASS_220_I009_NATIVE_CAUSAL_LM_RECEIPT_V1"
-DEFAULT_MAX_NEW_TOKENS = 256
+DEFAULT_MAX_NEW_TOKENS = 1024
 MAX_MAX_NEW_TOKENS = 4096
 
 
@@ -157,6 +157,8 @@ class NativeCausalLMGenerationService:
             "model_id": self.model_id,
             "local_files_only": self.local_files_only,
             "max_new_tokens": self.max_new_tokens,
+            "generation_limit_semantics": "PER_CALL_BUFFER_NOT_WHOLE_RESPONSE_LIMIT",
+            "serialized_response_block_stream_supported": True,
             "load_error": self._load_error,
             "network_download_required": False,
             "natural_language_egress_only": True,
@@ -282,8 +284,7 @@ class NativeCausalLMGenerationService:
             raise NativeCausalLMGenerationError(
                 "tokenizer.decode must return natural-language text"
             )
-        response = response.strip()
-        if not response:
+        if not response.strip():
             raise NativeCausalLMGenerationError(
                 "native causal model generated an empty response"
             )
