@@ -1,26 +1,26 @@
 # Repository file/dependency shard - formal
 
-Source commit: [3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4](https://github.com/danonbrez/Holofractal_Harmonicode/commit/3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4)
+Source commit: [d46b2ad3271834449dd69b140dafc5803680a2fa](https://github.com/danonbrez/Holofractal_Harmonicode/commit/d46b2ad3271834449dd69b140dafc5803680a2fa)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## formal/certificates
 
-- [formal/certificates/gfe_state_5_4_grobner.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4/formal/certificates/gfe_state_5_4_grobner.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 12
+- [formal/certificates/gfe_state_5_4_grobner.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d46b2ad3271834449dd69b140dafc5803680a2fa/formal/certificates/gfe_state_5_4_grobner.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 12
 
 ## formal/coq
 
-- [formal/coq/HHS_GFE_Field_Quotient.v](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4/formal/coq/HHS_GFE_Field_Quotient.v) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 20
+- [formal/coq/HHS_GFE_Field_Quotient.v](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d46b2ad3271834449dd69b140dafc5803680a2fa/formal/coq/HHS_GFE_Field_Quotient.v) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 20
 
 ## formal/lean
 
-- [formal/lean/HHS_GFE_Field_Quotient.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4/formal/lean/HHS_GFE_Field_Quotient.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 16
+- [formal/lean/HHS_GFE_Field_Quotient.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d46b2ad3271834449dd69b140dafc5803680a2fa/formal/lean/HHS_GFE_Field_Quotient.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 16
 
 ## formal/lemmas/pass_144
 
-- [formal/lemmas/pass_144/LEMMA_CORPUS.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4/formal/lemmas/pass_144/LEMMA_CORPUS.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 16
-- [formal/lemmas/pass_144/LEMMA_DERIVATIONS.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4/formal/lemmas/pass_144/LEMMA_DERIVATIONS.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
+- [formal/lemmas/pass_144/LEMMA_CORPUS.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d46b2ad3271834449dd69b140dafc5803680a2fa/formal/lemmas/pass_144/LEMMA_CORPUS.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 16
+- [formal/lemmas/pass_144/LEMMA_DERIVATIONS.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d46b2ad3271834449dd69b140dafc5803680a2fa/formal/lemmas/pass_144/LEMMA_DERIVATIONS.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
 
 ## formal/wolfram
 
-- [formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3c48ff0c90cabffdb04e0f82ecb1c57c9c0529a4/formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 5
+- [formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d46b2ad3271834449dd69b140dafc5803680a2fa/formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 5
