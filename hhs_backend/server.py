@@ -37,6 +37,10 @@ from fastapi.responses import JSONResponse
 
 import uvicorn
 
+from hhs_backend.frontend_ingress_policy_v1 import (
+    configured_frontend_ingress_policy,
+)
+
 # ============================================================================
 # ROUTES
 # ============================================================================
@@ -365,17 +369,21 @@ app = FastAPI(
 # MIDDLEWARE
 # ============================================================================
 
+FRONTEND_INGRESS_POLICY = configured_frontend_ingress_policy()
+
 app.add_middleware(
 
     CORSMiddleware,
 
-    allow_origins=["*"],
+    allow_origins=FRONTEND_INGRESS_POLICY["cors_allowed_origins"],
 
-    allow_credentials=True,
+    allow_credentials=FRONTEND_INGRESS_POLICY["allow_credentials"],
 
-    allow_methods=["*"],
+    allow_methods=FRONTEND_INGRESS_POLICY["allow_methods"],
 
-    allow_headers=["*"],
+    allow_headers=FRONTEND_INGRESS_POLICY["allow_headers"],
+
+    expose_headers=FRONTEND_INGRESS_POLICY["expose_headers"],
 )
 
 # ============================================================================

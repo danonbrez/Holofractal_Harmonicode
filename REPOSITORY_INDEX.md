@@ -22,6 +22,14 @@ The repository-wide generated deep index is [REPOSITORY_HASH216_DEPENDENCY_TREE.
 
 Generation, authority checks, evidence upload, and refresh are defined by [.github/workflows/repository-hash216-dependency-index.yml](.github/workflows/repository-hash216-dependency-index.yml).
 
+### First-class Lane 5 hydration knowledge graph
+
+The file/dependency index is also hydrated into [artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json), which promotes discovered system capabilities and constructors into first-class, domain-separated Hash216 knowledge objects while retaining their exact repository-file bindings.
+
+The callable database surface is [hhs_backend/runtime/hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69.py](hhs_backend/runtime/hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69.py). It hydrates the file graph, dependencies, capabilities, constructors, typed knowledge relations, and all 216 Hash216 character positions into restartable SQLite WAL/FULL storage. The generated [database receipt](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json) proves the current projection can be reconstructed into that database without making the generated SQLite file itself source authority.
+
+This Lane 5 map remains candidate-only: discovery and hydration do not mint canonical VM81/Hash72/Hash216 state or automatically promote composition/superedge authority.
+
 ## Canonical execution stack
 
 ### Runtime authority

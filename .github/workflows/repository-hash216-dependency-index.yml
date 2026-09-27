@@ -37,6 +37,10 @@ jobs:
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
 
+      - name: Validate Lane 5 repository hydration knowledge graph 1.69
+        run: |
+          PYTHONPATH=. pytest -q tests/pass219/test_pass219_lane5_repository_hydration_knowledge_graph_1_69.py
+
       - name: Deep scan repository through Lane 5 and Hash216
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
@@ -56,6 +60,7 @@ jobs:
 
           from hhs_backend.runtime.hhs_pass214_repository_census_v1 import build_repository_census
           from hhs_backend.runtime.hhs_pass219_lane5_repository_capability_reverse_discovery_1_44 import build_repository_capability_reverse_discovery
+          from hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69 import build_repository_hydration_knowledge_graph, Lane5RepositoryHydrationKnowledgeDatabase
           from hhs_runtime.pass191.repository_hydration import _hash216
           from hhs_verification.pass173.dependency_scanner import DependencyScanner
 
@@ -63,8 +68,10 @@ jobs:
           REPO = 'danonbrez/Holofractal_Harmonicode'
           MASTER = 'REPOSITORY_HASH216_DEPENDENCY_TREE.md'
           GRAPH = 'artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json'
+          KNOWLEDGE = 'artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json'
+          DB_RECEIPT = 'artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json'
           SHARDS = 'docs/repository_index/files'
-          GENERATED = (MASTER, GRAPH, SHARDS + '/')
+          GENERATED = (MASTER, GRAPH, KNOWLEDGE, DB_RECEIPT, SHARDS + '/')
           TEXT = {'.py','.pyi','.c','.h','.cc','.cpp','.cxx','.hpp','.hh','.js','.mjs','.cjs','.jsx','.ts','.tsx','.json','.jsonl','.yaml','.yml','.toml','.ini','.cfg','.md','.rst','.adoc','.html','.htm','.css','.scss','.sh','.bash','.zsh','.ps1','.sql','.txt','.glsl','.wgsl','.vert','.frag','.cmake'}
           NAMES = {'Makefile','GNUmakefile','CMakeLists.txt','Dockerfile'}
           EXT = ('','.py','.pyi','.js','.mjs','.cjs','.jsx','.ts','.tsx','.json','.md','.h','.hpp','.c','.cc','.cpp','.css','.html','.sh','.yaml','.yml','.toml')
@@ -79,7 +86,7 @@ jobs:
               return subprocess.check_output(['git','-C',str(ROOT),*args], text=True).strip()
 
           def projection(path):
-              return path in {MASTER, GRAPH} or path.startswith(SHARDS + '/')
+              return path in {MASTER, GRAPH, KNOWLEDGE, DB_RECEIPT} or path.startswith(SHARDS + '/')
 
           def clean(ref):
               ref = unquote(html.unescape(ref.strip())).strip("'\"<>")
@@ -284,7 +291,7 @@ jobs:
               'schema':'HHS_REPOSITORY_HASH216_FILE_DEPENDENCY_INDEX_V1',
               'source_commit':commit,
               'source_tree':tree_id,
-              'projection_policy':{'read_only_discovery':True,'candidate_only':True,'canonical_vm81_mutation_authority':False,'canonical_hash72_authority':False,'canonical_hash216_authority':False,'automatic_hash216_composition_promotion':False,'automatic_superedge_promotion':False,'self_generated_projection_excluded':[MASTER,GRAPH,SHARDS+'/**']},
+              'projection_policy':{'read_only_discovery':True,'candidate_only':True,'canonical_vm81_mutation_authority':False,'canonical_hash72_authority':False,'canonical_hash216_authority':False,'automatic_hash216_composition_promotion':False,'automatic_superedge_promotion':False,'self_generated_projection_excluded':[MASTER,GRAPH,KNOWLEDGE,DB_RECEIPT,SHARDS+'/**']},
               'counts':{
                   'tracked_tree_entries':summary['coverage']['tracked_tree_entries'],
                   'tracked_files_total':len(all_blobs),
@@ -326,6 +333,27 @@ jobs:
           out_graph = ROOT/GRAPH
           out_graph.parent.mkdir(parents=True,exist_ok=True)
           out_graph.write_text(json.dumps(graph,sort_keys=True,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+
+          knowledge = build_repository_hydration_knowledge_graph(ROOT, graph, lane5_snapshot=lane5)
+          out_knowledge = ROOT/KNOWLEDGE
+          out_knowledge.write_text(json.dumps(knowledge,sort_keys=True,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          db_path = Path('/tmp/hhs_lane5_repository_hydration_knowledge.sqlite3')
+          for suffix in ('', '-wal', '-shm'):
+              candidate = Path(str(db_path) + suffix)
+              if candidate.exists(): candidate.unlink()
+          with Lane5RepositoryHydrationKnowledgeDatabase(db_path) as knowledge_db:
+              database_status = knowledge_db.hydrate(dependency_graph=graph, knowledge_projection=knowledge)
+          database_status.pop('database_path', None)
+          database_receipt = {
+              'schema':'HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_DATABASE_RECEIPT_1_69',
+              'source_commit':commit,
+              'source_dependency_graph_root_hash216':roots['graph_root_hash216'],
+              'projection_root_hash216':knowledge['roots']['projection_root_hash216'],
+              'database_status':database_status,
+              'database_binary_is_source_authority':False,
+              'restart_rehydratable_from_repository_artifacts':True,
+          }
+          (ROOT/DB_RECEIPT).write_text(json.dumps(database_receipt,sort_keys=True,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 
           shard_root = ROOT/SHARDS
           if shard_root.exists():
@@ -371,7 +399,7 @@ jobs:
           master = ['# HHS Hash216 Repository File & Dependency Tree','','Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency observations, Pass 191 three-Hash72 Hash216 identities, and Lane 5 1.44 capability topology.','', '> Read-only/candidate-only projection. It does not mint canonical VM81/Hash72/Hash216 state or promote Hash216 composition/superedges.','','## Bound repository state','', '- Source commit: ['+commit+'](https://github.com/'+REPO+'/commit/'+commit+')','- Git tree: '+tree_id,'- Tracked tree entries: '+format(graph['counts']['tracked_tree_entries'],','),'- Tracked files in Git tree: '+format(graph['counts']['tracked_files_total'],','),'- Content-bound indexed files: '+format(graph['counts']['tracked_files'],','),'- Projection artifacts excluded from content root: '+format(graph['counts']['projection_artifacts_excluded'],','),'- Text files deep-scanned: '+format(graph['counts']['text_files_scanned'],','),'- Internal dependency edges: '+format(graph['counts']['file_dependency_edges'],','),'- Containment edges: '+format(graph['counts']['containment_edges'],','),'- Lane 5 capability nodes: '+format(graph['counts']['lane5_capability_nodes'],','),'','## Hash216 graph roots','']
           for key in ('file_node_root_hash216','directory_node_root_hash216','containment_edge_root_hash216','dependency_edge_root_hash216','lane5_capability_binding_root_hash216','graph_root_hash216'):
               master += ['### '+key,'',roots[key],'']
-          master += ['## Lane 5 evidence binding','', '- Public catalog Hash72: '+lane5['public_catalog_root_hash72'],'- Native export SHA-256: '+lane5['native_export_root_sha256'],'- Python registry SHA-256: '+lane5['python_registry_root_sha256'],'- Dependency SHA-256: '+lane5['dependency_root_sha256'],'- Model SHA-256: '+lane5['model_root_sha256'],'- Native receipt accepted: '+str(receipt['accepted']).lower(),'- Canonical admission boundaries: '+str(lane5['counts']['canonical_boundaries']),'','## Machine graph','', '['+GRAPH+']('+GRAPH+')','','## Full file-link shards','','| Shard | Files |','|---|---:|']
+          master += ['## Lane 5 evidence binding','', '- Public catalog Hash72: '+lane5['public_catalog_root_hash72'],'- Native export SHA-256: '+lane5['native_export_root_sha256'],'- Python registry SHA-256: '+lane5['python_registry_root_sha256'],'- Dependency SHA-256: '+lane5['dependency_root_sha256'],'- Model SHA-256: '+lane5['model_root_sha256'],'- Native receipt accepted: '+str(receipt['accepted']).lower(),'- Canonical admission boundaries: '+str(lane5['counts']['canonical_boundaries']),'','## Machine graph','', '['+GRAPH+']('+GRAPH+')','','## Lane 5 hydration knowledge graph','', '['+KNOWLEDGE+']('+KNOWLEDGE+')','', '- Capabilities: '+format(knowledge['counts']['capabilities'],','),'- Constructors: '+format(knowledge['counts']['constructors'],','),'- Knowledge relations: '+format(knowledge['counts']['knowledge_edges'],','),'- Projection root Hash216: '+knowledge['roots']['projection_root_hash216'],'- Database hydration receipt: ['+DB_RECEIPT+']('+DB_RECEIPT+')','','## Full file-link shards','','| Shard | Files |','|---|---:|']
           counts = Counter((n['path'].split('/',1)[0] if '/' in n['path'] else '_root') for n in file_nodes)
           for group,rel in sorted(shard_paths.items()): master.append('| ['+group+']('+rel+') | '+format(counts[group],',')+' |')
           master += ['','## Cross-component dependency tree','']
@@ -384,7 +412,7 @@ jobs:
           master += ['## Replay and authority rules','', '- Pass 214 classifies the complete bound Git tree.','- Every internal dependency endpoint resolves to a tracked content-bound file.','- Graph node, edge, and aggregate roots use 216-symbol Pass 191 Hash216 identity.','- Lane 5 1.44 retains exactly one inherited canonical admission boundary and candidate-only native validation.','- Generated projections are excluded from the content-bound source root to avoid self-referential hashing.','']
           (ROOT/MASTER).write_text('\n'.join(master),encoding='utf-8')
 
-          print(json.dumps({'source_commit':commit,'source_tree':tree_id,'tracked_files':graph['counts']['tracked_files'],'dependency_edges':graph['counts']['file_dependency_edges'],'lane5_nodes':graph['counts']['lane5_capability_nodes'],'graph_root_hash216':roots['graph_root_hash216']},sort_keys=True))
+          print(json.dumps({'source_commit':commit,'source_tree':tree_id,'tracked_files':graph['counts']['tracked_files'],'dependency_edges':graph['counts']['file_dependency_edges'],'lane5_nodes':graph['counts']['lane5_capability_nodes'],'graph_root_hash216':roots['graph_root_hash216'],'knowledge_capabilities':knowledge['counts']['capabilities'],'knowledge_constructors':knowledge['counts']['constructors'],'knowledge_edges':knowledge['counts']['knowledge_edges'],'knowledge_root_hash216':knowledge['roots']['projection_root_hash216']},sort_keys=True))
           PY
 
       - name: Replay generated graph deterministically
@@ -394,6 +422,7 @@ jobs:
         run: |
           cp REPOSITORY_HASH216_DEPENDENCY_TREE.md /tmp/repository-tree-first.md
           cp artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json /tmp/repository-graph-first.json
+          cp artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json /tmp/repository-knowledge-first.json
           find docs/repository_index/files -type f -name '*.md' -print0 | sort -z | xargs -0 sha256sum > /tmp/repository-shards-first.sha256
           # Re-run the exact workflow step body by invoking this workflow through its committed source is intentionally
           # replaced here by graph self-verification; determinism is additionally checked on every subsequent main push.
@@ -401,7 +430,16 @@ jobs:
           import json
           from pathlib import Path
           graph=json.loads(Path('artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json').read_text())
+          knowledge=json.loads(Path('artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json').read_text())
+          database_receipt=json.loads(Path('artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json').read_text())
           assert len(graph['roots']['graph_root_hash216']) == 216
+          assert len(knowledge['roots']['projection_root_hash216']) == 216
+          assert knowledge['source_dependency_graph_root_hash216'] == graph['roots']['graph_root_hash216']
+          assert knowledge['authority']['candidate_only'] is True
+          assert knowledge['authority']['canonical_hash216_authority'] is False
+          assert database_receipt['projection_root_hash216'] == knowledge['roots']['projection_root_hash216']
+          assert database_receipt['database_status']['capabilities'] == knowledge['counts']['capabilities']
+          assert database_receipt['database_status']['constructors'] == knowledge['counts']['constructors']
           assert graph['lane5']['native_receipt']['accepted'] is True
           assert graph['lane5']['native_receipt']['candidate_only'] is True
           assert graph['counts']['tracked_files'] == len(graph['files'])
@@ -418,6 +456,8 @@ jobs:
           path: |
             REPOSITORY_HASH216_DEPENDENCY_TREE.md
             artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json
+            artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json
+            artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json
             docs/repository_index/files/*.md
 
       - name: Dispatch authoritative main refresh
