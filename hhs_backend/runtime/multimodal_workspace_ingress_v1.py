@@ -513,6 +513,25 @@ def multimodal_workspace_ingress_self_test() -> Dict[str, Any]:
         declared_modality="VENDOR_LEGACY_RECORD",
         media_type="application/x-vendor-legacy",
     )
+    # Low-level packet construction remains fail-closed for an undeclared
+    # canonical adapter. External ingress does not hit this path directly:
+    # it must translate legacy/unknown types first.
+    unsupported_packet = build_ingress_packet(
+        project_id=str(project.get("project_id")),
+        source_name="unknown.xyz",
+        payload="unknown",
+        declared_modality="UNKNOWN_MODALITY",
+        detected_modality="UNKNOWN_MODALITY",
+    )
+    unsupported_validation = validate_ingress_packet(unsupported_packet)
+    unsupported = {
+        "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+        "version": VERSION,
+        "ok": False,
+        "status": "WORKSPACE_INGRESS_REJECTED",
+        "packet": unsupported_packet,
+        "validation": unsupported_validation,
+    }
     return {
         "schema": "HHS_MULTIMODAL_WORKSPACE_INGRESS_SELF_TEST_V1",
         "version": VERSION,
@@ -534,6 +553,7 @@ def multimodal_workspace_ingress_self_test() -> Dict[str, Any]:
         "results": [text, hhs, json_result, pdf, image, video, audio, legacy_graph, unknown],
         "legacy_graph_translation": legacy_graph,
         "unknown_legacy_binary_fallback": unknown,
+        "unsupported_modality_rejection": unsupported,
         "invariant": "LEGACY_EXTERNAL_TYPES_TRANSLATE_OR_PRESERVE_AS_BINARY_WITHOUT_BYPASSING_CANONICAL_ADAPTER_AUTHORITY",
     }
 
