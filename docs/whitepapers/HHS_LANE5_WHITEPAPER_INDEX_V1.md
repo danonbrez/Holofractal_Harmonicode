@@ -560,3 +560,10 @@ Pass 219 Lane 5 1.67 adds a bounded exact-arithmetic foreign-model benchmark ove
 The C++ cell-wall membrane requires Pass 219 1.66 plus the frozen monolithic equation source identity before accepting the candidate. The receipt remains candidate-only and exposes no VM81, canonical Hash72/Hash216, persistence, or floating-point authority.
 
 The current proof scope is deliberately bounded: structural metadata and the published exact sample oracle are verified, while full upstream artifact ingestion and all-coefficient equivalence remain unresolved until a source manifest and complete foreign dataset are imported and replayed.
+
+
+### Nine-loop source attestation 1.68
+
+[HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md](HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md)
+
+Pass 219 Lane 5 1.68 closes the source/provenance axis for the public Cosmic9 sample corpus. It streams all 20,630 weight-18 sample words, reconstructs every nonzero rational at both 31-bit primes, verifies all exact-zero rows, freezes the upstream MANIFEST/sample/summary SHA-256 identities, and binds that source receipt to a revalidated 1.67 parent through a candidate-only native Hash216 successor cell wall.
