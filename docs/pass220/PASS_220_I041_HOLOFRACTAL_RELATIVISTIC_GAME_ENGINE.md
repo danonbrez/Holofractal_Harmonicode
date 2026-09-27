@@ -363,6 +363,25 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Passive particle-follow projection
+
+Particle-follow mode is a noninteractive observer. It reads the particle's
+already-computed state and derives camera pose from the local trajectory only.
+
+~~~text
+engine position + velocity
+-> instantaneous path tangent
++ local spherical radial normal
+-> passive camera transport
+~~~
+
+No camera operation can modify force, acceleration, velocity, position,
+topology, constructor state, or any other canonical simulation quantity.
+Orbit/pan/zoom controls are disabled while follow mode is active.
+
+This preserves the visible toroidal spiraling curvature instead of replacing it
+with a synthetic straight chase path.
+
 ## Perspective-invariant folded hyperspherical cloud
 
 The mature cloud's 2D appearance is structurally invariant across admissible
