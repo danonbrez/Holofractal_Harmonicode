@@ -22,6 +22,22 @@ is the foundation. Optimization precedes feature additions. Geometry and physics
 are preserved unless a native repository contract requires a corrective
 refinement and dependency-scoped validation proves the affected invariant.
 
+## Spritemap correction
+
+The Lane-5 projection fork shares the 5184/Q144 address topology but does not
+currently execute the full bounded-spherical monolithic trajectory. Therefore
+it is not permitted to claim canonical animated-spritemap seed authority.
+
+The canonical animated seed is the full spherical trajectory. Fork B must
+either execute the same state kernel or consume exact
+`HHS_I041_CANONICAL_SPHERICAL_FRAME_V1` states emitted/replayed from Fork A.
+Until then it is explicitly `PROJECTION_PIPELINE_PREVIEW` with
+`canonicalAnimatedSeedBound=false`.
+
+This preserves the intended use of MP4 rendering: show the same simulation at
+arbitrary/offline render speed when realtime display is too expensive, never
+replace the simulation with a cheaper trajectory.
+
 ## Fork architecture clarified
 
 - Fork A: full canonical monolithic simulation, optimized in place for
