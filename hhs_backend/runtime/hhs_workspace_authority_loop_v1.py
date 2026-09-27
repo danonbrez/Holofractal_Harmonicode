@@ -56,11 +56,28 @@ class WorkspaceAuthorityLoop:
             result = fork_workspace_project(project, payload_dict.get("name"))
         elif operation == "ingress.register":
             project = self.projects.get(str(payload_dict.get("project_id"))) or create_workspace_project("Ingress Project")
+            source_payload = (
+                payload_dict.get("source_payload")
+                if "source_payload" in payload_dict
+                else payload_dict.get("payload", "")
+            )
             result = ingest_workspace_source(
                 project=project,
-                source_name=str(payload_dict.get("source_name") or "main.hhs"),
-                payload=payload_dict.get("source_payload") or payload_dict.get("payload") or "",
-                declared_modality=str(payload_dict.get("declared_modality") or "HARMONICODE_SOURCE"),
+                source_name=str(payload_dict.get("source_name") or "ingress.bin"),
+                payload=source_payload,
+                declared_modality=(
+                    str(payload_dict.get("declared_modality") or payload_dict.get("source_modality") or "")
+                    or None
+                ),
+                media_type=(
+                    str(
+                        payload_dict.get("source_media_type")
+                        or payload_dict.get("media_type")
+                        or payload_dict.get("content_type")
+                        or ""
+                    )
+                    or None
+                ),
             )
             if result.get("ok") and result.get("registration", {}).get("project"):
                 self.projects[result["registration"]["project"]["project_id"]] = result["registration"]["project"]
