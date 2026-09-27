@@ -139,22 +139,26 @@ def test_renderer_is_explicitly_fork_b_and_never_the_canonical_simulation_replac
         assert token in source, token
 
 
-def test_canonical_seed_optimization_is_foundation_first_and_allocation_safe():
+def test_canonical_execution_contract_is_math_repair_only():
     source = HTML.read_text(encoding="utf-8")
     for token in (
-        'const FOUNDATION_OPTIMIZATION_CONTRACT = Object.freeze({',
-        'schema:"HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1"',
+        'const FOUNDATION_EXECUTION_CONTRACT = Object.freeze({',
+        'repair mathematical/runtime faults in place',
+        'lane5Rendering:"inherited Lane 5 optimization owns rendering/projection from the same canonical simulation state"',
+        'simulationReductionAuthorized:false',
         'geometryMutationAuthorized:false',
         'physicsMutationAuthorized:false',
-        'function modInverseCoprime(a,m)',
-        'const phaseWordCache = new Map();',
-        'const projected=new Float32Array(verts.length*3);',
-        'updateHudText:renderDue',
+        'repairScope:"MATH_AND_RUNTIME_CORRECTION_ONLY"',
+        'lane5RenderingInherited:true',
+        'schema:"HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1"',
         'foundationPreservationReceipt,',
     ):
         assert token in source, token
-    assert "const pr=tess.verts.map" not in source
-    assert "for(let k=1;k<NODE_COUNT;k++){ if((stride*k)%NODE_COUNT===1)" not in source
+    assert "FOUNDATION_OPTIMIZATION_CONTRACT" not in source
+    assert "phaseWordCache" not in source
+    assert "modInverseCoprime" not in source
+
+
 
 
 
@@ -177,12 +181,10 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "5184 * 5184 = 26,873,856",
         "HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS",
         "HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1",
-        "canonical monolithic seed",
-        "observationally equivalent code/data-layout optimization",
-        "Fork A — optimized realtime simulation",
-        "Fork B — MP4/render observation fork",
-        "same simulation, optimized execution",
-        "same-state observation / MP4 projection",
+        "Canonical execution rule — math/runtime repair only",
+        "execute all specified modules",
+        "Lane 5 is the existing rendering optimization path",
+        "Realtime rendering and MP4 rendering are two observation modes",
         "HHS_I041_CANONICAL_SPHERICAL_FRAME_V1",
         "PROJECTION_PIPELINE_PREVIEW",
         "not yet the canonical animated",
