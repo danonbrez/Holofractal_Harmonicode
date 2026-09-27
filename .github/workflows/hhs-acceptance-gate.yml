@@ -3,19 +3,78 @@ name: HHS Consensus Gate
 on:
   pull_request:
     branches: [main, work]
+    paths:
+      - 'hhs_runtime/hhs_commit_acceptance_gate_v1.py'
+      - 'hhs_runtime/hhs_distributed_verification_v1.py'
+      - 'hhs_runtime/hhs_multi_agent_consensus_v2_gate.py'
+      - 'hhs_runtime/hhs_repo_paths_v1.py'
+      - 'hhs_runtime/hhs_language_runtime_validator_cli_v1.py'
+      - 'hhs_runtime/hhs_unified_hash72_ledger_v1.py'
+      - 'hhs_runtime/hhs_filesystem_hash72_ledger_v1.py'
+      - 'hhs_runtime/hhs_git_hash72_binding_v1.py'
+      - 'hhs_runtime/hhs_dependency_audit_v1.py'
+      - 'hhs_runtime/hhs_immutable_manifest_v1.py'
+      - 'PASS_078_KERNEL_FREEZE_MANIFEST.json'
+      - 'artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json'
+      - 'evidence/pass220/PASS_078_SUCCESSOR_LINEAGE_V1.json'
+      - 'evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'hhs_runtime/include/HARMONICODE_VM_RUNTIME.h'
+      - 'hhs_runtime/c/hhs_runtime_abi.c'
+      - 'hhs_runtime/c/hhs_runtime_abi.h'
+      - 'hhs_runtime_certification_v2.py'
+      - 'hhs_v1_bundle_runner-2.py'
+      - 'hhs_realtime_phase_certification_v1.py'
+      - '.github/workflows/hhs-acceptance-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_commit_acceptance_gate_v1.py'
+      - 'hhs_runtime/hhs_distributed_verification_v1.py'
+      - 'hhs_runtime/hhs_multi_agent_consensus_v2_gate.py'
+      - 'hhs_runtime/hhs_repo_paths_v1.py'
+      - 'hhs_runtime/hhs_language_runtime_validator_cli_v1.py'
+      - 'hhs_runtime/hhs_unified_hash72_ledger_v1.py'
+      - 'hhs_runtime/hhs_filesystem_hash72_ledger_v1.py'
+      - 'hhs_runtime/hhs_git_hash72_binding_v1.py'
+      - 'hhs_runtime/hhs_dependency_audit_v1.py'
+      - 'hhs_runtime/hhs_immutable_manifest_v1.py'
+      - 'PASS_078_KERNEL_FREEZE_MANIFEST.json'
+      - 'artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json'
+      - 'evidence/pass220/PASS_078_SUCCESSOR_LINEAGE_V1.json'
+      - 'evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'hhs_runtime/include/HARMONICODE_VM_RUNTIME.h'
+      - 'hhs_runtime/c/hhs_runtime_abi.c'
+      - 'hhs_runtime/c/hhs_runtime_abi.h'
+      - 'hhs_runtime_certification_v2.py'
+      - 'hhs_v1_bundle_runner-2.py'
+      - 'hhs_realtime_phase_certification_v1.py'
+      - '.github/workflows/hhs-acceptance-gate.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: hhs-consensus-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   verify:
     strategy:
       matrix:
-        node: [1,2,3]
+        node: [1, 2, 3]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
-        with: {python-version: '3.11'}
-      - run: python hhs_runtime/hhs_commit_acceptance_gate_v1.py
-      - run: python hhs_runtime/hhs_distributed_verification_v1.py
+        with:
+          python-version: '3.11'
+      - run: python -m hhs_runtime.hhs_commit_acceptance_gate_v1
+      - run: python -m hhs_runtime.hhs_distributed_verification_v1
       - uses: actions/upload-artifact@v4
         with:
           name: receipt-${{ matrix.node }}
@@ -26,15 +85,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
-        with: {path: receipts}
+        with:
+          path: receipts
       - uses: actions/setup-python@v5
-        with: {python-version: '3.11'}
+        with:
+          python-version: '3.11'
       - run: |
-          python - << 'EOF'
-import json,glob
-from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
-recs=[json.load(open(f)) for f in glob.glob('receipts/**/*.json',recursive=True)]
-res=evaluate_consensus(recs)
-print(res)
-assert res.status=='CONSENSUS_ACCEPTED'
-EOF
+          python - <<'PY'
+          import glob
+          import json
+
+          from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
+
+          recs = [
+              json.load(open(path, encoding='utf-8'))
+              for path in glob.glob('receipts/**/*.json', recursive=True)
+          ]
+          result = evaluate_consensus(recs)
+          print(result)
+          assert result.status == 'CONSENSUS_ACCEPTED'
+          PY

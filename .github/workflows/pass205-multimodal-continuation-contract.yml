@@ -39,6 +39,10 @@ on:
       - '.github/workflows/pass205-production-runtime.yml'
   workflow_dispatch:
 
+concurrency:
+  group: pass205-multimodal-continuation-contract-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -99,7 +103,7 @@ jobs:
     env:
       PYTHONFAULTHANDLER: '1'
       PYTHONUNBUFFERED: '1'
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-continuation.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-continuation.sqlite3
     steps:
       - name: Checkout exact tree
         uses: actions/checkout@v4
@@ -139,7 +143,7 @@ jobs:
       - name: Execute hosted Pass 205 production validation
         run: |
           mkdir -p evidence/pass205-ci
-          python scripts/pass205_production_validation.py \
+          PYTHONPATH="$PWD" python scripts/pass205_production_validation.py \
             --db "${HHS_PASS205_DB}" \
             --evidence evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
 
@@ -165,7 +169,9 @@ jobs:
             evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
           grep -Fq '1259712' evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
           grep -Fq 'gpu_may_commit_hash72' hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py
-          grep -Fq '/api/runtime/continuation/studio' hhs_backend/api/pass205_continuation_routes.py
+          grep -Fq 'API_PREFIX = "/api/runtime/continuation"' hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py
+          grep -Fq 'prefix=API_PREFIX' hhs_backend/api/pass205_continuation_routes.py
+          grep -Fq '@router.get("/studio"' hhs_backend/api/pass205_continuation_routes.py
 
       - name: Upload Pass 205 production evidence
         uses: actions/upload-artifact@v4

@@ -17,7 +17,7 @@ on:
       - "hhs_backend/runtime/**"
       - "hhs_python/runtime/**"
       - "deployment/digitalocean/guarded_auto_update/**"
-      - "deployment/digitalocean/pass205_state/**"
+      - "deployment/digitalocean/warm_boot_manifest.py"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_runtime_os_production_root.py"
       - "tests/test_production_visual_server.py"
@@ -43,7 +43,7 @@ on:
       - "hhs_backend/runtime/**"
       - "hhs_python/runtime/**"
       - "deployment/digitalocean/guarded_auto_update/**"
-      - "deployment/digitalocean/pass205_state/**"
+      - "deployment/digitalocean/warm_boot_manifest.py"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "tests/test_runtime_os_production_root.py"
       - "tests/test_production_visual_server.py"
@@ -97,30 +97,24 @@ jobs:
           test -s hhs_runtime/builds/libhhs_runtime.so
 
       - name: Retain Pass 205 authority and transport gates
-        if: ${{ hashFiles('hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py') != '' }}
         env:
           HHS_PASS205_DB: ${{ runner.temp }}/pass205-runtime-os.sqlite3
         run: |
           set -euo pipefail
           bash -n bin/post_compile
-          bash -n deployment/digitalocean/pass205_state/install.sh
           python -m py_compile \
-            hhs_python/runtime/__init__.py \
-            hhs_python/runtime/hhs_pass205_native_freshness_guard.py \
-            hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py \
-            hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py \
-            hhs_backend/api/a0_pass205_transport_bootstrap.py \
-            hhs_backend/api/a_pass205_governed_bootstrap.py
+            hhs_python/runtime/hhs_pass205_continuation_bridge.py \
+            hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py \
+            hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py \
+            hhs_backend/api/pass205_continuation_routes.py \
+            deployment/digitalocean/warm_boot_manifest.py
           python - <<'PY'
           from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library
           print(build_native_library(force=True))
           PY
-          timeout 600s pytest -q \
-            tests/test_hhs_pass205_native_freshness_guard_v1.py \
-            tests/test_hhs_pass205_state_deployment_v1.py \
-            tests/test_hhs_pass205_governed_continuation_v2.py \
-            tests/test_hhs_pass205_transport_and_retrieval_v1.py
-          timeout 900s pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
+          timeout 900s pytest -q \
+            tests/test_hhs_pass205_continuation_runtime_v1.py \
+            tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py
 
       - name: Validate TypeScript Runtime OS source and build
         working-directory: hhs_gui

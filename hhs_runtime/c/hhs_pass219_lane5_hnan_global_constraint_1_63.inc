@@ -150,17 +150,17 @@ static int hhs_p219_hnan_rank(
 }
 
 static void hhs_p219_hnan_matmul(
-    const int64_t a[4][4],
-    const int64_t b[4][4],
-    int64_t out[4][4]
+    const int64_t *a,
+    const int64_t *b,
+    int64_t *out
 ) {
     size_t i, j, k;
     for (i = 0U; i < 4U; ++i) {
         for (j = 0U; j < 4U; ++j) {
             int64_t v = 0;
             for (k = 0U; k < 4U; ++k)
-                v += a[i][k] * b[k][j];
-            out[i][j] = v;
+                v += a[i * 4U + k] * b[k * 4U + j];
+            out[i * 4U + j] = v;
         }
     }
 }
@@ -190,9 +190,9 @@ static int hhs_p219_hnan_jordan_verify(
     size_t i, j;
     int recurrence = 1;
 
-    hhs_p219_hnan_matmul(m, m, m2);
-    hhs_p219_hnan_matmul(m2, m, m3);
-    hhs_p219_hnan_matmul(m3, m, m4);
+    hhs_p219_hnan_matmul(&m[0][0], &m[0][0], &m2[0][0]);
+    hhs_p219_hnan_matmul(&m2[0][0], &m[0][0], &m3[0][0]);
+    hhs_p219_hnan_matmul(&m3[0][0], &m[0][0], &m4[0][0]);
 
     rank_m = hhs_p219_hnan_rank(&m[0][0], 4U, 4U);
     rank_m2 = hhs_p219_hnan_rank(&m2[0][0], 4U, 4U);

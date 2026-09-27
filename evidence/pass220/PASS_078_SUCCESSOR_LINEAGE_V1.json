@@ -1,0 +1,29 @@
+{
+  "schema": "HHS_PASS_078_SUCCESSOR_LINEAGE_V1",
+  "historical_ref": "66c614ae1de0c1b1651451e2c406307a8dee83ed",
+  "policy": "HISTORICAL_FREEZE_PLUS_EXPLICIT_VALIDATED_SUCCESSORS",
+  "runtime_abi_successor": {
+    "repository_path": "hhs_runtime/c/hhs_runtime_abi.c",
+    "authority": "PASS_206_CORE_SUCCESSOR_REPAIR_LINEAGE_V1",
+    "approved_current_git_blob": "6a3ed4a10c5d83fa77bb4d118819fc230d32248a",
+    "canonical_authority_change": false,
+    "abi_signature_drift": false
+  },
+  "vm81_successor": {
+    "repository_path": "hhs_runtime/HARMONICODE_VM_RUNTIME.c",
+    "pass": 220,
+    "iteration": "I028",
+    "pull_request": 547,
+    "validated_head": "8a750bb56d14fc9847166736bbbf2ca0660bff7f",
+    "validation_run": 35723417642,
+    "validation_conclusion": "success",
+    "merge_commit": "86a66d32ba3c17430887cb4ff9fa0da7dbb4bf6f",
+    "approved_current_git_blob": "92afd8d0e26119b6db6420740c05db25a37d389a",
+    "semantic_boundary": "APPEND_ONLY_VM81_OPCODE_EXTENSION_WITH_LEGACY_0_23_FROZEN",
+    "canonical_authority_change": false
+  },
+  "unchanged_historical_surfaces": [
+    "hhs_runtime/include/HARMONICODE_VM_RUNTIME.h",
+    "hhs_runtime/c/hhs_runtime_abi.h"
+  ]
+}

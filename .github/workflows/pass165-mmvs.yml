@@ -28,13 +28,46 @@ on:
       - 'evidence/pass166/**'
       - '.github/workflows/pass165-mmvs.yml'
       - '.github/workflows/pass166-word2vec.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass165/**'
+      - 'hhs_backend/api/pass165_multimodal_ingress_routes.py'
+      - 'hhs_backend/pass165_server.py'
+      - 'native_projects/hhs_pass165_mmvs/**'
+      - 'tests/test_hhs_pass165_multimodal_ingress_v1.py'
+      - 'tests/test_hhs_pass165_terminal_v1.py'
+      - 'tests/pass165_real_fixture_corpus.py'
+      - 'tools/pass165_terminal_evidence.py'
+      - 'HHS_PASS_165_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_165_IMPLEMENTATION_STATUS.md'
+      - 'docs/HHS_PASS_165_MULTIMODAL_INGRESS_RUNTIME.md'
+      - 'evidence/pass165/**'
+      - 'hhs_runtime/pass166/**'
+      - 'hhs_backend/api/pass166_word2vec_routes.py'
+      - 'hhs_backend/pass166_server.py'
+      - 'native_projects/hhs_pass166_word2vec/**'
+      - 'tests/test_hhs_pass166_word2vec_v1.py'
+      - 'tests/test_hhs_pass166_supply_chain_v1.py'
+      - 'tools/hhs_model.py'
+      - 'tools/pass166_terminal_evidence.py'
+      - 'HHS_PASS_166_AUTHORITY_BINDING.json'
+      - 'HHS_PASS_166_IMPLEMENTATION_STATUS.md'
+      - 'docs/HHS_PASS_166_WORD2VEC_RUNTIME.md'
+      - 'evidence/pass166/**'
+      - '.github/workflows/pass165-mmvs.yml'
+      - '.github/workflows/pass166-word2vec.yml'
   workflow_dispatch:
+concurrency:
+  group: pass165-mmvs-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dependency-scoped-validation:
     runs-on: ubuntu-latest
     env:
       PYTHONHASHSEED: '0'
-      HHS_PASS166_STORAGE_DIR: '${{ runner.temp }}/hhs-pass166-default'
+      HHS_PASS166_STORAGE_DIR: '/tmp/hhs-pass166-default'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

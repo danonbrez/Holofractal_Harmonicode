@@ -4,20 +4,65 @@ on:
   push:
     branches:
       - agent/pass219-iteration119-pass205-membrane
-  pull_request:
-    branches: [main]
+      - main
     paths:
       - 'hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.h'
       - 'hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.hpp'
       - 'hhs_runtime/c/hhs_pass219_inherited_pass205_1_19.inc'
+      - 'hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc'
       - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i119_pass205.py'
       - 'tests/pass219/test_pass219_inherited_pass205_1_19.c'
       - 'tests/pass219/test_pass219_inherited_pass205_1_19.cpp'
       - 'tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py'
+      - 'tests/pass219/test_pass219_inherited_pass206_1_18.c'
+      - 'tests/pass219/test_pass219_inherited_pass206_1_18.cpp'
+      - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.c'
+      - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp'
       - 'docs/operations/restart/PASS_219_I119_PASS205_MEMBRANE_RESTART.md'
       - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass214.py'
+      - 'tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py'
+      - 'scripts/run_pass214_vm81_ir_adapter_validation.sh'
+      - 'tests/test_hhs_pass214_vm81_ir_adapter_v1.py'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'evidence/pass220/PASS_078_SUCCESSOR_LINEAGE_V1.json'
+      - 'evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.h'
+      - 'hhs_runtime/include/hhs_pass219_inherited_pass205_1_19.hpp'
+      - 'hhs_runtime/c/hhs_pass219_inherited_pass205_1_19.inc'
+      - 'hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i119_pass205.py'
+      - 'tests/pass219/test_pass219_inherited_pass205_1_19.c'
+      - 'tests/pass219/test_pass219_inherited_pass205_1_19.cpp'
+      - 'tests/pass219/test_pass219_cumulative_pass205_membrane_i119.py'
+      - 'tests/pass219/test_pass219_inherited_pass206_1_18.c'
+      - 'tests/pass219/test_pass219_inherited_pass206_1_18.cpp'
+      - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.c'
+      - 'tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp'
+      - 'docs/operations/restart/PASS_219_I119_PASS205_MEMBRANE_RESTART.md'
+      - '.github/workflows/pass219-cumulative-pass205-membrane-i119.yml'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass214.py'
+      - 'tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py'
+      - 'scripts/run_pass214_vm81_ir_adapter_validation.sh'
+      - 'tests/test_hhs_pass214_vm81_ir_adapter_v1.py'
+      - 'hhs_runtime/HARMONICODE_VM_RUNTIME.c'
+      - 'evidence/pass220/PASS_078_SUCCESSOR_LINEAGE_V1.json'
+      - 'evidence/pass220/i028_g3_ouroboros_wolfram_20260922_v1.output.json'
+
+concurrency:
+  group: pass219-i119-pass205-membrane-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -33,7 +78,7 @@ jobs:
       matrix:
         target: [exact, synthetic]
     env:
-      HHS_PASS205_DB: ${{ runner.temp }}/pass205-i119.sqlite3
+      HHS_PASS205_DB: /tmp/pass205-i119.sqlite3
       HHS_PASS208_GPU_ENABLED: '0'
       HHS_PASS207_GPU_BACKEND: CPU_REFERENCE
       HHS_PASS207_REQUIRE_PHYSICAL_GPU: '0'
@@ -86,17 +131,62 @@ jobs:
           mkdir -p /tmp/pass219-i119-pass205
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/pass219-i119-pass205/exact.o
 
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-i119-pass205/link-support full
+
       - name: Run Pass 205 C and C++ conformance
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass205_1_19.c /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/c && /tmp/pass219-i119-pass205/c
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass205_1_19.cpp /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/cpp && /tmp/pass219-i119-pass205/cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.c \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-i119-pass205/c
+          /tmp/pass219-i119-pass205/c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass205_1_19.cpp \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
+            -o /tmp/pass219-i119-pass205/cpp
+          /tmp/pass219-i119-pass205/cpp
 
       - name: Preserve Pass 206 and Pass 219B exact ABI successors
         run: |
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass206_1_18.c /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass206-c && /tmp/pass219-i119-pass205/pass206-c
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_inherited_pass206_1_18.cpp /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass206-cpp && /tmp/pass219-i119-pass205/pass206-cpp
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_universal_phase_locality_1_0.c /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass219b-c && /tmp/pass219-i119-pass205/pass219b-c
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp /tmp/pass219-i119-pass205/exact.o -o /tmp/pass219-i119-pass205/pass219b-cpp && /tmp/pass219-i119-pass205/pass219b-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.c \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-i119-pass205/pass206-c
+          /tmp/pass219-i119-pass205/pass206-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_inherited_pass206_1_18.cpp \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
+            -o /tmp/pass219-i119-pass205/pass206-cpp
+          /tmp/pass219-i119-pass205/pass206-cpp
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_universal_phase_locality_1_0.c \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass219-i119-pass205/pass219b-c
+          /tmp/pass219-i119-pass205/pass219b-c
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219b_universal_phase_locality_1_0.cpp \
+            /tmp/pass219-i119-pass205/exact.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_hash216.o \
+            /tmp/pass219-i119-pass205/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
+            -o /tmp/pass219-i119-pass205/pass219b-cpp
+          /tmp/pass219-i119-pass205/pass219b-cpp
 
       - uses: actions/setup-python@v5
         with:
