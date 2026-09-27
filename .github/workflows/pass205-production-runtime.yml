@@ -155,7 +155,9 @@ jobs:
           grep -Fq 'HHS_PASS_205_DETERMINISTIC_MULTIMODAL_CONTINUATION_RUNTIME_VERIFIED' evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
           grep -Fq '1259712' evidence/pass205-ci/PASS205_PRODUCTION_VALIDATION_RECEIPT.json
           grep -Fq 'gpu_may_commit_hash72' hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py
-          grep -Fq '/api/runtime/continuation/studio' hhs_backend/api/pass205_continuation_routes.py
+          grep -Fq 'API_PREFIX = "/api/runtime/continuation"' hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py
+          grep -Fq 'prefix=API_PREFIX' hhs_backend/api/pass205_continuation_routes.py
+          grep -Fq '@router.get("/studio"' hhs_backend/api/pass205_continuation_routes.py
 
       - name: Upload Pass 205 production evidence
         uses: actions/upload-artifact@v4

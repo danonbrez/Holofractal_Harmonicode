@@ -28,8 +28,13 @@ def _scan(root: Path):
     return hits
 
 def _run(p):
-    r=subprocess.run(["python",str(p)],capture_output=True,text=True)
-    return {"ok":r.returncode==0,"stderr":r.stderr}
+    r = subprocess.run(["python", str(p)], capture_output=True, text=True)
+    return {
+        "ok": r.returncode == 0,
+        "returncode": r.returncode,
+        "stdout": r.stdout,
+        "stderr": r.stderr,
+    }
 
 def run_commit_acceptance_gate():
     root=repo_root()
@@ -46,7 +51,14 @@ def run_commit_acceptance_gate():
     if rt.get("status")!="ACCEPTED": raise CommitAcceptanceError(json.dumps(rt))
 
     for s in ["hhs_runtime_certification_v2.py","hhs_v1_bundle_runner-2.py","hhs_realtime_phase_certification_v1.py"]:
-        if not _run(root/s)["ok"]: raise CommitAcceptanceError(s)
+        result = _run(root / s)
+        if not result["ok"]:
+            raise CommitAcceptanceError(json.dumps({
+                "script": s,
+                "returncode": result["returncode"],
+                "stdout": result["stdout"],
+                "stderr": result["stderr"],
+            }, sort_keys=True))
 
     arts=list((root/"data"/"runtime").glob("*.json"))
     if not absorb_json_artifacts(arts)["verification"]["ok"]:
