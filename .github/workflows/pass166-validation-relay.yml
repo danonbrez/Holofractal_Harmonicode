@@ -17,6 +17,10 @@ on:
       - 'HHS_PASS_166_IMPLEMENTATION_STATUS.md'
       - 'docs/HHS_PASS_166_WORD2VEC_RUNTIME.md'
 
+concurrency:
+  group: pass166-validation-relay-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -26,7 +30,7 @@ jobs:
     timeout-minutes: 20
     env:
       PYTHONHASHSEED: '0'
-      HHS_PASS166_STORAGE_DIR: '${{ runner.temp }}/hhs-pass166-default'
+      HHS_PASS166_STORAGE_DIR: '/tmp/hhs-pass166-default'
     steps:
       - uses: actions/checkout@v4
         with:
