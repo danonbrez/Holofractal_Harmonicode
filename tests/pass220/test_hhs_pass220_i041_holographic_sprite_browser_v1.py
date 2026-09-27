@@ -339,3 +339,22 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py",
     ):
         assert token in source, token
+
+
+
+BENCHMARK = Path("benchmarks/pass220/benchmark_i041_html_render_bottleneck.py")
+
+
+def test_i041_benchmark_uses_exact_fractional_capture_cadence_without_fractional_canonical_ticks():
+    source = BENCHMARK.read_text(encoding="utf-8")
+    for token in (
+        "from fractions import Fraction",
+        "def _exact_positive_fraction(value: str) -> Fraction:",
+        "type=_exact_positive_fraction",
+        "default=Fraction(4, 1)",
+        "exact_target = index * args.tick_step",
+        "target_tick = exact_target.numerator // exact_target.denominator",
+        '"canonical_state_sampling": "FLOOR_EXACT_RATIONAL_TO_INTEGER_TICK"',
+        "expected_canonical_states=expected_canonical_states",
+    ):
+        assert token in source, token
