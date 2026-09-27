@@ -13,6 +13,7 @@ from hhs_backend.api.standard_ingress_compat_routes import (
 from hhs_backend.runtime.hhs_workspace_authority_loop_v1 import WorkspaceAuthorityLoop
 from hhs_backend.runtime.multimodal_workspace_ingress_v1 import (
     ingest_workspace_source,
+    normalize_legacy_payload,
     translate_legacy_modality,
 )
 from hhs_backend.runtime.runtime_workspace_project_v1 import create_workspace_project
@@ -97,8 +98,14 @@ def test_raw_octet_stream_redirects_to_workspace_ingress():
     assert body["ok"] is True
     assert body["status"] == "LEGACY_INGRESS_TRANSLATED_AND_REDIRECTED"
     assert body["redirected_operation"] == "workspace:ingress.register"
+    command_payload = body["authority_decision"]["command"]["payload"]["source_payload"]
+    assert command_payload["schema"] == "HHS_REVERSIBLE_BINARY_SOURCE_V1"
+    assert command_payload["encoding"] == "base64"
     ingress = body["authority_decision"]["result"]
     assert ingress["packet"]["declared_modality"] == "BINARY"
+    assert ingress["packet"]["transport_encoding"] == "BASE64_REVERSIBLE"
+    assert ingress["packet"]["compatibility_metadata"]["source_transport_encoding"] == "BASE64_REVERSIBLE"
+    assert ingress["packet"]["compatibility_metadata"]["source_size_bytes"] == 4
     payload = ingress["workspace_object"]
     assert payload["source_preserved"] is True
 
@@ -223,3 +230,13 @@ def test_compatibility_routes_are_declared_in_kernel_surface_map():
         assert path in source
     assert "workspace.ingress.compatibility.submit" in source
     assert "ingress.register" in source
+
+
+
+def test_reversible_binary_normalization_is_idempotent():
+    first = normalize_legacy_payload(b"\x00\xfflegacy")
+    second = normalize_legacy_payload(first["payload"])
+    assert first["transport_encoding"] == "BASE64_REVERSIBLE"
+    assert second["transport_encoding"] == "BASE64_REVERSIBLE"
+    assert second["payload"] == first["payload"]
+    assert second["source_size_bytes"] == first["source_size_bytes"]
