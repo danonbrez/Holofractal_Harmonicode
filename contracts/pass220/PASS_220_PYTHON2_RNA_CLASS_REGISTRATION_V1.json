@@ -1,0 +1,49 @@
+{
+  "schema": "HHS_PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1",
+  "version": 1,
+  "inherits": {
+    "python1": "HHS_PASS_220_PYTHON1_NATIVE_BIGINT_EXECUTION_V1",
+    "pass190_python_registry": "HHS_PYTHON_COMPATIBILITY_OPERATION_REGISTRY_V1",
+    "pass219_rna_grammar": "1.11",
+    "pass219_rna_admission_lowering": "1.12",
+    "pass219_cell_wall_contract": "HHS_PASS_219_CPP_COMPOUND_SYMBOLIC_CONSTRAINT_RUNTIME_VERIFIED"
+  },
+  "native_abi": {
+    "c_header": "hhs_runtime/include/hhs_pass220_python_rna_class_registration_2_0.h",
+    "c_implementation": "hhs_runtime/c/hhs_pass220_python_rna_class_registration_2_0.inc",
+    "cpp_cell_wall": "hhs::rna::PythonClassRegistration",
+    "aggregate_exact_abi": true,
+    "maximum_members": 7,
+    "rna_class_anchor_plus_members_max_domains": 8
+  },
+  "registration_semantics": {
+    "class_anchor_is_rna_domain": true,
+    "each_member_is_rna_domain": true,
+    "member_order_preserved": true,
+    "exactly_one_constructor_required": true,
+    "source_sha256_required": true,
+    "class_hash216_identity_required": true,
+    "registration_program_is_nonexecuting": true,
+    "registration_program_rule_count": 0,
+    "instance_mutation_requires_pass219_rna_admission": true
+  },
+  "shared_language_identity": {
+    "python": true,
+    "mojo_future_binding": true,
+    "cpp": true,
+    "c_abi": true,
+    "same_class_identity_required": true
+  },
+  "authority": {
+    "registration_may_mutate_vm81": false,
+    "registration_may_commit_hash72": false,
+    "registration_may_persist_hash216": false,
+    "registration_may_use_float_as_canonical_authority": false,
+    "single_vm81_authority_preserved": true
+  },
+  "next": {
+    "python_class_syntax_lowering": "NATIVE_PARSER_TO_THIS_DESCRIPTOR",
+    "instance_state": "RNA_TRANSCRIPTION_WITNESS_TO_1_12_ADMISSION_CANDIDATE",
+    "litert_lm": "USE_SAME_NATIVE_CLASS_AND_OPERATION_REGISTRY_BOUNDARY"
+  }
+}
