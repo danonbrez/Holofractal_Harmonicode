@@ -1,0 +1,67 @@
+{
+  "schema": "HHS_STANDARD_LEGACY_INGRESS_COMPAT_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 220,
+  "contract_id": "HHS-P220-STANDARD-LEGACY-INGRESS-COMPAT-1.0",
+  "canonical_operation": {
+    "operation_id": "workspace.ingress.register",
+    "canonical_http_method": "POST",
+    "canonical_http_path": "/api/runtime/workspace/command",
+    "canonical_authority": "HHS_WORKSPACE_AUTHORITY_LOOP_V1"
+  },
+  "compatibility_aliases": [
+    {"method": "POST", "path": "/api/runtime/ingress"},
+    {"method": "POST", "path": "/api/runtime/ingress/legacy"},
+    {"method": "POST", "path": "/api/runtime/ingress/upload"},
+    {"method": "POST", "path": "/api/ingress"}
+  ],
+  "status_path": {
+    "method": "GET",
+    "path": "/api/runtime/ingress/compatibility"
+  },
+  "translation_policy": {
+    "block_unknown_external_types": false,
+    "translate_known_legacy_types": true,
+    "translate_known_media_types": true,
+    "translate_known_filename_profiles": true,
+    "unknown_external_type_fallback": "BINARY",
+    "binary_transport_encoding": "BASE64_REVERSIBLE",
+    "preserve_original_declared_modality": true,
+    "preserve_original_media_type": true,
+    "preserve_source_commitment": true,
+    "silent_reclassification_forbidden": true,
+    "canonical_adapter_required_after_translation": true
+  },
+  "http_transport_profiles": [
+    "application/json",
+    "text/*",
+    "application/x-www-form-urlencoded",
+    "multipart/form-data",
+    "application/octet-stream",
+    "arbitrary vendor media types"
+  ],
+  "linux_backend_compatibility": {
+    "profile": "PASS187_EXECUTABLE_UBUNTU_LINUX_ADAPTERS",
+    "surfaces": {
+      "filesystem": "hhs_runtime.pass187.adapters.read_file",
+      "stdin_stdout_process": "hhs_runtime.pass187.adapters.run_process",
+      "unix_domain_socket": "hhs_runtime.pass187.adapters.unix_socket_roundtrip",
+      "http_client": "hhs_runtime.pass187.adapters.http_get"
+    },
+    "normal_linux_frontend_contract": true,
+    "x86_64_guest_compatibility_is_additive": true
+  },
+  "authority_invariants": {
+    "frontend_commits_runtime_truth": false,
+    "compatibility_layer_mints_vm81_authority": false,
+    "compatibility_layer_mints_hash72_authority": false,
+    "compatibility_layer_mints_hash216_persistence_authority": false,
+    "compatibility_aliases_map_to_one_canonical_operation": true,
+    "native_backend_remains_authoritative": true
+  },
+  "resource_bounds": {
+    "default_body_bytes": 67108864,
+    "maximum_configurable_body_bytes": 268435456,
+    "oversize_status": 413
+  }
+}
