@@ -6,12 +6,28 @@
     "page": "https://smsharma.io/cosmic-nine-loops/",
     "manifest": "https://smsharma.io/cosmic-nine-loops/MANIFEST.sha256",
     "sample": "https://smsharma.io/cosmic-nine-loops/samples/E9_sample_coefficients.txt",
-    "zenodo_doi": "10.5281/zenodo.22949278"
+    "zenodo_doi": "10.5281/zenodo.22949278",
+    "manifest_sha256": "f96534526482f03e638ee030b1a88968348901f70967bb89618c76420a21ffe5",
+    "sample_sha256": "a78557e58efb3e12cccb647974131a3f694322bebb97607a5648db0484099b18",
+    "full_sample_summary_sha256": "fbda1f90205bcf4f02b154aba25346aa83768e6cbbccbeeceaef9187eb691088"
   },
   "sample_contract": {
     "weight": 18,
-    "alphabet": ["ah", "bh", "ch", "dh", "eh", "fh", "yu", "yv", "yw"],
-    "prime_moduli": [2147483647, 2147483629],
+    "alphabet": [
+      "ah",
+      "bh",
+      "ch",
+      "dh",
+      "eh",
+      "fh",
+      "yu",
+      "yv",
+      "yw"
+    ],
+    "prime_moduli": [
+      2147483647,
+      2147483629
+    ],
     "nonzero_rows": 20400,
     "zero_rows": 230,
     "total_rows": 20630,
@@ -24,7 +40,8 @@
     "manifest_membership_required": true,
     "exact_rational_reconstruction_required": true,
     "float_authority": false,
-    "candidate_only": true
+    "candidate_only": true,
+    "frozen_upstream_digest_required": true
   },
   "composition": {
     "bind_parent_1_67_hash216": true,
