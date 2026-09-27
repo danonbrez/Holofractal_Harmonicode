@@ -272,3 +272,54 @@ Do not force-reset the branch. Next integration action is to reconcile the
 12-commit main drift against the nine changed I041 files, preserve all
 canonical I041 invariants, run dependency-scoped validation, and then update
 the PR head.
+
+
+## Integration checkpoint — exact rational spherical inspection merge
+
+Base main merged:
+`6eef21a42e36dfe881ff1e5e2e39c9cf322416e7`
+
+Two-parent merge commit:
+`6e742319a52112d616aa7fc8ea8659cc3856ffa1`
+
+Merge construction:
+- base tree: current `main`;
+- overlaid all nine I041 branch files;
+- preserved current-main I047/workflow files unchanged;
+- reconciled I041 spherical inspection/orbit/tesseract controls with the
+  self-hosted exact arithmetic layer;
+- no force update was used.
+
+Merged runtime invariants:
+- 3D spherical boundary is enforced without a visible wireframe;
+- tesseract/SO(4) remains a bounded x-w/y-z phase driver;
+- no 4D perspective divisor is applied to visible particle/camera coordinates;
+- orbit/tesseract/Q144 controls are retained as exact rational host state;
+- wall-clock input is quantized to integer microseconds immediately;
+- simulation/projection tick accumulation is BigInt rational;
+- every crossed integer tick is executed in order;
+- canonical projection writes remain quartic: `tick mod 4 == 0`;
+- WebGL floats remain projection-only;
+- passive particle-follow remains noninteractive and has no physics authority.
+
+Static dependency-scoped validation at merge head:
+- all required exact-runtime / spherical / phase-control tokens present;
+- forbidden 4D visible perspective divisor absent;
+- forbidden visible `THREE.SphereGeometry` guide absent;
+- old float `simTimeTicks += dt*60*speed` clock absent;
+- accidental GLSL `PHI_RENDER` reference absent;
+- old `tick/60` canonical float conversion absent.
+
+PR state after merge:
+- PR #596 open;
+- branch is ahead of main and behind by 0;
+- GitHub reports `mergeable = true`;
+- exact-head workflow `Pass 220 I041 Holofractal Relativistic Game Engine`
+  run `36323946453` queued at the merge head;
+- Pass 157 Unified GUI run `36323946463` queued;
+- queued external CI does not block this restartable checkpoint.
+
+Next action:
+- inspect only attributable exact-head I041/Unified-GUI failures if they appear;
+- repair forward without reopening already-validated unrelated surfaces;
+- merge PR #596 after required checks permit it.
