@@ -90,7 +90,11 @@ typedef struct HHS179RenderCommandV1 {
     uint64_t arg1;
 } HHS179RenderCommandV1;
 
+#ifdef __cplusplus
+static_assert(sizeof(HHS179RenderCommandV1) == HHS179_RENDER_COMMAND_BYTES, "HHS179RenderCommandV1 must remain 32 bytes");
+#else
 _Static_assert(sizeof(HHS179RenderCommandV1) == HHS179_RENDER_COMMAND_BYTES, "HHS179RenderCommandV1 must remain 32 bytes");
+#endif
 
 size_t hhs179_render_packet_required_bytes(uint32_t command_count);
 HHS179RenderStatusV1 hhs179_render_packet_init(
