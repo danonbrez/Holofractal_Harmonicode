@@ -111,6 +111,21 @@ def test_holographic_pixel_sprite_compositor_preserves_source_resolution_and_tra
 
 
 
+def test_holographic_animated_spritemap_requires_canonical_spherical_frame_binding():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'const I041_SPRITEMAP_BINDING = Object.freeze({',
+        'addressTopologySeedBound:true',
+        'canonicalAnimatedSeedBound:false',
+        'currentTrajectoryAuthority:"NONE"',
+        'currentMode:"PROJECTION_PIPELINE_PREVIEW"',
+        'requiredCanonicalFrameSchema:"HHS_I041_CANONICAL_SPHERICAL_FRAME_V1"',
+        'projection_preview_not_mislabeled_as_animated_seed:',
+        'spritemapBinding:I041_SPRITEMAP_BINDING',
+    ):
+        assert token in source, token
+
+
 def test_renderer_is_explicitly_fork_b_and_never_the_canonical_simulation_replacement():
     source = HTML.read_text(encoding="utf-8")
     for token in (
@@ -168,6 +183,9 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "Fork B — MP4/render observation fork",
         "same simulation, optimized execution",
         "same-state observation / MP4 projection",
+        "HHS_I041_CANONICAL_SPHERICAL_FRAME_V1",
+        "PROJECTION_PIPELINE_PREVIEW",
+        "not yet the canonical animated",
         "holofractal_hybrid_qpu_neural_swarm_vm81_i041_realtime.html",
     ):
         assert token in source, token
