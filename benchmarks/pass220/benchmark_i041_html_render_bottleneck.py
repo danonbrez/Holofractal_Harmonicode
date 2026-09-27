@@ -144,6 +144,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             math_repair = page.evaluate(
                 "()=>window.HHS_LANE5_TEST.mathRepairReceipt()"
             )
+            foundation_preservation = page.evaluate(
+                "()=>window.HHS_LANE5_TEST.foundationPreservationReceipt()"
+            )
             if not display_contract["sameResolution"]:
                 raise RuntimeError("HTML source frame does not match drawing-buffer resolution")
             if display_contract["virtualFrameSide"] != 5184:
@@ -158,6 +161,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 raise RuntimeError("halo transparency invariant is not active")
             if math_repair["status"] != "PASS":
                 raise RuntimeError(f"canonical seed math repair failed: {math_repair}")
+            if foundation_preservation["status"] != "PASS":
+                raise RuntimeError(
+                    "canonical seed foundation preservation failed: "
+                    f"{foundation_preservation}"
+                )
 
             benchmark = page.evaluate(
                 "(opts)=>window.HHS_LANE5_TEST.benchmark(opts)",
@@ -228,6 +236,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "benchmark": benchmark,
         "pixel_display_contract": display_contract,
         "canonical_seed_math_repair": math_repair,
+        "foundation_preservation": foundation_preservation,
         "visual": visual,
         "mp4": {
             "path": video_path.name,
@@ -256,6 +265,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "gpu_browser_floats_projection_only": True,
             "canonical_state_authority_changed": False,
             "canonical_seed_title": "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041",
+            "foundation_preservation_passed": foundation_preservation["status"] == "PASS",
+            "geometry_physics_mutation_authorized": False,
             "source_frame_matches_output_resolution": display_contract["sameResolution"],
             "source_pixel_is_dense_nucleus": display_contract["sourcePixelIsDenseNucleus"],
             "halo_overlap_is_translucent": display_contract["haloBackgroundAlphaZero"],
