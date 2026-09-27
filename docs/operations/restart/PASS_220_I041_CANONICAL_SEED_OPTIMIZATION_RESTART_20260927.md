@@ -28,21 +28,23 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
-## Presentation-only limitation
+## Realtime bottleneck classification
 
-The original HTML is not being treated as a faulty physics implementation.
-The remaining limitation is that WebGL/browser presentation changes visual
-quality and cannot guarantee every state is displayed in realtime.
+The original HTML renderer is realtime-capable. The principal slowdown is
+CPU-side construction/formation work when those subsystems become dense or
+active. In that condition, requestAnimationFrame may miss display deadlines
+because the next canonical state has not finished computing, not because the
+toroidal/swarm renderer itself is inherently too slow.
 
 Lane 5 therefore owns:
 - high-resolution projection;
-- display-time decoupling from simulation time;
-- MP4/offline capture;
+- efficient presentation of already-produced canonical state;
+- MP4/offline capture when CPU state production cannot sustain wall-clock display;
 - preservation of quartic closure and canonical state order.
 
-The simplified fork is retained as a rendering-path proof that the toroidal
-swarm survives high-resolution Lane 5 projection. Its reduced physics is not
-canonical and must not replace the original simulation state generator.
+The construction/formation subsystem remains canonical and must not be reduced
+to improve frame rate. The simplified fork is retained only as rendering-path
+proof that the toroidal swarm survives high-resolution Lane 5 projection.
 
 ## Quartic closure clarified
 
