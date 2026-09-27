@@ -73,6 +73,14 @@ const MASK64 = (1n << 64n) - 1n;
 const VIRTUAL_FRAME_SIDE = NODE_COUNT;
 const VIRTUAL_FRAME_PIXELS = NODE_COUNT * NODE_COUNT;
 const CANONICAL_SEED_TITLE = "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041";
+const I041_FORK_ROLE = Object.freeze({
+  fork:"B",
+  name:"MP4_RENDER_OBSERVATION_FORK",
+  canonicalSimulationReplacement:false,
+  consumesCanonicalSimulationSemantics:true,
+  mayRenderSlowerThanRealtime:true,
+  purpose:"observe/capture the same canonical simulation evolution when full realtime execution is too expensive"
+});
 const FOUNDATION_OPTIMIZATION_CONTRACT = Object.freeze({
   order:"canonical monolithic seed -> observationally equivalent optimization -> feature additions",
   geometryPhysicsRule:"preserve foundation geometry and physics unless a native repository contract requires a repair",
@@ -826,6 +834,7 @@ async function setTestSeed(seed){
 function foundationPreservationReceipt(){
   const checks={
     canonical_seed_identity:CANONICAL_SEED_TITLE==="Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041",
+    renderer_is_observation_fork:I041_FORK_ROLE.fork==="B"&&I041_FORK_ROLE.canonicalSimulationReplacement===false,
     lane5_topology:NODE_COUNT===5184&&HASH72_SIDE===72&&HASH72_SIDE*HASH72_SIDE===NODE_COUNT,
     eight_phase_groups:PHASE_GROUPS===8,
     q144_octant_quarter_half:Q144===144&&Q144_OCTANT===18&&Q144_QUARTER===36&&Q144_HALF===72,
@@ -840,6 +849,7 @@ function foundationPreservationReceipt(){
     schema:"HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1",
     status:Object.values(checks).every(Boolean)?"PASS":"FAIL",
     checks,
+    forkRole:I041_FORK_ROLE,
     optimizationContract:FOUNDATION_OPTIMIZATION_CONTRACT,
     optimizationChanges:[
       "extended-Euclid modular inverse",
