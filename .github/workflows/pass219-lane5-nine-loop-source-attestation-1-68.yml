@@ -1,0 +1,83 @@
+name: Pass 219 Lane 5 Nine-Loop Source Attestation 1.68
+
+on:
+  pull_request:
+    branches: [main, agent/pass219-lane5-nine-loop-equivalence-1-67-20260927]
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_source_attestation_1_68.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_source_attestation_1_68.py'
+      - '.github/workflows/pass219-lane5-nine-loop-source-attestation-1-68.yml'
+  push:
+    branches:
+      - agent/pass219-lane5-nine-loop-source-attestation-1-68-20260927
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_source_attestation_1_68.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_source_attestation_1_68.py'
+      - '.github/workflows/pass219-lane5-nine-loop-source-attestation-1-68.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-attestation-1-68:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install pytest
+
+      - name: Run bounded source-attestation tests
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/pass219/test_pass219_lane5_nine_loop_source_attestation_1_68.py             tests/pass219/test_pass219_lane5_nine_loop_foreign_equivalence_1_67.py
+
+      - name: Download public Cosmic9 checksum manifest and sample corpus
+        run: |
+          mkdir -p /tmp/cosmic9
+          curl --fail --location --silent --show-error             https://smsharma.io/cosmic-nine-loops/MANIFEST.sha256             -o /tmp/cosmic9/MANIFEST.sha256
+          curl --fail --location --silent --show-error             https://smsharma.io/cosmic-nine-loops/samples/E9_sample_coefficients.txt             -o /tmp/cosmic9/E9_sample_coefficients.txt
+          test -s /tmp/cosmic9/MANIFEST.sha256
+          test -s /tmp/cosmic9/E9_sample_coefficients.txt
+
+      - name: Verify full 20,630-row source-attested sample
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from hhs_runtime.pass219.lane5_nine_loop_source_attestation_1_68 import attest_sample
+
+          manifest = Path("/tmp/cosmic9/MANIFEST.sha256").read_text(encoding="utf-8")
+          raw = Path("/tmp/cosmic9/E9_sample_coefficients.txt").read_bytes()
+          receipt = attest_sample(raw, manifest_text=manifest, require_full_contract=True)
+
+          assert receipt["manifest_member_verified"] is True
+          assert receipt["nonzero_rows"] == 20400
+          assert receipt["zero_rows"] == 230
+          assert receipt["total_rows"] == 20630
+          assert receipt["all_nonzero_rationals_exact"] is True
+          assert receipt["all_zero_rows_exact"] is True
+          assert receipt["floating_point_authority"] is False
+          assert receipt["candidate_only"] is True
+
+          print("PASS219_1_68_RECEIPT=" + json.dumps(receipt, sort_keys=True))
+          with open("/tmp/cosmic9/receipt.json", "w", encoding="utf-8") as f:
+              json.dump(receipt, f, indent=2, sort_keys=True)
+              f.write("\n")
+          PY
+
+      - name: Emit immutable digest observation
+        run: |
+          echo "MANIFEST_SHA256=$(sha256sum /tmp/cosmic9/MANIFEST.sha256 | awk '{print $1}')"
+          echo "SAMPLE_SHA256=$(sha256sum /tmp/cosmic9/E9_sample_coefficients.txt | awk '{print $1}')"
