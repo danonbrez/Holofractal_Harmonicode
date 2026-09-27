@@ -1,0 +1,26 @@
+{
+  "database_binary_is_source_authority": false,
+  "database_status": {
+    "candidate_only": true,
+    "canonical_hash216_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_persistence_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "capabilities": 2071,
+    "constructors": 4205,
+    "execution_authority": false,
+    "file_dependencies": 72301,
+    "hash216_positions": 4215456,
+    "journal_mode": "wal",
+    "knowledge_edges": 13240,
+    "repository_files": 8618,
+    "restart_rehydratable": true,
+    "schema": "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_HASH216_DATABASE_1_69",
+    "synchronous_full": true
+  },
+  "projection_root_hash216": ")OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXU5(y/KhHDfTyXzCjOXaXnQ)xCuHTA8-b9SQT7crq-yZ8j!uR0wxLllW6pDfmsXccD-pKGMtabwPkF!<v6BLnw1c97ZXW1wALLPYAIZnuWmwpKr1gRRDPirVU-d7i?a7vy>giMaEPu5*j<)Ak",
+  "restart_rehydratable_from_repository_artifacts": true,
+  "schema": "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_DATABASE_RECEIPT_1_69",
+  "source_commit": "a7c0f2363c00b389ae39bd7aeaab504e20729de9",
+  "source_dependency_graph_root_hash216": "*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLMGu8iK9/t>FqA-57(AAaNK7N?<LbrdsVXI>v<EAeDypzEPgCT>F5cP(eEV7VCN8t010PqbZwKR2XSGVTHqjfCY5leNbv!(38HxGO/!l9xD02p4ZPGOOviML0yTaLNVFzs!7a>+(3AlREo2p5"
+}
