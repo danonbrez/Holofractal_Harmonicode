@@ -89,15 +89,10 @@ const I041_SPRITEMAP_BINDING = Object.freeze({
   requiredCanonicalFrameSchema:"HHS_I041_CANONICAL_SPHERICAL_FRAME_V1",
   rule:"a holographic animated spritemap is canonical only when every rendered frame consumes the same bounded-spherical simulation state produced by Fork A or an exact replay of that state"
 });
-const FOUNDATION_OPTIMIZATION_CONTRACT = Object.freeze({
-  order:"canonical monolithic seed -> observationally equivalent optimization -> feature additions",
-  geometryPhysicsRule:"preserve foundation geometry and physics unless a native repository contract requires a repair",
-  allowedWithoutPhysicsChange:Object.freeze([
-    "allocation elimination",
-    "deterministic cache reuse",
-    "indexing/data-layout optimization",
-    "projection/UI cadence optimization"
-  ]),
+const FOUNDATION_EXECUTION_CONTRACT = Object.freeze({
+  rule:"execute the complete canonical simulation; repair mathematical/runtime faults in place; do not reduce, approximate, substitute, or delete specified modules",
+  lane5Rendering:"inherited Lane 5 optimization owns rendering/projection from the same canonical simulation state",
+  simulationReductionAuthorized:false,
   geometryMutationAuthorized:false,
   physicsMutationAuthorized:false
 });
@@ -127,27 +122,7 @@ let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
 let manualTestMode = false;
 let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
 let lastPhaseWord = "";
-const phaseWordCache = new Map();
-let phaseWordCacheSeed = "";
-let resizeQueued = false;
-
 function gcd(a,b){ while(b!==0){ const t=a%b; a=b; b=t; } return Math.abs(a); }
-function modInverseCoprime(a,m){
-  let t=0,newT=1,r=m,newR=((a%m)+m)%m;
-  while(newR!==0){
-    const q=Math.floor(r/newR);
-    const nextT=t-q*newT; t=newT; newT=nextT;
-    const nextR=r-q*newR; r=newR; newR=nextR;
-  }
-  if(r!==1) throw new Error("path stride is not invertible modulo node count");
-  return ((t%m)+m)%m;
-}
-function resetPhaseWordCache(seed){
-  if(seed!==phaseWordCacheSeed){
-    phaseWordCache.clear();
-    phaseWordCacheSeed=seed;
-  }
-}
 
 async function sha256Bytes(text){
   const data = new TextEncoder().encode(text);
@@ -167,33 +142,20 @@ async function derivePath(seed){
   let stride = Number((await seedU64(seed,"PATH_STRIDE")) % BigInt(NODE_COUNT));
   if(stride===0) stride=1;
   while(gcd(stride,NODE_COUNT)!==1){ stride=(stride+1)%NODE_COUNT; if(stride===0) stride=1; }
-  const inverse=modInverseCoprime(stride,NODE_COUNT);
+  let inverse=1;
+  for(let k=1;k<NODE_COUNT;k++){ if((stride*k)%NODE_COUNT===1){ inverse=k; break; } }
   return {seed,start,stride,inverseStride:inverse};
 }
 function pathAddress(rank){
   return (path.start + path.stride*(rank%NODE_COUNT)) % NODE_COUNT;
 }
-async function hash72FromSeed(seed,label,useCache=true){
-  resetPhaseWordCache(seed);
-  const key=label;
-  if(useCache && phaseWordCache.has(key)) return phaseWordCache.get(key);
-  const pending=(async()=>{
-    let out="";
-    for(let counter=0;out.length<HASH72_LEN;counter++){
-      const bytes=await sha256Bytes(seed+":"+label+":"+counter);
-      for(const b of bytes){ out+=HASH72[b%HASH72_LEN]; if(out.length===HASH72_LEN) break; }
-    }
-    return out;
-  })();
-  if(useCache) phaseWordCache.set(key,pending);
-  try{
-    const word=await pending;
-    if(useCache) phaseWordCache.set(key,Promise.resolve(word));
-    return word;
-  }catch(error){
-    if(useCache) phaseWordCache.delete(key);
-    throw error;
+async function hash72FromSeed(seed,label){
+  let out="";
+  for(let counter=0;out.length<HASH72_LEN;counter++){
+    const bytes=await sha256Bytes(seed+":"+label+":"+counter);
+    for(const b of bytes){ out+=HASH72[b%HASH72_LEN]; if(out.length===HASH72_LEN) break; }
   }
+  return out;
 }
 function coord5184(address){
   const word144=Math.floor(address/36), bit36=address%36, op64=address%64;
@@ -638,28 +600,25 @@ function buildTesseract(){
   const edges=[];
   for(let v=0;v<16;v++) for(let b=0;b<4;b++){ const u=v^(1<<b); if(u>v) edges.push([v,u]); }
   const arr=new Float32Array(edges.length*6);
-  const projected=new Float32Array(verts.length*3);
   const geo=new THREE.BufferGeometry();
   geo.setAttribute("position",new THREE.BufferAttribute(arr,3));
   const lines=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:0x8ad8ff,transparent:true,opacity:.65}));
   scene.add(lines);
-  return {verts,edges,arr,projected,lines};
+  return {verts,edges,arr,lines};
 }
 function updateTesseract(t){
   const h1=t*.20,h2=h1/PHI,c1=Math.cos(h1),s1=Math.sin(h1),c2=Math.cos(h2),s2=Math.sin(h2);
-  const pr=tess.projected;
-  for(let i=0;i<tess.verts.length;i++){
-    const v=tess.verts[i],o=i*3;
+  const pr=tess.verts.map(v=>{
     const x1=c1*v[0]-s1*v[3],w1=s1*v[0]+c1*v[3];
     const y1=c2*v[1]-s2*v[2],z1=s2*v[1]+c2*v[2];
     const scale=2.6/(2.2-w1);
-    pr[o]=x1*scale; pr[o+1]=y1*scale; pr[o+2]=z1*scale;
-  }
-  for(let k=0;k<tess.edges.length;k++){
-    const e=tess.edges[k],a=e[0]*3,b=e[1]*3,o=k*6;
-    tess.arr[o]=pr[a];tess.arr[o+1]=pr[a+1];tess.arr[o+2]=pr[a+2];
-    tess.arr[o+3]=pr[b];tess.arr[o+4]=pr[b+1];tess.arr[o+5]=pr[b+2];
-  }
+    return [x1*scale,y1*scale,z1*scale];
+  });
+  tess.edges.forEach((e,k)=>{
+    const a=pr[e[0]],b=pr[e[1]],o=k*6;
+    tess.arr[o]=a[0];tess.arr[o+1]=a[1];tess.arr[o+2]=a[2];
+    tess.arr[o+3]=b[0];tess.arr[o+4]=b[1];tess.arr[o+5]=b[2];
+  });
   tess.lines.geometry.attributes.position.needsUpdate=true;
 }
 
@@ -703,14 +662,12 @@ function projectionTick(targetTick, options={}){
   const seconds=tick/60;
   const pathEnd=performance.now();
 
-  material1.uniforms.uTime.value=seconds;
-  material1.uniforms.uPathAddress.value=address;
-  material1.uniforms.uBottOctant.value=bott;
-  material1.uniforms.uTopologyInvert.value=topoInvert;
-  material2.uniforms.uTime.value=seconds;
-  material2.uniforms.uPathAddress.value=address;
-  material2.uniforms.uBottOctant.value=bott;
-  material2.uniforms.uTopologyInvert.value=topoInvert;
+  for(const m of [material1,material2]){
+    m.uniforms.uTime.value=seconds;
+    m.uniforms.uPathAddress.value=address;
+    m.uniforms.uBottOctant.value=bott;
+    m.uniforms.uTopologyInvert.value=topoInvert;
+  }
   if(postMaterial) postMaterial.uniforms.uTick.value=tick;
   const uniformEnd=performance.now();
 
@@ -769,7 +726,7 @@ async function benchmarkPhaseWords(samples){
   for(let i=0;i<count;i++){
     const rank=i%NODE_COUNT;
     const address=pathAddress(rank);
-    const word=await hash72FromSeed(path.seed,"PATH72:"+rank+":"+address,false);
+    const word=await hash72FromSeed(path.seed,"PATH72:"+rank+":"+address);
     checksum=(checksum+word.charCodeAt(i%HASH72_LEN))%65536;
   }
   const totalMs=performance.now()-start;
@@ -852,8 +809,9 @@ function foundationPreservationReceipt(){
     golden_spiral_seed:PHI===(1+Math.sqrt(5))/2,
     shared_so4_tesseract:tess&&tess.verts.length===16&&tess.edges.length===32,
     quartic_projection_gate:QUARTIC_RENDER_PERIOD===4,
-    geometry_mutation_authorized:FOUNDATION_OPTIMIZATION_CONTRACT.geometryMutationAuthorized===false,
-    physics_mutation_authorized:FOUNDATION_OPTIMIZATION_CONTRACT.physicsMutationAuthorized===false
+    simulation_reduction_authorized:FOUNDATION_EXECUTION_CONTRACT.simulationReductionAuthorized===false,
+    geometry_mutation_authorized:FOUNDATION_EXECUTION_CONTRACT.geometryMutationAuthorized===false,
+    physics_mutation_authorized:FOUNDATION_EXECUTION_CONTRACT.physicsMutationAuthorized===false
   };
   return {
     schema:"HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1",
@@ -861,14 +819,9 @@ function foundationPreservationReceipt(){
     checks,
     forkRole:I041_FORK_ROLE,
     spritemapBinding:I041_SPRITEMAP_BINDING,
-    optimizationContract:FOUNDATION_OPTIMIZATION_CONTRACT,
-    optimizationChanges:[
-      "extended-Euclid modular inverse",
-      "deterministic Hash72 phase-word cache",
-      "preallocated tesseract projection buffer",
-      "allocation-free dual-material uniform updates",
-      "coalesced resize and HUD projection cadence"
-    ],
+    executionContract:FOUNDATION_EXECUTION_CONTRACT,
+    repairScope:"MATH_AND_RUNTIME_CORRECTION_ONLY",
+    lane5RenderingInherited:true,
     foundationPhysicsOwnedByProjectionAdapter:false,
     canonicalMutationAuthority:false
   };
@@ -936,14 +889,9 @@ function init(){
   installTestApi();
 
   addEventListener("resize",()=>{
-    if(resizeQueued) return;
-    resizeQueued=true;
-    requestAnimationFrame(()=>{
-      resizeQueued=false;
-      camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
-      renderer.setSize(innerWidth,innerHeight);
-      resizePixelCompositor();
-    });
+    camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+    resizePixelCompositor();
   });
   document.getElementById("applySeed").addEventListener("click",applySeed);
   document.getElementById("toggleTopo").addEventListener("click",()=>{
@@ -962,11 +910,10 @@ function animate(){
   controls.update();
   rafCount++;
   if(!paused) tick++;
-  const renderDue=(tick%QUARTIC_RENDER_PERIOD)===0;
   const result=projectionTick(tick,{
-    renderFrame:renderDue,
+    renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0,
     gpuSync:false,
-    updateHudText:renderDue
+    updateHudText:true
   });
   if(tick%72===0) refreshPhaseWord(result.address,result.rank);
 }
