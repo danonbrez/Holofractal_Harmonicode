@@ -119,6 +119,36 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Presentation-only defect boundary
+
+For the canonical monolithic HTML, the simulation/physics model is not treated
+as defective merely because the browser cannot present every state at full
+visual quality in realtime.
+
+The known problem class is presentation-side:
+
+```text
+canonical simulation state     = authoritative
+WebGL/browser raster quality   = projection concern
+requestAnimationFrame pacing   = projection concern
+dropped/display-skipped frames = projection concern
+HD/4K offline capture          = observation solution
+```
+
+Accordingly, degraded antialiasing, browser/WebGL raster differences, missed
+display deadlines, or unavoidable frame skipping do not authorize changes to
+the simulation equations or state evolution.
+
+Lane 5 is responsible for decoupling canonical simulation time from display
+time. It may render the same state sequence more slowly than realtime at a
+higher output resolution, provided state order and quartic closure are
+preserved.
+
+The simplified fork is retained as evidence that the core toroidal/swarm
+geometry survives the Lane 5 high-resolution projection path. That evidence
+does not promote the fork's reduced computational-physics generator to
+canonical authority.
+
 ## Quartic closure and raw canonical-HTML ingress
 
 Quartic closure is a render/projection cadence, not a simulation-update
