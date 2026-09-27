@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 
 from hhs_backend.api.standard_ingress_compat_routes import (
     LEGACY_ROUTE_ALIASES,
+    LINUX_ADAPTER_BINDINGS,
     build_standard_ingress_router,
     compatibility_status,
 )
@@ -168,6 +169,10 @@ def test_compatibility_status_declares_linux_surface_and_no_alternate_authority(
     assert "FILESYSTEM" in status["linux_compatibility_surfaces"]
     assert "STDIN_STDOUT_PROCESS" in status["linux_compatibility_surfaces"]
     assert "UNIX_DOMAIN_SOCKET" in status["linux_compatibility_surfaces"]
+    assert status["linux_backend_profile"] == "PASS187_EXECUTABLE_UBUNTU_LINUX_ADAPTERS"
+    assert LINUX_ADAPTER_BINDINGS["FILESYSTEM"].endswith(".read_file")
+    assert LINUX_ADAPTER_BINDINGS["STDIN_STDOUT_PROCESS"].endswith(".run_process")
+    assert LINUX_ADAPTER_BINDINGS["UNIX_DOMAIN_SOCKET"].endswith(".unix_socket_roundtrip")
     assert status["frontend_authority"] == "REQUEST_ONLY_NO_CANONICAL_COMMIT_AUTHORITY"
     assert status["native_backend_authority"] == "HHS_FASTAPI_KERNEL_RUNTIME_AUTHORITY_V1"
     assert "/api/ingress" in LEGACY_ROUTE_ALIASES
