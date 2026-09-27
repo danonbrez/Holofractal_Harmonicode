@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   deep-index:
@@ -419,8 +420,15 @@ jobs:
             artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json
             docs/repository_index/files/*.md
 
+      - name: Dispatch authoritative main refresh
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run repository-hash216-dependency-index.yml --ref main
+
       - name: Commit generated projection to main
-        if: github.event_name == 'push'
+        if: github.event_name != 'pull_request'
         env:
           EXPECTED_HEAD: ${{ github.sha }}
         run: |
