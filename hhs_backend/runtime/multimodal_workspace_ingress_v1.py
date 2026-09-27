@@ -10,7 +10,7 @@ workspace objects only through witnessed packets.
 from __future__ import annotations
 
 from typing import Any, Dict, List, Mapping, Optional
-from base64 import b64encode
+from base64 import b64decode, b64encode
 import mimetypes
 import time
 import uuid
@@ -263,7 +263,32 @@ def translate_legacy_modality(
 
 
 def normalize_legacy_payload(payload: Any) -> Dict[str, Any]:
-    """Create a reversible canonical transport representation for legacy bytes."""
+    """Create an idempotent reversible transport representation for legacy bytes."""
+
+    if isinstance(payload, Mapping):
+        schema = str(payload.get("schema") or "")
+        encoding = str(payload.get("encoding") or "").lower()
+        data_b64 = payload.get("data_b64")
+        if (
+            schema == "HHS_REVERSIBLE_BINARY_SOURCE_V1"
+            and encoding == "base64"
+            and isinstance(data_b64, str)
+        ):
+            try:
+                decoded = b64decode(data_b64, validate=True)
+            except Exception as exc:
+                raise ValueError("HHS_REVERSIBLE_BINARY_SOURCE_BASE64_INVALID") from exc
+            declared_size = payload.get("source_size_bytes")
+            if declared_size is not None and int(declared_size) != len(decoded):
+                raise ValueError("HHS_REVERSIBLE_BINARY_SOURCE_SIZE_MISMATCH")
+            normalized = dict(payload)
+            normalized["source_size_bytes"] = len(decoded)
+            return {
+                "payload": normalized,
+                "transport_encoding": "BASE64_REVERSIBLE",
+                "source_size_bytes": len(decoded),
+                "binary_source": True,
+            }
 
     if isinstance(payload, memoryview):
         payload = payload.tobytes()
