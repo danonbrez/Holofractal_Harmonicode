@@ -6,12 +6,12 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [d9cf0f14587e8f0808249cefbfa1d98b5feebd55](https://github.com/danonbrez/Holofractal_Harmonicode/commit/d9cf0f14587e8f0808249cefbfa1d98b5feebd55)
-- Git tree: f5db93f5d9c596ae0921f6275a54145f4328b0b1
-- Tracked tree entries: 9,344
-- Tracked files in Git tree: 8,604
+- Source commit: [184b5f608430fce5fca518caabdc3644e2e62b9c](https://github.com/danonbrez/Holofractal_Harmonicode/commit/184b5f608430fce5fca518caabdc3644e2e62b9c)
+- Git tree: 742c9c9cbd0d5c2538485e10335cade4ba42072d
+- Tracked tree entries: 9,396
+- Tracked files in Git tree: 8,653
 - Content-bound indexed files: 8,604
-- Projection artifacts excluded from content root: 0
+- Projection artifacts excluded from content root: 49
 - Text files deep-scanned: 8,187
 - Internal dependency edges: 72,169
 - Containment edges: 9,344
@@ -21,7 +21,7 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpa1q+YlE8(T66mSCHh3bGRi6bXc!bz>kuOLg/w8wT+MRQ)twBM6ZSk7Nb-AxPO)>8ht4LVXC!CpU-dh>sh3w6J8MSb/dNA(knqLfS*TCHhyLutASC!>b5*04wlCRh3vH0zuS2t!PxQnbh6dHl
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpE1Gz+qwL1AKu4W9gaU24eA>Y-l!<0vt*BYRuW1*UO/tY6G-Pkbn7v9xwZ++FDVHFtstfyo>dbmUSmMS479Owg?H(ysmFuKRu/Jj7!aCGAs+pv)N62IQ>R0ZiChU7v!-zs*9X)Q3qymk/NOeh
 
 ### directory_node_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d6rbC/t!l
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLTi2P2xfRPyms-jWeY6UFhbXXC2<mB)Y!ATQWtJ8!6GAM1K(Mb23q90eMZQ7!Au*uFI*L>Tq(w+ZvedfMhjVJ+anS56l(F+kPnr(oe<HpVndL3U7ZOSVC0wWAx66pYwt+SRjSh(qd(gy18jj7
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiL8geF4qM*-?5cc2(eg16B4BfPe?pMVuv4I10xzX2C7!23V>+mcR9(YWdiZa(1JGdR>5OAvo5scNquM<HPlYQxn+BKH?pJEN*<nBXzrwLfmPj7(VIq!AGXgIYY0BeEWicG8A<hyauHLrIl?!7I
 
 ## Lane 5 evidence binding
 
