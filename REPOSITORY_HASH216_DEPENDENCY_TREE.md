@@ -6,8 +6,8 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [184b5f608430fce5fca518caabdc3644e2e62b9c](https://github.com/danonbrez/Holofractal_Harmonicode/commit/184b5f608430fce5fca518caabdc3644e2e62b9c)
-- Git tree: 742c9c9cbd0d5c2538485e10335cade4ba42072d
+- Source commit: [3c79d05c7846d413bdf6bfdad53831de79964721](https://github.com/danonbrez/Holofractal_Harmonicode/commit/3c79d05c7846d413bdf6bfdad53831de79964721)
+- Git tree: 7dabd147e672cde4da4ea58a2a374e979e5b1ae7
 - Tracked tree entries: 9,396
 - Tracked files in Git tree: 8,653
 - Content-bound indexed files: 8,604
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d6rbC/t!l
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiL8geF4qM*-?5cc2(eg16B4BfPe?pMVuv4I10xzX2C7!23V>+mcR9(YWdiZa(1JGdR>5OAvo5scNquM<HPlYQxn+BKH?pJEN*<nBXzrwLfmPj7(VIq!AGXgIYY0BeEWicG8A<hyauHLrIl?!7I
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiL3I2IR2)E!R?Dg>FuoNkJa>3K4eNyOhXV)lgEpM/y!K?n+wnf>rh)gPfJ/kZ(el>VUxjINuJRnk/MpWee<7/KIEQj9Y?fFPSgbkLBsXe9s<mDcG-xW((c3>ELdNux-IX6n8!bfnOy9hIb(jgu
 
 ## Lane 5 evidence binding
 
