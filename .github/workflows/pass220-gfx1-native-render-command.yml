@@ -31,6 +31,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install test dependency
+        run: python -m pip install --disable-pip-version-check pytest
       - name: Compile and run native C11 command ABI
         run: make -C native_projects/hhs_pass220_gfx1_native_render_commands clean test
       - name: Run packet, renderer, and inherited Lane 5 gates
