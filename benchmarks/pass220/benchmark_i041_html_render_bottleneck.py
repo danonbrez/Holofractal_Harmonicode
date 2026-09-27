@@ -156,6 +156,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 raise RuntimeError("halo overlap invariant is not active")
             if not display_contract["haloBackgroundAlphaZero"]:
                 raise RuntimeError("halo transparency invariant is not active")
+            if not display_contract["sphericalSpacetimeBoundary"]:
+                raise RuntimeError("3D spherical spacetime boundary is not active")
+            if display_contract["visibleGeometryDimensions"] != 3:
+                raise RuntimeError("visible geometry is not three-dimensional")
+            if not display_contract["tesseractDiagnosticOnly"]:
+                raise RuntimeError("tesseract is not diagnostic-only")
+            if display_contract["cameraWarpFromTesseract"]:
+                raise RuntimeError("tesseract camera warp is active")
+            if not display_contract["supportsPause"] or not display_contract["supportsSingleStep"]:
+                raise RuntimeError("inspection pause/single-step controls are unavailable")
             if math_repair["status"] != "PASS":
                 raise RuntimeError(f"canonical seed math repair failed: {math_repair}")
 
@@ -225,6 +235,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "resolution": {"width": args.width, "height": args.height},
         "fps": args.fps,
         "tick_step": args.tick_step,
+        "inspection_speed_equivalent_x": (args.tick_step * args.fps) / 60.0,
         "benchmark": benchmark,
         "pixel_display_contract": display_contract,
         "canonical_seed_math_repair": math_repair,
@@ -259,6 +270,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "source_frame_matches_output_resolution": display_contract["sameResolution"],
             "source_pixel_is_dense_nucleus": display_contract["sourcePixelIsDenseNucleus"],
             "halo_overlap_is_translucent": display_contract["haloBackgroundAlphaZero"],
+            "spherical_spacetime_boundary": display_contract["sphericalSpacetimeBoundary"],
+            "visible_geometry_dimensions": display_contract["visibleGeometryDimensions"],
+            "tesseract_diagnostic_only": display_contract["tesseractDiagnosticOnly"],
+            "camera_warp_from_tesseract": display_contract["cameraWarpFromTesseract"],
+            "inspection_speed_control": True,
+            "pause_and_single_step": True,
         },
     }
     receipt_path = output / "lane5-html-render-bottleneck-receipt.json"
@@ -278,7 +295,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=720)
     parser.add_argument("--fps", type=int, default=24)
     parser.add_argument("--frames", type=int, default=48)
-    parser.add_argument("--tick-step", type=int, default=4)
+    parser.add_argument("--tick-step", type=float, default=4.0)
     parser.add_argument("--state-ticks", type=int, default=4096)
     parser.add_argument("--render-ticks", type=int, default=256)
     parser.add_argument("--warmup", type=int, default=64)
