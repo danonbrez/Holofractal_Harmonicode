@@ -241,7 +241,7 @@ def test_numpy1_float64_palindromic_symbolic_bigint_witness_is_value_bound(
     assert len(witness["bigint_5184"]) == 5184
     assert witness["host_float_arithmetic_used"] is False
     assert witness["constructor"]["representation_views"]["bigint_5184"] == witness["bigint_5184"]
-    assert witness["validation"]["valid"] is True
+    assert witness["validation"]["ok"] is True
 
 
 def test_numpy1_rejects_out_of_range_int64_ingress(
