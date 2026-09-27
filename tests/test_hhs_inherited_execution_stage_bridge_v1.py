@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import asdict
+from pathlib import Path
 import sys
 
+import hhs_runtime.hhs_inherited_execution_stage_bridge_v1 as stage_bridge
 from hhs_runtime.hhs_inherited_execution_stage_bridge_v1 import (
     build_initial_inherited_authority_reachability,
     continuation_context_facts,
@@ -251,3 +253,15 @@ def test_generic_cache_words_do_not_fake_continuation_applicability() -> None:
     assert facts["observed_markers"] == []
     assert facts["marker_count"] == 0
     assert facts["complete_contract_bundle_count"] == 0
+
+
+
+def test_default_semantic_cache_uses_runtime_output_dir_in_production(monkeypatch, tmp_path) -> None:
+    monkeypatch.delenv("HHS_LIVE_SEMANTIC_COMPOSITION_CACHE_PATH", raising=False)
+    monkeypatch.setenv("HHS_RUNTIME_OUTPUT_DIR", str(tmp_path))
+    monkeypatch.setattr(stage_bridge, "_SEMANTIC_CACHE_SINGLETON", None)
+
+    cache = stage_bridge._default_semantic_cache()
+
+    assert cache.path == Path(tmp_path) / "hhs_live_semantic_composition_cache_pass217.json"
+    assert "demo_reports" not in str(cache.path)
