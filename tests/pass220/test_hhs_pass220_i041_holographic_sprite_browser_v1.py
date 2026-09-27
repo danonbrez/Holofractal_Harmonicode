@@ -162,6 +162,29 @@ def test_canonical_execution_contract_is_math_repair_only():
 
 
 
+
+RAW_INGRESS = Path(
+    "benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py"
+)
+
+
+def test_raw_lane5_ingress_accepts_unaltered_html_and_quartic_capture():
+    source = RAW_INGRESS.read_text(encoding="utf-8")
+    for token in (
+        'SCHEMA = "HHS_PASS_220_I041_RAW_HTML_LANE5_INGRESS_V1"',
+        '"mode": "OPAQUE_UNALTERED_HTML"',
+        '"source_unchanged": source_sha_before == source_sha_after',
+        '"raf_step": args.raf_step',
+        'parser.add_argument("--raf-step", type=int, default=4)',
+        'parser.add_argument("--width", type=int, default=1920)',
+        'parser.add_argument("--height", type=int, default=1080)',
+        'page.on("pageerror"',
+        'page.on("console"',
+    ):
+        assert token in source, token
+
+
+
 CONTRACT = Path(
     "contracts/pass220/"
     "PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md"
@@ -184,6 +207,11 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "Canonical execution rule — math/runtime repair only",
         "execute all specified modules",
         "Lane 5 is the existing rendering optimization path",
+        "Quartic closure and raw canonical-HTML ingress",
+        "execute the complete canonical state update",
+        "canonical HTML bytes (unchanged)",
+        "source_bytes_before == source_bytes_after",
+        "quartic_capture_step == 4 RAF ticks by default",
         "Realtime rendering and MP4 rendering are two observation modes",
         "HHS_I041_CANONICAL_SPHERICAL_FRAME_V1",
         "PROJECTION_PIPELINE_PREVIEW",
