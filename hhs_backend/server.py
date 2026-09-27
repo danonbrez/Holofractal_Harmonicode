@@ -47,6 +47,7 @@ from hhs_backend.frontend_ingress_policy_v1 import (
 
 from hhs_backend.api.pass135_audit_routes import router as pass135_audit_router
 from hhs_backend.api.pass152_elastic_closure_routes import router as pass152_elastic_closure_router
+from hhs_backend.api.standard_ingress_compat_routes import build_standard_ingress_router
 
 from hhs_backend.api.runtime_routes import (
     router as runtime_router,
@@ -394,6 +395,7 @@ app.include_router(runtime_router)
 app.include_router(runtime_ws_router)
 app.include_router(pass135_audit_router)
 app.include_router(pass152_elastic_closure_router)
+app.include_router(build_standard_ingress_router(WORKSPACE_AUTHORITY_LOOP))
 
 # ============================================================================
 # HEALTH ROUTES
