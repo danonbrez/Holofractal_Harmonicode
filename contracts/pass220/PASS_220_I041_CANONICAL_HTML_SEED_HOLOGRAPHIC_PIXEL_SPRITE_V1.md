@@ -119,6 +119,40 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Bounded digital-mitochondria end-state
+
+The mature bounded hyperspherical cloud acts as a digital cellular
+mitochondria-like system: a closed energetic constructor environment rather
+than a dissipative particle effect.
+
+Its canonical responsibilities are:
+
+```text
+preserve total usable energy / momentum
++ retain particles inside the bounded hyperspherical ecology
++ recycle particles and reciprocal/ionic states through admissible pathways
++ convert available state into bonds / structures / constructors
++ return released particles and energy to the reusable swarm
+= persistent self-sustaining constructor metabolism
+```
+
+The constructor subsystem therefore consumes and returns state through a
+recycling loop. Particle destruction, one-way energy loss, or disposable
+formation state is noncanonical unless explicitly represented by an admitted
+decay/egress channel with conserved provenance.
+
+The mature cloud must preserve lineage between:
+- free swarm particles;
+- bound constructor particles;
+- reciprocal/ionic partners;
+- released/recycled particles;
+- stored and available energy/momentum;
+- constructor/formation provenance.
+
+This metabolic interpretation is digital/system-internal. It defines the
+closed computational role of the hyperspherical cloud and does not require a
+literal biological implementation.
+
 ## Initial toroidal disk-galaxy seed
 
 The canonical swarm does not begin as an isotropic random sphere. Its initial
