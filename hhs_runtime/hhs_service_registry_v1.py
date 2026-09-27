@@ -5476,6 +5476,71 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.gfx4_vm81_graphics_packet_identity.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_gfx4_vm81_graphics_packet_identity_v1"
+        ),
+        function="gfx4_vm81_graphics_packet_identity_self_test",
+        service_type="pass220_vm81_admitted_graphics_packet_identity_self_test",
+        description=(
+            "Validate the GFX4 exact graphics packet identity bridge against "
+            "the inherited Pass163 VM81 commit path. The test derives 216-byte "
+            "scene/frame/resource identities and a 72-byte camera identity, "
+            "requires a real HHS_PASS_163_COMMIT_ADMITTED receipt, and proves "
+            "deterministic replay from equal VM81 genesis states without "
+            "granting renderer/GPU/JavaScript mutation authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_GFX4_VM81_GRAPHICS_PACKET_IDENTITY_V1",
+            "HHS_PASS_179_RENDER_COMMAND_PACKET_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_GFX4_VM81_GRAPHICS_PACKET_IDENTITY_SELF_TEST_V1",
+        ],
+        validators=[
+            "gfx4_vm81_graphics_packet_identity_self_test",
+        ],
+        guards=[
+            "inherited_vm81_instance_required",
+            "vm81_commit_admission_required",
+            "scene_hash216_216_bytes",
+            "frame_hash216_216_bytes",
+            "resource_hash216_216_bytes",
+            "camera_hash72_72_bytes",
+            "exact_rational_time_only",
+            "float_descriptor_rejected_before_mutation",
+            "deterministic_equal_genesis_replay",
+            "renderer_mutation_authority_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "P220_GFX4_INHERITED_VM81_REQUIRED",
+            "P220_GFX4_VM81_ADMISSION_REJECTED",
+            "P220_GFX4_VM81_COMMIT_NOT_ADMITTED",
+            "P220_GFX4_IDENTITY_LENGTH_INVALID",
+            "P220_GFX4_TIME_DENOMINATOR_INVALID",
+            "P220_GFX4_DETERMINISTIC_REPLAY_FAILED",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "SELF_TEST_EPHEMERAL_VM81_ONLY_NO_PRODUCTION_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_ONE_FRAME_VM81_ADMISSION_AND_FIXED_IDENTITY_WIDTHS"
+        ),
+    )
+
     return registry
 
 
