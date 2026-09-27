@@ -1,0 +1,39 @@
+name: Pass 220 NumPy1 HARMONICODE Array Engine
+
+on:
+  pull_request:
+    paths:
+      - 'native_projects/hhs_pass220_numpy_native_array_kernel/**'
+      - 'hhs_runtime/hhs_pass220_numpy_harmonicode_array_v1.py'
+      - 'tests/pass220/test_hhs_pass220_numpy_harmonicode_array_v1.py'
+      - 'contracts/pass220/PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE_V1.json'
+      - 'docs/pass220/PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE.md'
+      - '.github/workflows/pass220-numpy1-harmonicode-array-engine.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'native_projects/hhs_pass220_numpy_native_array_kernel/**'
+      - 'hhs_runtime/hhs_pass220_numpy_harmonicode_array_v1.py'
+      - 'tests/pass220/test_hhs_pass220_numpy_harmonicode_array_v1.py'
+      - 'contracts/pass220/PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE_V1.json'
+      - 'docs/pass220/PASS_220_NUMPY1_HARMONICODE_ARRAY_ENGINE.md'
+      - '.github/workflows/pass220-numpy1-harmonicode-array-engine.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  numpy-native-array-engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install differential-test dependencies
+        run: python -m pip install --disable-pip-version-check pytest 'numpy>=1.26,<3.0'
+      - name: Compile and run strict C11 native array kernel
+        run: make -C native_projects/hhs_pass220_numpy_native_array_kernel clean all test
+      - name: Run NumPy versus HARMONICODE differential gates
+        run: python -m pytest -q tests/pass220/test_hhs_pass220_numpy_harmonicode_array_v1.py
