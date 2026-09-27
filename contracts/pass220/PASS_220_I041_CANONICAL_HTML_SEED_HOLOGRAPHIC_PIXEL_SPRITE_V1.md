@@ -20,6 +20,53 @@ is a derived execution adapter.  It MAY optimize rendering and data layout but
 MUST preserve the seed's ordered animation geometry unless a native repository
 contract requires a repair.
 
+## Holographic spritemap seed identity
+
+A 5184-address/Q144-compatible renderer is **not** by itself the holographic
+animated spritemap seed.
+
+There are two distinct seed notions:
+
+```text
+address/topology seed
+    = 5184 / 72² / Q144 / phase-address organization
+
+animated spritemap seed
+    = the canonical bounded-spherical simulation state trajectory
+```
+
+The animated seed includes the state that actually determines the visible
+motion: particle positions and velocities, phase/precession state, layer and
+reciprocal identity, barycenter-relative state, fourth-coordinate/SO(4) state,
+bond/constructor state, memory/budget state, decay/coupling state, and the
+boundary conditions that confine the simulation to its inherited spherical
+membranes.
+
+Therefore Fork B may become a canonical holographic pixel-spritemap renderer
+only by one of two routes:
+
+1. execute the same Fork-A simulation state-transition kernel; or
+2. consume an exact deterministic frame/state trace emitted by Fork A.
+
+Fork B MUST NOT synthesize an independent shader trajectory and then call that
+trajectory the canonical animated seed merely because its address topology,
+phase labels, golden-ratio constants, or tesseract projection resemble the
+foundation.
+
+The required canonical frame interface is named:
+
+```text
+HHS_I041_CANONICAL_SPHERICAL_FRAME_V1
+```
+
+Until that interface is bound, the existing Lane-5 renderer is a
+`PROJECTION_PIPELINE_PREVIEW`: useful for renderer/compositor development and
+address-topology visualization, but **not yet the canonical animated
+holographic spritemap seed**.
+
+The MP4 pipeline is allowed to be slower than realtime. Its responsibility is
+frame fidelity, not independent dynamics.
+
 ## Two-fork execution architecture
 
 The canonical monolithic simulation remains one simulation with two allowed
