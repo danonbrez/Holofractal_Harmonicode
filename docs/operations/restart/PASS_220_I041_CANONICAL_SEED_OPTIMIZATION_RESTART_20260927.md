@@ -28,6 +28,13 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Toroidal momentum invariant
+
+Primitive particle motion is toroidal and conserves swarm momentum. Straight
+lines are not an initial motion model; locally linear-looking paths are valid
+only when they emerge from the inherited physics layers. Construction,
+formation, and Lane 5 projection must preserve that curved momentum state.
+
 ## Canonical purpose of the heavy CPU path
 
 The construction/formation workload is intentional. The simulation models a
