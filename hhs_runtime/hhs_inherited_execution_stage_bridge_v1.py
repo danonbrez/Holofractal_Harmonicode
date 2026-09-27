@@ -71,12 +71,21 @@ def _default_semantic_cache() -> SemanticCompositionCache:
     global _SEMANTIC_CACHE_SINGLETON
     with _SEMANTIC_LOCK:
         if _SEMANTIC_CACHE_SINGLETON is None:
-            path = Path(
-                os.environ.get(
-                    "HHS_LIVE_SEMANTIC_COMPOSITION_CACHE_PATH",
-                    "demo_reports/hhs_live_semantic_composition_cache_pass217.json",
-                )
+            explicit_path = os.environ.get(
+                "HHS_LIVE_SEMANTIC_COMPOSITION_CACHE_PATH"
             )
+            runtime_output_dir = os.environ.get("HHS_RUNTIME_OUTPUT_DIR")
+            if explicit_path:
+                path = Path(explicit_path)
+            elif runtime_output_dir:
+                path = (
+                    Path(runtime_output_dir)
+                    / "hhs_live_semantic_composition_cache_pass217.json"
+                )
+            else:
+                path = Path(
+                    "demo_reports/hhs_live_semantic_composition_cache_pass217.json"
+                )
             _SEMANTIC_CACHE_SINGLETON = SemanticCompositionCache(path)
         return _SEMANTIC_CACHE_SINGLETON
 
