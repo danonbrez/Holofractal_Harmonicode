@@ -28,6 +28,22 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Presentation-only limitation
+
+The original HTML is not being treated as a faulty physics implementation.
+The remaining limitation is that WebGL/browser presentation changes visual
+quality and cannot guarantee every state is displayed in realtime.
+
+Lane 5 therefore owns:
+- high-resolution projection;
+- display-time decoupling from simulation time;
+- MP4/offline capture;
+- preservation of quartic closure and canonical state order.
+
+The simplified fork is retained as a rendering-path proof that the toroidal
+swarm survives high-resolution Lane 5 projection. Its reduced physics is not
+canonical and must not replace the original simulation state generator.
+
 ## Quartic closure clarified
 
 The inherited quartic closure skips three of four **render/projection writes**,
