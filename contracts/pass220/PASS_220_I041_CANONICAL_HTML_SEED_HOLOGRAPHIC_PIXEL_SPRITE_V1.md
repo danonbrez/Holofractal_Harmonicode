@@ -119,6 +119,64 @@ The browser adapter MUST expose
 path MUST fail closed if that receipt indicates simulation reduction,
 geometry/physics mutation, or loss of the canonical spherical-frame binding.
 
+## Quartic closure and raw canonical-HTML ingress
+
+Quartic closure is a render/projection cadence, not a simulation-update
+cadence:
+
+```text
+for every simulation tick n:
+    execute the complete canonical state update
+
+render/write projection only when:
+    n mod 4 = 0
+```
+
+Therefore three of every four raster/projection writes are skipped while all
+four simulation states still exist and advance. This is the executable meaning
+of the inherited quartic closure for this surface. A Lane 5 implementation
+that skips three of four physics/state updates is nonconformant.
+
+Lane 5 MUST also support the canonical monolithic HTML as an **opaque,
+unaltered input document**. The source file need not be rewritten to contain
+the derived `window.HHS_LANE5_TEST` adapter before it can be rendered.
+
+For raw ingress, Lane 5 owns the observation environment externally:
+
+```text
+canonical HTML bytes (unchanged)
+    -> browser/WebGL execution
+    -> externally selected drawing-buffer/viewport resolution
+    -> canonical canvas
+    -> Lane 5 capture/compositor/MP4 transport
+```
+
+The raw-ingress acceptance contract is:
+
+```text
+source_bytes_before == source_bytes_after
+page_runtime_errors == 0
+console_error_messages == 0
+webgl_context_available == true
+canvas_width == requested_width
+canvas_height == requested_height
+captured_frame_is_nonblank == true
+quartic_capture_step == 4 RAF ticks by default
+```
+
+Resolution is a projection parameter. 1080p, 4K, or another supported target
+must not require modification of the simulation equations or animation source.
+If raw canonical HTML cannot be rendered at the requested supported resolution,
+the failure must be identified as an environment/dependency/GPU limit or a
+renderer integration defect; it must not be repaired by replacing the
+simulation with different dynamics.
+
+The repository raw-ingress harness is:
+
+```text
+benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+```
+
 ## Preserved visual/animation invariants
 
 The adapter MUST preserve:
