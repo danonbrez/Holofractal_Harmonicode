@@ -28,6 +28,17 @@ noncommutative relations, bonds, constructor behavior, memory, decay behavior,
 Layer-2 behavior, HNAN semantics, or spherical boundary behavior may be removed
 or substituted to make the implementation easier to run.
 
+## Bounded metabolic-cloud invariant
+
+The mature hyperspherical cloud is a closed digital mitochondria-like
+constructor environment. Preserve energy/momentum accounting and particle
+recycling across free, bound, reciprocal, constructor, decay/release, and
+re-entry states.
+
+Do not optimize by deleting particles, silently dissipating state, or treating
+completed constructor material as disposable. Any legitimate loss/egress must
+remain explicit and provenance-bearing.
+
 ## Initial-condition invariant
 
 The canonical swarm begins as a toroidal disk-galaxy distribution, not a random
