@@ -279,3 +279,16 @@ External CI remains nonblocking under repository policy. No green claim is permi
   `canonical_c2_overwritten is False`.
 - no 1.66 equation, proof receipt, source identity, native runtime code, or
   authority boundary changed.
+
+
+## Repair-forward — duplicated regression predicate
+
+- exact-head run 36277724466 passed the corrected frozen-proof workflow preflight.
+- 12/13 Python regressions passed.
+- the only failure was the same stale `all(proof["checks"].values())`
+  predicate duplicated in
+  `tests/pass219/test_pass219_global_conservation_polarity_1_66.py`.
+- repair now requires every positive proof check to be true and separately
+  requires `canonical_c2_overwritten is False`.
+- source bytes, SHA-256, Wolfram receipt, 1.66 equations, native C runtime,
+  ABI exports, and authority boundaries remain unchanged.

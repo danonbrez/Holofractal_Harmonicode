@@ -38,7 +38,13 @@ def test_source_and_wolfram_receipt_are_frozen():
         ).read_text(encoding="utf-8")
     )
     assert proof["status"] == "PASS"
-    assert all(proof["checks"].values())
+    positive_checks = {
+        key: value
+        for key, value in proof["checks"].items()
+        if key != "canonical_c2_overwritten"
+    }
+    assert all(positive_checks.values())
+    assert proof["checks"]["canonical_c2_overwritten"] is False
     assert proof["pell_branch"]["defect"] == "-1"
     assert proof["pell_branch"]["ratio_product"] == "1"
     assert proof["phase72_witness"]["b6c4"] == 72
