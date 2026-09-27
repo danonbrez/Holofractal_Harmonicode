@@ -11,6 +11,8 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'tests/pass220/test_hhs_pass220_native_response_block_stream_v1.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - 'contracts/pass220/PASS_220_NATIVE_ASSISTANT_SERIALIZED_RESPONSE_BLOCKS_1_0.md'
+      - '.github/workflows/litert-lm-assistant.yml'
       - '.github/workflows/pass220-native-response-block-stream.yml'
   pull_request:
     branches: [main]
@@ -21,6 +23,8 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'tests/pass220/test_hhs_pass220_native_response_block_stream_v1.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - 'contracts/pass220/PASS_220_NATIVE_ASSISTANT_SERIALIZED_RESPONSE_BLOCKS_1_0.md'
+      - '.github/workflows/litert-lm-assistant.yml'
       - '.github/workflows/pass220-native-response-block-stream.yml'
   workflow_dispatch:
 
