@@ -499,12 +499,72 @@ The adapter MUST preserve:
 - reciprocal phase/color relation;
 - Layer-2 orthogonal +pi/2 / quarter-turn geometry;
 - golden-spiral seed geometry;
-- shared SO(4) xw/yz projection descriptor;
-- tesseract 16 vertices / 32 edges / 8 cubic cells;
+- shared SO(4) xw/yz descriptor drives bounded particle phase evolution;
+- tesseract 16 vertices / 32 edges / 8 cubic cells remain internal state and
+  may drive x-w / y-z phase behavior, but MUST NOT apply a 4D perspective
+  divisor to the visible camera or final rendered particle coordinate;
+- visible simulation geometry remains three-dimensional inside an explicit
+  spherical spacetime boundary with no required visible wireframe guide;
 - Bott eight-group sweep;
 - quartic one-in-four projection cadence while state ticks continue;
 - deterministic pathway replay from a named seed;
 - browser/GPU projection-only authority.
+
+## 3D spherical spacetime and exact inspection clock
+
+The browser inspection surface is three-dimensional and bounded by the
+spherical spacetime membrane. The boundary may be enforced mathematically
+without drawing a visible sphere.
+
+Required browser invariants:
+
+```text
+visible_geometry_dimensions == 3
+spherical_spacetime_boundary == true
+spherical_wireframe_visible == false
+tesseract_phase_driven == true
+tesseract_visible_guide == false
+camera_warp_from_tesseract == false
+```
+
+The restored tesseract layer is a bounded phase operator, not a camera
+perspective transform. Its visible projection path is:
+
+```text
+orbit translation
+-> Layer-2 quarter turn
+-> Q144 w-phase
+-> x-w / y-z tesseract phase rotation
+-> discard w as a camera coordinate
+-> 3D spherical boundary clamp
+-> ordinary 3D camera projection
+```
+
+No `2.6/(2.2-w)`-style 4D perspective divisor is permitted in the visible
+particle/camera path.
+
+Inspection controls remain additive and source-preserving:
+
+```text
+orbit_radius             = 6
+orbit_rate               = 1/2
+orbit_slow_axis_rate     = 1/200
+tesseract_phase_rate     = 1/5
+q144_phase_rate          = 1/50
+default_simulation_speed = 1/10
+```
+
+Those parameters are represented as exact rationals on the host side and are
+converted to IEEE values only when written into WebGL uniforms.
+
+Browser wall time has observation/scheduling authority only. It is immediately
+quantized to integer microseconds and transported through exact rational
+arithmetic. Every crossed integer simulation tick is executed in order; only
+ticks satisfying `n mod 4 = 0` perform canonical projection writes.
+
+Pause/resume and exact one-tick stepping must preserve that same quartic
+projection rule. HUD/control visibility toggles are projection-only and must
+not reset or remove any parameter.
 
 ## Repository-contract repairs
 
@@ -619,7 +679,14 @@ The HTML MUST expose live projection-only tuning for at least:
 - halo gain;
 - deterministic phase amplitude;
 - deterministic phase speed;
+- exact rational simulation-speed control with pause/resume and one-tick stepping;
+- orbit radius, orbit rate, slow-axis rate, tesseract phase rate, and Q144 phase rate;
+- persistent hide/show toggles for HUD and controls;
 - source-only, nucleus-only, halo-only, and composite views.
+
+Existing controls are additive state. A visual simplification pass MUST NOT
+delete an existing control or its parameter binding unless a later explicit
+contract replaces it.
 
 ## Acceptance
 
@@ -628,6 +695,14 @@ Before MP4 capture, the browser harness MUST verify:
 ```text
 HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS
 HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sameResolution == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sphericalSpacetimeBoundary == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.visibleGeometryDimensions == 3
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sphericalWireframeVisible == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.tesseractPhaseDriven == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.tesseractVisibleGuide == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.cameraWarpFromTesseract == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.renderFloatAuthority == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.selfHostedExactRuntime == true
 ```
 
 MP4/video evidence remains projection evidence.  It grants no VM81 mutation,
