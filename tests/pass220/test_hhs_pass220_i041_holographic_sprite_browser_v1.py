@@ -110,6 +110,26 @@ def test_holographic_pixel_sprite_compositor_preserves_source_resolution_and_tra
 
 
 
+
+def test_canonical_seed_optimization_is_foundation_first_and_allocation_safe():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'const FOUNDATION_OPTIMIZATION_CONTRACT = Object.freeze({',
+        'schema:"HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1"',
+        'geometryMutationAuthorized:false',
+        'physicsMutationAuthorized:false',
+        'function modInverseCoprime(a,m)',
+        'const phaseWordCache = new Map();',
+        'const projected=new Float32Array(verts.length*3);',
+        'updateHudText:renderDue',
+        'foundationPreservationReceipt,',
+    ):
+        assert token in source, token
+    assert "const pr=tess.verts.map" not in source
+    assert "for(let k=1;k<NODE_COUNT;k++){ if((stride*k)%NODE_COUNT===1)" not in source
+
+
+
 CONTRACT = Path(
     "contracts/pass220/"
     "PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md"
@@ -128,5 +148,8 @@ def test_canonical_seed_contract_freezes_pixel_sprite_and_math_repair_boundaries
         "source_frame_resolution == output_drawing_buffer_resolution",
         "5184 * 5184 = 26,873,856",
         "HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS",
+        "HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1",
+        "canonical monolithic seed",
+        "observationally equivalent code/data-layout optimization",
     ):
         assert token in source, token
