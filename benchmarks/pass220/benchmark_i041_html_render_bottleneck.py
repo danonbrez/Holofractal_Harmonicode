@@ -159,6 +159,26 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 raise RuntimeError("halo overlap invariant is not active")
             if not display_contract["haloBackgroundAlphaZero"]:
                 raise RuntimeError("halo transparency invariant is not active")
+            if not display_contract["sphericalSpacetimeBoundary"]:
+                raise RuntimeError("3D spherical spacetime boundary is not active")
+            if display_contract["visibleGeometryDimensions"] != 3:
+                raise RuntimeError("visible geometry is not three-dimensional")
+            if not display_contract["tesseractPhaseDriven"]:
+                raise RuntimeError("tesseract phase driver is not active")
+            if display_contract["tesseractVisibleGuide"]:
+                raise RuntimeError("tesseract visual guide must remain hidden")
+            if display_contract["cameraWarpFromTesseract"]:
+                raise RuntimeError("tesseract camera warp is active")
+            if display_contract["sphericalWireframeVisible"]:
+                raise RuntimeError("spherical wireframe guide must remain hidden")
+            if not display_contract["supportsPause"] or not display_contract["supportsSingleStep"]:
+                raise RuntimeError("inspection pause/single-step controls are unavailable")
+            if display_contract["canonicalArithmetic"] != "BIGINT_RATIONAL_SYMBOLIC_Q144_TENSOR":
+                raise RuntimeError("exact browser arithmetic contract drifted")
+            if display_contract["renderFloatAuthority"]:
+                raise RuntimeError("render float acquired canonical authority")
+            if not display_contract["selfHostedExactRuntime"]:
+                raise RuntimeError("self-hosted exact runtime is unavailable")
             if math_repair["status"] != "PASS":
                 raise RuntimeError(f"canonical seed math repair failed: {math_repair}")
             if foundation_preservation["status"] != "PASS":
@@ -270,6 +290,19 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "source_frame_matches_output_resolution": display_contract["sameResolution"],
             "source_pixel_is_dense_nucleus": display_contract["sourcePixelIsDenseNucleus"],
             "halo_overlap_is_translucent": display_contract["haloBackgroundAlphaZero"],
+            "spherical_spacetime_boundary": display_contract["sphericalSpacetimeBoundary"],
+            "visible_geometry_dimensions": display_contract["visibleGeometryDimensions"],
+            "tesseract_phase_driven": display_contract["tesseractPhaseDriven"],
+            "tesseract_visible_guide": display_contract["tesseractVisibleGuide"],
+            "camera_warp_from_tesseract": display_contract["cameraWarpFromTesseract"],
+            "spherical_wireframe_visible": display_contract["sphericalWireframeVisible"],
+            "dynamics_tune_exact": display_contract["dynamicsTuneExact"],
+            "simulation_speed_exact": display_contract["simulationSpeedExact"],
+            "simulation_tick_exact": display_contract["simulationTickExact"],
+            "self_hosted_exact_runtime": display_contract["selfHostedExactRuntime"],
+            "render_float_authority": display_contract["renderFloatAuthority"],
+            "inspection_speed_control": True,
+            "pause_and_single_step": True,
         },
     }
     receipt_path = output / "lane5-html-render-bottleneck-receipt.json"
