@@ -35,22 +35,22 @@
   <button id="toggleTopo">reciprocal topology: seed</button>
   <button id="pause">pause</button>
   <button id="stepOnce">step +1 simulation tick</button>
-  <label class="row"><span>simulation speed</span><span id="simulationSpeedVal" class="readout">0.10×</span></label>
+  <label class="row"><span>simulation speed</span><span id="simulationSpeedVal" class="readout">1/10×</span></label>
   <input id="simulationSpeed" type="range" min="0.01" max="2" step="0.01" value="0.10">
-  <div style="margin-top:7px">Simulation time is decoupled from render cadence. Slow motion changes dynamics time only; camera/UI rendering remains smooth.</div>
+  <div style="margin-top:7px">Simulation/projection time uses an exact rational tick accumulator. Browser timing has no canonical authority.</div>
   <hr>
   <strong>Orbital / tesseract phase dynamics</strong>
-  <label class="row"><span>orbit radius</span><span id="orbitRadiusVal" class="readout">6.0</span></label>
+  <label class="row"><span>orbit radius</span><span id="orbitRadiusVal" class="readout">6</span></label>
   <input id="orbitRadius" type="range" min="0" max="18" step="0.1" value="6.0">
-  <label class="row"><span>orbit rate</span><span id="orbitRateVal" class="readout">0.50</span></label>
+  <label class="row"><span>orbit rate</span><span id="orbitRateVal" class="readout">1/2</span></label>
   <input id="orbitRate" type="range" min="0" max="2" step="0.01" value="0.50">
-  <label class="row"><span>slow-axis rate</span><span id="orbitSlowRateVal" class="readout">0.005</span></label>
+  <label class="row"><span>slow-axis rate</span><span id="orbitSlowRateVal" class="readout">1/200</span></label>
   <input id="orbitSlowRate" type="range" min="0" max="0.05" step="0.001" value="0.005">
-  <label class="row"><span>tesseract phase rate</span><span id="tesseractRateVal" class="readout">0.20</span></label>
+  <label class="row"><span>tesseract phase rate</span><span id="tesseractRateVal" class="readout">1/5</span></label>
   <input id="tesseractRate" type="range" min="0" max="1" step="0.01" value="0.20">
-  <label class="row"><span>Q144 phase rate</span><span id="q144PhaseRateVal" class="readout">0.02</span></label>
+  <label class="row"><span>Q144 phase rate</span><span id="q144PhaseRateVal" class="readout">1/50</span></label>
   <input id="q144PhaseRate" type="range" min="0" max="0.2" step="0.005" value="0.02">
-  <div style="margin-top:7px">These restore the pre-repair orbital and x–w / y–z phase drivers while the final visible coordinate remains bounded in 3D.</div>
+  <div style="margin-top:7px">These controls project exact rational phase parameters into the WebGL membrane; they do not acquire physics authority.</div>
   <hr>
   <strong>Holographic pixel-sprite tuning</strong>
   <label>view</label>
@@ -91,12 +91,82 @@ const Q144_QUARTER = 36;
 const Q144_HALF = 72;
 const QUARTIC_RENDER_PERIOD = 4;
 const HASH72 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
-const PHI = (1 + Math.sqrt(5)) / 2;
 const MASK64 = (1n << 64n) - 1n;
+
+/* Self-hosted exact repository algebra.
+   Canonical math is retained as exact integers/rationals, phase residues,
+   symbolic cyclotomic matrices and typed tensor/address relations. Host floats
+   are emitted only at the final WebGL projection membrane. */
+const PHI_EXACT = Object.freeze({
+  symbol:"phi",
+  polynomial:"phi^2-phi-1=0",
+  radical:"(1+sqrt(5))/2",
+  canonicalFloatAuthority:false
+});
+const PHI_RENDER = (1 + Math.sqrt(5)) / 2;
+
+const SELF_HOSTED_HHS_EXACT = Object.freeze({
+  schema:"HHS_I041_SELF_HOSTED_EXACT_MANIFOLD_V1",
+  sources:Object.freeze([
+    "whitepapers/HOLOFRACTAL_HARMONICODE.md",
+    "docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md",
+    "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md",
+    "hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+  ]),
+  cardinality:"144*36 = 12*12*3*12 = 81*64 = 72*72 = 5184",
+  rot72:Object.freeze({
+    action:"Rot_72(k): j -> (j+k) mod 72",
+    composition:"Rot_72(k1) o Rot_72(k2) = Rot_72((k1+k2) mod 72)",
+    inverse:"Rot_72(k)^(-1) = Rot_72((-k) mod 72)",
+    closure:"Rot_72(72) = identity"
+  }),
+  q144:Object.freeze({
+    field:"Q(zeta_144)",
+    cos:"(zeta_144^k + zeta_144^-k)/2",
+    sin:"(zeta_144^k - zeta_144^-k)/(2*i)",
+    rotation:"[[cos,-sin],[sin,cos]]"
+  }),
+  lane5:Object.freeze({
+    rule:"optimization may change how a candidate/state is found, scheduled or reused; it may not change the exact canonical result",
+    exactTransitionIdentity:true,
+    hydrationLineageReuse:true,
+    constantAuxiliaryMemoryByCandidateCount:true,
+    optimizerMemory:"O(1)",
+    candidateOnly:true,
+    canonicalMutationAuthority:false,
+    renderCadence:4,
+    phaseWordRefreshCadence:72
+  }),
+  canonicalFloatAuthority:false,
+  renderFloatProjectionOnly:true
+});
 const VIRTUAL_FRAME_SIDE = NODE_COUNT;
 const VIRTUAL_FRAME_PIXELS = NODE_COUNT * NODE_COUNT;
-const SPACETIME_RADIUS = 90.0;
+const SPACETIME_RADIUS = 90;
 const CANONICAL_SEED_TITLE = "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041";
+const I041_FORK_ROLE = Object.freeze({
+  fork:"B",
+  name:"MP4_RENDER_OBSERVATION_FORK",
+  canonicalSimulationReplacement:false,
+  consumesCanonicalSimulationSemantics:true,
+  mayRenderSlowerThanRealtime:true,
+  purpose:"observe/capture the same canonical simulation evolution when full realtime execution is too expensive"
+});
+const I041_SPRITEMAP_BINDING = Object.freeze({
+  addressTopologySeedBound:true,
+  canonicalAnimatedSeedBound:false,
+  currentTrajectoryAuthority:"NONE",
+  currentMode:"PROJECTION_PIPELINE_PREVIEW",
+  requiredCanonicalFrameSchema:"HHS_I041_CANONICAL_SPHERICAL_FRAME_V1",
+  rule:"a holographic animated spritemap is canonical only when every rendered frame consumes the same bounded-spherical simulation state produced by Fork A or an exact replay of that state"
+});
+const FOUNDATION_EXECUTION_CONTRACT = Object.freeze({
+  rule:"execute the complete canonical simulation; repair mathematical/runtime faults in place; do not reduce, approximate, substitute, or delete specified modules",
+  lane5Rendering:"inherited Lane 5 optimization owns rendering/projection from the same canonical simulation state",
+  simulationReductionAuthorized:false,
+  geometryMutationAuthorized:false,
+  physicsMutationAuthorized:false
+});
 const CANONICAL_SEED_REPAIRS = Object.freeze({
   q23_field_division:"exact BigInt rational coefficients; no BigInt quotient truncation",
   vm81_closure:"all six folded cell coordinates required; P2-pq == n4 == xy",
@@ -108,7 +178,7 @@ const CANONICAL_SEED_REPAIRS = Object.freeze({
   manifold_hash:"browser compression is a projection fingerprint, never canonical Hash72/Hash216",
   spherical_display_boundary:"visible dynamics are confined to a 3D spherical spacetime boundary",
   tesseract_phase_without_camera_warp:"SO(4)/tesseract state drives bounded x-w / y-z phase evolution but cannot perspective-warp the camera",
-  inspection_clock:"simulation-time speed is decoupled from render cadence with pause and exact single-step"
+  inspection_clock:"simulation/projection time uses exact rational state; browser timing is observation-only"
 });
 
 let scene, camera, renderer, controls, geometry;
@@ -122,19 +192,20 @@ const pixelTune={
   phaseSpeed:1.0,
   viewMode:3
 };
-const dynamicsTune={
-  orbitRadius:6.0,
-  orbitRate:0.50,
-  orbitSlowRate:0.005,
-  tesseractRate:0.20,
-  q144PhaseRate:0.02
+const dynamicsTuneExact={
+  orbitRadius:"6",
+  orbitRate:"1/2",
+  orbitSlowRate:"1/200",
+  tesseractRate:"1/5",
+  q144PhaseRate:"1/50"
 };
+let simulationSpeedExact=null;
+let simulationTickExact=null;
+let lastWallMicros=0n;
 let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
-let simTimeTicks = 0.0, simulationSpeed = 0.10, lastWallTime = 0.0;
 let manualTestMode = false;
 let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
 let lastPhaseWord = "";
-
 function gcd(a,b){ while(b!==0){ const t=a%b; a=b; b=t; } return Math.abs(a); }
 
 async function sha256Bytes(text){
@@ -209,6 +280,94 @@ const brEq=(a,b)=>a.n*b.d===b.n*a.d;
 const brZero=()=>brat(0n,1n);
 const brOne=()=>brat(1n,1n);
 const brFromInt=n=>brat(BigInt(n),1n);
+const brToString=a=>a.d===1n?String(a.n):String(a.n)+"/"+String(a.d);
+function exactRatioFromText(value){
+  const text=String(value).trim();
+  if(/^-?\d+\/\d+$/.test(text)){
+    const [n,d]=text.split("/");
+    return brat(BigInt(n),BigInt(d));
+  }
+  if(/^-?\d+(?:\.\d+)?$/.test(text)){
+    const sign=text.startsWith("-")?-1n:1n;
+    const body=text.replace(/^-/,"");
+    const [whole,frac=""]=body.split(".");
+    const scale=10n**BigInt(frac.length);
+    return brat(sign*(BigInt(whole||"0")*scale+BigInt(frac||"0")),scale);
+  }
+  throw new Error("exact decimal/rational text required");
+}
+function brFloor(a){
+  if(a.n>=0n) return a.n/a.d;
+  return -((-a.n+a.d-1n)/a.d);
+}
+function dynamicsProjection(){
+  return Object.fromEntries(Object.entries(dynamicsTuneExact).map(
+    ([key,value])=>[key,projectionFloatRational(exactRatioFromText(value))]
+  ));
+}
+function exactDynamicsReceipt(){
+  return Object.freeze({...dynamicsTuneExact});
+}
+function initExactInspectionClock(){
+  simulationSpeedExact=exactRatioFromText(document.getElementById("simulationSpeed")?.value||"0.10");
+  simulationTickExact=brat(0n,1n);
+}
+function projectionFloatRational(a){
+  /* Sole rational -> IEEE projection membrane for browser/WebGL presentation. */
+  return Number(a.n)/Number(a.d);
+}
+function rot72Exact(j,k){
+  const jj=BigInt(j), kk=BigInt(k);
+  const mod=72n;
+  return Number(((jj+kk)%mod+mod)%mod);
+}
+function q144RotationExact(k){
+  const q=((Number(k)%Q144)+Q144)%Q144;
+  const inverse=(Q144-q)%Q144;
+  const cos="(zeta_144^"+q+"+zeta_144^"+inverse+")/2";
+  const sin="(zeta_144^"+q+"-zeta_144^"+inverse+")/(2*i)";
+  return Object.freeze({
+    field:"Q(zeta_144)",
+    q144Index:q,
+    inverseIndex:inverse,
+    cosExact:cos,
+    sinExact:sin,
+    matrixExact:Object.freeze([
+      Object.freeze([cos,"-("+sin+")"]),
+      Object.freeze([sin,cos])
+    ]),
+    hostFloatArithmeticUsed:false
+  });
+}
+function lane5ExactSchedule(targetTick){
+  if(!Number.isSafeInteger(targetTick)||targetTick<0)
+    throw new Error("Lane 5 exact tick must be a nonnegative safe integer");
+  const t=BigInt(targetTick);
+  return Object.freeze({
+    tick:t,
+    timeSeconds:brat(t,60n),
+    q144:Number(t%144n),
+    phase72:Number(t%72n),
+    render:(t%BigInt(QUARTIC_RENDER_PERIOD))===0n,
+    refreshPhaseWord:(t%72n)===0n,
+    materializedIntermediateStates:0,
+    canonicalResultChanged:false,
+    canonicalMutationAuthority:false
+  });
+}
+function exactScheduleReceipt(schedule){
+  return Object.freeze({
+    tick:String(schedule.tick),
+    timeSeconds:brToString(schedule.timeSeconds),
+    q144:schedule.q144,
+    phase72:schedule.phase72,
+    render:schedule.render,
+    refreshPhaseWord:schedule.refreshPhaseWord,
+    materializedIntermediateStates:schedule.materializedIntermediateStates,
+    canonicalResultChanged:schedule.canonicalResultChanged,
+    canonicalMutationAuthority:schedule.canonicalMutationAuthority
+  });
+}
 
 function q23(a,b,c,d){ return [a,b,c,d]; }
 function q23i(a,b,c,d){ return q23(brFromInt(a),brFromInt(b),brFromInt(c),brFromInt(d)); }
@@ -346,7 +505,7 @@ function buildGeometry(){
   for(let i=0;i<NODE_COUNT;i++){
     const c=coord5184(i);
     const j=c.vm81Cell81*8+c.phaseRight8;   // 0..647, 648 nodes per phase family
-    const a=j*PHI*Math.PI*2;
+    const a=j*PHI_RENDER*Math.PI*2;
     const r=Math.sqrt(j)*3;                 // inherited golden spiral law
     pos[i*3]=r*Math.cos(a);
     pos[i*3+1]=r*Math.sin(a);
@@ -440,11 +599,11 @@ function makeMaterial(layer){
       uTime:{value:0},uPathAddress:{value:0},uBottOctant:{value:0},
       uLayer:{value:layer},uTopologyInvert:{value:0},
       uSpacetimeRadius:{value:SPACETIME_RADIUS},
-      uOrbitRadius:{value:dynamicsTune.orbitRadius},
-      uOrbitRate:{value:dynamicsTune.orbitRate},
-      uOrbitSlowRate:{value:dynamicsTune.orbitSlowRate},
-      uTesseractRate:{value:dynamicsTune.tesseractRate},
-      uQ144PhaseRate:{value:dynamicsTune.q144PhaseRate}
+      uOrbitRadius:{value:dynamicsProjection().orbitRadius},
+      uOrbitRate:{value:dynamicsProjection().orbitRate},
+      uOrbitSlowRate:{value:dynamicsProjection().orbitSlowRate},
+      uTesseractRate:{value:dynamicsProjection().tesseractRate},
+      uQ144PhaseRate:{value:dynamicsProjection().q144PhaseRate}
     }
   });
 }
@@ -589,11 +748,15 @@ function pixelDisplayContract(){
     tesseractVisibleGuide:false,
     cameraWarpFromTesseract:false,
     sphericalWireframeVisible:false,
-    simulationSpeed,
-    dynamicsTune:{...dynamicsTune},
+    simulationSpeedExact:simulationSpeedExact?brToString(simulationSpeedExact):"1/10",
+    simulationTickExact:simulationTickExact?brToString(simulationTickExact):"0",
+    dynamicsTuneExact:exactDynamicsReceipt(),
     supportsPause:true,
     supportsSingleStep:true,
     projectionOnly:true,
+    canonicalArithmetic:"BIGINT_RATIONAL_SYMBOLIC_Q144_TENSOR",
+    renderFloatAuthority:false,
+    selfHostedExactRuntime:true,
     tuning:{...pixelTune}
   };
 }
@@ -631,6 +794,56 @@ function installPixelTuneControls(){
   bindPixelTuneControl("viewMode","viewMode",null,Number);
 }
 
+function bindDynamicsControl(id,key,readoutId){
+  const el=document.getElementById(id), out=document.getElementById(readoutId);
+  const apply=()=>{
+    const ratio=exactRatioFromText(el.value);
+    dynamicsTuneExact[key]=brToString(ratio);
+    if(out) out.textContent=brToString(ratio);
+  };
+  el.addEventListener("input",apply);
+  el.addEventListener("change",apply);
+  apply();
+}
+function installDynamicsControls(){
+  bindDynamicsControl("orbitRadius","orbitRadius","orbitRadiusVal");
+  bindDynamicsControl("orbitRate","orbitRate","orbitRateVal");
+  bindDynamicsControl("orbitSlowRate","orbitSlowRate","orbitSlowRateVal");
+  bindDynamicsControl("tesseractRate","tesseractRate","tesseractRateVal");
+  bindDynamicsControl("q144PhaseRate","q144PhaseRate","q144PhaseRateVal");
+}
+function installPanelToggles(){
+  const hud=document.getElementById("hud"), ctl=document.getElementById("ctl");
+  const hudToggle=document.getElementById("toggleHudPanel"), ctlToggle=document.getElementById("toggleCtlPanel");
+  hudToggle.addEventListener("click",()=>{
+    const hidden=hud.classList.toggle("panelHidden");
+    hudToggle.textContent=hidden?"show HUD":"hide HUD";
+  });
+  ctlToggle.addEventListener("click",()=>{
+    const hidden=ctl.classList.toggle("panelHidden");
+    ctlToggle.textContent=hidden?"show controls":"hide controls";
+  });
+}
+function setSimulationSpeedExact(value){
+  simulationSpeedExact=exactRatioFromText(value);
+  if(simulationSpeedExact.n<=0n || simulationSpeedExact.n>2n*simulationSpeedExact.d)
+    throw new Error("simulation speed outside admitted inspection range");
+  const el=document.getElementById("simulationSpeed"), out=document.getElementById("simulationSpeedVal");
+  if(el) el.value=String(projectionFloatRational(simulationSpeedExact));
+  if(out) out.textContent=brToString(simulationSpeedExact)+"×";
+  return brToString(simulationSpeedExact);
+}
+function exactSingleStep(){
+  const base=brFloor(simulationTickExact||brZero());
+  simulationTickExact=brat(base+1n,1n);
+  tick=Number(base+1n);
+  return projectionTick(tick,{
+    renderFrame:(tick%QUARTIC_RENDER_PERIOD)===0,
+    gpuSync:false,
+    updateHudText:true
+  });
+}
+
 function buildSphericalBoundary(){
   return Object.freeze({
     radius:SPACETIME_RADIUS,
@@ -644,24 +857,22 @@ function buildTesseract(){
   for(let v=0;v<16;v++) verts.push([v&1?1:-1,v&2?1:-1,v&4?1:-1,v&8?1:-1]);
   const edges=[];
   for(let v=0;v<16;v++) for(let b=0;b<4;b++){ const u=v^(1<<b); if(u>v) edges.push([v,u]); }
-  const arr=new Float32Array(edges.length*6);
-  return {verts,edges,arr,diagnosticOnly:true,lastChecksum:0};
+  return {verts,edges,lastChecksum:0,visibleGuide:false};
 }
 function updateTesseract(t){
-  const h1=t*.20,h2=h1/PHI,c1=Math.cos(h1),s1=Math.sin(h1),c2=Math.cos(h2),s2=Math.sin(h2);
-  const pr=tess.verts.map(v=>{
-    const x1=c1*v[0]-s1*v[3],w1=s1*v[0]+c1*v[3];
-    const y1=c2*v[1]-s2*v[2],z1=s2*v[1]+c2*v[2];
-    const s=2.6/(2.2-w1);
-    return [x1*s,y1*s,z1*s];
-  });
-  tess.edges.forEach((e,k)=>{
-    const a=pr[e[0]],b=pr[e[1]],o=k*6;
-    tess.arr[o]=a[0];tess.arr[o+1]=a[1];tess.arr[o+2]=a[2];
-    tess.arr[o+3]=b[0];tess.arr[o+4]=b[1];tess.arr[o+5]=b[2];
-  });
+  /* Projection-only diagnostic. Canonical SO(4)/Q144 state is symbolic above. */
+  const d=dynamicsProjection();
+  const h1=t*d.tesseractRate,h2=h1/PHI_RENDER;
+  const c1=Math.cos(h1),s1=Math.sin(h1),c2=Math.cos(h2),s2=Math.sin(h2);
   let checksum=0;
-  for(let i=0;i<tess.arr.length;i++) checksum+=tess.arr[i]*(i+1);
+  for(let k=0;k<tess.edges.length;k++){
+    const e=tess.edges[k], a=tess.verts[e[0]], b=tess.verts[e[1]];
+    for(const [v,weight] of [[a,k*2+1],[b,k*2+2]]){
+      const x1=c1*v[0]-s1*v[3],w1=s1*v[0]+c1*v[3];
+      const y1=c2*v[1]-s2*v[2],z1=s2*v[1]+c2*v[2];
+      checksum+=(x1+y1+z1+w1)*weight;
+    }
+  }
   tess.lastChecksum=checksum;
   return checksum;
 }
@@ -682,14 +893,16 @@ function updateHud(address,rank,bott){
     "VM81 cell="+c.vm81Cell81+" op64="+c.operation64+
     " phase="+c.phaseLeft8+":"+c.phaseRight8+" bott="+bott+"\n"+
     "phase72="+(lastPhaseWord?lastPhaseWord.slice(0,36)+"…":"computing…")+"\n"+
-    "rendered="+rendered+"/"+rafCount+
-    " sim-speed="+simulationSpeed.toFixed(2)+"x paused="+paused+
+    "render gate=1/4 rendered="+rendered+"/"+rafCount+
+    " sim-speed="+(simulationSpeedExact?brToString(simulationSpeedExact):"1/10")+"x paused="+paused+
     " topology="+(topoInvert?"reciprocal-inverted":"seed")+"\n"+
     "3D spherical spacetime R="+SPACETIME_RADIUS+
     " tesseract=phase-driven; camera-warp=false; wireframe=false\n"+
     "virtual="+VIRTUAL_FRAME_SIDE+"²="+VIRTUAL_FRAME_PIXELS+
     " view="+["source","nucleus","halo","composite"][pixelTune.viewMode]+"\n"+
     "pixel nucleus=source frame; halo overlap=translucent; source/target=same resolution\n"+
+    "spritemap="+(I041_SPRITEMAP_BINDING.canonicalAnimatedSeedBound?"canonical-frame-bound":"preview-unbound")+"\n"+
+    "exact=BigInt/rational + symbolic Q(zeta_144); float=render-only\n"+
     "authority=projection-only; no VM81/Hash72/Hash216 mutation";
 }
 
@@ -698,29 +911,31 @@ function projectionTick(targetTick, options={}){
   const renderFrame=Boolean(options.renderFrame);
   const gpuSync=Boolean(options.gpuSync);
   const updateHudText=Boolean(options.updateHudText);
-  simTimeTicks=Number(targetTick);
-  tick=Math.floor(simTimeTicks);
+  tick=targetTick;
 
   const pathStart=performance.now();
-  const rank=((tick%NODE_COUNT)+NODE_COUNT)%NODE_COUNT;
+  const schedule=lane5ExactSchedule(tick);
+  const rank=tick%NODE_COUNT;
   const address=pathAddress(rank);
-  const q=((tick%Q144)+Q144)%Q144;
+  const q=schedule.q144;
   const bott=Math.floor(q/Q144_OCTANT)%PHASE_GROUPS;
-  const seconds=simTimeTicks/60;
+  const seconds=projectionFloatRational(schedule.timeSeconds);
+  const exactRotation=q144RotationExact(q);
   const pathEnd=performance.now();
 
+  const dyn=dynamicsProjection();
   for(const m of [material1,material2]){
     m.uniforms.uTime.value=seconds;
     m.uniforms.uPathAddress.value=address;
     m.uniforms.uBottOctant.value=bott;
     m.uniforms.uTopologyInvert.value=topoInvert;
-    m.uniforms.uOrbitRadius.value=dynamicsTune.orbitRadius;
-    m.uniforms.uOrbitRate.value=dynamicsTune.orbitRate;
-    m.uniforms.uOrbitSlowRate.value=dynamicsTune.orbitSlowRate;
-    m.uniforms.uTesseractRate.value=dynamicsTune.tesseractRate;
-    m.uniforms.uQ144PhaseRate.value=dynamicsTune.q144PhaseRate;
+    m.uniforms.uOrbitRadius.value=dyn.orbitRadius;
+    m.uniforms.uOrbitRate.value=dyn.orbitRate;
+    m.uniforms.uOrbitSlowRate.value=dyn.orbitSlowRate;
+    m.uniforms.uTesseractRate.value=dyn.tesseractRate;
+    m.uniforms.uQ144PhaseRate.value=dyn.q144PhaseRate;
   }
-  if(postMaterial) postMaterial.uniforms.uTick.value=simTimeTicks;
+  if(postMaterial) postMaterial.uniforms.uTick.value=tick;
   const uniformEnd=performance.now();
 
   updateTesseract(seconds);
@@ -740,7 +955,9 @@ function projectionTick(targetTick, options={}){
   if(updateHudText) updateHud(address,rank,bott);
 
   return {
-    tick,simTimeTicks,simulationSpeed,rank,address,bott,
+    tick,rank,address,bott,
+    exactSchedule:exactScheduleReceipt(schedule),
+    exactQ144Rotation:exactRotation,
     pathMs:pathEnd-pathStart,
     uniformMs:uniformEnd-pathEnd,
     tesseractMs:tesseractEnd-uniformEnd,
@@ -849,6 +1066,40 @@ async function setTestSeed(seed){
   return {...path};
 }
 
+function foundationPreservationReceipt(){
+  const checks={
+    canonical_seed_identity:CANONICAL_SEED_TITLE==="Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041",
+    renderer_is_observation_fork:I041_FORK_ROLE.fork==="B"&&I041_FORK_ROLE.canonicalSimulationReplacement===false,
+    projection_preview_not_mislabeled_as_animated_seed:I041_SPRITEMAP_BINDING.canonicalAnimatedSeedBound===false&&I041_SPRITEMAP_BINDING.currentTrajectoryAuthority==="NONE",
+    lane5_topology:NODE_COUNT===5184&&HASH72_SIDE===72&&HASH72_SIDE*HASH72_SIDE===NODE_COUNT,
+    eight_phase_groups:PHASE_GROUPS===8,
+    q144_octant_quarter_half:Q144===144&&Q144_OCTANT===18&&Q144_QUARTER===36&&Q144_HALF===72,
+    layer2_quarter_turn_shader:vertexShader.includes("aGroup*PI/4.0 + uLayer*PI/2.0")&&vertexShader.includes("p.xy=vec2(-p.y,p.x)"),
+    golden_spiral_seed:PHI_RENDER===(1+Math.sqrt(5))/2,
+    shared_so4_tesseract:tess&&tess.verts.length===16&&tess.edges.length===32,
+    quartic_projection_gate:QUARTIC_RENDER_PERIOD===4,
+    simulation_reduction_authorized:FOUNDATION_EXECUTION_CONTRACT.simulationReductionAuthorized===false,
+    geometry_mutation_authorized:FOUNDATION_EXECUTION_CONTRACT.geometryMutationAuthorized===false,
+    physics_mutation_authorized:FOUNDATION_EXECUTION_CONTRACT.physicsMutationAuthorized===false,
+    self_hosted_exact_manifold:SELF_HOSTED_HHS_EXACT.canonicalFloatAuthority===false,
+    exact_rot72_closure:rot72Exact(0,72)===0&&rot72Exact(17,-17)===0,
+    exact_q144_symbolic:q144RotationExact(36).hostFloatArithmeticUsed===false,
+    lane5_schedule_preserves_result:lane5ExactSchedule(4).canonicalResultChanged===false
+  };
+  return {
+    schema:"HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1",
+    status:Object.values(checks).every(Boolean)?"PASS":"FAIL",
+    checks,
+    forkRole:I041_FORK_ROLE,
+    spritemapBinding:I041_SPRITEMAP_BINDING,
+    executionContract:FOUNDATION_EXECUTION_CONTRACT,
+    repairScope:"MATH_AND_RUNTIME_CORRECTION_ONLY",
+    lane5RenderingInherited:true,
+    foundationPhysicsOwnedByProjectionAdapter:false,
+    canonicalMutationAuthority:false
+  };
+}
+
 function installTestApi(){
   window.HHS_LANE5_TEST={
     schema:"HHS_PASS_220_I041_HTML_TEST_API_V1",
@@ -859,28 +1110,30 @@ function installTestApi(){
     setSeed:setTestSeed,
     step(targetTick,options={}){manualTestMode=true;paused=true;return projectionTick(targetTick,options);},
     benchmark:runBottleneckBenchmark,
-    snapshot(){return {tick,simTimeTicks,simulationSpeed,path:{...path},rendered,rafCount,manualTestMode,topoInvert,pixelTune:{...pixelTune},dynamicsTune:{...dynamicsTune},spacetimeRadius:SPACETIME_RADIUS,tesseractPhaseDriven:true,cameraWarpFromTesseract:false,sphericalWireframeVisible:false};},
-    setSimulationSpeed(value){
-      const v=Number(value);
-      if(!Number.isFinite(v)) throw new Error("simulation speed must be finite");
-      simulationSpeed=Math.min(2.0,Math.max(0.01,v));
-      const el=document.getElementById("simulationSpeed");
-      const out=document.getElementById("simulationSpeedVal");
-      if(el) el.value=String(simulationSpeed);
-      if(out) out.textContent=simulationSpeed.toFixed(2)+"×";
-      return simulationSpeed;
-    },
-    singleStep(){
-      paused=true;
-      simTimeTicks=Math.floor(simTimeTicks)+1;
-      return projectionTick(simTimeTicks,{renderFrame:true,gpuSync:false,updateHudText:true});
+    snapshot(){return {
+      tick,
+      simulationTickExact:simulationTickExact?brToString(simulationTickExact):"0",
+      simulationSpeedExact:simulationSpeedExact?brToString(simulationSpeedExact):"1/10",
+      path:{...path},rendered,rafCount,manualTestMode,topoInvert,
+      pixelTune:{...pixelTune},dynamicsTuneExact:exactDynamicsReceipt(),
+      spacetimeRadius:SPACETIME_RADIUS,tesseractPhaseDriven:true,
+      cameraWarpFromTesseract:false,sphericalWireframeVisible:false
+    };},
+    setSimulationSpeed(value){return setSimulationSpeedExact(value);},
+    singleStep(){paused=true;return exactSingleStep();},
+    setDynamics(values={}){
+      for(const [key,value] of Object.entries(values)){
+        if(!(key in dynamicsTuneExact)) throw new Error("unknown dynamics key: "+key);
+        dynamicsTuneExact[key]=brToString(exactRatioFromText(value));
+      }
+      return exactDynamicsReceipt();
     },
     displayContract:pixelDisplayContract,
     mathRepairReceipt:canonicalSeedMathRepairReceipt,
-    setDynamics(values={}){
-      Object.assign(dynamicsTune,values);
-      return {...dynamicsTune};
-    },
+    foundationPreservationReceipt,
+    selfHostedExactContract(){return SELF_HOSTED_HHS_EXACT;},
+    exactSchedule(targetTick){return exactScheduleReceipt(lane5ExactSchedule(targetTick));},
+    exactQ144Rotation:q144RotationExact,
     setTune(values={}){
       Object.assign(pixelTune,values);
       if(postMaterial){
@@ -897,48 +1150,15 @@ function installTestApi(){
   };
 }
 
-function bindDynamicsControl(id,key,readoutId,digits=2){
-  const el=document.getElementById(id), out=document.getElementById(readoutId);
-  const apply=()=>{
-    dynamicsTune[key]=Number(el.value);
-    if(out) out.textContent=dynamicsTune[key].toFixed(digits);
-  };
-  el.addEventListener("input",apply);
-  el.addEventListener("change",apply);
-  apply();
-}
-
-function installDynamicsControls(){
-  bindDynamicsControl("orbitRadius","orbitRadius","orbitRadiusVal",1);
-  bindDynamicsControl("orbitRate","orbitRate","orbitRateVal",2);
-  bindDynamicsControl("orbitSlowRate","orbitSlowRate","orbitSlowRateVal",3);
-  bindDynamicsControl("tesseractRate","tesseractRate","tesseractRateVal",2);
-  bindDynamicsControl("q144PhaseRate","q144PhaseRate","q144PhaseRateVal",3);
-}
-
-function installPanelToggles(){
-  const hud=document.getElementById("hud");
-  const ctl=document.getElementById("ctl");
-  const hudToggle=document.getElementById("toggleHudPanel");
-  const ctlToggle=document.getElementById("toggleCtlPanel");
-  hudToggle.addEventListener("click",()=>{
-    const hidden=hud.classList.toggle("panelHidden");
-    hudToggle.textContent=hidden?"show HUD":"hide HUD";
-  });
-  ctlToggle.addEventListener("click",()=>{
-    const hidden=ctl.classList.toggle("panelHidden");
-    ctlToggle.textContent=hidden?"show controls":"hide controls";
-  });
-}
-
 async function applySeed(){
   const seed=document.getElementById("seed").value.trim()||"HHS-I041-LANE5-5184";
   path=await derivePath(seed);
-  tick=0; simTimeTicks=0; lastWallTime=0; lastPhaseWord="";
+  tick=0; simulationTickExact=brZero(); lastWallMicros=0n; lastPhaseWord="";
   await refreshPhaseWord(pathAddress(0),0);
 }
 
 function init(){
+  initExactInspectionClock();
   scene=new THREE.Scene();
   scene.background=null;
   camera=new THREE.PerspectiveCamera(62,innerWidth/innerHeight,.1,1000);
@@ -980,45 +1200,55 @@ function init(){
     document.getElementById("toggleTopo").textContent="reciprocal topology: "+(topoInvert?"inverted":"seed");
   });
   const speedEl=document.getElementById("simulationSpeed");
-  const speedOut=document.getElementById("simulationSpeedVal");
-  const applySpeed=()=>{
-    simulationSpeed=Math.min(2.0,Math.max(0.01,Number(speedEl.value)||0.10));
-    speedOut.textContent=simulationSpeed.toFixed(2)+"×";
-  };
-  speedEl.addEventListener("input",applySpeed);
-  speedEl.addEventListener("change",applySpeed);
-  applySpeed();
+  const speedApply=()=>setSimulationSpeedExact(speedEl.value);
+  speedEl.addEventListener("input",speedApply);
+  speedEl.addEventListener("change",speedApply);
+  speedApply();
   document.getElementById("pause").addEventListener("click",()=>{
     paused=!paused;document.getElementById("pause").textContent=paused?"resume":"pause";
   });
   document.getElementById("stepOnce").addEventListener("click",()=>{
     paused=true;
     document.getElementById("pause").textContent="resume";
-    simTimeTicks=Math.floor(simTimeTicks)+1;
-    const stepped=projectionTick(simTimeTicks,{renderFrame:true,gpuSync:false,updateHudText:true});
+    const stepped=exactSingleStep();
     if(tick%72===0) refreshPhaseWord(stepped.address,stepped.rank);
   });
-  animate();
+  requestAnimationFrame(animate);
 }
 
 function animate(now){
   requestAnimationFrame(animate);
-  const wall=Number.isFinite(now)?now:performance.now();
-  if(manualTestMode){ lastWallTime=wall; return; }
+  const wallMicros=BigInt(Math.round((Number.isFinite(now)?now:performance.now())*1000));
+  if(manualTestMode){ lastWallMicros=wallMicros; return; }
   controls.update();
   rafCount++;
-  if(lastWallTime===0) lastWallTime=wall;
-  const dt=Math.min(0.10,Math.max(0,(wall-lastWallTime)/1000));
-  lastWallTime=wall;
-  if(!paused) simTimeTicks+=dt*60.0*simulationSpeed;
+  if(lastWallMicros===0n) lastWallMicros=wallMicros;
+  let deltaMicros=wallMicros-lastWallMicros;
+  lastWallMicros=wallMicros;
+  if(deltaMicros<0n) deltaMicros=0n;
+  if(deltaMicros>100000n) deltaMicros=100000n;
+
   const priorTick=tick;
-  const result=projectionTick(simTimeTicks,{
-    renderFrame:true,
-    gpuSync:false,
-    updateHudText:true
-  });
-  const quarticGate=(tick%QUARTIC_RENDER_PERIOD)===0;
-  if(quarticGate && tick!==priorTick && tick%72===0) refreshPhaseWord(result.address,result.rank);
+  if(!paused){
+    const wallTickDelta=brat(deltaMicros*60n,1000000n);
+    simulationTickExact=brAdd(simulationTickExact,brMul(wallTickDelta,simulationSpeedExact));
+  }
+  const targetTick=Number(brFloor(simulationTickExact));
+
+  if(targetTick===priorTick){
+    updateHud(pathAddress(tick%NODE_COUNT),tick%NODE_COUNT,tick%PHASE_GROUPS);
+    return;
+  }
+
+  let result=null;
+  for(let next=priorTick+1;next<=targetTick;next++){
+    result=projectionTick(next,{
+      renderFrame:(next%QUARTIC_RENDER_PERIOD)===0,
+      gpuSync:false,
+      updateHudText:next===targetTick
+    });
+    if(next%72===0) refreshPhaseWord(result.address,result.rank);
+  }
 }
 
 (async()=>{

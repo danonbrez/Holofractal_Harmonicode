@@ -25,6 +25,12 @@ export class HHSRenderProjection {
     this.material = null;
     this.animationFrame = null;
     this.frame = 0;
+    this.followParticleIndex = null;
+    this.followDistance = 5;
+    this.followHeight = 1.5;
+    this._followTangent = new THREE.Vector3(0, 0, 1);
+    this._followRadial = new THREE.Vector3(0, 1, 0);
+    this._followPosition = new THREE.Vector3();
     this.onContextLost = options.onContextLost ?? (() => {});
     this.onContextRestored = options.onContextRestored ?? (() => {});
     this._contextLostHandler = (event) => {
@@ -129,9 +135,40 @@ export class HHSRenderProjection {
     }
   }
 
+  _updateFollowCamera() {
+    if (this.followParticleIndex === null || !this.camera) return;
+    const particle = this.engine.getParticle(this.followParticleIndex);
+    const [px, py, pz] = particle.position;
+    const [vx, vy, vz] = particle.velocity;
+
+    this._followPosition.set(px, py, pz);
+    this._followRadial.copy(this._followPosition);
+    if (this._followRadial.lengthSq() > 1e-18) {
+      this._followRadial.normalize();
+    } else {
+      this._followRadial.set(0, 1, 0);
+    }
+
+    const speedSq = vx * vx + vy * vy + vz * vz;
+    if (speedSq > 1e-18) {
+      this._followTangent.set(vx, vy, vz).normalize();
+    }
+
+    this.camera.position
+      .copy(this._followPosition)
+      .addScaledVector(this._followTangent, -this.followDistance)
+      .addScaledVector(this._followRadial, this.followHeight);
+    this.camera.up.copy(this._followRadial);
+    this.camera.lookAt(this._followPosition);
+  }
+
   renderFrame = () => {
     if (!this.renderer) return;
-    this.controls?.update();
+    if (this.followParticleIndex === null) {
+      this.controls?.update();
+    } else {
+      this._updateFollowCamera();
+    }
     this.updateBuffers();
     this.renderer.render(this.scene, this.camera);
     this.frame += 1;
@@ -159,12 +196,44 @@ export class HHSRenderProjection {
     return this.diagnostics();
   }
 
-  focusParticle(index) {
+  followParticle(index) {
     const particle = this.engine.getParticle(index);
-    this.controls.target.set(...particle.position);
-    this.camera.position.set(particle.position[0], particle.position[1] + 2, particle.position[2] + 5);
-    this.controls.update();
-    return particle;
+    this.followParticleIndex = index;
+    if (this.controls) {
+      this.controls.enabled = false;
+      this.controls.enableRotate = false;
+      this.controls.enablePan = false;
+      this.controls.enableZoom = false;
+    }
+    const [vx, vy, vz] = particle.velocity;
+    if ((vx * vx + vy * vy + vz * vz) > 1e-18) {
+      this._followTangent.set(vx, vy, vz).normalize();
+    }
+    this._updateFollowCamera();
+    return Object.freeze({
+      particle_index: index,
+      interactive: false,
+      physics_mutation: false,
+      path_source: "ENGINE_POSITION_VELOCITY_ONLY",
+      trajectory_model: "NATIVE_CURVED_TOROIDAL_PATH",
+    });
+  }
+
+  clearParticleFollow() {
+    this.followParticleIndex = null;
+    if (this.controls) {
+      this.controls.enabled = true;
+      this.controls.enableRotate = true;
+      this.controls.enablePan = true;
+      this.controls.enableZoom = true;
+      this.controls.target.set(0, 0, 0);
+      this.controls.update();
+    }
+    return this.diagnostics();
+  }
+
+  focusParticle(index) {
+    return this.followParticle(index);
   }
 
   diagnostics() {
@@ -175,6 +244,10 @@ export class HHSRenderProjection {
       frame: this.frame,
       webgl2: Boolean(this.renderer?.capabilities?.isWebGL2),
       draw_object: this.object?.isInstancedMesh ? "THREE.InstancedMesh" : "THREE.Points",
+      follow_particle_index: this.followParticleIndex,
+      follow_interactive: this.followParticleIndex === null,
+      follow_physics_mutation: false,
+      follow_trajectory_model: "NATIVE_CURVED_TOROIDAL_PATH",
     });
   }
 

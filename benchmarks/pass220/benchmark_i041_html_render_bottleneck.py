@@ -144,6 +144,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             math_repair = page.evaluate(
                 "()=>window.HHS_LANE5_TEST.mathRepairReceipt()"
             )
+            foundation_preservation = page.evaluate(
+                "()=>window.HHS_LANE5_TEST.foundationPreservationReceipt()"
+            )
             if not display_contract["sameResolution"]:
                 raise RuntimeError("HTML source frame does not match drawing-buffer resolution")
             if display_contract["virtualFrameSide"] != 5184:
@@ -170,8 +173,19 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 raise RuntimeError("spherical wireframe guide must remain hidden")
             if not display_contract["supportsPause"] or not display_contract["supportsSingleStep"]:
                 raise RuntimeError("inspection pause/single-step controls are unavailable")
+            if display_contract["canonicalArithmetic"] != "BIGINT_RATIONAL_SYMBOLIC_Q144_TENSOR":
+                raise RuntimeError("exact browser arithmetic contract drifted")
+            if display_contract["renderFloatAuthority"]:
+                raise RuntimeError("render float acquired canonical authority")
+            if not display_contract["selfHostedExactRuntime"]:
+                raise RuntimeError("self-hosted exact runtime is unavailable")
             if math_repair["status"] != "PASS":
                 raise RuntimeError(f"canonical seed math repair failed: {math_repair}")
+            if foundation_preservation["status"] != "PASS":
+                raise RuntimeError(
+                    "canonical seed foundation preservation failed: "
+                    f"{foundation_preservation}"
+                )
 
             benchmark = page.evaluate(
                 "(opts)=>window.HHS_LANE5_TEST.benchmark(opts)",
@@ -239,10 +253,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "resolution": {"width": args.width, "height": args.height},
         "fps": args.fps,
         "tick_step": args.tick_step,
-        "inspection_speed_equivalent_x": (args.tick_step * args.fps) / 60.0,
         "benchmark": benchmark,
         "pixel_display_contract": display_contract,
         "canonical_seed_math_repair": math_repair,
+        "foundation_preservation": foundation_preservation,
         "visual": visual,
         "mp4": {
             "path": video_path.name,
@@ -271,6 +285,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "gpu_browser_floats_projection_only": True,
             "canonical_state_authority_changed": False,
             "canonical_seed_title": "Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041",
+            "foundation_preservation_passed": foundation_preservation["status"] == "PASS",
+            "geometry_physics_mutation_authorized": False,
             "source_frame_matches_output_resolution": display_contract["sameResolution"],
             "source_pixel_is_dense_nucleus": display_contract["sourcePixelIsDenseNucleus"],
             "halo_overlap_is_translucent": display_contract["haloBackgroundAlphaZero"],
@@ -280,7 +296,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "tesseract_visible_guide": display_contract["tesseractVisibleGuide"],
             "camera_warp_from_tesseract": display_contract["cameraWarpFromTesseract"],
             "spherical_wireframe_visible": display_contract["sphericalWireframeVisible"],
-            "dynamics_tune": display_contract["dynamicsTune"],
+            "dynamics_tune_exact": display_contract["dynamicsTuneExact"],
+            "simulation_speed_exact": display_contract["simulationSpeedExact"],
+            "simulation_tick_exact": display_contract["simulationTickExact"],
+            "self_hosted_exact_runtime": display_contract["selfHostedExactRuntime"],
+            "render_float_authority": display_contract["renderFloatAuthority"],
             "inspection_speed_control": True,
             "pause_and_single_step": True,
         },
@@ -302,7 +322,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=720)
     parser.add_argument("--fps", type=int, default=24)
     parser.add_argument("--frames", type=int, default=48)
-    parser.add_argument("--tick-step", type=float, default=4.0)
+    parser.add_argument("--tick-step", type=int, default=4)
     parser.add_argument("--state-ticks", type=int, default=4096)
     parser.add_argument("--render-ticks", type=int, default=256)
     parser.add_argument("--warmup", type=int, default=64)

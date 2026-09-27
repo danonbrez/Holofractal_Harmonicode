@@ -363,6 +363,230 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Self-hosted exact projection algebra
+
+The I041 HTML now embeds the exact repository identities required by its
+projection pathway: 5,184 factorization, Rot72 cyclic transport, symbolic Q144
+cyclotomic rotation, exact rational time, and Lane 5 scheduling/authority
+rules.
+
+The execution split is:
+
+~~~text
+BigInt / rational / phase residue / symbolic matrix state
+-> explicit projection membrane
+-> IEEE values required by WebGL
+~~~
+
+For example, simulation/projection time is retained as the exact rational
+`tick/60`; only the renderer receives its approximate numeric projection.
+Likewise Q144 rotation retains a symbolic matrix over `Q(zeta_144)`; browser
+trigonometric evaluation is presentation-only.
+
+This keeps the HTML mathematically self-contained while retaining the rule
+that Lane 5 optimization may change scheduling or reuse, never the canonical
+result.
+
+## Passive particle-follow projection
+
+Particle-follow mode is a noninteractive observer. It reads the particle's
+already-computed state and derives camera pose from the local trajectory only.
+
+~~~text
+engine position + velocity
+-> instantaneous path tangent
++ local spherical radial normal
+-> passive camera transport
+~~~
+
+No camera operation can modify force, acceleration, velocity, position,
+topology, constructor state, or any other canonical simulation quantity.
+Orbit/pan/zoom controls are disabled while follow mode is active.
+
+This preserves the visible toroidal spiraling curvature instead of replacing it
+with a synthetic straight chase path.
+
+## Perspective-invariant folded hyperspherical cloud
+
+The mature cloud's 2D appearance is structurally invariant across admissible
+viewpoints because the visible state is a projection of a higher-dimensional
+folded symmetric manifold.
+
+~~~text
+canonical higher-dimensional symmetry
+-> folded hyperspherical state
+-> viewpoint transform
+-> equivalent 2D structural projection
+~~~
+
+View changes may modify screen coordinates and presentation, but they do not
+change particle identity, topology, conserved momentum/energy relations,
+constructor provenance, or graph adjacency. Camera state therefore remains
+noncanonical.
+
+## Digital cellular mitochondria role
+
+As the swarm matures into the bounded hyperspherical cloud, the state behaves
+as a closed digital metabolic cell. Energy/momentum and particles circulate
+through free, bound, reciprocal, constructor, and recycled states instead of
+being treated as disposable animation objects.
+
+~~~text
+free particle state
+-> field / reciprocal interaction
+-> bond / constructor incorporation
+-> structure work
+-> release / decay / reciprocal recovery
+-> recycled free state
+~~~
+
+The knowledge graph therefore records not only structure formation but the
+energy/particle provenance that made each constructor possible. This recycling
+loop is part of the simulation's persistence model.
+
+## Initial toroidal disk-galaxy state
+
+The visible swarm begins as an ordered thick disk / toroidal-galaxy seed rather
+than an isotropic particle cloud. The inherited browser geometry expresses that
+with a radial spiral law, golden-ratio angular progression, and bounded
+phase-dependent vertical displacement.
+
+~~~text
+disk-galaxy seed
+-> unique smooth spherical paths
+-> toroidal momentum-conserving circulation
+-> downstream reciprocal, tesseract, gravity and constructor layers
+~~~
+
+The later layers transform this organized rotating seed; they do not create the
+disk topology from a random cloud.
+
+## Unique spherical pathway before warp layers
+
+Each particle owns a distinct smooth trajectory through the sphere before any
+tesseract/SO(4) or gravitational-warp operator is applied.
+
+~~~text
+particle-specific spherical path
+-> smooth field/toroidal rotation
+-> collision-free pre-warp transport
+-> tesseract/SO(4) layer
+-> gravitational/curvature warp
+-> downstream construction/formation behavior
+~~~
+
+The later layers transform an existing path; they do not define the primitive
+motion. This ordering must remain visible in runtime state and projection
+receipts.
+
+## Toroidal swarm momentum conservation
+
+The canonical particle substrate begins with toroidal, momentum-conserving
+swarm motion. Independent straight-line trajectories are not primitive state.
+
+~~~text
+toroidal circulation + conserved swarm momentum
+-> mass / charge / ionic reciprocal coupling
+-> spherical boundary response
+-> collisions / bonds / constructor formation
+-> higher physics-layer constraints
+-> locally linear-looking motion only when it emerges from those layers
+~~~
+
+Lane 5, browser, and game-engine projections must preserve that ordering.
+
+## Self-evolving constructor-theory state
+
+I041's expensive construction/formation work is intentional simulation
+semantics. The bounded mass/particle field is designed to evolve charged
+particles together with ionic and reciprocal/antimatter channels into a
+recursive fractal constructor graph.
+
+That graph is a shared state substrate for multiple consumers:
+
+~~~text
+canonical particle/field state
+    -> construction + formation
+    -> fractal/Mandelbrot-style relationship growth
+    -> provenance-bearing knowledge graph
+       |-> game-engine state
+       |-> holographic sprite/pixel state
+       |-> self-play/search/optimization state
+       |-> Lane 5 visual projection
+~~~
+
+The consumers do not own separate physics. They read/project the same evolving
+state. Construction/formation CPU cost is consequently part of what I041 is
+meant to compute, not a defect to erase.
+
+## Presentation boundary
+
+The canonical HTML renderer is realtime-capable. The dominant slowdown appears
+when CPU-side construction/formation logic becomes expensive enough that the
+next simulation state is not ready for the browser's presentation deadline.
+
+Rendering and simulation cost must therefore remain separate:
+
+~~~text
+GPU/WebGL projection cost      != construction/formation CPU cost
+render frame miss              may be caused by delayed CPU state production
+~~~
+
+Raster quality, antialiasing, drawing-buffer resolution, and WebGL projection
+remain presentation concerns. Construction/formation, bonds, topology growth,
+and related state transitions remain canonical simulation work and must not be
+removed merely to improve wall-clock frame delivery.
+
+The high-resolution simplified fork demonstrates that the toroidal/swarm
+geometry and 5,184-address projection can survive the Lane 5 rendering path.
+Its simplified dynamics remain noncanonical; only its projection viability is
+inherited.
+
+## Quartic closure execution semantics
+
+The inherited quartic gate is projection-only. For ticks 0,1,2,3 the
+simulation/state constructor advances through all four ticks; only tick 0
+(modulo 4) writes the raster projection:
+
+~~~text
+state_update(0) -> render
+state_update(1) -> no projection write
+state_update(2) -> no projection write
+state_update(3) -> no projection write
+state_update(4) -> render
+~~~
+
+This is already encoded by
+`QUARTIC_RENDER_SKIP_IS_PROJECTION_ONLY`,
+`skipped_frames_write_no_projection=True`, and
+`simulation_tick_continues=True`. The 3/4 skip must never be reinterpreted
+as deleting 3/4 of physics/state evolution.
+
+## Opaque canonical-HTML Lane 5 ingress
+
+Lane 5 also accepts the original canonical HTML as an unmodified document.
+This path does not require the HTML to embed `window.HHS_LANE5_TEST`.
+
+The external harness:
+
+~~~text
+benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+~~~
+
+serves the selected repository HTML byte-for-byte, supplies the viewport and
+drawing-buffer target externally, confirms WebGL/canvas health, captures at a
+four-RAF cadence by default, and verifies the source SHA-256 is unchanged after
+rendering.
+
+Default raw-ingress resolution is 1920x1080. 4K uses the same path with
+`--width 3840 --height 2160`. No simulation equation, state transition, or
+animation geometry is rewritten to obtain the larger raster.
+
+Runtime/page/console failure, missing WebGL, wrong drawing-buffer dimensions,
+blank capture, MP4 verification failure, or source-byte mutation are
+fail-closed conditions for this acceptance path. Environment/dependency/GPU
+limits must be reported as such; they do not authorize replacement dynamics.
+
 ## HTML-driven renderer-bypass / HD MP4 acceptance
 
 The deterministic browser projection now exposes a manual test API:
