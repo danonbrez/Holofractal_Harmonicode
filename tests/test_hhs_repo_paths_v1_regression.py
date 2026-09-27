@@ -60,3 +60,12 @@ def test_existing_callers_import_against_restored_interface(tmp_path, monkeypatc
     target = atomic_write.runtime_artifact_path("caller-compatibility.json")
     assert target == tmp_path / "runtime/caller-compatibility.json"
     assert callable(unified_ledger.runtime_artifact_path)
+
+
+def test_consensus_workflow_preserves_repository_import_root():
+    workflow = Path(".github/workflows/hhs-acceptance-gate.yml").read_text(encoding="utf-8")
+    assert "python -m hhs_runtime.hhs_commit_acceptance_gate_v1" in workflow
+    assert "python -m hhs_runtime.hhs_distributed_verification_v1" in workflow
+    assert "python hhs_runtime/hhs_commit_acceptance_gate_v1.py" not in workflow
+    assert "python hhs_runtime/hhs_distributed_verification_v1.py" not in workflow
+    assert workflow.count("uses: actions/checkout@v4") >= 2

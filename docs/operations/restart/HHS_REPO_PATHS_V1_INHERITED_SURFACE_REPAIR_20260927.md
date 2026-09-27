@@ -42,3 +42,24 @@ The repair is complete only when the PR's HHS Consensus Gate executes past the p
 ## Next action
 
 After this repair merges to main, bring PR #618 forward to the repaired main without altering its PR-only Hash216 publication logic. Re-run its Hash216 dependency-index gate, no-direct-main-push regression, Consensus Gate, and applicable required checks before merging #618.
+
+
+## Current-main reconciliation
+
+During PR validation, authoritative main was re-read and already contained `hhs_runtime/hhs_repo_paths_v1.py` with the exact historical blob SHA `4cd632a13bc61ec6a2c8e3c814a257b8349732aa`. Therefore the module itself is no longer a diff in this PR.
+
+The remaining HHS Consensus Gate failure was traced to workflow import wiring:
+
+```text
+python hhs_runtime/hhs_commit_acceptance_gate_v1.py
+→ sys.path[0] = .../hhs_runtime
+→ absolute import hhs_runtime.hhs_repo_paths_v1 cannot resolve
+```
+
+Repair-forward changes:
+
+- run the two verification entry points as package modules with `python -m ...`, preserving the repository root on the import path;
+- add `actions/checkout@v4` to the downstream `consensus` job, which imports repository Python modules but previously had no repository checkout;
+- extend the regression to lock both behaviors.
+
+This changes gate invocation only; it does not alter runtime/path semantics or weaken Consensus Gate checks.
