@@ -88,6 +88,25 @@ int main(void) {
     packet[HHS179_RENDER_PACKET_HEADER_BYTES + 6U * HHS179_RENDER_COMMAND_BYTES + 16U] ^= 1U;
     assert(hhs179_render_packet_validate(packet, bytes) == HHS179_RENDER_ERR_FINGERPRINT);
 
+    memset(init.scene_snapshot_hash216, 0, sizeof(init.scene_snapshot_hash216));
+    memset(init.frame_hash216, 0, sizeof(init.frame_hash216));
+    memset(init.resource_manifest_hash216, 0, sizeof(init.resource_manifest_hash216));
+    memset(init.camera_hash72, 0, sizeof(init.camera_hash72));
+    init.flags = 0U;
+    assert(hhs179_render_packet_init(packet, bytes, &init, COMMAND_COUNT) == HHS179_RENDER_OK);
+    for (i = 0U; i < COMMAND_COUNT; ++i) {
+        assert(hhs179_render_packet_write_command(packet, bytes, i, &commands[i]) == HHS179_RENDER_OK);
+    }
+    assert(hhs179_render_packet_seal(packet, bytes) == HHS179_RENDER_ERR_IDENTITY);
+
+    init.flags = HHS179_RENDER_PACKET_FLAG_COMPATIBILITY_UNADMITTED;
+    assert(hhs179_render_packet_init(packet, bytes, &init, COMMAND_COUNT) == HHS179_RENDER_OK);
+    for (i = 0U; i < COMMAND_COUNT; ++i) {
+        assert(hhs179_render_packet_write_command(packet, bytes, i, &commands[i]) == HHS179_RENDER_OK);
+    }
+    assert(hhs179_render_packet_seal(packet, bytes) == HHS179_RENDER_OK);
+    assert(hhs179_render_packet_validate(packet, bytes) == HHS179_RENDER_OK);
+
     free(exported);
     free(packet);
     puts("PASS hhs_pass179_render_command_v1");
