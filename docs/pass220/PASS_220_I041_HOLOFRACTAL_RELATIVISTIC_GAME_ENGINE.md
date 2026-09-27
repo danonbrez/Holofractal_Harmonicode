@@ -363,6 +363,24 @@ point rasterization remain projection-only.  They do not mint Hash72/Hash216,
 mutate VM81, or persist canonical state.
 
 
+## Perspective-invariant folded hyperspherical cloud
+
+The mature cloud's 2D appearance is structurally invariant across admissible
+viewpoints because the visible state is a projection of a higher-dimensional
+folded symmetric manifold.
+
+~~~text
+canonical higher-dimensional symmetry
+-> folded hyperspherical state
+-> viewpoint transform
+-> equivalent 2D structural projection
+~~~
+
+View changes may modify screen coordinates and presentation, but they do not
+change particle identity, topology, conserved momentum/energy relations,
+constructor provenance, or graph adjacency. Camera state therefore remains
+noncanonical.
+
 ## Digital cellular mitochondria role
 
 As the swarm matures into the bounded hyperspherical cloud, the state behaves
