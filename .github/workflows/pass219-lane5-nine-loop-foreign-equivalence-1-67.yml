@@ -1,0 +1,99 @@
+name: Pass 219 Lane 5 Nine-Loop Foreign Equivalence 1.67
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_foreign_equivalence_1_67.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_cell_wall_1_67.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_cell_wall_1_67.cpp'
+      - 'evidence/pass219/lane5_nine_loop_foreign_equivalence_1_67_wolfram_20260927_v1.wl'
+      - 'evidence/pass219/lane5_nine_loop_foreign_equivalence_1_67_wolfram_20260927_v1.output.json'
+      - 'evidence/pass219/lane5_nine_loop_external_benchmark_manifest_20260927_v1.json'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_foreign_equivalence_1_67.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_cell_wall_1_67.cpp'
+      - 'GNUmakefile'
+      - '.github/workflows/pass219-lane5-nine-loop-foreign-equivalence-1-67.yml'
+  push:
+    branches:
+      - main
+      - agent/pass219-lane5-nine-loop-equivalence-1-67-20260927
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_foreign_equivalence_1_67.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_cell_wall_1_67.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_cell_wall_1_67.cpp'
+      - 'evidence/pass219/lane5_nine_loop_foreign_equivalence_1_67_wolfram_20260927_v1.wl'
+      - 'evidence/pass219/lane5_nine_loop_foreign_equivalence_1_67_wolfram_20260927_v1.output.json'
+      - 'evidence/pass219/lane5_nine_loop_external_benchmark_manifest_20260927_v1.json'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_foreign_equivalence_1_67.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_cell_wall_1_67.cpp'
+      - 'GNUmakefile'
+      - '.github/workflows/pass219-lane5-nine-loop-foreign-equivalence-1-67.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nine-loop-foreign-equivalence-1-67:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install pytest
+
+      - name: Verify Wolfram bounded oracle receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          proof = json.loads(Path(
+              "evidence/pass219/"
+              "lane5_nine_loop_foreign_equivalence_1_67_wolfram_20260927_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert proof["status"] == "PASS"
+          assert proof["check_count"] == 11
+          assert proof["pass_count"] == 11
+          assert all(proof["checks"].values())
+          assert proof["sample"]["reconstructed_residues"] == [
+              829521918, 1173913588
+          ]
+          assert proof["universal_physics_proof"] is False
+          assert proof["canonical_hhs_authority"] is False
+          PY
+
+      - name: Run 1.67 and parent Python regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/pass219/test_pass219_lane5_nine_loop_foreign_equivalence_1_67.py             tests/pass219/test_pass219_global_conservation_polarity_1_66.py             tests/pass219/test_pass219_polarity_s_half_turn_1_65.py             tests/pass219/test_pass219_p_x2_global_reciprocal_manifold_1_64.py             tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.py
+
+      - name: Build shared exact VM81 runtime
+        run: make -f GNUmakefile c-kernel
+
+      - name: Compile native 1.67 conformance
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_nine_loop_cell_wall_1_67.cpp             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread             -o /tmp/test_pass219_lane5_nine_loop_1_67
+
+      - name: Run native 1.67 conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_lane5_nine_loop_1_67
+
+      - name: Verify fail-closed authority and source bindings
+        run: |
+          grep -F '9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944'             contracts/pass219/PASS_219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.json
+          grep -F '"alias_authorized": false'             contracts/pass219/PASS_219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.json
+          grep -F '"canonical_hash216_authority": false'             contracts/pass219/PASS_219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.json
+          grep -F 'hhs_exact_pass219_conservation_1_66_verify'             hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_cell_wall_1_67.cpp
+          grep -F 'hhs_exact_pass219_monolithic_descriptor'             hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_cell_wall_1_67.cpp
