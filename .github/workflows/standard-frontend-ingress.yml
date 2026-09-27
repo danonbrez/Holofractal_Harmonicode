@@ -1,0 +1,50 @@
+name: Standard Frontend Ingress Compatibility
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_backend/frontend_ingress_policy_v1.py"
+      - "hhs_backend/server.py"
+      - "deploy/digitalocean/hhs-pass196.env.example"
+      - "tests/test_hhs_standard_frontend_ingress_v1.py"
+      - ".github/workflows/standard-frontend-ingress.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "hhs_backend/frontend_ingress_policy_v1.py"
+      - "hhs_backend/server.py"
+      - "deploy/digitalocean/hhs-pass196.env.example"
+      - "tests/test_hhs_standard_frontend_ingress_v1.py"
+      - ".github/workflows/standard-frontend-ingress.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-ingress-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install targeted test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile ingress surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/frontend_ingress_policy_v1.py \
+            hhs_backend/server.py
+
+      - name: Run standard frontend ingress contract
+        run: python -m pytest -q tests/test_hhs_standard_frontend_ingress_v1.py
