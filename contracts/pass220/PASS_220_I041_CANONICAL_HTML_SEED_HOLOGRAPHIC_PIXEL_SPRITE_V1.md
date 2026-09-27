@@ -148,6 +148,27 @@ This invariant applies before Lane 5 projection. Lane 5 may rasterize or sample
 the resulting trajectory, but it may not linearize the canonical path to reduce
 cost.
 
+## Toroidal momentum foundation
+
+The base swarm kinematics are toroidal and momentum-conserving. Straight-line
+motion is not a primitive of the canonical simulation.
+
+The foundational ordering is:
+
+```text
+toroidal momentum-conserving swarm transport
+-> curved local trajectories and reciprocal circulation
+-> mass / charge / ionic / boundary interactions
+-> higher physics-layer constraints
+-> locally straight or approximately linear segments only as an emergent projection
+```
+
+Toroidal circulation and momentum conservation are first-order invariants.
+Rendering or optimization must not replace this base motion with independent
+Cartesian straight-line propagation. Construction and formation inherit the
+same toroidal momentum state, and Lane 5 only projects the resulting canonical
+trajectory.
+
 ## Canonical simulation purpose — self-evolving constructor manifold
 
 The CPU-heavy construction/formation subsystem is not incidental rendering
