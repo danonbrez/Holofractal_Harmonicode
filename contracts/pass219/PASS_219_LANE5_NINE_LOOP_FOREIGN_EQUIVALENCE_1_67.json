@@ -1,0 +1,90 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67",
+  "version": "1.67.0",
+  "status": "ADDITIVE_CANDIDATE_ONLY_HASH216_SEALED_FOREIGN_EQUIVALENCE",
+  "parent_chain": [
+    "PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66",
+    "PASS_219_MONOLITHIC_CONSTRAINT_ABI_1_20",
+    "PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37",
+    "PASS_219_LANE5_RECURSIVE_HASH216_COMPOSITION_GRAPH_1_40"
+  ],
+  "foreign_task": {
+    "name": "nine_loop_six_particle_MHV_planar_N4_SYM",
+    "loop_order": 9,
+    "symbol_weight": 18,
+    "primitive_alphabet": ["a", "b", "c", "mu", "mv", "mw", "yu", "yv", "yw"],
+    "primitive_alphabet_count": 9,
+    "quintuple_coproduct_count": 424,
+    "weight13_basis_dimension": 5431,
+    "delta0_octuple_term_count": 295186924,
+    "septuple_determining_nonzero_coefficients": 107053,
+    "quintuple_rank": 400,
+    "route_witnesses": ["form_factor_antipodal_lift", "direct_hexagon_bootstrap"]
+  },
+  "exact_oracle": {
+    "prime_moduli": [2147483647, 2147483629],
+    "sample_word": ["bh", "bh", "fh", "dh", "dh", "eh", "dh", "fh", "bh", "dh", "fh", "ah", "ah", "fh", "eh", "fh", "dh", "eh"],
+    "sample_rational": {"numerator": -105757, "denominator": 65536},
+    "sample_residues": [829521918, 1173913588],
+    "requires_exact_modular_inverse": true,
+    "floating_point_authority": false
+  },
+  "semantic_quarantine": {
+    "foreign_symbol": "Delta=0",
+    "foreign_type": "parity_preserving_kinematic_surface",
+    "native_symbol": "Delta_e=0",
+    "native_type": "harmonicode_exact_arithmetic_error_closure",
+    "alias_authorized": false,
+    "typed_foreign_symbol_required": true
+  },
+  "learning_metadata": {
+    "parallel_channels": [
+      "external_solution_structure",
+      "external_prediction_oracle",
+      "external_route_agreement",
+      "harmonicode_v1_deviation",
+      "harmonicode_improved_composition",
+      "hash216_composition_receipt"
+    ],
+    "deviation_axes": [
+      "symbol_typing",
+      "exact_arithmetic",
+      "route_equivalence",
+      "coproduct_dag_shape",
+      "basis_rank",
+      "modular_residue_closure",
+      "source_identity",
+      "operator_order",
+      "provenance",
+      "branch_scope",
+      "hash216_replay",
+      "canonical_authority_boundary"
+    ],
+    "trinary_semantics": {
+      "-1": "missing_or_rejected",
+      "0": "matched_or_neutral",
+      "+1": "validated_additive_structure"
+    }
+  },
+  "composition_gate": {
+    "requires_parent_1_66": true,
+    "requires_monolithic_verbatim_source_identity": true,
+    "monolithic_frozen_tex_sha256": "9f2238981bf509d22ffebb46816346f389fd2d949ccd7956cde3630ab2b56944",
+    "requires_foreign_delta_quarantine": true,
+    "requires_exact_sample_oracle": true,
+    "requires_dual_route_agreement_metadata": true,
+    "requires_native_hash216_replay": true,
+    "requires_wolfram_exact_witness": true,
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false
+  },
+  "external_evidence": {
+    "anthropic_publication_date": "2026-09-25",
+    "cosmic9_data_page": "https://smsharma.io/cosmic-nine-loops/",
+    "anthropic_post": "https://www.anthropic.com/research/yes-claude-can-do-nine-loops",
+    "data_doi": "10.5281/zenodo.22949278"
+  }
+}

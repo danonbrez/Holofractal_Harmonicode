@@ -1,0 +1,29 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 11,
+  "pass_count": 11,
+  "checks": {
+    "prime1_is_prime": true,
+    "prime2_is_prime": true,
+    "residue1_exact": true,
+    "residue2_exact": true,
+    "primitive_alphabet_count": true,
+    "symbol_weight": true,
+    "quintuple_count": true,
+    "weight13_dimension": true,
+    "octuple_term_count": true,
+    "foreign_delta_typed_separate": true,
+    "floating_canonical_authority_disabled": true
+  },
+  "sample": {
+    "numerator": -105757,
+    "denominator": 65536,
+    "prime_moduli": [2147483647, 2147483629],
+    "reconstructed_residues": [829521918, 1173913588],
+    "expected_residues": [829521918, 1173913588]
+  },
+  "scope": "BOUNDED_EXACT_ORACLE_AND_METADATA_WITNESS",
+  "universal_physics_proof": false,
+  "canonical_hhs_authority": false
+}

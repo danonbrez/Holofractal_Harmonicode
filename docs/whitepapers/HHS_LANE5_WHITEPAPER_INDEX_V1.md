@@ -549,3 +549,14 @@ to the inherited RML5 `u^36` chiral half-turn. For `s=-1`, both chiral sign pair
 ### Global conservation/polarity resolver 1.66
 
 Pass 219 Lane 5 1.66 adds a gate-scoped conservation membrane over the HNAN/Jordan, reciprocal-manifold, and polarity layers. It preserves distinct operator types and branch identities, verifies the Pell negative-defect witness in exact `Q(sqrt(2),sqrt(3))` arithmetic, preserves the separate positive unit shell, verifies the 72-phase seed, records the conditional scalar `Delta=m` witness, and models the null-cone statement with a signed metric projection instead of rewriting canonical `c²=3`.
+
+
+### Nine-loop foreign-to-native equivalence constructor 1.67
+
+[HHS_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.md](HHS_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.md)
+
+Pass 219 Lane 5 1.67 adds a bounded exact-arithmetic foreign-model benchmark over the public nine-loop six-particle MHV planar N=4 SYM result. It preserves the foreign kinematic Delta=0 symbol as a quarantined typed object, records parallel HARMONICODE-V1 deviation metadata, reconstructs a published rational coefficient against two 31-bit prime residues with exact modular arithmetic, and seals the resulting composition candidate through the inherited native Hash216 implementation.
+
+The C++ cell-wall membrane requires Pass 219 1.66 plus the frozen monolithic equation source identity before accepting the candidate. The receipt remains candidate-only and exposes no VM81, canonical Hash72/Hash216, persistence, or floating-point authority.
+
+The current proof scope is deliberately bounded: structural metadata and the published exact sample oracle are verified, while full upstream artifact ingestion and all-coefficient equivalence remain unresolved until a source manifest and complete foreign dataset are imported and replayed.
