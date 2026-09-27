@@ -31,10 +31,10 @@ jobs:
         with: {python-version: '3.11'}
       - run: |
           python - << 'EOF'
-import json,glob
-from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
-recs=[json.load(open(f)) for f in glob.glob('receipts/**/*.json',recursive=True)]
-res=evaluate_consensus(recs)
-print(res)
-assert res.status=='CONSENSUS_ACCEPTED'
-EOF
+          import json,glob
+          from hhs_runtime.hhs_multi_agent_consensus_v2_gate import evaluate_consensus
+          recs=[json.load(open(f)) for f in glob.glob('receipts/**/*.json',recursive=True)]
+          res=evaluate_consensus(recs)
+          print(res)
+          assert res.status=='CONSENSUS_ACCEPTED'
+          EOF
