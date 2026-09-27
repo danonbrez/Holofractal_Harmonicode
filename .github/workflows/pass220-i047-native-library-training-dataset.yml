@@ -1,0 +1,47 @@
+name: Pass 220 I047 Native Library Training Dataset
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/hhs_pass220_i047_native_library_training_dataset_v1.py"
+      - "scripts/pass220_i047_native_library_training_dataset_v1.py"
+      - "tests/pass220/test_hhs_pass220_i047_native_library_training_dataset_v1.py"
+      - "docs/pass220/PASS_220_I047_NATIVE_LIBRARY_TRAINING_DATASET_V1.md"
+      - "docs/operations/restart/PASS_220_I047_NATIVE_LIBRARY_TRAINING_DATASET_RESTART_20260927.md"
+      - ".github/workflows/pass220-i047-native-library-training-dataset.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-library-training-dataset:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile I047 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i047_native_library_training_dataset_v1.py \
+            scripts/pass220_i047_native_library_training_dataset_v1.py \
+            tests/pass220/test_hhs_pass220_i047_native_library_training_dataset_v1.py
+      - name: Run I047 dependency-scoped validation
+        run: python -m pytest -q tests/pass220/test_hhs_pass220_i047_native_library_training_dataset_v1.py
+      - name: Enforce candidate-only Lane 5 handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODULE=hhs_runtime/hhs_pass220_i047_native_library_training_dataset_v1.py
+          grep -Fq '"algebraic_lifting_performed_here":False' "$MODULE"
+          grep -Fq '"latency_phase_scheduling_performed_here":False' "$MODULE"
+          grep -Fq '"canonical_hash216_committed":False' "$MODULE"
+          grep -Fq '"alternate_scheduler_created":False' "$MODULE"
+          grep -Fq '"alternate_optimizer_created":False' "$MODULE"
