@@ -5,16 +5,16 @@ on:
     branches:
       - pass219/ethical-predictive-narrative-simulation-20260927
     paths:
+      - 'contracts/pass219/PASS_219_LANE5_PREDICTIVE_NARRATIVE_ETHICAL_SIMULATION_1_0.md'
       - 'hhs_runtime/hhs_pass219_lane5_predictive_narrative_v1.py'
       - 'tests/pass219/test_hhs_pass219_lane5_predictive_narrative_v1.py'
-      - 'docs/operations/restart/PASS_219_LANE5_PREDICTIVE_NARRATIVE_RESTART_20260927.md'
       - '.github/workflows/pass219-lane5-predictive-narrative.yml'
   pull_request:
     branches: [main]
     paths:
+      - 'contracts/pass219/PASS_219_LANE5_PREDICTIVE_NARRATIVE_ETHICAL_SIMULATION_1_0.md'
       - 'hhs_runtime/hhs_pass219_lane5_predictive_narrative_v1.py'
       - 'tests/pass219/test_hhs_pass219_lane5_predictive_narrative_v1.py'
-      - 'docs/operations/restart/PASS_219_LANE5_PREDICTIVE_NARRATIVE_RESTART_20260927.md'
       - '.github/workflows/pass219-lane5-predictive-narrative.yml'
   workflow_dispatch:
 
