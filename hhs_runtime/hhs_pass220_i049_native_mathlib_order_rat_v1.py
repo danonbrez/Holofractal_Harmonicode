@@ -43,11 +43,13 @@ ORDER_RAT_CLASSES: tuple[MathlibNativeClassSpec, ...] = (
         class_name="LT",
         source_text=(
             "class LT:\n"
+            "    def __init__(self): pass\n"
             "    def compare(self, lhs, rhs): "
             "return lhs.numerator*rhs.denominator-rhs.numerator*lhs.denominator\n"
         ),
         members=(
-            PythonClassMemberSpec("compare", MEMBER_METHOD, 4, 0, ROLE_HAIRPIN),
+            PythonClassMemberSpec("__init__", MEMBER_CONSTRUCTOR, 4, 0, ROLE_TOEHOLD),
+            PythonClassMemberSpec("compare", MEMBER_METHOD, 1, 0, ROLE_HAIRPIN),
         ),
     ),
     MathlibNativeClassSpec(
@@ -56,11 +58,13 @@ ORDER_RAT_CLASSES: tuple[MathlibNativeClassSpec, ...] = (
         class_name="LE",
         source_text=(
             "class LE:\n"
+            "    def __init__(self): pass\n"
             "    def compare(self, lhs, rhs): "
             "return lhs.numerator*rhs.denominator-rhs.numerator*lhs.denominator\n"
         ),
         members=(
-            PythonClassMemberSpec("compare", MEMBER_METHOD, 1, 1, ROLE_HAIRPIN),
+            PythonClassMemberSpec("__init__", MEMBER_CONSTRUCTOR, 2, 1, ROLE_TOEHOLD),
+            PythonClassMemberSpec("compare", MEMBER_METHOD, 3, 1, ROLE_HAIRPIN),
         ),
     ),
 )
