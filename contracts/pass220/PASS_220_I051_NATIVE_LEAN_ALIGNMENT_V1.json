@@ -1,0 +1,55 @@
+{
+  "schema": "HHS_PASS_220_I051_NATIVE_LEAN_ALIGNMENT_V1",
+  "version": 1,
+  "base_main": "c67e01b764c9e2ae5d747375544d44ce3e282c21",
+  "inherits": [
+    "HHS_PASS_220_I048_LEAN4_NATIVE_MATHLIB_REBUILD_V1",
+    "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+    "HHS_PASS_220_I050_NATIVE_MATHLIB_ALGEBRA_V1"
+  ],
+  "formal_module": "HHS.Alignment.ReciprocalTensor",
+  "ordered_tensor": "A(+i,AUTH) tensor B(-i,DERIVED)",
+  "reciprocal_completion": "B=R_A^-i",
+  "closures": {
+    "direct": "AB=P^4",
+    "mirror": "BA=-P^4",
+    "x4": "x^4=1",
+    "omega12": "Omega^12=1",
+    "delta_e": "0",
+    "psi": "0"
+  },
+  "wordnet_geometry": {
+    "synonym": "(A,B)",
+    "antonym": "(A/B,B/A);B=-A",
+    "hypernym": "(A->B,B<-A)",
+    "hyponym": "(A<-B,B->A)",
+    "holonym": "(A superset_part B,B subset_whole A)",
+    "meronym": "(A subset_part B,B superset_whole A)"
+  },
+  "phase8": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+  "failure": {
+    "any_required_predicate": "WHOLE_PROMPT_RESPONSE_TENSOR_BOTTOM",
+    "response_free_state": false,
+    "response_competing_authority": false
+  },
+  "proof_identity": {
+    "theorem_hash72_bound_into_tensor_receipt": true,
+    "dependency_hash72_bound_into_tensor_receipt": true,
+    "transition_word216": "prompt_hash72||response_hash72||tensor_receipt_hash72",
+    "runtime_claims_live_lean_kernel_execution": false,
+    "build_and_ci_kernel_validation_required": true
+  },
+  "native_execution": {
+    "delta_e_psi_zero_authority": "PYTHON1_C11_NATIVEINT",
+    "cpp_witness": "hhs::alignment::NativeAlignmentWitnessV1",
+    "host_float": false
+  },
+  "authority": {
+    "prompt": "AUTH",
+    "response": "DERIVED",
+    "lean": "PROOF_WITNESS",
+    "vm81_mutation": "VM81_ONLY",
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}
