@@ -1,0 +1,84 @@
+# HHS Training
+
+The repository training surface is unified under the native Lane 5 VM5184 / Hash216 C++ API:
+
+hhs::lane5::VM5184Hash216TrainingAPI
+
+Implementation:
+- hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_71.hpp
+- hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_71.cpp
+
+This surface does not replace existing executors. It classifies their outputs as typed training specimens and routes every admitted specimen through the inherited Pass 219 RNA VM5184 cell wall before deriving a candidate Hash216 training witness. Canonical VM81 mutation, canonical Hash72/Hash216 authority, persistence authority, and floating-point canonical authority remain outside the training class.
+
+## Registered training methods
+
+| Mode | Existing role | Temporal class | Primary target |
+|---|---|---|---|
+| REALTIME_HASH216 | live Lane 5 / Hash216 hydration and governed adaptation | realtime | relation |
+| WOLFRAM_FORMALIZATION | exact Wolfram proof/formalization cycles | manual | proof |
+| EXTERNAL_LIBRARY_RECONSTRUCTION | foreign library bytecode/ABI reconstruction, including Pass 220 I047 | manual | constructor |
+| PALINDROMIC_ROUND_TRIP | ingress -> native -> egress reversible compatibility training | round-trip | codec |
+| PULL_REQUEST_HYDRATION | repository delta + validation + accepted/rejected transition evidence | repository delta | repository transition |
+| MULTIMODAL_INGRESS | Pass 165-style invariant/novelty/weight learning | realtime | invariant |
+| LINGUISTIC_OPERATOR | linguistic operator and recursive-language learning | batch | relation |
+| ETHICAL_TEXT | bounded ethical-text candidate training | batch | invariant |
+| RNA_CELL_WALL_ALIGNMENT | reverse alignment and cell-wall training | replay | weight |
+| CURRICULUM | manifest-bound curriculum advancement/completion | batch | relation |
+| CALLABLE_CORPUS | executable callable corpus comparison | batch | behavior |
+| CANONICAL_CORPUS | canonical algebra corpus execution/reconstruction/proof | batch | proof |
+| WORKLOAD_CALIBRATION | deterministic workload/calibration training | batch | schedule |
+| ANTI_FORGETTING_REPLAY | protected historical replay and regression rejection | replay | behavior |
+| AB_HYDRATION_CALIBRATION | exact A/B hydration calibration | batch | weight |
+| PROJECTION_CORPUS | exact domain projection corpora | batch | relation |
+| INVERSE_RENDER_HYDRATION | graphics/media inverse reconstruction | batch | constructor |
+| REPOSITORY_HYDRATION | repository knowledge-graph hydration outside a single PR | repository delta | repository transition |
+
+The registry is intentionally greater than ten methods because HHS already has multiple executable learning and reconstruction mechanisms that historically used different labels such as hydration, replay, corpus, curriculum, calibration, reconstruction, formalization, and alignment.
+
+## Common training contract
+
+Every TrainingSpecimen binds:
+- training mode;
+- temporal class;
+- learning target;
+- source Hash216 identity;
+- oracle/evidence Hash216 identity;
+- adapter signature;
+- executor signature;
+- validator signature;
+- negative-control signature;
+- replay signature;
+- oracle verification state;
+- negative-control verification state;
+- replay verification state;
+- ingress/egress preservation state;
+- candidate-only acknowledgement.
+
+Common execution path:
+
+existing mode-specific executor
+-> TrainingSpecimen
+-> VM5184Hash216TrainingAPI
+-> inherited RNA VM5184 route
+-> Lane 5 prepared/decision evidence
+-> candidate Hash216 training witness
+-> later inherited Lane 5 / VM81 admission boundary
+
+The class rejects a specimen when its registered temporal class or learning target is wrong, required oracle evidence is absent, negative controls are absent, replay is unverified, the ingress/egress membrane is not preserved, source/oracle identities are malformed, or candidate-only authority is not acknowledged.
+
+## Authority
+
+The unified training class is candidate-only:
+- canonical_vm81_mutation_authority = false
+- canonical_hash72_authority = false
+- canonical_hash216_authority = false
+- canonical_persistence_authority = false
+- floating_point_canonical_authority = false
+
+Calling hhs_hash216_compute inside this class derives a candidate witness identity only. It does not commit canonical Hash216 state. Canonical mutation remains beneath the inherited signed/environmental VM81 authority.
+
+## Adapter rule
+
+Python, REST, GUI, Wolfram, repository/PR ingestion, corpus tools, and external-library tooling are clients/adapters of this native class. They may prepare specimens and evidence, but they do not become independent training authorities.
+
+New learning-like mechanisms must register here rather than introducing another training authority.
