@@ -1,0 +1,27 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_GENERALIZATION_1_73_DISCOVERY_EVIDENCE_V1",
+  "date": "2026-09-28",
+  "workflow_run": 36413301687,
+  "validated_head": "534aeaf6fbf6ae9fb7a1e981622064b0f74ac946",
+  "conclusion": "success",
+  "training_example_count": 12,
+  "holdout_example_count": 12,
+  "rule_count": 12,
+  "accuracy": {
+    "numerator": 12,
+    "denominator": 12
+  },
+  "semantic_drift_count": 0,
+  "entropy_growth_bits": 0,
+  "replay_count": 12,
+  "model_root_hash72": "0000000000000000000000000000002rd>Jdh(*jXM9IMuM^931?)TxIUlEV>A5MH81cDfqL",
+  "validation_receipt_root_hash72": "0000000000000000000000000000004uxkwBpAEdc+=PCnAuM+5cGH26usFYmSWD3kSLSkPM",
+  "replay_bundle_sha256": "238556f95e17e77d01a9e37e4be4cbbd56181982f3599dc941cfe77be32aaf69",
+  "authority": {
+    "validated_knowledge_model_only": true,
+    "model_weight_update_authority": false,
+    "learning_commit_authority": false,
+    "canonical_transition_ready": false,
+    "candidate_only": true
+  }
+}
