@@ -1,0 +1,38 @@
+{
+  "schema": "HHS_PASS_220_I053_NATIVE_MATHLIB_EXACTRAT_EQUIVALENCE_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "base_main": "cbc4326367bc74650dcdc080960692fef979fee2",
+  "inherits": [
+    "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+    "HHS_PASS_220_I050_NATIVE_MATHLIB_ALGEBRA_V1",
+    "HHS_PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_V1"
+  ],
+  "formal_module": "HHS.Mathlib.Rat.Equivalence",
+  "representation": "UNREDUCED_ORDERED_NUMERATOR_POSITIVE_DENOMINATOR_PAIR",
+  "equivalence": "a.num*b.den == b.num*a.den",
+  "proofs": {
+    "reflexive": true,
+    "symmetric": true,
+    "transitive": true,
+    "positive_denominator_cast_nonzero": true,
+    "negation_congruence": true,
+    "addition_congruence": false,
+    "multiplication_congruence": false
+  },
+  "quotient_constructed": false,
+  "pair_identity_collapsed_into_equivalence": false,
+  "commutation_boundary": {
+    "local_int_mul_comm_used": true,
+    "local_reorder_lemma": "three_factor_swap_right",
+    "generic_hhs_commutation_authorized": false
+  },
+  "runtime_arithmetic_changed": false,
+  "authority": {
+    "arithmetic": "INHERITED_PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "lean": "EQUIVALENCE_PROOF_WITNESS",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}
