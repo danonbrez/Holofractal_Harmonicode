@@ -1,0 +1,111 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_FEEDBACK_1_70",
+  "version": "1.70.0",
+  "status": "ADDITIVE_CANDIDATE_ONLY_LANE5_WOLFRAM_FEEDBACK",
+  "parent": "HHS_PASS219_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69",
+  "parent_evidence": {
+    "merge_commit": "27523a2f66c44507cee585601353f3b304907b39",
+    "refreshed_validation_workflow": 36367391771,
+    "relation_sha256": "4acc66c250129d5a42f976d673027313707633012b2de6f85d6491a4083ed73a",
+    "e0_nonzero_support_sha256": "64cd7ae9027ef41969948efc35b1273ba03ba3f759c076700d8a09940ebbf54d",
+    "source_sha256": {
+      "p1": "75a52ebb4526bdb788ae8101e4908d52579637b6aaca1a308e4d783b4a8afe86",
+      "p2": "13c231664403d35e8ad68747302c7bc26bcc9b1b567d0da0d65444c980c8eb97",
+      "comparison": "d01e62885b74d13650b44baf8da3e42d15bab35c99f6ee778e66df4059ecf37d",
+      "septuple": "082abcea6a66fb434b24938236f443f2703e7e76ded8911f46ffffa292a2c5e1"
+    }
+  },
+  "exact_feedback": {
+    "root_metadata_seed": {
+      "numerator": 179971179971,
+      "denominator": 1000000,
+      "display": "179971.179971"
+    },
+    "genesis_identity_verbatim": "F(x,y,a,b)=(x+y)^2+(xy-a^2)^2+(a^2-b)^2+(a^4-2)^2",
+    "matrix": {
+      "rows": 424,
+      "columns": 5431,
+      "entries": 2302744,
+      "nonzero_coordinates": 1018297
+    },
+    "foreign_reconstruction_coverage": {
+      "certified_rational": {
+        "numerator": 1014476,
+        "denominator": 1018297
+      },
+      "two_prime_only": {
+        "numerator": 3821,
+        "denominator": 1018297
+      },
+      "complete": false
+    },
+    "comparison": {
+      "total_rows": 107053,
+      "two_prime_only_rows": 3401,
+      "observed_pattern_partition": [
+        103570,
+        3401,
+        82
+      ]
+    }
+  },
+  "learning_feedback": {
+    "trinary_semantics": {
+      "0": "matched_or_neutral",
+      "-1": "missing_rejected_or_incomplete",
+      "+1": "validated_additive_structure"
+    },
+    "deviation_vector": {
+      "symbol_typing": 0,
+      "exact_arithmetic": 0,
+      "route_equivalence": 1,
+      "coproduct_dag_shape": 1,
+      "basis_rank": 1,
+      "modular_residue_closure": 1,
+      "source_identity": 1,
+      "operator_order": 0,
+      "provenance": 1,
+      "branch_scope": 0,
+      "hash216_replay": 1,
+      "canonical_authority_boundary": 0,
+      "literal_container_identity_assumption": -1,
+      "logical_representation_equivalence": 1,
+      "support_geometry": 1,
+      "foreign_rational_reconstruction_complete": -1
+    },
+    "validated_additions": [
+      "manifest_attested_source_identity",
+      "cross_prime_common_support_geometry",
+      "role_level_container_equivalence",
+      "full_comparison_stream_identity",
+      "native_parent_hash216_replay"
+    ],
+    "rejected_assumptions": [
+      "literal_cross_prime_container_identity"
+    ]
+  },
+  "wolfram_receipt": {
+    "schema": "HHS_PASS219_LANE5_NINE_LOOP_FEEDBACK_1_70_WOLFRAM_V1",
+    "checks": 13,
+    "pass_count": 13,
+    "feedback_material_sha256": "ba58c70820f0f3e5bd3a352b89441face87d07ea7ce776b1b8481c21393c69e1",
+    "exact_receipt_required": true
+  },
+  "feedback_payload_sha256": "78f2cc37e9304017cf0b6a233f2cb5ab080757fec57e6eb5897295bf0d2bed70",
+  "composition_gate": {
+    "requires_parent_1_69_native_hash216": true,
+    "requires_parent_relation_identity": true,
+    "requires_parent_support_identity": true,
+    "requires_wolfram_13_of_13": true,
+    "requires_verbatim_genesis_identity": true,
+    "requires_exact_coverage_partition": true,
+    "requires_native_hash216_replay": true,
+    "native_hash216_composition_frozen": true,
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  }
+}

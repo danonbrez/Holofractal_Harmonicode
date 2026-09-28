@@ -1,0 +1,45 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_FEEDBACK_1_70_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 13,
+  "pass_count": 13,
+  "checks": {
+    "prime1_is_prime": true,
+    "prime2_is_prime": true,
+    "matrix_entry_count_closes": true,
+    "coordinate_coverage_partition_closes": true,
+    "comparison_partition_closes": true,
+    "support_digest_typed": true,
+    "relation_digest_typed": true,
+    "comparison_digest_typed": true,
+    "septuple_digest_typed": true,
+    "all_source_digests_typed": true,
+    "root_seed_exact_rational": true,
+    "genesis_identity_verbatim": true,
+    "candidate_only_authority": true
+  },
+  "coverage_exact": {
+    "certified_rational": [
+      1014476,
+      1018297
+    ],
+    "two_prime_only": [
+      3821,
+      1018297
+    ]
+  },
+  "comparison_partition": {
+    "class_1": 103570,
+    "class_2": 3401,
+    "class_3": 82,
+    "total": 107053
+  },
+  "root_metadata_seed": {
+    "numerator": 179971179971,
+    "denominator": 1000000
+  },
+  "genesis_identity_verbatim": "F(x,y,a,b)=(x+y)^2+(xy-a^2)^2+(a^2-b)^2+(a^4-2)^2",
+  "feedback_material_sha256": "ba58c70820f0f3e5bd3a352b89441face87d07ea7ce776b1b8481c21393c69e1",
+  "native_hash216_authority": false,
+  "canonical_transition_ready": false
+}
