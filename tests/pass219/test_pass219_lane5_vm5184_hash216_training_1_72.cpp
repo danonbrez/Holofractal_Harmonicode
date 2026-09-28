@@ -62,6 +62,17 @@ hhs::lane5::TrainingSpecimen specimen_for(
     specimen.validator_signature64 = UINT64_C(0x3000) + salt;
     specimen.negative_control_signature64 = UINT64_C(0x4000) + salt;
     specimen.replay_signature64 = UINT64_C(0x5000) + salt;
+    if (descriptor.natural_language_native != 0U) {
+        std::memcpy(
+            specimen.ethical_text_supervisor_identity216,
+            transition.transition_identity216,
+            HHS_HASH216_LEN + 1U
+        );
+        specimen.ethical_text_supervisor_signature64 =
+            UINT64_C(0x6000) + salt;
+        specimen.natural_language_training = 1U;
+        specimen.ethical_text_supervision_verified = 1U;
+    }
     specimen.oracle_verified = 1U;
     specimen.negative_controls_verified = 1U;
     specimen.replay_verified = 1U;
@@ -89,6 +100,12 @@ int main() {
         CHECK(a->emits_candidate_hash216 == 1U);
         CHECK(a->candidate_only == 1U);
         CHECK(a->requires_negative_controls == 1U);
+        if (a->mode == TrainingMode::LinguisticOperator)
+            CHECK(a->natural_language_native == 1U);
+        if (a->mode == TrainingMode::EthicalText) {
+            CHECK(a->natural_language_native == 1U);
+            CHECK(a->ethical_text_supervisor == 1U);
+        }
         CHECK(a->requires_replay == 1U);
         CHECK(a->preserves_ingress_egress == 1U);
         CHECK(VM5184Hash216TrainingAPI::method(a->mode) == a);
@@ -152,6 +169,12 @@ int main() {
         CHECK(first.negative_controls_verified == 1U);
         CHECK(first.replay_verified == 1U);
         CHECK(first.ingress_egress_preserved == 1U);
+        CHECK(first.natural_language_training ==
+              descriptor->natural_language_native);
+        CHECK(first.ethical_text_supervision_required ==
+              descriptor->natural_language_native);
+        CHECK(first.ethical_text_supervision_verified ==
+              descriptor->natural_language_native);
         CHECK(first.vm5184_routed == 1U);
         CHECK(first.hash216_candidate_derived == 1U);
         CHECK(first.candidate_only == 1U);
@@ -281,6 +304,95 @@ int main() {
               bad, input, frame, transition,
               HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, negative) ==
           HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+
+    const TrainingMethodDescriptor *linguistic =
+        VM5184Hash216TrainingAPI::method(TrainingMode::LinguisticOperator);
+    CHECK(linguistic != nullptr && linguistic->natural_language_native == 1U);
+    TrainingSpecimen language =
+        specimen_for(*linguistic, transition, UINT64_C(101));
+    TrainingReceipt language_receipt{};
+    CHECK(api.evaluate(
+              language, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, language_receipt) ==
+          HHS_EXACT_STATUS_OK);
+    CHECK(language_receipt.natural_language_training == 1U);
+    CHECK(language_receipt.ethical_text_supervision_required == 1U);
+    CHECK(language_receipt.ethical_text_supervision_verified == 1U);
+    CHECK(std::memcmp(
+              language_receipt.ethical_text_supervisor_identity216,
+              transition.transition_identity216,
+              HHS_HASH216_LEN + 1U) == 0);
+
+    bad = language;
+    bad.ethical_text_supervision_verified = 0U;
+    CHECK(api.evaluate(
+              bad, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, negative) ==
+          HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    bad = language;
+    bad.ethical_text_supervisor_signature64 = 0U;
+    CHECK(api.evaluate(
+              bad, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, negative) ==
+          HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    bad = language;
+    bad.ethical_text_supervisor_identity216[0] = '\0';
+    CHECK(api.evaluate(
+              bad, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, negative) ==
+          HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    bad = language;
+    bad.natural_language_training = 0U;
+    CHECK(api.evaluate(
+              bad, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, negative) ==
+          HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    const TrainingMethodDescriptor *multimodal =
+        VM5184Hash216TrainingAPI::method(TrainingMode::MultimodalIngress);
+    CHECK(multimodal != nullptr && multimodal->natural_language_native == 0U);
+    TrainingSpecimen mixed =
+        specimen_for(*multimodal, transition, UINT64_C(102));
+    mixed.natural_language_training = 1U;
+    mixed.ethical_text_supervision_verified = 1U;
+    mixed.ethical_text_supervisor_signature64 = UINT64_C(0x6600);
+    std::memcpy(
+        mixed.ethical_text_supervisor_identity216,
+        transition.transition_identity216,
+        HHS_HASH216_LEN + 1U
+    );
+    TrainingReceipt mixed_receipt{};
+    CHECK(api.evaluate(
+              mixed, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, mixed_receipt) ==
+          HHS_EXACT_STATUS_OK);
+    CHECK(mixed_receipt.ethical_text_supervision_required == 1U);
+    CHECK(mixed_receipt.ethical_text_supervision_verified == 1U);
+
+    bad = mixed;
+    bad.ethical_text_supervision_verified = 0U;
+    CHECK(api.evaluate(
+              bad, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, negative) ==
+          HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    const TrainingMethodDescriptor *ethical =
+        VM5184Hash216TrainingAPI::method(TrainingMode::EthicalText);
+    CHECK(ethical != nullptr);
+    CHECK(ethical->ethical_text_supervisor == 1U);
+    TrainingSpecimen ethical_specimen =
+        specimen_for(*ethical, transition, UINT64_C(103));
+    TrainingReceipt ethical_receipt{};
+    CHECK(api.evaluate(
+              ethical_specimen, input, frame, transition,
+              HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE, 0, ethical_receipt) ==
+          HHS_EXACT_STATUS_OK);
+    CHECK(ethical_receipt.ethical_text_supervision_required == 1U);
+    CHECK(ethical_receipt.ethical_text_supervision_verified == 1U);
 
     std::printf(
         "PASS219_LANE5_UNIFIED_TRAINING_PASS methods=%zu vm5184=%u hash216=%u\n",
