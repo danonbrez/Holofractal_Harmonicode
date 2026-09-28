@@ -79,7 +79,21 @@ Both arms must agree on:
 
 HNAN is mandatory for priority promotion.
 
-The existing Pass 219 HNAN gate must report PASS and retain:
+The existing Pass 219 HNAN gate must report PASS and retain the explicit
+ordered identity:
+
+    0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+
+This is preserved together with the inherited shared-denominator closure:
+
+    0=∅=AB/P⁴∅=HNAN
+
+Neither string is substituted away by the other. The HNAN center expression is
+therefore bound explicitly to:
+
+    x+y-z-w+xy+yx-zw-wz
+
+The residual projection must additionally retain:
 
     terminal = xy+epsilon
 
@@ -91,7 +105,9 @@ The following remain forbidden:
     host-scalar epsilon substitution
 
 This matters because a translation that reproduces visible xy while dropping
-epsilon or ordered residual information is not information-preserving.
+epsilon, the explicit zero/EmptySet/HNAN center identity, the inherited
+AB/P⁴ denominator closure, or ordered residual information is not
+information-preserving.
 
 ## Supplied U9 circuit tensor
 

@@ -13,7 +13,8 @@ preserve the same complete tagged state through:
 - RNA/Hash72/Digital-DNA ordered phase binding,
 - canonical 81-cell qudit serialization/reconstruction,
 - supplied circuit-tensor U9 closure,
-- HNAN ordered Lo Shu + xy+epsilon admission.
+- HNAN ordered Lo Shu + explicit zero/EmptySet/HNAN center identity,
+- residual xy+epsilon projection preservation.
 
 No layer gains VM81 mutation, Hash72 mint, or Hash216 persistence authority.
 """
@@ -43,7 +44,9 @@ from hhs_runtime.hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1 import (
     phase_locked_state_witness,
 )
 from hhs_runtime.pass219.hnan_4x4_recursive_gate_v1 import (
+    HNAN_CENTER_EXPRESSION,
     HNAN_TERMINAL_SOURCE,
+    HNAN_ZERO_CLOSURE_SOURCE,
     hnan_loshu_resolution_receipt,
     invariant_receipt as hnan_invariant_receipt,
 )
@@ -58,6 +61,9 @@ BLOCK_WIDTH = 9
 BLOCK_COUNT = VM81_CELLS // BLOCK_WIDTH
 PRIORITY_DEFAULT = "SCALAR_SYMBOL_PERMUTATION_CONTROL_PLUS_OFFSET_VECTORIZATION"
 REFERENCE_FALLBACK = "DENSE_SUBSTITUTION_TENSOR_REFERENCE"
+HNAN_ZERO_EMPTYSET_CENTER_SOURCE = (
+    "0=∅=HNAN=" + HNAN_CENTER_EXPRESSION
+)
 
 
 class HHSInformationTranslationError(ValueError):
@@ -256,6 +262,20 @@ def hnan_information_gate_witness() -> dict[str, Any]:
         "center_expression_bound": (
             loshu["center_expression"]
             == invariant["hnan_center_expression"]
+            == HNAN_CENTER_EXPRESSION
+        ),
+        "explicit_zero_emptyset_hnan_center_identity": (
+            HNAN_ZERO_EMPTYSET_CENTER_SOURCE
+            == "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz"
+        ),
+        "explicit_hnan_center_matches_receipt_center": (
+            HNAN_ZERO_EMPTYSET_CENTER_SOURCE.split("HNAN=", 1)[1]
+            == loshu["center_expression"]
+        ),
+        "inherited_ab_over_p4_zero_closure_preserved": (
+            invariant["hnan_zero_closure_source"]
+            == HNAN_ZERO_CLOSURE_SOURCE
+            == "0=∅=AB/P⁴∅=HNAN"
         ),
     }
     body = {
@@ -264,6 +284,13 @@ def hnan_information_gate_witness() -> dict[str, Any]:
         "checks": checks,
         "hnan_invariant_receipt_sha256": invariant["receipt_sha256"],
         "hnan_loshu_receipt_sha256": loshu["receipt_sha256"],
+        "explicit_zero_emptyset_hnan_center_source": (
+            HNAN_ZERO_EMPTYSET_CENTER_SOURCE
+        ),
+        "inherited_ab_over_p4_zero_closure_source": (
+            HNAN_ZERO_CLOSURE_SOURCE
+        ),
+        "center_expression": HNAN_CENTER_EXPRESSION,
         "terminal_source": loshu["terminal_source"],
         "bare_xy_terminal_authorized": loshu[
             "bare_xy_terminal_authorized"
@@ -460,6 +487,14 @@ def build_cross_layer_information_witness(
     checks = {
         "all_four_ordered_channels_information_preserved": all_channels,
         "hnan_information_gate_pass": hnan["status"] == "PASS",
+        "hnan_explicit_zero_emptyset_center_identity": (
+            hnan["explicit_zero_emptyset_hnan_center_source"]
+            == "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz"
+        ),
+        "hnan_inherited_ab_over_p4_zero_closure": (
+            hnan["inherited_ab_over_p4_zero_closure_source"]
+            == "0=∅=AB/P⁴∅=HNAN"
+        ),
         "hnan_terminal_xy_plus_epsilon": (
             hnan["terminal_source"] == "xy+epsilon"
         ),
@@ -606,6 +641,7 @@ __all__ = [
     "PRIORITY_DEFAULT",
     "REFERENCE_FALLBACK",
     "SCHEMA",
+    "HNAN_ZERO_EMPTYSET_CENTER_SOURCE",
     "HHSInformationTranslationError",
     "build_cross_layer_information_witness",
     "channel_information_translation_witness",

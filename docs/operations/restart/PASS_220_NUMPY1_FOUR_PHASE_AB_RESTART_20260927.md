@@ -280,3 +280,33 @@ Next action:
 3. freeze the information-preservation receipt and cross-layer host timing;
 4. extend the same promotion gate to native Lane 5 hydration and I048
    constructor/runtime-adapter execution when those branches reconcile.
+
+
+## Explicit HNAN zero/center identity binding — 2026-09-28
+
+The cross-layer promotion gate now preserves the already-defined explicit HNAN
+identity:
+
+```text
+0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+```
+
+This is not a replacement for the inherited global denominator closure:
+
+```text
+0=∅=AB/P⁴∅=HNAN
+```
+
+Both constraint surfaces are mandatory and retained independently.
+
+The information gate now proves:
+- the exact combined zero/EmptySet/HNAN/center source string;
+- its HNAN-side center equals the existing
+  `HNAN_CENTER_EXPRESSION = x+y-z-w+xy+yx-zw-wz`;
+- the existing `0=∅=AB/P⁴∅=HNAN` source remains unchanged;
+- the residual terminal `xy+epsilon` remains required;
+- bare `xy`, epsilon elision, ordered-product commutation, and host-scalar
+  substitution remain forbidden.
+
+Therefore compact translation is rejected if it preserves a projected value but
+loses either HNAN equality surface or the typed residual information.

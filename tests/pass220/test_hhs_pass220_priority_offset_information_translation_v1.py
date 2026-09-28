@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from hhs_runtime.hhs_pass220_priority_offset_information_translation_v1 import (
+    HNAN_ZERO_EMPTYSET_CENTER_SOURCE,
     HHSInformationTranslationError,
     PRIORITY_DEFAULT,
     REFERENCE_FALLBACK,
@@ -75,11 +76,36 @@ def test_each_channel_preserves_5184_rna_and_qudit_identity(channel):
 def test_hnan_is_mandatory_information_gate():
     witness = hnan_information_gate_witness()
     assert witness["status"] == "PASS"
+    assert (
+        HNAN_ZERO_EMPTYSET_CENTER_SOURCE
+        == "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz"
+    )
+    assert (
+        witness["explicit_zero_emptyset_hnan_center_source"]
+        == "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz"
+    )
+    assert (
+        witness["inherited_ab_over_p4_zero_closure_source"]
+        == "0=∅=AB/P⁴∅=HNAN"
+    )
+    assert witness["center_expression"] == "x+y-z-w+xy+yx-zw-wz"
     assert witness["terminal_source"] == "xy+epsilon"
     assert witness["bare_xy_terminal_authorized"] is False
     assert witness["epsilon_elision_authorized"] is False
     assert witness["ordered_product_commutation_authorized"] is False
     assert witness["checks"]["center_expression_bound"] is True
+    assert (
+        witness["checks"]["explicit_zero_emptyset_hnan_center_identity"]
+        is True
+    )
+    assert (
+        witness["checks"]["explicit_hnan_center_matches_receipt_center"]
+        is True
+    )
+    assert (
+        witness["checks"]["inherited_ab_over_p4_zero_closure_preserved"]
+        is True
+    )
 
 
 def test_cross_layer_witness_requires_supplied_u9_circuit_tensor(information):
@@ -147,3 +173,15 @@ def test_no_authority_expansion(information):
         assert witness["canonical_vm81_mutation_authority"] is False
         assert witness["canonical_hash72_authority"] is False
         assert witness["canonical_hash216_authority"] is False
+
+
+
+def test_cross_layer_promotion_requires_explicit_hnan_zero_center_identity(information):
+    assert (
+        information["checks"]["hnan_explicit_zero_emptyset_center_identity"]
+        is True
+    )
+    assert (
+        information["checks"]["hnan_inherited_ab_over_p4_zero_closure"]
+        is True
+    )
