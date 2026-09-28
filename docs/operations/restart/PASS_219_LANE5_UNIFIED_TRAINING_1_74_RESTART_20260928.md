@@ -58,3 +58,28 @@ PR #632 intentionally has not yet frozen:
 5. Run 1.74 dependency-scoped CI.
 6. Retarget 1.74 PR to main after #632 merges.
 7. Merge only after the final inherited 1.73 lineage and 1.74 tests are green.
+
+
+## PR 634 handoff
+
+PR: https://github.com/danonbrez/Holofractal_Harmonicode/pull/634
+State: draft, stacked on PR #632 branch
+Base SHA at creation: 534aeaf6fbf6ae9fb7a1e981622064b0f74ac946
+Head SHA before this restart update: 827709d66e84d926357fabaeda2454534b80b895
+Branch relation to parent at creation: 12 commits ahead / 0 behind
+
+Initial 1.74 validation:
+- workflow: Pass 219 Lane 5 unified training 1.74
+- run: 36414175242
+- state: queued
+- combined statuses: none attached yet
+
+Parent 1.73 discovery:
+- PR: #632
+- discovery workflow: 36413301687
+- state at latest inspection: queued
+- receipt freeze remains pending
+
+PR #633 was closed as superseded because it incorrectly occupied the 1.73 version slot.
+
+No 1.74 compiler/runtime pass is claimed at this checkpoint.
