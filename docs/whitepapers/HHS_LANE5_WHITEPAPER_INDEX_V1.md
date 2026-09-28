@@ -567,3 +567,16 @@ The current proof scope is deliberately bounded: structural metadata and the pub
 [HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md](HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md)
 
 Pass 219 Lane 5 1.68 closes the source/provenance axis for the public Cosmic9 sample corpus. It streams all 20,630 weight-18 sample words, reconstructs every nonzero rational at both 31-bit primes, verifies all exact-zero rows, freezes the upstream MANIFEST/sample/summary SHA-256 identities, and binds that source receipt to a revalidated 1.67 parent through a candidate-only native Hash216 successor cell wall.
+
+
+### Nine-loop large-artifact equivalence 1.69
+
+[HHS_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.md](HHS_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.md)
+
+Pass 219 Lane 5 1.69 streams and manifest-attests the two public 424 x 5,431 prime-field coefficient matrices, the 107,053-row septuple/quintuple comparison record, and the direct-bootstrap septuple archive. It proves common E0 support geometry without requiring literal NPZ-container identity and seals the frozen relation through an inherited candidate-only native Hash216 cell wall.
+
+### Nine-loop Lane 5/Wolfram feedback 1.70
+
+[HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md](HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md)
+
+Pass 219 Lane 5 1.70 converts the proven 1.69 relation into exact training/deviation metadata. It preserves rejected foreign assumptions as negative evidence, validated additive structure as positive evidence, exact rational coverage as integer ratios, the root metadata seed as 179971179971/1000000, and the Genesis constructor verbatim. A connected Wolfram 13/13 receipt and independent feedback-payload digest are both required by the inherited candidate-only native Hash216 membrane.
