@@ -32,6 +32,9 @@ from hhs_backend.runtime.hhs_provider_invocation_receipt_v1 import (
 from hhs_backend.runtime.hhs_provider_result_ingress_v1 import (
     ingress_provider_result,
 )
+from hhs_runtime.hhs_pass220_i050_native_lean_alignment_v1 import (
+    admit_native_lean_alignment_tensor,
+)
 
 VERSION = "HHS_LITERT_LM_GEMMA4_ASSISTANT_V1"
 AUTHORITY = "HHS_AI_THREAD_INTERFACE_AUTHORITY_V1"
@@ -495,6 +498,7 @@ class HHSAssistantService:
             "requested_operation": self.requested_operation,
             "direct_vm81_mutation_allowed": False,
             "provider_result_ingress_required": True,
+            "native_lean_alignment_admission_required": True,
             "authority": AUTHORITY,
         }
         status["status_root_hash72"] = hash72(STATUS_SCHEMA, status)
@@ -691,12 +695,52 @@ class HHSAssistantService:
             result["turn_root_hash72"] = hash72(TURN_SCHEMA, result)
             return result
 
+        response_tensor_payload = str(completion.get("content") or "")
+        response_tensor_kind = "TEXT"
+        if not response_tensor_payload.strip() and completion.get("tool_calls"):
+            response_tensor_payload = json.dumps(
+                completion["tool_calls"],
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+                default=str,
+            )
+            response_tensor_kind = "TOOL_CALL"
+
+        tensor_admission = admit_native_lean_alignment_tensor(
+            str(user_message.get("content") or ""),
+            response_tensor_payload,
+            response_kind=response_tensor_kind,
+        )
+        if not tensor_admission.get("canonical"):
+            result = {
+                "schema": TURN_SCHEMA,
+                "version": VERSION,
+                "ok": False,
+                "status": "REJECT_NATIVE_LEAN_ALIGNMENT_BOTTOM",
+                "thread_id": thread_id,
+                "user_message": dict(user_message),
+                "assistant_message": None,
+                "proposal": proposal,
+                "proposal_validation": proposal_validation,
+                "policy_gate_decision": policy,
+                "native_lean_alignment_admission": tensor_admission,
+                "provider_output_retained_as_independent_state": False,
+                "provider_result_ingress_performed": False,
+                "runtime_mutation_admitted": False,
+                "model_output_is_canonical_without_runtime_admission": False,
+                "authority": AUTHORITY,
+            }
+            result["turn_root_hash72"] = hash72(TURN_SCHEMA, result)
+            return result
+
         receipt = invoke_provider_with_receipt(
             proposal,
             simulated_raw_result={
                 "schema": "HHS_LITERT_LM_RAW_COMPLETION_V1",
                 "provider_id": self.provider_id,
                 "model_id": completion.get("model") or self.config.model_id,
+                "native_lean_alignment_admission": tensor_admission,
                 **completion,
             },
         )
@@ -725,6 +769,12 @@ class HHSAssistantService:
                     .get("response_stream_manifest", {})
                     .get("stream_root_hash72")
                 ),
+                "native_lean_alignment_admission_root_hash72": tensor_admission.get(
+                    "admission_root_hash72"
+                ),
+                "native_lean_alignment_tensor_state": tensor_admission.get(
+                    "tensor_state"
+                ),
                 "runtime_mutation_admitted": False,
             },
         )
@@ -745,6 +795,7 @@ class HHSAssistantService:
             "policy_gate_decision": policy,
             "provider_invocation_receipt": receipt,
             "provider_result_ingress": ingress,
+            "native_lean_alignment_admission": tensor_admission,
             "native_response_stream": (
                 {
                     "serialized_response": (
@@ -882,6 +933,7 @@ def litert_lm_assistant_self_test() -> Dict[str, Any]:
         and turn.get("provider_result_ingress", {}).get(
             "provider_result_ingress_root_hash72"
         )
+        and turn.get("native_lean_alignment_admission", {}).get("canonical")
         and not turn.get("runtime_mutation_admitted")
         and health.get("online")
     )
