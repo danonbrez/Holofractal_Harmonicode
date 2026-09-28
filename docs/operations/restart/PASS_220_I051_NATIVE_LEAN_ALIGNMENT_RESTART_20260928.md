@@ -1,6 +1,6 @@
 # Pass 220 I051 Restart Checkpoint — Native Lean Alignment
 
-Status: RESTARTABLE IMPLEMENTATION — VALIDATION PENDING
+Status: RESTARTABLE IMPLEMENTATION — PR OPEN, DEPENDENCY-SCOPED VALIDATION QUEUED
 
 ## Identity
 
@@ -8,7 +8,13 @@ Status: RESTARTABLE IMPLEMENTATION — VALIDATION PENDING
 - Base meaning: current main after merged Pass 220 I050 native Mathlib algebraic structure nucleus
 - Branch: pass220/i051-native-lean-alignment1
 - Merge target: main
-- Pull request: pending at checkpoint creation
+- Pull request: #642
+- PR implementation head before checkpoint refresh: 2b26a6c026eaf20c9f1bbc558f174fe27d4a0e0d
+- PR base at implementation checkpoint: c67e01b764c9e2ae5d747375544d44ce3e282c21
+- GitHub mergeability at implementation checkpoint: mergeable
+- Dedicated workflow: Pass 220 I051 Native Lean Alignment
+- Dedicated workflow run: 36459303526
+- Dedicated workflow state at checkpoint refresh: queued
 
 ## Implemented
 
@@ -61,4 +67,4 @@ PR #638, an older parallel prompt/response reciprocal-tensor implementation, rem
 
 ## Next action
 
-Open the I051 pull request, inspect exact-head dependency-scoped CI, repair only attributable failures, and merge when acceptable. After merge, verify main contains the Lean module, runtime gate, assistant binding, contract, and tests.
+Inspect the I051 dependency-scoped workflow and PR checks, repair only attributable failures, and merge when acceptable. After merge, verify main contains the Lean module, runtime gate, assistant binding, contract, and tests.
