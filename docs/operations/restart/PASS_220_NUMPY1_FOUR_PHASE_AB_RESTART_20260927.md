@@ -167,3 +167,55 @@ Next action:
 2. if green, freeze the measured A/B result;
 3. treat Consensus as inherited mainline repair debt until #622 lands;
 4. repair-forward any actual mainline conflict before merge.
+
+
+## Measured A/B result frozen — 2026-09-28
+
+Dedicated workflow `36363194046` completed successfully on
+`22e83e794d7506dbaf86c0baef98819e65ad11c3`.
+
+Validation:
+- dependency-scoped pytest: PASS;
+- benchmark artifact upload: PASS;
+- semantic identity: true;
+- supplied U9 circuit tensor: `U9^9 = I`, nine distinct pre-closure
+  positional states, exact inverse recovery, and byte-identical payload
+  retention;
+- Hash216 dependency index `36363193969`: PASS.
+
+Measured median latency over 15 samples per channel:
+
+| channel | dense A | scalar-offset B | B speedup |
+| --- | ---: | ---: | ---: |
+| xy | 573355 ns | 132438 ns | 4.3292x |
+| yx | 563336 ns | 131546 ns | 4.2824x |
+| zw | 561953 ns | 131897 ns | 4.2605x |
+| wz | 562223 ns | 132378 ns | 4.2471x |
+
+Logical control storage:
+- dense A: 2916 matrix cells;
+- scalar-offset B: 324 index references + 36 scalar controls = 360 units;
+- exact dense/B control ratio: `81/10`.
+
+Candidate decision:
+`SCALAR_SYMBOL_PERMUTATION_CONTROL_PLUS_OFFSET_VECTORIZATION` is selected
+for the NumPy1 internal representation candidate.  This is a representation
+selection, not an authority expansion.  External ingress/egress remains
+unchanged and timing remains explicitly noncanonical.
+
+Frozen evidence:
+`evidence/pass220/PASS_220_NUMPY1_FOUR_PHASE_AB_MEASURED_RESULT_20260928.json`
+
+Artifact:
+- Actions artifact id: `10946785500`
+- uploaded zip SHA-256:
+  `adf76ccf4d6112f61e5f5f5c85429a4ef1d568a51b885a3c00e564dca44dad87`
+
+HHS Consensus on this stale experiment base remains inherited repair debt:
+PR #622 is still open and contains the package-invocation/import-root repair.
+Do not weaken the experiment or duplicate that repair here.
+
+Next workstream:
+- continue native-library metadata/constructor import and HARMONICODE
+  interpreter integration using the selected scalar-offset internal candidate;
+- repair-forward actual mainline conflicts when #622/#618 land.
