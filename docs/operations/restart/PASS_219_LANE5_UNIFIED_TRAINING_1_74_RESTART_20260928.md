@@ -83,3 +83,13 @@ Parent 1.73 discovery:
 PR #633 was closed as superseded because it incorrectly occupied the 1.73 version slot.
 
 No 1.74 compiler/runtime pass is claimed at this checkpoint.
+
+## Parent-freeze adapter checkpoint
+
+Added:
+- hhs_runtime/pass219/lane5_bounded_generalization_training_adapter_1_74.py
+- tests/pass219/test_pass219_lane5_bounded_generalization_training_adapter_1_74.py
+
+Current parent contract intentionally fails `frozen_parent_receipts()` because the observed 1.73 model/validation/replay/native identities are not frozen yet.
+
+The adapter already defines the positive post-freeze specimen mapping, including method 19 and ethical-text supervision when the bounded-generalization specimen is natural-language training.
