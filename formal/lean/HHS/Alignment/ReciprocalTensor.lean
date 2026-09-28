@@ -165,20 +165,23 @@ theorem admitted_requires_reciprocal_phase
 theorem admitted_requires_ab_p4
     (t : ReciprocalTensor)
     (h : t.admitted) :
-    t.closure.directABP4 = true :=
-  h.2.2.2.1
+    t.closure.directABP4 = true := by
+  have hc := h.2.2.2.1
+  exact hc.1
 
 theorem admitted_requires_ba_negative_p4
     (t : ReciprocalTensor)
     (h : t.admitted) :
-    t.closure.mirrorBANegP4 = true :=
-  h.2.2.2.2.1
+    t.closure.mirrorBANegP4 = true := by
+  have hc := h.2.2.2.1
+  exact hc.2.1
 
 theorem admitted_forbids_unproved_commutation
     (t : ReciprocalTensor)
     (h : t.admitted) :
-    t.closure.commutationAllowedWithoutNativeProof = false :=
-  h.2.2.2.2.2.2.2.2.2
+    t.closure.commutationAllowedWithoutNativeProof = false := by
+  have hc := h.2.2.2.1
+  exact hc.2.2.2.2.2.2.2.2
 
 theorem admitted_is_genesis
     (t : ReciprocalTensor)
