@@ -1,0 +1,116 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69",
+  "version": "1.69.0",
+  "parent": "HHS_PASS219_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68",
+  "public_source": "https://smsharma.io/cosmic-nine-loops/",
+  "targets": [
+    {
+      "role": "quintuple_coordinate_matrix_p1",
+      "path": "amplitude/E9_symbol_complete_mod2147483647.npz",
+      "prime": 2147483647,
+      "expected_matrix_shape": [
+        424,
+        5431
+      ]
+    },
+    {
+      "role": "quintuple_coordinate_matrix_p2",
+      "path": "amplitude/E9_symbol_complete_mod2147483629.npz",
+      "prime": 2147483629,
+      "expected_matrix_shape": [
+        424,
+        5431
+      ]
+    },
+    {
+      "role": "septuple_quintuple_full_comparison",
+      "path": "validation/records/09_septuple_vs_quintuple_107053_words.txt.gz",
+      "expected_comparison_rows": 107053
+    },
+    {
+      "role": "direct_bootstrap_septuple_archive",
+      "path": "MHV9/MHV9septuples.zip",
+      "expected_uncompressed_bytes_approx": 243269632
+    }
+  ],
+  "published_relations": {
+    "quintuple_count": 424,
+    "weight13_dimension": 5431,
+    "published_nonzero_coordinate_union": 1018297,
+    "certified_rational_coordinates": 1014476,
+    "two_prime_only_coordinates": 3821,
+    "septuple_determining_nonzero_coefficients": 107053,
+    "two_prime_only_compared_coefficients": 3401
+  },
+  "ingestion": {
+    "stream_hashing_required": true,
+    "manifest_membership_required": true,
+    "no_archive_extraction_required": true,
+    "npz_allow_pickle": false,
+    "full_materialization_forbidden": true,
+    "candidate_only": true,
+    "cross_prime_container_identity_required": false,
+    "discovery_before_equivalence_required": true,
+    "logical_equivalence_contract_frozen": true,
+    "native_hash216_composition_frozen": true
+  },
+  "learning_metadata": {
+    "parallel_axes": [
+      "source_identity",
+      "artifact_size",
+      "container_structure",
+      "matrix_shape",
+      "prime_lane",
+      "sparsity_or_dense_layout",
+      "comparison_row_count",
+      "comparison_schema_fingerprint",
+      "archive_member_fingerprint",
+      "representation_agreement",
+      "hash216_parent_binding",
+      "canonical_authority_boundary",
+      "per_prime_container_inventory",
+      "per_prime_structure_sha256",
+      "logical_equivalence_contract_state"
+    ]
+  },
+  "authority": {
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "observed_equivalence": {
+    "workflow_run": 36354479168,
+    "validated_code_head": "5b1f17257ab8ddf811211e6f34b186c72ab52671",
+    "source_sha256": {
+      "p1": "75a52ebb4526bdb788ae8101e4908d52579637b6aaca1a308e4d783b4a8afe86",
+      "p2": "13c231664403d35e8ad68747302c7bc26bcc9b1b567d0da0d65444c980c8eb97",
+      "comparison": "d01e62885b74d13650b44baf8da3e42d15bab35c99f6ee778e66df4059ecf37d",
+      "septuple": "082abcea6a66fb434b24938236f443f2703e7e76ded8911f46ffffa292a2c5e1"
+    },
+    "e0_nonzero_support_sha256": "64cd7ae9027ef41969948efc35b1273ba03ba3f759c076700d8a09940ebbf54d",
+    "comparison_normalized_sha256": "884b05ed4118ed372329c8b002b895dfa98bd92fe72cdd0f88b47cef94448d11",
+    "septuple_structure_sha256": "606c5db22ac881a92835cf12e7077d0093c8b599b5205d3e0752be91e82c3967",
+    "relation_sha256": "4acc66c250129d5a42f976d673027313707633012b2de6f85d6491a4083ed73a",
+    "matrix_geometry": [
+      424,
+      5431
+    ],
+    "matrix_dtype": "int64",
+    "nonzero_coordinate_count": 1018297,
+    "shared_invariant_members": [
+      "L",
+      "V",
+      "log",
+      "n",
+      "pivots"
+    ],
+    "prime_dependent_members": [
+      "E0",
+      "fix_note",
+      "p",
+      "tau_N3LL"
+    ]
+  }
+}
