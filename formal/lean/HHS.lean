@@ -1,6 +1,7 @@
 import HHS.Mathlib.Native
 import HHS.Mathlib.OrderRat
 import HHS.Mathlib.Algebra.Native
+import HHS.Alignment.ReciprocalTensor
 
 namespace HHS
 
