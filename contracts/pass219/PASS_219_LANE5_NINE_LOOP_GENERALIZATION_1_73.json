@@ -1,0 +1,45 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_GENERALIZATION_1_73",
+  "version": "1.73.0",
+  "status": "DISCOVERY_PRE_NATIVE_FREEZE",
+  "parent": "HHS_PASS219_LANE5_NINE_LOOP_RELATION_DATASET_1_72",
+  "parent_main_commit": "29d39c28134f42c2f0d89f5724c57966a5523cfd",
+  "parent_dataset_sha256": "dd623f4fc778364274e7ba05c914fb441b724ca3ce41a4eb4df4cdc64935d587",
+  "parent_record_chain_sha256": "4a951f76afcd3f759e74263bc9cd0019b50f034bc07e93341b73200e0c85bd6a",
+  "generalization": {
+    "engine": "BoundedTokenGeneralizationEngine",
+    "inherited_pass": "PASS_123",
+    "training_examples": 12,
+    "holdout_examples": 12,
+    "expected_rule_count": 12,
+    "expected_accuracy": {
+      "numerator": 12,
+      "denominator": 12
+    },
+    "require_all_declared_token_classes": false,
+    "representation_local_features_excluded": true,
+    "training_holdout_disjoint_required": true,
+    "semantic_drift_count_expected": 0,
+    "deterministic_replay_required": true,
+    "expected_replay_count": 12
+  },
+  "authority": {
+    "validated_knowledge_model_only": true,
+    "execution_authority": false,
+    "source_mutation_authority": false,
+    "runtime_mutation_authority": false,
+    "model_weight_update_authority": false,
+    "learning_commit_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "frozen_receipts": {
+    "model_root_hash72": null,
+    "validation_receipt_root_hash72": null,
+    "replay_bundle_sha256": null,
+    "native_hash216_composition_frozen": false
+  }
+}
