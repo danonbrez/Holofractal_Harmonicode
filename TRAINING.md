@@ -103,3 +103,21 @@ It fails closed while the 1.73 contract has unfrozen discovery/native identities
 - `native_hash216_composition_frozen=true`.
 
 The adapter never derives these values itself. Until 1.73 writes them authoritatively, the only valid 1.74 behavior is `UNFROZEN_PARENT_RECEIPTS`.
+
+## Repository-wide producer registry
+
+The native 19-method class is bound to a machine-readable repository catalog:
+
+`training_specimens/HHS_LANE5_UNIFIED_TRAINING_REGISTRY_1_74.json`
+
+Each method now resolves to an existing producer implementation rather than only an enum label. The catalog binds the native mode number, method ID, temporal class, primary learning target, producer path, training role, and natural-language supervision policy.
+
+The validator `hhs_runtime/pass219/lane5_unified_training_registry_1_74.py` rejects:
+- missing producer files;
+- method-count or ordering drift;
+- duplicate native mode/ID mappings;
+- natural-language supervision drift;
+- multiple or missing ethical-text supervisors;
+- any canonical-authority escalation.
+
+The CI registry test loads the native C ABI after the shared library is built and requires one-to-one agreement between the JSON catalog and `VM5184Hash216TrainingAPI`.
