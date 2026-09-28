@@ -1,4 +1,4 @@
-name: Pass 219 Lane 5 Nine-Loop Generalization Discovery 1.73
+name: Pass 219 Lane 5 Nine-Loop Generalization 1.73
 
 on:
   pull_request:
@@ -6,6 +6,22 @@ on:
     paths:
       - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json'
       - 'hhs_runtime/pass219/lane5_nine_loop_generalization_1_73.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_generalization_cell_wall_1_73.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_generalization_cell_wall_1_73.cpp'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_generalization_cell_wall_1_73.cpp'
+      - 'evidence/pass219/lane5_nine_loop_generalization_1_73_discovery_20260928_v1.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.md'
+      - 'docs/whitepapers/HHS_LANE5_NINE_LOOP_GENERALIZATION_1_73.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_generalization_cell_wall_1_73.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_generalization_cell_wall_1_73.cpp'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_generalization_cell_wall_1_73.cpp'
+      - 'evidence/pass219/lane5_nine_loop_generalization_1_73_discovery_20260928_v1.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.md'
+      - 'docs/whitepapers/HHS_LANE5_NINE_LOOP_GENERALIZATION_1_73.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'GNUmakefile'
       - 'tests/pass219/test_pass219_lane5_nine_loop_generalization_1_73.py'
       - '.github/workflows/pass219-lane5-nine-loop-generalization-1-73.yml'
   push:
@@ -61,5 +77,37 @@ jobs:
           assert receipt["replay_count"] == 12
           assert receipt["model_weight_update_authority"] is False
           assert receipt["learning_commit_authority"] is False
+          assert receipt["model_root_hash72"] == "0000000000000000000000000000002rd>Jdh(*jXM9IMuM^931?)TxIUlEV>A5MH81cDfqL"
+          assert receipt["validation_receipt_root_hash72"] == "0000000000000000000000000000004uxkwBpAEdc+=PCnAuM+5cGH26usFYmSWD3kSLSkPM"
+          assert receipt["replay_bundle_sha256"] == "238556f95e17e77d01a9e37e4be4cbbd56181982f3599dc941cfe77be32aaf69"
           print("PASS219_1_73_DISCOVERY=" + json.dumps(receipt, sort_keys=True))
           PY
+
+      - name: Build shared exact VM81 runtime
+        run: make -f GNUmakefile c-kernel
+
+      - name: Compile native 1.73 conformance
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_nine_loop_generalization_cell_wall_1_73.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread \
+            -o /tmp/test_pass219_lane5_nine_loop_generalization_1_73
+
+      - name: Run native 1.73 conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_lane5_nine_loop_generalization_1_73
+
+      - name: Verify frozen roots and authority boundary
+        run: |
+          grep -F '0000000000000000000000000000002rd>Jdh(*jXM9IMuM^931?)TxIUlEV>A5MH81cDfqL' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json
+          grep -F '0000000000000000000000000000004uxkwBpAEdc+=PCnAuM+5cGH26usFYmSWD3kSLSkPM' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json
+          grep -F '238556f95e17e77d01a9e37e4be4cbbd56181982f3599dc941cfe77be32aaf69' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json
+          grep -F '"model_weight_update_authority": false' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json
+          grep -F '"learning_commit_authority": false' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json
