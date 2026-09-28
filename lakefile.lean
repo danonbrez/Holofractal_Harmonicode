@@ -1,7 +1,8 @@
 import Lake
 open Lake DSL
 
-package harmonicode
+package harmonicode where
+  version := v!"0.220.48"
 
 lean_lib HHS where
   srcDir := "formal/lean"
