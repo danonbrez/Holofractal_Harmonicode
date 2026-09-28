@@ -1,0 +1,47 @@
+{
+  "schema": "HHS_PASS_220_I053_NATIVE_MATHLIB_EXACTRAT_CONGRUENCE_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "inherits": [
+    "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+    "HHS_PASS_220_I050_NATIVE_MATHLIB_ALGEBRA_V1",
+    "HHS_PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_V1"
+  ],
+  "formal_module": "HHS.Mathlib.Algebra.ExactRatCongruence",
+  "representation": "ORDERED_NUMERATOR_POSITIVE_DENOMINATOR_PAIR",
+  "equivalence": "a.num*b.den == b.num*a.den",
+  "operations": {
+    "add": {
+      "formula": "(a/b)+(c/d)=(a*d+c*b)/(b*d)",
+      "universal_congruence": true
+    },
+    "neg": {
+      "formula": "-(a/b)=(-a)/b",
+      "universal_congruence": true
+    },
+    "sub": {
+      "formula": "(a/b)-(c/d)=(a*d-c*b)/(b*d)",
+      "universal_congruence": true
+    },
+    "mul": {
+      "formula": "(a/b)*(c/d)=(a*c)/(b*d)",
+      "universal_congruence": true
+    }
+  },
+  "proof_boundary": {
+    "native_runtime_formulas_changed": false,
+    "carrier_local_int_commutation_used": true,
+    "carrier_local_commutation_is_private_proof_step": true,
+    "generic_hhs_commutation_authorized": false,
+    "equivalence_transitivity_closed": false,
+    "quotient_ring_closed": false
+  },
+  "authority": {
+    "native_cpp": "I049_NATIVERAT",
+    "arithmetic": "PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "lean": "UNIVERSAL_CONGRUENCE_PROOF_WITNESS",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}
