@@ -152,6 +152,9 @@ def _infer_lexical_edges(
 
 def _explicit_edges(
     values: Sequence[Mapping[str, Any]],
+    *,
+    prompt_tokens: set[str],
+    response_tokens: set[str],
 ) -> tuple[list[LexicalRelationEdge], list[str]]:
     edges: list[LexicalRelationEdge] = []
     reasons: list[str] = []
@@ -161,13 +164,16 @@ def _explicit_edges(
         b = _normalize_token(raw.get("response_token", raw.get("b", "")))
         geometry = str(raw.get("geometry") or LEXICAL_GEOMETRY.get(relation, ""))
         expected = LEXICAL_GEOMETRY.get(relation)
-        valid = bool(a and b and expected and geometry == expected)
+        endpoints_present = a in prompt_tokens and b in response_tokens
+        valid = bool(a and b and expected and geometry == expected and endpoints_present)
         if not expected:
             reasons.append(f"LEXICAL_RELATION_TYPE_INVALID:{index}")
         elif not a or not b:
             reasons.append(f"LEXICAL_RELATION_ENDPOINT_MISSING:{index}")
         elif geometry != expected:
             reasons.append(f"LEXICAL_GEOMETRY_MISMATCH:{index}:{relation}")
+        elif not endpoints_present:
+            reasons.append(f"LEXICAL_RELATION_ENDPOINT_OUTSIDE_TENSOR:{index}:{relation}")
         edges.append(
             LexicalRelationEdge(
                 prompt_token=a,
@@ -254,8 +260,14 @@ def admit_prompt_response_tensor(
             relation_db = {}
             db_error = f"{type(exc).__name__}: {exc}"
 
+    prompt_tokens = set(_unique_tokens(prompt))
+    response_tokens = set(_unique_tokens(response))
     inferred = _infer_lexical_edges(prompt, response, relation_db)
-    explicit, explicit_reasons = _explicit_edges(explicit_relations)
+    explicit, explicit_reasons = _explicit_edges(
+        explicit_relations,
+        prompt_tokens=prompt_tokens,
+        response_tokens=response_tokens,
+    )
     reasons.extend(explicit_reasons)
     edges = [*inferred, *explicit]
     lexical_verified = all(edge.geometry_verified for edge in edges)
@@ -418,8 +430,8 @@ def self_test() -> dict[str, Any]:
         "dog": WordRelationEntry(word="dog", hypernyms=["animal"]),
     }
     admitted = admit_prompt_response_tensor(
-        "A rapid hot animal",
-        "A fast cold dog",
+        "A rapid hot animal car wheel",
+        "A fast cold dog wheel car",
         relation_db=relation_db,
         explicit_relations=[
             {
