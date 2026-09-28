@@ -567,3 +567,20 @@ The current proof scope is deliberately bounded: structural metadata and the pub
 [HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md](HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md)
 
 Pass 219 Lane 5 1.68 closes the source/provenance axis for the public Cosmic9 sample corpus. It streams all 20,630 weight-18 sample words, reconstructs every nonzero rational at both 31-bit primes, verifies all exact-zero rows, freezes the upstream MANIFEST/sample/summary SHA-256 identities, and binds that source receipt to a revalidated 1.67 parent through a candidate-only native Hash216 successor cell wall.
+
+
+## HNAN zero-center information-preservation theorem
+
+[HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md](HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md)
+
+This Pass 220 successor proves why the explicit source
+
+```text
+0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+```
+
+is required as an information-binding witness rather than decorative notation.
+Connected Wolfram evaluation proves that deleting the center makes the HNAN
+projection non-injective over distinct ordered states, and deleting epsilon
+makes the visible `xy` projection non-injective over distinct residual states.
+The theorem preserves the inherited `0=∅=AB/P⁴∅=HNAN` closure independently.

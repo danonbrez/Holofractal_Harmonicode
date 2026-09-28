@@ -310,3 +310,52 @@ The information gate now proves:
 
 Therefore compact translation is rejected if it preserves a projected value but
 loses either HNAN equality surface or the typed residual information.
+
+
+## Wolfram HNAN zero-center formalization + whitepaper proof — 2026-09-28
+
+Connected Wolfram Language evaluation formalized the explicit typed source:
+
+```text
+0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+```
+
+using inert list ASTs, with the inherited closure
+
+```text
+0=∅=AB/P⁴∅=HNAN
+```
+
+and residual terminal
+
+```text
+xy+epsilon
+```
+
+retained as independent witnesses.
+
+Result: **20/20 PASS**.
+
+Key proof obligations:
+- exact eight-term center order;
+- `xy != yx`, `zw != wz`;
+- swapping `xy/yx` changes the center signature;
+- structural round-trip of both HNAN closure surfaces;
+- removing the center is non-injective over distinct ordered HNAN states;
+- removing epsilon is non-injective over distinct residual states;
+- the two closure surfaces remain structurally distinct.
+
+Added:
+- `evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.wl`
+- `evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.output.json`
+- `docs/whitepapers/HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md`
+
+Updated:
+- HNAN/Jordan global theorem whitepaper;
+- Lane 5 whitepaper index;
+- Pass 220 priority-offset information-translation contract;
+- dependency-scoped regression tests.
+
+The proof establishes why the string is necessary for translation: deleting the
+center makes the HNAN projection many-to-one and therefore destroys unique
+reconstruction. Speed cannot override this information-preservation failure.

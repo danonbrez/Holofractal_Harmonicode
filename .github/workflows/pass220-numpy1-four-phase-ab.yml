@@ -10,6 +10,11 @@ on:
       - "tests/pass220/test_hhs_pass220_priority_offset_information_translation_v1.py"
       - "benchmarks/pass220/pass220_numpy_four_phase_ab_v1.py"
       - "benchmarks/pass220/pass220_priority_offset_information_translation_v1.py"
+      - "evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.wl"
+      - "evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.output.json"
+      - "docs/whitepapers/HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md"
+      - "docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md"
+      - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
       - ".github/workflows/pass220-numpy1-four-phase-ab.yml"
 
 jobs:

@@ -185,3 +185,48 @@ def test_cross_layer_promotion_requires_explicit_hnan_zero_center_identity(infor
         information["checks"]["hnan_inherited_ab_over_p4_zero_closure"]
         is True
     )
+
+
+def test_connected_wolfram_hnan_zero_center_proof_is_frozen_and_green():
+    evidence = json.loads(
+        Path(
+            "evidence/pass220/"
+            "hnan_zero_center_information_wolfram_20260928_v1.output.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert evidence["status"] == "PASS"
+    assert evidence["passed"] == evidence["total"] == 20
+    assert evidence["source_string"] == (
+        "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz"
+    )
+    assert evidence["inherited_closure_string"] == "0=∅=AB/P⁴∅=HNAN"
+    assert evidence["terminal_string"] == "xy+epsilon"
+    assert evidence["checks"]["dropping_center_is_noninjective"] is True
+    assert evidence["checks"]["dropping_epsilon_is_noninjective"] is True
+    assert evidence["checks"]["swapping_xy_yx_changes_center"] is True
+    assert evidence["checks"]["two_closure_surfaces_remain_distinct"] is True
+
+
+def test_whitepapers_explain_hnan_zero_center_information_necessity():
+    theorem = Path(
+        "docs/whitepapers/"
+        "HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md"
+    ).read_text(encoding="utf-8")
+    parent = Path(
+        "docs/whitepapers/"
+        "HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md"
+    ).read_text(encoding="utf-8")
+    index = Path(
+        "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+    ).read_text(encoding="utf-8")
+    required = (
+        "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz",
+        "non-injective",
+        "0=∅=AB/P⁴∅=HNAN",
+        "xy+epsilon",
+        "20/20 PASS",
+    )
+    for token in required:
+        assert token in theorem
+        assert token in parent
+    assert "HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md" in index

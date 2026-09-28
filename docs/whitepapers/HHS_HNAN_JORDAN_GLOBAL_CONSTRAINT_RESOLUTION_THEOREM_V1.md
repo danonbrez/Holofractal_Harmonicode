@@ -1216,3 +1216,57 @@ Machine source:
 ```text
 contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.hhs
 ```
+
+
+---
+
+## 22. Explicit zero/EmptySet/HNAN center information theorem
+
+Pass 220 freezes a further information-preservation theorem over the existing
+HNAN semantics:
+
+```text
+0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+```
+
+This does not replace the inherited ordered denominator closure
+
+```text
+0=∅=AB/P⁴∅=HNAN.
+```
+
+Instead, it binds the resolved HNAN node to the exact ordered eight-term center
+while the earlier closure preserves the shared denominator lineage.
+
+The dedicated connected-Wolfram formalization represents all HHS operators as
+inert structural AST nodes, so no host `Plus`, `Times`, division, sorting, or
+commutation can change the proof object.
+
+The key necessity result is an injectivity argument. Two states that differ only
+by the order of the distinct `xy` and `yx` center terms are different exact
+HNAN states. If the center is discarded and both states are projected to the
+bare `HNAN` node, they become identical. Therefore the center-dropping map is
+non-injective and cannot be an information-preserving translation.
+
+The same proof is applied to the residual terminal: distinct epsilon-bearing
+states collapse to the same visible `xy` when epsilon is discarded. Thus
+`xy+epsilon` remains a separate mandatory witness.
+
+Connected Wolfram result:
+
+```text
+HHS_PASS220_HNAN_ZERO_CENTER_INFORMATION_WOLFRAM_V1
+20/20 PASS
+dropping_center_is_noninjective = true
+dropping_epsilon_is_noninjective = true
+```
+
+Full theorem and proof:
+
+`docs/whitepapers/HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md`
+
+Frozen formal evidence:
+
+`evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.wl`
+
+`evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.output.json`

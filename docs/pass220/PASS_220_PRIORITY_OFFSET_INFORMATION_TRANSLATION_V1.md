@@ -145,3 +145,29 @@ If any information gate fails:
 
 This experiment is read-only/candidate-only. It does not mint Hash72, persist
 Hash216, mutate canonical VM81 state, or bypass HNAN/Lane 5/VM81 admission.
+
+
+## Wolfram necessity proof
+
+Connected Wolfram formalization now proves the information role of:
+
+```text
+0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+```
+
+The proof uses inert ordered ASTs rather than host scalar arithmetic. It
+constructs two distinct center states differing in `xy/yx` order and shows
+that both map to the same bare `HNAN` projection if the center is discarded.
+Therefore the center-dropping translation is non-injective.
+
+It independently constructs two distinct epsilon residual states that map to
+the same visible `xy` projection when epsilon is removed.
+
+Result: **20/20 PASS**.
+
+Formal evidence:
+- `evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.wl`
+- `evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.output.json`
+
+Whitepaper:
+- `docs/whitepapers/HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md`
