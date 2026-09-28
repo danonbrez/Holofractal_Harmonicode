@@ -587,3 +587,10 @@ Pass 219 Lane 5 1.70 converts the proven 1.69 relation into exact training/devia
 [HHS_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71.md](HHS_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71.md)
 
 Pass 219 Lane 5 1.71 admits the source-bound 1.70 feedback object into the repository training-specimen corpus as deterministic dataset preparation. The specimen preserves 13 feedback labels, 5 learning objectives, 16 trinary deviation features, exact rational coverage, rejected assumptions, validated additive structure, and the full parent source/relation/support lineage. The native cell wall revalidates 1.70 and seals only a candidate specimen Hash216; model-weight updates and learning commits remain explicitly unauthorized.
+
+
+### Nine-loop relation dataset 1.72
+
+[HHS_LANE5_NINE_LOOP_RELATION_DATASET_1_72.md](HHS_LANE5_NINE_LOOP_RELATION_DATASET_1_72.md)
+
+Pass 219 Lane 5 1.72 expands the source-bound 1.71 specimen into twelve ordered relation-learning records. It preserves exact positive, neutral, and negative examples; derives deterministic per-record and ordered-chain identities; and seals the dataset through the inherited native candidate Hash216 path without granting model-weight updates, learning commits, canonical transition, VM81, canonical hash, persistence, or floating-point authority.
