@@ -68,6 +68,7 @@ struct TrainingMethodDescriptor final {
     std::uint8_t routes_through_vm5184{};
     std::uint8_t emits_candidate_hash216{};
     std::uint8_t candidate_only{};
+    std::uint8_t natural_language_native{};
     std::uint8_t ethical_text_supervisor{};
     std::uint8_t reserved0{};
 };
