@@ -1,0 +1,60 @@
+{
+  "schema": "HHS_PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "inherits": [
+    "HHS_PASS_220_I048_LEAN4_NATIVE_MATHLIB_REBUILD_V1",
+    "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+    "HHS_PASS_220_I050_NATIVE_MATHLIB_ALGEBRA_V1",
+    "HHS_PASS_220_I051_NATIVE_LEAN_ALIGNMENT_V1"
+  ],
+  "formal_module": "HHS.Mathlib.Algebra.Universal",
+  "coverage": {
+    "Nat": {
+      "universal_semiring_laws": true,
+      "laws": [
+        "add_assoc",
+        "add_left_identity",
+        "add_right_identity",
+        "mul_assoc",
+        "mul_left_identity",
+        "mul_right_identity",
+        "left_distrib",
+        "right_distrib"
+      ]
+    },
+    "Int": {
+      "universal_ring_laws": true,
+      "laws": [
+        "add_assoc",
+        "add_left_identity",
+        "add_right_identity",
+        "add_left_inverse",
+        "add_right_inverse",
+        "mul_assoc",
+        "mul_left_identity",
+        "mul_right_identity",
+        "left_distrib",
+        "right_distrib"
+      ]
+    },
+    "ExactRat": {
+      "universal_ring_laws": false
+    }
+  },
+  "proof_boundary": {
+    "runtime_certificates_replaced": false,
+    "runtime_arithmetic_changed": false,
+    "universal_theorems_are_carrier_specific": true,
+    "generic_hhs_commutation_authorized": false,
+    "commutativity_theorems_exported": false
+  },
+  "authority": {
+    "arithmetic": "INHERITED_PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "native_cpp": "INHERITED_I048_I049_I050",
+    "lean": "UNIVERSAL_PROOF_WITNESS",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}
