@@ -1,6 +1,6 @@
 # Pass 220 I048 Restart Checkpoint — Lean4 Native Mathlib1
 
-Status: **RESTARTABLE IMPLEMENTATION CHECKPOINT — VALIDATION QUEUED**
+Status: **RESTARTABLE IMPLEMENTATION CHECKPOINT — LEAN VALIDATION QUEUED**
 
 ## Restart identity
 
@@ -8,14 +8,17 @@ Status: **RESTARTABLE IMPLEMENTATION CHECKPOINT — VALIDATION QUEUED**
 - Branch: `pass220/i048-lean4-native-mathlib1`
 - Merge target: `main`
 - Pull request: `#636`
-- Implementation head before this checkpoint refresh: `a0158845e5cc1d63515c8c492e67023f5545a47e`
+- Implementation head before this checkpoint refresh: `60940b8ebfe3544afd2b5bb9815b5d08a8cc543f`
 - Scope: Lean 4 native package + first HHS-native Mathlib compatibility slice
 
 ## Implemented
 
 - root Lean 4 toolchain/package metadata;
+- dependency-free `lake-manifest.json`;
+- default `HHS` Lean library target;
+- real `formal/lean/HHS.lean` library root importing the native Mathlib nucleus;
 - `HHS.Mathlib.Native` proof/admission definitions with no proof placeholders;
-- native C++ `hhs::mathlib::NativeInt` and `NativeNat` wrappers that execute
+- native C++ `hhs::mathlib::NativeInt` and `NativeNat` wrappers executing
   arithmetic through Python1's C11 BigInt kernel;
 - native C++ RNA class-registration wrapper using the existing Python2/Pass 219
   cell wall;
@@ -30,6 +33,8 @@ Status: **RESTARTABLE IMPLEMENTATION CHECKPOINT — VALIDATION QUEUED**
 
 - `lean-toolchain`
 - `lakefile.lean`
+- `lake-manifest.json`
+- `formal/lean/HHS.lean`
 - `formal/lean/HHS/Mathlib/Native.lean`
 - `native_projects/hhs_pass220_mathlib_native/include/hhs_pass220_mathlib_native_v1.hpp`
 - `native_projects/hhs_pass220_mathlib_native/tests/hhs_pass220_mathlib_native_v1_test.cpp`
@@ -41,42 +46,76 @@ Status: **RESTARTABLE IMPLEMENTATION CHECKPOINT — VALIDATION QUEUED**
 - `.github/workflows/pass220-i048-lean4-native-mathlib.yml`
 - this checkpoint
 
-## Validation history
+## Frozen green evidence
 
-### Initial I048 run
+The native implementation path is green and should not be rerun independently
+unless one of its inputs changes.
 
-- Run: `36439203342`
-- Result: failed in native link.
-- Cause: I048 linked the current aggregate exact ABI without its inherited
-  Hash72/Hash216, C++ PQC cell-wall, and OpenSSL support dependencies.
-- Classification: I048 build-composition defect, not a runtime-semantics defect.
-- Repair: use the repository-canonical exact ABI link-support builder and link
-  `hhs_hash216.o`, `hhs_pass219_vm81_pqc_cell_wall.o`, `-lcrypto`,
-  `-pthread`, and `-lm`.
+Latest observed native stage:
 
-### Repair run
+- C11 Python1 executor build: PASS
+- current aggregate exact ABI build: PASS
+- canonical exact ABI support build: PASS
+- C++ native Mathlib harness: PASS
+- Python I048 tests: **5 passed**
+- native class registration / RNA boundary checks: PASS
 
-- Run: `36439498131`
-- Result: failed before native link.
-- Cause: the canonical support script is intentionally invoked through
-  `bash` in existing workflows and is not executable directly.
-- Repair commit: `a0158845e5cc1d63515c8c492e67023f5545a47e`.
-- Repair: Makefile now invokes
-  `bash tools/pass219/build_exact_abi_link_support.sh`.
+## Repair history
+
+### Run 36439203342
+
+Failure: native exact-ABI link omitted inherited Hash72/Hash216, PQC cell-wall,
+and OpenSSL support.
+
+Repair: use repository-canonical exact ABI support objects and library order.
+
+### Run 36439498131
+
+Failure: support builder invoked as an executable although repository workflows
+invoke it through `bash`.
+
+Repair: invoke `bash tools/pass219/build_exact_abi_link_support.sh`.
+
+### Run 36439843582
+
+Native stage: PASS.
+
+Lean failure: `lean-action` required `lake-manifest.json` before configuration.
+
+Repair: add a dependency-free Lake 1.2 manifest:
+`packages=[]`, package `harmonicode`.
+
+### Run 36443285936
+
+Native stage: PASS.
+
+Lean configuration: PASS.
+Lake build command: exited successfully but emitted `Nothing to build`.
+
+Leanchecker failure:
+`Could not find any oleans for: Harmonicode`.
+
+Cause: I048 had declared `lean_lib HHS` without making it a default target and
+without materializing the root module `formal/lean/HHS.lean`.
+
+Repair:
+- mark `lean_lib HHS` with `@[default_target]`;
+- add `formal/lean/HHS.lean` importing `HHS.Mathlib.Native`;
+- include the root and submodules in both push and pull-request workflow paths.
 
 ### Current validation target
 
-- Run: `36439672965`
-- State at checkpoint preparation: queued due repository-wide runner load.
-- Required stages:
-  1. Python 3.12 setup and bounded pytest install;
-  2. native C++/Python1 foundation build and tests;
-  3. dependency-scoped Python I048 tests;
-  4. Lean 4 Lake build;
-  5. Lean kernel check;
-  6. HHS axiom audit.
+- Implementation head: `60940b8ebfe3544afd2b5bb9815b5d08a8cc543f`
+- I048 run: `36444581308`
+- State at checkpoint preparation: queued.
 
-Queued external CI does not invalidate the restartable implementation checkpoint.
+Required Lean stages:
+
+1. `lake build` must compile the `HHS` target and emit HHS oleans;
+2. bundled Lean `leanchecker` must validate the built environment;
+3. axiom audit must complete for namespace `HHS`.
+
+Queued external CI does not block this restartable checkpoint.
 
 ## Canonical boundaries
 
@@ -87,26 +126,18 @@ Queued external CI does not invalidate the restartable implementation checkpoint
 - Lean is proof-checking authority for declared formal obligations.
 - VM81 remains canonical mutation/admission authority.
 - No Mathlib compatibility layer may bypass Hash72/Hash216 lineage rules.
-- No failure above authorized weakening PQC/environmental link dependencies.
-
-## Environment state
-
-Latest observed GitHub runner environment:
-
-- Ubuntu 24.04;
-- Python 3.12;
-- host C/C++ toolchain available;
-- OpenSSL/libcrypto inherited by the exact runtime support rule;
-- Lean toolchain pinned in `lean-toolchain`.
+- No repair above weakens PQC/environmental dependencies or VM81 authority.
 
 ## Next action
 
-Inspect only the latest I048 validation run for this code state.
+Inspect run `36444581308` first.
 
-- If green: freeze the dependency-scoped evidence, merge/ready PR #636, then
-  verify the resulting main commit.
-- If I048 fails: repair only the attributable I048 surface and rerun I048.
+- If green: freeze the I048 dependency-scoped evidence, merge PR #636, verify
+  main, then begin the next native Mathlib dependency slice.
+- If it fails: repair only the attributable Lean package/checker/audit surface;
+  native Python1/C++/RNA evidence remains frozen unless its inputs changed.
 - Do not rerun unrelated repository-wide workflows merely because they are
   queued or slow.
-- After I048 closure, expand native Mathlib in dependency order beginning with
-  relations/order and exact rational constructors.
+
+After I048 closure, expand native Mathlib in dependency order beginning with
+relations/order and exact rational constructors.
