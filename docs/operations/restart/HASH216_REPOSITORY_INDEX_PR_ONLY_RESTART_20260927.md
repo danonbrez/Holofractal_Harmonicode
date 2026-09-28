@@ -62,3 +62,24 @@ exit code 127
 ```
 
 Repair: move `Enforce PR-only publication contract` immediately after `Install exact runtime build dependencies`. No assertion, authority rule, publication restriction, or PR-only requirement was weakened.
+
+## Reconciliation onto repaired main — 2026-09-28
+
+- Previous PR: #618 (auto-closed when its branch temporarily equaled main during lossless rebase)
+- Continuation PR: #635
+- Authoritative base: `145aced39d489bf1e7cf651aceb7c93110e093c4` (PR #622 consensus repair merged)
+- Rebased branch: `repair/hash216-index-pr-only-20260927`
+- Recovered implementation head before this checkpoint: `6ebe8d137c128fefb69a2e2c9ec5d63882edeb13`
+- Diff against base: exactly 3 files, 155 additions, 12 deletions; no unrelated main drift
+- Previous exact-head Hash216 workflow on the original #618 implementation: run `36338735770` = SUCCESS
+- Previous Consensus failure on #618 was inherited pre-#622 gate behavior, not attributable to the Hash216 PR-only publication change
+- Current #635 checks registered on the repaired consensus base; Hash216 deep-index and three consensus verify nodes were queued at checkpoint time
+
+### Validation remaining
+
+1. Require exact-head `HHS Hash216 Repository Dependency Index` success.
+2. Require exact-head `HHS Consensus Gate` success on the repaired #622 gate.
+3. Repair forward only failures attributable to these three changed files.
+4. Merge #635 when green.
+5. Verify authoritative main preserves the three-file PR-only publication surface.
+6. Verify the next main-triggered Hash216 refresh creates/updates `automation/hash216-repository-index` and an ordinary PR rather than writing directly to main.
