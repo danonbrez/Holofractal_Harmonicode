@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PASS_220_I050_NATIVE_MATHLIB_ALGEBRA_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "inherits": {
+    "i048": "HHS_PASS_220_I048_LEAN4_NATIVE_MATHLIB_REBUILD_V1",
+    "i049": "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+    "python1": "HHS_PASS_220_PYTHON1_NATIVE_BIGINT_EXECUTION_V1",
+    "python2_rna_class_registration": "HHS_PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1"
+  },
+  "coverage": {
+    "carriers": ["Nat", "Int", "ExactRat"],
+    "structures": ["AddMonoid", "MulMonoid", "Semiring", "Ring"],
+    "runtime_law_evidence": "EXACT_SAMPLED_CERTIFICATE",
+    "universal_theorem_closure_claimed": false
+  },
+  "laws": [
+    "add_assoc",
+    "add_identity",
+    "mul_assoc",
+    "mul_identity",
+    "left_distrib",
+    "right_distrib",
+    "add_inverse"
+  ],
+  "authority": {
+    "arithmetic": "PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "rat_equivalence": "PYTHON1_CROSS_PRODUCT_EQUIVALENCE",
+    "operand_order_preserved": true,
+    "implicit_commutation_authorized": false,
+    "host_float": false,
+    "host_primitive_arithmetic": false,
+    "class_identity": "PYTHON2_CPP_RNA_CELL_WALL",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  },
+  "failure_policy": {
+    "overflow": "FAIL_CLOSED",
+    "invalid_rat": "FAIL_CLOSED",
+    "approximate_fallback": false
+  }
+}

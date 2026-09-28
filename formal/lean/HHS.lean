@@ -1,5 +1,6 @@
 import HHS.Mathlib.Native
 import HHS.Mathlib.OrderRat
+import HHS.Mathlib.Algebra.Native
 
 namespace HHS
 
