@@ -78,3 +78,22 @@ Validation remaining:
 Environment:
 - local chat container DNS cannot resolve github.com, so repository compilation cannot be executed locally from this session
 - repository writes and validation inspection are being performed through the connected GitHub integration
+
+## Ethical-text supervisor extension
+
+Added after unified-surface checkpoint:
+- ETHICAL_TEXT remains one of the 18 training methods;
+- ETHICAL_TEXT is now explicitly the supervisor over all natural-language training specimens;
+- LINGUISTIC_OPERATOR and ETHICAL_TEXT are intrinsic natural-language modes;
+- any other training mode can be marked natural_language_training for mixed/content-sensitive cases;
+- every natural-language specimen must bind ethical_text_supervisor_identity216, ethical_text_supervisor_signature64, and ethical_text_supervision_verified=true;
+- the supervisor lineage is included in candidate Hash216 derivation;
+- the gate executes before RNA VM5184 routing and fails closed;
+- the PR workflow now runs the inherited ethical-text cycle tests in addition to native 1.72 validation.
+
+Validation remaining after this extension:
+- inherited ethical-text pytest;
+- c-abi build;
+- linked unified-class symbol check;
+- strict native C++ test compilation;
+- 18-mode execution including natural-language supervisor positive/negative cases.
