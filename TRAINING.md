@@ -90,3 +90,16 @@ Python client:
 - `hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py`
 
 Python, Wolfram, repository/PR tooling, corpus tooling, and external-library reconstruction remain adapters/clients. They do not become independent training authorities.
+
+## 1.73 → 1.74 executable handoff gate
+
+`hhs_runtime/pass219/lane5_bounded_generalization_training_adapter_1_74.py` is the explicit producer adapter between Pass123 1.73 and Unified Training 1.74.
+
+It fails closed while the 1.73 contract has unfrozen discovery/native identities. A positive `BOUNDED_TOKEN_GENERALIZATION` specimen requires all of:
+- frozen 72-character model root;
+- frozen 72-character validation receipt root;
+- frozen replay-bundle SHA-256;
+- frozen native 216-character Hash216 identity;
+- `native_hash216_composition_frozen=true`.
+
+The adapter never derives these values itself. Until 1.73 writes them authoritatively, the only valid 1.74 behavior is `UNFROZEN_PARENT_RECEIPTS`.
