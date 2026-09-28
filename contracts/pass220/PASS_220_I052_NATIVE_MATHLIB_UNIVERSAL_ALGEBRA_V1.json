@@ -1,0 +1,52 @@
+{
+  "schema": "HHS_PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_ALGEBRA_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "base_main": "10c7e12c10a8f39edb0ca4415449499393185c18",
+  "inherits": [
+    "HHS_PASS_220_I048_LEAN4_NATIVE_MATHLIB_REBUILD_V1",
+    "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+    "HHS_PASS_220_I050_NATIVE_MATHLIB_ALGEBRA_V1",
+    "HHS_PASS_220_I051_NATIVE_LEAN_ALIGNMENT_V1"
+  ],
+  "universal_carriers": ["Nat", "Int"],
+  "promoted_laws": {
+    "Nat": [
+      "add_assoc",
+      "add_identity_left",
+      "add_identity_right",
+      "mul_assoc",
+      "mul_identity_left",
+      "mul_identity_right",
+      "left_distrib",
+      "right_distrib"
+    ],
+    "Int": [
+      "add_assoc",
+      "add_identity_left",
+      "add_identity_right",
+      "mul_assoc",
+      "mul_identity_left",
+      "mul_identity_right",
+      "left_distrib",
+      "right_distrib",
+      "add_inverse_right"
+    ]
+  },
+  "proof_dependencies": {
+    "lean_toolchain": "leanprover/lean4:v4.34.0",
+    "upstream_mathlib_runtime_dependency": false,
+    "source": "LEAN4_CORE_INT_NAT_THEOREMS"
+  },
+  "evidence_boundary": {
+    "i050_runtime_evidence_remains_sampled": true,
+    "runtime_evidence_reclassified_as_universal": false,
+    "lean_universal_proof_is_separate_layer": true
+  },
+  "exact_rat_universal_closure_claimed": false,
+  "complete_mathlib_rebuild_claimed": false,
+  "implicit_commutation_authorized": false,
+  "vm81_mutation_authority": false,
+  "hash72_commit_authority": false,
+  "hash216_persistence_authority": false
+}
