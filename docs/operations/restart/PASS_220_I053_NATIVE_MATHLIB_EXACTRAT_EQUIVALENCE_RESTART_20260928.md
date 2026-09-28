@@ -1,6 +1,6 @@
 # Pass 220 I053 Restart Checkpoint — ExactRat Equivalence
 
-Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
+Status: **VALIDATED — READY TO MERGE**
 
 ## Identity
 
@@ -8,12 +8,16 @@ Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
 - Branch: `pass220/i053-native-mathlib-exactrat-equivalence1`
 - Merge target: `main`
 - Pull request: `#646`
-- Implementation head before this checkpoint refresh:
+- Initial implementation head:
   `9edc62dec43f3ddfdf4e2f2fb7907e4d7e933fe7`
+- Lean namespace repair head:
+  `23d8430a6b27f39525e2855ff5fe40af5111689d`
 - PR mergeability at checkpoint preparation: mergeable
 - Dedicated workflow: `Pass 220 I053 Native Mathlib ExactRat Equivalence`
-- Dedicated run: `36465401302`
-- Run state at checkpoint preparation: queued
+- Initial dedicated run: `36465401302` — structural checks passed; Lean failed only because local negation was referenced as `ExactRat.neg` from the wrong namespace.
+- Repair: renamed the local constructor to `negExactRat` and referenced it directly; no proof geometry or runtime arithmetic changed.
+- Green repair run: `36488826282`, job `109152218790` — **success**.
+- Green stages: structural/contract tests; `lake build`; `leanchecker HHS`; HHS axiom audit.
 
 ## Implemented
 
@@ -72,23 +76,17 @@ No Python1/C11 or C++ implementation changed.
 Inherited I049 ExactRat runtime evidence remains frozen and should not be
 rerun unless an inherited runtime input changes.
 
-## Validation required
+## Validation completed
 
-1. I053 structural/contract tests.
-2. `lake build`.
-3. `leanchecker HHS`.
-4. HHS axiom audit.
+1. I053 structural/contract tests: PASS (`6 passed`; existing pytest `asyncio_mode` warning only).
+2. `lake build`: PASS.
+3. `leanchecker HHS`: PASS.
+4. HHS axiom audit: PASS.
 
-Queued external CI does not block this restartable checkpoint.
+The repair touched only Lean name resolution. Inherited I049 runtime evidence remains frozen.
 
 ## Next action
 
-Inspect run `36465401302`.
+Merge PR #646 and verify the new module, runtime theorem manifest, root import, and contract on main.
 
-- If green: merge PR #646 and verify the new module, runtime theorem manifest,
-  root import, and contract on main.
-- If it fails: repair only the I053 proof/structural-test surface.
-- Do not modify inherited runtime arithmetic merely because a Lean proof fails.
-
-After I053 closure, the next bounded step is universal binary ExactRat
-addition and multiplication congruence over the proven equivalence relation.
+After I053 closure, the next bounded step is universal binary ExactRat addition and multiplication congruence over the proven equivalence relation.
