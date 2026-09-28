@@ -81,6 +81,63 @@ hhs::lane5::TrainingSpecimen specimen_for(
     return specimen;
 }
 
+
+bool receipts_equal(
+    const hhs::lane5::TrainingReceipt& left,
+    const hhs::lane5::TrainingReceipt& right
+) {
+    return left.version == right.version &&
+           left.namespace_id == right.namespace_id &&
+           left.mode == right.mode &&
+           left.temporal == right.temporal &&
+           left.target == right.target &&
+           left.method_index == right.method_index &&
+           left.accepted == right.accepted &&
+           left.registry_verified == right.registry_verified &&
+           left.specimen_identity_verified == right.specimen_identity_verified &&
+           left.oracle_verified == right.oracle_verified &&
+           left.negative_controls_verified == right.negative_controls_verified &&
+           left.replay_verified == right.replay_verified &&
+           left.ingress_egress_preserved == right.ingress_egress_preserved &&
+           left.natural_language_training == right.natural_language_training &&
+           left.ethical_text_supervision_required ==
+               right.ethical_text_supervision_required &&
+           left.ethical_text_supervision_verified ==
+               right.ethical_text_supervision_verified &&
+           left.vm5184_routed == right.vm5184_routed &&
+           left.hash216_candidate_derived == right.hash216_candidate_derived &&
+           left.candidate_only == right.candidate_only &&
+           left.canonical_vm81_mutation_authority ==
+               right.canonical_vm81_mutation_authority &&
+           left.canonical_hash72_authority == right.canonical_hash72_authority &&
+           left.canonical_hash216_authority == right.canonical_hash216_authority &&
+           left.canonical_persistence_authority ==
+               right.canonical_persistence_authority &&
+           left.floating_point_canonical_authority ==
+               right.floating_point_canonical_authority &&
+           std::strcmp(left.source_identity216, right.source_identity216) == 0 &&
+           std::strcmp(left.oracle_identity216, right.oracle_identity216) == 0 &&
+           std::strcmp(
+               left.ethical_text_supervisor_identity216,
+               right.ethical_text_supervisor_identity216) == 0 &&
+           std::strcmp(
+               left.training_candidate_hash216,
+               right.training_candidate_hash216) == 0 &&
+           left.rna_prepared.graph_signature64 ==
+               right.rna_prepared.graph_signature64 &&
+           left.rna_prepared.tensor_signature64 ==
+               right.rna_prepared.tensor_signature64 &&
+           left.rna_prepared.word_visits == right.rna_prepared.word_visits &&
+           left.rna_prepared.graph_edge_visits ==
+               right.rna_prepared.graph_edge_visits &&
+           left.rna_prepared.hash216_positions_complete ==
+               right.rna_prepared.hash216_positions_complete &&
+           left.rna_decision.selected_lane == right.rna_decision.selected_lane &&
+           left.rna_decision.decision_signature64 ==
+               right.rna_decision.decision_signature64 &&
+           left.rna_decision.candidate_only == right.rna_decision.candidate_only;
+}
+
 }  // namespace
 
 int main() {
@@ -189,8 +246,7 @@ int main() {
         CHECK(first.rna_decision.candidate_only == 1U);
         CHECK(first.training_candidate_hash216[HHS_HASH216_LEN] == '\0');
         CHECK(first.training_candidate_hash216[0] != '\0');
-        CHECK(std::memcmp(
-                  &first, &replay, sizeof(first)) == 0);
+        CHECK(receipts_equal(first, replay));
 
         std::memcpy(
             candidates[i],
@@ -243,8 +299,7 @@ int main() {
               HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE,
               0,
               raw_receipt) == HHS_EXACT_STATUS_OK);
-    CHECK(std::memcmp(
-              &frame_receipt, &raw_receipt, sizeof(frame_receipt)) == 0);
+    CHECK(receipts_equal(frame_receipt, raw_receipt));
 
     TrainingReceipt negative{};
     TrainingSpecimen bad = specimen;
