@@ -6,6 +6,9 @@ import pytest
 
 from hhs_runtime.hhs_pass123_bounded_token_generalization_v1 import Pass123Error
 from hhs_runtime.pass219.lane5_nine_loop_generalization_1_73 import (
+    FROZEN_MODEL_ROOT_HASH72,
+    FROZEN_REPLAY_BUNDLE_SHA256,
+    FROZEN_VALIDATION_ROOT_HASH72,
     Lane5NineLoopGeneralizationError,
     _engine,
     assert_pass123_leakage_rejected,
@@ -23,6 +26,9 @@ def test_disjoint_generalization_closes_exactly():
     assert receipt["accuracy"] == {"numerator": 12, "denominator": 12}
     assert receipt["semantic_drift_count"] == 0
     assert receipt["replay_count"] == 12
+    assert receipt["model_root_hash72"] == FROZEN_MODEL_ROOT_HASH72
+    assert receipt["validation_receipt_root_hash72"] == FROZEN_VALIDATION_ROOT_HASH72
+    assert receipt["replay_bundle_sha256"] == FROZEN_REPLAY_BUNDLE_SHA256
     assert receipt["validated_model_only"] is True
     assert receipt["model_weight_update_authority"] is False
     assert receipt["learning_commit_authority"] is False
