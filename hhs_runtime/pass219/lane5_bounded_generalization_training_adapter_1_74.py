@@ -79,7 +79,7 @@ def verify_frozen_parent_receipts(
     contract: Mapping[str, Any] | None = None,
     discovery_receipt: Mapping[str, Any] | None = None,
 ) -> dict[str, str]:
-    frozen = verify_frozen_parent_receipts(contract)
+    frozen = frozen_parent_receipts(contract)
     observed = dict(discovery_receipt or run_generalization())
 
     expected = {
@@ -131,7 +131,7 @@ def build_unified_specimen(
     ethical_text_supervision_verified: bool = False,
     contract: Mapping[str, Any] | None = None,
 ) -> dict[str, object]:
-    frozen = frozen_parent_receipts(contract)
+    frozen = verify_frozen_parent_receipts(contract)
 
     for name, value in {
         "adapter_signature64": adapter_signature64,
