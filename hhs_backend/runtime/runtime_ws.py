@@ -146,6 +146,15 @@ class RuntimeWSManager:
             List[Dict[str, Any]]
         ] = defaultdict(list)
 
+        # The last canonical event is retained as an in-memory projection
+        # source for clients that attach after startup. Retaining the envelope
+        # does not advance the VM, mint a receipt, or create alternate
+        # authority; it only lets a late browser receive the latest committed
+        # kernel state immediately.
+        self.current_event: Optional[
+            HHSRuntimeEventEnvelope
+        ] = None
+
     # =====================================================================
     # Runtime Connect
     # =====================================================================
@@ -165,6 +174,11 @@ class RuntimeWSManager:
 
         logger.info(
             "Runtime websocket connected."
+        )
+
+        await self.send_current_projection(
+            websocket,
+            "/ws/runtime",
         )
 
     # =====================================================================
@@ -188,6 +202,11 @@ class RuntimeWSManager:
             "Replay websocket connected."
         )
 
+        await self.send_current_projection(
+            websocket,
+            "/ws/replay",
+        )
+
     # =====================================================================
     # Graph Connect
     # =====================================================================
@@ -209,6 +228,11 @@ class RuntimeWSManager:
             "Graph websocket connected."
         )
 
+        await self.send_current_projection(
+            websocket,
+            "/ws/graph",
+        )
+
     # =====================================================================
     # Transport Connect
     # =====================================================================
@@ -228,6 +252,11 @@ class RuntimeWSManager:
 
         logger.info(
             "Transport websocket connected."
+        )
+
+        await self.send_current_projection(
+            websocket,
+            "/ws/transport",
         )
 
     # =====================================================================
@@ -335,6 +364,35 @@ class RuntimeWSManager:
         return payload
 
     # =====================================================================
+    # Current Canonical Projection
+    # =====================================================================
+
+    async def send_current_projection(
+        self,
+        websocket: WebSocket,
+        channel: str,
+    ) -> bool:
+        """Project the latest committed kernel event to a newly attached client.
+
+        This is intentionally projection-only. It never calls the emulator,
+        advances a runtime tick, or appends a new canonical receipt.
+        """
+
+        event = self.current_event
+        if event is None:
+            return False
+
+        await websocket.send_text(
+            json.dumps(
+                self.build_channel_projection_payload(
+                    event,
+                    channel,
+                )
+            )
+        )
+        return True
+
+    # =====================================================================
     # Runtime Event Broadcast
     # =====================================================================
 
@@ -346,6 +404,8 @@ class RuntimeWSManager:
             HHSRuntimeEventEnvelope
 
     ):
+
+        self.current_event = event
 
         # Pass 045: when no websocket clients are attached, retain the
         # canonical event projection in replay cache without appending a fresh
@@ -549,25 +609,26 @@ class RuntimeWSManager:
 
         try:
 
+            if self.current_event is not None:
+                snapshot = self.build_channel_projection_payload(
+                    self.current_event,
+                    "/ws/replay",
+                )
+                snapshot["source_event_type"] = "replay_snapshot"
+                snapshot_payload = dict(snapshot.get("payload") or {})
+                snapshot_payload["replay_cache"] = self.replay_cache
+                snapshot["payload"] = snapshot_payload
+            else:
+                snapshot = {
+                    "event_type": "replay",
+                    "channel": "/ws/replay",
+                    "source_event_type": "replay_snapshot",
+                    "authority": GUI_KERNEL_AUTHORITY,
+                    "payload": {"replay_cache": self.replay_cache},
+                }
+
             await websocket.send_text(
-
-                json.dumps({
-
-                    "event_type":
-                        "replay",
-
-                    "channel":
-                        "/ws/replay",
-
-                    "source_event_type":
-                        "replay_snapshot",
-
-                    "authority":
-                        GUI_KERNEL_AUTHORITY,
-
-                    "payload":
-                        {"replay_cache": self.replay_cache}
-                })
+                json.dumps(snapshot)
             )
 
         except Exception:
@@ -624,6 +685,9 @@ class RuntimeWSManager:
 
             "replay_cache":
                 len(self.replay_cache),
+
+            "current_projection_available":
+                self.current_event is not None,
 
             "runtime_index":
                 len(self.runtime_index)

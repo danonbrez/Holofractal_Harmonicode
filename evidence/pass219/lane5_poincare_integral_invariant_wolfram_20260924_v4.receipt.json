@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_219_T_BRIDGE_01A_POINCARE_INVARIANT_WOLFRAM_RECEIPT_20260924_V4",
+  "date": "2026-09-24",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 16,
+  "pass_count": 16,
+  "failed": [],
+  "input_path": "evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl",
+  "output_path": "evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl",
+  "authority": "FORMAL_SYMPLECTIC_PROJECTION_PROOF_ONLY",
+  "poincare_integral_invariant_closed": true,
+  "phase_volume_preserved": true,
+  "volume_preservation_sufficient_for_symplecticity": false,
+  "both_sequential_orders_symplectic": true,
+  "simultaneous_old_state_explicit_symplectic": false,
+  "exact_energy_conservation_claimed": false,
+  "t_bridge_01b_energy_band_class_stability": "OPEN",
+  "canonical_runtime_mutation_authority": false
+}

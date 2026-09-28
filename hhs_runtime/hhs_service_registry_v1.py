@@ -4668,6 +4668,9 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
             "every_modality_exact_5184_bit_projection",
             "every_modality_hash72_witness",
             "every_modality_ordered_hash216_genome",
+            "hash216_genus3_surface_3x8x9",
+            "hash216_surface_8_flat_nonagons_24_vertices_36_edges",
+            "hash216_surface_every_face_neighbors_every_other_face",
             "language_exact_token_identities",
             "pass166_relations_candidate_only",
             "image_sprite216_q144_color_binding",
@@ -4686,6 +4689,8 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
             "REJECT_I042_SHARED_ROOT_SPLIT",
             "REJECT_I042_5184_PROJECTION_LOSS",
             "REJECT_I042_HASH216_GENOME_LOSS",
+            "REJECT_I042_HASH216_GENUS3_TOPOLOGY_DRIFT",
+            "REJECT_I042_HASH216_FACE_ADJACENCY_DRIFT",
             "REJECT_I042_MODALITY_PROVENANCE_LOSS",
             "REJECT_I042_TRANSLATION_PAIR_GAP",
             "REJECT_I042_LANGUAGE_AUTHORITY_ESCALATION",
@@ -4699,7 +4704,7 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
             "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
         ),
         boundedness_policy=(
-            "SIX_MODALITIES_X_5184_BITS_X_216_GENOME_POSITIONS_"
+            "SIX_MODALITIES_X_5184_BITS_X_HASH216_3X8X9_GENUS3_SURFACE_"
             "WITH_30_DIRECTED_ROOT_PRESERVING_TRANSLATIONS"
         ),
     )
@@ -5468,6 +5473,71 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         persistence_policy="NO_CANONICAL_PERSISTENCE",
         boundedness_policy=(
             "FINITE_EXHAUSTIVE_64_RNA_STATES_41_G41_CLASSES"
+        ),
+    )
+
+    registry.register_function(
+        name="pass220.gfx4_vm81_graphics_packet_identity.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_gfx4_vm81_graphics_packet_identity_v1"
+        ),
+        function="gfx4_vm81_graphics_packet_identity_self_test",
+        service_type="pass220_vm81_admitted_graphics_packet_identity_self_test",
+        description=(
+            "Validate the GFX4 exact graphics packet identity bridge against "
+            "the inherited Pass163 VM81 commit path. The test derives 216-byte "
+            "scene/frame/resource identities and a 72-byte camera identity, "
+            "requires a real HHS_PASS_163_COMMIT_ADMITTED receipt, and proves "
+            "deterministic replay from equal VM81 genesis states without "
+            "granting renderer/GPU/JavaScript mutation authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_GFX4_VM81_GRAPHICS_PACKET_IDENTITY_V1",
+            "HHS_PASS_179_RENDER_COMMAND_PACKET_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_GFX4_VM81_GRAPHICS_PACKET_IDENTITY_SELF_TEST_V1",
+        ],
+        validators=[
+            "gfx4_vm81_graphics_packet_identity_self_test",
+        ],
+        guards=[
+            "inherited_vm81_instance_required",
+            "vm81_commit_admission_required",
+            "scene_hash216_216_bytes",
+            "frame_hash216_216_bytes",
+            "resource_hash216_216_bytes",
+            "camera_hash72_72_bytes",
+            "exact_rational_time_only",
+            "float_descriptor_rejected_before_mutation",
+            "deterministic_equal_genesis_replay",
+            "renderer_mutation_authority_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "P220_GFX4_INHERITED_VM81_REQUIRED",
+            "P220_GFX4_VM81_ADMISSION_REJECTED",
+            "P220_GFX4_VM81_COMMIT_NOT_ADMITTED",
+            "P220_GFX4_IDENTITY_LENGTH_INVALID",
+            "P220_GFX4_TIME_DENOMINATOR_INVALID",
+            "P220_GFX4_DETERMINISTIC_REPLAY_FAILED",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "SELF_TEST_EPHEMERAL_VM81_ONLY_NO_PRODUCTION_VM81_MUTATION"
+        ),
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_ONE_FRAME_VM81_ADMISSION_AND_FIXED_IDENTITY_WIDTHS"
         ),
     )
 

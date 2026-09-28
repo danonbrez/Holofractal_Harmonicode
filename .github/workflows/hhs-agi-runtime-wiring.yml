@@ -12,11 +12,13 @@ on:
       - "hhs_backend/runtime/immutable_agent_sql_index_v1.py"
       - "hhs_backend/runtime/immutable_agent_index_hooks_v1.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
+      - "hhs_backend/runtime/runtime_ws.py"
       - "hhs_backend/api/cognition_routes.py"
       - "tests/test_hhs_live_kernel_bridge_boundaries_v1.py"
       - "tests/test_hhs_live_cognition_runtime_v1.py"
       - "tests/test_hhs_cognition_routes_v1.py"
       - "tests/test_hhs_server_cognition_boot_v1.py"
+      - "tests/test_hhs_live_fastapi_runtime_pass045_v1.py"
       - "tests/test_hhs_immutable_agent_sql_index_v1.py"
       - "HHS_IMMUTABLE_AGENT_SQL_INDEX_CONTRACT_V1.md"
       - ".github/bootstrap_immutable_agent_index/**"
@@ -34,11 +36,13 @@ on:
       - "hhs_backend/runtime/immutable_agent_sql_index_v1.py"
       - "hhs_backend/runtime/immutable_agent_index_hooks_v1.py"
       - "hhs_backend/runtime/live_fastapi_workflow_v1.py"
+      - "hhs_backend/runtime/runtime_ws.py"
       - "hhs_backend/api/cognition_routes.py"
       - "tests/test_hhs_live_kernel_bridge_boundaries_v1.py"
       - "tests/test_hhs_live_cognition_runtime_v1.py"
       - "tests/test_hhs_cognition_routes_v1.py"
       - "tests/test_hhs_server_cognition_boot_v1.py"
+      - "tests/test_hhs_live_fastapi_runtime_pass045_v1.py"
       - "tests/test_hhs_immutable_agent_sql_index_v1.py"
       - "HHS_IMMUTABLE_AGENT_SQL_INDEX_CONTRACT_V1.md"
       - ".github/bootstrap_immutable_agent_index/**"
@@ -57,9 +61,12 @@ jobs:
       HHS_LEDGER_FSYNC: "0"
       HHS_COGNITION_AUTO_TICK: "1"
       HHS_COGNITION_REPLAY_HORIZON: "4"
-      HHS_AGENT_INDEX_DB: ${{ runner.temp }}/hhs-agent-index.sqlite3
 
     steps:
+      - name: Bind runner-local HHS_AGENT_INDEX_DB
+        shell: bash
+        run: echo "HHS_AGENT_INDEX_DB=$RUNNER_TEMP/hhs-agent-index.sqlite3" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -190,8 +197,8 @@ jobs:
       - name: Validate guarded cognition routes
         run: python -m pytest -q tests/test_hhs_cognition_routes_v1.py
 
-      - name: Revalidate inherited Pass 045 workflow tick
-        run: python -m pytest -q tests/test_hhs_live_fastapi_runtime_pass045_v1.py::test_live_fastapi_workflow_manual_tick
+      - name: Revalidate inherited Pass 045 live workflow and late projections
+        run: python -m pytest -q tests/test_hhs_live_fastapi_runtime_pass045_v1.py
 
       - name: Run canonical server lifespan smoke test
         run: python -m pytest -q tests/test_hhs_server_cognition_boot_v1.py

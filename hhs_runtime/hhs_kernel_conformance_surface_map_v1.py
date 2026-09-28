@@ -72,6 +72,65 @@ CONTROL_FLOW_SURFACES = [
     },
 ]
 
+COMPATIBILITY_ALIAS_SURFACES = [
+    {
+        "surface_id": "api_route:GET /api/runtime/ingress/compatibility",
+        "surface_type": "API_ROUTE",
+        "module": "hhs_backend.api.standard_ingress_compat_routes",
+        "symbol": "workspace.ingress.compatibility.status",
+        "invariant_ids": ["HHS-I005", "HHS-I011", "HHS-I014"],
+        "contract_schemas": [
+            "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1",
+            "HHS_STANDARD_LEGACY_INGRESS_COMPAT_V1",
+        ],
+        "witness_schemas": ["HHS_SURFACE_REACHABILITY_WITNESS_V1"],
+        "validators": ["validate_api_route_kernel_derivation"],
+        "guards": ["runtime_constraint_enforcement", "io_gateway"],
+        "rejection_codes": ["REJECT_UNDERIVED_RUNTIME_SURFACE"],
+        "mutation_policy": "NO_EXTERNAL_STATE_MUTATION",
+        "persistence_policy": "NO_PERSISTENCE_MUTATION",
+        "boundedness_policy": "PASS_043_BOUNDED_METADATA_LIFECYCLE_V1",
+        "declared_operations": ["workspace.ingress.compatibility.status"],
+    },
+    *[
+        {
+            "surface_id": f"api_route:POST {path}",
+            "surface_type": "API_ROUTE",
+            "module": "hhs_backend.api.standard_ingress_compat_routes",
+            "symbol": "workspace.ingress.compatibility.submit",
+            "invariant_ids": ["HHS-I005", "HHS-I006", "HHS-I011", "HHS-I012", "HHS-I014"],
+            "contract_schemas": [
+                "HHS_CONFORMANCE_API_ROUTE_CONTRACT_V1",
+                "HHS_STANDARD_LEGACY_INGRESS_COMPAT_V1",
+            ],
+            "witness_schemas": [
+                "HHS_KERNEL_DERIVATION_WITNESS_V1",
+                "HHS_SURFACE_REACHABILITY_WITNESS_V1",
+            ],
+            "validators": ["validate_api_route_kernel_derivation"],
+            "guards": ["runtime_constraint_enforcement", "io_gateway"],
+            "rejection_codes": [
+                "REJECT_OPERATION_NOT_DERIVED_FROM_KERNEL_INVARIANT",
+                "REJECT_UNDERIVED_RUNTIME_SURFACE",
+            ],
+            "mutation_policy": "CONTROLLED_RUNTIME_MUTATION",
+            "persistence_policy": "CANONICAL_MUTATION_RECEIPT",
+            "boundedness_policy": "PASS_043_BOUNDED_METADATA_LIFECYCLE_V1",
+            "declared_operations": [
+                "workspace.ingress.compatibility.submit",
+                "workspace.command",
+                "ingress.register",
+            ],
+        }
+        for path in (
+            "/api/runtime/ingress",
+            "/api/runtime/ingress/legacy",
+            "/api/runtime/ingress/upload",
+            "/api/ingress",
+        )
+    ],
+]
+
 API_ROUTE_SURFACES = [
     ("GET /api/runtime/live/status", "live_runtime.status", ["HHS-I002", "HHS-I005", "HHS-I012", "HHS-I014"]),
     ("POST /api/runtime/live/tick", "live_runtime.tick", ["HHS-I002", "HHS-I005", "HHS-I006", "HHS-I012", "HHS-I014"]),
@@ -187,6 +246,9 @@ def _api_route_surfaces() -> List[Dict[str, Any]]:
                 "semantic_cache.refresh_composition_index" if symbol == "gui_mutation.allowlist" else "",
             ]),
         }))
+    surfaces.extend(
+        _canonical_surface(record) for record in COMPATIBILITY_ALIAS_SURFACES
+    )
     surfaces.extend(
         _canonical_surface(record) for record in service_route_surface_declarations()
     )

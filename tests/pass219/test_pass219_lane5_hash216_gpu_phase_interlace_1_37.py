@@ -15,6 +15,12 @@ from hhs_python.runtime.hhs_pass219_lane5_phase_interlace_bridge import (
 )
 from hhs_runtime.hhs_phase_inverted_pythagorean_geometry_v1 import (
     full_geometry_witness,
+    pq_orientation_witness,
+)
+from hhs_spi_scalar_projection_registry_v1 import (
+    spi_q_v1,
+    spi_shell,
+    t3b_modular_receipts,
 )
 from hhs_runtime.pass219.harmonic_geometry_circuit_i182 import (
     pentagonal_quantization_witness,
@@ -262,3 +268,63 @@ def test_lane5_self_enforcement_composes_scaling_phase_and_prime_fingerprint() -
                 fingerprint_changed = True
                 break
         assert fingerprint_changed is True
+
+
+
+def test_lane5_prime_quantization_seed_delta_and_modular_closure() -> None:
+    """Close the currently licensed seed/dyadic/Delta subtheorems exactly.
+
+    This test does not assume primality as an input predicate and does not
+    promote the bounded identities below to a global prime/RH/Collatz theorem.
+    """
+
+    geometry = full_geometry_witness()
+    pythagorean = geometry["pythagorean"]
+    manifold = geometry["manifold"]
+
+    # Fibonacci seed 1,1,2 and its exact Pythagorean closure 1,2,3 are carried
+    # by the same repository-native constant surface.
+    assert [pythagorean["a²"], pythagorean["a²"], pythagorean["b²"]] == [1, 1, 2]
+    assert pythagorean["triangle_reconstruction"] == [1, 2, 3]
+    assert [pythagorean["a²"], pythagorean["b²"], pythagorean["c²"]] == [1, 2, 3]
+
+    fibonacci_states = manifold["fibonacci_square_states"]
+    assert [
+        (item["numerator"], item["denominator"]) for item in fibonacci_states[:3]
+    ] == [(1, 1), (2, 1), (3, 1)]
+
+    # The dyadic manifold closure is exact and integer-only.
+    assert manifold["72²"] == 5_184
+    assert manifold["72^72"] == manifold["5184^36"]
+
+    # Licensed scalar projection: p=P-1, q=P+1, Delta=1.
+    # Exercise a broad exact integer prefix without invoking a primality test.
+    for P in range(2, 129):
+        projection = spi_q_v1(P)
+        assert projection["p"] == P - 1
+        assert projection["q"] == P + 1
+        assert projection["correction"] == 1
+        assert projection["residual"] == 0
+        assert projection["p"] * projection["q"] + 1 == P * P
+
+        shell = spi_shell(P, 1)
+        assert shell["tower_residual"] == 0
+        assert shell["unit_discrepancy"] == 0
+        assert shell["factored_discrepancy"] == 0
+
+        modular = t3b_modular_receipts(P)
+        assert modular["modulus"] == P * P - 1
+        assert modular["cubic_residue"] == 0
+        assert modular["square_residue"] == 1
+        assert modular["square_minus_unit_residue"] == 0
+
+        orientation = pq_orientation_witness(p=P - 1, q=P + 1, P=P)
+        assert orientation["swap_flips_sigma"] is True
+        assert orientation["orientation_quotient_closed"] is True
+        assert orientation["sigma_squared"] == {
+            "type": "EXACT_RATIONAL",
+            "numerator": 1,
+            "denominator": 1,
+        }
+
+    _assert_no_float_tree(geometry)

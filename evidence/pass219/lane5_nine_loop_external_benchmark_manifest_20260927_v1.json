@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_EXTERNAL_BENCHMARK_MANIFEST_V1",
+  "date": "2026-09-27",
+  "benchmark": "nine_loop_six_particle_MHV_planar_N4_SYM",
+  "public_sources": {
+    "anthropic": "https://www.anthropic.com/research/yes-claude-can-do-nine-loops",
+    "data_page": "https://smsharma.io/cosmic-nine-loops/",
+    "zenodo_doi": "10.5281/zenodo.22949278"
+  },
+  "frozen_metadata": {
+    "loop_order": 9,
+    "symbol_weight": 18,
+    "primitive_alphabet_count": 9,
+    "quintuple_coproduct_count": 424,
+    "weight13_basis_dimension": 5431,
+    "delta0_octuple_term_count": 295186924,
+    "septuple_determining_nonzero_coefficients": 107053,
+    "quintuple_rank": 400
+  },
+  "exact_sample_oracle": {
+    "rational": "-105757/65536",
+    "prime_moduli": [2147483647, 2147483629],
+    "residues": [829521918, 1173913588],
+    "wolfram_receipt": "evidence/pass219/lane5_nine_loop_foreign_equivalence_1_67_wolfram_20260927_v1.output.json",
+    "verified": true
+  },
+  "ingestion_state": {
+    "upstream_artifact_bytes_ingested": false,
+    "upstream_manifest_sha256_bound": false,
+    "full_107053_coefficient_equivalence_verified_by_lane5": false,
+    "full_quintuple_matrix_equivalence_verified_by_lane5": false,
+    "sample_oracle_verified": true,
+    "structural_metadata_verified": true,
+    "native_hash216_candidate_seal_required": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false
+  }
+}

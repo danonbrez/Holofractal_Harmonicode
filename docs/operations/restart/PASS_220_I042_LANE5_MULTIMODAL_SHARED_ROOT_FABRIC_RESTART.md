@@ -27,6 +27,18 @@ Date: 2026-09-23
 - exact 5,184-bit / 648-byte projection per modality;
 - Hash72 projection witness per modality;
 - 216-position ordered Hash216 genome and root per modality;
+- fixed Hash72 3D / Hash216 genus-3 surface:
+  - array shape 3x8x9;
+  - PREVIOUS/CHANGE/RECEIPT lane order;
+  - 8 flat nonagonal faces;
+  - 24 vertices;
+  - 36 edges;
+  - trivalent vertices;
+  - Euler characteristic -4;
+  - genus 3;
+  - every face neighboring every other face;
+  - explicit vertex/edge/face-cycle/slot incidence tables;
+  - surface root included in the I042 shared root;
 - language binding to Pass166 contract + Pass218 revisable candidate semantics;
 - I041 Sprite216/Q144 image state;
 - exact H36 Q144 audio state;

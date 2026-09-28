@@ -1604,3 +1604,48 @@ edges, and all thirty directed cross-modal source/target translations. Each
 translation records both endpoint projection receipts, Hash72 witnesses,
 Hash216 roots, and the common root. Thus modality translation is represented as
 explicit common-ancestry routing rather than an independent state authority.
+
+
+### Pass 220 I042 Hash216 genus-3 polyhedral constraint topology
+
+The three ordered Hash72 transition lanes are now given one fixed spatial
+indexing surface:
+
+```text
+Hash216 = 3 x 72 = 3 x 8 x 9.
+```
+
+Each 72-position lane traverses the same eight flat nonagonal faces. The fixed
+surface has:
+
+```text
+F=8
+p=9
+E=36
+V=24
+q=3
+```
+
+and therefore:
+
+```text
+pF = 9*8 = 72 = 2E
+qV = 3*24 = 72 = 2E
+V-E+F = 24-36+8 = -4 = 2-2g
+g=3.
+```
+
+Every face is adjacent to all seven other faces. The 28 unordered face pairs
+are all present; eight pairs carry a second shared edge, giving the required 36
+edges while each face retains nine boundary positions.
+
+Every one of the 216 ordered positions is now addressable as:
+
+```text
+(lane3, face8, nonagon_slot9)
+```
+
+with inherited lane order PREVIOUS, CHANGE, RECEIPT and explicit edge,
+endpoint-vertex, and neighbor-face incidence. The topology root participates in
+the I042 multimodal shared root, so language, image, audio, video, physics, and
+game projections share the same Hash216 genus-3 constraint geometry.

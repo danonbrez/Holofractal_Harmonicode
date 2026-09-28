@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import build_surface_map
+from hhs_runtime.hhs_kernel_conformance_surface_map_v1 import (
+    API_ROUTE_SURFACES,
+    COMPATIBILITY_ALIAS_SURFACES,
+    build_surface_map,
+)
 from hhs_runtime.hhs_pass217_cumulative_closure_v1 import (
     build_cumulative_utilization_reachability_closure,
     build_global_surface_publication_evidence,
@@ -27,7 +31,14 @@ def _surface_index():
 def test_pass217_service_routes_are_published_in_global_pass042_surface_map() -> None:
     surface_map, surfaces = _surface_index()
     assert surface_map["validation"]["ok"] is True
-    assert len([s for s in surface_map["surfaces"] if s["surface_type"] == "API_ROUTE"]) == 24
+    expected_api_routes = (
+        len(API_ROUTE_SURFACES)
+        + len(COMPATIBILITY_ALIAS_SURFACES)
+        + len(SERVICE_ROUTE_BINDINGS)
+    )
+    assert len(
+        [s for s in surface_map["surfaces"] if s["surface_type"] == "API_ROUTE"]
+    ) == expected_api_routes
     for source, binding in SERVICE_ROUTE_BINDINGS.items():
         declaration = service_route_surface_declaration(source)
         surface_id = declaration["surface_id"]
@@ -119,7 +130,11 @@ def test_surface_publication_evidence_is_complete() -> None:
     evidence = build_global_surface_publication_evidence()
     assert evidence["ok"] is True
     assert evidence["pass042_surface_map_validation_ok"] is True
-    assert evidence["pass042_api_route_count"] == 24
+    assert evidence["pass042_api_route_count"] == (
+        len(API_ROUTE_SURFACES)
+        + len(COMPATIBILITY_ALIAS_SURFACES)
+        + len(SERVICE_ROUTE_BINDINGS)
+    )
     assert evidence["published_pass217_route_count"] == 3
     assert evidence["expected_pass217_route_count"] == 3
     assert all(row["ok"] for row in evidence["routes"])

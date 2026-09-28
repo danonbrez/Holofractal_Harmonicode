@@ -62,20 +62,24 @@ class LiveFastAPIRuntimeWorkflow:
             if self.cognition_runtime is not None:
                 await asyncio.to_thread(self.cognition_runtime.initialize)
 
-            # Runtime authority is not ready merely because a task was scheduled.
-            # Complete one real emulator tick, Hash72 receipt, runtime-state hash,
-            # graph ingress, cognition pass, and four-channel propagation before
-            # startup returns or health may classify the workflow as online.
-            if self._tick_count == 0 or not self._last_emission:
-                await self.tick_once({"source": "live_fastapi_workflow.startup"})
+            # Startup must publish one canonical kernel emission even when the
+            # production service intentionally disables continuous auto-tick.
+            # This gives every projection channel a real receipt/state source
+            # without granting the browser or a background loop mutation
+            # authority. Subsequent ticks remain explicit unless auto_start is
+            # enabled.
+            if self._last_emission is None:
+                await self.tick_once({
+                    "source": "live_fastapi_workflow.startup_prime",
+                })
 
             if self.auto_start:
                 self._task = asyncio.create_task(self._run_loop())
             return self.status()
         except Exception as exc:
-            self._errors.append(f"startup:{exc}")
-            self._errors = self._errors[-16:]
             self._running = False
+            self._errors.append(f"startup:{type(exc).__name__}:{exc}")
+            self._errors = self._errors[-16:]
             raise
 
     async def stop(self) -> Dict[str, Any]:
@@ -139,21 +143,23 @@ class LiveFastAPIRuntimeWorkflow:
             except Exception as exc:  # pragma: no cover
                 cognition_status = {"ok": False, "error": str(exc)}
         last_emission = dict(self._last_emission or {})
-        receipt_ready = bool(
-            last_emission.get("ok")
+        authority_ready = bool(
+            self._running
+            and self._tick_count > 0
             and last_emission.get("receipt_hash72")
             and last_emission.get("runtime_state_hash72")
+            and last_emission.get("ok")
         )
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_STATUS_V1",
             "version": VERSION,
             "running": self._running,
-            "authority_ready": bool(self._running and receipt_ready),
+            "authority_ready": authority_ready,
+            "startup_prime_complete": bool(self._last_emission),
             "background_task_active": self._task is not None and not self._task.done(),
             "tick_count": self._tick_count,
             "last_emission": self._last_emission,
             "last_cognition": self._last_cognition,
-            "receipt_ready": receipt_ready,
             "errors": list(self._errors[-8:]),
             "bridge": self.bridge.status(),
             "cognition": cognition_status,
@@ -169,21 +175,27 @@ def live_fastapi_workflow_self_test() -> Dict[str, Any]:
             cognition_runtime=HHSRuntimeCognitionCoordinator(),
             auto_start=False,
         )
-        await workflow.start()
-        emission = dict(workflow.status().get("last_emission") or {})
+        startup_status = await workflow.start()
+        emission = dict(startup_status.get("last_emission") or {})
+        cognition_ok = bool(emission.get("cognition", {}).get("processed"))
         await workflow.stop()
         workflow_status = workflow.status()
-        cognition_ok = bool(emission.get("cognition", {}).get("processed"))
         return {
             "schema": "HHS_LIVE_FASTAPI_WORKFLOW_SELF_TEST_V1",
             "version": VERSION,
+            # Start itself must prime exactly one canonical emission even when
+            # auto_start=False. The stopped projection remains evidence of the
+            # completed startup prime but is no longer authority-ready.
             "ok": bool(
                 emission.get("ok")
+                and startup_status.get("authority_ready")
+                and startup_status.get("tick_count") == 1
+                and not startup_status.get("background_task_active")
                 and workflow_status.get("tick_count") == 1
-                and workflow_status.get("receipt_ready")
             ),
             "cognition_ok": cognition_ok,
             "emission": emission,
+            "startup_status": startup_status,
             "status": workflow_status,
         }
 

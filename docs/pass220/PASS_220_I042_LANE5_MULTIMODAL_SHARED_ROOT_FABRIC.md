@@ -230,3 +230,74 @@ The dedicated I042 workflow validates:
 The external Wolfram evaluator returned an internal tool failure while this
 checkpoint was being authored. No Wolfram PASS is claimed for I042. The exact
 finite identities are therefore enforced by repository tests/CI in this cycle.
+
+
+## Hash72 3D / Hash216 genus-3 constraint surface
+
+The ordered Hash216 transition word is now bound to a fixed three-dimensional
+surface index:
+
+```text
+Hash216 shape = 3 x 8 x 9
+              = 216
+```
+
+Axis 0 preserves the inherited ordered Hash72 lane roles:
+
+```text
+0 PREVIOUS
+1 CHANGE
+2 RECEIPT
+```
+
+Each Hash72 lane is one complete traversal of the same fixed polyhedral
+constraint surface:
+
+```text
+8 flat nonagonal faces
+9 boundary slots per face
+8*9 = 72 Hash72 positions
+24 vertices
+36 edges
+vertex valence = 3
+```
+
+The surface closes:
+
+```text
+V - E + F
+= 24 - 36 + 8
+= -4
+= 2 - 2g
+```
+
+therefore:
+
+```text
+g = 3.
+```
+
+Face-edge incidence also closes exactly:
+
+```text
+8*9 = 72 = 2*36
+24*3 = 72 = 2*36.
+```
+
+Every face is adjacent to every other face. With eight faces there are
+`C(8,2)=28` unique face pairs. Because the fixed surface has 36 edges, eight
+face-pair adjacencies occur twice while the remaining twenty occur once. The
+underlying simple face-adjacency graph is therefore complete `K8`.
+
+The runtime carries an explicit fixed incidence table:
+
+- 24 distinct primal vertices;
+- 36 primal edges;
+- eight ordered nine-vertex face cycles;
+- face-neighbor cycle for every nonagon;
+- exact mapping from every Hash216 absolute index to
+  `(lane3, face8, nonagon_slot9, edge, vertex_from, vertex_to, neighbor_face)`.
+
+The surface root is included in the I042 shared multimodal root. A modality
+cannot carry a Hash216 genome whose polyhedral constraint-surface identity
+differs from the shared root.

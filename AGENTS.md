@@ -6,11 +6,26 @@ This repository hosts the Holofractal Harmonicode general programming environmen
 
 Before changing runtime behavior, read:
 
-1. [`README.md`](README.md) — current repository state and primary entry points
-2. [`ARCHITECTURE.md`](ARCHITECTURE.md) — canonical ownership boundaries and anti-drift rules
-3. [`RUNTIME_FLOW.md`](RUNTIME_FLOW.md) — execution, receipt, replay, worker, API, and visual flows
-4. [`GLOSSARY.md`](GLOSSARY.md) — stable terminology
-5. the applicable pass contract and restart record
+1. [`README.md`](README.md) — current repository state and primary human entry point; it links directly to the repository index
+2. [`REPOSITORY_INDEX.md`](REPOSITORY_INDEX.md) — canonical repository navigation map for runtime, contracts, pass documentation, validation, deployment, applications, and the full Hash216 dependency graph
+3. [`ARCHITECTURE.md`](ARCHITECTURE.md) — canonical ownership boundaries and anti-drift rules
+4. [`RUNTIME_FLOW.md`](RUNTIME_FLOW.md) — execution, receipt, replay, worker, API, and visual flows
+5. [`GLOSSARY.md`](GLOSSARY.md) — stable terminology
+6. the applicable pass contract and restart record
+
+Repository navigation SHALL follow the shared index rather than reconstructing an independent path map:
+
+```text
+README.md
+→ REPOSITORY_INDEX.md
+→ REPOSITORY_HASH216_DEPENDENCY_TREE.md
+→ artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json
+→ artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json
+  + artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json
+  + docs/repository_index/files/*.md
+```
+
+Agents may enter the index directly through [`REPOSITORY_INDEX.md`](REPOSITORY_INDEX.md) or through the [`README.md`](README.md) repository-navigation link. The generated Hash216 tree, Lane 5 hydration knowledge graph, database receipt, and file-link shards are the repository-wide discovery/hydration surface; they do not replace the applicable canonical contracts or runtime authority.
 
 Current pass-specific anchors:
 

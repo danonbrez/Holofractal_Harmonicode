@@ -1,0 +1,66 @@
+name: Pass 220 Python2 RNA Class Registration
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_python_rna_class_registration_2_0.h'
+      - 'hhs_runtime/include/hhs_pass220_python_rna_class_registration_2_0.hpp'
+      - 'hhs_runtime/c/hhs_pass220_python_rna_class_registration_2_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc'
+      - 'hhs_runtime/hhs_pass220_python_rna_class_registration_v1.py'
+      - 'tests/pass220/test_hhs_pass220_python_rna_class_registration_2_0.c'
+      - 'tests/pass220/test_hhs_pass220_python_rna_class_registration_2_0.cpp'
+      - 'tests/pass220/test_hhs_pass220_python_rna_class_registration_v1.py'
+      - 'contracts/pass220/PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1.json'
+      - 'docs/pass220/PASS_220_PYTHON2_RNA_CLASS_REGISTRATION.md'
+      - '.github/workflows/pass220-python2-rna-class-registration.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_python_rna_class_registration_2_0.h'
+      - 'hhs_runtime/include/hhs_pass220_python_rna_class_registration_2_0.hpp'
+      - 'hhs_runtime/c/hhs_pass220_python_rna_class_registration_2_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc'
+      - 'hhs_runtime/hhs_pass220_python_rna_class_registration_v1.py'
+      - 'tests/pass220/test_hhs_pass220_python_rna_class_registration_2_0.c'
+      - 'tests/pass220/test_hhs_pass220_python_rna_class_registration_2_0.cpp'
+      - 'tests/pass220/test_hhs_pass220_python_rna_class_registration_v1.py'
+      - 'contracts/pass220/PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1.json'
+      - 'docs/pass220/PASS_220_PYTHON2_RNA_CLASS_REGISTRATION.md'
+      - '.github/workflows/pass220-python2-rna-class-registration.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  python2-rna-class-registration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile aggregate exact ABI
+        run: |
+          mkdir -p /tmp/pass220-python2
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -fPIC             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/pass220-python2/hhs_runtime_exact_abi.o
+          gcc -shared /tmp/pass220-python2/hhs_runtime_exact_abi.o             -o /tmp/pass220-python2/libhhs_runtime_exact_abi.so
+      - name: Run C class registration conformance
+        run: |
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass220/test_hhs_pass220_python_rna_class_registration_2_0.c             /tmp/pass220-python2/hhs_runtime_exact_abi.o             -o /tmp/pass220-python2/test-c
+          /tmp/pass220-python2/test-c
+      - name: Run C++17 RNA cell-wall class conformance
+        run: |
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass220/test_hhs_pass220_python_rna_class_registration_2_0.cpp             /tmp/pass220-python2/hhs_runtime_exact_abi.o             -o /tmp/pass220-python2/test-cpp
+          /tmp/pass220-python2/test-cpp
+      - name: Run Python/RNA registration parity
+        env:
+          HHS_PYTHON2_EXACT_ABI: /tmp/pass220-python2/libhhs_runtime_exact_abi.so
+        run: python -m pytest -q tests/pass220/test_hhs_pass220_python_rna_class_registration_v1.py

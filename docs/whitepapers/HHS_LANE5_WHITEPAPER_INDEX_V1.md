@@ -360,6 +360,10 @@ Pass 220 I042 binds six modalities to one exact execution ancestry:
   Pass165 token/chunk graph and 5,184-bit projection;
 - every modality carries a Hash72 witness and a 216-position ordered Hash216
   genome root;
+- Hash216 is indexed as a fixed `3x8x9` genus-3 polyhedral surface:
+  three PREVIOUS/CHANGE/RECEIPT Hash72 lanes over eight flat nonagonal faces,
+  with 24 vertices, 36 edges, trivalent vertices, Euler characteristic -4,
+  and complete face-neighbor relation;
 - all six projections share one SHA-256 root over the exact
   `179971.179971` seed, exact `1.001` gate, I041 cycle identity, I040
   relativistic projection root, I039 shared quantum/relativistic root, and the
@@ -493,3 +497,100 @@ This paper extends the equation set through the current stacked Lane 5 1.62 sour
 - ordered parent/result unresolved-stack Hash216 receipt binding.
 
 The connected 2026-09-21 Wolfram synthesis returned 44/44 PASS.
+
+
+## 12. HNAN Jordan global constraint-resolution theorem
+
+[HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md](HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md)
+
+Pass 219 Lane 5 successor 1.63 promotes the exact HNAN/Jordan closure into a system-wide typed contradiction-resolution membrane.
+
+It proves and binds:
+
+- `M01 ~ J2(0) direct-sum (-1) direct-sum (2)`;
+- the exact hydrated characteristic polynomial and recurrence;
+- the generic hydrated depth-two nilpotent channel and exceptional `r=±s` loci;
+- the ordered `0=∅=AB/P⁴∅=HNAN` closure;
+- `0 -> x+y+z+w` as a typed view;
+- `u^72 -> u^0` phase closure;
+- `∞ -> Delta -> x` directed reciprocity;
+- `∞Delta -> Bx^5184` and `P -> Bx^5184/Delta`;
+- noncommutative `xy/yx` and `zw/wz` distinctions;
+- fail-closed resolution for cancellation, equality reversal, type erasure, host float infinity, and scalar HNAN substitution.
+
+The resolver is compiled into the exact C Runtime ABI and is mandatory before both Lane 5 mediation and signed environmental VM81 admission.
+
+
+### P^(x²) global reciprocal manifold 1.64
+
+`PASS_219_P_X2_GLOBAL_RECIPROCAL_MANIFOLD_1_64` extends the HNAN/Jordan global constraint membrane with the source-preserved P^(x²) nested manifold and the ordered reciprocal correction
+
+```text
+((p/q)*(q/p))/(P²-pq)=((q-p)*P)/(p+q)
+```
+
+while retaining the literal user source separately. The correction is verified under the registered scalar unit-residue projection but remains non-cancellable and ordered in native HARMONICODE execution.
+
+
+### Polarity s half-turn 1.65
+
+Pass 219 Lane 5 1.65 binds
+
+```text
+xy=s/zw
+yx=-s/zw
+zw=s/xy
+wz=-s/xy
+```
+
+to the inherited RML5 `u^36` chiral half-turn. For `s=-1`, both chiral sign pairs invert together and the ordered `p-q:q-p` unit-shell pair rotates from `(-2):(+2)` to `(+2):(-2)`. The operator is self-inverse, preserves pair opposition, and carries no scalar substitution or canonical mutation authority.
+
+
+### Global conservation/polarity resolver 1.66
+
+Pass 219 Lane 5 1.66 adds a gate-scoped conservation membrane over the HNAN/Jordan, reciprocal-manifold, and polarity layers. It preserves distinct operator types and branch identities, verifies the Pell negative-defect witness in exact `Q(sqrt(2),sqrt(3))` arithmetic, preserves the separate positive unit shell, verifies the 72-phase seed, records the conditional scalar `Delta=m` witness, and models the null-cone statement with a signed metric projection instead of rewriting canonical `c²=3`.
+
+
+### Nine-loop foreign-to-native equivalence constructor 1.67
+
+[HHS_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.md](HHS_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.md)
+
+Pass 219 Lane 5 1.67 adds a bounded exact-arithmetic foreign-model benchmark over the public nine-loop six-particle MHV planar N=4 SYM result. It preserves the foreign kinematic Delta=0 symbol as a quarantined typed object, records parallel HARMONICODE-V1 deviation metadata, reconstructs a published rational coefficient against two 31-bit prime residues with exact modular arithmetic, and seals the resulting composition candidate through the inherited native Hash216 implementation.
+
+The C++ cell-wall membrane requires Pass 219 1.66 plus the frozen monolithic equation source identity before accepting the candidate. The receipt remains candidate-only and exposes no VM81, canonical Hash72/Hash216, persistence, or floating-point authority.
+
+The current proof scope is deliberately bounded: structural metadata and the published exact sample oracle are verified, while full upstream artifact ingestion and all-coefficient equivalence remain unresolved until a source manifest and complete foreign dataset are imported and replayed.
+
+
+### Nine-loop source attestation 1.68
+
+[HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md](HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md)
+
+Pass 219 Lane 5 1.68 closes the source/provenance axis for the public Cosmic9 sample corpus. It streams all 20,630 weight-18 sample words, reconstructs every nonzero rational at both 31-bit primes, verifies all exact-zero rows, freezes the upstream MANIFEST/sample/summary SHA-256 identities, and binds that source receipt to a revalidated 1.67 parent through a candidate-only native Hash216 successor cell wall.
+
+
+### Nine-loop large-artifact equivalence 1.69
+
+[HHS_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.md](HHS_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.md)
+
+Pass 219 Lane 5 1.69 streams and manifest-attests the two public 424 x 5,431 prime-field coefficient matrices, the 107,053-row septuple/quintuple comparison record, and the direct-bootstrap septuple archive. It proves common E0 support geometry without requiring literal NPZ-container identity and seals the frozen relation through an inherited candidate-only native Hash216 cell wall.
+
+### Nine-loop Lane 5/Wolfram feedback 1.70
+
+[HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md](HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md)
+
+Pass 219 Lane 5 1.70 converts the proven 1.69 relation into exact training/deviation metadata. It preserves rejected foreign assumptions as negative evidence, validated additive structure as positive evidence, exact rational coverage as integer ratios, the root metadata seed as 179971179971/1000000, and the Genesis constructor verbatim. A connected Wolfram 13/13 receipt and independent feedback-payload digest are both required by the inherited candidate-only native Hash216 membrane.
+
+
+### Nine-loop training specimen 1.71
+
+[HHS_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71.md](HHS_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71.md)
+
+Pass 219 Lane 5 1.71 admits the source-bound 1.70 feedback object into the repository training-specimen corpus as deterministic dataset preparation. The specimen preserves 13 feedback labels, 5 learning objectives, 16 trinary deviation features, exact rational coverage, rejected assumptions, validated additive structure, and the full parent source/relation/support lineage. The native cell wall revalidates 1.70 and seals only a candidate specimen Hash216; model-weight updates and learning commits remain explicitly unauthorized.
+
+
+### Nine-loop relation dataset 1.72
+
+[HHS_LANE5_NINE_LOOP_RELATION_DATASET_1_72.md](HHS_LANE5_NINE_LOOP_RELATION_DATASET_1_72.md)
+
+Pass 219 Lane 5 1.72 expands the source-bound 1.71 specimen into twelve ordered relation-learning records. It preserves exact positive, neutral, and negative examples; derives deterministic per-record and ordered-chain identities; and seals the dataset through the inherited native candidate Hash216 path without granting model-weight updates, learning commits, canonical transition, VM81, canonical hash, persistence, or floating-point authority.

@@ -1,0 +1,60 @@
+name: Pass 220 I046 Warm Hydrated VM Boot
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "deployment/digitalocean/warm_boot_manifest.py"
+      - "deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh"
+      - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
+      - ".github/workflows/pass196-integrated-environment.yml"
+      - "tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py"
+      - "docs/pass220/PASS_220_I046_WARM_HYDRATED_VM_BOOT_V1.md"
+      - "docs/operations/restart/PASS_220_I046_WARM_HYDRATED_VM_BOOT_20260923.md"
+      - ".github/workflows/pass220-i046-warm-hydrated-vm-boot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  warm-boot-frontier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile warm-boot surfaces
+        run: |
+          python -m py_compile \
+            deployment/digitalocean/warm_boot_manifest.py \
+            tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py
+
+      - name: Validate promotion shell
+        run: bash -n deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh
+
+      - name: Run warm hydrated VM boot regressions
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py
+
+      - name: Enforce restart-is-adopt-only contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVICE=deploy/digitalocean/hhs-pass196-integrated-environment.service
+          grep -Fq 'HHS_DISABLE_C_AUTOBUILD=1' "$SERVICE"
+          grep -Fq 'HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174' "$SERVICE"
+          grep -Fq 'HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194' "$SERVICE"
+          grep -Fq 'HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface' "$SERVICE"
+          grep -Fq 'HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5' "$SERVICE"
+          grep -Fq 'warm_boot_manifest.py verify' "$SERVICE"
+          ! grep -E 'ExecStartPre=.*(make|gcc|clang|cmake|npm|pip|post_compile)' "$SERVICE"

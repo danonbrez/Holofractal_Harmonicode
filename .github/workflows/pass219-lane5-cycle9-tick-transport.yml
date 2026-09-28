@@ -1,0 +1,126 @@
+name: Pass 219 Lane 5 Cycle 9 Tick Transport
+
+on:
+  push:
+    branches:
+      - proof/lane5-cycle9-tick-transport-20260924
+    paths:
+      - 'hhs_runtime/pass219/lane5_cycle9_tick_transport.py'
+      - 'tests/pass219/test_pass219_lane5_cycle9_tick_transport.py'
+      - 'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.wl'
+      - 'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.output.json'
+      - 'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.receipt.json'
+      - 'docs/operations/restart/PASS_219_LANE5_CYCLE9_TICK_TRANSPORT_RESTART_20260924.md'
+      - '.github/workflows/pass219-lane5-cycle9-tick-transport.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass219/lane5_cycle9_tick_transport.py'
+      - 'tests/pass219/test_pass219_lane5_cycle9_tick_transport.py'
+      - 'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.wl'
+      - 'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.output.json'
+      - 'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.receipt.json'
+      - 'docs/operations/restart/PASS_219_LANE5_CYCLE9_TICK_TRANSPORT_RESTART_20260924.md'
+      - '.github/workflows/pass219-lane5-cycle9-tick-transport.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pytest python3-sympy
+
+      - name: Run Cycle 9 and inherited T_BRIDGE regressions
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_lane5_cycle9_tick_transport.py \
+            tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py \
+            tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py
+          python hhs_runtime/pass219/lane5_cycle9_tick_transport.py
+
+      - name: Verify sealed Wolfram Cycle 9 evidence
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          source_path = Path(
+              'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.wl'
+          )
+          output_path = Path(
+              'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.output.json'
+          )
+          receipt_path = Path(
+              'evidence/pass219/lane5_tick_transport_wolfram_20260924_v9.receipt.json'
+          )
+
+          output = json.loads(output_path.read_text())
+          receipt = json.loads(receipt_path.read_text())
+
+          assert output['status'] == receipt['status'] == 'PASS'
+          assert output['check_count'] == receipt['check_count'] == 11
+          assert output['pass_count'] == receipt['pass_count'] == 11
+          assert output['failed'] == receipt['failed'] == []
+          assert output['forward_remainders'] == [0, 0, 0]
+          assert output['inverse_remainders'] == [0, 0, 0]
+          assert output['source_block_count'] == receipt['source_block_count'] == 72
+          assert output['endpoint_state_count'] == receipt['endpoint_state_count'] == 73
+          assert output['forward_transition_count'] == receipt['forward_transition_count'] == 72
+          assert output['cross_projection_bridge_inferred'] is False
+          assert output['t_bridge_workload_interval_inferred'] is False
+          assert receipt['cross_projection_bridge_inferred'] is False
+          assert receipt['t_bridge_workload_interval_inferred'] is False
+
+          assert hashlib.sha256(source_path.read_bytes()).hexdigest() == (
+              receipt['wolfram_source_sha256']
+          )
+          assert hashlib.sha256(output_path.read_bytes()).hexdigest() == (
+              receipt['output_sha256']
+          )
+
+          for key in (
+              'canonical_runtime_mutation_authority',
+              'canonical_hash72_mint_authority',
+              'canonical_hash216_mint_authority',
+              'canonical_persistence_authority',
+              'floating_point_authority',
+          ):
+              assert receipt[key] is False
+
+          print('lane5_cycle9_tick_transport_wolfram=PASS')
+          PY
+
+      - name: Guard transport authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              'hhs_runtime/pass219/lane5_cycle9_tick_transport.py'
+          ).read_text()
+          for needle in (
+              '"cross_projection_sigma_delta_bridge_closed": False',
+              '"cross_projection_substitution_authorized": False',
+              '"t_bridge_01b_workload_interval_certificate_closed": False',
+              '"qe_semantic_resolution_inferred": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_mint_authority": False',
+              '"canonical_hash216_mint_authority": False',
+              '"canonical_persistence_authority": False',
+              '"floating_point_authority": False',
+          ):
+              assert needle in source, needle
+          print('lane5_cycle9_authority_guard=PASS')
+          PY

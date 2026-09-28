@@ -1,0 +1,66 @@
+name: Standard Frontend Ingress Compatibility
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_backend/frontend_ingress_policy_v1.py"
+      - "hhs_backend/api/standard_ingress_compat_routes.py"
+      - "hhs_backend/runtime/multimodal_workspace_ingress_v1.py"
+      - "hhs_backend/runtime/hhs_workspace_authority_loop_v1.py"
+      - "hhs_runtime/hhs_kernel_conformance_surface_map_v1.py"
+      - "contracts/pass220/PASS_220_STANDARD_LEGACY_INGRESS_COMPAT_1_0.json"
+      - "hhs_backend/server.py"
+      - "deploy/digitalocean/hhs-pass196.env.example"
+      - "tests/test_hhs_standard_frontend_ingress_v1.py"
+      - "tests/test_hhs_linux_legacy_ingress_compat_v1.py"
+      - ".github/workflows/standard-frontend-ingress.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "hhs_backend/frontend_ingress_policy_v1.py"
+      - "hhs_backend/api/standard_ingress_compat_routes.py"
+      - "hhs_backend/runtime/multimodal_workspace_ingress_v1.py"
+      - "hhs_backend/runtime/hhs_workspace_authority_loop_v1.py"
+      - "hhs_runtime/hhs_kernel_conformance_surface_map_v1.py"
+      - "contracts/pass220/PASS_220_STANDARD_LEGACY_INGRESS_COMPAT_1_0.json"
+      - "hhs_backend/server.py"
+      - "deploy/digitalocean/hhs-pass196.env.example"
+      - "tests/test_hhs_standard_frontend_ingress_v1.py"
+      - "tests/test_hhs_linux_legacy_ingress_compat_v1.py"
+      - ".github/workflows/standard-frontend-ingress.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-ingress-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install targeted test dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Compile ingress surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/frontend_ingress_policy_v1.py \
+            hhs_backend/api/standard_ingress_compat_routes.py \
+            hhs_backend/runtime/multimodal_workspace_ingress_v1.py \
+            hhs_backend/runtime/hhs_workspace_authority_loop_v1.py \
+            hhs_runtime/hhs_kernel_conformance_surface_map_v1.py \
+            hhs_backend/server.py
+
+      - name: Run standard and legacy frontend ingress contracts
+        run: python -m pytest -q tests/test_hhs_standard_frontend_ingress_v1.py tests/test_hhs_linux_legacy_ingress_compat_v1.py

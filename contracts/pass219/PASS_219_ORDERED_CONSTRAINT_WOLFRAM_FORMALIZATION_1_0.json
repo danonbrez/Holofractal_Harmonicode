@@ -1,0 +1,62 @@
+{
+  "schema": "HHS_PASS219_ORDERED_CONSTRAINT_WOLFRAM_FORMALIZATION_CONTRACT_V1",
+  "version": "1.0.0",
+  "pass": 219,
+  "iteration": "ORDERED_CONSTRAINT_WOLFRAM_FORMALIZATION_1_0",
+  "base_main_sha": "ea3948afecb40a35b61eb7473f094eee6fd63cb0",
+  "classification": "ADDITIVE_READ_ONLY_EXACT_SOURCE_PRESERVING_FORMAL_PROOF",
+  "inherits": [
+    "HHS-P169-HSAE-VM81-ESCPR",
+    "PASS_219_NATIVE_RNA_TRANSCRIPTION_ABI",
+    "PASS_219_HASH216_FRACTAL_QUDIT_PROOF_HYDRATION"
+  ],
+  "canonical_source": {
+    "path": "contracts/pass219/PASS_219_ORDERED_CONSTRAINT_WOLFRAM_FORMALIZATION_1_0.harmonicode",
+    "bytes_utf8": 1321,
+    "sha256": "d6d7da60e3e9520c0ec802fa8ec63121ffbee9313263012d021907e210bc652c",
+    "source_is_opaque_authority": true,
+    "host_boolean_evaluation_permitted": false,
+    "commutative_reorder_permitted": false,
+    "scalar_projection_substitution_authority": false
+  },
+  "wolfram_formalization": {
+    "path": "formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl",
+    "sha256": "7e4203b0eb578cd10303971fb715576d7fd3af5c8921bd46d5a522d61a950a98",
+    "proof_mode": "LEXICAL_AND_STRUCTURAL_VERIFICATIONTEST_WITH_OPAQUE_SOURCE",
+    "tests_run": 13,
+    "tests_succeeded": 13,
+    "tests_failed": 0,
+    "all_succeeded": true,
+    "outer_top_level_equality_edges": 4,
+    "outer_ordered_segments": 5,
+    "first_outer_segment_top_level_quotients": 1,
+    "outer_segment_order_hash_sha256": "9049d2ff6db8aae344af85c2f34926bf76e5074013d3ab87fb07aecea692fe2f",
+    "execution_date": "2026-09-25",
+    "executor": "Wolfram Language kernel via connected Wolfram evaluator"
+  },
+  "proved_structural_invariants": [
+    "balanced delimiter topology",
+    "four top-level ordered equality edges",
+    "five top-level ordered constraint segments",
+    "single top-level quotient in the first outer segment",
+    "x,y,z,w lane ordering retained",
+    "required decimal lexemes retained exactly",
+    "distinct perturbation lexemes remain distinct",
+    "phase signatures retained textually without I^3 normalization",
+    "both ordered quartic correction witnesses retained",
+    "u relational carrier remains nested under exponent 72",
+    "terminal e^(y*Pi) segment retained",
+    "terminal x((a²,b²i,c²,(-c²-b²i))) segment retained",
+    "no Wolfram machine-precision marker occurs in canonical source"
+  ],
+  "nonclaims": [
+    "This proof does not assign conventional scalar semantics to nested == edges.",
+    "This proof does not authorize commutation, reassociation, I^3 reduction, floating-point evaluation, or Boolean collapse.",
+    "Canonical VM81 mutation and Hash72/Hash216 mint authority are unchanged."
+  ],
+  "repository_validation": {
+    "test_path": "tests/pass219/test_pass219_ordered_constraint_wolfram_formalization.py",
+    "workflow_path": ".github/workflows/pass219-ordered-constraint-wolfram-formalization.yml",
+    "required_result": "GREEN"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_PASS219_HNAN_4X4_PYTHON_BENCHMARK_20260926_V1",
+  "environment": "interactive validation container; CPython",
+  "iterations": 100000,
+  "test_result": "8 passed",
+  "parity": true,
+  "materialize_reference_seconds": 0.526705844999924,
+  "materialize_cached_seconds": 0.0024646899998970184,
+  "materialize_speedup": 213.70064593191486,
+  "recursive_reference_seconds": 1.2312686630000371,
+  "recursive_cached_seconds": 0.3425924649999388,
+  "recursive_speedup": 3.5939747332162053,
+  "optimization": "immutable canonical view + memoized structural recursion",
+  "semantic_change": false
+}

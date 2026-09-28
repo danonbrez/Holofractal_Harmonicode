@@ -1,0 +1,710 @@
+# Pass 220 I041 — Canonical HTML Seed / Holographic Pixel Sprite V1
+
+Status: **NORMATIVE SEED BINDING / SOURCE-PRESERVING / PROJECTION-ONLY**
+
+## Canonical seed identity
+
+The canonical browser seed is the user-supplied monolithic HTML surface titled:
+
+```text
+Holofractal Hybrid QPU & Neural Swarm — HHS VM81 / I041
+```
+
+The optimized repository surface:
+
+```text
+applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html
+```
+
+is a derived execution adapter.  It MAY optimize rendering and data layout but
+MUST preserve the seed's ordered animation geometry unless a native repository
+contract requires a repair.
+
+## Holographic spritemap seed identity
+
+A 5184-address/Q144-compatible renderer is **not** by itself the holographic
+animated spritemap seed.
+
+There are two distinct seed notions:
+
+```text
+address/topology seed
+    = 5184 / 72² / Q144 / phase-address organization
+
+animated spritemap seed
+    = the canonical bounded-spherical simulation state trajectory
+```
+
+The animated seed includes the state that actually determines the visible
+motion: particle positions and velocities, phase/precession state, layer and
+reciprocal identity, barycenter-relative state, fourth-coordinate/SO(4) state,
+bond/constructor state, memory/budget state, decay/coupling state, and the
+boundary conditions that confine the simulation to its inherited spherical
+membranes.
+
+Therefore Fork B may become a canonical holographic pixel-spritemap renderer
+only by one of two routes:
+
+1. execute the same Fork-A simulation state-transition kernel; or
+2. consume an exact deterministic frame/state trace emitted by Fork A.
+
+Fork B MUST NOT synthesize an independent shader trajectory and then call that
+trajectory the canonical animated seed merely because its address topology,
+phase labels, golden-ratio constants, or tesseract projection resemble the
+foundation.
+
+The required canonical frame interface is named:
+
+```text
+HHS_I041_CANONICAL_SPHERICAL_FRAME_V1
+```
+
+Until that interface is bound, the existing Lane-5 renderer is a
+`PROJECTION_PIPELINE_PREVIEW`: useful for renderer/compositor development and
+address-topology visualization, but **not yet the canonical animated
+holographic spritemap seed**.
+
+The MP4 pipeline is allowed to be slower than realtime. Its responsibility is
+frame fidelity, not independent dynamics.
+
+## Canonical execution rule — math/runtime repair only
+
+The monolithic simulation is already the designed system. This work does not
+create a reduced dynamics model and does not require a second simplified
+application to make rendering tractable.
+
+The governing implementation rule is:
+
+```text
+execute all specified modules
++ preserve all specified equations, ordering, types, provenance and state
++ repair mathematical/runtime faults where implementation diverges
++ route the resulting canonical state through the inherited Lane 5 renderer
+= accepted execution
+```
+
+No subsystem may be removed, approximated, collapsed, scalarized, substituted,
+or bypassed merely to improve performance. In particular, the swarm field,
+spherical boundary membranes, barycentric/ionic coupling, collision-chain
+logic, bonds and constructor, memory/budget state, virtual decay, Layer-2
+coupling/decay pool, fourth-coordinate/SO(4) state, HNAN behavior, receipts,
+and controls remain part of the simulation.
+
+The allowed corrective scope is mathematical/runtime repair: exact arithmetic,
+typed denominator handling, correct ordered algebra, valid cell/address
+mapping, preservation of noncommutative order, closure-gate correctness,
+finite-state/runtime safety, and other changes required to make the specified
+system execute without violating its own contracts.
+
+### Lane 5 rendering role
+
+Lane 5 is the existing rendering optimization path. It consumes the canonical
+simulation state; it does not define a cheaper replacement trajectory.
+
+The required flow is:
+
+```text
+complete canonical simulation state at tick n
+        -> Lane 5 projection/render optimization
+        -> realtime display when available
+        -> deterministic MP4/offline capture when display cost exceeds realtime
+```
+
+Realtime rendering and MP4 rendering are two observation modes of the same
+simulation. Rendering speed may differ from simulation time, but rendered
+geometry/state for a given tick must not.
+
+The browser adapter MUST expose
+`HHS_I041_FOUNDATION_PRESERVATION_RECEIPT_V1`, and the browser/MP4 acceptance
+path MUST fail closed if that receipt indicates simulation reduction,
+geometry/physics mutation, or loss of the canonical spherical-frame binding.
+
+## Self-hosted exact algebra and Lane 5 logic
+
+The HTML may embed the repository equations and Lane 5 scheduling rules needed
+to execute and verify its projection path without requiring a remote HHS
+runtime call.
+
+The embedded exact surface must be source-identifiable and must preserve:
+
+```text
+144*36 = 12*12*3*12 = 81*64 = 72*72 = 5184
+
+Rot_72(k): j -> (j+k) mod 72
+Rot_72(k1) o Rot_72(k2) = Rot_72((k1+k2) mod 72)
+Rot_72(k)^(-1) = Rot_72((-k) mod 72)
+Rot_72(72) = identity
+
+Q144 field = Q(zeta_144)
+cos(k) = (zeta_144^k + zeta_144^-k)/2
+sin(k) = (zeta_144^k - zeta_144^-k)/(2*i)
+```
+
+Lane 5 optimization retains the repository authority rule:
+
+```text
+optimize discovery / scheduling / reuse / projection
+without changing the exact canonical result
+```
+
+The in-page scheduler therefore carries exact integer/rational time and phase
+state. It may avoid materializing represented intermediate states and may use
+constant auxiliary scheduling state, but it cannot skip canonical simulation
+updates or acquire mutation authority.
+
+Any conversion to IEEE/WebGL values occurs only through an explicit projection
+membrane. Irrational geometry remains symbolic/algebraic on the exact side
+rather than being replaced by decimal rational approximations.
+
+The browser implementation exposes
+`HHS_I041_SELF_HOSTED_EXACT_MANIFOLD_V1` and declares:
+
+```text
+canonicalFloatAuthority = false
+renderFloatProjectionOnly = true
+```
+
+## Passive follow-particle observer
+
+The follow-particle view is observation-only. It must not become a control
+surface for the particle or simulation.
+
+Required behavior:
+
+```text
+read particle position / velocity / acceleration
+-> derive camera pose from current curved trajectory
+-> disable user orbit / pan / zoom while following
+-> render the already-computed toroidal spiraling path
+-> write nothing back to particle physics
+```
+
+The camera follows the native trajectory; it does not synthesize a chase-line
+trajectory, steer the particle, apply forces, modify velocity, or reorient the
+simulation manifold.
+
+The canonical follow frame uses the particle's instantaneous tangent together
+with the local spherical radial normal so the camera transports along the
+curved toroidal path rather than flattening it into a global Cartesian axis.
+
+Exiting follow mode may restore interactive camera controls, but interaction is
+disabled for the duration of canonical particle follow.
+
+## Folded hyperspherical projection invariance
+
+The mature cloud is hyperspherical because its observable 2D projection is
+invariant under viewpoint changes induced by the higher-dimensional folded
+symmetry. Camera orientation is an observation parameter, not a state variable
+that changes the cloud's canonical geometry.
+
+The required relation is:
+
+```text
+higher-dimensional symmetric state
+-> folded hyperspherical manifold
+-> arbitrary admissible viewpoint / camera orientation
+-> equivalent 2D projected structure
+```
+
+Perspective changes may alter raster coordinates, occlusion ordering, apparent
+scale, or phase-aligned presentation details, but they must not alter the
+canonical topology, conserved relationships, constructor lineage, particle
+identity, or state adjacency represented by the projection.
+
+Therefore the hyperspherical claim is not "a 3D ball looks round." It is that
+the higher-dimensional folded symmetry makes the 2D observable structurally
+equivalent across admissible perspectives.
+
+Lane 5 and browser cameras are projection operators only. They cannot inject
+view-dependent physics into the canonical state.
+
+## Bounded digital-mitochondria end-state
+
+The mature bounded hyperspherical cloud acts as a digital cellular
+mitochondria-like system: a closed energetic constructor environment rather
+than a dissipative particle effect.
+
+Its canonical responsibilities are:
+
+```text
+preserve total usable energy / momentum
++ retain particles inside the bounded hyperspherical ecology
++ recycle particles and reciprocal/ionic states through admissible pathways
++ convert available state into bonds / structures / constructors
++ return released particles and energy to the reusable swarm
+= persistent self-sustaining constructor metabolism
+```
+
+The constructor subsystem therefore consumes and returns state through a
+recycling loop. Particle destruction, one-way energy loss, or disposable
+formation state is noncanonical unless explicitly represented by an admitted
+decay/egress channel with conserved provenance.
+
+The mature cloud must preserve lineage between:
+- free swarm particles;
+- bound constructor particles;
+- reciprocal/ionic partners;
+- released/recycled particles;
+- stored and available energy/momentum;
+- constructor/formation provenance.
+
+This metabolic interpretation is digital/system-internal. It defines the
+closed computational role of the hyperspherical cloud and does not require a
+literal biological implementation.
+
+## Initial toroidal disk-galaxy seed
+
+The canonical swarm does not begin as an isotropic random sphere. Its initial
+state is an ordered toroidal disk-galaxy distribution.
+
+The inherited seed geometry uses a growing radial spiral, golden-ratio angular
+advance, and bounded vertical phase displacement to produce a thick rotating
+disk before later physics layers act.
+
+The required initial-condition ordering is:
+
+```text
+toroidal disk-galaxy seed
+-> per-particle unique smooth spherical pathway
+-> conserved toroidal swarm momentum / field rotation
+-> reciprocal ionic / charge coupling
+-> tesseract / SO(4) transformation
+-> gravitational / curvature warping
+-> constructor / formation growth
+```
+
+This initial disk topology is canonical. A replacement initializer that starts
+from a uniform random sphere, Cartesian box, or independent straight-line
+particle cloud changes the simulation before any later physics layer runs.
+
+## Pre-warp unique-pathway invariant
+
+Before tesseract/SO(4) projection and gravitational warping are applied, every
+particle follows its own smooth pathway through the bounded sphere.
+
+The required ordering is:
+
+```text
+unique particle identity
+-> unique smooth spherical pathway
+-> continuous toroidal / field rotation
+-> collision-free pre-warp transport
+-> later tesseract / SO(4) transformation
+-> later gravitational / curvature warping
+-> higher construction / formation interactions
+```
+
+The pre-warp path is not a straight Cartesian segment and is not generated by
+collision response. Distinct particles must not be collapsed onto one shared
+trajectory merely because they occupy the same phase family or Lane-5 address
+class.
+
+Collision, tesseract, and gravitational/curvature layers are downstream
+operators on the already-defined smooth pathway. An implementation that uses
+those later layers to create the base trajectory has changed the simulation
+ordering.
+
+## Toroidal momentum foundation
+
+The base swarm kinematics are toroidal and momentum-conserving. Straight-line
+motion is not a primitive of the canonical simulation.
+
+The foundational ordering is:
+
+```text
+toroidal momentum-conserving swarm transport
+    -> curved local trajectories / reciprocal circulation
+    -> mass / charge / ionic / boundary interactions
+    -> higher physics-layer constraints
+    -> locally straight or approximately linear segments only as an emergent projection
+```
+
+Accordingly:
+
+- toroidal circulation and momentum conservation are first-order invariants;
+- a renderer or optimization MUST NOT replace the base motion with independent
+  straight-line particle propagation;
+- apparent linear motion is admissible only when produced by the existing
+  layered physics as a local/emergent limit of the curved state evolution;
+- construction/formation logic inherits the toroidal momentum state rather than
+  rebuilding particle motion from Cartesian line segments.
+
+This invariant applies before Lane 5 projection. Lane 5 may rasterize or sample
+the resulting trajectory, but it may not linearize the canonical path to reduce
+cost.
+
+## Toroidal momentum foundation
+
+The base swarm kinematics are toroidal and momentum-conserving. Straight-line
+motion is not a primitive of the canonical simulation.
+
+The foundational ordering is:
+
+```text
+toroidal momentum-conserving swarm transport
+-> curved local trajectories and reciprocal circulation
+-> mass / charge / ionic / boundary interactions
+-> higher physics-layer constraints
+-> locally straight or approximately linear segments only as an emergent projection
+```
+
+Toroidal circulation and momentum conservation are first-order invariants.
+Rendering or optimization must not replace this base motion with independent
+Cartesian straight-line propagation. Construction and formation inherit the
+same toroidal momentum state, and Lane 5 only projects the resulting canonical
+trajectory.
+
+## Canonical simulation purpose — self-evolving constructor manifold
+
+The CPU-heavy construction/formation subsystem is not incidental rendering
+overhead. It is a principal output of the canonical simulation.
+
+The intended simulation composes, as one coupled state system:
+
+```text
+mass confinement / bounded spherical field
++ charged particle population
++ ionic reciprocal population
++ antimatter-reciprocal phase/coupling channels
++ collision / bond / constructor formation
++ recursive fractal / Mandelbrot-style growth
++ provenance-bearing relationship graph
+-> self-evolving constructor-theory knowledge graph
+```
+
+That evolving graph is intentionally multi-use. The same canonical state may
+project into:
+
+- game-engine world/physics state;
+- dynamic holographic sprite/pixel state;
+- constructor/formation knowledge-graph state;
+- self-play/search/optimization state.
+
+These are projections and consumers of one simulation, not independent
+replacement applications.
+
+Construction and formation cost is therefore semantically meaningful work. A
+performance pass MUST NOT classify the subsystem as expendable merely because
+it dominates CPU time. The system is specifically designed to spend compute on
+the recursive constructor/formation process.
+
+The canonical dependency direction is:
+
+```text
+particle / mass / charge / reciprocal dynamics
+        -> constructor + formation transitions
+        -> recursive fractal relationship graph
+        -> Lane 5 projection / game-engine / sprite / self-play consumers
+```
+
+Lane 5 may accelerate observation of this state but cannot substitute a
+different constructor graph or reduced particle dynamics.
+
+## Presentation-only defect boundary
+
+For the canonical monolithic HTML, the renderer itself is capable of realtime
+presentation. The primary wall-clock bottleneck is CPU-side simulation work
+when the construction/formation subsystem becomes computationally dense.
+
+The known problem classes are therefore separated:
+
+```text
+canonical simulation state          = authoritative
+WebGL/browser raster quality        = projection concern
+WebGL presentation throughput       = realtime-capable
+construction/formation CPU workload = primary simulation-time bottleneck
+requestAnimationFrame misses        = downstream symptom when CPU state production stalls
+HD/4K offline capture               = observation fallback / evidence path
+```
+
+A missed display deadline does not imply that the rendering geometry is too
+heavy. It may simply mean the CPU did not finish the next construction/
+formation state before the browser's presentation deadline.
+
+Lane 5 remains responsible for projection/rendering efficiency and may render
+the same canonical state sequence realtime or offline. It MUST NOT compensate
+for CPU construction/formation cost by changing the simulation equations,
+state transitions, geometry, or formation logic.
+
+The simplified fork is retained as evidence that the core toroidal/swarm
+geometry survives the Lane 5 high-resolution projection path. That evidence
+does not promote the fork's reduced computational-physics generator to
+canonical authority.
+
+## Quartic closure and raw canonical-HTML ingress
+
+Quartic closure is a render/projection cadence, not a simulation-update
+cadence:
+
+```text
+for every simulation tick n:
+    execute the complete canonical state update
+
+render/write projection only when:
+    n mod 4 = 0
+```
+
+Therefore three of every four raster/projection writes are skipped while all
+four simulation states still exist and advance. This is the executable meaning
+of the inherited quartic closure for this surface. A Lane 5 implementation
+that skips three of four physics/state updates is nonconformant.
+
+Lane 5 MUST also support the canonical monolithic HTML as an **opaque,
+unaltered input document**. The source file need not be rewritten to contain
+the derived `window.HHS_LANE5_TEST` adapter before it can be rendered.
+
+For raw ingress, Lane 5 owns the observation environment externally:
+
+```text
+canonical HTML bytes (unchanged)
+    -> browser/WebGL execution
+    -> externally selected drawing-buffer/viewport resolution
+    -> canonical canvas
+    -> Lane 5 capture/compositor/MP4 transport
+```
+
+The raw-ingress acceptance contract is:
+
+```text
+source_bytes_before == source_bytes_after
+page_runtime_errors == 0
+console_error_messages == 0
+webgl_context_available == true
+canvas_width == requested_width
+canvas_height == requested_height
+captured_frame_is_nonblank == true
+quartic_capture_step == 4 RAF ticks by default
+```
+
+Resolution is a projection parameter. 1080p, 4K, or another supported target
+must not require modification of the simulation equations or animation source.
+If raw canonical HTML cannot be rendered at the requested supported resolution,
+the failure must be identified as an environment/dependency/GPU limit or a
+renderer integration defect; it must not be repaired by replacing the
+simulation with different dynamics.
+
+The repository raw-ingress harness is:
+
+```text
+benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+```
+
+## Preserved visual/animation invariants
+
+The adapter MUST preserve:
+
+- 5184 = 72^2 Lane-5 address topology;
+- eight phase groups;
+- Q144 octant 18, quarter-turn 36, half-turn 72;
+- reciprocal phase/color relation;
+- Layer-2 orthogonal +pi/2 / quarter-turn geometry;
+- golden-spiral seed geometry;
+- shared SO(4) xw/yz descriptor drives bounded particle phase evolution;
+- tesseract 16 vertices / 32 edges / 8 cubic cells remain internal state and
+  may drive x-w / y-z phase behavior, but MUST NOT apply a 4D perspective
+  divisor to the visible camera or final rendered particle coordinate;
+- visible simulation geometry remains three-dimensional inside an explicit
+  spherical spacetime boundary with no required visible wireframe guide;
+- Bott eight-group sweep;
+- quartic one-in-four projection cadence while state ticks continue;
+- deterministic pathway replay from a named seed;
+- browser/GPU projection-only authority.
+
+## 3D spherical spacetime and exact inspection clock
+
+The browser inspection surface is three-dimensional and bounded by the
+spherical spacetime membrane. The boundary may be enforced mathematically
+without drawing a visible sphere.
+
+Required browser invariants:
+
+```text
+visible_geometry_dimensions == 3
+spherical_spacetime_boundary == true
+spherical_wireframe_visible == false
+tesseract_phase_driven == true
+tesseract_visible_guide == false
+camera_warp_from_tesseract == false
+```
+
+The restored tesseract layer is a bounded phase operator, not a camera
+perspective transform. Its visible projection path is:
+
+```text
+orbit translation
+-> Layer-2 quarter turn
+-> Q144 w-phase
+-> x-w / y-z tesseract phase rotation
+-> discard w as a camera coordinate
+-> 3D spherical boundary clamp
+-> ordinary 3D camera projection
+```
+
+No `2.6/(2.2-w)`-style 4D perspective divisor is permitted in the visible
+particle/camera path.
+
+Inspection controls remain additive and source-preserving:
+
+```text
+orbit_radius             = 6
+orbit_rate               = 1/2
+orbit_slow_axis_rate     = 1/200
+tesseract_phase_rate     = 1/5
+q144_phase_rate          = 1/50
+default_simulation_speed = 1/10
+```
+
+Those parameters are represented as exact rationals on the host side and are
+converted to IEEE values only when written into WebGL uniforms.
+
+Browser wall time has observation/scheduling authority only. It is immediately
+quantized to integer microseconds and transported through exact rational
+arithmetic. Every crossed integer simulation tick is executed in order; only
+ticks satisfying `n mod 4 = 0` perform canonical projection writes.
+
+Pause/resume and exact one-tick stepping must preserve that same quartic
+projection rule. HUD/control visibility toggles are projection-only and must
+not reset or remove any parameter.
+
+## Repository-contract repairs
+
+Seed behavior is preserved except where executable helper logic conflicts with
+the repository.  The following repairs are mandatory.
+
+### Exact Q(sqrt2,sqrt3) field division
+
+The Pass-219 1.66 Pell branch is exact.  Coefficients of the field inverse MUST
+remain BigInt rationals.  Integer BigInt quotient truncation is forbidden.
+
+Required witness:
+
+```text
+p/q = 2 + sqrt(3)
+q/p = 2 - sqrt(3)
+P^2 - pq = -1
+B = 2sqrt(3) + 4sqrt(6) - 2sqrt(2)
+(1/B) * B = 1 exactly
+```
+
+### VM81 closure is six-cell and fail-closed
+
+The browser mirror MUST match the frozen C surface:
+
+```text
+check_gate_closure(VM81*, Pc, pc, qc, nc, xc, yc)
+P^2 - pq == n^4
+n^4 == xy
+```
+
+Missing x or y cannot mean "cell gate omitted".  Missing/noninteger folded cell
+coordinates MUST reject the browser receipt.
+
+### HNAN typing
+
+The HNAN browser witness is the ordered 1/0 typed transition:
+
+```text
+(x+y-z-w+xy+yx-zw-wz)/EmptySet
+```
+
+It MUST NOT become a generic host division function.  Ordinary nonzero
+browser/projection division is a separately named helper with zero canonical
+authority.
+
+### Cycle-9 rational transport
+
+The exact root-isolation coordinate remains rational:
+
+```text
+P0 = 2133185666641251 / 10^15
+p = P - 1
+q = P + 1
+```
+
+The adapter verifies the exact rational identities directly.  It MUST NOT
+silently coerce this nonintegral coordinate into a Z/72 residue.
+
+### Determinism and side-effect discipline
+
+The final adapter MUST use deterministic seed-derived animation/path state.
+Diagnostic receipts MUST NOT mutate the authoritative simulation merely to
+prove themselves.
+
+If the canonical seed's bond/constructor subsystem is reintroduced, capture
+bonds and construction bonds MUST carry distinct budget provenance:
+construction edges spend no capture budget and therefore MUST NOT refund a
+capture slot when broken.
+
+Projection fingerprints MUST remain explicitly noncanonical.
+
+## Holographic pixel-sprite display invariant
+
+The renderer first produces one full-resolution RGBA source frame.  The
+holographic compositor consumes that SAME frame at the SAME drawing-buffer
+resolution.
+
+For every output pixel:
+
+```text
+source pixel -> dense bright nucleus
+neighbor source pixels -> translucent halo overlap
+output = source + nucleus modulation + halo contribution
+```
+
+Required invariants:
+
+```text
+source_frame_resolution == output_drawing_buffer_resolution
+source_pixel_is_dense_nucleus == true
+driving_pixel_remains_behind_halo == true
+halo_may_overlap_adjacent_pixel_cells == true
+empty_halo_background_alpha == 0
+```
+
+The virtual relationship surface is:
+
+```text
+5184 * 5184 = 26,873,856
+```
+
+This virtual field does not replace the physical raster.  720p, 1080p, 4K, or
+other display dimensions remain the actual output resolution.
+
+## Tuning surface
+
+The HTML MUST expose live projection-only tuning for at least:
+
+- nucleus gain;
+- halo radius in output pixels;
+- halo gain;
+- deterministic phase amplitude;
+- deterministic phase speed;
+- exact rational simulation-speed control with pause/resume and one-tick stepping;
+- orbit radius, orbit rate, slow-axis rate, tesseract phase rate, and Q144 phase rate;
+- persistent hide/show toggles for HUD and controls;
+- source-only, nucleus-only, halo-only, and composite views.
+
+Existing controls are additive state. A visual simplification pass MUST NOT
+delete an existing control or its parameter binding unless a later explicit
+contract replaces it.
+
+## Acceptance
+
+Before MP4 capture, the browser harness MUST verify:
+
+```text
+HHS_I041_CANONICAL_SEED_MATH_REPAIR_RECEIPT_V1 == PASS
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sameResolution == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sphericalSpacetimeBoundary == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.visibleGeometryDimensions == 3
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.sphericalWireframeVisible == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.tesseractPhaseDriven == true
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.tesseractVisibleGuide == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.cameraWarpFromTesseract == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.renderFloatAuthority == false
+HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1.selfHostedExactRuntime == true
+```
+
+MP4/video evidence remains projection evidence.  It grants no VM81 mutation,
+Hash72 mint, Hash216 persistence, receipt-clock, or floating-point canonical
+authority.

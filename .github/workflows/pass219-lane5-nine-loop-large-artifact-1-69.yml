@@ -1,0 +1,144 @@
+name: Pass 219 Lane 5 Nine-Loop Large Artifact 1.69
+
+on:
+  pull_request:
+    branches:
+      - main
+      - agent/pass219-lane5-nine-loop-source-attestation-1-68-20260927
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_large_artifact_1_69.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_large_artifact_cell_wall_1_69.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_large_artifact_cell_wall_1_69.cpp'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_large_artifact_cell_wall_1_69.cpp'
+      - 'GNUmakefile'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_large_artifact_1_69.py'
+      - '.github/workflows/pass219-lane5-nine-loop-large-artifact-1-69.yml'
+  push:
+    branches:
+      - agent/pass219-lane5-nine-loop-large-artifact-1-69-20260927
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_large_artifact_1_69.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_large_artifact_cell_wall_1_69.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_large_artifact_cell_wall_1_69.cpp'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_large_artifact_cell_wall_1_69.cpp'
+      - 'GNUmakefile'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_large_artifact_1_69.py'
+      - '.github/workflows/pass219-lane5-nine-loop-large-artifact-1-69.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  large-artifact-1-69:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped verifier dependencies
+        run: python -m pip install pytest numpy
+
+      - name: Run synthetic fail-closed tests
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/pass219/test_pass219_lane5_nine_loop_large_artifact_1_69.py             tests/pass219/test_pass219_lane5_nine_loop_source_attestation_1_68.py             tests/pass219/test_pass219_lane5_nine_loop_foreign_equivalence_1_67.py
+
+      - name: Download bounded public Cosmic9 artifacts
+        run: |
+          mkdir -p /tmp/cosmic9/amplitude /tmp/cosmic9/validation/records /tmp/cosmic9/MHV9
+          curl --fail --location --silent --show-error             https://smsharma.io/cosmic-nine-loops/MANIFEST.sha256             -o /tmp/cosmic9/MANIFEST.sha256
+          curl --fail --location --silent --show-error             https://smsharma.io/cosmic-nine-loops/amplitude/E9_symbol_complete_mod2147483647.npz             -o /tmp/cosmic9/amplitude/E9_symbol_complete_mod2147483647.npz
+          curl --fail --location --silent --show-error             https://smsharma.io/cosmic-nine-loops/amplitude/E9_symbol_complete_mod2147483629.npz             -o /tmp/cosmic9/amplitude/E9_symbol_complete_mod2147483629.npz
+          curl --fail --location --silent --show-error             https://smsharma.io/cosmic-nine-loops/validation/records/09_septuple_vs_quintuple_107053_words.txt.gz             -o /tmp/cosmic9/validation/records/09_septuple_vs_quintuple_107053_words.txt.gz
+          curl --fail --location --silent --show-error             https://smsharma.io/cosmic-nine-loops/MHV9/MHV9septuples.zip             -o /tmp/cosmic9/MHV9/MHV9septuples.zip
+
+      - name: Discover public container inventories before equivalence freeze
+        env:
+          SOURCE_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          from hhs_runtime.pass219.lane5_nine_loop_large_artifact_1_69 import (
+              discover_large_artifact_schema,
+              derive_public_logical_equivalence,
+          )
+
+          root = Path("/tmp/cosmic9")
+          discovery = discover_large_artifact_schema(
+              manifest_text=(root / "MANIFEST.sha256").read_text(encoding="utf-8"),
+              p1_npz=root / "amplitude/E9_symbol_complete_mod2147483647.npz",
+              p2_npz=root / "amplitude/E9_symbol_complete_mod2147483629.npz",
+              comparison_gz=root / "validation/records/09_septuple_vs_quintuple_107053_words.txt.gz",
+              septuple_zip=root / "MHV9/MHV9septuples.zip",
+          )
+          assert discovery["comparison"]["comparison_rows"] == 107053
+          assert discovery["comparison"]["mismatch_marker_count"] == 0
+          assert discovery["prime_lanes"]["2147483647"]["expected_matrix_shape_verified"] is True
+          assert discovery["prime_lanes"]["2147483629"]["expected_matrix_shape_verified"] is True
+          assert discovery["septuple_archive"]["archive_extracted"] is False
+          assert discovery["cross_prime_container_identity_required"] is False
+          assert discovery["logical_equivalence_contract_frozen"] is False
+          assert discovery["native_hash216_composition_frozen"] is False
+          assert discovery["candidate_only"] is True
+          assert discovery["full_materialization"] is False
+
+          discovery["source_head_sha"] = os.environ["SOURCE_HEAD_SHA"]
+          discovery["github_sha"] = os.environ["GITHUB_SHA"]
+          discovery["checkout_commit_sha"] = subprocess.check_output(
+              ["git", "rev-parse", "HEAD"], text=True
+          ).strip()
+          discovery["workflow_run_id"] = os.environ["GITHUB_RUN_ID"]
+          relation = derive_public_logical_equivalence(discovery)
+          assert relation["logical_equivalence_contract_frozen"] is True
+          assert relation["native_hash216_composition_frozen"] is False
+          assert relation["literal_container_identity_required"] is False
+          assert relation["nonzero_support_sha256"]
+
+          print("PASS219_1_69_DISCOVERY=" + json.dumps(discovery, sort_keys=True))
+          print("PASS219_1_69_RELATION=" + json.dumps(relation, sort_keys=True))
+          with open("/tmp/cosmic9/discovery.json", "w", encoding="utf-8") as handle:
+              json.dump(discovery, handle, indent=2, sort_keys=True)
+              handle.write("\n")
+          with open("/tmp/cosmic9/relation.json", "w", encoding="utf-8") as handle:
+              json.dump(relation, handle, indent=2, sort_keys=True)
+              handle.write("\n")
+          PY
+
+      - name: Upload schema-discovery receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-1-69-schema-discovery-${{ github.sha }}
+          path: |
+            /tmp/cosmic9/discovery.json
+            /tmp/cosmic9/relation.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Build shared exact VM81 runtime with 1.69 membrane
+        run: make -f GNUmakefile c-kernel
+
+      - name: Compile native 1.69 conformance
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_nine_loop_large_artifact_cell_wall_1_69.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread \
+            -o /tmp/test_pass219_lane5_nine_loop_large_1_69
+
+      - name: Run native 1.69 conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_lane5_nine_loop_large_1_69

@@ -36,6 +36,21 @@ def test_shell_and_python_deployment_assets_parse() -> None:
     )
 
 
+def test_production_service_routes_live_semantic_cache_to_writable_runtime_state() -> None:
+    production_service = (
+        ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service"
+    ).read_text(encoding="utf-8")
+
+    assert "Environment=HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime" in production_service
+    assert (
+        "Environment=HHS_LIVE_SEMANTIC_COMPOSITION_CACHE_PATH="
+        "/var/lib/hhs/data/runtime/hhs_live_semantic_composition_cache_pass217.json"
+    ) in production_service
+    assert "Environment=HHS_COGNITION_AUTO_TICK=0" in production_service
+    assert "ProtectSystem=full" in production_service
+    assert "ReadWritePaths=/var/lib/hhs" in production_service
+
+
 def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> None:
     with tempfile.TemporaryDirectory(prefix="hhs-runtime-os-bundle-") as tmp:
         root = Path(tmp)
@@ -485,3 +500,44 @@ def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
     assert 'values["HHS_VALIDATE_TIMEOUT_SECONDS"] = str(' in source
     assert "max(minimum_validate_timeout, current_validate_timeout)" in source
     assert '"HHS_VALIDATE_TIMEOUT_SECONDS",' in source
+
+
+def test_delivery_workflows_pin_active_production_target_and_skip_stale_index_without_failure() -> None:
+    production = (
+        ROOT / ".github" / "workflows" / "digitalocean-production-main.yml"
+    ).read_text(encoding="utf-8")
+    application_vm = (
+        ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+    real_guest = (
+        ROOT / ".github" / "workflows" / "pass220-i044-real-ubuntu-guest.yml"
+    ).read_text(encoding="utf-8")
+    mobile_gate = (
+        ROOT / ".github" / "workflows" / "digitalocean-mobile-control-ingress.yml"
+    ).read_text(encoding="utf-8")
+    index_workflow = (
+        ROOT / ".github" / "workflows" / "repository-hash216-dependency-index.yml"
+    ).read_text(encoding="utf-8")
+
+    active_host = "159.65.178.254"
+    retired_host = "165.227.220.193"
+
+    for workflow in (production, application_vm, real_guest):
+        assert f"HHS_PRODUCTION_HOST: '{active_host}'" in workflow
+        assert "vars.HHS_DIGITALOCEAN_HOST" not in workflow
+
+    assert active_host in mobile_gate
+    assert f'! grep -Fq "{retired_host}"' in mobile_gate
+    assert retired_host not in production
+
+    stale_guard = (
+        'if [ "$remote_head" != "$EXPECTED_HEAD" ]; then',
+        "Stale Hash216 projection skipped",
+        "exit 0",
+    )
+    stale_start = index_workflow.index(stale_guard[0])
+    stale_end = index_workflow.index("fi", stale_start)
+    stale_block = index_workflow[stale_start:stale_end]
+    assert stale_guard[1] in stale_block
+    assert stale_guard[2] in stale_block
+    assert "exit 1" not in stale_block

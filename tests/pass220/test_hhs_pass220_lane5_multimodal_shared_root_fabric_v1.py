@@ -15,17 +15,107 @@ from hhs_runtime.hhs_pass220_lane5_multimodal_shared_root_fabric_v1 import (
     PASS218_RELATIONAL_SEMANTICS,
     ROOT_METADATA_SEED,
     ROOT_METADATA_SEED_TEXT,
+    HASH216_LANE_ORDER,
+    GENUS3_FACE_CYCLES,
+    GENUS3_EDGES,
+    GENUS3_VERTEX_FACE_TRIPLES,
     Pass220I042MultimodalError,
     build_multimodal_knowledge_graph,
     build_multimodal_projection_set,
     cross_modal_translation,
     lane5_multimodal_shared_root_self_test,
     lane5_multimodal_shared_root_witness,
+    hash216_genus3_polyhedral_surface,
     shared_multimodal_root_payload,
     shared_multimodal_root_sha256,
     validate_multimodal_knowledge_graph,
 )
 from hhs_runtime.hhs_service_registry_v1 import make_default_service_registry
+
+
+
+
+
+def test_hash216_is_fixed_three_hash72_genus3_nonagonal_surface():
+    surface = hash216_genus3_polyhedral_surface()
+
+    assert surface["lane_order"] == ("PREVIOUS", "CHANGE", "RECEIPT")
+    assert surface["lane_order"] == HASH216_LANE_ORDER
+    assert surface["array_shape"] == (3, 8, 9)
+    assert surface["hash72_positions_per_lane"] == 72
+    assert surface["hash216_positions"] == 216
+
+    assert surface["faces"] == 8
+    assert surface["face_type"] == "FLAT_NONAGON"
+    assert surface["sides_per_face"] == 9
+    assert surface["vertices"] == 24
+    assert surface["edges"] == 36
+    assert surface["vertex_valence"] == 3
+    assert surface["euler_characteristic"] == -4
+    assert surface["orientable_genus"] == 3
+
+    assert len(GENUS3_VERTEX_FACE_TRIPLES) == 24
+    assert len(GENUS3_EDGES) == 36
+    assert len(GENUS3_FACE_CYCLES) == 8
+    assert all(len(face) == 9 for face in GENUS3_FACE_CYCLES)
+
+    assert surface["every_face_neighbors_every_other_face"] is True
+    assert surface["unique_face_pairs"] == 28
+    assert len(surface["face_pair_multiplicity"]) == 28
+    assert all(count in (1, 2) for count in surface["face_pair_multiplicity"].values())
+    assert len(surface["repeated_face_pairs"]) == 8
+
+    assert surface["incidence_closure"] == {
+        "8x9_equals_72": True,
+        "72_equals_2E": True,
+        "24x3_equals_72": True,
+        "V_minus_E_plus_F": -4,
+        "2_minus_2g": -4,
+    }
+
+    slots = surface["slots"]
+    assert len(slots) == 216
+    assert tuple(slot["hash216_index"] for slot in slots) == tuple(range(216))
+
+    for lane in range(3):
+        lane_slots = slots[lane * 72:(lane + 1) * 72]
+        assert {slot["lane"] for slot in lane_slots} == {lane}
+        assert {slot["lane_role"] for slot in lane_slots} == {HASH216_LANE_ORDER[lane]}
+        assert tuple(slot["hash72_index"] for slot in lane_slots) == tuple(range(72))
+        assert {slot["face"] for slot in lane_slots} == set(range(8))
+        assert all(0 <= slot["nonagon_slot"] < 9 for slot in lane_slots)
+
+
+def test_hash216_surface_face_adjacency_is_complete_k8_with_eight_repeats():
+    surface = hash216_genus3_polyhedral_surface()
+    multiplicity = surface["face_pair_multiplicity"]
+
+    expected_pairs = {
+        f"{a}:{b}"
+        for a in range(8)
+        for b in range(a + 1, 8)
+    }
+    assert set(multiplicity) == expected_pairs
+
+    # Every face is a neighbor of all seven others.
+    neighbor_sets = []
+    for face, cycle in enumerate(surface["face_neighbor_cycles"]):
+        assert len(cycle) == 9
+        neighbor_set = set(cycle)
+        assert face not in neighbor_set
+        assert neighbor_set == (set(range(8)) - {face})
+        neighbor_sets.append(neighbor_set)
+
+    # Eight extra edge adjacencies beyond K8 account for 36 total edges.
+    assert sum(multiplicity.values()) == 36
+    assert sum(count - 1 for count in multiplicity.values()) == 8
+
+
+def test_shared_root_binds_genus3_surface_identity():
+    surface = hash216_genus3_polyhedral_surface()
+    payload = shared_multimodal_root_payload()
+    assert payload["hash216_genus3_surface_root_sha256"] == surface["surface_root_sha256"]
+    assert payload["hash216_genus3_array_shape"] == (3, 8, 9)
 
 
 def test_root_seed_and_invariant_gate_are_exact_rationals():
@@ -89,6 +179,8 @@ def test_all_six_modalities_get_exact_5184_hash72_hash216_projection():
         assert len(projection["projection_hash72"]) == 72
         assert projection["hash216_position_count"] == 216
         assert len(projection["hash216_positions"]) == 216
+        assert projection["hash216_genus3_surface_shape"] == (3, 8, 9)
+        assert len(projection["hash216_genus3_surface_root_sha256"]) == 64
         assert len(projection["hash216_genome_root_sha256"]) == 64
         assert projection["token_count"] > 0
         assert projection["source_bytes_retained_in_projection_record"] is False
@@ -243,6 +335,9 @@ def test_graph_validates_and_fails_closed_on_root_or_authority_tampering():
     assert result["all_modalities_share_root"] is True
     assert result["all_modalities_have_5184_projection"] is True
     assert result["all_modalities_have_hash216_genome"] is True
+    assert result["hash216_genus3_surface_closed"] is True
+    assert result["hash216_array_shape"] == (3, 8, 9)
+    assert result["hash216_polyhedral_counts"] == {"V": 24, "E": 36, "F": 8}
     assert result["exact_multimodal_fabric_closed"] is True
 
     tampered = deepcopy(graph)

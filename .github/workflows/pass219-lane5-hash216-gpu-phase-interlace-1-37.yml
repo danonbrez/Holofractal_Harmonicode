@@ -14,6 +14,52 @@ on:
       - 'hhs_backend/runtime/hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.c'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
+      - 'hhs_runtime/pass219/phase_geometry_learning.py'
+      - 'tests/pass219/test_pass219_phase_geometry_learning.py'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c'
+      - 'formal/coq/HHS_GFE_Field_Quotient.v'
+      - 'formal/lemmas/pass_144/LEMMA_CORPUS.json'
+      - 'tests/test_pass136_formal_gfe.py'
+      - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl'
+      - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json'
+      - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.receipt.json'
+      - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
+      - 'hhs_runtime/pass219/lane5_poincare_integral_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_poincare_integral_bridge.py'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
+      - 'hhs_spi_scalar_projection_registry_v9.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v9.py'
+      - 'hhs_runtime/pass219/lane5_t_bridge_01b_class_stability.py'
+      - 'tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
+      - 'hhs_runtime/pass219/lane5_self_solving_tbridge_optimizer.py'
+      - 'tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
+      - 'hhs_runtime/pass219/lane5_penrose8_hash216_loshu_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.wl'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
+      - 'hhs_runtime/hhs_pass220_g3_reciprocal_symbol_codec_v1.py'
+      - 'tests/pass220/test_hhs_pass220_g3_reciprocal_symbol_codec_v1.py'
+      - 'hhs_runtime/pass219/lane5_feynman_discrete_orbit_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_feynman_discrete_orbit_bridge.py'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.wl'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.output.json'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.receipt.json'
+      - 'docs/operations/restart/PASS_219_LANE5_PRIME_QUANTIZATION_WOLFRAM_RESTART_20260924.md'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   pull_request:
@@ -29,6 +75,52 @@ on:
       - 'hhs_backend/runtime/hhs_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.c'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
+      - 'hhs_runtime/pass219/phase_geometry_learning.py'
+      - 'tests/pass219/test_pass219_phase_geometry_learning.py'
+      - 'hhs_runtime/core_sandbox/hhs_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py'
+      - 'tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c'
+      - 'formal/coq/HHS_GFE_Field_Quotient.v'
+      - 'formal/lemmas/pass_144/LEMMA_CORPUS.json'
+      - 'tests/test_pass136_formal_gfe.py'
+      - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.wl'
+      - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json'
+      - 'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.receipt.json'
+      - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.wl'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
+      - 'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
+      - 'hhs_runtime/pass219/lane5_poincare_integral_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_poincare_integral_bridge.py'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.wl'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
+      - 'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
+      - 'hhs_spi_scalar_projection_registry_v9.py'
+      - 'hhs_spi_scalar_projection_registry_tests_v9.py'
+      - 'hhs_runtime/pass219/lane5_t_bridge_01b_class_stability.py'
+      - 'tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.wl'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
+      - 'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
+      - 'hhs_runtime/pass219/lane5_self_solving_tbridge_optimizer.py'
+      - 'tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
+      - 'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
+      - 'hhs_runtime/pass219/lane5_penrose8_hash216_loshu_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.wl'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
+      - 'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
+      - 'hhs_runtime/hhs_pass220_g3_reciprocal_symbol_codec_v1.py'
+      - 'tests/pass220/test_hhs_pass220_g3_reciprocal_symbol_codec_v1.py'
+      - 'hhs_runtime/pass219/lane5_feynman_discrete_orbit_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_feynman_discrete_orbit_bridge.py'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.wl'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.output.json'
+      - 'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.receipt.json'
+      - 'docs/operations/restart/PASS_219_LANE5_PRIME_QUANTIZATION_WOLFRAM_RESTART_20260924.md'
       - 'docs/operations/restart/PASS_219_LANE5_HASH216_GPU_PHASE_INTERLACE_1_37_RESTART_20260913.md'
       - '.github/workflows/pass219-lane5-hash216-gpu-phase-interlace-1-37.yml'
   workflow_dispatch:
@@ -46,7 +138,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev python3-pytest
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-sympy
 
       - name: Static Lane 5 optimizer contract gate
         run: |
@@ -116,6 +208,304 @@ jobs:
           python -m pytest -q \
             tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py \
             tests/test_hhs_pass207_gpu_driver_v1.py
+
+      - name: Run modular phase / proof-preserving / Coq-source regressions
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_phase_geometry_learning.py \
+            tests/pass219/test_pass219_proof_preserving_optimizer_1_21_12.py \
+            tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py \
+            tests/pass219/test_pass219_lane5_poincare_integral_bridge.py \
+            tests/pass219/test_pass219_lane5_t_bridge_01b_class_stability.py \
+            tests/pass219/test_pass219_lane5_self_solving_tbridge_optimizer.py \
+            tests/pass219/test_pass219_lane5_penrose8_hash216_loshu_bridge.py \
+            tests/pass219/test_pass219_lane5_feynman_discrete_orbit_bridge.py \
+            hhs_spi_scalar_projection_registry_tests_v9.py \
+            tests/test_pass136_formal_gfe.py
+
+      - name: Run nested Boolean constraint membrane conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_harmonicode_global_constraint_membrane_1_21_9.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-global-constraint-membrane
+          /tmp/test-global-constraint-membrane
+
+      - name: Verify Wolfram cycle-2 evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_modular_complex_tensor_phase_wolfram_20260924_v2.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 29
+          assert receipt['pass_count'] == output['pass_count'] == 29
+          assert receipt['failed'] == output['failed'] == []
+          assert receipt['coq_kernel_execution_claimed'] is False
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          assert output['global_prime_equivalence'] == 'OPEN'
+          assert output['riemann_bridge'] == 'OPEN'
+          assert output['collatz_asymptotic_bridge'] == 'OPEN'
+          print('lane5_modular_complex_tensor_phase_wolfram_v2=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-3 Genesis/U9/Qe evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_genesis_orientation_u9_qe_wolfram_20260924_v3.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 27
+          assert receipt['pass_count'] == output['pass_count'] == 27
+          assert receipt['failed'] == output['failed'] == []
+          assert output['vm81_construction'] == (
+              '72 phase-cover positions + 9-cell Genesis nucleus'
+          )
+          assert output['kronecker_scalar_construction_authority'] is False
+          assert output['u9_one_step_e0_scalar_eigenclaim'] == 'NOT_ASSERTED'
+          assert output['native_eigenvector0'] == (
+              'full ordered x,y,z,w tensor object'
+          )
+          assert output['symplectic_central_L'] == 'EXACT'
+          assert output['kepler_local_energy_defect'] == (
+              'O(h^2); no linear h term'
+          )
+          assert output['t_bridge_01_global_band_monotonicity'] == 'OPEN'
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_genesis_orientation_u9_qe_wolfram_v3=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-4 Poincare invariant evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_poincare_integral_invariant_wolfram_20260924_v4.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 16
+          assert receipt['pass_count'] == output['pass_count'] == 16
+          assert receipt['failed'] == output['failed'] == []
+          assert output['both_sequential_orders_symplectic'] is True
+          assert output['simultaneous_old_state_explicit_symplectic'] is False
+          assert output['volume_only_is_insufficient'] is True
+          assert output['poincare_integral_invariant'] == (
+              'Phi^*(sum_i dq_i wedge dp_i)=sum_i dq_i wedge dp_i'
+          )
+          assert output['four_d_projection_reading'] == (
+              'oriented A1+A2 is invariant; individual Ai may exchange'
+          )
+          assert output['t_bridge_01b_energy_band_class_stability'] == 'OPEN'
+          assert receipt['exact_energy_conservation_claimed'] is False
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_poincare_integral_invariant_wolfram_v4=PASS')
+          PY
+
+      - name: Validate SPI v9 harmonic and Delta projection registry
+        env:
+          PYTHONPATH: .
+        run: |
+          python hhs_spi_scalar_projection_registry_v9.py
+          python hhs_spi_scalar_projection_registry_tests_v9.py
+
+      - name: Verify Wolfram cycle-5 scalar-face / Delta / T_BRIDGE evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_scalar_face_delta_tbridge_wolfram_20260924_v5.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 15
+          assert receipt['pass_count'] == output['pass_count'] == 15
+          assert receipt['failed'] == output['failed'] == []
+          assert output['harmonic_modulus_symbol'] == (
+              'U72 := 2/ubar^2; not ordinary ubar^72'
+          )
+          assert output['g72_native_status'] == (
+              'immutable ordered generator; scalar preemption forbidden'
+          )
+          assert output['g72_scalar_projection_face'] == '2^(1/72)'
+          assert output['delta_constructor_identity_global'] is False
+          assert output['delta_projection_cross_substitution_authorized'] is False
+          assert output['actual_epsilon_monotonicity_claimed'] is False
+          assert output['monotone_envelope_claimed'] is True
+          assert output['t_bridge_01b_workload_interval_certificate'] == 'OPEN'
+          assert receipt['native_g72_rewritten'] is False
+          assert receipt['native_u72_label_rewritten_as_ordinary_power'] is False
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_scalar_face_delta_tbridge_wolfram_v5=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-6 self-solving T_BRIDGE evidence is sealed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.receipt.json'
+          ).read_text())
+          output = json.loads(Path(
+              'evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json'
+          ).read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 16
+          assert receipt['pass_count'] == output['pass_count'] == 16
+          assert receipt['failed'] == output['failed'] == []
+          assert output['root_polynomial'] == '2*u^3+3*u^2-8*u-16'
+          assert output['sextic_carrier'] == (
+              '2*a^6+3*a^4-8*a^2-16=0 with u=a^2'
+          )
+          assert output['energy_membrane_polynomial'] == 'F=A^2*R^2-1'
+          assert output['gamma_definition'] == (
+              'h^2*v_t^2/r^2=h^2*L^2/r^4 (L=r*v_t)'
+          )
+          assert receipt['gamma_convention_pinned'] is True
+          assert output['local_order'].startswith('F=h^2*G(h)')
+          assert output['circular_h_le_quarter_class'] == '+1'
+          assert output['eccentric_vt_4_over_5_h_le_quarter_class'] == '-1'
+          assert output['cumulative_multistep_energy_band'].startswith('OPEN')
+          assert receipt['legacy_self_solving_direct_execution_claimed'] is False
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          print('lane5_self_solving_tbridge_wolfram_v6=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-7 Penrose8 / Hash72 / Hash216 evidence is sealed
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          output_path = Path(
+              'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.output.json'
+          )
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_penrose8_hash216_loshu_wolfram_20260924_v7.receipt.json'
+          ).read_text())
+          output = json.loads(output_path.read_text())
+          assert receipt['status'] == output['status'] == 'PASS'
+          assert receipt['check_count'] == output['check_count'] == 9
+          assert receipt['pass_count'] == output['pass_count'] == 9
+          assert receipt['failed'] == output['failed'] == []
+          assert output['twistor_complex_dimension'] == 4
+          assert output['twistor_real_dimension'] == 8
+          assert output['incidence_relation'] == 'omega=i X pi'
+          assert output['checks']['incidence_null_form_zero'] is True
+          assert output['checks']['massless_momentum_det_zero'] is True
+          assert output['checks']['truth_table_2^3'] is True
+          assert output['checks']['nine_nuclei_times_eight'] is True
+          assert output['checks']['hash216_three_hash72'] is True
+          assert output['checks']['vm5184_hash72_square'] is True
+          assert output['null_form_class'] == 'ALGEBRAIC_IDENTITY'
+          assert output['massless_momentum_det_class'] == 'ALGEBRAIC_IDENTITY'
+          assert output['center_role'] == (
+              'NUCLEUS_LOCK_NOT_8D_CARRIER_COORDINATE'
+          )
+          assert output['hash72_geometry'] == (
+              '9*8=72; U72 typed geometry = Hash72 = '
+              '72 Lo-Shu outer-cell coordinates'
+          )
+          assert output['u72_scalar_projection_closure_assignment'] == (
+              'U72:=2/ubar^2'
+          )
+          assert output['ordinary_ubar_power_rewrite_authorized'] is False
+          assert output['z_gauge_policy'] == (
+              'EXACT_PI_REPRESENTATIVE_FROZEN_PER_RECEIPT'
+          )
+          assert output['cross_gauge_absolute_magnitude_authorized'] is False
+          assert receipt['center_lock_excluded_from_penrose8_chart'] is True
+          assert receipt['retained_cstar_gauge_freedom'] is True
+          assert receipt[
+              'absolute_z_magnitude_gate_requires_gauge_root_match'
+          ] is True
+          assert output['hash216_geometry'] == (
+              'previous72||next72||receipt72; 3*72=216'
+          )
+          assert receipt['output_sha256'] == hashlib.sha256(
+              output_path.read_bytes()
+          ).hexdigest()
+          assert receipt['hhs_projection_contract_only'] is True
+          assert receipt[
+              'external_physical_equivalence_beyond_projection_claimed'
+          ] is False
+          assert receipt['canonical_hash72_mint_authority'] is False
+          assert receipt['canonical_hash216_mint_authority'] is False
+          assert receipt['canonical_persistence_authority'] is False
+          assert receipt['floating_point_canonical_authority'] is False
+          print('lane5_penrose8_hash216_loshu_wolfram_v7=PASS')
+          PY
+
+      - name: Verify Wolfram cycle-8 discrete Feynman / Carry evidence is sealed
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          output_path = Path(
+              'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.output.json'
+          )
+          output = json.loads(output_path.read_text())
+          receipt = json.loads(Path(
+              'evidence/pass219/lane5_feynman_discrete_orbit_wolfram_20260924_v8.receipt.json'
+          ).read_text())
+          assert output['status'] == receipt['status'] == 'PASS'
+          assert output['check_count'] == receipt['check_count'] == 11
+          assert output['pass_count'] == receipt['pass_count'] == 11
+          assert output['failed'] == receipt['failed'] == []
+          assert output['nonzero_counts_n0_to_18'] == [9] * 19
+          assert output['partition_trace_n1_to_9'] == [0,0,0,0,0,0,0,0,9]
+          assert output['checks']['r2_F2_kick_relation'] is True
+          assert output['checks']['r2_F2_drift_relation'] is True
+          assert output['checks']['r2_discrete_action_stationarity'] is True
+          assert output['checks']['r4_explicit_cross_mismatch'] is True
+          assert output['checks']['spectrum_scalar_face'] is True
+          assert output['weight_policy'] == (
+              'NO_EXACT_CANONICAL_F2 => NO_ADMITTED_HHS_FEYNMAN_WEIGHT'
+          )
+          assert output['continuum_path_integral_claimed'] is False
+          assert output['partition_trace_class'] == (
+              'REAL_TIME_SPECTRAL_TRACE_NOT_THERMAL_PARTITION_FUNCTION'
+          )
+          assert receipt['weightlessness_scope'] == (
+              'HHS_ADMISSION_ONLY_NOT_UNIVERSAL_EXTERNAL_ZERO_AMPLITUDE'
+          )
+          assert receipt['output_sha256'] == hashlib.sha256(
+              output_path.read_bytes()
+          ).hexdigest()
+          assert receipt['canonical_runtime_mutation_authority'] is False
+          assert receipt['canonical_hash72_mint_authority'] is False
+          assert receipt['canonical_hash216_mint_authority'] is False
+          assert receipt['canonical_persistence_authority'] is False
+          assert receipt['floating_point_canonical_authority'] is False
+          print('lane5_feynman_discrete_orbit_wolfram_v8=PASS')
+          PY
 
       - name: Regress inherited Lane 5 authority
         env:

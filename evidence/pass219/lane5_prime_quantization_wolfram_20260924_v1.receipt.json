@@ -1,0 +1,17 @@
+{
+  "schema": "HHS_PASS_219_LANE5_PRIME_QUANTIZATION_WOLFRAM_RECEIPT_V1",
+  "date": "2026-09-24",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 19,
+  "pass_count": 19,
+  "failed": [],
+  "input_path": "evidence/pass219/lane5_prime_quantization_wolfram_20260924_v1.wl",
+  "output_path": "evidence/pass219/lane5_prime_quantization_wolfram_20260924_v1.output.json",
+  "repository_replay_command": "wolframscript -file evidence/pass219/lane5_prime_quantization_wolfram_20260924_v1.wl",
+  "authority": "FORMAL_PROJECTION_ONLY",
+  "canonical_runtime_mutation_authority": false,
+  "global_prime_equivalence": "OPEN",
+  "riemann_bridge": "OPEN",
+  "collatz_asymptotic_bridge": "OPEN"
+}

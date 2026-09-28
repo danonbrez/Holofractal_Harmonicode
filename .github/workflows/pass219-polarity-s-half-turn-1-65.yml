@@ -1,0 +1,107 @@
+name: Pass 219 Polarity s Half-Turn 1.65
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.hhs'
+      - 'contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.md'
+      - 'hhs_runtime/include/hhs_pass219_polarity_s_half_turn_1_65.h'
+      - 'hhs_runtime/c/hhs_pass219_polarity_s_half_turn_1_65.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc'
+      - 'evidence/pass219/polarity_s_half_turn_wolfram_20260926_v1.output.json'
+      - 'tests/pass219/test_pass219_polarity_s_half_turn_1_65.c'
+      - 'tests/pass219/test_pass219_polarity_s_half_turn_1_65.py'
+      - '.github/workflows/pass219-polarity-s-half-turn-1-65.yml'
+      - 'docs/operations/restart/PASS_219_POLARITY_S_HALF_TURN_1_65_RESTART_20260926.md'
+  push:
+    branches:
+      - main
+      - pass219/hnan-4x4-recursive-gate-20260926
+    paths:
+      - 'contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.hhs'
+      - 'contracts/pass219/PASS_219_POLARITY_S_HALF_TURN_1_65.md'
+      - 'hhs_runtime/include/hhs_pass219_polarity_s_half_turn_1_65.h'
+      - 'hhs_runtime/c/hhs_pass219_polarity_s_half_turn_1_65.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc'
+      - 'evidence/pass219/polarity_s_half_turn_wolfram_20260926_v1.output.json'
+      - 'tests/pass219/test_pass219_polarity_s_half_turn_1_65.c'
+      - 'tests/pass219/test_pass219_polarity_s_half_turn_1_65.py'
+      - '.github/workflows/pass219-polarity-s-half-turn-1-65.yml'
+      - 'docs/operations/restart/PASS_219_POLARITY_S_HALF_TURN_1_65_RESTART_20260926.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  polarity-s-half-turn:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install pytest
+
+      - name: Verify frozen Wolfram polarity proof
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          proof = json.loads(
+              Path(
+                  "evidence/pass219/"
+                  "polarity_s_half_turn_wolfram_20260926_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert proof["status"] == "PASS"
+          assert proof["s_plus_one_sign_vector"] == [1,-1,1,-1]
+          assert proof["s_minus_one_sign_vector"] == [-1,1,-1,1]
+          assert proof["p_minus_q_q_minus_p_before"] == [-2,2]
+          assert proof["p_minus_q_q_minus_p_after_s_minus_one"] == [2,-2]
+          assert proof["phase_operator"] == "u^36"
+          assert proof["phase_steps"] == 36
+          assert proof["rotation_self_inverse"] is True
+          assert proof["opposition_preserved"] is True
+          assert proof["native_scalar_rewrite_authority"] is False
+          PY
+
+      - name: Run polarity and parent regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q             tests/pass219/test_pass219_polarity_s_half_turn_1_65.py             tests/pass219/test_pass219_p_x2_global_reciprocal_manifold_1_64.py             tests/pass219/test_pass219_lane5_hnan_global_constraint_1_63.py
+
+      - name: Build shared exact VM81 Runtime
+        run: make -f GNUmakefile c-kernel
+
+      - name: Verify callable polarity exports
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so             | grep -F 'hhs_exact_pass219_polarity_s_version'
+          nm -D hhs_runtime/builds/libhhs_runtime.so             | grep -F 'hhs_exact_pass219_polarity_s_verify'
+
+      - name: Compile native polarity conformance
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror             -Ihhs_runtime/include             tests/pass219/test_pass219_polarity_s_half_turn_1_65.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto             -o /tmp/test_pass219_polarity_s_1_65
+
+      - name: Run native polarity conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_polarity_s_1_65
+
+      - name: Verify both mandatory runtime boundaries
+        run: |
+          grep -F 'hhs_exact_pass219_polarity_s_verify'             hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+          grep -F 'hhs_exact_pass219_polarity_s_verify'             hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc
+          grep -F 'p_q_pair_rotation_verified'             hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+          grep -F 'p_q_pair_rotation_verified'             hhs_runtime/c/hhs_pass219_vm81_environmental_recovery_1_32.inc

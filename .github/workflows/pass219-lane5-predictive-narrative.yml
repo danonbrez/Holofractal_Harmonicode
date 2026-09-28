@@ -1,0 +1,48 @@
+name: Pass 219 Lane 5 Predictive Narrative Validation
+# validated integration parent: main@009042302b687bb902151adca0330ece56462c0c
+
+on:
+  push:
+    branches:
+      - pass219/ethical-predictive-narrative-simulation-20260927
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_PREDICTIVE_NARRATIVE_ETHICAL_SIMULATION_1_0.md'
+      - 'hhs_runtime/hhs_pass219_lane5_predictive_narrative_v1.py'
+      - 'tests/pass219/test_hhs_pass219_lane5_predictive_narrative_v1.py'
+      - '.github/workflows/pass219-lane5-predictive-narrative.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_PREDICTIVE_NARRATIVE_ETHICAL_SIMULATION_1_0.md'
+      - 'hhs_runtime/hhs_pass219_lane5_predictive_narrative_v1.py'
+      - 'tests/pass219/test_hhs_pass219_lane5_predictive_narrative_v1.py'
+      - '.github/workflows/pass219-lane5-predictive-narrative.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  predictive-narrative:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run predictive narrative and inherited Python regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_hhs_pass219_lane5_predictive_narrative_v1.py \
+            tests/test_hhs_pass218_219_r03_r04_vm81_bridge_v1.py \
+            hhs_runtime/test_narrative_alignment_reasoning_engine_v1.py
+
+      - name: Re-run inherited native ethical membrane
+        run: make -C native_projects/hhs_pass219_ethical_scope_membrane clean test

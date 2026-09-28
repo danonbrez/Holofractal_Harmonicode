@@ -7,7 +7,10 @@ from typing import Any, Dict, Mapping, Optional
 from hhs_backend.runtime.hhs_workspace_command_router_v1 import build_workspace_command, COMMAND_TIERS
 from hhs_backend.runtime.runtime_workspace_project_v1 import create_workspace_project, fork_workspace_project, open_workspace_project
 from hhs_backend.runtime.runtime_workspace_object_v1 import VERSION, AUTHORITY, create_workspace_object, hash72
-from hhs_backend.runtime.multimodal_workspace_ingress_v1 import ingest_workspace_source
+from hhs_backend.runtime.multimodal_workspace_ingress_v1 import (
+    ingest_workspace_source,
+    normalize_legacy_payload,
+)
 from hhs_backend.runtime.hhs_symbolic_document_service_v1 import create_symbolic_document, propose_source_patch, admit_symbolic_patch
 from hhs_backend.runtime.hhs_live_interpreter_v1 import build_interpreter_request, interpret_expression
 from hhs_backend.runtime.hhs_interpreting_compiler_v1 import build_compiler_request, compile_hhs_source
@@ -24,6 +27,27 @@ class WorkspaceAuthorityLoop:
 
     def submit(self, operation: str, payload: Optional[Mapping[str, Any]] = None) -> Dict[str, Any]:
         payload_dict = dict(payload or {})
+
+        # Compatibility ingress must be JSON-safe before the command envelope is
+        # witnessed and returned through FastAPI.  Raw Linux/browser bytes are
+        # converted once into the reversible binary source envelope; the
+        # downstream ingress normalizer is idempotent and preserves that exact
+        # representation instead of creating a second encoding layer.
+        if operation == "ingress.register":
+            source_key = "source_payload" if "source_payload" in payload_dict else "payload"
+            if source_key in payload_dict:
+                normalized_source = normalize_legacy_payload(payload_dict.get(source_key))
+                if normalized_source.get("binary_source"):
+                    payload_dict[source_key] = normalized_source["payload"]
+                    payload_dict.setdefault(
+                        "compatibility_source_transport_encoding",
+                        normalized_source["transport_encoding"],
+                    )
+                    payload_dict.setdefault(
+                        "compatibility_source_size_bytes",
+                        normalized_source["source_size_bytes"],
+                    )
+
         command = build_workspace_command(
             operation,
             project_id=str(payload_dict.get("project_id") or "project:default"),
@@ -56,11 +80,38 @@ class WorkspaceAuthorityLoop:
             result = fork_workspace_project(project, payload_dict.get("name"))
         elif operation == "ingress.register":
             project = self.projects.get(str(payload_dict.get("project_id"))) or create_workspace_project("Ingress Project")
+            source_payload = (
+                payload_dict.get("source_payload")
+                if "source_payload" in payload_dict
+                else payload_dict.get("payload", "")
+            )
             result = ingest_workspace_source(
                 project=project,
-                source_name=str(payload_dict.get("source_name") or "main.hhs"),
-                payload=payload_dict.get("source_payload") or payload_dict.get("payload") or "",
-                declared_modality=str(payload_dict.get("declared_modality") or "HARMONICODE_SOURCE"),
+                source_name=str(payload_dict.get("source_name") or "ingress.bin"),
+                payload=source_payload,
+                declared_modality=(
+                    str(payload_dict.get("declared_modality") or payload_dict.get("source_modality") or "")
+                    or None
+                ),
+                media_type=(
+                    str(
+                        payload_dict.get("source_media_type")
+                        or payload_dict.get("media_type")
+                        or payload_dict.get("content_type")
+                        or ""
+                    )
+                    or None
+                ),
+                compatibility_metadata={
+                    "transport": payload_dict.get("compatibility_transport"),
+                    "parse_error": payload_dict.get("compatibility_parse_error"),
+                    "source_transport_encoding": payload_dict.get(
+                        "compatibility_source_transport_encoding"
+                    ),
+                    "source_size_bytes": payload_dict.get(
+                        "compatibility_source_size_bytes"
+                    ),
+                },
             )
             if result.get("ok") and result.get("registration", {}).get("project"):
                 self.projects[result["registration"]["project"]["project_id"]] = result["registration"]["project"]

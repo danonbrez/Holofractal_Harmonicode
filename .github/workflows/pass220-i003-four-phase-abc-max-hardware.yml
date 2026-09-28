@@ -23,6 +23,10 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
+      - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py'
+      - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
       - 'hhs_backend/api/litert_lm_assistant_routes.py'
       - 'tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py'
       - 'tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py'
@@ -70,6 +74,10 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
+      - 'hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py'
+      - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
       - 'hhs_backend/api/litert_lm_assistant_routes.py'
       - 'tests/pass220/test_hhs_pass220_i007_custom_system_instruction.py'
       - 'tests/pass220/test_hhs_pass220_i007_assistant_settings_clipboard_ui.py'
@@ -178,6 +186,9 @@ jobs:
             hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
             hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
             hhs_backend/runtime/hhs_production_assistant_v1.py \
+            hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py \
+            hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py \
+            hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py \
             hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
             hhs_backend/runtime/hhs_pass220_native_causal_lm_generation_v1.py \
             hhs_backend/api/litert_lm_assistant_routes.py \
@@ -193,7 +204,8 @@ jobs:
             tests/pass220/test_hhs_pass220_i008_assistant_mode_ui.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
             tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
-            tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py
+            tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py
 
       - name: Run dependency-scoped I001-I010 integration tests
         env:
@@ -217,6 +229,7 @@ jobs:
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
             tests/pass220/test_hhs_pass220_i010_user_approved_context.py \
             tests/pass220/test_hhs_pass220_i010_user_approved_context_ui.py \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py \
             | tee /tmp/pass220-i003/integration-tests.txt
 
       - name: Record raw-capacity normalization facts

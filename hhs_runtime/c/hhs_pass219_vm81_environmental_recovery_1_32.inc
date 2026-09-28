@@ -558,6 +558,10 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     HHSExactPass219VM81EnvironmentReceiptV1 *out_environment_receipt
 ) {
     uint8_t key[HHS_EXACT_PASS219_VM81_PQC_KEY_BYTES];
+    HHSExactPass219HNANGlobalReceiptV1 hnan_global;
+    HHSExactPass219PX2ManifoldReceiptV1 px2_manifold;
+    HHSExactPass219PolaritySReceiptV1 polarity_s;
+    HHSExactPass219ConservationReceiptV1 conservation_1_66;
     HHSExactStatus status;
     if (out_committed_frame == NULL || out_admission == NULL ||
         out_firewall_receipt == NULL || out_signature_receipt == NULL ||
@@ -568,6 +572,137 @@ HHSExactStatus hhs_exact_pass219_vm81_environment_admit_signed(
     hhs_p219_pqc_zero_receipt(out_firewall_receipt, pass_number);
     hhs_p219_pqc_signature_zero_receipt(out_signature_receipt, signature_algorithm);
     hhs_p219_env_zero_receipt(out_environment_receipt, signature_algorithm);
+
+    /*
+     * Global HNAN constraint preflight is part of the signed VM81 boundary.
+     * A runtime whose typed global relation table no longer verifies cannot
+     * commit canonical state, even when all cryptographic/environmental
+     * witnesses would otherwise succeed.
+     */
+    memset(&hnan_global, 0, sizeof(hnan_global));
+    status = hhs_exact_pass219_hnan_global_system_verify(&hnan_global);
+    if (status != HHS_EXACT_STATUS_OK ||
+        hnan_global.decision != HHS_EXACT_HNAN_DECISION_VERIFIED ||
+        hnan_global.verified_rule_mask != HHS_EXACT_PASS219_HNAN_GLOBAL_ALL_RULES ||
+        hnan_global.jordan_depth2_verified != 1U ||
+        hnan_global.ordered_zero_closure_preserved != 1U ||
+        hnan_global.global_delta_denominator_preserved != 1U ||
+        hnan_global.delta_cancellation_forbidden != 1U ||
+        hnan_global.unbounded_carrier_symbolic != 1U ||
+        hnan_global.u72_to_u0_closure_preserved != 1U ||
+        hnan_global.xy_yx_distinct != 1U ||
+        hnan_global.zw_wz_distinct != 1U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    memset(&px2_manifold, 0, sizeof(px2_manifold));
+    status = hhs_exact_pass219_px2_manifold_verify(&px2_manifold);
+    if (status != HHS_EXACT_STATUS_OK ||
+        px2_manifold.decision != HHS_EXACT_PASS219_PX2_DECISION_VERIFIED ||
+        px2_manifold.source_hash_verified != 1U ||
+        px2_manifold.parentheses_balanced != 1U ||
+        px2_manifold.typed_relation_edges_preserved != 1U ||
+        px2_manifold.outer_prefix_exact != 1U ||
+        px2_manifold.outer_denominator_exact != 1U ||
+        px2_manifold.ordered_markers_exact != 1U ||
+        px2_manifold.correction_raw_hash_verified != 1U ||
+        px2_manifold.correction_parse_hash_verified != 1U ||
+        px2_manifold.correction_raw_source_preserved != 1U ||
+        px2_manifold.correction_balanced_parse_preserved != 1U ||
+        px2_manifold.correction_native_order_preserved != 1U ||
+        px2_manifold.correction_scalar_projection_closed != 1U ||
+        px2_manifold.delta_bx_boundary_preserved != 1U ||
+        px2_manifold.scalar_simplification_authority != 0U ||
+        px2_manifold.equality_reversal_authority != 0U ||
+        px2_manifold.delta_cancellation_authority != 0U ||
+        px2_manifold.floating_point_canonical_authority != 0U ||
+        px2_manifold.canonical_vm81_mutation_authority != 0U ||
+        px2_manifold.canonical_hash72_authority != 0U ||
+        px2_manifold.canonical_hash216_authority != 0U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    memset(&polarity_s, 0, sizeof(polarity_s));
+    status = hhs_exact_pass219_polarity_s_verify(-1, &polarity_s);
+    if (status != HHS_EXACT_STATUS_OK ||
+        polarity_s.decision != HHS_EXACT_PASS219_POLARITY_S_DECISION_VERIFIED ||
+        polarity_s.s_value != -1 ||
+        polarity_s.phase_steps != HHS_EXACT_PASS219_POLARITY_S_HALF_TURN ||
+        polarity_s.source_definitions_verified != 1U ||
+        polarity_s.negative_s_surface_verified != 1U ||
+        polarity_s.parent_1_64_verified != 1U ||
+        polarity_s.chiral_pairs_opposed != 1U ||
+        polarity_s.half_turn_verified != 1U ||
+        polarity_s.half_turn_self_inverse != 1U ||
+        polarity_s.p_q_pair_rotation_verified != 1U ||
+        polarity_s.correction_link_verified != 1U ||
+        polarity_s.scalar_projection_closed != 1U ||
+        polarity_s.scalar_projection_witness_only != 1U ||
+        polarity_s.commutation_authority != 0U ||
+        polarity_s.reciprocal_cancellation_authority != 0U ||
+        polarity_s.equality_reversal_authority != 0U ||
+        polarity_s.floating_point_canonical_authority != 0U ||
+        polarity_s.canonical_vm81_mutation_authority != 0U ||
+        polarity_s.canonical_hash72_authority != 0U ||
+        polarity_s.canonical_hash216_authority != 0U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
+
+    memset(&conservation_1_66, 0, sizeof(conservation_1_66));
+    status = hhs_exact_pass219_conservation_1_66_verify(&conservation_1_66);
+    if (status != HHS_EXACT_STATUS_OK ||
+        conservation_1_66.decision !=
+            HHS_EXACT_PASS219_CONSERVATION_DECISION_VERIFIED ||
+        conservation_1_66.source_hash_verified != 1U ||
+        conservation_1_66.parent_1_65_verified != 1U ||
+        conservation_1_66.operator_typing_verified != 1U ||
+        conservation_1_66.pell_branch_verified != 1U ||
+        conservation_1_66.reciprocal_correction_verified != 1U ||
+        conservation_1_66.negative_s_factor_verified != 1U ||
+        conservation_1_66.phase72_seed_verified != 1U ||
+        conservation_1_66.congruent_projection_verified != 1U ||
+        conservation_1_66.unit_shell_verified != 1U ||
+        conservation_1_66.master_delta_m_projection_verified != 1U ||
+        conservation_1_66.signed_metric_null_cone_verified != 1U ||
+        conservation_1_66.canonical_c2_preserved != 1U ||
+        conservation_1_66.polarity_balance_projection_verified != 1U ||
+        conservation_1_66.unit_shell_x_plus_y_zero_verified != 1U ||
+        conservation_1_66.scalar_projection_witness_only != 1U ||
+        conservation_1_66.cross_gate_substitution_authority != 0U ||
+        conservation_1_66.canonical_constant_rewrite_authority != 0U ||
+        conservation_1_66.commutation_authority != 0U ||
+        conservation_1_66.equality_reversal_authority != 0U ||
+        conservation_1_66.delta_cancellation_authority != 0U ||
+        conservation_1_66.floating_point_canonical_authority != 0U ||
+        conservation_1_66.canonical_vm81_mutation_authority != 0U ||
+        conservation_1_66.canonical_hash72_authority != 0U ||
+        conservation_1_66.canonical_hash216_authority != 0U) {
+        atomic_store(&hhs_p219_env_state, HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN);
+        out_environment_receipt->state = HHS_EXACT_PASS219_VM81_ENV_STATE_FROZEN;
+        out_environment_receipt->decision = HHS_EXACT_PASS219_VM81_ENV_DECISION_FROZEN;
+        out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_WITNESS_FAILURE;
+        return hhs_p219_pqc_halt_result(
+            HHS_EXACT_PASS219_VM81_PQC_HALT_ENVIRONMENT_DIVERGENCE,
+            out_committed_frame, out_firewall_receipt);
+    }
 
     if (!hhs_p219_pqc_load_key(key)) {
         out_environment_receipt->reason = HHS_EXACT_PASS219_VM81_ENV_REASON_KERNEL_ROOT_UNAVAILABLE;

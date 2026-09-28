@@ -1,0 +1,15 @@
+{
+  "schema": "HHS_PASS_219_MODULAR_COMPLEX_TENSOR_PHASE_WOLFRAM_20260924_V2",
+  "status": "PASS",
+  "check_count": 29,
+  "pass_count": 29,
+  "failed": [],
+  "right_recursive_parser": "singular head + recursively grouped suffix modulus",
+  "nested_binding_semantics": "binding active-bit=1; == gate remains Boolean; TRUE preserves payload for outer propagation",
+  "coq_projection_scope": "instantiated rational state projection only; does not redefine native HARMONICODE slash",
+  "coq_calibration_5_4": "1/20",
+  "xyxy_closure": "exact right-recursive tree only",
+  "global_prime_equivalence": "OPEN",
+  "riemann_bridge": "OPEN",
+  "collatz_asymptotic_bridge": "OPEN"
+}

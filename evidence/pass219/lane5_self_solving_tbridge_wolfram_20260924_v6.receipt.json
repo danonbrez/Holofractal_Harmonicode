@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_219_LANE5_SELF_SOLVING_TBRIDGE_WOLFRAM_RECEIPT_20260924_V6",
+  "date": "2026-09-24",
+  "engine": "connected Wolfram Language kernel",
+  "evaluation_mode": "split exact blocks; root certificate, radical rationalization, h^2 factorization, and exact sign domains evaluated independently",
+  "status": "PASS",
+  "check_count": 16,
+  "pass_count": 16,
+  "failed": [],
+  "input_path": "evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.wl",
+  "output_path": "evidence/pass219/lane5_self_solving_tbridge_wolfram_20260924_v6.output.json",
+  "root_certificate_exact": true,
+  "local_energy_membrane_exact": true,
+  "taylor_remainder_required_for_local_sign": false,
+  "cumulative_multistep_energy_band": "OPEN",
+  "legacy_self_solving_direct_execution_claimed": false,
+  "self_solving_usage": "guarded Lane 5 capability-plan + proof-preserving candidate optimization",
+  "canonical_runtime_mutation_authority": false,
+  "gamma_definition": "h^2*v_t^2/r^2=h^2*L^2/r^4 (L=r*v_t)",
+  "gamma_convention_pinned": true
+}

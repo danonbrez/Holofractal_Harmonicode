@@ -80,6 +80,51 @@ MODALITIES: Tuple[str, ...] = (
     "GAME",
 )
 
+HASH216_LANE_ORDER: Tuple[str, ...] = ("PREVIOUS", "CHANGE", "RECEIPT")
+GENUS3_FACE_COUNT = 8
+GENUS3_FACE_SIDES = 9
+GENUS3_VERTEX_COUNT = 24
+GENUS3_EDGE_COUNT = 36
+GENUS3_EULER_CHARACTERISTIC = -4
+GENUS3_GENUS = 3
+
+# One fixed combinatorial realization of the user-specified surface.
+# Each tuple is a distinct primal vertex identified by the three incident faces.
+# Repeated face-triples denote distinct vertices, not collapsed objects.
+GENUS3_VERTEX_FACE_TRIPLES: Tuple[Tuple[int, int, int], ...] = (
+    (0, 1, 2), (0, 1, 2), (0, 1, 3), (0, 1, 5),
+    (0, 3, 7), (0, 4, 5), (0, 4, 7), (0, 6, 7),
+    (0, 6, 7), (1, 2, 3), (1, 2, 7), (1, 4, 6),
+    (1, 4, 7), (1, 5, 6), (2, 3, 4), (2, 3, 6),
+    (2, 3, 7), (2, 4, 5), (2, 5, 6), (3, 4, 5),
+    (3, 4, 5), (3, 4, 6), (5, 6, 7), (5, 6, 7),
+)
+
+# (vertex_u, vertex_v, incident_face_pair)
+GENUS3_EDGES: Tuple[Tuple[int, int, Tuple[int, int]], ...] = (
+    (0,1,(0,2)), (2,4,(0,3)), (5,6,(0,4)), (3,5,(0,5)),
+    (7,8,(0,6)), (2,9,(1,3)), (11,12,(1,4)), (3,13,(1,5)),
+    (11,13,(1,6)), (10,12,(1,7)), (14,17,(2,4)), (17,18,(2,5)),
+    (15,18,(2,6)), (10,16,(2,7)), (19,20,(3,5)), (15,21,(3,6)),
+    (4,16,(3,7)), (11,21,(4,6)), (6,12,(4,7)), (22,23,(5,7)),
+    (0,2,(0,1)), (1,3,(0,1)), (4,7,(0,7)), (6,8,(0,7)),
+    (0,10,(1,2)), (1,9,(1,2)), (9,14,(2,3)), (15,16,(2,3)),
+    (14,19,(3,4)), (20,21,(3,4)), (5,19,(4,5)), (17,20,(4,5)),
+    (13,22,(5,6)), (18,23,(5,6)), (7,22,(6,7)), (8,23,(6,7)),
+)
+
+# Each face is one flat nine-sided boundary cycle over primal vertex ids.
+GENUS3_FACE_CYCLES: Tuple[Tuple[int, ...], ...] = (
+    (0,1,3,5,6,8,7,4,2),
+    (0,2,9,1,3,13,11,12,10),
+    (0,1,9,14,17,18,15,16,10),
+    (2,4,16,15,21,20,19,14,9),
+    (5,6,12,11,21,20,17,14,19),
+    (3,5,19,20,17,18,23,22,13),
+    (7,8,23,18,15,21,11,13,22),
+    (4,7,22,23,8,6,12,10,16),
+)
+
 PASS166_LANGUAGE_CONTRACT = (
     "HHS_PASS_166_WORD2VEC_LANGUAGE_MODALITY_MODEL_"
     "ACQUISITION_IMPORT_PREINSTALLATION_AND_OFFLINE_ACTIVATION"
@@ -169,11 +214,156 @@ def _validated_i040() -> Dict[str, Any]:
     return projection
 
 
+def hash216_genus3_polyhedral_surface() -> Dict[str, Any]:
+    """Return and validate the fixed 3xHash72 genus-3 nonagonal surface."""
+    if len(GENUS3_VERTEX_FACE_TRIPLES) != GENUS3_VERTEX_COUNT:
+        raise Pass220I042MultimodalError("genus-3 vertex count drift")
+    if len(GENUS3_EDGES) != GENUS3_EDGE_COUNT:
+        raise Pass220I042MultimodalError("genus-3 edge count drift")
+    if len(GENUS3_FACE_CYCLES) != GENUS3_FACE_COUNT:
+        raise Pass220I042MultimodalError("genus-3 face count drift")
+    if any(len(face) != GENUS3_FACE_SIDES for face in GENUS3_FACE_CYCLES):
+        raise Pass220I042MultimodalError("nonagonal face boundary drift")
+
+    edge_by_vertices = {
+        tuple(sorted((u, v))): (edge_id, tuple(face_pair))
+        for edge_id, (u, v, face_pair) in enumerate(GENUS3_EDGES)
+    }
+    if len(edge_by_vertices) != GENUS3_EDGE_COUNT:
+        raise Pass220I042MultimodalError("duplicate primal edge")
+
+    face_boundary_edges = []
+    face_neighbors = []
+    face_pair_multiplicity: Dict[str, int] = {}
+    vertex_degree = [0] * GENUS3_VERTEX_COUNT
+
+    for u, v, face_pair in GENUS3_EDGES:
+        vertex_degree[u] += 1
+        vertex_degree[v] += 1
+        a, b = face_pair
+        if not (0 <= a < GENUS3_FACE_COUNT and 0 <= b < GENUS3_FACE_COUNT):
+            raise Pass220I042MultimodalError("face id outside genus-3 surface")
+        if a == b:
+            raise Pass220I042MultimodalError("self-neighbor face edge forbidden")
+        key = f"{min(a,b)}:{max(a,b)}"
+        face_pair_multiplicity[key] = face_pair_multiplicity.get(key, 0) + 1
+
+    if any(degree != 3 for degree in vertex_degree):
+        raise Pass220I042MultimodalError("genus-3 vertex valence drift")
+
+    for face_id, cycle in enumerate(GENUS3_FACE_CYCLES):
+        edge_ids = []
+        neighbors = []
+        for slot in range(GENUS3_FACE_SIDES):
+            u = cycle[slot]
+            v = cycle[(slot + 1) % GENUS3_FACE_SIDES]
+            key = tuple(sorted((u, v)))
+            if key not in edge_by_vertices:
+                raise Pass220I042MultimodalError("face boundary edge missing")
+            edge_id, incident = edge_by_vertices[key]
+            if face_id not in incident:
+                raise Pass220I042MultimodalError("face boundary incidence mismatch")
+            other = incident[1] if incident[0] == face_id else incident[0]
+            edge_ids.append(edge_id)
+            neighbors.append(other)
+        face_boundary_edges.append(tuple(edge_ids))
+        face_neighbors.append(tuple(neighbors))
+
+    all_face_pairs = {
+        f"{a}:{b}"
+        for a in range(GENUS3_FACE_COUNT)
+        for b in range(a + 1, GENUS3_FACE_COUNT)
+    }
+    if set(face_pair_multiplicity) != all_face_pairs:
+        raise Pass220I042MultimodalError("not every face neighbors every other face")
+
+    # 36 edges across only C(8,2)=28 face pairs force 8 repeated adjacencies.
+    repeated_pairs = tuple(
+        key for key, count in sorted(face_pair_multiplicity.items())
+        if count == 2
+    )
+    if len(repeated_pairs) != 8:
+        raise Pass220I042MultimodalError("genus-3 repeated adjacency count drift")
+    if any(count not in (1, 2) for count in face_pair_multiplicity.values()):
+        raise Pass220I042MultimodalError("genus-3 adjacency multiplicity drift")
+
+    euler = GENUS3_VERTEX_COUNT - GENUS3_EDGE_COUNT + GENUS3_FACE_COUNT
+    if euler != GENUS3_EULER_CHARACTERISTIC:
+        raise Pass220I042MultimodalError("genus-3 Euler characteristic drift")
+    genus = (2 - euler) // 2
+    if genus != GENUS3_GENUS:
+        raise Pass220I042MultimodalError("genus-3 topology drift")
+    if GENUS3_FACE_COUNT * GENUS3_FACE_SIDES != 2 * GENUS3_EDGE_COUNT:
+        raise Pass220I042MultimodalError("nonagonal edge-incidence closure drift")
+    if GENUS3_VERTEX_COUNT * 3 != 2 * GENUS3_EDGE_COUNT:
+        raise Pass220I042MultimodalError("trivalent vertex-incidence closure drift")
+
+    slots = tuple(
+        {
+            "lane": lane,
+            "lane_role": HASH216_LANE_ORDER[lane],
+            "hash216_index": lane * 72 + face * 9 + slot,
+            "hash72_index": face * 9 + slot,
+            "face": face,
+            "nonagon_slot": slot,
+            "edge_id": face_boundary_edges[face][slot],
+            "vertex_from": GENUS3_FACE_CYCLES[face][slot],
+            "vertex_to": GENUS3_FACE_CYCLES[face][(slot + 1) % 9],
+            "neighbor_face": face_neighbors[face][slot],
+        }
+        for lane in range(3)
+        for face in range(8)
+        for slot in range(9)
+    )
+    if len(slots) != 216:
+        raise Pass220I042MultimodalError("Hash216 surface slot count drift")
+    if tuple(item["hash216_index"] for item in slots) != tuple(range(216)):
+        raise Pass220I042MultimodalError("Hash216 surface index drift")
+
+    body = {
+        "schema": "HHS_PASS_220_I042_HASH216_GENUS3_POLYHEDRAL_SURFACE_V1",
+        "lane_order": HASH216_LANE_ORDER,
+        "array_shape": (3, 8, 9),
+        "hash72_positions_per_lane": 72,
+        "hash216_positions": 216,
+        "faces": GENUS3_FACE_COUNT,
+        "face_type": "FLAT_NONAGON",
+        "sides_per_face": GENUS3_FACE_SIDES,
+        "vertices": GENUS3_VERTEX_COUNT,
+        "edges": GENUS3_EDGE_COUNT,
+        "vertex_valence": 3,
+        "euler_characteristic": euler,
+        "orientable_genus": genus,
+        "every_face_neighbors_every_other_face": True,
+        "unique_face_pairs": len(all_face_pairs),
+        "face_pair_multiplicity": face_pair_multiplicity,
+        "repeated_face_pairs": repeated_pairs,
+        "vertex_face_triples": GENUS3_VERTEX_FACE_TRIPLES,
+        "edges_incidence": GENUS3_EDGES,
+        "face_cycles": GENUS3_FACE_CYCLES,
+        "face_boundary_edges": tuple(face_boundary_edges),
+        "face_neighbor_cycles": tuple(face_neighbors),
+        "slots": slots,
+        "incidence_closure": {
+            "8x9_equals_72": 8 * 9 == 72,
+            "72_equals_2E": 72 == 2 * GENUS3_EDGE_COUNT,
+            "24x3_equals_72": 24 * 3 == 72,
+            "V_minus_E_plus_F": euler,
+            "2_minus_2g": 2 - 2 * genus,
+        },
+    }
+    body["surface_root_sha256"] = sha256(_canonical_bytes(body)).hexdigest()
+    return body
+
+
 def shared_multimodal_root_payload() -> Dict[str, Any]:
     i041 = _validated_i041()
     i040 = _validated_i040()
+    surface = hash216_genus3_polyhedral_surface()
     return {
         "schema": "HHS_PASS_220_I042_SHARED_ROOT_PAYLOAD_V1",
+        "hash216_genus3_surface_root_sha256": surface["surface_root_sha256"],
+        "hash216_genus3_array_shape": surface["array_shape"],
         "root_metadata_seed": _fraction_record(ROOT_METADATA_SEED),
         "invariant_gate": _fraction_record(INVARIANT_GATE),
         "i041_cycle_receipt_sha256": i041["cycle_receipt_sha256"],
@@ -321,6 +511,10 @@ def _projection_from_source(
         "hash216_position_count": len(positions),
         "hash216_positions": positions,
         "hash216_genome_root_sha256": genome_root,
+        "hash216_genus3_surface_root_sha256": hash216_genus3_polyhedral_surface()[
+            "surface_root_sha256"
+        ],
+        "hash216_genus3_surface_shape": (3, 8, 9),
         "shared_multimodal_root_sha256": shared_root,
         "semantic_binding": dict(semantic_binding),
         "source_bytes_retained_in_projection_record": False,
@@ -711,6 +905,7 @@ def build_multimodal_knowledge_graph(
         "all_modalities_share_root": projection_roots == {shared_root},
         "all_modalities_have_5184_projection": all_5184,
         "all_modalities_have_hash216_genome": all_hash216,
+        "hash216_genus3_surface": hash216_genus3_polyhedral_surface(),
         "language_candidate_contract": {
             "pass166_contract": PASS166_LANGUAGE_CONTRACT,
             "pass218_candidate_semantics": PASS218_RELATIONAL_SEMANTICS,
@@ -767,6 +962,19 @@ def validate_multimodal_knowledge_graph(
         raise Pass220I042MultimodalError("5,184 projection loss")
     if graph.get("all_modalities_have_hash216_genome") is not True:
         raise Pass220I042MultimodalError("Hash216 genome loss")
+    surface = graph.get("hash216_genus3_surface")
+    if not isinstance(surface, Mapping):
+        raise Pass220I042MultimodalError("Hash216 genus-3 surface missing")
+    if surface.get("array_shape") != (3, 8, 9):
+        raise Pass220I042MultimodalError("Hash216 genus-3 array shape drift")
+    if surface.get("orientable_genus") != 3:
+        raise Pass220I042MultimodalError("Hash216 genus-3 topology drift")
+    if surface.get("faces") != 8 or surface.get("sides_per_face") != 9:
+        raise Pass220I042MultimodalError("Hash216 nonagonal face drift")
+    if surface.get("vertices") != 24 or surface.get("edges") != 36:
+        raise Pass220I042MultimodalError("Hash216 polyhedral count drift")
+    if surface.get("every_face_neighbors_every_other_face") is not True:
+        raise Pass220I042MultimodalError("Hash216 face adjacency closure drift")
 
     projections = graph.get("projections")
     if not isinstance(projections, Mapping):
@@ -876,6 +1084,9 @@ def validate_multimodal_knowledge_graph(
         "all_modalities_share_root": True,
         "all_modalities_have_5184_projection": True,
         "all_modalities_have_hash216_genome": True,
+        "hash216_genus3_surface_closed": True,
+        "hash216_array_shape": (3, 8, 9),
+        "hash216_polyhedral_counts": {"V": 24, "E": 36, "F": 8},
         "exact_multimodal_fabric_closed": True,
     }
 

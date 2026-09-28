@@ -1,0 +1,81 @@
+{
+  "schema": "HHS_PASS219_LANE5_HNAN_GLOBAL_CONSTRAINT_GRAPH_1_63",
+  "version": "1.63.0",
+  "policy": "ORDERED_TYPED_DIRECTED_FAIL_CLOSED_CONTRADICTION_RESOLUTION",
+  "mandatory_rule_count": 15,
+  "mandatory_rule_mask": 32767,
+  "ordered_zero_closure_source": "0=∅=AB/P⁴∅=HNAN",
+  "hnan_gate_source": "1/0=(x+y-z-w+xy+yx-zw-wz)/∅",
+  "typed_boundary_sources": [
+    "0=x+y+z+w=I+I^3",
+    "u^0=xy/zw=P^2-pq=a^2/Delta=0^4",
+    "u^72->u^0"
+  ],
+  "delta_unbounded_sources": [
+    "(P=√(pq+(P⁴/AB)))/∆",
+    "P=(Bx^5184)/∆",
+    "∞∆=Bx^5184",
+    "R(∞)=∆",
+    "R(∆)=x",
+    "x=Gamma_x",
+    "Gamma_x=u^(18/72mod72)*u^36",
+    "Cancel_∆(S)=forbidden"
+  ],
+  "rules": [
+    [1,"ZERO","EMPTYSET","ORDERED_CLOSURE"],
+    [2,"EMPTYSET","AB_P4_EMPTYSET","ORDERED_CLOSURE"],
+    [3,"AB_P4_EMPTYSET","HNAN","ORDERED_CLOSURE"],
+    [4,"ZERO","XYZW_SUM","TYPED_VIEW"],
+    [5,"U72","U0","PHASE_CLOSURE"],
+    [6,"INFINITY","DELTA","DIRECTED_RECIPROCAL"],
+    [7,"DELTA","X","DIRECTED_RECIPROCAL"],
+    [8,"INFINITY_DELTA","BX5184","UNBOUNDED_CARRIER"],
+    [9,"P","BX5184_OVER_DELTA","GLOBAL_DENOMINATOR"],
+    [10,"ONE_OVER_ZERO","HNAN_GATE","HNAN_BOUNDARY"],
+    [11,"J2_ZERO","HNAN_GATE","JORDAN_CORRESPONDENCE"],
+    [12,"XY","YX","NONCOMMUTATIVE_DISTINCTION"],
+    [13,"ZW","WZ","NONCOMMUTATIVE_DISTINCTION"],
+    [14,"X","GAMMA_X","DIRECTED_TYPED_IDENTITY"],
+    [15,"U0","ZERO_POWER4","TYPED_VIEW"]
+  ],
+  "resolution_precedence": [
+    "SOURCE_ORDER",
+    "TYPE_IDENTITY",
+    "FORBIDDEN_SCALARIZATION_AND_CANCELLATION",
+    "REGISTERED_DIRECTED_RULE",
+    "UNRESOLVED_FAIL_CLOSED"
+  ],
+  "forbidden": [
+    "reverse_ordered_closure",
+    "scalarize_ZERO_EMPTYSET_HNAN",
+    "cancel_DELTA",
+    "cancel_EMPTYSET",
+    "INFINITY_to_float",
+    "commute_XY_YX",
+    "commute_ZW_WZ",
+    "replace_HNAN_with_scalar_division"
+  ],
+  "jordan_binary": {
+    "rank": 3,
+    "nullity": 1,
+    "nullity_squared": 2,
+    "characteristic_polynomial": "lambda^2(lambda-2)(lambda+1)",
+    "minimal_polynomial": "lambda^2(lambda-2)(lambda+1)",
+    "decomposition": "J2(0) direct-sum (-1) direct-sum (2)"
+  },
+  "hydrated_generic": {
+    "characteristic_polynomial": "lambda^2(lambda-(r-s))(lambda-2(r+s))",
+    "conditions": ["r!=s","r+s!=0"],
+    "channels": ["J2(0)","r-s","2(r+s)"],
+    "r": "y/(4x^4)",
+    "s": "xy"
+  },
+  "authority": {
+    "lane5_candidate_mediation": true,
+    "signed_vm81_preflight": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "floating_point_canonical_authority": false
+  }
+}

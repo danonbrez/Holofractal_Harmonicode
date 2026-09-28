@@ -1,0 +1,33 @@
+name: Production Immutable Agent DB Root
+
+on:
+  push:
+    branches:
+      - fix/production-immutable-agent-db-20260925
+    paths:
+      - 'deploy/digitalocean/hhs-pass196-integrated-environment.service'
+      - 'tests/test_production_immutable_agent_db_root.py'
+      - '.github/workflows/production-immutable-agent-db-root.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'deploy/digitalocean/hhs-pass196-integrated-environment.service'
+      - 'tests/test_production_immutable_agent_db_root.py'
+      - '.github/workflows/production-immutable-agent-db-root.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - name: Verify production immutable-agent SQLite state root
+        run: python -m pytest -q tests/test_production_immutable_agent_db_root.py

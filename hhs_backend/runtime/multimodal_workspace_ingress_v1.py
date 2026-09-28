@@ -10,6 +10,7 @@ workspace objects only through witnessed packets.
 from __future__ import annotations
 
 from typing import Any, Dict, List, Mapping, Optional
+from base64 import b64decode, b64encode
 import mimetypes
 import time
 import uuid
@@ -73,6 +74,247 @@ REJECTION_CODES = [
     "REJECT_LOSSY_PROJECTION_UNMARKED",
 ]
 
+# Compatibility aliases are transport/profile names, not new authority types.
+# They are translated into one of the canonical modality adapters above while
+# retaining their original label in the ingress packet.
+LEGACY_MODALITY_ALIASES: Dict[str, str] = {
+    "HHS": "HARMONICODE_SOURCE",
+    "HARMONICODE": "HARMONICODE_SOURCE",
+    "HARMONICODE_TEXT": "HARMONICODE_SOURCE",
+    "SOURCE": "TEXT",
+    "PLAIN_TEXT": "TEXT",
+    "TEXT_PLAIN": "TEXT",
+    "STRING": "TEXT",
+    "SOURCE_CODE": "CODE",
+    "SCRIPT": "CODE",
+    "PYTHON": "CODE",
+    "JAVASCRIPT": "CODE",
+    "TYPESCRIPT": "CODE",
+    "C": "CODE",
+    "CPP": "CODE",
+    "CXX": "CODE",
+    "RUST": "CODE",
+    "SHELL": "CODE",
+    "BASH": "CODE",
+    "JSON_OBJECT": "JSON",
+    "APPLICATION_JSON": "JSON",
+    "JSON_EXECUTION_GRAPH": "GRAPH_OBJECT",
+    "EXECUTION_GRAPH": "GRAPH_OBJECT",
+    "GRAPH": "GRAPH_OBJECT",
+    "YML": "YAML",
+    "OCTET_STREAM": "BINARY",
+    "RAW": "BINARY",
+    "BYTES": "BINARY",
+    "BYTE_ARRAY": "BINARY",
+    "BLOB": "BINARY",
+    "FILE": "BINARY",
+    "FOLDER": "DIRECTORY",
+    "DIR": "DIRECTORY",
+    "RECEIPT": "RUNTIME_RECEIPT",
+    "LEDGER": "LEDGER_FRAGMENT",
+    "MEMORY": "SEMANTIC_MEMORY_OBJECT",
+    "ARTIFACT": "COMPILED_ARTIFACT",
+    "EXECUTABLE": "COMPILED_ARTIFACT",
+    "OBJECT_FILE": "COMPILED_ARTIFACT",
+    "SHARED_LIBRARY": "COMPILED_ARTIFACT",
+    "VM_STATE": "EMULATOR_STATE",
+    "SNAPSHOT": "EMULATOR_STATE",
+}
+
+MIME_MODALITY_PREFIXES = (
+    ("image/", "IMAGE"),
+    ("audio/", "AUDIO"),
+    ("video/", "VIDEO"),
+    ("text/", "TEXT"),
+)
+
+MIME_MODALITY_MAP: Dict[str, str] = {
+    "application/json": "JSON",
+    "application/ld+json": "JSON",
+    "application/yaml": "YAML",
+    "application/x-yaml": "YAML",
+    "text/yaml": "YAML",
+    "text/x-yaml": "YAML",
+    "text/csv": "CSV",
+    "application/csv": "CSV",
+    "application/pdf": "PDF",
+    "application/octet-stream": "BINARY",
+    "binary/octet-stream": "BINARY",
+    "application/x-executable": "COMPILED_ARTIFACT",
+    "application/x-pie-executable": "COMPILED_ARTIFACT",
+    "application/x-sharedlib": "COMPILED_ARTIFACT",
+    "application/x-object": "COMPILED_ARTIFACT",
+    "application/vnd.microsoft.portable-executable": "COMPILED_ARTIFACT",
+    "application/wasm": "COMPILED_ARTIFACT",
+    "inode/directory": "DIRECTORY",
+    "application/x-www-form-urlencoded": "JSON",
+    "application/xml": "TEXT",
+    "text/xml": "TEXT",
+    "application/javascript": "CODE",
+    "text/javascript": "CODE",
+    "application/ecmascript": "CODE",
+    "text/ecmascript": "CODE",
+    "text/x-python": "CODE",
+    "text/x-c": "CODE",
+    "text/x-c++": "CODE",
+    "text/x-rust": "CODE",
+    "application/x-sh": "CODE",
+}
+
+
+def _base_media_type(media_type: Optional[str]) -> str:
+    return str(media_type or "").split(";", 1)[0].strip().lower()
+
+
+def _filename_modality(source_name: str) -> Optional[str]:
+    name = str(source_name or "").lower()
+    if name.endswith((".hhs", ".harmonicode")):
+        return "HARMONICODE_SOURCE"
+    if name.endswith(".json"):
+        return "JSON"
+    if name.endswith((".yaml", ".yml")):
+        return "YAML"
+    if name.endswith(".csv"):
+        return "CSV"
+    if name.endswith(".pdf"):
+        return "PDF"
+    if name.endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tif", ".tiff", ".svg")):
+        return "IMAGE"
+    if name.endswith((".wav", ".mp3", ".flac", ".ogg", ".m4a", ".aac")):
+        return "AUDIO"
+    if name.endswith((".mp4", ".mov", ".mkv", ".webm", ".avi")):
+        return "VIDEO"
+    if name.endswith((".py", ".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".rs", ".go", ".java", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".sh", ".bash", ".ps1", ".s", ".asm", ".sql", ".html", ".css")):
+        return "CODE"
+    if name.endswith((".o", ".a", ".so", ".dll", ".exe", ".wasm", ".bin", ".elf")):
+        return "COMPILED_ARTIFACT"
+    if name.endswith((".txt", ".md", ".rst", ".log", ".ini", ".cfg", ".conf")):
+        return "TEXT"
+    return None
+
+
+def translate_legacy_modality(
+    *,
+    source_name: str,
+    declared_modality: Optional[str] = None,
+    media_type: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Translate legacy/Linux-facing type labels into canonical ingress adapters.
+
+    Unknown external types are preserved as BINARY instead of being rejected.
+    The original declaration and media type remain explicit evidence so this
+    translation cannot masquerade as source-native canonical typing.
+    """
+
+    original = str(declared_modality or "").strip()
+    declared = original.upper().replace("-", "_").replace(" ", "_")
+    base_media = _base_media_type(media_type)
+
+    canonical: Optional[str] = None
+    reason = "UNKNOWN_EXTERNAL_TYPE_FALLBACK_BINARY"
+
+    if declared in SUPPORTED_MODALITIES:
+        canonical = declared
+        reason = "CANONICAL_MODALITY_PASSTHROUGH"
+    elif declared in LEGACY_MODALITY_ALIASES:
+        canonical = LEGACY_MODALITY_ALIASES[declared]
+        reason = "LEGACY_MODALITY_ALIAS"
+    elif base_media in MIME_MODALITY_MAP:
+        canonical = MIME_MODALITY_MAP[base_media]
+        reason = "MEDIA_TYPE_TRANSLATION"
+    else:
+        for prefix, modality in MIME_MODALITY_PREFIXES:
+            if base_media.startswith(prefix):
+                canonical = modality
+                reason = "MEDIA_TYPE_PREFIX_TRANSLATION"
+                break
+
+    if canonical is None:
+        canonical = _filename_modality(source_name)
+        if canonical is not None:
+            reason = "FILENAME_PROFILE_TRANSLATION"
+
+    if canonical is None:
+        canonical = "BINARY"
+
+    # Generic text/* may still carry source code. Let a known file suffix refine
+    # TEXT to CODE without losing the original MIME declaration.
+    filename_modality = _filename_modality(source_name)
+    if canonical == "TEXT" and filename_modality in {"CODE", "HARMONICODE_SOURCE", "JSON", "YAML", "CSV"}:
+        canonical = filename_modality
+        reason = "TEXT_MEDIA_FILENAME_REFINEMENT"
+
+    return {
+        "schema": "HHS_LEGACY_INGRESS_TYPE_TRANSLATION_V1",
+        "source_name": source_name,
+        "original_declared_modality": original or None,
+        "original_media_type": media_type or None,
+        "base_media_type": base_media or None,
+        "canonical_modality": canonical,
+        "translation_reason": reason,
+        "translated": bool(
+            (original and original.upper() != canonical)
+            or (base_media and MIME_MODALITY_MAP.get(base_media) != canonical)
+            or reason not in {"CANONICAL_MODALITY_PASSTHROUGH"}
+        ),
+        "unknown_external_type_preserved": reason == "UNKNOWN_EXTERNAL_TYPE_FALLBACK_BINARY",
+        "source_authority_changed": False,
+    }
+
+
+def normalize_legacy_payload(payload: Any) -> Dict[str, Any]:
+    """Create an idempotent reversible transport representation for legacy bytes."""
+
+    if isinstance(payload, Mapping):
+        schema = str(payload.get("schema") or "")
+        encoding = str(payload.get("encoding") or "").lower()
+        data_b64 = payload.get("data_b64")
+        if (
+            schema == "HHS_REVERSIBLE_BINARY_SOURCE_V1"
+            and encoding == "base64"
+            and isinstance(data_b64, str)
+        ):
+            try:
+                decoded = b64decode(data_b64, validate=True)
+            except Exception as exc:
+                raise ValueError("HHS_REVERSIBLE_BINARY_SOURCE_BASE64_INVALID") from exc
+            declared_size = payload.get("source_size_bytes")
+            if declared_size is not None and int(declared_size) != len(decoded):
+                raise ValueError("HHS_REVERSIBLE_BINARY_SOURCE_SIZE_MISMATCH")
+            normalized = dict(payload)
+            normalized["source_size_bytes"] = len(decoded)
+            return {
+                "payload": normalized,
+                "transport_encoding": "BASE64_REVERSIBLE",
+                "source_size_bytes": len(decoded),
+                "binary_source": True,
+            }
+
+    if isinstance(payload, memoryview):
+        payload = payload.tobytes()
+    if isinstance(payload, bytearray):
+        payload = bytes(payload)
+    if isinstance(payload, bytes):
+        encoded = b64encode(payload).decode("ascii")
+        return {
+            "payload": {
+                "schema": "HHS_REVERSIBLE_BINARY_SOURCE_V1",
+                "encoding": "base64",
+                "data_b64": encoded,
+                "source_size_bytes": len(payload),
+            },
+            "transport_encoding": "BASE64_REVERSIBLE",
+            "source_size_bytes": len(payload),
+            "binary_source": True,
+        }
+
+    return {
+        "payload": payload,
+        "transport_encoding": "NATIVE_JSON_VALUE",
+        "source_size_bytes": len(str(payload).encode("utf-8")),
+        "binary_source": False,
+    }
+
 
 def _unique(prefix: str) -> str:
     return f"{prefix}:{uuid.uuid4().hex}"
@@ -82,21 +324,18 @@ def _now_ms() -> int:
     return int(time.time() * 1000)
 
 
-def detect_modality(source_name: str, declared_modality: Optional[str] = None) -> str:
-    if declared_modality:
-        return str(declared_modality).upper()
-    name = source_name.lower()
-    if name.endswith((".hhs", ".harmonicode")):
-        return "HARMONICODE_SOURCE"
-    if name.endswith(".json"):
-        return "JSON"
-    if name.endswith(".pdf"):
-        return "PDF"
-    if name.endswith((".png", ".jpg", ".jpeg", ".webp", ".gif")):
-        return "IMAGE"
-    if name.endswith((".py", ".c", ".ts", ".tsx", ".js")):
-        return "CODE"
-    return "TEXT"
+def detect_modality(
+    source_name: str,
+    declared_modality: Optional[str] = None,
+    media_type: Optional[str] = None,
+) -> str:
+    return str(
+        translate_legacy_modality(
+            source_name=source_name,
+            declared_modality=declared_modality,
+            media_type=media_type,
+        )["canonical_modality"]
+    )
 
 
 def build_ingress_packet(
@@ -107,12 +346,27 @@ def build_ingress_packet(
     declared_modality: str,
     detected_modality: Optional[str] = None,
     projection_policy: str = "PRESERVE_UNRESOLVED_SOURCE",
+    media_type: Optional[str] = None,
+    compatibility_translation: Optional[Mapping[str, Any]] = None,
+    compatibility_metadata: Optional[Mapping[str, Any]] = None,
+    transport_encoding: str = "NATIVE_JSON_VALUE",
+    source_size_bytes: Optional[int] = None,
 ) -> Dict[str, Any]:
-    detected = detect_modality(source_name, detected_modality or declared_modality)
+    detected = detect_modality(
+        source_name,
+        detected_modality or declared_modality,
+        media_type=media_type,
+    )
     adapter = INITIAL_ADAPTERS.get(declared_modality)
+    translation = dict(compatibility_translation or {})
+    compatibility = dict(compatibility_metadata or {})
     source_commitment = hash72("HHS_WORKSPACE_INGRESS_SOURCE_COMMITMENT_V1", {
         "source_name": source_name,
         "declared_modality": declared_modality,
+        "media_type": media_type,
+        "transport_encoding": transport_encoding,
+        "compatibility_translation": translation,
+        "compatibility_metadata": compatibility,
         "payload": payload,
     })
     packet = {
@@ -123,8 +377,14 @@ def build_ingress_packet(
         "source_name": source_name,
         "declared_modality": declared_modality,
         "detected_modality": detected,
-        "mime_type": mimetypes.guess_type(source_name)[0] or "application/octet-stream",
-        "source_size_bytes": len(str(payload).encode("utf-8")),
+        "mime_type": _base_media_type(media_type) or mimetypes.guess_type(source_name)[0] or "application/octet-stream",
+        "source_size_bytes": int(source_size_bytes if source_size_bytes is not None else len(str(payload).encode("utf-8"))),
+        "source_declared_modality": translation.get("original_declared_modality"),
+        "source_media_type": translation.get("original_media_type") or media_type,
+        "compatibility_translation": translation or None,
+        "compatibility_metadata": compatibility or None,
+        "legacy_translation_applied": bool(translation.get("translated")),
+        "transport_encoding": transport_encoding,
         "source_commitment_hash72": source_commitment,
         "adapter_id": adapter.get("adapter_id") if adapter else "UNDECLARED_ADAPTER",
         "projection_policy": projection_policy,
@@ -188,6 +448,11 @@ def create_ingressed_workspace_object(packet: Mapping[str, Any], payload: Any) -
             "source_commitment_hash72": packet.get("source_commitment_hash72"),
             "adapter_id": packet.get("adapter_id"),
             "lossy_projection": bool(adapter.get("lossy")),
+            "source_declared_modality": packet.get("source_declared_modality"),
+            "source_media_type": packet.get("source_media_type"),
+            "compatibility_translation": packet.get("compatibility_translation"),
+            "compatibility_metadata": packet.get("compatibility_metadata"),
+            "transport_encoding": packet.get("transport_encoding"),
         },
     )
     obj["ingress_packet_hash72"] = packet.get("ingress_packet_hash72")
@@ -202,13 +467,29 @@ def ingest_workspace_source(
     project: Mapping[str, Any],
     source_name: str,
     payload: Any,
-    declared_modality: str,
+    declared_modality: Optional[str] = None,
+    media_type: Optional[str] = None,
+    compatibility_metadata: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
+    translation = translate_legacy_modality(
+        source_name=source_name,
+        declared_modality=declared_modality,
+        media_type=media_type,
+    )
+    normalized_payload = normalize_legacy_payload(payload)
+    canonical_modality = str(translation["canonical_modality"])
+    canonical_payload = normalized_payload["payload"]
     packet = build_ingress_packet(
         project_id=str(project.get("project_id")),
         source_name=source_name,
-        payload=payload,
-        declared_modality=declared_modality,
+        payload=canonical_payload,
+        declared_modality=canonical_modality,
+        detected_modality=canonical_modality,
+        media_type=media_type,
+        compatibility_translation=translation,
+        compatibility_metadata=compatibility_metadata,
+        transport_encoding=str(normalized_payload["transport_encoding"]),
+        source_size_bytes=int(normalized_payload["source_size_bytes"]),
     )
     validation = validate_ingress_packet(packet)
     if not validation.get("ok"):
@@ -220,7 +501,7 @@ def ingest_workspace_source(
             "packet": packet,
             "validation": validation,
         }
-    obj = create_ingressed_workspace_object(packet, payload)
+    obj = create_ingressed_workspace_object(packet, canonical_payload)
     obj_validation = validate_workspace_object(obj)
     registration = register_project_object(project, obj) if obj_validation.get("ok") else {"ok": False, "validation": obj_validation}
     result = {
@@ -234,6 +515,8 @@ def ingest_workspace_source(
         "registration": registration,
         "source_preserved": True,
         "projection_is_canonical_source": False,
+        "compatibility_translation": translation,
+        "legacy_ingress_redirected": bool(translation.get("translated")),
     }
     result["ingress_result_hash72"] = hash72("HHS_WORKSPACE_INGRESS_RESULT_V1", result)
     return result
@@ -248,15 +531,62 @@ def multimodal_workspace_ingress_self_test() -> Dict[str, Any]:
     image = ingest_workspace_source(project=project, source_name="glyph.png", payload="PNG-source-bytes", declared_modality="IMAGE")
     video = ingest_workspace_source(project=project, source_name="clip.mp4", payload="video", declared_modality="VIDEO")
     audio = ingest_workspace_source(project=project, source_name="tone.wav", payload="audio", declared_modality="AUDIO")
-    rejected = ingest_workspace_source(project=project, source_name="unknown.xyz", payload="unknown", declared_modality="UNKNOWN_MODALITY")
+    legacy_graph = ingest_workspace_source(
+        project=project,
+        source_name="visual-program.hhsgraph.json",
+        payload={"nodes": [], "edges": []},
+        declared_modality="JSON_EXECUTION_GRAPH",
+        media_type="application/json",
+    )
+    unknown = ingest_workspace_source(
+        project=project,
+        source_name="legacy.unknown",
+        payload=b"\x00\xfflegacy",
+        declared_modality="VENDOR_LEGACY_RECORD",
+        media_type="application/x-vendor-legacy",
+    )
+    # Low-level packet construction remains fail-closed for an undeclared
+    # canonical adapter. External ingress does not hit this path directly:
+    # it must translate legacy/unknown types first.
+    unsupported_packet = build_ingress_packet(
+        project_id=str(project.get("project_id")),
+        source_name="unknown.xyz",
+        payload="unknown",
+        declared_modality="UNKNOWN_MODALITY",
+        detected_modality="UNKNOWN_MODALITY",
+    )
+    unsupported_validation = validate_ingress_packet(unsupported_packet)
+    unsupported = {
+        "schema": "HHS_WORKSPACE_INGRESS_RESULT_V1",
+        "version": VERSION,
+        "ok": False,
+        "status": "WORKSPACE_INGRESS_REJECTED",
+        "packet": unsupported_packet,
+        "validation": unsupported_validation,
+    }
     return {
         "schema": "HHS_MULTIMODAL_WORKSPACE_INGRESS_SELF_TEST_V1",
         "version": VERSION,
-        "ok": bool(text.get("ok") and hhs.get("ok") and json_result.get("ok") and pdf.get("ok") and image.get("ok") and video.get("ok") and audio.get("ok") and not rejected.get("ok")),
+        "ok": bool(
+            text.get("ok")
+            and hhs.get("ok")
+            and json_result.get("ok")
+            and pdf.get("ok")
+            and image.get("ok")
+            and video.get("ok")
+            and audio.get("ok")
+            and legacy_graph.get("ok")
+            and legacy_graph.get("packet", {}).get("declared_modality") == "GRAPH_OBJECT"
+            and unknown.get("ok")
+            and unknown.get("packet", {}).get("declared_modality") == "BINARY"
+            and unknown.get("packet", {}).get("transport_encoding") == "BASE64_REVERSIBLE"
+        ),
         "supported_initial_modalities": sorted(INITIAL_ADAPTERS.keys()),
-        "results": [text, hhs, json_result, pdf, image, video, audio],
-        "unsupported_modality_rejection": rejected,
-        "invariant": "NO_PROJECTION_REPLACES_ITS_SOURCE_AND_ALL_MODALITIES_SHARE_HHS_UNIVERSAL_MODALITY_ADAPTER_V1",
+        "results": [text, hhs, json_result, pdf, image, video, audio, legacy_graph, unknown],
+        "legacy_graph_translation": legacy_graph,
+        "unknown_legacy_binary_fallback": unknown,
+        "unsupported_modality_rejection": unsupported,
+        "invariant": "LEGACY_EXTERNAL_TYPES_TRANSLATE_OR_PRESERVE_AS_BINARY_WITHOUT_BYPASSING_CANONICAL_ADAPTER_AUTHORITY",
     }
 
 
