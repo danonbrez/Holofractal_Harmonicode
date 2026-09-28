@@ -28,6 +28,9 @@ from hhs_runtime.pass219.lane5_nine_loop_relation_dataset_1_72 import (
 ROOT = Path(__file__).resolve().parents[2]
 CONTRACT_PATH = ROOT / "contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json"
 SCHEMA = "HHS_PASS219_LANE5_NINE_LOOP_GENERALIZATION_1_73"
+FROZEN_MODEL_ROOT_HASH72 = "0000000000000000000000000000002rd>Jdh(*jXM9IMuM^931?)TxIUlEV>A5MH81cDfqL"
+FROZEN_VALIDATION_ROOT_HASH72 = "0000000000000000000000000000004uxkwBpAEdc+=PCnAuM+5cGH26usFYmSWD3kSLSkPM"
+FROZEN_REPLAY_BUNDLE_SHA256 = "238556f95e17e77d01a9e37e4be4cbbd56181982f3599dc941cfe77be32aaf69"
 
 LABEL_BY_CLASS = {
     1: "LANE5_ADDITIVE_VALIDATED",
@@ -248,6 +251,21 @@ def run_generalization() -> dict[str, Any]:
             item["replay_status"]
             == "DETERMINISTIC_GENERALIZATION_REPLAY_VALIDATED"
             for item in replays
+        ),
+        "model_root_frozen": (
+            validated_model["model_root_hash72"]
+            == contract["frozen_receipts"]["model_root_hash72"]
+            == FROZEN_MODEL_ROOT_HASH72
+        ),
+        "validation_root_frozen": (
+            validation_receipt["validation_receipt_root_hash72"]
+            == contract["frozen_receipts"]["validation_receipt_root_hash72"]
+            == FROZEN_VALIDATION_ROOT_HASH72
+        ),
+        "replay_bundle_frozen": (
+            replay_bundle_sha256
+            == contract["frozen_receipts"]["replay_bundle_sha256"]
+            == FROZEN_REPLAY_BUNDLE_SHA256
         ),
         "authority_boundary": (
             contract["authority"]["validated_knowledge_model_only"] is True
