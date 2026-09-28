@@ -118,3 +118,33 @@ Next action remains receipt-driven:
 3. rebase 1.74 onto that final parent head;
 4. switch the adapter test from expected-unfrozen to positive authoritative mapping;
 5. run dependency-scoped 1.74 CI and retarget PR #634 to main only after #632 merges.
+
+
+## Provisional independent 1.73 reproduction
+
+While workflow 36413301687 remains queued, the exact 1.73 discovery algorithm was independently reproduced from:
+- the frozen 1.72 dataset;
+- the exact ordered record chain;
+- repository-native Pass123 BoundedTokenGeneralizationEngine semantics;
+- the 1.73 token-class mapping and representation-local exclusions.
+
+Observed locally:
+- rule_count: 12
+- accuracy: 12/12
+- semantic_drift_count: 0
+- replay_count: 12
+- entropy_growth_bits: 0
+- provisional model_root_hash72:
+  `0000000000000000000000000000002rd>Jdh(*jXM9IMuM^931?)TxIUlEV>A5MH81cDfqL`
+- provisional validation_receipt_root_hash72:
+  `0000000000000000000000000000004uxkwBpAEdc+=PCnAuM+5cGH26usFYmSWD3kSLSkPM`
+- provisional replay_bundle_sha256:
+  `238556f95e17e77d01a9e37e4be4cbbd56181982f3599dc941cfe77be32aaf69`
+
+These are diagnostic cross-check values only. They are NOT frozen authoritative 1.73 receipts and MUST NOT substitute for the actual workflow/native-freeze evidence.
+
+1.74 now recomputes Pass123 after the parent receipt block is frozen and rejects any mismatch before constructing method-19 training evidence.
+
+Repair note:
+- an intermediate edit accidentally made `verify_frozen_parent_receipts()` self-recursive;
+- commit `7571b3ad8abe0092488fd7176ccd526a234df4a4` repaired it so the verifier reads `frozen_parent_receipts()`, recomputes 1.73, and only then admits the normalized specimen.
