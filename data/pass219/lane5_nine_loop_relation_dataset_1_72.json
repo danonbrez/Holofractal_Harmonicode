@@ -1,0 +1,216 @@
+{
+  "schema": "HHS_NINE_LOOP_LANE5_RELATION_DATASET_1_72",
+  "version": "1.72.0",
+  "parent_specimen_sha256": "96a9f686a1ab35c8600ba7a38a367af38339b51a70182c3d7981ee529ff50191",
+  "corpus_classification": "HHS_LANE5_FOREIGN_EQUIVALENCE_RELATION_DATASET",
+  "record_count": 12,
+  "records": [
+    {
+      "record_id": "source_manifest_identity",
+      "relation_type": "source_identity",
+      "deviation_class": 1,
+      "observed_features": {
+        "p1_sha256": "75a52ebb4526bdb788ae8101e4908d52579637b6aaca1a308e4d783b4a8afe86",
+        "p2_sha256": "13c231664403d35e8ad68747302c7bc26bcc9b1b567d0da0d65444c980c8eb97",
+        "comparison_sha256": "d01e62885b74d13650b44baf8da3e42d15bab35c99f6ee778e66df4059ecf37d",
+        "septuple_sha256": "082abcea6a66fb434b24938236f443f2703e7e76ded8911f46ffffa292a2c5e1"
+      },
+      "expected_mapping": "manifest_attested_foreign_source_bundle",
+      "training_labels": [
+        "SOURCE_ATTESTED",
+        "PROVENANCE_PRESERVED"
+      ]
+    },
+    {
+      "record_id": "matrix_geometry",
+      "relation_type": "representation_geometry",
+      "deviation_class": 1,
+      "observed_features": {
+        "rows": 424,
+        "columns": 5431,
+        "entries": 2302744,
+        "dtype": "int64",
+        "nonzero_coordinates": 1018297
+      },
+      "expected_mapping": "lane5_foreign_matrix_geometry_424x5431",
+      "training_labels": [
+        "EXACT_MATRIX_GEOMETRY",
+        "COMMON_SUPPORT_GEOMETRY"
+      ]
+    },
+    {
+      "record_id": "shared_member_roles",
+      "relation_type": "container_role_equivalence",
+      "deviation_class": 1,
+      "observed_features": {
+        "shared_members": [
+          "L",
+          "V",
+          "log",
+          "n",
+          "pivots"
+        ]
+      },
+      "expected_mapping": "cross_prime_shared_role_set",
+      "training_labels": [
+        "LOGICAL_REPRESENTATION_EQUIVALENCE"
+      ]
+    },
+    {
+      "record_id": "prime_dependent_roles",
+      "relation_type": "container_role_variance",
+      "deviation_class": 0,
+      "observed_features": {
+        "prime_dependent_members": [
+          "E0",
+          "fix_note",
+          "p",
+          "tau_N3LL"
+        ]
+      },
+      "expected_mapping": "typed_prime_lane_variant_roles",
+      "training_labels": [
+        "DUAL_PRIME_EXACT",
+        "PROVENANCE_PRESERVED"
+      ]
+    },
+    {
+      "record_id": "support_geometry",
+      "relation_type": "cross_prime_support",
+      "deviation_class": 1,
+      "observed_features": {
+        "support_sha256": "64cd7ae9027ef41969948efc35b1273ba03ba3f759c076700d8a09940ebbf54d",
+        "nonzero_coordinates": 1018297
+      },
+      "expected_mapping": "equal_nonzero_coordinate_support",
+      "training_labels": [
+        "COMMON_SUPPORT_GEOMETRY"
+      ]
+    },
+    {
+      "record_id": "comparison_stream_identity",
+      "relation_type": "route_comparison",
+      "deviation_class": 1,
+      "observed_features": {
+        "rows": 107053,
+        "mismatch_markers": 0,
+        "normalized_sha256": "884b05ed4118ed372329c8b002b895dfa98bd92fe72cdd0f88b47cef94448d11"
+      },
+      "expected_mapping": "septuple_quintuple_comparison_closure",
+      "training_labels": [
+        "ROUTE_EQUIVALENCE_VALIDATED"
+      ]
+    },
+    {
+      "record_id": "literal_container_identity_rejected",
+      "relation_type": "negative_schema_example",
+      "deviation_class": -1,
+      "observed_features": {
+        "literal_container_identity_required": false
+      },
+      "expected_mapping": "reject_literal_npz_inventory_identity_requirement",
+      "training_labels": [
+        "LITERAL_CONTAINER_IDENTITY_REJECTED"
+      ]
+    },
+    {
+      "record_id": "rational_reconstruction_partition",
+      "relation_type": "coverage_partition",
+      "deviation_class": -1,
+      "observed_features": {
+        "certified_rational": {
+          "numerator": 1014476,
+          "denominator": 1018297
+        },
+        "two_prime_only": {
+          "numerator": 3821,
+          "denominator": 1018297
+        },
+        "complete": false
+      },
+      "expected_mapping": "preserve_incomplete_foreign_rational_reconstruction",
+      "training_labels": [
+        "PARTIAL_RATIONAL_RECONSTRUCTION",
+        "NO_FLOAT_CANONICAL"
+      ]
+    },
+    {
+      "record_id": "modular_residue_closure",
+      "relation_type": "exact_modular_arithmetic",
+      "deviation_class": 1,
+      "observed_features": {
+        "prime_moduli": [
+          2147483647,
+          2147483629
+        ],
+        "sample_rational": {
+          "numerator": -105757,
+          "denominator": 65536
+        },
+        "sample_residues": [
+          829521918,
+          1173913588
+        ]
+      },
+      "expected_mapping": "exact_dual_prime_residue_witness",
+      "training_labels": [
+        "DUAL_PRIME_EXACT"
+      ]
+    },
+    {
+      "record_id": "genesis_constructor",
+      "relation_type": "native_constructor_anchor",
+      "deviation_class": 0,
+      "observed_features": {
+        "genesis_identity_verbatim": "F(x,y,a,b)=(x+y)^2+(xy-a^2)^2+(a^2-b)^2+(a^4-2)^2",
+        "root_metadata_seed": {
+          "numerator": 179971179971,
+          "denominator": 1000000
+        }
+      },
+      "expected_mapping": "preserve_verbatim_native_constructor_boundary",
+      "training_labels": [
+        "GENESIS_IDENTITY_VERBATIM"
+      ]
+    },
+    {
+      "record_id": "foreign_delta_quarantine",
+      "relation_type": "symbol_typing",
+      "deviation_class": 0,
+      "observed_features": {
+        "foreign_delta_role": "kinematic_surface",
+        "native_delta_alias_authorized": false
+      },
+      "expected_mapping": "typed_foreign_delta_without_native_alias",
+      "training_labels": [
+        "FOREIGN_DELTA_TYPED_QUARANTINE"
+      ]
+    },
+    {
+      "record_id": "authority_boundary",
+      "relation_type": "admission_authority",
+      "deviation_class": 0,
+      "observed_features": {
+        "dataset_preparation_only": true,
+        "model_weight_update_authority": false,
+        "learning_commit_authority": false,
+        "canonical_vm81_mutation_authority": false,
+        "canonical_hash72_authority": false,
+        "canonical_hash216_authority": false,
+        "canonical_persistence_authority": false,
+        "floating_point_canonical_authority": false
+      },
+      "expected_mapping": "candidate_only_dataset_boundary",
+      "training_labels": [
+        "CANDIDATE_ONLY",
+        "NO_FLOAT_CANONICAL"
+      ]
+    }
+  ],
+  "admission": {
+    "dataset_preparation_only": true,
+    "model_weight_update_authority": false,
+    "learning_commit_authority": false,
+    "canonical_transition_authority": false
+  }
+}
