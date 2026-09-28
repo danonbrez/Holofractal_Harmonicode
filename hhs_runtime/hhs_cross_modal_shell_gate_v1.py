@@ -334,7 +334,34 @@ def cross_modal_consensus(projections: Sequence[ModalityProjection], trust_profi
     status = ShellGateStatus.COMMITTED if ok else ShellGateStatus.QUARANTINED
     quarantine = None if ok else security_hash72_v44({"reason": reason, "next_state_hashes": hashes, "phase_indices": [p.phase_index for p in projections], "missing_mandatory_witnesses": missing_mandatory, "weighted_quorum": weighted_quorum}, domain="HHS_SHELL_CROSS_MODAL_QUARANTINE")
     receipt = security_hash72_v44({"projection_hashes": [p.projection_hash72 for p in projections], "agreed_next_state_hash72": agreed, "anchor_phase_index": anchor, "phase_max_distance": phase_max_distance, "mandatory_phase_ok": mandatory_phase_ok, "support_phase_ok": support_phase_ok, "weighted_quorum": weighted_quorum, "status": status.value, "quarantine": quarantine}, domain="HHS_SHELL_CROSS_MODAL_CONSENSUS")
-    return CrossModalConsensusReceipt(list(projections), agreed, None, anchor, phase_max_distance, len(distinct_modalities), MIN_DISTINCT_MODALITIES, modality_floor_ok, mandatory_present, missing_mandatory, mandatory_phase_ok, support_phase_ok, weighted_quorum, REQUIRED_WEIGHTED_QUORUM, weighted_quorum_ok, temporal_ok, phase_consensus_ok, profile, delta_e_zero, psi_zero, theta, omega_true, armor_ok, status, receipt, quarantine, reason)
+    return CrossModalConsensusReceipt(
+        projections=list(projections),
+        agreed_next_state_hash72=agreed,
+        anchor_phase_index=anchor,
+        phase_max_distance=phase_max_distance,
+        distinct_modality_count=len(distinct_modalities),
+        min_distinct_modalities=MIN_DISTINCT_MODALITIES,
+        modality_floor_ok=modality_floor_ok,
+        mandatory_witnesses_present=mandatory_present,
+        missing_mandatory_witnesses=missing_mandatory,
+        mandatory_phase_ok=mandatory_phase_ok,
+        support_phase_ok=support_phase_ok,
+        weighted_quorum=weighted_quorum,
+        required_weighted_quorum=REQUIRED_WEIGHTED_QUORUM,
+        weighted_quorum_ok=weighted_quorum_ok,
+        temporal_ok=temporal_ok,
+        phase_consensus_ok=phase_consensus_ok,
+        adaptive_trust_profile=profile,
+        delta_e_zero=delta_e_zero,
+        psi_zero=psi_zero,
+        theta15_true=theta,
+        omega_true=omega_true,
+        armor_ok=armor_ok,
+        status=status,
+        receipt_hash72=receipt,
+        quarantine_hash72=quarantine,
+        reason=reason,
+    )
 
 
 class CrossModalShellGateV1:

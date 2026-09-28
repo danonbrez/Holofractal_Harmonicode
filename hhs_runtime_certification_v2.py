@@ -21,7 +21,7 @@ import traceback
 from hhs_runtime.hhs_repo_paths_v1 import runtime_artifact_path
 
 from hhs_regression_suite_v1 import HHSRegressionSuiteV1
-from hhs_runtime_smoke_tests_v1 import HHSSmokeTestSuiteV1
+from hhs_runtime_smoke_tests_v1 import run_smoke_suite
 
 from hhs_runtime.core_sandbox.hhs_state_layer_v1 import HHSStateLayerV1
 from hhs_runtime.hhs_cross_modal_shell_gate_v1 import CrossModalShellGateV1, ShellGateStatus
@@ -74,9 +74,9 @@ class HHSRuntimeCertificationV2:
             )
 
     def test_v1_smoke_and_regression_still_lock(self) -> None:
-        smoke = HHSSmokeTestSuiteV1().run_all()
+        smoke = run_smoke_suite()
         regression = HHSRegressionSuiteV1().run_all()
-        assert smoke.get("all_ok") is True
+        assert smoke.get("summary", {}).get("all_ok") is True
         assert regression.get("all_ok") is True
         self.record("v1_smoke_and_regression_still_lock", True, "V1 locked base remains intact.")
 
