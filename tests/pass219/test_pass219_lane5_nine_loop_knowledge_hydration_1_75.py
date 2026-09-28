@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 from hhs_runtime.pass219.lane5_nine_loop_knowledge_hydration_1_75 import (
+    FROZEN_ADMISSION_REPLAY_BUNDLE_SHA256,
+    FROZEN_ADMITTED_CORPUS_ROOT_HASH72,
+    FROZEN_KNOWLEDGE_GRAPH_ROOT_HASH72,
+    FROZEN_RETRIEVAL_REPLAY_BUNDLE_SHA256,
     assert_pass127_insufficient_support_rejected,
     assert_pass128_execution_escalation_rejected,
     discover_knowledge_hydration,
@@ -19,6 +23,10 @@ def test_knowledge_hydration_discovery_closes_exactly():
     assert len(receipt["knowledge_graph_root_hash72"]) == 72
     assert len(receipt["admission_replay_bundle_sha256"]) == 64
     assert len(receipt["retrieval_replay_bundle_sha256"]) == 64
+    assert receipt["admitted_corpus_root_hash72"] == FROZEN_ADMITTED_CORPUS_ROOT_HASH72
+    assert receipt["knowledge_graph_root_hash72"] == FROZEN_KNOWLEDGE_GRAPH_ROOT_HASH72
+    assert receipt["admission_replay_bundle_sha256"] == FROZEN_ADMISSION_REPLAY_BUNDLE_SHA256
+    assert receipt["retrieval_replay_bundle_sha256"] == FROZEN_RETRIEVAL_REPLAY_BUNDLE_SHA256
     assert receipt["knowledge_authority"] is True
     assert receipt["graph_projection_only"] is True
     assert receipt["execution_authority"] is False
