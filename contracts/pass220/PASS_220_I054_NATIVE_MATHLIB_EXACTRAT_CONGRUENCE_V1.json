@@ -1,0 +1,36 @@
+{
+  "schema": "HHS_PASS_220_I054_NATIVE_MATHLIB_EXACTRAT_CONGRUENCE_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "base_main": "b374ac53bde2225de1c6060818232b20fddc6048",
+  "inherits": [
+    "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+    "HHS_PASS_220_I053_NATIVE_MATHLIB_EXACTRAT_EQUIVALENCE_V1"
+  ],
+  "formal_module": "HHS.Mathlib.Rat.Congruence",
+  "representation": "UNREDUCED_ORDERED_NUMERATOR_POSITIVE_DENOMINATOR_PAIR",
+  "runtime_formulas": {
+    "add": "(a.num*b.den+b.num*a.den)/(a.den*b.den)",
+    "mul": "(a.num*b.num)/(a.den*b.den)"
+  },
+  "proofs": {
+    "negation_congruence_inherited": true,
+    "addition_congruence": true,
+    "multiplication_congruence": true
+  },
+  "quotient_constructed": false,
+  "pair_identity_collapsed_into_equivalence": false,
+  "commutation_boundary": {
+    "local_int_mul_comm_used": true,
+    "local_reorder_lemma": "mul_pair_swap_middle",
+    "generic_hhs_commutation_authorized": false
+  },
+  "runtime_arithmetic_changed": false,
+  "authority": {
+    "arithmetic": "INHERITED_PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "lean": "BINARY_CONGRUENCE_PROOF_WITNESS",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}
