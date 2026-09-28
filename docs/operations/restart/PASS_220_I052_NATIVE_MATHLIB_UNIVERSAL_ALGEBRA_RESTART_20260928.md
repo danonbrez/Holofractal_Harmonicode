@@ -1,13 +1,22 @@
 # Pass 220 I052 Restart Checkpoint — Universal Algebra Proof Promotion
 
-Status: **RESTARTABLE IMPLEMENTATION — VALIDATION PENDING**
+Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
 
 ## Identity
 
-- Base main: `10c7e12c10a8f39edb0ca4415449499393185c18`
+- Base main at implementation start:
+  `10c7e12c10a8f39edb0ca4415449499393185c18`
+- Current observed PR base after unrelated main drift:
+  `244d0dd41dea4a3ff9522975e0a60c0b930406fb`
 - Branch: `pass220/i052-native-mathlib-universal-algebra1`
 - Merge target: `main`
-- Scope: universal Lean proof promotion for native Nat/Int algebra laws
+- Pull request: `#644`
+- Implementation head before this checkpoint refresh:
+  `c8efcee0a6044f2ad1bad9797fccef7754704620`
+- PR mergeability at checkpoint preparation: mergeable
+- Dedicated workflow: `Pass 220 I052 Native Mathlib Universal Algebra`
+- Dedicated run: `36464634192`
+- Run state at checkpoint preparation: queued
 
 ## Implemented
 
@@ -21,12 +30,57 @@ Status: **RESTARTABLE IMPLEMENTATION — VALIDATION PENDING**
 - VM81/Hash72/Hash216 proof-authority boundary;
 - contract, structural tests, CI, documentation.
 
-## Frozen inherited runtime evidence
+## Proof dependencies
 
-No Python1/C11 or C++ arithmetic path changes in I052.
+The proof layer uses the pinned Lean 4 v4.34.0 core theorem surface:
 
-I048-I050 native execution evidence is inherited and should not be rerun unless
-one of those inputs changes.
+### Nat
+
+- `Nat.add_assoc`
+- `Nat.zero_add`
+- `Nat.add_zero`
+- `Nat.mul_assoc`
+- `Nat.one_mul`
+- `Nat.mul_one`
+- `Nat.mul_add`
+- `Nat.add_mul`
+
+### Int
+
+- `Int.add_assoc`
+- `Int.zero_add`
+- `Int.add_zero`
+- `Int.mul_assoc`
+- `Int.one_mul`
+- `Int.mul_one`
+- `Int.mul_add`
+- `Int.add_mul`
+- `Int.add_right_neg`
+
+No commutativity theorem is promoted into the I052 compatibility proof bundle.
+
+## Evidence boundary
+
+I050's runtime descriptors remain unchanged:
+
+```text
+universalProofClosed = false
+```
+
+That field still means the runtime sample itself is not a universal theorem.
+I052 supplies a distinct Lean kernel proof artifact for the enumerated Nat/Int
+carrier propositions.
+
+No Python1/C11 or C++ arithmetic implementation changed in I052.
+
+## Authority
+
+- Lean: proof witness for the explicitly enumerated universal Nat/Int laws.
+- Python1/C11 + C++: inherited exact runtime execution.
+- VM81: canonical mutation/admission authority remains unchanged.
+- Hash72/Hash216: commit/persistence authority remains unchanged.
+- Implicit HHS commutation remains forbidden.
+- ExactRat universal quotient/equivalence closure is not claimed in I052.
 
 ## Validation required
 
@@ -35,12 +89,18 @@ one of those inputs changes.
 3. `leanchecker HHS`.
 4. HHS axiom audit.
 
+Queued external CI does not block this restartable checkpoint.
+
 ## Next action
 
-Run dependency-scoped I052 validation. Repair only the I052 Lean/proof surface
-if necessary. After green validation, merge to main and verify the new module
-and contract on main.
+Inspect run `36464634192`.
 
-The next Mathlib slice may address universal ExactRat quotient/equivalence
-laws, which require explicit reasoning over cross-product equivalence rather
-than treating unreduced pair identity as scalar equality.
+- If green: merge PR #644 and verify
+  `HHS.Mathlib.Algebra.Universal`, the contract, and root import on main.
+- If it fails: repair only the I052 Lean/proof or structural-test surface.
+- Do not rerun inherited Python1/C++ arithmetic tests unless an inherited input
+  changes.
+
+After I052 closure, the next native Mathlib slice can address universal
+`ExactRat` equivalence/congruence laws over the unreduced ordered-pair
+representation.
