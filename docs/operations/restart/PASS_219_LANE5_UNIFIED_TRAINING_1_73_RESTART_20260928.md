@@ -1,0 +1,117 @@
+# Pass 219 Lane 5 Unified Training 1.73 — Restart Record
+
+Date: 2026-09-28
+
+## Base
+
+Repository: danonbrez/Holofractal_Harmonicode
+Base branch: main
+Base commit: 29d39c28134f42c2f0d89f5724c57966a5523cfd
+Work branch: pass219-lane5-unified-training-1-73
+
+## Objective
+
+Unify the repository existing training, hydration, formalization, reconstruction, replay, curriculum, calibration, corpus, and repository-delta learning mechanisms beneath one explicit Lane 5 5184 + Hash216 C++ class API without introducing a second canonical mutation authority.
+
+## Changed files
+
+GNUmakefile
+TRAINING.md
+hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_73.hpp
+hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_73.cpp
+tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_73.cpp
+contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_73.md
+.github/workflows/pass219-lane5-unified-training-1-73.yml
+docs/operations/restart/PASS_219_LANE5_UNIFIED_TRAINING_1_73_RESTART_20260928.md
+
+## Implemented
+
+- one native C++ training class: hhs::lane5::VM5184Hash216TrainingAPI;
+- 18 registered training modes;
+- mode-specific temporal class and target masks;
+- source/oracle Hash216 identity binding;
+- adapter/executor/validator/negative-control/replay signature binding;
+- required negative controls and deterministic replay;
+- ingress/egress compatibility preservation;
+- inherited RNA VM5184 routing for every accepted specimen;
+- deterministic candidate Hash216 training witness derivation;
+- raw 648-byte ingress equivalence;
+- fail-closed authority boundary.
+
+## Authority
+
+The new class remains candidate-only and has no canonical VM81 mutation, Hash72 mint, Hash216 commit, persistence, or floating-point canonical authority.
+
+## Validation state
+
+The active chat runtime cannot reach GitHub from its local container, so an in-container repository build was unavailable.
+
+Repository-visible validation is encoded in:
+- tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_73.cpp
+- .github/workflows/pass219-lane5-unified-training-1-73.yml
+
+The workflow builds the inherited c-abi, verifies the C++ class is linked, compiles the native test with strict warnings, and runs it.
+
+## Next action
+
+Inspect the branch/PR workflow result. If it fails, repair forward only the impacted 1.73 files and build overlay. If it passes, merge the PR and verify main.
+
+
+## PR handoff
+
+PR: #631
+PR URL: https://github.com/danonbrez/Holofractal_Harmonicode/pull/631
+Checkpoint head before this restart-record update: d216ddefbe022e95e2379dc160e4e74597b276bb
+
+Initial external validation query:
+- commit workflow runs: none visible yet
+- combined commit statuses: none visible yet
+- interpretation: CI result pending/not yet attached; no pass or failure claimed
+
+Validation remaining:
+- GitHub Actions c-abi build
+- linked C++ symbol check
+- strict C++17 native test compilation
+- execution of 18-mode registry/routing test
+- merge and verified-main check after green CI
+
+Environment:
+- local chat container DNS cannot resolve github.com, so repository compilation cannot be executed locally from this session
+- repository writes and validation inspection are being performed through the connected GitHub integration
+
+## Ethical-text supervisor extension
+
+Added after unified-surface checkpoint:
+- ETHICAL_TEXT remains one of the 18 training methods;
+- ETHICAL_TEXT is now explicitly the supervisor over all natural-language training specimens;
+- LINGUISTIC_OPERATOR and ETHICAL_TEXT are intrinsic natural-language modes;
+- any other training mode can be marked natural_language_training for mixed/content-sensitive cases;
+- every natural-language specimen must bind ethical_text_supervisor_identity216, ethical_text_supervisor_signature64, and ethical_text_supervision_verified=true;
+- the supervisor lineage is included in candidate Hash216 derivation;
+- the gate executes before RNA VM5184 routing and fails closed;
+- the PR workflow now runs the inherited ethical-text cycle tests in addition to native 1.73 validation.
+
+Validation remaining after this extension:
+- inherited ethical-text pytest;
+- c-abi build;
+- linked unified-class symbol check;
+- strict native C++ test compilation;
+- 18-mode execution including natural-language supervisor positive/negative cases.
+
+## Cross-language adapter extension
+
+Added:
+- hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_73.h
+- hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_73.cpp
+- hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py
+- tests/pass219/test_pass219_lane5_unified_training_bridge_1_73.py
+- GNUmakefile linkage for the adapter object
+- workflow symbol checks and Python-to-native execution tests
+
+The Python bridge routes realtime, intrinsic natural-language, and content-sensitive multimodal-language specimens through the same C++ class. Ethical supervisor removal is a native rejection, not a Python-side policy decision.
+
+Remaining external validation is GitHub Actions for the current branch head.
+
+## 1.73 rebase
+
+Unified Training advanced from provisional 1.72 to 1.73 because current main assigned Lane 5 1.72 to the Nine-Loop Relation Dataset. New base: main @ 29d39c28134f42c2f0d89f5724c57966a5523cfd. The 1.72 relation dataset is preserved as an upstream training-data producer.
