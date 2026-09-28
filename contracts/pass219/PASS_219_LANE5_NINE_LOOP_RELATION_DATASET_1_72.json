@@ -1,0 +1,35 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_RELATION_DATASET_1_72",
+  "version": "1.72.0",
+  "status": "ADDITIVE_MULTI_RECORD_DATASET_PREPARATION_HASH216_SEALED",
+  "parent": "HHS_PASS219_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71",
+  "parent_main_commit": "4a01b69e0be461d15f8afc9359acda36207bd278",
+  "parent_specimen_sha256": "96a9f686a1ab35c8600ba7a38a367af38339b51a70182c3d7981ee529ff50191",
+  "dataset": {
+    "path": "data/pass219/lane5_nine_loop_relation_dataset_1_72.json",
+    "canonical_sha256": "dd623f4fc778364274e7ba05c914fb441b724ca3ce41a4eb4df4cdc64935d587",
+    "ordered_record_chain_sha256": "4a951f76afcd3f759e74263bc9cd0019b50f034bc07e93341b73200e0c85bd6a",
+    "record_count": 12,
+    "additive_records": 6,
+    "neutral_records": 4,
+    "negative_records": 2
+  },
+  "admission_gate": {
+    "requires_parent_1_71_native_hash216": true,
+    "requires_dataset_sha256": true,
+    "requires_ordered_record_chain": true,
+    "requires_exact_record_partition": true,
+    "requires_negative_examples": true,
+    "requires_source_bound_features": true,
+    "dataset_preparation_only": true,
+    "model_weight_update_authority": false,
+    "learning_commit_authority": false,
+    "canonical_transition_authority": false,
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  }
+}
