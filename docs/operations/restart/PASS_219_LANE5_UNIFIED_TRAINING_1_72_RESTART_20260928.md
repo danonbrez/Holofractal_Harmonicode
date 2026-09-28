@@ -97,3 +97,17 @@ Validation remaining after this extension:
 - linked unified-class symbol check;
 - strict native C++ test compilation;
 - 18-mode execution including natural-language supervisor positive/negative cases.
+
+## Cross-language adapter extension
+
+Added:
+- hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.h
+- hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.cpp
+- hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py
+- tests/pass219/test_pass219_lane5_unified_training_bridge_1_72.py
+- GNUmakefile linkage for the adapter object
+- workflow symbol checks and Python-to-native execution tests
+
+The Python bridge routes realtime, intrinsic natural-language, and content-sensitive multimodal-language specimens through the same C++ class. Ethical supervisor removal is a native rejection, not a Python-side policy decision.
+
+Remaining external validation is GitHub Actions for the current branch head.
