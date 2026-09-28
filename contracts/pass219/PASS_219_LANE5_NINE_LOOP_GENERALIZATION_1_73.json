@@ -1,7 +1,7 @@
 {
   "schema": "HHS_PASS219_LANE5_NINE_LOOP_GENERALIZATION_1_73",
   "version": "1.73.0",
-  "status": "DISCOVERY_PRE_NATIVE_FREEZE",
+  "status": "ADDITIVE_BOUNDED_GENERALIZATION_NATIVE_HASH216_PENDING_VALIDATION",
   "parent": "HHS_PASS219_LANE5_NINE_LOOP_RELATION_DATASET_1_72",
   "parent_main_commit": "29d39c28134f42c2f0d89f5724c57966a5523cfd",
   "parent_dataset_sha256": "dd623f4fc778364274e7ba05c914fb441b724ca3ce41a4eb4df4cdc64935d587",
@@ -37,9 +37,31 @@
     "floating_point_canonical_authority": false
   },
   "frozen_receipts": {
-    "model_root_hash72": null,
-    "validation_receipt_root_hash72": null,
-    "replay_bundle_sha256": null,
-    "native_hash216_composition_frozen": false
+    "model_root_hash72": "0000000000000000000000000000002rd>Jdh(*jXM9IMuM^931?)TxIUlEV>A5MH81cDfqL",
+    "validation_receipt_root_hash72": "0000000000000000000000000000004uxkwBpAEdc+=PCnAuM+5cGH26usFYmSWD3kSLSkPM",
+    "replay_bundle_sha256": "238556f95e17e77d01a9e37e4be4cbbd56181982f3599dc941cfe77be32aaf69",
+    "native_hash216_composition_frozen": true
+  },
+  "discovery_evidence": {
+    "workflow_run": 36413301687,
+    "validated_head": "534aeaf6fbf6ae9fb7a1e981622064b0f74ac946",
+    "training_example_count": 12,
+    "holdout_example_count": 12,
+    "rule_count": 12,
+    "exact_accuracy": {
+      "numerator": 12,
+      "denominator": 12
+    },
+    "semantic_drift_count": 0,
+    "entropy_growth_bits": 0,
+    "replay_count": 12,
+    "covered_token_classes": [
+      "CODE",
+      "JSON",
+      "MATHEMATICS",
+      "SYMBOLIC_EXPRESSION",
+      "TENSOR_CELL",
+      "TEXT"
+    ]
   }
 }
