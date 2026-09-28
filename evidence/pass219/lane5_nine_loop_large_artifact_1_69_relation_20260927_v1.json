@@ -1,0 +1,48 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69_RELATION_EVIDENCE_V1",
+  "date": "2026-09-27",
+  "workflow_run": 36354479168,
+  "validated_code_head": "5b1f17257ab8ddf811211e6f34b186c72ab52671",
+  "workflow_conclusion": "success",
+  "source_sha256": {
+    "p1": "75a52ebb4526bdb788ae8101e4908d52579637b6aaca1a308e4d783b4a8afe86",
+    "p2": "13c231664403d35e8ad68747302c7bc26bcc9b1b567d0da0d65444c980c8eb97",
+    "comparison": "d01e62885b74d13650b44baf8da3e42d15bab35c99f6ee778e66df4059ecf37d",
+    "septuple": "082abcea6a66fb434b24938236f443f2703e7e76ded8911f46ffffa292a2c5e1"
+  },
+  "matrix": {
+    "shape": [424, 5431],
+    "dtype": "int64",
+    "entries": 2302744,
+    "nonzero_coordinates": 1018297,
+    "nonzero_support_sha256": "64cd7ae9027ef41969948efc35b1273ba03ba3f759c076700d8a09940ebbf54d"
+  },
+  "comparison": {
+    "rows": 107053,
+    "normalized_sha256": "884b05ed4118ed372329c8b002b895dfa98bd92fe72cdd0f88b47cef94448d11",
+    "mismatch_marker_count": 0,
+    "first_row_sha256": "fe1317d9a6d522c75efcf3734255c0e4f6fc9c7f40f766e18c39f53805e7fe5e",
+    "last_row_sha256": "be8adf71b2b9cff808d912b1d786e4ab8504cfce77e40a504e6da13de1b1ccf4"
+  },
+  "septuple_archive": {
+    "member_count": 1,
+    "member_name": "MHV9septuples.txt",
+    "member_crc32": "205b1248",
+    "uncompressed_bytes": 231558297,
+    "structure_sha256": "606c5db22ac881a92835cf12e7077d0093c8b599b5205d3e0752be91e82c3967"
+  },
+  "role_equivalence": {
+    "shared_invariant_members": ["L", "V", "log", "n", "pivots"],
+    "prime_dependent_members": ["E0", "fix_note", "p", "tau_N3LL"],
+    "literal_container_identity_required": false
+  },
+  "relation_sha256": "4acc66c250129d5a42f976d673027313707633012b2de6f85d6491a4083ed73a",
+  "native_composition": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  }
+}
