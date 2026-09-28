@@ -90,3 +90,12 @@ Dependency-scoped validation includes:
 - negative supervision and authority-escalation cases.
 
 1.74 SHALL NOT be merged to authoritative main before final 1.73 receipt/native closure is inherited.
+
+## Executable parent-freeze gate
+
+The 1.74 Pass123 producer adapter is:
+`hhs_runtime/pass219/lane5_bounded_generalization_training_adapter_1_74.py`.
+
+It SHALL reject construction of a `BOUNDED_TOKEN_GENERALIZATION` TrainingSpecimen unless the 1.73 frozen receipt block contains valid model, validation, replay, and native Hash216 identities and explicitly marks the native composition frozen.
+
+This gate exists independently of CI scheduling. A queued or successful discovery workflow without committed/frozen receipt identities is not sufficient for 1.74 admission.
