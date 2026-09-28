@@ -237,7 +237,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Relation) |
             target_bit(TrainingTarget::Constructor),
         "REPOSITORY_HYDRATION",
-        1U)
+        1U,
+        0U,
+        0U)
 };
 
 static_assert(
