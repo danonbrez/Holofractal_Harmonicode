@@ -1,0 +1,67 @@
+name: Pass 220 I049 Native Mathlib Order Rat
+
+on:
+  push:
+    branches:
+      - pass220/i049-mathlib-order-rat1
+    paths:
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "lean-toolchain"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Mathlib/**"
+      - "native_projects/hhs_pass220_mathlib_order_rat/**"
+      - "native_projects/hhs_pass220_mathlib_native/**"
+      - "native_projects/hhs_pass220_python_native_execution/**"
+      - "hhs_runtime/hhs_pass220_i049_native_mathlib_order_rat_v1.py"
+      - "hhs_runtime/hhs_pass220_i048_native_mathlib_v1.py"
+      - "tests/pass220/test_hhs_pass220_i049_native_mathlib_order_rat_v1.py"
+      - "contracts/pass220/PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1.json"
+      - "docs/pass220/PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT.md"
+      - "docs/operations/restart/PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_RESTART_20260928.md"
+      - ".github/workflows/pass220-i049-native-mathlib-order-rat.yml"
+  pull_request:
+    paths:
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "lean-toolchain"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Mathlib/**"
+      - "native_projects/hhs_pass220_mathlib_order_rat/**"
+      - "native_projects/hhs_pass220_mathlib_native/**"
+      - "native_projects/hhs_pass220_python_native_execution/**"
+      - "hhs_runtime/hhs_pass220_i049_native_mathlib_order_rat_v1.py"
+      - "hhs_runtime/hhs_pass220_i048_native_mathlib_v1.py"
+      - "tests/pass220/test_hhs_pass220_i049_native_mathlib_order_rat_v1.py"
+      - "contracts/pass220/PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1.json"
+      - "docs/pass220/PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT.md"
+      - "docs/operations/restart/PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_RESTART_20260928.md"
+      - ".github/workflows/pass220-i049-native-mathlib-order-rat.yml"
+  workflow_dispatch:
+
+jobs:
+  native-order-rat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Native exact rational and order
+        run: |
+          make -C native_projects/hhs_pass220_mathlib_order_rat clean test
+          python -m pytest -q tests/pass220/test_hhs_pass220_i049_native_mathlib_order_rat_v1.py
+
+      - name: Lean 4 build and kernel audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
