@@ -1,0 +1,136 @@
+name: Pass 219 Lane 5 Nine-Loop Feedback 1.70
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_feedback_1_70.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_feedback_cell_wall_1_70.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_feedback_cell_wall_1_70.cpp'
+      - 'evidence/pass219/lane5_nine_loop_feedback_1_70_wolfram_20260927_v1.wl'
+      - 'evidence/pass219/lane5_nine_loop_feedback_1_70_wolfram_20260927_v1.output.json'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_feedback_1_70.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_feedback_cell_wall_1_70.cpp'
+      - 'docs/whitepapers/HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'GNUmakefile'
+      - '.github/workflows/pass219-lane5-nine-loop-feedback-1-70.yml'
+  push:
+    branches:
+      - main
+      - agent/pass219-lane5-nine-loop-feedback-1-70-20260927
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.json'
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.md'
+      - 'hhs_runtime/pass219/lane5_nine_loop_feedback_1_70.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_nine_loop_feedback_cell_wall_1_70.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_feedback_cell_wall_1_70.cpp'
+      - 'evidence/pass219/lane5_nine_loop_feedback_1_70_wolfram_20260927_v1.wl'
+      - 'evidence/pass219/lane5_nine_loop_feedback_1_70_wolfram_20260927_v1.output.json'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_feedback_1_70.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_feedback_cell_wall_1_70.cpp'
+      - 'docs/whitepapers/HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md'
+      - 'docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md'
+      - 'GNUmakefile'
+      - '.github/workflows/pass219-lane5-nine-loop-feedback-1-70.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nine-loop-feedback-1-70:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install pytest numpy
+
+      - name: Verify connected Wolfram 13-of-13 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          proof = json.loads(Path(
+              "evidence/pass219/"
+              "lane5_nine_loop_feedback_1_70_wolfram_20260927_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert proof["status"] == "PASS"
+          assert proof["check_count"] == 13
+          assert proof["pass_count"] == 13
+          assert all(proof["checks"].values())
+          assert proof["feedback_material_sha256"] == (
+              "ba58c70820f0f3e5bd3a352b89441face87d07ea7ce776b1b8481c21393c69e1"
+          )
+          assert proof["genesis_identity_verbatim"] == (
+              "F(x,y,a,b)=(x+y)^2+(xy-a^2)^2+(a^2-b)^2+(a^4-2)^2"
+          )
+          assert proof["native_hash216_authority"] is False
+          assert proof["canonical_transition_ready"] is False
+          PY
+
+      - name: Run 1.70 and nine-loop parent Python regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_lane5_nine_loop_feedback_1_70.py \
+            tests/pass219/test_pass219_lane5_nine_loop_large_artifact_1_69.py \
+            tests/pass219/test_pass219_lane5_nine_loop_source_attestation_1_68.py \
+            tests/pass219/test_pass219_lane5_nine_loop_foreign_equivalence_1_67.py
+
+      - name: Emit deterministic feedback receipt
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from hhs_runtime.pass219.lane5_nine_loop_feedback_1_70 import (
+              build_learning_feedback,
+              verify_contract,
+          )
+
+          receipt = verify_contract()
+          feedback = build_learning_feedback()
+          assert receipt["feedback_payload_sha256"] == (
+              "78f2cc37e9304017cf0b6a233f2cb5ab080757fec57e6eb5897295bf0d2bed70"
+          )
+          assert feedback["deviation_vector"]["literal_container_identity_assumption"] == -1
+          assert feedback["deviation_vector"]["logical_representation_equivalence"] == 1
+          assert feedback["deviation_vector"]["support_geometry"] == 1
+          assert feedback["deviation_vector"]["foreign_rational_reconstruction_complete"] == -1
+          print("PASS219_1_70_FEEDBACK=" + json.dumps(feedback, sort_keys=True))
+          PY
+
+      - name: Build shared exact VM81 runtime
+        run: make -f GNUmakefile c-kernel
+
+      - name: Compile native 1.70 conformance
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_nine_loop_feedback_cell_wall_1_70.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread \
+            -o /tmp/test_pass219_lane5_nine_loop_feedback_1_70
+
+      - name: Run native 1.70 conformance
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/test_pass219_lane5_nine_loop_feedback_1_70
+
+      - name: Verify frozen authority and equation bindings
+        run: |
+          grep -F '4acc66c250129d5a42f976d673027313707633012b2de6f85d6491a4083ed73a' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.json
+          grep -F '78f2cc37e9304017cf0b6a233f2cb5ab080757fec57e6eb5897295bf0d2bed70' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.json
+          grep -F 'F(x,y,a,b)=(x+y)^2+(xy-a^2)^2+(a^2-b)^2+(a^4-2)^2' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.json
+          grep -F '"canonical_hash216_authority": false' \
+            contracts/pass219/PASS_219_LANE5_NINE_LOOP_FEEDBACK_1_70.json
