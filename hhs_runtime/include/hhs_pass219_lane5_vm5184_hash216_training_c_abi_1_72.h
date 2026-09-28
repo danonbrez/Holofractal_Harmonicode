@@ -1,6 +1,7 @@
 #ifndef HHS_PASS219_LANE5_VM5184_HASH216_TRAINING_C_ABI_1_72_H
 #define HHS_PASS219_LANE5_VM5184_HASH216_TRAINING_C_ABI_1_72_H
 
+#include "hhs_hash216.h"
 #include "hhs_pass219_rna_vm5184_abi_1_33.h"
 
 #include <stddef.h>
