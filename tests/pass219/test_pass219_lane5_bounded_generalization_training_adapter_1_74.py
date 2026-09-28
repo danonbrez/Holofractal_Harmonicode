@@ -4,6 +4,9 @@ from copy import deepcopy
 
 import pytest
 
+from hhs_python.runtime.hhs_pass219_lane5_unified_training_bridge import (
+    Pass219Lane5UnifiedTrainingBridge,
+)
 from hhs_runtime.pass219.lane5_nine_loop_generalization_1_73 import run_generalization
 from hhs_runtime.pass219.lane5_bounded_generalization_training_adapter_1_74 import (
     METHOD_ID,
@@ -14,6 +17,17 @@ from hhs_runtime.pass219.lane5_bounded_generalization_training_adapter_1_74 impo
     parent_evidence_identity216,
     verify_frozen_parent_receipts,
 )
+
+
+def _vm5184_frame() -> bytes:
+    words = [
+        0x9E3779B97F4A7C15 ^ (i * 0x100000001B3)
+        for i in range(81)
+    ]
+    return b"".join(
+        (word & ((1 << 64) - 1)).to_bytes(8, "little")
+        for word in words
+    )
 
 
 def test_merged_parent_receipts_are_frozen_and_reproducible() -> None:
@@ -131,3 +145,55 @@ def test_frozen_receipts_must_match_recomputed_pass123_discovery() -> None:
         match="FROZEN_PARENT_RECEIPT_MISMATCH",
     ):
         verify_frozen_parent_receipts(contract)
+
+
+def test_merged_1_73_specimen_executes_through_unified_vm5184_route() -> None:
+    specimen = build_unified_specimen(
+        adapter_signature64=0x7101,
+        executor_signature64=0x7102,
+        validator_signature64=0x7103,
+        negative_control_signature64=0x7104,
+        replay_signature64=0x7105,
+    )
+    bridge = Pass219Lane5UnifiedTrainingBridge()
+    receipt = bridge.evaluate_raw(specimen, _vm5184_frame())
+
+    assert receipt["accepted"] is True
+    assert receipt["mode"] == 19
+    assert receipt["method_index"] == 18
+    assert receipt["source_identity216"] == specimen["source_identity216"]
+    assert receipt["oracle_identity216"] == specimen["oracle_identity216"]
+    assert receipt["vm5184_routed"] is True
+    assert receipt["hash216_candidate_derived"] is True
+    assert len(receipt["training_candidate_hash216"]) == 216
+    assert receipt["candidate_only"] is True
+    assert receipt["canonical_vm81_mutation_authority"] is False
+    assert receipt["canonical_hash72_authority"] is False
+    assert receipt["canonical_hash216_authority"] is False
+    assert receipt["canonical_persistence_authority"] is False
+    assert receipt["floating_point_canonical_authority"] is False
+
+
+def test_natural_language_1_73_specimen_keeps_ethical_supervisor_through_vm5184() -> None:
+    frozen = verify_frozen_parent_receipts()
+    supervisor = parent_evidence_identity216(frozen)
+    specimen = build_unified_specimen(
+        adapter_signature64=0x7201,
+        executor_signature64=0x7202,
+        validator_signature64=0x7203,
+        negative_control_signature64=0x7204,
+        replay_signature64=0x7205,
+        natural_language_training=True,
+        ethical_text_supervisor_identity216=supervisor,
+        ethical_text_supervisor_signature64=0x7206,
+        ethical_text_supervision_verified=True,
+    )
+    receipt = Pass219Lane5UnifiedTrainingBridge().evaluate_raw(
+        specimen,
+        _vm5184_frame(),
+    )
+    assert receipt["accepted"] is True
+    assert receipt["natural_language_training"] is True
+    assert receipt["ethical_text_supervision_required"] is True
+    assert receipt["ethical_text_supervision_verified"] is True
+    assert receipt["ethical_text_supervisor_identity216"] == supervisor
