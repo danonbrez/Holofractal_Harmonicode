@@ -1,0 +1,117 @@
+name: Pass 220 Lane5 Priority Offset Native A/B
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_lane5_priority_offset_hydration_1_0.h'
+      - 'hhs_runtime/c/hhs_pass220_lane5_priority_offset_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass220/test_hhs_pass220_lane5_priority_offset_hydration_1_0.c'
+      - 'tests/pass220/test_hhs_pass220_lane5_priority_offset_native_ab_v1.py'
+      - 'benchmarks/pass220/pass220_lane5_priority_offset_native_ab_v1.c'
+      - 'docs/pass220/PASS_220_LANE5_PRIORITY_OFFSET_NATIVE_AB_V1.md'
+      - 'docs/operations/restart/PASS_220_LANE5_PRIORITY_OFFSET_NATIVE_AB_RESTART_20260927.md'
+      - '.github/workflows/pass220-lane5-priority-offset-native-ab.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_lane5_priority_offset_hydration_1_0.h'
+      - 'hhs_runtime/c/hhs_pass220_lane5_priority_offset_hydration_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'tests/pass220/test_hhs_pass220_lane5_priority_offset_hydration_1_0.c'
+      - 'tests/pass220/test_hhs_pass220_lane5_priority_offset_native_ab_v1.py'
+      - 'benchmarks/pass220/pass220_lane5_priority_offset_native_ab_v1.c'
+      - 'docs/pass220/PASS_220_LANE5_PRIORITY_OFFSET_NATIVE_AB_V1.md'
+      - 'docs/operations/restart/PASS_220_LANE5_PRIORITY_OFFSET_NATIVE_AB_RESTART_20260927.md'
+      - '.github/workflows/pass220-lane5-priority-offset-native-ab.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  validate-native-priority-offset:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependency-scoped tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest
+
+      - name: Validate Python and documentation bindings
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_lane5_priority_offset_native_ab_v1.py \
+            tests/pass220/test_hhs_pass220_priority_offset_information_translation_v1.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Compile native priority-offset regression
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_pass220_lane5_priority_offset_hydration_1_0.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass220-priority-offset-test
+
+      - name: Run native priority-offset regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: /tmp/pass220-priority-offset-test
+
+      - name: Compile paired native Lane5 A/B benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            benchmarks/pass220/pass220_lane5_priority_offset_native_ab_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/pass220-priority-offset-benchmark
+
+      - name: Run paired native Lane5 A/B benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/pass220
+          /tmp/pass220-priority-offset-benchmark \
+            | tee artifacts/pass220/lane5_priority_offset_native_ab.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("artifacts/pass220/lane5_priority_offset_native_ab.json")
+          result = json.loads(p.read_text())
+          assert result["status"] == "PASS"
+          assert result["semantic_identity_all_channels"] is True
+          assert result["lane5_mediate_candidate_invoked"] is True
+          assert result["hnan_global_preflight_invoked_via_lane5"] is True
+          assert result["priority_offset_native_hydration_applied"] is True
+          assert result["native_library_constructor_hydration_applied"] is False
+          assert result["timing_is_canonical"] is False
+          assert result["logical_storage"]["dense_matrix_cells_all_channels"] == 2916
+          assert result["logical_storage"]["compact_total_controls_all_channels"] == 360
+          assert [row["channel"] for row in result["channels"]] == ["xy","yx","zw","wz"]
+          assert all(row["dense_median_batch_ns"] > 0 for row in result["channels"])
+          assert all(row["compact_median_batch_ns"] > 0 for row in result["channels"])
+          print(json.dumps(result, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload native A/B evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-lane5-priority-offset-native-ab
+          path: artifacts/pass220/lane5_priority_offset_native_ab.json
+          if-no-files-found: error
