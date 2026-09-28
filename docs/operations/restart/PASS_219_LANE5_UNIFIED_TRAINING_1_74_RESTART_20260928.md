@@ -93,3 +93,28 @@ Added:
 Current parent contract intentionally fails `frozen_parent_receipts()` because the observed 1.73 model/validation/replay/native identities are not frozen yet.
 
 The adapter already defines the positive post-freeze specimen mapping, including method 19 and ethical-text supervision when the bounded-generalization specimen is natural-language training.
+
+
+## Latest checkpoint
+
+Head before this restart update: a5b9f053b58b12bf1ac5dac18f605ebc7f893250
+Relation to 1.73 parent branch: 20 commits ahead / 0 behind
+
+Additional hardening completed:
+- executable 1.73 frozen-receipt admission adapter;
+- explicit UNFROZEN_PARENT_RECEIPTS rejection;
+- positive post-freeze specimen mapping for method 19;
+- ethical-text supervisor propagation for natural-language bounded generalization;
+- fieldwise native receipt determinism checks replacing padding-sensitive whole-struct memcmp.
+
+External state:
+- parent 1.73 discovery job 108898380086 / run 36413301687 remains queued;
+- no workflow/status record is yet attached to the current 1.74 head;
+- no 1.73 receipt identity or 1.74 compiler/runtime pass is claimed.
+
+Next action remains receipt-driven:
+1. read actual 1.73 discovery outputs;
+2. freeze those values in the 1.73 contract and native membrane;
+3. rebase 1.74 onto that final parent head;
+4. switch the adapter test from expected-unfrozen to positive authoritative mapping;
+5. run dependency-scoped 1.74 CI and retarget PR #634 to main only after #632 merges.
