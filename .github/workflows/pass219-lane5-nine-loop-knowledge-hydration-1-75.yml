@@ -1,0 +1,64 @@
+name: Pass 219 Lane 5 Nine-Loop Knowledge Hydration Discovery 1.75
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75.json'
+      - 'hhs_runtime/pass219/lane5_nine_loop_knowledge_hydration_1_75.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_knowledge_hydration_1_75.py'
+      - '.github/workflows/pass219-lane5-nine-loop-knowledge-hydration-1-75.yml'
+  push:
+    branches:
+      - main
+      - agent/pass219-lane5-nine-loop-knowledge-hydration-1-75-20260928
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75.json'
+      - 'hhs_runtime/pass219/lane5_nine_loop_knowledge_hydration_1_75.py'
+      - 'tests/pass219/test_pass219_lane5_nine_loop_knowledge_hydration_1_75.py'
+      - '.github/workflows/pass219-lane5-nine-loop-knowledge-hydration-1-75.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover-knowledge-hydration-1-75:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependency-scoped test dependency
+        run: python -m pip install pytest numpy
+
+      - name: Run 1.75 discovery and nine-loop parent regressions
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_lane5_nine_loop_knowledge_hydration_1_75.py \
+            tests/pass219/test_pass219_lane5_nine_loop_generalization_1_73.py \
+            tests/pass219/test_pass219_lane5_nine_loop_relation_dataset_1_72.py \
+            tests/pass219/test_pass219_lane5_nine_loop_training_specimen_1_71.py \
+            tests/pass219/test_pass219_lane5_nine_loop_feedback_1_70.py
+
+      - name: Emit exact 1.75 discovery receipt
+        run: |
+          PYTHONPATH="$PWD" python - <<'PY'
+          import json
+          from hhs_runtime.pass219.lane5_nine_loop_knowledge_hydration_1_75 import (
+              discover_knowledge_hydration,
+          )
+          receipt = discover_knowledge_hydration()
+          assert receipt["admitted_record_count"] == 13
+          assert receipt["graph_node_count"] == 13
+          assert receipt["graph_edge_count"] == 12
+          assert receipt["query_count"] == 12
+          assert receipt["execution_authority"] is False
+          assert receipt["canonical_persistence_authority"] is False
+          print("PASS219_1_75_DISCOVERY=" + json.dumps(receipt, sort_keys=True))
+          PY
