@@ -13,6 +13,8 @@ on:
       - 'tests/pass219/test_pass219_lane5_unified_training_bridge_1_74.py'
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_74.cpp'
       - 'hhs_runtime/pass219/lane5_nine_loop_generalization_1_73.py'
+      - 'hhs_runtime/pass219/lane5_bounded_generalization_training_adapter_1_74.py'
+      - 'tests/pass219/test_pass219_lane5_bounded_generalization_training_adapter_1_74.py'
       - 'tests/pass219/test_pass219_lane5_nine_loop_generalization_1_73.py'
       - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json'
       - 'TRAINING.md'
@@ -34,6 +36,8 @@ on:
       - 'tests/pass219/test_pass219_lane5_unified_training_bridge_1_74.py'
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_74.cpp'
       - 'hhs_runtime/pass219/lane5_nine_loop_generalization_1_73.py'
+      - 'hhs_runtime/pass219/lane5_bounded_generalization_training_adapter_1_74.py'
+      - 'tests/pass219/test_pass219_lane5_bounded_generalization_training_adapter_1_74.py'
       - 'tests/pass219/test_pass219_lane5_nine_loop_generalization_1_73.py'
       - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json'
       - 'TRAINING.md'
@@ -53,6 +57,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate inherited Pass123 1.73 generalization
         run: python -m pytest -q tests/pass219/test_pass219_lane5_nine_loop_generalization_1_73.py
+      - name: Verify 1.74 fails closed until 1.73 receipts are frozen
+        run: python -m pytest -q tests/pass219/test_pass219_lane5_bounded_generalization_training_adapter_1_74.py
       - name: Validate inherited ethical-text supervisor
         run: python -m pytest -q tests/pass219/test_hhs_pass219_ethical_text_training_v1.py
       - name: Build inherited exact ABI with unified training class
