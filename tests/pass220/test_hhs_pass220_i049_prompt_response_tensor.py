@@ -30,8 +30,8 @@ def _relation_db():
 
 def test_single_ordered_tensor_admits_with_exact_lineage():
     result = admit_prompt_response_tensor(
-        "A rapid hot animal.",
-        "A fast cold dog.",
+        "A rapid hot animal car wheel.",
+        "A fast cold dog wheel car.",
         relation_db=_relation_db(),
         explicit_relations=[
             {
