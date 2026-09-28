@@ -580,3 +580,10 @@ Pass 219 Lane 5 1.69 streams and manifest-attests the two public 424 x 5,431 pri
 [HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md](HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md)
 
 Pass 219 Lane 5 1.70 converts the proven 1.69 relation into exact training/deviation metadata. It preserves rejected foreign assumptions as negative evidence, validated additive structure as positive evidence, exact rational coverage as integer ratios, the root metadata seed as 179971179971/1000000, and the Genesis constructor verbatim. A connected Wolfram 13/13 receipt and independent feedback-payload digest are both required by the inherited candidate-only native Hash216 membrane.
+
+
+### Nine-loop training specimen 1.71
+
+[HHS_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71.md](HHS_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71.md)
+
+Pass 219 Lane 5 1.71 admits the source-bound 1.70 feedback object into the repository training-specimen corpus as deterministic dataset preparation. The specimen preserves 13 feedback labels, 5 learning objectives, 16 trinary deviation features, exact rational coverage, rejected assumptions, validated additive structure, and the full parent source/relation/support lineage. The native cell wall revalidates 1.70 and seals only a candidate specimen Hash216; model-weight updates and learning commits remain explicitly unauthorized.
