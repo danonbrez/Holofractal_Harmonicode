@@ -23,11 +23,14 @@ RUNTIME_INCLUDE = ROOT / "hhs_runtime" / "include"
 @pytest.fixture()
 def native_libraries(tmp_path: Path) -> tuple[Path, Path]:
     cc = shutil.which("cc") or shutil.which("gcc")
-    if not cc:
-        pytest.skip("C compiler unavailable")
+    cxx = shutil.which("c++") or shutil.which("g++")
+    if not cc or not cxx:
+        pytest.skip("C/C++ compiler unavailable")
 
     python1 = tmp_path / "libhhs_python1.so"
     exact = tmp_path / "libhhs_exact.so"
+    exact_obj = tmp_path / "exact_abi.o"
+    support = tmp_path / "link-support"
 
     subprocess.run(
         [
@@ -60,9 +63,40 @@ def native_libraries(tmp_path: Path) -> tuple[Path, Path]:
             "-Werror",
             "-pedantic",
             "-fPIC",
-            "-shared",
             f"-I{RUNTIME_INCLUDE}",
+            "-c",
             str(EXACT_C),
+            "-o",
+            str(exact_obj),
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        [
+            "bash",
+            "tools/pass219/build_exact_abi_link_support.sh",
+            str(support),
+            "full",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+        env={**__import__("os").environ, "CC": cc, "CXX": cxx},
+    )
+    subprocess.run(
+        [
+            cxx,
+            "-shared",
+            str(exact_obj),
+            str(support / "hhs_hash216.o"),
+            str(support / "hhs_pass219_vm81_pqc_cell_wall.o"),
+            "-lcrypto",
+            "-pthread",
+            "-lm",
             "-o",
             str(exact),
         ],
