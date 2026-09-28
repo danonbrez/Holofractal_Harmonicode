@@ -14,6 +14,9 @@ on:
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_74.cpp'
       - 'hhs_runtime/pass219/lane5_nine_loop_generalization_1_73.py'
       - 'hhs_runtime/pass219/lane5_bounded_generalization_training_adapter_1_74.py'
+      - 'hhs_runtime/pass219/lane5_unified_training_registry_1_74.py'
+      - 'training_specimens/HHS_LANE5_UNIFIED_TRAINING_REGISTRY_1_74.json'
+      - 'tests/pass219/test_pass219_lane5_unified_training_registry_1_74.py'
       - 'tests/pass219/test_pass219_lane5_bounded_generalization_training_adapter_1_74.py'
       - 'tests/pass219/test_pass219_lane5_nine_loop_generalization_1_73.py'
       - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json'
@@ -37,6 +40,9 @@ on:
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_74.cpp'
       - 'hhs_runtime/pass219/lane5_nine_loop_generalization_1_73.py'
       - 'hhs_runtime/pass219/lane5_bounded_generalization_training_adapter_1_74.py'
+      - 'hhs_runtime/pass219/lane5_unified_training_registry_1_74.py'
+      - 'training_specimens/HHS_LANE5_UNIFIED_TRAINING_REGISTRY_1_74.json'
+      - 'tests/pass219/test_pass219_lane5_unified_training_registry_1_74.py'
       - 'tests/pass219/test_pass219_lane5_bounded_generalization_training_adapter_1_74.py'
       - 'tests/pass219/test_pass219_lane5_nine_loop_generalization_1_73.py'
       - 'contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json'
@@ -71,6 +77,8 @@ jobs:
             | grep 'hhs_exact_pass219_lane5_training_evaluate_raw'
           nm -D hhs_runtime/builds/libhhs_runtime.so \
             | grep 'hhs_exact_pass219_lane5_training_method'
+      - name: Validate repository training producer registry
+        run: python -m pytest -q tests/pass219/test_pass219_lane5_unified_training_registry_1_74.py
       - name: Execute Python adapter against native class
         run: python -m pytest -q tests/pass219/test_pass219_lane5_unified_training_bridge_1_74.py
       - name: Compile native 19-mode training registry and routing test
