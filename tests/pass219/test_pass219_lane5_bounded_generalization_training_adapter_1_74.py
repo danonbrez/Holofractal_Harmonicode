@@ -2,22 +2,26 @@ from __future__ import annotations
 
 import pytest
 
+from hhs_runtime.pass219.lane5_nine_loop_generalization_1_73 import run_generalization
 from hhs_runtime.pass219.lane5_bounded_generalization_training_adapter_1_74 import (
     METHOD_ID,
     Pass219Lane5BoundedGeneralizationTrainingAdapterError,
     build_unified_specimen,
     frozen_parent_receipts,
     load_parent_contract,
+    verify_frozen_parent_receipts,
 )
 
 
 def _frozen_contract() -> dict[str, object]:
-    contract = load_parent_contract()
-    contract = dict(contract)
+    contract = dict(load_parent_contract())
+    observed = run_generalization()
     contract["frozen_receipts"] = {
-        "model_root_hash72": "0" * 72,
-        "validation_receipt_root_hash72": "1" * 72,
-        "replay_bundle_sha256": "a" * 64,
+        "model_root_hash72": observed["model_root_hash72"],
+        "validation_receipt_root_hash72": observed[
+            "validation_receipt_root_hash72"
+        ],
+        "replay_bundle_sha256": observed["replay_bundle_sha256"],
         "native_hash216_identity": "2" * 216,
         "native_hash216_composition_frozen": True,
     }
@@ -48,9 +52,13 @@ def test_frozen_parent_builds_method_19_specimen() -> None:
     assert specimen["target"] == 1
     assert specimen["source_identity216"] == "2" * 216
     assert specimen["oracle_identity216"] == "2" * 216
-    assert specimen["parent_model_root_hash72"] == "0" * 72
-    assert specimen["parent_validation_receipt_root_hash72"] == "1" * 72
-    assert specimen["parent_replay_bundle_sha256"] == "a" * 64
+    observed = run_generalization()
+    assert specimen["parent_model_root_hash72"] == observed["model_root_hash72"]
+    assert (
+        specimen["parent_validation_receipt_root_hash72"]
+        == observed["validation_receipt_root_hash72"]
+    )
+    assert specimen["parent_replay_bundle_sha256"] == observed["replay_bundle_sha256"]
     assert specimen["oracle_verified"] is True
     assert specimen["negative_controls_verified"] is True
     assert specimen["replay_verified"] is True
@@ -101,3 +109,23 @@ def test_zero_execution_signatures_fail_closed() -> None:
             replay_signature64=5,
             contract=_frozen_contract(),
         )
+
+
+def test_frozen_receipts_must_match_recomputed_pass123_discovery() -> None:
+    contract = _frozen_contract()
+    verified = verify_frozen_parent_receipts(contract)
+    observed = run_generalization()
+    assert verified["model_root_hash72"] == observed["model_root_hash72"]
+    assert verified["validation_receipt_root_hash72"] == observed[
+        "validation_receipt_root_hash72"
+    ]
+    assert verified["replay_bundle_sha256"] == observed["replay_bundle_sha256"]
+
+    tampered = dict(contract)
+    tampered["frozen_receipts"] = dict(contract["frozen_receipts"])
+    tampered["frozen_receipts"]["replay_bundle_sha256"] = "f" * 64
+    with pytest.raises(
+        Pass219Lane5BoundedGeneralizationTrainingAdapterError,
+        match="FROZEN_PARENT_RECEIPT_MISMATCH",
+    ):
+        verify_frozen_parent_receipts(tampered)
