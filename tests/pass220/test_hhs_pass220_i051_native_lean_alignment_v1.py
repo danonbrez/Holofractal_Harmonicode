@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / "native_projects" / "hhs_pass220_native_lean_alignment"
 
 
-def test_i050_contract_preserves_native_authority_boundary() -> None:
+def test_i051_contract_preserves_native_authority_boundary() -> None:
     contract = native_lean_alignment_contract()
     assert contract["lean_module"] == "HHS.Alignment.ReciprocalTensor"
     assert contract["ordered_tensor"] == "A(+i,AUTH) tensor B(-i,DERIVED)"
@@ -34,7 +34,7 @@ def test_i050_contract_preserves_native_authority_boundary() -> None:
     assert contract["hash216_persistence_authority"] is False
 
 
-def test_i050_canonical_tensor_binds_lean_identity_into_hash216_lineage() -> None:
+def test_i051_canonical_tensor_binds_lean_identity_into_hash216_lineage() -> None:
     db = {
         "hot": WordRelationEntry(word="hot", antonyms=["cold"]),
         "rapid": WordRelationEntry(word="rapid", synonyms=["fast"]),
@@ -64,7 +64,7 @@ def test_i050_canonical_tensor_binds_lean_identity_into_hash216_lineage() -> Non
         ({"omega12_closure": "Omega^12=0"}, "OMEGA12_CLOSURE_FAILURE"),
     ],
 )
-def test_i050_closure_failures_collapse_whole_tensor(
+def test_i051_closure_failures_collapse_whole_tensor(
     witness: dict[str, str],
     reason: str,
 ) -> None:
@@ -80,7 +80,7 @@ def test_i050_closure_failures_collapse_whole_tensor(
     assert reason in result["failure_reasons"]
 
 
-def test_i050_phi8_order_is_identity_not_set_membership() -> None:
+def test_i051_phi8_order_is_identity_not_set_membership() -> None:
     reordered = list(PHASE8)
     reordered[4], reordered[5] = reordered[5], reordered[4]
     result = admit_native_lean_alignment_tensor(
@@ -93,7 +93,7 @@ def test_i050_phi8_order_is_identity_not_set_membership() -> None:
     assert "PHI8_ORDER_OR_CHANNEL_MISMATCH" in result["failure_reasons"]
 
 
-def test_i050_typed_wordnet_geometry_fails_closed() -> None:
+def test_i051_typed_wordnet_geometry_fails_closed() -> None:
     result = admit_native_lean_alignment_tensor(
         "hot",
         "cold",
@@ -115,7 +115,7 @@ def test_i050_typed_wordnet_geometry_fails_closed() -> None:
     )
 
 
-def test_i050_cpp_native_alignment_harness() -> None:
+def test_i051_cpp_native_alignment_harness() -> None:
     if not (shutil.which("cc") or shutil.which("gcc")):
         pytest.skip("C compiler unavailable")
     if not (shutil.which("c++") or shutil.which("g++")):
@@ -130,7 +130,7 @@ def test_i050_cpp_native_alignment_harness() -> None:
     assert "hhs_pass220_native_lean_alignment_v1_test" in completed.stdout
 
 
-def test_i050_lean_module_has_no_upstream_mathlib_or_placeholders() -> None:
+def test_i051_lean_module_has_no_upstream_mathlib_or_placeholders() -> None:
     source = (
         ROOT / "formal" / "lean" / "HHS" / "Alignment" / "ReciprocalTensor.lean"
     ).read_text(encoding="utf-8")
