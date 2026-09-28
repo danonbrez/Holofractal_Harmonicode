@@ -203,8 +203,8 @@
       <div class="eyebrow">Interface proof 001</div>
       <h1>The runtime is already the application.</h1>
       <p>
-        This page contains no mock data and no backend logic. It reads the existing guarded runtime service registry
-        through the published browser ingress path and turns the response into a normal mobile-first interface.
+        This is a strict thin client. The device captures controls, transports requests, and renders Runtime responses.
+        HARMONICODE computation, service accounting, state evaluation, execution, and result production remain inside the Runtime.
       </p>
       <div class="actions">
         <button id="refresh" class="button primary" type="button">Refresh live runtime</button>
@@ -216,14 +216,14 @@
 
     <section class="grid">
       <article class="card">
-        <div class="card-label">Reachable services</div>
+        <div class="card-label">Runtime service count</div>
         <div id="serviceCount" class="metric">—</div>
-        <div id="serviceSchema" class="sub">Waiting for /api/runtime/services</div>
+        <div id="serviceSchema" class="sub">Waiting for Runtime-computed status</div>
       </article>
 
       <article class="card">
-        <div class="card-label">Guarded runtime</div>
-        <div id="runtimeState" class="metric">Checking</div>
+        <div class="card-label">Runtime dispatch count</div>
+        <div id="dispatchCount" class="metric">—</div>
         <div id="statusSchema" class="sub">Waiting for /api/runtime/services/status</div>
       </article>
 
@@ -249,16 +249,10 @@
   <script type="module">
     const el = (id) => document.getElementById(id);
 
-    function serviceName(service, index) {
-      if (typeof service === "string") return service;
-      if (!service || typeof service !== "object") return `service-${index + 1}`;
-      return service.name || service.service || service.id || service.symbol || `service-${index + 1}`;
-    }
-
-    function serviceType(service) {
-      if (!service || typeof service !== "object") return "runtime";
-      return service.kind || service.type || service.category || service.authority || "runtime";
-    }
+    // Thin-client invariant:
+    // - event handling and transport are control-plane work
+    // - JSON decoding and DOM updates are presentation work
+    // - no HHS/runtime state, counts, decisions, execution, or result semantics are computed here
 
     function renderServices(services) {
       const root = el("services");
@@ -275,23 +269,13 @@
         row.className = "service";
         const name = document.createElement("div");
         name.className = "service-name";
-        name.textContent = serviceName(services[i], i);
+        name.textContent = String(services[i]?.name ?? "unnamed runtime service");
         const type = document.createElement("div");
         type.className = "service-type";
-        type.textContent = serviceType(services[i]);
+        type.textContent = String(services[i]?.service_type ?? "runtime");
         row.append(name, type);
         root.append(row);
       }
-    }
-
-    function runtimeLabel(statusBody) {
-      const status = statusBody?.status;
-      if (!status || typeof status !== "object") return "Reachable";
-      if (typeof status.state === "string") return status.state;
-      if (typeof status.status === "string") return status.status;
-      if (status.ok === true) return "Ready";
-      if (status.running === true) return "Running";
-      return "Reachable";
     }
 
     async function requestJson(path) {
@@ -331,10 +315,11 @@
         ]);
 
         const services = Array.isArray(servicesBody?.services) ? servicesBody.services : [];
-        el("serviceCount").textContent = String(services.length);
-        el("serviceSchema").textContent = servicesBody?.schema || "schema not declared";
-        el("runtimeState").textContent = runtimeLabel(statusBody);
-        el("statusSchema").textContent = statusBody?.schema || "schema not declared";
+        const runtimeStatus = statusBody?.status ?? {};
+        el("serviceCount").textContent = String(runtimeStatus?.service_count ?? "—");
+        el("serviceSchema").textContent = String(runtimeStatus?.schema ?? "Runtime status schema not declared");
+        el("dispatchCount").textContent = String(runtimeStatus?.dispatch_count ?? "—");
+        el("statusSchema").textContent = String(statusBody?.schema ?? "API response schema not declared");
         renderServices(services);
 
         el("rawOutput").textContent = JSON.stringify({
@@ -347,7 +332,7 @@
       } catch (cause) {
         const message = cause instanceof Error ? cause.message : String(cause);
         el("serviceCount").textContent = "—";
-        el("runtimeState").textContent = "Unavailable";
+        el("dispatchCount").textContent = "—";
         renderServices([]);
         live.className = "live fail";
         liveText.textContent = "runtime unavailable";
