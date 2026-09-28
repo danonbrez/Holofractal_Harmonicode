@@ -68,6 +68,7 @@ struct TrainingMethodDescriptor final {
     std::uint8_t routes_through_vm5184{};
     std::uint8_t emits_candidate_hash216{};
     std::uint8_t candidate_only{};
+    std::uint8_t ethical_text_supervisor{};
     std::uint8_t reserved0{};
 };
 
@@ -80,17 +81,21 @@ struct TrainingSpecimen final {
     std::uint32_t reserved0{};
     char source_identity216[HHS_HASH216_LEN + 1]{};
     char oracle_identity216[HHS_HASH216_LEN + 1]{};
+    char ethical_text_supervisor_identity216[HHS_HASH216_LEN + 1]{};
     std::uint64_t adapter_signature64{};
     std::uint64_t executor_signature64{};
     std::uint64_t validator_signature64{};
     std::uint64_t negative_control_signature64{};
     std::uint64_t replay_signature64{};
+    std::uint64_t ethical_text_supervisor_signature64{};
     std::uint8_t oracle_verified{};
     std::uint8_t negative_controls_verified{};
     std::uint8_t replay_verified{};
     std::uint8_t ingress_egress_preserved{};
     std::uint8_t candidate_only_acknowledged{};
-    std::uint8_t reserved1[3]{};
+    std::uint8_t natural_language_training{};
+    std::uint8_t ethical_text_supervision_verified{};
+    std::uint8_t reserved1{};
 };
 
 struct TrainingReceipt final {
@@ -107,6 +112,9 @@ struct TrainingReceipt final {
     std::uint8_t negative_controls_verified{};
     std::uint8_t replay_verified{};
     std::uint8_t ingress_egress_preserved{};
+    std::uint8_t natural_language_training{};
+    std::uint8_t ethical_text_supervision_required{};
+    std::uint8_t ethical_text_supervision_verified{};
     std::uint8_t vm5184_routed{};
     std::uint8_t hash216_candidate_derived{};
     std::uint8_t candidate_only{};
@@ -118,6 +126,7 @@ struct TrainingReceipt final {
     std::uint8_t reserved0{};
     char source_identity216[HHS_HASH216_LEN + 1]{};
     char oracle_identity216[HHS_HASH216_LEN + 1]{};
+    char ethical_text_supervisor_identity216[HHS_HASH216_LEN + 1]{};
     char training_candidate_hash216[HHS_HASH216_LEN + 1]{};
     HHSExactPass219Holo4PreparedV1 rna_prepared{};
     HHSExactPass219Holo4DecisionV1 rna_decision{};
