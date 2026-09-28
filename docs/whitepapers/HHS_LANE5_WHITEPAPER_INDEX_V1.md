@@ -584,3 +584,20 @@ Connected Wolfram evaluation proves that deleting the center makes the HNAN
 projection non-injective over distinct ordered states, and deleting epsilon
 makes the visible `xy` projection non-injective over distinct residual states.
 The theorem preserves the inherited `0=∅=AB/P⁴∅=HNAN` closure independently.
+
+
+## Literal firing-pattern phase-engine composition
+
+The HNAN information theorem is now explicitly bound to the repository's
+existing literal firing-order constructor:
+
+```text
+8 -> 24 -> 40 -> 56 -> 72 -> 16 -> 32 -> 48 -> 64 -> 8
+```
+
+This is the exact step-16 action on the 72-position ring. Pass 219 Lane 5
+consumes the same U9/macrocycle constructor; it is not a metaphor-derived
+replacement phase engine.
+
+Evidence:
+`evidence/pass220/phase_engine_firing_hnan_composition_20260928_v1.json`

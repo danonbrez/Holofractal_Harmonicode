@@ -305,3 +305,31 @@ retaining the ordered center that a bare HNAN label would erase.
 Any optimizer, serializer, interpreter, hydration layer, native constructor, or
 cross-modal translation that drops this binding must fail the information gate
 even if its visible output is numerically identical or faster.
+
+
+## 9. Literal phase-engine source geometry
+
+The phase carrier used by this theorem is not newly inferred from a mechanical
+analogy. HHS already carries a literal modular firing constructor:
+
+```text
+sigma_n = 8 + 16 n (mod 72)
+```
+
+which emits:
+
+```text
+8,24,40,56,72,16,32,48,64
+```
+
+before returning to 8.
+
+Because `gcd(72,16)=8`, the 72-position ring decomposes exactly into eight
+nine-state cycles. I025 freezes the corresponding Wolfram proof as 25/25 PASS,
+and the Pass 219 Lane 5 Genesis/U9 bridge imports the same macrocycle
+permutation directly.
+
+Thus HNAN zero-center closure is evaluated over an existing exact firing-phase
+state. It does not define a replacement firing pattern. The information theorem
+requires the counted phase-lane state to survive even when its closure
+projection is `Delta e = 0`.

@@ -15,6 +15,7 @@ on:
       - "docs/whitepapers/HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md"
       - "docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md"
       - "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md"
+      - "evidence/pass220/phase_engine_firing_hnan_composition_20260928_v1.json"
       - ".github/workflows/pass220-numpy1-four-phase-ab.yml"
 
 jobs:

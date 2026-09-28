@@ -359,3 +359,35 @@ Updated:
 The proof establishes why the string is necessary for translation: deleting the
 center makes the HNAN projection many-to-one and therefore destroys unique
 reconstruction. Speed cannot override this information-preservation failure.
+
+
+## Literal firing-pattern provenance binding — 2026-09-28
+
+Clarification frozen into repository evidence: the radial-engine firing pattern
+is not being used as an analogy or as a source for a new design. The exact
+engineering firing logic is already the phase-engine constructor.
+
+Existing exact schedule:
+
+```text
+sigma_n = 8 + 16 n (mod 72)
+8 -> 24 -> 40 -> 56 -> 72 -> 16 -> 32 -> 48 -> 64 -> 8
+```
+
+Existing proof:
+- I025 connected Wolfram: 25/25 PASS;
+- 72-position shift-by-16 operator;
+- eight disjoint 9-state cycles;
+- exact `U72^9 = I`.
+
+Pass 219 Lane 5 consumes the same constructor through
+`lane5_genesis_orientation_u9_qe_bridge.py` and
+`lane5_feynman_discrete_orbit_bridge.py`.
+
+Added composition receipt:
+`evidence/pass220/phase_engine_firing_hnan_composition_20260928_v1.json`.
+
+Regression now fails if the firing orbit, 8x9 cycle decomposition, Pass 219 U9
+permutation binding, or HNAN center source drifts.
+
+No second phase engine or metaphor-derived replacement geometry was introduced.

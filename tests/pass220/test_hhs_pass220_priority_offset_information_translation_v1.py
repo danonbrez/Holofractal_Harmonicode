@@ -230,3 +230,51 @@ def test_whitepapers_explain_hnan_zero_center_information_necessity():
         assert token in theorem
         assert token in parent
     assert "HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md" in index
+
+
+def test_literal_firing_pattern_drives_existing_pass219_u9_phase_engine():
+    from hhs_runtime.hhs_pass220_schrodinger_firing_order_v1 import (
+        firing_order,
+        full_orbit_receipt,
+        macrocycle_permutation,
+    )
+    from hhs_runtime.pass219.lane5_genesis_orientation_u9_qe_bridge import (
+        genesis_projection_witness,
+    )
+
+    assert firing_order() == (8, 24, 40, 56, 72, 16, 32, 48, 64)
+    orbit = full_orbit_receipt()
+    assert orbit["status"] == "PASS"
+    assert orbit["full_orbit_cycle_lengths"] == (9,) * 8
+    assert orbit["checks"]["full_orbit_nine_closure"] is True
+    assert orbit["checks"]["full_orbit_eight_cycles"] is True
+
+    genesis = genesis_projection_witness()
+    assert genesis["status"] == "PASS"
+    assert tuple(genesis["u9"]["permutation"]) == macrocycle_permutation()
+    assert genesis["u9"]["full_orbit_closes"] is True
+    assert (
+        genesis["native_eigenvector0"][1][1]
+        == "x+y-z-w+xy+yx-zw-wz"
+    )
+
+
+def test_literal_firing_hnan_composition_receipt_is_frozen():
+    receipt = json.loads(
+        Path(
+            "evidence/pass220/"
+            "phase_engine_firing_hnan_composition_20260928_v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert receipt["status"] == "PASS"
+    assert receipt["metaphor_or_visual_analogy_only"] is False
+    assert receipt["source_classification"] == (
+        "LITERAL_ENGINEERING_FIRING_PATTERN_RUNTIME_GEOMETRY"
+    )
+    assert receipt["firing_order"] == [8, 24, 40, 56, 72, 16, 32, 48, 64]
+    assert receipt["full_orbit_cycle_lengths"] == [9] * 8
+    assert receipt["composition_claims"]["no_new_phase_engine_introduced"] is True
+    assert (
+        receipt["hnan_zero_center_source"]
+        == "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz"
+    )
