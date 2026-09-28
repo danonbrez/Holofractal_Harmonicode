@@ -203,8 +203,8 @@
       <div class="eyebrow">Interface proof 001</div>
       <h1>The runtime is already the application.</h1>
       <p>
-        This is a strict thin client. The device captures controls, transports requests, and renders Runtime responses.
-        HARMONICODE computation, service accounting, state evaluation, execution, and result production remain inside the Runtime.
+        This is a secured thin terminal client. The device captures controls, transports requests, and renders validated Runtime responses.
+        If the Runtime or its declared contract is unavailable, the client fails closed. There is no local execution, mock data, fallback service, or synthesized result.
       </p>
       <div class="actions">
         <button id="refresh" class="button primary" type="button">Refresh live runtime</button>
@@ -254,25 +254,53 @@
     // - JSON decoding and DOM updates are presentation work
     // - no HHS/runtime state, counts, decisions, execution, or result semantics are computed here
 
+    function clearServices() {
+      el("services").replaceChildren();
+    }
+
+    function requireRuntimeContracts(servicesBody, statusBody) {
+      if (servicesBody?.schema !== "HHS_RUNTIME_SERVICE_LIST_V1" || !Array.isArray(servicesBody?.services)) {
+        throw new Error("Runtime service registry contract rejected");
+      }
+      if (
+        statusBody?.schema !== "HHS_GUARDED_SERVICE_STATUS_RESPONSE_V1" ||
+        statusBody?.status?.schema !== "HHS_SERVICE_REGISTRY_STATUS_V1" ||
+        typeof statusBody?.status?.service_count !== "number" ||
+        typeof statusBody?.status?.dispatch_count !== "number"
+      ) {
+        throw new Error("Runtime status contract rejected");
+      }
+      for (const service of servicesBody.services) {
+        if (
+          !service ||
+          typeof service !== "object" ||
+          typeof service.name !== "string" ||
+          typeof service.service_type !== "string"
+        ) {
+          throw new Error("Runtime returned an invalid service descriptor");
+        }
+      }
+    }
+
     function renderServices(services) {
       const root = el("services");
       root.replaceChildren();
-      if (!services.length) {
+      if (services.length === 0) {
         const empty = document.createElement("div");
         empty.className = "sub";
-        empty.textContent = "The registry responded but returned no service entries.";
+        empty.textContent = "Runtime reports zero reachable services.";
         root.append(empty);
         return;
       }
-      for (let i = 0; i < services.length; i += 1) {
+      for (const service of services) {
         const row = document.createElement("div");
         row.className = "service";
         const name = document.createElement("div");
         name.className = "service-name";
-        name.textContent = String(services[i]?.name ?? "unnamed runtime service");
+        name.textContent = service.name;
         const type = document.createElement("div");
         type.className = "service-type";
-        type.textContent = String(services[i]?.service_type ?? "runtime");
+        type.textContent = service.service_type;
         row.append(name, type);
         root.append(row);
       }
@@ -314,12 +342,14 @@
           requestJson("/api/runtime/services/status")
         ]);
 
-        const services = Array.isArray(servicesBody?.services) ? servicesBody.services : [];
-        const runtimeStatus = statusBody?.status ?? {};
-        el("serviceCount").textContent = String(runtimeStatus?.service_count ?? "—");
-        el("serviceSchema").textContent = String(runtimeStatus?.schema ?? "Runtime status schema not declared");
-        el("dispatchCount").textContent = String(runtimeStatus?.dispatch_count ?? "—");
-        el("statusSchema").textContent = String(statusBody?.schema ?? "API response schema not declared");
+        requireRuntimeContracts(servicesBody, statusBody);
+
+        const services = servicesBody.services;
+        const runtimeStatus = statusBody.status;
+        el("serviceCount").textContent = String(runtimeStatus.service_count);
+        el("serviceSchema").textContent = runtimeStatus.schema;
+        el("dispatchCount").textContent = String(runtimeStatus.dispatch_count);
+        el("statusSchema").textContent = statusBody.schema;
         renderServices(services);
 
         el("rawOutput").textContent = JSON.stringify({
@@ -333,7 +363,7 @@
         const message = cause instanceof Error ? cause.message : String(cause);
         el("serviceCount").textContent = "—";
         el("dispatchCount").textContent = "—";
-        renderServices([]);
+        clearServices();
         live.className = "live fail";
         liveText.textContent = "runtime unavailable";
         error.className = "card error show";
