@@ -1,12 +1,12 @@
 # Repository file/dependency shard - bin
 
-Source commit: [4a01b69e0be461d15f8afc9359acda36207bd278](https://github.com/danonbrez/Holofractal_Harmonicode/commit/4a01b69e0be461d15f8afc9359acda36207bd278)
+Source commit: [d1f255a476cfa5742dc7dbf6896f38b53317b5ab](https://github.com/danonbrez/Holofractal_Harmonicode/commit/d1f255a476cfa5742dc7dbf6896f38b53317b5ab)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## bin
 
-- [bin/hhs-guest](https://github.com/danonbrez/Holofractal_Harmonicode/blob/4a01b69e0be461d15f8afc9359acda36207bd278/bin/hhs-guest) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
-- [bin/hhs-hydrate](https://github.com/danonbrez/Holofractal_Harmonicode/blob/4a01b69e0be461d15f8afc9359acda36207bd278/bin/hhs-hydrate) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
-- [bin/hhs-vm](https://github.com/danonbrez/Holofractal_Harmonicode/blob/4a01b69e0be461d15f8afc9359acda36207bd278/bin/hhs-vm) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
-- [bin/post_compile](https://github.com/danonbrez/Holofractal_Harmonicode/blob/4a01b69e0be461d15f8afc9359acda36207bd278/bin/post_compile) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [bin/hhs-guest](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d1f255a476cfa5742dc7dbf6896f38b53317b5ab/bin/hhs-guest) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [bin/hhs-hydrate](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d1f255a476cfa5742dc7dbf6896f38b53317b5ab/bin/hhs-hydrate) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [bin/hhs-vm](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d1f255a476cfa5742dc7dbf6896f38b53317b5ab/bin/hhs-vm) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [bin/post_compile](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d1f255a476cfa5742dc7dbf6896f38b53317b5ab/bin/post_compile) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
