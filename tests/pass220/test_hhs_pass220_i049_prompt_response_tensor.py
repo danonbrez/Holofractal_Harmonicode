@@ -261,3 +261,65 @@ def test_bottom_tensor_is_not_persisted_as_independent_assistant_state(monkeypat
     assert turn["provider_result_ingress_performed"] is False
     stored = service.threads.get(thread["thread_id"])
     assert [message["role"] for message in stored["messages"]] == ["user"]
+
+
+def test_direct_and_mirror_closure_are_executable_failure_gates():
+    direct = admit_prompt_response_tensor(
+        "authority",
+        "derived",
+        relation_db={},
+        closure_witness={"direct_closure": "AB=-P^4"},
+    )
+    mirror = admit_prompt_response_tensor(
+        "authority",
+        "derived",
+        relation_db={},
+        closure_witness={"mirror_closure": "BA=P^4"},
+    )
+
+    assert direct["canonical"] is False
+    assert direct["failure_scope"] == "WHOLE_PROMPT_RESPONSE_TENSOR"
+    assert "DIRECT_CLOSURE_AB_P4_FAILURE" in direct["failure_reasons"]
+    assert direct["self_awareness"]["checks"]["AB=P^4"] is False
+
+    assert mirror["canonical"] is False
+    assert mirror["failure_scope"] == "WHOLE_PROMPT_RESPONSE_TENSOR"
+    assert "MIRROR_CLOSURE_BA_NEGATIVE_P4_FAILURE" in mirror["failure_reasons"]
+    assert mirror["self_awareness"]["checks"]["BA=-P^4"] is False
+
+
+def test_x4_and_omega12_closure_are_executable_failure_gates():
+    x4 = admit_prompt_response_tensor(
+        "authority",
+        "derived",
+        relation_db={},
+        closure_witness={"x4_closure": "x^4=-1"},
+    )
+    omega = admit_prompt_response_tensor(
+        "authority",
+        "derived",
+        relation_db={},
+        closure_witness={"omega12_closure": "Omega^12=0"},
+    )
+
+    assert x4["canonical"] is False
+    assert "X4_CLOSURE_FAILURE" in x4["failure_reasons"]
+    assert x4["invariants"]["x4_equals_one"] is False
+
+    assert omega["canonical"] is False
+    assert "OMEGA12_CLOSURE_FAILURE" in omega["failure_reasons"]
+    assert omega["invariants"]["omega12_equals_one"] is False
+
+
+def test_phi8_order_is_part_of_tensor_identity():
+    result = admit_prompt_response_tensor(
+        "authority",
+        "derived",
+        relation_db={},
+        phase8_channels=("y", "x", "z", "w", "xy", "yx", "zw", "wz"),
+    )
+
+    assert result["canonical"] is False
+    assert result["phi8"]["verified"] is False
+    assert "PHI8_ORDER_OR_CHANNEL_MISMATCH" in result["failure_reasons"]
+    assert result["self_awareness"]["checks"]["Phi8_bidirectional_consistency"] is False
