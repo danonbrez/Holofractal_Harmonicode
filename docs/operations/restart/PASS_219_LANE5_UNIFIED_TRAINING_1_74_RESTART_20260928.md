@@ -148,3 +148,22 @@ These are diagnostic cross-check values only. They are NOT frozen authoritative 
 Repair note:
 - an intermediate edit accidentally made `verify_frozen_parent_receipts()` self-recursive;
 - commit `7571b3ad8abe0092488fd7176ccd526a234df4a4` repaired it so the verifier reads `frozen_parent_receipts()`, recomputes 1.73, and only then admits the normalized specimen.
+
+## Repository-wide training catalog checkpoint
+
+Added:
+- training_specimens/HHS_LANE5_UNIFIED_TRAINING_REGISTRY_1_74.json
+- hhs_runtime/pass219/lane5_unified_training_registry_1_74.py
+- tests/pass219/test_pass219_lane5_unified_training_registry_1_74.py
+
+All 19 primary producer paths were checked to exist on the stacked branch before the registry was committed.
+
+The registry test requires exact synchronization with the native C ABI for:
+- mode number;
+- method ID;
+- temporal class;
+- primary learning target;
+- intrinsic natural-language classification;
+- ethical-text supervisor declaration.
+
+This completes the explicit repository-level labeling layer requested for the existing training-equivalent mechanisms without introducing another executor or mutation path.
