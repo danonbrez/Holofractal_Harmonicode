@@ -5,6 +5,8 @@
 - Base commit: ea82cf49f42c6a915a34621d1a542f6b10449d42
 - Branch: pass220/i048-loshu-integer-ratio-ab-wolfram
 - Merge target: main
+- Pull request: #629
+- Checkpoint head before this restart-record refresh: 5baf6af78ae6ef34171680195a453f7e97cc4caa
 - Scope: additive exact Wolfram formalization plus proof-preserving A/B hydration optimization
 
 ## Implemented
@@ -55,9 +57,14 @@ Result: 7 passed.
 
 Connected Wolfram result: 28 passed of 28.
 
-## Remaining validation
+## External validation state
 
-Run the exact-head GitHub workflow after the branch commit. External queued CI does not block creation of the restartable checkpoint; repair forward only I048-attributable failures.
+- PR: #629
+- I048 exact-head workflow run observed at checkpoint refresh: 36409842960
+- observed state: in_progress
+- repository-wide workflows were also queued/running; Guarded Continuous Integration was skipped by its own path/event rules.
+
+External queued/running CI is not a blocker for this restartable checkpoint. Repair forward only failures attributable to the I048 dependency frontier.
 
 ## Authority state
 
@@ -65,4 +72,4 @@ Candidate-only. No canonical VM81 mutation, Hash72 mint, Hash216 commit, canonic
 
 ## Next action
 
-Open the PR against main, inspect the I048 exact-head workflow, and merge only after dependency-scoped validation remains green.
+Inspect the latest I048 exact-head workflow for PR #629. If it fails because of these I048 files, repair forward only this dependency frontier. When I048 validation closes, merge PR #629 and verify authoritative main contains the integrated commit.
