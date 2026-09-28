@@ -219,3 +219,64 @@ Next workstream:
 - continue native-library metadata/constructor import and HARMONICODE
   interpreter integration using the selected scalar-offset internal candidate;
 - repair-forward actual mainline conflicts when #622/#618 land.
+
+
+## Cross-layer information-preserving priority default — 2026-09-28
+
+The NumPy1 scalar-offset result is extended into a cross-layer promotion gate.
+
+Primary rule:
+
+```text
+INFORMATION PRESERVATION FIRST
++ PERFORMANCE SUPPORT SECOND
+= PRIORITY DEFAULT PROMOTION
+```
+
+The complete translated unit is now the tagged tuple:
+
+```text
+(value, phase, rotation, original_position)
+```
+
+For all ordered channels `xy/yx/zw/wz`, dense Arm A and compact Arm B must
+preserve the entire tuple and exact inverse recovery.
+
+Mandatory downstream gates:
+- exact 5184-character serialization equality and inverse;
+- RNA phase-lock state identity;
+- ordered xy/yx/zw/wz Digital-DNA binding identity;
+- Pass 115 qudit serialization root, topology, coordinate-bijection, and exact
+  value/phase/rotation reconstruction;
+- supplied U9 circuit tensor closure and provenance;
+- Pass 219 HNAN invariant receipt;
+- HNAN ordered Lo Shu receipt;
+- terminal `xy+epsilon`;
+- bare-`xy`, epsilon-elision, ordered-product commutation, and host-scalar
+  epsilon substitution remain forbidden.
+
+New files:
+- `hhs_runtime/hhs_pass220_priority_offset_information_translation_v1.py`
+- `tests/pass220/test_hhs_pass220_priority_offset_information_translation_v1.py`
+- `benchmarks/pass220/pass220_priority_offset_information_translation_v1.py`
+- `docs/pass220/PASS_220_PRIORITY_OFFSET_INFORMATION_TRANSLATION_V1.md`
+
+The existing frozen NumPy timing evidence is used only as supporting promotion
+evidence. It is explicitly outside Lane 5 and cannot override an information
+gate failure.
+
+Promotion semantics:
+- information PASS + performance PASS -> `PROMOTE_PRIORITY_DEFAULT`;
+- information PASS + performance pending -> dense remains selected while compact
+  remains an information-valid candidate;
+- any information loss -> `FALL_BACK_TO_DENSE_REFERENCE`.
+
+No VM81 mutation, Hash72 mint, Hash216 persistence, HNAN bypass, or Lane 5
+authority is introduced.
+
+Next action:
+1. inspect exact-head PR #624 validation once;
+2. repair only attributable cross-layer failures;
+3. freeze the information-preservation receipt and cross-layer host timing;
+4. extend the same promotion gate to native Lane 5 hydration and I048
+   constructor/runtime-adapter execution when those branches reconcile.

@@ -5,8 +5,11 @@ on:
     branches: [main]
     paths:
       - "hhs_runtime/hhs_pass220_numpy_four_phase_ab_v1.py"
+      - "hhs_runtime/hhs_pass220_priority_offset_information_translation_v1.py"
       - "tests/pass220/test_hhs_pass220_numpy_four_phase_ab_v1.py"
+      - "tests/pass220/test_hhs_pass220_priority_offset_information_translation_v1.py"
       - "benchmarks/pass220/pass220_numpy_four_phase_ab_v1.py"
+      - "benchmarks/pass220/pass220_priority_offset_information_translation_v1.py"
       - ".github/workflows/pass220-numpy1-four-phase-ab.yml"
 
 jobs:
@@ -17,12 +20,21 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.11"}
       - run: python -m pip install --disable-pip-version-check pytest
-      - run: pytest -q tests/pass220/test_hhs_pass220_numpy_four_phase_ab_v1.py
+      - run: |
+          pytest -q \
+            tests/pass220/test_hhs_pass220_numpy_four_phase_ab_v1.py \
+            tests/pass220/test_hhs_pass220_priority_offset_information_translation_v1.py
       - run: |
           python -m benchmarks.pass220.pass220_numpy_four_phase_ab_v1 \
             --output artifacts/pass220/numpy1_four_phase_ab.json \
             --repeats 15
+      - run: |
+          python -m benchmarks.pass220.pass220_priority_offset_information_translation_v1 \
+            --output artifacts/pass220/priority_offset_information_translation.json \
+            --repeats 3
       - uses: actions/upload-artifact@v4
         with:
           name: pass220-numpy1-four-phase-ab
-          path: artifacts/pass220/numpy1_four_phase_ab.json
+          path: |
+            artifacts/pass220/numpy1_four_phase_ab.json
+            artifacts/pass220/priority_offset_information_translation.json
