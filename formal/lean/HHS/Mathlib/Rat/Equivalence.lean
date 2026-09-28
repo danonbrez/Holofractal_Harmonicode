@@ -58,7 +58,7 @@ theorem eqv_trans {a b c : ExactRat}
 
 /-- Negation preserves the unreduced denominator and reverses only the exact
 integer numerator. -/
-def ExactRat.neg (q : ExactRat) : ExactRat :=
+def negExactRat (q : ExactRat) : ExactRat :=
   {
     numerator := -q.numerator
     denominator := q.denominator
@@ -67,7 +67,7 @@ def ExactRat.neg (q : ExactRat) : ExactRat :=
 
 theorem eqv_neg_congr {a b : ExactRat}
     (h : a.eqv b) :
-    a.neg.eqv b.neg := by
+    (negExactRat a).eqv (negExactRat b) := by
   unfold ExactRat.eqv at h ⊢
   change (-a.numerator) * Int.ofNat b.denominator =
     (-b.numerator) * Int.ofNat a.denominator
