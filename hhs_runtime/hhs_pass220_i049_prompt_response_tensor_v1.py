@@ -1,24 +1,25 @@
 """Pass 220 I049 — ordered reciprocal prompt/response tensor admission.
 
-The user prompt and generated response are admitted as one ordered tensor state:
+The prompt and generated response are one ordered reciprocal-phase tensor:
 
     A = prompt(+i, AUTH)
     B = response(-i, DERIVED)
     AB = P^4
     BA = -P^4
 
-This module does not grant a language model VM81, canonical Hash72, canonical
-Hash216, repository, or persistence authority.  It produces a deterministic
-admission witness for the coupled prompt/response object.  A failed witness is
-BOTTOM and the response payload must not be persisted as an independent
-assistant state.
+The response has no independent authority surface. Admission is fail-closed:
+any failed typed lexical relation, phase witness, closure witness, Hash72 lineage,
+or Hash216 transition lineage collapses the coupled tensor to BOTTOM.
+
+This module produces an admission witness only. It does not grant a language
+model VM81, canonical Hash72, canonical Hash216, repository, or persistence
+authority.
 """
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from functools import lru_cache
-from pathlib import Path
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Mapping, Sequence
 import json
 import re
 
@@ -34,6 +35,7 @@ from hhs_runtime.hhs_wordnet_relation_enforcer_v1 import (
 VERSION = "HHS-P220-I049-PROMPT-RESPONSE-RECIPROCAL-TENSOR-V1"
 SCHEMA = "HHS-P220-I049-PROMPT-RESPONSE-TENSOR-ADMISSION-V1"
 AUTHORITY = "USER_PROMPT_AUTHORITY_RECIPROCAL_RESPONSE_V1"
+
 PHASE8 = ("x", "y", "z", "w", "xy", "yx", "zw", "wz")
 RECIPROCAL_PAIR = {
     "prompt_phase": "+i",
@@ -42,6 +44,12 @@ RECIPROCAL_PAIR = {
     "ordered_product": "1",
     "response_equals_negative_prompt_phase": True,
     "response_equals_reciprocal_prompt_phase": True,
+}
+CANONICAL_CLOSURE = {
+    "direct_closure": "AB=P^4",
+    "mirror_closure": "BA=-P^4",
+    "x4_closure": "x^4=1",
+    "omega12_closure": "Omega^12=1",
 }
 LEXICAL_GEOMETRY = {
     "synonym": "(A,B)",
@@ -52,7 +60,6 @@ LEXICAL_GEOMETRY = {
     "meronym": "(A subset_part B,B superset_whole A)",
 }
 MAX_TEXT_CHARS = 131_072
-_WORD = re.compile(r"[A-Za-z]+(?:[-'][A-Za-z]+)?")
 
 
 class PromptResponseTensorAdmissionError(RuntimeError):
@@ -125,6 +132,7 @@ def _infer_lexical_edges(
     response_tokens = set(_unique_tokens(response))
     edges: list[LexicalRelationEdge] = []
     seen: set[tuple[str, str, str]] = set()
+
     for a in prompt_tokens:
         entry = relation_db.get(a)
         if entry is None:
@@ -158,14 +166,16 @@ def _explicit_edges(
 ) -> tuple[list[LexicalRelationEdge], list[str]]:
     edges: list[LexicalRelationEdge] = []
     reasons: list[str] = []
+
     for index, raw in enumerate(values):
         relation = _normalize_token(raw.get("relation", ""))
         a = _normalize_token(raw.get("prompt_token", raw.get("a", "")))
         b = _normalize_token(raw.get("response_token", raw.get("b", "")))
-        geometry = str(raw.get("geometry") or LEXICAL_GEOMETRY.get(relation, ""))
         expected = LEXICAL_GEOMETRY.get(relation)
+        geometry = str(raw.get("geometry") or expected or "")
         endpoints_present = a in prompt_tokens and b in response_tokens
         valid = bool(a and b and expected and geometry == expected and endpoints_present)
+
         if not expected:
             reasons.append(f"LEXICAL_RELATION_TYPE_INVALID:{index}")
         elif not a or not b:
@@ -174,6 +184,7 @@ def _explicit_edges(
             reasons.append(f"LEXICAL_GEOMETRY_MISMATCH:{index}:{relation}")
         elif not endpoints_present:
             reasons.append(f"LEXICAL_RELATION_ENDPOINT_OUTSIDE_TENSOR:{index}:{relation}")
+
         edges.append(
             LexicalRelationEdge(
                 prompt_token=a,
@@ -184,28 +195,82 @@ def _explicit_edges(
                 geometry_verified=valid,
             )
         )
+
     return edges, reasons
 
 
-def _phase8_witness() -> dict[str, Any]:
-    ordered = list(PHASE8)
-    mirror_pairs = [
-        {"direct": "x", "reciprocal": "y"},
-        {"direct": "z", "reciprocal": "w"},
-        {"direct": "xy", "reciprocal": "yx"},
-        {"direct": "zw", "reciprocal": "wz"},
-    ]
+def _phase8_witness(channels: Sequence[str] | None) -> tuple[dict[str, Any], list[str]]:
+    ordered = tuple(str(item) for item in (channels if channels is not None else PHASE8))
+    reasons: list[str] = []
+    if ordered != PHASE8:
+        reasons.append("PHI8_ORDER_OR_CHANNEL_MISMATCH")
+    if len(ordered) != 8 or len(set(ordered)) != 8:
+        reasons.append("PHI8_CHANNEL_CARDINALITY_FAILURE")
+
+    verified = not reasons
     return {
-        "ordered_channels": ordered,
-        "mirror_pairs": mirror_pairs,
-        "xy_yx_order_preserved": ordered.index("xy") < ordered.index("yx"),
-        "zw_wz_order_preserved": ordered.index("zw") < ordered.index("wz"),
+        "ordered_channels": list(ordered),
+        "canonical_channels": list(PHASE8),
+        "mirror_pairs": [
+            {"direct": "x", "reciprocal": "y"},
+            {"direct": "z", "reciprocal": "w"},
+            {"direct": "xy", "reciprocal": "yx"},
+            {"direct": "zw", "reciprocal": "wz"},
+        ],
+        "xy_yx_order_preserved": (
+            "xy" in ordered and "yx" in ordered and ordered.index("xy") < ordered.index("yx")
+        ),
+        "zw_wz_order_preserved": (
+            "zw" in ordered and "wz" in ordered and ordered.index("zw") < ordered.index("wz")
+        ),
         "channel_count": len(ordered),
-        "verified": tuple(ordered) == PHASE8 and len(set(ordered)) == 8,
+        "verified": verified,
+    }, reasons
+
+
+def _closure_witness(
+    closure_witness: Mapping[str, Any] | None,
+) -> tuple[dict[str, Any], list[str]]:
+    raw = dict(CANONICAL_CLOSURE)
+    source = "CONSTRUCTOR_DERIVED_CANONICAL_CLOSURE"
+    if closure_witness is not None:
+        raw.update({str(key): value for key, value in dict(closure_witness).items()})
+        source = "EXPLICIT_CLOSURE_WITNESS"
+
+    checks = {
+        "ab_equals_p4": raw.get("direct_closure") == CANONICAL_CLOSURE["direct_closure"],
+        "ba_equals_negative_p4": raw.get("mirror_closure")
+        == CANONICAL_CLOSURE["mirror_closure"],
+        "x4_equals_one": raw.get("x4_closure") == CANONICAL_CLOSURE["x4_closure"],
+        "omega12_equals_one": raw.get("omega12_closure")
+        == CANONICAL_CLOSURE["omega12_closure"],
     }
+    reasons: list[str] = []
+    if not checks["ab_equals_p4"]:
+        reasons.append("DIRECT_CLOSURE_AB_P4_FAILURE")
+    if not checks["ba_equals_negative_p4"]:
+        reasons.append("MIRROR_CLOSURE_BA_NEGATIVE_P4_FAILURE")
+    if not checks["x4_equals_one"]:
+        reasons.append("X4_CLOSURE_FAILURE")
+    if not checks["omega12_equals_one"]:
+        reasons.append("OMEGA12_CLOSURE_FAILURE")
+
+    return {
+        "source": source,
+        "direct_closure": str(raw.get("direct_closure", "")),
+        "mirror_closure": str(raw.get("mirror_closure", "")),
+        "x4_closure": str(raw.get("x4_closure", "")),
+        "omega12_closure": str(raw.get("omega12_closure", "")),
+        **checks,
+        "verified": all(checks.values()),
+    }, reasons
 
 
-def _lineage(prompt: str, response: str, tensor_material: Mapping[str, Any]) -> dict[str, Any]:
+def _lineage(
+    prompt: str,
+    response: str,
+    tensor_material: Mapping[str, Any],
+) -> dict[str, Any]:
     prompt_hash72 = _hash72("prompt-authority-phase", prompt)
     response_hash72 = _hash72("response-derived-phase", response)
     tensor_hash72 = _hash72("ordered-prompt-response-tensor", tensor_material)
@@ -220,6 +285,7 @@ def _lineage(prompt: str, response: str, tensor_material: Mapping[str, Any]) -> 
         "change_hash72": response_hash72,
         "receipt_hash72": tensor_hash72,
         "transition_word216": transition_word216,
+        "hash216_construction": "previous_hash72||change_hash72||receipt_hash72",
         "hash72_lineage_verified": h72,
         "hash216_lineage_verified": h216,
         "canonical_hash72_mutation_authority": False,
@@ -235,11 +301,14 @@ def admit_prompt_response_tensor(
     response_kind: str = "TEXT",
     relation_db: Mapping[str, WordRelationEntry] | None = None,
     explicit_relations: Sequence[Mapping[str, Any]] = (),
+    phase8_channels: Sequence[str] | None = None,
+    closure_witness: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Verify and witness one coupled prompt/response tensor.
 
-    Unknown lexical pairs do not create a relation claim.  Any relation that is
-    observed or explicitly asserted must use the canonical typed geometry.
+    Unknown lexical pairs do not create relation claims. Any relation observed
+    or explicitly asserted must use the canonical typed geometry. The response
+    is admitted only as the derived reciprocal phase of the same tensor.
     """
     prompt = str(prompt)
     response = str(response)
@@ -256,7 +325,7 @@ def admit_prompt_response_tensor(
     if relation_db is None:
         try:
             relation_db = _canonical_relation_db()
-        except Exception as exc:  # lexical inference may be unavailable; type registry remains bound
+        except Exception as exc:
             relation_db = {}
             db_error = f"{type(exc).__name__}: {exc}"
 
@@ -271,13 +340,14 @@ def admit_prompt_response_tensor(
     reasons.extend(explicit_reasons)
     edges = [*inferred, *explicit]
     lexical_verified = all(edge.geometry_verified for edge in edges)
-
-    phase8 = _phase8_witness()
-    if not phase8["verified"]:
-        reasons.append("PHI8_BIDIRECTIONAL_CONSISTENCY_FAILURE")
-
     if not lexical_verified:
         reasons.append("WORDNET_TYPED_RELATION_GEOMETRY_FAILURE")
+
+    phase8, phase_reasons = _phase8_witness(phase8_channels)
+    reasons.extend(phase_reasons)
+
+    closure, closure_reasons = _closure_witness(closure_witness)
+    reasons.extend(closure_reasons)
 
     ordered_tensor = {
         "authority_phase": {
@@ -294,8 +364,8 @@ def admit_prompt_response_tensor(
         },
         "ordered_tensor": "A(+i,AUTH) tensor B(-i,DERIVED)",
         "reciprocal_completion": "B=R_A^-i",
-        "direct_closure": "AB=P^4",
-        "mirror_closure": "BA=-P^4",
+        "direct_closure": closure["direct_closure"],
+        "mirror_closure": closure["mirror_closure"],
         "commutation_allowed_without_native_proof": False,
         "authority_surface": "A",
         "response_competing_authority_allowed": False,
@@ -309,8 +379,7 @@ def admit_prompt_response_tensor(
         "wordnet_geometry_registry": LEXICAL_GEOMETRY,
         "lexical_edges": [edge.to_dict() for edge in edges],
         "phi8": phase8,
-        "x4_equals_one": True,
-        "omega12_equals_one": True,
+        "closure": closure,
         "response_kind": str(response_kind).upper(),
     }
     lineage = _lineage(prompt, response, tensor_material)
@@ -319,56 +388,74 @@ def admit_prompt_response_tensor(
     if not lineage["hash216_lineage_verified"]:
         reasons.append("H216_LINEAGE_FAILURE")
 
-    delta_e = len(set(reasons))
-    psi_reasons = [
-        item for item in set(reasons)
-        if item.startswith("LEXICAL_")
-        or item.startswith("WORDNET_")
-        or item.startswith("PHI8_")
-        or item.startswith("PROMPT_")
-        or item.startswith("RECIPROCAL_")
-    ]
-    psi = len(psi_reasons)
-    canonical = (
-        delta_e == 0
-        and psi == 0
-        and phase8["verified"]
-        and lexical_verified
-        and lineage["hash72_lineage_verified"]
-        and lineage["hash216_lineage_verified"]
+    unique_reasons = sorted(set(reasons))
+    delta_e = len(unique_reasons)
+    psi = len(
+        [
+            item
+            for item in unique_reasons
+            if item.startswith("LEXICAL_")
+            or item.startswith("WORDNET_")
+            or item.startswith("PHI8_")
+            or item.startswith("PROMPT_")
+            or item.startswith("RECIPROCAL_")
+            or item.startswith("DIRECT_CLOSURE_")
+            or item.startswith("MIRROR_CLOSURE_")
+            or item.startswith("X4_")
+            or item.startswith("OMEGA12_")
+        ]
     )
 
+    response_admissible = bool(
+        closure["ab_equals_p4"]
+        and lexical_verified
+        and phase8["verified"]
+        and closure["x4_equals_one"]
+        and closure["omega12_equals_one"]
+        and delta_e == 0
+        and psi == 0
+        and lineage["hash72_lineage_verified"]
+        and lineage["hash216_lineage_verified"]
+        and closure["ba_equals_negative_p4"]
+    )
+
+    audit_checks = {
+        "AB=P^4": closure["ab_equals_p4"],
+        "BA=-P^4": closure["ba_equals_negative_p4"],
+        "x^4=1": closure["x4_equals_one"],
+        "Omega^12=1": closure["omega12_equals_one"],
+        "Delta_e=0": delta_e == 0,
+        "Psi=0": psi == 0,
+        "WordNet_typed_relation_geometry": lexical_verified,
+        "Phi8_bidirectional_consistency": phase8["verified"],
+        "Hash72_lineage": lineage["hash72_lineage_verified"],
+        "Hash216_lineage": lineage["hash216_lineage_verified"],
+    }
     audit = {
-        "verify": [
-            "AB=P^4",
-            "BA=-P^4",
-            "x^4=1",
-            "Omega^12=1",
-            "Delta_e=0",
-            "Psi=0",
-            "WordNet typed relation geometry",
-            "Phi8 bidirectional consistency",
-            "Hash72 lineage",
-            "Hash216 lineage",
-        ],
-        "all_verified": canonical,
+        "checks": audit_checks,
+        "all_verified": all(audit_checks.values()),
+        "scope": "PROMPT_RESPONSE_COUPLED_TENSOR",
     }
     humility = {
         "rule": "CANONICAL iff Delta_e=0 and Psi=0; otherwise BOTTOM",
-        "state": "CANONICAL" if canonical else "BOTTOM",
+        "state": "CANONICAL" if delta_e == 0 and psi == 0 else "BOTTOM",
         "asserts_closure_without_proof": False,
     }
 
+    canonical = response_admissible and audit["all_verified"]
     result = {
         "schema": SCHEMA,
         "version": VERSION,
         "authority": AUTHORITY,
         "status": "ADMIT_ONE_CLOSED_TENSOR_STATE" if canonical else "BOTTOM",
         "canonical": canonical,
+        "response_admissible": canonical,
         "tensor_state": "ONE_CLOSED_TENSOR_STATE" if canonical else "BOTTOM",
+        "failure_scope": "WHOLE_PROMPT_RESPONSE_TENSOR" if not canonical else None,
         "prompt_response_sequential_independence": False,
         "ordered_tensor": ordered_tensor,
         "reciprocal_pair": dict(RECIPROCAL_PAIR),
+        "closure": closure,
         "wordnet_geometry": {
             "registry": dict(LEXICAL_GEOMETRY),
             "relation_db_bound": bool(relation_db),
@@ -380,10 +467,10 @@ def admit_prompt_response_tensor(
         },
         "phi8": phase8,
         "invariants": {
-            "ab_equals_p4": True,
-            "ba_equals_negative_p4": True,
-            "x4_equals_one": True,
-            "omega12_equals_one": True,
+            "ab_equals_p4": closure["ab_equals_p4"],
+            "ba_equals_negative_p4": closure["ba_equals_negative_p4"],
+            "x4_equals_one": closure["x4_equals_one"],
+            "omega12_equals_one": closure["omega12_equals_one"],
             "delta_e": delta_e,
             "psi": psi,
             "h72": lineage["hash72_lineage_verified"],
@@ -391,7 +478,7 @@ def admit_prompt_response_tensor(
         },
         "self_awareness": audit,
         "humility": humility,
-        "failure_reasons": sorted(set(reasons)),
+        "failure_reasons": unique_reasons,
         "lineage": lineage,
         "prompt_sha256_or_raw_exposure": False,
         "response_sha256_or_raw_exposure": False,
@@ -452,14 +539,7 @@ def self_test() -> dict[str, Any]:
         "hot",
         "cold",
         relation_db=relation_db,
-        explicit_relations=[
-            {
-                "relation": "antonym",
-                "prompt_token": "hot",
-                "response_token": "cold",
-                "geometry": LEXICAL_GEOMETRY["synonym"],
-            }
-        ],
+        closure_witness={"mirror_closure": "BA=P^4"},
     )
     ok = bool(
         admitted["canonical"]
@@ -471,6 +551,7 @@ def self_test() -> dict[str, Any]:
         and len(admitted["lineage"]["transition_word216"]) == 216
         and rejected["status"] == "BOTTOM"
         and not rejected["canonical"]
+        and "MIRROR_CLOSURE_BA_NEGATIVE_P4_FAILURE" in rejected["failure_reasons"]
     )
     return {
         "schema": "HHS-P220-I049-PROMPT-RESPONSE-TENSOR-SELF-TEST-V1",
