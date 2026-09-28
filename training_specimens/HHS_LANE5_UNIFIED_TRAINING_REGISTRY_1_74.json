@@ -1,0 +1,196 @@
+{
+  "schema": "HHS_PASS219_LANE5_UNIFIED_TRAINING_REGISTRY_1_74",
+  "version": "1.74.0",
+  "native_api": "hhs::lane5::VM5184Hash216TrainingAPI",
+  "native_c_abi": "HHS_EXACT_PASS219_LANE5_TRAINING_C_ABI_VERSION",
+  "method_count": 19,
+  "classification": "EXPLICIT_REPOSITORY_WIDE_TRAINING_SURFACE",
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "natural_language_supervisor": {
+    "method_id": "ETHICAL_TEXT",
+    "required_for_all_natural_language_training": true,
+    "content_sensitive": true
+  },
+  "methods": [
+    {
+      "mode": 1,
+      "method_id": "REALTIME_HASH216",
+      "temporal": "REALTIME",
+      "primary_target": "RELATION",
+      "producer": "hhs_runtime/pass165/ingestion.py",
+      "training_role": "live Lane5 relation/invariant candidate learning",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 2,
+      "method_id": "WOLFRAM_FORMALIZATION",
+      "temporal": "MANUAL",
+      "primary_target": "PROOF",
+      "producer": "formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl",
+      "training_role": "manual exact formalization and proof evidence",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 3,
+      "method_id": "EXTERNAL_LIBRARY_RECONSTRUCTION",
+      "temporal": "MANUAL",
+      "primary_target": "CONSTRUCTOR",
+      "producer": "hhs_runtime/hhs_pass220_i047_native_library_training_dataset_v1.py",
+      "training_role": "foreign library behavior/ABI reconstruction",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 4,
+      "method_id": "PALINDROMIC_ROUND_TRIP",
+      "temporal": "ROUND_TRIP",
+      "primary_target": "CODEC",
+      "producer": "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py",
+      "training_role": "ingress-native-egress equivalence training",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 5,
+      "method_id": "PULL_REQUEST_HYDRATION",
+      "temporal": "REPOSITORY_DELTA",
+      "primary_target": "REPOSITORY_TRANSITION",
+      "producer": "hhs_runtime/pass191/repository_hydration.py",
+      "training_role": "validated repository delta and pull-request transition learning",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 6,
+      "method_id": "MULTIMODAL_INGRESS",
+      "temporal": "REALTIME",
+      "primary_target": "INVARIANT",
+      "producer": "hhs_runtime/pass165/durability.py",
+      "training_role": "durable multimodal invariant/novelty learning",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 7,
+      "method_id": "LINGUISTIC_OPERATOR",
+      "temporal": "BATCH",
+      "primary_target": "RELATION",
+      "producer": "hhs_runtime/hhs_linguistic_operator_training_loop_v1.py",
+      "training_role": "natural-language operator relation learning",
+      "natural_language_policy": "REQUIRED"
+    },
+    {
+      "mode": 8,
+      "method_id": "ETHICAL_TEXT",
+      "temporal": "BATCH",
+      "primary_target": "INVARIANT",
+      "producer": "hhs_runtime/hhs_pass219_ethical_text_training_v1.py",
+      "training_role": "ethical text training and natural-language supervision",
+      "natural_language_policy": "REQUIRED",
+      "ethical_text_supervisor": true
+    },
+    {
+      "mode": 9,
+      "method_id": "RNA_CELL_WALL_ALIGNMENT",
+      "temporal": "REPLAY",
+      "primary_target": "WEIGHT",
+      "producer": "hhs_runtime/include/hhs_pass219_rna_cell_wall_alignment_training_1_26.hpp",
+      "training_role": "RNA alignment and protected reverse training",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 10,
+      "method_id": "CURRICULUM",
+      "temporal": "BATCH",
+      "primary_target": "RELATION",
+      "producer": "hhs_runtime/pass218/curriculum.py",
+      "training_role": "manifest-bound curriculum learning and advancement",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 11,
+      "method_id": "CALLABLE_CORPUS",
+      "temporal": "BATCH",
+      "primary_target": "BEHAVIOR",
+      "producer": "hhs_backend/runtime/hhs_pass214_iteration5_callable_corpus_v1.py",
+      "training_role": "executable callable behavioral corpus",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 12,
+      "method_id": "CANONICAL_CORPUS",
+      "temporal": "BATCH",
+      "primary_target": "PROOF",
+      "producer": "hhs_runtime/pass169/runtime_binding.py",
+      "training_role": "canonical algebra corpus execution/reconstruction/proof",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 13,
+      "method_id": "WORKLOAD_CALIBRATION",
+      "temporal": "BATCH",
+      "primary_target": "SCHEDULE",
+      "producer": "native_projects/hhs_bifurcation_calibration/hhs_pass088_deterministic_training_acceleration_v1.py",
+      "training_role": "deterministic training workload/calibration and acceleration",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 14,
+      "method_id": "ANTI_FORGETTING_REPLAY",
+      "temporal": "REPLAY",
+      "primary_target": "BEHAVIOR",
+      "producer": "hhs_runtime/include/hhs_pass219_rna_cell_wall_alignment_training_1_26.hpp",
+      "training_role": "protected historical replay and anti-forgetting evaluation",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 15,
+      "method_id": "AB_HYDRATION_CALIBRATION",
+      "temporal": "BATCH",
+      "primary_target": "WEIGHT",
+      "producer": "hhs_backend/runtime/hhs_pass197_ab_hydration_calibration_v1.py",
+      "training_role": "exact A/B hydration parameter calibration",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 16,
+      "method_id": "PROJECTION_CORPUS",
+      "temporal": "BATCH",
+      "primary_target": "RELATION",
+      "producer": "hhs_runtime/hhs_pass220_desi_explicit_projection_corpus_v1.py",
+      "training_role": "exact domain projection corpus learning",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 17,
+      "method_id": "INVERSE_RENDER_HYDRATION",
+      "temporal": "BATCH",
+      "primary_target": "CONSTRUCTOR",
+      "producer": "hhs_backend/runtime/hhs_graphics_vector_hydration_v1.py",
+      "training_role": "graphics/vector inverse reconstruction hydration",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 18,
+      "method_id": "REPOSITORY_HYDRATION",
+      "temporal": "REPOSITORY_DELTA",
+      "primary_target": "REPOSITORY_TRANSITION",
+      "producer": "hhs_backend/runtime/hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69.py",
+      "training_role": "repository Hash216 knowledge-graph hydration",
+      "natural_language_policy": "CONTENT_SENSITIVE"
+    },
+    {
+      "mode": 19,
+      "method_id": "BOUNDED_TOKEN_GENERALIZATION",
+      "temporal": "BATCH",
+      "primary_target": "RELATION",
+      "producer": "hhs_runtime/pass219/lane5_nine_loop_generalization_1_73.py",
+      "training_role": "Pass123 bounded cross-representation generalization",
+      "natural_language_policy": "CONTENT_SENSITIVE",
+      "parent_version": "1.73"
+    }
+  ]
+}
