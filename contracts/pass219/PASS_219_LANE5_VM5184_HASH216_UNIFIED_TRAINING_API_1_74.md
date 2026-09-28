@@ -99,3 +99,14 @@ The 1.74 Pass123 producer adapter is:
 It SHALL reject construction of a `BOUNDED_TOKEN_GENERALIZATION` TrainingSpecimen unless the 1.73 frozen receipt block contains valid model, validation, replay, and native Hash216 identities and explicitly marks the native composition frozen.
 
 This gate exists independently of CI scheduling. A queued or successful discovery workflow without committed/frozen receipt identities is not sufficient for 1.74 admission.
+
+## Explicit producer registry
+
+The unified Training surface SHALL maintain a machine-readable producer catalog at
+`training_specimens/HHS_LANE5_UNIFIED_TRAINING_REGISTRY_1_74.json`.
+
+The catalog is not a second authority. Its method order, IDs, temporal classes, primary targets, intrinsic language classification, and ethical-supervisor declaration SHALL match the native C ABI exactly.
+
+Every registered method SHALL resolve to a repository-visible producer artifact that already implements or supplies that training-equivalent mechanism. Missing producer files, catalog/native drift, language-supervision drift, or authority escalation fail validation.
+
+The catalog currently binds all 19 registered methods, including the inherited Pass123 1.73 producer for `BOUNDED_TOKEN_GENERALIZATION`.
