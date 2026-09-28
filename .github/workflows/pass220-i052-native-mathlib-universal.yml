@@ -1,0 +1,57 @@
+name: Pass 220 I052 Native Mathlib Universal
+
+on:
+  push:
+    branches:
+      - pass220/i052-native-mathlib-universal1
+    paths:
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "lean-toolchain"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Mathlib/Algebra/Universal.lean"
+      - "hhs_runtime/hhs_pass220_i052_native_mathlib_universal_v1.py"
+      - "tests/pass220/test_hhs_pass220_i052_native_mathlib_universal_v1.py"
+      - "contracts/pass220/PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_V1.json"
+      - "docs/pass220/PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL.md"
+      - "docs/operations/restart/PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_RESTART_20260928.md"
+      - ".github/workflows/pass220-i052-native-mathlib-universal.yml"
+  pull_request:
+    paths:
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "lean-toolchain"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Mathlib/Algebra/Universal.lean"
+      - "hhs_runtime/hhs_pass220_i052_native_mathlib_universal_v1.py"
+      - "tests/pass220/test_hhs_pass220_i052_native_mathlib_universal_v1.py"
+      - "contracts/pass220/PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_V1.json"
+      - "docs/pass220/PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL.md"
+      - "docs/operations/restart/PASS_220_I052_NATIVE_MATHLIB_UNIVERSAL_RESTART_20260928.md"
+      - ".github/workflows/pass220-i052-native-mathlib-universal.yml"
+  workflow_dispatch:
+
+jobs:
+  native-universal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Universal theorem manifest
+        run: python -m pytest -q tests/pass220/test_hhs_pass220_i052_native_mathlib_universal_v1.py
+
+      - name: Lean 4 build and kernel audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS

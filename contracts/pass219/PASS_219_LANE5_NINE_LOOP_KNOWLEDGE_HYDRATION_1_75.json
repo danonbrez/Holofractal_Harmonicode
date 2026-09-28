@@ -1,0 +1,71 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75",
+  "version": "1.75.0",
+  "status": "ADDITIVE_ADMITTED_KNOWLEDGE_GRAPH_NATIVE_HASH216_PENDING_VALIDATION",
+  "parent": "HHS_PASS219_LANE5_NINE_LOOP_GENERALIZATION_1_73",
+  "numbering_note": "1.74 is reserved by the existing training cycle; this successor is 1.75.",
+  "parent_main_commit": "bb280fccae7f53d150d874ee912dcab22f82e051",
+  "current_base_main": "091ab8c527dcb30e8f240e6fd525ee11249fc6b4",
+  "parent_receipts": {
+    "model_root_hash72": "0000000000000000000000000000002rd>Jdh(*jXM9IMuM^931?)TxIUlEV>A5MH81cDfqL",
+    "validation_receipt_root_hash72": "0000000000000000000000000000004uxkwBpAEdc+=PCnAuM+5cGH26usFYmSWD3kSLSkPM",
+    "replay_bundle_sha256": "238556f95e17e77d01a9e37e4be4cbbd56181982f3599dc941cfe77be32aaf69",
+    "relation_dataset_sha256": "dd623f4fc778364274e7ba05c914fb441b724ca3ce41a4eb4df4cdc64935d587",
+    "relation_record_chain_sha256": "4a951f76afcd3f759e74263bc9cd0019b50f034bc07e93341b73200e0c85bd6a"
+  },
+  "knowledge_admission": {
+    "pass127": true,
+    "admitted_relation_records": 12,
+    "admitted_anchor_records": 1,
+    "min_independent_support": 2,
+    "require_formal_proof": true,
+    "require_runtime_receipt": true,
+    "evidence_source_quality": "AUTHORITATIVE",
+    "contradiction_policy": "reject_any_contradiction"
+  },
+  "retrieval_projection": {
+    "pass128": true,
+    "graph_node_count": 13,
+    "graph_edge_count": 12,
+    "relation_type": "PART_OF",
+    "relation_confidence": {
+      "numerator": 1,
+      "denominator": 1
+    },
+    "query_count": 12,
+    "max_results": 2,
+    "max_hops": 1,
+    "deterministic_replay_required": true,
+    "immutable_non_executable": true
+  },
+  "authority": {
+    "knowledge_authority": true,
+    "graph_projection_only": true,
+    "execution_authority": false,
+    "source_mutation_authority": false,
+    "runtime_mutation_authority": false,
+    "model_weight_update_authority": false,
+    "learning_commit_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_mint_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  },
+  "frozen_receipts": {
+    "admitted_corpus_root_hash72": "0000000000000000000000000000002721Ip^KPnKF(sDVftNJCSFA1nW1v*8lgdQX?exMhE",
+    "knowledge_graph_root_hash72": "0000000000000000000000000000003ZOZmmCFNEq6a!I>kRKjlHqhXFOLxxAN4aleMzR7hM",
+    "admission_replay_bundle_sha256": "6d4ab72612278a3b1a27f8cab61a1de6e2a958275817b50aaa71ea11ac9a1b40",
+    "retrieval_replay_bundle_sha256": "9f509009a450e58e9d0fa91041e91dc69c2f20ea63d957f98cbd64526a38731a",
+    "native_hash216_composition_frozen": true
+  },
+  "discovery_evidence": {
+    "workflow_run": 36439515767,
+    "validated_head": "759b4e608a1590858ca1481313dd6201f95522a0",
+    "admitted_record_count": 13,
+    "admission_replay_count": 13,
+    "graph_node_count": 13,
+    "graph_edge_count": 12,
+    "query_count": 12
+  }
+}
