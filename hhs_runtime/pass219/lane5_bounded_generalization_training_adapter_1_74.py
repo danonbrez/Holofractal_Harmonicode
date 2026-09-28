@@ -10,6 +10,10 @@ import json
 from pathlib import Path
 from typing import Any, Mapping
 
+from hhs_runtime.pass219.lane5_nine_loop_generalization_1_73 import (
+    run_generalization,
+)
+
 ROOT = Path(__file__).resolve().parents[2]
 PARENT_CONTRACT = (
     ROOT / "contracts/pass219/PASS_219_LANE5_NINE_LOOP_GENERALIZATION_1_73.json"
@@ -69,6 +73,49 @@ def frozen_parent_receipts(
         "replay_bundle_sha256": replay,
         "native_hash216_identity": native,
     }
+
+
+def verify_frozen_parent_receipts(
+    contract: Mapping[str, Any] | None = None,
+    discovery_receipt: Mapping[str, Any] | None = None,
+) -> dict[str, str]:
+    frozen = verify_frozen_parent_receipts(contract)
+    observed = dict(discovery_receipt or run_generalization())
+
+    expected = {
+        "model_root_hash72": observed.get("model_root_hash72"),
+        "validation_receipt_root_hash72": observed.get(
+            "validation_receipt_root_hash72"
+        ),
+        "replay_bundle_sha256": observed.get("replay_bundle_sha256"),
+    }
+    mismatched = sorted(
+        key for key, value in expected.items()
+        if not isinstance(value, str) or frozen[key] != value
+    )
+    if mismatched:
+        raise Pass219Lane5BoundedGeneralizationTrainingAdapterError(
+            "FROZEN_PARENT_RECEIPT_MISMATCH:" + ",".join(mismatched)
+        )
+
+    if observed.get("rule_count") != 12:
+        raise Pass219Lane5BoundedGeneralizationTrainingAdapterError(
+            "FROZEN_PARENT_RULE_COUNT_MISMATCH"
+        )
+    if observed.get("accuracy") != {"numerator": 12, "denominator": 12}:
+        raise Pass219Lane5BoundedGeneralizationTrainingAdapterError(
+            "FROZEN_PARENT_ACCURACY_MISMATCH"
+        )
+    if observed.get("semantic_drift_count") != 0:
+        raise Pass219Lane5BoundedGeneralizationTrainingAdapterError(
+            "FROZEN_PARENT_SEMANTIC_DRIFT"
+        )
+    if observed.get("replay_count") != 12:
+        raise Pass219Lane5BoundedGeneralizationTrainingAdapterError(
+            "FROZEN_PARENT_REPLAY_COUNT_MISMATCH"
+        )
+
+    return frozen
 
 
 def build_unified_specimen(
@@ -155,4 +202,5 @@ __all__ = [
     "build_unified_specimen",
     "frozen_parent_receipts",
     "load_parent_contract",
+    "verify_frozen_parent_receipts",
 ]
