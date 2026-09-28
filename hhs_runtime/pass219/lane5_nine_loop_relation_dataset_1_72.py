@@ -104,6 +104,18 @@ def verify_dataset(
     ids = tuple(str(record.get("record_id")) for record in records)
     classes = [int(record.get("deviation_class")) for record in records]
     chain, chain_root = _record_chain(records)
+    by_id = {
+        str(record.get("record_id")): record
+        for record in records
+        if isinstance(record, Mapping)
+    }
+
+    def features(record_id: str) -> Mapping[str, Any]:
+        record = by_id.get(record_id)
+        if not isinstance(record, Mapping):
+            return {}
+        value = record.get("observed_features")
+        return value if isinstance(value, Mapping) else {}
 
     checks = {
         "dataset_sha256": digest == DATASET_SHA256 == c["dataset"]["canonical_sha256"],
@@ -120,32 +132,53 @@ def verify_dataset(
         ),
         "ordered_chain": chain_root == RECORD_CHAIN_SHA256 == c["dataset"]["ordered_record_chain_sha256"],
         "negative_container_example": (
-            records[6]["record_id"] == "literal_container_identity_rejected"
-            and records[6]["deviation_class"] == -1
-            and records[6]["observed_features"]["literal_container_identity_required"] is False
+            by_id.get("literal_container_identity_rejected", {}).get("deviation_class") == -1
+            and features("literal_container_identity_rejected").get(
+                "literal_container_identity_required"
+            ) is False
         ),
         "incomplete_reconstruction_example": (
-            records[7]["record_id"] == "rational_reconstruction_partition"
-            and records[7]["deviation_class"] == -1
-            and records[7]["observed_features"]["complete"] is False
-            and records[7]["observed_features"]["certified_rational"]["numerator"]
-              + records[7]["observed_features"]["two_prime_only"]["numerator"]
-              == records[7]["observed_features"]["certified_rational"]["denominator"]
-              == records[7]["observed_features"]["two_prime_only"]["denominator"]
+            by_id.get("rational_reconstruction_partition", {}).get("deviation_class") == -1
+            and features("rational_reconstruction_partition").get("complete") is False
+            and isinstance(
+                features("rational_reconstruction_partition").get("certified_rational"),
+                Mapping,
+            )
+            and isinstance(
+                features("rational_reconstruction_partition").get("two_prime_only"),
+                Mapping,
+            )
+            and features("rational_reconstruction_partition")["certified_rational"].get(
+                "numerator"
+            )
+              + features("rational_reconstruction_partition")["two_prime_only"].get(
+                  "numerator"
+              )
+              == features("rational_reconstruction_partition")["certified_rational"].get(
+                  "denominator"
+              )
+              == features("rational_reconstruction_partition")["two_prime_only"].get(
+                  "denominator"
+              )
         ),
         "matrix_geometry": (
-            records[1]["observed_features"]["rows"] == 424
-            and records[1]["observed_features"]["columns"] == 5431
-            and records[1]["observed_features"]["entries"] == 2302744
-            and records[1]["observed_features"]["rows"] * records[1]["observed_features"]["columns"]
-                == records[1]["observed_features"]["entries"]
+            features("matrix_geometry").get("rows") == 424
+            and features("matrix_geometry").get("columns") == 5431
+            and features("matrix_geometry").get("entries") == 2302744
+            and features("matrix_geometry").get("rows")
+                * features("matrix_geometry").get("columns")
+                == features("matrix_geometry").get("entries")
         ),
         "genesis_verbatim": (
-            records[9]["observed_features"]["genesis_identity_verbatim"] == GENESIS_IDENTITY
+            features("genesis_constructor").get("genesis_identity_verbatim")
+            == GENESIS_IDENTITY
         ),
         "foreign_delta_quarantine": (
-            records[10]["observed_features"]["foreign_delta_role"] == "kinematic_surface"
-            and records[10]["observed_features"]["native_delta_alias_authorized"] is False
+            features("foreign_delta_quarantine").get("foreign_delta_role")
+                == "kinematic_surface"
+            and features("foreign_delta_quarantine").get(
+                "native_delta_alias_authorized"
+            ) is False
         ),
         "dataset_only_authority": (
             d["admission"]["dataset_preparation_only"] is True
