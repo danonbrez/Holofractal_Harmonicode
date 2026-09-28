@@ -136,23 +136,14 @@ def ReciprocalTensor.admitted (t : ReciprocalTensor) : Prop :=
   t.closure.admitted ∧
   t.selfAudit.admitted
 
-instance reciprocalTensorAdmittedDecidable
-    (t : ReciprocalTensor) :
-    Decidable t.admitted := by
-  unfold ReciprocalTensor.admitted
-  unfold ReciprocalTensor.authorityAdmitted
-  unfold LexicalWitness.admitted
-  unfold ClosureWitness.admitted
-  unfold SelfAudit.admitted
-  infer_instance
-
 inductive TensorState
   | genesis
   | bottom
 deriving Repr, BEq, DecidableEq
 
-def ReciprocalTensor.result (t : ReciprocalTensor) : TensorState :=
-  if t.admitted then .genesis else .bottom
+noncomputable def ReciprocalTensor.result (t : ReciprocalTensor) : TensorState := by
+  classical
+  exact if t.admitted then .genesis else .bottom
 
 theorem admitted_requires_prompt_authority
     (t : ReciprocalTensor)
@@ -197,12 +188,14 @@ theorem admitted_is_genesis
     (t : ReciprocalTensor)
     (h : t.admitted) :
     t.result = .genesis := by
+  classical
   simp [ReciprocalTensor.result, h]
 
 theorem rejected_is_whole_tensor_bottom
     (t : ReciprocalTensor)
     (h : ¬ t.admitted) :
     t.result = .bottom := by
+  classical
   simp [ReciprocalTensor.result, h]
 
 structure AlignmentProofReceipt where
