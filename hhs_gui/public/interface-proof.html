@@ -208,6 +208,7 @@
       </p>
       <div class="actions">
         <button id="refresh" class="button primary" type="button">Refresh live runtime</button>
+        <button id="runSelfTest" class="button" type="button" disabled>Run Runtime self-test</button>
         <button id="toggleRaw" class="button" type="button">Inspect response</button>
       </div>
     </section>
@@ -232,7 +233,16 @@
         <div style="display:grid; gap:8px; margin-top:12px">
           <div class="route"><span class="verb">GET</span><span>/api/runtime/services</span></div>
           <div class="route"><span class="verb">GET</span><span>/api/runtime/services/status</span></div>
+          <div class="route"><span class="verb" style="color:#f9a8d4">POST</span><span>/api/runtime/services/dispatch</span></div>
         </div>
+      </article>
+
+      <article class="card span-2">
+        <div class="card-label">Terminal control test</div>
+        <div class="sub" style="margin-top:8px">
+          Control signal: <code>runtime_contract.self_test</code>. Execution occurs only in the Runtime service registry.
+        </div>
+        <pre id="dispatchOutput">No Runtime command has been sent.</pre>
       </article>
 
       <article class="card span-2">
@@ -306,12 +316,16 @@
       }
     }
 
-    async function requestJson(path) {
+    async function requestJson(path, init = {}) {
       const response = await fetch(path, {
-        method: "GET",
-        headers: { "Accept": "application/json" },
+        method: init.method ?? "GET",
+        headers: {
+          "Accept": "application/json",
+          ...(init.body ? { "Content-Type": "application/json" } : {})
+        },
         credentials: "same-origin",
-        cache: "no-store"
+        cache: "no-store",
+        body: init.body
       });
       const text = await response.text();
       let body;
@@ -323,17 +337,59 @@
       return body;
     }
 
+    function requireDispatchContract(body) {
+      if (
+        body?.runtime_contract?.contract_type !== "api_response" ||
+        body?.runtime_contract?.route !== "/api/runtime/services/dispatch" ||
+        body?.runtime_contract?.method !== "POST" ||
+        body?.runtime_contract?.status !== "ok"
+      ) {
+        throw new Error("Runtime dispatch response contract rejected");
+      }
+    }
+
+    async function dispatchRuntimeSelfTest() {
+      const button = el("runSelfTest");
+      const output = el("dispatchOutput");
+      button.disabled = true;
+      button.textContent = "Runtime executing…";
+      output.textContent = "Control signal sent; waiting for Runtime response.";
+
+      try {
+        const body = await requestJson("/api/runtime/services/dispatch", {
+          method: "POST",
+          body: JSON.stringify({
+            service: "runtime_contract.self_test",
+            payload: {}
+          })
+        });
+        requireDispatchContract(body);
+        output.textContent = JSON.stringify(body, null, 2);
+        await refresh();
+      } catch (cause) {
+        const message = cause instanceof Error ? cause.message : String(cause);
+        output.textContent = message;
+        throw cause;
+      } finally {
+        button.textContent = "Run Runtime self-test";
+        if (button.dataset.runtimeAvailable === "true") button.disabled = false;
+      }
+    }
+
     async function refresh() {
       const live = el("live");
       const liveText = el("liveText");
       const error = el("error");
       const button = el("refresh");
+      const runSelfTest = el("runSelfTest");
 
       live.className = "live";
       liveText.textContent = "connecting";
       error.className = "card error";
       error.textContent = "";
       button.disabled = true;
+      runSelfTest.disabled = true;
+      runSelfTest.dataset.runtimeAvailable = "false";
       button.textContent = "Refreshing…";
 
       try {
@@ -352,6 +408,13 @@
         el("statusSchema").textContent = statusBody.schema;
         renderServices(services);
 
+        const selfTest = services.find((service) => service.name === "runtime_contract.self_test");
+        if (!selfTest) {
+          throw new Error("Required Runtime self-test service is not exposed by the registry");
+        }
+        runSelfTest.dataset.runtimeAvailable = "true";
+        runSelfTest.disabled = false;
+
         el("rawOutput").textContent = JSON.stringify({
           services: servicesBody,
           status: statusBody
@@ -365,6 +428,8 @@
         el("dispatchCount").textContent = "—";
         clearServices();
         live.className = "live fail";
+        runSelfTest.dataset.runtimeAvailable = "false";
+        runSelfTest.disabled = true;
         liveText.textContent = "runtime unavailable";
         error.className = "card error show";
         error.textContent = message;
@@ -376,6 +441,9 @@
     }
 
     el("refresh").addEventListener("click", refresh);
+    el("runSelfTest").addEventListener("click", () => {
+      dispatchRuntimeSelfTest().catch(() => {});
+    });
     el("toggleRaw").addEventListener("click", () => {
       const details = el("raw");
       details.open = !details.open;
