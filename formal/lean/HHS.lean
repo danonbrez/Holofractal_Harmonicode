@@ -1,8 +1,9 @@
 import HHS.Mathlib.Native
+import HHS.Mathlib.OrderRat
 
 namespace HHS
 
-/-- Root marker proving the HHS native Lean library is materialized as a real module tree. -/
+/-- Root marker proving the native HHS Lean library and Mathlib compatibility slices are loaded. -/
 def nativeMathlibFoundationLoaded : Bool := true
 
 theorem nativeMathlibFoundationLoaded_eq_true :

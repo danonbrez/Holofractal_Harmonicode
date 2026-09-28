@@ -1,0 +1,45 @@
+{
+  "schema": "HHS_PASS_220_I049_NATIVE_MATHLIB_ORDER_RAT_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_STACKED_ON_I048",
+  "inherits": {
+    "i048": "HHS_PASS_220_I048_LEAN4_NATIVE_MATHLIB_REBUILD_V1",
+    "python1": "HHS_PASS_220_PYTHON1_NATIVE_BIGINT_EXECUTION_V1",
+    "python2_rna_class_registration": "HHS_PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1"
+  },
+  "coverage": {
+    "relations": ["LT", "LE", "rational equivalence"],
+    "exact_rational": true,
+    "complete_mathlib_rebuild_claimed": false
+  },
+  "representation": {
+    "form": "ORDERED_NUMERATOR_POSITIVE_DENOMINATOR_PAIR",
+    "gcd_reduction_required_for_identity": false,
+    "zero_denominator_admitted": false,
+    "negative_denominator_admitted": false,
+    "float_projection_required": false
+  },
+  "operations": {
+    "add": "(a/b)+(c/d) := (ad+cb)/(bd)",
+    "sub": "(a/b)-(c/d) := (ad-cb)/(bd)",
+    "mul": "(a/b)*(c/d) := (ac)/(bd)",
+    "eq": "ad == cb",
+    "lt": "ad < cb",
+    "le": "lt OR eq"
+  },
+  "authority": {
+    "arithmetic": "PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "comparison": "PYTHON1_CROSS_PRODUCT_DELTA_SIGN",
+    "host_float": false,
+    "host_integer_comparison": false,
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  },
+  "failure_policy": {
+    "overflow": "FAIL_CLOSED",
+    "zero_denominator": "FAIL_CLOSED",
+    "negative_denominator": "FAIL_CLOSED",
+    "approximate_fallback": false
+  }
+}
