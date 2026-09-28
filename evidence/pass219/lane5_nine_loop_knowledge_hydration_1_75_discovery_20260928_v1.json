@@ -1,0 +1,23 @@
+{
+  "schema": "HHS_PASS219_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75_DISCOVERY_EVIDENCE_V1",
+  "date": "2026-09-28",
+  "workflow_run": 36439515767,
+  "validated_head": "759b4e608a1590858ca1481313dd6201f95522a0",
+  "conclusion": "success",
+  "admitted_record_count": 13,
+  "admission_replay_count": 13,
+  "graph_node_count": 13,
+  "graph_edge_count": 12,
+  "query_count": 12,
+  "admitted_corpus_root_hash72": "0000000000000000000000000000002721Ip^KPnKF(sDVftNJCSFA1nW1v*8lgdQX?exMhE",
+  "knowledge_graph_root_hash72": "0000000000000000000000000000003ZOZmmCFNEq6a!I>kRKjlHqhXFOLxxAN4aleMzR7hM",
+  "admission_replay_bundle_sha256": "6d4ab72612278a3b1a27f8cab61a1de6e2a958275817b50aaa71ea11ac9a1b40",
+  "retrieval_replay_bundle_sha256": "9f509009a450e58e9d0fa91041e91dc69c2f20ea63d957f98cbd64526a38731a",
+  "authority": {
+    "knowledge_authority": true,
+    "graph_projection_only": true,
+    "execution_authority": false,
+    "mutation_authority": false,
+    "canonical_persistence_authority": false
+  }
+}
