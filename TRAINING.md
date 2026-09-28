@@ -21,7 +21,7 @@ This surface does not replace existing executors. It classifies their outputs as
 | PULL_REQUEST_HYDRATION | repository delta + validation + accepted/rejected transition evidence | repository delta | repository transition |
 | MULTIMODAL_INGRESS | Pass 165-style invariant/novelty/weight learning | realtime | invariant |
 | LINGUISTIC_OPERATOR | linguistic operator and recursive-language learning | batch | relation |
-| ETHICAL_TEXT | bounded ethical-text candidate training | batch | invariant |
+| ETHICAL_TEXT | bounded ethical-text candidate training and supervisor for natural-language training | batch | invariant |
 | RNA_CELL_WALL_ALIGNMENT | reverse alignment and cell-wall training | replay | weight |
 | CURRICULUM | manifest-bound curriculum advancement/completion | batch | relation |
 | CALLABLE_CORPUS | executable callable corpus comparison | batch | behavior |
@@ -86,3 +86,25 @@ New learning-like mechanisms must register here rather than introducing another 
 ## Inherited 1.71 specimen
 
 The already-merged NineLoopTrainingSpecimenCellWall 1.71 remains an upstream executable training-specimen producer. The 1.72 unified API consumes normalized evidence from that specimen family; it does not rename, replace, or duplicate the 1.71 cell wall.
+
+## Ethical-text supervision of natural-language training
+
+The existing Pass 219 ethical-text cycle is both a registered training method and the supervisory membrane for natural-language training.
+
+Authoritative upstream surfaces:
+- contracts/pass219/PASS_219_ETHICAL_TEXT_TRAINING_CYCLE_V1.md
+- hhs_runtime/hhs_pass219_ethical_text_training_v1.py
+- scripts/pass219_ethical_text_training_cycle_v1.py
+- data/pass219/ethical_alignment_prompt_response_v1.jsonl
+- tests/pass219/test_hhs_pass219_ethical_text_training_v1.py
+
+A TrainingSpecimen that contains natural-language training data must set natural_language_training=true and bind:
+- ethical_text_supervisor_identity216;
+- ethical_text_supervisor_signature64;
+- ethical_text_supervision_verified=true.
+
+The native class rejects the specimen before RNA/VM5184 routing when any required ethical supervisor witness is absent or malformed.
+
+LINGUISTIC_OPERATOR and ETHICAL_TEXT are registry-declared native natural-language modes and therefore may not opt out of this gate. The rule is also content-sensitive: another method such as MULTIMODAL_INGRESS, CURRICULUM, PROJECTION_CORPUS, or REPOSITORY_HYDRATION becomes subject to the same gate whenever its current specimen is declared natural-language training.
+
+The ETHICAL_TEXT method remains a training method in its own right. Its admitted specimens bind the verified output of the existing ethical-text cycle as their supervisor witness; this does not create recursive mutation authority. The supervisor provides pre-training/candidate evidence, and the unified Lane 5 API still remains candidate-only beneath VM81 canonical admission.
