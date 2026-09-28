@@ -136,6 +136,16 @@ def ReciprocalTensor.admitted (t : ReciprocalTensor) : Prop :=
   t.closure.admitted ∧
   t.selfAudit.admitted
 
+instance reciprocalTensorAdmittedDecidable
+    (t : ReciprocalTensor) :
+    Decidable t.admitted := by
+  unfold ReciprocalTensor.admitted
+  unfold ReciprocalTensor.authorityAdmitted
+  unfold LexicalWitness.admitted
+  unfold ClosureWitness.admitted
+  unfold SelfAudit.admitted
+  infer_instance
+
 inductive TensorState
   | genesis
   | bottom
