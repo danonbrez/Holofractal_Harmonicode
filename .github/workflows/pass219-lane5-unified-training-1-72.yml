@@ -10,6 +10,11 @@ on:
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_72.cpp'
       - 'TRAINING.md'
       - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_72.md'
+      - 'contracts/pass219/PASS_219_ETHICAL_TEXT_TRAINING_CYCLE_V1.md'
+      - 'hhs_runtime/hhs_pass219_ethical_text_training_v1.py'
+      - 'scripts/pass219_ethical_text_training_cycle_v1.py'
+      - 'data/pass219/ethical_alignment_prompt_response_v1.jsonl'
+      - 'tests/pass219/test_hhs_pass219_ethical_text_training_v1.py'
       - '.github/workflows/pass219-lane5-unified-training-1-72.yml'
   pull_request:
     paths:
@@ -19,6 +24,11 @@ on:
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_72.cpp'
       - 'TRAINING.md'
       - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_72.md'
+      - 'contracts/pass219/PASS_219_ETHICAL_TEXT_TRAINING_CYCLE_V1.md'
+      - 'hhs_runtime/hhs_pass219_ethical_text_training_v1.py'
+      - 'scripts/pass219_ethical_text_training_cycle_v1.py'
+      - 'data/pass219/ethical_alignment_prompt_response_v1.jsonl'
+      - 'tests/pass219/test_hhs_pass219_ethical_text_training_v1.py'
       - '.github/workflows/pass219-lane5-unified-training-1-72.yml'
   workflow_dispatch:
 
@@ -27,6 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validate inherited ethical-text supervisor
+        run: python -m pytest -q tests/pass219/test_hhs_pass219_ethical_text_training_v1.py
       - name: Build inherited exact ABI with unified training class
         run: make -f GNUmakefile c-abi
       - name: Verify class symbols are linked
