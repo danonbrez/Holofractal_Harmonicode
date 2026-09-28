@@ -90,3 +90,19 @@ Required natural-language fields:
 Native language modes cannot clear natural_language_training. Mixed/general modes may set it when the specimen contains natural-language training data, at which point the same requirements apply.
 
 The supervisor evidence is included in the candidate Hash216 training-witness material, so changing or removing the supervisor lineage changes or invalidates the candidate.
+
+## Cross-language adapter ABI
+
+The native training class SHALL be callable by existing non-C++ training producers without allowing those producers to become training authorities.
+
+The C façade:
+- exposes the same 18-method registry;
+- exports the canonical 1.72 version;
+- can return the inherited genesis Hash216 transition identity;
+- accepts a normalized C training specimen and exact raw 648-byte VM5184 frame;
+- accepts either genesis or explicit previous/change/receipt Hash72 transition lineage;
+- constructs only the compatibility UQCEL request envelope required for the inherited RNA route;
+- delegates evaluation to VM5184Hash216TrainingAPI;
+- returns a compact receipt derived from the native TrainingReceipt.
+
+The Python ctypes bridge is an adapter to this façade and SHALL NOT independently derive training acceptance or canonical state.
