@@ -1,0 +1,71 @@
+name: Pass 219 Lane 5 unified training 1.73
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_73.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_73.cpp'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_73.h'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_73.cpp'
+      - 'hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_unified_training_bridge_1_73.py'
+      - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_73.cpp'
+      - 'TRAINING.md'
+      - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_73.md'
+      - 'contracts/pass219/PASS_219_ETHICAL_TEXT_TRAINING_CYCLE_V1.md'
+      - 'hhs_runtime/hhs_pass219_ethical_text_training_v1.py'
+      - 'scripts/pass219_ethical_text_training_cycle_v1.py'
+      - 'data/pass219/ethical_alignment_prompt_response_v1.jsonl'
+      - 'tests/pass219/test_hhs_pass219_ethical_text_training_v1.py'
+      - '.github/workflows/pass219-lane5-unified-training-1-73.yml'
+  pull_request:
+    paths:
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_73.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_73.cpp'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_73.h'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_73.cpp'
+      - 'hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_unified_training_bridge_1_73.py'
+      - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_73.cpp'
+      - 'TRAINING.md'
+      - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_73.md'
+      - 'contracts/pass219/PASS_219_ETHICAL_TEXT_TRAINING_CYCLE_V1.md'
+      - 'hhs_runtime/hhs_pass219_ethical_text_training_v1.py'
+      - 'scripts/pass219_ethical_text_training_cycle_v1.py'
+      - 'data/pass219/ethical_alignment_prompt_response_v1.jsonl'
+      - 'tests/pass219/test_hhs_pass219_ethical_text_training_v1.py'
+      - '.github/workflows/pass219-lane5-unified-training-1-73.yml'
+  workflow_dispatch:
+
+jobs:
+  native-unified-training:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate inherited ethical-text supervisor
+        run: python -m pytest -q tests/pass219/test_hhs_pass219_ethical_text_training_v1.py
+      - name: Build inherited exact ABI with unified training class
+        run: make -f GNUmakefile c-abi
+      - name: Verify class and adapter symbols are linked
+        run: |
+          nm -D -C hhs_runtime/builds/libhhs_runtime.so \
+            | grep 'hhs::lane5::VM5184Hash216TrainingAPI'
+          nm -D hhs_runtime/builds/libhhs_runtime.so \
+            | grep 'hhs_exact_pass219_lane5_training_evaluate_raw'
+          nm -D hhs_runtime/builds/libhhs_runtime.so \
+            | grep 'hhs_exact_pass219_lane5_training_method'
+      - name: Execute Python adapter against native class
+        run: python -m pytest -q tests/pass219/test_pass219_lane5_unified_training_bridge_1_73.py
+      - name: Compile native training registry and routing test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_73.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-lane5-unified-training
+      - name: Run native training registry and routing test
+        run: /tmp/test-pass219-lane5-unified-training
