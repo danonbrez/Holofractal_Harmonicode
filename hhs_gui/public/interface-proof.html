@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#090b10" />
+  <title>HARMONICODE Interface Proof</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #090b10;
+      color: #f5f7fb;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #090b10; }
+    body {
+      min-height: 100dvh;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(96, 165, 250, .16), transparent 34rem),
+        radial-gradient(circle at 100% 20%, rgba(167, 139, 250, .12), transparent 30rem),
+        #090b10;
+    }
+    button { font: inherit; }
+    .shell {
+      width: min(100%, 980px);
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+    }
+    .brand { display: grid; gap: 2px; }
+    .brand strong { font-size: 15px; letter-spacing: .08em; }
+    .brand span { color: #8d96a7; font-size: 12px; }
+    .live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #252a35;
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: rgba(15, 18, 25, .72);
+      color: #aeb7c6;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #6b7280;
+      box-shadow: 0 0 0 4px rgba(107, 114, 128, .1);
+    }
+    .live.ok .dot { background: #34d399; box-shadow: 0 0 0 4px rgba(52, 211, 153, .12); }
+    .live.fail .dot { background: #fb7185; box-shadow: 0 0 0 4px rgba(251, 113, 133, .12); }
+
+    .hero {
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 26px;
+      padding: 22px;
+      background: linear-gradient(145deg, rgba(22,26,36,.92), rgba(12,14,20,.86));
+      box-shadow: 0 24px 80px rgba(0,0,0,.32);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -55% 35%;
+      height: 260px;
+      background: radial-gradient(circle, rgba(96,165,250,.18), transparent 68%);
+      pointer-events: none;
+    }
+    .eyebrow { color: #93c5fd; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 {
+      margin: 10px 0 8px;
+      max-width: 720px;
+      font-size: clamp(30px, 8vw, 58px);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 680px;
+      color: #aeb7c6;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .button {
+      min-height: 44px;
+      border: 1px solid #303746;
+      border-radius: 14px;
+      padding: 0 16px;
+      color: #eef3fb;
+      background: #171b24;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .button.primary {
+      color: #071018;
+      border-color: transparent;
+      background: #dbeafe;
+      font-weight: 750;
+    }
+    .button:active { transform: scale(.985); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .card {
+      min-width: 0;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(15,18,25,.78);
+      backdrop-filter: blur(18px);
+    }
+    .card-label { color: #8d96a7; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .metric { margin-top: 8px; font-size: 28px; font-weight: 780; letter-spacing: -.04em; }
+    .sub { margin-top: 4px; color: #8d96a7; font-size: 12px; overflow-wrap: anywhere; }
+
+    .services { display: grid; gap: 8px; margin-top: 12px; }
+    .service {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.055);
+    }
+    .service-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    .service-type { flex: 0 0 auto; color: #7dd3fc; font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    .route {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.055);
+      font: 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: #cbd5e1;
+      overflow-wrap: anywhere;
+    }
+    .verb { color: #86efac; font-weight: 800; }
+
+    details { margin-top: 12px; }
+    summary { color: #9ca3af; font-size: 12px; cursor: pointer; user-select: none; }
+    pre {
+      max-height: 320px;
+      overflow: auto;
+      margin: 10px 0 0;
+      padding: 12px;
+      border-radius: 14px;
+      background: #07090d;
+      border: 1px solid rgba(255,255,255,.06);
+      color: #a7f3d0;
+      font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .error {
+      display: none;
+      border-color: rgba(251,113,133,.28);
+      color: #fecdd3;
+    }
+    .error.show { display: block; }
+
+    @media (min-width: 700px) {
+      .shell { padding-left: 28px; padding-right: 28px; }
+      .hero { padding: 30px; }
+      .grid { grid-template-columns: .82fr 1.18fr; }
+      .span-2 { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <strong>HARMONICODE</strong>
+        <span>interface proof / external surfaces only</span>
+      </div>
+      <div id="live" class="live"><span class="dot"></span><span id="liveText">connecting</span></div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Interface proof 001</div>
+      <h1>The runtime is already the application.</h1>
+      <p>
+        This page contains no mock data and no backend logic. It reads the existing guarded runtime service registry
+        through the published browser ingress path and turns the response into a normal mobile-first interface.
+      </p>
+      <div class="actions">
+        <button id="refresh" class="button primary" type="button">Refresh live runtime</button>
+        <button id="toggleRaw" class="button" type="button">Inspect response</button>
+      </div>
+    </section>
+
+    <section id="error" class="card error" role="alert"></section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="card-label">Reachable services</div>
+        <div id="serviceCount" class="metric">—</div>
+        <div id="serviceSchema" class="sub">Waiting for /api/runtime/services</div>
+      </article>
+
+      <article class="card">
+        <div class="card-label">Guarded runtime</div>
+        <div id="runtimeState" class="metric">Checking</div>
+        <div id="statusSchema" class="sub">Waiting for /api/runtime/services/status</div>
+      </article>
+
+      <article class="card span-2">
+        <div class="card-label">Published paths used by this page</div>
+        <div style="display:grid; gap:8px; margin-top:12px">
+          <div class="route"><span class="verb">GET</span><span>/api/runtime/services</span></div>
+          <div class="route"><span class="verb">GET</span><span>/api/runtime/services/status</span></div>
+        </div>
+      </article>
+
+      <article class="card span-2">
+        <div class="card-label">Live service registry</div>
+        <div id="services" class="services"></div>
+        <details id="raw">
+          <summary>Technical response envelope</summary>
+          <pre id="rawOutput">No response yet.</pre>
+        </details>
+      </article>
+    </section>
+  </main>
+
+  <script type="module">
+    const el = (id) => document.getElementById(id);
+
+    function serviceName(service, index) {
+      if (typeof service === "string") return service;
+      if (!service || typeof service !== "object") return `service-${index + 1}`;
+      return service.name || service.service || service.id || service.symbol || `service-${index + 1}`;
+    }
+
+    function serviceType(service) {
+      if (!service || typeof service !== "object") return "runtime";
+      return service.kind || service.type || service.category || service.authority || "runtime";
+    }
+
+    function renderServices(services) {
+      const root = el("services");
+      root.replaceChildren();
+      if (!services.length) {
+        const empty = document.createElement("div");
+        empty.className = "sub";
+        empty.textContent = "The registry responded but returned no service entries.";
+        root.append(empty);
+        return;
+      }
+      for (let i = 0; i < services.length; i += 1) {
+        const row = document.createElement("div");
+        row.className = "service";
+        const name = document.createElement("div");
+        name.className = "service-name";
+        name.textContent = serviceName(services[i], i);
+        const type = document.createElement("div");
+        type.className = "service-type";
+        type.textContent = serviceType(services[i]);
+        row.append(name, type);
+        root.append(row);
+      }
+    }
+
+    function runtimeLabel(statusBody) {
+      const status = statusBody?.status;
+      if (!status || typeof status !== "object") return "Reachable";
+      if (typeof status.state === "string") return status.state;
+      if (typeof status.status === "string") return status.status;
+      if (status.ok === true) return "Ready";
+      if (status.running === true) return "Running";
+      return "Reachable";
+    }
+
+    async function requestJson(path) {
+      const response = await fetch(path, {
+        method: "GET",
+        headers: { "Accept": "application/json" },
+        credentials: "same-origin",
+        cache: "no-store"
+      });
+      const text = await response.text();
+      let body;
+      try { body = text ? JSON.parse(text) : {}; }
+      catch { throw new Error(`${path} returned non-JSON HTTP ${response.status}`); }
+      if (!response.ok) {
+        throw new Error(`${path} returned HTTP ${response.status}: ${body?.detail || body?.message || "request failed"}`);
+      }
+      return body;
+    }
+
+    async function refresh() {
+      const live = el("live");
+      const liveText = el("liveText");
+      const error = el("error");
+      const button = el("refresh");
+
+      live.className = "live";
+      liveText.textContent = "connecting";
+      error.className = "card error";
+      error.textContent = "";
+      button.disabled = true;
+      button.textContent = "Refreshing…";
+
+      try {
+        const [servicesBody, statusBody] = await Promise.all([
+          requestJson("/api/runtime/services"),
+          requestJson("/api/runtime/services/status")
+        ]);
+
+        const services = Array.isArray(servicesBody?.services) ? servicesBody.services : [];
+        el("serviceCount").textContent = String(services.length);
+        el("serviceSchema").textContent = servicesBody?.schema || "schema not declared";
+        el("runtimeState").textContent = runtimeLabel(statusBody);
+        el("statusSchema").textContent = statusBody?.schema || "schema not declared";
+        renderServices(services);
+
+        el("rawOutput").textContent = JSON.stringify({
+          services: servicesBody,
+          status: statusBody
+        }, null, 2);
+
+        live.className = "live ok";
+        liveText.textContent = "live runtime";
+      } catch (cause) {
+        const message = cause instanceof Error ? cause.message : String(cause);
+        el("serviceCount").textContent = "—";
+        el("runtimeState").textContent = "Unavailable";
+        renderServices([]);
+        live.className = "live fail";
+        liveText.textContent = "runtime unavailable";
+        error.className = "card error show";
+        error.textContent = message;
+        el("rawOutput").textContent = message;
+      } finally {
+        button.disabled = false;
+        button.textContent = "Refresh live runtime";
+      }
+    }
+
+    el("refresh").addEventListener("click", refresh);
+    el("toggleRaw").addEventListener("click", () => {
+      const details = el("raw");
+      details.open = !details.open;
+      if (details.open) details.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    refresh();
+  </script>
+</body>
+</html>
