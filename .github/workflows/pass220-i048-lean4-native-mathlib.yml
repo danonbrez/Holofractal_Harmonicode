@@ -56,5 +56,6 @@ jobs:
           build: true
           test: false
           leanchecker: true
+          leanchecker-args: HHS
           axiom-audit: true
           axiom-audit-root: HHS
