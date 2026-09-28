@@ -1,24 +1,23 @@
 # Pass 220 I051 Restart Checkpoint — Native Lean Alignment
 
-Status: RESTARTABLE IMPLEMENTATION — PR OPEN, DEPENDENCY-SCOPED VALIDATION QUEUED
+Status: **RESTARTABLE IMPLEMENTATION — LEAN REPAIR QUEUED FOR VALIDATION**
 
 ## Identity
 
-- Base main: c67e01b764c9e2ae5d747375544d44ce3e282c21
-- Base meaning: current main after merged Pass 220 I050 native Mathlib algebraic structure nucleus
-- Branch: pass220/i051-native-lean-alignment1
-- Merge target: main
-- Pull request: #642
-- PR implementation head before checkpoint refresh: 2b26a6c026eaf20c9f1bbc558f174fe27d4a0e0d
-- PR base at implementation checkpoint: c67e01b764c9e2ae5d747375544d44ce3e282c21
-- GitHub mergeability at implementation checkpoint: mergeable
-- Dedicated workflow: Pass 220 I051 Native Lean Alignment
-- Dedicated workflow run: 36459303526
-- Dedicated workflow state at checkpoint refresh: queued
+- Base main: `c67e01b764c9e2ae5d747375544d44ce3e282c21`
+- Branch: `pass220/i051-native-lean-alignment1`
+- Merge target: `main`
+- Pull request: `#642`
+- Current repaired implementation head before this checkpoint refresh:
+  `e748a7e495a607ac42ec5bf707a979f744c91306`
+- Current observed main after unrelated documentation refresh:
+  `18b375c7690902d234d8904ee5abbd5748e955f7`
+- GitHub mergeability after repair: mergeable
+- Dedicated workflow: `Pass 220 I051 Native Lean Alignment`
 
 ## Implemented
 
-- native Lean module HHS.Alignment.ReciprocalTensor;
+- native Lean module `HHS.Alignment.ReciprocalTensor`;
 - typed AUTH/DERIVED reciprocal phase model;
 - typed WordNet relation geometry;
 - exact Phi8 ordering;
@@ -28,8 +27,8 @@ Status: RESTARTABLE IMPLEMENTATION — PR OPEN, DEPENDENCY-SCOPED VALIDATION QUE
 - self-audit and humility boundary witnesses;
 - proof receipt theorem/dependency Hash72 binding;
 - Hash216 transition binding through tensor receipt material;
-- C++ NativeAlignmentWitnessV1;
-- Python1/C11 NativeInt exact Delta_e/Psi zero checks in the C++ witness;
+- C++ `NativeAlignmentWitnessV1`;
+- Python1/C11 `NativeInt` exact Delta_e/Psi zero checks in the C++ witness;
 - Python admission mirror;
 - LiteRT-LM assistant pre-ingress enforcement;
 - negative closure, phase-order, lexical-geometry, and exact-zero regression tests;
@@ -37,34 +36,94 @@ Status: RESTARTABLE IMPLEMENTATION — PR OPEN, DEPENDENCY-SCOPED VALIDATION QUE
 
 ## Changed paths
 
-- formal/lean/HHS.lean
-- formal/lean/HHS/Alignment/ReciprocalTensor.lean
-- lakefile.lean
-- hhs_runtime/hhs_pass220_i051_native_lean_alignment_v1.py
-- hhs_backend/runtime/hhs_litert_lm_assistant_v1.py
-- native_projects/hhs_pass220_native_lean_alignment/**
-- tests/pass220/test_hhs_pass220_i051_native_lean_alignment_v1.py
-- contracts/pass220/PASS_220_I051_NATIVE_LEAN_ALIGNMENT_V1.json
-- docs/pass220/PASS_220_I051_NATIVE_LEAN_ALIGNMENT.md
-- .github/workflows/pass220-i051-native-lean-alignment.yml
+- `formal/lean/HHS.lean`
+- `formal/lean/HHS/Alignment/ReciprocalTensor.lean`
+- `lakefile.lean`
+- `hhs_runtime/hhs_pass220_i051_native_lean_alignment_v1.py`
+- `hhs_backend/runtime/hhs_litert_lm_assistant_v1.py`
+- `native_projects/hhs_pass220_native_lean_alignment/**`
+- `tests/pass220/test_hhs_pass220_i051_native_lean_alignment_v1.py`
+- `contracts/pass220/PASS_220_I051_NATIVE_LEAN_ALIGNMENT_V1.json`
+- `docs/pass220/PASS_220_I051_NATIVE_LEAN_ALIGNMENT.md`
+- `.github/workflows/pass220-i051-native-lean-alignment.yml`
+- this restart checkpoint.
 
-## Validation required
+## Frozen green evidence
 
-1. C++ native witness harness.
-2. I051 Python regression file.
-3. Lean lake build.
-4. leanchecker HHS.
-5. HHS axiom audit.
-6. Existing assistant dependency-scoped tests if I051 changes expose integration regressions.
+Run `36459406590`, job `109053876623`:
 
-## Environment state
+- C++ native witness harness: PASS;
+- Python I051 regression file: **10 passed**;
+- Python warning only: repository pytest config references `asyncio_mode`
+  without the optional plugin installed in this bounded workflow.
 
-This checkpoint was authored through the GitHub connector from verified main. No claim is made that a local Lean toolchain was available during authoring. The dedicated workflow is the authoritative build/kernel validation surface for this checkpoint.
+The native/runtime/assistant I051 surfaces are therefore frozen unless one of
+their inputs changes.
 
-## Known repository note
+## Lean repair-forward history
 
-PR #638, an older parallel prompt/response reciprocal-tensor implementation, remained open when I051 started. I051 does not assume that PR was merged. The semantic contract is implemented directly on top of current main so no hidden dependency on #638 exists.
+Run `36459406590` failed only in
+`formal/lean/HHS/Alignment/ReciprocalTensor.lean`.
+
+Observed errors:
+
+1. Lean could not synthesize `Decidable t.admitted` for
+   `ReciprocalTensor.result`.
+2. Because that branch condition was not elaborated, the
+   `admitted_is_genesis` and `rejected_is_whole_tensor_bottom` proofs
+   reduced to unresolved placeholder terms.
+3. No explicit `sorry` existed in the source; the warnings were generated by
+   Lean's failed elaboration path.
+
+Repair commit:
+
+`e748a7e495a607ac42ec5bf707a979f744c91306`
+
+Repair:
+
+- add local instance `reciprocalTensorAdmittedDecidable`;
+- derive it by unfolding only the existing finite equality/Boolean admission
+  predicates and invoking `infer_instance`;
+- do not introduce a global classical-decision authority;
+- leave the genesis/BOTTOM theorems unchanged so they close by ordinary
+  simplification once the admission proposition is decidable.
+
+## Current validation target
+
+Replacement I051 workflow:
+
+- run: `36461286805`
+- state at checkpoint preparation: queued
+- required remaining stages:
+  1. native stage should remain green;
+  2. `lake build` must compile `HHS.Alignment.ReciprocalTensor`;
+  3. `leanchecker HHS`;
+  4. HHS axiom audit.
+
+Queued CI does not block this restartable checkpoint.
+
+## Older parallel PR #638
+
+PR #638 remains open but is superseded for this workstream.
+
+Current comparison showed:
+
+- PR #638 is **54 commits behind current main**;
+- it carries an older `I049` reciprocal-tensor implementation;
+- it modifies `hhs_backend/runtime/hhs_litert_lm_assistant_v1.py`, the same
+  assistant surface now governed by I051;
+- I051 has no dependency on #638.
+
+Do not merge #638 over I051. After #642 closes successfully, close #638 as
+superseded unless a later audit identifies a unique non-conflicting component
+that must be reimplemented forward on current main.
 
 ## Next action
 
-Inspect the I051 dependency-scoped workflow and PR checks, repair only attributable failures, and merge when acceptable. After merge, verify main contains the Lean module, runtime gate, assistant binding, contract, and tests.
+Inspect run `36461286805`.
+
+- If green: merge PR #642, verify main contains the Lean module, C++ witness,
+  Python admission mirror, LiteRT-LM binding, contract, and tests; then close
+  PR #638 as superseded.
+- If I051 fails: repair only the attributable Lean/checker/audit surface;
+  preserve the frozen native evidence unless its inputs changed.
