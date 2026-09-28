@@ -108,3 +108,24 @@ The native class rejects the specimen before RNA/VM5184 routing when any require
 LINGUISTIC_OPERATOR and ETHICAL_TEXT are registry-declared native natural-language modes and therefore may not opt out of this gate. The rule is also content-sensitive: another method such as MULTIMODAL_INGRESS, CURRICULUM, PROJECTION_CORPUS, or REPOSITORY_HYDRATION becomes subject to the same gate whenever its current specimen is declared natural-language training.
 
 The ETHICAL_TEXT method remains a training method in its own right. Its admitted specimens bind the verified output of the existing ethical-text cycle as their supervisor witness; this does not create recursive mutation authority. The supervisor provides pre-training/candidate evidence, and the unified Lane 5 API still remains candidate-only beneath VM81 canonical admission.
+
+## Native adapter surface
+
+The unified class now exposes a narrow C ABI façade for non-C++ training producers:
+
+- hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.h
+- hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.cpp
+- hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py
+
+The façade does not reproduce training logic. Registry discovery and evaluation delegate into hhs::lane5::VM5184Hash216TrainingAPI.
+
+A producer may supply:
+- a normalized TrainingSpecimen;
+- exact UQCEL profile + delta bytes;
+- a raw 648-byte VM5184 frame;
+- either genesis transition lineage or explicit previous/change/receipt Hash72 witnesses;
+- feedback lane/trinary evidence.
+
+The returned receipt exposes the native selected lane, graph/tensor/decision signatures, candidate Hash216 witness, ethical-text supervision state, and zero canonical-authority flags.
+
+This is the intended ingress for Python corpus tooling, Wolfram adapters, repository/PR hydration tooling, external-library reconstruction, and other existing producers. Their source-specific extraction remains outside the native class; candidate training execution converges inside it.
