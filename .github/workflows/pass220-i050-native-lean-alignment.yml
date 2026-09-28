@@ -1,0 +1,61 @@
+name: Pass 220 I050 Native Lean Alignment
+
+on:
+  push:
+    branches:
+      - pass220/i050-native-lean-alignment1
+    paths:
+      - "lean-toolchain"
+      - "lakefile.lean"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Alignment/**"
+      - "formal/lean/HHS/Mathlib/**"
+      - "hhs_runtime/hhs_pass220_i050_native_lean_alignment_v1.py"
+      - "hhs_backend/runtime/hhs_litert_lm_assistant_v1.py"
+      - "native_projects/hhs_pass220_native_lean_alignment/**"
+      - "native_projects/hhs_pass220_mathlib_native/**"
+      - "native_projects/hhs_pass220_python_native_execution/**"
+      - "tests/pass220/test_hhs_pass220_i050_native_lean_alignment_v1.py"
+      - "contracts/pass220/PASS_220_I050_NATIVE_LEAN_ALIGNMENT_V1.json"
+      - ".github/workflows/pass220-i050-native-lean-alignment.yml"
+  pull_request:
+    paths:
+      - "lean-toolchain"
+      - "lakefile.lean"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Alignment/**"
+      - "formal/lean/HHS/Mathlib/**"
+      - "hhs_runtime/hhs_pass220_i050_native_lean_alignment_v1.py"
+      - "hhs_backend/runtime/hhs_litert_lm_assistant_v1.py"
+      - "native_projects/hhs_pass220_native_lean_alignment/**"
+      - "native_projects/hhs_pass220_mathlib_native/**"
+      - "native_projects/hhs_pass220_python_native_execution/**"
+      - "tests/pass220/test_hhs_pass220_i050_native_lean_alignment_v1.py"
+      - "contracts/pass220/PASS_220_I050_NATIVE_LEAN_ALIGNMENT_V1.json"
+      - ".github/workflows/pass220-i050-native-lean-alignment.yml"
+  workflow_dispatch:
+
+jobs:
+  native-lean-alignment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Native C++ and Python alignment
+        run: |
+          make -C native_projects/hhs_pass220_native_lean_alignment clean test
+          python -m pytest -q tests/pass220/test_hhs_pass220_i050_native_lean_alignment_v1.py
+      - name: Lean 4 build and kernel audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
