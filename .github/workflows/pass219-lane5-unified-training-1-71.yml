@@ -1,0 +1,45 @@
+name: Pass 219 Lane 5 unified training 1.71
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_71.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_71.cpp'
+      - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_71.cpp'
+      - 'TRAINING.md'
+      - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_71.md'
+      - '.github/workflows/pass219-lane5-unified-training-1-71.yml'
+  pull_request:
+    paths:
+      - 'GNUmakefile'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_71.hpp'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_71.cpp'
+      - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_71.cpp'
+      - 'TRAINING.md'
+      - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_71.md'
+      - '.github/workflows/pass219-lane5-unified-training-1-71.yml'
+  workflow_dispatch:
+
+jobs:
+  native-unified-training:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build inherited exact ABI with unified training class
+        run: make -f GNUmakefile c-abi
+      - name: Verify class symbols are linked
+        run: |
+          nm -D -C hhs_runtime/builds/libhhs_runtime.so \
+            | grep 'hhs::lane5::VM5184Hash216TrainingAPI'
+      - name: Compile native training registry and routing test
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_71.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-lane5-unified-training
+      - name: Run native training registry and routing test
+        run: /tmp/test-pass219-lane5-unified-training
