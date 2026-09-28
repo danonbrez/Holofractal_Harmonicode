@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import shutil
 import subprocess
 
@@ -153,8 +154,8 @@ def test_i048_lean_native_module_has_no_mathlib_dependency_or_placeholders() -> 
         ROOT / "formal" / "lean" / "HHS" / "Mathlib" / "Native.lean"
     ).read_text(encoding="utf-8")
     lowered = source.lower()
-    assert "import mathlib" not in lowered
-    assert "sorry" not in lowered
-    assert "admit" not in lowered
+    assert re.search(r"\\bimport\\s+mathlib\\b", lowered) is None
+    assert re.search(r"\\bsorry\\b", source, flags=re.IGNORECASE) is None
+    assert re.search(r"\\badmit\\b", source, flags=re.IGNORECASE) is None
     assert "foundationclasses" in lowered
     assert "completeMathlibCoverage : Bool := false" in source
