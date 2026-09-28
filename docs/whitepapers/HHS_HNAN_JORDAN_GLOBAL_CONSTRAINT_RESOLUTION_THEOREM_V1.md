@@ -1216,3 +1216,127 @@ Machine source:
 ```text
 contracts/pass219/PASS_219_GLOBAL_CONSERVATION_POLARITY_1_66.hhs
 ```
+
+
+---
+
+## 22. Explicit zero/EmptySet/HNAN center information theorem
+
+Pass 220 freezes a further information-preservation theorem over the existing
+HNAN semantics:
+
+```text
+0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+```
+
+This does not replace the inherited ordered denominator closure
+
+```text
+0=∅=AB/P⁴∅=HNAN.
+```
+
+Instead, it binds the resolved HNAN node to the exact ordered eight-term center
+while the earlier closure preserves the shared denominator lineage.
+
+The dedicated connected-Wolfram formalization represents all HHS operators as
+inert structural AST nodes, so no host `Plus`, `Times`, division, sorting, or
+commutation can change the proof object.
+
+The key necessity result is an injectivity argument. Two states that differ only
+by the order of the distinct `xy` and `yx` center terms are different exact
+HNAN states. If the center is discarded and both states are projected to the
+bare `HNAN` node, they become identical. Therefore the center-dropping map is
+non-injective and cannot be an information-preserving translation.
+
+The same proof is applied to the residual terminal: distinct epsilon-bearing
+states collapse to the same visible `xy` when epsilon is discarded. Thus
+`xy+epsilon` remains a separate mandatory witness.
+
+Connected Wolfram result:
+
+```text
+HHS_PASS220_HNAN_ZERO_CENTER_INFORMATION_WOLFRAM_V1
+20/20 PASS
+dropping_center_is_noninjective = true
+dropping_epsilon_is_noninjective = true
+```
+
+Full theorem and proof:
+
+`docs/whitepapers/HHS_HNAN_ZERO_CENTER_INFORMATION_PRESERVATION_THEOREM_V1.md`
+
+Frozen formal evidence:
+
+`evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.wl`
+
+`evidence/pass220/hnan_zero_center_information_wolfram_20260928_v1.output.json`
+
+
+---
+
+## 23. Literal firing-pattern phase-engine provenance
+
+The (u^{72}) phase engine is not a mechanical metaphor introduced by this
+paper. The repository already implements the firing pattern itself as exact
+modular runtime geometry.
+
+The frozen firing constructor is:
+
+```text
+sigma_n = 8 + 16 n (mod 72)
+```
+
+with residue zero displayed as `72`. Its exact nine-step firing orbit is:
+
+```text
+8 -> 24 -> 40 -> 56 -> 72 -> 16 -> 32 -> 48 -> 64 -> 8
+```
+
+Pass 220 I025 independently proved this exact constructor in Wolfram:
+
+```text
+status = PASS
+checks = 25/25
+cycle lengths = {9,9,9,9,9,9,9,9}
+U72^9 = I
+```
+
+The implementation is not isolated from Pass 219. The Pass 219 Lane 5 modules
+
+```text
+hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py
+hhs_runtime/pass219/lane5_feynman_discrete_orbit_bridge.py
+```
+
+import and consume the same firing-order/U9 constructor. In particular, the
+Genesis bridge derives its nine-position address orbit from
+`macrocycle_permutation()`; it does not invent a second phase schedule.
+
+Therefore the runtime lineage is:
+
+```text
+literal firing schedule
+    -> exact Z/72Z step-16 orbit
+    -> 9-state macrocycle
+    -> 8 interlaced 9-cycles over the 72-position ring
+    -> Pass 219 Lane 5 U9/address-orbit consumption
+    -> x/y/z/w and xy/yx/zw/wz phase-state geometry
+    -> HNAN information-preserving closure
+```
+
+The HNAN source
+
+```text
+0=∅=HNAN=x+y-z-w+xy+yx-zw-wz
+```
+
+is therefore a closure witness over an already-existing counted phase engine,
+not a proposed redesign inspired by an external engine picture.
+
+The scalar result `Delta e = 0` records closure. It does not replace the
+explicit lane counts, firing position, orientation, phase address, or
+provenance that produced that closure.
+
+Frozen composition evidence:
+
+`evidence/pass220/phase_engine_firing_hnan_composition_20260928_v1.json`

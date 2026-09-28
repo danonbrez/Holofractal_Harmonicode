@@ -1,0 +1,79 @@
+{
+  "schema": "HHS_PASS220_NUMPY1_FOUR_PHASE_AB_MEASURED_RESULT_V1",
+  "date_utc": "2026-09-28",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "experiment_head": "22e83e794d7506dbaf86c0baef98819e65ad11c3",
+  "workflow_run_id": 36363194046,
+  "workflow_job_id": 108744330311,
+  "artifact_id": 10946785500,
+  "artifact_zip_sha256": "adf76ccf4d6112f61e5f5f5c85429a4ef1d568a51b885a3c00e564dca44dad87",
+  "repeats_per_channel": 15,
+  "sample_ieee_bits": [
+    "0000000000000001",
+    "3fb999999999999a",
+    "400921fb54442d18",
+    "bff0000000000000",
+    "7fefffffffffffff"
+  ],
+  "semantic_identity": true,
+  "supplied_u9_circuit_tensor": {
+    "u9_order": 9,
+    "u9_power_9_is_identity": true,
+    "nine_distinct_preclosure_positional_states": true,
+    "full_orbit_returns_tagged_source_exactly": true,
+    "dense_vector_u9_identity_all_powers": true,
+    "inverse_roundtrip_all_powers": true,
+    "payload_verbatim_all_powers": true
+  },
+  "logical_control_storage": {
+    "arm_a_dense_matrix_cells": 2916,
+    "arm_b_vector_index_refs": 324,
+    "arm_b_scalar_symbol_controls": 36,
+    "arm_b_total_control_units": 360,
+    "dense_to_vector_control_ratio_exact": "81/10"
+  },
+  "channel_medians_ns": {
+    "xy": {
+      "dense_substitution": 573355,
+      "scalar_offset_vector": 132438,
+      "speedup_x": 4.329233301620381,
+      "latency_reduction_fraction": 0.7690122175615457
+    },
+    "yx": {
+      "dense_substitution": 563336,
+      "scalar_offset_vector": 131546,
+      "speedup_x": 4.2824259194502305,
+      "latency_reduction_fraction": 0.7664874959171791
+    },
+    "zw": {
+      "dense_substitution": 561953,
+      "scalar_offset_vector": 131897,
+      "speedup_x": 4.2605442125294735,
+      "latency_reduction_fraction": 0.7652882002587404
+    },
+    "wz": {
+      "dense_substitution": 562223,
+      "scalar_offset_vector": 132378,
+      "speedup_x": 4.247102992944447,
+      "latency_reduction_fraction": 0.7645453850162658
+    }
+  },
+  "all_channels_vector_faster_on_median": true,
+  "timing_is_canonical": false,
+  "candidate_selection": {
+    "selected": "SCALAR_SYMBOL_PERMUTATION_CONTROL_PLUS_OFFSET_VECTORIZATION",
+    "rejected_as_primary": "DENSE_9X9_SUBSTITUTION_TENSOR_CONTROL",
+    "basis": [
+      "EXACT_SEMANTIC_IDENTITY",
+      "EXACT_U9_INVERSE_CLOSURE",
+      "SUPPLIED_CIRCUIT_TENSOR_BYTE_IDENTITY",
+      "LOWER_LOGICAL_CONTROL_STORAGE",
+      "FASTER_MEDIAN_IN_ALL_FOUR_MEASURED_CHANNELS"
+    ],
+    "role": "NUMPY1_INTERNAL_CANDIDATE",
+    "external_ingress_egress_changed": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false
+  }
+}
