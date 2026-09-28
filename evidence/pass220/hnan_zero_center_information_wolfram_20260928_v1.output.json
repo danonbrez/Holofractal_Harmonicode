@@ -1,0 +1,243 @@
+{
+  "schema": "HHS_PASS220_HNAN_ZERO_CENTER_INFORMATION_WOLFRAM_V1",
+  "status": "PASS",
+  "evaluation": "CONNECTED_WOLFRAM_LANGUAGE_KERNEL",
+  "checks": {
+    "source_string_exact": true,
+    "inherited_string_exact": true,
+    "terminal_string_exact": true,
+    "center_has_exactly_8_ordered_terms": true,
+    "center_term_sequence_exact": true,
+    "xy_yx_structurally_distinct": true,
+    "zw_wz_structurally_distinct": true,
+    "swapping_xy_yx_changes_center": true,
+    "zero_emptyset_hnan_center_chain_exact": true,
+    "inherited_ab_p4_closure_exact": true,
+    "two_closure_surfaces_remain_distinct": true,
+    "no_host_plus_times_divide_in_zero_center_ast": true,
+    "zero_center_roundtrip_structural_exact": true,
+    "inherited_closure_roundtrip_structural_exact": true,
+    "terminal_roundtrip_structural_exact": true,
+    "dropping_center_is_noninjective": true,
+    "dropping_epsilon_is_noninjective": true,
+    "full_center_signature_changes_on_order_change": true,
+    "full_zero_center_signature_changes_on_order_change": true,
+    "terminal_preserves_typed_residual": true
+  },
+  "passed": 20,
+  "total": 20,
+  "source_string": "0=∅=HNAN=x+y-z-w+xy+yx-zw-wz",
+  "source_string_ascii": "0=<EMPTYSET>=HNAN=x+y-z-w+xy+yx-zw-wz",
+  "source_string_codepoints": [
+    48,
+    61,
+    8709,
+    61,
+    72,
+    78,
+    65,
+    78,
+    61,
+    120,
+    43,
+    121,
+    45,
+    122,
+    45,
+    119,
+    43,
+    120,
+    121,
+    43,
+    121,
+    120,
+    45,
+    122,
+    119,
+    45,
+    119,
+    122
+  ],
+  "inherited_closure_string": "0=∅=AB/P⁴∅=HNAN",
+  "inherited_closure_ascii": "0=<EMPTYSET>=AB/P^4<EMPTYSET>=HNAN",
+  "inherited_closure_codepoints": [
+    48,
+    61,
+    8709,
+    61,
+    65,
+    66,
+    47,
+    80,
+    8308,
+    8709,
+    61,
+    72,
+    78,
+    65,
+    78
+  ],
+  "terminal_string": "xy+epsilon",
+  "center_ast": [
+    "OrderedSum",
+    "x",
+    "y",
+    [
+      "Negate",
+      "z"
+    ],
+    [
+      "Negate",
+      "w"
+    ],
+    [
+      "OrderedProduct",
+      "x",
+      "y"
+    ],
+    [
+      "OrderedProduct",
+      "y",
+      "x"
+    ],
+    [
+      "Negate",
+      [
+        "OrderedProduct",
+        "z",
+        "w"
+      ]
+    ],
+    [
+      "Negate",
+      [
+        "OrderedProduct",
+        "w",
+        "z"
+      ]
+    ]
+  ],
+  "zero_center_closure_ast": [
+    "OrderedClosure",
+    "ZERO",
+    "EMPTYSET",
+    "HNAN",
+    [
+      "OrderedSum",
+      "x",
+      "y",
+      [
+        "Negate",
+        "z"
+      ],
+      [
+        "Negate",
+        "w"
+      ],
+      [
+        "OrderedProduct",
+        "x",
+        "y"
+      ],
+      [
+        "OrderedProduct",
+        "y",
+        "x"
+      ],
+      [
+        "Negate",
+        [
+          "OrderedProduct",
+          "z",
+          "w"
+        ]
+      ],
+      [
+        "Negate",
+        [
+          "OrderedProduct",
+          "w",
+          "z"
+        ]
+      ]
+    ]
+  ],
+  "inherited_closure_ast": [
+    "OrderedClosure",
+    "ZERO",
+    "EMPTYSET",
+    "AB_P4_EMPTYSET",
+    "HNAN"
+  ],
+  "terminal_ast": [
+    "OrderedSum",
+    [
+      "OrderedProduct",
+      "x",
+      "y"
+    ],
+    [
+      "Residual",
+      "epsilon",
+      [
+        "HNANLoShuTensor",
+        [
+          "OrderedSum",
+          "x",
+          "y",
+          [
+            "Negate",
+            "z"
+          ],
+          [
+            "Negate",
+            "w"
+          ],
+          [
+            "OrderedProduct",
+            "x",
+            "y"
+          ],
+          [
+            "OrderedProduct",
+            "y",
+            "x"
+          ],
+          [
+            "Negate",
+            [
+              "OrderedProduct",
+              "z",
+              "w"
+            ]
+          ],
+          [
+            "Negate",
+            [
+              "OrderedProduct",
+              "w",
+              "z"
+            ]
+          ]
+        ]
+      ],
+      [
+        "RelativeToProjection",
+        [
+          "OrderedProduct",
+          "x",
+          "y"
+        ]
+      ]
+    ]
+  ],
+  "center_sha256_decimal": "55779834292454429946565006768200345983671321532310243548178544715051609606440",
+  "zero_center_sha256_decimal": "114267827802475493366008275471868493716875580986044400589424543258890544446177",
+  "inherited_closure_sha256_decimal": "1965897855089246072516821625465963466615722037026165759121022948191195016408",
+  "proof_claims": {
+    "necessity": "Removing the center binding makes the HNAN projection non-injective over distinct ordered center states.",
+    "residual_necessity": "Removing epsilon makes the visible xy projection non-injective over distinct residual states.",
+    "meaning": "The source string is a typed ordered binding from ZERO and EMPTYSET through HNAN to the exact eight-term ordered center; it is not host scalar equality.",
+    "coexistence": "The zero/HNAN/center closure and inherited AB/P^4 EMPTYSET closure remain distinct structural witnesses and are both retained."
+  }
+}

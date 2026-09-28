@@ -116,4 +116,5 @@
 #include "hhs_pass219_lane5_unbounded_workload_scaling_1_48.h"
 #include "hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h"
 #include "hhs_pass220_g72_epsilon_lo_shu_gear_1_0.h"
+#include "hhs_pass220_lane5_priority_offset_hydration_1_0.h"
 #endif
