@@ -8,7 +8,6 @@ on:
       - "lean-toolchain"
       - "lakefile.lean"
       - "lake-manifest.json"
-      - "lake-manifest.json"
       - "formal/lean/HHS/**"
       - "native_projects/hhs_pass220_mathlib_native/**"
       - "hhs_runtime/hhs_pass220_i048_native_mathlib_v1.py"
@@ -21,6 +20,7 @@ on:
     paths:
       - "lean-toolchain"
       - "lakefile.lean"
+      - "lake-manifest.json"
       - "formal/lean/HHS/**"
       - "native_projects/hhs_pass220_mathlib_native/**"
       - "hhs_runtime/hhs_pass220_i048_native_mathlib_v1.py"
