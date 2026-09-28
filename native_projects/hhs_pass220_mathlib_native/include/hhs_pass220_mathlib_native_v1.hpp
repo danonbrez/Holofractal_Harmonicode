@@ -55,7 +55,7 @@ public:
 private:
     struct RawTag {};
 
-    explicit NativeInt(RawTag) noexcept = default;
+    explicit NativeInt(RawTag) noexcept {}
 
     void assign_literal(std::string_view literal) noexcept {
         std::array<char, HHS_PYTHON_NATIVE_MAX_SOURCE_BYTES + 1U> source{};
