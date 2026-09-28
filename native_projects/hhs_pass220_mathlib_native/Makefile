@@ -29,7 +29,7 @@ $(EXACT_OBJ): $(ROOT)/hhs_runtime/c/hhs_runtime_exact_abi.c | $(BUILD)
 	$(CC) $(CFLAGS) -I$(RUNTIME_INCLUDE) -c $< -o $@
 
 $(SUPPORT_STAMP): $(ROOT)/tools/pass219/build_exact_abi_link_support.sh | $(BUILD)
-	cd $(ROOT) && CC=$(CC) CXX=$(CXX) tools/pass219/build_exact_abi_link_support.sh \
+	cd $(ROOT) && CC=$(CC) CXX=$(CXX) bash tools/pass219/build_exact_abi_link_support.sh \
 		$(abspath $(BUILD)) full
 	touch $@
 
