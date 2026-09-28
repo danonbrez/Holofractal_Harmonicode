@@ -185,3 +185,19 @@ def test_full_supplied_u9_tensor_is_required_by_numpy_experiment_acceptance() ->
         == SUPPLIED_U9_CIRCUIT_TENSOR
     )
     assert experiment_acceptance(witness) is True
+
+
+def test_experiment_workflow_uses_package_module_benchmark_invocation() -> None:
+    from pathlib import Path
+
+    workflow = Path(
+        ".github/workflows/pass220-numpy1-four-phase-ab.yml"
+    ).read_text(encoding="utf-8")
+    assert (
+        "python -m benchmarks.pass220.pass220_numpy_four_phase_ab_v1"
+        in workflow
+    )
+    assert (
+        "python benchmarks/pass220/pass220_numpy_four_phase_ab_v1.py"
+        not in workflow
+    )

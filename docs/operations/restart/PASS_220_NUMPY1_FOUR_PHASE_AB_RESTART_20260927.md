@@ -130,3 +130,40 @@ Next action:
 - repair only attributable failures;
 - preserve this branch across later mainline repair merges and repair forward
   only real conflicts.
+
+
+## Experiment benchmark import-path repair — 2026-09-27
+
+Exact-head validation on `ad59bdde4622571ef26bab2c19535503d751e2cd` established:
+
+- dependency-scoped pytest: **16 passed**;
+- Hash216 Repository Dependency Index `36359712883`: **success**;
+- dedicated NumPy A/B workflow `36359712902`: failed only at benchmark launch;
+- HHS Consensus Gate `36359712841`: failed on the inherited pre-#622
+  direct-path acceptance-gate import and is not attributable to the experiment.
+
+Dedicated experiment failure:
+
+```text
+python benchmarks/pass220/pass220_numpy_four_phase_ab_v1.py
+ModuleNotFoundError: No module named 'hhs_runtime'
+```
+
+Root cause: executing a nested benchmark by filesystem path makes the benchmark
+directory, rather than repository root, the import anchor.
+
+Repair:
+- invoke the benchmark as
+  `python -m benchmarks.pass220.pass220_numpy_four_phase_ab_v1`;
+- preserve the measured artifact arguments unchanged;
+- add a regression that requires package-module invocation and forbids the
+  direct-path form.
+
+No experiment semantics, tensor payload, U9 constraints, NumPy ingress/egress,
+VM81, Hash72, Hash216, or temporal authority changed.
+
+Next action:
+1. inspect the new exact-head dedicated NumPy A/B workflow once;
+2. if green, freeze the measured A/B result;
+3. treat Consensus as inherited mainline repair debt until #622 lands;
+4. repair-forward any actual mainline conflict before merge.
