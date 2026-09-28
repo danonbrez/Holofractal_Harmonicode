@@ -42,6 +42,10 @@ from hhs_runtime.pass219.lane5_nine_loop_relation_dataset_1_72 import (
 ROOT = Path(__file__).resolve().parents[2]
 CONTRACT_PATH = ROOT / "contracts/pass219/PASS_219_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75.json"
 SCHEMA = "HHS_PASS219_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75"
+FROZEN_ADMITTED_CORPUS_ROOT_HASH72 = "0000000000000000000000000000002721Ip^KPnKF(sDVftNJCSFA1nW1v*8lgdQX?exMhE"
+FROZEN_KNOWLEDGE_GRAPH_ROOT_HASH72 = "0000000000000000000000000000003ZOZmmCFNEq6a!I>kRKjlHqhXFOLxxAN4aleMzR7hM"
+FROZEN_ADMISSION_REPLAY_BUNDLE_SHA256 = "6d4ab72612278a3b1a27f8cab61a1de6e2a958275817b50aaa71ea11ac9a1b40"
+FROZEN_RETRIEVAL_REPLAY_BUNDLE_SHA256 = "9f509009a450e58e9d0fa91041e91dc69c2f20ea63d957f98cbd64526a38731a"
 AS_OF = "2026-09-28T00:00:00+00:00"
 
 ANCHOR_PROPOSITION = (
@@ -350,6 +354,26 @@ def discover_knowledge_hydration() -> dict[str, Any]:
         "query_count": len(query_receipts) == rp["query_count"] == 12,
         "all_queries_replayed": all(
             len(item["replay_root_hash72"]) == 72 for item in query_receipts
+        ),
+        "corpus_root_frozen": (
+            corpus["corpus_root_hash72"]
+            == contract["frozen_receipts"]["admitted_corpus_root_hash72"]
+            == FROZEN_ADMITTED_CORPUS_ROOT_HASH72
+        ),
+        "graph_root_frozen": (
+            graph["knowledge_graph_root_hash72"]
+            == contract["frozen_receipts"]["knowledge_graph_root_hash72"]
+            == FROZEN_KNOWLEDGE_GRAPH_ROOT_HASH72
+        ),
+        "admission_replay_bundle_frozen": (
+            admission_bundle_sha256
+            == contract["frozen_receipts"]["admission_replay_bundle_sha256"]
+            == FROZEN_ADMISSION_REPLAY_BUNDLE_SHA256
+        ),
+        "retrieval_replay_bundle_frozen": (
+            retrieval_bundle_sha256
+            == contract["frozen_receipts"]["retrieval_replay_bundle_sha256"]
+            == FROZEN_RETRIEVAL_REPLAY_BUNDLE_SHA256
         ),
         "knowledge_only_authority": (
             authority["knowledge_authority"] is True
