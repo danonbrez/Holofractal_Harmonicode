@@ -1,0 +1,62 @@
+{
+  "schema": "HHS_PASS_220_I048_LEAN4_NATIVE_MATHLIB_REBUILD_V1",
+  "version": 1,
+  "status": "FOUNDATION_IMPLEMENTATION",
+  "inherits": {
+    "python1": "HHS_PASS_220_PYTHON1_NATIVE_BIGINT_EXECUTION_V1",
+    "python2_rna_class_registration": "HHS_PASS_220_PYTHON2_RNA_CLASS_REGISTRATION_V1",
+    "pass219_rna_grammar": "1.11",
+    "vm81_authority": "SINGLE_CANONICAL_VM81"
+  },
+  "lean4": {
+    "toolchain": "leanprover/lean4:v4.34.0",
+    "package": "harmonicode",
+    "library": "HHS",
+    "native_module": "HHS.Mathlib.Native",
+    "upstream_mathlib_runtime_dependency": false,
+    "kernel_check_required": true,
+    "sorry_forbidden_for_canonical_admission": true,
+    "unapproved_axioms_forbidden_for_canonical_admission": true
+  },
+  "native_mathlib": {
+    "coverage": "FOUNDATION_SLICE",
+    "complete_rebuild_claimed": false,
+    "classes": [
+      {
+        "upstream_namespace": "Mathlib.Data.Nat.Basic",
+        "native_module": "HHS.Mathlib.Data.Nat.Basic",
+        "class": "Nat"
+      },
+      {
+        "upstream_namespace": "Mathlib.Data.Int.Basic",
+        "native_module": "HHS.Mathlib.Data.Int.Basic",
+        "class": "Int"
+      },
+      {
+        "upstream_namespace": "Mathlib.Logic.Basic",
+        "native_module": "HHS.Mathlib.Logic.Basic",
+        "class": "Eq"
+      }
+    ],
+    "integer_execution": "PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "cpp_class_layer": "hhs::mathlib",
+    "rna_class_identity": "hhs::rna::PythonClassRegistration",
+    "upstream_mathlib_role": "DIFFERENTIAL_AND_API_REFERENCE_ONLY"
+  },
+  "authority": {
+    "lean_may_mutate_vm81": false,
+    "mathlib_class_registration_may_mutate_vm81": false,
+    "mathlib_class_registration_may_commit_hash72": false,
+    "mathlib_class_registration_may_persist_hash216": false,
+    "python_host_eval_is_authority": false,
+    "floating_point_is_canonical_authority": false,
+    "vm81_remains_admission_authority": true
+  },
+  "expansion_gate": {
+    "interface_compatibility_required": true,
+    "observable_result_equivalence_required": true,
+    "lean_kernel_validation_required": true,
+    "dependency_identity_required": true,
+    "restartable_incremental_slices": true
+  }
+}
