@@ -1,34 +1,34 @@
 # Repository file/dependency shard - examples
 
-Source commit: [3a01dbf8a99520a083b328d9617fa4e68328a8b9](https://github.com/danonbrez/Holofractal_Harmonicode/commit/3a01dbf8a99520a083b328d9617fa4e68328a8b9)
+Source commit: [27523a2f66c44507cee585601353f3b304907b39](https://github.com/danonbrez/Holofractal_Harmonicode/commit/27523a2f66c44507cee585601353f3b304907b39)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## examples
 
-- [examples/hhs_loshu_phase_embedding_demo_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/examples/hhs_loshu_phase_embedding_demo_v1.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 2 ; in 26
-  - depends on: [hhs_runtime/hhs_loshu_phase_embedding_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/hhs_runtime/hhs_loshu_phase_embedding_v1.py) <sub>PYTHON_IMPORT</sub>
+- [examples/hhs_loshu_phase_embedding_demo_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/examples/hhs_loshu_phase_embedding_demo_v1.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 2 ; in 26
+  - depends on: [hhs_runtime/hhs_loshu_phase_embedding_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/hhs_runtime/hhs_loshu_phase_embedding_v1.py) <sub>PYTHON_IMPORT</sub>
 
 ## examples/pass_138
 
-- [examples/pass_138/gfe_5_4_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/examples/pass_138/gfe_5_4_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 9
+- [examples/pass_138/gfe_5_4_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/examples/pass_138/gfe_5_4_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 9
 
 ## examples/pass_139
 
-- [examples/pass_139/architect_gfe_optimization_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/examples/pass_139/architect_gfe_optimization_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
+- [examples/pass_139/architect_gfe_optimization_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/examples/pass_139/architect_gfe_optimization_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
 
 ## examples/pass_140
 
-- [examples/pass_140/holographic_recovery_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/examples/pass_140/holographic_recovery_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 9
+- [examples/pass_140/holographic_recovery_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/examples/pass_140/holographic_recovery_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 9
 
 ## examples/pass_141
 
-- [examples/pass_141/architect_epe_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/examples/pass_141/architect_epe_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
+- [examples/pass_141/architect_epe_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/examples/pass_141/architect_epe_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
 
 ## examples/pass_142
 
-- [examples/pass_142/multimodal_snapshot_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/examples/pass_142/multimodal_snapshot_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
+- [examples/pass_142/multimodal_snapshot_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/examples/pass_142/multimodal_snapshot_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
 
 ## examples/pass_143
 
-- [examples/pass_143/conflict_gradient_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/3a01dbf8a99520a083b328d9617fa4e68328a8b9/examples/pass_143/conflict_gradient_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
+- [examples/pass_143/conflict_gradient_request.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/27523a2f66c44507cee585601353f3b304907b39/examples/pass_143/conflict_gradient_request.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
