@@ -18,7 +18,9 @@ constexpr TrainingMethodDescriptor method_descriptor(
     TrainingTarget primary_target,
     std::uint32_t target_mask,
     const char *method_id,
-    std::uint8_t requires_oracle
+    std::uint8_t requires_oracle,
+    std::uint8_t natural_language_native,
+    std::uint8_t ethical_text_supervisor
 ) noexcept {
     return TrainingMethodDescriptor{
         mode,
@@ -33,6 +35,8 @@ constexpr TrainingMethodDescriptor method_descriptor(
         1U,
         1U,
         1U,
+        natural_language_native,
+        ethical_text_supervisor,
         0U
     };
 }
@@ -47,6 +51,8 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Invariant) |
             target_bit(TrainingTarget::Weight),
         "REALTIME_HASH216",
+        0U,
+        0U,
         0U),
     method_descriptor(
         TrainingMode::WolframFormalization,
@@ -56,7 +62,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Relation) |
             target_bit(TrainingTarget::Constructor),
         "WOLFRAM_FORMALIZATION",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::ExternalLibraryReconstruction,
         TrainingTemporal::Manual,
@@ -65,7 +73,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Behavior) |
             target_bit(TrainingTarget::Codec),
         "EXTERNAL_LIBRARY_RECONSTRUCTION",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::PalindromicRoundTrip,
         TrainingTemporal::RoundTrip,
@@ -73,7 +83,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
         target_bit(TrainingTarget::Codec) |
             target_bit(TrainingTarget::Behavior),
         "PALINDROMIC_ROUND_TRIP",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::PullRequestHydration,
         TrainingTemporal::RepositoryDelta,
@@ -82,7 +94,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Relation) |
             target_bit(TrainingTarget::Constructor),
         "PULL_REQUEST_HYDRATION",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::MultimodalIngress,
         TrainingTemporal::Realtime,
@@ -91,6 +105,8 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Weight) |
             target_bit(TrainingTarget::Relation),
         "MULTIMODAL_INGRESS",
+        0U,
+        0U,
         0U),
     method_descriptor(
         TrainingMode::LinguisticOperator,
@@ -100,6 +116,8 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Behavior) |
             target_bit(TrainingTarget::Invariant),
         "LINGUISTIC_OPERATOR",
+        0U,
+        1U,
         0U),
     method_descriptor(
         TrainingMode::EthicalText,
@@ -109,7 +127,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Behavior) |
             target_bit(TrainingTarget::Relation),
         "ETHICAL_TEXT",
-        0U),
+        0U,
+        1U,
+        1U),
     method_descriptor(
         TrainingMode::RNACellWallAlignment,
         TrainingTemporal::Replay,
@@ -118,7 +138,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Invariant) |
             target_bit(TrainingTarget::Relation),
         "RNA_CELL_WALL_ALIGNMENT",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::Curriculum,
         TrainingTemporal::Batch,
@@ -127,6 +149,8 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Invariant) |
             target_bit(TrainingTarget::Constructor),
         "CURRICULUM",
+        0U,
+        0U,
         0U),
     method_descriptor(
         TrainingMode::CallableCorpus,
@@ -136,7 +160,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Constructor) |
             target_bit(TrainingTarget::Relation),
         "CALLABLE_CORPUS",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::CanonicalCorpus,
         TrainingTemporal::Batch,
@@ -145,7 +171,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Relation) |
             target_bit(TrainingTarget::Constructor),
         "CANONICAL_CORPUS",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::WorkloadCalibration,
         TrainingTemporal::Batch,
@@ -154,7 +182,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Weight) |
             target_bit(TrainingTarget::Relation),
         "WORKLOAD_CALIBRATION",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::AntiForgettingReplay,
         TrainingTemporal::Replay,
@@ -163,7 +193,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Invariant) |
             target_bit(TrainingTarget::Weight),
         "ANTI_FORGETTING_REPLAY",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::ABHydrationCalibration,
         TrainingTemporal::Batch,
@@ -172,7 +204,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Relation) |
             target_bit(TrainingTarget::Schedule),
         "AB_HYDRATION_CALIBRATION",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::ProjectionCorpus,
         TrainingTemporal::Batch,
@@ -181,7 +215,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Codec) |
             target_bit(TrainingTarget::Invariant),
         "PROJECTION_CORPUS",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::InverseRenderHydration,
         TrainingTemporal::Batch,
@@ -190,7 +226,9 @@ constexpr TrainingMethodDescriptor kMethods[] = {
             target_bit(TrainingTarget::Codec) |
             target_bit(TrainingTarget::Behavior),
         "INVERSE_RENDER_HYDRATION",
-        1U),
+        1U,
+        0U,
+        0U),
     method_descriptor(
         TrainingMode::RepositoryHydration,
         TrainingTemporal::RepositoryDelta,
@@ -287,6 +325,19 @@ HHSExactStatus validate_specimen(
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     if (specimen.candidate_only_acknowledged != 1U)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (specimen.natural_language_training > 1U ||
+        specimen.ethical_text_supervision_verified > 1U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (descriptor.natural_language_native != 0U &&
+        specimen.natural_language_training != 1U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    if (specimen.natural_language_training == 1U) {
+        if (specimen.ethical_text_supervision_verified != 1U ||
+            specimen.ethical_text_supervisor_signature64 == 0U ||
+            !hash216_text_valid(
+                specimen.ethical_text_supervisor_identity216))
+            return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
     return HHS_EXACT_STATUS_OK;
 }
 
@@ -348,7 +399,8 @@ HHSExactStatus VM5184Hash216TrainingAPI::derive_candidate_hash216(
         "HHS-P219-LANE5-VM5184-HASH216-TRAINING-1.72|"
         "method=%s|mode=%" PRIu32 "|temporal=%" PRIu32
         "|target=%" PRIu32 "|source=%s|oracle=%s|transition=%s|"
-        "adapter=%" PRIu64 "|executor=%" PRIu64
+        "naturalLanguage=%u|ethicalSupervisor=%s|ethicalSignature=%" PRIu64
+        "|ethicalVerified=%u|adapter=%" PRIu64 "|executor=%" PRIu64
         "|validator=%" PRIu64 "|negative=%" PRIu64
         "|replay=%" PRIu64 "|lane=%u|graph=%" PRIu64
         "|tensor=%" PRIu64 "|decision=%" PRIu64,
@@ -359,6 +411,12 @@ HHSExactStatus VM5184Hash216TrainingAPI::derive_candidate_hash216(
         specimen.source_identity216,
         specimen.oracle_identity216,
         transition.transition_identity216,
+        static_cast<unsigned>(specimen.natural_language_training),
+        specimen.natural_language_training == 1U
+            ? specimen.ethical_text_supervisor_identity216
+            : "NONE",
+        specimen.ethical_text_supervisor_signature64,
+        static_cast<unsigned>(specimen.ethical_text_supervision_verified),
         specimen.adapter_signature64,
         specimen.executor_signature64,
         specimen.validator_signature64,
@@ -413,6 +471,20 @@ HHSExactStatus VM5184Hash216TrainingAPI::evaluate(
     out.negative_controls_verified = specimen.negative_controls_verified;
     out.replay_verified = specimen.replay_verified;
     out.ingress_egress_preserved = specimen.ingress_egress_preserved;
+    out.natural_language_training = specimen.natural_language_training;
+    out.ethical_text_supervision_required =
+        specimen.natural_language_training == 1U ? 1U : 0U;
+    out.ethical_text_supervision_verified =
+        specimen.natural_language_training == 1U
+            ? specimen.ethical_text_supervision_verified
+            : 0U;
+    if (specimen.natural_language_training == 1U) {
+        std::memcpy(
+            out.ethical_text_supervisor_identity216,
+            specimen.ethical_text_supervisor_identity216,
+            HHS_HASH216_LEN + 1U
+        );
+    }
 
     HHSExactPass219Holo4PreparedV1 prepared{};
     HHSExactPass219Holo4DecisionV1 decision{};
