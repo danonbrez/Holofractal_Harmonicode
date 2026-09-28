@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import os
+import re
 import shutil
 import subprocess
 
@@ -152,8 +153,8 @@ def test_i049_lean_module_has_no_mathlib_dependency_or_placeholders() -> None:
         ROOT / "formal" / "lean" / "HHS" / "Mathlib" / "OrderRat.lean"
     ).read_text(encoding="utf-8")
     lowered = source.lower()
-    assert "import mathlib" not in lowered
-    assert "sorry" not in lowered
-    assert "admit" not in lowered
+    assert re.search(r"\bimport\s+mathlib\b", lowered) is None
+    assert re.search(r"\bsorry\b", source, flags=re.IGNORECASE) is None
+    assert re.search(r"\badmit\b", source, flags=re.IGNORECASE) is None
     assert "structure exactrat" in lowered
     assert "crossproductcomparison" in lowered
