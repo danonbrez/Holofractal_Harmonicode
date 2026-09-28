@@ -7,6 +7,10 @@ on:
       - 'GNUmakefile'
       - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_72.hpp'
       - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_72.cpp'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.h'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.cpp'
+      - 'hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_unified_training_bridge_1_72.py'
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_72.cpp'
       - 'TRAINING.md'
       - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_72.md'
@@ -21,6 +25,10 @@ on:
       - 'GNUmakefile'
       - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_1_72.hpp'
       - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_1_72.cpp'
+      - 'hhs_runtime/include/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.h'
+      - 'hhs_runtime/cpp/hhs_pass219_lane5_vm5184_hash216_training_c_abi_1_72.cpp'
+      - 'hhs_python/runtime/hhs_pass219_lane5_unified_training_bridge.py'
+      - 'tests/pass219/test_pass219_lane5_unified_training_bridge_1_72.py'
       - 'tests/pass219/test_pass219_lane5_vm5184_hash216_training_1_72.cpp'
       - 'TRAINING.md'
       - 'contracts/pass219/PASS_219_LANE5_VM5184_HASH216_UNIFIED_TRAINING_API_1_72.md'
@@ -41,10 +49,16 @@ jobs:
         run: python -m pytest -q tests/pass219/test_hhs_pass219_ethical_text_training_v1.py
       - name: Build inherited exact ABI with unified training class
         run: make -f GNUmakefile c-abi
-      - name: Verify class symbols are linked
+      - name: Verify class and adapter symbols are linked
         run: |
           nm -D -C hhs_runtime/builds/libhhs_runtime.so \
             | grep 'hhs::lane5::VM5184Hash216TrainingAPI'
+          nm -D hhs_runtime/builds/libhhs_runtime.so \
+            | grep 'hhs_exact_pass219_lane5_training_evaluate_raw'
+          nm -D hhs_runtime/builds/libhhs_runtime.so \
+            | grep 'hhs_exact_pass219_lane5_training_method'
+      - name: Execute Python adapter against native class
+        run: python -m pytest -q tests/pass219/test_pass219_lane5_unified_training_bridge_1_72.py
       - name: Compile native training registry and routing test
         run: |
           c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
