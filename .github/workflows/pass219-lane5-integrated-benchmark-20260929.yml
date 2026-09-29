@@ -1,0 +1,338 @@
+name: Pass 219 Lane 5 Integrated Benchmark 2026-09-29 R4
+
+on:
+  push:
+    branches:
+      - 'bench/lane5-integrated-benchmark-20260929-r4'
+    paths:
+      - 'benchmarks/pass219/pass219_lane5_integrated_services_index_benchmark_20260929.py'
+      - 'docs/operations/restart/PASS_219_LANE5_INTEGRATED_BENCHMARK_20260929_R4_RESTART.md'
+      - '.github/workflows/pass219-lane5-integrated-benchmark-20260929.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: '0'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  lane5-integrated-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout exact benchmark head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify exact main lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 9cc8f89620183a90f9e269968ef75ee7476adeb8 HEAD\n          git merge-base --is-ancestor 85bd6b5430bef9e03e9a2e600aa9d3250938d5f9 HEAD
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependency-scoped build and Python tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check numpy cryptography
+
+      - name: Compile benchmark harness
+        run: |
+          python -m py_compile             benchmarks/pass219/pass219_lane5_integrated_services_index_benchmark_20260929.py
+
+      - name: Build cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Regenerate repository index at exact benchmark head
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/repository-hash216-dependency-index.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY\n", start)
+          body = textwrap.dedent(workflow[start:end])
+          Path('/tmp/hhs-rebuild-repository-index.py').write_text(body + "\n", encoding='utf-8')
+          PY
+          PYTHONPATH=. python /tmp/hhs-rebuild-repository-index.py \
+            | tee /tmp/hhs-rebuild-repository-index.txt
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import subprocess
+
+          head = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          graph = json.loads(Path('artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json').read_text())
+          knowledge = json.loads(Path('artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json').read_text())
+          receipt = json.loads(Path('artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json').read_text())
+          assert graph['source_commit'] == head
+          assert receipt['source_commit'] == head
+          assert knowledge['source_dependency_graph_root_hash216'] == graph['roots']['graph_root_hash216']
+          assert receipt['projection_root_hash216'] == knowledge['roots']['projection_root_hash216']
+          assert receipt['database_status']['hash216_positions'] == (
+              knowledge['counts']['capabilities']
+              + knowledge['counts']['constructors']
+              + knowledge['counts']['knowledge_edges']
+          ) * 216
+          print('BENCHMARK_HEAD_REPOSITORY_INDEX_REFRESH=PASS')
+          PY
+
+      - name: Dependency-scoped semantic and indexing regressions through I062
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          mkdir -p artifacts/pass219/lane5-integrated-20260929
+          set +e
+          python -m hhs_runtime.testing.native_pytest_provider_v1 -q \
+            tests/pass220/test_hhs_pass220_i051_native_lean_alignment_v1.py \
+            tests/pass220/test_hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py \
+            tests/pass219/test_pass219_lane5_repository_hydration_knowledge_graph_1_69.py \
+            tests/pass219/test_pass219_lane5_nine_loop_knowledge_hydration_1_75.py \
+            tests/test_hhs_service_registry_v1.py \
+            --json-report artifacts/pass219/lane5-integrated-20260929/native-pytest-regressions.json
+          native_status=$?
+          set -e
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/pass219/lane5-integrated-20260929/native-pytest-regressions.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          for row in d.get('results', []):
+              if row.get('outcome') in {'FAIL', 'ERROR', 'XPASS'}:
+                  print(json.dumps({
+                      'nodeid': row.get('nodeid'),
+                      'outcome': row.get('outcome'),
+                      'error_type': row.get('error_type'),
+                      'error_message': row.get('error_message'),
+                      'traceback': row.get('traceback'),
+                  }, ensure_ascii=False, sort_keys=True))
+          PY
+          exit "$native_status"
+
+      - name: Benchmark integrated services and repository indexes
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          mkdir -p artifacts/pass219/lane5-integrated-20260929
+          python benchmarks/pass219/pass219_lane5_integrated_services_index_benchmark_20260929.py             --output artifacts/pass219/lane5-integrated-20260929/services-index.json             --search-rounds 100             --positional-iterations 5000             --alignment-iterations 250             --lean-iterations 10000             --knowledge-repeats 2             --native-pytest-iterations 25             | tee artifacts/pass219/lane5-integrated-20260929/services-index.txt
+          grep -F 'PASS219_LANE5_INTEGRATED_SERVICES_INDEX_BENCHMARK_20260929_PASS'             artifacts/pass219/lane5-integrated-20260929/services-index.txt
+
+      - name: Benchmark HNAN immutable view and recursive memoization
+        run: |
+          python benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py             --iterations 100000             > artifacts/pass219/lane5-integrated-20260929/hnan.json
+          python - <<'PY'
+          import json
+          p='artifacts/pass219/lane5-integrated-20260929/hnan.json'
+          d=json.load(open(p, encoding='utf-8'))
+          assert d['parity'] is True
+          assert d['semantic_change'] is False
+          PY
+
+      - name: Compile Lane 5 one-million-candidate streaming benchmark
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_lane5_unbounded_workload_scaling_1_48.c             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread             -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds"             -o /tmp/lane5-1-48
+
+      - name: Run one-million-candidate streaming benchmark
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          /tmp/lane5-1-48             | tee artifacts/pass219/lane5-integrated-20260929/native-scaling.txt
+          grep -F 'PASS219_LANE5_UNBOUNDED_WORKLOAD_SCALING_1_48_PASS'             artifacts/pass219/lane5-integrated-20260929/native-scaling.txt
+          head -n 1 artifacts/pass219/lane5-integrated-20260929/native-scaling.txt             | python -m json.tool             > artifacts/pass219/lane5-integrated-20260929/native-scaling.json
+
+      - name: Normalize runner information density
+        run: |
+          python tools/hhs_qinfo_throughput_normalize_v1.py             artifacts/pass219/lane5-integrated-20260929/native-scaling.json             artifacts/pass219/lane5-integrated-20260929/qinfo.json             | tee artifacts/pass219/lane5-integrated-20260929/qinfo.txt
+          grep -F 'HHS_QINFO_THROUGHPUT_NORMALIZATION_V1_PASS'             artifacts/pass219/lane5-integrated-20260929/qinfo.txt
+
+      - name: Run expanded repository and ledger workloads
+        run: |
+          python benchmarks/pass219/pass219_lane5_real_world_workload_benchmark_1_47.py             --output artifacts/pass219/lane5-integrated-20260929/real-world.json             --files-per-class 8             --ledger-entries 1000
+
+      - name: Build circular-attractor benchmark link support
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/lane5-circular
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             -c hhs_runtime/c/hhs_runtime_exact_abi.c             -o /tmp/lane5-circular/exact.o
+          bash tools/pass219/build_exact_abi_link_support.sh             /tmp/lane5-circular/link-support full
+
+      - name: Run circular-attractor exact reduction benchmark
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             benchmarks/pass219/pass219_lane5_circular_attractor_global_optimizer_benchmark.cpp             /tmp/lane5-circular/exact.o             /tmp/lane5-circular/link-support/hhs_hash216.o             /tmp/lane5-circular/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -pthread -lm             -o /tmp/lane5-circular/benchmark
+          /tmp/lane5-circular/benchmark             artifacts/pass219/lane5-integrated-20260929/circular-native.json
+          python benchmarks/pass219/analyze_pass219_lane5_circular_attractor_global_optimizer.py             artifacts/pass219/lane5-integrated-20260929/circular-native.json             artifacts/pass219/lane5-integrated-20260929/circular-analysis.json
+
+      - name: Run Pass 214 compound benchmark
+        run: |
+          python tools/pass214_final_compound_benchmark.py             --output artifacts/pass219/lane5-integrated-20260929/pass214-compound.json
+          python tools/pass214_final_compound_benchmark.py             --output /tmp/pass214-validate-unused.json             --validate artifacts/pass219/lane5-integrated-20260929/pass214-compound.json
+
+      - name: Verify full 50,388,480-position hydration
+        run: python tools/generate_pass212_full_hydration_evidence.py --check
+
+      - name: Run raw5184 audio workload benchmark
+        run: |
+          python benchmarks/pass219/pass219_i148_raw5184_audio_benchmark.py             artifacts/pass219/lane5-integrated-20260929/raw5184-audio.json
+
+      - name: Seal integrated campaign summary
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+          import subprocess
+
+          root=Path('artifacts/pass219/lane5-integrated-20260929')
+          services=json.loads((root/'services-index.json').read_text())
+          native=json.loads((root/'native-scaling.json').read_text())
+          qinfo=json.loads((root/'qinfo.json').read_text())
+          real=json.loads((root/'real-world.json').read_text())
+          circular=json.loads((root/'circular-analysis.json').read_text())
+          hnan=json.loads((root/'hnan.json').read_text())
+          compound=json.loads((root/'pass214-compound.json').read_text())
+          raw=json.loads((root/'raw5184-audio.json').read_text())
+          native_pytest_regressions=json.loads((root/'native-pytest-regressions.json').read_text())
+
+          assert services['result'] == 'PASS'
+          assert services['lane5_provider_policy']['runtime_implicit_external_fallback_allowed'] is False
+          assert services['i062_native_pytest']['deterministic_replay'] is True
+          assert services['i062_native_pytest']['external_pytest_execution'] is False
+          assert native_pytest_regressions['exit_code'] == 0
+          assert native_pytest_regressions['authority']['external_pytest_execution'] is False
+          assert native['result'] == 'PASS'
+          assert native['scale_candidates'] == 1_000_000
+          assert native['materialized_intermediate_states'] == 0
+          assert qinfo['result'] == 'PASS'
+          assert real['result'] == 'PASS'
+          assert real['repository_workloads']['all_replay_deterministic'] is True
+          assert real['repository_workloads']['all_cross_process_equal'] is True
+          assert circular['result'] == 'PASS'
+          assert circular['exact_selected_route_equality'] is True
+          assert circular['exact_full_validation_reduction'] is True
+          assert circular['negative_controls']['invalid_best_falls_back_to_exhaustive'] is True
+          assert circular['negative_controls']['authority_escalation_candidate_rejected'] is True
+          assert hnan['parity'] is True
+          assert hnan['semantic_change'] is False
+          assert len(compound['workloads']) == 15
+          assert compound['incremental_full_equality'] is True
+          assert compound['recovery_replay_semantic_equality'] is True
+          assert compound['cross_process_replay_semantic_equality'] is True
+          assert compound['negative_controls_fail_closed'] is True
+          assert raw['result'] == 'PASS'
+          assert raw['aggregate']['exact_work_saved'] > 0
+
+          summary={
+            'schema':'HHS_PASS219_LANE5_INTEGRATED_BENCHMARK_CAMPAIGN_20260929_V1',
+            'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'source_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+            'result':'PASS',
+            'services_index':{
+              'knowledge_nodes':services['repository_index']['knowledge_nodes'],
+              'knowledge_edges':services['repository_index']['knowledge_edges'],
+              'hash216_positions':services['repository_index']['expected_hash216_positions'],
+              'hydrate_ns':services['repository_index']['hydrate_ns'],
+              'database_bytes':services['repository_index']['database_bytes'],
+              'service_count':services['service_registry']['service_count'],
+              'wordnet_entries':services['wordnet_native_alignment']['wordnet_entries'],
+              'alignment_median_ns':services['wordnet_native_alignment']['alignment_median_ns'],
+              'lean_cache_median_ns':services['i060_lean_identity']['median_ns'],
+              'knowledge_1_75_median_ns':services['nine_loop_knowledge_1_75']['median_ns'],
+              'lane5_registered_provider_capabilities':services['lane5_provider_policy']['registered_capability_count'],
+              'lane5_pr_fallback_capabilities':services['lane5_provider_policy']['pull_request_fallback_capabilities'],
+              'native_pytest_execution_median_ns':services['i062_native_pytest']['execution_median_ns'],
+              'native_pytest_collect_median_ns':services['i062_native_pytest']['collect_only_median_ns'],
+              'native_pytest_receipt_hash216':services['i062_native_pytest']['receipt_hash216'],
+            },
+            'native_stream':native,
+            'qinfo':qinfo,
+            'real_world':{
+              'record_count':real['repository_workloads']['record_count'],
+              'total_source_bytes':real['repository_workloads']['total_source_bytes'],
+              'cold_bytes_per_second_floor':real['repository_workloads']['observational']['cold_bytes_per_second_floor'],
+              'ledger_entries':real['hash72_ledger']['entries'],
+              'ledger_appends_per_second_floor':real['hash72_ledger']['appends_per_second_floor'],
+            },
+            'circular_attractor':{
+              'minimum_validation_reduction_exact_x':circular['minimum_validation_reduction_exact_x'],
+              'maximum_validation_reduction_exact_x':circular['maximum_validation_reduction_exact_x'],
+              'global_observed_speedup_x1000_min':circular['global_observed_speedup_x1000_min'],
+              'global_observed_speedup_x1000_median':circular['global_observed_speedup_x1000_median'],
+              'global_observed_speedup_x1000_max':circular['global_observed_speedup_x1000_max'],
+            },
+            'hnan':hnan,
+            'pass214_mode_executions':15*11,
+            'raw5184_exact_work_saved':raw['aggregate']['exact_work_saved'],
+            'timing_authority':'OBSERVATIONAL_ONLY',
+            'exactness_gate_passed':True,
+            'authority':{
+              'canonical_floating_point_authority':False,
+              'canonical_vm81_mutation_authority':False,
+              'canonical_hash72_commit_authority':False,
+              'canonical_hash216_persistence_authority':False,
+            },
+          }
+          summary['receipt_sha256']=sha256(
+            json.dumps(summary,sort_keys=True,separators=(',',':')).encode()
+          ).hexdigest()
+          (root/'summary.json').write_text(
+            json.dumps(summary,indent=2,sort_keys=True)+'\n',
+            encoding='utf-8'
+          )
+          print(json.dumps(summary,indent=2,sort_keys=True))
+          print('PASS219_LANE5_INTEGRATED_BENCHMARK_CAMPAIGN_20260929_PASS')
+          PY
+
+      - name: Publish benchmark summary
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('artifacts/pass219/lane5-integrated-20260929/summary.json',encoding='utf-8'))
+          s=d['services_index']
+          print('## Lane 5 integrated benchmark campaign')
+          print(f"- commit: {d['source_commit']}")
+          print(f"- knowledge nodes / edges: {s['knowledge_nodes']} / {s['knowledge_edges']}")
+          print(f"- Hash216 indexed positions: {s['hash216_positions']}")
+          print(f"- service count: {s['service_count']}")
+          print(f"- WordNet entries: {s['wordnet_entries']}")
+          print(f"- Lane 5 registered provider capabilities: {s['lane5_registered_provider_capabilities']}")
+          print(f"- I062 native pytest median execution: {s['native_pytest_execution_median_ns']} ns")
+          print(f"- I062 native pytest median collection: {s['native_pytest_collect_median_ns']} ns")
+          print(f"- 1M candidate throughput floor: {d['native_stream']['candidates_per_second_floor']} candidates/s")
+          print(f"- circular exact reduction: {d['circular_attractor']['minimum_validation_reduction_exact_x']}x to {d['circular_attractor']['maximum_validation_reduction_exact_x']}x")
+          print(f"- HNAN materialize speedup: {d['hnan']['materialize_speedup']:.3f}x")
+          print(f"- HNAN recursive speedup: {d['hnan']['recursive_speedup']:.3f}x")
+          print('- timing authority: observational only')
+          print('- exactness/replay/negative gates: PASS')
+          PY
+
+      - name: Upload integrated benchmark evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-integrated-benchmark-20260929-${{ github.sha }}
+          path: artifacts/pass219/lane5-integrated-20260929/
+          if-no-files-found: error
+          retention-days: 30
