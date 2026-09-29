@@ -312,7 +312,7 @@ class StorybookReelRuntime:
         json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         output = io.StringIO()
         writer = csv.writer(output)
-        writer.writerow(["frame", "start_timecode", "end_timecode", "start_seconds", "end_seconds", "narration", "visual_label", "transition_anchor"])
+        writer.writerow(["frame", "start_timecode", "end_timecode", "start_seconds", "end_seconds", "narration", "visual_label", "visual_prompt", "transition_anchor"])
         for frame in payload.get("frames") or []:
             writer.writerow([
                 frame.get("frame"),
@@ -322,6 +322,7 @@ class StorybookReelRuntime:
                 frame.get("end_seconds"),
                 frame.get("narration"),
                 frame.get("visual_label", ""),
+                frame.get("visual_prompt", ""),
                 frame.get("transition_anchor", ""),
             ])
         csv_path.write_text(output.getvalue(), encoding="utf-8")
