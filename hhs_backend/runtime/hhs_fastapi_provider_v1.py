@@ -1,13 +1,12 @@
 """Native-first FastAPI provider selection for HHS runtime compatibility.
 
-The default auto mode preserves existing explicitly installed FastAPI
-environments while making the repository-native compatibility surface the
-automatic fallback when the external dependency is absent.
+The repository-native compatibility surface is the default. External FastAPI
+is used only when HHS_FASTAPI_PROVIDER=external is explicitly selected by an
+external FastAPI application/composition boundary.
 
-Explicit modes:
-- HHS_FASTAPI_PROVIDER=native   -> repository-native compatibility only
+Modes:
+- HHS_FASTAPI_PROVIDER=native   -> repository-native compatibility (default)
 - HHS_FASTAPI_PROVIDER=external -> external FastAPI required; fail closed
-- HHS_FASTAPI_PROVIDER=auto     -> external when importable, native otherwise
 """
 from __future__ import annotations
 
@@ -16,7 +15,7 @@ import os
 from typing import Any
 
 _PROVIDER_ENV = "HHS_FASTAPI_PROVIDER"
-_VALID = {"auto", "native", "external"}
+_VALID = {"native", "external"}
 
 
 @dataclass(frozen=True)
@@ -43,10 +42,10 @@ class FastAPIProviderSelection:
 
 
 def _requested_provider() -> str:
-    value = os.environ.get(_PROVIDER_ENV, "auto").strip().lower()
+    value = os.environ.get(_PROVIDER_ENV, "native").strip().lower()
     if value not in _VALID:
         raise RuntimeError(
-            f"HHS_FASTAPI_PROVIDER_INVALID:{value}:expected auto|native|external"
+            f"HHS_FASTAPI_PROVIDER_INVALID:{value}:expected native|external"
         )
     return value
 
@@ -65,13 +64,11 @@ def _load_native() -> tuple[Any, Any, Any]:
     return NativeAPIRouter, NativeWebSocket, NativeWebSocketDisconnect
 
 
+_PROVIDER_EXPLICIT = _PROVIDER_ENV in os.environ
 _REQUESTED = _requested_provider()
 _EXTERNAL_AVAILABLE = False
 
-if _REQUESTED == "native":
-    APIRouter, WebSocket, WebSocketDisconnect = _load_native()
-    _SELECTED = "native"
-elif _REQUESTED == "external":
+if _REQUESTED == "external":
     try:
         APIRouter, WebSocket, WebSocketDisconnect = _load_external()
     except ModuleNotFoundError as exc:
@@ -83,23 +80,16 @@ elif _REQUESTED == "external":
     _EXTERNAL_AVAILABLE = True
     _SELECTED = "external"
 else:
-    try:
-        APIRouter, WebSocket, WebSocketDisconnect = _load_external()
-    except ModuleNotFoundError as exc:
-        if not (exc.name == "fastapi" or str(exc.name or "").startswith("fastapi.")):
-            raise
-        APIRouter, WebSocket, WebSocketDisconnect = _load_native()
-        _SELECTED = "native"
-    else:
-        _EXTERNAL_AVAILABLE = True
-        _SELECTED = "external"
+    APIRouter, WebSocket, WebSocketDisconnect = _load_native()
+    _SELECTED = "native"
+
 
 _SELECTION = FastAPIProviderSelection(
     requested=_REQUESTED,
     selected=_SELECTED,
     external_available=_EXTERNAL_AVAILABLE,
-    native_fallback=(_REQUESTED == "auto" and _SELECTED == "native"),
-    explicit_override=(_REQUESTED != "auto"),
+    native_fallback=(_SELECTED == "native" and not _PROVIDER_EXPLICIT),
+    explicit_override=_PROVIDER_EXPLICIT,
 )
 
 
