@@ -1,0 +1,152 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from hhs_runtime.hhs_lane5_native_capability_provider_v1 import (
+    CAPABILITIES,
+    Lane5CapabilityProviderError,
+    capability_spec,
+    lane5_capability_provider_status,
+    resolve_lane5_capability,
+)
+
+ROOT = Path(__file__).resolve().parents[2]
+CONTRACT = ROOT / "contracts/pass220/PASS_220_LANE5_NATIVE_CAPABILITY_PROVIDER_V1.json"
+
+
+def test_lane5_all_registered_capabilities_default_to_native() -> None:
+    status = lane5_capability_provider_status(environ={})
+    assert status["global_default_provider"] == "native"
+    assert status["external_provider_requires_explicit_selection"] is True
+    assert status["unknown_capabilities_fail_closed"] is True
+    assert status["missing_native_implementation_fails_closed"] is True
+    assert status["authority"]["vm81_admission_authority"] is False
+    assert status["authority"]["hash72_commit_authority"] is False
+    assert status["authority"]["hash216_persistence_authority"] is False
+
+    rows = {row["capability_id"]: row for row in status["capabilities"]}
+    assert set(rows) == set(CAPABILITIES)
+    for row in rows.values():
+        assert row["selected_provider"] == "native"
+        assert row["explicit_selection"] is False
+        assert row["implicit_external_fallback_allowed"] is False
+        assert row["default_provider"] == "native"
+
+
+@pytest.mark.parametrize(
+    "capability_id",
+    [
+        "fastapi",
+        "python1",
+        "python2",
+        "numpy",
+        "three_js",
+        "webgl",
+        "litert_lm",
+        "mathlib",
+        "lean4",
+    ],
+)
+def test_implemented_lane5_native_capabilities_resolve_real_repository_surfaces(
+    capability_id: str,
+) -> None:
+    resolution = resolve_lane5_capability(capability_id, environ={})
+    assert resolution.provider == "native"
+    assert resolution.explicit is False
+    assert resolution.native_implemented is True
+    assert resolution.native_surfaces
+    for surface in resolution.native_surfaces:
+        assert (ROOT / surface).exists(), (capability_id, surface)
+
+
+def test_matplotlib_native_default_fails_closed_until_native_provider_exists() -> None:
+    spec = capability_spec("matplotlib")
+    assert spec.native_implemented is False
+    assert spec.native_surfaces == ()
+    with pytest.raises(
+        Lane5CapabilityProviderError,
+        match="HHS_LANE5_NATIVE_IMPLEMENTATION_UNAVAILABLE:matplotlib",
+    ):
+        resolve_lane5_capability("matplotlib", environ={})
+
+
+@pytest.mark.parametrize(
+    "capability_id",
+    [
+        "fastapi",
+        "python1",
+        "python2",
+        "numpy",
+        "matplotlib",
+        "three_js",
+        "webgl",
+        "litert_lm",
+        "mathlib",
+        "lean4",
+    ],
+)
+def test_external_lane5_provider_requires_explicit_per_capability_selection(
+    capability_id: str,
+) -> None:
+    spec = capability_spec(capability_id)
+    resolution = resolve_lane5_capability(
+        capability_id,
+        environ={spec.env_name: "external"},
+    )
+    assert resolution.provider == "external"
+    assert resolution.explicit is True
+    assert resolution.external_target == spec.external_target
+
+
+def test_explicit_global_external_selection_is_still_explicit() -> None:
+    resolution = resolve_lane5_capability(
+        "numpy",
+        environ={"HHS_LANE5_PROVIDER_DEFAULT": "external"},
+    )
+    assert resolution.provider == "external"
+    assert resolution.explicit is True
+
+
+def test_invalid_provider_and_unknown_capability_fail_closed() -> None:
+    numpy_spec = capability_spec("numpy")
+    with pytest.raises(
+        Lane5CapabilityProviderError,
+        match="HHS_LANE5_PROVIDER_INVALID:numpy:auto",
+    ):
+        resolve_lane5_capability(
+            "numpy",
+            environ={numpy_spec.env_name: "auto"},
+        )
+    with pytest.raises(
+        Lane5CapabilityProviderError,
+        match="HHS_LANE5_CAPABILITY_UNREGISTERED",
+    ):
+        resolve_lane5_capability("unregistered_foreign_runtime", environ={})
+
+
+def test_contract_freezes_native_default_for_current_and_future_capabilities() -> None:
+    contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+    rule = contract["governing_rule"]
+    assert contract["scope"] == "ALL_HARMONICODE_NATIVE_LANE5_CAPABILITIES"
+    assert rule["implicit_provider"] == "HHS_NATIVE"
+    assert rule["external_provider_requires_explicit_selection"] is True
+    assert rule["installed_external_package_never_overrides_native_default"] is True
+    assert rule["missing_native_implementation_fails_closed"] is True
+    assert rule["future_native_capabilities_inherit_rule"] is True
+    assert contract["selection"]["auto_mode_allowed"] is False
+    assert set(contract["registered_capabilities"]) == set(CAPABILITIES)
+
+
+def test_lane5_threejs_application_remains_repository_native() -> None:
+    html = (
+        ROOT
+        / "applications/holofractal_harmonizer/lane5_holographic_sprite_5184.html"
+    ).read_text(encoding="utf-8")
+    assert "../../hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js" in html
+    assert "new HHS3D.WebGLRenderer" in html
+    assert "three.min.js" not in html
+    assert "cdn.jsdelivr.net/npm/three" not in html
+    assert "cdnjs.cloudflare.com/ajax/libs/three" not in html
