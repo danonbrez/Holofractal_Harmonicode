@@ -50,7 +50,7 @@ def test_native_api_router_preserves_deferred_route_metadata() -> None:
     assert websocket_route.include_in_schema is False
 
 
-def test_auto_provider_falls_back_to_repository_native_when_external_fastapi_is_absent() -> None:
+def test_default_provider_uses_repository_native_when_external_fastapi_is_absent() -> None:
     source = r"""
 import builtins
 import json
@@ -73,7 +73,7 @@ from hhs_backend.runtime.hhs_fastapi_provider_v1 import (
 from hhs_backend.runtime import runtime_ws
 
 status = fastapi_provider_status()
-assert status["requested"] == "auto"
+assert status["requested"] == "native"
 assert status["selected"] == "native"
 assert status["native_fallback"] is True
 assert status["external_available"] is False
