@@ -93,3 +93,34 @@ After merge, the Lane 5 integrated benchmark should:
 The earlier FastAPI-only implementation was generalized rather than discarded. Existing commits on this branch remain part of the lineage; the authoritative branch head is the latest commit.
 
 If CI fails, repair only the attributable provider/compatibility/test surface. Do not weaken exactness, authority, replay, or fail-closed invariants.
+
+
+## Hosted provider validation repair-forward
+
+Runs `36582941743` (PR) and `36582930370` (push) proved the shared provider resolver, PR fallback warning path, cumulative ABI, and native FastAPI C11 route kernel, then failed during the final live FastAPI regression.
+
+The attributable failure was not the native FastAPI core. Test collection imported the broader legacy application surface:
+
+`hhs_backend.api -> Pass 201 federation / cognition / runtime routes`
+
+which still requires full FastAPI/Starlette/Pydantic application semantics. The first missing import was:
+
+```text
+ModuleNotFoundError: No module named 'fastapi'
+```
+
+The repair preserves the distinction between two capability surfaces:
+
+- `fastapi`: repository-native APIRouter/WebSocket/C11 route-kernel core — implemented and native-default.
+- `fastapi_application`: full FastAPI/Starlette/Pydantic application/OpenAPI composition — native implementation incomplete.
+
+Runtime `fastapi_application` remains fail-closed unless external is explicitly selected. Pull-request validation falls back to the declared external application provider with the standard warning receipt.
+
+The workflow now:
+1. validates the native FastAPI core with FastAPI/Starlette absent;
+2. validates service-registry and websocket declaration behavior natively;
+3. installs the repository-pinned external FastAPI/Starlette/Pydantic compatibility stack only for the incomplete application surface;
+4. emits the `HHS_LANE5_PR_EXTERNAL_PROVIDER_FALLBACK:fastapi_application` warning;
+5. runs the live FastAPI application regression in explicit external compatibility mode.
+
+This repair does not grant external application code canonical authority and does not weaken the native core provider.
