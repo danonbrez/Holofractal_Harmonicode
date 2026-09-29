@@ -83,6 +83,54 @@ class MultiModelTransport:
         }
 
 
+class EmptyRegistryTransport:
+    provider_id = "provider:test.empty"
+    requested_operation = "litert_lm.chat_completion"
+
+    async def list_models(self):
+        return {"object": "list", "data": []}
+
+    async def chat_completion(self, **_kwargs):
+        raise AssertionError("empty registry transport must not be invoked")
+
+
+class SemanticFallbackTransport:
+    provider_id = "provider:test.native-semantic"
+    requested_operation = "litert_lm.chat_completion"
+
+    def __init__(self, model_id: str = "native-semantic") -> None:
+        self.model_id = model_id
+        self.calls = 0
+
+    async def list_models(self):
+        return {"object": "list", "data": [{"id": self.model_id}]}
+
+    async def chat_completion(self, **_kwargs):
+        self.calls += 1
+        return {
+            "id": "chatcmpl-semantic-fallback",
+            "model": self.model_id,
+            "choices": [{
+                "message": {
+                    "role": "assistant",
+                    "content": (
+                        "I can continue this as a general natural-language conversation."
+                    ),
+                },
+                "finish_reason": "stop",
+            }],
+            "usage": {
+                "prompt_tokens": 2,
+                "completion_tokens": 8,
+                "total_tokens": 10,
+            },
+            "hhs_native_trace": {
+                "generation_path": "EXACT_SEMANTIC_FALLBACK",
+                "general_chat_prompt_response_cycle": True,
+            },
+        }
+
+
 class OfflineService:
     provider_id = "provider:test.offline"
 
@@ -197,6 +245,73 @@ def test_production_chat_uses_declared_primary_registered_model_on_one_thread(mo
     assert [item["role"] for item in stored["messages"]] == ["user", "assistant"]
     assert transports["model-large"].calls == 1
     assert small_transport.calls == 0
+
+
+def test_semantic_fallback_is_nonterminal_and_does_not_duplicate_thread(monkeypatch):
+    monkeypatch.setenv("HHS_LITERT_LM_PROVIDER_MODE", "auto")
+    base_config = LiteRTLMConfig(
+        model_id="unregistered-external",
+        system_instruction="BASE HHS AUTHORITY",
+    )
+    base = HHSAPIAssistantService(
+        config=base_config,
+        transport=EmptyRegistryTransport(),
+    )
+    native_transport = SemanticFallbackTransport()
+    native = HHSAPIAssistantService(
+        config=LiteRTLMConfig(
+            model_id=native_transport.model_id,
+            system_instruction="NATIVE HHS AUTHORITY",
+        ),
+        transport=native_transport,
+        thread_store=base.threads,
+    )
+    final_transport = MultiModelTransport(
+        "pass153-final",
+        ("pass153-final",),
+    )
+    pass153 = HHSAPIAssistantService(
+        config=LiteRTLMConfig(
+            model_id="pass153-final",
+            system_instruction="PASS153 HHS AUTHORITY",
+        ),
+        transport=final_transport,
+        thread_store=base.threads,
+    )
+    service = ProductionAssistantService(
+        model_service=base,
+        native_service=native,
+        pass153_service=pass153,
+    )
+    thread = service.create_thread(project_id="project:nonterminal-fallback")
+    result = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Give me a substantive answer.",
+            assistant_mode=ASSISTANT_MODE_BOTH,
+        )
+    )
+
+    assert result["ok"] is True
+    assert result["selected_model_id"] == "pass153-final"
+    assert result["assistant_message"]["content"] == "answer:pass153-final"
+    assert native_transport.calls == 1
+    assert final_transport.calls == 1
+    failed = result["failed_provider_results"]
+    assert len(failed) == 1
+    assert failed[0]["provider_metadata"]["generation_path"] == "EXACT_SEMANTIC_FALLBACK"
+    assert (
+        ProductionAssistantService._completion_state(failed[0])
+        == "NONTERMINAL_SEMANTIC_FALLBACK"
+    )
+
+    stored = service.threads.get(thread["thread_id"])
+    assert [item["role"] for item in stored["messages"]] == ["user", "assistant"]
+    assert stored["messages"][-1]["content"] == "answer:pass153-final"
+    assert all(
+        "general natural-language conversation" not in item["content"]
+        for item in stored["messages"]
+    )
 
 
 def test_lane5_and_model_fabric_tools_are_in_one_governed_registry():
