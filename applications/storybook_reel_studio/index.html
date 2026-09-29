@@ -20,6 +20,11 @@
       <header><b>01</b><div><h1>Story and narration</h1><p>Use the exact text spoken in the uploaded audio. Alignment JSON may come from any TTS source.</p></div></header>
       <label class="field">Reel title<input id="title" maxlength="128" value="The Reciprocal Lantern"></label>
       <label class="field grow">Narrative caption / exact spoken text<textarea id="story" maxlength="16384" spellcheck="true">Beyond the copper hills, a small lantern learned that every color has a reciprocal answer. Red called to teal across the night. Gold found violet in the quiet river. The lantern followed four phase planes through the old forest, carrying each sentence at the measured pace of the voice. At the final gate, the colors turned together like twelve notes around one wheel, and the path home became visible.</textarea><small><span id="count">0</span> / 16,384 characters</small></label>
+      <details>
+        <summary>Optional 22-frame storyboard package</summary>
+        <p>Paste the generated storyboard Markdown to bind each exact audio window to its visual prompt and transition anchor in the exported cue manifests.</p>
+        <textarea id="storyboard-markdown" maxlength="64000" spellcheck="false" placeholder="FRAME 01 — ... through FRAME 22 — ..."></textarea>
+      </details>
       <div class="control-section voice-sync">
         <strong>Automated ElevenLabs voice sync</strong>
         <label class="field">Voice ID<input id="voice-id" autocomplete="off" placeholder="ElevenLabs voice ID"></label>
