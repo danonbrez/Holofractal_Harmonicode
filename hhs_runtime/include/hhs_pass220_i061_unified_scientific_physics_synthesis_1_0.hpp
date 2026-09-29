@@ -14,6 +14,10 @@ inline constexpr std::uint32_t kI061Version = UINT32_C(0x00010000);
 inline constexpr std::uint32_t kI061Namespace = UINT32_C(0x00022061);
 inline constexpr char kI061ParentMain[] =
     "ad697affec1eb87d413f25ddb9aa4ece403506ff";
+inline constexpr char kI060TheoremIdentityHash72[] =
+    "nY*r1-+?2ON7geRk9Uu5G7jO1lD!E!BjMfRj0I3OsFuQPSkRRf-eS>B/Z)vFXbO87vB6)Hkj";
+inline constexpr char kI060DependencyIdentityHash72[] =
+    "iTulnFCxT>M0-zvAiwdMF?M?*F*H*QQ29w0db/EC7?jHmdb16/R(sEoIR8BOkvKr5fcqJ0Hx";
 inline constexpr char kHash72Alphabet[] =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?";
 
@@ -162,6 +166,14 @@ public:
         const auto& lean = formal.lean;
         return hash72_valid(lean.theorem_identity_hash72) &&
                hash72_valid(lean.dependency_identity_hash72) &&
+               std::memcmp(
+                   lean.theorem_identity_hash72.data(),
+                   kI060TheoremIdentityHash72,
+                   HHS_HASH72_LEN + 1U) == 0 &&
+               std::memcmp(
+                   lean.dependency_identity_hash72.data(),
+                   kI060DependencyIdentityHash72,
+                   HHS_HASH72_LEN + 1U) == 0 &&
                lean.theorem_identity_validated == 1U &&
                lean.dependency_identity_validated == 1U &&
                lean.kernel_build_validated == 1U &&
@@ -309,6 +321,10 @@ private:
     hhs::game::PhysicsCellWall inherited_physics_{};
 };
 
+static_assert(sizeof(kI060TheoremIdentityHash72) - 1U == HHS_HASH72_LEN,
+              "I060 theorem identity must remain one exact Hash72");
+static_assert(sizeof(kI060DependencyIdentityHash72) - 1U == HHS_HASH72_LEN,
+              "I060 dependency identity must remain one exact Hash72");
 static_assert(HHS_EXACT_HASH72_COORDS == 5184U,
               "I061 physics knowledge graph requires the 5184 coordinate fabric");
 static_assert(HHS_HASH216_LEN == 3U * HHS_HASH72_LEN,
