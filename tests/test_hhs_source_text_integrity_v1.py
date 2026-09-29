@@ -38,6 +38,11 @@ def test_allows_newline_escape_inside_string_char_regex_and_comment():
         assert find_literal_escaped_newline_issues(path, source) == []
 
 
+def test_allows_nested_javascript_template_literal_newline_escapes():
+    source = "  output.textContent += `\\n[${stamp}] ${data === undefined ? '' : `\\n${JSON.stringify(data)}`}`;\n"
+    assert find_literal_escaped_newline_issues("visual-ide-state.mjs", source) == []
+
+
 def test_forward_slash_n_data_is_not_treated_as_newline():
     source = 'hash72 = "abc/nxyz"\nroute = "/novel/status"\nratio = "k/n"\n'
     assert find_literal_escaped_newline_issues("example.py", source) == []
