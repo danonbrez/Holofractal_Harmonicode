@@ -35,7 +35,7 @@ jobs:
           python-version: "3.12"
 
       - name: I062 standard-library provider tests
-        run: python tests/pass220/test_hhs_pass220_i062_native_pytest_provider_v1.py
+        run: PYTHONPATH=. python tests/pass220/test_hhs_pass220_i062_native_pytest_provider_v1.py
 
       - name: I062 native pytest-compatible CLI
         run: python -m hhs_runtime.testing.native_pytest_provider_v1 -q tests/pass220/i062_native_pytest_specimen
