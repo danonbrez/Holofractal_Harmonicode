@@ -1,0 +1,110 @@
+name: Pass 220 I058 Whitepaper Equation Game Mechanics
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_whitepaper_equation_game_mechanics_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_i058_whitepaper_equation_game_mechanics_v1.py"
+      - "docs/pass220/PASS_220_I058_WHITEPAPER_EQUATION_GAME_MECHANICS.md"
+      - "docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md"
+      - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
+      - "docs/whitepapers/HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "examples/ParticleSimulation.html"
+      - ".github/workflows/pass220-i058-whitepaper-equation-game-mechanics.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_whitepaper_equation_game_mechanics_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_i058_whitepaper_equation_game_mechanics_v1.py"
+      - "docs/pass220/PASS_220_I058_WHITEPAPER_EQUATION_GAME_MECHANICS.md"
+      - "docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md"
+      - "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md"
+      - "docs/whitepapers/HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md"
+      - "whitepapers/HOLOFRACTAL_HARMONICODE.md"
+      - "examples/ParticleSimulation.html"
+      - ".github/workflows/pass220-i058-whitepaper-equation-game-mechanics.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I058 surfaces
+        run: |
+          python -m py_compile             hhs_runtime/hhs_pass220_whitepaper_equation_game_mechanics_v1.py             tests/pass220/test_hhs_pass220_i058_whitepaper_equation_game_mechanics_v1.py
+
+      - name: Run I058 exact game-mechanics tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i058_whitepaper_equation_game_mechanics_v1.py
+
+      - name: Run I041 exact game-engine regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py
+
+      - name: Run frozen I057 ParticleSimulation regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+
+      - name: Enforce whitepaper status and authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          runtime = Path(
+              "hhs_runtime/hhs_pass220_whitepaper_equation_game_mechanics_v1.py"
+          ).read_text(encoding="utf-8")
+          compendium = Path(
+              "docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md"
+          ).read_text(encoding="utf-8")
+          frozen = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
+
+          for token in (
+              "CANONICAL_VERBATIM",
+              "DEVELOPMENT_VERBATIM",
+              "EXECUTED_EXACT",
+              "HHS_NATIVE_SEMANTIC",
+              "REFERENCE_ONLY",
+          ):
+              assert token in compendium, token
+              assert token in runtime, token
+
+          for token in (
+              '"runtime_lowering": False',
+              '"cross_status_substitution_authority": False',
+              '"canonical_physics_authority": False',
+              '"host_float_arithmetic_used_by_exact_frame": False',
+              '"probability_used": False',
+              '"canonical_vm81_mutation_authority": False',
+              '"canonical_hash72_authority": False',
+              '"canonical_hash216_authority": False',
+          ):
+              assert token in runtime, token
+
+          assert 'schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"' in frozen
+          assert "HHS_PASS_220_I058_WHITEPAPER_EQUATION_GAME_MECHANICS_V1" not in frozen
+          PY
