@@ -436,6 +436,44 @@ class ConversationThreadStore:
             )
             return self._thread_projection(message)
 
+    def discard_last_assistant_candidate(
+        self,
+        thread_id: str,
+        *,
+        message_root_hash72: str,
+    ) -> Dict[str, Any]:
+        """Rollback one non-terminal assistant candidate without duplicating the user turn."""
+        with self._lock:
+            thread = self._threads.get(thread_id)
+            if not thread:
+                raise KeyError(thread_id)
+            messages = thread["messages"]
+            if not messages:
+                raise ValueError("thread has no assistant candidate to discard")
+            candidate = messages[-1]
+            if (
+                candidate.get("role") != "assistant"
+                or candidate.get("message_root_hash72") != message_root_hash72
+            ):
+                raise ValueError("assistant candidate is not the current thread tip")
+            discarded = messages.pop()
+            thread["message_count"] = max(0, int(thread.get("message_count", 0)) - 1)
+            thread["updated_at_unix_ms"] = _now_ms()
+            thread["message_tip_hash72"] = (
+                messages[-1]["message_root_hash72"]
+                if messages
+                else None
+            )
+            thread["thread_root_hash72"] = hash72(
+                THREAD_SCHEMA,
+                {
+                    key: value
+                    for key, value in thread.items()
+                    if key != "thread_root_hash72"
+                },
+            )
+            return self._thread_projection(discarded)
+
 
 class HHSAssistantService:
     def __init__(
@@ -796,6 +834,7 @@ class HHSAssistantService:
             "provider_invocation_receipt": receipt,
             "provider_result_ingress": ingress,
             "native_lean_alignment_admission": tensor_admission,
+            "provider_metadata": dict(completion.get("provider_metadata") or {}),
             "native_response_stream": (
                 {
                     "serialized_response": (
