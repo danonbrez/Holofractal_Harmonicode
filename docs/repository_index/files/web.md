@@ -1,12 +1,12 @@
 # Repository file/dependency shard - web
 
-Source commit: [cde48d770535f40e69be7841fc34cd67a2a277db](https://github.com/danonbrez/Holofractal_Harmonicode/commit/cde48d770535f40e69be7841fc34cd67a2a277db)
+Source commit: [b477c65832386de362dce66e0bb5d76478cd495c](https://github.com/danonbrez/Holofractal_Harmonicode/commit/b477c65832386de362dce66e0bb5d76478cd495c)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## web/pass145
 
-- [web/pass145/app.js](https://github.com/danonbrez/Holofractal_Harmonicode/blob/cde48d770535f40e69be7841fc34cd67a2a277db/web/pass145/app.js) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; javascript ; out 0 ; in 9
-- [web/pass145/index.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/cde48d770535f40e69be7841fc34cd67a2a277db/web/pass145/index.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 2 ; in 8
-  - depends on: [web/pass145/app.js](https://github.com/danonbrez/Holofractal_Harmonicode/blob/cde48d770535f40e69be7841fc34cd67a2a277db/web/pass145/app.js) <sub>HTML_LINK</sub>; [web/pass145/styles.css](https://github.com/danonbrez/Holofractal_Harmonicode/blob/cde48d770535f40e69be7841fc34cd67a2a277db/web/pass145/styles.css) <sub>HTML_LINK</sub>
-- [web/pass145/styles.css](https://github.com/danonbrez/Holofractal_Harmonicode/blob/cde48d770535f40e69be7841fc34cd67a2a277db/web/pass145/styles.css) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 9
+- [web/pass145/app.js](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b477c65832386de362dce66e0bb5d76478cd495c/web/pass145/app.js) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; javascript ; out 0 ; in 9
+- [web/pass145/index.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b477c65832386de362dce66e0bb5d76478cd495c/web/pass145/index.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 2 ; in 8
+  - depends on: [web/pass145/app.js](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b477c65832386de362dce66e0bb5d76478cd495c/web/pass145/app.js) <sub>HTML_LINK</sub>; [web/pass145/styles.css](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b477c65832386de362dce66e0bb5d76478cd495c/web/pass145/styles.css) <sub>HTML_LINK</sub>
+- [web/pass145/styles.css](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b477c65832386de362dce66e0bb5d76478cd495c/web/pass145/styles.css) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 9
