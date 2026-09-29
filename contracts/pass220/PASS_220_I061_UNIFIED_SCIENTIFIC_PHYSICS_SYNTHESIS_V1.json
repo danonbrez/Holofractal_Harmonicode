@@ -1,0 +1,89 @@
+{
+  "schema": "HHS_PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "parent_main": "ad697affec1eb87d413f25ddb9aa4ece403506ff",
+  "inherits": [
+    "HHS_PASS_220_I057_FROZEN_PARTICLE_SIMULATION",
+    "HHS_PASS_220_I058_WHITEPAPER_EQUATION_GAME_MECHANICS_V1",
+    "HHS_PASS_220_I059_NATIVE_3D_ENGINE_CELL_WALL_FOUNDATION",
+    "HHS_PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_V1"
+  ],
+  "scientific_admission": {
+    "formal_validity_axis": {
+      "required": true,
+      "sources": [
+        "verbatim HARMONICODE source",
+        "repository white-paper proof sources",
+        "Wolfram formalization",
+        "Lean 4 theorem identity",
+        "Lean 4 dependency identity"
+      ],
+      "theorem_identity_hash72_bound_before_physics_candidate": true,
+      "dependency_identity_hash72_bound_before_physics_candidate": true,
+      "post_hoc_proof_attachment_satisfies_admission": false
+    },
+    "empirical_correspondence_axis": {
+      "independent_from_formal_validity": true,
+      "required_when_measured_physical_behavior_is_claimed": true,
+      "requires_declared_domain": true,
+      "requires_calibration_or_experimental_evidence": true,
+      "requires_units_dimensions": true,
+      "requires_exact_residual_and_error_bound": true,
+      "requires_replay_receipt_hash72": true
+    },
+    "substitution": {
+      "formal_for_empirical": false,
+      "empirical_for_formal": false
+    }
+  },
+  "lane5_knowledge_graph": {
+    "coordinate_domain": 5184,
+    "coordinate_range": [0, 5183],
+    "candidate_hash216_order": [
+      "formal_axis_hash72",
+      "empirical_axis_hash72",
+      "physics_candidate_hash72"
+    ],
+    "relation": "INSTANCE_OF",
+    "projection_only": true,
+    "execution_authority": false,
+    "mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_persistence_authority": false
+  },
+  "physics_cell": {
+    "inherits": "hhs::game::PhysicsCellWall",
+    "exact_rational_delta_time": true,
+    "host_float_canonical_authority": false,
+    "renderer_mutation_authority": false,
+    "vm81_admission_required_for_canonical_successor": true
+  },
+  "formal_artifacts": {
+    "verbatim_source": {
+      "path": "contracts/pass219/PASS_219_ORDERED_CONSTRAINT_WOLFRAM_FORMALIZATION_1_0.harmonicode",
+      "sha256": "d6d7da60e3e9520c0ec802fa8ec63121ffbee9313263012d021907e210bc652c"
+    },
+    "wolfram": {
+      "path": "formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl",
+      "sha256": "7e4203b0eb578cd10303971fb715576d7fd3af5c8921bd46d5a522d61a950a98",
+      "tests_succeeded": 13,
+      "tests_failed": 0
+    },
+    "lean": {
+      "module": "HHS.Mathlib.Rat.ValueAlgebra",
+      "source_contract": "HHS_PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_V1",
+      "kernel_validation_required": true,
+      "leanchecker_required": true,
+      "axiom_audit_required": true,
+      "proof_identity_only": true
+    }
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_commit": false,
+    "canonical_hash216_persistence": false,
+    "floating_point_canonical_authority": false
+  }
+}
