@@ -3,6 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
+import json
 
 import pytest
 
@@ -333,3 +334,31 @@ def test_i061_self_test_and_service_registry_surface() -> None:
     assert "hhs_pass220_i061_unified_scientific_physics_synthesis_v1" in registry_source
     assert "REJECT_I061_POST_HOC_PROOF_ATTACHMENT" in registry_source
     assert "REJECT_I061_FORMAL_EMPIRICAL_SUBSTITUTION" in registry_source
+
+
+def test_i061_native_and_contract_pin_exact_i060_lean_identities() -> None:
+    lean = lean_identity_receipt()
+    native = (
+        ROOT
+        / "hhs_runtime"
+        / "include"
+        / "hhs_pass220_i061_unified_scientific_physics_synthesis_1_0.hpp"
+    ).read_text(encoding="utf-8")
+    contract = json.loads(
+        (
+            ROOT
+            / "contracts"
+            / "pass220"
+            / "PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS_V1.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    theorem = lean["theorem_identity_hash72"]
+    dependency = lean["dependency_identity_hash72"]
+    assert f'"{theorem}"' in native
+    assert f'"{dependency}"' in native
+    assert contract["formal_artifacts"]["lean"]["theorem_identity_hash72"] == theorem
+    assert (
+        contract["formal_artifacts"]["lean"]["dependency_identity_hash72"]
+        == dependency
+    )
