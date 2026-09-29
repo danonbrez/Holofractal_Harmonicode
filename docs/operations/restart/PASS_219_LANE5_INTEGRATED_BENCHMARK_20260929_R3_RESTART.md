@@ -79,11 +79,13 @@ remain mandatory.
 - Repair commit: `a2dfabc8550b1ca5bfcd0243b9d73249840c1f48`.
 - The repair changes only that tokenization defect; provider selection semantics are unchanged.
 - No timing result from the failed runs is accepted because the campaign never passed index regeneration.
+- Proactive harness audit then found that the I062 benchmark reused one `NativePytestProvider` instance across timed runs even though each provider run closes its session temporary directory.
+- Harness lifecycle repair: `3054db434c7c0e1acc52c3c1e11805faf9547054`; each timed execution/collection now creates a fresh provider instance. This changes only benchmark lifecycle isolation, not I062 provider semantics.
 
 ## Next action
 
 Use the newest `Pass 219 Lane 5 Integrated Benchmark 2026-09-29 R3` run
-triggered from a checkpoint containing `a2dfabc8550b1ca5bfcd0243b9d73249840c1f48`.
+triggered from a checkpoint containing both `a2dfabc8550b1ca5bfcd0243b9d73249840c1f48` and `3054db434c7c0e1acc52c3c1e11805faf9547054`.
 
 If failed, repair only the first attributable R3 frontier. Do not restore
 upstream pytest or the temporary FastAPI install as a bypass.
