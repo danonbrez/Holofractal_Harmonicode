@@ -4,18 +4,9 @@ on:
   push:
     branches:
       - 'repair/native-fastapi-default-provider'
-    paths:
-      - 'hhs_backend/runtime/hhs_fastapi_provider_v1.py'
-      - 'hhs_runtime/hhs_lane5_native_capability_provider_v1.py'
-      - 'contracts/pass220/PASS_220_LANE5_NATIVE_CAPABILITY_PROVIDER_V1.json'
-      - 'hhs_backend/runtime/hhs_native_fastapi_compat_v1.py'
-      - 'hhs_backend/runtime/runtime_ws.py'
-      - 'hhs_backend/server.py'
-      - 'tests/pass220/test_hhs_native_fastapi_default_provider_v1.py'
-      - 'tests/pass220/test_hhs_lane5_native_capability_provider_v1.py'
-      - '.github/workflows/native-fastapi-default-provider.yml'
-      - 'docs/operations/restart/NATIVE_FASTAPI_DEFAULT_PROVIDER_20260929.md'
-      - 'docs/operations/restart/LANE5_NATIVE_CAPABILITY_PROVIDER_20260929.md'
+  pull_request:
+    branches:
+      - 'main'
   workflow_dispatch:
 
 permissions:
@@ -24,6 +15,7 @@ permissions:
 env:
   PYTHONHASHSEED: '0'
   PYTHONDONTWRITEBYTECODE: '1'
+  HHS_LANE5_PROVIDER_CONTEXT: 'pull_request'
 
 jobs:
   lane5-native-capability-provider:
@@ -41,16 +33,17 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install bounded validation prerequisites
+      - name: Install bounded validation and declared fallback prerequisites
         shell: bash
         run: |
           set -euo pipefail
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev
           python -m venv .venv
-          .venv/bin/python -m pip install --disable-pip-version-check pytest numpy cryptography
+          .venv/bin/python -m pip install --disable-pip-version-check \
+            pytest numpy matplotlib cryptography
 
-      - name: Prove external FastAPI is absent
+      - name: Prove FastAPI external package is absent while native provider exists
         shell: bash
         run: |
           set -euo pipefail
@@ -72,6 +65,37 @@ jobs:
             hhs_backend/runtime/runtime_ws.py \
             tests/pass220/test_hhs_native_fastapi_default_provider_v1.py \
             tests/pass220/test_hhs_lane5_native_capability_provider_v1.py
+
+      - name: Resolve PR providers and emit fallback warnings
+        shell: bash
+        run: |
+          set -euo pipefail
+          .venv/bin/python - <<'PY'
+          import importlib.util
+          from hhs_runtime.hhs_lane5_native_capability_provider_v1 import (
+              lane5_capability_provider_status,
+              resolve_lane5_capability,
+          )
+
+          status = lane5_capability_provider_status(provider_context="pull_request")
+          fallback_rows = [
+              row for row in status["capabilities"]
+              if row["pull_request_fallback_used"]
+          ]
+          assert any(row["capability_id"] == "matplotlib" for row in fallback_rows)
+          assert importlib.util.find_spec("matplotlib") is not None
+
+          for row in fallback_rows:
+              warning = row["warning"]
+              print(f"::warning title=Lane 5 provider fallback::{warning}")
+              resolution = resolve_lane5_capability(
+                  row["capability_id"],
+                  provider_context="pull_request",
+              )
+              assert resolution.provider == "external"
+              assert resolution.fallback_used is True
+              assert resolution.warning == warning
+          PY
 
       - name: Build cumulative exact ABI
         shell: bash
