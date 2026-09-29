@@ -79,8 +79,9 @@
       "output": 179,
       "relation_class": "RECORDED_HHS_DERIVATION_NOT_AD_HOC_SCALAR_SHORTCUT",
       "direct_relation_semantics": "RECORDED_DIRECT_DERIVATION_FROM_101_HARMONIC_SEED",
-      "prime_tensor_output_identity": "13^2+16=179",
-      "scalar_shortcut": "NOT_SUBSTITUTED_WHERE_HISTORICAL_EQUATION_IS_NOT_RECOVERED"
+      "prime_tensor_output_identity": "ZERO_BASED_PRIME_INDEX_40=179",
+      "scalar_shortcut": "NOT_SUBSTITUTED_WHERE_HISTORICAL_EQUATION_IS_NOT_RECOVERED",
+      "prime_ordinal_one_based": 41
     },
     {
       "ordinal": 5,
@@ -141,7 +142,7 @@
   "historical_derivation_witnesses": [
     {
       "date": "2025-06-12",
-      "witness": "first-81-prime Lo Shu tensor: 101=10^2+1 at [2,7]/25; 179=13^2+16 at [4,4]/40"
+      "witness": "first-81-prime Lo Shu tensor: 101=10^2+1 at [2,7]/25; 179 at zero-based prime index 40 / [4,4]"
     },
     {
       "date": "2026-07-20",

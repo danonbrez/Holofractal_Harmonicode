@@ -74,7 +74,7 @@ HISTORICAL_DERIVATION_WITNESSES = (
         "witness": "FIRST_81_PRIMES_LO_SHU_RECURSIVE_TENSOR",
         "facts": (
             "101=10^2+1 at zero-based 9x9 coordinate [2,7], flat index 25",
-            "179 prime-tensor cell identity: 13^2+16=179 at zero-based 9x9 coordinate [4,4], flat index 40",
+            "179 prime-tensor cell witness: zero-based prime index 40 at 9x9 coordinate [4,4]",
         ),
     },
     {
@@ -146,7 +146,6 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
         (10**2 + 1 == 101, "101=10^2+1"),
         (shell_1001 == 1001, "1000+1=1001 modular shell"),
         (factor_1001 == shell_1001, "7*11*13=1001 factorization identity"),
-        (13**2 + 16 == 179, "179=13^2+16"),
         (reversal_971 == 971, "reverse3(179)=971"),
         (concat_179971 == 179971, "179||971=179971"),
         (shell_1000001 == 1000001, "million shell"),
@@ -226,7 +225,8 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
             "input": 101,
             "rule": "HHS_101_HARMONIC_KERNEL_GENERATION",
             "direct_relation_semantics": "RECORDED_DIRECT_DERIVATION_FROM_101_HARMONIC_SEED",
-            "prime_tensor_output_identity": "13^2+16=179",
+            "prime_tensor_output_identity": "ZERO_BASED_PRIME_INDEX_40=179",
+            "prime_ordinal_one_based": 41,
             "scalar_shortcut": "NOT_SUBSTITUTED_WHERE_HISTORICAL_EQUATION_IS_NOT_RECOVERED",
             "zero_based_coordinate": (4, 4),
             "flat_index": 40,

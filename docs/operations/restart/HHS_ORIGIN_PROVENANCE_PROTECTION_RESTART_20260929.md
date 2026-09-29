@@ -228,3 +228,21 @@ Validation remaining:
 2. Lean build, leanchecker and axiom audit;
 3. merge PR #659 if green and mergeable;
 4. verify the merged main surfaces and record final merge/run identities.
+
+
+## Repair-forward: invalid 179 scalar identity removed
+
+Static dependency-scoped arithmetic validation found that the inherited helper
+claim `13^2+16=179` is false (`13^2+16=185`). It has been removed from the
+runtime, contract, documentation, tests, and Lean theorem surface.
+
+The preserved semantics are now:
+
+- historical provenance relation:
+  `101 --HHS_101_HARMONIC_KERNEL_GENERATION--> 179`;
+- independent first-81-prime tensor witness:
+  zero-based prime index/cell `40` has value `179` (one-based prime ordinal
+  `41`);
+- no unrecovered scalar shortcut is invented for `101 -> 179`.
+
+This repair changes no endpoint invariant or bounded provenance scope.

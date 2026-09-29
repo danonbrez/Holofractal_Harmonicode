@@ -97,12 +97,13 @@ The historical relation retained by the provenance object is:
 101 --HHS_101_HARMONIC_KERNEL_GENERATION--> 179
 ```
 
-The prime tensor independently identifies the resulting 179 cell:
+The first-81-prime tensor independently identifies the resulting 179 cell:
 
 ```text
-13^2 + 16 = 179
+zero-based prime index = 40
+one-based prime ordinal = 41
+prime value = 179
 zero-based coordinate = [4,4]
-flat index = 40
 ```
 
 That cell identity is not substituted for the historical 101-to-179 generation
@@ -175,7 +176,7 @@ Matching `179971.179971` and `1.001` alone is explicitly insufficient.
 The genealogy records three development layers:
 
 1. **2025-06-12** — first-81-prime Lo Shu recursive tensor with
-   `101=10^2+1` at cell 25 and `179=13^2+16` at cell 40.
+   `101=10^2+1` at cell 25 and `179` at zero-based prime index/cell 40.
 2. **2026-07-20** — correction establishing the
    `101-harmonic kernel -> {179,971,179971}` relation and
    `10^6+1=101*9901`.

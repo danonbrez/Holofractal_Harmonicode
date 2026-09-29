@@ -60,7 +60,8 @@ def test_ordered_genealogy_closes_exact_shell_and_reversal_construction():
     assert harmonic["direct_relation_semantics"] == (
         "RECORDED_DIRECT_DERIVATION_FROM_101_HARMONIC_SEED"
     )
-    assert harmonic["prime_tensor_output_identity"] == "13^2+16=179"
+    assert harmonic["prime_tensor_output_identity"] == "ZERO_BASED_PRIME_INDEX_40=179"
+    assert harmonic["prime_ordinal_one_based"] == 41
     assert harmonic["scalar_shortcut"] == (
         "NOT_SUBSTITUTED_WHERE_HISTORICAL_EQUATION_IS_NOT_RECOVERED"
     )

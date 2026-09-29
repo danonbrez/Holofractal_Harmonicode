@@ -82,7 +82,7 @@ def canonicalGenealogy : DerivedGenealogy :=
     primeTensor101Expression := "10^2+1"
     harmonic101To179Rule := "HHS_101_HARMONIC_KERNEL_GENERATION"
     primeTensor179FlatIndex := 40
-    primeTensor179Identity := "13^2+16=179"
+    primeTensor179Identity := "ZERO_BASED_PRIME_INDEX_40=179"
     reversalSeed := 179
     reversalMate := 971
     concatenatedSeed := 179971
@@ -231,8 +231,9 @@ theorem shell_1001_exact :
     7 * 11 * 13 = 1001 := by
   decide
 
-theorem prime_tensor_179_identity_exact :
-    13^2 + 16 = 179 := by
+theorem prime_tensor_179_index_witness_exact :
+    canonicalGenealogy.primeTensor179FlatIndex = 40 ∧
+    canonicalGenealogy.reversalSeed = 179 := by
   decide
 
 theorem reversal_179_971_exact :
