@@ -4710,6 +4710,93 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.unified_scientific_physics_synthesis.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_i061_unified_scientific_physics_synthesis_v1"
+        ),
+        function="scientific_physics_synthesis_self_test",
+        service_type="pass220_validated_scientific_physics_candidate_constructor",
+        description=(
+            "Validate the I061 unified scientific-physics admission envelope "
+            "over the frozen I059 PhysicsCellWall. I060 Lean theorem and "
+            "dependency Hash72 identities are intrinsically bound before the "
+            "physics candidate is constructed. Formal validity from verbatim "
+            "HARMONICODE/white-paper/Wolfram/Lean evidence and empirical "
+            "correspondence from declared-domain calibration or experiment are "
+            "independent axes; neither substitutes for the other. Candidate "
+            "topology is indexed as ordered formal+empirical+physics Hash216 "
+            "over the Lane 5 5,184 knowledge fabric. Canonical VM81/Hash "
+            "authority remains unchanged."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I061_LANE5_5184_HASH216_KNOWLEDGE_BINDING_V1",
+        ],
+        validators=[
+            "validate_scientific_physics_candidate",
+            "scientific_physics_synthesis_self_test",
+        ],
+        guards=[
+            "verified_i060_parent_lineage",
+            "i060_theorem_identity_hash72_bound_preconstruction",
+            "i060_dependency_identity_hash72_bound_preconstruction",
+            "post_hoc_proof_attachment_forbidden",
+            "verbatim_hhs_source_identity_preserved",
+            "whitepaper_proof_identity_preserved",
+            "wolfram_formalization_identity_preserved",
+            "lean_kernel_leanchecker_axiom_audit_required",
+            "formal_empirical_axes_independent",
+            "measured_behavior_requires_declared_domain",
+            "measured_behavior_requires_calibration_or_experiment",
+            "measured_behavior_requires_units_dimensions",
+            "measured_behavior_requires_exact_residual_bound",
+            "empirical_replay_receipt_hash72_required",
+            "lane5_5184_coordinate_required",
+            "candidate_hash216_formal_empirical_physics_order",
+            "i059_physics_cell_wall_inherited",
+            "vm81_admission_required_for_canonical_successor",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I061_PRE_I060_LINEAGE",
+            "REJECT_I061_LEAN_IDENTITY_MISSING",
+            "REJECT_I061_POST_HOC_PROOF_ATTACHMENT",
+            "REJECT_I061_FORMAL_VALIDITY_FAILURE",
+            "REJECT_I061_EMPIRICAL_DOMAIN_MISSING",
+            "REJECT_I061_EMPIRICAL_EVIDENCE_MISSING",
+            "REJECT_I061_EMPIRICAL_RESIDUAL_BOUND_FAILURE",
+            "REJECT_I061_FORMAL_EMPIRICAL_SUBSTITUTION",
+            "REJECT_I061_5184_COORDINATE_DRIFT",
+            "REJECT_I061_HASH216_TOPOLOGY_DRIFT",
+            "REJECT_I061_PHYSICS_CELL_FAILURE",
+            "REJECT_I061_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "CANDIDATE_ONLY_SCIENTIFIC_PHYSICS_VM81_ADMISSION_REQUIRED"
+        ),
+        persistence_policy=(
+            "NO_DIRECT_HASH72_HASH216_PERSISTENCE_FROM_I061_SYNTHESIS"
+        ),
+        boundedness_policy=(
+            "DUAL_EVIDENCE_AXES_X_5184_KNOWLEDGE_COORDINATE_X_"
+            "ORDERED_3XHASH72_CANDIDATE_TOPOLOGY"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.whitepaper_equation_game_mechanics.self_test",
         module=(
             "hhs_runtime."
