@@ -1,0 +1,241 @@
+# Pass 220 I061 — Unified Scientific Physics Synthesis Restart
+
+Date: 2026-09-29
+
+## Exact parent
+
+I061 was created from the verified I060 merge commit:
+
+```text
+ad697affec1eb87d413f25ddb9aa4ece403506ff
+```
+
+This satisfies the mandatory dependency rule:
+
+```text
+I061 admissible base
+<=> exact verified I060 head
+    OR main containing verified I060 merge
+```
+
+No I061 work is based on pre-I060 main.
+
+## Frozen inherited lineage
+
+- I057 — frozen optimized 3D ParticleSimulation;
+- I058 — frozen white-paper equation mechanics;
+- I059 — frozen native C++ 3D engine cell-wall foundation;
+- I060 — verified native Lean ExactRat ValueAlgebra proof/identity layer.
+
+I061 is additive over all four.
+
+## Objective
+
+Create the scientific admission membrane for the full native 3D physics engine.
+
+The first I061 checkpoint does not yet implement a complete rigid-body,
+collision, field, or relativistic solver. It establishes the evidence and
+lineage conditions that all later solver implementations must satisfy.
+
+## Two independent evidence axes
+
+### Formal validity
+
+Required sources:
+
+1. verbatim HARMONICODE source identity;
+2. repository white-paper proof identity;
+3. Wolfram formalization identity;
+4. I060 Lean theorem identity Hash72;
+5. I060 Lean dependency identity Hash72.
+
+The two Lean Hash72 identities are loaded before PhysicsCellWall candidate
+construction and included in the intrinsic proof-binding Hash72.
+
+Post-hoc proof attachment is explicitly rejected.
+
+### Empirical correspondence
+
+When a mechanic claims measured physical behavior, the candidate must carry:
+
+- declared operating domain;
+- calibration or experimental evidence;
+- unit and dimension;
+- measured/predicted exact rational values where represented;
+- exact residual;
+- exact error bound;
+- residual-within-bound verification;
+- deterministic replay receipt Hash72.
+
+Formal validity does not substitute for empirical correspondence.
+Empirical correspondence does not substitute for formal validity.
+
+Purely formal mechanics may declare no measured-behavior claim, in which case
+empirical evidence is not required and no measured correspondence is claimed.
+
+## Lane 5 knowledge binding
+
+Every I061 candidate is assigned one exact coordinate:
+
+```text
+0 <= linear5184 < 5184
+```
+
+Candidate topology:
+
+```text
+formal_axis_hash72
+||
+empirical_axis_hash72
+||
+physics_candidate_hash72
+=
+candidate_hash216
+```
+
+The topology is candidate/index evidence only.
+
+It has no independent execution, mutation, Hash72 commit, Hash216 persistence,
+or floating-point canonical authority.
+
+## Native integration
+
+I061 adds:
+
+```text
+hhs::game::physics::UnifiedScientificPhysicsCellWall
+```
+
+It validates the scientific envelope and then delegates the base physics
+candidate to the frozen I059:
+
+```text
+hhs::game::PhysicsCellWall
+```
+
+Thus I059 invariants remain active.
+
+## Repository surfaces
+
+Runtime:
+
+```text
+hhs_runtime/hhs_pass220_i061_unified_scientific_physics_synthesis_v1.py
+```
+
+Native cell wall:
+
+```text
+hhs_runtime/include/
+hhs_pass220_i061_unified_scientific_physics_synthesis_1_0.hpp
+```
+
+Contract:
+
+```text
+contracts/pass220/
+PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS_V1.json
+```
+
+Tests:
+
+```text
+tests/pass220/
+test_hhs_pass220_i061_unified_scientific_physics_synthesis_v1.py
+test_hhs_pass220_i061_unified_scientific_physics_synthesis.cpp
+```
+
+Documentation:
+
+```text
+docs/pass220/PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS.md
+```
+
+Workflow:
+
+```text
+.github/workflows/pass220-i061-unified-scientific-physics-synthesis.yml
+```
+
+Service:
+
+```text
+pass220.unified_scientific_physics_synthesis.self_test
+```
+
+## Commits before restart checkpoint
+
+- `ce9327558746b0f491016add4532f30d66ff09a7` — Python I061 synthesis/admission
+- `891bbc52fd548ad73b62ca83db7f0cbf269593c5` — native scientific PhysicsCellWall
+- `39b416e16bfc6c4ce4ba1f6367d0d5de053d7911` — Python dual-axis regression
+- `97eeb19f75cb1c22203069eb40ba0090f3f6aadb` — native C++ regression
+- `a2181e4ef50c9b7054413cb665b75649c87a7e12` — runtime self-test surface
+- `1e1051d8a343315ebf67f8266568c7e8ac0fbb77` — machine-readable contract
+- `91be65d1caec3dd1f28fad14646213ca0245370e` — service registry integration
+- `7c65a27e2c7ac04a2be5d2ecf88f1fb6329d21d3` — self-test/registry guards
+- `d2c9851596951cea7956ea403558c8257e8e0cf8` — scientific synthesis documentation
+- `fb12269beab988b3ec92ce74c4974fa4b731da11` — dependency-scoped I061 CI
+
+## Validation encoded
+
+The workflow requires:
+
+1. exact I060 merge ancestry;
+2. frozen verbatim HARMONICODE source SHA-256;
+3. frozen Wolfram formalization SHA-256;
+4. I061 Python dual-axis tests;
+5. inherited I060 theorem/dependency Hash72 tests;
+6. strict C++17 I061 native cell-wall compile and execution;
+7. frozen I059 native cell-wall regression;
+8. machine-readable evidence-axis and authority checks.
+
+The I061 Python tests cover:
+
+- exact I060 parent identity;
+- exact formal-artifact SHA-256 identities;
+- preconstruction Lean identity binding;
+- ordered formal/empirical/physics Hash216 topology;
+- formal-only candidate admission;
+- measured-behavior empirical requirements;
+- exact residual/error-bound rejection;
+- post-hoc proof attachment rejection;
+- Lean identity tampering;
+- knowledge graph topology drift;
+- out-of-range 5,184 coordinates;
+- candidate-receipt mutation detection.
+
+The native C++ tests cover:
+
+- formal-only admission;
+- measured-claim evidence gating;
+- post-hoc attachment rejection;
+- missing Lean kernel/axiom verification;
+- formal/empirical non-substitution;
+- Hash216 lane-order drift;
+- 5,184 coordinate bounds;
+- authority escalation;
+- inherited I059 tick and float-authority invariants.
+
+## Authority boundary
+
+I061 is candidate-only.
+
+```text
+canonical_vm81_mutation_authority = false
+canonical_hash72_commit_authority = false
+canonical_hash216_persistence_authority = false
+floating_point_canonical_authority = false
+```
+
+A canonical successor still requires the inherited singleton VM81 admission
+path.
+
+## Next action
+
+Open the I061 pull request and run the exact-head workflow.
+
+Repair forward only failures attributable to I061.
+
+After I061 is green and frozen, implement canonical STEM/physics law objects,
+then exact rigid-body state/integration behind this unchanged scientific
+admission membrane.
