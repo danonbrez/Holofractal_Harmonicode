@@ -5,9 +5,10 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=hhs
-Group=hhs
+User=root
+Group=root
 WorkingDirectory=/opt/hhs/app
+EnvironmentFile=-/var/lib/hhs/ubuntu-guest/current/runtime.env
 EnvironmentFile=/etc/hhs/interface-pty.env
 ExecStart=/opt/hhs/app/.venv/bin/uvicorn hhs_gui.interface_gateway.ubuntu_pty_gateway:app --host 127.0.0.1 --port 8787 --proxy-headers
 Restart=on-failure
