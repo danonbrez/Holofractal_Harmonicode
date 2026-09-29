@@ -67,8 +67,9 @@
     <div>global frequency <b>&times;<span id="freqVal">1</span></b></div>
     <input id="freqSlider" type="range" min="1" max="10" step="1" value="1" style="width:150px">
   </div>
-  <button id="chaseBtn" style="position:absolute;top:118px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">ChaseCam (C)</button>
-  <div id="densityCtl" style="position:absolute;top:158px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
+  <button id="referenceMotionBtn" style="position:absolute;top:118px;right:10px;z-index:104;background:rgba(0,0,20,.72);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">Reference Motion ON (V)</button>
+  <button id="chaseBtn" style="position:absolute;top:154px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">ChaseCam (C)</button>
+  <div id="densityCtl" style="position:absolute;top:194px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
     <div>density test: mass <b>&times;<span id="massVal">1</span></b></div>
     <input id="massSlider" type="range" min="1" max="4" step="0.5" value="1" style="width:150px">
     <div>collision <b>&times;<span id="collVal">1</span></b></div>
@@ -121,8 +122,120 @@
       receiptLogicRemoved:false,
       canonicalMutationAuthority:false
     });
+
+    /* PASS 220 I064 — user-reference particle cinematic.
+       Projection only: the 10,368 logical particles, force laws, receipts,
+       VM81/Hash authority and simulation coordinates are unchanged. The
+       user's four 5.083333 s / 24 fps reference clips establish the intended
+       motion grammar: compact readable volume -> rapid camera ingress through
+       large near-field circles -> return to a deep readable cloud. */
+    const I064_REFERENCE_VISUAL = Object.freeze({
+      schema:"HHS_PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_V1",
+      source:"examples/ParticleSimulation.html",
+      referenceClipSeconds:122/24,
+      projectionOnly:true,
+      logicalParticleMutation:false,
+      pureBlackBackground:true,
+      deterministicVisualProfile:true,
+      coreCompression:0.235,
+      satelliteCompression:0.46,
+      coreDepthSpan:18.0,
+      satelliteDepthSpan:12.0,
+      minParticleScale:0.38,
+      maxParticleScale:5.25,
+      staticCameraZ:36.0,
+      ingressCameraZ:5.2,
+      referenceFov:62,
+      hideInstrumentation:true,
+      defaultMotion:true,
+      canonicalMutationAuthority:false
+    });
+    const referenceMotion={
+      on:I064_REFERENCE_VISUAL.defaultMotion,
+      startMs:performance.now(),
+      look:new THREE.Vector3(0,0,0),
+      pos:new THREE.Vector3(0,0,I064_REFERENCE_VISUAL.staticCameraZ)
+    };
+    const referenceTmp=new THREE.Vector3();
+    const referenceScaleTmp=new THREE.Vector3();
+    const referenceQuat=new THREE.Quaternion();
+    const particleBatchColor=new THREE.Color();
+    function visualHash32(a,b,c0,d){
+      let x=(Math.imul((a|0)+1,0x45d9f3b) ^ Math.imul((b|0)+17,0x119de1f3) ^
+             Math.imul((c0|0)+31,0x3449f) ^ Math.imul((d|0)+7,0x27d4eb2d))>>>0;
+      x=(x ^ (x>>>16))>>>0; x=Math.imul(x,0x7feb352d)>>>0;
+      x=(x ^ (x>>>15))>>>0; x=Math.imul(x,0x846ca68b)>>>0;
+      return (x ^ (x>>>16))>>>0;
+    }
+    function buildReferenceVisualProfile(points,batchIndex){
+      const n=points.length, scale=new Float32Array(n), depth=new Float32Array(n),
+            compression=new Float32Array(n), rgb=new Float32Array(n*3);
+      for(let i=0;i<n;i++){
+        const p=points[i], u=p.userData||{}, q144=(u.q144===undefined?i:u.q144)|0,
+              j=(u.j===undefined?i:u.j)|0, spiral=(u.spiral===undefined?batchIndex:u.spiral)|0,
+              layer=u.layer2?1:0, recip=!!u.recip;
+        const h=visualHash32(q144,j,spiral,layer+batchIndex*3);
+        const u0=(h&0xffff)/65535, u1=((h>>>16)&0xffff)/65535;
+        /* Heavy-tailed scale: most particles remain tiny and crisp while a
+           small deterministic population becomes large near-field discs. */
+        let s=I064_REFERENCE_VISUAL.minParticleScale + 0.78*Math.pow(u0,1.8);
+        if(u0>0.82) s+=0.85*Math.pow((u0-0.82)/0.18,1.25);
+        if(u0>0.94) s+=2.85*Math.pow((u0-0.94)/0.06,1.15);
+        if(s>I064_REFERENCE_VISUAL.maxParticleScale) s=I064_REFERENCE_VISUAL.maxParticleScale;
+        scale[i]=s*(recip?1.12:1);
+        compression[i]=recip?I064_REFERENCE_VISUAL.satelliteCompression:I064_REFERENCE_VISUAL.coreCompression;
+        depth[i]=(u1-0.5)*(recip?I064_REFERENCE_VISUAL.satelliteDepthSpan:I064_REFERENCE_VISUAL.coreDepthSpan);
+        /* Q144 is still the color identity; only projection lightness and a
+           small deterministic hue offset are varied for the reference look. */
+        const hue=((q144%144)+144)%144/144;
+        const sat=0.78+0.22*((h>>>8)&255)/255;
+        const light=0.43+0.25*((h>>>24)&255)/255;
+        particleBatchColor.setHSL(hue,sat,light);
+        const o=i*3; rgb[o]=particleBatchColor.r; rgb[o+1]=particleBatchColor.g; rgb[o+2]=particleBatchColor.b;
+      }
+      return {scale,depth,compression,rgb};
+    }
+    function referenceEase(x){ x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); }
+    function updateReferenceCamera(nowMs){
+      if(!referenceMotion.on || chase.on) return;
+      const period=I064_REFERENCE_VISUAL.referenceClipSeconds*1000;
+      const u=((nowMs-referenceMotion.startMs)%period)/period;
+      /* sin(pi*u)^2 gives the reference rhythm: readable far state at each
+         clip boundary and a fast, deep pass through the field at mid-cycle. */
+      const ingress=Math.pow(Math.sin(Math.PI*u),2);
+      const rush=referenceEase(ingress);
+      const theta=u*Math.PI*2;
+      const z=I064_REFERENCE_VISUAL.staticCameraZ -
+        (I064_REFERENCE_VISUAL.staticCameraZ-I064_REFERENCE_VISUAL.ingressCameraZ)*rush;
+      const lateral=1.6+3.2*rush;
+      referenceMotion.pos.set(
+        Math.sin(theta*0.72)*lateral,
+        Math.cos(theta*0.53+0.35)*(0.9+1.65*rush),
+        z
+      );
+      referenceMotion.look.set(
+        Math.sin(theta*0.47)*0.8,
+        Math.cos(theta*0.61)*0.45,
+        -1.8*rush
+      );
+      camera.position.copy(referenceMotion.pos);
+      camera.lookAt(referenceMotion.look);
+    }
+    function toggleReferenceMotion(force){
+      referenceMotion.on=force===undefined ? !referenceMotion.on : !!force;
+      referenceMotion.startMs=performance.now();
+      if(referenceMotion.on){
+        chase.on=false;
+        const cb=document.getElementById("chaseBtn");
+        if(cb) cb.textContent="ChaseCam (C)";
+      }
+      if(controls) controls.enabled=!referenceMotion.on && !chase.on;
+      const b=document.getElementById("referenceMotionBtn");
+      if(b) b.textContent=referenceMotion.on?"Reference Motion ON (V)":"Reference Motion paused (V)";
+    }
     const particleRenderBatches=[];
     const particleBatchMatrix=new THREE.Matrix4();
+    const particleBatchPosition=new THREE.Vector3();
     function registerParticleRenderBatch(group,points,geometry){
       if(typeof THREE.InstancedMesh!=="function" ||
          typeof THREE.InstancedMesh.prototype.setMatrixAt!=="function" ||
@@ -136,19 +249,24 @@
       if(mesh.instanceMatrix && typeof mesh.instanceMatrix.setUsage==="function" &&
          THREE.DynamicDrawUsage!==undefined) mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       group.add(mesh);
-      const batch={mesh,points};
+      const profile=buildReferenceVisualProfile(points,particleRenderBatches.length);
+      const batch={mesh,points,profile};
       particleRenderBatches.push(batch);
       for(let i=0;i<points.length;i++) points[i].visible=false;
       syncParticleRenderBatch(batch);
       return batch;
     }
     function syncParticleRenderBatch(batch){
-      const mesh=batch.mesh, points=batch.points;
+      const mesh=batch.mesh, points=batch.points, profile=batch.profile;
       for(let i=0;i<points.length;i++){
-        const p=points[i], q=p.position;
-        particleBatchMatrix.makeTranslation(q.x,q.y,q.z);
+        const q=points[i].position, k=profile.compression[i], s=profile.scale[i];
+        particleBatchPosition.set(q.x*k,q.y*k,q.z*k+profile.depth[i]);
+        referenceScaleTmp.set(s,s,s);
+        particleBatchMatrix.compose(particleBatchPosition,referenceQuat,referenceScaleTmp);
         mesh.setMatrixAt(i,particleBatchMatrix);
-        mesh.setColorAt(i,p.material.color);
+        const o=i*3;
+        particleBatchColor.setRGB(profile.rgb[o],profile.rgb[o+1],profile.rgb[o+2]);
+        mesh.setColorAt(i,particleBatchColor);
       }
       mesh.instanceMatrix.needsUpdate=true;
       if(mesh.instanceColor){
@@ -179,12 +297,14 @@
     function initScene() {
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x000000);
-      camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 0, 15);
+      camera = new THREE.PerspectiveCamera(I064_REFERENCE_VISUAL.referenceFov, window.innerWidth/window.innerHeight, 0.05, 1000);
+      camera.position.set(0, 0, I064_REFERENCE_VISUAL.staticCameraZ);
       renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference:"high-performance" });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
       controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enabled=!referenceMotion.on;
       controls.enableDamping = true;
       controls.dampingFactor = 0.1;
       controls.rotateSpeed = 0.5;
@@ -196,6 +316,10 @@
       initExchangeNuclei(true);     /* L2 exchange: carriers 7776..10367 */
       initNinthNucleus();
       buildTesseract();
+      if(I064_REFERENCE_VISUAL.hideInstrumentation){
+        if(ninthNucleus) ninthNucleus.visible=false;
+        if(tessGeo && tessGeo.lines) tessGeo.lines.visible=false;
+      }
       window.addEventListener('resize', onWindowResize, false);
       animate();
     }
@@ -213,6 +337,7 @@
     function onWindowResize() {
       camera.aspect = window.innerWidth/window.innerHeight;
       camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
@@ -3310,8 +3435,11 @@
         const ix=chase.idx*3;
         chase.pos.set(thPos[ix]-2, thPos[ix+1]+1, thPos[ix+2]+2);
         chase.look.set(thPos[ix], thPos[ix+1], thPos[ix+2]);
+        referenceMotion.on=false;
         controls.enabled=false;
-      } else controls.enabled=true;
+        const rb=document.getElementById("referenceMotionBtn");
+        if(rb) rb.textContent="Reference Motion paused (V)";
+      } else controls.enabled=!referenceMotion.on;
       const b=document.getElementById("chaseBtn");
       if(b) b.textContent = chase.on ? ("Chase #"+chase.idx+" (C=off, N=next)") : "ChaseCam (C)";
     }
@@ -3334,7 +3462,7 @@
     }
     function animate() {
       requestAnimationFrame(animate);
-      if(!chase.on) controls.update();
+      if(!chase.on && !referenceMotion.on) controls.update();
       /* GLOBAL FREQUENCY CONTROL: freqScale physics substeps per frame.
          Each substep runs the FULL stack (phase precession + swarm coupling
          field) at the canonical dt — symplectic structure and every receipt
@@ -3345,6 +3473,7 @@
       updatePhaseGeometry();
       constructorScan();
       if(chase.on) updateChaseCamera();
+      else if(referenceMotion.on) updateReferenceCamera(performance.now());
       /* QUARTIC RENDER SKIP: physics advanced for ALL carriers above;
          the projection renders on every 4th frame (base-8 periodicity +
          quartic closure M⁴=M³+2M² — the HNAN semicomplement at projection
@@ -3369,7 +3498,7 @@
         document.getElementById("hud").innerText =
           `HHS tick=${window.HHS.engine.tick} blocks=${window.HHS.engine.blocks} ` +
           `swarm=${particles.length} mean_v=${(spd/particles.length).toFixed(3)} freq=${steps}x ` +
-          `chase=${chase.on?'#'+chase.idx:'off'} ` +
+          `chase=${chase.on?'#'+chase.idx:'off'} refcam=${referenceMotion.on?'on':'off'} ` +
           `rho=m${(simParams.massBoost||1)}x/c${(simParams.collBoost||1)}x ` +
           `cohorts=${cohortCount} solids=${solidCount} ctor=${(simParams.ctorBoost||1)}x ` +
           `rskip=64/72(${renderedFrames}/${renderTick}) ` +
@@ -4004,6 +4133,8 @@
     if(freqSlider){ freqSlider.addEventListener("input",()=>{
       simParams.freqScale=parseInt(freqSlider.value,10)||1;
       const fv=document.getElementById("freqVal"); if(fv) fv.textContent=simParams.freqScale; });}
+    const referenceMotionBtn=document.getElementById("referenceMotionBtn");
+    if(referenceMotionBtn){ referenceMotionBtn.addEventListener("click",()=>toggleReferenceMotion()); }
     const chaseBtn=document.getElementById("chaseBtn");
     if(chaseBtn){ chaseBtn.addEventListener("click",()=>toggleChase()); }
     const massSlider=document.getElementById("massSlider");
@@ -4032,6 +4163,7 @@
       if(e.target && (e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")) return;
       if(e.key==="c"||e.key==="C") toggleChase();
       else if(e.key==="n"||e.key==="N") chaseNext();
+      else if(e.key==="v"||e.key==="V") toggleReferenceMotion();
       else if(e.key==="t"||e.key==="T") toggleRecipTopo();
     });
     const toggleButton = document.getElementById("toggleShell");
