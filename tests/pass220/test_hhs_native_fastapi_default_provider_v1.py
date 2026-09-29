@@ -151,3 +151,31 @@ print(json.dumps(status, sort_keys=True))
 """
     result = _run_python(source, provider="native")
     assert result.returncode == 0, result.stderr
+
+
+def test_websocket_runtime_modules_do_not_bypass_native_fastapi_provider() -> None:
+    source = r"""
+import builtins
+import os
+
+real_import = builtins.__import__
+
+def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+    if name == "fastapi" or name.startswith("fastapi."):
+        raise AssertionError("external FastAPI import attempted by runtime WebSocket module")
+    return real_import(name, globals, locals, fromlist, level)
+
+builtins.__import__ = guarded_import
+os.environ.pop("HHS_FASTAPI_PROVIDER", None)
+os.environ.pop("HHS_LANE5_PROVIDER_FASTAPI", None)
+os.environ.pop("HHS_LANE5_PROVIDER_DEFAULT", None)
+
+from hhs_backend.websocket import runtime_stream_manager
+from hhs_runtime import runtime_ws
+
+assert runtime_stream_manager.WebSocket.__name__ == "NativeWebSocket"
+assert runtime_ws.WebSocket.__name__ == "NativeWebSocket"
+assert runtime_ws.WebSocketDisconnect.__name__ == "NativeWebSocketDisconnect"
+"""
+    result = _run_python(source)
+    assert result.returncode == 0, result.stderr
