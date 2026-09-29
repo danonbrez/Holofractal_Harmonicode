@@ -236,6 +236,29 @@
       background: #090c11;
     }
     .terminal-controls .button { min-width: 0; padding-inline: 10px; }
+    .terminal-auth,
+    .terminal-command-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      background: #090c11;
+    }
+    .terminal-input {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      border: 1px solid #303746;
+      border-radius: 12px;
+      padding: 0 12px;
+      background: #11151d;
+      color: #eef3fb;
+      outline: none;
+      font: 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .terminal-input:focus { border-color: rgba(125,211,252,.5); }
+    .terminal-input::placeholder { color: #64748b; }
 
     @media (min-width: 700px) {
       .shell { padding-left: 28px; padding-right: 28px; }
@@ -318,8 +341,27 @@
             <button id="terminalPing" class="button" type="button" disabled>Ping</button>
           </div>
         </div>
-        <div class="sub" style="margin-top:10px">
-          Ubuntu Bash/PTTY: gated. The indexed I043/I044 guest PTY exists beneath the Runtime, but its contract does not yet publish a frontend adapter.
+      </article>
+
+      <article class="card span-2">
+        <div class="card-label">Ubuntu guest Bash / PTY</div>
+        <div class="sub" style="margin:8px 0 12px">
+          Authenticated interface adapter → <code>bin/hhs-guest pty-exec</code> → strict SSH/PTTY → Ubuntu guest. Token is held in page memory only.
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-title">/api/interface/ubuntu/pty/ws</div>
+            <div id="ubuntuState" class="terminal-state">CLOSED</div>
+          </div>
+          <pre id="ubuntuScreen" class="terminal-screen">$ Ubuntu guest terminal disconnected</pre>
+          <div id="ubuntuAuthRow" class="terminal-auth">
+            <input id="ubuntuToken" class="terminal-input" type="password" autocomplete="off" placeholder="Interface PTY bearer token" />
+            <button id="ubuntuConnect" class="button primary" type="button">Connect</button>
+          </div>
+          <div class="terminal-command-row">
+            <input id="ubuntuCommand" class="terminal-input" type="text" autocomplete="off" spellcheck="false" placeholder="pwd && uname -a" disabled />
+            <button id="ubuntuRun" class="button" type="button" disabled>Run</button>
+          </div>
         </div>
       </article>
 
@@ -551,6 +593,133 @@
       setTerminalState(action === "ping" ? "PING_SENT" : "STATUS_SENT");
     }
 
+    let ubuntuSocket = null;
+    let ubuntuAuthenticated = false;
+
+    function setUbuntuState(value, kind = "") {
+      const node = el("ubuntuState");
+      node.textContent = value;
+      node.className = `terminal-state ${kind}`.trim();
+      const ready = value === "READY";
+      el("ubuntuCommand").disabled = !ready;
+      el("ubuntuRun").disabled = !ready;
+    }
+
+    function ubuntuWrite(value) {
+      const screen = el("ubuntuScreen");
+      if (typeof value === "string") {
+        screen.textContent = value;
+        return;
+      }
+      const result = value?.result;
+      if (value?.ok === true && value?.action === "exec" && typeof result?.output_utf8 === "string") {
+        screen.textContent = result.output_utf8;
+        return;
+      }
+      screen.textContent = JSON.stringify(value, null, 2);
+    }
+
+    function requireUbuntuEnvelope(payload) {
+      if (!payload || typeof payload !== "object" || payload.schema !== "HHS_INTERFACE_UBUNTU_PTY_GATEWAY_V1") {
+        throw new Error("Ubuntu PTY gateway contract rejected");
+      }
+      if (payload.ok === true && payload.action === "auth" && payload.authenticated === true) return;
+      if (payload.ok === true && (payload.action === "status" || payload.action === "exec") && payload.result?.schema) return;
+      if (payload.ok === false) return;
+      throw new Error("Unexpected Ubuntu PTY gateway frame");
+    }
+
+    function closeUbuntu() {
+      const socket = ubuntuSocket;
+      ubuntuSocket = null;
+      ubuntuAuthenticated = false;
+      if (socket && socket.readyState < WebSocket.CLOSING) socket.close(1000, "interface-proof-ubuntu-close");
+      setUbuntuState("CLOSED");
+      ubuntuWrite("$ Ubuntu guest terminal disconnected");
+      el("ubuntuConnect").textContent = "Connect";
+      el("ubuntuToken").disabled = false;
+      el("ubuntuCommand").value = "";
+    }
+
+    function openUbuntu() {
+      if (ubuntuSocket) {
+        closeUbuntu();
+        return;
+      }
+      const token = el("ubuntuToken").value;
+      if (!token) {
+        ubuntuWrite("Bearer token required.");
+        setUbuntuState("AUTH REQUIRED", "fail");
+        return;
+      }
+
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const socket = new WebSocket(`${protocol}//${window.location.host}/api/interface/ubuntu/pty/ws`);
+      ubuntuSocket = socket;
+      setUbuntuState("CONNECTING");
+      ubuntuWrite("$ connecting to Ubuntu PTY gateway…");
+      el("ubuntuConnect").textContent = "Disconnect";
+
+      socket.addEventListener("open", () => {
+        if (ubuntuSocket !== socket) return;
+        socket.send(JSON.stringify({ action: "auth", token }));
+        el("ubuntuToken").value = "";
+        el("ubuntuToken").disabled = true;
+        setUbuntuState("AUTHENTICATING");
+      });
+
+      socket.addEventListener("message", (event) => {
+        if (ubuntuSocket !== socket) return;
+        try {
+          const payload = JSON.parse(String(event.data));
+          requireUbuntuEnvelope(payload);
+          ubuntuWrite(payload);
+          if (payload.ok === true && payload.action === "auth") {
+            ubuntuAuthenticated = true;
+            setUbuntuState("READY", "ready");
+            socket.send(JSON.stringify({ action: "status" }));
+          } else if (payload.ok === false) {
+            setUbuntuState("REJECTED", "fail");
+          } else if (ubuntuAuthenticated) {
+            setUbuntuState("READY", "ready");
+          }
+        } catch (cause) {
+          ubuntuWrite(cause instanceof Error ? cause.message : String(cause));
+          setUbuntuState("REJECTED", "fail");
+          socket.close(1008, "ubuntu-contract-rejected");
+        }
+      });
+
+      socket.addEventListener("error", () => {
+        if (ubuntuSocket !== socket) return;
+        ubuntuWrite("Ubuntu PTY gateway transport failed.");
+        setUbuntuState("ERROR", "fail");
+      });
+
+      socket.addEventListener("close", () => {
+        if (ubuntuSocket !== socket) return;
+        ubuntuSocket = null;
+        ubuntuAuthenticated = false;
+        if (!["REJECTED", "ERROR"].includes(el("ubuntuState").textContent)) setUbuntuState("CLOSED");
+        el("ubuntuConnect").textContent = "Connect";
+        el("ubuntuToken").disabled = false;
+      });
+    }
+
+    function runUbuntuCommand() {
+      const socket = ubuntuSocket;
+      const command = el("ubuntuCommand").value;
+      if (!socket || socket.readyState !== WebSocket.OPEN || !ubuntuAuthenticated) {
+        ubuntuWrite("Ubuntu PTY control rejected: authenticated transport is not open.");
+        return;
+      }
+      if (!command) return;
+      socket.send(JSON.stringify({ action: "exec", command, rows: 24, cols: 100, timeout: 60 }));
+      el("ubuntuCommand").value = "";
+      ubuntuWrite("$ command sent to Ubuntu guest…");
+      setUbuntuState("EXECUTING");
+    }
+
     async function dispatchRuntimeSelfTest() {
       const button = el("runSelfTest");
       const output = el("dispatchOutput");
@@ -647,6 +816,11 @@
     el("terminalOpen").addEventListener("click", openTerminal);
     el("terminalStatus").addEventListener("click", () => sendTerminalControl("status"));
     el("terminalPing").addEventListener("click", () => sendTerminalControl("ping"));
+    el("ubuntuConnect").addEventListener("click", openUbuntu);
+    el("ubuntuRun").addEventListener("click", runUbuntuCommand);
+    el("ubuntuCommand").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") runUbuntuCommand();
+    });
     el("runSelfTest").addEventListener("click", () => {
       dispatchRuntimeSelfTest().catch(() => {});
     });
