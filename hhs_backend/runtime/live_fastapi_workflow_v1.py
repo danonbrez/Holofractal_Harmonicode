@@ -17,7 +17,6 @@ import asyncio
 from dataclasses import dataclass, field
 from typing import Any, Dict, Mapping, Optional
 
-from hhs_backend.api.cognition_routes import register_cognition_routes
 from hhs_backend.runtime.immutable_agent_index_hooks_v1 import install_agent_index_hooks
 from hhs_backend.runtime.live_cognition_runtime_v1 import (
     HHSRuntimeCognitionCoordinator,
@@ -29,7 +28,13 @@ from hhs_python.runtime.hhs_runtime_emulator import HHSCEmulator
 VERSION = "PASS_045_LIVE_FASTAPI_KERNEL_RUNTIME_V1"
 WORKFLOW_SCHEMA = "HHS_LIVE_FASTAPI_WORKFLOW_V1"
 
-register_cognition_routes()
+def register_cognition_routes() -> bool:
+    """Bind HTTP cognition routes only at an explicit application boundary."""
+    from hhs_backend.api.cognition_routes import register_cognition_routes as _register
+
+    return _register()
+
+
 install_agent_index_hooks(live_cognition_runtime)
 
 
