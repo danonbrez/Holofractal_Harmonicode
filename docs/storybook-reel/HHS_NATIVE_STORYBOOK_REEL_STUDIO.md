@@ -96,6 +96,24 @@ Native effects support:
 
 Font scale, letter spacing, extrusion depth, motion speed, motion amplitude, title placement, caption placement, line length, line count, and panel opacity are adjustable.
 
+## Automated cinematic voiceover workflow
+
+The studio can generate the narration directly through ElevenLabs without exposing the provider key to the browser.
+
+1. Paste the exact narrative caption.
+2. Optionally paste the complete 22-frame storyboard Markdown.
+3. Enter an ElevenLabs voice ID and model.
+4. Select **Generate + sync 88-second voiceover**.
+5. The server synthesizes speech through the timestamped TTS endpoint and measures the returned character alignment.
+6. If the narration overruns the master, the runtime iteratively regenerates with a bounded native ElevenLabs speed adjustment. It never accepts spoken audio that crosses 88.000 seconds.
+7. If narration ends early, the remaining master time is preserved as silence rather than time-stretching the voice.
+8. Download the original voice stem, JSON timing manifest, or DAW/NLE cue CSV.
+9. The cue manifest binds every 4-second visual window to overlapping narration, word timestamps, pauses, storyboard label, full image prompt, and transition anchor when storyboard Markdown was supplied.
+
+The backend reads `ELEVENLABS_API_KEY` from server environment state. The secret is never embedded in frontend JavaScript or returned in API responses.
+
+The generated voice stem is preserved at provider timing. FFmpeg may resample to 48 kHz and pad or trim the master container boundary, but it does not use `atempo` to stretch a fitted narration.
+
 ## Narration synchronization
 
 Synchronization uses the exact matching text and uploaded audio.
