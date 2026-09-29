@@ -1,6 +1,6 @@
 # Pass 220 I062 Native Pytest Provider — Restart Record
 
-Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
+Status: **RESTARTABLE IMPLEMENTATION — CI INVOCATION REPAIRED; REVALIDATION PENDING**
 
 ## Identity
 
@@ -17,8 +17,11 @@ Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
   `Pass 220 I062 Native Pytest Provider`
 - Repair-head run: `36588572441`
 - Repair-head job: `109475357254`
-- Run state at checkpoint write: queued
-- PR state at checkpoint write: open, mergeable
+- Repair-head run `36588572441`: completed failure
+- Checkpoint-head run `36588848437`: completed failure
+- Both failed before provider execution because the workflow invoked the unittest file as a direct script without repository root on `sys.path`, producing `ModuleNotFoundError: No module named 'hhs_runtime'`.
+- CI invocation repair: `b74fd2c10b48cdfd5345040c76a2ecf516ca9cd6`
+- Provider implementation code was not changed by this repair.
 
 ## Implemented surfaces
 
@@ -104,19 +107,49 @@ Required workflow steps:
 
 No upstream pytest installation is required by the I062 workflow.
 
+## Hosted validation failure and repair-forward
+
+Runs `36588572441` / job `109475357254` and `36588848437` / job
+`109476308272` both reached the first I062 workflow step and failed with:
+
+```text
+ModuleNotFoundError: No module named 'hhs_runtime'
+```
+
+The workflow had executed:
+
+```bash
+python tests/pass220/test_hhs_pass220_i062_native_pytest_provider_v1.py
+```
+
+Direct-script execution makes `tests/pass220` the import root on the hosted
+runner. The test itself is a valid standard-library `unittest` suite and no
+native provider semantic assertion was reached.
+
+Repair commit `b74fd2c10b48cdfd5345040c76a2ecf516ca9cd6` changes only the workflow
+invocation to:
+
+```bash
+PYTHONPATH=. python tests/pass220/test_hhs_pass220_i062_native_pytest_provider_v1.py
+```
+
+No provider, specimen, installer, contract, or authority behavior changed.
+
 ## Next action
 
-Inspect run `36588572441`, job `109475357254`.
+Use the first scoped I062 run triggered from or containing
+`b74fd2c10b48cdfd5345040c76a2ecf516ca9cd6` as the revalidation gate.
 
 If green:
-1. freeze green evidence without changing executable provider logic;
-2. merge PR #658;
-3. verify the provider, installer migration and contract on main;
-4. repair-forward only attributable post-merge failures.
+1. freeze the I062 validation evidence;
+2. reconcile PR #658 with current main if required;
+3. merge PR #658;
+4. verify native provider, installer migration, and contract on main;
+5. repair-forward only attributable post-merge failures.
 
 If failed:
-repair only the attributable I062 provider, compatibility specimen, installer
-migration, or provider test surface.
+repair only the new attributable I062 frontier exposed after repository import
+resolution succeeds.
 
 Do not restore external pytest as the authoritative installer validation path
 to work around a native-provider defect.
