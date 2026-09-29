@@ -10,18 +10,23 @@ PAGE = ROOT / "hhs_gui/public/interface-proof.html"
 VITE = ROOT / "hhs_gui/vite.config.ts"
 UNIT = ROOT / "hhs_gui/interface_gateway/hhs-interface-pty.service"
 NGINX = ROOT / "hhs_gui/interface_gateway/nginx-interface-pty.conf"
+CONFIGURE_NGINX = ROOT / "hhs_gui/interface_gateway/configure_nginx.py"
+INSTALL = ROOT / "hhs_gui/interface_gateway/install.sh"
 
-for path in (GATEWAY, PAGE, VITE, UNIT, NGINX):
+for path in (GATEWAY, PAGE, VITE, UNIT, NGINX, CONFIGURE_NGINX, INSTALL):
     if not path.is_file():
         raise SystemExit(f"MISSING:{path.relative_to(ROOT)}")
 
 py_compile.compile(str(GATEWAY), doraise=True)
+py_compile.compile(str(CONFIGURE_NGINX), doraise=True)
 
 gateway = GATEWAY.read_text("utf-8")
 page = PAGE.read_text("utf-8")
 vite = VITE.read_text("utf-8")
 unit = UNIT.read_text("utf-8")
 nginx = NGINX.read_text("utf-8")
+configure_nginx = CONFIGURE_NGINX.read_text("utf-8")
+install = INSTALL.read_text("utf-8")
 
 required_gateway = [
     'GUEST_CLI = ROOT / "bin" / "hhs-guest"',
@@ -70,5 +75,11 @@ if "/var/lib/hhs/ubuntu-guest/current/runtime.env" not in unit:
     raise SystemExit("PROMOTED_GUEST_ENV_MISSING")
 if "127.0.0.1:8787" not in nginx or "proxy_set_header Upgrade $http_upgrade" not in nginx:
     raise SystemExit("NGINX_WEBSOCKET_ROUTE_MISSING")
+if "pre-hhs-interface-pty" not in configure_nginx or 'subprocess.run(["nginx", "-t"], check=True)' not in configure_nginx:
+    raise SystemExit("NGINX_ROLLBACK_CONFIGURATOR_MISSING")
+if 'systemctl enable --now hhs-interface-pty.service' not in install:
+    raise SystemExit("INSTALL_SERVICE_ENABLE_MISSING")
+if 'python3 "$NGINX_CONFIGURATOR" --repository-root "$ROOT"' not in install:
+    raise SystemExit("INSTALL_NGINX_AUTOWIRE_MISSING")
 
 print("HHS_INTERFACE_UBUNTU_PTY_GATEWAY_SOURCE_VERIFY:PASS")
