@@ -1,46 +1,46 @@
 # Repository file/dependency shard - formal
 
-Source commit: [caf87199992c29b3674891bb682b632df611394d](https://github.com/danonbrez/Holofractal_Harmonicode/commit/caf87199992c29b3674891bb682b632df611394d)
+Source commit: [6e080fd0d0f193897144c886e3e362bd3256c670](https://github.com/danonbrez/Holofractal_Harmonicode/commit/6e080fd0d0f193897144c886e3e362bd3256c670)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## formal/certificates
 
-- [formal/certificates/gfe_state_5_4_grobner.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/certificates/gfe_state_5_4_grobner.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 12
+- [formal/certificates/gfe_state_5_4_grobner.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/certificates/gfe_state_5_4_grobner.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 12
 
 ## formal/coq
 
-- [formal/coq/HHS_GFE_Field_Quotient.v](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/coq/HHS_GFE_Field_Quotient.v) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 20
+- [formal/coq/HHS_GFE_Field_Quotient.v](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/coq/HHS_GFE_Field_Quotient.v) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 20
 
 ## formal/lean
 
-- [formal/lean/HHS.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 19
-- [formal/lean/HHS_GFE_Field_Quotient.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS_GFE_Field_Quotient.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 16
+- [formal/lean/HHS.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 19
+- [formal/lean/HHS_GFE_Field_Quotient.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS_GFE_Field_Quotient.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 16
 
 ## formal/lean/HHS/Alignment
 
-- [formal/lean/HHS/Alignment/ReciprocalTensor.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS/Alignment/ReciprocalTensor.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 2
+- [formal/lean/HHS/Alignment/ReciprocalTensor.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS/Alignment/ReciprocalTensor.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 2
 
 ## formal/lean/HHS/Mathlib
 
-- [formal/lean/HHS/Mathlib/Native.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS/Mathlib/Native.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 2
-- [formal/lean/HHS/Mathlib/OrderRat.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS/Mathlib/OrderRat.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [formal/lean/HHS/Mathlib/Native.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS/Mathlib/Native.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 2
+- [formal/lean/HHS/Mathlib/OrderRat.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS/Mathlib/OrderRat.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
 
 ## formal/lean/HHS/Mathlib/Algebra
 
-- [formal/lean/HHS/Mathlib/Algebra/Native.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS/Mathlib/Algebra/Native.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
-- [formal/lean/HHS/Mathlib/Algebra/Universal.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS/Mathlib/Algebra/Universal.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 2
+- [formal/lean/HHS/Mathlib/Algebra/Native.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS/Mathlib/Algebra/Native.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [formal/lean/HHS/Mathlib/Algebra/Universal.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS/Mathlib/Algebra/Universal.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 2
 
 ## formal/lean/HHS/Mathlib/Rat
 
-- [formal/lean/HHS/Mathlib/Rat/Congruence.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS/Mathlib/Rat/Congruence.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
-- [formal/lean/HHS/Mathlib/Rat/Equivalence.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lean/HHS/Mathlib/Rat/Equivalence.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [formal/lean/HHS/Mathlib/Rat/Congruence.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS/Mathlib/Rat/Congruence.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
+- [formal/lean/HHS/Mathlib/Rat/Equivalence.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lean/HHS/Mathlib/Rat/Equivalence.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 0
 
 ## formal/lemmas/pass_144
 
-- [formal/lemmas/pass_144/LEMMA_CORPUS.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lemmas/pass_144/LEMMA_CORPUS.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 16
-- [formal/lemmas/pass_144/LEMMA_DERIVATIONS.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/lemmas/pass_144/LEMMA_DERIVATIONS.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
+- [formal/lemmas/pass_144/LEMMA_CORPUS.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lemmas/pass_144/LEMMA_CORPUS.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 16
+- [formal/lemmas/pass_144/LEMMA_DERIVATIONS.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/lemmas/pass_144/LEMMA_DERIVATIONS.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
 
 ## formal/wolfram
 
-- [formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl](https://github.com/danonbrez/Holofractal_Harmonicode/blob/caf87199992c29b3674891bb682b632df611394d/formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 5
+- [formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6e080fd0d0f193897144c886e3e362bd3256c670/formal/wolfram/pass219_ordered_constraint_formalization_1_0.wl) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 5
