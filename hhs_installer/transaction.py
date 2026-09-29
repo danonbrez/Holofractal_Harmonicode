@@ -563,7 +563,7 @@ class InstallationTransaction:
         if not selected:
             return self._result(step, result="BLOCKED", classification="P172_DEPENDENCY_SCOPED_TESTS_MISSING")
         command = self.runner.run(
-            [str(python), "-m", "pytest", "-q", *selected],
+            [str(python), "-m", "hhs_runtime.testing.native_pytest_provider_v1", "-q", *selected],
             cwd=self.repository_root,
             timeout_seconds=step.timeout_seconds,
         )
