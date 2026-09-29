@@ -311,6 +311,7 @@ def production_manifest(
         for item in frame_map:
             visual = by_frame[item["frame"]]
             item["visual_label"] = visual.get("label", "")
+            item["visual_prompt"] = visual.get("prompt", "")
             item["transition_anchor"] = visual.get("transition_anchor", "")
 
     payload: Dict[str, Any] = {
