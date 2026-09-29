@@ -44,6 +44,7 @@ from hhs_backend.runtime.hhs_unified_language_model_fabric_v1 import (
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 
 VERSION = "HHS_PRODUCTION_ASSISTANT_V2"
+NONTERMINAL_GENERATION_PATHS = frozenset({"EXACT_SEMANTIC_FALLBACK"})
 STATUS_SCHEMA = "HHS_PRODUCTION_ASSISTANT_STATUS_V2"
 TURN_SCHEMA = "HHS_PRODUCTION_ASSISTANT_TURN_V2"
 PROVIDER_ID = "provider:hhs.production_assistant"
@@ -433,10 +434,40 @@ class ProductionAssistantService:
         return self.status()
 
     @staticmethod
-    def _completed(result: Mapping[str, Any]) -> bool:
-        return bool(
-            result.get("ok")
-            and str((result.get("assistant_message") or {}).get("content") or "").strip()
+    def _completion_state(result: Mapping[str, Any]) -> str:
+        if not result.get("ok"):
+            return "REJECTED_OR_FAILED"
+        content = str((result.get("assistant_message") or {}).get("content") or "").strip()
+        if not content:
+            return "EMPTY"
+        provider_metadata = result.get("provider_metadata")
+        generation_path = (
+            str(provider_metadata.get("generation_path") or "")
+            if isinstance(provider_metadata, Mapping)
+            else ""
+        )
+        if generation_path in NONTERMINAL_GENERATION_PATHS:
+            return "NONTERMINAL_SEMANTIC_FALLBACK"
+        return "SUBSTANTIVE_GENERATION"
+
+    @classmethod
+    def _completed(cls, result: Mapping[str, Any]) -> bool:
+        return cls._completion_state(result) == "SUBSTANTIVE_GENERATION"
+
+    def _discard_nonterminal_assistant_candidate(
+        self,
+        result: Mapping[str, Any],
+    ) -> None:
+        message = result.get("assistant_message")
+        if not isinstance(message, Mapping):
+            return
+        root = str(message.get("message_root_hash72") or "")
+        thread_id = str(message.get("thread_id") or result.get("thread_id") or "")
+        if not root or not thread_id:
+            return
+        self.threads.discard_last_assistant_candidate(
+            thread_id,
+            message_root_hash72=root,
         )
 
     def _unavailable_turn(
@@ -556,6 +587,7 @@ class ProductionAssistantService:
                 result["failed_provider_results"] = failed_litert_results
                 result["unified_model_fabric"] = self.unified_model_fabric()
                 return result
+            self._discard_nonterminal_assistant_candidate(result)
             failed_litert_results.append(dict(result))
             candidate_user = result.get("user_message")
             if isinstance(candidate_user, Mapping):
@@ -591,6 +623,7 @@ class ProductionAssistantService:
                 native_result["failed_provider_results"] = failed_litert_results
                 native_result["unified_model_fabric"] = self.unified_model_fabric()
                 return native_result
+            self._discard_nonterminal_assistant_candidate(native_result)
             candidate_user = native_result.get("user_message")
             if isinstance(candidate_user, Mapping):
                 user_message = candidate_user
@@ -628,6 +661,7 @@ class ProductionAssistantService:
                 ]
                 pass153_result["unified_model_fabric"] = self.unified_model_fabric()
                 return pass153_result
+            self._discard_nonterminal_assistant_candidate(pass153_result)
             candidate_user = pass153_result.get("user_message")
             if isinstance(candidate_user, Mapping):
                 user_message = candidate_user
