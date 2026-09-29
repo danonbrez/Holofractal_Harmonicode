@@ -59,7 +59,7 @@ jobs:
           tests/pass220/test_hhs_system_signature_watermark_v1.py
           tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
 
-      - name: Lean 4 origin-family theorem and axiom audit
+      - name: Lean 4 ordered-genealogy theorem and axiom audit
         uses: leanprover/lean-action@v1
         with:
           use-mathlib-cache: false
@@ -70,11 +70,15 @@ jobs:
           axiom-audit: true
           axiom-audit-root: HHS
 
-      - name: Verify public priority anchor remains explicit
+      - name: Verify priority anchor and ordered genealogy remain explicit
         run: |
           grep -F '49b8f32bb9ce7e37e661333d76d5e4398093659f' \
             hhs_runtime/hhs_origin_provenance_protection_v1.py
+          grep -F 'HHS_101_HARMONIC_KERNEL_GENERATION' \
+            hhs_runtime/hhs_origin_provenance_protection_v1.py
           grep -F '179971.179971' \
             contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json
-          grep -F '1.001' \
+          grep -F '1001/1000=1.001' \
+            contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json
+          grep -F 'PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW' \
             contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json
