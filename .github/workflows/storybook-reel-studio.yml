@@ -118,7 +118,6 @@ jobs:
             tests/test_hhs_storybook_reel_timing_v1.py \
             tests/test_hhs_storybook_reel_studio_v1.py \
             tests/test_hhs_storyboard_voice_sync_v1.py \
-            tests/test_hhs_storyboard_voice_sync_v1.py \
             tools/run_storybook_reel_acceptance.py
           node --check applications/storybook_reel_studio/app.js
           node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
