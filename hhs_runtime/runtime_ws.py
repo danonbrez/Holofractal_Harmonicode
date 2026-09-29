@@ -13,8 +13,10 @@ from typing import List
 from typing import Optional
 from typing import Set
 
-from fastapi import WebSocket
-from fastapi import WebSocketDisconnect
+from hhs_backend.runtime.hhs_fastapi_provider_v1 import (
+    WebSocket,
+    WebSocketDisconnect,
+)
 
 from hhs_runtime.hhs_runtime_dataflow_guard_v1 import attach_egress_record
 
