@@ -233,7 +233,7 @@ function applyTemplate(templateId, {lock = true} = {}) {
   }
   $('#automatic-palette').checked = Number(template.palette_mode ?? 0) !== 2;
   updatePaletteControls();
-  if ($('#automatic-palette').checked) applyPalette(automaticPalette(Math.floor(state.previewSecond / 6)));
+  if ($('#automatic-palette').checked) applyPalette(automaticPalette(Math.floor(state.previewSecond / 4)));
   document.querySelectorAll('.template-card').forEach((card) => card.classList.toggle('active',card.dataset.template === templateId));
   readStyle();
   renderPreview();
@@ -398,7 +398,7 @@ function renderPreview() {
   context.fillStyle = 'rgba(5,3,4,.75)';context.fillRect(45,910,450,8);
   context.fillStyle = palette.colors.w;context.fillRect(45,910,450*(second/88),8);
   context.font='700 16px ui-monospace,monospace';context.fillStyle=palette.colors.x;context.fillText(`PAGE ${String(scene+1).padStart(2,'0')} · VM81`,42,682);
-  $('#time').textContent = `${formatTime(second)} / 01:30`;
+  $('#time').textContent = `${formatTime(second)} / 01:28`;
   $('#scrub').value = Math.min(88,Math.floor(second));
 }
 
