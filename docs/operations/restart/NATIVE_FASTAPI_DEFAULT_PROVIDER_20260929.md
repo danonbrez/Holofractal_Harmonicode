@@ -13,9 +13,10 @@ Status: **IMPLEMENTED — VALIDATION PENDING**
 
 `HHS_FASTAPI_PROVIDER` accepts:
 
-- `auto` (default): use external FastAPI when it is installed; otherwise bind the repository-native compatibility surface automatically.
-- `native`: force repository-native FastAPI compatibility and never import external FastAPI.
+- `native` (implicit default): bind repository-native FastAPI compatibility and never import external FastAPI.
 - `external`: require external FastAPI and fail closed with `HHS_FASTAPI_EXTERNAL_EXPLICIT_BUT_UNAVAILABLE` when it is absent.
+
+`hhs_backend.server` is an explicit external FastAPI composition boundary and sets `HHS_FASTAPI_PROVIDER=external` by default before importing the canonical WebSocket router. A caller may still explicitly override the environment before server import.
 
 The provider does not create VM81 mutation, Hash72 commit, Hash216 persistence, or canonical-state authority.
 
@@ -37,13 +38,16 @@ Changed surfaces:
 3. `hhs_backend/runtime/runtime_ws.py`
    - imports API/WebSocket compatibility from the provider resolver instead of directly importing external FastAPI.
 
-4. `tests/pass220/test_hhs_native_fastapi_default_provider_v1.py`
+4. `hhs_backend/server.py`
+   - explicitly selects the external provider at the canonical external FastAPI application boundary.
+
+5. `tests/pass220/test_hhs_native_fastapi_default_provider_v1.py`
    - native router metadata;
    - automatic native fallback with all external FastAPI imports blocked;
    - explicit external fail-closed behavior;
    - explicit native mode never importing external FastAPI.
 
-5. `.github/workflows/native-fastapi-default-provider.yml`
+6. `.github/workflows/native-fastapi-default-provider.yml`
    - creates a clean virtual environment;
    - deliberately does **not** install FastAPI or Starlette;
    - asserts both are absent;
