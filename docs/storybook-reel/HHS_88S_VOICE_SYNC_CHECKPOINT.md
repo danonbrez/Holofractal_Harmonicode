@@ -6,6 +6,7 @@
 - Base main commit: `75a7912a6b204fd5cda5eb67e993a9af39f85fa6`
 - Branch: `feature/storyboard-voice-sync-88s`
 - Pull request: `#657`
+- Current head: `73508e3ae9d5d7e95d6f2e3237794bb6d260609a`
 - Merge target: `main`
 
 ## Canonical production contract
@@ -99,6 +100,33 @@ The key is never sent to or embedded in frontend JavaScript.
 - full acceptance script/workflow
   - 88-second end-to-end media acceptance
 
+## Repair-forward update — 2026-09-29
+
+Observed CI failures on prior head `ce4d056c83063b03a1dde8c733305bc51a7bc260`:
+
+1. **Native Storybook Reel Studio** failed during native build/test.
+2. **Pass 203 Integrated Mainframe** failed during hydrated mainframe tests.
+
+Root cause shared by both paths:
+- `hhs_storybook_reel_timing_v1.py` contained literal escaped `\\n` sequences in the newly inserted timing functions, producing a Python `SyntaxError` at line 457.
+
+Repair:
+- commit `ad0e8cb52cdac659e11009d1cb3bc8e376af7af6` rewrote the block as real Python source lines.
+
+Proactive dependency audit then found:
+- native reel test still asserted legacy `scene_count == 15U`.
+
+Repair:
+- commit `73508e3ae9d5d7e95d6f2e3237794bb6d260609a` updates the invariant to `scene_count == 22U`.
+
+Audited dependent Pass 203/high-fidelity tests and validation scripts show no remaining fixed `90`, `2700`, or `15` storyboard-duration assumptions.
+
+Fresh CI on `73508e3ae9d5d7e95d6f2e3237794bb6d260609a`:
+- Native Storybook Reel Studio: pending
+- Pass 203 Integrated Mainframe: queued
+- Validate Full Application IDE: pending
+- HHS Consensus Gate: queued
+
 ## Validation state at checkpoint
 
 Completed:
@@ -117,7 +145,7 @@ Environment limitation:
 
 Remaining:
 
-1. Wait for the final-head PR checks to attach/run.
+1. Inspect the fresh PR checks on head `73508e3ae9d5d7e95d6f2e3237794bb6d260609a`.
 2. Inspect **Native Storybook Reel Studio** first.
 3. Repair-forward only concrete failures attributable to this change.
 4. Require native build/test/sanitize, Python/JS compile, timing/UI tests, and full 88-second acceptance to pass.
