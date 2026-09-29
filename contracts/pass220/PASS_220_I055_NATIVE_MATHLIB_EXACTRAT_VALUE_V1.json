@@ -1,0 +1,34 @@
+{
+  "schema": "HHS_PASS_220_I055_NATIVE_MATHLIB_EXACTRAT_VALUE_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "base_main": "a5ff3a01484ed63feeae0107de39b982e1321303",
+  "inherits": [
+    "HHS_PASS_220_I053_NATIVE_MATHLIB_EXACTRAT_EQUIVALENCE_V1",
+    "HHS_PASS_220_I054_NATIVE_MATHLIB_EXACTRAT_CONGRUENCE_V1"
+  ],
+  "formal_module": "HHS.Mathlib.Rat.Value",
+  "value_layer": {
+    "setoid": "ExactRat.eqv",
+    "quotient": "ExactRatValue",
+    "quotient_constructed": true,
+    "operations_lifted": ["neg", "add", "mul"],
+    "representative_recoverable": false
+  },
+  "provenance_layer": {
+    "type": "ExactRatProvenance",
+    "stores_unreduced_pair": true,
+    "stores_quotient_value": true,
+    "pair_identity_preserved": true,
+    "equivalent_pairs_may_share_value": true
+  },
+  "runtime_arithmetic_changed": false,
+  "generic_hhs_commutation_authorized": false,
+  "authority": {
+    "arithmetic": "INHERITED_PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "lean": "QUOTIENT_VALUE_PROOF_LAYER",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}

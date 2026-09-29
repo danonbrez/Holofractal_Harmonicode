@@ -1,0 +1,40 @@
+{
+  "schema": "HHS_PASS_220_I056_NATIVE_MATHLIB_EXACTRAT_VALUE_LAWS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "base_main": "ab09a779fd9beba48926c50826e04eb8fad68f61",
+  "inherits": [
+    "HHS_PASS_220_I055_NATIVE_MATHLIB_EXACTRAT_VALUE_V1"
+  ],
+  "formal_module": "HHS.Mathlib.Rat.ValueLaws",
+  "carrier": "ExactRatValue",
+  "closed_universal_laws": [
+    "add_left_identity",
+    "add_right_identity",
+    "mul_left_identity",
+    "mul_right_identity",
+    "add_left_inverse",
+    "add_right_inverse"
+  ],
+  "deferred_universal_laws": [
+    "add_assoc",
+    "mul_assoc",
+    "left_distrib",
+    "right_distrib"
+  ],
+  "value_constants": {
+    "zero": "0/1",
+    "one": "1/1"
+  },
+  "provenance_objects_rewritten": false,
+  "pair_provenance_preserved_separately": true,
+  "runtime_arithmetic_changed": false,
+  "generic_hhs_commutation_authorized": false,
+  "authority": {
+    "arithmetic": "INHERITED_PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "lean": "QUOTIENT_VALUE_LAW_PROOF_LAYER",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}
