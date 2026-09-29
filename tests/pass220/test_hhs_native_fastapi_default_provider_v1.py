@@ -15,6 +15,8 @@ ROOT = Path(__file__).resolve().parents[2]
 def _run_python(source: str, *, provider: str | None = None) -> subprocess.CompletedProcess[str]:
     env = dict(os.environ)
     env.pop("HHS_FASTAPI_PROVIDER", None)
+    env.pop("HHS_LANE5_PROVIDER_FASTAPI", None)
+    env.pop("HHS_LANE5_PROVIDER_DEFAULT", None)
     if provider is not None:
         env["HHS_FASTAPI_PROVIDER"] = provider
     return subprocess.run(
@@ -65,6 +67,8 @@ def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
 
 builtins.__import__ = guarded_import
 os.environ.pop("HHS_FASTAPI_PROVIDER", None)
+os.environ.pop("HHS_LANE5_PROVIDER_FASTAPI", None)
+os.environ.pop("HHS_LANE5_PROVIDER_DEFAULT", None)
 
 from hhs_backend.runtime.hhs_fastapi_provider_v1 import (
     APIRouter,
