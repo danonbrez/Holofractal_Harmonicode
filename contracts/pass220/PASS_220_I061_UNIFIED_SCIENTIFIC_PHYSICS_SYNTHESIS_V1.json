@@ -39,7 +39,10 @@
   },
   "lane5_knowledge_graph": {
     "coordinate_domain": 5184,
-    "coordinate_range": [0, 5183],
+    "coordinate_range": [
+      0,
+      5183
+    ],
     "candidate_hash216_order": [
       "formal_axis_hash72",
       "empirical_axis_hash72",
@@ -76,7 +79,9 @@
       "kernel_validation_required": true,
       "leanchecker_required": true,
       "axiom_audit_required": true,
-      "proof_identity_only": true
+      "proof_identity_only": true,
+      "theorem_identity_hash72": "nY*r1-+?2ON7geRk9Uu5G7jO1lD!E!BjMfRj0I3OsFuQPSkRRf-eS>B/Z)vFXbO87vB6)Hkj",
+      "dependency_identity_hash72": "iTulnFCxT>M0-zvAiwdMF?M?*F*H*QQ29w0db/EC7?jHmdb16/R(sEoIR8BOkvKr5fcqJ0Hx"
     }
   },
   "authority": {
