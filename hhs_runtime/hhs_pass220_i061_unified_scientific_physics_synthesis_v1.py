@@ -261,6 +261,108 @@ def _empirical_axis(
     return axis
 
 
+def _fraction_from_record(value: Any, *, name: str) -> Fraction:
+    if not isinstance(value, Mapping):
+        raise I061PhysicsSynthesisError(f"{name} must be an exact rational record")
+    numerator = value.get("numerator")
+    denominator = value.get("denominator")
+    if (
+        isinstance(numerator, bool)
+        or not isinstance(numerator, int)
+        or isinstance(denominator, bool)
+        or not isinstance(denominator, int)
+        or denominator <= 0
+    ):
+        raise I061PhysicsSynthesisError(f"{name} exact rational record invalid")
+    return Fraction(numerator, denominator)
+
+
+def _validate_empirical_axis_payload(empirical: Mapping[str, Any]) -> bool:
+    claimed_hash = empirical.get("empirical_axis_hash72")
+    if not validate_hash72(claimed_hash):
+        raise I061PhysicsSynthesisError("empirical axis Hash72 invalid")
+    body = dict(empirical)
+    body.pop("empirical_axis_hash72", None)
+    if claimed_hash != _hash72("empirical-correspondence-axis", body):
+        raise I061PhysicsSynthesisError("empirical axis Hash72 mismatch")
+
+    claim = empirical.get("claims_measured_physical_behavior") is True
+    required = empirical.get("empirical_evidence_required") is True
+    if claim != required:
+        raise I061PhysicsSynthesisError("empirical requirement flag drift")
+    if empirical.get("formal_validity_cannot_substitute") is not True:
+        raise I061PhysicsSynthesisError("formal-to-empirical substitution enabled")
+    if empirical.get(
+        "empirical_correspondence_cannot_substitute_for_formal_validity"
+    ) is not True:
+        raise I061PhysicsSynthesisError("empirical-to-formal substitution enabled")
+
+    domain = empirical.get("declared_domain")
+    rows = empirical.get("evidence")
+    if not isinstance(rows, list):
+        raise I061PhysicsSynthesisError("empirical evidence must be a list")
+
+    for index, row in enumerate(rows):
+        if not isinstance(row, Mapping):
+            raise I061PhysicsSynthesisError(
+                f"empirical evidence row {index} must be a mapping"
+            )
+        for field in ("evidence_id", "source", "declared_domain", "unit", "dimension"):
+            value = row.get(field)
+            if not isinstance(value, str) or not value.strip():
+                raise I061PhysicsSynthesisError(
+                    f"empirical evidence row {index} missing {field}"
+                )
+        measured = _fraction_from_record(
+            row.get("measured_value"), name=f"evidence[{index}].measured_value"
+        )
+        predicted = _fraction_from_record(
+            row.get("predicted_value"), name=f"evidence[{index}].predicted_value"
+        )
+        residual = _fraction_from_record(
+            row.get("residual"), name=f"evidence[{index}].residual"
+        )
+        error_bound = _fraction_from_record(
+            row.get("error_bound"), name=f"evidence[{index}].error_bound"
+        )
+        if error_bound < 0:
+            raise I061PhysicsSynthesisError("empirical error bound cannot be negative")
+        if abs(residual) > error_bound:
+            raise I061PhysicsSynthesisError(
+                "empirical residual exceeds declared exact error bound"
+            )
+        if measured - predicted != residual:
+            raise I061PhysicsSynthesisError(
+                "empirical residual must equal measured minus predicted"
+            )
+        if not validate_hash72(row.get("replay_receipt_hash72")):
+            raise I061PhysicsSynthesisError(
+                "empirical replay receipt must be canonical Hash72"
+            )
+        if domain is not None and row.get("declared_domain") != domain:
+            raise I061PhysicsSynthesisError(
+                "empirical evidence domain mismatch"
+            )
+
+    if claim:
+        if not isinstance(domain, str) or not domain.strip():
+            raise I061PhysicsSynthesisError(
+                "measured physical behavior requires declared domain"
+            )
+        if not rows:
+            raise I061PhysicsSynthesisError(
+                "measured physical behavior requires empirical evidence"
+            )
+        if empirical.get("empirical_correspondence_valid") is not True:
+            raise I061PhysicsSynthesisError(
+                "measured physical behavior empirical axis invalid"
+            )
+    elif empirical.get("empirical_correspondence_valid") is not True:
+        raise I061PhysicsSynthesisError("formal-only empirical axis must be neutral-valid")
+
+    return True
+
+
 def build_scientific_physics_candidate(
     *,
     tick: int,
@@ -414,11 +516,8 @@ def validate_scientific_physics_candidate(
     empirical = candidate.get("empirical_correspondence_axis")
     if not isinstance(empirical, Mapping):
         raise I061PhysicsSynthesisError("empirical axis missing")
+    _validate_empirical_axis_payload(empirical)
     measured_claim = empirical.get("claims_measured_physical_behavior") is True
-    if measured_claim and empirical.get("empirical_correspondence_valid") is not True:
-        raise I061PhysicsSynthesisError(
-            "measured behavior lacks empirical correspondence"
-        )
 
     binding = candidate.get("intrinsic_proof_binding")
     physics = candidate.get("physics_cell_candidate")
