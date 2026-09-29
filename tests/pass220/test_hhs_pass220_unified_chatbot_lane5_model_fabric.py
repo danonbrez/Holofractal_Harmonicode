@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 
+import hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 as assistant_gateway
 from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
     DEFAULT_HHS_ASSISTANT_TOOLS,
     assistant_api_tool_registry,
@@ -333,6 +334,68 @@ def test_lane5_and_model_fabric_tools_are_in_one_governed_registry():
     }.issubset(names)
     assert registry["read_only"] is True
     assert registry["mutating_tool_execution_allowed"] is False
+
+
+def test_lane5_search_consumes_global_visibility_not_bounded_local_graph(monkeypatch):
+    model = {
+        "counts": {
+            "main_repository_file_surfaces": 1,
+            "inherited_capability_surfaces": 1,
+            "repository_ref_delta_surfaces": 1,
+            "discovered_refs": 1,
+            "total_visibility_nodes": 3,
+        },
+        "roots": {"visibility_root_hash216": "H" * 216},
+        "coverage": {
+            "complete_within_discovered_refs": True,
+            "silent_truncation_allowed": False,
+        },
+        "nodes": [
+            {
+                "node_id": "visibility:ref-delta:refs/remotes/pull/634:training.py",
+                "node_kind": "REPOSITORY_REF_DELTA_SURFACE",
+                "source_state": "PULL_REQUEST_REF",
+                "source_ref": "refs/remotes/pull/634",
+                "source_commit": "a" * 40,
+                "source_path": "training.py",
+                "lane5_visible": True,
+                "closure_state": "UNRESOLVED",
+                "validation_state": "UNRESOLVED",
+                "executability_state": "UNRESOLVED",
+                "declared_classification": {"demo": True, "enabled": False},
+                "hash216": "V" * 216,
+            },
+            {
+                "node_id": "visibility:capability:language.generate",
+                "node_kind": "CAPABILITY_SURFACE",
+                "source_state": "INHERITED_PASS219_REVERSE_DISCOVERY",
+                "source_ref": "HEAD",
+                "source_commit": "b" * 40,
+                "source_path": "language.py",
+                "lane5_visible": True,
+                "closure_state": "REVERSE_DISCOVERY_OBSERVED",
+                "validation_state": "INHERITED_EVIDENCE_PRESENT",
+                "executability_state": "UNRESOLVED",
+                "declared_classification": {},
+                "hash216": "C" * 216,
+            },
+        ],
+    }
+    monkeypatch.setattr(
+        assistant_gateway,
+        "_lane5_global_visibility_sync",
+        lambda: model,
+    )
+    result = assistant_gateway._lane5_search_sync("training demo", 6)
+    assert result["lane5_global_visibility"] is True
+    assert result["visibility_root_hash216"] == "H" * 216
+    assert result["result_count"] == 1
+    found = result["results"][0]
+    assert found["source_state"] == "PULL_REQUEST_REF"
+    assert found["lane5_visible"] is True
+    assert found["closure_state"] == "UNRESOLVED"
+    assert found["declared_classification"]["demo"] is True
+    assert found["declared_classification"]["enabled"] is False
 
 
 def test_native_both_mode_routes_lane5_queries_to_lane5_tools():
