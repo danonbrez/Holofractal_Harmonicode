@@ -438,6 +438,7 @@ async function generateVoiceover() {
         model_id: $('#voice-model').value.trim() || 'eleven_multilingual_v2',
         initial_speed: 1.0,
         max_attempts: 3,
+        storyboard_markdown: $('#storyboard-markdown').value.trim() || null,
       }),
     });
     const payload = await response.json();
