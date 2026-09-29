@@ -264,7 +264,7 @@ def test_i061_rejects_out_of_range_knowledge_coordinate_and_float_like_time() ->
         ExactRational(1, 0)
 
 
-def test_i061_candidate_receipt_detects_any_postconstruction_mutation() -> None:
+def test_i061_candidate_topology_and_outer_receipt_detect_mutation() -> None:
     candidate = build_scientific_physics_candidate(
         tick=13,
         body_count=3,
@@ -274,9 +274,47 @@ def test_i061_candidate_receipt_detects_any_postconstruction_mutation() -> None:
         knowledge_coordinate5184=72,
         parent_hash216=parent216(),
     )
-    tampered = deepcopy(candidate)
-    tampered["physics_cell_candidate"]["body_count"] += 1
+
+    topology_tampered = deepcopy(candidate)
+    topology_tampered["physics_cell_candidate"]["body_count"] += 1
+    with pytest.raises(I061PhysicsSynthesisError, match="Hash216 binding drift"):
+        validate_scientific_physics_candidate(topology_tampered)
+
+    receipt_tampered = deepcopy(candidate)
+    receipt_tampered["admission"]["formal_axis_required"] = False
     with pytest.raises(I061PhysicsSynthesisError, match="candidate receipt mismatch"):
+        validate_scientific_physics_candidate(receipt_tampered)
+
+
+def test_i061_empirical_axis_hash_and_exact_residual_are_revalidated() -> None:
+    candidate = build_scientific_physics_candidate(
+        tick=14,
+        body_count=1,
+        collider_count=1,
+        constraint_count=0,
+        delta_time=ExactRational(1, 60),
+        knowledge_coordinate5184=73,
+        parent_hash216=parent216(),
+        claims_measured_physical_behavior=True,
+        declared_domain="bench-rigid-body-v1",
+        calibration_evidence=[evidence()],
+    )
+
+    tampered = deepcopy(candidate)
+    tampered["empirical_correspondence_axis"]["evidence"][0]["unit"] = "s"
+    with pytest.raises(I061PhysicsSynthesisError, match="empirical axis Hash72 mismatch"):
+        validate_scientific_physics_candidate(tampered)
+
+    tampered = deepcopy(candidate)
+    row = tampered["empirical_correspondence_axis"]["evidence"][0]
+    row["residual"] = {"numerator": 0, "denominator": 1}
+    body = dict(tampered["empirical_correspondence_axis"])
+    body.pop("empirical_axis_hash72")
+    from hhs_runtime.hhs_pass220_i061_unified_scientific_physics_synthesis_v1 import _hash72
+    tampered["empirical_correspondence_axis"]["empirical_axis_hash72"] = _hash72(
+        "empirical-correspondence-axis", body
+    )
+    with pytest.raises(I061PhysicsSynthesisError, match="measured minus predicted"):
         validate_scientific_physics_candidate(tampered)
 
 
