@@ -1,0 +1,23 @@
+[Unit]
+Description=HHS interface Ubuntu PTY gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hhs
+Group=hhs
+WorkingDirectory=/opt/hhs/app
+EnvironmentFile=/etc/hhs/interface-pty.env
+ExecStart=/opt/hhs/app/.venv/bin/uvicorn hhs_gui.interface_gateway.ubuntu_pty_gateway:app --host 127.0.0.1 --port 8787 --proxy-headers
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hhs /opt/hhs/app/.hhs_runtime_state /opt/hhs/app/.hhs
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target
