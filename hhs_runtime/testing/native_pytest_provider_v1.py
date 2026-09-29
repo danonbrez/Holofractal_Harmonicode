@@ -201,13 +201,7 @@ class _MarkDecorator:
         return _MarkSpec(self.name, self.args, self.kwargs)
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
-        if (
-            len(args) == 1
-            and callable(args[0])
-            and not kwargs
-            and not self.args
-            and not self.kwargs
-        ):
+        if len(args) == 1 and callable(args[0]) and not kwargs:
             return _attach_mark(args[0], self.spec)
         return _MarkDecorator(self.name, tuple(args), kwargs)
 
@@ -829,7 +823,11 @@ class NativePytestProvider:
                 errors.append(f"{_path_node(self.root, path)}:{type(exc).__name__}:{exc}")
                 continue
             fixtures = self._fixtures(module)
-            module_marks = tuple(getattr(module, "pytestmark", ()))
+            raw_module_marks = getattr(module, "pytestmark", ())
+            if isinstance(raw_module_marks, (_MarkDecorator, _MarkSpec)):
+                module_marks = (raw_module_marks,)
+            else:
+                module_marks = tuple(raw_module_marks)
             normalized_module_marks: tuple[_MarkSpec, ...] = tuple(
                 mark.spec if isinstance(mark, _MarkDecorator) else mark
                 for mark in module_marks
@@ -1328,28 +1326,34 @@ class NativePytestProvider:
         return "::".join([normalized, *rest]) if rest else normalized
 
     @staticmethod
-    def _setup_module(module: types.ModuleType) -> None:
-        function = getattr(module, "setup_module", None)
-        if callable(function):
-            _call_maybe_async(function, module)
-
-    @staticmethod
-    def _teardown_module(module: types.ModuleType) -> None:
-        function = getattr(module, "teardown_module", None)
-        if callable(function):
-            _call_maybe_async(function, module)
-
-    @staticmethod
-    def _setup_class(class_type: type[Any]) -> None:
-        function = getattr(class_type, "setup_class", None)
-        if callable(function):
+    def _call_xunit(function: Callable[..., Any] | None, argument: Any) -> None:
+        if not callable(function):
+            return
+        parameters = [
+            item
+            for item in inspect.signature(function).parameters.values()
+            if item.kind not in (item.VAR_POSITIONAL, item.VAR_KEYWORD)
+        ]
+        if parameters:
+            _call_maybe_async(function, argument)
+        else:
             _call_maybe_async(function)
 
-    @staticmethod
-    def _teardown_class(class_type: type[Any]) -> None:
-        function = getattr(class_type, "teardown_class", None)
-        if callable(function):
-            _call_maybe_async(function)
+    @classmethod
+    def _setup_module(cls, module: types.ModuleType) -> None:
+        cls._call_xunit(getattr(module, "setup_module", None), module)
+
+    @classmethod
+    def _teardown_module(cls, module: types.ModuleType) -> None:
+        cls._call_xunit(getattr(module, "teardown_module", None), module)
+
+    @classmethod
+    def _setup_class(cls, class_type: type[Any]) -> None:
+        cls._call_xunit(getattr(class_type, "setup_class", None), class_type)
+
+    @classmethod
+    def _teardown_class(cls, class_type: type[Any]) -> None:
+        cls._call_xunit(getattr(class_type, "teardown_class", None), class_type)
 
 
 class _ArgumentParser(argparse.ArgumentParser):
