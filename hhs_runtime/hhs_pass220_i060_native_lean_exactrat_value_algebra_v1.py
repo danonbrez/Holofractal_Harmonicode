@@ -42,6 +42,7 @@ LEAN_DEPENDENCIES = (
     "HHS.Mathlib.Rat.ValueLaws",
     "Int.add_mul",
     "Int.mul_add",
+    "Int.natCast_mul",
     "Int.add_assoc",
     "Int.mul_assoc",
     "Int.add_comm",
