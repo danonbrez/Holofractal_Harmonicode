@@ -246,7 +246,7 @@ def test_i063_law_mutation_breaks_hash_and_source_or_dimension_drift_fails() -> 
 
     tampered = deepcopy(law)
     tampered["assumptions"].append("late mutation")
-    with pytest.raises(I063PhysicsLawError, match="law object Hash72 mismatch"):
+    with pytest.raises(I063PhysicsLawError, match="law formal identity Hash72 drift"):
         validate_physics_law_object(tampered)
 
     tampered = deepcopy(law)
