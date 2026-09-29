@@ -6,6 +6,7 @@ import HHS.Mathlib.Rat.Equivalence
 import HHS.Mathlib.Rat.Congruence
 import HHS.Mathlib.Rat.Value
 import HHS.Mathlib.Rat.ValueLaws
+import HHS.Mathlib.Rat.ValueAlgebra
 import HHS.Alignment.ReciprocalTensor
 
 namespace HHS

@@ -1,0 +1,57 @@
+{
+  "schema": "HHS_PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "base_main": "08bc57b2f9eb075af14fb3bf700c637832f2b566",
+  "inherits": [
+    "HHS_PASS_220_I053_NATIVE_MATHLIB_EXACTRAT_EQUIVALENCE_V1",
+    "HHS_PASS_220_I054_NATIVE_MATHLIB_EXACTRAT_CONGRUENCE_V1",
+    "HHS_PASS_220_I055_NATIVE_MATHLIB_EXACTRAT_VALUE_V1",
+    "HHS_PASS_220_I056_NATIVE_MATHLIB_EXACTRAT_VALUE_LAWS_V1"
+  ],
+  "repository_lineage": {
+    "contains_i057": true,
+    "contains_i058": true,
+    "contains_i059": true,
+    "i059_merge_precedes_i060_base": true
+  },
+  "formal_module": "HHS.Mathlib.Rat.ValueAlgebra",
+  "closed_universal_laws": [
+    "add_assoc",
+    "mul_assoc",
+    "left_distrib",
+    "right_distrib"
+  ],
+  "inherited_universal_laws": [
+    "add_left_identity",
+    "add_right_identity",
+    "mul_left_identity",
+    "mul_right_identity",
+    "add_left_inverse",
+    "add_right_inverse"
+  ],
+  "commutation": {
+    "add_promoted": false,
+    "mul_promoted": false,
+    "generic_hhs_authorized": false,
+    "local_conventional_int_ac_only": true
+  },
+  "proof_identity": {
+    "theorem_hash72_generated": true,
+    "dependency_hash72_generated": true,
+    "kernel_validation_required": true,
+    "runtime_claims_live_lean_kernel_execution": false,
+    "intrinsic_successor_binding_required": true,
+    "intended_successor": "PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS",
+    "post_hoc_attachment_satisfies_i061": false
+  },
+  "provenance_objects_rewritten": false,
+  "runtime_arithmetic_changed": false,
+  "authority": {
+    "arithmetic": "INHERITED_PYTHON1_C11_5184_DIGIT_EXACT_BIGINT",
+    "lean": "PROOF_AND_IDENTITY_WITNESS",
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false
+  }
+}
