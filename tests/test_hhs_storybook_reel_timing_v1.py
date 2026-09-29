@@ -60,10 +60,12 @@ def test_elevenlabs_character_alignment_preserves_provider_time_on_88_second_mas
     spans = character_alignment_timings(text, alignment, Fraction(len(characters), 10))
     assert spans
     assert spans[0].first_frame == 0
-    assert spans[-1].end_frame == FRAME_COUNT
+    expected_end_frame = int(Fraction(len(characters), 10) * 30)
+    assert spans[-1].end_frame == expected_end_frame
+    assert spans[-1].end_frame < FRAME_COUNT
     resolved, source = timings_from_alignment(text, alignment, Fraction(len(characters), 10))
     assert source == "elevenlabs_character_alignment"
-    assert resolved[-1].end_frame == FRAME_COUNT
+    assert resolved[-1].end_frame == expected_end_frame
 
 
 def test_invalid_or_absent_alignment_uses_deterministic_duration_fit():
