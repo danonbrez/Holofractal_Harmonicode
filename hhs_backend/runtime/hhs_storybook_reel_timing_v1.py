@@ -15,7 +15,7 @@ from fractions import Fraction
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 FPS = 30
-DURATION_SECONDS = 90
+DURATION_SECONDS = 88
 FRAME_COUNT = FPS * DURATION_SECONDS
 MAX_TIMING_SPANS = 256
 
@@ -454,40 +454,7 @@ def punctuation_weighted_timings(text: str) -> List[TimingSpan]:
     return result
 
 
-def _normalize_spans(spans: Sequence[TimingSpan]) -> List[TimingSpan]:
-    if not spans:
-        return []
-    normalized: List[TimingSpan] = []
-    cursor = 0
-    for index, span in enumerate(spans[:MAX_TIMING_SPANS]):
-        end = max(cursor + 1, min(FRAME_COUNT, span.end_frame))
-        normalized.append(
-            TimingSpan(index, cursor, end - cursor, span.text_offset, span.text_length, span.source)
-        )
-        cursor = end
-        if cursor >= FRAME_COUNT:
-            break
-    if normalized and cursor < FRAME_COUNT:
-        last = normalized[-1]
-        normalized[-1] = TimingSpan(
-            last.index,
-            last.first_frame,
-            last.frame_count + FRAME_COUNT - cursor,
-            last.text_offset,
-            last.text_length,
-            last.source,
-        )
-    return normalized
-
-
-def _scaled_frame(seconds: Fraction, source_duration: Fraction) -> int:
-    if source_duration <= 0:
-        return 0
-    scaled = seconds * Fraction(DURATION_SECONDS, 1) / source_duration
-    return max(0, min(FRAME_COUNT, int(scaled * FPS)))
-
-
-def character_alignment_timings(
+def _normalize_spans(spans: Sequence[TimingSpan]) -> List[TimingSpan]:\n    \"\"\"Clamp provider timing without rescaling or erasing intentional pauses.\"\"\"\n    if not spans:\n        return []\n    normalized: List[TimingSpan] = []\n    prior_end = 0\n    for index, span in enumerate(spans[:MAX_TIMING_SPANS]):\n        first = max(prior_end, min(FRAME_COUNT - 1, span.first_frame))\n        end = max(first + 1, min(FRAME_COUNT, span.end_frame))\n        normalized.append(\n            TimingSpan(index, first, end - first, span.text_offset, span.text_length, span.source)\n        )\n        prior_end = end\n        if prior_end >= FRAME_COUNT:\n            break\n    return normalized\n\n\ndef _scaled_frame(seconds: Fraction, source_duration: Fraction) -> int:\n    \"\"\"Convert an external timestamp directly to the canonical 30 fps clock.\"\"\"\n    if source_duration <= 0:\n        return 0\n    clamped = max(Fraction(0, 1), min(Fraction(DURATION_SECONDS, 1), seconds))\n    return max(0, min(FRAME_COUNT, int(clamped * FPS)))\n\ndef character_alignment_timings(
     text: str,
     alignment: Mapping[str, Any],
     source_duration: Fraction,
