@@ -596,9 +596,14 @@ def benchmark_i062_native_pytest(*, iterations: int) -> dict[str, Any]:
     )
 
     selector = "tests/pass220/i062_native_pytest_specimen"
-    provider = NativePytestProvider(ROOT)
 
-    cold_ns, cold = _timed(lambda: provider.run([selector]))
+    def execute(*, collect_only: bool = False):
+        return NativePytestProvider(ROOT).run(
+            [selector],
+            collect_only=collect_only,
+        )
+
+    cold_ns, cold = _timed(execute)
     if cold.exit_code != EXIT_OK:
         raise RuntimeError("I062 native pytest specimen rejected")
     outcomes = [result.outcome for result in cold.results]
@@ -618,7 +623,7 @@ def benchmark_i062_native_pytest(*, iterations: int) -> dict[str, Any]:
     collection_hash72: set[str] = set()
     result_hash72: set[str] = set()
     for _ in range(iterations):
-        elapsed, run = _timed(lambda: provider.run([selector]))
+        elapsed, run = _timed(execute)
         if run.exit_code != EXIT_OK:
             raise RuntimeError("I062 native pytest replay rejected")
         samples.append(elapsed)
@@ -633,7 +638,7 @@ def benchmark_i062_native_pytest(*, iterations: int) -> dict[str, Any]:
     selected_counts: set[int] = set()
     for _ in range(iterations):
         elapsed, run = _timed(
-            lambda: provider.run([selector], collect_only=True)
+            lambda: execute(collect_only=True)
         )
         if run.exit_code != EXIT_OK:
             raise RuntimeError("I062 collect-only replay rejected")
