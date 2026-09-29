@@ -1,0 +1,21 @@
+{
+  "branch": "pass220/i062-native-pytest-provider1",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "49f3a70e8bf2b43c8fe81e9c62caa936fe34e0726b9ed7747bb159969a9bc048",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 36588342325,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "ffc8f5e413b99fee1b259e460075d58203219c18"
+}
