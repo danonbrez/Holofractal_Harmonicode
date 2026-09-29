@@ -334,6 +334,173 @@ class HHSNativeASGIApplication:
         await send({"type": "http.response.body", "body": body})
 
 
+@dataclass(frozen=True)
+class NativeAPIRoute:
+    """Deferred FastAPI-compatible route declaration for native-first imports."""
+
+    path: str
+    endpoint: Handler
+    methods: frozenset[str]
+    name: str
+    tags: tuple[str, ...]
+    include_in_schema: bool = True
+
+    @property
+    def route_type(self) -> str:
+        return "WEBSOCKET" if "WEBSOCKET" in self.methods else "HTTP"
+
+
+class NativeAPIRouter:
+    """Minimal APIRouter-compatible declaration surface.
+
+    This object is intentionally a registration membrane, not an execution
+    authority. Native execution remains owned by NativeRouteKernel /
+    HHSNativeASGIApplication when a route family is bound for ASGI service.
+    """
+
+    def __init__(
+        self,
+        *,
+        prefix: str = "",
+        tags: list[str] | tuple[str, ...] | None = None,
+        **_: Any,
+    ) -> None:
+        self.prefix = str(prefix)
+        self.tags = tuple(tags or ())
+        self.routes: list[NativeAPIRoute] = []
+
+    def _path(self, path: str) -> str:
+        path_value = str(path)
+        if not self.prefix:
+            return path_value
+        if not path_value:
+            return self.prefix
+        return self.prefix.rstrip("/") + "/" + path_value.lstrip("/")
+
+    def add_api_route(
+        self,
+        path: str,
+        endpoint: Handler,
+        *,
+        methods: list[str] | tuple[str, ...] | set[str] | frozenset[str] | None = None,
+        name: str | None = None,
+        tags: list[str] | tuple[str, ...] | None = None,
+        include_in_schema: bool = True,
+        **_: Any,
+    ) -> None:
+        method_set = frozenset(
+            str(method).upper() for method in (methods or ("GET",))
+        )
+        self.routes.append(
+            NativeAPIRoute(
+                path=self._path(path),
+                endpoint=endpoint,
+                methods=method_set,
+                name=str(name or getattr(endpoint, "__name__", "native_route")),
+                tags=tuple(self.tags) + tuple(tags or ()),
+                include_in_schema=bool(include_in_schema),
+            )
+        )
+
+    def api_route(
+        self,
+        path: str,
+        *,
+        methods: list[str] | tuple[str, ...] | set[str] | frozenset[str] | None = None,
+        **kwargs: Any,
+    ):
+        def decorator(endpoint: Handler) -> Handler:
+            self.add_api_route(path, endpoint, methods=methods, **kwargs)
+            return endpoint
+        return decorator
+
+    def get(self, path: str, **kwargs: Any):
+        return self.api_route(path, methods=("GET",), **kwargs)
+
+    def post(self, path: str, **kwargs: Any):
+        return self.api_route(path, methods=("POST",), **kwargs)
+
+    def put(self, path: str, **kwargs: Any):
+        return self.api_route(path, methods=("PUT",), **kwargs)
+
+    def patch(self, path: str, **kwargs: Any):
+        return self.api_route(path, methods=("PATCH",), **kwargs)
+
+    def delete(self, path: str, **kwargs: Any):
+        return self.api_route(path, methods=("DELETE",), **kwargs)
+
+    def options(self, path: str, **kwargs: Any):
+        return self.api_route(path, methods=("OPTIONS",), **kwargs)
+
+    def head(self, path: str, **kwargs: Any):
+        return self.api_route(path, methods=("HEAD",), **kwargs)
+
+    def websocket(self, path: str, **kwargs: Any):
+        return self.api_route(
+            path,
+            methods=("WEBSOCKET",),
+            include_in_schema=False,
+            **kwargs,
+        )
+
+    def include_router(
+        self,
+        router: "NativeAPIRouter",
+        *,
+        prefix: str = "",
+        tags: list[str] | tuple[str, ...] | None = None,
+        **_: Any,
+    ) -> None:
+        extra_prefix = str(prefix)
+        extra_tags = tuple(tags or ())
+        for route in router.routes:
+            path = route.path
+            if extra_prefix:
+                path = extra_prefix.rstrip("/") + "/" + path.lstrip("/")
+            self.routes.append(
+                NativeAPIRoute(
+                    path=self._path(path),
+                    endpoint=route.endpoint,
+                    methods=route.methods,
+                    name=route.name,
+                    tags=tuple(self.tags) + extra_tags + tuple(route.tags),
+                    include_in_schema=route.include_in_schema,
+                )
+            )
+
+
+class NativeWebSocket:
+    """Structural WebSocket compatibility type for native-first route modules."""
+
+    async def accept(self, *args: Any, **kwargs: Any) -> None:
+        raise NativeFastAPICompatibilityError(
+            "HHS_NATIVE_WEBSOCKET_TRANSPORT_NOT_BOUND"
+        )
+
+    async def receive_text(self) -> str:
+        raise NativeFastAPICompatibilityError(
+            "HHS_NATIVE_WEBSOCKET_TRANSPORT_NOT_BOUND"
+        )
+
+    async def send_text(self, data: str) -> None:
+        _ = data
+        raise NativeFastAPICompatibilityError(
+            "HHS_NATIVE_WEBSOCKET_TRANSPORT_NOT_BOUND"
+        )
+
+    async def close(self, *args: Any, **kwargs: Any) -> None:
+        raise NativeFastAPICompatibilityError(
+            "HHS_NATIVE_WEBSOCKET_TRANSPORT_NOT_BOUND"
+        )
+
+
+class NativeWebSocketDisconnect(Exception):
+    def __init__(self, code: int = 1000, reason: str | None = None) -> None:
+        super().__init__(reason or f"WebSocket disconnected ({code})")
+        self.code = int(code)
+        self.reason = reason
+
+
 def native_fastapi_compatibility_contract(kernel: NativeRouteKernel) -> dict[str, Any]:
     return {
         "schema": SCHEMA,
@@ -354,8 +521,12 @@ def native_fastapi_compatibility_contract(kernel: NativeRouteKernel) -> dict[str
 
 __all__ = [
     "HHSNativeASGIApplication",
+    "NativeAPIRoute",
+    "NativeAPIRouter",
     "NativeFastAPICompatibilityError",
     "NativeRouteKernel",
     "NativeRouteResolution",
+    "NativeWebSocket",
+    "NativeWebSocketDisconnect",
     "native_fastapi_compatibility_contract",
 ]
