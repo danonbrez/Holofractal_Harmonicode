@@ -1,6 +1,6 @@
 # Pass 220 I060 Restart Checkpoint — Native Lean ExactRat Value Algebra
 
-Status: **RESTARTABLE REPAIR — VALIDATION QUEUED**
+Status: **VALIDATED — READY TO MERGE**
 
 ## Identity
 
@@ -66,18 +66,22 @@ No theorem scope was widened.
 - VM81 remains mutation/admission authority;
 - no Hash72 commit or Hash216 persistence authority transfer.
 
-## Current validation
+## Validation completed
 
 Repair-head workflow:
 - run: `36558168152`
 - job: `109372276549`
-- state at checkpoint write: queued
+- conclusion: **success**
 
-Required:
-1. structural / Hash72 identity tests;
-2. `lake build`;
-3. `leanchecker HHS`;
-4. HHS axiom audit.
+Completed:
+1. structural / Hash72 identity tests: PASS;
+2. `lake build`: PASS;
+3. `leanchecker HHS`: PASS;
+4. HHS axiom audit: PASS — 1,321 declarations audited within
+   `[propext, Classical.choice, Quot.sound]`.
+
+Only existing non-fatal linter warnings remained. No attributable runtime,
+provenance, VM81, Hash72-commit, or Hash216-persistence failure remains.
 
 ## I061 gate
 
@@ -100,13 +104,7 @@ Post-hoc proof attachment does not satisfy I061.
 
 ## Next action
 
-Inspect run `36558168152`.
-
-If green:
-1. freeze the validation evidence;
-2. merge PR #654;
-3. verify ValueAlgebra, identity manifest, contract, and root import on main;
-4. only then expose the verified I060 merge/head as the admissible I061 parent.
-
-If failed:
-repair only the attributable I060 Lean proof/type or identity-manifest surface.
+Merge PR #654, then verify ValueAlgebra, the theorem/dependency identity
+manifest, contract, root import, and merge lineage on main. If no attributable
+post-merge error is present, expose the verified I060 merge commit as the
+admissible I061 parent for the next agent.
