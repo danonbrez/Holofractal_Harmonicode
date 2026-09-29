@@ -175,7 +175,7 @@ def test_contract_freezes_native_default_for_current_and_future_capabilities() -
     rule = contract["governing_rule"]
     assert contract["scope"] == "ALL_HARMONICODE_NATIVE_LANE5_CAPABILITIES"
     assert rule["implicit_provider"] == "HHS_NATIVE"
-    assert rule["external_provider_requires_explicit_selection"] is True
+    assert rule["runtime_external_provider_requires_explicit_selection"] is True
     assert rule["installed_external_package_never_overrides_native_default"] is True
     assert rule["runtime_missing_native_implementation_fails_closed"] is True
     assert rule["pull_request_native_unavailable_falls_back_to_declared_external"] is True
