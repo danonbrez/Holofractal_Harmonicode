@@ -23,6 +23,7 @@ from hhs_runtime.hhs_pass220_i061_unified_scientific_physics_synthesis_v1 import
     WOLFRAM_FORMALIZATION,
     WOLFRAM_FORMALIZATION_SHA256,
     build_scientific_physics_candidate,
+    scientific_physics_synthesis_self_test,
     validate_scientific_physics_candidate,
 )
 
@@ -277,3 +278,20 @@ def test_i061_candidate_receipt_detects_any_postconstruction_mutation() -> None:
     tampered["physics_cell_candidate"]["body_count"] += 1
     with pytest.raises(I061PhysicsSynthesisError, match="candidate receipt mismatch"):
         validate_scientific_physics_candidate(tampered)
+
+
+def test_i061_self_test_and_service_registry_surface() -> None:
+    result = scientific_physics_synthesis_self_test()
+    assert result["schema"] == SCHEMA
+    assert result["ok"] is True
+    assert result["canonical_vm81_mutation_authority"] is False
+    assert result["canonical_hash72_commit_authority"] is False
+    assert result["canonical_hash216_persistence_authority"] is False
+
+    registry_source = (
+        ROOT / "hhs_runtime" / "hhs_service_registry_v1.py"
+    ).read_text(encoding="utf-8")
+    assert "pass220.unified_scientific_physics_synthesis.self_test" in registry_source
+    assert "hhs_pass220_i061_unified_scientific_physics_synthesis_v1" in registry_source
+    assert "REJECT_I061_POST_HOC_PROOF_ATTACHMENT" in registry_source
+    assert "REJECT_I061_FORMAL_EMPIRICAL_SUBSTITUTION" in registry_source
