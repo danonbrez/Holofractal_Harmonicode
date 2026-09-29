@@ -6,9 +6,12 @@ on:
       - 'repair/native-fastapi-default-provider'
     paths:
       - 'hhs_backend/runtime/hhs_fastapi_provider_v1.py'
+      - 'hhs_runtime/hhs_lane5_native_capability_provider_v1.py'
+      - 'contracts/pass220/PASS_220_LANE5_NATIVE_CAPABILITY_PROVIDER_V1.json'
       - 'hhs_backend/runtime/hhs_native_fastapi_compat_v1.py'
       - 'hhs_backend/runtime/runtime_ws.py'
       - 'tests/pass220/test_hhs_native_fastapi_default_provider_v1.py'
+      - 'tests/pass220/test_hhs_lane5_native_capability_provider_v1.py'
       - '.github/workflows/native-fastapi-default-provider.yml'
       - 'docs/operations/restart/NATIVE_FASTAPI_DEFAULT_PROVIDER_20260929.md'
   workflow_dispatch:
@@ -64,7 +67,8 @@ jobs:
             hhs_backend/runtime/hhs_fastapi_provider_v1.py \
             hhs_backend/runtime/hhs_native_fastapi_compat_v1.py \
             hhs_backend/runtime/runtime_ws.py \
-            tests/pass220/test_hhs_native_fastapi_default_provider_v1.py
+            tests/pass220/test_hhs_native_fastapi_default_provider_v1.py \\
+            tests/pass220/test_hhs_lane5_native_capability_provider_v1.py
 
       - name: Build cumulative exact ABI
         shell: bash
