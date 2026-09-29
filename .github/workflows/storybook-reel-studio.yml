@@ -118,6 +118,7 @@ jobs:
             hhs_backend/runtime/hhs_storyboard_voice_sync_v1.py \
             hhs_backend/runtime/hhs_storybook_elevenlabs_v1.py \
             hhs_backend/api/storybook_reel_routes.py \
+            hhs_backend/server.py \
             hhs_backend/visual_server.py \
             tests/test_hhs_storybook_reel_timing_v1.py \
             tests/test_hhs_storybook_reel_studio_v1.py \
