@@ -7,7 +7,7 @@ from hhs_runtime.core_sandbox.hhs_general_runtime_layer_v1 import (
     Hash72Authority,
     load_authoritative_kernel,
 )
-from hhs_backend.runtime.runtime_server import execute_runtime_expression
+from hhs_backend.runtime.hhs_runtime_expression_service_v1 import execute_runtime_expression
 from hhs_runtime.hhs_pass105_2_authority_placeholder_closure_v1 import run
 
 R = Path(__file__).resolve().parents[1]
