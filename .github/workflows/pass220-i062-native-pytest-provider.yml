@@ -1,0 +1,44 @@
+name: Pass 220 I062 Native Pytest Provider
+
+on:
+  push:
+    branches:
+      - pass220/i062-native-pytest-provider1
+    paths:
+      - "hhs_runtime/testing/**"
+      - "hhs_installer/transaction.py"
+      - "tests/pass220/test_hhs_pass220_i062_native_pytest_provider_v1.py"
+      - "tests/pass220/i062_native_pytest_specimen/**"
+      - "contracts/pass220/PASS_220_I062_NATIVE_PYTEST_PROVIDER_V1.json"
+      - "docs/pass220/PASS_220_I062_NATIVE_PYTEST_PROVIDER.md"
+      - "docs/operations/restart/PASS_220_I062_NATIVE_PYTEST_PROVIDER_RESTART_20260929.md"
+      - ".github/workflows/pass220-i062-native-pytest-provider.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/testing/**"
+      - "hhs_installer/transaction.py"
+      - "tests/pass220/test_hhs_pass220_i062_native_pytest_provider_v1.py"
+      - "tests/pass220/i062_native_pytest_specimen/**"
+      - "contracts/pass220/PASS_220_I062_NATIVE_PYTEST_PROVIDER_V1.json"
+      - "docs/pass220/PASS_220_I062_NATIVE_PYTEST_PROVIDER.md"
+      - "docs/operations/restart/PASS_220_I062_NATIVE_PYTEST_PROVIDER_RESTART_20260929.md"
+      - ".github/workflows/pass220-i062-native-pytest-provider.yml"
+  workflow_dispatch:
+
+jobs:
+  native-pytest-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: I062 standard-library provider tests
+        run: PYTHONPATH=. python tests/pass220/test_hhs_pass220_i062_native_pytest_provider_v1.py
+
+      - name: I062 native pytest-compatible CLI
+        run: python -m hhs_runtime.testing.native_pytest_provider_v1 -q tests/pass220/i062_native_pytest_specimen
+
+      - name: I062 provider syntax
+        run: python -m py_compile hhs_runtime/testing/native_pytest_provider_v1.py hhs_installer/transaction.py

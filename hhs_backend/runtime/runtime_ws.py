@@ -45,9 +45,11 @@ from typing import List
 from typing import Optional
 from typing import Set
 
-from fastapi import APIRouter
-from fastapi import WebSocket
-from fastapi import WebSocketDisconnect
+from hhs_backend.runtime.hhs_fastapi_provider_v1 import (
+    APIRouter,
+    WebSocket,
+    WebSocketDisconnect,
+)
 
 from hhs_backend.runtime.runtime_event_schema import (
     HHSRuntimeEventEnvelope,
