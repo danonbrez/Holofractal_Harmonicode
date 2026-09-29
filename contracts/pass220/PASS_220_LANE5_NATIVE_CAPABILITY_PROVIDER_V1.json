@@ -1,0 +1,78 @@
+{
+  "schema": "HHS_PASS_220_LANE5_NATIVE_CAPABILITY_PROVIDER_V1",
+  "version": 1,
+  "scope": "ALL_HARMONICODE_NATIVE_LANE5_CAPABILITIES",
+  "governing_rule": {
+    "implicit_provider": "HHS_NATIVE",
+    "external_provider_requires_explicit_selection": true,
+    "installed_external_package_never_overrides_native_default": true,
+    "missing_native_implementation_fails_closed": true,
+    "unknown_capability_fails_closed": true,
+    "implicit_external_fallback_allowed": false,
+    "future_native_capabilities_inherit_rule": true
+  },
+  "selection": {
+    "global_environment": "HHS_LANE5_PROVIDER_DEFAULT",
+    "per_capability_environment_pattern": "HHS_LANE5_PROVIDER_<CAPABILITY>",
+    "allowed_values": ["native", "external"],
+    "auto_mode_allowed": false
+  },
+  "registered_capabilities": {
+    "fastapi": {
+      "native": "hhs_backend.runtime.hhs_native_fastapi_compat_v1 + C11 native route kernel",
+      "external": "FastAPI/Starlette"
+    },
+    "python1": {
+      "native": "hhs_runtime.hhs_pass220_python_native_execution_v1 + C11 BigInt executor",
+      "external": "CPython 3.12"
+    },
+    "python2": {
+      "native": "hhs_runtime.hhs_pass220_python_rna_class_registration_v1 + Pass219 RNA cell wall",
+      "external": "CPython object/class model"
+    },
+    "numpy": {
+      "native": "hhs_runtime.hhs_pass220_numpy_harmonicode_array_v1 + C11 array kernel",
+      "external": "NumPy"
+    },
+    "matplotlib": {
+      "native": "NOT_YET_IMPLEMENTED",
+      "external": "Matplotlib",
+      "native_default_behavior": "FAIL_CLOSED_UNTIL_NATIVE_PROVIDER_EXISTS"
+    },
+    "three_js": {
+      "native": "hhs_gui/rendering/hhs_harmonicode_three_webgl_v1.js",
+      "external": "Three.js/OrbitControls"
+    },
+    "webgl": {
+      "native": "HHS3D + native render-packet boundary",
+      "external": "direct application-owned WebGL/WebGL2"
+    },
+    "litert_lm": {
+      "native": "HHS native LiteRT-compatible provider/model runtime",
+      "external": "LiteRT-LM/OpenAI-compatible provider"
+    },
+    "mathlib": {
+      "native": "HHS.Mathlib + native C++/Python1 arithmetic carrier",
+      "external": "upstream Mathlib semantic/runtime substitution"
+    },
+    "lean4": {
+      "native": "pinned HHS Lean proof toolchain and HHS.Mathlib modules",
+      "external": "unbound external proof/runtime authority"
+    }
+  },
+  "compatibility_membrane": {
+    "external_input_output_contracts_may_be_retained": true,
+    "external_differential_oracle_may_be_used_for_tests": true,
+    "external_projection_backend_may_be_used_when_explicit": true,
+    "external_provider_may_gain_vm81_authority": false,
+    "external_provider_may_commit_hash72": false,
+    "external_provider_may_persist_hash216": false,
+    "external_host_float_may_be_canonical_authority": false
+  },
+  "authority": {
+    "provider_registry_mutates_canonical_state": false,
+    "provider_registry_vm81_admission_authority": false,
+    "provider_registry_hash72_commit_authority": false,
+    "provider_registry_hash216_persistence_authority": false
+  }
+}
