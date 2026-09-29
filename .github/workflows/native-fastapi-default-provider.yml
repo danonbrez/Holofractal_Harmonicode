@@ -60,6 +60,8 @@ jobs:
           set -euo pipefail
           .venv/bin/python -m py_compile \
             hhs_backend/runtime/hhs_fastapi_provider_v1.py \
+            hhs_backend/runtime/hhs_runtime_expression_service_v1.py \
+            hhs_runtime/hhs_pass105_2_authority_placeholder_closure_v1.py \
             hhs_runtime/hhs_lane5_native_capability_provider_v1.py \
             hhs_backend/runtime/hhs_native_fastapi_compat_v1.py \
             hhs_backend/runtime/runtime_ws.py \
