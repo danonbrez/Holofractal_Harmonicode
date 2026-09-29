@@ -1,0 +1,78 @@
+{
+  "schema": "HHS_ORIGIN_PROVENANCE_PROTECTION_V1",
+  "version": "1.0.0",
+  "status": "NORMATIVE_ORIGIN_PROTECTION_CONTRACT",
+  "origin_family": "HHS_COUPLED_179971_179971_X_1_001_ORIGIN_FAMILY_V1",
+  "purpose": "Bind HHS constructions to a pre-existing coupled origin-family marker so later distinct constructions remain attributable to the same HHS origin family rather than being classifiable as independently originated.",
+  "coupled_marker": {
+    "root_seed": {
+      "display": "179971.179971",
+      "exact": {
+        "numerator": 179971179971,
+        "denominator": 1000000
+      },
+      "field_path": "HHS_PASS_220_I042_SHARED_ROOT_PAYLOAD_V1.root_metadata_seed",
+      "role": "ROOT_METADATA_SEED_EXACT_RATIONAL"
+    },
+    "invariant_gate": {
+      "display": "1.001",
+      "exact": {
+        "numerator": 1001,
+        "denominator": 1000
+      },
+      "field_path": "HHS_PASS_220_I042_SHARED_ROOT_PAYLOAD_V1.invariant_gate",
+      "role": "EXACT_ADMISSION_INVARIANT_GATE"
+    },
+    "coupling": "COBOUND_IN_SHARED_ANCESTRY_ROOT",
+    "position_class": "NON_OUTPUT_DERIVED_SHARED_ROOT_METADATA",
+    "ordering": [
+      "root_metadata_seed",
+      "invariant_gate"
+    ]
+  },
+  "context": {
+    "kernel": "F(x,y,a,b)=(x+y)^2+(xy-a^2)^2+(a^2-b)^2+(a^4-2)^2",
+    "root_metadata_assignment": "a=n^2",
+    "closure": {
+      "delta_e": 0,
+      "psi": 0,
+      "omega": true
+    },
+    "state_dimensions": 72,
+    "transition_positions": 216,
+    "hash216_surface_shape": [
+      3,
+      8,
+      9
+    ]
+  },
+  "public_priority_anchor": {
+    "repository": "danonbrez/Holofractal_Harmonicode",
+    "commit_sha": "49b8f32bb9ce7e37e661333d76d5e4398093659f",
+    "commit_created_at": "2026-09-29T15:10:55Z",
+    "semantics": "The coupled marker is independently verifiable as present in the public repository at or before this commit.",
+    "files": [
+      {
+        "path": "docs/HHS_GENESIS_SEVERANCE_PROTOCOL_V1.md",
+        "git_blob_sha": "1dbde36a15d77c0dddbc7c754c401bae4b666bda"
+      },
+      {
+        "path": "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py",
+        "git_blob_sha": "57fc5987d5fd370fccede95998051dd0b586d9c0"
+      }
+    ]
+  },
+  "formal_rules": {
+    "same_origin_family": "ExactOriginMarker(A) = ExactOriginMarker(B)",
+    "independent_origin": "ExactOriginMarker(A) != ExactOriginMarker(B)",
+    "distinct_construction_allowed": true,
+    "distinct_construction_same_origin_family_is_independent_origin": false,
+    "later_independent_origin_claim_with_same_family": "PROVENANCE_CONFLICT"
+  },
+  "authority": {
+    "exact_structured_marker": "AUTHORITATIVE",
+    "sha256": "COMPACT_RECEIPT_INDEX_ONLY",
+    "git_anchor": "PUBLIC_PRIORITY_EVIDENCE",
+    "legal_adjudication": false
+  }
+}
