@@ -1,0 +1,119 @@
+name: Pass 220 I064 Reference Particle Cinematic
+
+on:
+  push:
+    paths:
+      - "examples/ParticleSimulation.html"
+      - "tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py"
+      - "docs/pass220/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC.md"
+      - "docs/operations/restart/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_RESTART_20260929.md"
+      - ".github/workflows/pass220-i064-reference-particle-cinematic.yml"
+  pull_request:
+    paths:
+      - "examples/ParticleSimulation.html"
+      - "tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py"
+      - "docs/pass220/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC.md"
+      - "docs/operations/restart/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_RESTART_20260929.md"
+      - ".github/workflows/pass220-i064-reference-particle-cinematic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference-cinematic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove repaired I063 ancestry
+        run: |
+          git merge-base --is-ancestor             c8cab5b215e4d461e7829e5b6aac69f9afd4254e             HEAD
+
+      - name: Install dependency-scoped Python requirement
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse canonical inline browser JavaScript
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          html = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
+          scripts = re.findall(
+              r"<script(?![^>]*\bsrc\s*=)[^>]*>(.*?)</script>",
+              html,
+              flags=re.I | re.S,
+          )
+          assert scripts, "no inline scripts found"
+          Path("/tmp/i064-inline.js").write_text(
+              "\n;\n".join(scripts),
+              encoding="utf-8",
+          )
+          PY
+          node --check /tmp/i064-inline.js
+
+      - name: Run I064 reference projection regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+
+      - name: Re-run frozen I057 ParticleSimulation performance regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+
+      - name: Enforce projection-only visual authority
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          text = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
+          visual = text[
+              text.index("const I064_REFERENCE_VISUAL"):
+              text.index("const particleRenderBatches=[]")
+          ]
+
+          for token in (
+              'schema:"HHS_PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_V1"',
+              "referenceClipSeconds:122/24",
+              "logicalParticleMutation:false",
+              "canonicalMutationAuthority:false",
+              "coreCompression:0.235",
+              "satelliteCompression:0.46",
+              "coreDepthSpan:18.0",
+              "satelliteDepthSpan:12.0",
+              "minParticleScale:0.38",
+              "maxParticleScale:5.25",
+              "staticCameraZ:36.0",
+              "ingressCameraZ:5.2",
+              "referenceFov:62",
+              "function updateReferenceCamera",
+              "PRE_SOLVER_STATE_CONSTRUCTION" if False else "function toggleReferenceMotion",
+          ):
+              assert token in text, token
+
+          assert "Math.random" not in visual
+          assert (
+              'schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"'
+              in text
+          )
+          assert (
+              "for(let s=0;s<steps;s++){ updateSpiralParticles(); "
+              "time += simParams.evolutionSpeed * simParams.timeDilationFactor; }"
+              in text
+          )
+          assert "renderGate=((renderTick%4)===0);" in text
+          PY
