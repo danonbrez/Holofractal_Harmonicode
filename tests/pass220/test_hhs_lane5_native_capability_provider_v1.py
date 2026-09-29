@@ -65,15 +65,16 @@ def test_implemented_lane5_native_capabilities_resolve_real_repository_surfaces(
         assert (ROOT / surface).exists(), (capability_id, surface)
 
 
-def test_matplotlib_runtime_native_default_fails_closed_until_native_provider_exists() -> None:
-    spec = capability_spec("matplotlib")
+@pytest.mark.parametrize("capability_id", ["matplotlib", "fastapi_application"])
+def test_incomplete_native_capabilities_fail_closed_at_runtime(capability_id: str) -> None:
+    spec = capability_spec(capability_id)
     assert spec.native_implemented is False
     assert spec.native_surfaces == ()
     with pytest.raises(
         Lane5CapabilityProviderError,
-        match="HHS_LANE5_NATIVE_IMPLEMENTATION_UNAVAILABLE:matplotlib",
+        match=f"HHS_LANE5_NATIVE_IMPLEMENTATION_UNAVAILABLE:{capability_id}",
     ):
-        resolve_lane5_capability("matplotlib", environ={}, provider_context="runtime")
+        resolve_lane5_capability(capability_id, environ={}, provider_context="runtime")
 
 
 def test_matplotlib_pull_request_falls_back_to_declared_external_with_warning() -> None:
@@ -103,12 +104,14 @@ def test_pull_request_status_exposes_fallback_warning_receipt() -> None:
         provider_context="pull_request",
     )
     rows = {row["capability_id"]: row for row in status["capabilities"]}
-    matplotlib = rows["matplotlib"]
-    assert matplotlib["selected_provider"] == "external"
-    assert matplotlib["pull_request_fallback_used"] is True
-    assert matplotlib["warning"].startswith(
-        "HHS_LANE5_PR_EXTERNAL_PROVIDER_FALLBACK:matplotlib"
-    )
+    for capability_id in ("matplotlib", "fastapi_application"):
+        row = rows[capability_id]
+        assert row["selected_provider"] == "external"
+        assert row["pull_request_fallback_used"] is True
+        assert row["warning"].startswith(
+            f"HHS_LANE5_PR_EXTERNAL_PROVIDER_FALLBACK:{capability_id}"
+        )
+    assert rows["fastapi"]["selected_provider"] == "native"
     assert rows["numpy"]["selected_provider"] == "native"
     assert rows["numpy"]["pull_request_fallback_used"] is False
 
