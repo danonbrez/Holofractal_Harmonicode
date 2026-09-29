@@ -1,6 +1,6 @@
 # Pass 220 I056 Restart Checkpoint — ExactRat Value Laws
 
-Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
+Status: **VALIDATED — READY TO MERGE**
 
 ## Identity
 
@@ -8,14 +8,19 @@ Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
 - Branch: `pass220/i056-native-mathlib-exactrat-value-laws1`
 - Merge target: `main`
 - Pull request: `#652`
-- Implementation head before this checkpoint refresh:
+- Initial implementation head:
   `05351ecb11ae776ea51bb08fe63ef49d019dd74a`
+- Lean quotient-notation repair head:
+  `d564cf4dd1bc6e2d9e3604bd851ae2833d527157`
 - PR mergeability at checkpoint preparation: mergeable
 - Branch comparison at checkpoint preparation: 1 commit ahead, 0 behind main
 - Dedicated workflow: `Pass 220 I056 Native Mathlib ExactRat Value Laws`
-- Dedicated run: `36513927843`
-- Dedicated job: `109231926111`
-- Run state at checkpoint preparation: queued
+- Earlier metadata-triggered run: `36515008798` — failed on quotient namespace/notation elaboration only.
+- Repair run: `36556953863`, job `109368293003` — **success**.
+- Structural tests: PASS (`7 passed`; existing pytest `asyncio_mode` warning only).
+- `lake build`: PASS.
+- `leanchecker HHS`: PASS.
+- HHS axiom audit: PASS; 1,221 declarations audited within `[propext, Classical.choice, Quot.sound]`.
 
 ## Implemented
 
@@ -65,25 +70,18 @@ No Python1/C11 or C++ implementation changed.
 Inherited I049 arithmetic, I053 equivalence, I054 congruence, and I055 quotient
 evidence remain frozen unless their inputs change.
 
-## Validation required
+## Validation completed
 
-1. I056 structural/contract tests.
-2. `lake build`.
-3. `leanchecker HHS`.
-4. HHS axiom audit.
+1. I056 structural/contract tests: PASS.
+2. `lake build`: PASS.
+3. `leanchecker HHS`: PASS.
+4. HHS axiom audit: PASS.
 
-Queued external CI does not block this restartable checkpoint.
+The repair only qualified `ExactRatValue.ofPair` and explicitly unfolded the quotient zero/one value instances in the six universal proofs. No theorem scope or runtime arithmetic changed.
 
 ## Next action
 
-Inspect run `36513927843`, job `109231926111`.
-
-- If green: freeze evidence, merge PR #652, and verify the value-laws module,
-  manifest, root import, and contract on main.
-- If it fails: repair only the I056 Lean law-proof/type or structural-test
-  surface.
-- Do not modify inherited runtime arithmetic merely because a Lean proof
-  fails.
+Merge PR #652 into current main and verify the value-laws module, manifest, root import, and contract on main. The resulting verified main merge commit is the required base for Pass 220 I060.
 
 Pass numbers I057, I058, and I059 are occupied by parallel Pass 220 workstreams.
 After I056 closes, the next native Mathlib continuation is therefore explicitly
