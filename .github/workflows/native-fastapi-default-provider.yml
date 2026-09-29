@@ -19,7 +19,6 @@ permissions:
 env:
   PYTHONHASHSEED: '0'
   PYTHONDONTWRITEBYTECODE: '1'
-  HHS_FASTAPI_PROVIDER: 'auto'
 
 jobs:
   native-fastapi-default:
