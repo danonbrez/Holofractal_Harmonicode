@@ -63,6 +63,9 @@ jobs:
             hhs_runtime/hhs_lane5_native_capability_provider_v1.py \
             hhs_backend/runtime/hhs_native_fastapi_compat_v1.py \
             hhs_backend/runtime/runtime_ws.py \
+            hhs_backend/runtime/live_fastapi_workflow_v1.py \
+            hhs_backend/runtime/hhs_pass201_public_api_federation.py \
+            hhs_backend/server.py \
             tests/pass220/test_hhs_native_fastapi_default_provider_v1.py \
             tests/pass220/test_hhs_lane5_native_capability_provider_v1.py
 
