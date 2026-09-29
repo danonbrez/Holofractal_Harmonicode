@@ -62,7 +62,29 @@ def _regex_can_start(text: str, index: int) -> bool:
         cursor -= 1
     if cursor < 0 or text[cursor] == "\n":
         return True
-    return text[cursor] in "=([{,:;!&|?"
+    if text[cursor] in "=([{,:;!&|?":
+        return True
+    if cursor >= 1 and text[cursor - 1 : cursor + 1] == "=>":
+        return True
+    end = cursor + 1
+    while cursor >= 0 and (
+        text[cursor].isalnum() or text[cursor] in "_$"
+    ):
+        cursor -= 1
+    previous_word = text[cursor + 1 : end]
+    return previous_word in {
+        "return",
+        "throw",
+        "case",
+        "delete",
+        "void",
+        "typeof",
+        "instanceof",
+        "in",
+        "of",
+        "yield",
+        "await",
+    }
 
 
 def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[SourceTextIssue]:
@@ -152,6 +174,31 @@ def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[Sou
                 regex_character_class = False
             elif ch == "/" and not regex_character_class:
                 regex_literal = False
+            i += 1
+            column += 1
+            continue
+
+        if (
+            suffix in JS_SUFFIXES
+            and template_stack
+            and template_stack[-1]["mode"] == "text"
+        ):
+            if ch == "\\":
+                step = min(2, len(text) - i)
+                i += step
+                column += step
+                continue
+            if ch == BACKTICK:
+                template_stack.pop()
+                i += 1
+                column += 1
+                continue
+            if ch == "$" and nxt == "{":
+                template_stack[-1]["mode"] = "expr"
+                template_stack[-1]["brace_depth"] = 1
+                i += 2
+                column += 2
+                continue
             i += 1
             column += 1
             continue

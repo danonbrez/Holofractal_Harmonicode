@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 
+import hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 as assistant_gateway
 from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
     DEFAULT_HHS_ASSISTANT_TOOLS,
     assistant_api_tool_registry,
@@ -83,6 +84,54 @@ class MultiModelTransport:
         }
 
 
+class EmptyRegistryTransport:
+    provider_id = "provider:test.empty"
+    requested_operation = "litert_lm.chat_completion"
+
+    async def list_models(self):
+        return {"object": "list", "data": []}
+
+    async def chat_completion(self, **_kwargs):
+        raise AssertionError("empty registry transport must not be invoked")
+
+
+class SemanticFallbackTransport:
+    provider_id = "provider:test.native-semantic"
+    requested_operation = "litert_lm.chat_completion"
+
+    def __init__(self, model_id: str = "native-semantic") -> None:
+        self.model_id = model_id
+        self.calls = 0
+
+    async def list_models(self):
+        return {"object": "list", "data": [{"id": self.model_id}]}
+
+    async def chat_completion(self, **_kwargs):
+        self.calls += 1
+        return {
+            "id": "chatcmpl-semantic-fallback",
+            "model": self.model_id,
+            "choices": [{
+                "message": {
+                    "role": "assistant",
+                    "content": (
+                        "I can continue this as a general natural-language conversation."
+                    ),
+                },
+                "finish_reason": "stop",
+            }],
+            "usage": {
+                "prompt_tokens": 2,
+                "completion_tokens": 8,
+                "total_tokens": 10,
+            },
+            "hhs_native_trace": {
+                "generation_path": "EXACT_SEMANTIC_FALLBACK",
+                "general_chat_prompt_response_cycle": True,
+            },
+        }
+
+
 class OfflineService:
     provider_id = "provider:test.offline"
 
@@ -149,6 +198,15 @@ def test_unified_fabric_includes_generators_fallbacks_and_memory(monkeypatch):
     assert "native-causal:hydrated-native" in member_ids
     assert "pass153:hhs-reference-open-model-v1" in member_ids
     assert "pass166:word2vec-active" in member_ids
+    semantic = next(
+        item for item in fabric["members"]
+        if item["member_id"] == "native-semantic:hhs-native-language-v1"
+    )
+    assert semantic["role"] == "EXACT_SEMANTIC_CONTEXT"
+    assert semantic["callable_from_unified_chat"] is False
+    assert semantic["terminal_generation_eligible"] is False
+    assert "TEXT_GENERATION" not in semantic["capabilities"]
+    assert "SEMANTIC_CONTEXT" in semantic["capabilities"]
     assert fabric["vm81_admission_boundary_preserved"] is True
 
 
@@ -199,6 +257,73 @@ def test_production_chat_uses_declared_primary_registered_model_on_one_thread(mo
     assert small_transport.calls == 0
 
 
+def test_semantic_fallback_is_nonterminal_and_does_not_duplicate_thread(monkeypatch):
+    monkeypatch.setenv("HHS_LITERT_LM_PROVIDER_MODE", "auto")
+    base_config = LiteRTLMConfig(
+        model_id="unregistered-external",
+        system_instruction="BASE HHS AUTHORITY",
+    )
+    base = HHSAPIAssistantService(
+        config=base_config,
+        transport=EmptyRegistryTransport(),
+    )
+    native_transport = SemanticFallbackTransport()
+    native = HHSAPIAssistantService(
+        config=LiteRTLMConfig(
+            model_id=native_transport.model_id,
+            system_instruction="NATIVE HHS AUTHORITY",
+        ),
+        transport=native_transport,
+        thread_store=base.threads,
+    )
+    final_transport = MultiModelTransport(
+        "pass153-final",
+        ("pass153-final",),
+    )
+    pass153 = HHSAPIAssistantService(
+        config=LiteRTLMConfig(
+            model_id="pass153-final",
+            system_instruction="PASS153 HHS AUTHORITY",
+        ),
+        transport=final_transport,
+        thread_store=base.threads,
+    )
+    service = ProductionAssistantService(
+        model_service=base,
+        native_service=native,
+        pass153_service=pass153,
+    )
+    thread = service.create_thread(project_id="project:nonterminal-fallback")
+    result = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Give me a substantive answer.",
+            assistant_mode=ASSISTANT_MODE_BOTH,
+        )
+    )
+
+    assert result["ok"] is True
+    assert result["selected_model_id"] == "pass153-final"
+    assert result["assistant_message"]["content"] == "answer:pass153-final"
+    assert native_transport.calls == 1
+    assert final_transport.calls == 1
+    failed = result["failed_provider_results"]
+    assert len(failed) == 1
+    assert failed[0]["provider_metadata"]["generation_path"] == "EXACT_SEMANTIC_FALLBACK"
+    assert (
+        ProductionAssistantService._completion_state(failed[0])
+        == "NONTERMINAL_SEMANTIC_FALLBACK"
+    )
+
+    stored = service.threads.get(thread["thread_id"])
+    assert [item["role"] for item in stored["messages"]] == ["user", "assistant"]
+    assert stored["messages"][-1]["content"] == "answer:pass153-final"
+    assert all(
+        "general natural-language conversation" not in item["content"]
+        for item in stored["messages"]
+    )
+
+
 def test_lane5_and_model_fabric_tools_are_in_one_governed_registry():
     registry = assistant_api_tool_registry()
     names = set(registry["tool_names"])
@@ -209,6 +334,68 @@ def test_lane5_and_model_fabric_tools_are_in_one_governed_registry():
     }.issubset(names)
     assert registry["read_only"] is True
     assert registry["mutating_tool_execution_allowed"] is False
+
+
+def test_lane5_search_consumes_global_visibility_not_bounded_local_graph(monkeypatch):
+    model = {
+        "counts": {
+            "main_repository_file_surfaces": 1,
+            "inherited_capability_surfaces": 1,
+            "repository_ref_delta_surfaces": 1,
+            "discovered_refs": 1,
+            "total_visibility_nodes": 3,
+        },
+        "roots": {"visibility_root_hash216": "H" * 216},
+        "coverage": {
+            "complete_within_discovered_refs": True,
+            "silent_truncation_allowed": False,
+        },
+        "nodes": [
+            {
+                "node_id": "visibility:ref-delta:refs/remotes/pull/634:training.py",
+                "node_kind": "REPOSITORY_REF_DELTA_SURFACE",
+                "source_state": "PULL_REQUEST_REF",
+                "source_ref": "refs/remotes/pull/634",
+                "source_commit": "a" * 40,
+                "source_path": "training.py",
+                "lane5_visible": True,
+                "closure_state": "UNRESOLVED",
+                "validation_state": "UNRESOLVED",
+                "executability_state": "UNRESOLVED",
+                "declared_classification": {"demo": True, "enabled": False},
+                "hash216": "V" * 216,
+            },
+            {
+                "node_id": "visibility:capability:language.generate",
+                "node_kind": "CAPABILITY_SURFACE",
+                "source_state": "INHERITED_PASS219_REVERSE_DISCOVERY",
+                "source_ref": "HEAD",
+                "source_commit": "b" * 40,
+                "source_path": "language.py",
+                "lane5_visible": True,
+                "closure_state": "REVERSE_DISCOVERY_OBSERVED",
+                "validation_state": "INHERITED_EVIDENCE_PRESENT",
+                "executability_state": "UNRESOLVED",
+                "declared_classification": {},
+                "hash216": "C" * 216,
+            },
+        ],
+    }
+    monkeypatch.setattr(
+        assistant_gateway,
+        "_lane5_global_visibility_sync",
+        lambda: model,
+    )
+    result = assistant_gateway._lane5_search_sync("training demo", 6)
+    assert result["lane5_global_visibility"] is True
+    assert result["visibility_root_hash216"] == "H" * 216
+    assert result["result_count"] == 1
+    found = result["results"][0]
+    assert found["source_state"] == "PULL_REQUEST_REF"
+    assert found["lane5_visible"] is True
+    assert found["closure_state"] == "UNRESOLVED"
+    assert found["declared_classification"]["demo"] is True
+    assert found["declared_classification"]["enabled"] is False
 
 
 def test_native_both_mode_routes_lane5_queries_to_lane5_tools():

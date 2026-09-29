@@ -55,6 +55,30 @@ def test_allows_nested_javascript_template_literal_newline_escapes():
     assert find_literal_escaped_newline_issues("visual-ide-state.mjs", source) == []
 
 
+def test_allows_javascript_template_text_with_quotes_regex_and_newline_escapes():
+    source = (
+        "const rendered = "
+        + chr(96)
+        + r"\n[${kind.toUpperCase()}] ${source.replace(/}\\s*/g, '}\\n').trim()}\n"
+        + chr(96)
+        + ";\n"
+    )
+    assert find_literal_escaped_newline_issues("production-recovery.mjs", source) == []
+
+
+def test_allows_javascript_regex_after_return_keyword():
+    source = (
+        r"function stringify(cell) { return /[\",\\r\\n]/.test(cell) ? cell : String(cell); }"
+        + "\n"
+    )
+    assert find_literal_escaped_newline_issues("module-library.mjs", source) == []
+
+
+def test_allows_javascript_regex_after_arrow_operator():
+    source = r"const hasLine = (value) => /\\n/.test(value);" + "\n"
+    assert find_literal_escaped_newline_issues("example.ts", source) == []
+
+
 def test_forward_slash_n_data_is_not_treated_as_newline():
     source = 'hash72 = "abc/nxyz"\nroute = "/novel/status"\nratio = "k/n"\n'
     assert find_literal_escaped_newline_issues("example.py", source) == []

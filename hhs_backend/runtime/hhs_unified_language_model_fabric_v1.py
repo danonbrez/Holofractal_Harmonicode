@@ -112,10 +112,12 @@ def build_unified_language_model_fabric(
         "member_id": "native-semantic:hhs-native-language-v1",
         "provider_id": "provider:hhs.local.text",
         "model_id": "hhs-native-language-v1",
-        "role": "EXACT_SEMANTIC_FALLBACK",
+        "role": "EXACT_SEMANTIC_CONTEXT",
         "ready": bool(native_health.get("ok") and native_health.get("online")),
-        "callable_from_unified_chat": True,
-        "capabilities": ["TEXT_GENERATION", "SEARCH", "MEMORY_RETRIEVAL"],
+        "callable_from_unified_chat": False,
+        "terminal_generation_eligible": False,
+        "contributes_context_to_native_provider": True,
+        "capabilities": ["SEMANTIC_CONTEXT", "SEARCH", "MEMORY_RETRIEVAL"],
         "full_causal_generation_ready": bool(causal.get("ready")),
     })
 
