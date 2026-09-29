@@ -266,23 +266,24 @@ Additional commits:
   `ad697affec1eb87d413f25ddb9aa4ece403506ff`
 - branch was one commit behind current main, but the intervening compare reported
   no changed files and no semantic overlap with I061;
-- I061 exact-head workflow on pre-checkpoint head
-  `8a412e162966b4a10187ee6019f93b8ff42a54db`:
-  run `36560926738` — queued;
-- no I061-attributable failure was present when this restart checkpoint was
-  prepared.
+- final restartable head before evidence freeze:
+  `4de41adeb1670ba3d0f1255e3d9c2f7f5c07a58f`;
+- dedicated I061 workflow:
+  run `36561007221`, job `109381595946` — **SUCCESS**;
+- Consensus Gate:
+  run `36561007431` — matrix verification and consensus jobs **SUCCESS**;
+- no I061-attributable failure remains.
 
 Queued external CI is not a reason to reopen already implemented surfaces.
 Repair forward only a concrete I061-attributable failure.
 
+## Validation closure
+
+The exact-head I061 workflow and Consensus Gate are green. PR #655 is ready to
+merge. No repair-forward action is required.
+
 ## Next action
 
-Check the exact-head I061 workflow and Consensus Gate for this checkpoint head.
-
-If an I061-attributable failure exists, repair only the impacted surface and
-rerun dependency-scoped validation.
-
-If the I061 workflow and required gate are green, merge PR #655, verify main,
-and freeze I061. The next physics implementation should then create canonical
-STEM/physics law objects and exact rigid-body state/integration behind this
-unchanged scientific admission membrane.
+Merge PR #655, verify the I061 contract/runtime/native cell wall on main, and
+freeze the resulting merge commit as the inherited parent for subsequent Pass
+220 work.
