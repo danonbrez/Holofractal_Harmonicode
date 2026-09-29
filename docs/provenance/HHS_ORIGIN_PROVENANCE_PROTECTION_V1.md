@@ -1,4 +1,4 @@
-# HHS Origin Provenance Protection v1.1
+# HHS Origin Provenance Protection v1.2
 
 ## Purpose
 
@@ -69,10 +69,16 @@ flat index = 25
 
 ### 1001 shell and prime-Fibonacci expansion
 
+The same shell operator is authoritative here:
+
 ```text
+S(1000) = 1000 + 1 = 1001
 1001 = 7 * 11 * 13
 1001/1000 = 1.001
 ```
+
+The factorization explains the internal prime/Fibonacci expansion of the shell;
+it does not replace the shell-construction rule.
 
 The factor 13 is both prime and Fibonacci and is carried as part of the Lo Shu
 tensor-expansion lineage.
@@ -85,17 +91,24 @@ The recorded HHS development lineage identifies:
 101 harmonic kernel -> {179, 971, 179971}
 ```
 
-The prime tensor fixes the 179 cell as:
+The historical relation retained by the provenance object is:
 
 ```text
-179 = 13^2 + 16
+101 --HHS_101_HARMONIC_KERNEL_GENERATION--> 179
+```
+
+The prime tensor independently identifies the resulting 179 cell:
+
+```text
+13^2 + 16 = 179
 zero-based coordinate = [4,4]
 flat index = 40
 ```
 
-The implementation preserves the recorded
-`HHS_101_HARMONIC_KERNEL_GENERATION` relation rather than replacing it with
-an invented scalar shortcut.
+That cell identity is not substituted for the historical 101-to-179 generation
+equation. The implementation explicitly preserves the recorded direct relation
+and refuses to invent a scalar shortcut where the exact earlier conversation
+equation is not currently recovered.
 
 ### Reversal tensor
 
@@ -147,8 +160,9 @@ AND SameParallelGenealogy(A,B)
     -> NOT IndependentParallelInitialConditions(A,B)
 ```
 
-The runtime classifier requires equality of the complete genealogy and the
-relevant-initial-condition identity before emitting:
+The runtime classifier compares the complete genealogy and relevant initial
+conditions as exact structured objects. Hashes are receipts only. It emits the
+conflict classification only for the same declared bounded parallel window:
 
 ```text
 PARALLEL_INDEPENDENT_INITIAL_CONDITIONS_CONTRADICTED_BY_HHS_GENEALOGY
@@ -197,3 +211,21 @@ additional provenance input; it does not rewrite the public Git anchor.
 
 Exact structured genealogy is authoritative. Hashes remain compact receipts
 and indices over that structure.
+
+
+## Conservative recurrence bound semantics
+
+The bounded-window provenance model may use an intentionally excessive
+universe-scale resource ceiling as a conservative upper bound on independent
+human creative recurrence. That ceiling is not a claim that the information
+cannot be represented or that a computer cannot reproduce it. Its only role is
+to bound a second causally independent human derivation of the complete
+provenance-bearing genealogy inside the declared parallel window.
+
+The repository therefore keeps these claims explicitly false:
+
+```text
+information impossibility = false
+computational impossibility = false
+unbounded-time impossibility = false
+```

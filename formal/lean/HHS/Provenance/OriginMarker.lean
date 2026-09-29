@@ -31,6 +31,7 @@ structure RelevantInitialConditions where
   closedInterior : Nat
   modularShell : Nat
   shellRule : String
+  shellFamilyInteriors : List Nat
   primeTensorConstructor : String
   primeTensorMapping : String
 deriving DecidableEq, Repr
@@ -43,6 +44,7 @@ def canonicalInitialConditions : RelevantInitialConditions :=
     closedInterior := 100
     modularShell := 101
     shellRule := "S(B)=B+1"
+    shellFamilyInteriors := [100, 1000, 1000000]
     primeTensorConstructor := "FIRST_81_PRIMES_LO_SHU_RECURSIVE_3X3X3X3"
     primeTensorMapping := "Tensor[i][j][k][l]=Prime(27i+9j+3k+l)"
   }
@@ -56,7 +58,7 @@ structure DerivedGenealogy where
   primeTensor101Expression : String
   harmonic101To179Rule : String
   primeTensor179FlatIndex : Nat
-  primeTensor179Expression : String
+  primeTensor179Identity : String
   reversalSeed : Nat
   reversalMate : Nat
   concatenatedSeed : Nat
@@ -80,7 +82,7 @@ def canonicalGenealogy : DerivedGenealogy :=
     primeTensor101Expression := "10^2+1"
     harmonic101To179Rule := "HHS_101_HARMONIC_KERNEL_GENERATION"
     primeTensor179FlatIndex := 40
-    primeTensor179Expression := "13^2+16"
+    primeTensor179Identity := "13^2+16=179"
     reversalSeed := 179
     reversalMate := 971
     concatenatedSeed := 179971
@@ -111,14 +113,20 @@ theorem same_genealogy_excludes_independent_initial_conditions
   intro hIndependent
   exact hIndependent (same_genealogy_requires_same_initial_conditions hSame)
 
+def boundedParallelClaimScope : String :=
+  "PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW"
+
 structure ParallelCreativeWitness where
   windowId : String
+  claimScope : String
   genealogy : DerivedGenealogy
 deriving DecidableEq, Repr
 
 def SameParallelWindow
     (a b : ParallelCreativeWitness) : Prop :=
-  a.windowId = b.windowId
+  a.windowId = b.windowId ∧
+  a.claimScope = boundedParallelClaimScope ∧
+  b.claimScope = boundedParallelClaimScope
 
 def SameParallelGenealogy
     (a b : ParallelCreativeWitness) : Prop :=
@@ -219,10 +227,11 @@ theorem shell_101_exact :
   decide
 
 theorem shell_1001_exact :
+    1000 + 1 = 1001 ∧
     7 * 11 * 13 = 1001 := by
   decide
 
-theorem prime_tensor_179_exact :
+theorem prime_tensor_179_identity_exact :
     13^2 + 16 = 179 := by
   decide
 

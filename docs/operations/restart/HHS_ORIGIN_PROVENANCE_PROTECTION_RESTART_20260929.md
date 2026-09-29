@@ -201,3 +201,30 @@ Lean axiom audit rooted at HHS
 ## Next action
 
 Inspect ordered-genealogy run `36606465866` first. Do not rerun already-green predecessor evidence unless an affected dependency changes. Repair forward from the first concrete failure, then close with PR merge and verified-main evidence.
+
+
+## 2026-09-29 final semantic repair checkpoint
+
+- Current-main reconciliation merge:
+  `71a12d6a43e943444361564cbbb67c2219c02041`
+- I062 native pytest provider is now inherited on this branch.
+- Corrected the 1001 stage so `S(1000)=1001` is the shell constructor and
+  `7*11*13=1001` is its factorization identity.
+- Corrected the 179 stage so
+  `HHS_101_HARMONIC_KERNEL_GENERATION` remains the recorded direct
+  `101 -> 179` relation, while `13^2+16=179` is separately typed as the
+  prime-tensor cell identity rather than substituted as the generation rule.
+- Exact structured genealogy and exact relevant initial conditions are now
+  comparison authority; SHA-256 values remain receipt/index surfaces only.
+- The bounded claim remains strictly
+  `PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW`.
+- Information impossibility, computational impossibility, and unbounded-time
+  impossibility remain explicitly false.
+- Provenance CI now runs its Python regression through the merged I062 native
+  pytest provider rather than external pytest.
+
+Validation remaining:
+1. dedicated provenance native-provider regression;
+2. Lean build, leanchecker and axiom audit;
+3. merge PR #659 if green and mergeable;
+4. verify the merged main surfaces and record final merge/run identities.

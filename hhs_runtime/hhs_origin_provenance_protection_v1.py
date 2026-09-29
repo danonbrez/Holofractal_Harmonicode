@@ -41,7 +41,7 @@ from hhs_runtime.pass219.lane5_nine_loop_feedback_1_70 import GENESIS_IDENTITY
 
 
 SCHEMA = "HHS_ORIGIN_PROVENANCE_PROTECTION_V1"
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 ORIGIN_FAMILY = "HHS_DERIVED_101_179971_X_1_001_ORIGIN_FAMILY_V2"
 DERIVATION_GENEALOGY_SCHEMA = "HHS_101_MODULAR_SHELL_DERIVATION_GENEALOGY_V1"
 
@@ -74,14 +74,14 @@ HISTORICAL_DERIVATION_WITNESSES = (
         "witness": "FIRST_81_PRIMES_LO_SHU_RECURSIVE_TENSOR",
         "facts": (
             "101=10^2+1 at zero-based 9x9 coordinate [2,7], flat index 25",
-            "179=13^2+16 at zero-based 9x9 coordinate [4,4], flat index 40",
+            "179 prime-tensor cell identity: 13^2+16=179 at zero-based 9x9 coordinate [4,4], flat index 40",
         ),
     },
     {
         "time": "2026-07-20",
         "witness": "101_HARMONIC_KERNEL_CORRECTION",
         "facts": (
-            "101 harmonic kernel generates the {179,971,179971} symmetry set",
+            "101 harmonic kernel directly generates 179; reversal/concatenation then generate 971 and 179971",
             "101=10^2+1",
             "10^6+1=101*9901",
         ),
@@ -131,7 +131,8 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
     b2, c2, d2 = 2, 3, 5
     closed_100 = (b2**2) * ((b2 + c2) ** 2)
     shell_101 = closed_100 + 1
-    shell_1001 = 7 * 11 * 13
+    shell_1001 = 1000 + 1
+    factor_1001 = 7 * 11 * 13
     reversal_179 = 179
     reversal_971 = _reverse3(reversal_179)
     concat_179971 = reversal_179 * 1000 + reversal_971
@@ -143,7 +144,8 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
         (closed_100 == 100, "closed interior 100"),
         (shell_101 == 101, "modular shell 101"),
         (10**2 + 1 == 101, "101=10^2+1"),
-        (shell_1001 == 1001, "1001=7*11*13"),
+        (shell_1001 == 1001, "1000+1=1001 modular shell"),
+        (factor_1001 == shell_1001, "7*11*13=1001 factorization identity"),
         (13**2 + 16 == 179, "179=13^2+16"),
         (reversal_971 == 971, "reverse3(179)=971"),
         (concat_179971 == 179971, "179||971=179971"),
@@ -167,6 +169,7 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
         "closed_interior_constructor": "b^4(b^2+c^2=d^2)^2",
         "closed_interior": 100,
         "shell_operator": "S(B)=B+1",
+        "shell_family_interiors": (100, 1000, 1000000),
         "base_101_modular_shell": 101,
         "prime_tensor_constructor": "FIRST_81_PRIMES_LO_SHU_RECURSIVE_3X3X3X3",
         "prime_tensor_mapping": "Tensor[i][j][k][l]=Prime(27i+9j+3k+l)",
@@ -205,7 +208,8 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
             "ordinal": 3,
             "name": "1001_PRIME_FIBONACCI_SHELL_EXTENSION",
             "input": 1000,
-            "rule": "7*11*13",
+            "rule": "S(B)=B+1",
+            "factorization_identity": "7*11*13=1001",
             "prime_factors": (7, 11, 13),
             "fibonacci_prime": 13,
             "output": 1001,
@@ -221,7 +225,9 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
             "name": "101_HARMONIC_KERNEL_TO_179",
             "input": 101,
             "rule": "HHS_101_HARMONIC_KERNEL_GENERATION",
-            "prime_tensor_output_rule": "13^2+16",
+            "direct_relation_semantics": "RECORDED_DIRECT_DERIVATION_FROM_101_HARMONIC_SEED",
+            "prime_tensor_output_identity": "13^2+16=179",
+            "scalar_shortcut": "NOT_SUBSTITUTED_WHERE_HISTORICAL_EQUATION_IS_NOT_RECOVERED",
             "zero_based_coordinate": (4, 4),
             "flat_index": 40,
             "output": 179,
@@ -247,6 +253,7 @@ def canonical_derivation_genealogy() -> dict[str, Any]:
             "input": 1000000,
             "rule": "S(B)=B+1",
             "output": 1000001,
+            "factorization_identity": "101*9901=1000001",
             "factorization": (101, 9901),
             "exact_normalized_projection": {
                 "numerator": 1000001,
@@ -293,9 +300,12 @@ def derivation_genealogy_identity_sha256() -> str:
     return sha256(canonical_bytes(canonical_derivation_genealogy())).hexdigest()
 
 
+def relevant_initial_conditions() -> dict[str, Any]:
+    return deepcopy(canonical_derivation_genealogy()["relevant_initial_conditions"])
+
+
 def relevant_initial_conditions_identity_sha256() -> str:
-    conditions = canonical_derivation_genealogy()["relevant_initial_conditions"]
-    return sha256(canonical_bytes(conditions)).hexdigest()
+    return sha256(canonical_bytes(relevant_initial_conditions())).hexdigest()
 
 
 def coupled_origin_marker() -> dict[str, Any]:
@@ -443,7 +453,9 @@ def build_origin_provenance_envelope(
             "origin_family": marker,
             "origin_family_identity_sha256": sha256(canonical_bytes(marker)).hexdigest(),
             "derivation_genealogy_identity_sha256": derivation_genealogy_identity_sha256(),
+            "relevant_initial_conditions": relevant_initial_conditions(),
             "relevant_initial_conditions_identity_sha256": relevant_initial_conditions_identity_sha256(),
+            "claim_scope": "PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW",
             "derivation_identity": identity,
             "derivation_identity_sha256": sha256(canonical_bytes(identity)).hexdigest(),
             "public_priority_anchor": deepcopy(PUBLIC_PRIORITY_ANCHOR),
@@ -478,8 +490,12 @@ def verify_origin_provenance_envelope(envelope: Mapping[str, Any]) -> dict[str, 
             return {"ok": False, "reason": "ORIGIN_FAMILY_INDEX_MISMATCH"}
         if envelope.get("derivation_genealogy_identity_sha256") != derivation_genealogy_identity_sha256():
             return {"ok": False, "reason": "GENEALOGY_INDEX_MISMATCH"}
+        if envelope.get("relevant_initial_conditions") != relevant_initial_conditions():
+            return {"ok": False, "reason": "INITIAL_CONDITIONS_MISMATCH"}
         if envelope.get("relevant_initial_conditions_identity_sha256") != relevant_initial_conditions_identity_sha256():
             return {"ok": False, "reason": "INITIAL_CONDITIONS_INDEX_MISMATCH"}
+        if envelope.get("claim_scope") != "PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW":
+            return {"ok": False, "reason": "CLAIM_SCOPE_MISMATCH"}
 
         identity = derivation_identity(construction)
         if envelope.get("derivation_identity") != identity:
@@ -524,12 +540,12 @@ def classify_parallel_originality_claim(
 
     same_family = reference["origin_family"] == candidate["origin_family"]
     same_genealogy = (
-        reference["derivation_genealogy_identity_sha256"]
-        == candidate["derivation_genealogy_identity_sha256"]
+        reference["origin_family"]["derivation_genealogy"]
+        == candidate["origin_family"]["derivation_genealogy"]
     )
     same_initial_conditions = (
-        reference["relevant_initial_conditions_identity_sha256"]
-        == candidate["relevant_initial_conditions_identity_sha256"]
+        reference["relevant_initial_conditions"]
+        == candidate["relevant_initial_conditions"]
     )
     same_parallel_window = reference["parallel_window_id"] == candidate["parallel_window_id"]
     same_derivation = reference["derivation_identity"] == candidate["derivation_identity"]
@@ -555,6 +571,10 @@ def classify_parallel_originality_claim(
             else "NO_PARALLEL_INITIAL_CONDITION_CONFLICT"
         ),
         "bounded_claim": True,
+        "claim_scope": "PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW",
+        "comparison_authority": "EXACT_STRUCTURED_GENEALOGY_AND_INITIAL_CONDITIONS",
+        "information_impossibility_claimed": False,
+        "computational_impossibility_claimed": False,
         "unbounded_impossibility_claimed": False,
         "priority_anchor_commit": PUBLIC_PRIORITY_ANCHOR["commit_sha"],
         "priority_anchor_time": PUBLIC_PRIORITY_ANCHOR["commit_created_at"],

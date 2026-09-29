@@ -10,6 +10,7 @@ from hhs_runtime.hhs_origin_provenance_protection_v1 import (
     derivation_genealogy_identity_sha256,
     origin_family_identity_sha256,
     output_variation_independence_witness,
+    relevant_initial_conditions,
     relevant_initial_conditions_identity_sha256,
     verify_origin_provenance_envelope,
 )
@@ -28,12 +29,21 @@ def test_ordered_genealogy_closes_exact_shell_and_reversal_construction():
     assert genealogy["relevant_initial_conditions"]["closed_interior"] == 100
     assert genealogy["relevant_initial_conditions"]["base_101_modular_shell"] == 101
     assert genealogy["relevant_initial_conditions"]["shell_operator"] == "S(B)=B+1"
+    assert genealogy["relevant_initial_conditions"]["shell_family_interiors"] == (
+        100,
+        1000,
+        1000000,
+    )
 
     assert stages["BASE_101_MODULAR_SHELL"]["exact_normalized_projection"] == {
         "numerator": 101,
         "denominator": 100,
         "display": "1.01",
     }
+    assert stages["1001_PRIME_FIBONACCI_SHELL_EXTENSION"]["rule"] == "S(B)=B+1"
+    assert stages["1001_PRIME_FIBONACCI_SHELL_EXTENSION"][
+        "factorization_identity"
+    ] == "7*11*13=1001"
     assert stages["1001_PRIME_FIBONACCI_SHELL_EXTENSION"]["prime_factors"] == (
         7,
         11,
@@ -47,7 +57,13 @@ def test_ordered_genealogy_closes_exact_shell_and_reversal_construction():
     harmonic = stages["101_HARMONIC_KERNEL_TO_179"]
     assert harmonic["input"] == 101
     assert harmonic["rule"] == "HHS_101_HARMONIC_KERNEL_GENERATION"
-    assert harmonic["prime_tensor_output_rule"] == "13^2+16"
+    assert harmonic["direct_relation_semantics"] == (
+        "RECORDED_DIRECT_DERIVATION_FROM_101_HARMONIC_SEED"
+    )
+    assert harmonic["prime_tensor_output_identity"] == "13^2+16=179"
+    assert harmonic["scalar_shortcut"] == (
+        "NOT_SUBSTITUTED_WHERE_HISTORICAL_EQUATION_IS_NOT_RECOVERED"
+    )
     assert harmonic["zero_based_coordinate"] == (4, 4)
     assert harmonic["flat_index"] == 40
     assert harmonic["output"] == 179
@@ -147,6 +163,7 @@ def test_origin_provenance_envelope_verifies_for_native_construction():
     assert result["derivation_genealogy_identity_sha256"] == (
         derivation_genealogy_identity_sha256()
     )
+    assert envelope["relevant_initial_conditions"] == relevant_initial_conditions()
     assert result["relevant_initial_conditions_identity_sha256"] == (
         relevant_initial_conditions_identity_sha256()
     )
@@ -204,6 +221,12 @@ def test_parallel_independent_initial_conditions_conflict_with_same_genealogy():
         "PARALLEL_INDEPENDENT_INITIAL_CONDITIONS_CONTRADICTED_BY_HHS_GENEALOGY"
     )
     assert result["bounded_claim"] is True
+    assert result["claim_scope"] == "PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW"
+    assert result["comparison_authority"] == (
+        "EXACT_STRUCTURED_GENEALOGY_AND_INITIAL_CONDITIONS"
+    )
+    assert result["information_impossibility_claimed"] is False
+    assert result["computational_impossibility_claimed"] is False
     assert result["unbounded_impossibility_claimed"] is False
 
 
@@ -248,3 +271,17 @@ def test_genealogy_or_priority_anchor_substitution_breaks_origin_envelope():
     altered_anchor = deepcopy(envelope)
     altered_anchor["public_priority_anchor"]["commit_sha"] = "0" * 40
     assert verify_origin_provenance_envelope(altered_anchor)["ok"] is False
+
+
+def test_hashes_are_receipts_not_genealogy_comparison_authority():
+    first = build_origin_provenance_envelope(
+        build_multimodal_projection_set(tick=0)["LANGUAGE"],
+        construction_type="PASS220_I042_LANGUAGE_PROJECTION",
+        parallel_window_id=WINDOW,
+    )
+    second = deepcopy(first)
+    second["derivation_genealogy_identity_sha256"] = "0" * 64
+    # Receipt/index substitution makes the envelope invalid; exact genealogy remains
+    # the authoritative object and is never replaced by digest equality.
+    assert verify_origin_provenance_envelope(second)["ok"] is False
+    assert first["origin_family"]["derivation_genealogy"] == canonical_derivation_genealogy()
