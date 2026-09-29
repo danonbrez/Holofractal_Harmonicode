@@ -102,6 +102,7 @@ jobs:
           HHS_DISABLE_C_AUTOBUILD: '1'
         run: |
           mkdir -p artifacts/pass219/lane5-integrated-20260929
+          set +e
           python -m hhs_runtime.testing.native_pytest_provider_v1 -q \
             tests/pass220/test_hhs_pass220_i051_native_lean_alignment_v1.py \
             tests/pass220/test_hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py \
@@ -109,6 +110,24 @@ jobs:
             tests/pass219/test_pass219_lane5_nine_loop_knowledge_hydration_1_75.py \
             tests/test_hhs_service_registry_v1.py \
             --json-report artifacts/pass219/lane5-integrated-20260929/native-pytest-regressions.json
+          native_status=$?
+          set -e
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/pass219/lane5-integrated-20260929/native-pytest-regressions.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          for row in d.get('results', []):
+              if row.get('outcome') in {'FAIL', 'ERROR', 'XPASS'}:
+                  print(json.dumps({
+                      'nodeid': row.get('nodeid'),
+                      'outcome': row.get('outcome'),
+                      'error_type': row.get('error_type'),
+                      'error_message': row.get('error_message'),
+                      'traceback': row.get('traceback'),
+                  }, ensure_ascii=False, sort_keys=True))
+          PY
+          exit "$native_status"
 
       - name: Benchmark integrated services and repository indexes
         env:
