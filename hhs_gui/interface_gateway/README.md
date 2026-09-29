@@ -44,20 +44,10 @@ From the repository root on the Ubuntu host:
 sudo sh hhs_gui/interface_gateway/install.sh
 ```
 
-The installer creates and starts the loopback systemd service and installs the
-nginx snippet. It deliberately does not guess which existing TLS server block is
-authoritative. Add this one line to that existing block:
-
-```nginx
-include /etc/nginx/snippets/hhs-interface-pty.conf;
-```
-
-Then:
-
-```bash
-sudo nginx -t
-sudo systemctl reload nginx
-```
+The installer creates and starts the loopback systemd service, discovers the
+single existing TLS server block that owns the HHS runtime proxy, injects the
+interface snippet idempotently, runs `nginx -t`, rolls back the nginx edit on
+validation failure, and reloads nginx only after validation succeeds.
 
 The installer prints the newly generated interface bearer token once. Store it
 securely. The proof client accepts it into an in-memory password field and clears
