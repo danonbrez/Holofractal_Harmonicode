@@ -4710,6 +4710,81 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.whitepaper_equation_game_mechanics.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_whitepaper_equation_game_mechanics_v1"
+        ),
+        function="whitepaper_game_mechanics_self_test",
+        service_type="pass220_validated_whitepaper_game_mechanics_constructor",
+        description=(
+            "Validate the I058 equation-driven game-mechanics kernel over the "
+            "frozen I057 ParticleSimulation baseline. Repository white-paper "
+            "status classes are enforced before lowering: the indivisible "
+            "boundary B and reference-only relativity remain nonlowered; "
+            "licensed exact mechanics include the reciprocal P/p/q macro "
+            "projection, 5,184 coordinate geometry, Q144 reciprocal phase, "
+            "integer translation pairs, exact GFE reciprocal residual, and "
+            "rho^2=1-kappa phase-region projection. Exact state uses no host "
+            "floats and gains no VM81/Hash72/Hash216 mutation authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I058_WHITEPAPER_EQUATION_GAME_MECHANICS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I058_WHITEPAPER_GAME_WITNESS_V1",
+        ],
+        validators=[
+            "validate_whitepaper_game_frame",
+            "whitepaper_game_mechanics_self_test",
+        ],
+        guards=[
+            "whitepaper_status_classes_preserved",
+            "boundary_B_canonical_verbatim_nonlowered",
+            "reference_relativity_noncanonical_projection_only",
+            "macro_reciprocal_projection_exact",
+            "h36_5184_coordinate_geometry_inherited",
+            "q144_reciprocal_half_turn_inherited",
+            "integer_translation_pair_exact_odd_square",
+            "gfe_reciprocal_residual_exact_rational",
+            "phase_radius_rho_squared_exact",
+            "i057_particle_simulation_frozen_baseline",
+            "host_float_forbidden_in_exact_gameplay_state",
+            "probability_forbidden_in_exact_gameplay_state",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I058_WHITEPAPER_STATUS_DRIFT",
+            "REJECT_I058_BOUNDARY_B_REINTERPRETATION",
+            "REJECT_I058_REFERENCE_PROMOTION",
+            "REJECT_I058_RECIPROCAL_MACRO_DRIFT",
+            "REJECT_I058_TRANSLATION_PAIR_DRIFT",
+            "REJECT_I058_GFE_RESIDUAL_DRIFT",
+            "REJECT_I058_PHASE_RADIUS_DRIFT",
+            "REJECT_I058_I057_BASELINE_DRIFT",
+            "REJECT_I058_FLOAT_OR_PROBABILITY_PATH",
+            "REJECT_I058_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_WHITEPAPER_GAME_MECHANICS_NO_VM81_MUTATION",
+        persistence_policy=(
+            "REPOSITORY_OS_HYDRATION_ONLY_NO_DIRECT_CANONICAL_PERSISTENCE"
+        ),
+        boundedness_policy=(
+            "EXACT_WHITEPAPER_TYPED_MECHANICS_OVER_FROZEN_I057_RENDER_BASELINE"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.holofractal_relativistic_game_engine.self_test",
         module=(
             "hhs_runtime."
