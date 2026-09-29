@@ -1,6 +1,6 @@
 # Pass 220 I055 Restart Checkpoint — ExactRat Quotient Value
 
-Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
+Status: **VALIDATED — READY TO MERGE**
 
 ## Identity
 
@@ -8,13 +8,15 @@ Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
 - Branch: `pass220/i055-native-mathlib-exactrat-value1`
 - Merge target: `main`
 - Pull request: `#649`
-- Implementation head before this checkpoint refresh:
+- Initial implementation head:
   `f9df741bf838a25471fe3e63de4e49caa949332f`
+- Lean repair head:
+  `fc9f625e1654e28723e7bf145de1edde472bd99e`
 - PR mergeability at checkpoint preparation: mergeable
 - Dedicated workflow: `Pass 220 I055 Native Mathlib ExactRat Value`
-- Dedicated run: `36507088597`
-- Dedicated job: `109210836171`
-- Run state at checkpoint preparation: queued
+- Initial run: `36507088597`, job `109210836171` — structural tests passed; Lean failed only because `by decide` could not synthesize `Decidable (half12.eqv half24)`.
+- Repair: close the concrete `1/2 ~ 2/4` witness by direct kernel reduction (`rfl`); no quotient geometry or runtime arithmetic changed.
+- Green repair run: `36513614454`, job `109230968031` — **success**.
 - Branch comparison at checkpoint preparation: 1 commit ahead, 0 behind main
 
 ## Implemented
@@ -51,26 +53,17 @@ No Python1/C11 or C++ implementation changed.
 Inherited I049 runtime arithmetic, I053 equivalence, and I054 congruence
 evidence remain frozen unless their inputs change.
 
-## Validation required
+## Validation completed
 
-1. I055 structural/contract tests.
-2. `lake build`.
-3. `leanchecker HHS`.
-4. HHS axiom audit.
+1. I055 structural/contract tests: PASS.
+2. `lake build`: PASS.
+3. `leanchecker HHS`: PASS.
+4. HHS axiom audit: PASS.
 
-Queued external CI does not block this restartable checkpoint.
+No inherited Python1/C11 or C++ runtime input changed.
 
 ## Next action
 
-Inspect run `36507088597`.
+Merge PR #649 and verify the value module, manifest, root import, and contract on main.
 
-- If green: freeze evidence, merge PR #649, and verify the value module,
-  manifest, root import, and contract on main.
-- If it fails: repair only the I055 quotient/proof/type or structural-test
-  surface.
-- Do not modify inherited runtime arithmetic merely because a Lean quotient
-  proof fails.
-
-After I055 closure, the next bounded slice can prove selected algebraic laws
-directly on `ExactRatValue` while keeping provenance identity separate from
-quotient value identity.
+After I055 closure, the next bounded slice can prove selected algebraic laws directly on `ExactRatValue` while keeping provenance identity separate from quotient value identity.
