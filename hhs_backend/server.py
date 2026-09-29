@@ -71,7 +71,10 @@ from hhs_backend.runtime.runtime_ws import (
 
 from hhs_backend.runtime.live_fastapi_workflow_v1 import (
     LiveFastAPIRuntimeWorkflow,
+    register_cognition_routes,
 )
+
+register_cognition_routes()
 from hhs_backend.runtime.gui_projection_contract_v1 import (
     list_gui_channel_bindings,
     live_gui_projection_contract_self_test,
