@@ -2,7 +2,7 @@ import Lake
 open Lake DSL
 
 package harmonicode where
-  version := v!"0.220.54"
+  version := v!"0.220.55"
 
 @[default_target]
 lean_lib HHS where
