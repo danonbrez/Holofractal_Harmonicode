@@ -6,7 +6,7 @@ on:
       - 'bench/lane5-integrated-benchmark-20260929-r3'
     paths:
       - 'benchmarks/pass219/pass219_lane5_integrated_services_index_benchmark_20260929.py'
-      - 'docs/operations/restart/PASS_219_LANE5_INTEGRATED_BENCHMARK_20260929_RESTART.md'
+      - 'docs/operations/restart/PASS_219_LANE5_INTEGRATED_BENCHMARK_20260929_R3_RESTART.md'
       - '.github/workflows/pass219-lane5-integrated-benchmark-20260929.yml'
   workflow_dispatch:
 
