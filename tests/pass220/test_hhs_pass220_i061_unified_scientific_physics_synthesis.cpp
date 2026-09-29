@@ -19,6 +19,12 @@ void fill_chars(std::array<char, N>& out, char symbol) {
     out[N - 1U] = '\0';
 }
 
+template <std::size_t N, std::size_t M>
+void copy_literal(std::array<char, N>& out, const char (&literal)[M]) {
+    static_assert(N == M);
+    std::memcpy(out.data(), literal, N);
+}
+
 void fill_raw_hash216(char (&out)[HHS_HASH216_LEN + 1], char symbol) {
     for (std::size_t i = 0U; i < HHS_HASH216_LEN; ++i)
         out[i] = symbol;
@@ -42,8 +48,12 @@ UnifiedScientificPhysicsCandidate candidate(
 ) {
     UnifiedScientificPhysicsCandidate c{};
 
-    fill_chars(c.formal.lean.theorem_identity_hash72, '1');
-    fill_chars(c.formal.lean.dependency_identity_hash72, '2');
+    copy_literal(
+        c.formal.lean.theorem_identity_hash72,
+        kI060TheoremIdentityHash72);
+    copy_literal(
+        c.formal.lean.dependency_identity_hash72,
+        kI060DependencyIdentityHash72);
     c.formal.lean.theorem_identity_validated = 1U;
     c.formal.lean.dependency_identity_validated = 1U;
     c.formal.lean.kernel_build_validated = 1U;
@@ -163,6 +173,21 @@ void test_post_hoc_proof_attachment_fails() {
     assert(wall.evaluate(w, c, receipt) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
 }
 
+void test_wrong_i060_hash72_identity_fails() {
+    UnifiedScientificPhysicsCellWall wall{};
+    UnifiedScientificPhysicsReceipt receipt{};
+    const auto w = world();
+
+    auto c = candidate();
+    fill_chars(c.formal.lean.theorem_identity_hash72, '1');
+    assert(wall.evaluate(w, c, receipt) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
+    c = candidate();
+    fill_chars(c.formal.lean.dependency_identity_hash72, '2');
+    receipt = UnifiedScientificPhysicsReceipt{};
+    assert(wall.evaluate(w, c, receipt) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+}
+
 void test_missing_kernel_or_axiom_validation_fails() {
     UnifiedScientificPhysicsCellWall wall{};
     UnifiedScientificPhysicsReceipt receipt{};
@@ -259,6 +284,7 @@ int main() {
     test_formal_only_accepts();
     test_measured_claim_requires_empirical_evidence();
     test_post_hoc_proof_attachment_fails();
+    test_wrong_i060_hash72_identity_fails();
     test_missing_kernel_or_axiom_validation_fails();
     test_formal_cannot_substitute_for_empirical();
     test_empirical_cannot_substitute_for_formal();
