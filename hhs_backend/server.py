@@ -44,7 +44,8 @@ from hhs_backend.frontend_ingress_policy_v1 import (
 # This module is the canonical external FastAPI application boundary. Runtime
 # modules default to repository-native compatibility unless an external
 # composition surface explicitly declares this provider.
-os.environ.setdefault("HHS_LANE5_PROVIDER_FASTAPI", "external")\nos.environ.setdefault("HHS_FASTAPI_PROVIDER", "external")
+os.environ.setdefault("HHS_LANE5_PROVIDER_FASTAPI", "external")
+os.environ.setdefault("HHS_FASTAPI_PROVIDER", "external")
 
 # ============================================================================
 # ROUTES
