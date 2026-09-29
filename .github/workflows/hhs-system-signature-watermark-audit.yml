@@ -1,0 +1,87 @@
+name: HHS System Signature Watermark Audit
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_system_signature_watermark_v1.py"
+      - "tests/pass220/test_hhs_system_signature_watermark_v1.py"
+      - ".github/workflows/hhs-system-signature-watermark-audit.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_system_signature_watermark_v1.py"
+      - "tests/pass220/test_hhs_system_signature_watermark_v1.py"
+      - ".github/workflows/hhs-system-signature-watermark-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  signature-watermark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Compile signature and inherited I042 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_system_signature_watermark_v1.py \
+            hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py \
+            tests/pass220/test_hhs_system_signature_watermark_v1.py \
+            tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Run system signature watermark regression
+        env:
+          PYTHONPATH: .
+        run: >-
+          python -m pytest -q
+          tests/pass220/test_hhs_system_signature_watermark_v1.py
+
+      - name: Run inherited I042 shared-root regression
+        env:
+          PYTHONPATH: .
+        run: >-
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Verify deterministic self-recognition receipt
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_system_signature_watermark_v1 import (
+              canonical_bytes,
+              recognize_construction,
+              unwrap_recognized_construction,
+              watermark_construction,
+          )
+
+          construction = {
+              "state": "SYSTEM_STANDARDIZATION_AUDIT",
+              "ordered_phase": ["PREVIOUS", "CHANGE", "RECEIPT"],
+              "closure": {"delta_e": 0, "psi": 0, "omega": True},
+          }
+          before = canonical_bytes(construction)
+          envelope = watermark_construction(
+              construction,
+              construction_type="CI_SYSTEM_SIGNATURE_PROBE",
+          )
+          result = recognize_construction(envelope)
+          recovered = unwrap_recognized_construction(envelope)
+
+          assert result["recognized"] is True
+          assert result["reason"] == "HHS_CONSTRUCTION_RECOGNIZED"
+          assert canonical_bytes(recovered) == before
+          assert len(result["construction_sha256"]) == 64
+          assert len(result["standardization_sha256"]) == 64
+          assert len(result["signature_sha256"]) == 64
+          PY
