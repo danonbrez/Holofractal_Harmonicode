@@ -82,6 +82,12 @@
     "lean4": {
       "native": "pinned HHS Lean proof toolchain and HHS.Mathlib modules",
       "external": "unbound external Lean proof/runtime authority"
+    },
+    "fastapi_application": {
+      "native": "NOT_YET_IMPLEMENTED_AS_FULL_FASTAPI_STARLETTE_PYDANTIC_APPLICATION_STACK",
+      "external": "FastAPI/Starlette/Pydantic extended application composition",
+      "runtime_behavior": "FAIL_CLOSED_OR_EXPLICIT_EXTERNAL",
+      "pull_request_behavior": "WARN_AND_FALLBACK_TO_DECLARED_EXTERNAL"
     }
   },
   "compatibility_membrane": {
