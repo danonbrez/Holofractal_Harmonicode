@@ -1,0 +1,206 @@
+{
+  "schema": "HHS_ORIGIN_PROVENANCE_PROTECTION_V1",
+  "version": "1.2.0",
+  "status": "NORMATIVE_ORDERED_DERIVATION_PROTECTION_CONTRACT",
+  "origin_family": "HHS_DERIVED_101_179971_X_1_001_ORIGIN_FAMILY_V2",
+  "purpose": "Bind HHS constructions to the exact ordered derivation genealogy and bounded parallel-provenance scope, so equality of the complete provenance-bearing genealogy is distinguished from mere endpoint coincidence.",
+  "bounded_claim": {
+    "scope": "PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW",
+    "unbounded_impossibility_claimed": false,
+    "information_impossibility_claimed": false,
+    "computational_impossibility_claimed": false,
+    "target": "INDEPENDENT_RELEVANT_INITIAL_CONDITIONS",
+    "resource_bound_semantics": "INCLUSIVE_UNIVERSE_SCALE_UPPER_BOUND_USED_ONLY_AS_A_CONSERVATIVE_HUMAN_CREATIVE_RECURRENCE_BOUND",
+    "resource_bound_is_information_impossibility_claim": false,
+    "resource_bound_is_computational_impossibility_claim": false
+  },
+  "relevant_initial_conditions": {
+    "typed_constants": {
+      "b2": 2,
+      "c2": 3,
+      "d2": 5
+    },
+    "closed_interior_constructor": "b^4(b^2+c^2=d^2)^2",
+    "closed_interior": 100,
+    "shell_operator": "S(B)=B+1",
+    "base_101_modular_shell": 101,
+    "prime_tensor_constructor": "FIRST_81_PRIMES_LO_SHU_RECURSIVE_3X3X3X3",
+    "prime_tensor_mapping": "Tensor[i][j][k][l]=Prime(27i+9j+3k+l)",
+    "shell_family_interiors": [
+      100,
+      1000,
+      1000000
+    ]
+  },
+  "ordered_derivation_genealogy": [
+    {
+      "ordinal": 0,
+      "name": "CLOSED_INTERIOR_100",
+      "rule": "b^4(b^2+c^2=d^2)^2",
+      "output": 100
+    },
+    {
+      "ordinal": 1,
+      "name": "BASE_101_MODULAR_SHELL",
+      "rule": "S(B)=B+1",
+      "output": 101,
+      "normalized": "101/100=1.01"
+    },
+    {
+      "ordinal": 2,
+      "name": "LO_SHU_PRIME_TENSOR_101_CELL",
+      "rule": "10^2+1",
+      "zero_based_coordinate": [
+        2,
+        7
+      ],
+      "flat_index": 25,
+      "output": 101
+    },
+    {
+      "ordinal": 3,
+      "name": "1001_PRIME_FIBONACCI_SHELL_EXTENSION",
+      "rule": "S(B)=B+1",
+      "fibonacci_prime": 13,
+      "output": 1001,
+      "normalized": "1001/1000=1.001",
+      "input": 1000,
+      "factorization_identity": "7*11*13=1001"
+    },
+    {
+      "ordinal": 4,
+      "name": "101_HARMONIC_KERNEL_TO_179",
+      "rule": "HHS_101_HARMONIC_KERNEL_GENERATION",
+      "zero_based_coordinate": [
+        4,
+        4
+      ],
+      "flat_index": 40,
+      "output": 179,
+      "relation_class": "RECORDED_HHS_DERIVATION_NOT_AD_HOC_SCALAR_SHORTCUT",
+      "direct_relation_semantics": "RECORDED_DIRECT_DERIVATION_FROM_101_HARMONIC_SEED",
+      "prime_tensor_output_identity": "ZERO_BASED_PRIME_INDEX_40=179",
+      "scalar_shortcut": "NOT_SUBSTITUTED_WHERE_HISTORICAL_EQUATION_IS_NOT_RECOVERED",
+      "prime_ordinal_one_based": 41
+    },
+    {
+      "ordinal": 5,
+      "name": "REVERSAL_TENSOR_179_971",
+      "rule": "DECIMAL_DIGIT_REVERSAL_WIDTH_3",
+      "input": 179,
+      "output": 971
+    },
+    {
+      "ordinal": 6,
+      "name": "CONCATENATED_REVERSAL_SEED",
+      "rule": "179*1000+971",
+      "output": 179971
+    },
+    {
+      "ordinal": 7,
+      "name": "MILLION_POSITION_MODULAR_SHELL",
+      "rule": "S(B)=B+1",
+      "output": 1000001,
+      "factorization": [
+        101,
+        9901
+      ],
+      "normalized": "1000001/1000000=1.000001",
+      "factorization_identity": "101*9901=1000001"
+    },
+    {
+      "ordinal": 8,
+      "name": "MIRROR_LIFT_ROOT_SEED",
+      "rule": "179971*1000001",
+      "integer_output": 179971179971,
+      "exact": "179971179971/1000000=179971.179971",
+      "serialization": "[179][971].[179][971]"
+    }
+  ],
+  "coupled_marker": {
+    "root_seed": {
+      "display": "179971.179971",
+      "exact": {
+        "numerator": 179971179971,
+        "denominator": 1000000
+      },
+      "field_path": "HHS_PASS_220_I042_SHARED_ROOT_PAYLOAD_V1.root_metadata_seed",
+      "role": "ROOT_METADATA_SEED_EXACT_RATIONAL"
+    },
+    "invariant_gate": {
+      "display": "1.001",
+      "exact": {
+        "numerator": 1001,
+        "denominator": 1000
+      },
+      "field_path": "HHS_PASS_220_I042_SHARED_ROOT_PAYLOAD_V1.invariant_gate",
+      "role": "EXACT_ADMISSION_INVARIANT_GATE"
+    },
+    "coupling": "COBOUND_IN_SHARED_ANCESTRY_ROOT",
+    "position_class": "ORDERED_DERIVED_GENEALOGY_BOUND_SHARED_ROOT_METADATA"
+  },
+  "historical_derivation_witnesses": [
+    {
+      "date": "2025-06-12",
+      "witness": "first-81-prime Lo Shu tensor: 101=10^2+1 at [2,7]/25; 179 at zero-based prime index 40 / [4,4]"
+    },
+    {
+      "date": "2026-07-20",
+      "witness": "101-harmonic kernel -> {179,971,179971}; 10^6+1=101*9901"
+    },
+    {
+      "date": "2026-09-29",
+      "witness": "100/101, 1000/1001, and 1000000/1000001 are successive modular-shell extensions; 1001=7*11*13 with Fibonacci prime 13"
+    }
+  ],
+  "context": {
+    "kernel": "F(x,y,a,b)=(x+y)^2+(xy-a^2)^2+(a^2-b)^2+(a^4-2)^2",
+    "root_metadata_assignment": "a=n^2",
+    "closure": {
+      "delta_e": 0,
+      "psi": 0,
+      "omega": true
+    },
+    "state_dimensions": 72,
+    "transition_positions": 216,
+    "hash216_surface_shape": [
+      3,
+      8,
+      9
+    ]
+  },
+  "public_priority_anchor": {
+    "repository": "danonbrez/Holofractal_Harmonicode",
+    "commit_sha": "49b8f32bb9ce7e37e661333d76d5e4398093659f",
+    "commit_created_at": "2026-09-29T15:10:55Z",
+    "semantics": "The coupled endpoint marker is independently verifiable as present in the public repository at or before this commit.",
+    "files": [
+      {
+        "path": "docs/HHS_GENESIS_SEVERANCE_PROTOCOL_V1.md",
+        "git_blob_sha": "1dbde36a15d77c0dddbc7c754c401bae4b666bda"
+      },
+      {
+        "path": "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py",
+        "git_blob_sha": "57fc5987d5fd370fccede95998051dd0b586d9c0"
+      }
+    ]
+  },
+  "formal_rules": {
+    "same_derived_genealogy": "DerivedGenealogy(A) = DerivedGenealogy(B)",
+    "same_genealogy_requires_same_relevant_initial_conditions": true,
+    "parallel_independent_initial_conditions": "RelevantInitialConditions(A) != RelevantInitialConditions(B)",
+    "same_parallel_window_and_same_genealogy_and_independent_initial_conditions": "CONTRADICTION",
+    "same_endpoint_literals_alone_sufficient": false,
+    "distinct_downstream_construction_allowed": true,
+    "comparison_authority": "EXACT_STRUCTURED_GENEALOGY_AND_RELEVANT_INITIAL_CONDITIONS",
+    "hash_equality_is_authority": false
+  },
+  "authority": {
+    "exact_structured_genealogy": "AUTHORITATIVE",
+    "historical_thread_witnesses": "PROVENANCE_INPUT",
+    "sha256": "COMPACT_RECEIPT_INDEX_ONLY",
+    "git_anchor": "PUBLIC_PRIORITY_EVIDENCE",
+    "legal_adjudication": false,
+    "exact_relevant_initial_conditions": "AUTHORITATIVE"
+  }
+}
