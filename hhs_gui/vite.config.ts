@@ -10,6 +10,12 @@ export default defineConfig({
     strictPort: false,
     cors: true,
     proxy: {
+      "/api/interface/ubuntu/pty": {
+        target: "http://127.0.0.1:8787",
+        ws: true,
+        changeOrigin: true,
+        secure: false,
+      },
       "/api/pass190": {
         target: "http://127.0.0.1:8190",
         ws: true,
