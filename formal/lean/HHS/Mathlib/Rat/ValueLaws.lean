@@ -24,10 +24,10 @@ def onePair : ExactRat :=
 namespace ExactRatValue
 
 def zeroValue : ExactRatValue :=
-  ofPair zeroPair
+  ExactRatValue.ofPair zeroPair
 
 def oneValue : ExactRatValue :=
-  ofPair onePair
+  ExactRatValue.ofPair onePair
 
 instance : Zero ExactRatValue := ⟨zeroValue⟩
 instance : One ExactRatValue := ⟨oneValue⟩
@@ -72,8 +72,9 @@ theorem value_add_zero (x : ExactRatValue) :
   intro a
   change
     ExactRatValue.add (ExactRatValue.ofPair a)
-        (ExactRatValue.ofPair zeroPair) =
+        ExactRatValue.zeroValue =
       ExactRatValue.ofPair a
+  unfold ExactRatValue.zeroValue
   rw [ExactRatValue.add_ofPair]
   exact ExactRatValue.ofPair_eq_of_eqv (add_zero_pair_eqv a)
 
@@ -82,9 +83,10 @@ theorem value_zero_add (x : ExactRatValue) :
   refine Quotient.inductionOn x ?_
   intro a
   change
-    ExactRatValue.add (ExactRatValue.ofPair zeroPair)
+    ExactRatValue.add ExactRatValue.zeroValue
         (ExactRatValue.ofPair a) =
       ExactRatValue.ofPair a
+  unfold ExactRatValue.zeroValue
   rw [ExactRatValue.add_ofPair]
   exact ExactRatValue.ofPair_eq_of_eqv (zero_add_pair_eqv a)
 
@@ -94,8 +96,9 @@ theorem value_mul_one (x : ExactRatValue) :
   intro a
   change
     ExactRatValue.mul (ExactRatValue.ofPair a)
-        (ExactRatValue.ofPair onePair) =
+        ExactRatValue.oneValue =
       ExactRatValue.ofPair a
+  unfold ExactRatValue.oneValue
   rw [ExactRatValue.mul_ofPair]
   exact ExactRatValue.ofPair_eq_of_eqv (mul_one_pair_eqv a)
 
@@ -104,9 +107,10 @@ theorem value_one_mul (x : ExactRatValue) :
   refine Quotient.inductionOn x ?_
   intro a
   change
-    ExactRatValue.mul (ExactRatValue.ofPair onePair)
+    ExactRatValue.mul ExactRatValue.oneValue
         (ExactRatValue.ofPair a) =
       ExactRatValue.ofPair a
+  unfold ExactRatValue.oneValue
   rw [ExactRatValue.mul_ofPair]
   exact ExactRatValue.ofPair_eq_of_eqv (one_mul_pair_eqv a)
 
@@ -117,7 +121,8 @@ theorem value_add_neg (x : ExactRatValue) :
   change
     ExactRatValue.add (ExactRatValue.ofPair a)
         (ExactRatValue.neg (ExactRatValue.ofPair a)) =
-      ExactRatValue.ofPair zeroPair
+      ExactRatValue.zeroValue
+  unfold ExactRatValue.zeroValue
   rw [ExactRatValue.neg_ofPair, ExactRatValue.add_ofPair]
   exact ExactRatValue.ofPair_eq_of_eqv (add_neg_pair_eqv_zero a)
 
@@ -129,7 +134,8 @@ theorem value_neg_add (x : ExactRatValue) :
     ExactRatValue.add
         (ExactRatValue.neg (ExactRatValue.ofPair a))
         (ExactRatValue.ofPair a) =
-      ExactRatValue.ofPair zeroPair
+      ExactRatValue.zeroValue
+  unfold ExactRatValue.zeroValue
   rw [ExactRatValue.neg_ofPair, ExactRatValue.add_ofPair]
   exact ExactRatValue.ofPair_eq_of_eqv (neg_add_pair_eqv_zero a)
 
