@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, Mapping, Sequence
-
-from fastapi import FastAPI
+from typing import Any, Dict, Mapping, Protocol, Sequence
 
 import hhs_backend.runtime.hhs_pass201_public_api_federation_v1 as _v1
 from hhs_backend.runtime.hhs_pass201_public_api_federation_v1 import (
@@ -27,7 +25,7 @@ class PublicAPIFederation(_V1PublicAPIFederation):
         return _PATH_CONVERTER_PATTERN.sub(r"{\1}", path)
 
     @staticmethod
-    def _openapi_missing(app: FastAPI, routes: Sequence[Mapping[str, Any]]) -> list[Dict[str, Any]]:
+    def _openapi_missing(app: _OpenAPIApplication, routes: Sequence[Mapping[str, Any]]) -> list[Dict[str, Any]]:
         schema = app.openapi()
         paths = schema.get("paths", {}) if isinstance(schema, dict) else {}
         missing: list[Dict[str, Any]] = []
@@ -54,7 +52,7 @@ class PublicAPIFederation(_V1PublicAPIFederation):
 PASS201_PUBLIC_API_FEDERATION = PublicAPIFederation()
 
 
-def register_public_api_federation(app: FastAPI) -> Dict[str, Any]:
+def register_public_api_federation(app: _OpenAPIApplication) -> Dict[str, Any]:
     return PASS201_PUBLIC_API_FEDERATION.register_all_api_routers(app)
 
 
