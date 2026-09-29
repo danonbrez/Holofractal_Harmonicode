@@ -17,6 +17,7 @@ from dataclasses import asdict, dataclass
 import os
 from pathlib import Path
 import re
+import warnings
 from typing import Any, Mapping
 
 SCHEMA = "HHS_LANE5_NATIVE_CAPABILITY_PROVIDER_V1"
@@ -285,6 +286,7 @@ def resolve_lane5_capability(
                 provider = "external"
                 fallback_used = True
                 warning = _pr_fallback_warning(spec, native_unavailable_reason)
+                warnings.warn(warning, RuntimeWarning, stacklevel=2)
             else:
                 raise Lane5CapabilityProviderError(native_unavailable_reason)
 
