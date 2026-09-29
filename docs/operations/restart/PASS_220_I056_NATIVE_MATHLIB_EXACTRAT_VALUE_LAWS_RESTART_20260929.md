@@ -85,6 +85,7 @@ Inspect run `36513927843`, job `109231926111`.
 - Do not modify inherited runtime arithmetic merely because a Lean proof
   fails.
 
-Pass number I057 is already occupied on main by the separate
-ParticleSimulation performance workstream. After I056 closes, the next new
-Pass 220 Mathlib iteration must use the next free repository iteration.
+Pass numbers I057, I058, and I059 are occupied by parallel Pass 220 workstreams.
+After I056 closes, the next native Mathlib continuation is therefore explicitly
+reserved as **Pass 220 I060**. Do not allocate I057, I058, or I059 to this
+Mathlib lineage.
