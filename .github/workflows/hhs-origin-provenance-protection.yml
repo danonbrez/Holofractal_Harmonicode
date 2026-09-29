@@ -10,6 +10,7 @@ on:
       - "contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json"
       - "tests/pass220/test_hhs_origin_provenance_protection_v1.py"
       - "docs/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.md"
+      - "docs/operations/restart/HHS_ORIGIN_PROVENANCE_PROTECTION_RESTART_20260929.md"
       - ".github/workflows/hhs-origin-provenance-protection.yml"
   pull_request:
     paths:
@@ -20,6 +21,7 @@ on:
       - "contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json"
       - "tests/pass220/test_hhs_origin_provenance_protection_v1.py"
       - "docs/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.md"
+      - "docs/operations/restart/HHS_ORIGIN_PROVENANCE_PROTECTION_RESTART_20260929.md"
       - ".github/workflows/hhs-origin-provenance-protection.yml"
   workflow_dispatch:
 
