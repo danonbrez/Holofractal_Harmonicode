@@ -106,7 +106,7 @@ def half24 : ExactRat :=
 
 theorem half12_eqv_half24 :
     half12.eqv half24 := by
-  decide
+  rfl
 
 theorem half_pair_objects_distinct :
     half12 ≠ half24 := by
