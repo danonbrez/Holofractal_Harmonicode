@@ -156,7 +156,7 @@ def derivation_identity(construction: Mapping[str, Any]) -> dict[str, Any]:
         "source_provenance": _require_text(source, "provenance"),
         "projection_sha256": _require_text(construction, "projection_sha256"),
         "projection_hash72": _require_text(construction, "projection_hash72"),
-        "hash216_positions": deepcopy(tuple(positions)),
+        "hash216_positions": list(positions),
         "hash216_genome_root_sha256": _require_text(
             construction,
             "hash216_genome_root_sha256",
