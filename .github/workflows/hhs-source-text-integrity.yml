@@ -1,0 +1,18 @@
+name: HHS Source Text Integrity
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  source-text-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m hhs_runtime.hhs_source_text_integrity_v1
+      - run: python -m pytest -q tests/test_hhs_source_text_integrity_v1.py
