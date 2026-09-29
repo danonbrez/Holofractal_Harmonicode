@@ -4,6 +4,7 @@ import HHS.Mathlib.Algebra.Native
 import HHS.Mathlib.Algebra.Universal
 import HHS.Mathlib.Rat.Equivalence
 import HHS.Mathlib.Rat.Congruence
+import HHS.Mathlib.Rat.Value
 import HHS.Alignment.ReciprocalTensor
 
 namespace HHS
