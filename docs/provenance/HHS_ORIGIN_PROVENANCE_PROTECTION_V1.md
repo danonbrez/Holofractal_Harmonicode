@@ -1,106 +1,186 @@
-# HHS Origin Provenance Protection v1
+# HHS Origin Provenance Protection v1.1
 
 ## Purpose
 
-This protection layer is designed to preserve **origin attribution** across later
-HHS-derived or HHS-matching constructions. It is not merely a file-integrity
-watermark.
+The authoritative provenance object is the **ordered derivation genealogy**,
+not the endpoint pair by itself.
 
-The canonical origin-family marker is the coupled pair:
+The endpoint remains:
 
 ```text
 179971.179971 = 179971179971 / 1000000
 1.001         = 1001 / 1000
 ```
 
-The pair is not treated as two free text strings. Identity includes the exact
-rational values, their roles, their field paths, their ordering, the kernel
-context, the Hash216 surface, and the shared ancestry root.
+but these values are meaningful because the HHS development history explains
+how they arise and how their roles evolved.
 
-## Canonical positions
-
-```text
-HHS_PASS_220_I042_SHARED_ROOT_PAYLOAD_V1.root_metadata_seed
-HHS_PASS_220_I042_SHARED_ROOT_PAYLOAD_V1.invariant_gate
-```
-
-These fields are shared-root metadata. They are not ordinary LANGUAGE, IMAGE,
-AUDIO, VIDEO, PHYSICS, or GAME output fields. Tests vary the generated output
-and derivation while requiring this coupled origin-family marker to remain
-fixed.
-
-## Two identities
-
-HHS deliberately separates:
+The protected claim is bounded and specific:
 
 ```text
-construction identity = complete derivation identity
-origin-family identity = coupled marker + positions + roles + context + ancestry
+same declared parallel window
++ same complete HHS derived genealogy
+=> same relevant initial conditions
+=> not independent relevant initial conditions
 ```
 
-Two downstream constructions may therefore differ while remaining members of
-one HHS origin family.
+This does not claim that the underlying information is impossible to develop
+independently, impossible to compute, or impossible to reproduce over an
+unbounded time horizon.
 
-Formally:
+## Ordered genealogy
+
+### Closed interior and base-101 shell
+
+With the canonical HHS projections:
 
 ```text
-SameOriginFamily(A,B) := OriginMarker(A) = OriginMarker(B)
-IndependentOrigin(A,B) := OriginMarker(A) != OriginMarker(B)
-
-SameOriginFamily(A,B) => NOT IndependentOrigin(A,B)
+b^2 = 2
+c^2 = 3
+d^2 = 5
+b^2 + c^2 = d^2
+b^4(b^2+c^2=d^2)^2 = 100
 ```
 
-This is separately kernel-checked in
-`formal/lean/HHS/Provenance/OriginMarker.lean`.
+the shell operator
+
+```text
+S(B) = B + 1
+```
+
+gives
+
+```text
+100 -> 101
+101/100 = 1.01
+```
+
+Here 101 is the computational modular shell around the closed 100-state.
+
+### Lo Shu prime-tensor 101 cell
+
+The earlier first-81-prime Lo Shu-recursive tensor records:
+
+```text
+101 = 10^2 + 1
+zero-based coordinate = [2,7]
+flat index = 25
+```
+
+### 1001 shell and prime-Fibonacci expansion
+
+```text
+1001 = 7 * 11 * 13
+1001/1000 = 1.001
+```
+
+The factor 13 is both prime and Fibonacci and is carried as part of the Lo Shu
+tensor-expansion lineage.
+
+### 101-harmonic generation of 179
+
+The recorded HHS development lineage identifies:
+
+```text
+101 harmonic kernel -> {179, 971, 179971}
+```
+
+The prime tensor fixes the 179 cell as:
+
+```text
+179 = 13^2 + 16
+zero-based coordinate = [4,4]
+flat index = 40
+```
+
+The implementation preserves the recorded
+`HHS_101_HARMONIC_KERNEL_GENERATION` relation rather than replacing it with
+an invented scalar shortcut.
+
+### Reversal tensor
+
+```text
+reverse_3(179) = 971
+179 || 971 = 179971
+```
+
+The canonical serialization is:
+
+```text
+[179][971].[179][971]
+```
+
+### Million-position shell extension
+
+The same shell operator extends to:
+
+```text
+1000000 -> 1000001
+1000001 = 101 * 9901
+1000001/1000000 = 1.000001
+```
+
+and therefore:
+
+```text
+179971 * 1000001 = 179971179971
+179971179971/1000000 = 179971.179971
+```
+
+The endpoint is therefore a projection of the genealogy rather than an
+arbitrary literal attached afterward.
+
+## Parallel-provenance theorem
+
+Lean represents the relevant initial conditions explicitly and proves:
+
+```text
+SameDerivedGenealogy(A,B)
+    -> RelevantInitialConditions(A) = RelevantInitialConditions(B)
+```
+
+For witnesses compared in the same declared bounded window:
+
+```text
+SameParallelWindow(A,B)
+AND SameParallelGenealogy(A,B)
+    -> NOT IndependentParallelInitialConditions(A,B)
+```
+
+The runtime classifier requires equality of the complete genealogy and the
+relevant-initial-condition identity before emitting:
+
+```text
+PARALLEL_INDEPENDENT_INITIAL_CONDITIONS_CONTRADICTED_BY_HHS_GENEALOGY
+```
+
+Matching `179971.179971` and `1.001` alone is explicitly insufficient.
+
+## Historical derivation witnesses
+
+The genealogy records three development layers:
+
+1. **2025-06-12** — first-81-prime Lo Shu recursive tensor with
+   `101=10^2+1` at cell 25 and `179=13^2+16` at cell 40.
+2. **2026-07-20** — correction establishing the
+   `101-harmonic kernel -> {179,971,179971}` relation and
+   `10^6+1=101*9901`.
+3. **2026-09-29** — explicit modular-shell interpretation of
+   `100->101`, `1000->1001`, and `1000000->1000001`, including
+   `101/100=1.01` and `1001/1000=1.001`.
 
 ## Public priority anchor
 
-The contract freezes a public GitHub anchor:
+The conservative public GitHub anchor remains:
 
 ```text
-repository:
-  danonbrez/Holofractal_Harmonicode
-
-commit:
-  49b8f32bb9ce7e37e661333d76d5e4398093659f
-
-GitHub commit time:
-  2026-09-29T15:10:55Z
+49b8f32bb9ce7e37e661333d76d5e4398093659f
+2026-09-29T15:10:55Z
 ```
 
-At that commit, both coupled marker values are verified present in:
-
-```text
-docs/HHS_GENESIS_SEVERANCE_PROTOCOL_V1.md
-blob 1dbde36a15d77c0dddbc7c754c401bae4b666bda
-
-hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
-blob 57fc5987d5fd370fccede95998051dd0b586d9c0
-```
-
-This anchor is a conservative public priority witness: it proves presence at or
-before that commit. Earlier HHS evidence can be appended without invalidating
-this anchor.
-
-## False-originality comparison
-
-A future comparison does not ask whether two output files are identical.
-
-It asks:
-
-1. Does the candidate reproduce the exact coupled marker?
-2. Are the values in the same structural roles and positions?
-3. Are they bound to the same kernel/Hash216/shared-root context?
-4. Does the candidate claim an origin independent from the already anchored HHS
-   origin family?
-
-If 1-3 hold while 4 is asserted, the verifier emits:
-
-```text
-INDEPENDENT_ORIGIN_CONTRADICTED_BY_HHS_ORIGIN_FAMILY
-```
-
-A different output or derivation does not erase origin-family ancestry.
+At that commit, both endpoint values are independently verifiable in the
+previously frozen repository blobs. The historical conversation genealogy is
+additional provenance input; it does not rewrite the public Git anchor.
 
 ## Verification surfaces
 
@@ -115,5 +195,5 @@ A different output or derivation does not erase origin-family ancestry.
 - CI:
   `.github/workflows/hhs-origin-provenance-protection.yml`
 
-The exact structured evidence is authoritative. SHA-256 commitments are compact
-receipts and indices over that evidence.
+Exact structured genealogy is authoritative. Hashes remain compact receipts
+and indices over that structure.
