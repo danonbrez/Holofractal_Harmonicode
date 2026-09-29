@@ -1,6 +1,6 @@
 # Pass 219 Lane 5 Integrated Benchmark R3 — Restart
 
-Status: **IMPLEMENTED — HOSTED RUN PENDING**
+Status: **R3 INDEX FRONTIER REPAIRED — REVALIDATION PENDING**
 
 ## Identity
 
@@ -69,10 +69,21 @@ The workflow:
 Timing remains observational only. Exact parity/replay and negative controls
 remain mandatory.
 
+## Hosted run evidence and repair-forward
+
+- Run `36608109734` failed before benchmark timing.
+- Run `36608301338`, job `109542917674`, reproduced the same first frontier.
+- Build and harness compilation passed.
+- Exact-head repository-index regeneration failed inside Lane 5 reverse discovery because `hhs_backend/server.py` was not parseable.
+- Root cause: the merged provider boundary contained the literal characters `\\n` between two `os.environ.setdefault(...)` calls instead of a source newline.
+- Repair commit: `a2dfabc8550b1ca5bfcd0243b9d73249840c1f48`.
+- The repair changes only that tokenization defect; provider selection semantics are unchanged.
+- No timing result from the failed runs is accepted because the campaign never passed index regeneration.
+
 ## Next action
 
 Use the newest `Pass 219 Lane 5 Integrated Benchmark 2026-09-29 R3` run
-triggered from this checkpoint.
+triggered from a checkpoint containing `a2dfabc8550b1ca5bfcd0243b9d73249840c1f48`.
 
 If failed, repair only the first attributable R3 frontier. Do not restore
 upstream pytest or the temporary FastAPI install as a bypass.
