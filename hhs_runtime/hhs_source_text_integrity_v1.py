@@ -10,8 +10,10 @@ SOURCE_SUFFIXES = frozenset({
     ".py", ".pyi",
     ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs",
     ".c", ".h", ".cc", ".cpp", ".cxx", ".hpp",
+    ".sh", ".bash",
 })
 PYTHON_SUFFIXES = frozenset({".py", ".pyi"})
+SHELL_SUFFIXES = frozenset({".sh", ".bash"})
 JS_SUFFIXES = frozenset({".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"})
 C_LIKE_SUFFIXES = frozenset({
     ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs",
@@ -154,7 +156,7 @@ def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[Sou
             column += 1
             continue
 
-        if suffix in PYTHON_SUFFIXES and ch == "#":
+        if (suffix in PYTHON_SUFFIXES or suffix in SHELL_SUFFIXES) and ch == "#":
             line_comment = True
             i += 1
             column += 1

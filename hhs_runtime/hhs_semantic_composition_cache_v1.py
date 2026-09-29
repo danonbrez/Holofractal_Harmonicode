@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 import json
+import os
 
 from hhs_runtime.hhs_hash72_kernel_authority_v1 import make_hash72_kernel_witness
 from hhs_runtime.hhs_kernel_runtime_autocomposer_v1 import compose_surface_pipeline
@@ -35,6 +36,16 @@ REJECT_CACHE_ENTRY_AFTER_DECAY_EXPIRATION = "REJECT_CACHE_ENTRY_AFTER_DECAY_EXPI
 REJECT_SEMANTIC_DB_AS_AUTHORITY_SOURCE = "REJECT_SEMANTIC_DB_AS_AUTHORITY_SOURCE"
 
 DEFAULT_CACHE_PATH = Path("demo_reports/hhs_semantic_composition_cache_pass044.json")
+
+def resolve_default_cache_path() -> Path:
+    """Resolve implicit cache storage without writing into a production checkout."""
+    explicit = os.environ.get("HHS_LIVE_SEMANTIC_COMPOSITION_CACHE_PATH")
+    if explicit:
+        return Path(explicit)
+    runtime_output_dir = os.environ.get("HHS_RUNTIME_OUTPUT_DIR")
+    if runtime_output_dir:
+        return Path(runtime_output_dir) / "hhs_live_semantic_composition_cache_pass217.json"
+    return DEFAULT_CACHE_PATH
 
 
 def canonical_json(payload: Any) -> str:
@@ -133,8 +144,8 @@ class _ReceiptForVectorIndex:
 class SemanticCompositionCache:
     """JSON-backed verbatim semantic cache for kernel-derived pipeline plans."""
 
-    def __init__(self, path: str | Path = DEFAULT_CACHE_PATH) -> None:
-        self.path = Path(path)
+    def __init__(self, path: str | Path | None = None) -> None:
+        self.path = Path(path) if path is not None else resolve_default_cache_path()
         self.vector_index = HHSReceiptVectorIndex()
 
     def load(self) -> Dict[str, Any]:

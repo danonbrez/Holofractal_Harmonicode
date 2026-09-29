@@ -28,6 +28,18 @@ def test_rejects_literal_escaped_newline_between_c_includes():
     assert len(issues) == 1
 
 
+def test_rejects_literal_escaped_newline_between_shell_assignments():
+    source = "RECOVERY_VERIFIER=/tmp/verify.py\\nSTATIC_FIRST_CONFIGURATOR=/tmp/configure.py\n"
+    issues = find_literal_escaped_newline_issues("install.sh", source)
+    assert len(issues) == 1
+    assert issues[0].kind == "LITERAL_ESCAPED_NEWLINE_OUTSIDE_STRING_OR_COMMENT"
+
+
+def test_allows_shell_newline_escape_inside_quote_and_comment():
+    source = "printf '%s\\n' value\n# documentation contains \\n token\n"
+    assert find_literal_escaped_newline_issues("install.sh", source) == []
+
+
 def test_allows_newline_escape_inside_string_char_regex_and_comment():
     cases = [
         ("example.py", 'value = "line one\\nline two"\n# literal text \\\\n is documentation\n'),
