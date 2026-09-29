@@ -1,0 +1,96 @@
+name: HHS System Signature Watermark Audit
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_system_signature_watermark_v1.py"
+      - "tests/pass220/test_hhs_system_signature_watermark_v1.py"
+      - ".github/workflows/hhs-system-signature-watermark-audit.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_system_signature_watermark_v1.py"
+      - "tests/pass220/test_hhs_system_signature_watermark_v1.py"
+      - ".github/workflows/hhs-system-signature-watermark-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  signature-watermark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx
+
+      - name: Compile derivational watermark and inherited I042 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_system_signature_watermark_v1.py \
+            hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py \
+            tests/pass220/test_hhs_system_signature_watermark_v1.py \
+            tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Run derivational uniqueness watermark regression
+        env:
+          PYTHONPATH: .
+        run: >-
+          python -m pytest -q
+          tests/pass220/test_hhs_system_signature_watermark_v1.py
+
+      - name: Run inherited I042 shared-root regression
+        env:
+          PYTHONPATH: .
+        run: >-
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Verify independent parallel construction contradiction
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_lane5_multimodal_shared_root_fabric_v1 import (
+              build_multimodal_projection_set,
+          )
+          from hhs_runtime.hhs_system_signature_watermark_v1 import (
+              compare_construction_derivations,
+              recognize_construction,
+              watermark_construction,
+          )
+
+          first = build_multimodal_projection_set(tick=0)["LANGUAGE"]
+          replay = build_multimodal_projection_set(tick=0)["LANGUAGE"]
+          alternate = build_multimodal_projection_set(tick=1)["LANGUAGE"]
+
+          same = compare_construction_derivations(first, replay)
+          different = compare_construction_derivations(first, alternate)
+
+          assert same["same_construction"] is True
+          assert same["independent_parallel"] is False
+          assert same["same_and_independent"] is False
+          assert same["parallel_independent_same_construction"] is False
+
+          assert different["same_construction"] is False
+          assert different["independent_parallel"] is True
+          assert different["same_and_independent"] is False
+          assert different["parallel_independent_same_construction"] is False
+
+          envelope = watermark_construction(
+              first,
+              construction_type="PASS220_I042_LANGUAGE_PROJECTION",
+          )
+          result = recognize_construction(envelope)
+          assert result["recognized"] is True
+          assert result["reason"] == "HHS_DERIVATION_RECOGNIZED"
+          assert result["same_construction_requires_same_ancestry"] is True
+          assert result["independent_parallel_same_construction"] is False
+          PY

@@ -1,0 +1,84 @@
+name: HHS Origin Provenance Protection
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_origin_provenance_protection_v1.py"
+      - "hhs_runtime/hhs_system_signature_watermark_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Provenance/**"
+      - "contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json"
+      - "tests/pass220/test_hhs_origin_provenance_protection_v1.py"
+      - "docs/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.md"
+      - "docs/operations/restart/HHS_ORIGIN_PROVENANCE_PROTECTION_RESTART_20260929.md"
+      - ".github/workflows/hhs-origin-provenance-protection.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_origin_provenance_protection_v1.py"
+      - "hhs_runtime/hhs_system_signature_watermark_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Provenance/**"
+      - "contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json"
+      - "tests/pass220/test_hhs_origin_provenance_protection_v1.py"
+      - "docs/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.md"
+      - "docs/operations/restart/HHS_ORIGIN_PROVENANCE_PROTECTION_RESTART_20260929.md"
+      - ".github/workflows/hhs-origin-provenance-protection.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  origin-provenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped runtime requirements
+        run: python -m pip install --disable-pip-version-check fastapi httpx
+
+      - name: Compile provenance surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_origin_provenance_protection_v1.py \
+            hhs_runtime/hhs_system_signature_watermark_v1.py \
+            tests/pass220/test_hhs_origin_provenance_protection_v1.py
+
+      - name: Run origin provenance regression through native pytest provider
+        env:
+          PYTHONPATH: .
+        run: >-
+          python -m hhs_runtime.testing.native_pytest_provider_v1 -q
+          tests/pass220/test_hhs_origin_provenance_protection_v1.py
+          tests/pass220/test_hhs_system_signature_watermark_v1.py
+          tests/pass220/test_hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py
+
+      - name: Lean 4 ordered-genealogy theorem and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
+
+      - name: Verify priority anchor and ordered genealogy remain explicit
+        run: |
+          grep -F '49b8f32bb9ce7e37e661333d76d5e4398093659f' \
+            hhs_runtime/hhs_origin_provenance_protection_v1.py
+          grep -F 'HHS_101_HARMONIC_KERNEL_GENERATION' \
+            hhs_runtime/hhs_origin_provenance_protection_v1.py
+          grep -F '179971.179971' \
+            contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json
+          grep -F '1001/1000=1.001' \
+            contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json
+          grep -F 'PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW' \
+            contracts/provenance/HHS_ORIGIN_PROVENANCE_PROTECTION_V1.json
