@@ -43,7 +43,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev
-          python -m pip install --disable-pip-version-check pytest numpy cryptography
+          python -m pip install --disable-pip-version-check pytest numpy cryptography fastapi
 
       - name: Compile benchmark harness
         run: |
