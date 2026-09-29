@@ -59,7 +59,7 @@ def test_manifest_keeps_unscaled_provider_alignment_and_visual_labels():
     text = "Life is not raw material."
     alignment = _alignment(text, Decimal("8"))
     storyboard = [
-        {"frame": index, "label": f"Frame {index}", "transition_anchor": "bridge"}
+        {"frame": index, "label": f"Frame {index}", "prompt": f"Visual prompt {index}", "transition_anchor": "bridge"}
         for index in range(1, 23)
     ]
     manifest = production_manifest(
@@ -75,6 +75,8 @@ def test_manifest_keeps_unscaled_provider_alignment_and_visual_labels():
     assert manifest["tail_silence_seconds"] == "80.000"
     assert manifest["alignment_authority"] == "elevenlabs_character_timestamps_unscaled"
     assert manifest["frames"][0]["visual_label"] == "Frame 1"
+    assert manifest["frames"][0]["visual_prompt"] == "Visual prompt 1"
+    assert manifest["frames"][0]["transition_anchor"] == "bridge"
 
 
 def test_elevenlabs_fit_loop_regenerates_with_bounded_native_speed():
