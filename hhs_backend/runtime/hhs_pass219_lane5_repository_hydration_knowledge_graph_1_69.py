@@ -389,6 +389,9 @@ class Lane5RepositoryHydrationKnowledgeDatabase:
         CREATE INDEX IF NOT EXISTS knowledge_edge_source ON knowledge_edges(source_node_id,relation_type);
         CREATE INDEX IF NOT EXISTS knowledge_edge_target_node ON knowledge_edges(target_node_id,relation_type);
         CREATE INDEX IF NOT EXISTS knowledge_edge_target_file ON knowledge_edges(target_file_path,relation_type);
+        CREATE TABLE IF NOT EXISTS global_visibility_nodes(node_id TEXT PRIMARY KEY,node_hash216 TEXT NOT NULL UNIQUE,node_kind TEXT NOT NULL,source_state TEXT NOT NULL,source_ref TEXT NOT NULL,source_commit TEXT NOT NULL,source_path TEXT,closure_state TEXT NOT NULL,validation_state TEXT NOT NULL,executability_state TEXT NOT NULL,payload_json TEXT NOT NULL);
+        CREATE INDEX IF NOT EXISTS global_visibility_source ON global_visibility_nodes(source_state,source_ref,source_path);
+        CREATE INDEX IF NOT EXISTS global_visibility_state ON global_visibility_nodes(closure_state,validation_state,executability_state);
         CREATE TABLE IF NOT EXISTS hash216_positions(owner_hash216 TEXT NOT NULL,owner_kind TEXT NOT NULL,ordinal INTEGER NOT NULL,lane INTEGER NOT NULL,lane_offset INTEGER NOT NULL,symbol TEXT NOT NULL,symbol_sha256 TEXT NOT NULL,PRIMARY KEY(owner_hash216,ordinal),CHECK(ordinal>=0 AND ordinal<216),CHECK(lane>=0 AND lane<3),CHECK(lane_offset>=0 AND lane_offset<72));
         CREATE TABLE IF NOT EXISTS hydration_metadata(key TEXT PRIMARY KEY,value TEXT NOT NULL);
         """)
@@ -421,7 +424,7 @@ class Lane5RepositoryHydrationKnowledgeDatabase:
         nodes = list(knowledge_projection["capabilities"]) + list(knowledge_projection["constructors"])
         edges = list(knowledge_projection["edges"])
         with self.db:
-            for table in ("hash216_positions","knowledge_edges","knowledge_nodes","file_dependencies","repository_files","hydration_metadata"):
+            for table in ("hash216_positions","global_visibility_nodes","knowledge_edges","knowledge_nodes","file_dependencies","repository_files","hydration_metadata"):
                 self.db.execute(f"DELETE FROM {table}")
             self.db.executemany("INSERT INTO repository_files VALUES(?,?,?,?,?,?)", [
                 (path,str(row["hash216"]),str(row.get("git_blob","")),str(row.get("language","")),str(row.get("disposition","")),str(row.get("origin","")))
@@ -467,6 +470,7 @@ class Lane5RepositoryHydrationKnowledgeDatabase:
             "capabilities": int(self.db.execute("SELECT COUNT(*) FROM knowledge_nodes WHERE node_kind='CAPABILITY'").fetchone()[0]),
             "constructors": int(self.db.execute("SELECT COUNT(*) FROM knowledge_nodes WHERE node_kind='CONSTRUCTOR'").fetchone()[0]),
             "knowledge_edges": int(self.db.execute("SELECT COUNT(*) FROM knowledge_edges").fetchone()[0]),
+            "global_visibility_nodes": int(self.db.execute("SELECT COUNT(*) FROM global_visibility_nodes").fetchone()[0]),
             "hash216_positions": int(self.db.execute("SELECT COUNT(*) FROM hash216_positions").fetchone()[0]),
             "journal_mode": str(self.db.execute("PRAGMA journal_mode").fetchone()[0]),
             "synchronous_full": synchronous == 2,
@@ -478,6 +482,99 @@ class Lane5RepositoryHydrationKnowledgeDatabase:
             "canonical_hash216_authority": False,
             "canonical_persistence_authority": False,
         }
+
+    def hydrate_global_visibility(self, projection: Mapping[str, Any]) -> dict[str, Any]:
+        """Hydrate the Pass 219 1.70 visibility manifold into the same Hash216 store."""
+        from hhs_backend.runtime.hhs_pass219_lane5_global_repository_visibility_1_70 import (
+            verify_global_repository_visibility,
+        )
+
+        verify_global_repository_visibility(projection)
+        nodes = projection.get("nodes")
+        if not isinstance(nodes, list):
+            raise ValueError("global visibility nodes missing")
+        with self.db:
+            visibility_hashes = [
+                str(row[0])
+                for row in self.db.execute(
+                    "SELECT node_hash216 FROM global_visibility_nodes"
+                ).fetchall()
+            ]
+            if visibility_hashes:
+                placeholders = ",".join("?" for _ in visibility_hashes)
+                self.db.execute(
+                    f"DELETE FROM hash216_positions WHERE owner_hash216 IN ({placeholders})",
+                    visibility_hashes,
+                )
+            self.db.execute("DELETE FROM global_visibility_nodes")
+            self.db.executemany(
+                "INSERT INTO global_visibility_nodes VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                [
+                    (
+                        str(node["node_id"]),
+                        str(node["hash216"]),
+                        str(node["node_kind"]),
+                        str(node["source_state"]),
+                        str(node["source_ref"]),
+                        str(node["source_commit"]),
+                        node.get("source_path"),
+                        str(node["closure_state"]),
+                        str(node["validation_state"]),
+                        str(node["executability_state"]),
+                        _canon(node),
+                    )
+                    for node in nodes
+                ],
+            )
+            for node in nodes:
+                self.db.executemany(
+                    "INSERT INTO hash216_positions VALUES(?,?,?,?,?,?,?)",
+                    self._positions(str(node["hash216"]), "GLOBAL_VISIBILITY_NODE"),
+                )
+            metadata = {
+                "global_visibility_schema": str(projection.get("schema") or ""),
+                "global_visibility_root_hash216": str(
+                    projection.get("roots", {}).get("visibility_root_hash216") or ""
+                ),
+                "global_visibility_source_commit": str(
+                    projection.get("source_commit") or ""
+                ),
+                "global_visibility_complete": "true",
+            }
+            self.db.executemany(
+                "INSERT OR REPLACE INTO hydration_metadata VALUES(?,?)",
+                sorted(metadata.items()),
+            )
+        return self.status()
+
+    def search_visibility(self, text: str, *, limit: int = 128) -> list[dict[str, Any]]:
+        query = text.strip()
+        if not query or limit <= 0 or limit > 2048:
+            raise ValueError("invalid bounded global visibility search")
+        like = f"%{query}%"
+        rows = self.db.execute(
+            "SELECT * FROM global_visibility_nodes "
+            "WHERE node_id LIKE ? OR COALESCE(source_path,'') LIKE ? "
+            "OR source_ref LIKE ? OR payload_json LIKE ? "
+            "ORDER BY node_kind,source_ref,source_path,node_id LIMIT ?",
+            (like, like, like, like, int(limit)),
+        ).fetchall()
+        return [
+            {
+                "node_id": str(row["node_id"]),
+                "hash216": str(row["node_hash216"]),
+                "node_kind": str(row["node_kind"]),
+                "source_state": str(row["source_state"]),
+                "source_ref": str(row["source_ref"]),
+                "source_commit": str(row["source_commit"]),
+                "source_path": row["source_path"],
+                "closure_state": str(row["closure_state"]),
+                "validation_state": str(row["validation_state"]),
+                "executability_state": str(row["executability_state"]),
+                "payload": json.loads(str(row["payload_json"])),
+            }
+            for row in rows
+        ]
 
     def search(self, text: str, *, kinds: Sequence[str] = ("CAPABILITY","CONSTRUCTOR"), limit: int = 64) -> list[dict[str, Any]]:
         query, canonical_kinds = text.strip(), tuple(sorted(set(str(kind) for kind in kinds)))
