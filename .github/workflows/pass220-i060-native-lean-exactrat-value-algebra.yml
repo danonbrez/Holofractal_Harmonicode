@@ -1,0 +1,57 @@
+name: Pass 220 I060 Native Lean ExactRat Value Algebra
+
+on:
+  push:
+    branches:
+      - pass220/i060-native-lean-exactrat-value-ring1
+    paths:
+      - "lean-toolchain"
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Mathlib/**"
+      - "hhs_runtime/hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py"
+      - "contracts/pass220/PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_V1.json"
+      - "docs/pass220/PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA.md"
+      - "docs/operations/restart/PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_RESTART_20260929.md"
+      - ".github/workflows/pass220-i060-native-lean-exactrat-value-algebra.yml"
+  pull_request:
+    paths:
+      - "lean-toolchain"
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Mathlib/**"
+      - "hhs_runtime/hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py"
+      - "contracts/pass220/PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_V1.json"
+      - "docs/pass220/PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA.md"
+      - "docs/operations/restart/PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_RESTART_20260929.md"
+      - ".github/workflows/pass220-i060-native-lean-exactrat-value-algebra.yml"
+  workflow_dispatch:
+
+jobs:
+  exactrat-value-algebra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: I060 structural and proof-identity checks
+        run: python -m pytest -q tests/pass220/test_hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py
+
+      - name: Lean 4 build and kernel audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
