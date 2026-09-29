@@ -105,6 +105,62 @@
     let debugLog = [];
     let lastLogTime = 0, lastClearTime = Date.now(), maxLogMessages = 25;
 
+    /* PASS 220 I057 — execution-only performance membrane.
+       The 10,368 logical Mesh particles remain the simulation/receipt objects.
+       Rendering is projected through persistent InstancedMesh batches; no
+       force law, particle state, tick, receipt, gate, or authority is moved. */
+    const I057_PERF = Object.freeze({
+      schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1",
+      source:"examples/ParticleSimulation.html",
+      persistentProjectionBatches:true,
+      bondAdjacencyCSR:true,
+      tesseractScratchReuse:true,
+      streamingManifoldHash:true,
+      quarticDisplaySerialization:true,
+      simulationLogicRemoved:false,
+      receiptLogicRemoved:false,
+      canonicalMutationAuthority:false
+    });
+    const particleRenderBatches=[];
+    const particleBatchMatrix=new THREE.Matrix4();
+    function registerParticleRenderBatch(group,points,geometry){
+      if(typeof THREE.InstancedMesh!=="function" ||
+         typeof THREE.InstancedMesh.prototype.setMatrixAt!=="function" ||
+         typeof THREE.InstancedMesh.prototype.setColorAt!=="function") return null;
+      const mesh=new THREE.InstancedMesh(
+        geometry,
+        new THREE.MeshBasicMaterial({color:0xffffff}),
+        points.length
+      );
+      mesh.frustumCulled=false;
+      if(mesh.instanceMatrix && typeof mesh.instanceMatrix.setUsage==="function" &&
+         THREE.DynamicDrawUsage!==undefined) mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      group.add(mesh);
+      const batch={mesh,points};
+      particleRenderBatches.push(batch);
+      for(let i=0;i<points.length;i++) points[i].visible=false;
+      syncParticleRenderBatch(batch);
+      return batch;
+    }
+    function syncParticleRenderBatch(batch){
+      const mesh=batch.mesh, points=batch.points;
+      for(let i=0;i<points.length;i++){
+        const p=points[i], q=p.position;
+        particleBatchMatrix.makeTranslation(q.x,q.y,q.z);
+        mesh.setMatrixAt(i,particleBatchMatrix);
+        mesh.setColorAt(i,p.material.color);
+      }
+      mesh.instanceMatrix.needsUpdate=true;
+      if(mesh.instanceColor){
+        if(typeof mesh.instanceColor.setUsage==="function" &&
+           THREE.DynamicDrawUsage!==undefined) mesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
+        mesh.instanceColor.needsUpdate=true;
+      }
+    }
+    function syncParticleRenderBatches(){
+      for(let i=0;i<particleRenderBatches.length;i++) syncParticleRenderBatch(particleRenderBatches[i]);
+    }
+
     // Log function for debugging in the OS Shell
     function logDebug(message) {
       if (!DEBUG_MODE) return;
@@ -125,7 +181,7 @@
       scene.background = new THREE.Color(0x000000);
       camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
       camera.position.set(0, 0, 15);
-      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference:"high-performance" });
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
       controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -194,6 +250,7 @@
           points.push(particle);
         }
         spiralData.push({ group, points, index: (layer2 ? 8 : 0) + i, layer2: !!layer2 });
+        registerParticleRenderBatch(group,points,particleGeometry);
         scene.add(group);
       }
     }
@@ -217,10 +274,10 @@
       const groupHue=g=>(g/8);
       const posArr=new Float32Array(edges.length*6);
       const colArr=new Float32Array(edges.length*6);
-      tessGeo={ posArr, colArr, edges, cellOf, verts,
+      tessGeo={ posArr, colArr, edges, cellOf, verts, projected:new Float64Array(verts.length*3),
                 lines:new THREE.LineSegments(
                   new THREE.BufferGeometry()
-                    .setAttribute('position', new THREE.BufferAttribute(posArr,3))
+                    .setAttribute('position', new THREE.BufferAttribute(posArr,3).setUsage(THREE.DynamicDrawUsage))
                     .setAttribute('color', new THREE.BufferAttribute(colArr,3)),
                   new THREE.LineBasicMaterial({ vertexColors:true, transparent:true, opacity:0.75 })) };
       for(let e=0;e<edges.length;e++){ const h=groupHue(cellOf(edges[e]));
@@ -234,17 +291,19 @@
       if(!tessGeo) return;
       const [h1,h2]=hypDispAngles();   // visible spin, lockstep with the object
       const c1=Math.cos(h1), s1=Math.sin(h1), c2=Math.cos(h2), s2=Math.sin(h2);
-      const {posArr,edges,verts}=tessGeo;
-      const pr=verts.map(v=>{
-        let [x,y,z,w]=v;
+      const {posArr,edges,verts,projected}=tessGeo;
+      for(let vi=0;vi<verts.length;vi++){
+        const v=verts[vi], x=v[0], y=v[1], z=v[2], w=v[3];
         const x1=c1*x - s1*w, w1=s1*x + c1*w;              // shared rotation, xw plane
         const y1=c2*y - s2*z, z1=s2*y + c2*z;              // yz plane
         const s=TESS_SCALE/(2.2-w1);                        // w-perspective
-        return [x1*s, y1*s, z1*s];
-      });
-      for(let e=0;e<edges.length;e++){ const [a,b]=edges[e];
-        posArr[e*6]=pr[a][0]; posArr[e*6+1]=pr[a][1]; posArr[e*6+2]=pr[a][2];
-        posArr[e*6+3]=pr[b][0]; posArr[e*6+4]=pr[b][1]; posArr[e*6+5]=pr[b][2];
+        const o=vi*3;
+        projected[o]=x1*s; projected[o+1]=y1*s; projected[o+2]=z1*s;
+      }
+      for(let e=0;e<edges.length;e++){ const a=edges[e][0], b=edges[e][1];
+        const ao=a*3, bo=b*3, eo=e*6;
+        posArr[eo]=projected[ao]; posArr[eo+1]=projected[ao+1]; posArr[eo+2]=projected[ao+2];
+        posArr[eo+3]=projected[bo]; posArr[eo+4]=projected[bo+1]; posArr[eo+5]=projected[bo+2];
       }
       tessGeo.lines.geometry.attributes.position.needsUpdate=true;
     }
@@ -296,6 +355,7 @@
           points.push(particle);
         }
         exchangeData.push({ group, points, index: (layer2 ? 8 : 0) + s, layer2: !!layer2 });
+        registerParticleRenderBatch(group,points,particleGeometry);
         scene.add(group);
       }
     }
@@ -621,6 +681,10 @@
     const BOND_CAP=9600;
     const bondI=new Int32Array(BOND_CAP), bondJ=new Int32Array(BOND_CAP);
     let bondN=0;
+    const BOND_PARTICLE_N=2*LAYER_SPLIT;
+    const bondAdjStart=new Int32Array(BOND_PARTICLE_N+1);
+    const bondAdjCursor=new Int32Array(BOND_PARTICLE_N);
+    const bondAdjIndex=new Int32Array(BOND_CAP*2);
     /* 4D HYPERSPHERICAL ROTATION — global shared SO(4) element. Every
        particle carries a 4th coordinate w4; each frame ALL are rotated by
        the same angles (shared = phase-lock), staying on the manifold via a
@@ -681,15 +745,27 @@
     const SHARED_CAP=4.0;   /* shared-inertia contribution is bounded */
     function ufFind(x){ while(ufP[x]!==x){ ufP[x]=ufP[ufP[x]]; x=ufP[x]; } return x; }
     function rebuildBondIndex(){
-      bondSet.clear(); bondIdxMap.clear();
-      for(let i=0;i<2*LAYER_SPLIT;i++){ ufP[i]=i; compM[i]=0; }
-      for(let k=0;k<bondN;k++){ const key=bondI[k]*65536+bondJ[k];
+      bondSet.clear(); bondIdxMap.clear(); bondAdjStart.fill(0);
+      for(let i=0;i<BOND_PARTICLE_N;i++){ ufP[i]=i; compM[i]=0; }
+      for(let k=0;k<bondN;k++){
+        const bi=bondI[k], bj=bondJ[k], key=bi*65536+bj;
         bondSet.add(key); bondIdxMap.set(key,k);
-        ufP[ufFind(bondI[k])]=ufFind(bondJ[k]); }
+        ufP[ufFind(bi)]=ufFind(bj);
+        bondAdjStart[bi+1]++; bondAdjStart[bj+1]++;
+      }
+      for(let i=1;i<=BOND_PARTICLE_N;i++) bondAdjStart[i]+=bondAdjStart[i-1];
+      bondAdjCursor.set(bondAdjStart.subarray(0,BOND_PARTICLE_N));
+      /* k ascends exactly as in the former complete scan, preserving the
+         original per-particle bond evaluation order. */
+      for(let k=0;k<bondN;k++){
+        const bi=bondI[k], bj=bondJ[k];
+        bondAdjIndex[bondAdjCursor[bi]++]=k;
+        bondAdjIndex[bondAdjCursor[bj]++]=k;
+      }
       /* component masses: shared local inertia */
       const ms=thMass;
-      for(let i=0;i<2*LAYER_SPLIT;i++) compM[ufFind(i)]+= ms?ms[i]:1;
-      for(let i=0;i<2*LAYER_SPLIT;i++) compM[i]=compM[ufFind(i)];
+      for(let i=0;i<BOND_PARTICLE_N;i++) compM[ufFind(i)]+= ms?ms[i]:1;
+      for(let i=0;i<BOND_PARTICLE_N;i++) compM[i]=compM[ufFind(i)];
     }
     function addBond(i,j){
       if(i>j){ const t=i; i=j; j=t; }                           // ordered pair
@@ -1073,9 +1149,9 @@
            freedom, pattern preserved. */
         /* bond springs: EVERY bond of this particle holds (clusters share
            geometry); generation timer updated once per bond per frame */
-        for(let k=0;k<bondN;k++){
-          let j=-1; if(bondI[k]===i) j=bondJ[k]; else if(bondJ[k]===i) j=bondI[k];
-          if(j===-1) continue;
+        for(let ai=bondAdjStart[i], ae=bondAdjStart[i+1]; ai<ae; ai++){
+          const k=bondAdjIndex[ai];
+          const j=bondI[k]===i ? bondJ[k] : bondI[k];
           const jx=j*3;
           const rvx=vel[ix]-vel[jx], rvy=vel[ix+1]-vel[jx+1], rvz=vel[ix+2]-vel[jx+2];
           const rv2=rvx*rvx+rvy*rvy+rvz*rvz;
@@ -1294,13 +1370,9 @@
          component (the spatial community), not on the random respawn set.
          Frameworks dedup by vertex key globally; the scan is recognition-
          only bookkeeping (integer counting, no physics writes). */
-      const adj=new Map();
-      for(let b=0;b<bondN;b++){ const i=bondI[b], j=bondJ[b];
-        if(!adj.has(i)) adj.set(i,[]); if(!adj.has(j)) adj.set(j,[]);
-        adj.get(i).push(j); adj.get(j).push(i); }
       let anyBonded=false;
       for(let mi=0;mi<co.members.length;mi++){ const m=co.members[mi];
-        if(m!==undefined&&m>=0&&adj.has(m)){ anyBonded=true; break; } }
+        if(m!==undefined&&m>=0&&bondAdjStart[m+1]>bondAdjStart[m]){ anyBonded=true; break; } }
       if(!anyBonded) return;
       /* CUBE CONSTRUCTOR (construction, not physics): the bond channel
          is bipartite by charge, so the CUBE is the unique platonic solid
@@ -1348,10 +1420,14 @@
       }
       for(let mi=0;mi<co.members.length;mi++){
         const m=co.members[mi];
-        if(m===undefined||m<0||!adj.has(m)) continue;
+        if(m===undefined||m<0||bondAdjStart[m+1]===bondAdjStart[m]) continue;
         const seen=new Set([m]); const stack=[m]; const comp=[];
         while(stack.length){ const u=stack.pop(); comp.push(u);
-          for(const v of (adj.get(u)||[])) if(!seen.has(v)&&seen.size<9){ seen.add(v); stack.push(v); } }
+          for(let ai=bondAdjStart[u], ae=bondAdjStart[u+1]; ai<ae; ai++){
+            const k=bondAdjIndex[ai];
+            const v=bondI[k]===u ? bondJ[k] : bondI[k];
+            if(!seen.has(v)&&seen.size<9){ seen.add(v); stack.push(v); }
+          } }
         if(comp.length<4) continue;
         for(const s of detectSolidsInCohort(comp)){
           const key=s.vertices.slice().sort((a,b)=>a-b).join(",");
@@ -3276,40 +3352,55 @@
          stops). */
       renderTick++;
       renderGate=((renderTick%4)===0);
-      if(renderGate){ renderer.render(scene, camera); renderedFrames++; }
-      outputState();
+      if(renderGate){
+        syncParticleRenderBatches();
+        renderer.render(scene, camera);
+        renderedFrames++;
+        /* state JSON is a presentation surface; get_state remains fresh on demand */
+        outputState();
+      }
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
           try { fn(); } catch (e) { logDebug("Error in update function: " + e); }
         });
       }
-      let spd=0; for(let i=0;i<particles.length;i++) spd+=particles[i].userData.velocity.length();
-      document.getElementById("hud").innerText =
-        `HHS tick=${window.HHS.engine.tick} blocks=${window.HHS.engine.blocks} ` +
-        `swarm=${particles.length} mean_v=${(spd/particles.length).toFixed(3)} freq=${steps}x ` +
-        `chase=${chase.on?'#'+chase.idx:'off'} ` +
-        `rho=m${(simParams.massBoost||1)}x/c${(simParams.collBoost||1)}x ` +
-        `cohorts=${cohortCount} solids=${solidCount} ctor=${(simParams.ctorBoost||1)}x ` +
-        `rskip=1/4(${renderedFrames}/${renderTick}) ` +
-        `bond=${(simParams.bondBoost||1)}x(c${ctorBonds}) ` +
-        `cpl=${couplingCount} ` +
-        `topo=${simParams.recipTopo?'inv':'seed'} ` +
-        `field=thermo+ionic(mu/r^2+Coulomb)+boundary(Rb/Rout)+framedrag+bonds(${bondN})+mem/win8/budget8+hyp4d/oct8/tess+accel~phase+hypgeom(lobe)+cfreq/cldrag boot_halt=${window.HHS.boot.boot_halt}`;
+      if(renderGate){
+        let spd=0; for(let i=0;i<particles.length;i++) spd+=particles[i].userData.velocity.length();
+        document.getElementById("hud").innerText =
+          `HHS tick=${window.HHS.engine.tick} blocks=${window.HHS.engine.blocks} ` +
+          `swarm=${particles.length} mean_v=${(spd/particles.length).toFixed(3)} freq=${steps}x ` +
+          `chase=${chase.on?'#'+chase.idx:'off'} ` +
+          `rho=m${(simParams.massBoost||1)}x/c${(simParams.collBoost||1)}x ` +
+          `cohorts=${cohortCount} solids=${solidCount} ctor=${(simParams.ctorBoost||1)}x ` +
+          `rskip=1/4(${renderedFrames}/${renderTick}) ` +
+          `bond=${(simParams.bondBoost||1)}x(c${ctorBonds}) ` +
+          `cpl=${couplingCount} ` +
+          `topo=${simParams.recipTopo?'inv':'seed'} ` +
+          `field=thermo+ionic(mu/r^2+Coulomb)+boundary(Rb/Rout)+framedrag+bonds(${bondN})+mem/win8/budget8+hyp4d/oct8/tess+accel~phase+hypgeom(lobe)+cfreq/cldrag boot_halt=${window.HHS.boot.boot_halt}`;
+      }
     }
 
     // Compute a compressed manifold hash from particle positions
     function computeManifoldHash() {
-      let concatStr = "";
-      particles.forEach(p => {
-        let pos = p.position;
-        concatStr += Math.round(pos.x*10)/10 + "_" + Math.round(pos.y*10)/10 + "_" + Math.round(pos.z*10)/10;
-      });
-      let binaryStr = "";
-      for (let i = 0; i < concatStr.length; i++) {
-        let bin = concatStr.charCodeAt(i).toString(2).padStart(8, "0");
-        binaryStr += bin;
+      /* Same ASCII bytes, bit order, 3-bit groups and trailing-bit behavior
+         as the original, without materializing concatStr + binaryStr. */
+      const out=[]; let bits=0, bitCount=0;
+      const feed=text=>{
+        for(let ci=0;ci<text.length;ci++){
+          const code=text.charCodeAt(ci);
+          for(let b=7;b>=0;b--){
+            bits=(bits<<1)|((code>>b)&1); bitCount++;
+            if(bitCount===3){ out.push(String(bits)); bits=0; bitCount=0; }
+          }
+        }
+      };
+      for(let i=0;i<particles.length;i++){
+        const pos=particles[i].position;
+        feed(String(Math.round(pos.x*10)/10)); feed("_");
+        feed(String(Math.round(pos.y*10)/10)); feed("_");
+        feed(String(Math.round(pos.z*10)/10));
       }
-      return compressBinary(binaryStr);
+      return out.join("");
     }
 
     // Simple binary compression for a given binary string
