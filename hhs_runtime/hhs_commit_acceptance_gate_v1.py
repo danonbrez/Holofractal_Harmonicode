@@ -14,6 +14,7 @@ from hhs_runtime.hhs_unified_hash72_ledger_v1 import absorb_json_artifacts, veri
 from hhs_runtime.hhs_git_hash72_binding_v1 import bind_git_state_to_unified_ledger
 from hhs_runtime.hhs_dependency_audit_v1 import run_dependency_audit
 from hhs_runtime.hhs_immutable_manifest_v1 import validate_manifest
+from hhs_runtime.hhs_source_text_integrity_v1 import scan_repository_source_text
 
 FORBIDDEN_STRINGS = ["/" + "mnt" + "/" + "data"]
 
@@ -38,6 +39,10 @@ def _run(p):
 
 def run_commit_acceptance_gate():
     root=repo_root()
+
+    source_text=scan_repository_source_text(root)
+    if not source_text["ok"]:
+        raise CommitAcceptanceError(json.dumps({"source_text_integrity": source_text}, sort_keys=True))
 
     if _scan(root): raise CommitAcceptanceError("forbidden paths")
 
@@ -69,7 +74,7 @@ def run_commit_acceptance_gate():
 
     git=bind_git_state_to_unified_ledger(root)
 
-    return {"status":"ACCEPTED","git":git.to_dict()}
+    return {"status":"ACCEPTED","source_text_integrity":source_text,"git":git.to_dict()}
 
 if __name__=="__main__":
     print(json.dumps(run_commit_acceptance_gate(),indent=2))
