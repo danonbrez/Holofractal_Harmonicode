@@ -1,4 +1,4 @@
-name: Native FastAPI Default Provider
+name: Lane 5 Native Capability Provider
 
 on:
   push:
@@ -15,6 +15,7 @@ on:
       - 'tests/pass220/test_hhs_lane5_native_capability_provider_v1.py'
       - '.github/workflows/native-fastapi-default-provider.yml'
       - 'docs/operations/restart/NATIVE_FASTAPI_DEFAULT_PROVIDER_20260929.md'
+      - 'docs/operations/restart/LANE5_NATIVE_CAPABILITY_PROVIDER_20260929.md'
   workflow_dispatch:
 
 permissions:
@@ -25,7 +26,7 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
-  native-fastapi-default:
+  lane5-native-capability-provider:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
 
