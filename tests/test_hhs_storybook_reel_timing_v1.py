@@ -33,7 +33,7 @@ def test_reciprocal_palette_uses_twelve_tones_and_opposed_x_z_planes():
     assert first != next_scene
 
 
-def test_punctuation_weighted_timing_closes_exactly_at_2700_frames():
+def test_punctuation_weighted_timing_closes_exactly_at_2640_frames():
     text = (
         "First the lantern woke. Then it crossed the river, slowly and carefully. "
         "At the final gate, every color answered its reciprocal partner!"
@@ -47,7 +47,7 @@ def test_punctuation_weighted_timing_closes_exactly_at_2700_frames():
     assert timing_file_text(spans).count("\n") == len(spans)
 
 
-def test_elevenlabs_character_alignment_is_scaled_to_canonical_90_seconds():
+def test_elevenlabs_character_alignment_preserves_provider_time_on_88_second_master():
     text = "A light returned home."
     characters = list(text)
     starts = [str(index / 10) for index in range(len(characters))]
