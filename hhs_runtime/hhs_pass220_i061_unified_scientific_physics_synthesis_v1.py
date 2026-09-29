@@ -531,6 +531,38 @@ def validate_scientific_physics_candidate(
     }
 
 
+
+def scientific_physics_synthesis_self_test() -> dict[str, Any]:
+    parent = (
+        _hash72("self-test-parent-minus", "minus")
+        + _hash72("self-test-parent-center", "center")
+        + _hash72("self-test-parent-plus", "plus")
+    )
+    candidate = build_scientific_physics_candidate(
+        tick=61,
+        body_count=3,
+        collider_count=4,
+        constraint_count=2,
+        delta_time=ExactRational(1, 120),
+        knowledge_coordinate5184=61,
+        parent_hash216=parent,
+    )
+    validation = validate_scientific_physics_candidate(candidate)
+    return {
+        "schema": SCHEMA,
+        "version": VERSION,
+        "ok": validation["ok"],
+        "validation": validation,
+        "candidate_receipt_hash72": candidate["candidate_receipt_hash72"],
+        "candidate_hash216": candidate[
+            "lane5_knowledge_graph_binding"
+        ]["candidate_hash216"],
+        "canonical_vm81_mutation_authority": False,
+        "canonical_hash72_commit_authority": False,
+        "canonical_hash216_persistence_authority": False,
+    }
+
+
 __all__ = [
     "CalibrationEvidence",
     "CONSTRUCTION_ORDER",
@@ -545,5 +577,6 @@ __all__ = [
     "WOLFRAM_FORMALIZATION",
     "WOLFRAM_FORMALIZATION_SHA256",
     "build_scientific_physics_candidate",
+    "scientific_physics_synthesis_self_test",
     "validate_scientific_physics_candidate",
 ]
