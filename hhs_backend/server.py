@@ -41,6 +41,11 @@ from hhs_backend.frontend_ingress_policy_v1 import (
     configured_frontend_ingress_policy,
 )
 
+# This module is the canonical external FastAPI application boundary. Runtime
+# modules default to repository-native compatibility unless an external
+# composition surface explicitly declares this provider.
+os.environ.setdefault("HHS_LANE5_PROVIDER_FASTAPI", "external")\nos.environ.setdefault("HHS_FASTAPI_PROVIDER", "external")
+
 # ============================================================================
 # ROUTES
 # ============================================================================
@@ -66,7 +71,10 @@ from hhs_backend.runtime.runtime_ws import (
 
 from hhs_backend.runtime.live_fastapi_workflow_v1 import (
     LiveFastAPIRuntimeWorkflow,
+    register_cognition_routes,
 )
+
+register_cognition_routes()
 from hhs_backend.runtime.gui_projection_contract_v1 import (
     list_gui_channel_bindings,
     live_gui_projection_contract_self_test,

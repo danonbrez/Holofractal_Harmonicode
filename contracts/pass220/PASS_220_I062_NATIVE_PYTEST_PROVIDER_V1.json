@@ -1,0 +1,101 @@
+{
+  "schema": "HHS_PASS_220_I062_NATIVE_PYTEST_PROVIDER_V1",
+  "version": 1,
+  "status": "IMPLEMENTED",
+  "base_main": "8db145707a71f60015904577e2a0786e438a4c65",
+  "inherits": [
+    "PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS"
+  ],
+  "provider_id": "provider:hhs.native.pytest",
+  "authoritative_path": {
+    "external_pytest_import": false,
+    "external_pytest_subprocess": false,
+    "installer_validation": "hhs_runtime.testing.native_pytest_provider_v1",
+    "upstream_pytest_role": "DIFFERENTIAL_ORACLE_AND_MIGRATION_COMPATIBILITY_ONLY"
+  },
+  "compatibility": {
+    "discovery": [
+      "test_*.py",
+      "*_test.py",
+      "Test* classes",
+      "test_* methods"
+    ],
+    "selection": [
+      "path",
+      "nodeid",
+      "-k",
+      "-m",
+      "--collect-only",
+      "--maxfail",
+      "-x"
+    ],
+    "execution": [
+      "sync",
+      "async"
+    ],
+    "fixtures": [
+      "function",
+      "class",
+      "module",
+      "session",
+      "autouse",
+      "yield",
+      "tmp_path",
+      "tmp_path_factory",
+      "monkeypatch",
+      "capsys",
+      "request.addfinalizer"
+    ],
+    "parameterization": [
+      "pytest.mark.parametrize",
+      "pytest.param",
+      "ids"
+    ],
+    "outcomes": [
+      "PASS",
+      "FAIL",
+      "ERROR",
+      "SKIP",
+      "XFAIL",
+      "XPASS"
+    ],
+    "assertions": [
+      "native Python assert",
+      "pytest.raises",
+      "pytest.approx",
+      "pytest.fail"
+    ],
+    "markers": [
+      "skip",
+      "skipif",
+      "xfail",
+      "asyncio",
+      "custom markers",
+      "usefixtures"
+    ],
+    "setup_teardown": [
+      "module",
+      "function",
+      "class",
+      "method"
+    ],
+    "unsupported_fail_closed": [
+      "indirect parametrization",
+      "parametrized fixtures",
+      "third-party pytest plugin hooks"
+    ]
+  },
+  "receipts": {
+    "config_hash72": true,
+    "collection_hash72": true,
+    "result_hash72": true,
+    "hash216": "config_hash72||collection_hash72||result_hash72",
+    "deterministic_replay": true
+  },
+  "authority": {
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false,
+    "receipt_role": "REPLAYABLE_TEST_EVIDENCE_CANDIDATE"
+  }
+}
