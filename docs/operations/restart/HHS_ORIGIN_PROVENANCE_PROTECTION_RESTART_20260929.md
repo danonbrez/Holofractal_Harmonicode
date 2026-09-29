@@ -1,5 +1,14 @@
 # HHS Origin Provenance Protection — Restart Record — 2026-09-29
 
+## Ordered-genealogy checkpoint
+
+Current executable head before this record: `03c9982b5df27b9f276ba4857b7877e2fe4d6811`.
+Dedicated ordered-genealogy run: `36606465866` (queued when recorded).
+PR #659 is open and mergeable.
+
+The corrected theorem is bounded: same declared parallel window plus the same complete HHS derived genealogy requires the same relevant initial conditions; it does not assert unbounded impossibility. The runtime now binds the 100→101 shell, 101/100=1.01, 1001=7*11*13 and 1001/1000=1.001, the recorded 101-harmonic→{179,971,179971} lineage, 179=13^2+16 prime-tensor cell, 179↔971 reversal, 1000001=101*9901 shell, and 179971179971/1000000 endpoint into one ordered genealogy.
+
+
 ## Identity
 
 - Repository: `danonbrez/Holofractal_Harmonicode`
@@ -191,4 +200,4 @@ Lean axiom audit rooted at HHS
 
 ## Next action
 
-Inspect the dedicated origin-provenance CI run first. Do not rerun already-green predecessor evidence unless an affected dependency changes. Repair forward from the first concrete failure, then close with PR merge and verified-main evidence.
+Inspect ordered-genealogy run `36606465866` first. Do not rerun already-green predecessor evidence unless an affected dependency changes. Repair forward from the first concrete failure, then close with PR merge and verified-main evidence.
