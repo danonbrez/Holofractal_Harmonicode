@@ -18,12 +18,12 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
+from hhs_backend.runtime.hhs_runtime_expression_service_v1 import execute_runtime_expression
 from hhs_backend.runtime.runtime_event_schema import create_runtime_event
 from hhs_backend.runtime.runtime_ws import (
     propagate_runtime_event,
     runtime_ws_health,
 )
-from hhs_runtime.harmonicode_constraint_solver_v1 import interpret_and_solve
 
 RETIREMENT_CLASSIFICATION = "PASS170_LEGACY_RUNTIME_SERVER_CONSTRUCTOR_RETIRED_I181"
 CANONICAL_TARGET = "hhs_backend.public_api_server:app"
@@ -43,22 +43,6 @@ class SolveRequest(BaseModel):
     runtime_id: Optional[str] = "runtime_main"
     branch_id: Optional[str] = "main"
 
-
-async def execute_runtime_expression(expression: str) -> Dict[str, Any]:
-    """Execute source through the inherited Harmonicode interpreter and solver."""
-    if not isinstance(expression, str) or not expression.strip():
-        raise ValueError("expression must be a non-empty Harmonicode source string")
-    result = interpret_and_solve(expression)
-    solver = result.get("solver", {})
-    receipt = solver.get("receipt", {})
-    return {
-        "expression": expression,
-        "status": receipt.get("status", "UNKNOWN"),
-        "result": result,
-        "transport": "harmonicode_interpreter_solver",
-        "execution_performed": True,
-        "full_receipt_hash72": result["full_receipt_hash72"],
-    }
 
 
 @legacy_router.get("/api/healthz")
