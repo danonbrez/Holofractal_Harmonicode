@@ -57,7 +57,9 @@ The database is reconstructable from repository-visible generated artifacts and 
 
 ## Authority membrane
 
-This surface is candidate-only and non-executable. It has no canonical VM81 mutation authority, Hash72 authority, Hash216 authority, canonical persistence authority, automatic Hash216 composition promotion, or automatic superedge promotion.
+This knowledge projection is candidate-only and has no direct execution authority. That property belongs to the projection itself; it MUST NOT be reinterpreted as proof that a represented capability is non-executable. Capability visibility, executability, validation, admission, and mutation authority are separate states. A represented capability remains visible when its executability or closure state is unresolved.
+
+The projection has no canonical VM81 mutation authority, Hash72 authority, Hash216 authority, canonical persistence authority, automatic Hash216 composition promotion, or automatic superedge promotion.
 
 Any canonical mutation still requires the inherited signed environmental VM81 admission path.
 
@@ -68,6 +70,7 @@ The repository deep-index workflow regenerates:
 - REPOSITORY_HASH216_DEPENDENCY_TREE.md
 - artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json
 - artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json
+- artifacts/repository_index/LANE5_GLOBAL_REPOSITORY_VISIBILITY.json
 - artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json
 - docs/repository_index/files/*.md
 
@@ -80,3 +83,32 @@ Dependency-scoped test:
     PYTHONPATH=. pytest -q tests/pass219/test_pass219_lane5_repository_hydration_knowledge_graph_1_69.py
 
 The repository deep-index workflow additionally runs the real Lane 5 1.44 native receipt path, generates the knowledge projection, hydrates a temporary SQLite database, validates all authority gates, and records a deterministic database receipt.
+
+
+## Pass 219 global visibility successor 1.70
+
+The 1.70 successor implements the already-governing Pass 219 global visibility rule without creating another composition authority.
+
+Discovery occurs before classification. The hydrated visibility manifold contains:
+
+- every content-bound file surface from the bound main repository graph;
+- every capability surface inherited from Lane 5 reverse discovery;
+- static changed-file surfaces from discovered branch and pull-request Git refs.
+
+Flags or words such as `demo`, `example`, `reference`, `candidate_only`, `enabled=false`, unresolved closure, or unvalidated branch state are metadata and MUST NOT remove a discovered surface from Lane 5 visibility.
+
+The state separation is:
+
+```text
+VISIBLE != EXECUTABLE != VALIDATED != ADMITTED != MUTABLE
+```
+
+Unknown executability, closure, configuration, or adapter state remains `UNRESOLVED`. A `NON_EXECUTABLE`, `configuration REQUIRED`, or `adapter REQUIRED` classification requires explicit evidence; it cannot be inferred from the Pass 219 security membrane or from inability to bypass the kernel.
+
+Branch and pull-request source is inspected through Git object metadata and diffs only. It is never imported or executed during discovery. Complete-scan bounds fail the projection instead of silently truncating capability visibility.
+
+The resulting visibility records are Hash216-identified and hydrated into the same positional SQLite vector store as the 1.69 capability/constructor graph. This adds searchable provenance and unresolved-state information without granting canonical mutation, Hash72/Hash216 minting, persistence, PQC, or receipt-clock authority.
+
+Dependency-scoped validation additionally runs:
+
+    PYTHONPATH=. pytest -q tests/pass219/test_pass219_lane5_global_repository_visibility_1_70.py
