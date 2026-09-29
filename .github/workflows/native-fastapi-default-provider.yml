@@ -10,6 +10,7 @@ on:
       - 'contracts/pass220/PASS_220_LANE5_NATIVE_CAPABILITY_PROVIDER_V1.json'
       - 'hhs_backend/runtime/hhs_native_fastapi_compat_v1.py'
       - 'hhs_backend/runtime/runtime_ws.py'
+      - 'hhs_backend/server.py'
       - 'tests/pass220/test_hhs_native_fastapi_default_provider_v1.py'
       - 'tests/pass220/test_hhs_lane5_native_capability_provider_v1.py'
       - '.github/workflows/native-fastapi-default-provider.yml'
@@ -39,7 +40,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install native-only test prerequisites
+      - name: Install bounded validation prerequisites
         shell: bash
         run: |
           set -euo pipefail
@@ -65,9 +66,10 @@ jobs:
           set -euo pipefail
           .venv/bin/python -m py_compile \
             hhs_backend/runtime/hhs_fastapi_provider_v1.py \
+            hhs_runtime/hhs_lane5_native_capability_provider_v1.py \
             hhs_backend/runtime/hhs_native_fastapi_compat_v1.py \
             hhs_backend/runtime/runtime_ws.py \
-            tests/pass220/test_hhs_native_fastapi_default_provider_v1.py \\
+            tests/pass220/test_hhs_native_fastapi_default_provider_v1.py \
             tests/pass220/test_hhs_lane5_native_capability_provider_v1.py
 
       - name: Build cumulative exact ABI
@@ -84,7 +86,7 @@ jobs:
           set -euo pipefail
           make -C native_projects/hhs_pass220_fastapi_native_route_kernel clean all test
 
-      - name: Native fallback and service-registry regression
+      - name: Native-provider and service-registry regression
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
           HHS_DISABLE_C_AUTOBUILD: '1'
@@ -93,6 +95,7 @@ jobs:
           set -euo pipefail
           .venv/bin/python -m pytest -q \
             tests/pass220/test_hhs_native_fastapi_default_provider_v1.py \
+            tests/pass220/test_hhs_lane5_native_capability_provider_v1.py \
             tests/test_hhs_service_registry_v1.py \
             tests/test_hhs_live_fastapi_runtime_pass045_v1.py \
             tests/test_hhs_websocket_kernel_channel_binding_pass045_v1.py
