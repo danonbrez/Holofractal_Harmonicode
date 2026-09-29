@@ -98,6 +98,12 @@ CAPABILITIES: Mapping[str, Lane5CapabilitySpec] = {
         ),
         external_target="FastAPI/Starlette",
     ),
+    "fastapi_application": Lane5CapabilitySpec(
+        capability_id="fastapi_application",
+        native_surfaces=(),
+        external_target="FastAPI/Starlette/Pydantic extended application composition",
+        native_implemented=False,
+    ),
     "python1": Lane5CapabilitySpec(
         capability_id="python1",
         native_surfaces=(
