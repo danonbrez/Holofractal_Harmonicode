@@ -230,12 +230,59 @@ floating_point_canonical_authority = false
 A canonical successor still requires the inherited singleton VM81 admission
 path.
 
+## Strengthening after initial checkpoint
+
+Additional repair-forward hardening completed before handoff:
+
+- native C++ admission pins the exact deterministic I060 theorem Hash72:
+  `nY*r1-+?2ON7geRk9Uu5G7jO1lD!E!BjMfRj0I3OsFuQPSkRRf-eS>B/Z)vFXbO87vB6)Hkj`;
+- native C++ admission pins the exact deterministic I060 dependency Hash72:
+  `iTulnFCxT>M0-zvAiwdMF?M?*F*H*QQ29w0db/EC7?jHmdb16/R(sEoIR8BOkvKr5fcqJ0Hx`;
+- well-shaped but unrelated Hash72 identities are rejected;
+- the JSON I061 contract carries the same exact identities;
+- Python regression derives the identities through the I060 runtime and proves
+  parity with both the C++ constants and JSON contract;
+- empirical validation recomputes the empirical-axis Hash72 at admission time;
+- empirical evidence is revalidated for declared domain, unit, dimension,
+  replay Hash72, exact residual, exact error bound, and
+  `measured - predicted = residual`;
+- topology mutation and outer-receipt mutation have separate fail-closed tests.
+
+Additional commits:
+
+- `e4425bbd6ae1ac8bdee69677056f016bf6bc3906` — pin exact I060 Hash72 identities in native gate;
+- `aa0362ace296e35f1f294d385f78c41adf05ef89` — reject wrong I060 identities in native regression;
+- `54e75592368446aa35622ec8eb8152ca08eda21a` — revalidate empirical evidence during admission;
+- `dfe3ed6596dacbca2e39c4b3e188c9ef9a93e0b2` — bind exact I060 identities in machine contract;
+- `400da4f3008a6892dcfbf362564a384b84065102` — align mutation tests with fail-closed order;
+- `8a412e162966b4a10187ee6019f93b8ff42a54db` — cross-language I060 identity parity guard.
+
+## Pull request and validation state
+
+- PR: `#655`
+- URL: `https://github.com/danonbrez/Holofractal_Harmonicode/pull/655`
+- state at checkpoint preparation: open, mergeable
+- merge base: exact verified I060 merge
+  `ad697affec1eb87d413f25ddb9aa4ece403506ff`
+- branch was one commit behind current main, but the intervening compare reported
+  no changed files and no semantic overlap with I061;
+- I061 exact-head workflow on pre-checkpoint head
+  `8a412e162966b4a10187ee6019f93b8ff42a54db`:
+  run `36560926738` — queued;
+- no I061-attributable failure was present when this restart checkpoint was
+  prepared.
+
+Queued external CI is not a reason to reopen already implemented surfaces.
+Repair forward only a concrete I061-attributable failure.
+
 ## Next action
 
-Open the I061 pull request and run the exact-head workflow.
+Check the exact-head I061 workflow and Consensus Gate for this checkpoint head.
 
-Repair forward only failures attributable to I061.
+If an I061-attributable failure exists, repair only the impacted surface and
+rerun dependency-scoped validation.
 
-After I061 is green and frozen, implement canonical STEM/physics law objects,
-then exact rigid-body state/integration behind this unchanged scientific
-admission membrane.
+If the I061 workflow and required gate are green, merge PR #655, verify main,
+and freeze I061. The next physics implementation should then create canonical
+STEM/physics law objects and exact rigid-body state/integration behind this
+unchanged scientific admission membrane.
