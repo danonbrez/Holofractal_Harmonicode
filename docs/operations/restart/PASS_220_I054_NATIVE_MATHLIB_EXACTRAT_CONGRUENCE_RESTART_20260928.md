@@ -1,6 +1,6 @@
 # Pass 220 I054 Restart Checkpoint — ExactRat Binary Congruence
 
-Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
+Status: **VALIDATED — READY TO MERGE**
 
 ## Identity
 
@@ -17,7 +17,7 @@ Status: **RESTARTABLE IMPLEMENTATION — VALIDATION QUEUED**
 - Dedicated workflow: `Pass 220 I054 Native Mathlib ExactRat Congruence`
 - Dedicated run: `36489395697`
 - Dedicated job: `109154072790`
-- Run state at checkpoint preparation: queued
+- Validation conclusion: **success**
 
 ## Implemented
 
@@ -64,25 +64,17 @@ No Python1/C11 or C++ arithmetic implementation changed.
 Inherited I049 runtime evidence and I053 equivalence evidence remain frozen
 unless one of their inputs changes.
 
-## Validation required
+## Validation completed
 
-1. I054 structural/contract tests.
-2. `lake build`.
-3. `leanchecker HHS`.
-4. HHS axiom audit.
+1. I054 structural/contract tests: PASS.
+2. `lake build`: PASS.
+3. `leanchecker HHS`: PASS.
+4. HHS axiom audit: PASS.
 
-Queued external CI does not block this restartable checkpoint.
+No inherited Python1/C11 or C++ runtime input changed.
 
 ## Next action
 
-Inspect run `36489395697`.
+Merge PR #647 and verify the congruence module, manifest, root import, and contract on main.
 
-- If green: freeze evidence, merge PR #647, and verify the congruence module,
-  manifest, root import, and contract on main.
-- If it fails: repair only the I054 proof/structural-test surface.
-- Do not modify inherited runtime arithmetic merely because a Lean proof
-  fails.
-
-After I054 closure, the next bounded slice can construct a quotient-compatible
-ExactRat value layer over the proven I053 equivalence + I054 congruence
-nucleus, while preserving unreduced pair provenance separately.
+After I054 closure, the next bounded slice can construct a quotient-compatible ExactRat value layer over the proven I053 equivalence + I054 congruence nucleus, while preserving unreduced pair provenance separately.
