@@ -257,7 +257,7 @@ def plan_next_speed(
     if measured <= 0 or target <= 0:
         raise ValueError("measured and target durations must be positive")
     delta = target - measured
-    if abs(delta) <= tolerance:
+    if measured <= target and delta <= tolerance:
         return FitDecision("FIT", current, current, measured, target, delta, False)
 
     proposed = current * measured / target
