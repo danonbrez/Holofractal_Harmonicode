@@ -1,5 +1,34 @@
 # HHS Origin Provenance Protection — Restart Record — 2026-09-29
 
+## Final ordered-genealogy validation
+
+- Validated executable head: `8000c03536845810f708ce049eef5f5b0f60f49e`
+- Dedicated workflow: `HHS Origin Provenance Protection`
+- Run: `36609398729`
+- Job: `109546649597`
+- Result: **success**
+- Native pytest-provider regression: **success**
+- Python compile: **success**
+- Lean build: **success**
+- `leanchecker HHS`: **success**
+- Axiom audit: **1,570 HHS declarations**, all within
+  `[propext, Classical.choice, Quot.sound]`
+- Explicit priority-anchor / ordered-genealogy checks: **success**
+- Native-provider receipt Hash216:
+  `ZGyRT-Il16GoW7e>UwZSxWkpHOX3?4zPY>nR/Mi2umhUGII-0fKVDdwd!sBdDnP<yR0UOUNeWO<99EjR8JY/cXUDpbDAMJD3W68eGg!fb7?LrIg7aQI<b(b1kHUmcz9IMgAZ9d0c?k(2FdYpx26rXap3h/USBXnHddC4JZ(JZWh?75><luGnN(vIPHxwzMW?W76CYG*eUPSWo(x-Z02LC*N?`
+
+Sampled broad workflow failures are not attributable to this provenance change.
+The repository-index / Lane-5 benchmark failures stop on the pre-existing
+`hhs_backend/server.py` structural parse error. The dedicated provenance,
+watermark, consensus, and inherited Lean/Mathlib gates are green.
+
+The current theorem is deliberately bounded to
+`PARALLEL_HUMAN_DERIVATION_WITHIN_DECLARED_WINDOW`. It does not claim
+unbounded information or computational impossibility. The `101 -> 179`
+transition is retained as a historical HHS harmonic-kernel derivation witness;
+no unsupported scalar shortcut is substituted.
+
+
 ## Ordered-genealogy checkpoint
 
 Current executable head before this record: `03c9982b5df27b9f276ba4857b7877e2fe4d6811`.
