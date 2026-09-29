@@ -79,6 +79,7 @@ def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[Sou
     line_comment = False
     regex_literal = False
     regex_character_class = False
+    template_stack: list[dict[str, object]] = []
 
     while i < len(text):
         ch = text[i]
@@ -171,8 +172,8 @@ def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[Sou
                 column += 2
                 continue
 
-        if ch in {'"', "'"} or (suffix in JS_SUFFIXES and ch == BACKTICK):
-            if suffix in PYTHON_SUFFIXES and ch in {'"', "'"} and text.startswith(ch * 3, i):
+        if ch in {'"', "'"}:
+            if suffix in PYTHON_SUFFIXES and text.startswith(ch * 3, i):
                 quote = ch
                 triple_quote = True
                 i += 3
@@ -183,6 +184,27 @@ def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[Sou
             i += 1
             column += 1
             continue
+
+        if suffix in JS_SUFFIXES and ch == BACKTICK:
+            template_stack.append({"mode": "text", "brace_depth": 0})
+            i += 1
+            column += 1
+            continue
+
+        if suffix in JS_SUFFIXES and template_stack and template_stack[-1]["mode"] == "expr":
+            if ch == "{":
+                template_stack[-1]["brace_depth"] = int(template_stack[-1]["brace_depth"]) + 1
+                i += 1
+                column += 1
+                continue
+            if ch == "}":
+                depth = int(template_stack[-1]["brace_depth"]) - 1
+                template_stack[-1]["brace_depth"] = depth
+                if depth == 0:
+                    template_stack[-1]["mode"] = "text"
+                i += 1
+                column += 1
+                continue
 
         if suffix in JS_SUFFIXES and ch == "/" and _regex_can_start(text, i):
             regex_literal = True
