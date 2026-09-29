@@ -20,9 +20,11 @@ CONTRACT = ROOT / "contracts/pass220/PASS_220_LANE5_NATIVE_CAPABILITY_PROVIDER_V
 def test_lane5_all_registered_capabilities_default_to_native() -> None:
     status = lane5_capability_provider_status(environ={})
     assert status["global_default_provider"] == "native"
-    assert status["external_provider_requires_explicit_selection"] is True
+    assert status["external_provider_requires_explicit_selection_at_runtime"] is True
+    assert status["pull_request_native_unavailable_falls_back_to_declared_external"] is True
+    assert status["pull_request_fallback_requires_warning"] is True
     assert status["unknown_capabilities_fail_closed"] is True
-    assert status["missing_native_implementation_fails_closed"] is True
+    assert status["runtime_missing_native_implementation_fails_closed"] is True
     assert status["authority"]["vm81_admission_authority"] is False
     assert status["authority"]["hash72_commit_authority"] is False
     assert status["authority"]["hash216_persistence_authority"] is False
@@ -32,7 +34,8 @@ def test_lane5_all_registered_capabilities_default_to_native() -> None:
     for row in rows.values():
         assert row["selected_provider"] == "native"
         assert row["explicit_selection"] is False
-        assert row["implicit_external_fallback_allowed"] is False
+        assert row["runtime_implicit_external_fallback_allowed"] is False
+        assert row["pull_request_external_fallback_allowed"] is True
         assert row["default_provider"] == "native"
 
 
@@ -62,7 +65,7 @@ def test_implemented_lane5_native_capabilities_resolve_real_repository_surfaces(
         assert (ROOT / surface).exists(), (capability_id, surface)
 
 
-def test_matplotlib_native_default_fails_closed_until_native_provider_exists() -> None:
+def test_matplotlib_runtime_native_default_fails_closed_until_native_provider_exists() -> None:
     spec = capability_spec("matplotlib")
     assert spec.native_implemented is False
     assert spec.native_surfaces == ()
@@ -70,7 +73,44 @@ def test_matplotlib_native_default_fails_closed_until_native_provider_exists() -
         Lane5CapabilityProviderError,
         match="HHS_LANE5_NATIVE_IMPLEMENTATION_UNAVAILABLE:matplotlib",
     ):
-        resolve_lane5_capability("matplotlib", environ={})
+        resolve_lane5_capability("matplotlib", environ={}, provider_context="runtime")
+
+
+def test_matplotlib_pull_request_falls_back_to_declared_external_with_warning() -> None:
+    with pytest.warns(
+        RuntimeWarning,
+        match="HHS_LANE5_PR_EXTERNAL_PROVIDER_FALLBACK:matplotlib",
+    ):
+        resolution = resolve_lane5_capability(
+            "matplotlib",
+            environ={},
+            provider_context="pull_request",
+        )
+    assert resolution.provider == "external"
+    assert resolution.explicit is False
+    assert resolution.fallback_used is True
+    assert resolution.external_target == "Matplotlib"
+    assert resolution.native_unavailable_reason == (
+        "HHS_LANE5_NATIVE_IMPLEMENTATION_UNAVAILABLE:matplotlib"
+    )
+    assert resolution.warning is not None
+    assert "compatibility_only_no_canonical_authority" in resolution.warning
+
+
+def test_pull_request_status_exposes_fallback_warning_receipt() -> None:
+    status = lane5_capability_provider_status(
+        environ={},
+        provider_context="pull_request",
+    )
+    rows = {row["capability_id"]: row for row in status["capabilities"]}
+    matplotlib = rows["matplotlib"]
+    assert matplotlib["selected_provider"] == "external"
+    assert matplotlib["pull_request_fallback_used"] is True
+    assert matplotlib["warning"].startswith(
+        "HHS_LANE5_PR_EXTERNAL_PROVIDER_FALLBACK:matplotlib"
+    )
+    assert rows["numpy"]["selected_provider"] == "native"
+    assert rows["numpy"]["pull_request_fallback_used"] is False
 
 
 @pytest.mark.parametrize(
@@ -134,7 +174,9 @@ def test_contract_freezes_native_default_for_current_and_future_capabilities() -
     assert rule["implicit_provider"] == "HHS_NATIVE"
     assert rule["external_provider_requires_explicit_selection"] is True
     assert rule["installed_external_package_never_overrides_native_default"] is True
-    assert rule["missing_native_implementation_fails_closed"] is True
+    assert rule["runtime_missing_native_implementation_fails_closed"] is True
+    assert rule["pull_request_native_unavailable_falls_back_to_declared_external"] is True
+    assert rule["pull_request_fallback_requires_warning"] is True
     assert rule["future_native_capabilities_inherit_rule"] is True
     assert contract["selection"]["auto_mode_allowed"] is False
     assert set(contract["registered_capabilities"]) == set(CAPABILITIES)
