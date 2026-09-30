@@ -409,3 +409,98 @@ Additional commits:
 - `aaa0e0c7010879047415a8594299903d91a37a64` — reference-clean HTML chrome;
 - `79ddf40d74e148c274db54c8d301d4b9dfe25c29` — static-presentation regression;
 - `fd0006e0b70684b45d279b6e24e5db04de563f5b` — CI guards.
+
+
+## Static projection fidelity — continuation
+
+The static reference mode now freezes the **render projection snapshot**, not
+only the camera.
+
+When Reference Motion is disabled:
+
+```text
+syncParticleRenderBatches(true)
+-> capture current projected matrices/colors
+-> referenceMotion.projectionFrozen = true
+-> applyReferenceStaticCamera()
+```
+
+The physics loop, constructors, receipts, Hash surfaces, and state queries
+continue underneath. Only the presentation matrices stop changing.
+
+When Reference Motion resumes, projection updates resume immediately.
+
+Exiting ChaseCam while Reference Motion is paused now returns to the same
+frozen static projection/camera state rather than leaving a live-particle
+manual view.
+
+### Density refinement
+
+The primary and satellite clusters now use nonlinear radial compression:
+
+```text
+primary outer compression   0.20
+primary inner compression   0.125
+primary radial knee         25.0
+
+satellite outer compression 0.115
+satellite inner compression 0.072
+satellite radial knee       15.0
+```
+
+Inner particles are additionally biased smaller, preserving dense micro-dot
+readability at the cluster centers without altering logical positions.
+
+### Reference color tail
+
+The Q144 hue remains the color identity, but the static presentation now has a
+small deterministic neutral/pastel population and a separate dim
+green/brown/blue population matching the supplied stills.
+
+No new random source is introduced.
+
+### Sparse local foreground halo
+
+Only the deterministic FOREGROUND role receives a secondary translucent
+projection shell:
+
+```text
+halo scale   1.14
+halo opacity 0.085
+depthWrite   false
+```
+
+This is a sparse local edge/near-field softness layer, not global bloom.
+
+Non-foreground instances have zero halo scale.
+
+### Frozen I057 compatibility repair
+
+The original I057 projection behavior remains a real fallback:
+
+```text
+mesh.setColorAt(i,p.material.color);
+```
+
+when no I064 RGB profile is available.
+
+This repairs the inherited I057 regression without weakening or deleting it.
+
+### Continuation commits
+
+- `500404c4f797bc0d6b8959b6c78df3966a550451` — static density/color/freeze/halo HTML refinement;
+- `5ffc0034bd104c435395c130c784a8fe9a54f334` — structural regression for the refinement;
+- `6c3b672c16830095cfcbed79dd9f5f6b49fbb029` — ChaseCam exit returns to frozen static view;
+- `6768052bb8fce2699b0ddc550fd449d2038bf923` — ChaseCam/static transition regression.
+
+### Current validation state
+
+The earlier I064 run `36657611275` failed only because the frozen I057 test
+required the original color-projection fallback token. I064's own projection
+tests and inline JavaScript parsing passed in that run.
+
+The fallback is now restored as executable behavior. New exact-head validation
+must be read from the latest branch head; do not treat the earlier failure as
+representative after commit `500404c4...`.
+
+I063 remains the stacked parent and must close before I064 is merged to main.
