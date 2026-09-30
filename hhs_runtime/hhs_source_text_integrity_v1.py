@@ -97,6 +97,27 @@ def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[Sou
             i += 1
             continue
 
+        if suffix in JS_SUFFIXES and template_stack and template_stack[-1]["mode"] == "text":
+            if ch == "\\":
+                step = min(2, len(text) - i)
+                i += step
+                column += step
+                continue
+            if ch == BACKTICK:
+                template_stack.pop()
+                i += 1
+                column += 1
+                continue
+            if ch == "$" and nxt == "{":
+                template_stack[-1]["mode"] = "expr"
+                template_stack[-1]["brace_depth"] = 1
+                i += 2
+                column += 2
+                continue
+            i += 1
+            column += 1
+            continue
+
         if line_comment:
             i += 1
             column += 1
