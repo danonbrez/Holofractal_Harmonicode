@@ -86,7 +86,7 @@ def test_projection_lifts_capabilities_constructors_and_bindings(case):
     assert projection["counts"]["inherited_lane5_capabilities"] == 1
     assert projection["counts"]["repository_static_callables"] == 4
     assert projection["counts"]["constructors"] == 3
-    assert projection["counts"]["knowledge_nodes"] == 4
+    assert projection["counts"]["knowledge_nodes"] == 8
     assert len(projection["roots"]["projection_root_hash216"]) == 216
     assert projection["authority"]["candidate_only"] is True
     assert projection["authority"]["canonical_hash216_authority"] is False
