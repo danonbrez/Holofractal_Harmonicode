@@ -31,7 +31,7 @@ import uuid
 from contextlib import asynccontextmanager
 from typing import Dict, Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -406,7 +406,7 @@ app.add_middleware(
 
 app.include_router(runtime_router)
 if isinstance(runtime_ws_router, NativeAPIRouter):
-    bind_native_router_to_external_app(app, runtime_ws_router)
+    bind_native_router_to_external_app(\n        app, runtime_ws_router, external_websocket_type=WebSocket\n    )
 else:
     app.include_router(runtime_ws_router)
 app.include_router(pass135_audit_router)
