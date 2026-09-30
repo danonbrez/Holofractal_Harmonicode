@@ -85,7 +85,7 @@
     <input id="freqSlider" type="range" min="1" max="10" step="1" value="1" style="width:150px">
   </div>
   <button id="referenceMotionBtn" style="position:absolute;top:118px;right:10px;z-index:104;background:rgba(0,0,20,.72);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">Boundary Orbit OFF (V)</button>
-  <button id="chaseBtn" style="position:absolute;top:154px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">ChaseCam (C)</button>
+  <button id="chaseBtn" style="position:absolute;top:154px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">Follow Seed (C)</button>
   <div id="densityCtl" style="position:absolute;top:194px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
     <div>density test: mass <b>&times;<span id="massVal">1</span></b></div>
     <input id="massSlider" type="range" min="1" max="4" step="0.5" value="1" style="width:150px">
@@ -3745,11 +3745,10 @@
     }
 
     // Animation loop
-    /* CHASE CAMERA: ride one carrier through the field — camera trails the
-       particle's velocity direction and looks ahead along its momentum.
-       Pure view layer: no physics input, fail-closed toggle. */
-    const chase={ on:false, idx:0, pos:new THREE.Vector3(0,0,15), look:new THREE.Vector3() };
-    const chaseTmp=new THREE.Vector3(), chaseSide=new THREE.Vector3(), chaseUp=new THREE.Vector3(0,1,0);
+    /* FOLLOW CAMERA: projection-only observer of one reconstructed original
+       spiral seed path. It is deliberately not a live carrier and cannot
+       participate in physics, collisions, bonds, constructors, or receipts. */
+    const chase={ on:false };
     function toggleChase(force){
       toggleReferenceFollow(force);
     }
