@@ -33,6 +33,10 @@ jobs:
         run: |
           git merge-base --is-ancestor c8cab5b215e4d461e7829e5b6aac69f9afd4254e HEAD
 
+      - name: Install test runner
+        run: |
+          python -m pip install --disable-pip-version-check pytest
+
       - name: Check inline JavaScript syntax
         run: |
           python - <<'PY'
