@@ -1,9 +1,12 @@
 """Pass 220 I043 host-side Ubuntu guest lifecycle and PTY transport.
 
-This module sits *beneath* the existing Ubuntu application-VM control plane.
-It owns guest artifact identity, QEMU lifecycle, and authenticated SSH/PTTY
-transport only. It never commits VM81/Hash72/Hash216 state and never replaces
-the Pass 190 operation authority running inside the guest.
+This module provides a Pass 220 host-side QEMU/SSH/PTTY compatibility and
+bootstrap harness. The canonical machine remains the VM81 runtime: VM81 is the
+only authority, Lane 5 is its C++ BIOS/AGI optimization control center, the
+cumulative pass system is its integrated OS/callable service registry, Hash216
+is its permanent validation storage, and Ubuntu is intended to run as the
+internal guest OS on VM81 virtual hardware. This host QEMU harness does not by
+itself satisfy that canonical internal-VM requirement.
 """
 from __future__ import annotations
 
@@ -249,7 +252,7 @@ class GuestPTYSession:
 
 
 class UbuntuGuestRuntime:
-    """Host-side guest artifact, lifecycle, and transport authority."""
+    """Host-side guest artifact, lifecycle, and transport controller."""
 
     def __init__(self, config: GuestRuntimeConfig) -> None:
         self.config = config
@@ -433,6 +436,15 @@ class UbuntuGuestRuntime:
             "hypervisor": "QEMU",
             "accelerator_policy": "KVM_THEN_TCG",
             "existing_application_vm_control_plane_inside_guest": True,
+            "vm81_runtime_only_authority": True,
+            "lane5_role": "CXX_BIOS_AGI_OPTIMIZATION_CONTROL_CENTER",
+            "pass_system_role": "INTEGRATED_OS_AND_CALLABLE_SERVICE_REGISTRY",
+            "hash216_role": "PERMANENT_VALIDATION_STORAGE",
+            "ubuntu_role": "GUEST_OS_INSTALLATION_ON_VM81_VIRTUAL_HARDWARE",
+            "frontend_role": "ABI_API_OPCODE_GUI_INTERFACE_ENVIRONMENT",
+            "host_qemu_role": "BOOTSTRAP_COMPATIBILITY_NOT_CANONICAL_VM81_HARDWARE",
+            "canonical_internal_linux_vm_proven": False,
+            "optimization_execution_model": "CALLABLE_BOUNDED_CIRCUITS_NOT_AMBIENT_LOOP",
             "canonical_state_authority": False,
             "new_vm81_authority": False,
             "new_hash72_mint_authority": False,
