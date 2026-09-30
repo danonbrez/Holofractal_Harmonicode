@@ -31,7 +31,7 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Dict, List, Set, Optional, Any
 
-from fastapi import WebSocket
+from hhs_backend.runtime.hhs_fastapi_provider_v1 import WebSocket
 
 from hhs_runtime.hhs_runtime_dataflow_guard_v1 import attach_egress_record
 
