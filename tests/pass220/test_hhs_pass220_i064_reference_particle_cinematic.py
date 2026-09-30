@@ -57,10 +57,10 @@ def test_i064_visual_profile_is_deterministic_and_render_only():
     assert "satelliteDepthSpan:5.5" in visual
     assert "haloDepthSpan:19.0" in visual
     assert "foregroundDepthSpan:25.0" in visual
-    assert "primaryCenterX:0.5" in visual
-    assert "primaryCenterY:-0.8" in visual
-    assert "satelliteCenterX:-9.2" in visual
-    assert "satelliteCenterY:7.1" in visual
+    assert "primaryCenterX:-0.4" in visual
+    assert "primaryCenterY:3.9" in visual
+    assert "satelliteCenterX:-12.5" in visual
+    assert "satelliteCenterY:14.5" in visual
     assert "satelliteFraction:0.10" in visual
     assert "haloFraction:0.15" in visual
     assert "foregroundFraction:0.045" in visual
