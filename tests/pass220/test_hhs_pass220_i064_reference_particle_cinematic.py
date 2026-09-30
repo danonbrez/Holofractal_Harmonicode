@@ -49,15 +49,30 @@ def test_i064_visual_profile_is_deterministic_and_render_only():
     assert "function visualHash32" in visual
     assert "function buildReferenceVisualProfile" in visual
     assert "Math.random" not in visual
-    assert "coreCompression:0.235" in visual
-    assert "satelliteCompression:0.46" in visual
-    assert "coreDepthSpan:18.0" in visual
-    assert "satelliteDepthSpan:12.0" in visual
-    assert "minParticleScale:0.38" in visual
-    assert "maxParticleScale:5.25" in visual
-    assert "staticCameraZ:36.0" in visual
-    assert "ingressCameraZ:5.2" in visual
-    assert "referenceFov:62" in visual
+    assert "coreCompression:0.20" in visual
+    assert "satelliteCompression:0.115" in visual
+    assert "haloCompression:0.50" in visual
+    assert "foregroundCompression:0.72" in visual
+    assert "coreDepthSpan:12.0" in visual
+    assert "satelliteDepthSpan:5.5" in visual
+    assert "haloDepthSpan:19.0" in visual
+    assert "foregroundDepthSpan:25.0" in visual
+    assert "primaryCenterX:0.5" in visual
+    assert "primaryCenterY:-0.8" in visual
+    assert "satelliteCenterX:-9.2" in visual
+    assert "satelliteCenterY:7.1" in visual
+    assert "satelliteFraction:0.10" in visual
+    assert "haloFraction:0.15" in visual
+    assert "foregroundFraction:0.045" in visual
+    assert "minParticleScale:0.30" in visual
+    assert "maxParticleScale:7.25" in visual
+    assert "staticCameraZ:34.0" in visual
+    assert "ingressCameraZ:4.8" in visual
+    assert "referenceFov:60" in visual
+    assert "I064_ROLE_PRIMARY" in visual
+    assert "I064_ROLE_SATELLITE" in visual
+    assert "I064_ROLE_HALO" in visual
+    assert "I064_ROLE_FOREGROUND" in visual
 
 
 def test_i064_instanced_projection_scales_and_separates_depth_without_logical_write():
@@ -70,6 +85,11 @@ def test_i064_instanced_projection_scales_and_separates_depth_without_logical_wr
     assert "profile.compression[i]" in render
     assert "profile.scale[i]" in render
     assert "profile.depth[i]" in render
+    assert "profile.offset[o]" in render
+    assert "const wx=q.x+gx, wy=q.y+gy, wz=q.z+gz;" in render
+    assert " - gx" in render
+    assert " - gy" in render
+    assert " - gz" in render
     assert "particleBatchMatrix.compose" in render
     assert "mesh.setMatrixAt" in render
     assert "mesh.setColorAt" in render
@@ -91,6 +111,9 @@ def test_i064_camera_matches_reference_clip_rhythm_and_has_user_toggle():
     assert "I064_REFERENCE_VISUAL.ingressCameraZ" in camera
     assert "camera.position.copy(referenceMotion.pos)" in camera
     assert "camera.lookAt(referenceMotion.look)" in camera
+    assert "function applyReferenceStaticCamera()" in text
+    assert 'referenceMotion.look.set(-0.4,0.15,-2.7);' in text
+    assert 'b.textContent=referenceMotion.on?"Reference Motion ON (V)":"Reference Static (V)";' in text
 
     assert 'id="referenceMotionBtn"' in text
     assert "Reference Motion ON (V)" in text
@@ -115,3 +138,30 @@ def test_i064_reference_profile_hides_debug_instrumentation_only_at_projection()
     assert "function updateNinthNucleus()" in text
     assert "function buildTesseract()" in text
     assert "function updateTesseract()" in text
+
+
+
+def test_i064_static_reference_quality_uses_smoother_geometry_and_color_output():
+    text = source()
+    assert text.count("new THREE.SphereGeometry(0.1, 12, 8)") >= 2
+    assert 'new THREE.MeshBasicMaterial({color:0xffffff, toneMapped:false})' in text
+    assert "renderer.setClearColor(0x000000,1);" in text
+    assert "renderer.outputEncoding=THREE.sRGBEncoding" in text
+
+
+def test_i064_static_composition_has_distinct_primary_satellite_halo_foreground_roles():
+    text = source()
+    visual = block(
+        text,
+        "const I064_REFERENCE_VISUAL",
+        "const particleRenderBatches=[]",
+    )
+    assert "I064_ROLE_PRIMARY=0" in visual
+    assert "I064_ROLE_SATELLITE=1" in visual
+    assert "I064_ROLE_HALO=2" in visual
+    assert "I064_ROLE_FOREGROUND=3" in visual
+    assert "Role selection is deterministic and projection-only." in visual
+    assert "primaryCenterX" in visual
+    assert "satelliteCenterX" in visual
+    assert "foregroundFraction" in visual
+    assert "return {scale,depth,compression,role,offset,rgb};" in visual
