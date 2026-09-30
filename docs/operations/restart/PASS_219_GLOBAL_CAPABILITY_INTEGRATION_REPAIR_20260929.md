@@ -18,6 +18,9 @@
 6. Exact semantic fallback output is not persisted as an assistant message.
 7. Unified language-model fabric classifies the native semantic member as a semantic/context contributor rather than a `TEXT_GENERATION` provider.
 8. The source-text-integrity scanner now treats JavaScript/template-literal text as string context while continuing to reject literal escaped-newline injection inside executable `${...}` expressions. This repairs the false-positive source guard without weakening the original `\\n` injection contract.
+9. Pass 219 Lane 5 1.69 statically scans fetched branch and pull-request Git objects for callable surfaces without checkout or execution. Ref-only capabilities remain visible with `closure_state=UNRESOLVED`, exact ref/commit provenance, candidate-only authority, and a Hash216 ref-snapshot root.
+10. The Hash216 deep-index workflow explicitly fetches branch and PR refs before hydration, so the repository index exercises the same global visibility topology.
+11. The Lane 5 native-provider workflow now runs service-registry/WebSocket integration tests after installing the declared Pass 220 FastAPI substrate instead of falsely treating a missing test dependency as capability unavailability.
 
 ## Changed files
 
@@ -29,6 +32,8 @@
 - `tests/test_hhs_litert_lm_hhs_api_tools_v1.py`
 - `hhs_runtime/hhs_source_text_integrity_v1.py`
 - `tests/test_hhs_source_text_integrity_v1.py`
+- `.github/workflows/native-fastapi-default-provider.yml`
+- `.github/workflows/repository-hash216-dependency-index.yml`
 - this restart record.
 
 ## Required dependency-scoped validation
@@ -41,6 +46,8 @@
 - verify semantic fallback leaves only the witnessed user message and permits production failover to an actual generator.
 - `pytest -q tests/test_hhs_source_text_integrity_v1.py`
 - full source-text-integrity scan must accept valid string/template `\\n` data while rejecting injected `\\n` separators in executable source.
+- branch/PR ref fixture must hydrate a callable absent from main without executing it and must bind the exact ref/commit snapshot into a 216-character Hash216 root.
+- Lane 5 native-provider workflow must run the native-core tests before external FastAPI installation, then run service-registry/WebSocket integration after the declared FastAPI substrate is installed.
 
 ## Environment state
 
@@ -55,4 +62,4 @@ The first source-text-integrity run exposed pre-existing false positives on vali
 3. Refresh generated Hash216 repository index after source validation.
 4. Merge when required checks permit.
 5. Verify `main` contains the merged repair and regenerated projection.
-6. Continue repository/PR/branch provenance hydration so open and historical capability evidence remains visible to Pass 219 without executing untrusted branch code.
+6. Extend ref provenance with explicit GitHub PR validation/merge-state metadata where available; ref visibility itself is now implemented and does not depend on that metadata.
