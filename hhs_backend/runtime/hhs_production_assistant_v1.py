@@ -336,6 +336,8 @@ class ProductionAssistantService:
             native_installation=self._native_installation_status(),
             native_health=self._health_cache.get("native", {}),
             pass153_models=self._pass153_models(),
+            pass153_health=self._health_cache.get("pass153", {}),
+            litert_health=litert_health,
             pass166_status=self._pass166_status(),
         )
 
