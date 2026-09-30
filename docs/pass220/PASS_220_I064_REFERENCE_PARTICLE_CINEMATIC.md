@@ -252,3 +252,83 @@ After I064 is validated in-browser, later passes can add:
 
 Those additions should preserve the I064 rule that visual fidelity is a
 projection concern and cannot mutate the canonical physics state.
+
+
+## Refined static-scene composition
+
+The supplied still frames are now treated as the canonical static composition
+target.
+
+The render projection uses four deterministic roles:
+
+```text
+PRIMARY      dense main cluster
+SATELLITE    compact upper-left secondary cluster
+HALO         sparse mid/far population
+FOREGROUND   very sparse large near-field bodies
+```
+
+Current static projection parameters:
+
+```text
+primary compression      0.20
+satellite compression    0.115
+halo compression         0.50
+foreground compression   0.72
+
+primary depth span       12
+satellite depth span     5.5
+halo depth span          19
+foreground depth span    25
+
+primary center           (-0.4, 3.9, -3.0)
+satellite center         (-12.5, 14.5, -5.0)
+
+satellite fraction       10%
+halo fraction            15%
+foreground fraction      4.5%
+
+particle scale           0.30 .. 7.25
+static camera Z          34
+ingress camera Z         4.8
+FOV                      60 degrees
+```
+
+The primary population is weighted toward pinpoints and small particles so the
+dense center remains individually readable. Large bodies are concentrated in
+the sparse foreground population.
+
+The projection reads the group-local logical coordinate, reconstructs the
+physical world coordinate, applies the reference composition, and subtracts
+the parent group translation before writing the instance matrix. Parent-group
+orbital translation is therefore not visually applied twice.
+
+No logical particle position is overwritten.
+
+## Static camera and clean presentation
+
+Pausing Reference Motion now selects a defined static acceptance camera rather
+than freezing at an arbitrary point in the camera ingress:
+
+```text
+camera = (0.4, 0.15, 34)
+look   = (-0.4, 0.15, -2.7)
+```
+
+The page fallback background and renderer clear color are pure black.
+
+The existing engine interface remains intact but auto-hides after 1.8 seconds
+of pointer inactivity so the idle scene is an uninterrupted particle field.
+Pointer movement or touch reveals the controls. `H` pins/unpins the chrome.
+
+Particle projection quality uses:
+
+```text
+SphereGeometry(0.1, 12, 8)
+toneMapped = false
+sRGB output when available
+device pixel ratio <= 2
+```
+
+This is still projection-only and does not change simulation or canonical
+authority.
