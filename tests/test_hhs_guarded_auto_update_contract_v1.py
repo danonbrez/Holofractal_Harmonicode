@@ -480,15 +480,19 @@ def test_digitalocean_workflow_builds_frontend_in_github_and_transfers_exact_bun
         "EXPECTED_RUNTIME_OS_RELEASE",
         "Runtime OS asset authority mismatch",
         "/api/interface/status",
+        "/api/runtime/services",
         "HHS Visual Runtime OS Workspace",
         "legacy_harmonizer_is_public_root",
         "/var/lib/hhs/runtime-os/releases/",
+        "HHS_DIGITALOCEAN_LOCAL_SERVICE_REGISTRY_VERIFIED",
         "HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED",
+        "HHS_DIGITALOCEAN_PUBLIC_SERVICE_REGISTRY_VERIFIED",
         "HHS_PRODUCTION_SERVICE_PERMISSIONS_VERIFIED=1",
         'runuser -u hhs -- test -r "$APP_ROOT/hhs_backend/__init__.py"',
     ]
     for token in required:
         assert token in workflow
+    assert workflow.count("/api/runtime/services") >= 2
     assert "HHS_RUNTIME_OS_ROOT=/var/lib/hhs/runtime-os/current" not in workflow
     assert "npm ci --no-audit --no-fund" not in workflow
 
