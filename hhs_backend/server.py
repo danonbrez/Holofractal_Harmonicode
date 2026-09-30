@@ -69,6 +69,10 @@ from hhs_backend.runtime.runtime_ws import (
     runtime_ws_router,
     runtime_ws_health,
 )
+from hhs_backend.runtime.hhs_native_fastapi_compat_v1 import (
+    NativeAPIRouter,
+    bind_native_router_to_external_app,
+)
 
 from hhs_backend.runtime.live_fastapi_workflow_v1 import (
     LiveFastAPIRuntimeWorkflow,
@@ -401,7 +405,10 @@ app.add_middleware(
 # ============================================================================
 
 app.include_router(runtime_router)
-app.include_router(runtime_ws_router)
+if isinstance(runtime_ws_router, NativeAPIRouter):
+    bind_native_router_to_external_app(app, runtime_ws_router)
+else:
+    app.include_router(runtime_ws_router)
 app.include_router(pass135_audit_router)
 app.include_router(pass152_elastic_closure_router)
 app.include_router(build_standard_ingress_router(WORKSPACE_AUTHORITY_LOOP))
