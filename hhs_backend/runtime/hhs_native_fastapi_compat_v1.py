@@ -490,7 +490,49 @@ def bind_native_router_to_external_app(app: Any, router: NativeAPIRouter) -> int
                 raise NativeFastAPICompatibilityError(
                     "HHS_FASTAPI_EXTERNAL_WEBSOCKET_BINDING_UNAVAILABLE"
                 )
-            add_websocket(route.path, route.endpoint, name=route.name)
+
+            projected_endpoint = route.endpoint
+            try:
+                from fastapi import WebSocket as ExternalWebSocket
+            except ModuleNotFoundError:
+                # Non-FastAPI test doubles can consume the native declaration
+                # directly. The canonical external server always has FastAPI
+                # installed before entering this boundary.
+                ExternalWebSocket = None
+
+            if ExternalWebSocket is not None:
+                endpoint = route.endpoint
+
+                async def projected_endpoint(*args: Any, __endpoint=endpoint, **kwargs: Any):
+                    value = __endpoint(*args, **kwargs)
+                    if inspect.isawaitable(value):
+                        return await value
+                    return value
+
+                signature = inspect.signature(endpoint)
+                projected_parameters = []
+                for parameter in signature.parameters.values():
+                    annotation = parameter.annotation
+                    if (
+                        annotation is NativeWebSocket
+                        or annotation == "WebSocket"
+                        or annotation == "NativeWebSocket"
+                    ):
+                        annotation = ExternalWebSocket
+                    projected_parameters.append(
+                        parameter.replace(annotation=annotation)
+                    )
+                projected_endpoint.__signature__ = signature.replace(
+                    parameters=projected_parameters
+                )
+                projected_endpoint.__name__ = getattr(
+                    endpoint, "__name__", route.name
+                )
+                projected_endpoint.__qualname__ = getattr(
+                    endpoint, "__qualname__", projected_endpoint.__name__
+                )
+
+            add_websocket(route.path, projected_endpoint, name=route.name)
         else:
             add_http = getattr(app, "add_api_route", None)
             if add_http is None:
