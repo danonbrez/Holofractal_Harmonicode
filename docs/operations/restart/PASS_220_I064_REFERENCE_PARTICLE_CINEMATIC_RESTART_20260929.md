@@ -372,3 +372,40 @@ This preserves crisp colored particle silhouettes and avoids global bloom.
 
 The supplied static frames remain the acceptance target. Browser comparison is
 still required before claiming visual equivalence.
+
+
+## Reference-clean page presentation
+
+The supplied static frames contain no persistent debug/control chrome.
+
+I064 therefore preserves all existing controls but makes them idle-auto-hiding
+presentation UI:
+
+```text
+autoHideChrome = true
+chromeIdleMs    = 1800
+H               = pin/unpin controls
+mousemove       = reveal + restart idle timer
+touchstart      = reveal + restart idle timer
+```
+
+Hidden-on-idle elements:
+
+- OS Shell toggle and panel;
+- HUD;
+- frequency control;
+- Reference Motion control;
+- ChaseCam control;
+- density/constructor/topology control surface.
+
+This is presentation-only. The elements are not deleted and their event
+handlers remain active whenever the chrome is visible.
+
+The body fallback background is now pure `#000`, matching the renderer clear
+color and the supplied static references.
+
+Additional commits:
+
+- `aaa0e0c7010879047415a8594299903d91a37a64` — reference-clean HTML chrome;
+- `79ddf40d74e148c274db54c8d301d4b9dfe25c29` — static-presentation regression;
+- `fd0006e0b70684b45d279b6e24e5db04de563f5b` — CI guards.
