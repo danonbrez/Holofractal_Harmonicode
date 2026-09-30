@@ -95,6 +95,14 @@ syntax, all inherited function bodies, and the frozen I057 regression:
 5f3bfe9ccd50b41db2ed8672fdc5e36b7711f32b
 ```
 
+The first hardened run exposed a workflow-environment defect rather than a
+simulation defect: the runner did not have `pytest` installed. The workflow was
+repaired without touching ParticleSimulation:
+
+```text
+0c0fb0d1912df412bea314c1f1e87a36b3734d3c
+```
+
 ## Acceptance rule
 
 A future I064 visual/cinematic implementation is admissible only if:
