@@ -261,3 +261,114 @@ Do not claim pixel-perfect visual equivalence before that browser check.
    against the user-supplied references.
 6. Repair visual parameters only if needed; do not change the physics to chase
    appearance.
+
+
+## Static-scene refinement — uploaded reference fidelity
+
+The user clarified that the supplied still images define the static-scene
+appearance. No generated substitute image is part of acceptance.
+
+The HTML was refined on top of the initial I064 projection so that static mode
+is not merely a compressed version of the logical cloud.
+
+New deterministic presentation roles:
+
+```text
+PRIMARY     dense central volume
+SATELLITE   compact upper-left secondary cluster
+HALO        sparse mid/far particles
+FOREGROUND  very sparse large near-field bodies
+```
+
+Role assignment is deterministic from existing particle metadata and
+`visualHash32`; it adds no new random source.
+
+Updated projection parameters:
+
+```text
+primary compression      0.20
+satellite compression    0.115
+halo compression         0.50
+foreground compression   0.72
+
+primary depth span       12
+satellite depth span     5.5
+halo depth span          19
+foreground depth span    25
+
+primary center           (0.5, -0.8, -3.0)
+satellite center         (-9.2, 7.1, -5.0)
+
+satellite population     10%
+halo population          15%
+foreground population    4.5%
+
+particle scale range     0.30 .. 7.25
+static camera Z          34
+ingress camera Z         4.8
+reference FOV            60 degrees
+```
+
+The central population is deliberately dominated by pinpoints/small bodies.
+Large bodies are concentrated in the sparse foreground role so the dense core
+does not collapse into an oversized colored mass.
+
+### Parent-orbit neutralization in projection only
+
+Logical particle state remains group-local and the parent spiral groups retain
+their physics orbit.
+
+For rendering, I064 now reads:
+
+```text
+world = logical_local + group_translation
+```
+
+then creates the static reference composition in world-like projection
+coordinates and subtracts the parent translation before writing the instance
+matrix.
+
+Therefore the scene composition does not receive the parent orbit twice, and
+no logical particle position is overwritten.
+
+### Static camera semantics
+
+Turning Reference Motion off now calls:
+
+```text
+applyReferenceStaticCamera()
+```
+
+rather than freezing an arbitrary point in the cinematic ingress cycle.
+
+Static acceptance view:
+
+```text
+camera = (0.4, 0.15, 34)
+look   = (-0.4, 0.15, -2.7)
+```
+
+The UI state reads `Reference Static (V)`.
+
+### Render-quality refinement
+
+The render projection now uses:
+
+```text
+SphereGeometry(0.1, 12, 8)
+MeshBasicMaterial toneMapped=false
+opaque black renderer clear color
+sRGB output encoding when supported by the bundled Three.js revision
+devicePixelRatio capped at 2
+```
+
+This preserves crisp colored particle silhouettes and avoids global bloom.
+
+### Refinement commits
+
+- `28d625209f5b5fa96b4c0086188b61316d72536a` — refined HTML static composition;
+- `bcfed390264cd01f8c3dd0d5b0eb39aa0037cb08` — structural static-composition guards;
+- `0626e7b3706e68d08abf620fe358a56ec3bd4167` — updated exact-head visual CI guards.
+
+The supplied static frames remain the acceptance target. Browser comparison is
+still required before claiming visual equivalence.
