@@ -84,7 +84,7 @@
     <div>global frequency <b>&times;<span id="freqVal">1</span></b></div>
     <input id="freqSlider" type="range" min="1" max="10" step="1" value="1" style="width:150px">
   </div>
-  <button id="referenceMotionBtn" style="position:absolute;top:118px;right:10px;z-index:104;background:rgba(0,0,20,.72);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">Reference Motion ON (V)</button>
+  <button id="referenceMotionBtn" style="position:absolute;top:118px;right:10px;z-index:104;background:rgba(0,0,20,.72);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">Boundary Orbit OFF (V)</button>
   <button id="chaseBtn" style="position:absolute;top:154px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">ChaseCam (C)</button>
   <div id="densityCtl" style="position:absolute;top:194px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
     <div>density test: mass <b>&times;<span id="massVal">1</span></b></div>
@@ -149,7 +149,6 @@
     const I064_REFERENCE_VISUAL = Object.freeze({
       schema:"HHS_PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_V1",
       source:"examples/ParticleSimulation.html",
-      referenceClipSeconds:122/24,
       projectionOnly:true,
       logicalParticleMutation:false,
       pureBlackBackground:true,
@@ -181,22 +180,49 @@
       foregroundHaloOpacity:0.085,
       neutralColorFraction:0.085,
       dimColorFraction:0.11,
-      staticCameraZ:34.0,
-      ingressCameraZ:4.8,
+      initialCameraZ:34.0,
       referenceFov:60,
+      manualZoom:true,
+      boundaryOrbitAvailable:true,
+      defaultBoundaryOrbit:false,
+      boundaryOrbitAzimuthRate:0.000055,
+      boundaryOrbitPolarRate:0.000029,
+      boundaryOrbitPolarAmplitude:0.30,
+      boundaryOrbitMinPolar:0.34,
+      boundaryOrbitMaxPolar:2.80,
       hideInstrumentation:true,
-      defaultMotion:true,
-      freezeStaticProjection:true,
+      continuousProjectionSync:true,
       autoHideChrome:true,
       chromeIdleMs:1800,
       canonicalMutationAuthority:false
     });
-    const referenceMotion={
-      on:I064_REFERENCE_VISUAL.defaultMotion,
+    /* Camera modes are projection-only and never write particle state.
+       Manual OrbitControls is the default. Boundary orbit captures the user's
+       current radius instead of imposing a zoom. Follow camera reconstructs a
+       single original spiral seed trajectory and never reads live physics. */
+    const boundaryOrbit={
+      on:I064_REFERENCE_VISUAL.defaultBoundaryOrbit,
       startMs:performance.now(),
-      look:new THREE.Vector3(0,0,0),
-      pos:new THREE.Vector3(0,0,I064_REFERENCE_VISUAL.staticCameraZ),
-      projectionFrozen:false
+      radius:0,
+      theta0:0,
+      phi0:Math.PI/2,
+      target:new THREE.Vector3(
+        I064_REFERENCE_VISUAL.primaryCenterX,
+        I064_REFERENCE_VISUAL.primaryCenterY,
+        I064_REFERENCE_VISUAL.primaryCenterZ
+      )
+    };
+    const referenceFollow={
+      on:false,
+      spiralIndex:0,
+      particleIndex:144,
+      layer2:false,
+      pos:new THREE.Vector3(),
+      prev:new THREE.Vector3(),
+      tangent:new THREE.Vector3(1,0,0),
+      cam:new THREE.Vector3(),
+      look:new THREE.Vector3(),
+      initialized:false
     };
     const referenceTmp=new THREE.Vector3();
     const referenceScaleTmp=new THREE.Vector3();
@@ -338,59 +364,132 @@
       }
       return {scale,softScale,depth,compression,role,offset,rgb};
     }
-    function referenceEase(x){ x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); }
-    function updateReferenceCamera(nowMs){
-      if(!referenceMotion.on || chase.on) return;
-      const period=I064_REFERENCE_VISUAL.referenceClipSeconds*1000;
-      const u=((nowMs-referenceMotion.startMs)%period)/period;
-      /* sin(pi*u)^2 gives the reference rhythm: readable far state at each
-         clip boundary and a fast, deep pass through the field at mid-cycle. */
-      const ingress=Math.pow(Math.sin(Math.PI*u),2);
-      const rush=referenceEase(ingress);
-      const theta=u*Math.PI*2;
-      const z=I064_REFERENCE_VISUAL.staticCameraZ -
-        (I064_REFERENCE_VISUAL.staticCameraZ-I064_REFERENCE_VISUAL.ingressCameraZ)*rush;
-      const lateral=1.6+3.2*rush;
-      referenceMotion.pos.set(
-        Math.sin(theta*0.72)*lateral,
-        Math.cos(theta*0.53+0.35)*(0.9+1.65*rush),
-        z
+    function clampReferencePolar(phi){
+      return Math.max(
+        I064_REFERENCE_VISUAL.boundaryOrbitMinPolar,
+        Math.min(I064_REFERENCE_VISUAL.boundaryOrbitMaxPolar,phi)
       );
-      referenceMotion.look.set(
-        Math.sin(theta*0.47)*0.8,
-        Math.cos(theta*0.61)*0.45,
-        -1.8*rush
+    }
+    function captureBoundaryOrbitFromCamera(){
+      if(!camera) return;
+      const target=(controls && controls.target)
+        ? controls.target
+        : boundaryOrbit.target;
+      boundaryOrbit.target.copy(target);
+      referenceTmp.copy(camera.position).sub(boundaryOrbit.target);
+      let r=referenceTmp.length();
+      if(!(r>0)) r=1;
+      boundaryOrbit.radius=r;
+      boundaryOrbit.theta0=Math.atan2(referenceTmp.x,referenceTmp.z);
+      boundaryOrbit.phi0=clampReferencePolar(
+        Math.acos(Math.max(-1,Math.min(1,referenceTmp.y/r)))
       );
-      camera.position.copy(referenceMotion.pos);
-      camera.lookAt(referenceMotion.look);
+      boundaryOrbit.startMs=performance.now();
     }
-    function applyReferenceStaticCamera(){
-      if(chase.on) return;
-      referenceMotion.pos.set(0.4,0.15,I064_REFERENCE_VISUAL.staticCameraZ);
-      referenceMotion.look.set(-0.4,0.15,-2.7);
-      camera.position.copy(referenceMotion.pos);
-      camera.lookAt(referenceMotion.look);
+    function updateBoundaryOrbitCamera(nowMs){
+      if(!boundaryOrbit.on || chase.on) return;
+      const elapsed=nowMs-boundaryOrbit.startMs;
+      const theta=boundaryOrbit.theta0 +
+        elapsed*I064_REFERENCE_VISUAL.boundaryOrbitAzimuthRate;
+      const phi=clampReferencePolar(
+        boundaryOrbit.phi0 +
+        Math.sin(elapsed*I064_REFERENCE_VISUAL.boundaryOrbitPolarRate)*
+          I064_REFERENCE_VISUAL.boundaryOrbitPolarAmplitude
+      );
+      const r=boundaryOrbit.radius;
+      const sinPhi=Math.sin(phi);
+      camera.position.set(
+        boundaryOrbit.target.x + r*sinPhi*Math.sin(theta),
+        boundaryOrbit.target.y + r*Math.cos(phi),
+        boundaryOrbit.target.z + r*sinPhi*Math.cos(theta)
+      );
+      camera.lookAt(boundaryOrbit.target);
     }
-    function toggleReferenceMotion(force){
-      referenceMotion.on=force===undefined ? !referenceMotion.on : !!force;
-      referenceMotion.startMs=performance.now();
-      if(referenceMotion.on){
-        referenceMotion.projectionFrozen=false;
-        chase.on=false;
-        const cb=document.getElementById("chaseBtn");
-        if(cb) cb.textContent="ChaseCam (C)";
-      } else if(!chase.on){
-        /* Static presentation now freezes the projected particle matrices as
-           well as the camera. Physics/receipts continue underneath; only the
-           presentation snapshot stops changing. */
-        referenceMotion.projectionFrozen=false;
-        syncParticleRenderBatches(true);
-        referenceMotion.projectionFrozen=I064_REFERENCE_VISUAL.freezeStaticProjection;
-        applyReferenceStaticCamera();
+    function toggleBoundaryOrbit(force){
+      boundaryOrbit.on=force===undefined ? !boundaryOrbit.on : !!force;
+      if(boundaryOrbit.on){
+        if(chase.on) toggleChase(false);
+        captureBoundaryOrbitFromCamera();
       }
-      if(controls) controls.enabled=!referenceMotion.on && !chase.on;
+      if(controls) controls.enabled=!boundaryOrbit.on && !chase.on;
       const b=document.getElementById("referenceMotionBtn");
-      if(b) b.textContent=referenceMotion.on?"Reference Motion ON (V)":"Reference Static (V)";
+      if(b) b.textContent=boundaryOrbit.on?"Boundary Orbit ON (V)":"Boundary Orbit OFF (V)";
+    }
+    function originalReferenceParticlePosition(nowMs,out){
+      /* Exact kinematic seed path from the original ParticleSimulation:
+         - original phyllotaxis local seed from initSpiralParticles();
+         - original spiral group orbit from updateSpiralParticles().
+         No thPos/thVel, gravity, collisions, bonds, coupling, barycenter,
+         decay, constructor, or VM81 state participates. */
+      const j=referenceFollow.particleIndex;
+      const spiral=referenceFollow.spiralIndex;
+      const goldenRatio=simParams.goldenRatio;
+      const angle=j*goldenRatio*Math.PI*2;
+      const radius=Math.sqrt(j)*3;
+      const localX=radius*Math.cos(angle);
+      const localY=radius*Math.sin(angle);
+      const localZ=Math.sin(j/5)*5*(spiral%2===0?1:-1);
+      const phaseShift=spiral*Math.PI/4 +
+        (referenceFollow.layer2?Math.PI/2:0);
+      const orbitRadius=6;
+      const t=nowMs*0.0005;
+      out.set(
+        localX + Math.sin(t+phaseShift)*orbitRadius,
+        localY + Math.cos(t*simParams.evolutionSpeed+phaseShift)*orbitRadius,
+        localZ + Math.sin(t*simParams.goldenRatio+phaseShift)*orbitRadius
+      );
+      return out;
+    }
+    function resetReferenceFollow(){
+      originalReferenceParticlePosition(performance.now(),referenceFollow.pos);
+      referenceFollow.prev.copy(referenceFollow.pos);
+      referenceFollow.initialized=true;
+    }
+    function updateReferenceFollowCamera(nowMs){
+      if(!referenceFollow.on) return;
+      originalReferenceParticlePosition(nowMs,referenceFollow.pos);
+      if(!referenceFollow.initialized){
+        referenceFollow.prev.copy(referenceFollow.pos);
+        referenceFollow.initialized=true;
+      }
+      referenceFollow.tangent.copy(referenceFollow.pos).sub(referenceFollow.prev);
+      if(referenceFollow.tangent.lengthSq()<1e-10){
+        referenceFollow.tangent.set(1,0,0);
+      } else {
+        referenceFollow.tangent.normalize();
+      }
+      referenceFollow.prev.copy(referenceFollow.pos);
+      /* Trail the untouched reference path like a swimmer/fish follow cam.
+         Camera interpolation is visual only; the target path itself is exact. */
+      referenceFollow.cam.copy(referenceFollow.pos)
+        .addScaledVector(referenceFollow.tangent,-2.6);
+      referenceFollow.cam.y+=0.65;
+      referenceFollow.look.copy(referenceFollow.pos)
+        .addScaledVector(referenceFollow.tangent,3.4);
+      camera.position.lerp(referenceFollow.cam,0.18);
+      camera.lookAt(referenceFollow.look);
+    }
+    function toggleReferenceFollow(force){
+      referenceFollow.on=force===undefined ? !referenceFollow.on : !!force;
+      chase.on=referenceFollow.on;
+      if(referenceFollow.on){
+        boundaryOrbit.on=false;
+        resetReferenceFollow();
+      }
+      if(controls) controls.enabled=!referenceFollow.on && !boundaryOrbit.on;
+      const b=document.getElementById("chaseBtn");
+      if(b) b.textContent=referenceFollow.on
+        ? "Follow Seed (C=off, N=next)"
+        : "Follow Seed (C)";
+      const rb=document.getElementById("referenceMotionBtn");
+      if(rb) rb.textContent=boundaryOrbit.on
+        ? "Boundary Orbit ON (V)"
+        : "Boundary Orbit OFF (V)";
+    }
+    function referenceFollowNext(){
+      referenceFollow.particleIndex=(referenceFollow.particleIndex+37)%324;
+      referenceFollow.spiralIndex=(referenceFollow.spiralIndex+1)%8;
+      resetReferenceFollow();
     }
     const particleRenderBatches=[];
     const particleBatchMatrix=new THREE.Matrix4();
@@ -480,8 +579,8 @@
         }
       }
     }
-    function syncParticleRenderBatches(force){
-      if(referenceMotion.projectionFrozen && !force) return;
+    function syncParticleRenderBatches(){
+      /* Continuous projection sync: presentation never freezes live motion. */
       for(let i=0;i<particleRenderBatches.length;i++) syncParticleRenderBatch(particleRenderBatches[i]);
     }
 
@@ -504,7 +603,7 @@
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x000000);
       camera = new THREE.PerspectiveCamera(I064_REFERENCE_VISUAL.referenceFov, window.innerWidth/window.innerHeight, 0.05, 1000);
-      camera.position.set(0, 0, I064_REFERENCE_VISUAL.staticCameraZ);
+      camera.position.set(0, 0, I064_REFERENCE_VISUAL.initialCameraZ);
       renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference:"high-performance" });
       renderer.setClearColor(0x000000,1);
       if(THREE.sRGBEncoding!==undefined) renderer.outputEncoding=THREE.sRGBEncoding;
@@ -512,10 +611,20 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
       controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enabled=!referenceMotion.on;
+      controls.enabled=true;
       controls.enableDamping = true;
       controls.dampingFactor = 0.1;
       controls.rotateSpeed = 0.5;
+      controls.enableZoom = I064_REFERENCE_VISUAL.manualZoom;
+      controls.zoomSpeed = 0.8;
+      controls.minDistance = 0.5;
+      controls.maxDistance = 500;
+      controls.target.set(
+        I064_REFERENCE_VISUAL.primaryCenterX,
+        I064_REFERENCE_VISUAL.primaryCenterY,
+        I064_REFERENCE_VISUAL.primaryCenterZ
+      );
+      controls.update();
       addLighting();
       // Initialize particle groups from neural swarm
       initSpiralParticles(false);   /* L1 spirals: carriers 0..2591 */
@@ -3642,51 +3751,15 @@
     const chase={ on:false, idx:0, pos:new THREE.Vector3(0,0,15), look:new THREE.Vector3() };
     const chaseTmp=new THREE.Vector3(), chaseSide=new THREE.Vector3(), chaseUp=new THREE.Vector3(0,1,0);
     function toggleChase(force){
-      chase.on = force===undefined ? !chase.on : !!force;
-      if(chase.on){
-        chase.idx=(Math.random()*particles.length)|0;
-        const ix=chase.idx*3;
-        chase.pos.set(thPos[ix]-2, thPos[ix+1]+1, thPos[ix+2]+2);
-        chase.look.set(thPos[ix], thPos[ix+1], thPos[ix+2]);
-        referenceMotion.on=false;
-        referenceMotion.projectionFrozen=false;
-        controls.enabled=false;
-        const rb=document.getElementById("referenceMotionBtn");
-        if(rb) rb.textContent="Reference Motion paused (V)";
-      } else {
-        controls.enabled=!referenceMotion.on;
-        if(!referenceMotion.on && I064_REFERENCE_VISUAL.freezeStaticProjection){
-          referenceMotion.projectionFrozen=false;
-          syncParticleRenderBatches(true);
-          referenceMotion.projectionFrozen=true;
-          applyReferenceStaticCamera();
-          const rb=document.getElementById("referenceMotionBtn");
-          if(rb) rb.textContent="Reference Static (V)";
-        }
-      }
-      const b=document.getElementById("chaseBtn");
-      if(b) b.textContent = chase.on ? ("Chase #"+chase.idx+" (C=off, N=next)") : "ChaseCam (C)";
+      toggleReferenceFollow(force);
     }
-    function chaseNext(){ if(chase.on){ toggleChase(false); toggleChase(true); } }
+    function chaseNext(){ if(referenceFollow.on) referenceFollowNext(); }
     function updateChaseCamera(){
-      const ix=chase.idx*3;
-      const px=thPos[ix], py=thPos[ix+1], pz=thPos[ix+2];
-      const vx=thVel[ix], vy=thVel[ix+1], vz=thVel[ix+2];
-      const sp=Math.hypot(vx,vy,vz);
-      let dx,dy,dz;
-      if(sp>1e-4){ dx=vx/sp; dy=vy/sp; dz=vz/sp; }
-      else { const l=Math.hypot(px,py,pz)||1; dx=px/l; dy=py/l; dz=pz/l; }
-      chaseSide.set(-dz,0,dx);                       /* dir × up, unnormalized */
-      chaseTmp.set(px-dx*2.2 - chaseSide.x*0.6, py-dy*2.2+0.5, pz-dz*2.2 + chaseSide.z*0.6);
-      chase.pos.lerp(chaseTmp,0.12);
-      chaseTmp.set(px+dx*3, py+dy*3, pz+dz*3);
-      chase.look.lerp(chaseTmp,0.2);
-      camera.position.copy(chase.pos);
-      camera.lookAt(chase.look);
+      updateReferenceFollowCamera(performance.now());
     }
     function animate() {
       requestAnimationFrame(animate);
-      if(!chase.on && !referenceMotion.on) controls.update();
+      if(!chase.on && !boundaryOrbit.on) controls.update();
       /* GLOBAL FREQUENCY CONTROL: freqScale physics substeps per frame.
          Each substep runs the FULL stack (phase precession + swarm coupling
          field) at the canonical dt — symplectic structure and every receipt
@@ -3697,7 +3770,7 @@
       updatePhaseGeometry();
       constructorScan();
       if(chase.on) updateChaseCamera();
-      else if(referenceMotion.on) updateReferenceCamera(performance.now());
+      else if(boundaryOrbit.on) updateBoundaryOrbitCamera(performance.now());
       /* QUARTIC RENDER SKIP: physics advanced for ALL carriers above;
          the projection renders on every 4th frame (base-8 periodicity +
          quartic closure M⁴=M³+2M² — the HNAN semicomplement at projection
@@ -3722,7 +3795,7 @@
         document.getElementById("hud").innerText =
           `HHS tick=${window.HHS.engine.tick} blocks=${window.HHS.engine.blocks} ` +
           `swarm=${particles.length} mean_v=${(spd/particles.length).toFixed(3)} freq=${steps}x ` +
-          `chase=${chase.on?'#'+chase.idx:'off'} refcam=${referenceMotion.on?'on':'off'} ` +
+          `follow=${referenceFollow.on?'s'+referenceFollow.spiralIndex+'/p'+referenceFollow.particleIndex:'off'} orbit=${boundaryOrbit.on?'on':'off'} ` +
           `rho=m${(simParams.massBoost||1)}x/c${(simParams.collBoost||1)}x ` +
           `cohorts=${cohortCount} solids=${solidCount} ctor=${(simParams.ctorBoost||1)}x ` +
           `rskip=64/72(${renderedFrames}/${renderTick}) ` +
@@ -4358,7 +4431,7 @@
       simParams.freqScale=parseInt(freqSlider.value,10)||1;
       const fv=document.getElementById("freqVal"); if(fv) fv.textContent=simParams.freqScale; });}
     const referenceMotionBtn=document.getElementById("referenceMotionBtn");
-    if(referenceMotionBtn){ referenceMotionBtn.addEventListener("click",()=>toggleReferenceMotion()); }
+    if(referenceMotionBtn){ referenceMotionBtn.addEventListener("click",()=>toggleBoundaryOrbit()); }
     const chaseBtn=document.getElementById("chaseBtn");
     if(chaseBtn){ chaseBtn.addEventListener("click",()=>toggleChase()); }
     const massSlider=document.getElementById("massSlider");
@@ -4387,7 +4460,7 @@
       if(e.target && (e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")) return;
       if(e.key==="c"||e.key==="C") toggleChase();
       else if(e.key==="n"||e.key==="N") chaseNext();
-      else if(e.key==="v"||e.key==="V") toggleReferenceMotion();
+      else if(e.key==="v"||e.key==="V") toggleBoundaryOrbit();
       else if(e.key==="h"||e.key==="H") toggleReferenceChromePin();
       else if(e.key==="t"||e.key==="T") toggleRecipTopo();
     });
