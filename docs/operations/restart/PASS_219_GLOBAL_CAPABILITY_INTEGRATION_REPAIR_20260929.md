@@ -17,6 +17,7 @@
 5. The production assistant no longer accepts `EXACT_SEMANTIC_FALLBACK` as a completed text-generation turn.
 6. Exact semantic fallback output is not persisted as an assistant message.
 7. Unified language-model fabric classifies the native semantic member as a semantic/context contributor rather than a `TEXT_GENERATION` provider.
+8. The source-text-integrity scanner now treats JavaScript/template-literal text as string context while continuing to reject literal escaped-newline injection inside executable `${...}` expressions. This repairs the false-positive source guard without weakening the original `\\n` injection contract.
 
 ## Changed files
 
@@ -26,6 +27,8 @@
 - `tests/pass219/test_pass219_lane5_repository_hydration_knowledge_graph_1_69.py`
 - `tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py`
 - `tests/test_hhs_litert_lm_hhs_api_tools_v1.py`
+- `hhs_runtime/hhs_source_text_integrity_v1.py`
+- `tests/test_hhs_source_text_integrity_v1.py`
 - this restart record.
 
 ## Required dependency-scoped validation
@@ -36,10 +39,14 @@
 - regenerate/validate the repository Hash216 dependency projection because Lane 5 capability counts change.
 - verify no canonical VM81/Hash72/Hash216/mutation authority is introduced.
 - verify semantic fallback leaves only the witnessed user message and permits production failover to an actual generator.
+- `pytest -q tests/test_hhs_source_text_integrity_v1.py`
+- full source-text-integrity scan must accept valid string/template `\\n` data while rejecting injected `\\n` separators in executable source.
 
 ## Environment state
 
 The connected GitHub repository is authoritative. A local clone was attempted only for dependency-scoped execution but the execution container has no DNS access to GitHub, so no local repository test result is claimed. Validation must therefore come from repository CI/check evidence for this branch.
+
+The first source-text-integrity run exposed pre-existing false positives on valid JavaScript/template-string `\\n` data. The scanner itself was repaired on this branch; the replacement workflow run is queued. No green result is claimed yet.
 
 ## Remaining work
 
