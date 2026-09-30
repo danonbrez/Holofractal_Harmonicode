@@ -107,27 +107,45 @@ lake: command not found
 Python 3.13.5 available
 ```
 
-## Validation remaining
+## GitHub dependency-scoped validation
 
-- GitHub HNAN workflow:
-  - Python compile
-  - inherited HNAN tests
-  - new QGU/HNAN tests
-  - frozen Wolfram evidence verification
-  - benchmark semantic parity
-- GitHub Lean workflow:
-  - `lake build HHS`
-  - Lean kernel checker
-  - axiom audit
+PR #667 completed the required implementation-cone gates successfully:
+
+```text
+Pass 219 HNAN 4x4 Recursive Gate             SUCCESS
+Pass 220 I051 Native Lean Alignment          SUCCESS
+Pass 219 Lane 5 HNAN Global Constraint 1.63  SUCCESS
+```
+
+The Lean job's native C++/Python alignment stage and Lean 4 build/kernel/axiom
+audit completed successfully.
+
+Two repository-wide guards reported failure:
+
+```text
+HHS Source Text Integrity  FAILURE
+HHS Consensus Gate         FAILURE
+```
+
+Inspection of both failure logs found zero references to any file changed by
+this QGU/HNAN branch.  Both failures originate from the same repository-wide
+source-text integrity scan reporting 49 literal escaped-newline findings in
+unrelated pre-existing GUI/application files.  Those findings are outside this
+dependency cone and are not evidence of QGU/HNAN divergence.
+
+## Merge readiness
+
+Dependency-scoped implementation, Lean proof, HNAN regression, global-HNAN
+successor, and independent Wolfram evidence are green.  The branch is
+merge-ready under the repository's repair-forward policy; unrelated global
+source-text findings remain a separate repair workstream.
 
 ## Next action
 
-Open a PR from `pass219-qgu-hnan-transport-20260930` to `main`, inspect the
-dependency-scoped HNAN and Lean checks, repair forward on any failure, then
-merge and verify main.
+Merge PR #667 into `main`, verify the resulting main commit contains the QGU
+transport surfaces, then preserve any unrelated source-text integrity repair as
+its own dependency-scoped task.
 
 ## Blockers
 
-No semantic blocker is known.  Only the local execution environment lacks
-repository network access and Lean tooling; GitHub CI remains the available
-independent compiler/test surface.
+No QGU/HNAN semantic or integration blocker remains.
