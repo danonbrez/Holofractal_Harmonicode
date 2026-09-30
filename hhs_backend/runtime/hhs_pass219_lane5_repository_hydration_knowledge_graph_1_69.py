@@ -30,6 +30,8 @@ FORMAL_SUFFIXES = {".md",".rst",".adoc",".json",".harmonicode"}
 C_FACTORY = re.compile(r"(?m)^[ \t]*(?:[A-Za-z_][A-Za-z0-9_ \t*]+[ \t]+)([A-Za-z_][A-Za-z0-9_]*(?:build|create|construct|hydrate|init|make|new|register)[A-Za-z0-9_]*)[ \t]*\(")
 JS_CLASS = re.compile(r"(?m)^\s*(?:export\s+)?class\s+([A-Za-z_$][A-Za-z0-9_$]*)")
 JS_FACTORY = re.compile(r"(?m)^\s*(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*(?:build|create|construct|hydrate|make|register)[A-Za-z0-9_$]*)\s*\(")
+JS_CALLABLE = re.compile(r"(?m)^\s*(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(")
+C_CPP_CALLABLE = re.compile(r"(?m)^[ \t]*(?:[A-Za-z_][A-Za-z0-9_:<>, \t*&]+[ \t]+)([A-Za-z_][A-Za-z0-9_:]*)[ \t]*\([^;{}]*\)[ \t]*(?:const[ \t]*)?(?:noexcept[ \t]*)?\{")
 TOKENS = re.compile(r"[A-Za-z0-9]+")
 IGNORE = {"hhs","pass","runtime","api","v","v1","v2","exact","lane","lane5"}
 
@@ -165,6 +167,116 @@ def discover_repository_constructors(repo_root: str | Path, dependency_graph: Ma
     return [unique[key] for key in sorted(unique)]
 
 
+def _callable_capability(
+    path: str,
+    name: str,
+    kind: str,
+    language: str,
+    line: int,
+    symbol: str,
+    evidence: Sequence[str],
+) -> dict[str, Any]:
+    """Create visibility evidence without inventing demo/config/adapter restrictions."""
+    body = {
+        "node_id": f"capability:repository-callable:{kind.lower()}:{path}#{symbol}:{line}",
+        "node_kind": "CAPABILITY",
+        "name": name,
+        "source_path": path,
+        "line": int(line),
+        "source_kind": "REPOSITORY_STATIC_CALLABLE",
+        "callable_kind": kind,
+        "language": language,
+        "symbol": symbol,
+        "authority_class": 0,
+        "semantic_tokens": _tokens(name, symbol, path),
+        "discovery_evidence": sorted(set(evidence)),
+        "visible_to_lane5": True,
+        "execution_eligibility": "DISCOVERED_NOT_PRECLUDED",
+        "runtime_validation_required": True,
+        "classification_flags_are_metadata_only": True,
+        "demo_or_reference_status": "NOT_INFERRED",
+        "configuration_requirement": "NOT_INFERRED",
+        "adapter_requirement": "NOT_INFERRED",
+        "candidate_only": True,
+        "execution_authority": False,
+        "canonical_vm81_mutation_authority": False,
+        "canonical_hash72_authority": False,
+        "canonical_hash216_authority": False,
+        "canonical_persistence_authority": False,
+        "automatic_composition_promotion": False,
+        "automatic_superedge_promotion": False,
+    }
+    body["hash216"] = _h216(
+        "HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-CAPABILITY-1.69",
+        body,
+    )
+    return body
+
+
+def discover_repository_callable_capabilities(
+    repo_root: str | Path,
+    dependency_graph: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    """Over-include repository callables for Lane 5 visibility; never execute them here."""
+    root, files, found = Path(repo_root).resolve(), _files(dependency_graph), []
+    for path, row in sorted(files.items()):
+        suffix = PurePosixPath(path).suffix.lower()
+        text = _text(root, path, row.get("size_bytes"))
+        if text is None:
+            continue
+
+        if suffix in {".py", ".pyi"}:
+            try:
+                tree = ast.parse(text, filename=path)
+            except (SyntaxError, ValueError):
+                tree = None
+            if tree is not None:
+                module = str(PurePosixPath(path).with_suffix("")).replace("/", ".")
+                for node in tree.body:
+                    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                        found.append(_callable_capability(
+                            path, node.name, "PYTHON_FUNCTION", "python",
+                            node.lineno, f"{module}.{node.name}",
+                            ("AST_TOP_LEVEL_CALLABLE",),
+                        ))
+                    elif isinstance(node, ast.ClassDef):
+                        for child in node.body:
+                            if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                                found.append(_callable_capability(
+                                    path,
+                                    f"{node.name}.{child.name}",
+                                    "PYTHON_METHOD",
+                                    "python",
+                                    child.lineno,
+                                    f"{module}.{node.name}.{child.name}",
+                                    ("AST_CLASS_METHOD_CALLABLE",),
+                                ))
+        elif suffix in {".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".hh"}:
+            for match in C_CPP_CALLABLE.finditer(text):
+                symbol = match.group(1)
+                found.append(_callable_capability(
+                    path, symbol, "C_CPP_FUNCTION", "c_cpp",
+                    _line(text, match.start()), symbol,
+                    ("C_CPP_FUNCTION_DEFINITION",),
+                ))
+        elif suffix in {".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx"}:
+            for match in JS_CALLABLE.finditer(text):
+                symbol = match.group(1)
+                found.append(_callable_capability(
+                    path, symbol, "JS_TS_FUNCTION", "js_ts",
+                    _line(text, match.start()), symbol,
+                    ("JS_TS_FUNCTION_DECLARATION",),
+                ))
+
+    unique: dict[str, dict[str, Any]] = {}
+    for node in found:
+        node_id = str(node["node_id"])
+        if node_id in unique and unique[node_id] != node:
+            raise ValueError(f"repository callable identity collision: {node_id}")
+        unique[node_id] = node
+    return [unique[key] for key in sorted(unique)]
+
+
 def _capability(raw: Mapping[str, Any]) -> dict[str, Any]:
     raw_id = str(raw.get("node_id", ""))
     if not raw_id:
@@ -182,6 +294,13 @@ def _capability(raw: Mapping[str, Any]) -> dict[str, Any]:
         "repository_capability_node_id": raw_id,
         "repository_entry_signature64": int(raw.get("entry_signature64", 0)),
         "semantic_tokens": _tokens(name, raw.get("raw_name",""), raw.get("operation_key",""), raw.get("export_name",""), source_path or ""),
+        "visible_to_lane5": True,
+        "execution_eligibility": "INHERITED_TYPED_CAPABILITY",
+        "runtime_validation_required": True,
+        "classification_flags_are_metadata_only": True,
+        "demo_or_reference_status": "NOT_INFERRED",
+        "configuration_requirement": "NOT_INFERRED",
+        "adapter_requirement": "NOT_INFERRED",
         "candidate_only": True,
         "execution_authority": False,
         "canonical_vm81_mutation_authority": False,
@@ -236,7 +355,16 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
     if not isinstance(receipt, Mapping) or receipt.get("accepted") is not True or receipt.get("candidate_only") is not True:
         raise ValueError("Lane 5 native receipt is not accepted candidate-only evidence")
 
-    capabilities = sorted((_capability(row) for row in raw_nodes if isinstance(row, Mapping)), key=lambda x: str(x["node_id"]))
+    inherited_capabilities = [
+        _capability(row) for row in raw_nodes if isinstance(row, Mapping)
+    ]
+    repository_callable_capabilities = discover_repository_callable_capabilities(
+        repo_root, dependency_graph
+    )
+    capabilities = sorted(
+        inherited_capabilities + repository_callable_capabilities,
+        key=lambda x: str(x["node_id"]),
+    )
     constructors = discover_repository_constructors(repo_root, dependency_graph)
     nodes = capabilities + constructors
     if len({str(x["node_id"]) for x in nodes}) != len(nodes) or len({str(x["hash216"]) for x in nodes}) != len(nodes):
@@ -275,6 +403,8 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
     }
     counts = {
         "capabilities": len(capabilities),
+        "inherited_lane5_capabilities": len(inherited_capabilities),
+        "repository_static_callables": len(repository_callable_capabilities),
         "constructors": len(constructors),
         "knowledge_nodes": len(nodes),
         "knowledge_edges": len(edges),
@@ -299,6 +429,14 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
             "hash216_character_indexed": True,
             "sha256_per_character_codeword": True,
             "restart_rehydratable": True,
+        },
+        "visibility_policy": {
+            "complete_repository_static_callable_visibility": True,
+            "classification_flags_filter_visibility": False,
+            "unresolved_state_filters_visibility": False,
+            "demo_reference_labels_inferred_from_kernel_restrictions": False,
+            "configuration_or_adapter_requirements_must_be_evidenced": True,
+            "discovery_executes_repository_callables": False,
         },
         "authority": {
             "candidate_only": True,
