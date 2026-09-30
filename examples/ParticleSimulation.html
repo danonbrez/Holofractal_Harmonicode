@@ -3653,7 +3653,17 @@
         controls.enabled=false;
         const rb=document.getElementById("referenceMotionBtn");
         if(rb) rb.textContent="Reference Motion paused (V)";
-      } else controls.enabled=!referenceMotion.on;
+      } else {
+        controls.enabled=!referenceMotion.on;
+        if(!referenceMotion.on && I064_REFERENCE_VISUAL.freezeStaticProjection){
+          referenceMotion.projectionFrozen=false;
+          syncParticleRenderBatches(true);
+          referenceMotion.projectionFrozen=true;
+          applyReferenceStaticCamera();
+          const rb=document.getElementById("referenceMotionBtn");
+          if(rb) rb.textContent="Reference Static (V)";
+        }
+      }
       const b=document.getElementById("chaseBtn");
       if(b) b.textContent = chase.on ? ("Chase #"+chase.idx+" (C=off, N=next)") : "ChaseCam (C)";
     }
