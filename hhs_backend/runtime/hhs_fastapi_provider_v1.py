@@ -51,18 +51,27 @@ def _provider_environment() -> dict[str, str]:
     return env
 
 
-def _load_external() -> tuple[Any, Any, Any]:
-    from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-    return APIRouter, WebSocket, WebSocketDisconnect
+def _load_external() -> tuple[Any, Any, Any, Any, Any]:
+    from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
+    from pydantic import BaseModel
+    return APIRouter, WebSocket, WebSocketDisconnect, HTTPException, BaseModel
 
 
-def _load_native() -> tuple[Any, Any, Any]:
+def _load_native() -> tuple[Any, Any, Any, Any, Any]:
     from hhs_backend.runtime.hhs_native_fastapi_compat_v1 import (
         NativeAPIRouter,
+        NativeBaseModel,
+        NativeHTTPException,
         NativeWebSocket,
         NativeWebSocketDisconnect,
     )
-    return NativeAPIRouter, NativeWebSocket, NativeWebSocketDisconnect
+    return (
+        NativeAPIRouter,
+        NativeWebSocket,
+        NativeWebSocketDisconnect,
+        NativeHTTPException,
+        NativeBaseModel,
+    )
 
 
 _ENV = _provider_environment()
@@ -74,7 +83,7 @@ except Lane5CapabilityProviderError as exc:
 _EXTERNAL_AVAILABLE = False
 if _RESOLUTION.provider == "external":
     try:
-        APIRouter, WebSocket, WebSocketDisconnect = _load_external()
+        APIRouter, WebSocket, WebSocketDisconnect, HTTPException, BaseModel = _load_external()
     except ModuleNotFoundError as exc:
         if exc.name == "fastapi" or str(exc.name or "").startswith("fastapi."):
             raise RuntimeError(
@@ -83,7 +92,7 @@ if _RESOLUTION.provider == "external":
         raise
     _EXTERNAL_AVAILABLE = True
 else:
-    APIRouter, WebSocket, WebSocketDisconnect = _load_native()
+    APIRouter, WebSocket, WebSocketDisconnect, HTTPException, BaseModel = _load_native()
 
 _SELECTION = FastAPIProviderSelection(
     requested=_RESOLUTION.provider,
@@ -105,6 +114,8 @@ def fastapi_provider_status() -> dict[str, Any]:
 
 __all__ = [
     "APIRouter",
+    "BaseModel",
+    "HTTPException",
     "WebSocket",
     "WebSocketDisconnect",
     "FastAPIProviderSelection",

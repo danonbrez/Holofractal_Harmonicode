@@ -15,8 +15,11 @@ import logging
 import traceback
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from hhs_backend.runtime.hhs_fastapi_provider_v1 import (
+    APIRouter,
+    BaseModel,
+    HTTPException,
+)
 
 from hhs_backend.runtime.runtime_event_schema import create_runtime_event
 from hhs_backend.runtime.runtime_ws import (

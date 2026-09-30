@@ -469,6 +469,129 @@ class NativeAPIRouter:
             )
 
 
+def bind_native_router_to_external_app(app: Any, router: NativeAPIRouter) -> int:
+    """Project deferred native route declarations into an external ASGI app.
+
+    The native router remains the declaration authority. This boundary adapter
+    is used only when the canonical external FastAPI server composes routes
+    after the Lane 5 provider module has already been resolved in native mode.
+    """
+
+    if not isinstance(router, NativeAPIRouter):
+        raise NativeFastAPICompatibilityError(
+            "HHS_FASTAPI_NATIVE_ROUTER_BINDING_TYPE_MISMATCH"
+        )
+
+    bound = 0
+    for route in router.routes:
+        if route.route_type == "WEBSOCKET":
+            add_websocket = getattr(app, "add_api_websocket_route", None)
+            if add_websocket is None:
+                raise NativeFastAPICompatibilityError(
+                    "HHS_FASTAPI_EXTERNAL_WEBSOCKET_BINDING_UNAVAILABLE"
+                )
+
+            projected_endpoint = route.endpoint
+            try:
+                from fastapi import WebSocket as ExternalWebSocket
+            except ModuleNotFoundError:
+                # Non-FastAPI test doubles can consume the native declaration
+                # directly. The canonical external server always has FastAPI
+                # installed before entering this boundary.
+                ExternalWebSocket = None
+
+            if ExternalWebSocket is not None:
+                endpoint = route.endpoint
+
+                async def projected_endpoint(*args: Any, __endpoint=endpoint, **kwargs: Any):
+                    value = __endpoint(*args, **kwargs)
+                    if inspect.isawaitable(value):
+                        return await value
+                    return value
+
+                signature = inspect.signature(endpoint)
+                projected_parameters = []
+                for parameter in signature.parameters.values():
+                    annotation = parameter.annotation
+                    if (
+                        annotation is NativeWebSocket
+                        or annotation == "WebSocket"
+                        or annotation == "NativeWebSocket"
+                    ):
+                        annotation = ExternalWebSocket
+                    projected_parameters.append(
+                        parameter.replace(annotation=annotation)
+                    )
+                projected_endpoint.__signature__ = signature.replace(
+                    parameters=projected_parameters
+                )
+                projected_endpoint.__name__ = getattr(
+                    endpoint, "__name__", route.name
+                )
+                projected_endpoint.__qualname__ = getattr(
+                    endpoint, "__qualname__", projected_endpoint.__name__
+                )
+
+            add_websocket(route.path, projected_endpoint, name=route.name)
+        else:
+            add_http = getattr(app, "add_api_route", None)
+            if add_http is None:
+                raise NativeFastAPICompatibilityError(
+                    "HHS_FASTAPI_EXTERNAL_HTTP_BINDING_UNAVAILABLE"
+                )
+            add_http(
+                route.path,
+                route.endpoint,
+                methods=sorted(route.methods),
+                name=route.name,
+                tags=list(route.tags),
+                include_in_schema=route.include_in_schema,
+            )
+        bound += 1
+    return bound
+
+
+class NativeHTTPException(Exception):
+    """FastAPI HTTPException-compatible data carrier for native-only imports."""
+
+    def __init__(
+        self,
+        status_code: int,
+        detail: Any = None,
+        headers: Mapping[str, str] | None = None,
+    ) -> None:
+        super().__init__(str(detail))
+        self.status_code = int(status_code)
+        self.detail = detail
+        self.headers = dict(headers or {})
+
+
+class NativeBaseModel:
+    """Minimal Pydantic BaseModel-compatible constructor for native-only paths."""
+
+    def __init__(self, **data: Any) -> None:
+        annotations: dict[str, Any] = {}
+        for cls in reversed(type(self).__mro__):
+            annotations.update(getattr(cls, "__annotations__", {}))
+        for field_name in annotations:
+            if field_name in data:
+                value = data[field_name]
+            elif hasattr(type(self), field_name):
+                value = getattr(type(self), field_name)
+            else:
+                raise TypeError(f"missing required field: {field_name}")
+            setattr(self, field_name, value)
+        unknown = set(data) - set(annotations)
+        if unknown:
+            raise TypeError(f"unexpected fields: {sorted(unknown)!r}")
+
+    def model_dump(self) -> dict[str, Any]:
+        annotations: dict[str, Any] = {}
+        for cls in reversed(type(self).__mro__):
+            annotations.update(getattr(cls, "__annotations__", {}))
+        return {name: getattr(self, name) for name in annotations}
+
+
 class NativeWebSocket:
     """Structural WebSocket compatibility type for native-first route modules."""
 
@@ -523,10 +646,13 @@ __all__ = [
     "HHSNativeASGIApplication",
     "NativeAPIRoute",
     "NativeAPIRouter",
+    "NativeBaseModel",
     "NativeFastAPICompatibilityError",
+    "NativeHTTPException",
     "NativeRouteKernel",
     "NativeRouteResolution",
     "NativeWebSocket",
     "NativeWebSocketDisconnect",
+    "bind_native_router_to_external_app",
     "native_fastapi_compatibility_contract",
 ]
