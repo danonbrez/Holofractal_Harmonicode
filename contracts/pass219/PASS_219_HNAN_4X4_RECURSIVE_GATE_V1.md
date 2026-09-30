@@ -1,4 +1,4 @@
-# Pass 219 — HNAN 4x4 Recursive Two-View Gate Contract v1.2
+# Pass 219 — HNAN 4x4 Recursive Two-View Gate Contract v1.3
 
 Status: ADDITIVE FORMALIZATION / EXECUTABLE STRUCTURAL GATE / NO NEW CANONICAL AUTHORITY
 
@@ -150,6 +150,82 @@ hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py
 The invariant receipt SHALL fail if the 3x3 tensor is reordered, if its center
 does not equal the HNAN numerator, if ordered products collapse, if the terminal
 is reduced to bare `xy`, or if epsilon is silently elided.
+
+### 4.2 Mandatory QGU phase-ring transport
+
+The inherited QGU relation is bound into the complete ordered x/y/z/w tensor
+and the HNAN boundary as a transport kernel:
+
+```text
+R_K^QGU(q) = (xy + c q^2 + d q^4) / (xy + c q^2)
+```
+
+The runtime phase projection is the additive excess:
+
+```text
+delta_QGU(q,c,d) = (c q^2 + d q^4) mod 72
+```
+
+These are synchronized but non-interchangeable views.  The ordered ratio AST
+is retained as provenance and SHALL NOT be scalar-cancelled or rewritten into
+host division.  The executable VM phase transport applies the additive excess
+inside the 72-phase ring:
+
+```text
+phase' = (phase + delta_QGU) mod 72
+```
+
+The complete HNAN Lo Shu tensor is transported cellwise without rewriting any
+cell:
+
+```text
+T_QGU[i,j] = PhaseTransportMod72(T_HNAN[i,j], delta_QGU)
+```
+
+Therefore the ordered identities remain visible under transport:
+
+```text
+xy != yx
+zw != wz
+```
+
+The HNAN gate retains its typed `EmptySet` denominator under transport, and
+the terminal boundary transports the complete residual-bearing state:
+
+```text
+PhaseTransportMod72(xy + epsilon, delta_QGU)
+```
+
+not bare `xy` and not `xy + delta_QGU` with epsilon silently removed.
+
+Executable enforcement is provided by:
+
+```text
+QGU_DELTA
+QGU_TRANSPORT_KERNEL
+QGU_TRANSPORTED_LO_SHU_TENSOR
+QGU_HNAN_GATE_10
+QGU_HNAN_TERMINAL
+qgu_phase_delta()
+qgu_transport_phase()
+qgu_inverse_transport_phase()
+qgu_hnan_transport_receipt()
+```
+
+The additive phase projection is exactly reversible with the same QGU witness
+by subtraction modulo 72.  This reversibility statement applies to the phase
+transport projection; it does not authorize cancellation or commutation inside
+the symbolic QGU ratio or the ordered HNAN tensor.
+
+Independent proof surfaces for this binding are:
+
+```text
+formal/lean/HHS/Pass219/QGUHNANTransport.lean
+evidence/pass219/hnan_qgu_transport_wolfram_20260930_v1.wl
+tests/pass219/test_pass219_hnan_qgu_transport_v1.py
+```
+
+No floating-point authority is introduced.
 
 ## 5. Recursive two-view evaluation
 
