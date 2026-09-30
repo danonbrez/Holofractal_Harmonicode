@@ -10,7 +10,7 @@
   <!-- dat.GUI for optional debugging controls -->
   <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
   <style>
-    body { margin: 0; overflow: hidden; background: #000; font-family: monospace; }
+    body { margin: 0; overflow: hidden; background: radial-gradient(circle, #000022, #111111); font-family: monospace; }
     canvas { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     /* OS Shell UI Styles */
     #toggleShell {
@@ -44,23 +44,6 @@
     #receiptBanner { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
       background: rgba(0,40,0,.85); color: #7f7; padding: 8px 16px; border-radius: 5px; z-index: 105;
       display: none; font-size: .85em; border: 1px solid #4a4; }
-    /* I064 cinematic presentation: controls remain fully present and wake on
-       pointer/touch activity, but idle frames become an uninterrupted black
-       particle field matching the supplied static references. */
-    #toggleShell, #osShell, #hud, #freqCtl, #referenceMotionBtn, #chaseBtn, #densityCtl {
-      transition: opacity .22s ease, visibility .22s ease;
-    }
-    body.reference-clean-ui #toggleShell,
-    body.reference-clean-ui #osShell,
-    body.reference-clean-ui #hud,
-    body.reference-clean-ui #freqCtl,
-    body.reference-clean-ui #referenceMotionBtn,
-    body.reference-clean-ui #chaseBtn,
-    body.reference-clean-ui #densityCtl {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
   </style>
 </head>
 <body>
@@ -84,9 +67,8 @@
     <div>global frequency <b>&times;<span id="freqVal">1</span></b></div>
     <input id="freqSlider" type="range" min="1" max="10" step="1" value="1" style="width:150px">
   </div>
-  <button id="referenceMotionBtn" style="position:absolute;top:118px;right:10px;z-index:104;background:rgba(0,0,20,.72);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">Boundary Orbit OFF (V)</button>
-  <button id="chaseBtn" style="position:absolute;top:154px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">Follow Seed (C)</button>
-  <div id="densityCtl" style="position:absolute;top:194px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
+  <button id="chaseBtn" style="position:absolute;top:118px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer">ChaseCam (C)</button>
+  <div id="densityCtl" style="position:absolute;top:158px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
     <div>density test: mass <b>&times;<span id="massVal">1</span></b></div>
     <input id="massSlider" type="range" min="1" max="4" step="0.5" value="1" style="width:150px">
     <div>collision <b>&times;<span id="collVal">1</span></b></div>
@@ -139,430 +121,34 @@
       receiptLogicRemoved:false,
       canonicalMutationAuthority:false
     });
-
-    /* PASS 220 I064 — user-reference particle cinematic.
-       Projection only: the 10,368 logical particles, force laws, receipts,
-       VM81/Hash authority and simulation coordinates are unchanged. The
-       user's four 5.083333 s / 24 fps reference clips establish the intended
-       motion grammar: compact readable volume -> rapid camera ingress through
-       large near-field circles -> return to a deep readable cloud. */
-    const I064_REFERENCE_VISUAL = Object.freeze({
-      schema:"HHS_PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_V1",
-      source:"examples/ParticleSimulation.html",
-      projectionOnly:true,
-      logicalParticleMutation:false,
-      pureBlackBackground:true,
-      deterministicVisualProfile:true,
-      coreCompression:0.20,
-      coreInnerCompression:0.125,
-      coreRadialKnee:25.0,
-      satelliteCompression:0.115,
-      satelliteInnerCompression:0.072,
-      satelliteRadialKnee:15.0,
-      haloCompression:0.50,
-      foregroundCompression:0.72,
-      coreDepthSpan:12.0,
-      satelliteDepthSpan:5.5,
-      haloDepthSpan:19.0,
-      foregroundDepthSpan:25.0,
-      primaryCenterX:-0.4,
-      primaryCenterY:3.9,
-      primaryCenterZ:-3.0,
-      satelliteCenterX:-12.5,
-      satelliteCenterY:14.5,
-      satelliteCenterZ:-5.0,
-      satelliteFraction:0.10,
-      haloFraction:0.15,
-      foregroundFraction:0.045,
-      minParticleScale:0.30,
-      maxParticleScale:7.25,
-      foregroundHaloScale:1.14,
-      foregroundHaloOpacity:0.085,
-      neutralColorFraction:0.085,
-      dimColorFraction:0.11,
-      initialCameraZ:34.0,
-      referenceFov:60,
-      manualZoom:true,
-      boundaryOrbitAvailable:true,
-      defaultBoundaryOrbit:false,
-      boundaryOrbitAzimuthRate:0.000055,
-      boundaryOrbitPolarRate:0.000029,
-      boundaryOrbitPolarAmplitude:0.30,
-      boundaryOrbitMinPolar:0.34,
-      boundaryOrbitMaxPolar:2.80,
-      hideInstrumentation:true,
-      continuousProjectionSync:true,
-      autoHideChrome:true,
-      chromeIdleMs:1800,
-      canonicalMutationAuthority:false
-    });
-    /* Camera modes are projection-only and never write particle state.
-       Manual OrbitControls is the default. Boundary orbit captures the user's
-       current radius instead of imposing a zoom. Follow camera reconstructs a
-       single original spiral seed trajectory and never reads live physics. */
-    const boundaryOrbit={
-      on:I064_REFERENCE_VISUAL.defaultBoundaryOrbit,
-      startMs:performance.now(),
-      radius:0,
-      theta0:0,
-      phi0:Math.PI/2,
-      target:new THREE.Vector3(
-        I064_REFERENCE_VISUAL.primaryCenterX,
-        I064_REFERENCE_VISUAL.primaryCenterY,
-        I064_REFERENCE_VISUAL.primaryCenterZ
-      )
-    };
-    const referenceFollow={
-      on:false,
-      spiralIndex:0,
-      particleIndex:144,
-      layer2:false,
-      pos:new THREE.Vector3(),
-      prev:new THREE.Vector3(),
-      tangent:new THREE.Vector3(1,0,0),
-      cam:new THREE.Vector3(),
-      look:new THREE.Vector3(),
-      initialized:false
-    };
-    const referenceTmp=new THREE.Vector3();
-    const referenceScaleTmp=new THREE.Vector3();
-    const referenceQuat=new THREE.Quaternion();
-    const particleBatchColor=new THREE.Color();
-    const I064_ROLE_PRIMARY=0, I064_ROLE_SATELLITE=1, I064_ROLE_HALO=2, I064_ROLE_FOREGROUND=3;
-    const referenceChrome={ pinned:false, timer:0, visible:true };
-    function setReferenceChromeVisible(show){
-      referenceChrome.visible=!!show;
-      document.body.classList.toggle("reference-clean-ui",!referenceChrome.visible);
-    }
-    function scheduleReferenceChromeHide(){
-      if(!I064_REFERENCE_VISUAL.autoHideChrome || referenceChrome.pinned) return;
-      if(referenceChrome.timer) clearTimeout(referenceChrome.timer);
-      referenceChrome.timer=setTimeout(()=>{
-        if(!referenceChrome.pinned) setReferenceChromeVisible(false);
-      },I064_REFERENCE_VISUAL.chromeIdleMs);
-    }
-    function wakeReferenceChrome(){
-      if(!I064_REFERENCE_VISUAL.autoHideChrome) return;
-      setReferenceChromeVisible(true);
-      scheduleReferenceChromeHide();
-    }
-    function toggleReferenceChromePin(){
-      referenceChrome.pinned=!referenceChrome.pinned;
-      setReferenceChromeVisible(true);
-      if(!referenceChrome.pinned) scheduleReferenceChromeHide();
-    }
-    function visualHash32(a,b,c0,d){
-      let x=(Math.imul((a|0)+1,0x45d9f3b) ^ Math.imul((b|0)+17,0x119de1f3) ^
-             Math.imul((c0|0)+31,0x3449f) ^ Math.imul((d|0)+7,0x27d4eb2d))>>>0;
-      x=(x ^ (x>>>16))>>>0; x=Math.imul(x,0x7feb352d)>>>0;
-      x=(x ^ (x>>>15))>>>0; x=Math.imul(x,0x846ca68b)>>>0;
-      return (x ^ (x>>>16))>>>0;
-    }
-    function buildReferenceVisualProfile(points,batchIndex){
-      const n=points.length,
-            scale=new Float32Array(n),
-            softScale=new Float32Array(n),
-            depth=new Float32Array(n),
-            compression=new Float32Array(n),
-            role=new Uint8Array(n),
-            offset=new Float32Array(n*3),
-            rgb=new Float32Array(n*3);
-      for(let i=0;i<n;i++){
-        const p=points[i], u=p.userData||{}, q144=(u.q144===undefined?i:u.q144)|0,
-              j=(u.j===undefined?i:u.j)|0, spiral=(u.spiral===undefined?batchIndex:u.spiral)|0,
-              layer=u.layer2?1:0, recip=!!u.recip;
-        const h=visualHash32(q144,j,spiral,layer+batchIndex*3);
-        const u0=(h&0xffff)/65535, u1=((h>>>16)&0xffff)/65535;
-        const h2=visualHash32(j,q144,batchIndex,spiral+layer*19);
-        const u2=(h2&0xffff)/65535, u3=((h2>>>16)&0xffff)/65535;
-
-        /* Static reference composition. The uploaded frames consistently read
-           as one dense central volume, one compact upper-left satellite,
-           a sparse mid/far halo and a very small near-field population.
-           Role selection is deterministic and projection-only. */
-        let r=I064_ROLE_PRIMARY;
-        if(u2<I064_REFERENCE_VISUAL.foregroundFraction) r=I064_ROLE_FOREGROUND;
-        else if(u2<I064_REFERENCE_VISUAL.foregroundFraction+I064_REFERENCE_VISUAL.satelliteFraction) r=I064_ROLE_SATELLITE;
-        else if(u2<I064_REFERENCE_VISUAL.foregroundFraction+I064_REFERENCE_VISUAL.satelliteFraction+I064_REFERENCE_VISUAL.haloFraction) r=I064_ROLE_HALO;
-        role[i]=r;
-
-        let k, span, ox=0, oy=0, oz=0, s;
-        const localRadius=Math.hypot(p.position.x,p.position.y,p.position.z);
-        if(r===I064_ROLE_PRIMARY){
-          const rt=Math.min(1,localRadius/I064_REFERENCE_VISUAL.coreRadialKnee);
-          const re=rt*rt*(3-2*rt);
-          k=I064_REFERENCE_VISUAL.coreInnerCompression +
-            (I064_REFERENCE_VISUAL.coreCompression-I064_REFERENCE_VISUAL.coreInnerCompression)*re;
-          span=I064_REFERENCE_VISUAL.coreDepthSpan;
-          ox=I064_REFERENCE_VISUAL.primaryCenterX + (layer?0.55:-0.25);
-          oy=I064_REFERENCE_VISUAL.primaryCenterY + (layer?0.35:-0.15);
-          oz=I064_REFERENCE_VISUAL.primaryCenterZ + (layer?-1.2:0.7);
-          /* The main core is mostly pinpoints and small bodies so its density
-             remains readable instead of becoming a single colored mass. */
-          s=(I064_REFERENCE_VISUAL.minParticleScale + 1.05*Math.pow(u0,2.15))*(0.72+0.28*re);
-          if(u0>0.955) s+=1.25*Math.pow((u0-0.955)/0.045,1.2);
-        } else if(r===I064_ROLE_SATELLITE){
-          const rt=Math.min(1,localRadius/I064_REFERENCE_VISUAL.satelliteRadialKnee);
-          const re=rt*rt*(3-2*rt);
-          k=I064_REFERENCE_VISUAL.satelliteInnerCompression +
-            (I064_REFERENCE_VISUAL.satelliteCompression-I064_REFERENCE_VISUAL.satelliteInnerCompression)*re;
-          span=I064_REFERENCE_VISUAL.satelliteDepthSpan;
-          ox=I064_REFERENCE_VISUAL.satelliteCenterX + (layer?0.65:0);
-          oy=I064_REFERENCE_VISUAL.satelliteCenterY + (layer?-0.45:0.25);
-          oz=I064_REFERENCE_VISUAL.satelliteCenterZ + (recip?-0.8:0.5);
-          s=0.34 + 1.45*Math.pow(u0,1.9);
-        } else if(r===I064_ROLE_HALO){
-          k=I064_REFERENCE_VISUAL.haloCompression;
-          span=I064_REFERENCE_VISUAL.haloDepthSpan;
-          ox=(u3-0.5)*3.0;
-          oy=(u1-0.5)*2.2;
-          oz=-1.0;
-          s=0.38 + 2.15*Math.pow(u0,1.65);
-          if(u0>0.93) s+=1.5*Math.pow((u0-0.93)/0.07,1.15);
-        } else {
-          k=I064_REFERENCE_VISUAL.foregroundCompression;
-          span=I064_REFERENCE_VISUAL.foregroundDepthSpan;
-          /* Near bodies are deliberately sparse and distributed across the
-             whole viewport, matching the large isolated circles in the
-             references without turning the core into oversized blobs. */
-          ox=(u3-0.5)*15.0;
-          oy=(u1-0.5)*18.0;
-          oz=8.0 + 7.0*u0;
-          s=1.35 + 5.9*Math.pow(u0,1.35);
-        }
-        if(s>I064_REFERENCE_VISUAL.maxParticleScale) s=I064_REFERENCE_VISUAL.maxParticleScale;
-        scale[i]=s*(recip && r!==I064_ROLE_FOREGROUND?1.05:1);
-        softScale[i]=(r===I064_ROLE_FOREGROUND)
-          ? scale[i]*I064_REFERENCE_VISUAL.foregroundHaloScale
-          : 0;
-        compression[i]=k;
-        depth[i]=(u1-0.5)*span;
-        const o=i*3; offset[o]=ox; offset[o+1]=oy; offset[o+2]=oz;
-
-        /* Q144 stays the color identity. A broader lightness distribution
-           preserves both the dark colored bodies and vivid candy-like points
-           visible in the references while avoiding a washed-out white core. */
-        const hue=((q144%144)+144)%144/144;
-        let sat=0.78+0.22*((h>>>8)&255)/255;
-        let light=0.36+0.30*((h>>>24)&255)/255;
-        if(u3<I064_REFERENCE_VISUAL.neutralColorFraction){
-          /* The supplied stills contain a small ivory/lavender/grey population.
-             Retain Q144 hue identity while reducing presentation saturation. */
-          sat=0.12+0.30*u1;
-          light=0.53+0.19*u0;
-        } else if(u3<I064_REFERENCE_VISUAL.neutralColorFraction+I064_REFERENCE_VISUAL.dimColorFraction){
-          /* Dark green/brown/blue bodies create the same deep-field layering
-             without adding global fog or bloom. */
-          sat=0.48+0.38*u0;
-          light=0.18+0.22*u1;
-        } else if(u3>0.92){
-          sat=0.52+0.38*u1;
-          light=Math.min(0.74,0.58+0.15*u0);
-        }
-        particleBatchColor.setHSL(hue,sat,light);
-        rgb[o]=particleBatchColor.r; rgb[o+1]=particleBatchColor.g; rgb[o+2]=particleBatchColor.b;
-      }
-      return {scale,softScale,depth,compression,role,offset,rgb};
-    }
-    function clampReferencePolar(phi){
-      return Math.max(
-        I064_REFERENCE_VISUAL.boundaryOrbitMinPolar,
-        Math.min(I064_REFERENCE_VISUAL.boundaryOrbitMaxPolar,phi)
-      );
-    }
-    function captureBoundaryOrbitFromCamera(){
-      if(!camera) return;
-      const target=(controls && controls.target)
-        ? controls.target
-        : boundaryOrbit.target;
-      boundaryOrbit.target.copy(target);
-      referenceTmp.copy(camera.position).sub(boundaryOrbit.target);
-      let r=referenceTmp.length();
-      if(!(r>0)) r=1;
-      boundaryOrbit.radius=r;
-      boundaryOrbit.theta0=Math.atan2(referenceTmp.x,referenceTmp.z);
-      boundaryOrbit.phi0=clampReferencePolar(
-        Math.acos(Math.max(-1,Math.min(1,referenceTmp.y/r)))
-      );
-      boundaryOrbit.startMs=performance.now();
-    }
-    function updateBoundaryOrbitCamera(nowMs){
-      if(!boundaryOrbit.on || chase.on) return;
-      const elapsed=nowMs-boundaryOrbit.startMs;
-      const theta=boundaryOrbit.theta0 +
-        elapsed*I064_REFERENCE_VISUAL.boundaryOrbitAzimuthRate;
-      const phi=clampReferencePolar(
-        boundaryOrbit.phi0 +
-        Math.sin(elapsed*I064_REFERENCE_VISUAL.boundaryOrbitPolarRate)*
-          I064_REFERENCE_VISUAL.boundaryOrbitPolarAmplitude
-      );
-      const r=boundaryOrbit.radius;
-      const sinPhi=Math.sin(phi);
-      camera.position.set(
-        boundaryOrbit.target.x + r*sinPhi*Math.sin(theta),
-        boundaryOrbit.target.y + r*Math.cos(phi),
-        boundaryOrbit.target.z + r*sinPhi*Math.cos(theta)
-      );
-      camera.lookAt(boundaryOrbit.target);
-    }
-    function toggleBoundaryOrbit(force){
-      boundaryOrbit.on=force===undefined ? !boundaryOrbit.on : !!force;
-      if(boundaryOrbit.on){
-        if(chase.on) toggleChase(false);
-        captureBoundaryOrbitFromCamera();
-      }
-      if(controls) controls.enabled=!boundaryOrbit.on && !chase.on;
-      const b=document.getElementById("referenceMotionBtn");
-      if(b) b.textContent=boundaryOrbit.on?"Boundary Orbit ON (V)":"Boundary Orbit OFF (V)";
-    }
-    function originalReferenceParticlePosition(nowMs,out){
-      /* Exact kinematic seed path from the original ParticleSimulation:
-         - original phyllotaxis local seed from initSpiralParticles();
-         - original spiral group orbit from updateSpiralParticles().
-         No thPos/thVel, gravity, collisions, bonds, coupling, barycenter,
-         decay, constructor, or VM81 state participates. */
-      const j=referenceFollow.particleIndex;
-      const spiral=referenceFollow.spiralIndex;
-      const goldenRatio=simParams.goldenRatio;
-      const angle=j*goldenRatio*Math.PI*2;
-      const radius=Math.sqrt(j)*3;
-      const localX=radius*Math.cos(angle);
-      const localY=radius*Math.sin(angle);
-      const localZ=Math.sin(j/5)*5*(spiral%2===0?1:-1);
-      const phaseShift=spiral*Math.PI/4 +
-        (referenceFollow.layer2?Math.PI/2:0);
-      const orbitRadius=6;
-      const t=nowMs*0.0005;
-      out.set(
-        localX + Math.sin(t+phaseShift)*orbitRadius,
-        localY + Math.cos(t*simParams.evolutionSpeed+phaseShift)*orbitRadius,
-        localZ + Math.sin(t*simParams.goldenRatio+phaseShift)*orbitRadius
-      );
-      return out;
-    }
-    function resetReferenceFollow(){
-      originalReferenceParticlePosition(performance.now(),referenceFollow.pos);
-      referenceFollow.prev.copy(referenceFollow.pos);
-      referenceFollow.initialized=true;
-    }
-    function updateReferenceFollowCamera(nowMs){
-      if(!referenceFollow.on) return;
-      originalReferenceParticlePosition(nowMs,referenceFollow.pos);
-      if(!referenceFollow.initialized){
-        referenceFollow.prev.copy(referenceFollow.pos);
-        referenceFollow.initialized=true;
-      }
-      referenceFollow.tangent.copy(referenceFollow.pos).sub(referenceFollow.prev);
-      if(referenceFollow.tangent.lengthSq()<1e-10){
-        referenceFollow.tangent.set(1,0,0);
-      } else {
-        referenceFollow.tangent.normalize();
-      }
-      referenceFollow.prev.copy(referenceFollow.pos);
-      /* Trail the untouched reference path like a swimmer/fish follow cam.
-         Camera interpolation is visual only; the target path itself is exact. */
-      referenceFollow.cam.copy(referenceFollow.pos)
-        .addScaledVector(referenceFollow.tangent,-2.6);
-      referenceFollow.cam.y+=0.65;
-      referenceFollow.look.copy(referenceFollow.pos)
-        .addScaledVector(referenceFollow.tangent,3.4);
-      camera.position.lerp(referenceFollow.cam,0.18);
-      camera.lookAt(referenceFollow.look);
-    }
-    function toggleReferenceFollow(force){
-      referenceFollow.on=force===undefined ? !referenceFollow.on : !!force;
-      chase.on=referenceFollow.on;
-      if(referenceFollow.on){
-        boundaryOrbit.on=false;
-        resetReferenceFollow();
-      }
-      if(controls) controls.enabled=!referenceFollow.on && !boundaryOrbit.on;
-      const b=document.getElementById("chaseBtn");
-      if(b) b.textContent=referenceFollow.on
-        ? "Follow Seed (C=off, N=next)"
-        : "Follow Seed (C)";
-      const rb=document.getElementById("referenceMotionBtn");
-      if(rb) rb.textContent=boundaryOrbit.on
-        ? "Boundary Orbit ON (V)"
-        : "Boundary Orbit OFF (V)";
-    }
-    function referenceFollowNext(){
-      referenceFollow.particleIndex=(referenceFollow.particleIndex+37)%324;
-      referenceFollow.spiralIndex=(referenceFollow.spiralIndex+1)%8;
-      resetReferenceFollow();
-    }
     const particleRenderBatches=[];
     const particleBatchMatrix=new THREE.Matrix4();
-    const particleBatchPosition=new THREE.Vector3();
     function registerParticleRenderBatch(group,points,geometry){
       if(typeof THREE.InstancedMesh!=="function" ||
          typeof THREE.InstancedMesh.prototype.setMatrixAt!=="function" ||
          typeof THREE.InstancedMesh.prototype.setColorAt!=="function") return null;
       const mesh=new THREE.InstancedMesh(
         geometry,
-        new THREE.MeshBasicMaterial({color:0xffffff, toneMapped:false}),
-        points.length
-      );
-      const softMesh=new THREE.InstancedMesh(
-        geometry,
-        new THREE.MeshBasicMaterial({
-          color:0xffffff,
-          toneMapped:false,
-          transparent:true,
-          opacity:I064_REFERENCE_VISUAL.foregroundHaloOpacity,
-          depthWrite:false
-        }),
+        new THREE.MeshBasicMaterial({color:0xffffff}),
         points.length
       );
       mesh.frustumCulled=false;
-      softMesh.frustumCulled=false;
       if(mesh.instanceMatrix && typeof mesh.instanceMatrix.setUsage==="function" &&
          THREE.DynamicDrawUsage!==undefined) mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-      if(softMesh.instanceMatrix && typeof softMesh.instanceMatrix.setUsage==="function" &&
-         THREE.DynamicDrawUsage!==undefined) softMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       group.add(mesh);
-      group.add(softMesh);
-      const profile=buildReferenceVisualProfile(points,particleRenderBatches.length);
-      const batch={mesh,softMesh,points,profile,group};
+      const batch={mesh,points};
       particleRenderBatches.push(batch);
       for(let i=0;i<points.length;i++) points[i].visible=false;
       syncParticleRenderBatch(batch);
       return batch;
     }
     function syncParticleRenderBatch(batch){
-      const mesh=batch.mesh, softMesh=batch.softMesh, points=batch.points, profile=batch.profile, group=batch.group;
-      const gx=group?group.position.x:0, gy=group?group.position.y:0, gz=group?group.position.z:0;
+      const mesh=batch.mesh, points=batch.points;
       for(let i=0;i<points.length;i++){
-        const p=points[i], q=p.position, k=profile.compression[i], s=profile.scale[i], o=i*3;
-        /* q is group-local authoritative state. Read the physical world point,
-           compose the reference scene in world-like coordinates, then subtract
-           the parent translation so the InstancedMesh parent does not add the
-           orbit a second time. No logical position is written. */
-        const wx=q.x+gx, wy=q.y+gy, wz=q.z+gz;
-        particleBatchPosition.set(
-          wx*k + profile.offset[o]   - gx,
-          wy*k + profile.offset[o+1] - gy,
-          wz*k + profile.depth[i] + profile.offset[o+2] - gz
-        );
-        referenceScaleTmp.set(s,s,s);
-        particleBatchMatrix.compose(particleBatchPosition,referenceQuat,referenceScaleTmp);
+        const p=points[i], q=p.position;
+        particleBatchMatrix.makeTranslation(q.x,q.y,q.z);
         mesh.setMatrixAt(i,particleBatchMatrix);
-        if(profile && profile.rgb){
-          particleBatchColor.setRGB(profile.rgb[o],profile.rgb[o+1],profile.rgb[o+2]);
-          mesh.setColorAt(i,particleBatchColor);
-        } else {
-          /* Frozen I057 fallback: if the reference profile is unavailable,
-             projection returns to the logical particle's material color. */
-          mesh.setColorAt(i,p.material.color);
-        }
-        if(softMesh){
-          const hs=profile.softScale[i];
-          referenceScaleTmp.set(hs,hs,hs);
-          particleBatchMatrix.compose(particleBatchPosition,referenceQuat,referenceScaleTmp);
-          softMesh.setMatrixAt(i,particleBatchMatrix);
-          particleBatchColor.setRGB(profile.rgb[o],profile.rgb[o+1],profile.rgb[o+2]);
-          softMesh.setColorAt(i,particleBatchColor);
-        }
+        mesh.setColorAt(i,p.material.color);
       }
       mesh.instanceMatrix.needsUpdate=true;
       if(mesh.instanceColor){
@@ -570,17 +156,8 @@
            THREE.DynamicDrawUsage!==undefined) mesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
         mesh.instanceColor.needsUpdate=true;
       }
-      if(softMesh){
-        softMesh.instanceMatrix.needsUpdate=true;
-        if(softMesh.instanceColor){
-          if(typeof softMesh.instanceColor.setUsage==="function" &&
-             THREE.DynamicDrawUsage!==undefined) softMesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
-          softMesh.instanceColor.needsUpdate=true;
-        }
-      }
     }
     function syncParticleRenderBatches(){
-      /* Continuous projection sync: presentation never freezes live motion. */
       for(let i=0;i<particleRenderBatches.length;i++) syncParticleRenderBatch(particleRenderBatches[i]);
     }
 
@@ -602,29 +179,15 @@
     function initScene() {
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x000000);
-      camera = new THREE.PerspectiveCamera(I064_REFERENCE_VISUAL.referenceFov, window.innerWidth/window.innerHeight, 0.05, 1000);
-      camera.position.set(0, 0, I064_REFERENCE_VISUAL.initialCameraZ);
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 15);
       renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference:"high-performance" });
-      renderer.setClearColor(0x000000,1);
-      if(THREE.sRGBEncoding!==undefined) renderer.outputEncoding=THREE.sRGBEncoding;
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
       controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enabled=true;
       controls.enableDamping = true;
       controls.dampingFactor = 0.1;
       controls.rotateSpeed = 0.5;
-      controls.enableZoom = I064_REFERENCE_VISUAL.manualZoom;
-      controls.zoomSpeed = 0.8;
-      controls.minDistance = 0.5;
-      controls.maxDistance = 500;
-      controls.target.set(
-        I064_REFERENCE_VISUAL.primaryCenterX,
-        I064_REFERENCE_VISUAL.primaryCenterY,
-        I064_REFERENCE_VISUAL.primaryCenterZ
-      );
-      controls.update();
       addLighting();
       // Initialize particle groups from neural swarm
       initSpiralParticles(false);   /* L1 spirals: carriers 0..2591 */
@@ -633,16 +196,7 @@
       initExchangeNuclei(true);     /* L2 exchange: carriers 7776..10367 */
       initNinthNucleus();
       buildTesseract();
-      if(I064_REFERENCE_VISUAL.hideInstrumentation){
-        if(ninthNucleus) ninthNucleus.visible=false;
-        if(tessGeo && tessGeo.lines) tessGeo.lines.visible=false;
-      }
       window.addEventListener('resize', onWindowResize, false);
-      if(I064_REFERENCE_VISUAL.autoHideChrome){
-        window.addEventListener('mousemove',wakeReferenceChrome,{passive:true});
-        window.addEventListener('touchstart',wakeReferenceChrome,{passive:true});
-        scheduleReferenceChromeHide();
-      }
       animate();
     }
 
@@ -659,7 +213,6 @@
     function onWindowResize() {
       camera.aspect = window.innerWidth/window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
@@ -670,7 +223,7 @@
          8..15) — IDENTICAL seed, mass and lattice arithmetic, but the
          phase geometry is ORTHOGONAL: initial phase shifted by π/2 and the
          group orbit quarter-turned (applied in updateSpiralParticles). */
-      const particleGeometry = new THREE.SphereGeometry(0.1, 12, 8);
+      const particleGeometry = new THREE.SphereGeometry(0.1, 6, 6);
       const particleCount = 2592;                    /* 8 spirals × 324 = 2592 */
       const goldenRatio = simParams.goldenRatio;
       let totalSpirals = 8;
@@ -778,7 +331,7 @@
          (particles 7776..10367, exchangeData 8..15). The carrier-index
          order — L1 spirals, L1 exchange, L2 spirals, L2 exchange — makes
          i >= LAYER_SPLIT EXACTLY the layer-2 predicate everywhere. */
-      const particleGeometry = new THREE.SphereGeometry(0.1, 12, 8);
+      const particleGeometry = new THREE.SphereGeometry(0.1, 6, 6);
       for (let s = 0; s < 8; s++) {
         const group = new THREE.Group();
         const points = [];
@@ -3745,20 +3298,43 @@
     }
 
     // Animation loop
-    /* FOLLOW CAMERA: projection-only observer of one reconstructed original
-       spiral seed path. It is deliberately not a live carrier and cannot
-       participate in physics, collisions, bonds, constructors, or receipts. */
-    const chase={ on:false };
+    /* CHASE CAMERA: ride one carrier through the field — camera trails the
+       particle's velocity direction and looks ahead along its momentum.
+       Pure view layer: no physics input, fail-closed toggle. */
+    const chase={ on:false, idx:0, pos:new THREE.Vector3(0,0,15), look:new THREE.Vector3() };
+    const chaseTmp=new THREE.Vector3(), chaseSide=new THREE.Vector3(), chaseUp=new THREE.Vector3(0,1,0);
     function toggleChase(force){
-      toggleReferenceFollow(force);
+      chase.on = force===undefined ? !chase.on : !!force;
+      if(chase.on){
+        chase.idx=(Math.random()*particles.length)|0;
+        const ix=chase.idx*3;
+        chase.pos.set(thPos[ix]-2, thPos[ix+1]+1, thPos[ix+2]+2);
+        chase.look.set(thPos[ix], thPos[ix+1], thPos[ix+2]);
+        controls.enabled=false;
+      } else controls.enabled=true;
+      const b=document.getElementById("chaseBtn");
+      if(b) b.textContent = chase.on ? ("Chase #"+chase.idx+" (C=off, N=next)") : "ChaseCam (C)";
     }
-    function chaseNext(){ if(referenceFollow.on) referenceFollowNext(); }
+    function chaseNext(){ if(chase.on){ toggleChase(false); toggleChase(true); } }
     function updateChaseCamera(){
-      updateReferenceFollowCamera(performance.now());
+      const ix=chase.idx*3;
+      const px=thPos[ix], py=thPos[ix+1], pz=thPos[ix+2];
+      const vx=thVel[ix], vy=thVel[ix+1], vz=thVel[ix+2];
+      const sp=Math.hypot(vx,vy,vz);
+      let dx,dy,dz;
+      if(sp>1e-4){ dx=vx/sp; dy=vy/sp; dz=vz/sp; }
+      else { const l=Math.hypot(px,py,pz)||1; dx=px/l; dy=py/l; dz=pz/l; }
+      chaseSide.set(-dz,0,dx);                       /* dir × up, unnormalized */
+      chaseTmp.set(px-dx*2.2 - chaseSide.x*0.6, py-dy*2.2+0.5, pz-dz*2.2 + chaseSide.z*0.6);
+      chase.pos.lerp(chaseTmp,0.12);
+      chaseTmp.set(px+dx*3, py+dy*3, pz+dz*3);
+      chase.look.lerp(chaseTmp,0.2);
+      camera.position.copy(chase.pos);
+      camera.lookAt(chase.look);
     }
     function animate() {
       requestAnimationFrame(animate);
-      if(!chase.on && !boundaryOrbit.on) controls.update();
+      if(!chase.on) controls.update();
       /* GLOBAL FREQUENCY CONTROL: freqScale physics substeps per frame.
          Each substep runs the FULL stack (phase precession + swarm coupling
          field) at the canonical dt — symplectic structure and every receipt
@@ -3769,7 +3345,6 @@
       updatePhaseGeometry();
       constructorScan();
       if(chase.on) updateChaseCamera();
-      else if(boundaryOrbit.on) updateBoundaryOrbitCamera(performance.now());
       /* QUARTIC RENDER SKIP: physics advanced for ALL carriers above;
          the projection renders on every 4th frame (base-8 periodicity +
          quartic closure M⁴=M³+2M² — the HNAN semicomplement at projection
@@ -3794,7 +3369,7 @@
         document.getElementById("hud").innerText =
           `HHS tick=${window.HHS.engine.tick} blocks=${window.HHS.engine.blocks} ` +
           `swarm=${particles.length} mean_v=${(spd/particles.length).toFixed(3)} freq=${steps}x ` +
-          `follow=${referenceFollow.on?'s'+referenceFollow.spiralIndex+'/p'+referenceFollow.particleIndex:'off'} orbit=${boundaryOrbit.on?'on':'off'} ` +
+          `chase=${chase.on?'#'+chase.idx:'off'} ` +
           `rho=m${(simParams.massBoost||1)}x/c${(simParams.collBoost||1)}x ` +
           `cohorts=${cohortCount} solids=${solidCount} ctor=${(simParams.ctorBoost||1)}x ` +
           `rskip=64/72(${renderedFrames}/${renderTick}) ` +
@@ -4429,8 +4004,6 @@
     if(freqSlider){ freqSlider.addEventListener("input",()=>{
       simParams.freqScale=parseInt(freqSlider.value,10)||1;
       const fv=document.getElementById("freqVal"); if(fv) fv.textContent=simParams.freqScale; });}
-    const referenceMotionBtn=document.getElementById("referenceMotionBtn");
-    if(referenceMotionBtn){ referenceMotionBtn.addEventListener("click",()=>toggleBoundaryOrbit()); }
     const chaseBtn=document.getElementById("chaseBtn");
     if(chaseBtn){ chaseBtn.addEventListener("click",()=>toggleChase()); }
     const massSlider=document.getElementById("massSlider");
@@ -4459,8 +4032,6 @@
       if(e.target && (e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")) return;
       if(e.key==="c"||e.key==="C") toggleChase();
       else if(e.key==="n"||e.key==="N") chaseNext();
-      else if(e.key==="v"||e.key==="V") toggleBoundaryOrbit();
-      else if(e.key==="h"||e.key==="H") toggleReferenceChromePin();
       else if(e.key==="t"||e.key==="T") toggleRecipTopo();
     });
     const toggleButton = document.getElementById("toggleShell");
