@@ -41,6 +41,8 @@ def _eligible(
     failed_member_ids: set[str],
 ) -> bool:
     member_id = str(member.get("member_id") or "")
+    if str(member.get("role") or "") == "SEMANTIC_CONTEXT_CONTRIBUTOR":
+        return False
     return bool(
         member_id
         and member_id not in failed_member_ids
@@ -48,18 +50,7 @@ def _eligible(
         and member.get("callable_from_unified_chat") is True
         and member.get("ready") is True
         and "TEXT_GENERATION" in _normalized_capabilities(member)
-        and member.get("semantic_fallback_is_text_generation") is not False
-        if str(member.get("role") or "") == "SEMANTIC_CONTEXT_CONTRIBUTOR"
-        else (
-            member_id
-            and member_id not in failed_member_ids
-            and member.get("visible_to_lane5", True) is not False
-            and member.get("callable_from_unified_chat") is True
-            and member.get("ready") is True
-            and "TEXT_GENERATION" in _normalized_capabilities(member)
-        )
     )
-
 
 def _utility(member: Mapping[str, Any]) -> Fraction:
     """Exact evidence weight; configuration can inform search, never authorize it."""
