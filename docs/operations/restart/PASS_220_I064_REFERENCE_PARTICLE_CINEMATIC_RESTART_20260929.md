@@ -296,8 +296,8 @@ satellite depth span     5.5
 halo depth span          19
 foreground depth span    25
 
-primary center           (0.5, -0.8, -3.0)
-satellite center         (-9.2, 7.1, -5.0)
+primary center           (-0.4, 3.9, -3.0)
+satellite center         (-12.5, 14.5, -5.0)
 
 satellite population     10%
 halo population          15%
