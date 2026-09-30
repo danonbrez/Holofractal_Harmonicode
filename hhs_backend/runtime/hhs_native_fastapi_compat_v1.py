@@ -551,6 +551,47 @@ def bind_native_router_to_external_app(app: Any, router: NativeAPIRouter) -> int
     return bound
 
 
+class NativeHTTPException(Exception):
+    """FastAPI HTTPException-compatible data carrier for native-only imports."""
+
+    def __init__(
+        self,
+        status_code: int,
+        detail: Any = None,
+        headers: Mapping[str, str] | None = None,
+    ) -> None:
+        super().__init__(str(detail))
+        self.status_code = int(status_code)
+        self.detail = detail
+        self.headers = dict(headers or {})
+
+
+class NativeBaseModel:
+    """Minimal Pydantic BaseModel-compatible constructor for native-only paths."""
+
+    def __init__(self, **data: Any) -> None:
+        annotations: dict[str, Any] = {}
+        for cls in reversed(type(self).__mro__):
+            annotations.update(getattr(cls, "__annotations__", {}))
+        for field_name in annotations:
+            if field_name in data:
+                value = data[field_name]
+            elif hasattr(type(self), field_name):
+                value = getattr(type(self), field_name)
+            else:
+                raise TypeError(f"missing required field: {field_name}")
+            setattr(self, field_name, value)
+        unknown = set(data) - set(annotations)
+        if unknown:
+            raise TypeError(f"unexpected fields: {sorted(unknown)!r}")
+
+    def model_dump(self) -> dict[str, Any]:
+        annotations: dict[str, Any] = {}
+        for cls in reversed(type(self).__mro__):
+            annotations.update(getattr(cls, "__annotations__", {}))
+        return {name: getattr(self, name) for name in annotations}
+
+
 class NativeWebSocket:
     """Structural WebSocket compatibility type for native-first route modules."""
 
@@ -605,7 +646,9 @@ __all__ = [
     "HHSNativeASGIApplication",
     "NativeAPIRoute",
     "NativeAPIRouter",
+    "NativeBaseModel",
     "NativeFastAPICompatibilityError",
+    "NativeHTTPException",
     "NativeRouteKernel",
     "NativeRouteResolution",
     "NativeWebSocket",
