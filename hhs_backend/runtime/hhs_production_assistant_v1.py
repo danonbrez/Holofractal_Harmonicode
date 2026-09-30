@@ -1,15 +1,17 @@
-"""Production HHS unified chatbot provider fabric.
+"""Production HHS unified chatbot ingress/egress over Pass 219 / Lane 5.
 
-Provider order:
-1. all registered LiteRT-LM text models, ordered by the declared primary/priority
-   configuration while sharing one witnessed conversation thread;
-2. the repository-native HHS text provider, including its causal model when
-   loaded and its exact semantic/Pass 166 memory path as fallback;
-3. registered Pass 153 open-model generation through the same assistant receipt
-   and result-ingress pipeline;
-4. a closed provider-unavailable turn when no callable member is ready.
+All language capabilities remain visible to the Pass 219 composition manifold.
+Runtime health, declared preferences, model loading, prior failures, and
+authority constraints are candidate evidence. They are not a local provider
+hierarchy.
 
-The routing layer does not widen VM81, Hash72, Hash216, or Lane 5 authority.
+For each turn Lane 5 adapts ready text generators into the inherited Pass 124
+parallel deterministic consensus/probability selector, invokes only the selected
+candidate through the governed assistant receipt/result-ingress membrane, and
+reselects after a failed attempt without duplicating the witnessed user message.
+
+The interface does not gain VM81, Hash72, Hash216, canonical persistence, or
+Linux-kernel bypass authority.
 """
 from __future__ import annotations
 
@@ -348,6 +350,31 @@ class ProductionAssistantService:
             pass166_status=self._pass166_status(),
         )
 
+    @staticmethod
+    def _lane5_chat_candidates(fabric: Mapping[str, Any]) -> List[Dict[str, Any]]:
+        candidates: List[Dict[str, Any]] = []
+        for raw in fabric.get("members") or []:
+            if not isinstance(raw, Mapping):
+                continue
+            member = dict(raw)
+            capabilities = {
+                str(value).strip().upper().replace("-", "_")
+                for value in (member.get("capabilities") or [])
+                if str(value).strip()
+            }
+            if (
+                member.get("visible_to_lane5", True) is not False
+                and member.get("callable_from_unified_chat") is True
+                and member.get("ready") is True
+                and "TEXT_GENERATION" in capabilities
+                and str(member.get("role") or "") != "SEMANTIC_CONTEXT_CONTRIBUTOR"
+            ):
+                candidates.append(member)
+        return sorted(
+            candidates,
+            key=lambda item: str(item.get("member_id") or ""),
+        )
+
     def status(self) -> Dict[str, Any]:
         litert_status = dict(self.model_service.status())
         native_status = dict(self.native_service.status())
@@ -360,48 +387,81 @@ class ProductionAssistantService:
         native_health = self._health_cache.get("native", {})
         pass153_health = self._health_cache.get("pass153", {})
         registered = self._registered_litert_model_ids(litert_health)
-        litert_ready = bool(registered)
-        native_ready = bool(native_health.get("online") and native_health.get("ok"))
-        pass153_ready = bool(
-            self.pass153_service is not None
-            and pass153_health.get("online")
-            and pass153_health.get("ok")
-        )
         fabric = self.unified_model_fabric()
-        selected = (
-            litert_status.get("provider_id")
-            if litert_ready
-            else native_status.get("provider_id")
-            if native_ready
-            else pass153_status.get("provider_id")
-            if pass153_ready
+        candidates = self._lane5_chat_candidates(fabric)
+        candidate_ids = [
+            str(member.get("member_id"))
+            for member in candidates
+            if member.get("member_id")
+        ]
+
+        last_selection = dict(self._last_lane5_selection or {})
+        selected_member_id = (
+            str(last_selection.get("selected_member_id"))
+            if last_selection.get("ok") and last_selection.get("selected_member_id")
             else None
         )
+        selected_member = next(
+            (
+                member
+                for member in fabric.get("members") or []
+                if isinstance(member, Mapping)
+                and str(member.get("member_id") or "") == selected_member_id
+            ),
+            None,
+        )
+        selected_provider_id = (
+            str(selected_member.get("provider_id"))
+            if isinstance(selected_member, Mapping)
+            and selected_member.get("provider_id")
+            else None
+        )
+        selected_model_id = (
+            selected_member.get("model_id")
+            if isinstance(selected_member, Mapping)
+            else None
+        )
+        ready = bool(candidates)
+
         status: Dict[str, Any] = {
             "schema": STATUS_SCHEMA,
             "version": VERSION,
-            "ok": bool(selected),
-            "online": bool(selected),
+            "ok": ready,
+            "online": ready,
             "status": (
                 "HHS_PRODUCTION_ASSISTANT_READY"
-                if selected
+                if ready
                 else "HHS_PRODUCTION_ASSISTANT_PROVIDER_UNAVAILABLE"
             ),
             "provider_id": PROVIDER_ID,
             "provider_mode": self.provider_mode,
+            "provider_mode_is_visibility_filter": False,
             "native_first": self.native_first,
-            "external_litert_compatibility_selected": not self.native_first,
-            "selected_provider_id": selected,
-            "selected_model_id": fabric.get("primary_model_id"),
+            "native_first_is_composition_authority": False,
+            "external_litert_compatibility_selected": False,
+            "selected_provider_id": selected_provider_id,
+            "selected_model_id": selected_model_id,
+            "selected_lane5_member_id": selected_member_id,
+            "declared_primary_model_id": fabric.get("primary_model_id"),
             "effective_mode": (
-                "UNIFIED_LITERT_MODEL_FABRIC"
-                if litert_ready
-                else "HHS_NATIVE_LITERT_COMPATIBLE"
-                if native_ready
-                else "HHS_PASS153_OPEN_MODEL"
-                if pass153_ready
+                "PASS219_LANE5_COMPOSED_CHAT_GENERATOR"
+                if ready
                 else "UNAVAILABLE"
             ),
+            "composition_authority": "PASS219_LANE5",
+            "local_provider_hierarchy_authority": False,
+            "provider_hierarchy_is_composition_authority": False,
+            "lane5_candidate_member_ids": candidate_ids,
+            "lane5_candidate_count": len(candidate_ids),
+            "last_lane5_selection": last_selection,
+            "selection_requires_pass124_consensus": True,
+            "provider_candidates": sorted({
+                str(member.get("provider_id"))
+                for member in candidates
+                if member.get("provider_id")
+            }),
+            # Kept only as an observational compatibility field for old clients.
+            # Its order has no routing or composition authority.
             "provider_hierarchy": [
                 litert_status.get("provider_id"),
                 native_status.get("provider_id"),
@@ -410,19 +470,29 @@ class ProductionAssistantService:
             "gemma": {
                 "status": litert_status,
                 "health": litert_health,
-                "ready": litert_ready,
+                "ready": bool(
+                    litert_health.get("ok")
+                    and litert_health.get("online")
+                    and registered
+                ),
                 "registered_model_ids": registered,
             },
             "native_hhs": {
                 "status": native_status,
                 "health": native_health,
                 "installation": self._native_installation_status(),
-                "ready": native_ready,
+                "ready": bool(
+                    native_health.get("online") and native_health.get("ok")
+                ),
             },
             "pass153": {
                 "status": pass153_status,
                 "health": pass153_health,
-                "ready": pass153_ready,
+                "ready": bool(
+                    self.pass153_service is not None
+                    and pass153_health.get("online")
+                    and pass153_health.get("ok")
+                ),
                 "models": self._pass153_models(),
             },
             "unified_model_fabric": fabric,
@@ -443,51 +513,32 @@ class ProductionAssistantService:
         return status
 
     async def health(self) -> Dict[str, Any]:
-        if self.native_first:
-            gemma_health = {
-                "ok": False,
-                "online": False,
-                "status": "EXTERNAL_LITERT_COMPATIBILITY_NOT_SELECTED",
-                "provider_mode": self.provider_mode,
-                "registered_model_ids": [],
-            }
-            native_health = await self._provider_health(
-                "native", self.native_service, force=True
+        # Health contributes evidence to Pass 219. A configured/default provider
+        # mode must never erase another repository-visible capability.
+        tasks = [
+            self._provider_health("gemma", self.model_service, force=True),
+            self._provider_health("native", self.native_service, force=True),
+        ]
+        if self.pass153_service is not None:
+            tasks.append(
+                self._provider_health("pass153", self.pass153_service, force=True)
             )
-            pass153_health = (
-                await self._provider_health(
-                    "pass153", self.pass153_service, force=True
-                )
-                if self.pass153_service is not None
-                else {
-                    "ok": False,
-                    "online": False,
-                    "status": "PASS153_PROVIDER_UNAVAILABLE",
-                }
-            )
-        else:
-            tasks = [
-                self._provider_health("gemma", self.model_service, force=True),
-                self._provider_health("native", self.native_service, force=True),
-            ]
-            if self.pass153_service is not None:
-                tasks.append(
-                    self._provider_health("pass153", self.pass153_service, force=True)
-                )
-            results = await asyncio.gather(*tasks)
-            gemma_health = results[0]
-            native_health = results[1]
-            pass153_health = results[2] if len(results) > 2 else {
-                "ok": False,
-                "online": False,
-                "status": "PASS153_PROVIDER_UNAVAILABLE",
-            }
+        results = await asyncio.gather(*tasks)
+        gemma_health = results[0]
+        native_health = results[1]
+        pass153_health = results[2] if len(results) > 2 else {
+            "ok": False,
+            "online": False,
+            "status": "PASS153_PROVIDER_UNAVAILABLE",
+        }
+
+        now = time.monotonic()
         self._health_cache["gemma"] = dict(gemma_health)
         self._health_cache["native"] = dict(native_health)
         self._health_cache["pass153"] = dict(pass153_health)
-        self._health_cache_at["gemma"] = time.monotonic()
-        self._health_cache_at["native"] = time.monotonic()
-        self._health_cache_at["pass153"] = time.monotonic()
+        self._health_cache_at["gemma"] = now
+        self._health_cache_at["native"] = now
+        self._health_cache_at["pass153"] = now
         return self.status()
 
     @staticmethod
