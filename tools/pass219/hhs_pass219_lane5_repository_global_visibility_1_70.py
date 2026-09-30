@@ -126,13 +126,12 @@ def _merge_provenance(
     observed: list[dict[str, Any]],
     supplied: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    keyed: dict[tuple[str, str, str], dict[str, Any]] = {}
+    keyed: dict[tuple[str, str], dict[str, Any]] = {}
     for row in observed + supplied:
-        key = (
-            str(row.get("ref_kind", "")).upper(),
-            str(row.get("ref_name", "")),
-            str(row.get("head_sha", "")),
-        )
+        ref_kind = str(row.get("ref_kind", "")).upper()
+        ref_name = str(row.get("ref_name", ""))
+        head_sha = str(row.get("head_sha", ""))
+        key = (ref_kind, ref_name or head_sha)
         previous = keyed.get(key, {})
         merged = {**previous, **row}
         previous_metadata = dict(previous.get("declared_metadata") or {})
