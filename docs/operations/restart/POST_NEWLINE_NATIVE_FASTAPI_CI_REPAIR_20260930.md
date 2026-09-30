@@ -46,7 +46,12 @@ This was a direct external dependency leak around the Lane 5 provider membrane.
 
 The adapter grants no canonical VM81, Hash72, Hash216, or persistence authority. Native route declarations remain the declaration source. External FastAPI is only the server ingress/egress composition boundary.
 
+## Repair-forward validation finding
+
+The first PR run proved the original `NativeAPIRouter.on_startup` crash was removed and reached route projection. FastAPI then rejected the deferred websocket endpoint because its cached native declaration still carried `NativeWebSocket` as the parameter type. The bridge now wraps only the external projection endpoint and replaces the websocket parameter annotation with external `fastapi.WebSocket` when FastAPI is present. The native endpoint object and native declaration metadata are not mutated.
+
 ## Validation remaining
+
 
 - Lane 5 Native Capability Provider workflow;
 - HHS Immutable Agent SQL Index workflow;
