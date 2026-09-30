@@ -50,7 +50,11 @@ def test_i064_visual_profile_is_deterministic_and_render_only():
     assert "function buildReferenceVisualProfile" in visual
     assert "Math.random" not in visual
     assert "coreCompression:0.20" in visual
+    assert "coreInnerCompression:0.125" in visual
+    assert "coreRadialKnee:25.0" in visual
     assert "satelliteCompression:0.115" in visual
+    assert "satelliteInnerCompression:0.072" in visual
+    assert "satelliteRadialKnee:15.0" in visual
     assert "haloCompression:0.50" in visual
     assert "foregroundCompression:0.72" in visual
     assert "coreDepthSpan:12.0" in visual
@@ -66,6 +70,11 @@ def test_i064_visual_profile_is_deterministic_and_render_only():
     assert "foregroundFraction:0.045" in visual
     assert "minParticleScale:0.30" in visual
     assert "maxParticleScale:7.25" in visual
+    assert "foregroundHaloScale:1.14" in visual
+    assert "foregroundHaloOpacity:0.085" in visual
+    assert "neutralColorFraction:0.085" in visual
+    assert "dimColorFraction:0.11" in visual
+    assert "freezeStaticProjection:true" in visual
     assert "staticCameraZ:34.0" in visual
     assert "ingressCameraZ:4.8" in visual
     assert "referenceFov:60" in visual
@@ -164,7 +173,7 @@ def test_i064_static_composition_has_distinct_primary_satellite_halo_foreground_
     assert "primaryCenterX" in visual
     assert "satelliteCenterX" in visual
     assert "foregroundFraction" in visual
-    assert "return {scale,depth,compression,role,offset,rgb};" in visual
+    assert "return {scale,softScale,depth,compression,role,offset,rgb};" in visual
 
 
 
@@ -184,3 +193,74 @@ def test_i064_reference_clean_static_presentation_preserves_controls_but_hides_i
     assert "window.addEventListener('mousemove',wakeReferenceChrome,{passive:true});" in text
     assert "window.addEventListener('touchstart',wakeReferenceChrome,{passive:true});" in text
     assert 'else if(e.key==="h"||e.key==="H") toggleReferenceChromePin();' in text
+
+
+def test_i064_static_projection_is_a_true_visual_freeze_without_stopping_physics():
+    text = source()
+    assert "projectionFrozen:false" in text
+    assert "freezeStaticProjection:true" in text
+    assert "referenceMotion.projectionFrozen=false;" in text
+    assert "syncParticleRenderBatches(true);" in text
+    assert (
+        "referenceMotion.projectionFrozen="
+        "I064_REFERENCE_VISUAL.freezeStaticProjection;"
+    ) in text
+    assert "function syncParticleRenderBatches(force)" in text
+    assert "if(referenceMotion.projectionFrozen && !force) return;" in text
+    # Physics remains outside the presentation freeze and continues every step.
+    assert (
+        "for(let s=0;s<steps;s++){ updateSpiralParticles(); "
+        "time += simParams.evolutionSpeed * simParams.timeDilationFactor; }"
+    ) in text
+
+
+def test_i064_static_core_uses_nonlinear_radial_compression_for_pinpoint_density():
+    text = source()
+    visual = block(
+        text,
+        "function buildReferenceVisualProfile(points,batchIndex)",
+        "function referenceEase(x)",
+    )
+    assert "const localRadius=Math.hypot(p.position.x,p.position.y,p.position.z);" in visual
+    assert "localRadius/I064_REFERENCE_VISUAL.coreRadialKnee" in visual
+    assert "I064_REFERENCE_VISUAL.coreInnerCompression" in visual
+    assert "localRadius/I064_REFERENCE_VISUAL.satelliteRadialKnee" in visual
+    assert "I064_REFERENCE_VISUAL.satelliteInnerCompression" in visual
+    assert "0.72+0.28*re" in visual
+
+
+def test_i064_color_tail_preserves_muted_dark_and_pastel_reference_particles():
+    text = source()
+    visual = block(
+        text,
+        "function buildReferenceVisualProfile(points,batchIndex)",
+        "function referenceEase(x)",
+    )
+    assert "I064_REFERENCE_VISUAL.neutralColorFraction" in visual
+    assert "I064_REFERENCE_VISUAL.dimColorFraction" in visual
+    assert "sat=0.12+0.30*u1;" in visual
+    assert "light=0.18+0.22*u1;" in visual
+    assert "sat=0.52+0.38*u1;" in visual
+
+
+def test_i064_foreground_halo_is_sparse_local_projection_not_global_bloom():
+    text = source()
+    assert "const softMesh=new THREE.InstancedMesh(" in text
+    assert "opacity:I064_REFERENCE_VISUAL.foregroundHaloOpacity" in text
+    assert "depthWrite:false" in text
+    assert "softScale[i]=(r===I064_ROLE_FOREGROUND)" in text
+    assert "softMesh.setMatrixAt(i,particleBatchMatrix);" in text
+    assert "softMesh.setColorAt(i,particleBatchColor);" in text
+    assert "UnrealBloomPass" not in text
+
+
+def test_i064_keeps_frozen_i057_color_projection_as_real_fallback():
+    text = source()
+    render = block(
+        text,
+        "function syncParticleRenderBatch(batch)",
+        "function syncParticleRenderBatches(force)",
+    )
+    assert "const p=points[i], q=p.position" in render
+    assert "if(profile && profile.rgb)" in render
+    assert "mesh.setColorAt(i,p.material.color);" in render
