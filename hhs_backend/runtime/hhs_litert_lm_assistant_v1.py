@@ -677,6 +677,31 @@ class HHSAssistantService:
                 response_format=response_format,
             )
             completion = self._extract_completion(raw_response)
+            provider_metadata = dict(completion.get("provider_metadata") or {})
+            if provider_metadata.get("generation_path") == "EXACT_SEMANTIC_FALLBACK":
+                result = {
+                    "schema": TURN_SCHEMA,
+                    "version": VERSION,
+                    "ok": False,
+                    "status": "REJECT_NON_GENERATING_SEMANTIC_FALLBACK_AS_ASSISTANT_COMPLETION",
+                    "thread_id": thread_id,
+                    "user_message": dict(user_message),
+                    "assistant_message": None,
+                    "proposal": proposal,
+                    "proposal_validation": proposal_validation,
+                    "policy_gate_decision": policy,
+                    "provider_metadata": provider_metadata,
+                    "causal_generation_failure": provider_metadata.get(
+                        "causal_generation_failure"
+                    ),
+                    "provider_output_retained_as_assistant_message": False,
+                    "provider_result_ingress_performed": False,
+                    "runtime_mutation_admitted": False,
+                    "model_output_is_canonical_without_runtime_admission": False,
+                    "authority": AUTHORITY,
+                }
+                result["turn_root_hash72"] = hash72(TURN_SCHEMA, result)
+                return result
         except Exception as exc:
             result = {
                 "schema": TURN_SCHEMA,

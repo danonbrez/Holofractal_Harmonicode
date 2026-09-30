@@ -23,6 +23,7 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_chat_generator_selection_v1.py'
       - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
       - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
       - 'hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py'
@@ -74,6 +75,7 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_chat_generator_selection_v1.py'
       - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
       - 'hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py'
       - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
@@ -186,6 +188,7 @@ jobs:
             hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
             hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
             hhs_backend/runtime/hhs_production_assistant_v1.py \
+            hhs_backend/runtime/hhs_pass219_lane5_chat_generator_selection_v1.py \
             hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py \
             hhs_backend/runtime/hhs_pass153_assistant_transport_v1.py \
             hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py \

@@ -6,21 +6,24 @@ Status: IMPLEMENTED CHECKPOINT / DEPENDENCY-SCOPED CI PENDING / AUTHORITY PRESER
 
 The production HHS assistant is one chatbot surface over the language capabilities already present in the repository/runtime.
 
-The previous production selector treated one configured LiteRT alias and the native semantic provider as separate alternatives. That allowed a registered/hydrated model to exist without being considered by the chatbot when its ID was not the configured alias.
+The production chatbot is an ingress/egress surface of Pass 219 / Lane 5. It must not create a parallel provider-selection authority outside the C++ RNA cell-wall composition manifold.
 
 The unified routing contract is now:
 
 ```text
-one conversation thread
-  -> discover all LiteRT-LM registered model IDs
-  -> apply declared model priority
-  -> try each registered LiteRT generator on the same witnessed user message
-  -> native HHS causal/semantic provider
-  -> Pass 153 registered open-model fallback
-  -> closed unavailable turn only if every callable member fails
+one witnessed conversation thread
+  -> expose every language capability to Pass 219 / Lane 5
+  -> attach runtime health, loading, preference, provenance, and authority evidence
+  -> adapt ready TEXT_GENERATION members into the inherited Pass 124 selector
+  -> three deterministic witness lanes isolate mutually validated invariants
+  -> exact Fraction probability selects only among admitted candidates
+  -> replay the selection receipt
+  -> invoke the selected member through the inherited assistant receipt/ingress membrane
+  -> on failure preserve evidence, exclude only that failed member, and recompose
+  -> closed unavailable turn only when no admissible visible generator remains
 ```
 
-No failed provider attempt appends a second user message. Fallback uses the inherited `continue_message()` witness path.
+No failed provider attempt appends a second user message. Reselection uses the inherited `continue_message()` witness path. Probability allocates selection among already-admissible candidates and never creates canonical authority.
 
 ## Declaring the primary model
 
@@ -34,14 +37,9 @@ HHS_ASSISTANT_MODEL_PRIORITY=model-a,model-b,model-c
 HHS_LITERT_LM_MODEL=<compatibility configured model>
 ```
 
-Ordering is:
+These declarations are retained as typed selection evidence and compatibility preferences. They do **not** form an execution hierarchy and they do not hide any other model from Lane 5.
 
-1. explicit primary if registered;
-2. explicit priority list entries if registered;
-3. the configured `HHS_LITERT_LM_MODEL` if registered;
-4. all remaining registered LiteRT models in deterministic order.
-
-This lets the most capable hydrated/imported model be designated without disconnecting the other registered models from the chatbot.
+The Pass 219 selector may incorporate declared/configured/loaded state into exact candidate utility while the Pass 124 witness lanes independently require visibility, callability, runtime readiness, text-generation capability, and preserved authority boundaries. The selected candidate is therefore receipt-bearing and replayable rather than the result of a local `if/else` provider chain.
 
 ## Unified contributors
 
@@ -49,10 +47,10 @@ The fabric reports and composes:
 
 - every model returned by the LiteRT-LM `/v1/models` registry;
 - the repository-native causal model when configured/loaded;
-- the repository-native exact semantic fallback;
+- the repository-native exact semantic/Pass 166 path as a context contributor, **not** a completed text generator;
 - Pass 153 registered open-model generation;
 - the active Pass 166 Word2Vec model as semantic-memory/retrieval contribution;
-- other registered text-generation capability providers as specialized registered contributors pending their own runtime-health/adapter requirements.
+- other registered text-generation capability providers as visible specialized contributors, with actual unresolved runtime/configuration/adapter evidence preserved when present rather than inferred from the security membrane.
 
 Pass 166 is not relabeled as a causal generator. It remains semantic memory and retrieval context.
 
@@ -82,7 +80,7 @@ hhs_lane5_capability_status
 hhs_lane5_capability_search
 ```
 
-Lane 5 tools use the validated 1.44 repository capability reverse-discovery surface and return bounded evidence only.
+The inherited 1.44 typed reverse-discovery spine remains valid, while Pass 219 1.69 now hydrates current-tree callable surfaces plus statically fetched branch/PR callable provenance into the Hash216 knowledge graph. Ref-only capability discovery never checks out or executes branch code, remains `UNRESOLVED`, and carries no canonical authority.
 
 They explicitly preserve:
 
@@ -113,12 +111,14 @@ Ordinary general conversation still does not force developer/Lane 5 tools.
 
 Production assistant health now reports:
 
-- `selected_provider_id`;
-- `selected_model_id`;
-- `unified_model_fabric`;
-- registered LiteRT model IDs and route order;
+- the complete visible unified model fabric;
+- `lane5_candidate_member_ids` and `lane5_candidate_count`;
+- `composition_authority=PASS219_LANE5`;
+- `local_provider_hierarchy_authority=false`;
+- the last replayable Lane 5 selection receipt, when a turn has actually been composed;
+- `selected_provider_id` / `selected_model_id` only after an actual Lane 5 selection rather than as a readiness guess;
 - native causal/semantic readiness;
-- Pass 153 fallback models;
+- Pass 153 model visibility;
 - Pass 166 semantic-memory contribution;
 - `lane5_tooling_enabled=true`.
 
@@ -126,12 +126,14 @@ Production assistant health now reports:
 
 Focused tests cover:
 
-1. explicit primary/priority ordering across all registered LiteRT models;
-2. unified fabric membership for LiteRT, native causal, Pass 153, and Pass 166;
-3. routing to the declared primary model on one shared witnessed thread;
-4. Lane 5/model-fabric tools present in the governed read-only registry;
-5. native `BOTH` mode Lane 5 intent routing;
-6. Pass 153 transport availability as an assistant fallback.
+1. declared model preferences remain visible without becoming composition authority;
+2. unified fabric membership and Lane 5 visibility for LiteRT, native causal, Pass 153, and Pass 166;
+3. Pass 124 consensus/probability selection with deterministic replay on one shared witnessed thread;
+4. failed selected generators are excluded for the next composition without duplicating the user witness;
+5. Lane 5/model-fabric tools remain in the governed read-only registry;
+6. native `BOTH` mode Lane 5 intent routing;
+7. exact semantic fallback cannot be persisted as a completed assistant generation;
+8. Pass 153 transport remains available through the same governed assistant membrane.
 
 The existing Pass 220 I003-I010 integration workflow is extended to compile the new modules and run the new focused test file.
 

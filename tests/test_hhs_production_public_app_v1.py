@@ -62,7 +62,7 @@ def test_integrated_workspace_session_is_lightweight_and_real():
     }
 
 
-def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec():
+def test_hosted_assistant_executes_lane5_selected_receipt_bearing_turn():
     from hhs_backend import production_server
     from hhs_backend.runtime.hhs_production_assistant_v1 import (
         DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
@@ -70,6 +70,7 @@ def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec(
 
     service = DEFAULT_PRODUCTION_ASSISTANT_SERVICE
     service._health_timeout = max(float(service._health_timeout), 5.0)
+    service._last_lane5_selection = {}
 
     installation = service._native_installation_status()
     assert installation["ready"] is True, installation
@@ -82,8 +83,14 @@ def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec(
     health = asyncio.run(production_server._assistant_health())
     assert health["ok"] is True, health
     assert health["online"] is True, health
-    assert health["selected_provider_id"] == "provider:hhs.local.text", health
-    assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", health
+    assert health["composition_authority"] == "PASS219_LANE5", health
+    assert health["local_provider_hierarchy_authority"] is False, health
+    assert health["provider_hierarchy_is_composition_authority"] is False, health
+    assert health["selection_requires_pass124_consensus"] is True, health
+    assert health["lane5_candidate_count"] >= 1, health
+    assert health["selected_provider_id"] is None, health
+    assert health["selected_model_id"] is None, health
+    assert health["effective_mode"] == "PASS219_LANE5_COMPOSED_CHAT_GENERATOR", health
     assert health["native_hhs"]["installation"]["ready"] is True
     assert health["native_hhs"]["installation"]["word2vec_required"] is False
     assert health["repository_search_is_provider"] is False
@@ -95,7 +102,14 @@ def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec(
     )
     turn = asyncio.run(service.send_message(thread["thread_id"], content="AB=P^4"))
     assert turn["ok"] is True, turn
-    assert turn["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", turn
+    assert turn["composition_authority"] == "PASS219_LANE5", turn
+    assert turn["local_provider_hierarchy_authority"] is False, turn
+    assert turn["selected_lane5_member_id"], turn
+    assert turn["lane5_selection"]["ok"] is True, turn
+    assert (
+        turn["lane5_selection"]["replay"]["replay_status"]
+        == "PARALLEL_DETERMINISTIC_GENERALIZATION_REPLAY_VALIDATED"
+    ), turn
     assert str(turn["assistant_message"]["content"]).strip(), turn
     assert turn["assistant_message"]["message_root_hash72"], turn
     assert turn["provider_invocation_receipt"]["provider_invocation_receipt_hash72"], turn
@@ -250,15 +264,20 @@ def test_verified_harmonizer_hydrates_live_backend_registry_and_dispatch():
     assert "disabled registry item" not in source
 
 
-def test_provider_hierarchy_uses_gemma_then_native_hhs_without_canned_demo():
+def test_production_assistant_routes_generation_through_pass219_lane5_without_canned_demo():
     paths = [
         "hhs_backend/runtime/hhs_production_assistant_v1.py",
+        "hhs_backend/runtime/hhs_pass219_lane5_chat_generator_selection_v1.py",
         "hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py",
-        "hhs_backend/runtime/hhs_capability_provider_registry_v1.py",
-        "hhs_backend/runtime/hhs_litert_lm_assistant_v1.py",
+        "hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py",
+        "hhs_runtime/hhs_pass124_parallel_deterministic_generalization_v1.py",
     ]
     combined = "\n".join(Path(path).read_text(encoding="utf-8") for path in paths)
-    assert "provider:hhs.litert_lm.gemma4" in combined
+    assert "select_lane5_chat_generator" in combined
+    assert "ParallelDeterministicGeneralizationEngine" in combined
+    assert 'composition_authority"] = "PASS219_LANE5"' in combined
+    assert '"local_provider_hierarchy_authority": False' in combined
+    assert "probability_created_authority" in combined
     assert "provider:hhs.local.text" in combined
     assert "Pass 166" in combined or "pass166" in combined
     assert "The request was received without runtime mutation" not in combined

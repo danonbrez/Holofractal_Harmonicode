@@ -54,6 +54,7 @@ def _litert_members(
     registered_model_ids: Sequence[str],
     *,
     configured_model_id: str,
+    runtime_ready: bool = True,
 ) -> list[dict[str, Any]]:
     ordered = ordered_litert_model_ids(
         registered_model_ids,
@@ -66,7 +67,7 @@ def _litert_members(
             "provider_id": "provider:hhs.litert_lm.gemma4",
             "model_id": model_id,
             "role": "PRIMARY_GENERATOR" if model_id == primary else "GENERATOR_FALLBACK",
-            "ready": True,
+            "ready": bool(runtime_ready),
             "callable_from_unified_chat": True,
             "capabilities": ["TEXT_GENERATION"],
             "priority_ordinal": index,
@@ -84,14 +85,26 @@ def build_unified_language_model_fabric(
     native_installation: Mapping[str, Any] | None = None,
     native_health: Mapping[str, Any] | None = None,
     pass153_models: Sequence[Mapping[str, Any]] | None = None,
+    pass153_health: Mapping[str, Any] | None = None,
+    litert_health: Mapping[str, Any] | None = None,
     pass166_status: Mapping[str, Any] | None = None,
 ) -> Dict[str, Any]:
+    native_health_provided = native_health is not None
+    pass153_health_provided = pass153_health is not None
+    litert_health_provided = litert_health is not None
     native_installation = dict(native_installation or {})
     native_health = dict(native_health or {})
+    pass153_health = dict(pass153_health or {})
+    litert_health = dict(litert_health or {})
     pass166_status = dict(pass166_status or {})
     members = _litert_members(
         registered_model_ids,
         configured_model_id=configured_model_id,
+        runtime_ready=(
+            bool(litert_health.get("ok") and litert_health.get("online"))
+            if litert_health_provided
+            else True
+        ),
     )
 
     causal = dict(native_installation.get("causal_lm") or {})
@@ -101,7 +114,14 @@ def build_unified_language_model_fabric(
             "provider_id": "provider:hhs.local.text",
             "model_id": causal.get("model_id"),
             "role": "NATIVE_CAUSAL_GENERATOR",
-            "ready": bool(causal.get("ready")),
+            "ready": bool(
+                causal.get("ready")
+                and (
+                    native_health.get("ok") and native_health.get("online")
+                    if native_health_provided
+                    else True
+                )
+            ),
             "configured": bool(causal.get("configured")),
             "loaded": bool(causal.get("loaded")),
             "callable_from_unified_chat": True,
@@ -112,11 +132,13 @@ def build_unified_language_model_fabric(
         "member_id": "native-semantic:hhs-native-language-v1",
         "provider_id": "provider:hhs.local.text",
         "model_id": "hhs-native-language-v1",
-        "role": "EXACT_SEMANTIC_FALLBACK",
+        "role": "SEMANTIC_CONTEXT_CONTRIBUTOR",
         "ready": bool(native_health.get("ok") and native_health.get("online")),
-        "callable_from_unified_chat": True,
-        "capabilities": ["TEXT_GENERATION", "SEARCH", "MEMORY_RETRIEVAL"],
+        "callable_from_unified_chat": False,
+        "contributes_context_to_native_provider": True,
+        "capabilities": ["SEMANTIC_ANALYSIS", "SEARCH", "MEMORY_RETRIEVAL"],
         "full_causal_generation_ready": bool(causal.get("ready")),
+        "semantic_fallback_is_text_generation": False,
     })
 
     for raw in pass153_models or ():
@@ -129,7 +151,11 @@ def build_unified_language_model_fabric(
             "provider_id": "provider:hhs.pass153.open_model",
             "model_id": model_id,
             "role": "PASS153_OPEN_MODEL_FALLBACK",
-            "ready": True,
+            "ready": (
+                bool(pass153_health.get("ok") and pass153_health.get("online"))
+                if pass153_health_provided
+                else True
+            ),
             "callable_from_unified_chat": True,
             "capabilities": list(model.get("capabilities") or ["text-generation"]),
             "backend": model.get("backend"),
@@ -174,6 +200,12 @@ def build_unified_language_model_fabric(
             "runtime_health_required_before_routing": True,
         })
 
+    for member in members:
+        member["visible_to_lane5"] = True
+        member["candidate_only"] = True
+        member["provider_output_canonical_authority"] = False
+        member["runtime_validation_required"] = True
+
     litert = [
         member for member in members
         if str(member.get("member_id") or "").startswith("litert:")
@@ -207,6 +239,9 @@ def build_unified_language_model_fabric(
         "litert_registered_model_ids": list(registered_model_ids),
         "litert_route_order": [member["model_id"] for member in litert],
         "lane5_tooling_expected": True,
+        "lane5_is_pass219_composition_authority": True,
+        "local_provider_order_is_composition_authority": False,
+        "all_members_visible_to_lane5": True,
         "provider_output_is_canonical_authority": False,
         "vm81_admission_boundary_preserved": True,
         "hash72_receipt_boundary_preserved": True,

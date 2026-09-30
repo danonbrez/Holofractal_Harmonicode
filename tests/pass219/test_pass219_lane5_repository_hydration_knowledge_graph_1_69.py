@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -81,12 +82,23 @@ def test_declares_first_class_lane5_operation_registry():
 def test_projection_lifts_capabilities_constructors_and_bindings(case):
     root, graph, lane5 = case
     projection = build_repository_hydration_knowledge_graph(root, graph, lane5_snapshot=lane5)
-    assert projection["counts"]["capabilities"] == 1
+    assert projection["counts"]["capabilities"] == 5
+    assert projection["counts"]["inherited_lane5_capabilities"] == 1
+    assert projection["counts"]["repository_static_callables"] == 4
     assert projection["counts"]["constructors"] == 3
-    assert projection["counts"]["knowledge_nodes"] == 4
+    assert projection["counts"]["knowledge_nodes"] == 8
     assert len(projection["roots"]["projection_root_hash216"]) == 216
     assert projection["authority"]["candidate_only"] is True
     assert projection["authority"]["canonical_hash216_authority"] is False
+    assert projection["visibility_policy"]["classification_flags_filter_visibility"] is False
+    assert projection["visibility_policy"]["unresolved_state_filters_visibility"] is False
+    helper = next(item for item in projection["capabilities"] if item["name"] == "helper")
+    assert helper["visible_to_lane5"] is True
+    assert helper["execution_eligibility"] == "DISCOVERED_NOT_PRECLUDED"
+    assert helper["demo_or_reference_status"] == "NOT_INFERRED"
+    assert helper["configuration_requirement"] == "NOT_INFERRED"
+    assert helper["adapter_requirement"] == "NOT_INFERRED"
+    assert helper["execution_authority"] is False
     kinds = {item["constructor_kind"] for item in projection["constructors"]}
     assert {"PYTHON_CLASS","PYTHON_FACTORY_FUNCTION","FORMAL_CONSTRUCTOR_ARTIFACT"} <= kinds
     relations = {item["relation_type"] for item in projection["edges"]}
@@ -103,7 +115,7 @@ def test_database_is_restartable_queryable_and_position_indexed(case, tmp_path: 
         status = db.hydrate(dependency_graph=graph, knowledge_projection=projection)
         assert status["repository_files"] == 2
         assert status["file_dependencies"] == 1
-        assert status["capabilities"] == 1
+        assert status["capabilities"] == projection["counts"]["capabilities"]
         assert status["constructors"] == 3
         assert status["hash216_positions"] == (projection["counts"]["knowledge_nodes"] + projection["counts"]["knowledge_edges"]) * 216
         assert status["journal_mode"].lower() == "wal"
@@ -115,6 +127,67 @@ def test_database_is_restartable_queryable_and_position_indexed(case, tmp_path: 
     with Lane5RepositoryHydrationKnowledgeDatabase(path) as reopened:
         assert reopened.status()["restart_rehydratable"] is True
         assert reopened.status()["constructors"] == 3
+
+
+def test_branch_ref_callable_is_visible_without_executing_branch_source(case):
+    root, graph, lane5 = case
+
+    def git(*args: str) -> str:
+        result = subprocess.run(
+            ["git", "-C", str(root), *args],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        return result.stdout.strip()
+
+    git("init", "-b", "main")
+    git("config", "user.name", "HHS Test")
+    git("config", "user.email", "hhs-test@example.invalid")
+    git("add", ".")
+    git("commit", "-m", "fixture main")
+    git("checkout", "-b", "feature/ref-visible")
+    branch_file = root / "pkg" / "branch_only.py"
+    branch_file.write_text(
+        "def branch_only_capability(value):\n"
+        "    return value\n",
+        encoding="utf-8",
+    )
+    git("add", "pkg/branch_only.py")
+    git("commit", "-m", "branch capability")
+    feature_commit = git("rev-parse", "HEAD")
+    git("update-ref", "refs/remotes/origin/feature/ref-visible", feature_commit)
+    git("checkout", "main")
+
+    projection = build_repository_hydration_knowledge_graph(
+        root, graph, lane5_snapshot=lane5
+    )
+    ref_caps = [
+        item for item in projection["capabilities"]
+        if item.get("source_ref") == "refs/remotes/origin/feature/ref-visible"
+    ]
+    assert len(ref_caps) == 1
+    cap = ref_caps[0]
+    assert cap["name"] == "branch_only_capability"
+    assert cap["visible_to_lane5"] is True
+    assert cap["closure_state"] == "UNRESOLVED"
+    assert cap["integration_evidence"] == "STATIC_GIT_OBJECT_DISCOVERY_ONLY"
+    assert cap["ref_source_executed"] is False
+    assert cap["execution_authority"] is False
+    assert projection["counts"]["repository_ref_heads"] == 1
+    assert projection["counts"]["repository_ref_static_callables"] == 1
+    assert len(projection["roots"]["repository_ref_snapshot_root_hash216"]) == 216
+    assert projection["repository_ref_snapshot"] == [{
+        "source_ref": "refs/remotes/origin/feature/ref-visible",
+        "source_commit": feature_commit,
+        "source_state": "BRANCH_HEAD",
+    }]
+    assert not any(
+        edge.get("source_node_id") == cap["node_id"]
+        and edge.get("relation_type") == "DECLARED_IN_FILE"
+        for edge in projection["edges"]
+    )
 
 
 def test_tamper_fails_closed(case, tmp_path: Path):

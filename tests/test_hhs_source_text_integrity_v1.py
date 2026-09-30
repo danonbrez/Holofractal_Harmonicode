@@ -55,6 +55,18 @@ def test_allows_nested_javascript_template_literal_newline_escapes():
     assert find_literal_escaped_newline_issues("visual-ide-state.mjs", source) == []
 
 
+def test_allows_template_text_escapes_and_string_escape_inside_expression():
+    source = "const lines = (...values) => `${values.join('\\n')}\\n`;\n"
+    assert find_literal_escaped_newline_issues("application-templates.mjs", source) == []
+
+
+def test_rejects_literal_escaped_newline_inside_template_expression_code():
+    source = "const value = `${left \\n right}`;\n"
+    issues = find_literal_escaped_newline_issues("template-expression.mjs", source)
+    assert len(issues) == 1
+    assert issues[0].kind == "LITERAL_ESCAPED_NEWLINE_OUTSIDE_STRING_OR_COMMENT"
+
+
 def test_forward_slash_n_data_is_not_treated_as_newline():
     source = 'hash72 = "abc/nxyz"\nroute = "/novel/status"\nratio = "k/n"\n'
     assert find_literal_escaped_newline_issues("example.py", source) == []

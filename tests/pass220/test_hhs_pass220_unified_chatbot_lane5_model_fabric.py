@@ -20,6 +20,9 @@ from hhs_backend.runtime.hhs_native_litert_lm_provider_v1 import (
 from hhs_backend.runtime.hhs_pass153_assistant_transport_v1 import (
     Pass153AssistantTransport,
 )
+from hhs_backend.runtime.hhs_pass219_lane5_chat_generator_selection_v1 import (
+    select_lane5_chat_generator,
+)
 from hhs_backend.runtime.hhs_production_assistant_v1 import (
     ProductionAssistantService,
 )
@@ -149,10 +152,26 @@ def test_unified_fabric_includes_generators_fallbacks_and_memory(monkeypatch):
     assert "native-causal:hydrated-native" in member_ids
     assert "pass153:hhs-reference-open-model-v1" in member_ids
     assert "pass166:word2vec-active" in member_ids
+    semantic = next(
+        item for item in fabric["members"]
+        if item["member_id"] == "native-semantic:hhs-native-language-v1"
+    )
+    assert semantic["callable_from_unified_chat"] is False
+    assert semantic["semantic_fallback_is_text_generation"] is False
+    assert "TEXT_GENERATION" not in semantic["capabilities"]
     assert fabric["vm81_admission_boundary_preserved"] is True
+    assert fabric["lane5_is_pass219_composition_authority"] is True
+    assert fabric["local_provider_order_is_composition_authority"] is False
+    assert fabric["all_members_visible_to_lane5"] is True
+    assert all(item["visible_to_lane5"] is True for item in fabric["members"])
+    assert all(item["candidate_only"] is True for item in fabric["members"])
+    assert all(
+        item["provider_output_canonical_authority"] is False
+        for item in fabric["members"]
+    )
 
 
-def test_production_chat_uses_declared_primary_registered_model_on_one_thread(monkeypatch):
+def test_production_chat_uses_lane5_consensus_on_one_witnessed_thread(monkeypatch):
     monkeypatch.setenv("HHS_ASSISTANT_MODEL_PRIORITY", "model-large,model-small")
     registry = ("model-small", "model-large")
     config = LiteRTLMConfig(
@@ -190,13 +209,98 @@ def test_production_chat_uses_declared_primary_registered_model_on_one_thread(mo
     )
 
     assert result["ok"] is True
-    assert result["selected_model_id"] == "model-large"
+    assert result["selected_model_id"] in registry
+    assert (
+        result["selected_lane5_member_id"]
+        == f"litert:{result['selected_model_id']}"
+    )
     assert result["effective_mode"] == "UNIFIED_LITERT_MODEL_FABRIC"
-    assert result["assistant_message"]["content"] == "answer:model-large"
+    assert (
+        result["assistant_message"]["content"]
+        == f"answer:{result['selected_model_id']}"
+    )
+    assert result["composition_authority"] == "PASS219_LANE5"
+    assert result["local_provider_hierarchy_authority"] is False
+    selection = result["lane5_selection"]
+    assert selection["ok"] is True
+    assert selection["selection_uses_pass124_parallel_consensus"] is True
+    assert selection["probability_created_authority"] is False
+    assert (
+        selection["replay"]["replay_status"]
+        == "PARALLEL_DETERMINISTIC_GENERALIZATION_REPLAY_VALIDATED"
+    )
     stored = service.threads.get(thread["thread_id"])
     assert [item["role"] for item in stored["messages"]] == ["user", "assistant"]
-    assert transports["model-large"].calls == 1
-    assert small_transport.calls == 0
+
+    calls = {"model-small": small_transport.calls}
+    calls.update({model_id: transport.calls for model_id, transport in transports.items()})
+    assert sum(calls.values()) == 1
+    assert calls[result["selected_model_id"]] == 1
+
+
+def test_lane5_selection_excludes_failed_generator_and_replays_exactly():
+    fabric = build_unified_language_model_fabric(
+        configured_model_id="model-a",
+        registered_model_ids=["model-a", "model-b"],
+        native_installation={},
+        native_health={"ok": False, "online": False},
+        pass153_models=[],
+        pass166_status={},
+    )
+    first = select_lane5_chat_generator(
+        fabric=fabric,
+        thread_id="thread:selection",
+        content="Choose an available generator.",
+    )
+    assert first["ok"] is True
+    assert first["selected_member_id"] in {"litert:model-a", "litert:model-b"}
+    assert (
+        first["replay"]["replay_status"]
+        == "PARALLEL_DETERMINISTIC_GENERALIZATION_REPLAY_VALIDATED"
+    )
+
+    second = select_lane5_chat_generator(
+        fabric=fabric,
+        thread_id="thread:selection",
+        content="Choose an available generator.",
+        failed_member_ids=[first["selected_member_id"]],
+    )
+    assert second["ok"] is True
+    assert second["selected_member_id"] != first["selected_member_id"]
+    assert second["candidate_count"] == 1
+    assert first["selected_member_id"] in second["failed_member_ids"]
+    assert second["probability_created_authority"] is False
+    assert second["canonical_vm81_mutation_authority"] is False
+
+
+def test_production_health_reports_lane5_candidate_pool_not_provider_hierarchy(monkeypatch):
+    monkeypatch.setenv("HHS_ASSISTANT_MODEL_PRIORITY", "model-large,model-small")
+    registry = ("model-small", "model-large")
+    config = LiteRTLMConfig(model_id="model-small")
+    base = HHSAPIAssistantService(
+        config=config,
+        transport=MultiModelTransport("model-small", registry),
+    )
+    service = ProductionAssistantService(
+        model_service=base,
+        native_service=OfflineService(base.threads),
+        pass153_service=OfflineService(base.threads),
+    )
+
+    health = asyncio.run(service.health())
+    assert health["ok"] is True
+    assert health["composition_authority"] == "PASS219_LANE5"
+    assert health["local_provider_hierarchy_authority"] is False
+    assert health["provider_hierarchy_is_composition_authority"] is False
+    assert health["selected_provider_id"] is None
+    assert health["selected_model_id"] is None
+    assert health["selected_lane5_member_id"] is None
+    assert health["lane5_candidate_count"] == 2
+    assert set(health["lane5_candidate_member_ids"]) == {
+        "litert:model-small",
+        "litert:model-large",
+    }
+    assert health["effective_mode"] == "PASS219_LANE5_COMPOSED_CHAT_GENERATOR"
 
 
 def test_lane5_and_model_fabric_tools_are_in_one_governed_registry():
