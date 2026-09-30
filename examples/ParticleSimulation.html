@@ -155,7 +155,11 @@
       pureBlackBackground:true,
       deterministicVisualProfile:true,
       coreCompression:0.20,
+      coreInnerCompression:0.125,
+      coreRadialKnee:25.0,
       satelliteCompression:0.115,
+      satelliteInnerCompression:0.072,
+      satelliteRadialKnee:15.0,
       haloCompression:0.50,
       foregroundCompression:0.72,
       coreDepthSpan:12.0,
@@ -173,11 +177,16 @@
       foregroundFraction:0.045,
       minParticleScale:0.30,
       maxParticleScale:7.25,
+      foregroundHaloScale:1.14,
+      foregroundHaloOpacity:0.085,
+      neutralColorFraction:0.085,
+      dimColorFraction:0.11,
       staticCameraZ:34.0,
       ingressCameraZ:4.8,
       referenceFov:60,
       hideInstrumentation:true,
       defaultMotion:true,
+      freezeStaticProjection:true,
       autoHideChrome:true,
       chromeIdleMs:1800,
       canonicalMutationAuthority:false
@@ -186,7 +195,8 @@
       on:I064_REFERENCE_VISUAL.defaultMotion,
       startMs:performance.now(),
       look:new THREE.Vector3(0,0,0),
-      pos:new THREE.Vector3(0,0,I064_REFERENCE_VISUAL.staticCameraZ)
+      pos:new THREE.Vector3(0,0,I064_REFERENCE_VISUAL.staticCameraZ),
+      projectionFrozen:false
     };
     const referenceTmp=new THREE.Vector3();
     const referenceScaleTmp=new THREE.Vector3();
@@ -225,6 +235,7 @@
     function buildReferenceVisualProfile(points,batchIndex){
       const n=points.length,
             scale=new Float32Array(n),
+            softScale=new Float32Array(n),
             depth=new Float32Array(n),
             compression=new Float32Array(n),
             role=new Uint8Array(n),
@@ -250,18 +261,25 @@
         role[i]=r;
 
         let k, span, ox=0, oy=0, oz=0, s;
+        const localRadius=Math.hypot(p.position.x,p.position.y,p.position.z);
         if(r===I064_ROLE_PRIMARY){
-          k=I064_REFERENCE_VISUAL.coreCompression;
+          const rt=Math.min(1,localRadius/I064_REFERENCE_VISUAL.coreRadialKnee);
+          const re=rt*rt*(3-2*rt);
+          k=I064_REFERENCE_VISUAL.coreInnerCompression +
+            (I064_REFERENCE_VISUAL.coreCompression-I064_REFERENCE_VISUAL.coreInnerCompression)*re;
           span=I064_REFERENCE_VISUAL.coreDepthSpan;
           ox=I064_REFERENCE_VISUAL.primaryCenterX + (layer?0.55:-0.25);
           oy=I064_REFERENCE_VISUAL.primaryCenterY + (layer?0.35:-0.15);
           oz=I064_REFERENCE_VISUAL.primaryCenterZ + (layer?-1.2:0.7);
           /* The main core is mostly pinpoints and small bodies so its density
              remains readable instead of becoming a single colored mass. */
-          s=I064_REFERENCE_VISUAL.minParticleScale + 1.05*Math.pow(u0,2.15);
+          s=(I064_REFERENCE_VISUAL.minParticleScale + 1.05*Math.pow(u0,2.15))*(0.72+0.28*re);
           if(u0>0.955) s+=1.25*Math.pow((u0-0.955)/0.045,1.2);
         } else if(r===I064_ROLE_SATELLITE){
-          k=I064_REFERENCE_VISUAL.satelliteCompression;
+          const rt=Math.min(1,localRadius/I064_REFERENCE_VISUAL.satelliteRadialKnee);
+          const re=rt*rt*(3-2*rt);
+          k=I064_REFERENCE_VISUAL.satelliteInnerCompression +
+            (I064_REFERENCE_VISUAL.satelliteCompression-I064_REFERENCE_VISUAL.satelliteInnerCompression)*re;
           span=I064_REFERENCE_VISUAL.satelliteDepthSpan;
           ox=I064_REFERENCE_VISUAL.satelliteCenterX + (layer?0.65:0);
           oy=I064_REFERENCE_VISUAL.satelliteCenterY + (layer?-0.45:0.25);
@@ -288,6 +306,9 @@
         }
         if(s>I064_REFERENCE_VISUAL.maxParticleScale) s=I064_REFERENCE_VISUAL.maxParticleScale;
         scale[i]=s*(recip && r!==I064_ROLE_FOREGROUND?1.05:1);
+        softScale[i]=(r===I064_ROLE_FOREGROUND)
+          ? scale[i]*I064_REFERENCE_VISUAL.foregroundHaloScale
+          : 0;
         compression[i]=k;
         depth[i]=(u1-0.5)*span;
         const o=i*3; offset[o]=ox; offset[o+1]=oy; offset[o+2]=oz;
@@ -296,14 +317,26 @@
            preserves both the dark colored bodies and vivid candy-like points
            visible in the references while avoiding a washed-out white core. */
         const hue=((q144%144)+144)%144/144;
-        const sat=0.76+0.24*((h>>>8)&255)/255;
-        let light=0.38+0.28*((h>>>24)&255)/255;
-        if(u3<0.14) light*=0.72;
-        else if(u3>0.90) light=Math.min(0.72,light+0.08);
+        let sat=0.78+0.22*((h>>>8)&255)/255;
+        let light=0.36+0.30*((h>>>24)&255)/255;
+        if(u3<I064_REFERENCE_VISUAL.neutralColorFraction){
+          /* The supplied stills contain a small ivory/lavender/grey population.
+             Retain Q144 hue identity while reducing presentation saturation. */
+          sat=0.12+0.30*u1;
+          light=0.53+0.19*u0;
+        } else if(u3<I064_REFERENCE_VISUAL.neutralColorFraction+I064_REFERENCE_VISUAL.dimColorFraction){
+          /* Dark green/brown/blue bodies create the same deep-field layering
+             without adding global fog or bloom. */
+          sat=0.48+0.38*u0;
+          light=0.18+0.22*u1;
+        } else if(u3>0.92){
+          sat=0.52+0.38*u1;
+          light=Math.min(0.74,0.58+0.15*u0);
+        }
         particleBatchColor.setHSL(hue,sat,light);
         rgb[o]=particleBatchColor.r; rgb[o+1]=particleBatchColor.g; rgb[o+2]=particleBatchColor.b;
       }
-      return {scale,depth,compression,role,offset,rgb};
+      return {scale,softScale,depth,compression,role,offset,rgb};
     }
     function referenceEase(x){ x=Math.max(0,Math.min(1,x)); return x*x*(3-2*x); }
     function updateReferenceCamera(nowMs){
@@ -342,12 +375,17 @@
       referenceMotion.on=force===undefined ? !referenceMotion.on : !!force;
       referenceMotion.startMs=performance.now();
       if(referenceMotion.on){
+        referenceMotion.projectionFrozen=false;
         chase.on=false;
         const cb=document.getElementById("chaseBtn");
         if(cb) cb.textContent="ChaseCam (C)";
       } else if(!chase.on){
-        /* "Static" has a defined acceptance view rather than freezing at an
-           arbitrary point inside the cinematic camera cycle. */
+        /* Static presentation now freezes the projected particle matrices as
+           well as the camera. Physics/receipts continue underneath; only the
+           presentation snapshot stops changing. */
+        referenceMotion.projectionFrozen=false;
+        syncParticleRenderBatches(true);
+        referenceMotion.projectionFrozen=I064_REFERENCE_VISUAL.freezeStaticProjection;
         applyReferenceStaticCamera();
       }
       if(controls) controls.enabled=!referenceMotion.on && !chase.on;
@@ -366,22 +404,37 @@
         new THREE.MeshBasicMaterial({color:0xffffff, toneMapped:false}),
         points.length
       );
+      const softMesh=new THREE.InstancedMesh(
+        geometry,
+        new THREE.MeshBasicMaterial({
+          color:0xffffff,
+          toneMapped:false,
+          transparent:true,
+          opacity:I064_REFERENCE_VISUAL.foregroundHaloOpacity,
+          depthWrite:false
+        }),
+        points.length
+      );
       mesh.frustumCulled=false;
+      softMesh.frustumCulled=false;
       if(mesh.instanceMatrix && typeof mesh.instanceMatrix.setUsage==="function" &&
          THREE.DynamicDrawUsage!==undefined) mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      if(softMesh.instanceMatrix && typeof softMesh.instanceMatrix.setUsage==="function" &&
+         THREE.DynamicDrawUsage!==undefined) softMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       group.add(mesh);
+      group.add(softMesh);
       const profile=buildReferenceVisualProfile(points,particleRenderBatches.length);
-      const batch={mesh,points,profile,group};
+      const batch={mesh,softMesh,points,profile,group};
       particleRenderBatches.push(batch);
       for(let i=0;i<points.length;i++) points[i].visible=false;
       syncParticleRenderBatch(batch);
       return batch;
     }
     function syncParticleRenderBatch(batch){
-      const mesh=batch.mesh, points=batch.points, profile=batch.profile, group=batch.group;
+      const mesh=batch.mesh, softMesh=batch.softMesh, points=batch.points, profile=batch.profile, group=batch.group;
       const gx=group?group.position.x:0, gy=group?group.position.y:0, gz=group?group.position.z:0;
       for(let i=0;i<points.length;i++){
-        const q=points[i].position, k=profile.compression[i], s=profile.scale[i], o=i*3;
+        const p=points[i], q=p.position, k=profile.compression[i], s=profile.scale[i], o=i*3;
         /* q is group-local authoritative state. Read the physical world point,
            compose the reference scene in world-like coordinates, then subtract
            the parent translation so the InstancedMesh parent does not add the
@@ -395,8 +448,22 @@
         referenceScaleTmp.set(s,s,s);
         particleBatchMatrix.compose(particleBatchPosition,referenceQuat,referenceScaleTmp);
         mesh.setMatrixAt(i,particleBatchMatrix);
-        particleBatchColor.setRGB(profile.rgb[o],profile.rgb[o+1],profile.rgb[o+2]);
-        mesh.setColorAt(i,particleBatchColor);
+        if(profile && profile.rgb){
+          particleBatchColor.setRGB(profile.rgb[o],profile.rgb[o+1],profile.rgb[o+2]);
+          mesh.setColorAt(i,particleBatchColor);
+        } else {
+          /* Frozen I057 fallback: if the reference profile is unavailable,
+             projection returns to the logical particle's material color. */
+          mesh.setColorAt(i,p.material.color);
+        }
+        if(softMesh){
+          const hs=profile.softScale[i];
+          referenceScaleTmp.set(hs,hs,hs);
+          particleBatchMatrix.compose(particleBatchPosition,referenceQuat,referenceScaleTmp);
+          softMesh.setMatrixAt(i,particleBatchMatrix);
+          particleBatchColor.setRGB(profile.rgb[o],profile.rgb[o+1],profile.rgb[o+2]);
+          softMesh.setColorAt(i,particleBatchColor);
+        }
       }
       mesh.instanceMatrix.needsUpdate=true;
       if(mesh.instanceColor){
@@ -404,8 +471,17 @@
            THREE.DynamicDrawUsage!==undefined) mesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
         mesh.instanceColor.needsUpdate=true;
       }
+      if(softMesh){
+        softMesh.instanceMatrix.needsUpdate=true;
+        if(softMesh.instanceColor){
+          if(typeof softMesh.instanceColor.setUsage==="function" &&
+             THREE.DynamicDrawUsage!==undefined) softMesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
+          softMesh.instanceColor.needsUpdate=true;
+        }
+      }
     }
-    function syncParticleRenderBatches(){
+    function syncParticleRenderBatches(force){
+      if(referenceMotion.projectionFrozen && !force) return;
       for(let i=0;i<particleRenderBatches.length;i++) syncParticleRenderBatch(particleRenderBatches[i]);
     }
 
@@ -3573,6 +3649,7 @@
         chase.pos.set(thPos[ix]-2, thPos[ix+1]+1, thPos[ix+2]+2);
         chase.look.set(thPos[ix], thPos[ix+1], thPos[ix+2]);
         referenceMotion.on=false;
+        referenceMotion.projectionFrozen=false;
         controls.enabled=false;
         const rb=document.getElementById("referenceMotionBtn");
         if(rb) rb.textContent="Reference Motion paused (V)";
