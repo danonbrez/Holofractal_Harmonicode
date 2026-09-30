@@ -23,7 +23,7 @@ import json
 from typing import Any, Iterable, Sequence
 
 SCHEMA = "HHS_PASS219_HNAN_4X4_RECURSIVE_GATE_V1"
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 SERIALIZED_4X4 = (
     0, 0, 0, 1,
@@ -87,6 +87,45 @@ HNAN_EPSILON = (
 )
 HNAN_TERMINAL_XY_EPSILON = ("Sum", XY, HNAN_EPSILON)
 HNAN_TERMINAL_SOURCE = "xy+epsilon"
+
+# QGU transport has two synchronized views:
+# 1. the inherited ordered symbolic kernel
+#      R_K^QGU(q) = (xy + c*q^2 + d*q^4) / (xy + c*q^2)
+# 2. the executable phase-ring displacement
+#      delta = (c*q^2 + d*q^4) mod 72
+# The ratio AST is retained as provenance and is never scalar-cancelled into
+# the additive projection.  The additive projection is the VM phase transport.
+PHASE_RING = 72
+QGU_CQ2 = ("Product", "c", ("Power", "q", 2))
+QGU_DQ4 = ("Product", "d", ("Power", "q", 4))
+QGU_DELTA_SUM = ("Sum", QGU_CQ2, QGU_DQ4)
+QGU_DELTA = ("Mod", QGU_DELTA_SUM, PHASE_RING)
+QGU_TRANSPORT_KERNEL = (
+    "Quotient",
+    ("Sum", XY, QGU_CQ2, QGU_DQ4),
+    ("Sum", XY, QGU_CQ2),
+)
+QGU_TRANSPORT_KERNEL_SOURCE = (
+    "R_K^QGU(q)=(xy+cq^2+dq^4)/(xy+cq^2)"
+)
+QGU_DELTA_SOURCE = "delta=(c*q^2+d*q^4) mod 72"
+
+# QGU acts as transport over the existing ordered tensor.  It does not replace
+# or rewrite any x/y/z/w cell; each cell is wrapped with the same typed
+# phase-ring displacement so ordered products remain visible and distinct.
+QGU_TRANSPORTED_LO_SHU_TENSOR = tuple(
+    tuple(("PhaseTransportMod72", cell, QGU_DELTA) for cell in row)
+    for row in HNAN_LO_SHU_TENSOR
+)
+QGU_HNAN_GATE_10 = ("PhaseTransportMod72", HNAN_GATE_10, QGU_DELTA)
+QGU_HNAN_TERMINAL = (
+    "PhaseTransportMod72",
+    HNAN_TERMINAL_XY_EPSILON,
+    QGU_DELTA,
+)
+QGU_HNAN_TERMINAL_SOURCE = (
+    "PhaseTransportMod72(xy+epsilon,(c*q^2+d*q^4) mod 72)"
+)
 
 HNAN_ZERO_CLOSURE_SOURCE = "0=∅=AB/P⁴∅=HNAN"
 M01_JORDAN_STRUCTURE = (
@@ -169,9 +208,117 @@ def hnan_gate(lhs: int, rhs: int) -> tuple[Any, ...]:
     return HNAN_GATE_10
 
 
+def _exact_phase_int(name: str, value: Any) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise HNANGateError(f"{name} must be an exact integer")
+    return value
+
+
+def qgu_phase_delta(q: int, c: int, d: int) -> int:
+    """Return the exact QGU additive transport excess in the 72-phase ring."""
+    qv = _exact_phase_int("q", q)
+    cv = _exact_phase_int("c", c)
+    dv = _exact_phase_int("d", d)
+    return (cv * qv**2 + dv * qv**4) % PHASE_RING
+
+
+def qgu_transport_phase(phase: int, q: int, c: int, d: int) -> int:
+    """Apply QGU as additive phase transport without evaluating native xy."""
+    pv = _exact_phase_int("phase", phase)
+    return (pv + qgu_phase_delta(q, c, d)) % PHASE_RING
+
+
+def qgu_inverse_transport_phase(phase: int, q: int, c: int, d: int) -> int:
+    """Invert the additive phase projection with the same exact QGU witness."""
+    pv = _exact_phase_int("phase", phase)
+    return (pv - qgu_phase_delta(q, c, d)) % PHASE_RING
+
+
+def qgu_hnan_transport_receipt() -> dict[str, Any]:
+    """Validate QGU transport binding over the complete ordered HNAN tensor."""
+    transported = QGU_TRANSPORTED_LO_SHU_TENSOR
+    expected = tuple(
+        tuple(("PhaseTransportMod72", cell, QGU_DELTA) for cell in row)
+        for row in HNAN_LO_SHU_TENSOR
+    )
+    checks = {
+        "phase_ring_72": PHASE_RING == 72,
+        "qgu_delta_ast_exact":
+            QGU_DELTA == ("Mod", ("Sum", QGU_CQ2, QGU_DQ4), 72),
+        "qgu_kernel_ast_exact":
+            QGU_TRANSPORT_KERNEL == (
+                "Quotient",
+                ("Sum", XY, QGU_CQ2, QGU_DQ4),
+                ("Sum", XY, QGU_CQ2),
+            ),
+        "qgu_kernel_ratio_not_scalar_cancelled":
+            QGU_TRANSPORT_KERNEL[0] == "Quotient",
+        "transported_tensor_shape_3x3":
+            tuple(map(len, transported)) == (3, 3, 3),
+        "transported_tensor_wraps_exact_base": transported == expected,
+        "transported_center_wraps_hnan_numerator":
+            transported[1][1] == (
+                "PhaseTransportMod72",
+                HNAN_NUMERATOR,
+                QGU_DELTA,
+            ),
+        "transport_preserves_xy_yx_distinction":
+            transported[0][0][1] == XY
+            and transported[0][2][1] == YX
+            and transported[0][0][1] != transported[0][2][1],
+        "transport_preserves_zw_wz_distinction":
+            transported[2][2][1] == ZW
+            and transported[2][0][1] == WZ
+            and transported[2][2][1] != transported[2][0][1],
+        "hnan_gate_transport_preserves_emptyset":
+            QGU_HNAN_GATE_10[1] == HNAN_GATE_10
+            and QGU_HNAN_GATE_10[1][-1] == "EmptySet",
+        "terminal_transports_xy_plus_epsilon":
+            QGU_HNAN_TERMINAL[1] == HNAN_TERMINAL_XY_EPSILON,
+        "terminal_does_not_drop_epsilon":
+            QGU_HNAN_TERMINAL[1] != XY,
+        "numeric_delta_projection_exact":
+            qgu_phase_delta(1, 1, 1) == 2,
+        "q_period_72_preserved":
+            qgu_phase_delta(5, 3, 7) == qgu_phase_delta(77, 3, 7),
+        "additive_transport_has_exact_inverse":
+            qgu_inverse_transport_phase(
+                qgu_transport_phase(41, 5, 3, 7),
+                5,
+                3,
+                7,
+            ) == 41,
+    }
+    payload = {
+        "schema": "HHS_PASS219_HNAN_QGU_TRANSPORT_RECEIPT_V1",
+        "status": "PASS" if all(checks.values()) else "FAIL",
+        "checks": checks,
+        "phase_ring": PHASE_RING,
+        "qgu_transport_kernel": QGU_TRANSPORT_KERNEL,
+        "qgu_transport_kernel_source": QGU_TRANSPORT_KERNEL_SOURCE,
+        "qgu_delta": QGU_DELTA,
+        "qgu_delta_source": QGU_DELTA_SOURCE,
+        "base_tensor": HNAN_LO_SHU_TENSOR,
+        "transported_tensor": transported,
+        "transported_gate": QGU_HNAN_GATE_10,
+        "base_terminal": HNAN_TERMINAL_XY_EPSILON,
+        "transported_terminal": QGU_HNAN_TERMINAL,
+        "transported_terminal_source": QGU_HNAN_TERMINAL_SOURCE,
+        "ratio_kernel_scalar_cancellation_authorized": False,
+        "ordered_product_commutation_authorized": False,
+        "epsilon_elision_authorized": False,
+        "host_float_authority": False,
+    }
+    payload["receipt_sha256"] = sha256(
+        _stable(payload).encode("utf-8")
+    ).hexdigest()
+    return payload
+
+
 def hnan_loshu_resolution_receipt() -> dict[str, Any]:
-    """Validate the ordered HNAN Lo Shu tensor and xy+epsilon closure."""
+    """Validate the ordered HNAN Lo Shu tensor, residual, and QGU transport."""
     tensor = HNAN_LO_SHU_TENSOR
+    qgu = qgu_hnan_transport_receipt()
     checks = {
         "tensor_shape_3x3": tuple(map(len, tensor)) == (3, 3, 3),
         "top_row_order_exact": tensor[0] == (
@@ -199,6 +346,7 @@ def hnan_loshu_resolution_receipt() -> dict[str, Any]:
             "Residual",
             "epsilon",
         ),
+        "qgu_transport_pass": qgu["status"] == "PASS",
     }
     payload = {
         "schema": "HHS_PASS219_HNAN_LO_SHU_XY_EPSILON_RECEIPT_V1",
@@ -211,6 +359,8 @@ def hnan_loshu_resolution_receipt() -> dict[str, Any]:
         "epsilon": HNAN_EPSILON,
         "terminal": HNAN_TERMINAL_XY_EPSILON,
         "terminal_source": HNAN_TERMINAL_SOURCE,
+        "qgu_transport": qgu,
+        "qgu_transport_required": True,
         "bare_xy_terminal_authorized": False,
         "epsilon_elision_authorized": False,
         "ordered_product_commutation_authorized": False,
@@ -489,6 +639,7 @@ def jordan_refinement_receipt() -> dict[str, Any]:
 
 def invariant_receipt() -> dict[str, Any]:
     jordan = jordan_refinement_receipt()
+    qgu = qgu_hnan_transport_receipt()
     loshu = hnan_loshu_resolution_receipt()
     checks = {
         "serialized_length_16": len(SERIALIZED_4X4) == 16,
@@ -505,6 +656,7 @@ def invariant_receipt() -> dict[str, Any]:
             materialize_xy_view() == materialize_xy_view_reference(),
         "jordan_refinement_pass": jordan["status"] == "PASS",
         "hnan_loshu_xy_epsilon_pass": loshu["status"] == "PASS",
+        "hnan_qgu_transport_pass": qgu["status"] == "PASS",
     }
     payload = {
         "schema": SCHEMA,
@@ -519,7 +671,9 @@ def invariant_receipt() -> dict[str, Any]:
         "hnan_zero_closure_source": HNAN_ZERO_CLOSURE_SOURCE,
         "jordan_refinement": jordan,
         "hnan_loshu_resolution": loshu,
+        "hnan_qgu_transport": qgu,
         "hnan_terminal_source": HNAN_TERMINAL_SOURCE,
+        "hnan_qgu_terminal_source": QGU_HNAN_TERMINAL_SOURCE,
         "canonical_vm81_mutation_authority": False,
         "canonical_hash72_authority": False,
         "canonical_hash216_authority": False,
@@ -542,6 +696,18 @@ __all__ = [
     "HNAN_TERMINAL_XY_EPSILON",
     "HNAN_TERMINAL_SOURCE",
     "HNAN_ZERO_CLOSURE_SOURCE",
+    "PHASE_RING",
+    "QGU_CQ2",
+    "QGU_DQ4",
+    "QGU_DELTA_SUM",
+    "QGU_DELTA",
+    "QGU_TRANSPORT_KERNEL",
+    "QGU_TRANSPORT_KERNEL_SOURCE",
+    "QGU_DELTA_SOURCE",
+    "QGU_TRANSPORTED_LO_SHU_TENSOR",
+    "QGU_HNAN_GATE_10",
+    "QGU_HNAN_TERMINAL",
+    "QGU_HNAN_TERMINAL_SOURCE",
     "M01_JORDAN_STRUCTURE",
     "MXY_GENERIC_CHANNELS",
     "MXY_GENERIC_CONDITIONS",
@@ -558,6 +724,10 @@ __all__ = [
     "deserialize_4x4",
     "hnan_gate",
     "hnan_loshu_resolution_receipt",
+    "qgu_phase_delta",
+    "qgu_transport_phase",
+    "qgu_inverse_transport_phase",
+    "qgu_hnan_transport_receipt",
     "invariant_receipt",
     "jordan_refinement_receipt",
     "materialize_xy_view",

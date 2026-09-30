@@ -1,0 +1,22 @@
+{
+  "schema": "HHS_PASS219_HNAN_QGU_TRANSPORT_WOLFRAM_20260930_V1",
+  "status": "PASS",
+  "check_count": 11,
+  "pass_count": 11,
+  "failed": [],
+  "phase_ring": 72,
+  "bounded_complete_residue_scan": true,
+  "q_period_72_complete_residue_scan": true,
+  "additive_inverse_complete_phase_scan": true,
+  "kernel_ast_exact": true,
+  "delta_ast_exact": true,
+  "transported_tensor_rows_3x3": true,
+  "transported_center_wraps_hnan_numerator": true,
+  "xy_yx_order_preserved": true,
+  "zw_wz_order_preserved": true,
+  "epsilon_terminal_preserved": true,
+  "ratio_kernel_scalar_cancellation_authorized": false,
+  "ordered_product_commutation_authorized": false,
+  "epsilon_elision_authorized": false,
+  "host_float_authority": false
+}

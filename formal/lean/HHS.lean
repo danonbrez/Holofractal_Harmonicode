@@ -9,6 +9,7 @@ import HHS.Mathlib.Rat.ValueLaws
 import HHS.Mathlib.Rat.ValueAlgebra
 import HHS.Alignment.ReciprocalTensor
 import HHS.Provenance.OriginMarker
+import HHS.Pass219.QGUHNANTransport
 
 namespace HHS
 

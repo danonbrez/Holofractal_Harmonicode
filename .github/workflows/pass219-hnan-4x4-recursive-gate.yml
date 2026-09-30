@@ -7,10 +7,13 @@ on:
       - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
       - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
       - 'tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py'
+      - 'tests/pass219/test_pass219_hnan_qgu_transport_v1.py'
       - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
       - 'benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.wl'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_qgu_transport_wolfram_20260930_v1.wl'
+      - 'evidence/pass219/hnan_qgu_transport_wolfram_20260930_v1.output.json'
       - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.wl'
       - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json'
       - 'evidence/pass219/hnan_4x4_recursive_gate_python_benchmark_20260926_v1.json'
@@ -25,10 +28,13 @@ on:
       - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
       - 'hhs_runtime/pass219/lane5_genesis_orientation_u9_qe_bridge.py'
       - 'tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py'
+      - 'tests/pass219/test_pass219_hnan_qgu_transport_v1.py'
       - 'tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py'
       - 'benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.wl'
       - 'evidence/pass219/hnan_4x4_recursive_gate_wolfram_20260926_v1.output.json'
+      - 'evidence/pass219/hnan_qgu_transport_wolfram_20260930_v1.wl'
+      - 'evidence/pass219/hnan_qgu_transport_wolfram_20260930_v1.output.json'
       - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.wl'
       - 'evidence/pass219/hnan_4x4_jordan_refinement_wolfram_20260926_v1.output.json'
       - 'evidence/pass219/hnan_4x4_recursive_gate_python_benchmark_20260926_v1.json'
@@ -60,12 +66,14 @@ jobs:
           python -m py_compile \
             hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py \
             tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
+            tests/pass219/test_pass219_hnan_qgu_transport_v1.py \
             benchmarks/pass219/hnan_4x4_recursive_gate_benchmark.py
 
       - name: Run HNAN and inherited center regressions
         run: |
           PYTHONPATH="$PWD" python -m pytest -q \
             tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
+            tests/pass219/test_pass219_hnan_qgu_transport_v1.py \
             tests/pass219/test_pass219_lane5_genesis_orientation_u9_qe_bridge.py
 
       - name: Verify frozen Wolfram evidence
@@ -81,6 +89,23 @@ jobs:
           assert data["failed"] == []
           assert data["xy_yx_distinct"] is True
           assert data["zw_wz_distinct"] is True
+
+          qgu = Path(
+              "evidence/pass219/"
+              "hnan_qgu_transport_wolfram_20260930_v1.output.json"
+          )
+          qgu_proof = json.loads(qgu.read_text(encoding="utf-8"))
+          assert qgu_proof["status"] == "PASS"
+          assert qgu_proof["check_count"] == 11
+          assert qgu_proof["pass_count"] == 11
+          assert qgu_proof["failed"] == []
+          assert qgu_proof["phase_ring"] == 72
+          assert qgu_proof["bounded_complete_residue_scan"] is True
+          assert qgu_proof["q_period_72_complete_residue_scan"] is True
+          assert qgu_proof["additive_inverse_complete_phase_scan"] is True
+          assert qgu_proof["xy_yx_order_preserved"] is True
+          assert qgu_proof["zw_wz_order_preserved"] is True
+          assert qgu_proof["epsilon_terminal_preserved"] is True
 
           jordan = Path(
               "evidence/pass219/"
