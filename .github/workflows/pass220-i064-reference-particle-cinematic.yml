@@ -1,266 +1,58 @@
-name: Pass 220 I064 Reference Particle Cinematic
+name: Pass 220 I064 ParticleSimulation invariant repair
 
 on:
   push:
+    branches:
+      - pass220/i064-reference-particle-cinematic-20260929
     paths:
-      - "examples/ParticleSimulation.html"
-      - "tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py"
-      - "docs/pass220/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC.md"
-      - "docs/operations/restart/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_RESTART_20260929.md"
-      - ".github/workflows/pass220-i064-reference-particle-cinematic.yml"
+      - examples/ParticleSimulation.html
+      - tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+      - tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+      - .github/workflows/pass220-i064-reference-particle-cinematic.yml
   pull_request:
     paths:
-      - "examples/ParticleSimulation.html"
-      - "tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py"
-      - "docs/pass220/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC.md"
-      - "docs/operations/restart/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_RESTART_20260929.md"
-      - ".github/workflows/pass220-i064-reference-particle-cinematic.yml"
+      - examples/ParticleSimulation.html
+      - tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+      - tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+      - .github/workflows/pass220-i064-reference-particle-cinematic.yml
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  reference-cinematic:
+  invariant:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout full history
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Prove repaired I063 ancestry
+      - name: Verify exact I064 parent ancestry
         run: |
-          git merge-base --is-ancestor             c8cab5b215e4d461e7829e5b6aac69f9afd4254e             HEAD
+          git merge-base --is-ancestor c8cab5b215e4d461e7829e5b6aac69f9afd4254e HEAD
 
-      - name: Install dependency-scoped Python requirement
-        run: python -m pip install --disable-pip-version-check pytest
-
-      - name: Parse canonical inline browser JavaScript
+      - name: Check inline JavaScript syntax
         run: |
           python - <<'PY'
+          from pathlib import Path
           import re
-          from pathlib import Path
-
-          html = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
-          scripts = re.findall(
-              r"<script(?![^>]*\bsrc\s*=)[^>]*>(.*?)</script>",
-              html,
-              flags=re.I | re.S,
-          )
-          assert scripts, "no inline scripts found"
-          Path("/tmp/i064-inline.js").write_text(
-              "\n;\n".join(scripts),
-              encoding="utf-8",
-          )
-          PY
-          node --check /tmp/i064-inline.js
-
-      - name: Prove authoritative physics is byte-identical to I064 parent
-        run: |
-          git show             c8cab5b215e4d461e7829e5b6aac69f9afd4254e:examples/ParticleSimulation.html             > /tmp/i064-parent.html
-          python - <<'PY'
-          from pathlib import Path
-
-          parent = Path("/tmp/i064-parent.html").read_text(encoding="utf-8")
-          current = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
-
-          def extract_function(text: str, name: str) -> str:
-              needle = f"function {name}("
-              start = text.index(needle)
-              brace = text.index("{", start)
-              i = brace
-              depth = 0
-              quote = None
-              line_comment = False
-              block_comment = False
-              escape = False
-
-              while i < len(text):
-                  ch = text[i]
-                  nx = text[i + 1] if i + 1 < len(text) else ""
-
-                  if line_comment:
-                      if ch == "\n":
-                          line_comment = False
-                      i += 1
-                      continue
-
-                  if block_comment:
-                      if ch == "*" and nx == "/":
-                          block_comment = False
-                          i += 2
-                      else:
-                          i += 1
-                      continue
-
-                  if quote is not None:
-                      if escape:
-                          escape = False
-                      elif ch == "\\":
-                          escape = True
-                      elif ch == quote:
-                          quote = None
-                      i += 1
-                      continue
-
-                  if ch == "/" and nx == "/":
-                      line_comment = True
-                      i += 2
-                      continue
-                  if ch == "/" and nx == "*":
-                      block_comment = True
-                      i += 2
-                      continue
-                  if ch in ("'", '"', "`"):
-                      quote = ch
-                      i += 1
-                      continue
-
-                  if ch == "{":
-                      depth += 1
-                  elif ch == "}":
-                      depth -= 1
-                      if depth == 0:
-                          return text[start:i + 1]
-                  i += 1
-
-              raise AssertionError(f"unterminated function {name}")
-
-          protected = (
-              "hnanGate",
-              "updateSwarmCoupling",
-              "updateSpiralParticles",
-              "constructorScan",
-              "virtualDecay",
-              "rebuildBondIndex",
-              "addBond",
-              "addConstructionBond",
-          )
-          for name in protected:
-              before = extract_function(parent, name)
-              after = extract_function(current, name)
-              assert after == before, f"I064 changed authoritative function: {name}"
-
-          sim_start = parent.index("const simParams = {")
-          sim_end = parent.index("const DEBUG_MODE", sim_start)
-          cur_sim_start = current.index("const simParams = {")
-          cur_sim_end = current.index("const DEBUG_MODE", cur_sim_start)
-          assert current[cur_sim_start:cur_sim_end] == parent[sim_start:sim_end], (
-              "I064 changed authoritative simulation parameters"
-          )
-          PY
-
-      - name: Run corrected I064 projection and camera regression
-        env:
-          PYTHONPATH: .
-        run: >
-          python -m pytest -q
-          tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
-
-      - name: Re-run frozen I057 ParticleSimulation performance regression
-        env:
-          PYTHONPATH: .
-        run: >
-          python -m pytest -q
-          tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
-
-      - name: Enforce live projection and user camera authority
-        run: |
-          python - <<'PY'
-          from pathlib import Path
 
           text = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
-          visual = text[
-              text.index("const I064_REFERENCE_VISUAL"):
-              text.index("const particleRenderBatches=[]")
-          ]
-
-          required = (
-              'schema:"HHS_PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_V1"',
-              "logicalParticleMutation:false",
-              "canonicalMutationAuthority:false",
-              "manualZoom:true",
-              "boundaryOrbitAvailable:true",
-              "defaultBoundaryOrbit:false",
-              "continuousProjectionSync:true",
-              "coreCompression:0.20",
-              "satelliteCompression:0.115",
-              "haloCompression:0.50",
-              "foregroundCompression:0.72",
-              "coreDepthSpan:12.0",
-              "satelliteDepthSpan:5.5",
-              "haloDepthSpan:19.0",
-              "foregroundDepthSpan:25.0",
-              "primaryCenterX:-0.4",
-              "primaryCenterY:3.9",
-              "satelliteCenterX:-12.5",
-              "satelliteCenterY:14.5",
-              "satelliteFraction:0.10",
-              "haloFraction:0.15",
-              "foregroundFraction:0.045",
-              "minParticleScale:0.30",
-              "maxParticleScale:7.25",
-              "referenceFov:60",
-              "function captureBoundaryOrbitFromCamera",
-              "function updateBoundaryOrbitCamera",
-              "function originalReferenceParticlePosition",
-              "function updateReferenceFollowCamera",
-              "function toggleReferenceFollow",
-              "function syncParticleRenderBatches()",
-              "I064_ROLE_PRIMARY",
-              "I064_ROLE_SATELLITE",
-              "I064_ROLE_HALO",
-              "I064_ROLE_FOREGROUND",
-              "autoHideChrome:true",
-              "chromeIdleMs:1800",
-              "function setReferenceChromeVisible",
-              "function toggleReferenceChromePin",
-              "background: #000",
-          )
-          for token in required:
-              assert token in text, token
-
-          forbidden = (
-              "freezeStaticProjection",
-              "projectionFrozen",
-              "ingressCameraZ",
-              "function updateReferenceCamera",
-              "function applyReferenceStaticCamera",
-          )
-          for token in forbidden:
-              assert token not in text, token
-
-          follow = text[
-              text.index("function originalReferenceParticlePosition"):
-              text.index("function resetReferenceFollow")
-          ]
-          for token in (
-              "thPos",
-              "thVel",
-              "updateSwarmCoupling",
-              "bond",
-              "bary",
-              "collision",
-              "constructor",
-              "particles[",
-          ):
-              assert token not in follow, token
-
-          assert "Math.random" not in visual
-          assert (
-              'schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"'
-              in text
-          )
-          assert (
-              "for(let s=0;s<steps;s++){ updateSpiralParticles(); "
-              "time += simParams.evolutionSpeed * simParams.timeDilationFactor; }"
-              in text
-          )
-          assert "renderGate=((renderTick%4)===0);" in text
+          blocks = re.findall(r"<script(?:\s[^>]*)?>([\s\S]*?)</script>", text, flags=re.I)
+          Path("/tmp/particle-inline.js").write_text("\n".join(blocks), encoding="utf-8")
           PY
+          node --check /tmp/particle-inline.js
+
+      - name: Prove every inherited function is byte-identical
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+
+      - name: Re-run frozen I057 performance regression
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
