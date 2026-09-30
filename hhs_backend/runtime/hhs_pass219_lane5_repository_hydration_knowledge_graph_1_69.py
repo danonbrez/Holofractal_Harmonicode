@@ -13,6 +13,7 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import sqlite3
+import subprocess
 from typing import Any, Mapping, Sequence
 
 from hhs_runtime.pass191.repository_hydration import _hash216
@@ -119,6 +120,19 @@ def _ctor(path: str, name: str, kind: str, language: str, line: int, symbol: str
         "automatic_composition_promotion": False,
         "automatic_superedge_promotion": False,
     }
+    if source_ref is not None:
+        body.update({
+            "source_ref": source_ref,
+            "source_commit": str(source_commit or ""),
+            "source_state": str(source_state or "REPOSITORY_REF"),
+            "closure_state": "UNRESOLVED",
+            "integration_evidence": "STATIC_GIT_OBJECT_DISCOVERY_ONLY",
+            "ref_source_executed": False,
+        })
+        body["node_id"] = (
+            f"capability:repository-ref:{source_ref}@{source_commit}:"
+            f"{kind.lower()}:{path}#{symbol}:{line}"
+        )
     body["hash216"] = _h216("HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-CONSTRUCTOR-1.69", body)
     return body
 
@@ -175,6 +189,10 @@ def _callable_capability(
     line: int,
     symbol: str,
     evidence: Sequence[str],
+    *,
+    source_ref: str | None = None,
+    source_commit: str | None = None,
+    source_state: str | None = None,
 ) -> dict[str, Any]:
     """Create visibility evidence without inventing demo/config/adapter restrictions."""
     body = {
@@ -277,6 +295,169 @@ def discover_repository_callable_capabilities(
     return [unique[key] for key in sorted(unique)]
 
 
+
+def _git(repo_root: Path, *args: str, check: bool = True) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "-C", str(repo_root), *args],
+            check=check,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="surrogateescape",
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+    return completed.stdout.strip()
+
+
+def _repository_candidate_refs(repo_root: Path) -> list[tuple[str, str, str]]:
+    """Return branch/PR refs as provenance only; never checkout or execute them."""
+    head = _git(repo_root, "rev-parse", "HEAD")
+    rows = _git(
+        repo_root,
+        "for-each-ref",
+        "--format=%(refname)%09%(objectname)",
+        "refs/remotes/origin",
+        "refs/remotes/pull",
+    )
+    found: list[tuple[str, str, str]] = []
+    for raw in rows.splitlines():
+        parts = raw.split("\t", 1)
+        if len(parts) != 2:
+            continue
+        ref_name, commit = parts[0].strip(), parts[1].strip()
+        if not ref_name or not commit or ref_name.endswith("/HEAD") or commit == head:
+            continue
+        state = (
+            "PULL_REQUEST_HEAD"
+            if ref_name.startswith("refs/remotes/pull/")
+            else "BRANCH_HEAD"
+        )
+        found.append((ref_name, commit, state))
+    return sorted(set(found))
+
+
+def _ref_changed_paths(repo_root: Path, commit: str) -> list[str]:
+    merge_base = _git(repo_root, "merge-base", "HEAD", commit)
+    if merge_base:
+        raw = _git(
+            repo_root,
+            "diff",
+            "--name-only",
+            "--diff-filter=ACMRT",
+            merge_base,
+            commit,
+            "--",
+        )
+    else:
+        raw = _git(repo_root, "ls-tree", "-r", "--name-only", commit)
+    return sorted({
+        path.strip()
+        for path in raw.splitlines()
+        if path.strip() and PurePosixPath(path.strip()).suffix.lower() in TEXT_SUFFIXES
+    })
+
+
+def _ref_text(repo_root: Path, commit: str, path: str) -> str | None:
+    size_text = _git(repo_root, "cat-file", "-s", f"{commit}:{path}")
+    try:
+        if not size_text or int(size_text) > 8 * 1024 * 1024:
+            return None
+    except ValueError:
+        return None
+    try:
+        completed = subprocess.run(
+            ["git", "-C", str(repo_root), "show", f"{commit}:{path}"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    raw = completed.stdout
+    if b"\0" in raw:
+        return None
+    return raw.decode("utf-8", "surrogateescape")
+
+
+def discover_repository_ref_callable_capabilities(
+    repo_root: str | Path,
+) -> list[dict[str, Any]]:
+    """Hydrate callable evidence from branch/PR Git objects without executing source."""
+    root = Path(repo_root).resolve()
+    if not (root / ".git").exists():
+        return []
+
+    found: list[dict[str, Any]] = []
+    for ref_name, commit, source_state in _repository_candidate_refs(root):
+        for path in _ref_changed_paths(root, commit):
+            suffix = PurePosixPath(path).suffix.lower()
+            text = _ref_text(root, commit, path)
+            if text is None:
+                continue
+            provenance = {
+                "source_ref": ref_name,
+                "source_commit": commit,
+                "source_state": source_state,
+            }
+            if suffix in {".py", ".pyi"}:
+                try:
+                    tree = ast.parse(text, filename=f"{ref_name}:{path}")
+                except (SyntaxError, ValueError):
+                    tree = None
+                if tree is not None:
+                    module = str(PurePosixPath(path).with_suffix("")).replace("/", ".")
+                    for node in tree.body:
+                        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                            found.append(_callable_capability(
+                                path, node.name, "PYTHON_FUNCTION", "python",
+                                node.lineno, f"{module}.{node.name}",
+                                ("STATIC_GIT_REF_AST_TOP_LEVEL_CALLABLE",),
+                                **provenance,
+                            ))
+                        elif isinstance(node, ast.ClassDef):
+                            for child in node.body:
+                                if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                                    found.append(_callable_capability(
+                                        path,
+                                        f"{node.name}.{child.name}",
+                                        "PYTHON_METHOD",
+                                        "python",
+                                        child.lineno,
+                                        f"{module}.{node.name}.{child.name}",
+                                        ("STATIC_GIT_REF_AST_CLASS_METHOD_CALLABLE",),
+                                        **provenance,
+                                    ))
+            elif suffix in {".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".hh"}:
+                for match in C_CPP_CALLABLE.finditer(text):
+                    symbol = match.group(1)
+                    found.append(_callable_capability(
+                        path, symbol, "C_CPP_FUNCTION", "c_cpp",
+                        _line(text, match.start()), symbol,
+                        ("STATIC_GIT_REF_C_CPP_FUNCTION_DEFINITION",),
+                        **provenance,
+                    ))
+            elif suffix in {".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx"}:
+                for match in JS_CALLABLE.finditer(text):
+                    symbol = match.group(1)
+                    found.append(_callable_capability(
+                        path, symbol, "JS_TS_FUNCTION", "js_ts",
+                        _line(text, match.start()), symbol,
+                        ("STATIC_GIT_REF_JS_TS_FUNCTION_DECLARATION",),
+                        **provenance,
+                    ))
+
+    unique: dict[str, dict[str, Any]] = {}
+    for node in found:
+        node_id = str(node["node_id"])
+        if node_id in unique and unique[node_id] != node:
+            raise ValueError(f"repository ref callable identity collision: {node_id}")
+        unique[node_id] = node
+    return [unique[key] for key in sorted(unique)]
+
+
 def _capability(raw: Mapping[str, Any]) -> dict[str, Any]:
     raw_id = str(raw.get("node_id", ""))
     if not raw_id:
@@ -361,8 +542,13 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
     repository_callable_capabilities = discover_repository_callable_capabilities(
         repo_root, dependency_graph
     )
+    repository_ref_capabilities = discover_repository_ref_callable_capabilities(
+        repo_root
+    )
     capabilities = sorted(
-        inherited_capabilities + repository_callable_capabilities,
+        inherited_capabilities
+        + repository_callable_capabilities
+        + repository_ref_capabilities,
         key=lambda x: str(x["node_id"]),
     )
     constructors = discover_repository_constructors(repo_root, dependency_graph)
@@ -373,7 +559,11 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
     caps_by_path, ctors_by_path = defaultdict(list), defaultdict(list)
     for node in capabilities:
         path = node.get("source_path")
-        if isinstance(path, str) and path in files:
+        if (
+            isinstance(path, str)
+            and path in files
+            and not node.get("source_ref")
+        ):
             caps_by_path[path].append(node)
     for node in constructors:
         if node["source_path"] in files:
@@ -405,6 +595,12 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
         "capabilities": len(capabilities),
         "inherited_lane5_capabilities": len(inherited_capabilities),
         "repository_static_callables": len(repository_callable_capabilities),
+        "repository_ref_static_callables": len(repository_ref_capabilities),
+        "repository_ref_heads": len({
+            str(node.get("source_ref"))
+            for node in repository_ref_capabilities
+            if node.get("source_ref")
+        }),
         "constructors": len(constructors),
         "knowledge_nodes": len(nodes),
         "knowledge_edges": len(edges),
@@ -437,6 +633,9 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
             "demo_reference_labels_inferred_from_kernel_restrictions": False,
             "configuration_or_adapter_requirements_must_be_evidenced": True,
             "discovery_executes_repository_callables": False,
+            "repository_branch_and_pr_refs_visible": True,
+            "repository_ref_source_executed": False,
+            "repository_ref_closure_state_preserved": True,
         },
         "authority": {
             "candidate_only": True,
