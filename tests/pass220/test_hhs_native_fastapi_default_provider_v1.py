@@ -143,6 +143,61 @@ print(json.dumps(status, sort_keys=True))
     assert status["selected"] == "native"
 
 
+def test_native_provider_supplies_framework_types_without_fastapi_or_pydantic() -> None:
+    source = r"""
+import builtins
+import json
+import os
+
+real_import = builtins.__import__
+
+def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+    if (
+        name == "fastapi"
+        or name.startswith("fastapi.")
+        or name == "pydantic"
+        or name.startswith("pydantic.")
+    ):
+        raise ModuleNotFoundError(f"No module named {name!r}", name=name)
+    return real_import(name, globals, locals, fromlist, level)
+
+builtins.__import__ = guarded_import
+os.environ.pop("HHS_FASTAPI_PROVIDER", None)
+os.environ.pop("HHS_LANE5_PROVIDER_FASTAPI", None)
+os.environ.pop("HHS_LANE5_PROVIDER_DEFAULT", None)
+
+from hhs_backend.runtime.hhs_fastapi_provider_v1 import BaseModel, HTTPException
+
+class Request(BaseModel):
+    expression: str
+    runtime_id: str = "main"
+
+request = Request(expression="x+y")
+assert request.expression == "x+y"
+assert request.runtime_id == "main"
+assert request.model_dump() == {"expression": "x+y", "runtime_id": "main"}
+
+error = HTTPException(status_code=409, detail={"status": "rejected"})
+assert error.status_code == 409
+assert error.detail == {"status": "rejected"}
+print(json.dumps({"base_model": BaseModel.__name__, "http_exception": HTTPException.__name__}))
+"""
+    result = _run_python(source)
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout.strip().splitlines()[-1])
+    assert payload == {
+        "base_model": "NativeBaseModel",
+        "http_exception": "NativeHTTPException",
+    }
+
+
+def test_retired_runtime_server_has_no_direct_fastapi_or_pydantic_import() -> None:
+    source = (ROOT / "hhs_backend/runtime/runtime_server.py").read_text(encoding="utf-8")
+    assert "from fastapi import" not in source
+    assert "from pydantic import" not in source
+    assert "hhs_fastapi_provider_v1 import" in source
+
+
 def test_explicit_external_provider_fails_closed_when_external_fastapi_is_absent() -> None:
     source = r"""
 import builtins
