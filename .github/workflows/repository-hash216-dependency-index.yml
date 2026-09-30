@@ -32,8 +32,8 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin \
             '+refs/heads/*:refs/remotes/origin/*' \
-            '+refs/pull/*/head:refs/remotes/pull/*'
-          echo "LANE5_STATIC_REF_COUNT=$(git for-each-ref --format='%(refname)' refs/remotes/origin refs/remotes/pull | wc -l)"
+            '+refs/pull/*/head:refs/remotes/hhs-pr/*'
+          echo "LANE5_STATIC_REF_COUNT=$(git for-each-ref --format='%(refname)' refs/remotes/origin refs/remotes/hhs-pr | wc -l)"
 
       - name: Install exact runtime build dependencies
         run: |
