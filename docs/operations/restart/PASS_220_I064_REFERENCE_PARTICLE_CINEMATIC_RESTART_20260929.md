@@ -144,6 +144,12 @@ Any I064 edit to those surfaces is a hard CI failure.
   — replace regression with live-motion/manual-camera/follow-path guards.
 - `ef1c8652915a0c3fb80b9505449f18e12d43b5ac`
   — exact-parent physics equality CI plus corrected camera invariants.
+- `72fdb71d36cfe083984069e40a2e242afc08aac0`
+  — rewrite I064 documentation around live motion/manual camera semantics.
+- `19e2b3a8f7e2912ba662c1ea44b60688af8b5bb9`
+  — restart checkpoint for the corrected camera/follow behavior.
+- `b85508cef004d5d5bf5658989b318c4bd111e6a6`
+  — repair CI constructor-bond function name to `addConstructionBond`.
 
 ## Files changed in corrective scope
 
@@ -170,9 +176,41 @@ The current I064 workflow requires:
 9. continuous render projection;
 10. no canonical authority escalation.
 
+## Direct parent-equality verification
+
+A repository-side comparison against exact I064 parent
+`c8cab5b215e4d461e7829e5b6aac69f9afd4254e` verified byte equality for:
+
+```text
+hnanGate                  true
+updateSwarmCoupling       true
+updateSpiralParticles     true
+constructorScan           true
+virtualDecay              true
+rebuildBondIndex          true
+addBond                   true
+addConstructionBond       true
+simParams                 true
+```
+
+Therefore the corrective HTML work has not modified those authoritative
+physics/motion surfaces.
+
 ## Remaining validation
 
-Hosted exact-head CI must run after this documentation checkpoint.
+Exact-head hosted workflow:
+
+```text
+run 36668200779
+head b85508cef004d5d5bf5658989b318c4bd111e6a6
+status queued at checkpoint
+```
+
+The local container cannot resolve github.com, so a local clone/test attempt
+could not execute. That environment limitation is not recorded as a code
+failure.
+
+Hosted exact-head CI remains the executable validation authority.
 
 A real browser visual check is still required for the supplied still-frame
 acceptance target.
