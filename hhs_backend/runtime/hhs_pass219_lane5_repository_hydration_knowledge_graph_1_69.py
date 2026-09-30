@@ -320,7 +320,7 @@ def _repository_candidate_refs(repo_root: Path) -> list[tuple[str, str, str]]:
         "for-each-ref",
         "--format=%(refname)%09%(objectname)",
         "refs/remotes/origin",
-        "refs/remotes/pull",
+        "refs/remotes/hhs-pr",
     )
     found: list[tuple[str, str, str]] = []
     for raw in rows.splitlines():
@@ -332,7 +332,7 @@ def _repository_candidate_refs(repo_root: Path) -> list[tuple[str, str, str]]:
             continue
         state = (
             "PULL_REQUEST_HEAD"
-            if ref_name.startswith("refs/remotes/pull/")
+            if ref_name.startswith("refs/remotes/hhs-pr/")
             else "BRANCH_HEAD"
         )
         found.append((ref_name, commit, state))
