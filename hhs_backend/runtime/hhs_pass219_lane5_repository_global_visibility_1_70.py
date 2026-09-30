@@ -296,7 +296,7 @@ def _provenance_class(raw: Mapping[str, Any]) -> str:
     if kind in {"PULL_REQUEST", "PR"} and state == "OPEN" and green:
         return "OPEN_GREEN_PR"
     if kind in {"PULL_REQUEST", "PR"} and state == "OPEN":
-        return "OPEN_UNTESTED_PR"
+        return "OPEN_UNRESOLVED_PR"
     if kind == "BRANCH":
         return "BRANCH_REF"
     return "SOURCE_ONLY"
