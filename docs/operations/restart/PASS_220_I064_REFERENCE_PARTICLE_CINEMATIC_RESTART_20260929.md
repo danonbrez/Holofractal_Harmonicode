@@ -1,506 +1,190 @@
 # Pass 220 I064 — Reference Particle Cinematic Restart
 
-Date: 2026-09-29
+Date: 2026-09-30
 
-## Branch and parent
-
-Branch:
+## Branch
 
 ```text
 pass220/i064-reference-particle-cinematic-20260929
 ```
 
-Exact parent at branch creation:
+PR:
+
+```text
+#665
+```
+
+I064 remains stacked on the repaired I063 head:
 
 ```text
 c8cab5b215e4d461e7829e5b6aac69f9afd4254e
 ```
 
-That parent is the repaired I063 head.
+I063 PR #660 is still open at this checkpoint, so I064 must not merge before
+I063 closes and the branch is retargeted/revalidated.
 
-I064 is intentionally stacked on I063 while I063 hosted validation is queued.
-It must not merge to main before I063 is verified/merged. Once I063 merges,
-I064 can be retargeted to main without losing the inherited pass history.
+## User correction now authoritative
 
-## User reference source
+The user explicitly corrected the earlier I064 behavior:
 
-The visual target was supplied directly in the current development session:
+1. the scene must not be frozen;
+2. physics and motion cannot be changed at all;
+3. zoom must not be forced;
+4. camera zoom/orbit should be user-controlled, with an optional full boundary
+   orbit;
+5. Follow Cam must use one non-interacting original particle path rather than a
+   live carrier affected by physics;
+6. that reference path must preserve the original toroidal/spiraling
+   fish-like movement.
 
-- four static reference frames;
-- four motion clips;
-- each clip: 640x608, 24 fps, 122 frames;
-- exact clip duration: 122/24 = 5.083333... seconds.
+This correction supersedes all earlier I064 documentation describing:
 
-The reference media is not copied into the repository.
+- `freezeStaticProjection`;
+- `projectionFrozen`;
+- forced camera ingress;
+- forced `staticCameraZ -> ingressCameraZ` cycles;
+- live `thPos/thVel` ChaseCam behavior.
 
-It defines the acceptance target.
+## Current implementation
 
-## Requested visual behavior
-
-### Static/readable state
-
-- pure black background;
-- thousands of individually visible colored particles;
-- one dense primary volume;
-- satellite/off-axis clusters;
-- broad size distribution from pinpoints to large foreground bodies;
-- strong 3D depth;
-- crisp circular/spherical projections;
-- restrained local appearance rather than global bloom;
-- saturated Q144-derived color variety.
-
-### Motion
-
-The clip grammar is:
+### Continuous projection
 
 ```text
-far / compact readable volume
--> rapid camera ingress
--> near-field particles become very large and cross the view
--> camera exits / returns
--> readable deep volume
+continuousProjectionSync = true
 ```
 
-This is implemented as a render-camera projection, not a physics explosion.
+`syncParticleRenderBatches()` runs on every render gate.
 
-## Implementation
+No projection freeze remains.
 
-Canonical HTML modified:
+### Manual camera / zoom
+
+OrbitControls is enabled by default.
+
+```text
+manualZoom = true
+defaultBoundaryOrbit = false
+```
+
+Wheel/pinch zoom is enabled.
+
+### Boundary orbit
+
+`V` toggles a projection-only boundary orbit.
+
+It captures the user's current:
+
+- camera position;
+- target;
+- radius;
+- initial angular coordinates.
+
+The orbit changes angles while retaining the captured radius.
+
+It therefore does not impose a zoom.
+
+### Follow Seed
+
+`C` toggles Follow Seed.
+
+It reconstructs an independent original spiral path using the original seed and
+group-orbit equations.
+
+Exact local seed formulas:
+
+```text
+angle  = j * goldenRatio * pi * 2
+radius = sqrt(j) * 3
+x0     = radius cos(angle)
+y0     = radius sin(angle)
+z0     = sin(j/5) * 5 * parity
+```
+
+Exact group-orbit formulas:
+
+```text
+t = performance.now() * 0.0005
+x = x0 + sin(t + phaseShift) * 6
+y = y0 + cos(t * evolutionSpeed + phaseShift) * 6
+z = z0 + sin(t * goldenRatio + phaseShift) * 6
+```
+
+Follow Seed does not read `thPos`, `thVel`, forces, collisions, bonds,
+barycenter, constructor state, or live particle state.
+
+`N` advances to another deterministic seed.
+
+## Physics freeze-by-equality validation
+
+I064 CI now compares these functions byte-for-byte with the exact I064 parent:
+
+```text
+hnanGate
+updateSwarmCoupling
+updateSpiralParticles
+constructorScan
+virtualDecay
+rebuildBondIndex
+addBond
+addCtorBond
+```
+
+It also compares the full `simParams` block.
+
+Any I064 edit to those surfaces is a hard CI failure.
+
+## Corrective commits
+
+- `8bdc6ed49d8769d8b3f62e13c8718055b9a5fe32`
+  — remove forced ingress/freeze; restore manual camera and optional boundary
+  orbit; add nonphysical original-seed follow path.
+- `2f86d353c5036f023ba59032847a85efad1b28dc`
+  — remove dead live-carrier chase state.
+- `2b931fea8e130ac3219c9ebc3b81c576d111cf51`
+  — replace regression with live-motion/manual-camera/follow-path guards.
+- `ef1c8652915a0c3fb80b9505449f18e12d43b5ac`
+  — exact-parent physics equality CI plus corrected camera invariants.
+
+## Files changed in corrective scope
 
 ```text
 examples/ParticleSimulation.html
+tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+.github/workflows/pass220-i064-reference-particle-cinematic.yml
+docs/pass220/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC.md
+docs/operations/restart/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_RESTART_20260929.md
 ```
-
-New projection schema:
-
-```text
-HHS_PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_V1
-```
-
-Projection parameters:
-
-```text
-reference cycle       122/24 seconds
-core compression      0.235
-satellite compression 0.46
-core Z span           18
-satellite Z span      12
-min particle scale    0.38
-max particle scale    5.25
-far camera Z          36
-ingress camera Z      5.2
-FOV                   62 degrees
-max device pixel ratio 2
-```
-
-## Deterministic presentation
-
-I064 adds no new random source to its visual profile.
-
-Visual size, depth, compression, color saturation and lightness are derived
-deterministically from existing particle metadata:
-
-- q144;
-- particle index;
-- spiral;
-- layer;
-- render batch.
-
-The reference profile does not write back to logical particle positions,
-velocity, phase, mass, bonds, constructors, receipts, or hashes.
-
-## Render projection change
-
-I057 already separated authoritative logical particles from persistent
-InstancedMesh projection.
-
-I064 reuses that exact seam.
-
-Old projection:
-
-```text
-logical position
--> translation-only instance matrix
-```
-
-I064 projection:
-
-```text
-logical position READ
--> visual compression
--> deterministic visual-only Z offset
--> deterministic heavy-tail visual scale
--> Q144-derived presentation color
--> instance matrix
-```
-
-No logical state is overwritten.
-
-## Reference camera
-
-New default camera mode:
-
-```text
-Reference Motion ON
-```
-
-Keyboard:
-
-```text
-V = toggle/freeze reference motion
-C = existing ChaseCam
-N = existing next chase particle
-```
-
-ChaseCam has priority and automatically pauses reference motion.
-
-When both automated cameras are off, OrbitControls are enabled.
-
-The camera cycle uses:
-
-```text
-ingress = sin(pi*u)^2
-```
-
-followed by smoothstep shaping, so the start/end of the cycle remains the
-readable static target and maximum ingress occurs near the midpoint.
-
-## Instrumentation
-
-The ninth nucleus and tesseract remain constructed and updated.
-
-Their visual objects are hidden by default only under the I064 presentation
-profile so the supplied visual target is not obstructed.
-
-## Physics and authority preserved
-
-I064 preserves:
-
-- I057 schema and performance membrane;
-- full physics substep loop;
-- updateSpiralParticles;
-- updateSwarmCoupling;
-- constructorScan;
-- quartic render gate;
-- logical particle count;
-- state/receipt surfaces;
-- VM81/Hash authority.
-
-Explicit contract:
-
-```text
-projectionOnly = true
-logicalParticleMutation = false
-canonicalMutationAuthority = false
-```
-
-## Changed files
-
-- `examples/ParticleSimulation.html`
-- `tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py`
-- `docs/pass220/PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC.md`
-- `.github/workflows/pass220-i064-reference-particle-cinematic.yml`
-- this restart record
-
-## Commits before checkpoint
-
-- `b50c26f9a6c8c04a575e30d0031ee3773eb8ce14` — HTML reference visual/motion projection
-- `cd2952a55e496fedf31b5452cf2fb6c18a2ed922` — I064 structural regression
-- `e530a77d4a760e926c9d4c313cb3764166764ccb` — visual/motion documentation
-- `90f8ee4d82a3d6454665f7219e032b8cc80e5017` — exact-head CI
 
 ## Validation encoded
 
-I064 workflow:
+The current I064 workflow requires:
 
-1. proves repaired I063 ancestry;
-2. extracts real inline browser scripts from the HTML;
-3. runs `node --check` over those scripts;
-4. runs I064 projection regression;
-5. reruns frozen I057 ParticleSimulation performance regression;
-6. enforces projection-only authority tokens.
+1. repaired I063 ancestry;
+2. inline JavaScript parsing with `node --check`;
+3. byte-identical protected physics functions against the exact I064 parent;
+4. byte-identical `simParams`;
+5. corrected I064 projection/camera regression;
+6. frozen I057 ParticleSimulation performance regression;
+7. explicit absence of projection-freeze and forced-ingress tokens;
+8. proof that Follow Seed never reads live physics state;
+9. continuous render projection;
+10. no canonical authority escalation.
 
-Structural I064 tests cover:
+## Remaining validation
 
-- reference schema;
-- exact clip timing;
-- deterministic visual profile;
-- heavy-tailed scale parameters;
-- depth/compression parameters;
-- render-only matrix composition;
-- no logical position write in render projection;
-- reference camera timing;
-- user V toggle;
-- ChaseCam priority;
-- instrumentation hidden only visually;
-- frozen I057 physics/render authority preserved.
+Hosted exact-head CI must run after this documentation checkpoint.
 
-## Validation remaining
+A real browser visual check is still required for the supplied still-frame
+acceptance target.
 
-A real browser visual check is still required after hosted CI confirms syntax
-and dependency tests.
-
-Visual acceptance must compare:
-
-- far/static frame against the supplied static references;
-- mid-cycle ingress against supplied motion clips;
-- particle readability;
-- foreground scale;
-- central/satellite cluster balance;
-- camera speed and lateral motion.
-
-Do not claim pixel-perfect visual equivalence before that browser check.
+Do not claim pixel-perfect visual equivalence until that check is performed.
 
 ## Next action
 
-1. Run I064 exact-head CI on the stacked branch.
-2. Verify/fix I063 and merge I063 first.
-3. Retarget I064 to main after I063 merge.
-4. Run I064 exact-head and Consensus Gate on its final head.
-5. Open the HTML in a real browser and compare the static and mid-cycle frames
-   against the user-supplied references.
-6. Repair visual parameters only if needed; do not change the physics to chase
-   appearance.
-
-
-## Static-scene refinement — uploaded reference fidelity
-
-The user clarified that the supplied still images define the static-scene
-appearance. No generated substitute image is part of acceptance.
-
-The HTML was refined on top of the initial I064 projection so that static mode
-is not merely a compressed version of the logical cloud.
-
-New deterministic presentation roles:
-
-```text
-PRIMARY     dense central volume
-SATELLITE   compact upper-left secondary cluster
-HALO        sparse mid/far particles
-FOREGROUND  very sparse large near-field bodies
-```
-
-Role assignment is deterministic from existing particle metadata and
-`visualHash32`; it adds no new random source.
-
-Updated projection parameters:
-
-```text
-primary compression      0.20
-satellite compression    0.115
-halo compression         0.50
-foreground compression   0.72
-
-primary depth span       12
-satellite depth span     5.5
-halo depth span          19
-foreground depth span    25
-
-primary center           (-0.4, 3.9, -3.0)
-satellite center         (-12.5, 14.5, -5.0)
-
-satellite population     10%
-halo population          15%
-foreground population    4.5%
-
-particle scale range     0.30 .. 7.25
-static camera Z          34
-ingress camera Z         4.8
-reference FOV            60 degrees
-```
-
-The central population is deliberately dominated by pinpoints/small bodies.
-Large bodies are concentrated in the sparse foreground role so the dense core
-does not collapse into an oversized colored mass.
-
-### Parent-orbit neutralization in projection only
-
-Logical particle state remains group-local and the parent spiral groups retain
-their physics orbit.
-
-For rendering, I064 now reads:
-
-```text
-world = logical_local + group_translation
-```
-
-then creates the static reference composition in world-like projection
-coordinates and subtracts the parent translation before writing the instance
-matrix.
-
-Therefore the scene composition does not receive the parent orbit twice, and
-no logical particle position is overwritten.
-
-### Static camera semantics
-
-Turning Reference Motion off now calls:
-
-```text
-applyReferenceStaticCamera()
-```
-
-rather than freezing an arbitrary point in the cinematic ingress cycle.
-
-Static acceptance view:
-
-```text
-camera = (0.4, 0.15, 34)
-look   = (-0.4, 0.15, -2.7)
-```
-
-The UI state reads `Reference Static (V)`.
-
-### Render-quality refinement
-
-The render projection now uses:
-
-```text
-SphereGeometry(0.1, 12, 8)
-MeshBasicMaterial toneMapped=false
-opaque black renderer clear color
-sRGB output encoding when supported by the bundled Three.js revision
-devicePixelRatio capped at 2
-```
-
-This preserves crisp colored particle silhouettes and avoids global bloom.
-
-### Refinement commits
-
-- `28d625209f5b5fa96b4c0086188b61316d72536a` — refined HTML static composition;
-- `bcfed390264cd01f8c3dd0d5b0eb39aa0037cb08` — structural static-composition guards;
-- `0626e7b3706e68d08abf620fe358a56ec3bd4167` — updated exact-head visual CI guards.
-
-The supplied static frames remain the acceptance target. Browser comparison is
-still required before claiming visual equivalence.
-
-
-## Reference-clean page presentation
-
-The supplied static frames contain no persistent debug/control chrome.
-
-I064 therefore preserves all existing controls but makes them idle-auto-hiding
-presentation UI:
-
-```text
-autoHideChrome = true
-chromeIdleMs    = 1800
-H               = pin/unpin controls
-mousemove       = reveal + restart idle timer
-touchstart      = reveal + restart idle timer
-```
-
-Hidden-on-idle elements:
-
-- OS Shell toggle and panel;
-- HUD;
-- frequency control;
-- Reference Motion control;
-- ChaseCam control;
-- density/constructor/topology control surface.
-
-This is presentation-only. The elements are not deleted and their event
-handlers remain active whenever the chrome is visible.
-
-The body fallback background is now pure `#000`, matching the renderer clear
-color and the supplied static references.
-
-Additional commits:
-
-- `aaa0e0c7010879047415a8594299903d91a37a64` — reference-clean HTML chrome;
-- `79ddf40d74e148c274db54c8d301d4b9dfe25c29` — static-presentation regression;
-- `fd0006e0b70684b45d279b6e24e5db04de563f5b` — CI guards.
-
-
-## Static projection fidelity — continuation
-
-The static reference mode now freezes the **render projection snapshot**, not
-only the camera.
-
-When Reference Motion is disabled:
-
-```text
-syncParticleRenderBatches(true)
--> capture current projected matrices/colors
--> referenceMotion.projectionFrozen = true
--> applyReferenceStaticCamera()
-```
-
-The physics loop, constructors, receipts, Hash surfaces, and state queries
-continue underneath. Only the presentation matrices stop changing.
-
-When Reference Motion resumes, projection updates resume immediately.
-
-Exiting ChaseCam while Reference Motion is paused now returns to the same
-frozen static projection/camera state rather than leaving a live-particle
-manual view.
-
-### Density refinement
-
-The primary and satellite clusters now use nonlinear radial compression:
-
-```text
-primary outer compression   0.20
-primary inner compression   0.125
-primary radial knee         25.0
-
-satellite outer compression 0.115
-satellite inner compression 0.072
-satellite radial knee       15.0
-```
-
-Inner particles are additionally biased smaller, preserving dense micro-dot
-readability at the cluster centers without altering logical positions.
-
-### Reference color tail
-
-The Q144 hue remains the color identity, but the static presentation now has a
-small deterministic neutral/pastel population and a separate dim
-green/brown/blue population matching the supplied stills.
-
-No new random source is introduced.
-
-### Sparse local foreground halo
-
-Only the deterministic FOREGROUND role receives a secondary translucent
-projection shell:
-
-```text
-halo scale   1.14
-halo opacity 0.085
-depthWrite   false
-```
-
-This is a sparse local edge/near-field softness layer, not global bloom.
-
-Non-foreground instances have zero halo scale.
-
-### Frozen I057 compatibility repair
-
-The original I057 projection behavior remains a real fallback:
-
-```text
-mesh.setColorAt(i,p.material.color);
-```
-
-when no I064 RGB profile is available.
-
-This repairs the inherited I057 regression without weakening or deleting it.
-
-### Continuation commits
-
-- `500404c4f797bc0d6b8959b6c78df3966a550451` — static density/color/freeze/halo HTML refinement;
-- `5ffc0034bd104c435395c130c784a8fe9a54f334` — structural regression for the refinement;
-- `6c3b672c16830095cfcbed79dd9f5f6b49fbb029` — ChaseCam exit returns to frozen static view;
-- `6768052bb8fce2699b0ddc550fd449d2038bf923` — ChaseCam/static transition regression.
-
-### Current validation state
-
-The earlier I064 run `36657611275` failed only because the frozen I057 test
-required the original color-projection fallback token. I064's own projection
-tests and inline JavaScript parsing passed in that run.
-
-The fallback is now restored as executable behavior. New exact-head validation
-must be read from the latest branch head; do not treat the earlier failure as
-representative after commit `500404c4...`.
-
-I063 remains the stacked parent and must close before I064 is merged to main.
+1. read exact-head I064 workflow and Consensus Gate;
+2. repair only I064-attributable failures;
+3. close I063 first;
+4. retarget/rebase I064 onto verified main without changing the protected
+   physics surfaces;
+5. rerun exact-head I064 validation;
+6. merge only after those gates are green.
