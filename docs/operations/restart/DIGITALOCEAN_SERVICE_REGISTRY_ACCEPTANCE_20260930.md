@@ -71,3 +71,40 @@ Live production verification must occur only after an accepted merge to exact ma
 ## Next action
 
 Open the PR, inspect dependency-scoped pull-request checks, repair forward only on failures attributable to this change, then merge when restartable/mergeable and trigger exact-main deployment. Do not populate Pass 218 I14 until the real operator identities and distributed-authority prerequisites exist.
+
+
+## Repair-forward: stale Pass 202 successor identities
+
+The first PR check matrix exposed one dependency-scoped failure:
+
+```text
+Pass 219 Cumulative Pass 202 Membrane I122
+inherited-pass202-membrane (exact): failure
+inherited-pass202-membrane (synthetic): failure
+step: Prove current successor-hardened Pass 202 deployment identities
+```
+
+The historical Pass 202 identities remained valid. The failure was confined to the mutable current-successor seal. Three production deployment files had legitimately advanced on authoritative main after the prior successor seal:
+
+```text
+hhs-guarded-update.timer
+  previous successor blob: 3296ee9787544542697d3915e01569562ef30046
+  current blob:            4d0640477a5f7e0d9657c5fd7f4d6ba4792682bb
+
+hhs-guarded-update.sh
+  previous successor blob: 1248ce5f9cc8c1a49a1ef83aab7f47d1bd4ad180
+  current blob:            3709ddcd9d5a22b18771794bc3bdbb622ccb02ac
+
+install.sh
+  previous successor blob: 9832e410e9aadf2cdda6c8ce3bc70cfd9590f18f
+  current blob:            b4df0e7f9711594cf6a518e82d6ec9ca44ae1765
+```
+
+These current sources already passed the PR's DigitalOcean deployment-contract gate, Source Text Integrity, and DigitalOcean Mobile Control validation. The successor seal was therefore repaired forward without changing any frozen historical Pass 202 blob identity.
+
+Repair commits:
+
+- `339ebd09d79f1793568f4ad59023aede3f4ba10f` — reseal current Pass 202 deployment successors;
+- `7be71021b3abb20b82db15b55be43ab8d9f068e9` — refresh the exact/synthetic CI successor checks.
+
+Validation remaining is the rerun triggered by the repaired branch head. No already-green independent gate needs manual rerun.
