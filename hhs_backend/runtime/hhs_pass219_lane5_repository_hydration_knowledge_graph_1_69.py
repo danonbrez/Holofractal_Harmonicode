@@ -545,6 +545,15 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
     repository_ref_capabilities = discover_repository_ref_callable_capabilities(
         repo_root
     )
+    repository_ref_snapshot = sorted({
+        (
+            str(node.get("source_ref") or ""),
+            str(node.get("source_commit") or ""),
+            str(node.get("source_state") or ""),
+        )
+        for node in repository_ref_capabilities
+        if node.get("source_ref") and node.get("source_commit")
+    })
     capabilities = sorted(
         inherited_capabilities
         + repository_callable_capabilities
@@ -590,17 +599,17 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
         "constructor_root_hash216": _h216("HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-CONSTRUCTOR-ROOT-1.69", [x["hash216"] for x in constructors]),
         "knowledge_node_root_hash216": _h216("HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-NODE-ROOT-1.69", [x["hash216"] for x in nodes]),
         "knowledge_edge_root_hash216": _h216("HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-EDGE-ROOT-1.69", [x["hash216"] for x in edges]),
+        "repository_ref_snapshot_root_hash216": _h216(
+            "HHS-P219-LANE5-REPOSITORY-REF-SNAPSHOT-ROOT-1.69",
+            repository_ref_snapshot,
+        ),
     }
     counts = {
         "capabilities": len(capabilities),
         "inherited_lane5_capabilities": len(inherited_capabilities),
         "repository_static_callables": len(repository_callable_capabilities),
         "repository_ref_static_callables": len(repository_ref_capabilities),
-        "repository_ref_heads": len({
-            str(node.get("source_ref"))
-            for node in repository_ref_capabilities
-            if node.get("source_ref")
-        }),
+        "repository_ref_heads": len(repository_ref_snapshot),
         "constructors": len(constructors),
         "knowledge_nodes": len(nodes),
         "knowledge_edges": len(edges),
@@ -614,6 +623,14 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
         "source_tree": str(dependency_graph.get("source_tree", "")),
         "source_dependency_graph_root_hash216": source_root,
         "source_lane5_model_root_sha256": str(lane5_snapshot.get("model_root_sha256", "")),
+        "repository_ref_snapshot": [
+            {
+                "source_ref": ref_name,
+                "source_commit": commit,
+                "source_state": source_state,
+            }
+            for ref_name, commit, source_state in repository_ref_snapshot
+        ],
         "counts": counts,
         "roots": roots,
         "database_binding": {
@@ -689,6 +706,18 @@ def _verify_projection(projection: Mapping[str, Any]) -> None:
         "constructor_root_hash216": _h216("HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-CONSTRUCTOR-ROOT-1.69", [x["hash216"] for x in constructors]),
         "knowledge_node_root_hash216": _h216("HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-NODE-ROOT-1.69", [x["hash216"] for x in nodes]),
         "knowledge_edge_root_hash216": _h216("HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-EDGE-ROOT-1.69", [x["hash216"] for x in edges]),
+        "repository_ref_snapshot_root_hash216": _h216(
+            "HHS-P219-LANE5-REPOSITORY-REF-SNAPSHOT-ROOT-1.69",
+            [
+                (
+                    str(item.get("source_ref") or ""),
+                    str(item.get("source_commit") or ""),
+                    str(item.get("source_state") or ""),
+                )
+                for item in (projection.get("repository_ref_snapshot") or [])
+                if isinstance(item, Mapping)
+            ],
+        ),
     }
     for key, value in expected.items():
         if roots.get(key) != value:
