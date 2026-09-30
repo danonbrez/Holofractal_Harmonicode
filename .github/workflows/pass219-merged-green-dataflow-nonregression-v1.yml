@@ -1,0 +1,261 @@
+name: Pass 219 Merged-Green Dataflow Nonregression v1
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - policy/pass219-merged-green-dataflow-nonregression-v1-20260925
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: pass219-merged-green-lineage-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  merged-green-dataflow-lineage-guard:
+    name: merged-green-dataflow-lineage-guard
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONHASHSEED: '0'
+      PYTHONPATH: '.'
+    steps:
+      - name: Check out exact candidate head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Resolve base and head
+        id: refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="${{ github.event.pull_request.base.sha }}"
+            head="${{ github.event.pull_request.head.sha }}"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            head="${{ github.sha }}"
+            if [ "${{ github.ref_name }}" = "main" ]; then
+              base="${{ github.event.before }}"
+              if [ "${base}" = "0000000000000000000000000000000000000000" ]; then
+                base="$(git rev-parse "${head}^")"
+              fi
+            else
+              git fetch origin main
+              base="$(git rev-parse origin/main)"
+            fi
+          else
+            git fetch origin main
+            base="$(git rev-parse origin/main)"
+            head="$(git rev-parse HEAD)"
+          fi
+          git cat-file -e "${base}^{commit}"
+          git cat-file -e "${head}^{commit}"
+          echo "base=${base}" >> "$GITHUB_OUTPUT"
+          echo "head=${head}" >> "$GITHUB_OUTPUT"
+          printf 'LINEAGE_BASE=%s\nLINEAGE_HEAD=%s\n' "${base}" "${head}"
+
+      - name: Select authoritative base guard
+        id: guard_source
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="${{ steps.refs.outputs.base }}"
+          guard_path="tools/pass219/pass219_merged_green_dataflow_guard_v1.py"
+          manifest_path="contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json"
+
+          if git cat-file -e "${base}:${guard_path}" 2>/dev/null &&
+             git cat-file -e "${base}:${manifest_path}" 2>/dev/null; then
+            rm -rf /tmp/hhs-lineage-base
+            git worktree add --detach /tmp/hhs-lineage-base "${base}"
+            echo "guard=/tmp/hhs-lineage-base/${guard_path}" >> "$GITHUB_OUTPUT"
+            echo "manifest=/tmp/hhs-lineage-base/${manifest_path}" >> "$GITHUB_OUTPUT"
+            echo "source=AUTHORITATIVE_BASE" >> "$GITHUB_OUTPUT"
+          else
+            # One-time installation bootstrap only. After this policy is on main,
+            # every pull request must execute the base version above.
+            test -f "${guard_path}"
+            test -f "${manifest_path}"
+            echo "guard=${guard_path}" >> "$GITHUB_OUTPUT"
+            echo "manifest=${manifest_path}" >> "$GITHUB_OUTPUT"
+            echo "source=BOOTSTRAP_HEAD" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run base-authoritative lineage guard
+        id: lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python "${{ steps.guard_source.outputs.guard }}" \
+            --base "${{ steps.refs.outputs.base }}" \
+            --head "${{ steps.refs.outputs.head }}" \
+            --manifest "${{ steps.guard_source.outputs.manifest }}" \
+            --output /tmp/hhs-lineage-plan.json
+
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          d=json.load(open('/tmp/hhs-lineage-plan.json', encoding='utf-8'))
+          print('proof_required=' + ('true' if d['proof_required'] else 'false'))
+          print('protected_change_count=' + str(d['protected_change_count']))
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install guard test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Require an associated merged PR for protected main pushes
+        if: github.event_name == 'push' && github.ref_name == 'main' && steps.lineage.outputs.proof_required == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          HEAD_SHA: ${{ steps.refs.outputs.head }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          url = (
+              f"https://api.github.com/repos/{os.environ['REPOSITORY']}"
+              f"/commits/{os.environ['HEAD_SHA']}/pulls"
+          )
+          req = urllib.request.Request(
+              url,
+              headers={
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+          )
+          with urllib.request.urlopen(req, timeout=30) as response:
+              pulls = json.load(response)
+
+          merged = [
+              pr for pr in pulls
+              if pr.get("merged_at")
+              and pr.get("base", {}).get("ref") == "main"
+          ]
+          if not merged:
+              raise SystemExit(
+                  "PROTECTED_MAIN_PUSH_WITHOUT_ASSOCIATED_MERGED_PULL_REQUEST"
+              )
+          print(
+              "associated_merged_prs="
+              + ",".join(str(pr["number"]) for pr in merged)
+          )
+          PY
+
+      - name: Run guard unit and negative tests
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass219/test_pass219_merged_green_dataflow_guard_v1.py
+
+      - name: Install proof-validation dependencies
+        if: steps.lineage.outputs.proof_required == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check \
+            pytest fastapi httpx cryptography uvicorn
+
+      - name: Pass 206 frozen-core and approved-successor regression
+        if: steps.lineage.outputs.proof_required == 'true'
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass206/test_pass206_cumulative_enforcement_v1.py
+
+      - name: Pass 219 cumulative membrane regression
+        if: steps.lineage.outputs.proof_required == 'true'
+        run: |
+          PYTHONPATH="$PWD" python \
+            tests/pass219/test_pass219_cumulative_pass_membrane_i116.py
+
+      - name: Build cumulative exact ABI
+        if: steps.lineage.outputs.proof_required == 'true'
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Prove singleton VM81 authority and receipt ordering surface
+        if: steps.lineage.outputs.proof_required == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs.symbols
+
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal
+          do
+            if grep -q " ${forbidden}$" /tmp/hhs.symbols; then
+              echo "forbidden alternate authority exported: ${forbidden}" >&2
+              exit 1
+            fi
+          done
+
+          grep -q ' hhs_exact_pass219_vm81_environment_recover_candidate$' /tmp/hhs.symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_hash216_registry_root$' /tmp/hhs.symbols
+
+      - name: Regress Hash216 positional lineage and RNA VM5184 cell wall
+        if: steps.lineage.outputs.proof_required == 'true'
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_vm5184_abi_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-rna-vm5184
+          /tmp/test-rna-vm5184
+
+      - name: Regress VM81 PQC firewall and environmental recovery
+        if: steps.lineage.outputs.proof_required == 'true'
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_vm81_pqc_firewall_1_30.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pqc-firewall
+          /tmp/test-pqc-firewall
+
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_vm81_environmental_recovery_1_32.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-environmental-recovery
+          /tmp/test-environmental-recovery
+
+      - name: Emit guard receipt
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f /tmp/hhs-lineage-plan.json ]; then
+            cat /tmp/hhs-lineage-plan.json
+          fi
+          printf 'guard_source=%s\n' "${{ steps.guard_source.outputs.source }}"
+          printf 'base=%s\n' "${{ steps.refs.outputs.base }}"
+          printf 'head=%s\n' "${{ steps.refs.outputs.head }}"

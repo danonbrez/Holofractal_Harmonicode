@@ -1,0 +1,189 @@
+{
+  "schema": "HHS_GITHUB_MAIN_MERGED_GREEN_DATAFLOW_RULESET_V1",
+  "version": "1.0.0",
+  "name": "HHS Main Merged-Green Dataflow Protection",
+  "target": {
+    "repository": "danonbrez/Holofractal_Harmonicode",
+    "branch": "main",
+    "include_ref": "refs/heads/main"
+  },
+  "enforcement": "ACTIVE_REQUIRED",
+  "bypass_policy": {
+    "ordinary_development_bypass_allowed": false,
+    "direct_push_allowed": false,
+    "force_push_allowed": false,
+    "branch_deletion_allowed": false,
+    "emergency_bypass": {
+      "repository_contract_authorizes_implicit_bypass": false,
+      "requirement": "Any exceptional hosting-layer bypass must be followed by an explicit repair-forward PR restoring a state accepted by the merged-green dataflow guard; the repository contract itself does not grant such a bypass."
+    }
+  },
+  "pull_request_policy": {
+    "pull_request_required": true,
+    "branch_must_be_up_to_date_before_merge": true,
+    "required_status_checks": [
+      "merged-green-dataflow-lineage-guard"
+    ],
+    "required_conversation_resolution": true,
+    "allow_merge_when_required_check_queued": false,
+    "allow_merge_when_required_check_pending": false,
+    "allow_merge_when_required_check_failed": false,
+    "allow_merge_when_required_check_cancelled": false
+  },
+  "lineage_policy": {
+    "governing_contract": "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.md",
+    "machine_manifest": "contracts/pass219/PASS_219_MERGED_GREEN_DATAFLOW_NONREGRESSION_V1.json",
+    "guard": "tools/pass219/pass219_merged_green_dataflow_guard_v1.py",
+    "workflow": ".github/workflows/pass219-merged-green-dataflow-nonregression-v1.yml",
+    "protected_pass_ceiling": 219,
+    "upstream_passes_inherit_protection": true,
+    "base_branch_guard_authoritative": true,
+    "protected_change_requires_successor_proof": true,
+    "allowed_successor_modes": [
+      "BACKWARD_COMPATIBLE_ITERATION",
+      "REPAIR_FORWARD_REFINEMENT"
+    ],
+    "proof_directory": "artifacts/pass219/merged_green_successor_proofs",
+    "proof_must_bind_git_blobs": true,
+    "proof_must_cover_all_protected_changes": true
+  },
+  "cumulative_contract_rules": [
+    {
+      "id": "HHS-RULE-001",
+      "rule": "NO_MERGED_GREEN_DATAFLOW_REMOVAL_WITHOUT_VALIDATED_SUCCESSOR",
+      "source": [
+        "docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md",
+        "HHS_PASS_206_CUMULATIVE_CONSTRAINT_CONTRACT_ENFORCEMENT_CORE_FUNCTION_PRESERVATION.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-002",
+      "rule": "NO_SILENT_DEPRECATION_BY_OMISSION_REFACTOR_DIRECTORY_OR_NEW_APPLICATION",
+      "source": [
+        "docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-003",
+      "rule": "PROTECTED_CORE_CHANGE_REQUIRES_SEPARATE_REPAIR_CONTRACT_AND_BACKWARD_COMPATIBILITY_PROOF",
+      "source": [
+        "HHS_PASS_206_CUMULATIVE_CONSTRAINT_CONTRACT_ENFORCEMENT_CORE_FUNCTION_PRESERVATION.md",
+        "artifacts/pass206/CORE_FUNCTION_FREEZE_MANIFEST.json",
+        "artifacts/pass206/CORE_SUCCESSOR_REPAIR_LINEAGE.json"
+      ]
+    },
+    {
+      "id": "HHS-RULE-004",
+      "rule": "SINGLETON_VM81_CANONICAL_MUTATION_AUTHORITY_MUST_REMAIN_SINGLETON",
+      "source": [
+        "HHS_PASS_206_CUMULATIVE_CONSTRAINT_CONTRACT_ENFORCEMENT_CORE_FUNCTION_PRESERVATION.md",
+        "docs/runtime_authority_map.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-005",
+      "rule": "HASH72_RECEIPT_CLOSURE_MUST_PRECEDE_HASH216_ARCHIVAL",
+      "source": [
+        "HHS_PASS_206_CUMULATIVE_CONSTRAINT_CONTRACT_ENFORCEMENT_CORE_FUNCTION_PRESERVATION.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-006",
+      "rule": "NO_FLOAT_CANONICAL_AUTHORITY",
+      "source": [
+        "HHS_PASS_206_CUMULATIVE_CONSTRAINT_CONTRACT_ENFORCEMENT_CORE_FUNCTION_PRESERVATION.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-007",
+      "rule": "ORDERED_NONCOMMUTATIVE_IDENTITY_BEARING_OPERANDS_MAY_NOT_BE_NORMALIZED_OR_REORDERED_WITHOUT_PROOF",
+      "source": [
+        "HHS_PASS_206_CUMULATIVE_CONSTRAINT_CONTRACT_ENFORCEMENT_CORE_FUNCTION_PRESERVATION.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-008",
+      "rule": "NO_CACHE_VECTOR_STORE_API_WORKER_PROVIDER_GUI_OR_COMPATIBILITY_PATH_MAY_BYPASS_CURRENT_ADMISSION",
+      "source": [
+        "HHS_PASS_206_CUMULATIVE_CONSTRAINT_CONTRACT_ENFORCEMENT_CORE_FUNCTION_PRESERVATION.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-009",
+      "rule": "COMPATIBLE_DEFAULTS_ACCUMULATE_UNTIL_EXPLICIT_VALIDATED_UPGRADE_OR_DEPRECATION",
+      "source": [
+        "docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md"
+      ]
+    },
+    {
+      "id": "HHS-RULE-010",
+      "rule": "OBSERVED_FAILURE_OF_PROVEN_BEHAVIOR_REQUIRES_REPAIR_FORWARD_NOT_CONTRACT_WEAKENING",
+      "source": [
+        "AGENTS.md",
+        "docs/architecture/HHS_CUMULATIVE_PASS_GLOBAL_DEFAULTS.md"
+      ]
+    }
+  ],
+  "successor_proof_requirements": {
+    "backward_compatible_iteration": [
+      "predecessor Git blobs bound",
+      "successor Git blobs bound",
+      "all predecessor public HHS identifiers preserved",
+      "singleton VM81 authority preserved",
+      "Hash72/Hash216 receipt order preserved",
+      "exact/no-float authority preserved",
+      "ordered/noncommutative semantics preserved",
+      "RNA/cell-wall route preserved where applicable",
+      "cumulative Pass 219 registration preserved",
+      "receipt/replay continuity preserved",
+      "no alternate authority or dataflow orphaning",
+      "fixed inherited validation profiles pass"
+    ],
+    "repair_forward_refinement": [
+      "all backward-compatible proof obligations that remain applicable",
+      "defect explicitly named",
+      "affected predecessor identities named",
+      "every removed identifier mapped to a replacement identifier",
+      "compatibility adapter present in successor tree",
+      "migration behavior specified",
+      "negative tests present",
+      "receipt continuity specified",
+      "rollback plan specified",
+      "authority delta absent unless separately authorized",
+      "fixed inherited validation profiles pass"
+    ]
+  },
+  "fixed_validation_profiles": [
+    "PASS206_CORE_FREEZE",
+    "PASS219_CUMULATIVE_MEMBRANE",
+    "EXACT_ABI_BUILD",
+    "VM81_SINGLE_AUTHORITY",
+    "HASH72_HASH216_LINEAGE",
+    "RNA_VM5184_CELL_WALL"
+  ],
+  "merge_decision": {
+    "admit_when": [
+      "pull_request targets main",
+      "branch is current with main",
+      "merged-green-dataflow-lineage-guard concludes success",
+      "all other repository-required checks conclude success"
+    ],
+    "reject_when": [
+      "protected change has no successor proof",
+      "proof does not match predecessor/successor Git blobs",
+      "protected identifier removed in backward-compatible mode",
+      "repair-forward removed identifier lacks replacement or compatibility adapter",
+      "new sensitive authority path is unproved",
+      "guard/manifest/workflow/contract is weakened",
+      "required validation profile is missing or failing",
+      "required check is queued, pending, cancelled, or failed",
+      "change is a protected direct push without an associated merged PR"
+    ]
+  },
+  "administration_note": {
+    "repository_rulesets_observed_on_2026_09_25": [],
+    "admin_write_available_to_connected_integration": false,
+    "required_manual_hosting_action": "Create/enable a GitHub ruleset on refs/heads/main implementing this specification and make merged-green-dataflow-lineage-guard a required status check."
+  }
+}
