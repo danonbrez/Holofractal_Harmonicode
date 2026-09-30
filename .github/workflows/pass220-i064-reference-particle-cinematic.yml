@@ -140,7 +140,7 @@ jobs:
               "virtualDecay",
               "rebuildBondIndex",
               "addBond",
-              "addCtorBond",
+              "addConstructionBond",
           )
           for name in protected:
               before = extract_function(parent, name)
