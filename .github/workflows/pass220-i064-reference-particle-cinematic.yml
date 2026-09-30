@@ -1,0 +1,62 @@
+name: Pass 220 I064 ParticleSimulation invariant repair
+
+on:
+  push:
+    branches:
+      - pass220/i064-reference-particle-cinematic-20260929
+    paths:
+      - examples/ParticleSimulation.html
+      - tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+      - tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+      - .github/workflows/pass220-i064-reference-particle-cinematic.yml
+  pull_request:
+    paths:
+      - examples/ParticleSimulation.html
+      - tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+      - tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+      - .github/workflows/pass220-i064-reference-particle-cinematic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  invariant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact I064 parent ancestry
+        run: |
+          git merge-base --is-ancestor c8cab5b215e4d461e7829e5b6aac69f9afd4254e HEAD
+
+      - name: Install test runner
+        run: |
+          python -m pip install --disable-pip-version-check pytest
+
+      - name: Check inline JavaScript syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          text = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
+          blocks = re.findall(r"<script(?:\s[^>]*)?>([\s\S]*?)</script>", text, flags=re.I)
+          Path("/tmp/particle-inline.js").write_text("\n".join(blocks), encoding="utf-8")
+          PY
+          node --check /tmp/particle-inline.js
+
+      - name: Prove every inherited function is byte-identical
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q tests/pass220/test_hhs_pass220_i064_reference_particle_cinematic.py
+
+      - name: Re-run frozen I057 performance regression
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
