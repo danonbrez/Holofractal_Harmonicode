@@ -2,277 +2,229 @@
 
 ## Purpose
 
-I064 updates the canonical browser game-engine surface:
+I064 updates only the browser presentation layer in:
 
 ```text
 examples/ParticleSimulation.html
 ```
 
-to match the user-supplied visual and motion design for the full 3D particle
-engine.
+The supplied still frames define the static visual acceptance target.
 
-The supplied reference set contains four static frames and four motion clips.
-Each motion clip is:
+They do **not** authorize changes to physics, particle motion, timing, force
+laws, bonds, collisions, constructors, receipts, VM81 state, or Hash
+authority.
 
-```text
-640 x 608
-24 fps
-122 frames
-5.083333... seconds
+## Frozen simulation rule
+
+I064 preserves the inherited simulation path exactly.
+
+The authoritative loop remains:
+
+```javascript
+const steps=Math.max(1,Math.min(10,simParams.freqScale|0));
+for(let s=0;s<steps;s++){
+  updateSpiralParticles();
+  time += simParams.evolutionSpeed * simParams.timeDilationFactor;
+}
+updatePhaseGeometry();
+constructorScan();
 ```
 
-The reference material is an **acceptance target**, not an asset that is copied
-into the runtime.
+I064 may change only projection, camera behavior, render geometry/material
+quality, and UI visibility.
 
-## Visual target
+CI compares the following functions byte-for-byte against the exact I064 parent:
 
-When motion is paused, the scene should read as:
+- `hnanGate`;
+- `updateSwarmCoupling`;
+- `updateSpiralParticles`;
+- `constructorScan`;
+- `virtualDecay`;
+- `rebuildBondIndex`;
+- `addBond`;
+- `addCtorBond`.
 
-- near-pure black background;
-- extremely high particle density;
-- a dense primary volume with individually readable tiny particles;
-- satellite/off-axis clusters rather than one flat radial burst;
-- very large dynamic range in particle size;
-- crisp circular/spherical projections rather than indiscriminate bloom;
-- high-saturation Q144-driven color diversity;
-- strong depth from perspective, overlap, scale, and Z separation;
-- sparse large near-field bodies around a dense distant core;
-- instrumentation hidden by default so the particle field itself is the scene.
+The canonical `simParams` block is also compared byte-for-byte.
 
-The target is not a blurred nebula or a 2D radial explosion.
+## Static visual target
 
-## Motion target
+The uploaded still frames establish:
 
-The four clips establish one common movement grammar:
+- pure black background;
+- extremely high visible particle density;
+- one dense primary volume;
+- a compact off-axis satellite cluster;
+- sparse halo particles;
+- sparse large foreground bodies;
+- wide particle-size range;
+- individually readable small particles;
+- saturated Q144-derived colors with a small muted/dark tail;
+- strong depth from Z separation, perspective, overlap, and scale;
+- restrained local softness only on sparse foreground bodies;
+- no global bloom.
 
-```text
-compact readable volume
-  -> camera ingress toward / through the cloud
-  -> large near-field particles cross the frame
-  -> camera exits / returns
-  -> readable deep volume
-```
-
-I064 uses the exact clip duration:
-
-```text
-122 / 24 = 5.083333... seconds
-```
-
-for the default projection-camera cycle.
-
-The movement is implemented as a camera/view projection. It does not create a
-new physics force or move authoritative particles merely to imitate the clip.
-
-## Frozen logical simulation
-
-I064 preserves the I057 split:
+The I064 deterministic render-only roles are:
 
 ```text
-logical Mesh particles
-    |
-    +-- authoritative simulation / receipts / physics
-    |
-    +-- persistent InstancedMesh render projection
+PRIMARY
+SATELLITE
+HALO
+FOREGROUND
 ```
 
-The user-reference visual profile modifies only the lower render branch.
+The visual profile never writes logical particle coordinates.
 
-The following remain unchanged:
+## Continuous live projection
 
-- 10,368 logical simulation particles;
-- physics substep loop;
-- `updateSpiralParticles()`;
-- `updateSwarmCoupling()`;
-- constructor scan;
-- bond/CSR mechanics;
-- VM81/Hash receipts;
-- render gate;
-- state serialization authority;
-- chase camera physics independence.
+The earlier I064 experiment that froze instance matrices in a "static" mode is
+superseded.
 
-## Deterministic particle presentation
+Current invariant:
 
-Every particle receives a deterministic render profile derived from existing
-metadata:
+```text
+continuousProjectionSync = true
+```
 
-- Q144 color coordinate;
+Every render gate updates the instance projection from current logical particle
+state.
+
+There is no:
+
+```text
+freezeStaticProjection
+projectionFrozen
+```
+
+Physics and motion therefore remain visible continuously.
+
+## Camera authority
+
+### Manual camera is the default
+
+OrbitControls is enabled by default.
+
+User controls include:
+
+- orbit/rotation;
+- pan where supported by OrbitControls;
+- wheel/pinch zoom;
+- unrestricted ordinary view changes inside the configured broad distance
+  bounds.
+
+I064 does not continuously force a camera distance.
+
+Initial camera placement is only a starting view.
+
+### Optional full boundary orbit
+
+`V` toggles the optional boundary orbit.
+
+The boundary orbit:
+
+1. reads the user's **current** camera position and target;
+2. captures the current camera radius;
+3. preserves that radius;
+4. moves around the full scene boundary by changing angular coordinates only;
+5. never changes simulation state.
+
+Therefore the orbit cannot impose a forced zoom.
+
+Turning it off returns camera authority to OrbitControls at the current view.
+
+## Follow Seed camera
+
+`C` toggles **Follow Seed**.
+
+This is not a live interacting particle chase.
+
+The old implementation followed `thPos/thVel`, which meant camera motion was
+driven by a particle affected by gravity, collision, bonds, field coupling,
+constructor state, and other physics. That behavior is superseded.
+
+Current Follow Seed reconstructs one independent original spiral trajectory
+from the original `ParticleSimulation.html` equations only.
+
+### Original local seed
+
+For one deterministic spiral/particle pair:
+
+```javascript
+angle  = j * goldenRatio * PI * 2
+radius = sqrt(j) * 3
+x0     = radius * cos(angle)
+y0     = radius * sin(angle)
+z0     = sin(j/5) * 5 * parity
+```
+
+### Original group orbit
+
+The reference path then uses the original group movement verbatim:
+
+```javascript
+t = performanceTime * 0.0005
+
+x = x0 + sin(t + phaseShift) * 6
+y = y0 + cos(t * evolutionSpeed + phaseShift) * 6
+z = z0 + sin(t * goldenRatio + phaseShift) * 6
+```
+
+This gives the original quasi-periodic/toroidal spiral path that reads like a
+fish swimming through the volume.
+
+The Follow Seed path does **not** read:
+
+- `thPos`;
+- `thVel`;
+- barycenter state;
+- collision state;
+- bond state;
+- constructor state;
+- component mass;
+- force accumulation;
+- live `particles[]` state.
+
+It is a projection-only reference trajectory.
+
+The camera trails the exact trajectory tangent; only camera smoothing is
+applied. Smoothing does not change the reference particle path.
+
+`N` selects another deterministic original seed trajectory.
+
+## Camera-mode priority
+
+Camera modes are mutually exclusive:
+
+```text
+Follow Seed
+    OR
+Boundary Orbit
+    OR
+Manual OrbitControls
+```
+
+Manual OrbitControls is the default.
+
+Follow Seed and Boundary Orbit never execute simultaneously.
+
+## Deterministic render profile
+
+The visual profile remains deterministic and derived from existing metadata:
+
+- Q144 coordinate;
 - local particle index;
 - spiral index;
 - layer;
-- batch index.
+- render batch.
 
-No new `Math.random()` call participates in the I064 visual profile.
+No I064 visual profile uses `Math.random()`.
 
-### Position compression
-
-The authoritative local position is read, never overwritten.
-
-The render projection uses:
-
-```text
-core compression       = 0.235
-satellite compression  = 0.46
-```
-
-This turns the wide logical manifold into the compact but deep visual volumes
-visible in the supplied static references.
-
-### Render-only Z separation
-
-Static deterministic depth offsets are added only to the instance matrix:
-
-```text
-core depth span       = 18
-satellite depth span  = 12
-```
-
-The logical particle's `position` remains unchanged.
-
-This gives the camera actual depth to travel through while retaining the same
-simulation state.
-
-### Heavy-tailed size distribution
-
-Reference particles range from tiny pinpoints to very large foreground circles.
-
-I064 therefore uses a deterministic heavy-tailed instance scale:
-
-```text
-minimum scale = 0.38
-maximum scale = 5.25
-```
-
-Most particles remain small. A small deterministic population becomes
-mid-size/large foreground bodies.
-
-### Color
-
-Q144 remains the color identity.
-
-I064 varies only presentation saturation/lightness deterministically so that:
-
-- colors remain distinct in dense regions;
-- dark and pastel bodies can coexist with saturated ones;
-- the scene does not collapse into one luminous core.
-
-There is no global bloom pass.
-
-## Reference camera
-
-Default reference projection:
-
-```text
-FOV       = 62 degrees
-far Z     = 36
-ingress Z = 5.2
-period    = 122/24 seconds
-```
-
-The ingress envelope is:
-
-```text
-sin(pi*u)^2
-```
-
-with a smoothstep shaping function.
-
-Therefore every cycle begins and ends in a readable far/static configuration
-and reaches maximum depth penetration near mid-cycle.
-
-A small lateral camera orbit reproduces the off-center motion visible across
-the supplied clips without moving logical state.
-
-## Controls
-
-I064 adds:
-
-```text
-V — toggle / freeze Reference Motion
-```
-
-The default is ON.
-
-When Reference Motion is paused, OrbitControls become available.
-
-Existing ChaseCam remains available:
-
-```text
-C — ChaseCam
-N — next chase particle
-```
-
-ChaseCam takes priority and pauses Reference Motion.
-
-## Instrumentation
-
-The tesseract and ninth-nucleus projection instruments continue to be
-constructed and updated, but I064 hides them visually by default while the
-reference presentation profile is active.
-
-Their underlying state and tests are not deleted.
-
-## Rendering quality
-
-The WebGL renderer now uses device pixel ratio up to 2x:
-
-```text
-min(devicePixelRatio, 2)
-```
-
-The scene remains pure black with high-performance antialiasing.
-
-## Authority
-
-I064 is projection-only.
-
-```text
-logicalParticleMutation = false
-canonicalMutationAuthority = false
-```
-
-It does not gain:
-
-- VM81 mutation authority;
-- Hash72 commit authority;
-- Hash216 persistence authority;
-- physics-law authority;
-- solver authority.
-
-## Next visual work
-
-After I064 is validated in-browser, later passes can add:
-
-- shader-based circular impostors if the native renderer benefits from them;
-- depth-of-field as a selective optional projection effect;
-- more reference camera tracks;
-- lighting/material profiles for non-particle world geometry;
-- the same reference presentation contract on the native C++/WebGL engine
-  surface.
-
-Those additions should preserve the I064 rule that visual fidelity is a
-projection concern and cannot mutate the canonical physics state.
-
-
-## Refined static-scene composition
-
-The supplied still frames are now treated as the canonical static composition
-target.
-
-The render projection uses four deterministic roles:
-
-```text
-PRIMARY      dense main cluster
-SATELLITE    compact upper-left secondary cluster
-HALO         sparse mid/far population
-FOREGROUND   very sparse large near-field bodies
-```
-
-Current static projection parameters:
+Current major presentation parameters remain:
 
 ```text
 primary compression      0.20
+primary inner            0.125
 satellite compression    0.115
+satellite inner          0.072
 halo compression         0.50
 foreground compression   0.72
 
@@ -281,54 +233,80 @@ satellite depth span     5.5
 halo depth span          19
 foreground depth span    25
 
-primary center           (-0.4, 3.9, -3.0)
-satellite center         (-12.5, 14.5, -5.0)
-
-satellite fraction       10%
-halo fraction            15%
-foreground fraction      4.5%
+satellite population     10%
+halo population          15%
+foreground population    4.5%
 
 particle scale           0.30 .. 7.25
-static camera Z          34
-ingress camera Z         4.8
-FOV                      60 degrees
+reference FOV            60 degrees
 ```
 
-The primary population is weighted toward pinpoints and small particles so the
-dense center remains individually readable. Large bodies are concentrated in
-the sparse foreground population.
+## Rendering quality
 
-The projection reads the group-local logical coordinate, reconstructs the
-physical world coordinate, applies the reference composition, and subtracts
-the parent group translation before writing the instance matrix. Parent-group
-orbital translation is therefore not visually applied twice.
+I064 retains:
 
-No logical particle position is overwritten.
+- pure black renderer clear color;
+- `SphereGeometry(0.1, 12, 8)` projection quality;
+- tone mapping disabled for the particle material;
+- sRGB output where supported;
+- device pixel ratio capped at 2;
+- sparse local foreground halo only;
+- no global bloom pass.
 
-## Static camera and clean presentation
+## UI presentation
 
-Pausing Reference Motion now selects a defined static acceptance camera rather
-than freezing at an arbitrary point in the camera ingress:
+The existing engine interface remains present.
+
+Idle chrome may auto-hide after the configured delay so the particle field can
+be viewed cleanly.
+
+Pointer/touch activity reveals the UI.
+
+`H` pins/unpins the chrome.
+
+## Authority boundary
+
+I064 is projection-only:
 
 ```text
-camera = (0.4, 0.15, 34)
-look   = (-0.4, 0.15, -2.7)
+logicalParticleMutation = false
+canonicalMutationAuthority = false
 ```
 
-The page fallback background and renderer clear color are pure black.
+It receives no:
 
-The existing engine interface remains intact but auto-hides after 1.8 seconds
-of pointer inactivity so the idle scene is an uninterrupted particle field.
-Pointer movement or touch reveals the controls. `H` pins/unpins the chrome.
+- VM81 mutation authority;
+- Hash72 commit authority;
+- Hash216 persistence authority;
+- physics-law authority;
+- solver authority.
 
-Particle projection quality uses:
+## Current controls
 
 ```text
-SphereGeometry(0.1, 12, 8)
-toneMapped = false
-sRGB output when available
-device pixel ratio <= 2
+mouse/touch OrbitControls  manual camera
+wheel/pinch                manual zoom
+V                          boundary orbit toggle
+C                          Follow Seed toggle
+N                          next deterministic reference seed
+H                          pin/unpin UI chrome
 ```
 
-This is still projection-only and does not change simulation or canonical
-authority.
+## Acceptance rule
+
+A visually correct I064 frame is not allowed to come from altered physics.
+
+The acceptance condition is:
+
+```text
+reference-quality projection
++
+unchanged authoritative simulation
++
+continuous live render projection
++
+user-controlled camera/zoom
+```
+
+Browser validation is still required before claiming visual equivalence to the
+supplied still references.
