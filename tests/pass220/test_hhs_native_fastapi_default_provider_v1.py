@@ -6,7 +6,10 @@ from pathlib import Path
 import subprocess
 import sys
 
-from hhs_backend.runtime.hhs_native_fastapi_compat_v1 import NativeAPIRouter
+from hhs_backend.runtime.hhs_native_fastapi_compat_v1 import (
+    NativeAPIRouter,
+    bind_native_router_to_external_app,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -50,6 +53,45 @@ def test_native_api_router_preserves_deferred_route_metadata() -> None:
     assert websocket_route.methods == frozenset({"WEBSOCKET"})
     assert websocket_route.route_type == "WEBSOCKET"
     assert websocket_route.include_in_schema is False
+
+
+def test_native_router_binds_to_external_application_boundary_without_fastapi_import() -> None:
+    calls: list[tuple[str, str, tuple[str, ...]]] = []
+
+    class FakeExternalApp:
+        def add_api_route(self, path, endpoint, *, methods, name, tags, include_in_schema):
+            _ = endpoint, name, tags, include_in_schema
+            calls.append(("HTTP", path, tuple(methods)))
+
+        def add_api_websocket_route(self, path, endpoint, *, name):
+            _ = endpoint, name
+            calls.append(("WEBSOCKET", path, ("WEBSOCKET",)))
+
+    router = NativeAPIRouter(prefix="/api", tags=["native"])
+
+    @router.get("/health")
+    def health():
+        return {"ok": True}
+
+    @router.websocket("/events")
+    async def events(websocket):
+        _ = websocket
+
+    count = bind_native_router_to_external_app(FakeExternalApp(), router)
+
+    assert count == 2
+    assert calls == [
+        ("HTTP", "/api/health", ("GET",)),
+        ("WEBSOCKET", "/api/events", ("WEBSOCKET",)),
+    ]
+
+
+def test_runtime_stream_manager_uses_lane5_websocket_provider() -> None:
+    source = (ROOT / "hhs_backend/websocket/runtime_stream_manager.py").read_text(
+        encoding="utf-8"
+    )
+    assert "from hhs_backend.runtime.hhs_fastapi_provider_v1 import WebSocket" in source
+    assert "from fastapi import WebSocket" not in source
 
 
 def test_default_provider_uses_repository_native_when_external_fastapi_is_absent() -> None:
