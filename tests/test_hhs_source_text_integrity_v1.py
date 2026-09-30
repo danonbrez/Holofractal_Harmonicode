@@ -55,6 +55,36 @@ def test_allows_nested_javascript_template_literal_newline_escapes():
     assert find_literal_escaped_newline_issues("visual-ide-state.mjs", source) == []
 
 
+def test_allows_template_literal_text_newline_escapes_with_expressions():
+    cases = [
+        (
+            "genesis.mjs",
+            "const genesis = `a²=1\\nb²=2\\nc²=3\\nP=72\\np=64\\nq=81\\nΔ=P²-pq\\n(P²-pq)-Δ=0`;\n",
+        ),
+        (
+            "verify.mjs",
+            "const publicSource = `${content.main}\\n${content.product}\\n${content.workspace}`;\n",
+        ),
+        (
+            "render.mjs",
+            "output.textContent += `\\n[${stamp}] ${message}${data === undefined ? '' : `\\n${JSON.stringify(data)}`}`;\n",
+        ),
+        (
+            "factory.mjs",
+            "const body = `${JSON.stringify(value, null, 2)}\\n`;\n",
+        ),
+    ]
+    for path, source in cases:
+        assert find_literal_escaped_newline_issues(path, source) == []
+
+
+def test_rejects_escaped_newline_after_template_literal_closes():
+    source = "const body = `valid\\ntext`;\\nconst broken = true;\n"
+    issues = find_literal_escaped_newline_issues("example.mjs", source)
+    assert len(issues) == 1
+    assert issues[0].kind == "LITERAL_ESCAPED_NEWLINE_OUTSIDE_STRING_OR_COMMENT"
+
+
 def test_forward_slash_n_data_is_not_treated_as_newline():
     source = 'hash72 = "abc/nxyz"\nroute = "/novel/status"\nratio = "k/n"\n'
     assert find_literal_escaped_newline_issues("example.py", source) == []
