@@ -44,7 +44,6 @@ from hhs_backend.runtime.hhs_pass219_lane5_chat_generator_selection_v1 import (
 )
 from hhs_backend.runtime.hhs_unified_language_model_fabric_v1 import (
     build_unified_language_model_fabric,
-    ordered_litert_model_ids,
 )
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 
@@ -252,16 +251,6 @@ class ProductionAssistantService:
         self._litert_services[model_id] = service
         return service
 
-    def _ordered_litert_services(
-        self,
-        health: Mapping[str, Any],
-    ) -> List[tuple[str, Any]]:
-        registered = self._registered_litert_model_ids(health)
-        order = ordered_litert_model_ids(
-            registered,
-            configured_model_id=str(self.model_service.config.model_id),
-        )
-        return [(model_id, self._litert_service(model_id)) for model_id in order]
 
     def _pass153_service(self, model_id: str) -> Any:
         model_id = str(model_id)
