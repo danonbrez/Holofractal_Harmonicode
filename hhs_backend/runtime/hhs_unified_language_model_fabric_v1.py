@@ -176,6 +176,12 @@ def build_unified_language_model_fabric(
             "runtime_health_required_before_routing": True,
         })
 
+    for member in members:
+        member["visible_to_lane5"] = True
+        member["candidate_only"] = True
+        member["provider_output_canonical_authority"] = False
+        member["runtime_validation_required"] = True
+
     litert = [
         member for member in members
         if str(member.get("member_id") or "").startswith("litert:")
@@ -209,6 +215,9 @@ def build_unified_language_model_fabric(
         "litert_registered_model_ids": list(registered_model_ids),
         "litert_route_order": [member["model_id"] for member in litert],
         "lane5_tooling_expected": True,
+        "lane5_is_pass219_composition_authority": True,
+        "local_provider_order_is_composition_authority": False,
+        "all_members_visible_to_lane5": True,
         "provider_output_is_canonical_authority": False,
         "vm81_admission_boundary_preserved": True,
         "hash72_receipt_boundary_preserved": True,
