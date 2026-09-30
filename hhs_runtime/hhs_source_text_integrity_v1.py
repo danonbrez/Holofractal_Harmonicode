@@ -112,6 +112,34 @@ def find_literal_escaped_newline_issues(path: str | Path, text: str) -> list[Sou
                 column += 1
             continue
 
+        if (
+            suffix in JS_SUFFIXES
+            and template_stack
+            and template_stack[-1]["mode"] == "text"
+        ):
+            # Template-literal text is a string context. Escaped newlines here
+            # are data, not injected source separators. Only ${...} returns
+            # to executable JavaScript where the normal detector applies.
+            if ch == "\\":
+                step = min(2, len(text) - i)
+                i += step
+                column += step
+                continue
+            if ch == BACKTICK:
+                template_stack.pop()
+                i += 1
+                column += 1
+                continue
+            if ch == "$" and nxt == "{":
+                template_stack[-1]["mode"] = "expr"
+                template_stack[-1]["brace_depth"] = 1
+                i += 2
+                column += 2
+                continue
+            i += 1
+            column += 1
+            continue
+
         if quote is not None:
             if triple_quote:
                 if text.startswith(quote * 3, i):
