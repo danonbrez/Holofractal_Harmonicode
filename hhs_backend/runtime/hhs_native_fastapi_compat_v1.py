@@ -469,6 +469,46 @@ class NativeAPIRouter:
             )
 
 
+def bind_native_router_to_external_app(app: Any, router: NativeAPIRouter) -> int:
+    """Project deferred native route declarations into an external ASGI app.
+
+    The native router remains the declaration authority. This boundary adapter
+    is used only when the canonical external FastAPI server composes routes
+    after the Lane 5 provider module has already been resolved in native mode.
+    """
+
+    if not isinstance(router, NativeAPIRouter):
+        raise NativeFastAPICompatibilityError(
+            "HHS_FASTAPI_NATIVE_ROUTER_BINDING_TYPE_MISMATCH"
+        )
+
+    bound = 0
+    for route in router.routes:
+        if route.route_type == "WEBSOCKET":
+            add_websocket = getattr(app, "add_api_websocket_route", None)
+            if add_websocket is None:
+                raise NativeFastAPICompatibilityError(
+                    "HHS_FASTAPI_EXTERNAL_WEBSOCKET_BINDING_UNAVAILABLE"
+                )
+            add_websocket(route.path, route.endpoint, name=route.name)
+        else:
+            add_http = getattr(app, "add_api_route", None)
+            if add_http is None:
+                raise NativeFastAPICompatibilityError(
+                    "HHS_FASTAPI_EXTERNAL_HTTP_BINDING_UNAVAILABLE"
+                )
+            add_http(
+                route.path,
+                route.endpoint,
+                methods=sorted(route.methods),
+                name=route.name,
+                tags=list(route.tags),
+                include_in_schema=route.include_in_schema,
+            )
+        bound += 1
+    return bound
+
+
 class NativeWebSocket:
     """Structural WebSocket compatibility type for native-first route modules."""
 
@@ -528,5 +568,6 @@ __all__ = [
     "NativeRouteResolution",
     "NativeWebSocket",
     "NativeWebSocketDisconnect",
+    "bind_native_router_to_external_app",
     "native_fastapi_compatibility_contract",
 ]
