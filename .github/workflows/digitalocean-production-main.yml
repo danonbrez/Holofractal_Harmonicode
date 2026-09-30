@@ -397,6 +397,7 @@ jobs:
 
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
+          curl -fsS --max-time 30 http://127.0.0.1:8080/api/runtime/services >/tmp/hhs-exact-main-services.json
           curl -fsS --max-time 10 http://127.0.0.1:8080/ >/tmp/hhs-exact-main-root.html
           grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-exact-main-root.html
           EXPECTED_RUNTIME_OS_RELEASE="$release" python3 - <<'PY'
@@ -409,6 +410,11 @@ jobs:
           expected = Path(os.environ['EXPECTED_RUNTIME_OS_RELEASE']).resolve()
           if actual != expected:
               raise SystemExit(f'Runtime OS asset authority mismatch: actual={actual} expected={expected}')
+          services_payload = json.loads(Path('/tmp/hhs-exact-main-services.json').read_text(encoding='utf-8'))
+          services = services_payload.get('services')
+          if not isinstance(services, list) or not services:
+              raise SystemExit(f'local Runtime OS service registry is empty or malformed: {services_payload}')
+          print(f'HHS_DIGITALOCEAN_LOCAL_SERVICE_REGISTRY_VERIFIED={len(services)}')
           PY
 
           latest_drift_manifest=$(find "$STATE_ROOT/host-drift" -mindepth 2 -maxdepth 2 -name manifest.json -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -n 1 | cut -d' ' -f2- || true)
@@ -429,6 +435,8 @@ jobs:
           curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
             "https://${HHS_PRODUCTION_HOST}/api/interface/status" >/tmp/hhs-public-interface-status.json
           curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://${HHS_PRODUCTION_HOST}/api/runtime/services" >/tmp/hhs-public-services.json
+          curl -kfsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
             "https://${HHS_PRODUCTION_HOST}/" >/tmp/hhs-public-runtime-os.html
           test -s /tmp/hhs-public-system-status.json
           grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-public-runtime-os.html
@@ -440,5 +448,10 @@ jobs:
           if payload.get('legacy_harmonizer_is_public_root') is not False: raise SystemExit(payload)
           if '/var/lib/hhs/runtime-os/releases/' not in str(payload.get('asset_root', '')):
               raise SystemExit(f"public interface is not serving a versioned Runtime OS release: {payload}")
+          services_payload = json.loads(Path('/tmp/hhs-public-services.json').read_text(encoding='utf-8'))
+          services = services_payload.get('services')
+          if not isinstance(services, list) or not services:
+              raise SystemExit(f'public Runtime OS service registry is empty or malformed: {services_payload}')
           print('HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED')
+          print(f'HHS_DIGITALOCEAN_PUBLIC_SERVICE_REGISTRY_VERIFIED={len(services)}')
           PY
