@@ -126,9 +126,7 @@ jobs:
           set -euo pipefail
           .venv/bin/python -m pytest -q \
             tests/pass220/test_hhs_native_fastapi_default_provider_v1.py \
-            tests/pass220/test_hhs_lane5_native_capability_provider_v1.py \
-            tests/test_hhs_service_registry_v1.py \
-            tests/test_hhs_websocket_kernel_channel_binding_pass045_v1.py
+            tests/pass220/test_hhs_lane5_native_capability_provider_v1.py
 
       - name: Install declared external FastAPI application fallback
         shell: bash
@@ -154,4 +152,6 @@ jobs:
           set -euo pipefail
           echo "::warning title=Lane 5 provider fallback::HHS_LANE5_PR_EXTERNAL_PROVIDER_FALLBACK:fastapi_application:native_unavailable=HHS_LANE5_NATIVE_IMPLEMENTATION_UNAVAILABLE:fastapi_application:external=FastAPI/Starlette/Pydantic extended application composition:compatibility_only_no_canonical_authority"
           .venv/bin/python -m pytest -q \
-            tests/test_hhs_live_fastapi_runtime_pass045_v1.py
+            tests/test_hhs_live_fastapi_runtime_pass045_v1.py \
+            tests/test_hhs_service_registry_v1.py \
+            tests/test_hhs_websocket_kernel_channel_binding_pass045_v1.py
