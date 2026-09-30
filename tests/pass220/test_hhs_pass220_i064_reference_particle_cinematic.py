@@ -165,3 +165,22 @@ def test_i064_static_composition_has_distinct_primary_satellite_halo_foreground_
     assert "satelliteCenterX" in visual
     assert "foregroundFraction" in visual
     assert "return {scale,depth,compression,role,offset,rgb};" in visual
+
+
+
+def test_i064_reference_clean_static_presentation_preserves_controls_but_hides_idle_chrome():
+    text = source()
+    assert "body { margin: 0; overflow: hidden; background: #000;" in text
+    assert "autoHideChrome:true" in text
+    assert "chromeIdleMs:1800" in text
+    assert 'body.reference-clean-ui #toggleShell' in text
+    assert 'body.reference-clean-ui #osShell' in text
+    assert 'body.reference-clean-ui #hud' in text
+    assert 'body.reference-clean-ui #densityCtl' in text
+    assert "function setReferenceChromeVisible(show)" in text
+    assert "function scheduleReferenceChromeHide()" in text
+    assert "function wakeReferenceChrome()" in text
+    assert "function toggleReferenceChromePin()" in text
+    assert "window.addEventListener('mousemove',wakeReferenceChrome,{passive:true});" in text
+    assert "window.addEventListener('touchstart',wakeReferenceChrome,{passive:true});" in text
+    assert 'else if(e.key==="h"||e.key==="H") toggleReferenceChromePin();' in text
