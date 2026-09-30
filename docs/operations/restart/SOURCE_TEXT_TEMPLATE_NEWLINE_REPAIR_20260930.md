@@ -37,11 +37,13 @@ The live `HHS Source Text Integrity` workflow on the current PR lineage reported
 Completed:
 - inspected the live failing workflow and extracted all 49 findings;
 - classified 49/49 as legitimate JavaScript data escapes rather than physical source corruption;
-- added focused regressions for multiline template data, interpolated source aggregation, nested templates, generated JSON, and a real escaped-newline token after a closed template.
+- added focused regressions for multiline template data, interpolated source aggregation, nested templates, generated JSON, and a real escaped-newline token after a closed template;
+- branch workflow scan completed with `issue_count: 0`, proving the repository-wide escaped-newline findings are cleared;
+- diagnosed the remaining workflow failure as missing test-runner dependency (`No module named pytest`) after the clean scan;
+- repaired the dedicated workflow to install its focused pytest dependency.
 
 Remaining:
-- GitHub `HHS Source Text Integrity` workflow on this branch;
-- focused pytest job from that workflow;
+- rerun GitHub `HHS Source Text Integrity` workflow through the new branch commit;
 - merge to `main`;
 - verify the merged main source-text workflow is green.
 
