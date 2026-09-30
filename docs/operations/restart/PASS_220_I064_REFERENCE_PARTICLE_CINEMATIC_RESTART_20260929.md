@@ -60,6 +60,12 @@ Hardened CI:
 5f3bfe9ccd50b41db2ed8672fdc5e36b7711f32b
 ```
 
+CI environment repair (`pytest` installation only; no simulation source change):
+
+```text
+0c0fb0d1912df412bea314c1f1e87a36b3734d3c
+```
+
 Invariant documentation:
 
 ```text
