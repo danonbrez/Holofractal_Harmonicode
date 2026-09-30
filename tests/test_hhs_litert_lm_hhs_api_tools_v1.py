@@ -74,6 +74,40 @@ class ToolCallingFakeTransport:
         }
 
 
+class SemanticFallbackTransport:
+    provider_id = "provider:hhs.local.text"
+    requested_operation = "litert_lm.chat_completion"
+    backend = "cpu"
+    model_id = "hhs-native-language-v1"
+    request_model_id = "hhs-native-language-v1,cpu,test"
+
+    async def list_models(self):
+        return {"object": "list", "data": [{"id": self.model_id}]}
+
+    async def chat_completion(self, **_kwargs):
+        return {
+            "id": "chatcmpl-semantic-fallback",
+            "model": self.model_id,
+            "choices": [{
+                "message": {
+                    "role": "assistant",
+                    "content": "generic semantic fallback text",
+                },
+                "finish_reason": "stop",
+            }],
+            "usage": {
+                "prompt_tokens": 3,
+                "completion_tokens": 4,
+                "total_tokens": 7,
+            },
+            "hhs_native_trace": {
+                "generation_path": "EXACT_SEMANTIC_FALLBACK",
+                "causal_generation_failure": "NativeCausalLMNotReady: fixture",
+                "runtime_mutation_admitted": False,
+            },
+        }
+
+
 class DelayedEchoTransport:
     async def list_models(self):
         return {"object": "list", "data": [{"id": "gemma4-12b"}]}
@@ -125,6 +159,30 @@ def test_default_hhs_api_tools_execute_inside_gemma4_turn():
     assert turn["per_thread_request_serialization"] is True
     assert turn["mutating_model_tool_execution_allowed"] is False
     assert turn["runtime_mutation_admitted"] is False
+
+
+def test_semantic_fallback_is_not_persisted_as_assistant_generation():
+    service = HHSAPIAssistantService(
+        config=LiteRTLMConfig(model_id="hhs-native-language-v1"),
+        transport=SemanticFallbackTransport(),
+    )
+    thread = service.create_thread(project_id="project:semantic-fallback")
+    turn = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Explain this normally.",
+        )
+    )
+
+    assert turn["ok"] is False
+    assert (
+        turn["status"]
+        == "REJECT_NON_GENERATING_SEMANTIC_FALLBACK_AS_ASSISTANT_COMPLETION"
+    )
+    assert turn["assistant_message"] is None
+    assert turn["provider_output_retained_as_assistant_message"] is False
+    stored = service.threads.get(thread["thread_id"])
+    assert [message["role"] for message in stored["messages"]] == ["user"]
 
 
 def test_same_thread_concurrent_turns_are_serialized():
