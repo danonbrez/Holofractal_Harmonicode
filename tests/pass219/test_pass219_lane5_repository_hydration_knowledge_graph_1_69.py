@@ -177,6 +177,12 @@ def test_branch_ref_callable_is_visible_without_executing_branch_source(case):
     assert cap["execution_authority"] is False
     assert projection["counts"]["repository_ref_heads"] == 1
     assert projection["counts"]["repository_ref_static_callables"] == 1
+    assert len(projection["roots"]["repository_ref_snapshot_root_hash216"]) == 216
+    assert projection["repository_ref_snapshot"] == [{
+        "source_ref": "refs/remotes/origin/feature/ref-visible",
+        "source_commit": feature_commit,
+        "source_state": "BRANCH_HEAD",
+    }]
     assert not any(
         edge.get("source_node_id") == cap["node_id"]
         and edge.get("relation_type") == "DECLARED_IN_FILE"
