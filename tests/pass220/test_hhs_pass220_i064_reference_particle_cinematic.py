@@ -264,3 +264,17 @@ def test_i064_keeps_frozen_i057_color_projection_as_real_fallback():
     assert "const p=points[i], q=p.position" in render
     assert "if(profile && profile.rgb)" in render
     assert "mesh.setColorAt(i,p.material.color);" in render
+
+
+def test_i064_chase_exit_returns_to_same_frozen_static_presentation():
+    text = source()
+    chase = block(
+        text,
+        "function toggleChase(force)",
+        "function chaseNext()",
+    )
+    assert "referenceMotion.projectionFrozen=false;" in chase
+    assert "syncParticleRenderBatches(true);" in chase
+    assert "referenceMotion.projectionFrozen=true;" in chase
+    assert "applyReferenceStaticCamera();" in chase
+    assert 'rb.textContent="Reference Static (V)";' in chase
