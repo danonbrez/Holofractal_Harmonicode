@@ -6,7 +6,7 @@ import shutil
 import subprocess
 
 import pytest
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.testclient import TestClient
 
 from hhs_backend.api.runtime_graphics_routes import router as fastapi_graphics_router
@@ -14,6 +14,11 @@ from hhs_backend.runtime import hhs_runtime_graphics_service_v1 as graphics_serv
 from hhs_backend.runtime.hhs_native_fastapi_graphics_v1 import (
     build_native_runtime_graphics_app,
     native_runtime_graphics_contract,
+)
+from hhs_backend.runtime.hhs_native_fastapi_compat_v1 import (
+    NativeAPIRouter,
+    NativeWebSocket,
+    bind_native_router_to_external_app,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -267,3 +272,36 @@ def test_existing_fastapi_router_is_thin_compatibility_membrane() -> None:
     assert "runtime_graphics_vulkan_status_payload()" in source
     assert "runtime_graphics_capabilities_payload()" in source
     assert "inspect_vulkan_loader" not in source
+
+
+def test_native_websocket_projection_injects_external_boundary_type() -> None:
+    app = FastAPI()
+    router = NativeAPIRouter()
+
+    @router.websocket("/ws/native-boundary")
+    async def native_ws(websocket: NativeWebSocket) -> None:
+        await websocket.accept()
+        payload = await websocket.receive_text()
+        await websocket.send_text("native:" + payload)
+
+    bound = bind_native_router_to_external_app(
+        app,
+        router,
+        external_websocket_type=WebSocket,
+    )
+    assert bound == 1
+
+    with TestClient(app) as client:
+        with client.websocket_connect("/ws/native-boundary") as websocket:
+            websocket.send_text("ok")
+            assert websocket.receive_text() == "native:ok"
+
+
+def test_fastapi_boundary_sources_have_no_literal_escaped_newlines() -> None:
+    paths = [
+        ROOT / "hhs_backend" / "runtime" / "hhs_native_fastapi_compat_v1.py",
+        ROOT / "hhs_backend" / "server.py",
+    ]
+    for path in paths:
+        source = path.read_text(encoding="utf-8")
+        assert r"\n" not in source

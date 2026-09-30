@@ -469,7 +469,12 @@ class NativeAPIRouter:
             )
 
 
-def bind_native_router_to_external_app(app: Any, router: NativeAPIRouter) -> int:
+def bind_native_router_to_external_app(
+    app: Any,
+    router: NativeAPIRouter,
+    *,
+    external_websocket_type: Any = None,
+) -> int:
     """Project deferred native route declarations into an external ASGI app.
 
     The native router remains the declaration authority. This boundary adapter
@@ -492,13 +497,9 @@ def bind_native_router_to_external_app(app: Any, router: NativeAPIRouter) -> int
                 )
 
             projected_endpoint = route.endpoint
-            try:
-                from fastapi import WebSocket as ExternalWebSocket
-            except ModuleNotFoundError:
-                # Non-FastAPI test doubles can consume the native declaration
-                # directly. The canonical external server always has FastAPI
-                # installed before entering this boundary.
-                ExternalWebSocket = None
+            # External framework types are supplied by the canonical server
+            # boundary; native compatibility code remains dependency-free.
+            ExternalWebSocket = external_websocket_type
 
             if ExternalWebSocket is not None:
                 endpoint = route.endpoint
