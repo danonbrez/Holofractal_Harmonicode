@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -126,6 +127,61 @@ def test_database_is_restartable_queryable_and_position_indexed(case, tmp_path: 
     with Lane5RepositoryHydrationKnowledgeDatabase(path) as reopened:
         assert reopened.status()["restart_rehydratable"] is True
         assert reopened.status()["constructors"] == 3
+
+
+def test_branch_ref_callable_is_visible_without_executing_branch_source(case):
+    root, graph, lane5 = case
+
+    def git(*args: str) -> str:
+        result = subprocess.run(
+            ["git", "-C", str(root), *args],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        return result.stdout.strip()
+
+    git("init", "-b", "main")
+    git("config", "user.name", "HHS Test")
+    git("config", "user.email", "hhs-test@example.invalid")
+    git("add", ".")
+    git("commit", "-m", "fixture main")
+    git("checkout", "-b", "feature/ref-visible")
+    branch_file = root / "pkg" / "branch_only.py"
+    branch_file.write_text(
+        "def branch_only_capability(value):\n"
+        "    return value\n",
+        encoding="utf-8",
+    )
+    git("add", "pkg/branch_only.py")
+    git("commit", "-m", "branch capability")
+    feature_commit = git("rev-parse", "HEAD")
+    git("update-ref", "refs/remotes/origin/feature/ref-visible", feature_commit)
+    git("checkout", "main")
+
+    projection = build_repository_hydration_knowledge_graph(
+        root, graph, lane5_snapshot=lane5
+    )
+    ref_caps = [
+        item for item in projection["capabilities"]
+        if item.get("source_ref") == "refs/remotes/origin/feature/ref-visible"
+    ]
+    assert len(ref_caps) == 1
+    cap = ref_caps[0]
+    assert cap["name"] == "branch_only_capability"
+    assert cap["visible_to_lane5"] is True
+    assert cap["closure_state"] == "UNRESOLVED"
+    assert cap["integration_evidence"] == "STATIC_GIT_OBJECT_DISCOVERY_ONLY"
+    assert cap["ref_source_executed"] is False
+    assert cap["execution_authority"] is False
+    assert projection["counts"]["repository_ref_heads"] == 1
+    assert projection["counts"]["repository_ref_static_callables"] == 1
+    assert not any(
+        edge.get("source_node_id") == cap["node_id"]
+        and edge.get("relation_type") == "DECLARED_IN_FILE"
+        for edge in projection["edges"]
+    )
 
 
 def test_tamper_fails_closed(case, tmp_path: Path):
