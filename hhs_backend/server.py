@@ -406,7 +406,9 @@ app.add_middleware(
 
 app.include_router(runtime_router)
 if isinstance(runtime_ws_router, NativeAPIRouter):
-    bind_native_router_to_external_app(\n        app, runtime_ws_router, external_websocket_type=WebSocket\n    )
+    bind_native_router_to_external_app(
+        app, runtime_ws_router, external_websocket_type=WebSocket
+    )
 else:
     app.include_router(runtime_ws_router)
 app.include_router(pass135_audit_router)
