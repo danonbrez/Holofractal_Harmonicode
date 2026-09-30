@@ -469,7 +469,12 @@ class NativeAPIRouter:
             )
 
 
-def bind_native_router_to_external_app(\n    app: Any,\n    router: NativeAPIRouter,\n    *,\n    external_websocket_type: Any = None,\n) -> int:
+def bind_native_router_to_external_app(
+    app: Any,
+    router: NativeAPIRouter,
+    *,
+    external_websocket_type: Any = None,
+) -> int:
     """Project deferred native route declarations into an external ASGI app.
 
     The native router remains the declaration authority. This boundary adapter
