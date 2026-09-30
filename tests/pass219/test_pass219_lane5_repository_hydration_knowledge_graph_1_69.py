@@ -81,12 +81,23 @@ def test_declares_first_class_lane5_operation_registry():
 def test_projection_lifts_capabilities_constructors_and_bindings(case):
     root, graph, lane5 = case
     projection = build_repository_hydration_knowledge_graph(root, graph, lane5_snapshot=lane5)
-    assert projection["counts"]["capabilities"] == 1
+    assert projection["counts"]["capabilities"] == 5
+    assert projection["counts"]["inherited_lane5_capabilities"] == 1
+    assert projection["counts"]["repository_static_callables"] == 4
     assert projection["counts"]["constructors"] == 3
     assert projection["counts"]["knowledge_nodes"] == 4
     assert len(projection["roots"]["projection_root_hash216"]) == 216
     assert projection["authority"]["candidate_only"] is True
     assert projection["authority"]["canonical_hash216_authority"] is False
+    assert projection["visibility_policy"]["classification_flags_filter_visibility"] is False
+    assert projection["visibility_policy"]["unresolved_state_filters_visibility"] is False
+    helper = next(item for item in projection["capabilities"] if item["name"] == "helper")
+    assert helper["visible_to_lane5"] is True
+    assert helper["execution_eligibility"] == "DISCOVERED_NOT_PRECLUDED"
+    assert helper["demo_or_reference_status"] == "NOT_INFERRED"
+    assert helper["configuration_requirement"] == "NOT_INFERRED"
+    assert helper["adapter_requirement"] == "NOT_INFERRED"
+    assert helper["execution_authority"] is False
     kinds = {item["constructor_kind"] for item in projection["constructors"]}
     assert {"PYTHON_CLASS","PYTHON_FACTORY_FUNCTION","FORMAL_CONSTRUCTOR_ARTIFACT"} <= kinds
     relations = {item["relation_type"] for item in projection["edges"]}
@@ -103,7 +114,7 @@ def test_database_is_restartable_queryable_and_position_indexed(case, tmp_path: 
         status = db.hydrate(dependency_graph=graph, knowledge_projection=projection)
         assert status["repository_files"] == 2
         assert status["file_dependencies"] == 1
-        assert status["capabilities"] == 1
+        assert status["capabilities"] == projection["counts"]["capabilities"]
         assert status["constructors"] == 3
         assert status["hash216_positions"] == (projection["counts"]["knowledge_nodes"] + projection["counts"]["knowledge_edges"]) * 216
         assert status["journal_mode"].lower() == "wal"
