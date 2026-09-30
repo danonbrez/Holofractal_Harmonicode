@@ -61,7 +61,102 @@ jobs:
           PY
           node --check /tmp/i064-inline.js
 
-      - name: Run I064 reference projection regression
+      - name: Prove authoritative physics is byte-identical to I064 parent
+        run: |
+          git show             c8cab5b215e4d461e7829e5b6aac69f9afd4254e:examples/ParticleSimulation.html             > /tmp/i064-parent.html
+          python - <<'PY'
+          from pathlib import Path
+
+          parent = Path("/tmp/i064-parent.html").read_text(encoding="utf-8")
+          current = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
+
+          def extract_function(text: str, name: str) -> str:
+              needle = f"function {name}("
+              start = text.index(needle)
+              brace = text.index("{", start)
+              i = brace
+              depth = 0
+              quote = None
+              line_comment = False
+              block_comment = False
+              escape = False
+
+              while i < len(text):
+                  ch = text[i]
+                  nx = text[i + 1] if i + 1 < len(text) else ""
+
+                  if line_comment:
+                      if ch == "\n":
+                          line_comment = False
+                      i += 1
+                      continue
+
+                  if block_comment:
+                      if ch == "*" and nx == "/":
+                          block_comment = False
+                          i += 2
+                      else:
+                          i += 1
+                      continue
+
+                  if quote is not None:
+                      if escape:
+                          escape = False
+                      elif ch == "\\":
+                          escape = True
+                      elif ch == quote:
+                          quote = None
+                      i += 1
+                      continue
+
+                  if ch == "/" and nx == "/":
+                      line_comment = True
+                      i += 2
+                      continue
+                  if ch == "/" and nx == "*":
+                      block_comment = True
+                      i += 2
+                      continue
+                  if ch in ("'", '"', "`"):
+                      quote = ch
+                      i += 1
+                      continue
+
+                  if ch == "{":
+                      depth += 1
+                  elif ch == "}":
+                      depth -= 1
+                      if depth == 0:
+                          return text[start:i + 1]
+                  i += 1
+
+              raise AssertionError(f"unterminated function {name}")
+
+          protected = (
+              "hnanGate",
+              "updateSwarmCoupling",
+              "updateSpiralParticles",
+              "constructorScan",
+              "virtualDecay",
+              "rebuildBondIndex",
+              "addBond",
+              "addCtorBond",
+          )
+          for name in protected:
+              before = extract_function(parent, name)
+              after = extract_function(current, name)
+              assert after == before, f"I064 changed authoritative function: {name}"
+
+          sim_start = parent.index("const simParams = {")
+          sim_end = parent.index("const DEBUG_MODE", sim_start)
+          cur_sim_start = current.index("const simParams = {")
+          cur_sim_end = current.index("const DEBUG_MODE", cur_sim_start)
+          assert current[cur_sim_start:cur_sim_end] == parent[sim_start:sim_end], (
+              "I064 changed authoritative simulation parameters"
+          )
+          PY
+
+      - name: Run corrected I064 projection and camera regression
         env:
           PYTHONPATH: .
         run: >
@@ -75,7 +170,7 @@ jobs:
           python -m pytest -q
           tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
 
-      - name: Enforce projection-only visual authority
+      - name: Enforce live projection and user camera authority
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -86,11 +181,14 @@ jobs:
               text.index("const particleRenderBatches=[]")
           ]
 
-          for token in (
+          required = (
               'schema:"HHS_PASS_220_I064_REFERENCE_PARTICLE_CINEMATIC_V1"',
-              "referenceClipSeconds:122/24",
               "logicalParticleMutation:false",
               "canonicalMutationAuthority:false",
+              "manualZoom:true",
+              "boundaryOrbitAvailable:true",
+              "defaultBoundaryOrbit:false",
+              "continuousProjectionSync:true",
               "coreCompression:0.20",
               "satelliteCompression:0.115",
               "haloCompression:0.50",
@@ -108,11 +206,13 @@ jobs:
               "foregroundFraction:0.045",
               "minParticleScale:0.30",
               "maxParticleScale:7.25",
-              "staticCameraZ:34.0",
-              "ingressCameraZ:4.8",
               "referenceFov:60",
-              "function updateReferenceCamera",
-              "function applyReferenceStaticCamera",
+              "function captureBoundaryOrbitFromCamera",
+              "function updateBoundaryOrbitCamera",
+              "function originalReferenceParticlePosition",
+              "function updateReferenceFollowCamera",
+              "function toggleReferenceFollow",
+              "function syncParticleRenderBatches()",
               "I064_ROLE_PRIMARY",
               "I064_ROLE_SATELLITE",
               "I064_ROLE_HALO",
@@ -122,9 +222,35 @@ jobs:
               "function setReferenceChromeVisible",
               "function toggleReferenceChromePin",
               "background: #000",
-              "PRE_SOLVER_STATE_CONSTRUCTION" if False else "function toggleReferenceMotion",
-          ):
+          )
+          for token in required:
               assert token in text, token
+
+          forbidden = (
+              "freezeStaticProjection",
+              "projectionFrozen",
+              "ingressCameraZ",
+              "function updateReferenceCamera",
+              "function applyReferenceStaticCamera",
+          )
+          for token in forbidden:
+              assert token not in text, token
+
+          follow = text[
+              text.index("function originalReferenceParticlePosition"):
+              text.index("function resetReferenceFollow")
+          ]
+          for token in (
+              "thPos",
+              "thVel",
+              "updateSwarmCoupling",
+              "bond",
+              "bary",
+              "collision",
+              "constructor",
+              "particles[",
+          ):
+              assert token not in follow, token
 
           assert "Math.random" not in visual
           assert (
