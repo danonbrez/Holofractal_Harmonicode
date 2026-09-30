@@ -104,6 +104,7 @@ def case(tmp_path: Path):
         },
         {
             "ref_kind": "BRANCH",
+            "provenance_class": "ORPHAN_BRANCH",
             "ref_name": "refs/remotes/origin/old-capability",
             "head_sha": "3" * 40,
             "state": "OBSERVED",
