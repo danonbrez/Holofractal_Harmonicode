@@ -50,7 +50,14 @@ The adapter grants no canonical VM81, Hash72, Hash216, or persistence authority.
 
 The first PR run proved the original `NativeAPIRouter.on_startup` crash was removed and reached route projection. FastAPI then rejected the deferred websocket endpoint because its cached native declaration still carried `NativeWebSocket` as the parameter type. The bridge now wraps only the external projection endpoint and replaces the websocket parameter annotation with external `fastapi.WebSocket` when FastAPI is present. The native endpoint object and native declaration metadata are not mutated.
 
+### Lane 5 service-registry repair-forward
+
+The first Lane 5 run passed the native FastAPI C11 route-kernel build and advanced beyond the original `runtime_stream_manager` dependency leak. The next failure occurred when the service registry imported the retired `runtime_server.py`, which still required external `fastapi.APIRouter`, `fastapi.HTTPException`, and `pydantic.BaseModel` at module import time.
+
+The Lane 5 provider now exposes native `HTTPException` and `BaseModel` compatibility types alongside `APIRouter` and WebSocket types. External mode still binds the real FastAPI/Pydantic classes. The retired runtime server imports all framework types through the provider membrane, so preserved callables remain importable in native-only service-registry validation.
+
 ## Validation remaining
+
 
 
 - Lane 5 Native Capability Provider workflow;
