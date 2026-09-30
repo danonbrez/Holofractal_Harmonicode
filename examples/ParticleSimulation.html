@@ -10,7 +10,7 @@
   <!-- dat.GUI for optional debugging controls -->
   <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
   <style>
-    body { margin: 0; overflow: hidden; background: radial-gradient(circle, #000022, #111111); font-family: monospace; }
+    body { margin: 0; overflow: hidden; background: #000; font-family: monospace; }
     canvas { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     /* OS Shell UI Styles */
     #toggleShell {
@@ -44,6 +44,23 @@
     #receiptBanner { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
       background: rgba(0,40,0,.85); color: #7f7; padding: 8px 16px; border-radius: 5px; z-index: 105;
       display: none; font-size: .85em; border: 1px solid #4a4; }
+    /* I064 cinematic presentation: controls remain fully present and wake on
+       pointer/touch activity, but idle frames become an uninterrupted black
+       particle field matching the supplied static references. */
+    #toggleShell, #osShell, #hud, #freqCtl, #referenceMotionBtn, #chaseBtn, #densityCtl {
+      transition: opacity .22s ease, visibility .22s ease;
+    }
+    body.reference-clean-ui #toggleShell,
+    body.reference-clean-ui #osShell,
+    body.reference-clean-ui #hud,
+    body.reference-clean-ui #freqCtl,
+    body.reference-clean-ui #referenceMotionBtn,
+    body.reference-clean-ui #chaseBtn,
+    body.reference-clean-ui #densityCtl {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
   </style>
 </head>
 <body>
@@ -161,6 +178,8 @@
       referenceFov:60,
       hideInstrumentation:true,
       defaultMotion:true,
+      autoHideChrome:true,
+      chromeIdleMs:1800,
       canonicalMutationAuthority:false
     });
     const referenceMotion={
@@ -174,6 +193,28 @@
     const referenceQuat=new THREE.Quaternion();
     const particleBatchColor=new THREE.Color();
     const I064_ROLE_PRIMARY=0, I064_ROLE_SATELLITE=1, I064_ROLE_HALO=2, I064_ROLE_FOREGROUND=3;
+    const referenceChrome={ pinned:false, timer:0, visible:true };
+    function setReferenceChromeVisible(show){
+      referenceChrome.visible=!!show;
+      document.body.classList.toggle("reference-clean-ui",!referenceChrome.visible);
+    }
+    function scheduleReferenceChromeHide(){
+      if(!I064_REFERENCE_VISUAL.autoHideChrome || referenceChrome.pinned) return;
+      if(referenceChrome.timer) clearTimeout(referenceChrome.timer);
+      referenceChrome.timer=setTimeout(()=>{
+        if(!referenceChrome.pinned) setReferenceChromeVisible(false);
+      },I064_REFERENCE_VISUAL.chromeIdleMs);
+    }
+    function wakeReferenceChrome(){
+      if(!I064_REFERENCE_VISUAL.autoHideChrome) return;
+      setReferenceChromeVisible(true);
+      scheduleReferenceChromeHide();
+    }
+    function toggleReferenceChromePin(){
+      referenceChrome.pinned=!referenceChrome.pinned;
+      setReferenceChromeVisible(true);
+      if(!referenceChrome.pinned) scheduleReferenceChromeHide();
+    }
     function visualHash32(a,b,c0,d){
       let x=(Math.imul((a|0)+1,0x45d9f3b) ^ Math.imul((b|0)+17,0x119de1f3) ^
              Math.imul((c0|0)+31,0x3449f) ^ Math.imul((d|0)+7,0x27d4eb2d))>>>0;
@@ -412,6 +453,11 @@
         if(tessGeo && tessGeo.lines) tessGeo.lines.visible=false;
       }
       window.addEventListener('resize', onWindowResize, false);
+      if(I064_REFERENCE_VISUAL.autoHideChrome){
+        window.addEventListener('mousemove',wakeReferenceChrome,{passive:true});
+        window.addEventListener('touchstart',wakeReferenceChrome,{passive:true});
+        scheduleReferenceChromeHide();
+      }
       animate();
     }
 
@@ -4255,6 +4301,7 @@
       if(e.key==="c"||e.key==="C") toggleChase();
       else if(e.key==="n"||e.key==="N") chaseNext();
       else if(e.key==="v"||e.key==="V") toggleReferenceMotion();
+      else if(e.key==="h"||e.key==="H") toggleReferenceChromePin();
       else if(e.key==="t"||e.key==="T") toggleRecipTopo();
     });
     const toggleButton = document.getElementById("toggleShell");
