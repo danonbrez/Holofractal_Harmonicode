@@ -72,6 +72,18 @@ The connected GitHub repository is authoritative. A local clone was attempted on
 
 The first source-text-integrity run exposed pre-existing false positives on valid JavaScript/template-string `\\n` data. The scanner itself was repaired on this branch. Check conclusions must be refreshed against the latest branch head before merge; no stale earlier result is treated as current validation.
 
+## Latest checkpoint — 2026-09-29 23:58 America/New_York
+
+- Current branch head after repair-forward: `10d6dd75e9d58db0255f0c53379e6b2e2656f2c6`.
+- PR: `#666`.
+- Source-text integrity now uses the Pass 220 I062 native pytest-compatible provider rather than assuming `setup-python` installs upstream pytest.
+- Deep-index PR refs now hydrate under `refs/remotes/hhs-pr/*` to avoid collision with GitHub Actions' `refs/remotes/pull/<n>/merge` checkout namespace.
+- The Pass 219 ref scanner recognizes the `hhs-pr` namespace and preserves PR-head provenance without checkout/execution.
+- The expanded fixture count is corrected to 8 knowledge nodes (5 capabilities + 3 constructors).
+- LiteRT compatibility validation now checks only an active `-r requirements-litert-lm.txt` directive; commented installation documentation no longer causes a false failure.
+- The FastAPI provider workflow now runs service-registry/WebSocket integration only after the declared FastAPI application substrate is installed.
+- Latest affected checks were retriggered from this exact head; they are queued. Older failed runs are superseded and are not current validation evidence.
+
 ## Remaining work
 
 1. Run/inspect dependency-scoped PR checks.
