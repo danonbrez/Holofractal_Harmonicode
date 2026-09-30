@@ -37,6 +37,9 @@ from hhs_backend.runtime.hhs_native_litert_lm_provider_v1 import (
 from hhs_backend.runtime.hhs_pass153_assistant_transport_v1 import (
     Pass153AssistantTransport,
 )
+from hhs_backend.runtime.hhs_pass219_lane5_chat_generator_selection_v1 import (
+    select_lane5_chat_generator,
+)
 from hhs_backend.runtime.hhs_unified_language_model_fabric_v1 import (
     build_unified_language_model_fabric,
     ordered_litert_model_ids,
@@ -131,6 +134,12 @@ class ProductionAssistantService:
         elif pass153_service is not None:
             pass153_service.threads = self.threads
         self.pass153_service = pass153_service
+        self._pass153_services: Dict[str, Any] = {}
+        if self.pass153_service is not None:
+            self._pass153_services[
+                str(self.pass153_service.config.model_id)
+            ] = self.pass153_service
+        self._last_lane5_selection: Dict[str, Any] = {}
 
         self._health_cache: Dict[str, Dict[str, Any]] = {}
         self._health_cache_at: Dict[str, float] = {}
@@ -251,6 +260,55 @@ class ProductionAssistantService:
             configured_model_id=str(self.model_service.config.model_id),
         )
         return [(model_id, self._litert_service(model_id)) for model_id in order]
+
+    def _pass153_service(self, model_id: str) -> Any:
+        model_id = str(model_id)
+        existing = self._pass153_services.get(model_id)
+        if existing is not None:
+            return existing
+        if self.pass153_service is None:
+            return None
+        transport = getattr(self.pass153_service, "transport", None)
+        inner = getattr(transport, "inner", transport)
+        environment = getattr(inner, "environment", None)
+        if environment is None:
+            return None
+        pass153_transport = Pass153AssistantTransport(
+            environment=environment,
+            model_id=model_id,
+        )
+        config = replace(
+            self.pass153_service.config,
+            base_url="hhs-pass153://local/v1",
+            model_id=model_id,
+            temperature=0.0,
+            top_p=1.0,
+            top_k=1,
+            reasoning_effort="bounded",
+        )
+        service = HHSAPIAssistantService(
+            config=config,
+            transport=pass153_transport,
+            thread_store=self.threads,
+        )
+        self._pass153_services[model_id] = service
+        return service
+
+    def _service_for_lane5_member(self, member_id: str) -> tuple[Any, str, str]:
+        value = str(member_id)
+        if value.startswith("litert:"):
+            model_id = value.split(":", 1)[1]
+            return self._litert_service(model_id), model_id, "UNIFIED_LITERT_MODEL_FABRIC"
+        if value.startswith("native-causal:"):
+            model_id = value.split(":", 1)[1]
+            return self.native_service, model_id, "HHS_NATIVE_LITERT_COMPATIBLE"
+        if value.startswith("pass153:"):
+            model_id = value.split(":", 1)[1]
+            service = self._pass153_service(model_id)
+            if service is None:
+                raise RuntimeError(f"Pass153 service unavailable for Lane 5 member: {value}")
+            return service, model_id, "HHS_PASS153_OPEN_MODEL"
+        raise RuntimeError(f"Lane 5 selected non-callable chatbot member: {value}")
 
     def _pass153_models(self) -> List[Dict[str, Any]]:
         service = self.pass153_service
@@ -497,37 +555,63 @@ class ProductionAssistantService:
         if not self.threads.get(thread_id):
             raise KeyError(thread_id)
 
-        litert_health = (
-            {
-                "ok": False,
-                "online": False,
-                "status": "EXTERNAL_LITERT_COMPATIBILITY_NOT_SELECTED",
-                "provider_mode": self.provider_mode,
-                "registered_model_ids": [],
-            }
-            if self.native_first
-            else await self._provider_health("gemma", self.model_service)
-        )
-        if self.native_first:
-            self._health_cache["gemma"] = dict(litert_health)
-            self._health_cache_at["gemma"] = time.monotonic()
-        native_health = await self._provider_health("native", self.native_service)
-        pass153_health = (
-            await self._provider_health("pass153", self.pass153_service)
-            if self.pass153_service is not None
-            else {"ok": False, "online": False}
-        )
-        native_ready = bool(native_health.get("ok") and native_health.get("online"))
-        pass153_ready = bool(
-            self.pass153_service is not None
-            and pass153_health.get("ok")
-            and pass153_health.get("online")
-        )
+        # Health is evidence for Pass 219 composition. It does not itself select
+        # a provider and native/default mode does not erase other capabilities.
+        tasks = [
+            self._provider_health("gemma", self.model_service),
+            self._provider_health("native", self.native_service),
+        ]
+        if self.pass153_service is not None:
+            tasks.append(self._provider_health("pass153", self.pass153_service))
+        results = await asyncio.gather(*tasks)
+        litert_health = results[0]
+        native_health = results[1]
+        pass153_health = results[2] if len(results) > 2 else {
+            "ok": False,
+            "online": False,
+            "status": "PASS153_PROVIDER_UNAVAILABLE",
+        }
+        self._health_cache["gemma"] = dict(litert_health)
+        self._health_cache["native"] = dict(native_health)
+        self._health_cache["pass153"] = dict(pass153_health)
+        now = time.monotonic()
+        self._health_cache_at["gemma"] = now
+        self._health_cache_at["native"] = now
+        self._health_cache_at["pass153"] = now
 
         user_message: Optional[Mapping[str, Any]] = None
-        failed_litert_results: List[Dict[str, Any]] = []
+        failed_member_ids: List[str] = []
+        failed_provider_results: List[Dict[str, Any]] = []
+        last_native_result: Optional[Mapping[str, Any]] = None
 
-        for model_id, service in self._ordered_litert_services(litert_health):
+        while True:
+            fabric = self.unified_model_fabric()
+            selection = select_lane5_chat_generator(
+                fabric=fabric,
+                thread_id=thread_id,
+                content=content,
+                failed_member_ids=failed_member_ids,
+            )
+            self._last_lane5_selection = dict(selection)
+            if not selection.get("ok"):
+                break
+
+            selected_member_id = str(selection["selected_member_id"])
+            try:
+                service, model_id, effective_mode = self._service_for_lane5_member(
+                    selected_member_id
+                )
+            except Exception as exc:
+                failed_member_ids.append(selected_member_id)
+                failed_provider_results.append({
+                    "ok": False,
+                    "status": "LANE5_SELECTED_MEMBER_BINDING_FAILED",
+                    "selected_member_id": selected_member_id,
+                    "error": f"{type(exc).__name__}: {exc}",
+                    "lane5_selection": selection,
+                })
+                continue
+
             if user_message is None:
                 result = await service.send_message(
                     thread_id,
@@ -548,87 +632,30 @@ class ProductionAssistantService:
                     assistant_mode=assistant_mode,
                     user_context=user_context,
                 )
+
+            if selected_member_id.startswith("native-causal:"):
+                last_native_result = result
+
             if self._completed(result):
-                result["effective_mode"] = "UNIFIED_LITERT_MODEL_FABRIC"
+                result["effective_mode"] = effective_mode
                 result["selected_model_id"] = model_id
+                result["selected_lane5_member_id"] = selected_member_id
                 result["production_assistant_version"] = VERSION
-                result["fallback_used"] = bool(failed_litert_results)
-                result["failed_provider_results"] = failed_litert_results
-                result["unified_model_fabric"] = self.unified_model_fabric()
+                result["fallback_used"] = bool(failed_member_ids)
+                result["failed_provider_results"] = failed_provider_results
+                result["lane5_selection"] = selection
+                result["composition_authority"] = "PASS219_LANE5"
+                result["local_provider_hierarchy_authority"] = False
+                result["unified_model_fabric"] = fabric
                 return result
-            failed_litert_results.append(dict(result))
+
+            failed_member_ids.append(selected_member_id)
+            failed_provider_results.append({
+                **dict(result),
+                "selected_lane5_member_id": selected_member_id,
+                "lane5_selection": selection,
+            })
             candidate_user = result.get("user_message")
-            if isinstance(candidate_user, Mapping):
-                user_message = candidate_user
-
-        native_result: Optional[Mapping[str, Any]] = None
-        if native_ready:
-            if user_message is None:
-                native_result = await self.native_service.send_message(
-                    thread_id,
-                    content=content,
-                    tools=tools,
-                    response_format=response_format,
-                    custom_system_instruction=custom_system_instruction,
-                    assistant_mode=assistant_mode,
-                    user_context=user_context,
-                )
-            else:
-                native_result = await self.native_service.continue_message(
-                    thread_id,
-                    user_message=user_message,
-                    tools=tools,
-                    response_format=response_format,
-                    custom_system_instruction=custom_system_instruction,
-                    assistant_mode=assistant_mode,
-                    user_context=user_context,
-                )
-            if self._completed(native_result):
-                native_result["effective_mode"] = "HHS_NATIVE_LITERT_COMPATIBLE"
-                native_result["selected_model_id"] = NATIVE_MODEL_ID
-                native_result["production_assistant_version"] = VERSION
-                native_result["fallback_used"] = True
-                native_result["failed_provider_results"] = failed_litert_results
-                native_result["unified_model_fabric"] = self.unified_model_fabric()
-                return native_result
-            candidate_user = native_result.get("user_message")
-            if isinstance(candidate_user, Mapping):
-                user_message = candidate_user
-
-        pass153_result: Optional[Mapping[str, Any]] = None
-        if pass153_ready and self.pass153_service is not None:
-            if user_message is None:
-                pass153_result = await self.pass153_service.send_message(
-                    thread_id,
-                    content=content,
-                    tools=tools,
-                    response_format=response_format,
-                    custom_system_instruction=custom_system_instruction,
-                    assistant_mode=assistant_mode,
-                    user_context=user_context,
-                )
-            else:
-                pass153_result = await self.pass153_service.continue_message(
-                    thread_id,
-                    user_message=user_message,
-                    tools=tools,
-                    response_format=response_format,
-                    custom_system_instruction=custom_system_instruction,
-                    assistant_mode=assistant_mode,
-                    user_context=user_context,
-                )
-            if self._completed(pass153_result):
-                pass153_result["effective_mode"] = "HHS_PASS153_OPEN_MODEL"
-                pass153_result["selected_model_id"] = self.pass153_service.config.model_id
-                pass153_result["production_assistant_version"] = VERSION
-                pass153_result["fallback_used"] = True
-                pass153_result["failed_provider_results"] = [
-                    *failed_litert_results,
-                    *([dict(native_result)] if isinstance(native_result, Mapping) else []),
-                ]
-                pass153_result["unified_model_fabric"] = self.unified_model_fabric()
-                return pass153_result
-            candidate_user = pass153_result.get("user_message")
             if isinstance(candidate_user, Mapping):
                 user_message = candidate_user
 
@@ -638,20 +665,24 @@ class ProductionAssistantService:
                 role="user",
                 content=content,
             )
-        return self._unavailable_turn(
+        unavailable = self._unavailable_turn(
             thread_id,
             user_message=user_message,
             gemma_health=litert_health,
             native_health=native_health,
-            gemma_result=failed_litert_results[-1] if failed_litert_results else None,
-            native_result=(
-                native_result
-                if isinstance(native_result, Mapping)
-                else pass153_result
-                if isinstance(pass153_result, Mapping)
+            gemma_result=(
+                failed_provider_results[-1]
+                if failed_provider_results
                 else None
             ),
+            native_result=last_native_result,
         )
+        unavailable["failed_provider_results"] = failed_provider_results
+        unavailable["failed_lane5_member_ids"] = failed_member_ids
+        unavailable["lane5_selection"] = dict(self._last_lane5_selection)
+        unavailable["composition_authority"] = "PASS219_LANE5"
+        unavailable["local_provider_hierarchy_authority"] = False
+        return unavailable
 
 
 DEFAULT_PRODUCTION_ASSISTANT_SERVICE = ProductionAssistantService()
