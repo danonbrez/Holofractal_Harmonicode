@@ -149,6 +149,13 @@ def test_unified_fabric_includes_generators_fallbacks_and_memory(monkeypatch):
     assert "native-causal:hydrated-native" in member_ids
     assert "pass153:hhs-reference-open-model-v1" in member_ids
     assert "pass166:word2vec-active" in member_ids
+    semantic = next(
+        item for item in fabric["members"]
+        if item["member_id"] == "native-semantic:hhs-native-language-v1"
+    )
+    assert semantic["callable_from_unified_chat"] is False
+    assert semantic["semantic_fallback_is_text_generation"] is False
+    assert "TEXT_GENERATION" not in semantic["capabilities"]
     assert fabric["vm81_admission_boundary_preserved"] is True
 
 
