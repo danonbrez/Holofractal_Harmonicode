@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# HHS production HTTPS + mobile-interface closure.
-# Idempotently configures Nginx TLS, Certbot renewal, deploys the repository
-# mobile first-paint repair, runs dependency-scoped tests, and verifies the
-# public HTTPS surface.
+# HHS production HTTPS closure.
+#
+# Production frontend authority is owned exclusively by the versioned Runtime OS
+# release selected by hhs.service. This script MUST NOT copy, install, patch, or
+# otherwise mutate any frontend source inside /opt/hhs/app. It manages only the
+# network/TLS edge and verifies that Nginx proxies the canonical Runtime OS.
 
 HHS_IP="${HHS_IP:-137.184.223.84}"
-HHS_APP_ROOT="${HHS_APP_ROOT:-/opt/hhs/app}"
-HHS_APP_USER="${HHS_APP_USER:-hhs}"
 HHS_CERT_NAME="${HHS_CERT_NAME:-hhs-production-ip}"
 HHS_CERTBOT="${HHS_CERTBOT:-/opt/certbot/bin/certbot}"
 HHS_BACKEND="${HHS_BACKEND:-http://127.0.0.1:8080}"
-HHS_HEALTH_PATH="${HHS_HEALTH_PATH:-/api/health}"
+HHS_WEBROOT="${HHS_WEBROOT:-/var/www/letsencrypt}"
 HHS_TIMER_SCHEDULE="${HHS_TIMER_SCHEDULE:-*-*-* 00,06,12,18:17:00}"
-HHS_SKIP_FRONTEND_DEPLOY="${HHS_SKIP_FRONTEND_DEPLOY:-0}"
 HHS_RUN_RENEW_DRY_RUN="${HHS_RUN_RENEW_DRY_RUN:-0}"
 
 fail() {
@@ -52,32 +51,6 @@ configure_firewall() {
   ufw status | grep -Eq '443/tcp.*ALLOW' || fail "UFW did not admit HTTPS"
 }
 
-run_as_app() {
-  if command -v runuser >/dev/null 2>&1; then
-    runuser -u "${HHS_APP_USER}" -- "$@"
-  elif command -v sudo >/dev/null 2>&1; then
-    sudo -u "${HHS_APP_USER}" -H "$@"
-  else
-    fail "runuser or sudo is required to execute Git as ${HHS_APP_USER}"
-  fi
-}
-
-atomic_install_from_main() {
-  local path="$1"
-  local tmp
-  tmp="$(mktemp)"
-  if ! run_as_app git -C "${HHS_APP_ROOT}" show "origin/main:${path}" >"${tmp}"; then
-    rm -f "${tmp}"
-    fail "unable to read origin/main:${path}"
-  fi
-  [[ -s "${tmp}" ]] || {
-    rm -f "${tmp}"
-    fail "refusing to install empty file: ${path}"
-  }
-  install -o "${HHS_APP_USER}" -g "${HHS_APP_USER}" -m 0644 "${tmp}" "${HHS_APP_ROOT}/${path}"
-  rm -f "${tmp}"
-}
-
 find_hhs_nginx_site() {
   local candidate
   candidate="$({
@@ -95,6 +68,8 @@ write_nginx_configuration() {
   cp -a "${site_file}" "${backup}"
   printf 'Nginx backup: %s\n' "${backup}"
 
+  install -d -m 0755 "${HHS_WEBROOT}/.well-known/acme-challenge"
+
   cat >/etc/nginx/conf.d/hhs-websocket-map.conf <<'NGINX'
 map $http_upgrade $hhs_connection_upgrade {
     default upgrade;
@@ -108,7 +83,15 @@ server {
     listen [::]:80;
     server_name ${HHS_IP};
 
-    return 308 https://${HHS_IP}\$request_uri;
+    location ^~ /.well-known/acme-challenge/ {
+        root ${HHS_WEBROOT};
+        default_type text/plain;
+        try_files \$uri =404;
+    }
+
+    location / {
+        return 308 https://${HHS_IP}\$request_uri;
+    }
 }
 
 server {
@@ -129,6 +112,8 @@ server {
     add_header X-Content-Type-Options "nosniff" always;
     add_header Referrer-Policy "same-origin" always;
 
+    # One HTTP frontend authority: every application request is proxied to the
+    # canonical HHS service. Nginx never serves a repository/static UI tree.
     location / {
         proxy_pass ${HHS_BACKEND};
         proxy_http_version 1.1;
@@ -156,30 +141,23 @@ NGINX
 }
 
 configure_renewal() {
-  cat >/usr/local/sbin/hhs-certbot-pre-renew <<'SH'
-#!/bin/sh
-set -eu
-systemctl stop nginx
-SH
-
-  cat >/usr/local/sbin/hhs-certbot-post-renew <<'SH'
+  cat >/usr/local/sbin/hhs-certbot-deploy-renew <<'SH'
 #!/bin/sh
 set -eu
 nginx -t
-systemctl start nginx
+systemctl reload nginx
 SH
-
-  chmod 0755 /usr/local/sbin/hhs-certbot-pre-renew /usr/local/sbin/hhs-certbot-post-renew
+  chmod 0755 /usr/local/sbin/hhs-certbot-deploy-renew
 
   cat >/etc/systemd/system/hhs-certbot-renew.service <<SYSTEMD
 [Unit]
 Description=Renew HHS short-lived IP certificate
-Wants=network-online.target
-After=network-online.target
+Wants=network-online.target nginx.service
+After=network-online.target nginx.service
 
 [Service]
 Type=oneshot
-ExecStart=${HHS_CERTBOT} renew --quiet --cert-name ${HHS_CERT_NAME} --pre-hook /usr/local/sbin/hhs-certbot-pre-renew --post-hook /usr/local/sbin/hhs-certbot-post-renew
+ExecStart=${HHS_CERTBOT} renew --quiet --cert-name ${HHS_CERT_NAME} --deploy-hook /usr/local/sbin/hhs-certbot-deploy-renew
 ExecStartPost=/usr/bin/systemctl is-active --quiet nginx
 SYSTEMD
 
@@ -203,31 +181,22 @@ SYSTEMD
   systemctl is-active --quiet hhs-certbot-renew.timer
 }
 
-deploy_frontend_repair() {
-  [[ "${HHS_SKIP_FRONTEND_DEPLOY}" == "1" ]] && return 0
+verify_interface_identity() {
+  local status_file="$1"
+  python3 - "$status_file" <<'PY'
+import json
+import sys
+from pathlib import Path
 
-  [[ -d "${HHS_APP_ROOT}/.git" ]] || fail "repository not found at ${HHS_APP_ROOT}"
-  id "${HHS_APP_USER}" >/dev/null 2>&1 || fail "application user not found: ${HHS_APP_USER}"
-
-  run_as_app git -C "${HHS_APP_ROOT}" fetch origin main
-
-  atomic_install_from_main applications/holofractal_harmonizer/src/sha256.mjs
-  atomic_install_from_main applications/holofractal_harmonizer/src/core.mjs
-  atomic_install_from_main applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs
-  atomic_install_from_main applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs
-  atomic_install_from_main applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
-  atomic_install_from_main applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs
-  atomic_install_from_main applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs
-
-  node --check "${HHS_APP_ROOT}/applications/holofractal_harmonizer/src/sha256.mjs"
-  node --check "${HHS_APP_ROOT}/applications/holofractal_harmonizer/src/core.mjs"
-  node --check "${HHS_APP_ROOT}/applications/holofractal_harmonizer/src/pass177/hash216-browser.mjs"
-  node --check "${HHS_APP_ROOT}/applications/holofractal_harmonizer/src/mobile-first-paint-fix.mjs"
-  node --check "${HHS_APP_ROOT}/applications/holofractal_harmonizer/src/production-startup-coordinator.mjs"
-
-  node --test \
-    "${HHS_APP_ROOT}/applications/holofractal_harmonizer/tests/http-insecure-sha256-fallback.test.mjs" \
-    "${HHS_APP_ROOT}/applications/holofractal_harmonizer/tests/mobile-first-paint-fix.test.mjs"
+payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+if payload.get("interface") != "HHS_VISUAL_RUNTIME_OS_WORKSPACE":
+    raise SystemExit(f"unexpected production interface: {payload}")
+if payload.get("legacy_harmonizer_is_public_root") is not False:
+    raise SystemExit(f"legacy Harmonizer is still public-root authority: {payload}")
+asset_root = str(payload.get("asset_root", ""))
+if "/var/lib/hhs/runtime-os/releases/" not in asset_root:
+    raise SystemExit(f"production is not serving a versioned Runtime OS release: {payload}")
+PY
 }
 
 verify_public_surface() {
@@ -236,16 +205,21 @@ verify_public_surface() {
   curl -fsSI "http://${HHS_IP}/" | grep -Eqi '^HTTP/[0-9.]+ 308|^location: https://' \
     || fail "HTTP did not redirect to HTTPS"
 
-  curl -fsS "${https_root}${HHS_HEALTH_PATH}" >/tmp/hhs-production-health.json
-  [[ -s /tmp/hhs-production-health.json ]] || fail "HTTPS health response was empty"
+  curl -fsS "${HHS_BACKEND}/api/system/status" >/tmp/hhs-backend-system-status.json
+  [[ -s /tmp/hhs-backend-system-status.json ]] || fail "local HHS system status was empty"
 
-  curl -fsS "${https_root}/src/sha256.mjs?production-closure=1" \
-    | grep -q 'fallbackSha256' \
-    || fail "SHA-256 fallback is not served over HTTPS"
+  curl -fsS "${HHS_BACKEND}/api/interface/status" >/tmp/hhs-backend-interface-status.json
+  verify_interface_identity /tmp/hhs-backend-interface-status.json
 
-  curl -fsS "${https_root}/src/mobile-first-paint-fix.mjs?production-closure=1" \
-    | grep -q 'HHS_MOBILE_FIRST_PAINT_AND_OVERLAY_OWNERSHIP_V1' \
-    || fail "mobile first-paint repair is not served over HTTPS"
+  curl -fsS "${https_root}/api/system/status" >/tmp/hhs-production-system-status.json
+  [[ -s /tmp/hhs-production-system-status.json ]] || fail "HTTPS system status response was empty"
+
+  curl -fsS "${https_root}/api/interface/status" >/tmp/hhs-production-interface-status.json
+  verify_interface_identity /tmp/hhs-production-interface-status.json
+
+  curl -fsS "${https_root}/" >/tmp/hhs-production-runtime-os.html
+  grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-production-runtime-os.html \
+    || fail "public root is not the canonical Runtime OS"
 
   openssl s_client -connect "${HHS_IP}:443" -servername "${HHS_IP}" </dev/null 2>/dev/null \
     | openssl x509 -noout -checkend 86400 \
@@ -257,58 +231,50 @@ verify_public_surface() {
 
 main() {
   require_root
-  require_command git
   require_command nginx
   require_command curl
   require_command openssl
   require_command systemctl
-  require_command node
+  require_command python3
   [[ -x "${HHS_CERTBOT}" ]] || fail "Certbot not executable at ${HHS_CERTBOT}"
 
   local cert_root="/etc/letsencrypt/live/${HHS_CERT_NAME}"
   [[ -s "${cert_root}/fullchain.pem" ]] || fail "certificate not found: ${cert_root}/fullchain.pem"
   [[ -s "${cert_root}/privkey.pem" ]] || fail "private key not found: ${cert_root}/privkey.pem"
 
-  note "Checking backend health"
-  curl -fsS "${HHS_BACKEND}${HHS_HEALTH_PATH}" >/tmp/hhs-backend-health.json
+  note "Checking canonical HHS backend and Runtime OS identity"
+  curl -fsS "${HHS_BACKEND}/api/system/status" >/tmp/hhs-backend-system-status.json
+  curl -fsS "${HHS_BACKEND}/api/interface/status" >/tmp/hhs-backend-interface-status.json
+  verify_interface_identity /tmp/hhs-backend-interface-status.json
 
   note "Admitting HTTP and HTTPS through the host firewall"
   configure_firewall
 
-  note "Configuring Nginx HTTPS and WebSocket proxy"
+  note "Configuring Nginx as proxy-only frontend authority"
   local site_file
   site_file="$(find_hhs_nginx_site)"
   printf 'Active HHS Nginx site: %s\n' "${site_file}"
   write_nginx_configuration "${site_file}"
 
-  note "Configuring short-lived certificate renewal"
+  note "Configuring online short-lived certificate renewal"
   configure_renewal
-
-  note "Removing staging certificate when present"
-  if [[ -d /etc/letsencrypt/live/hhs-production-ip-staging ]]; then
-    "${HHS_CERTBOT}" delete --cert-name hhs-production-ip-staging --non-interactive || true
-  fi
-
-  note "Deploying and validating browser repairs"
-  deploy_frontend_repair
 
   if [[ "${HHS_RUN_RENEW_DRY_RUN}" == "1" ]]; then
     note "Running Certbot renewal dry run"
     "${HHS_CERTBOT}" renew --dry-run --cert-name "${HHS_CERT_NAME}" \
-      --pre-hook /usr/local/sbin/hhs-certbot-pre-renew \
-      --post-hook /usr/local/sbin/hhs-certbot-post-renew
+      --deploy-hook /usr/local/sbin/hhs-certbot-deploy-renew
   fi
 
-  note "Verifying public production surface"
+  note "Verifying one canonical public Runtime OS surface"
   verify_public_surface
 
-  printf '\nHHS_PRODUCTION_HTTPS_MOBILE_CLOSURE_VERIFIED\n'
-  printf 'Public URL: https://%s/?production-closure=1\n' "${HHS_IP}"
+  printf '\nHHS_PRODUCTION_HTTPS_RUNTIME_OS_CLOSURE_VERIFIED\n'
+  printf 'Public URL: https://%s/\n' "${HHS_IP}"
   printf 'Certificate:\n'
   openssl x509 -in "${cert_root}/fullchain.pem" -noout -subject -issuer -dates -ext subjectAltName
   printf 'Renewal timer:\n'
   systemctl list-timers hhs-certbot-renew.timer --all --no-pager
-  printf 'Health response saved at /tmp/hhs-production-health.json\n'
+  printf 'Interface status saved at /tmp/hhs-production-interface-status.json\n'
 }
 
 main "$@"
