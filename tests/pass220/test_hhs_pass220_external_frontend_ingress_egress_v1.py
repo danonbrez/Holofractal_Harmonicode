@@ -15,14 +15,27 @@ WARM = ROOT / "hhs_backend/runtime_os_pass220_lane5_capability_hydration.py"
 
 def _python_mib_constant(path: Path, name: str) -> int:
     source = path.read_text(encoding="utf-8")
-    match = re.search(
-        rf"^{re.escape(name)}\\s*=\\s*(\\d+)\\s*\\*\\s*1024\\s*\\*\\s*1024\\s*$",
-        source,
-        flags=re.MULTILINE,
-    )
-    if not match:
-        raise AssertionError(f"{name} MiB constant not found in {path}")
-    return int(match.group(1)) * 1024 * 1024
+    tree = ast.parse(source, filename=str(path))
+
+    def exact_int(node: ast.AST) -> int:
+        if isinstance(node, ast.Constant) and isinstance(node.value, int):
+            return int(node.value)
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Mult):
+            return exact_int(node.left) * exact_int(node.right)
+        raise AssertionError(
+            f"{name} must be an exact integer multiplication expression in {path}"
+        )
+
+    for statement in tree.body:
+        if not isinstance(statement, ast.Assign) or len(statement.targets) != 1:
+            continue
+        target = statement.targets[0]
+        if isinstance(target, ast.Name) and target.id == name:
+            value = exact_int(statement.value)
+            assert value % (1024 * 1024) == 0
+            return value
+
+    raise AssertionError(f"{name} exact integer constant not found in {path}")
 
 
 def test_external_frontend_ingress_bound_matches_canonical_pass165_limit() -> None:
@@ -47,7 +60,8 @@ def test_external_frontend_reads_exact_file_bytes_and_uses_pass174_pipeline() ->
         '"/api/v1/pass174/sdlc/run"',
         '"/api/v1/pass174/hash216/query"',
         "source_size_bytes: selected.size",
-        "frontend",
+        'provenance: "RUNTIME_OS_MOBILE_MULTIMODAL_INGRESS"',
+        'authorization_scope: "P174_MULTIMODAL_SDLC_PIPELINE"',
         "Hydrate vector store",
         "Read persisted vector",
     ):
