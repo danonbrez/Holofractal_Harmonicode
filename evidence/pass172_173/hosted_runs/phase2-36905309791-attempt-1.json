@@ -1,0 +1,21 @@
+{
+  "branch": "pass220-reconcile-588-global-capability-1-77",
+  "failures": 0,
+  "next_action": "merge after the evidence-only head is revalidated",
+  "outcomes": {
+    "compile": "success",
+    "contracts": "success",
+    "dependencies": "success",
+    "smoke": "success",
+    "tests": "success"
+  },
+  "pytest_output_sha256": "0ddc545bd23540ae64c82f4c3df0a4654787cad35c06dc4a6bcb18d400638ea7",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "run_attempt": 1,
+  "run_id": 36905309791,
+  "schema": "HHS_PASS_172_173_PHASE2_HOSTED_VALIDATION_V1",
+  "status": "SUCCESS",
+  "terminal_pass172_claimed": false,
+  "terminal_pass173_claimed": false,
+  "validated_sha": "8a62da86abe6b1ad53a17ec17b502f54cd1d7838"
+}
