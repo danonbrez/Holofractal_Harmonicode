@@ -18,7 +18,7 @@ Date: 2026-10-01
 4. Branch and pull-request refs are read through Git object inspection only; discovered source is never imported or executed.
 5. Parse failures remain visible as source-file nodes.
 6. Every node receives exact 216-character Hash216 identity.
-7. Restartable SQLite hydration stores every node plus all 216 Hash216 glyph positions and per-glyph SHA-256 codewords.
+7. Restartable SQLite hydration stores every node plus a compact fixed-width vector containing all 216 ordered per-glyph SHA-256 codewords.
 8. Added native C++ Pass 219 Lane 5 cell-wall policy validator for visibility/non-bypass/no-authority-escalation semantics.
 9. Added dependency-scoped Python and native C++ regression tests.
 10. Added CI workflow that fetches repository branch/PR refs, runs scoped tests, performs real repository hydration, and uploads the receipt/database as restartable artifacts.
@@ -59,7 +59,7 @@ g++ -std=c++20 -Wall -Wextra -Werror -pedantic \
 /tmp/pass219-lane5-global-capability-visibility-1-76
 ```
 
-The workflow then performs an actual whole-repository/ref visibility hydration and verifies that the SQLite vector-position count is exactly `node_count * 216`.
+The workflow then performs an actual whole-repository/ref visibility hydration and verifies one compact Hash216 vector row per node, exactly 216 ordered codewords per row, and fixed vector width `216 * 32` bytes.
 
 ## Next action
 
