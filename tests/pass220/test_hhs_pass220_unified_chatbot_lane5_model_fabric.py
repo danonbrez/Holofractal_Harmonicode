@@ -8,6 +8,7 @@ from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
 )
 from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     ASSISTANT_MODE_BOTH,
+    ASSISTANT_MODE_GENERAL_CHAT,
     ConversationThreadStore,
     LiteRTLMConfig,
 )
@@ -83,6 +84,144 @@ class MultiModelTransport:
         }
 
 
+class SemanticCandidateTransport:
+    provider_id = "provider:hhs.local.text"
+    requested_operation = "hhs_native_litert.chat_completion"
+    backend = "native"
+    model_id = "semantic-candidate"
+    request_model_id = model_id
+
+    async def list_models(self):
+        return {"object": "list", "data": [{"id": self.model_id}]}
+
+    async def chat_completion(self, **_kwargs):
+        return {
+            "id": "chatcmpl-semantic-candidate",
+            "model": self.model_id,
+            "choices": [{
+                "message": {
+                    "role": "assistant",
+                    "content": "semantic evidence only",
+                },
+                "finish_reason": "stop",
+            }],
+            "usage": {
+                "prompt_tokens": 2,
+                "completion_tokens": 3,
+                "total_tokens": 5,
+            },
+            "hhs_native_trace": {
+                "generation_path": "EXACT_SEMANTIC_FALLBACK",
+                "assistant_turn_disposition": "NONTERMINAL_SEMANTIC_CANDIDATE",
+                "terminal_text_generation": False,
+                "runtime_mutation_admitted": False,
+            },
+        }
+
+
+class RoutingBaseOffline:
+    provider_id = "provider:test.offline.base"
+
+    def __init__(self):
+        self.config = LiteRTLMConfig(model_id="offline-base")
+        self.threads = ConversationThreadStore(self.config, provider_id=self.provider_id)
+
+    def create_thread(self, *, project_id="project:default", title="HHS Assistant", metadata=None):
+        return self.threads.create(
+            project_id=project_id,
+            title=title,
+            metadata=metadata,
+        )
+
+    def status(self):
+        return {"provider_id": self.provider_id, "model_id": self.config.model_id}
+
+    async def health(self):
+        return {
+            "ok": False,
+            "online": False,
+            "provider_id": self.provider_id,
+            "registered_model_ids": [],
+        }
+
+
+class RoutingSemanticCandidateService:
+    provider_id = "provider:hhs.local.text"
+
+    def __init__(self, threads):
+        self.config = LiteRTLMConfig(model_id="semantic-candidate")
+        self.threads = threads
+        self.transport = None
+        self.sent_user_message_id = None
+
+    def status(self):
+        return {"provider_id": self.provider_id, "model_id": self.config.model_id}
+
+    async def health(self):
+        return {"ok": True, "online": True, "provider_id": self.provider_id}
+
+    async def send_message(self, thread_id, *, content, **_kwargs):
+        user = self.threads.append(thread_id, role="user", content=content)
+        self.sent_user_message_id = user["message_id"]
+        return {
+            "ok": True,
+            "status": "ADMIT_PROVIDER_CANDIDATE_NO_THREAD_COMMIT",
+            "thread_id": thread_id,
+            "user_message": user,
+            "assistant_message": None,
+            "candidate_assistant_message": {
+                "content": "semantic evidence only",
+                "thread_persisted": False,
+            },
+            "assistant_turn_disposition": "NONTERMINAL_SEMANTIC_CANDIDATE",
+            "provider_metadata": {
+                "generation_path": "EXACT_SEMANTIC_FALLBACK",
+                "assistant_turn_disposition": "NONTERMINAL_SEMANTIC_CANDIDATE",
+            },
+        }
+
+    async def continue_message(self, *_args, **_kwargs):
+        raise AssertionError("native semantic candidate must be first native attempt")
+
+
+class RoutingTerminalService:
+    provider_id = "provider:hhs.pass153.open_model"
+
+    def __init__(self, threads):
+        self.config = LiteRTLMConfig(model_id="terminal-fallback")
+        self.threads = threads
+        self.transport = None
+        self.received_user_message_id = None
+
+    def status(self):
+        return {"provider_id": self.provider_id, "model_id": self.config.model_id}
+
+    async def health(self):
+        return {"ok": True, "online": True, "provider_id": self.provider_id}
+
+    async def send_message(self, thread_id, *, content, **_kwargs):
+        raise AssertionError("terminal fallback should reuse witnessed user message")
+
+    async def continue_message(self, thread_id, *, user_message, **_kwargs):
+        self.received_user_message_id = user_message["message_id"]
+        assistant = self.threads.append(
+            thread_id,
+            role="assistant",
+            content="terminal generated response",
+        )
+        return {
+            "ok": True,
+            "thread_id": thread_id,
+            "user_message": dict(user_message),
+            "assistant_message": assistant,
+            "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
+            "provider_metadata": {
+                "generation_path": "PASS153_TERMINAL_GENERATION",
+                "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
+            },
+        }
+
+
 class OfflineService:
     provider_id = "provider:test.offline"
 
@@ -150,6 +289,18 @@ def test_unified_fabric_includes_generators_fallbacks_and_memory(monkeypatch):
     assert "pass153:hhs-reference-open-model-v1" in member_ids
     assert "pass166:word2vec-active" in member_ids
     assert fabric["vm81_admission_boundary_preserved"] is True
+    semantic = next(
+        item
+        for item in fabric["members"]
+        if item["member_id"] == "native-semantic:hhs-native-language-v1"
+    )
+    assert semantic["terminal_text_generation"] is False
+    assert semantic["assistant_turn_disposition"] == "NONTERMINAL_SEMANTIC_CANDIDATE"
+    assert "TEXT_GENERATION" not in semantic["capabilities"]
+    assert fabric["capability_visibility_authority"] == (
+        "HHS_PASS_219_LANE5_GLOBAL_CAPABILITY_VISIBILITY_1_76"
+    )
+    assert fabric["local_member_inventory_is_lane5_projection_not_parallel_authority"] is True
 
 
 def test_production_chat_uses_declared_primary_registered_model_on_one_thread(monkeypatch):
@@ -197,6 +348,85 @@ def test_production_chat_uses_declared_primary_registered_model_on_one_thread(mo
     assert [item["role"] for item in stored["messages"]] == ["user", "assistant"]
     assert transports["model-large"].calls == 1
     assert small_transport.calls == 0
+
+
+def test_semantic_candidate_is_ingressed_without_assistant_thread_commit():
+    config = LiteRTLMConfig(
+        model_id="semantic-candidate",
+        system_instruction="BASE HHS AUTHORITY",
+    )
+    service = HHSAPIAssistantService(
+        config=config,
+        transport=SemanticCandidateTransport(),
+    )
+    thread = service.create_thread(project_id="project:semantic-candidate")
+    result = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Explain the semantic relation.",
+            assistant_mode=ASSISTANT_MODE_GENERAL_CHAT,
+        )
+    )
+
+    assert result["ok"] is True
+    assert result["assistant_message"] is None
+    assert result["candidate_assistant_message"]["content"] == "semantic evidence only"
+    assert result["candidate_assistant_message"]["thread_persisted"] is False
+    assert result["assistant_turn_disposition"] == "NONTERMINAL_SEMANTIC_CANDIDATE"
+    assert result["provider_output_retained_as_independent_state"] is True
+    assert result["provider_result_ingress_performed"] is True
+    assert result["assistant_thread_message_persisted"] is False
+    stored = service.threads.get(thread["thread_id"])
+    assert [item["role"] for item in stored["messages"]] == ["user"]
+
+
+def test_production_failover_reuses_one_user_message_after_semantic_candidate(monkeypatch):
+    monkeypatch.setenv("HHS_LITERT_LM_PROVIDER_MODE", "auto")
+    base = RoutingBaseOffline()
+    native = RoutingSemanticCandidateService(base.threads)
+    terminal = RoutingTerminalService(base.threads)
+    service = ProductionAssistantService(
+        model_service=base,
+        native_service=native,
+        pass153_service=terminal,
+    )
+    thread = service.create_thread(project_id="project:typed-failover")
+    result = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Continue through the available generation fabric.",
+            assistant_mode=ASSISTANT_MODE_GENERAL_CHAT,
+        )
+    )
+
+    assert result["ok"] is True
+    assert result["assistant_message"]["content"] == "terminal generated response"
+    assert result["effective_mode"] == "HHS_PASS153_OPEN_MODEL"
+    assert native.sent_user_message_id
+    assert terminal.received_user_message_id == native.sent_user_message_id
+    stored = service.threads.get(thread["thread_id"])
+    assert [item["role"] for item in stored["messages"]] == ["user", "assistant"]
+    assert [item["content"] for item in stored["messages"]] == [
+        "Continue through the available generation fabric.",
+        "terminal generated response",
+    ]
+
+
+def test_production_completion_predicate_rejects_semantic_fallback_candidate():
+    assert ProductionAssistantService._completed({
+        "ok": True,
+        "assistant_message": {"content": "generic semantic fallback"},
+        "assistant_turn_disposition": "NONTERMINAL_SEMANTIC_CANDIDATE",
+        "provider_metadata": {"generation_path": "EXACT_SEMANTIC_FALLBACK"},
+    }) is False
+    assert ProductionAssistantService._completed({
+        "ok": True,
+        "assistant_message": {"content": "generated response"},
+        "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
+        "provider_metadata": {
+            "generation_path": "NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM"
+        },
+    }) is True
 
 
 def test_lane5_and_model_fabric_tools_are_in_one_governed_registry():
