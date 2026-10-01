@@ -1,11 +1,11 @@
 # Repository file/dependency shard - PASS_137_EGRESS
 
-Source commit: [a8f933e2e4bc46d289b260d9a0c94fa0df46344c](https://github.com/danonbrez/Holofractal_Harmonicode/commit/a8f933e2e4bc46d289b260d9a0c94fa0df46344c)
+Source commit: [b192a615ad69b5e2febe9116f5f160500e60ff2f](https://github.com/danonbrez/Holofractal_Harmonicode/commit/b192a615ad69b5e2febe9116f5f160500e60ff2f)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## PASS_137_EGRESS
 
-- [PASS_137_EGRESS/HHS_GFE_Field_Quotient.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/a8f933e2e4bc46d289b260d9a0c94fa0df46344c/PASS_137_EGRESS/HHS_GFE_Field_Quotient.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 8
-- [PASS_137_EGRESS/HHS_GFE_Field_Quotient.v](https://github.com/danonbrez/Holofractal_Harmonicode/blob/a8f933e2e4bc46d289b260d9a0c94fa0df46344c/PASS_137_EGRESS/HHS_GFE_Field_Quotient.v) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 8
-- [PASS_137_EGRESS/gfe_state_5_4_grobner.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/a8f933e2e4bc46d289b260d9a0c94fa0df46344c/PASS_137_EGRESS/gfe_state_5_4_grobner.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [PASS_137_EGRESS/HHS_GFE_Field_Quotient.lean](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b192a615ad69b5e2febe9116f5f160500e60ff2f/PASS_137_EGRESS/HHS_GFE_Field_Quotient.lean) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 8
+- [PASS_137_EGRESS/HHS_GFE_Field_Quotient.v](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b192a615ad69b5e2febe9116f5f160500e60ff2f/PASS_137_EGRESS/HHS_GFE_Field_Quotient.v) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 8
+- [PASS_137_EGRESS/gfe_state_5_4_grobner.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/b192a615ad69b5e2febe9116f5f160500e60ff2f/PASS_137_EGRESS/gfe_state_5_4_grobner.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
