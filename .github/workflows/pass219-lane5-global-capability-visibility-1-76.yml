@@ -108,6 +108,7 @@ jobs:
           assert snapshot['authority']['canonical_hash72_mint_authority'] is False
           assert snapshot['authority']['canonical_hash216_mint_authority'] is False
           assert snapshot['authority']['canonical_persistence_authority'] is False
+          assert database['hash216_vector_rows'] == database['node_count']
           assert database['hash216_vector_positions'] == database['node_count'] * 216
           db = sqlite3.connect(database['database_path'])
           try:
@@ -119,10 +120,19 @@ jobs:
                   "SELECT COUNT(*) FROM capability_nodes "
                   "WHERE json_extract(payload_json, '$.classification_is_visibility_filter') != 0"
               ).fetchone()[0]
+              vector_shape = db.execute(
+                  "SELECT COUNT(*), COALESCE(SUM(codeword_count), 0), "
+                  "MIN(length(codeword_blob)), MAX(length(codeword_blob)) "
+                  "FROM hash216_vectors"
+              ).fetchone()
           finally:
               db.close()
           assert hidden == 0
           assert filtered == 0
+          assert vector_shape[0] == database['node_count']
+          assert vector_shape[1] == database['node_count'] * 216
+          assert vector_shape[2] == 216 * 32
+          assert vector_shape[3] == 216 * 32
           print(json.dumps({
               'nodes': database['node_count'],
               'hash216_vector_positions': database['hash216_vector_positions'],
@@ -136,6 +146,5 @@ jobs:
           name: pass219-lane5-global-capability-visibility-1-76
           path: |
             /tmp/pass219-176-state/receipt.json
-            /tmp/pass219-176-state/lane5-global-capability-visibility-1.76.sqlite3
           if-no-files-found: error
           retention-days: 14
