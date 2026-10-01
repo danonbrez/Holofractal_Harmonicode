@@ -132,9 +132,14 @@ def test_hash216_vector_database_hydrates_every_visible_node_position(tmp_path: 
             "SELECT payload_json FROM capability_nodes ORDER BY node_id"
         ).fetchall()
         vectors = connection.execute(
-            "SELECT COUNT(*) FROM hash216_vectors"
-        ).fetchone()[0]
+            "SELECT COUNT(*), COALESCE(SUM(codeword_count), 0), "
+            "MIN(length(codeword_blob)), MAX(length(codeword_blob)) "
+            "FROM hash216_vectors"
+        ).fetchone()
     finally:
         connection.close()
     assert len(visible) == len(snapshot["nodes"])
-    assert vectors == len(snapshot["nodes"]) * HASH216_CHARS
+    assert vectors[0] == len(snapshot["nodes"])
+    assert vectors[1] == len(snapshot["nodes"]) * HASH216_CHARS
+    assert vectors[2] == HASH216_CHARS * 32
+    assert vectors[3] == HASH216_CHARS * 32
