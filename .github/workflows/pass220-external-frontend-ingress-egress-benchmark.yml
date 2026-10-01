@@ -96,13 +96,34 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/pass220-native
-          for source in             tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c             tests/pass219/test_pass219_rna_transcription_1_10.c
-          do
-            name="$(basename "$source" .c)"
-            gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic               -Ihhs_runtime/include "$source"               -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread               -Wl,-rpath,"$PWD/hhs_runtime/builds"               -o "/tmp/pass220-native/$name"
-            "/tmp/pass220-native/$name"
-          done
+          mkdir -p /tmp/pass220-native/link-support
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass220-native/hhs_runtime_exact_abi.o
+          bash tools/pass219/build_exact_abi_link_support.sh \
+            /tmp/pass220-native/link-support full
+
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_global_raw5184_serialization_hydration_1_0.c \
+            /tmp/pass220-native/hhs_runtime_exact_abi.o \
+            /tmp/pass220-native/link-support/hhs_hash216.o \
+            /tmp/pass220-native/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass220-native/test-pass219-global-raw5184
+          /tmp/pass220-native/test-pass219-global-raw5184
+
+          gcc -O3 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_transcription_1_10.c \
+            /tmp/pass220-native/hhs_runtime_exact_abi.o \
+            /tmp/pass220-native/link-support/hhs_hash216.o \
+            /tmp/pass220-native/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass220-native/test-pass219-rna-transcription
+          /tmp/pass220-native/test-pass219-rna-transcription
+
           HHS_DISABLE_C_AUTOBUILD=1 python - <<'PY'
           from hhs_python.runtime.hhs_exact_ctypes_bridge import HHSExactRuntimeBridge
           raw = bytes(((i * 37 + 11) & 255) for i in range(648))
