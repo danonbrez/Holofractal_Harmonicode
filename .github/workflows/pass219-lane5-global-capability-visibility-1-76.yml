@@ -87,6 +87,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install \
             pytest \
+            pytest-asyncio \
+            uvicorn==0.54.0 \
             fastapi==0.128.2 \
             starlette==0.50.0 \
             'httpx>=0.27,<1.0' \
