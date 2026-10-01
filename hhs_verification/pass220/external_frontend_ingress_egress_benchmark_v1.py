@@ -73,7 +73,7 @@ class ExternalFrontendServer:
                 "HHS_PASS174_STATE_DIR": str(state_root / "pass174"),
                 "HHS_PASS165_STORAGE_DIR": str(state_root / "pass165"),
                 "HHS_PASS218_STATE_ROOT": str(state_root / "pass218"),
-                "HHS_PASS219_LANE5_CAPABILITY_STATE_ROOT": str(state_root / "pass220-lane5-tools"),
+                "HHS_PASS219_LANE5_CAPABILITY_STATE_ROOT": str(state_root / "pass219-lane5-capabilities"),
             }
         )
         self._log = self.log_path.open("w", encoding="utf-8")
