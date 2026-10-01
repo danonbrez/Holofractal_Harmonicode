@@ -337,12 +337,15 @@ class HHSNativeLiteRTLMTransport:
             "causal_lm": causal_status,
             "causal_lm_generation_supported": True,
             "causal_lm_required_for_provider_readiness": False,
+            "causal_lm_required_for_terminal_general_chat_completion": True,
+            "semantic_fallback_supported": ready,
+            "semantic_fallback_is_terminal_text_generation": False,
             "errors": {
                 "semantic": semantic_error,
                 "reasoner": reasoner_error,
                 "word2vec": word2vec_error,
             },
-            "general_chat_prompt_response_supported": True,
+            "general_chat_prompt_response_supported": bool(causal_status.get("ready")),
             "agentic_application_development_supported": True,
             "combined_mode_supported": True,
             "runtime_mutation_admitted": False,
@@ -931,6 +934,8 @@ class HHSNativeLiteRTLMTransport:
                     "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
                     "assistant_mode": mode,
                     "generation_path": "NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM",
+                    "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
+                    "terminal_text_generation": True,
                     "general_chat_prompt_response_cycle": True,
                     "prototype_retrieval": prototype_trace,
                     "tool_receipt_count": len(receipts),
@@ -985,6 +990,8 @@ class HHSNativeLiteRTLMTransport:
             assistant_mode=mode,
         )
         trace["generation_path"] = "EXACT_SEMANTIC_FALLBACK"
+        trace["assistant_turn_disposition"] = "NONTERMINAL_SEMANTIC_CANDIDATE"
+        trace["terminal_text_generation"] = False
         trace["causal_generation_failure"] = causal_failure
         trace["trace_root_hash72"] = hash72(
             "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
