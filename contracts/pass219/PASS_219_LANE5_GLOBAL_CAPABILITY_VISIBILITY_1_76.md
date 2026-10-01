@@ -84,6 +84,20 @@ Every visibility node receives a 216-character Hash216 identity. The restartable
 
 The database is a derived candidate-memory projection. Repository source and inherited canonical receipts remain authority. Rehydration MUST NOT mint canonical Hash216 state or create a canonical persistence path.
 
+## Pass 220 host consumption
+
+Pass 220 provides the Ubuntu/FastAPI hosting substrate for this Pass 219 manifold. It SHALL consume the 1.76 visibility projection; it SHALL NOT recreate an independent capability-selection universe.
+
+The Runtime OS host MAY warm the derived Hash216 vector database after FastAPI startup and MAY expose read-only status, summary, and search projections. Those host projections have:
+
+```text
+Lane5SelectionAuthority = FALSE
+RuntimeValidationAuthority = FALSE
+CanonicalMutationAuthority = FALSE
+```
+
+A host warm-up failure does not authorize direct service calls, browser-side computation, Linux-kernel bypass, or any fallback selector outside Pass 219/Lane 5.
+
 ## Interface and host boundary
 
 The user interface remains ingress/egress only for HHS computation. It may render, collect input, and decode validated output, but it may not replace Pass 219/Lane 5 computation with browser, client CPU/GPU, WASM, direct service calls, or direct Linux-kernel computation.
