@@ -509,8 +509,9 @@ def hydrate_hash216_vector_database(
         )
         connection.execute(
             "CREATE TABLE IF NOT EXISTS hash216_vectors ("
-            "node_id TEXT NOT NULL, position INTEGER NOT NULL, glyph TEXT NOT NULL, "
-            "glyph_sha256 TEXT NOT NULL, PRIMARY KEY(node_id, position))"
+            "node_id TEXT PRIMARY KEY, hash216 TEXT NOT NULL UNIQUE, "
+            "codeword_count INTEGER NOT NULL, codeword_width_bytes INTEGER NOT NULL, "
+            "codeword_blob BLOB NOT NULL)"
         )
         connection.execute("BEGIN IMMEDIATE")
         for node in nodes:
@@ -521,41 +522,52 @@ def hydrate_hash216_vector_database(
             if len(identity) != HASH216_CHARS:
                 raise Pass219Lane5GlobalCapabilityVisibilityError("Hash216 width drift")
             payload = _canonical(dict(node))
+            codeword_blob = b"".join(
+                sha256(glyph.encode("utf-8")).digest()
+                for glyph in identity
+            )
+            if len(codeword_blob) != HASH216_CHARS * 32:
+                raise Pass219Lane5GlobalCapabilityVisibilityError(
+                    "Hash216 codeword vector width drift"
+                )
             connection.execute(
                 "INSERT OR REPLACE INTO capability_nodes(node_id, hash216, payload_json) VALUES(?,?,?)",
                 (node_id, identity, payload),
             )
             connection.execute(
-                "DELETE FROM hash216_vectors WHERE node_id=?",
-                (node_id,),
-            )
-            connection.executemany(
-                "INSERT INTO hash216_vectors(node_id, position, glyph, glyph_sha256) VALUES(?,?,?,?)",
-                (
-                    (node_id, position, glyph, sha256(glyph.encode("utf-8")).hexdigest())
-                    for position, glyph in enumerate(identity)
-                ),
+                "INSERT OR REPLACE INTO hash216_vectors("
+                "node_id, hash216, codeword_count, codeword_width_bytes, codeword_blob"
+                ") VALUES(?,?,?,?,?)",
+                (node_id, identity, HASH216_CHARS, 32, codeword_blob),
             )
         connection.commit()
         node_count = int(
             connection.execute("SELECT COUNT(*) FROM capability_nodes").fetchone()[0]
         )
-        vector_count = int(
+        vector_row_count = int(
             connection.execute("SELECT COUNT(*) FROM hash216_vectors").fetchone()[0]
+        )
+        vector_position_count = int(
+            connection.execute(
+                "SELECT COALESCE(SUM(codeword_count), 0) FROM hash216_vectors"
+            ).fetchone()[0]
         )
     finally:
         connection.close()
 
     expected_vectors = node_count * HASH216_CHARS
-    if vector_count != expected_vectors:
+    if vector_row_count != node_count or vector_position_count != expected_vectors:
         raise Pass219Lane5GlobalCapabilityVisibilityError(
-            f"Hash216 vector count mismatch: {vector_count} != {expected_vectors}"
+            "Hash216 vector count mismatch: "
+            f"rows={vector_row_count}/{node_count}, "
+            f"positions={vector_position_count}/{expected_vectors}"
         )
     return {
         "schema": DB_SCHEMA,
         "database_path": str(target),
         "node_count": node_count,
-        "hash216_vector_positions": vector_count,
+        "hash216_vector_rows": vector_row_count,
+        "hash216_vector_positions": vector_position_count,
         "expected_hash216_vector_positions": expected_vectors,
         "snapshot_root_hash216": str(snapshot["snapshot_root_hash216"]),
         "candidate_only": True,
