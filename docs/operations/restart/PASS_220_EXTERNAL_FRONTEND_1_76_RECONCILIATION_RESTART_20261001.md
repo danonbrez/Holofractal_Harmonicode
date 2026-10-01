@@ -52,3 +52,35 @@
 ## Authority boundaries
 
 The browser, FastAPI host, benchmark, vector projection, and Pass 220 lifecycle have no direct Linux/service bypass into canonical HHS state, no Lane 5 selection authority, no runtime-validation authority, and no Hash72/Hash216 mint or canonical mutation authority. Capabilities remain visible to Lane 5 and become executable only through their declared typed contract and the normal C++ RNA/PQC runtime-validation membrane.
+
+## Repair-forward: canonical RNA link boundary
+
+The first completed external-frontend benchmark run (`36852358728`) stopped before browser acceptance during the native RNA regression link step:
+
+```text
+undefined reference to hhs_exact_pass219_rna_admit_composed
+```
+
+This was a benchmark-harness divergence, not a missing runtime capability. The symbol is part of the exact RNA authority but is intentionally hidden from the public shared-library export map. Canonical Pass 219 RNA workflows compile `hhs_runtime/c/hhs_runtime_exact_abi.c` to an object and link conformance tests directly against that exact ABI object plus inherited Hash216/PQC support.
+
+Repair committed on this branch:
+
+- compile `hhs_runtime_exact_abi.c` into `/tmp/pass220-native/hhs_runtime_exact_abi.o`;
+- build inherited exact link support with `tools/pass219/build_exact_abi_link_support.sh ... full`;
+- link the raw5184 and RNA C conformance suites against the exact ABI object and support objects;
+- retain the public `libhhs_runtime.so` boundary for Python ingress/egress round-trip testing;
+- do **not** export hidden RNA admission authority merely to satisfy a benchmark.
+
+This preserves the intended membrane:
+
+```text
+public shared runtime
+  -> public hydrated ingress/egress only
+
+exact conformance object
+  -> internal admission regression validation
+```
+
+The repaired benchmark workflow was re-triggered at commit `964e6ee876099426dbf5b49a3d059f6addbba11a`.
+
+No browser/nonblocking acceptance claim is made until that run reaches the benchmark stages and passes.
