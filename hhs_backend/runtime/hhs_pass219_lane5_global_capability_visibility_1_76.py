@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+from functools import lru_cache
 from hashlib import sha256
 import json
 from pathlib import Path, PurePosixPath
@@ -123,9 +124,20 @@ def _source_path(path: str) -> bool:
     return PurePosixPath(path).suffix.lower() in SOURCE_SUFFIXES
 
 
+@lru_cache(maxsize=None)
 def _read_git_text(root: Path, commit: str, path: str) -> str:
     if not _source_path(path):
         return ""
+    head = _git_optional(root, "rev-parse", "HEAD").strip()
+    if commit == head:
+        target = (root / path).resolve()
+        try:
+            target.relative_to(root)
+            raw = target.read_bytes()
+            if b"\0" not in raw:
+                return raw.decode("utf-8", "surrogateescape")
+        except (OSError, ValueError):
+            pass
     return _git_optional(root, "show", f"{commit}:{path}")
 
 
