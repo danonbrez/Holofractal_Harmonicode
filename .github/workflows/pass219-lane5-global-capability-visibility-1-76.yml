@@ -22,8 +22,6 @@ on:
       - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
       - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
-      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
-      - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
       - '.github/workflows/pass219-lane5-global-capability-visibility-1-76.yml'
   push:
     branches:
@@ -44,7 +42,10 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
       - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
+      - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
+      - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
       - '.github/workflows/pass219-lane5-global-capability-visibility-1-76.yml'
   workflow_dispatch:
 
