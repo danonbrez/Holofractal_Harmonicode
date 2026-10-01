@@ -108,3 +108,34 @@ Repair commits:
 - `7be71021b3abb20b82db15b55be43ab8d9f068e9` — refresh the exact/synthetic CI successor checks.
 
 Validation remaining is the rerun triggered by the repaired branch head. No already-green independent gate needs manual rerun.
+
+
+## Repair-forward: Pass 202 recovery-verifier boundary
+
+The next repaired head passed the current-successor blob identity step, cumulative C/C++ exact ABI compilation, and authority-export rejection. The remaining I122 failure moved to the Python membrane preflight:
+
+```text
+PASS202_SOURCE_BOUNDARY_DRIFT:
+deployment/digitalocean/guarded_auto_update/install.sh:
+ROLLBACK_HEALTH_FAILED
+```
+
+That literal was a stale source-boundary assertion. Current production recovery no longer embeds the recovery classification in `install.sh`; it delegates fail-closed classification to `verify-recovery-state.py`. The verifier still explicitly admits the legacy `ROLLBACK_HEALTH_FAILED` terminal class and the proven `VALIDATED` pre-promotion interruption class.
+
+Repair:
+
+- replace the stale installer-literal requirement with current semantic witnesses:
+  - `verify-recovery-state.py`;
+  - `HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1`;
+  - `HHS_ROLLBACK_BOUNDARY_HEALTHY=1`;
+- add `verify-recovery-state.py` to the mutable Pass 202 current-successor blob seal at
+  `63fd077254c55054c6c2929c02a2b7fa73f8578b`;
+- require the verifier itself to preserve the two admitted recovery classes, previous-promoted-boundary proof, live-head rollback-boundary equality, and restart-before-new-promotion requirement;
+- mirror the verifier blob identity in the exact/synthetic workflow gate.
+
+Repair commits:
+
+- `621b91b29d3d632afb3ce8c1f3237ceffc06f3b9` — bind recovery verifier into the Pass 202 successor membrane;
+- `539845179ab04f6f4cb829108d453166ff02a80b` — seal verifier identity in exact/synthetic CI.
+
+Historical Pass 202 blob identities remain unchanged.
