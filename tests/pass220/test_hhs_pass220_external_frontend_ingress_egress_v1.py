@@ -98,8 +98,9 @@ def test_lane5_capability_warming_is_post_start_nonblocking_and_non_authoritativ
     assert "asyncio.to_thread(lifecycle.startup)" in source
     assert "WARMING_NONBLOCKING" in source
     assert '"available_to_lane5": False' in source
-    assert '"lane5_selection_changed": False' in source
-    assert '"candidate_only": True' in source
+    assert '"lane5_selection_authority": False' in source
+    assert '"runtime_validation_authority": False' in source
+    assert '"canonical_mutation_authority": False' in source
     assert "await warm_task" in source
 
 
