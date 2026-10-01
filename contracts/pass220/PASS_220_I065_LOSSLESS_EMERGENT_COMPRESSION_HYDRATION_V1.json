@@ -1,0 +1,121 @@
+{
+  "schema": "HHS_PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CANDIDATE_ONLY",
+  "base_main": "c7c984dfb0b635974c2cf4531786d3ff7b2ec7cb",
+  "inherits": [
+    "HHS_PASS_220_LO_SHU_NORMALIZATION_V1",
+    "HHS_PASS_220_HOLOGRAPHIC_HASH216_QUERY_MANIFOLD_V1",
+    "HHS_PASS_220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1",
+    "PASS_219_HASH216_FRACTAL_QUDIT_PROOF_HYDRATION_1_45"
+  ],
+  "geometry": {
+    "hash72_base": 72,
+    "hash72_positions": 72,
+    "expanded_vertices": 5184,
+    "factorizations": {
+      "72x72": 5184,
+      "81x64": 5184
+    },
+    "hash216": {
+      "planes": 3,
+      "lane_order": [
+        "PREVIOUS",
+        "CHANGE",
+        "RECEIPT"
+      ],
+      "positions_per_plane": 72,
+      "flattened_positions": 216,
+      "three_component_vertices": 72,
+      "fully_hydrated_attached_components": 15552
+    },
+    "mirror_address_rule": "i -> 5183-i",
+    "center_pair_zero_based": [
+      2591,
+      2592
+    ],
+    "center_pair_one_based": [
+      2592,
+      2593
+    ]
+  },
+  "character_position_identity": {
+    "canonical_object": "<symbol,position>",
+    "same_symbol_different_position_is_operation": true,
+    "ordered_axis_coupling": "72_1 x 72_2",
+    "vertex_identity": "<source_symbol,source_position,coupled_symbol,coupled_position>"
+  },
+  "binary_serialization_binding": {
+    "binary_width": 5184,
+    "binary_alphabet": [
+      "0",
+      "1"
+    ],
+    "literal_binary_palindrome_required": true,
+    "serialized_width": 5184,
+    "serialized_canonical_roundtrip_required": true,
+    "serialized_zero_padding": "INHERITED_64_CHARACTER_RATIONAL_SCIENTIFIC_TOKEN_ABI",
+    "serialized_literal_character_palindrome_required": false,
+    "serialized_palindromic_symmetry_scope": "ADDRESS_MIRROR_INVOLUTION_OVER_FIXED_5184_GEOMETRY",
+    "same_linear5184_coordinate_required": true
+  },
+  "sha256_alphabet": {
+    "source_symbols": 72,
+    "sha256_codewords": 72,
+    "translation": "SHA256(UTF8(Hash72_symbol))",
+    "unique_codewords_required": true,
+    "geometry_changes": false
+  },
+  "compression": {
+    "single_layer": "72/5184=1/72",
+    "compounded": "(1/72)^n",
+    "expansion": "72^n",
+    "scope": "HHS_ADMITTED_FIXED_GEOMETRY_STRUCTURAL_REPRESENTATION",
+    "lossless_condition": "COMPRESS(HYDRATE(H72))=H72",
+    "generic_unconstrained_payload_compression": false,
+    "omitted_structure_must_be_reconstructible_from_shared_invariants": true
+  },
+  "storage_floor_model": [
+    "PIPELINE_BINARY",
+    "HASH216_HYDRATION",
+    "NOVEL_EXCEPTIONS"
+  ],
+  "lane5_optimization": {
+    "fixed_geometry_reused": true,
+    "generator_streaming": true,
+    "hydrate_on_demand": true,
+    "expanded_vertex_materialization_required_for_candidate_search": false,
+    "candidate_metadata_may_reuse_content_roots": true,
+    "gpu_candidate_search_only": true,
+    "canonical_mutation_authority": false
+  },
+  "hydration_cycle": [
+    "VALIDATE_PIPELINE",
+    "SPLIT_HASH216_3x72",
+    "HYDRATE_3x5184",
+    "BIND_SHA256_ALPHABET",
+    "BIND_BINARY_AND_SERIALIZATION",
+    "RECOMPRESS_3xHASH72",
+    "RECOMPOSE_HASH216",
+    "EMIT_CANDIDATE_RECEIPT"
+  ],
+  "formal": {
+    "lean_module": "HHS.Pass220.LosslessEmergentCompressionHydration",
+    "lean_kernel_build_required": true,
+    "wolfram_file": "formal/wolfram/pass220_i065_lossless_emergent_compression_hydration_v1.wl",
+    "wolfram_external_preflight": {
+      "tests_succeeded": 12,
+      "tests_failed": 0,
+      "all_succeeded": true,
+      "date": "2026-10-01"
+    }
+  },
+  "authority": {
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false,
+    "gpu_canonical_state": false,
+    "floating_point": false,
+    "candidate_only": true
+  }
+}

@@ -1,0 +1,107 @@
+name: Pass 220 I065 Lossless Emergent Compression Hydration
+
+on:
+  push:
+    branches:
+      - pass220/i065-lossless-emergent-compression-hydration-20261001
+    paths:
+      - "hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py"
+      - "tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/LosslessEmergentCompressionHydration.lean"
+      - "formal/wolfram/pass220_i065_lossless_emergent_compression_hydration_v1.wl"
+      - "contracts/pass220/PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_V1.md"
+      - "docs/pass220/PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION.md"
+      - "docs/operations/restart/PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_RESTART_20261001.md"
+      - ".github/workflows/pass220-i065-lossless-emergent-compression-hydration.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py"
+      - "tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/LosslessEmergentCompressionHydration.lean"
+      - "formal/wolfram/pass220_i065_lossless_emergent_compression_hydration_v1.wl"
+      - "contracts/pass220/PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_V1.md"
+      - "docs/pass220/PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION.md"
+      - "docs/operations/restart/PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_RESTART_20261001.md"
+      - ".github/workflows/pass220-i065-lossless-emergent-compression-hydration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i065-lossless-emergent-compression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I065 runtime and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py \
+            tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py
+
+      - name: Execute I065 dependency-scoped validation
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py
+
+      - name: Execute deterministic I065 runtime self-test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i065_lossless_emergent_compression_hydration_v1 import i065_self_test
+          result = i065_self_test()
+          assert result["ok"] is True, result
+          print(result)
+          PY
+
+      - name: Enforce Wolfram exact invariant surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("formal/wolfram/pass220_i065_lossless_emergent_compression_hydration_v1.wl")
+          source = path.read_text(encoding="utf-8")
+          required = (
+              "72*72",
+              "81*64",
+              "3*72",
+              "72/5184",
+              "compounded-ratio",
+              "mirror-involution",
+              "hash72-alphabet-cardinality",
+              "sha256-alphabet-codewords-unique",
+              "ordered-base72-vertex-cardinality",
+              "even-width-center-mirror-pair",
+              "GenericUnconstrainedPayloadCompressionClaimed",
+              "CanonicalMutationAuthority",
+          )
+          for token in required:
+              assert token in source, token
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
