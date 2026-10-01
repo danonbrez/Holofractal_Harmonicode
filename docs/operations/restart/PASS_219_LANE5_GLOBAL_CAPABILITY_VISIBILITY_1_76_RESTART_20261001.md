@@ -139,3 +139,25 @@ The assistant/provider layer is now explicitly execution-path scoped:
 - Main drift from the original #674 base contains no path overlap with the Pass 219 1.76 implementation patch; I065/I066 source changes therefore do not require semantic conflict resolution in these files.
 - The Pass 219 1.76 workflow has been expanded so the execution-path readiness tests are part of the dependency-scoped gate.
 - Merge remains contingent on the latest dependency-scoped run for the repaired head; no green claim is made until that run completes.
+
+## Current executable checkpoint — 2026-10-01 14:18 EDT
+
+- Executable code/CI checkpoint: `8a30596f13be257eca798e17afaf089c509ee209`.
+- Dependency-scoped workflow: `Pass 219 Lane 5 Global Capability Visibility 1.76` run `36905825622`, job `110515993356`.
+- State at checkpoint write: queued; no green claim made.
+- PR #674 remains mergeable.
+- Current observed `main` before merge: `e284ef59a17ebfdba6819ef052dffb40d0118dc6`.
+- Main drift from the original #674 base has zero file overlap with the Pass 219 1.76 implementation patch.
+
+The scoped workflow now installs the runtime needed by its expanded assistant regressions (`pytest`, FastAPI, Starlette, HTTPX, cryptography, requests) and compiles/runs:
+
+- Pass 219 1.76 global visibility tests;
+- Pass 220 host hydration tests;
+- unified-chatbot semantic-candidate/terminal-failover tests;
+- I008 assistant-mode tests;
+- I009 native causal generation tests, including causal execution with Pass 148 semantic membrane unavailable;
+- hosted production assistant routing acceptance.
+
+This closes the earlier validation-gap where the newly added I008/I009 tests could have failed for missing test dependencies rather than implementation behavior.
+
+Merge condition remains: consume run `36905825622`; repair only branch-attributable failures; merge #674 only after the dependency-scoped gate is green.
