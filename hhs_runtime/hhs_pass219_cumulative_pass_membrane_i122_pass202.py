@@ -27,6 +27,7 @@ INSTALLER_PATH = P("deployment/digitalocean/guarded_auto_update/install.sh")
 SERVICE_PATH = P("deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service")
 TIMER_PATH = P("deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer")
 VALIDATOR_PATH = P("deployment/digitalocean/guarded_auto_update/validate-candidate.sh")
+RECOVERY_VERIFIER_PATH = P("deployment/digitalocean/guarded_auto_update/verify-recovery-state.py")
 BUNDLE_PATH = P("deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py")
 NORMALIZER_PATH = P("deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py")
 LANGUAGE_INSTALLER_PATH = P("tools/install_production_language_assets.py")
@@ -62,6 +63,7 @@ CURRENT_SUCCESSOR_BLOBS = {
     ENV_PATH: "8d24f5825e0aaaa6e633877021c5bf4d5df0aee7",
     INSTALLER_PATH: "b4df0e7f9711594cf6a518e82d6ec9ca44ae1765",
     VALIDATOR_PATH: "0e74e2508c00507f7045dc8eecaab8a1a29f80ca",
+    RECOVERY_VERIFIER_PATH: "63fd077254c55054c6c2929c02a2b7fa73f8578b",
     BUNDLE_PATH: "fd6973697a39b94b445c35f6af7dd0aa3f727728",
     NORMALIZER_PATH: "35ef0b50e92721bddf01aa9273edb58bbc12fdb3",
     LANGUAGE_INSTALLER_PATH: "35de0676b137139554c20ee53d67be12aab65ac3",
@@ -156,7 +158,9 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "HHS_INSTALL_RECOVERY_MODE",
         "HHS_VALIDATE_TIMEOUT_SECONDS",
         "minimum_validate_timeout = 3600",
-        "ROLLBACK_HEALTH_FAILED",
+        "verify-recovery-state.py",
+        "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1",
+        "HHS_ROLLBACK_BOUNDARY_HEALTHY=1",
         "systemctl stop hhs-guarded-update.timer",
         "systemctl start hhs-guarded-update.service",
     )
@@ -169,6 +173,14 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "TimeoutStartSec=90min",
     )
     _require(TIMER_PATH, "OnUnitActiveSec=5min", "RandomizedDelaySec=30s")
+    _require(
+        RECOVERY_VERIFIER_PATH,
+        'phase == "rollback" and outcome == "ROLLBACK_HEALTH_FAILED"',
+        'phase == "validation" and outcome == "VALIDATED"',
+        "HHS_RECOVERY_VALIDATED_PREVIOUS_SHA_NOT_PROVEN_PROMOTED",
+        "HHS_RECOVERY_LIVE_HEAD_NOT_ROLLBACK_BOUNDARY",
+        "service_restart_before_new_promotion_required",
+    )
     _require(
         VALIDATOR_PATH,
         "HHS_RUNTIME_OS_BUNDLE_MODE",
