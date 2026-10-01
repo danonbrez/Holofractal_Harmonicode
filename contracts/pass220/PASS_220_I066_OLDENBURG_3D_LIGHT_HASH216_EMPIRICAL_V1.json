@@ -1,0 +1,118 @@
+{
+  "schema": "HHS_PASS_220_I066_OLDENBURG_3D_LIGHT_HASH216_EMPIRICAL_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CANDIDATE_ONLY",
+  "base_main": "b99c434f691e5ac69a94e2d971e8ac877b6e167a",
+  "inherits": [
+    "HHS_PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS_V1",
+    "HHS_PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_V1"
+  ],
+  "source": {
+    "title": "Multiphoton ionization with three-dimensional light fields",
+    "authors": [
+      "D. Köhnke",
+      "H.-C. Ahlswede",
+      "T. Bayer",
+      "M. Wollenhaupt"
+    ],
+    "institution": "Carl von Ossietzky Universität Oldenburg",
+    "journal": "Physical Review Research",
+    "volume": 8,
+    "article": "033048",
+    "publication_date": "2026-07-13",
+    "doi": "10.1103/r36b-vw82",
+    "publisher_url": "https://journals.aps.org/prresearch/abstract/10.1103/r36b-vw82",
+    "classification": "PEER_REVIEWED_EXPERIMENTAL_PUBLICATION"
+  },
+  "demonstrated": {
+    "field": {
+      "pulse_count": 2,
+      "bichromatic": true,
+      "noncollinear_superposition": true,
+      "polarization_shaped": true,
+      "spatial_components": [
+        "x",
+        "y",
+        "z"
+      ],
+      "spatial_component_count": 3
+    },
+    "target": "POTASSIUM_ATOMS",
+    "interaction": "ATOMIC_MULTIPHOTON_IONIZATION",
+    "measurement": "VELOCITY_MAP_IMAGING",
+    "output": "PHOTOELECTRON_MOMENTUM_DISTRIBUTIONS",
+    "dipole_selection_delta_m": [
+      -1,
+      0,
+      1
+    ],
+    "all_dipole_selection_rules_unlocked": true,
+    "pump_probe_application": "MAP_SPIN_ORBIT_DYNAMICS_OF_POTASSIUM_3D_FINE_STRUCTURE_DOUBLET"
+  },
+  "not_demonstrated": {
+    "chiral_sensing_in_potassium_experiment": true,
+    "status": "ROUTE_OR_FUTURE_APPLICATION_ONLY",
+    "unreported_numeric_wavelengths_invented": false,
+    "unreported_numeric_pulse_duration_invented": false,
+    "unreported_numeric_field_amplitudes_invented": false,
+    "unreported_numeric_relative_phases_invented": false
+  },
+  "hash216_binding": {
+    "lane_order": [
+      "PREVIOUS",
+      "CHANGE",
+      "RECEIPT"
+    ],
+    "previous_role": "PUBLISHED_SOURCE_IDENTITY",
+    "change_role": "3D_FIELD_CONSTRUCTION",
+    "receipt_role": "OBSERVED_TRANSITION_SELECTION_AND_MEASUREMENT",
+    "hash72_positions_per_lane": 72,
+    "hash216_positions": 216,
+    "hash216_vertex_count": 72,
+    "components_per_vertex": 3,
+    "hydrated_vertices_per_lane": 5184,
+    "fully_hydrated_attached_components": 15552,
+    "i065_hydration_roundtrip_required": true
+  },
+  "empirical_formal_separation": {
+    "publication_is_external_empirical_evidence": true,
+    "publication_is_hhs_proof": false,
+    "hhs_theorem_is_empirical_measurement": false,
+    "numeric_i061_calibration_satisfied_by_fixture_alone": false,
+    "formal_validity_cannot_substitute_for_empirical_evidence": true,
+    "empirical_evidence_cannot_substitute_for_formal_validity": true
+  },
+  "lane5": {
+    "candidate_search_only": true,
+    "features": [
+      "SOURCE_IDENTITY",
+      "BICHROMATIC",
+      "NONCOLLINEAR",
+      "XYZ_FIELD_COMPONENTS",
+      "POTASSIUM",
+      "MULTIPHOTON_IONIZATION",
+      "DELTA_M_MINUS1_0_PLUS1",
+      "VELOCITY_MAP_IMAGING",
+      "3D_FINE_STRUCTURE_SPIN_ORBIT"
+    ]
+  },
+  "formal": {
+    "lean_module": "HHS.Pass220.Oldenburg3DLightEmpirical",
+    "lean_kernel_build_required": true,
+    "wolfram_file": "formal/wolfram/pass220_i066_oldenburg_3d_light_empirical_v1.wl",
+    "wolfram_external_preflight": {
+      "date": "2026-10-01",
+      "tests_succeeded": 12,
+      "tests_failed": 0,
+      "all_succeeded": true
+    }
+  },
+  "authority": {
+    "vm81_mutation": false,
+    "hash72_commit": false,
+    "hash216_persistence": false,
+    "gpu_canonical_state": false,
+    "floating_point": false,
+    "candidate_only": true
+  }
+}
