@@ -117,7 +117,11 @@ def build_unified_language_model_fabric(
         "provider_id": "provider:hhs.local.text",
         "model_id": "hhs-native-language-v1",
         "role": "EXACT_SEMANTIC_RESPONSE_CANDIDATE",
-        "ready": bool(native_health.get("ok") and native_health.get("online")),
+        "ready": bool(
+            native_health.get("ok")
+            and native_health.get("online")
+            and native_installation.get("semantic_candidate_ready")
+        ),
         "callable_from_unified_chat": True,
         "terminal_text_generation": False,
         "assistant_turn_disposition": "NONTERMINAL_SEMANTIC_CANDIDATE",
