@@ -14,6 +14,11 @@ on:
       - 'hhs_backend/runtime_os_visual_server.py'
       - 'hhs_backend/runtime_os_application_server_full.py'
       - 'tests/pass220/test_hhs_pass220_lane5_capability_hydration.py'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
       - '.github/workflows/pass219-lane5-global-capability-visibility-1-76.yml'
   push:
     branches:
@@ -30,6 +35,11 @@ on:
       - 'hhs_backend/runtime_os_visual_server.py'
       - 'hhs_backend/runtime_os_application_server_full.py'
       - 'tests/pass220/test_hhs_pass220_lane5_capability_hydration.py'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
       - '.github/workflows/pass219-lane5-global-capability-visibility-1-76.yml'
   workflow_dispatch:
 
@@ -76,14 +86,20 @@ jobs:
             hhs_backend/runtime_os_pass220_lane5_capability_hydration.py \
             hhs_backend/runtime_os_visual_server.py \
             hhs_backend/runtime_os_application_server_full.py \
+            hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
+            hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
+            hhs_backend/runtime/hhs_production_assistant_v1.py \
+            hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py \
             tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py \
-            tests/pass220/test_hhs_pass220_lane5_capability_hydration.py
+            tests/pass220/test_hhs_pass220_lane5_capability_hydration.py \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py
 
       - name: Run dependency-scoped Python regressions
         run: |
           python -m pytest -q --tb=short \
             tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py \
-            tests/pass220/test_hhs_pass220_lane5_capability_hydration.py
+            tests/pass220/test_hhs_pass220_lane5_capability_hydration.py \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py
 
       - name: Verify Runtime OS host wiring is Pass219-consumer only
         shell: bash
