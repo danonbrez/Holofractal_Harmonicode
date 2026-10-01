@@ -79,8 +79,8 @@ Every visibility node receives a 216-character Hash216 identity. The restartable
 
 - the complete typed node payload;
 - its Hash216 identity;
-- all 216 positional glyphs;
-- SHA-256 of every individual glyph position.
+- the ordered 216-character Hash216 identity;
+- one fixed-width vector blob containing 216 ordered SHA-256 codewords, one per glyph position.
 
 The database is a derived candidate-memory projection. Repository source and inherited canonical receipts remain authority. Rehydration MUST NOT mint canonical Hash216 state or create a canonical persistence path.
 
@@ -99,6 +99,6 @@ Likewise, a capability is not made `demo` or `non-executable` merely because it 
 - discovery imports or executes discovered source;
 - visibility grants execution, validation, admission, mutation, mint, or persistence authority;
 - a Hash216 identity is not exactly 216 characters;
-- vector hydration does not preserve exactly 216 positional records per hydrated capability node.
+- vector hydration does not preserve exactly 216 ordered SHA-256 codewords per hydrated capability node.
 
 Existing 1.44, 1.69, 1.75 and other frozen Pass 219 evidence remain inherited and unchanged.
