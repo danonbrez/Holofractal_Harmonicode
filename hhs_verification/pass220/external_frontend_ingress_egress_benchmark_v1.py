@@ -903,7 +903,9 @@ def main() -> None:
         assert "json" in capability_content_type.lower()
         capability_status = json.loads(capability_body)
         assert capability_status["lane5_selection_authority"] is False
-        assert capability_status["pass220_host_only"] is True\n        assert capability_status["runtime_validation_authority"] is False\n        assert capability_status["canonical_mutation_authority"] is False
+        assert capability_status["pass220_host_only"] is True
+        assert capability_status["runtime_validation_authority"] is False
+        assert capability_status["canonical_mutation_authority"] is False
 
         result = {
             "schema": "HHS_PASS_220_EXTERNAL_FRONTEND_INGRESS_EGRESS_LOSSLESS_NONBLOCKING_BENCHMARK_V1",
