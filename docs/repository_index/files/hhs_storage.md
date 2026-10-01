@@ -1,14 +1,14 @@
 # Repository file/dependency shard - hhs_storage
 
-Source commit: [f5c90419cbcf57f837be388f5bbde29d1f9cbde0](https://github.com/danonbrez/Holofractal_Harmonicode/commit/f5c90419cbcf57f837be388f5bbde29d1f9cbde0)
+Source commit: [d77f24dd71ccf358a77d6487af2f7a24f8c57924](https://github.com/danonbrez/Holofractal_Harmonicode/commit/d77f24dd71ccf358a77d6487af2f7a24f8c57924)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## hhs_storage
 
-- [hhs_storage/__init__.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_storage/__init__.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 3 ; in 4
-  - depends on: [hhs_storage/runtime_state_compatibility_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_storage/runtime_state_compatibility_v1.py) <sub>PYTHON_IMPORT</sub>
-- [hhs_storage/runtime_state_compatibility_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_storage/runtime_state_compatibility_v1.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 2 ; in 6
-  - depends on: [hhs_python/runtime/hhs_runtime_state.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_python/runtime/hhs_runtime_state.py) <sub>PYTHON_IMPORT</sub>
-- [hhs_storage/runtime_state_store_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_storage/runtime_state_store_v1.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 9 ; in 43
-  - depends on: [hhs_python/runtime/hhs_runtime_state.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_python/runtime/hhs_runtime_state.py) <sub>PYTHON_IMPORT</sub>; [hhs_python/runtime/runtime_object_registry.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_python/runtime/runtime_object_registry.py) <sub>PYTHON_IMPORT</sub>; [hhs_runtime/hhs_semantic_memory_guard_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f5c90419cbcf57f837be388f5bbde29d1f9cbde0/hhs_runtime/hhs_semantic_memory_guard_v1.py) <sub>PYTHON_IMPORT</sub>
+- [hhs_storage/__init__.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_storage/__init__.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 3 ; in 4
+  - depends on: [hhs_storage/runtime_state_compatibility_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_storage/runtime_state_compatibility_v1.py) <sub>PYTHON_IMPORT</sub>
+- [hhs_storage/runtime_state_compatibility_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_storage/runtime_state_compatibility_v1.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 2 ; in 6
+  - depends on: [hhs_python/runtime/hhs_runtime_state.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_python/runtime/hhs_runtime_state.py) <sub>PYTHON_IMPORT</sub>
+- [hhs_storage/runtime_state_store_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_storage/runtime_state_store_v1.py) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; python ; out 9 ; in 43
+  - depends on: [hhs_python/runtime/hhs_runtime_state.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_python/runtime/hhs_runtime_state.py) <sub>PYTHON_IMPORT</sub>; [hhs_python/runtime/runtime_object_registry.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_python/runtime/runtime_object_registry.py) <sub>PYTHON_IMPORT</sub>; [hhs_runtime/hhs_semantic_memory_guard_v1.py](https://github.com/danonbrez/Holofractal_Harmonicode/blob/d77f24dd71ccf358a77d6487af2f7a24f8c57924/hhs_runtime/hhs_semantic_memory_guard_v1.py) <sub>PYTHON_IMPORT</sub>
