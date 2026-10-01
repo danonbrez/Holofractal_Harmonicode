@@ -18,6 +18,7 @@ on:
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
       - 'tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py'
       - '.github/workflows/pass219-lane5-global-capability-visibility-1-76.yml'
   push:
@@ -90,6 +91,7 @@ jobs:
             hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
             hhs_backend/runtime/hhs_production_assistant_v1.py \
             hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py \
+            hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py \
             tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py \
             tests/pass220/test_hhs_pass220_lane5_capability_hydration.py \
             tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py
@@ -110,6 +112,8 @@ jobs:
           grep -Fq 'lane5_selection_authority": False' hhs_backend/runtime_os_pass220_lane5_capability_hydration.py
           grep -Fq 'runtime_validation_authority": False' hhs_backend/runtime_os_pass220_lane5_capability_hydration.py
           grep -Fq 'canonical_mutation_authority": False' hhs_backend/runtime_os_pass220_lane5_capability_hydration.py
+          grep -Fq 'hhs_pass219_lane5_global_capability_visibility_1_76' hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py
+          ! grep -Fq 'hhs_pass219_lane5_repository_capability_reverse_discovery_1_44' hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py
 
       - name: Compile and run native C++ membrane regression
         shell: bash
