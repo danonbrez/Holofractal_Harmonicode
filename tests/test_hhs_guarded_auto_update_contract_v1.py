@@ -438,11 +438,35 @@ def test_timer_and_service_are_bounded() -> None:
     timer = read("hhs-guarded-update.timer")
     service = read("hhs-guarded-update.service")
     production_service = (ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service").read_text(encoding="utf-8")
-    assert "OnUnitActiveSec=5min" in timer
-    assert "RandomizedDelaySec=30s" in timer
-    assert "TimeoutStartSec=90min" in service
-    assert "Type=oneshot" in service
-    assert "NoNewPrivileges=true" in service
+
+    # Push-triggered exact-main delivery owns prompt promotion. The periodic
+    # timer is only a bounded watchdog and must leave startup/network headroom.
+    assert "OnBootSec=15min" in timer
+    assert "OnUnitActiveSec=30min" in timer
+    assert "RandomizedDelaySec=2min" in timer
+    assert "AccuracySec=30s" in timer
+
+    # Candidate validation/build work must never be able to consume the full
+    # 2-vCPU/4-GiB production host and starve sshd/nginx.
+    for token in [
+        "TimeoutStartSec=90min",
+        "Type=oneshot",
+        "Nice=15",
+        "CPUAccounting=true",
+        "CPUQuota=100%",
+        "CPUWeight=10",
+        "MemoryAccounting=true",
+        "MemoryHigh=2G",
+        "MemoryMax=3G",
+        "MemorySwapMax=1G",
+        "IOAccounting=true",
+        "IOWeight=10",
+        "IOSchedulingClass=idle",
+        "OOMScoreAdjust=500",
+        "TasksMax=512",
+        "NoNewPrivileges=true",
+    ]:
+        assert token in service
     assert "Environment=HHS_COGNITION_AUTO_TICK=0" in production_service
 
 
