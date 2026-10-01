@@ -98,3 +98,44 @@ The workflow then performs an actual whole-repository/ref visibility hydration a
 4. Let the Hash216 repository-index workflow refresh its generated projection from merged source rather than hand-editing generated index artifacts.
 5. Reconcile the useful warming/benchmark work from stale PR #588 against the now-authoritative Pass 219 1.76 discovery source; do not restore #588's narrower Pass219/220-only discovery universe.
 6. Continue replacing production-local provider/service universes with Pass 219/Lane 5 graph-derived candidate selection while preserving downstream runtime/kernel validation.
+
+
+## Repair-forward: execution-path-scoped readiness
+
+After the first completed CI wave, the dependency-scoped Pass 219 1.76 workflow was green, while broader repository workflows exposed a mix of inherited failures and one branch-attributable assistant-status inconsistency.
+
+### Inherited failures identified
+
+The following completed failures were outside this branch's changed dependency scope and are not reclassified as Pass 219 1.76 failures:
+
+- LiteRT native model C++ wrapper compile errors in `native_projects/hhs_pass220_litert_native_model_runtime` (`status_`/`record_` and `std::uint32_t` declarations).
+- Default-requirements closure failure because external `litert-lm` remains reachable from `requirements.txt`.
+- Pre-existing mobile-assistant UI/source-string assertions, context-budget assertion, and custom-system-instruction assertion in the Cold Raw/RAG workflow.
+
+### Attributable repair
+
+The assistant/provider layer is now explicitly execution-path scoped:
+
+1. Pass 148 semantic-membrane availability is retained as component evidence but is not a provider-wide kill switch.
+2. Native provider readiness is true when either:
+   - the terminal native causal generation path is ready, or
+   - the bounded semantic-candidate path is executable through Pass 151 plus the declared Word2Vec requirement.
+3. Semantic candidates remain nonterminal and cannot become the selected terminal generator.
+4. Production `selected_provider_id` and `effective_mode` now use the same terminal-readiness predicate.
+5. Unified-model-fabric semantic-candidate readiness now requires the actual semantic-candidate execution contract, not generic provider health.
+6. The I008 and I009 regression suites are part of the Pass 219 1.76 dependency-scoped workflow.
+7. Added an I009 regression proving a ready native causal generator remains executable even when the Pass 148 semantic membrane is unavailable.
+8. Updated the hosted production assistant acceptance so terminal provider expectations follow actual causal readiness; semantic-candidate availability is not mistaken for terminal completion.
+
+### Additional changed files
+
+- `tests/pass220/test_hhs_pass220_i008_assistant_modes.py` (scoped validation target)
+- `tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py`
+- `tests/test_hhs_production_public_app_v1.py`
+
+### Current integration state
+
+- Current main observed during this repair-forward cycle: `e284ef59a17ebfdba6819ef052dffb40d0118dc6`.
+- Main drift from the original #674 base contains no path overlap with the Pass 219 1.76 implementation patch; I065/I066 source changes therefore do not require semantic conflict resolution in these files.
+- The Pass 219 1.76 workflow has been expanded so the execution-path readiness tests are part of the dependency-scoped gate.
+- Merge remains contingent on the latest dependency-scoped run for the repaired head; no green claim is made until that run completes.
