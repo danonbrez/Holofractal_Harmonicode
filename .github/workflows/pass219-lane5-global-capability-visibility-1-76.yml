@@ -10,6 +10,10 @@ on:
       - 'tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py'
       - 'tests/pass219/test_pass219_lane5_global_capability_visibility_cell_wall_1_76.cpp'
       - 'contracts/pass219/PASS_219_LANE5_GLOBAL_CAPABILITY_VISIBILITY_1_76.md'
+      - 'hhs_backend/runtime_os_pass220_lane5_capability_hydration.py'
+      - 'hhs_backend/runtime_os_visual_server.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'tests/pass220/test_hhs_pass220_lane5_capability_hydration.py'
       - '.github/workflows/pass219-lane5-global-capability-visibility-1-76.yml'
   push:
     branches:
@@ -22,6 +26,10 @@ on:
       - 'tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py'
       - 'tests/pass219/test_pass219_lane5_global_capability_visibility_cell_wall_1_76.cpp'
       - 'contracts/pass219/PASS_219_LANE5_GLOBAL_CAPABILITY_VISIBILITY_1_76.md'
+      - 'hhs_backend/runtime_os_pass220_lane5_capability_hydration.py'
+      - 'hhs_backend/runtime_os_visual_server.py'
+      - 'hhs_backend/runtime_os_application_server_full.py'
+      - 'tests/pass220/test_hhs_pass220_lane5_capability_hydration.py'
       - '.github/workflows/pass219-lane5-global-capability-visibility-1-76.yml'
   workflow_dispatch:
 
@@ -56,16 +64,36 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install dependency-scoped Python test runtime
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+
       - name: Compile Python surfaces
         run: |
           python -m py_compile \
             hhs_backend/runtime/hhs_pass219_lane5_global_capability_visibility_1_76.py \
-            tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py
+            hhs_backend/runtime_os_pass220_lane5_capability_hydration.py \
+            hhs_backend/runtime_os_visual_server.py \
+            hhs_backend/runtime_os_application_server_full.py \
+            tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py \
+            tests/pass220/test_hhs_pass220_lane5_capability_hydration.py
 
       - name: Run dependency-scoped Python regressions
         run: |
           python -m pytest -q --tb=short \
-            tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py
+            tests/pass219/test_pass219_lane5_global_capability_visibility_1_76.py \
+            tests/pass220/test_hhs_pass220_lane5_capability_hydration.py
+
+      - name: Verify Runtime OS host wiring is Pass219-consumer only
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'install_pass219_lane5_capability_visibility' hhs_backend/runtime_os_visual_server.py
+          grep -Fq 'install_pass219_lane5_capability_visibility' hhs_backend/runtime_os_application_server_full.py
+          grep -Fq 'lane5_selection_authority": False' hhs_backend/runtime_os_pass220_lane5_capability_hydration.py
+          grep -Fq 'runtime_validation_authority": False' hhs_backend/runtime_os_pass220_lane5_capability_hydration.py
+          grep -Fq 'canonical_mutation_authority": False' hhs_backend/runtime_os_pass220_lane5_capability_hydration.py
 
       - name: Compile and run native C++ membrane regression
         shell: bash
