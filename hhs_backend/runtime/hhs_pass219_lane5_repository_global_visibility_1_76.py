@@ -482,6 +482,7 @@ class Lane5RepositoryGlobalVisibilityDatabase:
             self.db.execute("DELETE FROM hash216_positions")
             self.db.execute("DELETE FROM visibility_records")
             self.db.execute("DELETE FROM hydration_metadata")
+            position_batch: list[tuple[object, ...]] = []
             for item in all_rows:
                 identity = str(item["hash216"])
                 record_kind = str(item.get("record_kind") or item.get("edge_kind") or "")
@@ -496,9 +497,17 @@ class Lane5RepositoryGlobalVisibilityDatabase:
                         _canon(item),
                     ),
                 )
+                position_batch.extend(self._positions(identity, record_kind))
+                if len(position_batch) >= 32_768:
+                    self.db.executemany(
+                        "INSERT INTO hash216_positions VALUES(?,?,?,?,?,?,?)",
+                        position_batch,
+                    )
+                    position_batch.clear()
+            if position_batch:
                 self.db.executemany(
                     "INSERT INTO hash216_positions VALUES(?,?,?,?,?,?,?)",
-                    self._positions(identity, record_kind),
+                    position_batch,
                 )
             metadata = {
                 "schema": DB_SCHEMA,
