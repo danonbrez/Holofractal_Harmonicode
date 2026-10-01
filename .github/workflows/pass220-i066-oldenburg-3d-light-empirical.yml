@@ -1,0 +1,112 @@
+name: Pass 220 I066 Oldenburg 3D Light Empirical Bridge
+
+on:
+  push:
+    branches:
+      - pass220/i066-oldenburg-3d-light-hash216-empirical-20261001
+    paths:
+      - "hhs_runtime/hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1.py"
+      - "tests/pass220/test_hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/Oldenburg3DLightEmpirical.lean"
+      - "formal/wolfram/pass220_i066_oldenburg_3d_light_empirical_v1.wl"
+      - "contracts/pass220/PASS_220_I066_OLDENBURG_3D_LIGHT_HASH216_EMPIRICAL_V1.json"
+      - "docs/pass220/PASS_220_I066_OLDENBURG_3D_LIGHT_HASH216_EMPIRICAL.md"
+      - "docs/whitepapers/HHS_PASS_220_I066_OLDENBURG_3D_LIGHT_EMPIRICAL_BRIDGE_V1.md"
+      - "docs/operations/restart/PASS_220_I066_OLDENBURG_3D_LIGHT_HASH216_EMPIRICAL_RESTART_20261001.md"
+      - ".github/workflows/pass220-i066-oldenburg-3d-light-empirical.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1.py"
+      - "tests/pass220/test_hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/Oldenburg3DLightEmpirical.lean"
+      - "formal/wolfram/pass220_i066_oldenburg_3d_light_empirical_v1.wl"
+      - "contracts/pass220/PASS_220_I066_OLDENBURG_3D_LIGHT_HASH216_EMPIRICAL_V1.json"
+      - "docs/pass220/PASS_220_I066_OLDENBURG_3D_LIGHT_HASH216_EMPIRICAL.md"
+      - "docs/whitepapers/HHS_PASS_220_I066_OLDENBURG_3D_LIGHT_EMPIRICAL_BRIDGE_V1.md"
+      - "docs/operations/restart/PASS_220_I066_OLDENBURG_3D_LIGHT_HASH216_EMPIRICAL_RESTART_20261001.md"
+      - ".github/workflows/pass220-i066-oldenburg-3d-light-empirical.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i066-empirical-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I066 runtime and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1.py \
+            tests/pass220/test_hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1.py
+
+      - name: Execute I066 dependency-scoped validation
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1.py
+
+      - name: Re-run I065 hydration dependency
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py
+
+      - name: Execute deterministic I066 self-test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i066_oldenburg_3d_light_hash216_empirical_v1 import i066_self_test
+          result = i066_self_test()
+          assert result["ok"] is True, result
+          print(result)
+          PY
+
+      - name: Enforce Wolfram source surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "formal/wolfram/pass220_i066_oldenburg_3d_light_empirical_v1.wl"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "dipole-selection-set",
+              "xyz-basis-rank-three",
+              "hash216-3x72",
+              "hash72-square-5184",
+              "three-hydrated-planes",
+              "ordered-plane-previous",
+              "ordered-plane-change",
+              "ordered-plane-receipt",
+              "ChiralDemonstratedByPotassiumExperiment",
+              "NumericI061CalibrationSatisfiedByFixtureAlone",
+              "CanonicalMutationAuthority",
+          ):
+              assert token in source, token
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
