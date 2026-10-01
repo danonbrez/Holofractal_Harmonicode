@@ -365,6 +365,10 @@ class ProductionAssistantService:
                 "health": native_health,
                 "installation": self._native_installation_status(),
                 "ready": native_ready,
+                "terminal_generation_ready": native_terminal_ready,
+                "semantic_candidate_ready": bool(
+                    native_installation.get("semantic_candidate_ready")
+                ),
             },
             "pass153": {
                 "status": pass153_status,
