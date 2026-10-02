@@ -1,13 +1,13 @@
 [Unit]
 Description=HHS Lane 5 Host Ingress Membrane
-After=network-online.target hhs.service
+After=network-online.target
 Wants=network-online.target
-Requires=hhs.service
 StartLimitIntervalSec=300
 StartLimitBurst=5
 
 [Service]
 Type=simple
+Sockets=hhs-lane5-ingress.socket
 User=hhs
 Group=hhs
 WorkingDirectory=/opt/hhs/app
@@ -39,6 +39,3 @@ MemoryMax=1G
 IOAccounting=true
 IOWeight=50
 TasksMax=256
-
-[Install]
-WantedBy=multi-user.target
