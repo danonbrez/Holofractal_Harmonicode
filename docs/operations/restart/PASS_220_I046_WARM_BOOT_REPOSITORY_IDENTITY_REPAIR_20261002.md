@@ -82,7 +82,7 @@ When the explicit SHA file is supplied:
 Git `HEAD` remains the fallback for root-side creation/recovery tools that do
 have repository authority.
 
-### Stable production verifier
+### Stable production verifier and rollback-safe override
 
 `hhs.service` now invokes:
 
@@ -95,6 +95,17 @@ have repository authority.
 
 This avoids depending on the application checkout's own Python verifier while a
 rollback boundary is being recovered.
+
+A repository-owned systemd drop-in,
+`deploy/digitalocean/hhs-warm-boot-identity.conf`, clears only the inherited
+`ExecStartPre` and replaces it with the stable verifier command. The exact-main
+installer and guarded updater install this drop-in under
+`/etc/systemd/system/hhs.service.d/20-hhs-warm-boot-identity.conf`.
+
+This matters on rollback: the predecessor `hhs.service` definition can still be
+restored unchanged while the repaired warm-boot preflight remains active. No
+candidate `ExecStart`, application environment, or application service
+definition is imposed on the predecessor boundary.
 
 ### Identity lifecycle
 
@@ -123,6 +134,7 @@ No VM81, Hash72, Hash216, receipt, ledger, or mutation authority is moved.
 
 - `deployment/digitalocean/warm_boot_manifest.py`
 - `deploy/digitalocean/hhs-pass196-integrated-environment.service`
+- `deploy/digitalocean/hhs-warm-boot-identity.conf`
 - `deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh`
 - `deployment/digitalocean/guarded_auto_update/install.sh`
 - `tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py`
@@ -168,6 +180,7 @@ New regressions cover:
 - verification from sealed SHA without invoking Git;
 - rejection of malformed sealed repository identity;
 - production service use of the stable verifier and SHA file;
+- rollback-safe systemd override changes only `ExecStartPre`;
 - promotion candidate identity binding;
 - rollback predecessor identity binding;
 - recovery bootstrap binding before service start.
