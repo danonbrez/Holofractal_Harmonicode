@@ -177,12 +177,17 @@ if [[ "$ENABLE_PROMOTION" == "1" ]]; then
     echo "Lane 5 host ingress service missing: $LANE5_INGRESS_SERVICE" >&2
     exit 9
   }
+  [[ -f "$LANE5_INGRESS_SOCKET" ]] || {
+    echo "Lane 5 host ingress socket missing: $LANE5_INGRESS_SOCKET" >&2
+    exit 9
+  }
   [[ -f "$LANE5_INGRESS_CONFIGURATOR" ]] || {
     echo "Lane 5 nginx ingress configurator missing: $LANE5_INGRESS_CONFIGURATOR" >&2
     exit 9
   }
   install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service
   install -m 0644 "$LANE5_INGRESS_SERVICE" /etc/systemd/system/hhs-lane5-ingress.service
+  install -m 0644 "$LANE5_INGRESS_SOCKET" /etc/systemd/system/hhs-lane5-ingress.socket
 fi
 
 if [[ ! -f "$ENV_FILE" ]]; then
@@ -338,7 +343,8 @@ if [[ "$ENABLE_PROMOTION" == "1" ]]; then
   # Bring up Lane 5 on loopback before changing any public nginx route. SSH is
   # deliberately outside this dependency chain so recovery access never depends
   # on application or Lane 5 startup.
-  systemctl enable hhs-lane5-ingress.service >/dev/null
+  systemctl enable hhs-lane5-ingress.socket >/dev/null
+  systemctl restart hhs-lane5-ingress.socket
   systemctl restart hhs-lane5-ingress.service
   lane5_deadline=$((SECONDS + 120))
   until curl -fsS --max-time 10 "$LANE5_INGRESS_HEALTH_URL" >/dev/null; do
@@ -371,7 +377,9 @@ if [[ "$ENABLE_PROMOTION" == "1" ]]; then
     echo "Lane 5 nginx gateway route is missing after migration." >&2
     exit 12
   }
+  systemctl is-active --quiet hhs-lane5-ingress.socket || exit 12
   systemctl is-active --quiet hhs-lane5-ingress.service || exit 12
+  echo "HHS_LANE5_HOST_INGRESS_SOCKET_ACTIVATED=1"
   echo "HHS_LANE5_HOST_INGRESS_NGINX_ZERO_BYPASS=1"
 fi
 
