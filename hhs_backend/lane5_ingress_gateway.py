@@ -326,6 +326,7 @@ async def _http_proxy(request: Request, path: str = "") -> Response:
             set_cookies.append(value)
             continue
         response_headers[name] = value
+    response_headers["X-HHS-Lane5-Ingress"] = "mediated"
     response = Response(
         content=upstream.content,
         status_code=upstream.status_code,
