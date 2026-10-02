@@ -1,0 +1,21 @@
+{
+  "schema": "HHS_PASS_220_I067_AGENT_SCOPE_BOUNDARY_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 10,
+  "pass_count": 10,
+  "failed": [],
+  "checks": {
+    "compiled_scope_no_under_limit": true,
+    "compiled_scope_no_over_expand": true,
+    "authorized_never_soft_refused": true,
+    "denied_never_retries": true,
+    "denied_has_no_write_side_effect": true,
+    "denial_preserves_independent_next_step_admission": true,
+    "agent_grant_cannot_expand": true,
+    "external_grant_covers_requested_capability": true,
+    "bounded_retry_complete_0_2048": true,
+    "agent_budget_nonincrease_complete_0_64": true
+  },
+  "executed": "2026-10-02",
+  "execution_surface": "connected Wolfram Language kernel"
+}
