@@ -200,7 +200,7 @@ def _filtered_headers(
     result: list[tuple[bytes, bytes]] = []
     for name, value in headers:
         lowered = bytes(name).lower()
-        if lowered in _HOP_BY_HOP or lowered == b"host":
+        if lowered in _HOP_BY_HOP:
             continue
         if lowered.startswith(_RESERVED_INGRESS_HEADER_PREFIX):
             continue
@@ -423,7 +423,7 @@ async def websocket_proxy(websocket: WebSocket, path: str = "") -> None:
         payload=b"",
     )
     try:
-        await _mediate_async(
+        handshake_receipt = await _mediate_async(
             websocket.app,
             handshake,
             f"network:websocket-handshake:{raw_path.decode('latin-1')}",
@@ -435,7 +435,8 @@ async def websocket_proxy(websocket: WebSocket, path: str = "") -> None:
     requested = websocket.headers.get("sec-websocket-protocol", "")
     subprotocols = [part.strip() for part in requested.split(",") if part.strip()]
     target = _target(raw_path=raw_path, query_string=query, websocket=True)
-    kwargs = _websocket_connect_kwargs(raw_headers, subprotocols)
+    handshake_headers = raw_headers + _receipt_headers(handshake_receipt)
+    kwargs = _websocket_connect_kwargs(handshake_headers, subprotocols)
 
     try:
         async with websockets.connect(target, **kwargs) as upstream:
