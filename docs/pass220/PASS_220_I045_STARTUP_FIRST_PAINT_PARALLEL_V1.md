@@ -70,14 +70,18 @@ HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90
 HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2
 ```
 
-The guarded updater timer changes only its boot eligibility:
+The guarded updater remains a follower to push-triggered exact-main delivery and
+is deliberately delayed so it cannot contend with host recovery:
 
 ```text
-OnBootSec=10min
+OnBootSec=15min
+OnUnitActiveSec=30min
+RandomizedDelaySec=2min
+AccuracySec=30s
 ```
 
-Its normal recurring update cadence and all validation/promotion gates remain
-unchanged.
+This repair-forward refinement preserves the same validation/promotion authority
+while removing the former five-minute recurring contender from startup.
 
 ## Authority boundary
 
