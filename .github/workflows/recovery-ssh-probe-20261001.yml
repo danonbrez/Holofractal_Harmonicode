@@ -1,4 +1,4 @@
-name: Recovery SSH Auth Probe 20261001
+name: Recovery Clean Host Baseline 20261001
 
 on:
   push:
@@ -10,48 +10,53 @@ permissions:
   contents: read
 
 jobs:
-  probe:
+  baseline:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 20
     env:
       RECOVERY_HOST: '165.227.99.132'
       RECOVERY_USER: root
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
-      - name: Require recovery SSH credential
+      - name: Configure SSH
         shell: bash
         run: |
           set -euo pipefail
           test -n "$HHS_SSH_PRIVATE_KEY"
-      - name: Probe recovery SSH port
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import socket
-          import os
-          host = os.environ["RECOVERY_HOST"]
-          sock = socket.socket()
-          sock.settimeout(8)
-          sock.connect((host, 22))
-          sock.close()
-          print(f"HHS_RECOVERY_SSH_PORT_OPEN={host}:22")
-          PY
-      - name: Verify recovery SSH authentication
-        shell: bash
-        run: |
-          set -euo pipefail
           install -d -m 0700 "$HOME/.ssh"
           printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-recovery"
           chmod 0600 "$HOME/.ssh/hhs-recovery"
-          ssh-keyscan -T 8 -H "$RECOVERY_HOST" > "$HOME/.ssh/known_hosts"
+          ssh-keyscan -T 8 "$RECOVERY_HOST" > "$HOME/.ssh/known_hosts"
           test -s "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/known_hosts"
-          ssh \
-            -i "$HOME/.ssh/hhs-recovery" \
-            -o BatchMode=yes \
-            -o ConnectTimeout=12 \
-            -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
-            "$RECOVERY_USER@$RECOVERY_HOST" \
-            "set -e; printf 'HHS_RECOVERY_SSH_AUTH_OK=1\\n'; id; uname -a; cloud-init status --long || true"
+
+      - name: Install headless baseline and clone main
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-recovery" \
+            -o BatchMode=yes -o ConnectTimeout=15 \
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "$RECOVERY_USER@$RECOVERY_HOST" 'bash -se' <<'REMOTE'
+          set -Eeuo pipefail
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            ca-certificates git curl nginx \
+            build-essential gcc g++ make pkg-config libssl-dev \
+            python3 python3-venv python3-pip sqlite3 openssl
+
+          if ! id hhs >/dev/null 2>&1; then
+            useradd --system --home-dir /var/lib/hhs --create-home --shell /usr/sbin/nologin hhs
+          fi
+
+          rm -rf /opt/hhs
+          install -d -m 0755 /opt/hhs
+          git clone --branch main https://github.com/danonbrez/Holofractal_Harmonicode.git /opt/hhs/app
+          python3 -m venv /opt/hhs/venv
+
+          echo "HHS_RECOVERY_BASELINE_VERIFIED=1"
+          git -C /opt/hhs/app rev-parse HEAD
+          python3 --version
+          nginx -v
+          REMOTE
