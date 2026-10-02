@@ -17,10 +17,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
-      HHS_PRODUCTION_HOST: '159.65.178.254'
+      HHS_PRODUCTION_HOST: '165.227.99.132'
       HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
-      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
       TARGET_SHA: ${{ github.sha }}
 
     steps:
@@ -71,12 +70,11 @@ jobs:
         run: |
           set -euo pipefail
           [[ -n "${HHS_SSH_PRIVATE_KEY}" ]] || { echo "::error::Missing HHS_DIGITALOCEAN_SSH_PRIVATE_KEY"; exit 2; }
-          [[ -n "${HHS_PINNED_KNOWN_HOSTS}" ]] || { echo "::error::Missing HHS_DIGITALOCEAN_KNOWN_HOSTS"; exit 3; }
+          [[ -s ".github/known_hosts/hhs-production" ]] || { echo "::error::Missing audited production known_hosts file"; exit 3; }
           install -d -m 0700 "$HOME/.ssh"
           printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
           chmod 0600 "$HOME/.ssh/hhs-production"
-          printf '%s\n' "${HHS_PINNED_KNOWN_HOSTS}" > "$HOME/.ssh/known_hosts"
-          chmod 0600 "$HOME/.ssh/known_hosts"
+          install -m 0600 .github/known_hosts/hhs-production "$HOME/.ssh/known_hosts"
           ssh-keygen -F "${HHS_PRODUCTION_HOST}" -f "$HOME/.ssh/known_hosts" >/dev/null
           cat > "$HOME/.ssh/config" <<EOF
           Host ${HHS_PRODUCTION_HOST}
