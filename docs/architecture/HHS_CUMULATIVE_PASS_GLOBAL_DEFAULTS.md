@@ -179,3 +179,42 @@ that omit the policy are `WIRED_BUT_STALE` until repaired forward.
 
 The policy never creates an additional VM81 mutation authority, persistence
 authority, Hash72 authority, or Hash216 authority.
+
+
+## Host environmental ingress zero-bypass default
+
+The Pass 219/220 environmental-admission rule applies before the private HHS
+application process is reached, not merely after bytes have already entered an
+HTTP/API handler.
+
+For production network surfaces, the canonical topology is:
+
+```text
+public application ingress
+-> TLS/reverse proxy
+-> systemd-owned Lane 5 host ingress socket
+-> exact ordered-byte/provenance mediation
+-> private application/runtime sockets
+-> inherited signed environmental VM81 admission when canonical mutation occurs
+```
+
+A runtime receipt field such as `lane5_zero_bypass_interposer = 1` is evidence
+about a completed mediated candidate route. It is not, by itself, a host
+network interposer and may not substitute for enforced ingress ownership.
+
+Applicable public HHS routes MUST NOT proxy directly to private Runtime OS or
+application-VM ports. Presentation optimizations, including first-paint/static
+asset caching, do not create an exemption: client-originated bytes still pass
+through the same Lane 5 environmental ingress membrane.
+
+The recovery/management plane is intentionally separate. SSH and provider
+recovery access MUST NOT depend on HHS application, Lane 5 process, nginx, or
+private runtime readiness. Conversely, failure of the private backend MUST NOT
+release the host ingress socket or create a direct public bypass; the ingress
+plane fails closed and may return a controlled unavailable response while
+systemd retains socket ownership.
+
+This is an applicable canonical security/admission default under the
+repair-forward rule above. A later deployment surface that restores direct
+public proxying around the host Lane 5 membrane is `WIRED_BUT_STALE` and must
+be rejected.
