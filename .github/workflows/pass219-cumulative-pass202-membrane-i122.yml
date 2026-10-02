@@ -95,14 +95,14 @@ jobs:
           test "$(git hash-object docs/pass202/HHS_PASS_202_GUARDED_CONTINUOUS_INTEGRATION_DEPLOYMENT.md)" = a0634353e26c186bc72e887bd1bbc6bdc5db42c3
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = dedac12e79bbe84f1df9d363e14e31de6d469fa9
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 3a0749a71e085180f2e524f9e9fe3c6183bfe273
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = 3709ddcd9d5a22b18771794bc3bdbb622ccb02ac
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 8d24f5825e0aaaa6e633877021c5bf4d5df0aee7
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = b4df0e7f9711594cf6a518e82d6ec9ca44ae1765
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = 98bc7aec0c82f6ef7e0bd185d52fcb4dba4bc374
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = b63972db7da2497fd7ede8581644b597ff963862
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 54091e650834e4e0b1d227d799310a22726e2488
           # Current successor: exact production validator/liveness repair while historical Pass 202 identity remains frozen above.
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 0e74e2508c00507f7045dc8eecaab8a1a29f80ca
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/verify-recovery-state.py)" = 63fd077254c55054c6c2929c02a2b7fa73f8578b
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = fd6973697a39b94b445c35f6af7dd0aa3f727728
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = 35ef0b50e92721bddf01aa9273edb58bbc12fdb3
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/verify-recovery-state.py)" = 5327fa1ac832d48adf4389c19a0e45dac93a59b1
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = d8fc6406abfd0f9a3225993e4706919a21c3bc70
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = 63aa752b53fcb0b9c5224329eb4fb5201b3e7fb8
           test "$(git hash-object tools/install_production_language_assets.py)" = 35de0676b137139554c20ee53d67be12aab65ac3
 
       - name: Reject approximate arithmetic and new authority exports
@@ -121,6 +121,9 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic             -Ihhs_runtime/include             tests/pass219/test_pass219_inherited_pass202_1_22.cpp             /tmp/hhs-i122/exact.o             /tmp/hhs-i122/link-support/hhs_hash216.o             /tmp/hhs-i122/link-support/hhs_pass219_vm81_pqc_cell_wall.o             -lcrypto -pthread -lm             -o /tmp/hhs-i122/pass202-cpp
           /tmp/hhs-i122/pass202-cpp
 
+      - name: Prove sealed legacy rollback recovery bridge
+        run: python -m pytest -q tests/test_hhs_legacy_warm_boot_recovery_v1.py
+
       - name: Run kernel-derived Pass 202 membrane preflight
         run: PYTHONPATH="$PWD" python tests/pass219/test_pass219_cumulative_pass202_membrane_i122.py
 
@@ -130,6 +133,7 @@ jobs:
             tests/test_hhs_digitalocean_promotion_rollback_repair_v1.py \
             tests/test_hhs_runtime_os_release_permission_repair_v1.py \
             tests/test_hhs_guarded_auto_update_contract_v1.py \
+            tests/test_hhs_legacy_warm_boot_recovery_v1.py \
             tests/test_hhs_production_service_permissions_v2.py \
             tests/test_hhs_production_checkout_readability_repair_v1.py \
             tests/test_hhs_production_public_app_v1.py
