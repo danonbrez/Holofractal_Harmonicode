@@ -15,7 +15,7 @@ from hhs_backend import runtime_status_probe
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_static_first_nginx_serves_only_root_and_assets_without_backend() -> None:
+def test_first_paint_cache_policy_remains_behind_lane5_gateway() -> None:
     source = """
 server {
     listen 80;
@@ -28,7 +28,7 @@ server {
     server_name 165.227.220.193;
 
     location / {
-        proxy_pass http://127.0.0.1:8080;
+        proxy_pass http://127.0.0.1:8715;
         proxy_http_version 1.1;
     }
 }
@@ -37,10 +37,10 @@ server {
     assert "# HHS_RUNTIME_OS_STATIC_FIRST_V1_BEGIN" in patched
     assert "location = / {" in patched
     assert "location ^~ /assets/ {" in patched
-    assert "root /var/lib/hhs/runtime-os/current;" in patched
-    assert "try_files /index.html =503;" in patched
-    assert "try_files $uri =404;" in patched
-    assert patched.count("proxy_pass http://127.0.0.1:8080;") == 1
+    assert "root /var/lib/hhs/runtime-os/current;" not in patched
+    assert "try_files /index.html =503;" not in patched
+    assert "try_files $uri =404;" not in patched
+    assert patched.count("proxy_pass http://127.0.0.1:8715;") == 3
     assert patched.index("location = / {") < patched.index("location / {")
 
     # Idempotent update: the marker block is replaced, not duplicated.
@@ -53,7 +53,7 @@ def test_static_first_nginx_rejects_ambiguous_tls_runtime_blocks() -> None:
     block = """
 server {
     listen 443 ssl;
-    location / { proxy_pass http://127.0.0.1:8080; }
+    location / { proxy_pass http://127.0.0.1:8715; }
 }
 """
     with pytest.raises(RuntimeError, match="TLS_PROXY_BLOCK_COUNT_INVALID"):
@@ -139,7 +139,7 @@ def test_static_first_projection_does_not_claim_hhs_authority() -> None:
         ROOT / "deployment/digitalocean/configure_runtime_os_static_first.py"
     ).read_text(encoding="utf-8")
     assert "CANONICAL_AUTHORITY=0" in source
-    assert "Backend/API authority remains on :8080" in source
+    assert "All bytes still traverse Lane 5 on :8715" in source
     assert "VM81" in source
     assert "Hash72" in source
     assert "Hash216" in source
