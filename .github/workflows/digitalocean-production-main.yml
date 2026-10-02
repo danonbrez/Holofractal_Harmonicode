@@ -18,6 +18,7 @@ on:
       - "deployment/digitalocean/guarded_auto_update/**"
       - "deployment/digitalocean/warm_boot_manifest.py"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
+      - "deploy/digitalocean/hhs-warm-boot-identity.conf"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
       - "tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py"
       - "tests/test_runtime_os_production_root.py"
