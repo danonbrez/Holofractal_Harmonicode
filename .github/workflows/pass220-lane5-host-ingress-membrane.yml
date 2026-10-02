@@ -5,6 +5,7 @@ on:
     paths:
       - 'hhs_backend/lane5_ingress_gateway.py'
       - 'deploy/digitalocean/hhs-lane5-ingress.service'
+      - 'deploy/digitalocean/hhs-lane5-ingress.socket'
       - 'deployment/digitalocean/configure_lane5_ingress_nginx.py'
       - 'deployment/digitalocean/configure_runtime_os_static_first.py'
       - 'deployment/digitalocean/guarded_auto_update/install.sh'
