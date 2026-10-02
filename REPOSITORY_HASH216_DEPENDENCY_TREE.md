@@ -6,8 +6,8 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [fd5a1e127ff15aa6d0adff91d147c7275f2bd821](https://github.com/danonbrez/Holofractal_Harmonicode/commit/fd5a1e127ff15aa6d0adff91d147c7275f2bd821)
-- Git tree: ab77af9c681b08e602885ca9916b5e008781403f
+- Source commit: [d29d23e1750f9ac33c824e539b127e416b8c22b6](https://github.com/danonbrez/Holofractal_Harmonicode/commit/d29d23e1750f9ac33c824e539b127e416b8c22b6)
+- Git tree: 46c22896555d15771a4e48fa125bc011fea3fdaa
 - Tracked tree entries: 9,776
 - Tracked files in Git tree: 8,994
 - Content-bound indexed files: 8,943
@@ -21,7 +21,7 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCplLI-mViQIw6S/soFPZOO/mOzRmPobc(O(xdCWm<*04yAEPc2h7t*hTRBMVcler-P4q3QhkheVG)OGnraeebRyOfZpO1i4N?L!8V0SZ?GL-AVQBlRism4ZXcbMk2rSnWfJ0pT26w3*O!HzlN)
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCp?O9p6HvCmHV1vK>Uf6>5*yO?kckzMAKO4*GTs69U!Rkp0S(CugbG)-fUfzYtBkt0J(?O+KGVccm+CwnAK)>ZGwUhHlJM3+Rl85rVv10iGr!SfembY9B0Sq5qqAYcxTyFSDJPWx*8eVJh/vG!
 
 ### directory_node_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLgzzerhZTeWCu40v8JrapuDZzy+gZ36jvuTY4y+u<pn0suNY7p7L-S9?GhEHxQfOwK<H5g0za*Zl0>+c)t-dh+(/SLTgqB)xiKyq87>>a9>h>0Zks/P5Fq*RdcnxNzC0Jc9(4*Ykhapu2f7xG
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLKOg48a)AQf<5-?jjXJDCv9sh1L10OPa)VWWcWo1O4kVPi2qmLhjeLOII(upL1O/m<-Rs(4ecHl6LcuFK6t?jkczRGl1kc8MPjajNhu<MKq6/JHa()mn!vtp-h3XMQ/1!m)Dy!4B0urqDKYaT
 
 ## Lane 5 evidence binding
 
@@ -64,7 +64,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 - Capabilities: 2,085
 - Constructors: 4,330
 - Knowledge relations: 13,415
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXwZzOgq3mxOL6DktNrNc5<zHi+OBI?fTWn7DEK>uEo2i7pYqMMGfti32jtCfFqf>RA(!10tYkMZDE0TWmmTn)1gLig0COeCwn?8-bwEo8PvMMEt?a8t9FS9jD1iEkSC?h)9J!boca4qAhVmkk
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXe53DsvynrLZetandQ+ZCSGmU>HUva)o?kChJybD<bgn9UF<ZrEiMo1GH!AwB8V+BUCLcFTi/R!un8PnTGMAvusfD8M*1G?BrRyL06Ukb-Ibk7czlRxfGeU!0PekxXOW9W(Or+VO(et9Z-HYP
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
