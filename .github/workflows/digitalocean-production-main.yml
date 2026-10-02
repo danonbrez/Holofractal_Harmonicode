@@ -327,7 +327,9 @@ jobs:
               --receipt-log "$STATE_ROOT/receipts.jsonl" \
               --current-head "$current_head" \
               --repository-root "$APP_ROOT" \
-              --branch main)
+              --branch main \
+              --warm-boot-verifier "$bootstrap_root/deployment/digitalocean/warm_boot_manifest.py" \
+              --warm-boot-manifest-root /var/lib/hhs/warm-boot/releases)
             printf '%s\n' "$recovery_report"
             RECOVERY_MODE=1
             echo "HHS_EXACT_MAIN_RECOVERY_RECEIPT_VERIFIED=1"
