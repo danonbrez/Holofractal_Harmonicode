@@ -353,10 +353,13 @@ def recover_unified_ledger_rollback_boundary(
             "result": "PASS",
         }
 
-    source_root = Path(__file__).resolve().parents[3]
-    if str(source_root) not in sys.path:
-        sys.path.insert(0, str(source_root))
-    os.environ["HHS_REPO_ROOT"] = str(root.resolve())
+    # This helper is installed under /usr/local/lib/hhs-guarded-update in
+    # production, so __file__ cannot identify the HHS repository. The caller
+    # already supplies the authoritative live repository root explicitly.
+    repository_root = root.resolve()
+    if str(repository_root) not in sys.path:
+        sys.path.insert(0, str(repository_root))
+    os.environ["HHS_REPO_ROOT"] = str(repository_root)
     os.environ.setdefault("HHS_RUNTIME_OUTPUT_DIR", str(runtime_output_dir))
 
     from hhs_runtime.hhs_unified_hash72_ledger_recovery_v1 import (  # noqa: PLC0415

@@ -65,6 +65,81 @@ def test_permission_normalizer_repairs_tracked_read_and_parent_traversal_only() 
         assert stat.S_IMODE(secret.stat().st_mode) == secret_before
 
 
+def test_installed_normalizer_imports_recovery_from_explicit_repo_root() -> None:
+    source = TOOL.read_text(encoding="utf-8")
+    assert "repository_root = root.resolve()" in source
+    assert "sys.path.insert(0, str(repository_root))" in source
+    assert "Path(__file__).resolve().parents[3]" not in source
+
+    with tempfile.TemporaryDirectory(prefix="hhs-installed-normalizer-") as tmp:
+        workspace = Path(tmp)
+        installed_dir = workspace / "usr" / "local" / "lib" / "hhs-guarded-update"
+        installed_dir.mkdir(parents=True)
+        installed_tool = installed_dir / "normalize-service-permissions.py"
+        installed_tool.write_text(source, encoding="utf-8")
+
+        repo = workspace / "opt" / "hhs" / "app"
+        runtime = repo / "hhs_runtime"
+        runtime.mkdir(parents=True)
+        (runtime / "__init__.py").write_text("", encoding="utf-8")
+        (runtime / "hhs_unified_hash72_ledger_recovery_v1.py").write_text(
+            "def inspect_transition_metadata_recovery(path):\n"
+            "    return {'status': 'VALID_NO_REPAIR_REQUIRED'}\n\n"
+            "def repair_transition_metadata(*args, **kwargs):\n"
+            "    raise AssertionError('repair must not run for a valid ledger')\n",
+            encoding="utf-8",
+        )
+
+        runtime_output = workspace / "var" / "lib" / "hhs" / "data" / "runtime"
+        runtime_output.mkdir(parents=True)
+        ledger = runtime_output / "hhs_unified_hash72_ledger.json"
+        ledger.write_text("{}\n", encoding="utf-8")
+
+        spec = importlib.util.spec_from_file_location(
+            "installed_hhs_permission_normalizer", installed_tool
+        )
+        assert spec and spec.loader
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        old_package = sys.modules.pop("hhs_runtime", None)
+        old_recovery = sys.modules.pop(
+            "hhs_runtime.hhs_unified_hash72_ledger_recovery_v1", None
+        )
+        original_path = list(sys.path)
+        old_repo_root = os.environ.get("HHS_REPO_ROOT")
+        old_runtime_output = os.environ.get("HHS_RUNTIME_OUTPUT_DIR")
+        try:
+            receipt = module.recover_unified_ledger_rollback_boundary(
+                repo,
+                state_root=workspace / "state",
+                runtime_output_dir=runtime_output,
+            )
+            assert receipt["status"] == "LEDGER_VALID"
+            assert receipt["result"] == "PASS"
+            assert os.environ["HHS_REPO_ROOT"] == str(repo.resolve())
+        finally:
+            sys.path[:] = original_path
+            sys.modules.pop("hhs_runtime", None)
+            sys.modules.pop(
+                "hhs_runtime.hhs_unified_hash72_ledger_recovery_v1", None
+            )
+            if old_package is not None:
+                sys.modules["hhs_runtime"] = old_package
+            if old_recovery is not None:
+                sys.modules[
+                    "hhs_runtime.hhs_unified_hash72_ledger_recovery_v1"
+                ] = old_recovery
+            if old_repo_root is None:
+                os.environ.pop("HHS_REPO_ROOT", None)
+            else:
+                os.environ["HHS_REPO_ROOT"] = old_repo_root
+            if old_runtime_output is None:
+                os.environ.pop("HHS_RUNTIME_OUTPUT_DIR", None)
+            else:
+                os.environ["HHS_RUNTIME_OUTPUT_DIR"] = old_runtime_output
+
+
 def test_updater_normalizes_before_every_service_start() -> None:
     source = (ROOT / "deployment" / "digitalocean" / "guarded_auto_update" / "hhs-guarded-update.sh").read_text(encoding="utf-8")
     start = source.index("start_units()")
