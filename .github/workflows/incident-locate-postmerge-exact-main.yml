@@ -1,0 +1,29 @@
+name: Incident Locate Post-Merge Exact Main
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/incident-locate-postmerge-exact-main.yml'
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  locate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Locate Exact-Main runs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run list \
+            --repo danonbrez/Holofractal_Harmonicode \
+            --workflow digitalocean-production-main.yml \
+            --limit 12 \
+            --json databaseId,status,conclusion,headSha,event,createdAt \
+            --jq '.[] | "EXACT_MAIN_RUN id=\(.databaseId) status=\(.status) conclusion=\(.conclusion // "") head=\(.headSha) event=\(.event) created=\(.createdAt)"'
