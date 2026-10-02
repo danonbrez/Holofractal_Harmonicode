@@ -1,0 +1,66 @@
+name: Pass 220 Lane 5 Host Ingress Membrane
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_backend/lane5_ingress_gateway.py'
+      - 'deploy/digitalocean/hhs-lane5-ingress.service'
+      - 'deploy/digitalocean/hhs-lane5-ingress.socket'
+      - 'deployment/digitalocean/configure_lane5_ingress_nginx.py'
+      - 'deployment/digitalocean/configure_runtime_os_static_first.py'
+      - 'deployment/digitalocean/guarded_auto_update/install.sh'
+      - 'deployment/ubuntu/application_vm/nginx-hhs-application-vm.conf'
+      - 'scripts/complete_hhs_production_https_mobile.sh'
+      - 'tests/pass220/test_pass220_lane5_host_ingress_membrane.py'
+      - 'tests/pass220/test_pass220_i045_startup_first_paint_parallel.py'
+      - 'tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py'
+      - '.github/workflows/pass220-lane5-host-ingress-membrane.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lane5-host-ingress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped Python runtime
+        run: |
+          python -m pip install --disable-pip-version-check \
+            fastapi==0.128.2 starlette==0.50.0 pydantic pytest pytest-asyncio \
+            'httpx>=0.27,<1.0' 'websockets>=12,<16'
+      - name: Compile ingress and deployment surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/lane5_ingress_gateway.py \
+            deployment/digitalocean/configure_lane5_ingress_nginx.py \
+            deployment/digitalocean/configure_runtime_os_static_first.py \
+            tests/pass220/test_pass220_lane5_host_ingress_membrane.py
+          bash -n deployment/digitalocean/guarded_auto_update/install.sh
+          bash -n scripts/complete_hhs_production_https_mobile.sh
+      - name: Build native Lane 5 authority
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Prove real native ingress self-test
+        run: |
+          HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python - <<'PY'
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          receipt = Lane5IngressMediator().health()
+          assert receipt["native_mediation_selftest"] is True
+          assert receipt["lane5_candidate_only"] is True
+          assert receipt["requires_signed_environmental_vm81_admission"] is True
+          print("HHS_LANE5_HOST_INGRESS_NATIVE_SELFTEST_PASS=1")
+          PY
+      - name: Run dependency-scoped ingress contracts
+        run: |
+          HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_pass220_lane5_host_ingress_membrane.py \
+            tests/pass220/test_pass220_i045_startup_first_paint_parallel.py \
+            tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py \
+            tests/test_hhs_guarded_auto_update_contract_v1.py

@@ -47,12 +47,19 @@ IMAGE_SHA256="${IMAGE_FIELDS[1]}"
 IMAGE_FILENAME="${IMAGE_FIELDS[2]}"
 [[ "$IMAGE_SHA256" =~ ^[0-9a-f]{64}$ ]] || fail "manifest SHA-256 is invalid"
 
+INSTALL_PACKAGES="${HHS_GUEST_INSTALL_PACKAGES:-1}"
+[[ "$INSTALL_PACKAGES" == "0" || "$INSTALL_PACKAGES" == "1" ]] \
+  || fail "HHS_GUEST_INSTALL_PACKAGES must be 0 or 1"
+
 MISSING_PACKAGES=()
 command -v qemu-system-x86_64 >/dev/null 2>&1 || MISSING_PACKAGES+=(qemu-system-x86)
 command -v qemu-img >/dev/null 2>&1 || MISSING_PACKAGES+=(qemu-utils)
 command -v cloud-localds >/dev/null 2>&1 || MISSING_PACKAGES+=(cloud-image-utils)
 command -v ssh >/dev/null 2>&1 || MISSING_PACKAGES+=(openssh-client)
 if (("${#MISSING_PACKAGES[@]}" > 0)); then
+  if [[ "$INSTALL_PACKAGES" != "1" ]]; then
+    fail "required host packages missing in verify-only mode: ${MISSING_PACKAGES[*]}"
+  fi
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
   apt-get install -y "${MISSING_PACKAGES[@]}"

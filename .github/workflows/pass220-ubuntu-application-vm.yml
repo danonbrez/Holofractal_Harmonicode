@@ -44,7 +44,8 @@ jobs:
           PY
       - name: Validate service security boundary
         run: |
-          grep -F '127.0.0.1:8720' deployment/ubuntu/application_vm/nginx-hhs-application-vm.conf
+          grep -F '127.0.0.1:8715' deployment/ubuntu/application_vm/nginx-hhs-application-vm.conf
+          ! grep -F '127.0.0.1:8720' deployment/ubuntu/application_vm/nginx-hhs-application-vm.conf
           grep -F 'NoNewPrivileges=true' deployment/ubuntu/application_vm/hhs-application-vm.service.template
           grep -F 'frontend_attached' hhs_backend/application_vm_api_server.py
       - name: Build and verify prebuilt native runtime

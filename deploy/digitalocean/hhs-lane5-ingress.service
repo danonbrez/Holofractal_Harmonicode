@@ -1,0 +1,41 @@
+[Unit]
+Description=HHS Lane 5 Host Ingress Membrane
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+Sockets=hhs-lane5-ingress.socket
+User=hhs
+Group=hhs
+WorkingDirectory=/opt/hhs/app
+Environment=PYTHONUNBUFFERED=1
+Environment=HHS_DISABLE_C_AUTOBUILD=1
+Environment=HHS_LANE5_INGRESS_HTTP_UPSTREAM=http://127.0.0.1:8080
+Environment=HHS_LANE5_INGRESS_WS_UPSTREAM=ws://127.0.0.1:8080
+Environment=HHS_LANE5_INGRESS_VM_HTTP_UPSTREAM=http://127.0.0.1:8720
+Environment=HHS_LANE5_INGRESS_VM_WS_UPSTREAM=ws://127.0.0.1:8720
+ExecStartPre=/usr/bin/test -r /opt/hhs/app/hhs_runtime/builds/libhhs_runtime.so
+ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.lane5_ingress_gateway:app --fd 3 --workers 1 --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=60
+TimeoutStopSec=20
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/hhs /tmp
+CapabilityBoundingSet=
+AmbientCapabilities=
+CPUAccounting=true
+CPUWeight=50
+MemoryAccounting=true
+MemoryHigh=512M
+MemoryMax=1G
+IOAccounting=true
+IOWeight=50
+TasksMax=256

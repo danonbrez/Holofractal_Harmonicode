@@ -22,29 +22,29 @@ post-boot contention.
 
 ## I045 changes
 
-### 1. Static-first public first paint
+### 1. Lane-5-mediated public first paint
 
-`deployment/digitalocean/configure_runtime_os_static_first.py` installs two
-presentation-only nginx locations into the existing TLS server:
+`deployment/digitalocean/configure_runtime_os_static_first.py` retains the
+root/asset cache-policy locations in the existing TLS server:
 
 ```text
 location = /
 location ^~ /assets/
 ```
 
-They serve only:
+Those locations no longer serve files directly from the nginx filesystem.
+Root HTML, hashed assets, APIs, and WebSockets all proxy first to the
+systemd-owned Lane 5 host ingress socket on `127.0.0.1:8715`. The gateway
+binds exact request bytes and provenance through the inherited arbitrary-byte
+Lane 5 1.48 membrane before forwarding accepted traffic to the private runtime
+on `:8080` or the application-VM service on `:8720`.
 
-```text
-/var/lib/hhs/runtime-os/current/index.html
-/var/lib/hhs/runtime-os/current/assets/*
-```
+This repair-forward removes the prior presentation bypass. First-paint caching
+is still allowed; bypassing Lane 5 admission is not.
 
-The inherited generic `location /` backend proxy remains present and owns
-non-static requests. API/WebSocket/runtime authority remains downstream of the
-existing HHS backend.
-
-The configurator is installed during the guarded production promotion only
-after the candidate Runtime OS bundle has been activated and health-verified.
+The configurator is installed during guarded production promotion only after
+the candidate Runtime OS bundle and the local Lane 5 native self-test are
+health-verified.
 
 ### 2. Bounded parallel read-only status hydration
 
@@ -88,22 +88,29 @@ while removing the former five-minute recurring contender from startup.
 I045 creates no new canonical state path.
 
 ```text
-nginx static bytes -> presentation only
+public 80/443 -> nginx -> systemd socket :8715
+             -> exact-byte Lane 5 candidate mediation
+             -> private :8080 / :8720
+             -> inherited signed environmental VM81 admission where mutating
 status fan-out -> read-only projection only
 guarded updater -> same existing authority and validation
-Lane 5 / Pass 190 / VM81 -> unchanged canonical admission
+SSH/22 -> independent recovery/management plane
 ```
 
-The static shell may render while backend hydration is unavailable, but it does
-not fabricate backend health or canonical state.
+Lane 5 remains candidate-only at this host boundary. The gateway cannot mint
+VM81, Hash72, Hash216, persistence, PQC-key, or receipt-clock authority. If the
+private backend is unavailable, the socket remains owned and the public request
+degrades to a mediated 503 rather than treating backend disappearance as a valid
+bypass.
 
 ## Acceptance
 
 I045 is accepted when:
 
 - nginx patching is idempotent;
-- only root/index and hashed assets bypass backend readiness;
-- the generic backend proxy remains present;
+- root/index, hashed assets, APIs, and WebSockets all traverse Lane 5 ingress;
+- no public nginx route proxies directly to `:8080` or `:8720`;
+- the Lane 5 socket remains independently owned when the private backend fails;
 - status paths overlap with concurrency >1;
 - emitted status records retain input order;
 - probe ledger projection remains non-mutating;

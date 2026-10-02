@@ -11,7 +11,7 @@ HHS_APP_ROOT="${HHS_APP_ROOT:-/opt/hhs/app}"
 HHS_APP_USER="${HHS_APP_USER:-hhs}"
 HHS_CERT_NAME="${HHS_CERT_NAME:-hhs-production-ip}"
 HHS_CERTBOT="${HHS_CERTBOT:-/opt/certbot/bin/certbot}"
-HHS_BACKEND="${HHS_BACKEND:-http://127.0.0.1:8080}"
+HHS_BACKEND="${HHS_BACKEND:-http://127.0.0.1:8715}"
 HHS_HEALTH_PATH="${HHS_HEALTH_PATH:-/api/health}"
 HHS_TIMER_SCHEDULE="${HHS_TIMER_SCHEDULE:-*-*-* 00,06,12,18:17:00}"
 HHS_SKIP_FRONTEND_DEPLOY="${HHS_SKIP_FRONTEND_DEPLOY:-0}"
@@ -81,10 +81,10 @@ atomic_install_from_main() {
 find_hhs_nginx_site() {
   local candidate
   candidate="$({
-    grep -RslE 'proxy_pass[[:space:]]+http://127\.0\.0\.1:8080' \
+    grep -RslE 'proxy_pass[[:space:]]+http://127\.0\.0\.1:8715' \
       /etc/nginx/sites-enabled /etc/nginx/conf.d 2>/dev/null || true
   } | grep -v '/hhs-websocket-map\.conf$' | head -n 1)"
-  [[ -n "${candidate}" ]] || fail "unable to locate active Nginx site proxying to 127.0.0.1:8080"
+  [[ -n "${candidate}" ]] || fail "unable to locate active Nginx site proxying to Lane 5 ingress on 127.0.0.1:8715"
   readlink -f "${candidate}"
 }
 

@@ -20,6 +20,9 @@ PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
 RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}
 STATIC_FIRST_CONFIGURATOR=${HHS_RUNTIME_OS_STATIC_FIRST_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_runtime_os_static_first.py}
+LANE5_INGRESS_SERVICE=${HHS_LANE5_INGRESS_SERVICE:-$SOURCE_ROOT/deploy/digitalocean/hhs-lane5-ingress.service}
+LANE5_INGRESS_CONFIGURATOR=${HHS_LANE5_INGRESS_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_lane5_ingress_nginx.py}
+LANE5_INGRESS_HEALTH_URL=${HHS_LANE5_INGRESS_HEALTH_URL:-http://127.0.0.1:8715/__hhs_lane5_ingress_health}
 NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
@@ -56,7 +59,12 @@ bash -n \
   "$SOURCE/preserve-host-drift.sh" \
   "$SOURCE/validate-candidate.sh" \
   "$SOURCE/install.sh"
-python3 -m py_compile "$SOURCE/runtime-os-bundle.py" "$SOURCE/normalize-service-permissions.py" "$RECOVERY_VERIFIER"
+python3 -m py_compile \
+  "$SOURCE/runtime-os-bundle.py" \
+  "$SOURCE/normalize-service-permissions.py" \
+  "$RECOVERY_VERIFIER" \
+  "$LANE5_INGRESS_CONFIGURATOR" \
+  "$SOURCE_ROOT/hhs_backend/lane5_ingress_gateway.py"
 
 normalize_production_checkout() {
   python3 "$PERMISSION_TOOL" \
@@ -165,7 +173,21 @@ if [[ "$ENABLE_PROMOTION" == "1" ]]; then
     echo "Canonical HHS production service missing: $CANONICAL_HHS_SERVICE" >&2
     exit 9
   }
+  [[ -f "$LANE5_INGRESS_SERVICE" ]] || {
+    echo "Lane 5 host ingress service missing: $LANE5_INGRESS_SERVICE" >&2
+    exit 9
+  }
+  [[ -f "$LANE5_INGRESS_SOCKET" ]] || {
+    echo "Lane 5 host ingress socket missing: $LANE5_INGRESS_SOCKET" >&2
+    exit 9
+  }
+  [[ -f "$LANE5_INGRESS_CONFIGURATOR" ]] || {
+    echo "Lane 5 nginx ingress configurator missing: $LANE5_INGRESS_CONFIGURATOR" >&2
+    exit 9
+  }
   install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service
+  install -m 0644 "$LANE5_INGRESS_SERVICE" /etc/systemd/system/hhs-lane5-ingress.service
+  install -m 0644 "$LANE5_INGRESS_SOCKET" /etc/systemd/system/hhs-lane5-ingress.socket
 fi
 
 if [[ ! -f "$ENV_FILE" ]]; then
@@ -314,10 +336,51 @@ systemctl is-active --quiet hhs-guarded-update.timer || {
 
 if [[ "$ENABLE_PROMOTION" == "1" ]]; then
   [[ -f "$STATIC_FIRST_CONFIGURATOR" ]] || {
-    echo "Runtime OS static-first nginx configurator missing: $STATIC_FIRST_CONFIGURATOR" >&2
+    echo "Runtime OS first-paint nginx configurator missing: $STATIC_FIRST_CONFIGURATOR" >&2
     exit 12
   }
+
+  # Bring up Lane 5 on loopback before changing any public nginx route. SSH is
+  # deliberately outside this dependency chain so recovery access never depends
+  # on application or Lane 5 startup.
+  systemctl enable hhs-lane5-ingress.socket >/dev/null
+  systemctl restart hhs-lane5-ingress.socket
+  systemctl restart hhs-lane5-ingress.service
+  lane5_deadline=$((SECONDS + 120))
+  until curl -fsS --max-time 10 "$LANE5_INGRESS_HEALTH_URL" >/dev/null; do
+    if (( SECONDS >= lane5_deadline )); then
+      echo "Lane 5 host ingress failed local health before nginx migration." >&2
+      systemctl status hhs-lane5-ingress.service --no-pager --full >&2 || true
+      journalctl -u hhs-lane5-ingress.service -n 300 --no-pager >&2 || true
+      exit 12
+    fi
+    sleep 2
+  done
+  echo "HHS_LANE5_HOST_INGRESS_READY=1"
+
+  # Only after the local gateway proves Lane 5 authority do public routes move
+  # off direct :8080/:8720. The configurator rolls nginx back if validation or
+  # reload fails, so an incomplete migration is never accepted.
+  python3 "$LANE5_INGRESS_CONFIGURATOR"
   python3 "$STATIC_FIRST_CONFIGURATOR" --runtime-os-root "$BUNDLE_ROOT/current"
+
+  nginx_dump=$(nginx -T 2>&1)
+  if grep -Fq 'proxy_pass http://127.0.0.1:8080' <<<"$nginx_dump"; then
+    echo "Direct public Runtime OS nginx bypass remains after Lane 5 migration." >&2
+    exit 12
+  fi
+  if grep -Fq 'proxy_pass http://127.0.0.1:8720' <<<"$nginx_dump"; then
+    echo "Direct public application-VM nginx bypass remains after Lane 5 migration." >&2
+    exit 12
+  fi
+  grep -Fq 'proxy_pass http://127.0.0.1:8715' <<<"$nginx_dump" || {
+    echo "Lane 5 nginx gateway route is missing after migration." >&2
+    exit 12
+  }
+  systemctl is-active --quiet hhs-lane5-ingress.socket || exit 12
+  systemctl is-active --quiet hhs-lane5-ingress.service || exit 12
+  echo "HHS_LANE5_HOST_INGRESS_SOCKET_ACTIVATED=1"
+  echo "HHS_LANE5_HOST_INGRESS_NGINX_ZERO_BYPASS=1"
 fi
 
 cat <<EOF_SUMMARY
