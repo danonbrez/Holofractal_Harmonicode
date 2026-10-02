@@ -1,4 +1,4 @@
-name: Recovery Clean Host Baseline 20261001
+name: Recovery Runtime Seal 20261001
 
 on:
   push:
@@ -10,14 +10,40 @@ permissions:
   contents: read
 
 jobs:
-  baseline:
+  seal-runtime:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 35
     env:
       RECOVERY_HOST: '165.227.99.132'
       RECOVERY_USER: root
+      TARGET_SHA: '83e563b2227e6c5a9c7ded4be4fd7cd2c9b8fcc4'
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
+      - name: Check out sealed source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 1
+
+      - name: Set up frontend build runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build Runtime OS payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          pushd hhs_gui >/dev/null
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          popd >/dev/null
+          test -s hhs_gui/dist/index.html
+          test -d hhs_gui/dist/assets
+          tar -C hhs_gui/dist -czf "$RUNNER_TEMP/hhs-runtime-os.tar.gz" .
+
       - name: Configure SSH
         shell: bash
         run: |
@@ -30,33 +56,107 @@ jobs:
           test -s "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/known_hosts"
 
-      - name: Install headless baseline and clone main
+      - name: Transfer Runtime OS payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          scp -i "$HOME/.ssh/hhs-recovery" \
+            -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "$RUNNER_TEMP/hhs-runtime-os.tar.gz" \
+            "$RECOVERY_USER@$RECOVERY_HOST:/tmp/hhs-runtime-os.tar.gz"
+
+      - name: Build and seal native runtime
         shell: bash
         run: |
           set -euo pipefail
           ssh -i "$HOME/.ssh/hhs-recovery" \
             -o BatchMode=yes -o ConnectTimeout=15 \
+            -o ServerAliveInterval=30 -o ServerAliveCountMax=20 \
             -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
-            "$RECOVERY_USER@$RECOVERY_HOST" 'bash -se' <<'REMOTE'
+            "$RECOVERY_USER@$RECOVERY_HOST" \
+            "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
           set -Eeuo pipefail
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update
-          apt-get install -y --no-install-recommends \
-            ca-certificates git curl nginx \
-            build-essential gcc g++ make pkg-config libssl-dev \
-            python3 python3-venv python3-pip sqlite3 openssl
+          TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
+          REPO=/opt/hhs/app
+          VENV=/opt/hhs/venv
+          RUNTIME_ROOT=/var/lib/hhs/runtime-os
+          RELEASE="$RUNTIME_ROOT/releases/$TARGET_SHA"
+          WARM_ROOT=/var/lib/hhs/warm-boot/releases
 
-          if ! id hhs >/dev/null 2>&1; then
-            useradd --system --home-dir /var/lib/hhs --create-home --shell /usr/sbin/nologin hhs
-          fi
+          test "$(git -C "$REPO" rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git -C "$REPO" status --porcelain=v1 --untracked-files=normal)"
 
-          rm -rf /opt/hhs
-          install -d -m 0755 /opt/hhs
-          git clone --branch main https://github.com/danonbrez/Holofractal_Harmonicode.git /opt/hhs/app
-          python3 -m venv /opt/hhs/venv
+          "$VENV/bin/python" -m pip install --disable-pip-version-check --upgrade pip wheel
+          "$VENV/bin/python" -m pip install --disable-pip-version-check -r "$REPO/requirements.txt"
 
-          echo "HHS_RECOVERY_BASELINE_VERIFIED=1"
-          git -C /opt/hhs/app rev-parse HEAD
-          python3 --version
-          nginx -v
+          cd "$REPO"
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q 'hhs_hash216_compute'
+
+          install -d -o hhs -g hhs -m 0750 \
+            /var/lib/hhs/data \
+            /var/lib/hhs/data/runtime \
+            /var/lib/hhs/pass174 \
+            /var/lib/hhs/pass194 \
+            /var/lib/hhs/pass205 \
+            /var/lib/hhs/pass213/surface \
+            /var/lib/hhs/pass218 \
+            /var/lib/hhs/pass219/lane5 \
+            /var/lib/hhs/runtime-bootstrap \
+            /var/lib/hhs/runtime-certification \
+            /var/lib/hhs/runtime-api \
+            /var/lib/hhs/graphics-hydration \
+            /var/lib/hhs/storybook-reels \
+            /var/lib/hhs/vulkan-runtime \
+            /var/lib/hhs/warm-boot \
+            "$WARM_ROOT"
+
+          install -d -o root -g hhs -m 0755 "$RUNTIME_ROOT" "$RUNTIME_ROOT/releases"
+          rm -rf "$RELEASE"
+          install -d -o root -g hhs -m 0755 "$RELEASE"
+          tar -xzf /tmp/hhs-runtime-os.tar.gz -C "$RELEASE"
+          test -s "$RELEASE/index.html"
+          test -d "$RELEASE/assets"
+          chown -R root:hhs "$RELEASE"
+          chmod -R g+rX "$RELEASE"
+          ln -sfnT "$RELEASE" "$RUNTIME_ROOT/current"
+
+          "$VENV/bin/python" "$REPO/deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py" \
+            --repo-root "$REPO" --service-user hhs --service-group hhs
+
+          HHS_PRODUCTION_LANGUAGE_STATUS_PATH=/var/lib/hhs/runtime-bootstrap/production_language_assets_status.json \
+            "$VENV/bin/python" "$REPO/tools/install_production_language_assets.py" --install-if-configured || true
+
+          HHS_DATA_DIR=/var/lib/hhs/data \
+          HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 \
+          HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 \
+          HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 \
+          HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface \
+          HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 \
+          HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 \
+          HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap \
+            "$VENV/bin/python" "$REPO/deployment/digitalocean/warm_boot_manifest.py" create \
+              --repo-root "$REPO" \
+              --runtime-os-root "$RUNTIME_ROOT/current" \
+              --manifest-root "$WARM_ROOT"
+
+          chown hhs:hhs "$WARM_ROOT/$TARGET_SHA.json"
+          chmod 0640 "$WARM_ROOT/$TARGET_SHA.json"
+
+          HHS_DISABLE_C_AUTOBUILD=1 \
+          HHS_DATA_DIR=/var/lib/hhs/data \
+          HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 \
+          HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 \
+          HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 \
+          HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface \
+          HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 \
+          HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 \
+          HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap \
+            runuser -u hhs -- "$VENV/bin/python" "$REPO/deployment/digitalocean/warm_boot_manifest.py" verify \
+              --repo-root "$REPO" --manifest-root "$WARM_ROOT"
+
+          echo "HHS_RECOVERY_RUNTIME_SEALED=1"
+          echo "HHS_RECOVERY_RUNTIME_SHA=$TARGET_SHA"
           REMOTE
