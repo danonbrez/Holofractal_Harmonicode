@@ -62,4 +62,5 @@ jobs:
           HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python -m pytest -q \
             tests/pass220/test_pass220_lane5_host_ingress_membrane.py \
             tests/pass220/test_pass220_i045_startup_first_paint_parallel.py \
-            tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
+            tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py \
+            tests/test_hhs_guarded_auto_update_contract_v1.py
