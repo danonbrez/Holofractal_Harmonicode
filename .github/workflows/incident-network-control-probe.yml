@@ -1,0 +1,42 @@
+name: Incident Network Control Probe
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/incident-network-control-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Probe public TCP reachability
+        shell: bash
+        run: |
+          set -u
+          probe() {
+            local host="$1"
+            local port="$2"
+            if timeout 5 bash -c "cat < /dev/null > /dev/tcp/$host/$port" 2>/dev/null; then
+              echo "TCP_PROBE host=$host port=$port state=open"
+            else
+              rc=$?
+              echo "TCP_PROBE host=$host port=$port state=closed_or_filtered rc=$rc"
+            fi
+          }
+
+          echo "CONTROL=174.138.60.188"
+          echo "PRODUCTION=159.65.178.254"
+
+          for port in 22 80 443 8080 8720; do
+            probe 174.138.60.188 "$port"
+          done
+
+          for port in 22 80 443 8080 8720; do
+            probe 159.65.178.254 "$port"
+          done
