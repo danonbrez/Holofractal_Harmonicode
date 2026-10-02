@@ -17,6 +17,7 @@ OWNERSHIP_TIMEOUT=${HHS_UPDATE_OWNERSHIP_TIMEOUT_SECONDS:-900}
 PRODUCTION_HEALTH_TIMEOUT=${HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS:-600}
 PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
+VALIDATE_PYTHON=${HHS_VALIDATE_PYTHON:-/opt/hhs/venv/bin/python}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
 RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}
 STATIC_FIRST_CONFIGURATOR=${HHS_RUNTIME_OS_STATIC_FIRST_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_runtime_os_static_first.py}
@@ -52,6 +53,15 @@ if [[ "$ENABLE_PROMOTION" == "1" ]]; then
     echo "promotion requires exact HHS_RUNTIME_OS_BUNDLE_SHA" >&2
     exit 6
   }
+  [[ -x "$VALIDATE_PYTHON" ]] || {
+    echo "production validation interpreter is not executable: $VALIDATE_PYTHON" >&2
+    exit 6
+  }
+  "$VALIDATE_PYTHON" -c 'import pytest' || {
+    echo "production validation interpreter cannot import pytest: $VALIDATE_PYTHON" >&2
+    exit 6
+  }
+  echo "HHS_PRODUCTION_VALIDATE_PYTHON_VERIFIED=$VALIDATE_PYTHON"
 fi
 
 bash -n \
@@ -200,6 +210,7 @@ HHS_EXPECTED_REPOSITORY=danonbrez/Holofractal_Harmonicode
 HHS_SYSTEMD_UNITS=hhs.service
 HHS_HEALTH_URLS=http://127.0.0.1:8080/api/system/status
 HHS_VALIDATE_TIMEOUT_SECONDS=3600
+HHS_VALIDATE_PYTHON=$VALIDATE_PYTHON
 HHS_HEALTH_TIMEOUT_SECONDS=$PRODUCTION_HEALTH_TIMEOUT
 HHS_VALIDATE_NATIVE=1
 HHS_VALIDATE_NODE_TESTS=1
@@ -225,6 +236,7 @@ else
   LEGACY_RUNTIME_OS_BUILD_VALUE="$LEGACY_RUNTIME_OS_BUILD" \
   ENABLE_PROMOTION_VALUE="$ENABLE_PROMOTION" \
   PRODUCTION_HEALTH_TIMEOUT_VALUE="$PRODUCTION_HEALTH_TIMEOUT" \
+  VALIDATE_PYTHON_VALUE="$VALIDATE_PYTHON" \
   python3 - <<'PY'
 from pathlib import Path
 import os
@@ -238,6 +250,7 @@ bundle_root = os.environ["BUNDLE_ROOT_VALUE"]
 bundle_tool = os.environ["BUNDLE_TOOL_VALUE"]
 promotion = os.environ["ENABLE_PROMOTION_VALUE"] == "1"
 health_timeout = str(max(600, int(os.environ["PRODUCTION_HEALTH_TIMEOUT_VALUE"])))
+validate_python = os.environ["VALIDATE_PYTHON_VALUE"]
 minimum_validate_timeout = 3600
 
 values = {}
@@ -251,6 +264,8 @@ for line in lines:
         value = native
     values[key] = value
     order.append((key, None))
+
+values["HHS_VALIDATE_PYTHON"] = validate_python
 
 if promotion:
     try:
@@ -279,6 +294,7 @@ for key, literal in order:
     result.append(f"{key}={values[key]}")
     emitted.add(key)
 for key in (
+    "HHS_VALIDATE_PYTHON",
     "HHS_VALIDATE_TIMEOUT_SECONDS",
     "HHS_HEALTH_TIMEOUT_SECONDS",
     "HHS_RUNTIME_OS_BUNDLE_MODE",
