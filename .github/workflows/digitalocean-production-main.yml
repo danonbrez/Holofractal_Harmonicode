@@ -232,6 +232,7 @@ jobs:
           STATE_ROOT=/var/lib/hhs-guarded-update
           BUNDLE_ROOT=/var/lib/hhs/runtime-os
           LOCK_FILE=/run/lock/hhs-guarded-update.lock
+          PRODUCTION_LOCK_FILE=/run/lock/hhs-production-mutation.lock
           OWNERSHIP_TIMEOUT=900
           TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
           PROMOTION_HANDOFF=0
@@ -253,6 +254,14 @@ jobs:
 
           [[ $EUID -eq 0 ]] || { echo "production deployment requires root SSH authority" >&2; exit 10; }
           [[ -d "$APP_ROOT/.git" ]] || { echo "repository missing at $APP_ROOT" >&2; exit 11; }
+
+          # One host, one mutation owner. Keep this descriptor locked for the
+          # entire remote exact-main transaction so no independent production
+          # workflow can mutate the shared checkout/systemd/nginx concurrently.
+          install -d -m 0755 "$(dirname "$PRODUCTION_LOCK_FILE")"
+          exec 7>"$PRODUCTION_LOCK_FILE"
+          flock -w 30 7 || { echo "production mutation lock is busy" >&2; exit 14; }
+          echo "HHS_PRODUCTION_MUTATION_OWNERSHIP_CLAIMED=1"
           [[ -s "$BUNDLE_ROOT/incoming/$TARGET_SHA/runtime-os.tar.gz" ]] || { echo "Runtime OS archive missing" >&2; exit 12; }
           [[ -s "$BUNDLE_ROOT/incoming/$TARGET_SHA/manifest.json" ]] || { echo "Runtime OS manifest missing" >&2; exit 13; }
           command -v flock >/dev/null || { echo "flock is required for deployment ownership" >&2; exit 14; }
