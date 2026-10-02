@@ -18,7 +18,7 @@ Environment=HHS_LANE5_INGRESS_WS_UPSTREAM=ws://127.0.0.1:8080
 Environment=HHS_LANE5_INGRESS_VM_HTTP_UPSTREAM=http://127.0.0.1:8720
 Environment=HHS_LANE5_INGRESS_VM_WS_UPSTREAM=ws://127.0.0.1:8720
 ExecStartPre=/usr/bin/test -r /opt/hhs/app/hhs_runtime/builds/libhhs_runtime.so
-ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.lane5_ingress_gateway:app --host 127.0.0.1 --port 8715 --workers 1 --proxy-headers --forwarded-allow-ips=127.0.0.1
+ExecStart=/opt/hhs/venv/bin/python -m uvicorn hhs_backend.lane5_ingress_gateway:app --fd 3 --workers 1 --proxy-headers --forwarded-allow-ips=127.0.0.1
 Restart=on-failure
 RestartSec=10
 TimeoutStartSec=60
