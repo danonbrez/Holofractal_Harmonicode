@@ -142,12 +142,26 @@ class Lane5IngressMediator:
     def health(self) -> dict[str, object]:
         authority = self._native().authority()
         self._verify_authority(authority)
+        probe = serialize_environmental_ingress(
+            transport=b"health",
+            method_or_opcode=b"SELFTEST",
+            raw_path=HEALTH_PATH.encode("ascii"),
+            query_string=b"",
+            headers=(),
+            payload=b"HHS-LANE5-HOST-INGRESS-SELFTEST-V1",
+        )
+        receipt = self.mediate(
+            probe,
+            provenance="host-ingress:startup-selftest",
+        )
         return {
             "schema": GATEWAY_SCHEMA,
             "status": "ready",
             "lane5_candidate_only": True,
             "requires_signed_environmental_vm81_admission": True,
             "direct_backend_public_bypass": False,
+            "native_mediation_selftest": True,
+            "route_receipt_signature64": receipt["route_receipt_signature64"],
         }
 
     def mediate(self, exact_ingress: bytes, *, provenance: str) -> dict[str, object]:
@@ -331,7 +345,7 @@ async def _http_proxy(request: Request, path: str = "") -> Response:
     set_cookies: list[str] = []
     for name, value in upstream.headers.multi_items():
         lowered = name.lower().encode("ascii", "ignore")
-        if lowered in _HOP_BY_HOP:
+        if lowered in _HOP_BY_HOP or lowered in {b"content-length", b"content-encoding"}:
             continue
         if name.lower() == "set-cookie":
             set_cookies.append(value)
