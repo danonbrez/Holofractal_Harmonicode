@@ -367,12 +367,43 @@ def command_restore(args: argparse.Namespace) -> None:
         temp_link.unlink(missing_ok=True)
         os.symlink(os.path.relpath(release, root), temp_link)
         os.replace(temp_link, current)
-    else:
+        print(str(release))
+        return
+
+    # A pre-bundle production install can have a real directory at "current".
+    # The first modern activation preserves that tree as legacy-current-<pid>.
+    # If promotion then fails, PREVIOUS_RUNTIME_OS_RELEASE is empty because the
+    # predecessor was not yet a symlinked release. Restore that exact preserved
+    # tree instead of deleting the candidate symlink and abandoning the only
+    # valid predecessor. Ambiguous legacy trees fail closed.
+    legacy_candidates = sorted(
+        path
+        for path in root.glob("legacy-current-*")
+        if path.is_dir() and not path.is_symlink()
+    )
+    if len(legacy_candidates) > 1:
+        raise SystemExit(
+            "ambiguous legacy Runtime OS rollback roots: "
+            + ", ".join(str(path) for path in legacy_candidates)
+        )
+
+    if legacy_candidates:
+        if current.exists() and not current.is_symlink() and not current.is_file():
+            raise SystemExit(
+                f"refusing to replace existing non-symlink Runtime OS current: {current}"
+            )
         if current.is_symlink() or current.is_file():
             current.unlink()
-        elif current.exists():
-            shutil.rmtree(current)
-    print(args.release or "")
+        legacy = legacy_candidates[0]
+        os.replace(legacy, current)
+        print(str(current))
+        return
+
+    if current.is_symlink() or current.is_file():
+        current.unlink()
+    elif current.exists():
+        shutil.rmtree(current)
+    print("")
 
 
 def parser() -> argparse.ArgumentParser:
