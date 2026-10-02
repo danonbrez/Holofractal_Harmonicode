@@ -108,3 +108,54 @@ jobs:
             probe 159.65.178.254 "$port" production-public-from-vpc
           done
           REMOTE
+
+
+      - name: Verify Sep27 clone identity and inspect guest state
+        shell: bash
+        env:
+          HHS_CONTROL_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+          HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$HHS_CONTROL_SSH_PRIVATE_KEY"
+          test -n "$HHS_PINNED_KNOWN_HOSTS"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_CONTROL_SSH_PRIVATE_KEY" > "$HOME/.ssh/recovery"
+          chmod 0600 "$HOME/.ssh/recovery"
+          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/pinned"
+          chmod 0600 "$HOME/.ssh/pinned"
+
+          ssh-keygen -F 159.65.178.254 -f "$HOME/.ssh/pinned"             | awk '!/^#/ && NF >= 3 {print $2 " " $3}'             | sort -u > "$RUNNER_TEMP/old.keys"
+          test -s "$RUNNER_TEMP/old.keys"
+
+          ssh-keyscan -T 8 162.243.186.202 2>/dev/null             | tee "$HOME/.ssh/recovery_known_hosts"             | awk 'NF >= 3 {print $2 " " $3}'             | sort -u > "$RUNNER_TEMP/new.keys"
+          test -s "$RUNNER_TEMP/new.keys"
+
+          comm -12 "$RUNNER_TEMP/old.keys" "$RUNNER_TEMP/new.keys"             > "$RUNNER_TEMP/matching.keys"
+          test -s "$RUNNER_TEMP/matching.keys"
+          echo "RECOVERY_CLONE_PINNED_HOST_KEY_MATCH=1"
+
+          ssh -i "$HOME/.ssh/recovery"             -o BatchMode=yes             -o IdentitiesOnly=yes             -o ConnectTimeout=10             -o StrictHostKeyChecking=yes             -o UserKnownHostsFile="$HOME/.ssh/recovery_known_hosts"             root@162.243.186.202 'bash -s' <<'RECOVERY'
+          set -euo pipefail
+          echo "RECOVERY_SSH_OK=1"
+          printf 'RECOVERY_HOSTNAME='; hostname
+          printf 'RECOVERY_UPTIME='; uptime -p || true
+          printf 'RECOVERY_ROOT_FS='; df -h / | tail -1
+          printf 'RECOVERY_MAIN_SHA='
+          git -C /opt/hhs/app rev-parse HEAD 2>/dev/null || echo MISSING
+          printf 'RECOVERY_MAIN_BRANCH='
+          git -C /opt/hhs/app branch --show-current 2>/dev/null || true
+          for svc in ssh nginx hhs.service hhs-application-vm.service hhs-guarded-update.timer; do
+            printf 'RECOVERY_SERVICE_%s=' "$svc"
+            systemctl is-active "$svc" 2>/dev/null || true
+          done
+          echo 'RECOVERY_LISTENERS_BEGIN'
+          ss -ltnp | grep -E ':(22|80|443|8080|8720)\b' || true
+          echo 'RECOVERY_LISTENERS_END'
+          curl -kfsS --connect-timeout 5 --max-time 10 https://127.0.0.1/ -o /tmp/recovery-root.html || true
+          if test -s /tmp/recovery-root.html; then
+            echo "RECOVERY_LOCAL_HTTPS_BODY=1"
+          else
+            echo "RECOVERY_LOCAL_HTTPS_BODY=0"
+          fi
+          RECOVERY
