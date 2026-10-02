@@ -1,4 +1,4 @@
-name: Incident Inspect Production Recovery Boundary
+name: Incident Verify Rollback Receipt Lineage
 
 on:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
           printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/known_hosts"
           ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
-      - name: Inspect rollback boundary without mutation
+      - name: Inspect exact rollback lineage without mutation
         shell: bash
         run: |
           set -euo pipefail
@@ -38,44 +38,65 @@ jobs:
             -o ConnectTimeout=12 \
             -o StrictHostKeyChecking=yes \
             -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" 'python3 -' <<'PY'
+          import json
+          from pathlib import Path
+          rollback = "cf2764c24e85ff4980d599f528218f1328b81627"
+          path = Path("/var/lib/hhs-guarded-update/receipts.jsonl")
+          rows = []
+          if path.is_file():
+              for n, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                  try:
+                      rec = json.loads(raw)
+                  except Exception:
+                      continue
+                  if isinstance(rec, dict):
+                      rows.append((n, rec))
+          print("HHS_RECEIPT_COUNT=" + str(len(rows)))
+          relevant = [
+              (n, r) for n, r in rows
+              if rollback in {
+                  str(r.get("previous_sha") or ""),
+                  str(r.get("candidate_sha") or ""),
+                  str(r.get("runtime_os_bundle_sha") or ""),
+              }
+          ]
+          print("HHS_ROLLBACK_RELEVANT_RECEIPTS=" + str(len(relevant)))
+          for n, r in relevant:
+              print(json.dumps({
+                  "line": n,
+                  "timestamp": r.get("timestamp"),
+                  "phase": r.get("phase"),
+                  "outcome": r.get("outcome"),
+                  "previous_sha": r.get("previous_sha"),
+                  "candidate_sha": r.get("candidate_sha"),
+                  "runtime_os_bundle_sha": r.get("runtime_os_bundle_sha"),
+                  "detail": r.get("detail"),
+              }, sort_keys=True))
+          promoted = [
+              r for _, r in rows
+              if r.get("phase") == "promotion"
+              and r.get("outcome") == "PROMOTED"
+          ]
+          print("HHS_PROMOTED_RECEIPT_COUNT=" + str(len(promoted)))
+          for r in promoted[-10:]:
+              print("PROMOTED " + json.dumps(r, sort_keys=True))
+          PY
+
+          ssh -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes -o ConnectTimeout=12 -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
             "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" 'bash -s' <<'REMOTE'
           set +e
-          echo '=== CHECKOUT ==='
-          git -C /opt/hhs/app rev-parse HEAD || true
-          git -C /opt/hhs/app branch --show-current || true
-          git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal || true
-          git -C /opt/hhs/app rev-parse origin/main || true
-
-          echo '=== RUNTIME OS ==='
-          readlink -f /var/lib/hhs/runtime-os/current || true
-          ls -ld /var/lib/hhs/runtime-os/current /var/lib/hhs/runtime-os/releases/* 2>/dev/null | tail -20 || true
-
-          echo '=== GUARDED UPDATE RECEIPTS ==='
-          tail -n 25 /var/lib/hhs-guarded-update/receipts.jsonl 2>/dev/null || true
-          echo '=== LAST SUCCESS ==='
-          cat /var/lib/hhs-guarded-update/last-success.json 2>/dev/null || true
-
-          echo '=== WARM BOOT MANIFESTS ==='
-          ls -lt /var/lib/hhs/warm-boot/releases 2>/dev/null | head -15 || true
-          current=$(git -C /opt/hhs/app rev-parse HEAD 2>/dev/null || true)
-          [[ -n "$current" ]] && cat "/var/lib/hhs/warm-boot/releases/$current.json" 2>/dev/null || true
-
-          echo '=== SERVICES ==='
-          systemctl status hhs.service hhs-guarded-update.service hhs-guarded-update.timer hhs-lane5-ingress.socket hhs-lane5-ingress.service --no-pager --full || true
-
-          echo '=== LISTENERS ==='
-          ss -ltnp | grep -E ':(22|80|443|8080|8715|8720)\b' || true
-
-          echo '=== INSTALLED CONTROLLER IDENTITIES ==='
-          sha256sum \
-            /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py \
-            /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh \
-            /usr/local/lib/hhs-guarded-update/verify-recovery-state.py \
-            2>/dev/null || true
-          grep -nE 'source_root|repository_root = root.resolve|sys.path.insert' \
-            /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py \
-            2>/dev/null || true
-
-          echo '=== PRODUCTION MUTATION LOCK ==='
-          lslocks -o COMMAND,PID,TYPE,MODE,PATH 2>/dev/null | grep -E 'hhs-production-mutation|COMMAND' || true
+          echo '=== LIVE CHECKOUT / DRIFT ==='
+          git -C /opt/hhs/app rev-parse HEAD
+          git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal
+          git -C /opt/hhs/app diff --stat
+          git -C /opt/hhs/app diff -- data/runtime/hhs_filesystem_ledger.json | head -120
+          echo '=== ROLLBACK WARM MANIFEST ==='
+          cat /var/lib/hhs/warm-boot/releases/cf2764c24e85ff4980d599f528218f1328b81627.json 2>/dev/null || true
+          echo '=== CANDIDATE WARM MANIFEST ==='
+          cat /var/lib/hhs/warm-boot/releases/d29d23e1750f9ac33c824e539b127e416b8c22b6.json 2>/dev/null || true
+          echo '=== CURRENT SERVICE UNIT ==='
+          systemctl cat hhs.service || true
           REMOTE
