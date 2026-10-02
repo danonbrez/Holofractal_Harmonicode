@@ -110,6 +110,8 @@ def test_i044_preparation_is_digest_bound_release_scoped_and_strict_ssh() -> Non
     assert "HHS_GUEST_SEED_IMAGE=$SEED_IMAGE" in script
     assert "canonical_state_authority" in script
     assert "HHS_APPLICATION_VM_REQUIRE_GUI=0" in script
+    assert 'INSTALL_PACKAGES="${HHS_GUEST_INSTALL_PACKAGES:-1}"' in script
+    assert "required host packages missing in verify-only mode" in script
 
 
 def test_i044_real_gate_requires_guest_app_vm_and_real_pty_before_promotion() -> None:
@@ -140,4 +142,9 @@ def test_i044_workflow_real_host_job_is_manual_only() -> None:
     assert "inputs.run_real_guest == true" in workflow
     assert "HHS_DIGITALOCEAN_SSH_PRIVATE_KEY" in workflow
     assert "StrictHostKeyChecking=yes" in workflow
+    assert "PRODUCTION_LOCK_FILE=/run/lock/hhs-production-mutation.lock" in workflow
+    assert 'exec 7>"$PRODUCTION_LOCK_FILE"' in workflow
+    assert "flock -w 30 7" in workflow
+    assert "HHS_I044_PRODUCTION_MUTATION_OWNERSHIP_CLAIMED=1" in workflow
+    assert "HHS_GUEST_INSTALL_PACKAGES=0" in workflow
     assert "run-real-guest-integration.sh" in workflow
