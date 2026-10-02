@@ -4,7 +4,8 @@
 Root, assets, APIs, and WebSockets all remain behind the host Lane 5 ingress
 gateway.  The first-paint locations retain their cache policy but never serve
 directly from the filesystem, so public environmental ingress cannot bypass the
-same exact byte/provenance membrane used by dynamic requests.
+same exact byte/provenance membrane used by dynamic requests. This projection
+adds no VM81 mutation, Hash72, Hash216, persistence, or receipt-clock authority.
 """
 from __future__ import annotations
 
