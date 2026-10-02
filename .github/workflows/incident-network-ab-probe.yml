@@ -43,6 +43,12 @@ jobs:
             probe 104.236.61.39 "$port" tagged-control
           done
           for port in 22 80 443 8080 8720; do
+            probe 162.243.186.202 "$port" backup-sep27
+          done
+          for port in 22 80 443 8080 8720; do
+            probe 104.131.56.236 "$port" backup-sep26
+          done
+          for port in 22 80 443 8080 8720; do
             probe 138.197.93.86 "$port" replacement-snapshot
           done
           for port in 22 80 443 8080 8720; do
