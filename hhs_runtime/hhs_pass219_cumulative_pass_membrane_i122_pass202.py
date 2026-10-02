@@ -57,8 +57,8 @@ HISTORICAL_BLOBS = {
 CURRENT_SUCCESSOR_BLOBS = {
     WORKFLOW_PATH: "e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4",
     SPEC_PATH: "a0634353e26c186bc72e887bd1bbc6bdc5db42c3",
-    SERVICE_PATH: "645650a70efde6df130b90e21acbf063ebc0ff0d",
-    TIMER_PATH: "4d0640477a5f7e0d9657c5fd7f4d6ba4792682bb",
+    SERVICE_PATH: "dedac12e79bbe84f1df9d363e14e31de6d469fa9",
+    TIMER_PATH: "3a0749a71e085180f2e524f9e9fe3c6183bfe273",
     UPDATER_PATH: "3709ddcd9d5a22b18771794bc3bdbb622ccb02ac",
     ENV_PATH: "8d24f5825e0aaaa6e633877021c5bf4d5df0aee7",
     INSTALLER_PATH: "b4df0e7f9711594cf6a518e82d6ec9ca44ae1765",
@@ -171,8 +171,20 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         "Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0",
         "Environment=HHS_PRODUCTION_LANGUAGE_STATUS_PATH=/var/lib/hhs/runtime-bootstrap/production_language_assets_status.json",
         "TimeoutStartSec=90min",
+        "CPUQuota=100%",
+        "MemoryHigh=2G",
+        "MemoryMax=3G",
+        "IOWeight=10",
+        "OOMScoreAdjust=500",
+        "TasksMax=512",
     )
-    _require(TIMER_PATH, "OnUnitActiveSec=5min", "RandomizedDelaySec=30s")
+    _require(
+        TIMER_PATH,
+        "OnBootSec=15min",
+        "OnUnitActiveSec=30min",
+        "RandomizedDelaySec=2min",
+        "AccuracySec=30s",
+    )
     _require(
         RECOVERY_VERIFIER_PATH,
         'phase == "rollback" and outcome == "ROLLBACK_HEALTH_FAILED"',
