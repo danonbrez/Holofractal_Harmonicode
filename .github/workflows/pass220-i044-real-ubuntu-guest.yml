@@ -12,6 +12,7 @@ on:
       - "docs/pass220/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_V1.md"
       - "docs/operations/restart/PASS_220_I044_REAL_UBUNTU_GUEST_INTEGRATION_20260923.md"
       - ".github/workflows/pass220-i044-real-ubuntu-guest.yml"
+      - ".github/known_hosts/hhs-production"
   workflow_dispatch:
     inputs:
       run_real_guest:
@@ -74,13 +75,18 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      HHS_PRODUCTION_HOST: '159.65.178.254'
+      HHS_PRODUCTION_HOST: '165.227.99.132'
       HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
-      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
       TARGET_SHA: ${{ github.sha }}
 
     steps:
+      - name: Check out audited production host identity
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 1
+
       - name: Require explicit production SSH authority
         shell: bash
         run: |
@@ -89,8 +95,8 @@ jobs:
             echo "::error::Missing HHS_DIGITALOCEAN_SSH_PRIVATE_KEY"
             exit 2
           }
-          [[ -n "${HHS_PINNED_KNOWN_HOSTS}" ]] || {
-            echo "::error::Missing HHS_DIGITALOCEAN_KNOWN_HOSTS"
+          [[ -s ".github/known_hosts/hhs-production" ]] || {
+            echo "::error::Missing audited production known_hosts file"
             exit 3
           }
           [[ -n "${HHS_PRODUCTION_HOST}" ]]
@@ -103,8 +109,7 @@ jobs:
           install -d -m 0700 "$HOME/.ssh"
           printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
           chmod 0600 "$HOME/.ssh/hhs-production"
-          printf '%s\n' "${HHS_PINNED_KNOWN_HOSTS}" > "$HOME/.ssh/known_hosts"
-          chmod 0600 "$HOME/.ssh/known_hosts"
+          install -m 0600 .github/known_hosts/hhs-production "$HOME/.ssh/known_hosts"
           ssh-keygen -F "${HHS_PRODUCTION_HOST}" -f "$HOME/.ssh/known_hosts" >/dev/null
 
       - name: Boot and verify exact-main Ubuntu guest
