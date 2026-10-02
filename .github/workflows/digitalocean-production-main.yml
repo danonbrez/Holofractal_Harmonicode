@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/digitalocean-production-main.yml"
+      - ".github/known_hosts/hhs-production"
       - ".github/workflows/pass219-cumulative-pass202-membrane-i122.yml"
       - "hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py"
       - "hhs_gui/**"
@@ -69,10 +70,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      HHS_PRODUCTION_HOST: '159.65.178.254'
+      HHS_PRODUCTION_HOST: '165.227.99.132'
       HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
       HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
-      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
       TARGET_SHA: ${{ github.sha }}
 
     steps:
@@ -95,10 +95,10 @@ jobs:
             echo "::error::Missing repository secret HHS_DIGITALOCEAN_SSH_PRIVATE_KEY. Production cannot prove or promote exact main without SSH authority."
             exit 2
           fi
-          if [[ -z "${HHS_PINNED_KNOWN_HOSTS}" ]]; then
-            echo "::error::Missing repository secret HHS_DIGITALOCEAN_KNOWN_HOSTS. Runtime host-key discovery is forbidden; provision the audited production known_hosts entry."
+          [[ -s ".github/known_hosts/hhs-production" ]] || {
+            echo "::error::Audited production known_hosts file is missing."
             exit 3
-          fi
+          }
           [[ -n "${HHS_PRODUCTION_HOST}" ]]
           [[ -n "${HHS_PRODUCTION_USER}" ]]
           test "$(git rev-parse HEAD)" = "$TARGET_SHA"
@@ -138,10 +138,9 @@ jobs:
           install -d -m 0700 "$HOME/.ssh"
           printf '%s\n' "${HHS_SSH_PRIVATE_KEY}" > "$HOME/.ssh/hhs-production"
           chmod 0600 "$HOME/.ssh/hhs-production"
-          printf '%s\n' "${HHS_PINNED_KNOWN_HOSTS}" > "$HOME/.ssh/known_hosts"
-          chmod 0600 "$HOME/.ssh/known_hosts"
+          install -m 0600 .github/known_hosts/hhs-production "$HOME/.ssh/known_hosts"
           if ! ssh-keygen -F "${HHS_PRODUCTION_HOST}" -f "$HOME/.ssh/known_hosts" >/dev/null; then
-            echo "::error::Pinned HHS_DIGITALOCEAN_KNOWN_HOSTS does not contain the configured production host ${HHS_PRODUCTION_HOST}."
+            echo "::error::Audited production known_hosts file does not contain the configured production host ${HHS_PRODUCTION_HOST}."
             exit 4
           fi
           cat > "$HOME/.ssh/config" <<EOF
@@ -173,7 +172,7 @@ jobs:
           if [[ "$ssh_status" -ne 0 ]]; then
             case "$ssh_output" in
               *"REMOTE HOST IDENTIFICATION HAS CHANGED"*|*"Host key verification failed"*)
-                echo "::error title=Stale pinned production SSH host key::HHS_DIGITALOCEAN_KNOWN_HOSTS does not match ${HHS_PRODUCTION_HOST}. Rotate the audited known_hosts secret; do not bypass StrictHostKeyChecking."
+                echo "::error title=Stale pinned production SSH host key::The audited production known_hosts file does not match ${HHS_PRODUCTION_HOST}. Update the reviewed host-key file; do not bypass StrictHostKeyChecking."
                 ;;
               *"Permission denied"*)
                 echo "::error title=Production SSH deploy credential rejected::HHS_DIGITALOCEAN_SSH_PRIVATE_KEY is not authorized for ${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}. Verify the registered deploy public key and the server authorized_keys entry."
