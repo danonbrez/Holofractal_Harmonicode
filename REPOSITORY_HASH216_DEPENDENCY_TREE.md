@@ -6,22 +6,22 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [d38b084d74d5f5d55354657e29c6b18f3348f55c](https://github.com/danonbrez/Holofractal_Harmonicode/commit/d38b084d74d5f5d55354657e29c6b18f3348f55c)
-- Git tree: cf733a6c8d5348b0501fbb67949acdbf7ee07b97
-- Tracked tree entries: 9,766
-- Tracked files in Git tree: 8,984
-- Content-bound indexed files: 8,933
+- Source commit: [e6b56828e85e1a49c370407f93e1fe156bc5bd50](https://github.com/danonbrez/Holofractal_Harmonicode/commit/e6b56828e85e1a49c370407f93e1fe156bc5bd50)
+- Git tree: d1dc911ff95e515b685d91fcde7f2c2f16521f0c
+- Tracked tree entries: 9,767
+- Tracked files in Git tree: 8,985
+- Content-bound indexed files: 8,934
 - Projection artifacts excluded from content root: 51
-- Text files deep-scanned: 8,492
+- Text files deep-scanned: 8,493
 - Internal dependency edges: 73,976
-- Containment edges: 9,712
+- Containment edges: 9,713
 - Lane 5 capability nodes: 2,085
 
 ## Hash216 graph roots
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpBnp>H1AcaO-<NJJe155LbuAjA8aLGu75zfoabb<tz>gC-tLBeirMqyXIT)pYexcSTqARvVRNRMU3!N(B>PL3gq)GsQM*8SQIa?doSsUZwrx4Zx5!dRX09i!3aNU<0IFbWJY59i>La!Kc-+ix
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCp/A5dx?OnXFSFS/rNVj4G7kpUo5c3(?zspoh++ufMrf5V4TibvH7sbU9ysSWSFt9ql4965>(e+S>silIOqZphErOE*V/P8N>RJNwB6nFyiqf4Y2n-Uj4bLuRCQ5)88os4X9gvj/0XdC>wYKDA
 
 ### directory_node_root_hash216
 
@@ -29,7 +29,7 @@ m+>+KVW+Fd9M3>)OrHc)LCeL3KR8MzR39U2SOa2yjrS?mOjKOHgrRSwBBOQIzw7Uk54u>Vdf8e8BeyN>
 
 ### containment_edge_root_hash216
 
-Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+Iu4)9q(fHeyw6kIh96d8saWT2(<A4mXlfDV47xzTLuboMdvdI-(Q+llPS/R7EDqVR?wP1yJda)hsWe*PBoJRFBbWvuP)5eWwseM5+Pji?9Tdv-F?w<VEYDG2vW>pWg2>jsvOIxD()!B4DZqu
+Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+2huH)>Qb1PkTjz6pNmLdEH25dF9VoPa2guC<QG1d?fuXEG>RYNRZ5-EjQOi3pnbQwIskHRkJKzaYX<9!Dym-M5vKV)zTxEZy0X??193VH6yTWuKb3V67!-1icQPv*9KcKsNU86RQ)GNt?--)
 
 ### dependency_edge_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLSiS05eqEke(+qwJ<HyKCemVF4v*EPWDIZmzZA/j5nV9SiBrJB/bHSJ3N/jeXZ<CrI>J((i7k3xDebbmxk2kKhjQGjS3+4otCuwjWB)CII/!PiMICWcmQ1-MN*0TUU)t0mOJ*nIhOg1terL!G
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLqZ76zc<OhD!(MjNrKHOTyBn1v17vrT-FR6SlF71G>+hT9h(dt0!Dd>)*YB9B?-Uw9/B9r>t5p3ksFTWoCVR5elDwKJ+nbr>1Xc4l1Xit5w>cFxZ4FYp4ymOY-DAe3511rjcDGX2j<PO)mdKK
 
 ## Lane 5 evidence binding
 
@@ -64,7 +64,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 - Capabilities: 2,085
 - Constructors: 4,325
 - Knowledge relations: 13,410
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXxS4I/4rtOOF?+-B)7sgqW9a<qrix87YcVg)3JaD*S-IzsrxkqxGLBFY/HGo86OP5V-szby<xF8zXIY9cTO+JZ4J*rlOVIayhf<1AfH6XnGyyYc2jbQuD5O?Z!SE7ImDiE-8PeWF-qux1zxHN
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXS!yBVUfK?>7L7db(rrS0cNq4fcI8bcq2KtH+EBTyhf!(y1kC83<TNT6K1yygOr!)0m*>b5iyIO)6WRxt1c3W-5)<hV+44pCtIz(m4NucM(PnTUSfu/IPrhQcmzc3mSAcYTFz6iwIBprax*xy
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
@@ -85,7 +85,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 | [data](docs/repository_index/files/data.md) | 15 |
 | [deploy](docs/repository_index/files/deploy.md) | 7 |
 | [deployment](docs/repository_index/files/deployment.md) | 41 |
-| [docs](docs/repository_index/files/docs.md) | 925 |
+| [docs](docs/repository_index/files/docs.md) | 926 |
 | [evidence](docs/repository_index/files/evidence.md) | 514 |
 | [examples](docs/repository_index/files/examples.md) | 8 |
 | [formal](docs/repository_index/files/formal.md) | 23 |
