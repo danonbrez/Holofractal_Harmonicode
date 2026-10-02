@@ -533,6 +533,33 @@ def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
     assert '"HHS_VALIDATE_TIMEOUT_SECONDS",' in source
 
 
+def test_repair_sources_reject_literal_escaped_newline_artifacts() -> None:
+    escaped_newline = chr(92) + "n"
+    targets = (
+        ROOT / ".github" / "workflows" / "pass220-i045-startup-first-paint-parallel.yml",
+        ROOT / "tests" / "pass220" / "test_pass220_i045_startup_first_paint_parallel.py",
+    )
+    for path in targets:
+        assert escaped_newline not in path.read_text(encoding="utf-8")
+
+
+def test_application_vm_production_shell_continuations_are_comment_free() -> None:
+    workflow = (
+        ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+
+    comment = "# Production deployment must not mutate the host network/desktop stack."
+    env_block = (
+        'REPO_ROOT="$RELEASE" \\\n'
+        '          HHS_APPLICATION_VM_REQUIRE_GUI=1 \\\n'
+        '          HHS_APPLICATION_VM_INSTALL_GUI=0 \\\n'
+        '            bash "$RELEASE/deployment/ubuntu/application_vm/install.sh"'
+    )
+    assert comment in workflow
+    assert env_block in workflow
+    assert workflow.index(comment) < workflow.index(env_block)
+
+
 def test_application_vm_production_is_manual_and_cannot_reprovision_host_network_stack() -> None:
     application_vm = (
         ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm-production.yml"
