@@ -321,3 +321,37 @@ GitHub reruns for I045 and I122 are queued behind the repository Actions workloa
 Per the restartability policy, queued external CI does not block this checkpoint.
 Merge remains gated on those dependency-scoped reruns or an equivalent verified
 successor check.
+
+
+## I122 inherited failure classification — 2026-10-01 23:17 America/New_York
+
+The remaining I122 failure is not attributable to this production repair.
+
+Both current `main` and this repair branch contain the same Pass 214 membrane
+constant:
+
+```text
+EXACT_VM81_RUNTIME_GIT_BLOB=81d9699b2d28d5d6a09ea4763653f3ba9eda9e15
+```
+
+and both current `main` and this branch have identical blobs for:
+
+- `scripts/run_pass214_vm81_ir_adapter_validation.sh`:
+  `2c4d647f95ac3ae3873cd822d466397176710231`;
+- `tests/test_hhs_pass214_vm81_ir_adapter_v1.py`:
+  `a879d0ba602de07fc5267d217167070e551d6784`.
+
+Neither current file contains the expected `81d9699...` identity, so the
+cumulative I122 preflight fails after the repaired Pass 202 membrane has already
+passed with:
+
+```text
+PASS214_EXACT_VM81_REBIND_IDENTITY_DRIFT
+```
+
+This is inherited current-main drift outside the dependency scope of the
+production runner/network repair. I045, Application-VM, and DigitalOcean
+production deployment-contract checks are green on the corrected repair head.
+Under dependency-scoped validation, the inherited Pass 214 drift does not block
+merging the production availability repair; it remains a separate repair-forward
+item.
