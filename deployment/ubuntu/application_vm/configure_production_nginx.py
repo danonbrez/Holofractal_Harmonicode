@@ -11,7 +11,7 @@ import subprocess
 from typing import Iterable
 
 DEFAULT_INCLUDE = "/etc/nginx/snippets/hhs-application-vm.conf"
-BACKEND_MARKER = "proxy_pass http://127.0.0.1:8080"
+BACKEND_MARKER = "proxy_pass http://127.0.0.1:8715"
 
 
 def _matching_brace(text: str, open_index: int) -> int:
