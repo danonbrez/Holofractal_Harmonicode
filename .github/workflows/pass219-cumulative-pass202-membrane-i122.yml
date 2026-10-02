@@ -93,8 +93,8 @@ jobs:
         run: |
           test "$(git hash-object .github/workflows/guarded-continuous-integration.yml)" = e6b4e7c7cda8a64ef59151eae0e33ff1a70c6cd4
           test "$(git hash-object docs/pass202/HHS_PASS_202_GUARDED_CONTINUOUS_INTEGRATION_DEPLOYMENT.md)" = a0634353e26c186bc72e887bd1bbc6bdc5db42c3
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = 645650a70efde6df130b90e21acbf063ebc0ff0d
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 4d0640477a5f7e0d9657c5fd7f4d6ba4792682bb
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.service)" = dedac12e79bbe84f1df9d363e14e31de6d469fa9
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer)" = 3a0749a71e085180f2e524f9e9fe3c6183bfe273
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh)" = 3709ddcd9d5a22b18771794bc3bdbb622ccb02ac
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = 8d24f5825e0aaaa6e633877021c5bf4d5df0aee7
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = b4df0e7f9711594cf6a518e82d6ec9ca44ae1765
