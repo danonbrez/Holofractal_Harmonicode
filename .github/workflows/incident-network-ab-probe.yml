@@ -40,6 +40,9 @@ jobs:
             probe 134.209.161.168 "$port" clean-control
           done
           for port in 22 80 443 8080 8720; do
+            probe 104.236.61.39 "$port" tagged-control
+          done
+          for port in 22 80 443 8080 8720; do
             probe 159.65.178.254 "$port" production
           done
 
