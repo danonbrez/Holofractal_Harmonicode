@@ -1,5 +1,4 @@
-name: Incident Dispatch Exact Main Recovery
-# Recovery trigger: d29d23e1750f9ac33c824e539b127e416b8c22b6
+name: Incident Inspect Production Mutation Lock
 
 on:
   pull_request:
@@ -8,23 +7,53 @@ on:
       - '.github/workflows/incident-network-ab-probe.yml'
 
 permissions:
-  actions: write
   contents: read
 
 jobs:
-  dispatch:
+  inspect:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    env:
+      HHS_PRODUCTION_HOST: '159.65.178.254'
+      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
     steps:
-      - name: Dispatch authoritative Exact-Main recovery promotion
+      - name: Configure pinned SSH
         shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          target=$(gh api repos/danonbrez/Holofractal_Harmonicode/commits/main --jq '.sha')
-          gh workflow run digitalocean-production-main.yml \
-            --repo danonbrez/Holofractal_Harmonicode \
-            --ref main
-          echo "EXACT_MAIN_RECOVERY_DISPATCHED=1"
-          echo "EXACT_MAIN_RECOVERY_MAIN_AT_DISPATCH=$target"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+      - name: Inspect production mutation owner
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=12 \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" 'bash -s' <<'REMOTE'
+          set +e
+          echo '=== HHS PRODUCTION MUTATION LOCK ==='
+          lslocks -o COMMAND,PID,TYPE,MODE,PATH 2>/dev/null | grep -E 'hhs-production-mutation|COMMAND' || true
+          owner_pid=$(lslocks -n -o PID,PATH 2>/dev/null | awk '$2 == "/run/lock/hhs-production-mutation.lock" {print $1; exit}')
+          echo "HHS_PRODUCTION_MUTATION_OWNER_PID=${owner_pid:-none}"
+          if [[ -n "$owner_pid" ]]; then
+            ps -o pid,ppid,etimes,lstart,args -p "$owner_pid" || true
+            command -v pstree >/dev/null 2>&1 && pstree -aps "$owner_pid" || true
+            parent=$(ps -o ppid= -p "$owner_pid" | tr -d ' ')
+            [[ -n "$parent" ]] && ps -o pid,ppid,etimes,lstart,args -p "$parent" || true
+          fi
+          echo '=== SYSTEMD ==='
+          systemctl status hhs-guarded-update.service hhs-guarded-update.timer hhs.service hhs-lane5-ingress.socket hhs-lane5-ingress.service --no-pager --full || true
+          echo '=== LISTENERS ==='
+          ss -ltnp | grep -E ':(22|80|443|8080|8715|8720)\b' || true
+          echo '=== SSH SESSIONS ==='
+          ss -tnp | grep ':22' || true
+          REMOTE
