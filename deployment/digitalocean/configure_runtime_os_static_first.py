@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Install a static-first Runtime OS first-paint projection into production nginx.
+"""Install a Lane-5-mediated Runtime OS first-paint projection in nginx.
 
-Only the already-built Runtime OS index and hashed /assets tree are served
-directly. Dynamic API/WebSocket/other routes continue through the inherited
-backend proxy, so this adds no application, Lane 5, VM81, Hash72, or Hash216
-authority.
+Root, assets, APIs, and WebSockets all remain behind the host Lane 5 ingress
+gateway.  The first-paint locations retain their cache policy but never serve
+directly from the filesystem, so public environmental ingress cannot bypass the
+same exact byte/provenance membrane used by dynamic requests.
 """
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ import shutil
 import subprocess
 from typing import Iterable
 
-BACKEND_MARKER = "proxy_pass http://127.0.0.1:8080"
+BACKEND_MARKER = "proxy_pass http://127.0.0.1:8715"
 START_MARKER = "# HHS_RUNTIME_OS_STATIC_FIRST_V1_BEGIN"
 END_MARKER = "# HHS_RUNTIME_OS_STATIC_FIRST_V1_END"
 
@@ -67,19 +67,21 @@ def _find_tls_runtime_block(text: str) -> tuple[int, int]:
 
 
 def _snippet(runtime_root: Path) -> str:
-    root = runtime_root.as_posix()
+    _ = runtime_root
     return f"""
     {START_MARKER}
-    # Presentation-only fast path. Backend/API authority remains on :8080.
+    # Presentation cache policy only. All bytes still traverse Lane 5 on :8715.
     location = / {{
-        root {root};
-        try_files /index.html =503;
+        proxy_pass http://127.0.0.1:8715;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
         add_header Cache-Control "no-cache" always;
     }}
 
     location ^~ /assets/ {{
-        root {root};
-        try_files $uri =404;
+        proxy_pass http://127.0.0.1:8715;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
         expires 1y;
         add_header Cache-Control "public, immutable" always;
     }}
