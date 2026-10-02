@@ -43,9 +43,23 @@ jobs:
             tests/pass220/test_pass220_lane5_host_ingress_membrane.py
           bash -n deployment/digitalocean/guarded_auto_update/install.sh
           bash -n scripts/complete_hhs_production_https_mobile.sh
+      - name: Build native Lane 5 authority
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Prove real native ingress self-test
+        run: |
+          HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python - <<'PY'
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          receipt = Lane5IngressMediator().health()
+          assert receipt["native_mediation_selftest"] is True
+          assert receipt["lane5_candidate_only"] is True
+          assert receipt["requires_signed_environmental_vm81_admission"] is True
+          print("HHS_LANE5_HOST_INGRESS_NATIVE_SELFTEST_PASS=1")
+          PY
       - name: Run dependency-scoped ingress contracts
         run: |
-          PYTHONPATH="$PWD" python -m pytest -q \
+          HHS_DISABLE_C_AUTOBUILD=1 PYTHONPATH="$PWD" python -m pytest -q \
             tests/pass220/test_pass220_lane5_host_ingress_membrane.py \
             tests/pass220/test_pass220_i045_startup_first_paint_parallel.py \
             tests/pass220/test_pass220_ubuntu_application_vm_control_plane.py
