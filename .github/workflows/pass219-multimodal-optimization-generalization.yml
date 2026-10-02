@@ -20,6 +20,9 @@ on:
       - 'hhs_runtime/pass219/multimodal_optimization_generalization.py'
       - 'tools/hhs_multimodal_optimization_generalizer.py'
       - 'tools/validate_pass219_multimodal_optimization_generalization.py'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
       - 'tests/pass219/test_pass219_multimodal_optimization_generalization*'
       - '.github/workflows/pass219-multimodal-optimization-generalization.yml'
   pull_request:
@@ -39,6 +42,9 @@ on:
       - 'hhs_runtime/pass219/multimodal_optimization_generalization.py'
       - 'tools/hhs_multimodal_optimization_generalizer.py'
       - 'tools/validate_pass219_multimodal_optimization_generalization.py'
+      - 'tools/pass219/build_exact_abi_link_support.sh'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
       - 'tests/pass219/test_pass219_multimodal_optimization_generalization*'
       - '.github/workflows/pass219-multimodal-optimization-generalization.yml'
 
@@ -97,11 +103,17 @@ jobs:
           gcc -c native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_registers.S \
             -o /tmp/pass219-mog/registers.o
 
+      - name: Build authoritative exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass219-mog/link-support full
+
       - name: Run C multimodal policy conformance
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_multimodal_optimization_generalization_1_0.c \
             /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            /tmp/pass219-mog/link-support/hhs_hash216.o \
+            /tmp/pass219-mog/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-mog/mog-c
           /tmp/pass219-mog/mog-c
 
@@ -110,6 +122,9 @@ jobs:
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_multimodal_optimization_generalization_1_0.cpp \
             /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            /tmp/pass219-mog/link-support/hhs_hash216.o \
+            /tmp/pass219-mog/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
             -o /tmp/pass219-mog/mog-cpp
           /tmp/pass219-mog/mog-cpp
 
@@ -118,11 +133,17 @@ jobs:
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass186_1_40.c \
             /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            /tmp/pass219-mog/link-support/hhs_hash216.o \
+            /tmp/pass219-mog/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass219-mog/pass186-c
           /tmp/pass219-mog/pass186-c
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass186_1_40.cpp \
             /tmp/pass219-mog/exact.o /tmp/pass219-mog/pass186.o /tmp/pass219-mog/registers.o \
+            /tmp/pass219-mog/link-support/hhs_hash216.o \
+            /tmp/pass219-mog/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -pthread -lm \
             -o /tmp/pass219-mog/pass186-cpp
           /tmp/pass219-mog/pass186-cpp
 
