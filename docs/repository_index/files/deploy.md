@@ -1,18 +1,18 @@
 # Repository file/dependency shard - deploy
 
-Source commit: [89801340e56f5b207865ca1668abdbe0568ca204](https://github.com/danonbrez/Holofractal_Harmonicode/commit/89801340e56f5b207865ca1668abdbe0568ca204)
+Source commit: [6fa5c1e0d8b773c91539154d3e53bfc1564cfc71](https://github.com/danonbrez/Holofractal_Harmonicode/commit/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## deploy/digitalocean
 
-- [deploy/digitalocean/hhs-kimi-k3.env.example](https://github.com/danonbrez/Holofractal_Harmonicode/blob/89801340e56f5b207865ca1668abdbe0568ca204/deploy/digitalocean/hhs-kimi-k3.env.example) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 4
-- [deploy/digitalocean/hhs-lane5-ingress.service](https://github.com/danonbrez/Holofractal_Harmonicode/blob/89801340e56f5b207865ca1668abdbe0568ca204/deploy/digitalocean/hhs-lane5-ingress.service) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 3
-- [deploy/digitalocean/hhs-lane5-ingress.socket](https://github.com/danonbrez/Holofractal_Harmonicode/blob/89801340e56f5b207865ca1668abdbe0568ca204/deploy/digitalocean/hhs-lane5-ingress.socket) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 3
-- [deploy/digitalocean/hhs-pass196-integrated-environment.service](https://github.com/danonbrez/Holofractal_Harmonicode/blob/89801340e56f5b207865ca1668abdbe0568ca204/deploy/digitalocean/hhs-pass196-integrated-environment.service) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 64
-- [deploy/digitalocean/hhs-pass196.env.example](https://github.com/danonbrez/Holofractal_Harmonicode/blob/89801340e56f5b207865ca1668abdbe0568ca204/deploy/digitalocean/hhs-pass196.env.example) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 7
+- [deploy/digitalocean/hhs-kimi-k3.env.example](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71/deploy/digitalocean/hhs-kimi-k3.env.example) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 4
+- [deploy/digitalocean/hhs-lane5-ingress.service](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71/deploy/digitalocean/hhs-lane5-ingress.service) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 3
+- [deploy/digitalocean/hhs-lane5-ingress.socket](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71/deploy/digitalocean/hhs-lane5-ingress.socket) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 3
+- [deploy/digitalocean/hhs-pass196-integrated-environment.service](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71/deploy/digitalocean/hhs-pass196-integrated-environment.service) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 64
+- [deploy/digitalocean/hhs-pass196.env.example](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71/deploy/digitalocean/hhs-pass196.env.example) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 7
 
 ## deploy/pass218-etcd
 
-- [deploy/pass218-etcd/README.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/89801340e56f5b207865ca1668abdbe0568ca204/deploy/pass218-etcd/README.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 1
-- [deploy/pass218-etcd/hhs-pass218-distributed.env.example](https://github.com/danonbrez/Holofractal_Harmonicode/blob/89801340e56f5b207865ca1668abdbe0568ca204/deploy/pass218-etcd/hhs-pass218-distributed.env.example) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 1
+- [deploy/pass218-etcd/README.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71/deploy/pass218-etcd/README.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 1
+- [deploy/pass218-etcd/hhs-pass218-distributed.env.example](https://github.com/danonbrez/Holofractal_Harmonicode/blob/6fa5c1e0d8b773c91539154d3e53bfc1564cfc71/deploy/pass218-etcd/hhs-pass218-distributed.env.example) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 1
