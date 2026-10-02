@@ -1,24 +1,24 @@
 # Repository file/dependency shard - test_corpus
 
-Source commit: [60a7f432a9ba0f80f7eb750707a54b5e42aadfd8](https://github.com/danonbrez/Holofractal_Harmonicode/commit/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8)
+Source commit: [deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b](https://github.com/danonbrez/Holofractal_Harmonicode/commit/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## test_corpus/pass145
 
-- [test_corpus/pass145/README.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/README.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
-- [test_corpus/pass145/conflict_a.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/conflict_a.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
-- [test_corpus/pass145/conflict_b.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/conflict_b.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
-- [test_corpus/pass145/dangerous.js](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/dangerous.js) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; javascript ; out 0 ; in 8
-- [test_corpus/pass145/empty.txt](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/empty.txt) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/float_rejected.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/float_rejected.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/formal_system.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/formal_system.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
-- [test_corpus/pass145/invalid.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/invalid.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/malformed.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/malformed.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/prompt_injection.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/prompt_injection.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/table.csv](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/table.csv) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/unicode_symbols.txt](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/unicode_symbols.txt) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/valid.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/valid.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/valid.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/valid.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/valid.jsonl](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/valid.jsonl) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
-- [test_corpus/pass145/valid.xml](https://github.com/danonbrez/Holofractal_Harmonicode/blob/60a7f432a9ba0f80f7eb750707a54b5e42aadfd8/test_corpus/pass145/valid.xml) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/README.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/README.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
+- [test_corpus/pass145/conflict_a.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/conflict_a.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
+- [test_corpus/pass145/conflict_b.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/conflict_b.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
+- [test_corpus/pass145/dangerous.js](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/dangerous.js) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; javascript ; out 0 ; in 8
+- [test_corpus/pass145/empty.txt](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/empty.txt) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/float_rejected.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/float_rejected.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/formal_system.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/formal_system.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 8
+- [test_corpus/pass145/invalid.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/invalid.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/malformed.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/malformed.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/prompt_injection.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/prompt_injection.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/table.csv](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/table.csv) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/unicode_symbols.txt](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/unicode_symbols.txt) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/valid.html](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/valid.html) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/valid.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/valid.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/valid.jsonl](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/valid.jsonl) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
+- [test_corpus/pass145/valid.xml](https://github.com/danonbrez/Holofractal_Harmonicode/blob/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b/test_corpus/pass145/valid.xml) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 8
