@@ -1,4 +1,4 @@
-name: Recovery Capture SSH Host Keys 20261001
+name: Recovery Trusted HTTPS 20261001
 
 on:
   push:
@@ -10,20 +10,176 @@ permissions:
   contents: read
 
 jobs:
-  capture:
+  https:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 15
     env:
       RECOVERY_HOST: '165.227.99.132'
+      RECOVERY_USER: root
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
-      - name: Capture audited recovery host keys
+      - name: Configure SSH
         shell: bash
         run: |
           set -euo pipefail
-          keys=$(ssh-keyscan -T 8 "$RECOVERY_HOST" 2>/dev/null | sort -u)
-          test -n "$keys"
-          printf '%s\n' "HHS_RECOVERY_HOST_KEYS_BEGIN"
-          printf '%s\n' "$keys"
-          printf '%s\n' "HHS_RECOVERY_HOST_KEYS_END"
-          printf '%s\n' "$keys" > /tmp/recovery-known-hosts
-          ssh-keygen -lf /tmp/recovery-known-hosts
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-recovery"
+          chmod 0600 "$HOME/.ssh/hhs-recovery"
+          ssh-keyscan -T 8 "$RECOVERY_HOST" > "$HOME/.ssh/known_hosts"
+          test -s "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+
+      - name: Issue short-lived IP certificate and enable HTTPS
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-recovery" \
+            -o BatchMode=yes -o ConnectTimeout=15 \
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "$RECOVERY_USER@$RECOVERY_HOST" \
+            "HHS_IP='$RECOVERY_HOST' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          HHS_IP=${HHS_IP:?missing HHS_IP}
+          CERT_NAME=hhs-production-ip
+          CERTBOT=/opt/certbot/bin/certbot
+          WEBROOT=/var/www/hhs-acme
+
+          python3 -m venv /opt/certbot
+          /opt/certbot/bin/python -m pip install --disable-pip-version-check --upgrade pip
+          /opt/certbot/bin/python -m pip install --disable-pip-version-check 'certbot>=5.4,<6.0'
+          "$CERTBOT" --version
+
+          install -d -m 0755 "$WEBROOT/.well-known/acme-challenge"
+
+          cat >/etc/nginx/sites-available/hhs <<NGINX
+          server {
+              listen 80 default_server;
+              listen [::]:80 default_server;
+              server_name $HHS_IP;
+
+              location ^~ /.well-known/acme-challenge/ {
+                  root $WEBROOT;
+                  default_type text/plain;
+                  try_files \$uri =404;
+              }
+
+              location / {
+                  proxy_pass http://127.0.0.1:8080;
+                  proxy_http_version 1.1;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto \$scheme;
+                  proxy_set_header Upgrade \$http_upgrade;
+                  proxy_set_header Connection \$hhs_connection_upgrade;
+              }
+          }
+          NGINX
+          nginx -t
+          systemctl reload nginx
+
+          "$CERTBOT" certonly \
+            --preferred-profile shortlived \
+            --webroot \
+            --webroot-path "$WEBROOT" \
+            --ip-address "$HHS_IP" \
+            --cert-name "$CERT_NAME" \
+            --non-interactive \
+            --agree-tos \
+            --register-unsafely-without-email
+
+          test -s "/etc/letsencrypt/live/$CERT_NAME/fullchain.pem"
+          test -s "/etc/letsencrypt/live/$CERT_NAME/privkey.pem"
+
+          cat >/etc/nginx/sites-available/hhs <<NGINX
+          server {
+              listen 80 default_server;
+              listen [::]:80 default_server;
+              server_name $HHS_IP;
+
+              location ^~ /.well-known/acme-challenge/ {
+                  root $WEBROOT;
+                  default_type text/plain;
+                  try_files \$uri =404;
+              }
+
+              location / {
+                  return 308 https://$HHS_IP\$request_uri;
+              }
+          }
+
+          server {
+              listen 443 ssl default_server;
+              listen [::]:443 ssl default_server;
+              server_name $HHS_IP;
+
+              ssl_certificate /etc/letsencrypt/live/$CERT_NAME/fullchain.pem;
+              ssl_certificate_key /etc/letsencrypt/live/$CERT_NAME/privkey.pem;
+              ssl_protocols TLSv1.2 TLSv1.3;
+              client_max_body_size 512m;
+
+              location / {
+                  proxy_pass http://127.0.0.1:8080;
+                  proxy_http_version 1.1;
+                  proxy_set_header Host \$host;
+                  proxy_set_header X-Real-IP \$remote_addr;
+                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto https;
+                  proxy_set_header X-Forwarded-Host \$host;
+                  proxy_set_header X-Forwarded-Port 443;
+                  proxy_set_header Upgrade \$http_upgrade;
+                  proxy_set_header Connection \$hhs_connection_upgrade;
+                  proxy_connect_timeout 30s;
+                  proxy_send_timeout 300s;
+                  proxy_read_timeout 300s;
+              }
+          }
+          NGINX
+
+          cat >/etc/systemd/system/hhs-certbot-renew.service <<'SYSTEMD'
+          [Unit]
+          Description=Renew HHS short-lived IP certificate
+          Wants=network-online.target
+          After=network-online.target
+
+          [Service]
+          Type=oneshot
+          ExecStart=/bin/sh -c '/opt/certbot/bin/certbot renew --quiet --deploy-hook "nginx -t && systemctl reload nginx"'
+          SYSTEMD
+
+          cat >/etc/systemd/system/hhs-certbot-renew.timer <<'SYSTEMD'
+          [Unit]
+          Description=Check HHS short-lived IP certificate renewal every six hours
+
+          [Timer]
+          OnCalendar=*-*-* 00,06,12,18:17:00
+          RandomizedDelaySec=15m
+          Persistent=true
+          Unit=hhs-certbot-renew.service
+
+          [Install]
+          WantedBy=timers.target
+          SYSTEMD
+
+          nginx -t
+          systemctl reload nginx
+          systemctl daemon-reload
+          systemctl enable --now hhs-certbot-renew.timer
+
+          curl -fsS --max-time 10 "https://$HHS_IP/api/system/status" >/tmp/hhs-https-system.json
+          openssl s_client -connect "$HHS_IP:443" -servername "$HHS_IP" </dev/null 2>/dev/null \
+            | openssl x509 -noout -subject -issuer -dates -ext subjectAltName
+
+          echo "HHS_RECOVERY_TRUSTED_HTTPS_ACTIVE=1"
+          REMOTE
+
+      - name: Verify trusted public HTTPS
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://$RECOVERY_HOST/api/system/status" >/tmp/hhs-https-status.json
+          curl -fsS --retry 5 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "https://$RECOVERY_HOST/" >/tmp/hhs-https-root.html
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-https-root.html
+          echo "HHS_RECOVERY_PUBLIC_TRUSTED_HTTPS_VERIFIED=1"
