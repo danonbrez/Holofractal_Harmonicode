@@ -106,6 +106,8 @@ I045 is accepted when:
 - production probe concurrency is bounded to 2;
 - the first probe is delayed 90 seconds;
 - guarded updater cannot begin at the former three-minute boot boundary;
+- watchdog boot eligibility is at least 15 minutes;
+- recurring watchdog cadence is 30 minutes rather than the former five-minute contender;
 - dependency-scoped regression tests pass.
 
 ## Current live-host distinction
