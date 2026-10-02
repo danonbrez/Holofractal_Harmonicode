@@ -293,6 +293,19 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
     assert "bash bin/post_compile\n" not in example
 
 
+def test_installer_binds_lane5_socket_before_strict_unbound_use() -> None:
+    installer = read("install.sh")
+    binding = (
+        'LANE5_INGRESS_SOCKET=${HHS_LANE5_INGRESS_SOCKET:-'
+        '$SOURCE_ROOT/deploy/digitalocean/hhs-lane5-ingress.socket}'
+    )
+    assert binding in installer
+    assert installer.index(binding) < installer.index('[[ -f "$LANE5_INGRESS_SOCKET" ]]')
+    assert installer.index(binding) < installer.index(
+        'install -m 0644 "$LANE5_INGRESS_SOCKET"'
+    )
+
+
 def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_gated_recovery() -> None:
     installer = read("install.sh")
     workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
