@@ -70,14 +70,18 @@ HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90
 HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2
 ```
 
-The guarded updater timer changes only its boot eligibility:
+The guarded updater remains a follower to push-triggered exact-main delivery and
+is deliberately delayed so it cannot contend with host recovery:
 
 ```text
-OnBootSec=10min
+OnBootSec=15min
+OnUnitActiveSec=30min
+RandomizedDelaySec=2min
+AccuracySec=30s
 ```
 
-Its normal recurring update cadence and all validation/promotion gates remain
-unchanged.
+This repair-forward refinement preserves the same validation/promotion authority
+while removing the former five-minute recurring contender from startup.
 
 ## Authority boundary
 
@@ -106,6 +110,8 @@ I045 is accepted when:
 - production probe concurrency is bounded to 2;
 - the first probe is delayed 90 seconds;
 - guarded updater cannot begin at the former three-minute boot boundary;
+- watchdog boot eligibility is at least 15 minutes;
+- recurring watchdog cadence is 30 minutes rather than the former five-minute contender;
 - dependency-scoped regression tests pass.
 
 ## Current live-host distinction

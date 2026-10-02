@@ -326,6 +326,9 @@ def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_g
         "flock -w 10 8",
         '$PROMOTION_HANDOFF" == "0"',
         "systemctl start hhs-guarded-update.timer",
+        "PRODUCTION_LOCK_FILE=/run/lock/hhs-production-mutation.lock",
+        "HHS_PRODUCTION_MUTATION_OWNERSHIP_CLAIMED=1",
+        "flock -w 30 7",
     ]:
         assert token in workflow
 
@@ -438,11 +441,35 @@ def test_timer_and_service_are_bounded() -> None:
     timer = read("hhs-guarded-update.timer")
     service = read("hhs-guarded-update.service")
     production_service = (ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service").read_text(encoding="utf-8")
-    assert "OnUnitActiveSec=5min" in timer
-    assert "RandomizedDelaySec=30s" in timer
-    assert "TimeoutStartSec=90min" in service
-    assert "Type=oneshot" in service
-    assert "NoNewPrivileges=true" in service
+
+    # Push-triggered exact-main delivery owns prompt promotion. The periodic
+    # timer is only a bounded watchdog and must leave startup/network headroom.
+    assert "OnBootSec=15min" in timer
+    assert "OnUnitActiveSec=30min" in timer
+    assert "RandomizedDelaySec=2min" in timer
+    assert "AccuracySec=30s" in timer
+
+    # Candidate validation/build work must never be able to consume the full
+    # 2-vCPU/4-GiB production host and starve sshd/nginx.
+    for token in [
+        "TimeoutStartSec=90min",
+        "Type=oneshot",
+        "Nice=15",
+        "CPUAccounting=true",
+        "CPUQuota=100%",
+        "CPUWeight=10",
+        "MemoryAccounting=true",
+        "MemoryHigh=2G",
+        "MemoryMax=3G",
+        "MemorySwapMax=1G",
+        "IOAccounting=true",
+        "IOWeight=10",
+        "IOSchedulingClass=idle",
+        "OOMScoreAdjust=500",
+        "TasksMax=512",
+        "NoNewPrivileges=true",
+    ]:
+        assert token in service
     assert "Environment=HHS_COGNITION_AUTO_TICK=0" in production_service
 
 
@@ -504,6 +531,47 @@ def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
     assert 'values["HHS_VALIDATE_TIMEOUT_SECONDS"] = str(' in source
     assert "max(minimum_validate_timeout, current_validate_timeout)" in source
     assert '"HHS_VALIDATE_TIMEOUT_SECONDS",' in source
+
+
+def test_repair_sources_reject_literal_escaped_newline_artifacts() -> None:
+    escaped_newline = chr(92) + "n"
+    targets = (
+        ROOT / ".github" / "workflows" / "pass220-i045-startup-first-paint-parallel.yml",
+        ROOT / "tests" / "pass220" / "test_pass220_i045_startup_first_paint_parallel.py",
+    )
+    for path in targets:
+        assert escaped_newline not in path.read_text(encoding="utf-8")
+
+
+def test_application_vm_production_shell_continuations_are_comment_free() -> None:
+    workflow = (
+        ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+
+    comment = "# Production deployment must not mutate the host network/desktop stack."
+    env_block = (
+        'REPO_ROOT="$RELEASE" \\\n'
+        '          HHS_APPLICATION_VM_REQUIRE_GUI=1 \\\n'
+        '          HHS_APPLICATION_VM_INSTALL_GUI=0 \\\n'
+        '            bash "$RELEASE/deployment/ubuntu/application_vm/install.sh"'
+    )
+    assert comment in workflow
+    assert env_block in workflow
+    assert workflow.index(comment) < workflow.index(env_block)
+
+
+def test_application_vm_production_is_manual_and_cannot_reprovision_host_network_stack() -> None:
+    application_vm = (
+        ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "push:" not in application_vm
+    assert "workflow_dispatch:" in application_vm
+    assert "LOCK_FILE=/run/lock/hhs-production-mutation.lock" in application_vm
+    assert "HHS_APPLICATION_VM_INSTALL_GUI=1" not in application_vm
+    assert "HHS_APPLICATION_VM_INSTALL_GUI=0" in application_vm
+    assert 'chown -R root:hhs "$RELEASE"' in application_vm
+    assert 'runuser -u hhs -- test -x "$RELEASE"' in application_vm
 
 
 def test_delivery_workflows_pin_active_production_target_and_skip_stale_index_without_failure() -> None:

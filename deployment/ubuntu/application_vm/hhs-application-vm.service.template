@@ -2,6 +2,8 @@
 Description=HHS Ubuntu Application VM Control Plane
 After=network-online.target
 Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
 
 [Service]
 Type=simple
@@ -11,7 +13,7 @@ WorkingDirectory=@@REPOSITORY_ROOT@@
 EnvironmentFile=/etc/hhs/application-vm.env
 ExecStart=@@PYTHON_BIN@@ -m uvicorn hhs_backend.application_vm_api_server:app --host ${HHS_APPLICATION_VM_HOST} --port ${HHS_APPLICATION_VM_PORT} --proxy-headers --forwarded-allow-ips=127.0.0.1
 Restart=on-failure
-RestartSec=3
+RestartSec=30
 TimeoutStartSec=90
 TimeoutStopSec=20
 KillSignal=SIGTERM

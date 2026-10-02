@@ -2,10 +2,12 @@
 Description=Check the HHS main branch for guarded production updates
 
 [Timer]
-OnBootSec=10min
-OnUnitActiveSec=5min
-RandomizedDelaySec=30s
-AccuracySec=15s
+# Push-triggered exact-main delivery remains the primary path. This timer is a
+# recovery/watchdog follower and must not repeatedly contend with host startup.
+OnBootSec=15min
+OnUnitActiveSec=30min
+RandomizedDelaySec=2min
+AccuracySec=30s
 Persistent=true
 Unit=hhs-guarded-update.service
 

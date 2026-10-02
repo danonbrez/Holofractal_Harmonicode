@@ -229,6 +229,9 @@ def test_service_template_uses_deployment_python_runtime() -> None:
     assert "ExecStart=@@PYTHON_BIN@@ -m uvicorn" in service
     assert "HHS_APPLICATION_VM_PYTHON_BIN=$PYTHON_BIN" in installer
     assert "systemctl restart hhs-application-vm.service" in installer
+    assert "StartLimitIntervalSec=300" in service
+    assert "StartLimitBurst=5" in service
+    assert "RestartSec=30" in service
 
 
 def test_production_nginx_include_targets_only_tls_runtime_server() -> None:
@@ -277,17 +280,23 @@ def test_installer_accepts_versioned_git_worktree_releases() -> None:
     assert '[[ -d "$REPO_ROOT/.git" ]]' not in installer
 
 
-def test_production_workflow_is_backend_first_and_frontend_independent() -> None:
+def test_production_workflow_is_manual_single_owner_and_frontend_independent() -> None:
     workflow = (
         ROOT / ".github/workflows/pass220-ubuntu-application-vm-production.yml"
     ).read_text(encoding="utf-8")
 
     assert "workflow_run:" not in workflow
-    assert "push:" in workflow
+    assert "push:" not in workflow
+    assert "workflow_dispatch:" in workflow
     assert "SOURCE_REPO=/opt/hhs/app" in workflow
     assert 'RELEASE_ROOT="$STATE_ROOT/releases"' in workflow
+    assert 'LOCK_FILE=/run/lock/hhs-production-mutation.lock' in workflow
     assert 'git -C "$SOURCE_REPO" worktree add --detach "$RELEASE" "$TARGET_SHA"' in workflow
-    assert "DigitalOcean Production Exact Main" not in workflow
+    assert 'chown -R root:hhs "$RELEASE"' in workflow
+    assert 'find "$RELEASE" -type d -exec chmod g+rx {} +' in workflow
+    assert 'runuser -u hhs -- test -x "$RELEASE"' in workflow
+    assert "HHS_APPLICATION_VM_INSTALL_GUI=1" not in workflow
+    assert "HHS_APPLICATION_VM_INSTALL_GUI=0" in workflow
     assert "systemctl is-active --quiet hhs.service" not in workflow
     assert "HHS_APPLICATION_VM_PUBLIC_SECURE_OPENAPI_VERIFIED" in workflow
     assert "HHS_PASS_220_APPLICATION_VM_PRODUCTION_RECEIPT_V1" in workflow

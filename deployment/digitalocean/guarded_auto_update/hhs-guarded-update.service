@@ -14,9 +14,24 @@ Environment=HHS_PRODUCTION_LANGUAGE_STATUS_PATH=/var/lib/hhs/runtime-bootstrap/p
 EnvironmentFile=/etc/hhs/guarded-update.env
 ExecStart=/usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh
 TimeoutStartSec=90min
-Nice=10
-IOSchedulingClass=best-effort
-IOSchedulingPriority=7
+
+# Production availability membrane: candidate validation, large repository-index
+# hydration, and native compilation must remain subordinate to sshd/nginx and the
+# already-serving HHS runtime on the 2-vCPU/4-GiB production host.
+Nice=15
+CPUAccounting=true
+CPUQuota=100%
+CPUWeight=10
+MemoryAccounting=true
+MemoryHigh=2G
+MemoryMax=3G
+MemorySwapMax=1G
+IOAccounting=true
+IOWeight=10
+IOSchedulingClass=idle
+OOMScoreAdjust=500
+TasksMax=512
+
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectHome=true
