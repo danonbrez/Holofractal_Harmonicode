@@ -21,6 +21,7 @@ VALIDATE_PYTHON=${HHS_VALIDATE_PYTHON:-/opt/hhs/venv/bin/python}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
 RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}
 WARM_BOOT_TOOL=${HHS_WARM_BOOT_TOOL:-$SOURCE_ROOT/deployment/digitalocean/warm_boot_manifest.py}
+WARM_BOOT_SERVICE_DROPIN=${HHS_WARM_BOOT_SERVICE_DROPIN:-$SOURCE_ROOT/deploy/digitalocean/hhs-warm-boot-identity.conf}
 INSTALLED_WARM_BOOT_TOOL=$INSTALL_ROOT/warm_boot_manifest.py
 WARM_BOOT_ROOT=${HHS_WARM_BOOT_MANIFEST_ROOT:-/var/lib/hhs/warm-boot/releases}
 WARM_BOOT_REPOSITORY_SHA_FILE=${HHS_WARM_BOOT_REPOSITORY_SHA_FILE:-/var/lib/hhs/warm-boot/current-repository-sha}
@@ -99,8 +100,8 @@ prepare_recovery_warm_boot_service() {
     echo "Warm-boot verifier missing from deployment source: $WARM_BOOT_TOOL" >&2
     exit 8
   }
-  [[ -f "$CANONICAL_HHS_SERVICE" ]] || {
-    echo "Canonical HHS service missing from deployment source: $CANONICAL_HHS_SERVICE" >&2
+  [[ -f "$WARM_BOOT_SERVICE_DROPIN" ]] || {
+    echo "Warm-boot service drop-in missing from deployment source: $WARM_BOOT_SERVICE_DROPIN" >&2
     exit 8
   }
   [[ -f "$WARM_BOOT_ROOT/$repository_sha.json" ]] || {
@@ -112,7 +113,8 @@ prepare_recovery_warm_boot_service() {
   install -d -o "$PRODUCTION_SERVICE_USER" -g "$PRODUCTION_SERVICE_GROUP" -m 0750 \
     "$(dirname "$WARM_BOOT_REPOSITORY_SHA_FILE")" "$WARM_BOOT_ROOT"
   install -m 0755 "$WARM_BOOT_TOOL" "$INSTALLED_WARM_BOOT_TOOL"
-  install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service
+  install -d -m 0755 /etc/systemd/system/hhs.service.d
+  install -m 0644 "$WARM_BOOT_SERVICE_DROPIN" /etc/systemd/system/hhs.service.d/20-hhs-warm-boot-identity.conf
 
   local temporary
   temporary=$(mktemp "$(dirname "$WARM_BOOT_REPOSITORY_SHA_FILE")/.current-repository-sha.XXXXXX")
@@ -220,6 +222,8 @@ install -m 0755 "$SOURCE/runtime-os-bundle.py" "$INSTALL_ROOT/runtime-os-bundle.
 install -m 0755 "$SOURCE/normalize-service-permissions.py" "$INSTALL_ROOT/normalize-service-permissions.py"
 install -m 0755 "$RECOVERY_VERIFIER" "$INSTALL_ROOT/verify-recovery-state.py"
 install -m 0755 "$WARM_BOOT_TOOL" "$INSTALLED_WARM_BOOT_TOOL"
+install -d -m 0755 /etc/systemd/system/hhs.service.d
+install -m 0644 "$WARM_BOOT_SERVICE_DROPIN" /etc/systemd/system/hhs.service.d/20-hhs-warm-boot-identity.conf
 install -m 0644 "$SOURCE/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
 install -m 0644 "$SOURCE/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
 
