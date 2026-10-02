@@ -1,0 +1,85 @@
+{
+  "schema": "HHS_PASS_219_OPTIMIZATION_GENERALIZATION_MANIFEST_V1",
+  "local_only": true,
+  "changed_paths": [
+    "hhs_backend/lane5_ingress_gateway.py"
+  ],
+  "optimization": {
+    "optimization_id": "PASS220_LANE5_HOST_INGRESS_NATIVE_MEDIATION",
+    "compatible_object_classes": [
+      "environmental_ingress_gateway"
+    ],
+    "required_operations": [
+      "MEDIATE"
+    ],
+    "required_port_types": [
+      "HHS_EXACT_NETWORK_INGRESS_V1"
+    ]
+  },
+  "source": {
+    "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+    "object_class": "environmental_ingress_gateway",
+    "operations": [
+      "MEDIATE"
+    ],
+    "inputs": [
+      {
+        "name": "environmental_ingress",
+        "type": "HHS_EXACT_NETWORK_INGRESS_V1"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "lane5_candidate_receipt",
+        "type": "HHS_LANE5_CANDIDATE_RECEIPT_V1"
+      }
+    ],
+    "runtime_authority": "LANE5_CANDIDATE_ONLY",
+    "exactness_domain": "EXACT_ORDERED_BYTES",
+    "state_schema": {
+      "schema": "HHS_LANE5_HOST_INGRESS_MEMBRANE_V1"
+    },
+    "logical_object_id": "lane5-host-ingress-source",
+    "modality_set": [
+      "NETWORK_ENVIRONMENTAL_INGRESS"
+    ]
+  },
+  "targets": [
+    {
+      "descriptor_schema_id": "HHS_PASS_187_OBJECT_DESCRIPTOR_V1",
+      "object_class": "environmental_ingress_gateway",
+      "operations": [
+        "MEDIATE"
+      ],
+      "inputs": [
+        {
+          "name": "environmental_ingress",
+          "type": "HHS_EXACT_NETWORK_INGRESS_V1"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lane5_candidate_receipt",
+          "type": "HHS_LANE5_CANDIDATE_RECEIPT_V1"
+        }
+      ],
+      "runtime_authority": "LANE5_CANDIDATE_ONLY",
+      "exactness_domain": "EXACT_ORDERED_BYTES",
+      "state_schema": {
+        "schema": "HHS_LANE5_HOST_INGRESS_MEMBRANE_V1"
+      },
+      "logical_object_id": "lane5-host-network-ingress",
+      "modality_set": [
+        "NETWORK_ENVIRONMENTAL_INGRESS"
+      ]
+    }
+  ],
+  "target_evidence": [
+    {
+      "logical_object_id": "lane5-host-network-ingress",
+      "bounded_exception": "INGRESS_ONLY",
+      "exception_evidence": "PR#679 native Lane 5 host-ingress gate: exact HTTP/WebSocket ingress mediation is a network-boundary specialization; canonical VM81/Hash216 authority remains excluded."
+    }
+  ],
+  "declared_generalize_required": []
+}
