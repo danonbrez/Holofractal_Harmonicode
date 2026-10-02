@@ -310,12 +310,23 @@ async def _http_proxy(request: Request, path: str = "") -> Response:
 
     headers = _filtered_headers(raw_headers) + _receipt_headers(receipt)
     target = _target(raw_path=raw_path, query_string=query, websocket=False)
-    upstream = await request.app.state.http_client.request(
-        request.method,
-        target,
-        headers=headers,
-        content=body,
-    )
+    try:
+        upstream = await request.app.state.http_client.request(
+            request.method,
+            target,
+            headers=headers,
+            content=body,
+        )
+    except httpx.HTTPError:
+        return Response(
+            content=b"HHS backend unavailable behind Lane 5 ingress\n",
+            status_code=503,
+            media_type="text/plain",
+            headers={
+                "X-HHS-Lane5-Ingress": "mediated",
+                "X-HHS-Upstream": "unavailable",
+            },
+        )
     response_headers: dict[str, str] = {}
     set_cookies: list[str] = []
     for name, value in upstream.headers.multi_items():
