@@ -13,9 +13,13 @@ on:
       - 'artifacts/repository_index/**'
       - 'docs/repository_index/files/**'
 
+concurrency:
+  group: repository-hash216-index-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
-  actions: write
+  pull-requests: write
 
 jobs:
   deep-index:
@@ -30,6 +34,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Enforce PR-only publication contract
+        run: |
+          PYTHONPATH=. pytest -q tests/pass219/test_repository_hash216_dependency_index_pr_only.py
 
       - name: Build cumulative exact ABI
         run: |
@@ -460,30 +468,66 @@ jobs:
             artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json
             docs/repository_index/files/*.md
 
-      - name: Dispatch authoritative main refresh
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow run repository-hash216-dependency-index.yml --ref main
-
-      - name: Commit generated projection to main
-        if: github.event_name != 'pull_request'
+      - name: Publish generated projection through pull request
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         env:
           EXPECTED_HEAD: ${{ github.sha }}
+          AUTOMATION_BRANCH: automation/hash216-repository-index
+          AUTOMATION_PR_TOKEN: ${{ secrets.HHS_AUTOMATION_PR_TOKEN }}
+          GH_TOKEN: ${{ secrets.HHS_AUTOMATION_PR_TOKEN || github.token }}
         run: |
+          set -euo pipefail
+
           git fetch origin main
           remote_head="$(git rev-parse origin/main)"
           if [ "$remote_head" != "$EXPECTED_HEAD" ]; then
-            echo "::notice title=Stale Hash216 projection skipped::main advanced from $EXPECTED_HEAD to $remote_head; refusing stale generated projection without marking the safe no-op as a workflow failure"
+            echo "::notice title=Stale Hash216 projection skipped::main advanced from $EXPECTED_HEAD to $remote_head; refusing to publish a stale automation PR"
             exit 0
           fi
+
           git add REPOSITORY_HASH216_DEPENDENCY_TREE.md artifacts/repository_index docs/repository_index/files
           if git diff --cached --quiet; then
             echo 'repository Hash216 index already current'
             exit 0
           fi
+
+          # The automation branch is intentionally non-authoritative. It may be
+          # rewritten to the latest main source so one open PR can be refreshed
+          # without creating a second mutation path to main.
+          git fetch origin "$AUTOMATION_BRANCH" || true
+          git switch -C "$AUTOMATION_BRANCH" "$EXPECTED_HEAD"
+          git add REPOSITORY_HASH216_DEPENDENCY_TREE.md artifacts/repository_index docs/repository_index/files
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'docs: refresh Hash216 repository dependency index'
-          git push origin HEAD:main
+          git push --force-with-lease origin "HEAD:refs/heads/$AUTOMATION_BRANCH"
+
+          if [ -z "$AUTOMATION_PR_TOKEN" ]; then
+            echo "::warning title=Automation PR token not configured::Using github.token can create/update the PR, but GitHub does not guarantee downstream pull_request workflows for events caused by GITHUB_TOKEN. Configure HHS_AUTOMATION_PR_TOKEN as a non-bypass fine-grained PAT or GitHub App token before making PR checks mandatory."
+          fi
+
+          pr_number="$(gh pr list --repo "$GITHUB_REPOSITORY" --base main --head "$AUTOMATION_BRANCH" --state open --json number --jq '.[0].number // empty')"
+          pr_body="$(cat <<EOF
+          Automated Hash216 repository-index refresh generated from authoritative main.
+
+          Source main SHA: $EXPECTED_HEAD
+          Automation branch: $AUTOMATION_BRANCH
+
+          This PR contains generated repository-index projections only. It must pass the repository's normal required checks and merge through the protected main branch. The automation has no direct-main push path and no protection bypass.
+          EOF
+          )"
+
+          if [ -n "$pr_number" ]; then
+            gh pr edit "$pr_number" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title 'docs: refresh Hash216 repository dependency index' \
+              --body "$pr_body"
+            echo "updated automation PR #$pr_number"
+          else
+            gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base main \
+              --head "$AUTOMATION_BRANCH" \
+              --title 'docs: refresh Hash216 repository dependency index' \
+              --body "$pr_body"
+          fi
