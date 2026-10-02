@@ -19,16 +19,11 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          EXPECTED_MAIN: 6fa5c1e0d8b773c91539154d3e53bfc1564cfc71
         run: |
           set -euo pipefail
-          actual=$(gh api repos/danonbrez/Holofractal_Harmonicode/commits/main --jq '.sha')
-          [[ "$actual" == "$EXPECTED_MAIN" ]] || {
-            echo "main moved before dispatch: expected=$EXPECTED_MAIN actual=$actual" >&2
-            exit 2
-          }
+          target=$(gh api repos/danonbrez/Holofractal_Harmonicode/commits/main --jq '.sha')
           gh workflow run digitalocean-production-main.yml \
             --repo danonbrez/Holofractal_Harmonicode \
             --ref main
           echo "EXACT_MAIN_RECOVERY_DISPATCHED=1"
-          echo "EXACT_MAIN_RECOVERY_TARGET=$EXPECTED_MAIN"
+          echo "EXACT_MAIN_RECOVERY_MAIN_AT_DISPATCH=$target"
