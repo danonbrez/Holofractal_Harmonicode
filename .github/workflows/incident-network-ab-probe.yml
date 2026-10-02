@@ -1,0 +1,49 @@
+name: Incident Network A-B Probe
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/incident-network-ab-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Compare clean control and production reachability
+        shell: bash
+        run: |
+          set +e
+          probe() {
+            host="$1"
+            port="$2"
+            label="$3"
+            started=$(date +%s)
+            timeout 5 bash -c "exec 3<>/dev/tcp/$host/$port" >/dev/null 2>&1
+            rc=$?
+            elapsed=$(( $(date +%s) - started ))
+            if [ "$rc" -eq 0 ]; then
+              state=open
+            elif [ "$rc" -eq 124 ]; then
+              state=timeout_or_filtered
+            else
+              state=refused_or_unreachable
+            fi
+            printf 'NETWORK_AB label=%s host=%s port=%s state=%s rc=%s elapsed_s=%s\n'               "$label" "$host" "$port" "$state" "$rc" "$elapsed"
+          }
+
+          for port in 22 80 443 8080 8720; do
+            probe 134.209.161.168 "$port" clean-control
+          done
+          for port in 22 80 443 8080 8720; do
+            probe 159.65.178.254 "$port" production
+          done
+
+          echo '--- HTTPS control ---'
+          curl -kIsS --connect-timeout 5 --max-time 8 https://134.209.161.168/ || true
+          echo '--- HTTPS production ---'
+          curl -kIsS --connect-timeout 5 --max-time 8 https://159.65.178.254/ || true
