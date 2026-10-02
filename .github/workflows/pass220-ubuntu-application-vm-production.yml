@@ -1,9 +1,8 @@
 name: Pass 220 Ubuntu Application VM Production
 
 on:
-  push:
-    branches:
-      - main
+  # Production OS/package mutation is manual-only. Exact-main remains the
+  # automatic production owner; this workflow must never race it on every push.
   workflow_dispatch:
 
 permissions:
@@ -109,7 +108,7 @@ jobs:
           STATE_ROOT=/var/lib/hhs/application-vm
           RELEASE_ROOT="$STATE_ROOT/releases"
           CURRENT_LINK="$STATE_ROOT/current"
-          LOCK_FILE=/run/lock/hhs-application-vm-deploy.lock
+          LOCK_FILE=/run/lock/hhs-production-mutation.lock
           TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
           RELEASE="$RELEASE_ROOT/$TARGET_SHA"
           PREVIOUS=""
@@ -146,6 +145,15 @@ jobs:
             git -C "$SOURCE_REPO" worktree add --detach "$RELEASE" "$TARGET_SHA"
           fi
 
+          # The remote shell uses umask 027 and creates worktrees as root.
+          # Normalize the release membrane before a service running as hhs may
+          # chdir/import from it; this closes the historical status=200/CHDIR loop.
+          chown -R root:hhs "$RELEASE"
+          find "$RELEASE" -type d -exec chmod g+rx {} +
+          find "$RELEASE" -type f -exec chmod g+r {} +
+          runuser -u hhs -- test -x "$RELEASE"
+          runuser -u hhs -- test -r "$RELEASE/hhs_backend/application_vm_api_server.py"
+
           [[ "$(git -C "$RELEASE" rev-parse HEAD)" == "$TARGET_SHA" ]]
           [[ -z "$(git -C "$RELEASE" status --porcelain=v1 --untracked-files=normal)" ]]
 
@@ -170,9 +178,15 @@ jobs:
           trap rollback ERR
 
           REPO_ROOT="$RELEASE" \
+          # Production deployment must not mutate the host network/desktop stack.
+          # GUI provisioning is a separate explicit bootstrap operation.
           HHS_APPLICATION_VM_REQUIRE_GUI=1 \
-          HHS_APPLICATION_VM_INSTALL_GUI=1 \
+          HHS_APPLICATION_VM_INSTALL_GUI=0 \
             bash "$RELEASE/deployment/ubuntu/application_vm/install.sh"
+
+          chown -R root:hhs "$RELEASE"
+          find "$RELEASE" -type d -exec chmod g+rx {} +
+          find "$RELEASE" -type f -exec chmod g+r {} +
 
           python3 "$RELEASE/deployment/ubuntu/application_vm/configure_production_nginx.py" \
             --repository-root "$RELEASE"
