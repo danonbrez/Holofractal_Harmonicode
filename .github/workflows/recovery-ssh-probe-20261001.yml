@@ -1,4 +1,4 @@
-name: Recovery Warm Boot Verify Repair 20261001
+name: Recovery Production Service Activation 20261001
 
 on:
   push:
@@ -10,9 +10,9 @@ permissions:
   contents: read
 
 jobs:
-  verify-runtime:
+  activate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
       RECOVERY_HOST: '165.227.99.132'
       RECOVERY_USER: root
@@ -29,38 +29,106 @@ jobs:
           ssh-keyscan -T 8 "$RECOVERY_HOST" > "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/known_hosts"
 
-      - name: Repair Git ownership trust and verify sealed runtime
+      - name: Install and start canonical production service
         shell: bash
         run: |
           set -euo pipefail
           ssh -i "$HOME/.ssh/hhs-recovery" \
             -o BatchMode=yes -o ConnectTimeout=15 \
+            -o ServerAliveInterval=30 -o ServerAliveCountMax=20 \
             -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
             "$RECOVERY_USER@$RECOVERY_HOST" \
             "TARGET_SHA='$TARGET_SHA' bash -s" <<'REMOTE'
           set -Eeuo pipefail
           REPO=/opt/hhs/app
-          VENV=/opt/hhs/venv
-          WARM_ROOT=/var/lib/hhs/warm-boot/releases
+          TARGET_SHA=${TARGET_SHA:?missing TARGET_SHA}
 
-          if ! git config --system --get-all safe.directory | grep -Fxq "$REPO"; then
-            git config --system --add safe.directory "$REPO"
-          fi
+          test "$(git -C "$REPO" rev-parse HEAD)" = "$TARGET_SHA"
+          test -s "$REPO/hhs_runtime/builds/libhhs_runtime.so"
+          test -s "/var/lib/hhs/warm-boot/releases/$TARGET_SHA.json"
+          test -s /var/lib/hhs/runtime-os/current/index.html
+          test -d /var/lib/hhs/runtime-os/current/assets
 
-          test "$(runuser -u hhs -- git -C "$REPO" rev-parse HEAD)" = "$TARGET_SHA"
+          install -d -m 0755 /etc/hhs
+          install -m 0644 \
+            "$REPO/deploy/digitalocean/hhs-pass196-integrated-environment.service" \
+            /etc/systemd/system/hhs.service
 
-          HHS_DISABLE_C_AUTOBUILD=1 \
-          HHS_DATA_DIR=/var/lib/hhs/data \
-          HHS_PASS174_STATE_DIR=/var/lib/hhs/pass174 \
-          HHS_PASS194_STATE_ROOT=/var/lib/hhs/pass194 \
-          HHS_PASS205_DB=/var/lib/hhs/pass205/continuation.sqlite3 \
-          HHS_PASS213_SURFACE_STATE_DIR=/var/lib/hhs/pass213/surface \
-          HHS_PASS218_STATE_ROOT=/var/lib/hhs/pass218 \
-          HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5 \
-          HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap \
-            runuser -u hhs -- "$VENV/bin/python" "$REPO/deployment/digitalocean/warm_boot_manifest.py" verify \
-              --repo-root "$REPO" --manifest-root "$WARM_ROOT"
+          cat >/etc/nginx/conf.d/hhs-websocket-map.conf <<'NGINX'
+          map $http_upgrade $hhs_connection_upgrade {
+              default upgrade;
+              '' close;
+          }
+          NGINX
 
-          echo "HHS_RECOVERY_RUNTIME_SEALED=1"
-          echo "HHS_RECOVERY_RUNTIME_SHA=$TARGET_SHA"
+          rm -f /etc/nginx/sites-enabled/default
+          cat >/etc/nginx/sites-available/hhs <<'NGINX'
+          server {
+              listen 80 default_server;
+              listen [::]:80 default_server;
+              server_name _;
+              client_max_body_size 512m;
+
+              location / {
+                  proxy_pass http://127.0.0.1:8080;
+                  proxy_http_version 1.1;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection $hhs_connection_upgrade;
+                  proxy_connect_timeout 30s;
+                  proxy_send_timeout 300s;
+                  proxy_read_timeout 300s;
+              }
+          }
+          NGINX
+          ln -sfn /etc/nginx/sites-available/hhs /etc/nginx/sites-enabled/hhs
+
+          nginx -t
+          systemctl daemon-reload
+          systemctl enable nginx >/dev/null
+          systemctl enable hhs.service >/dev/null
+          systemctl restart nginx
+          systemctl reset-failed hhs.service 2>/dev/null || true
+          systemctl restart hhs.service
+
+          deadline=$((SECONDS + 240))
+          until curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/tmp/hhs-system-status.json; do
+            if (( SECONDS >= deadline )); then
+              systemctl status hhs.service --no-pager --full >&2 || true
+              systemctl show hhs.service -p ActiveState -p SubState -p MainPID -p ExecStart -p WorkingDirectory --no-pager >&2 || true
+              journalctl -u hhs.service -n 500 --no-pager >&2 || true
+              ss -ltnp >&2 || true
+              exit 30
+            fi
+            sleep 3
+          done
+
+          curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-interface-status.json
+          curl -fsS --max-time 10 http://127.0.0.1/api/system/status >/tmp/hhs-nginx-status.json
+          systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet nginx
+          ss -H -ltnp 'sport = :8080'
+          ss -H -ltnp 'sport = :80'
+
+          echo "HHS_RECOVERY_SERVICE_ACTIVE=1"
+          echo "HHS_RECOVERY_SERVICE_SHA=$TARGET_SHA"
+          cat /tmp/hhs-system-status.json
           REMOTE
+
+      - name: Verify recovered public HTTP surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 10 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "http://$RECOVERY_HOST/api/system/status" >/tmp/hhs-public-system.json
+          curl -fsS --retry 10 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "http://$RECOVERY_HOST/api/interface/status" >/tmp/hhs-public-interface.json
+          curl -fsS --retry 10 --retry-delay 3 --connect-timeout 10 --max-time 30 \
+            "http://$RECOVERY_HOST/" >/tmp/hhs-public-root.html
+          test -s /tmp/hhs-public-system.json
+          grep -Fq 'HHS Visual Runtime OS Workspace' /tmp/hhs-public-root.html
+          echo "HHS_RECOVERY_PUBLIC_HTTP_VERIFIED=1"
+          cat /tmp/hhs-public-interface.json
