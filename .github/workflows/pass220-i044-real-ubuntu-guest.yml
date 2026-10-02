@@ -127,11 +127,24 @@ jobs:
           SOURCE_REPO=/opt/hhs/app
           SOURCE_PARENT=/var/lib/hhs/ubuntu-guest/source
           SOURCE_ROOT="$SOURCE_PARENT/$TARGET_SHA"
+          PRODUCTION_LOCK_FILE=/run/lock/hhs-production-mutation.lock
 
           [[ $EUID -eq 0 ]] || {
             echo "I044 real guest integration requires root on the host" >&2
             exit 10
           }
+
+          # Real-guest integration mutates production host state (worktrees,
+          # /var/lib guest state, QEMU lifecycle). It must serialize with every
+          # other production mutator for the full remote transaction.
+          install -d -m 0755 "$(dirname "$PRODUCTION_LOCK_FILE")"
+          exec 7>"$PRODUCTION_LOCK_FILE"
+          flock -w 30 7 || {
+            echo "I044 production mutation lock is busy" >&2
+            exit 11
+          }
+          echo "HHS_I044_PRODUCTION_MUTATION_OWNERSHIP_CLAIMED=1"
+
           git -C "$SOURCE_REPO" rev-parse --is-inside-work-tree >/dev/null
           git -C "$SOURCE_REPO" fetch --prune origin main
           git -C "$SOURCE_REPO" cat-file -e "$TARGET_SHA^{commit}"
@@ -154,6 +167,7 @@ jobs:
           [[ -z "$(git -C "$SOURCE_ROOT" status --porcelain=v1 --untracked-files=normal)" ]]
 
           SOURCE_ROOT="$SOURCE_ROOT" TARGET_SHA="$TARGET_SHA" \
+          HHS_GUEST_INSTALL_PACKAGES=0 \
             bash "$SOURCE_ROOT/deployment/ubuntu/guest_runtime/run-real-guest-integration.sh"
 
           RECEIPT="/var/lib/hhs/ubuntu-guest/releases/$TARGET_SHA/integration.receipt.json"
