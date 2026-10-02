@@ -189,7 +189,9 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
         RECOVERY_VERIFIER_PATH,
         'phase == "rollback" and outcome == "ROLLBACK_HEALTH_FAILED"',
         'phase == "validation" and outcome == "VALIDATED"',
-        "HHS_RECOVERY_VALIDATED_PREVIOUS_SHA_NOT_PROVEN_PROMOTED",\n        "VALIDATED_PREPROMOTION_INTERRUPTION_LEGACY_WARM_BOOT",\n        "legacy_warm_boot_boundary_verified",
+        "HHS_RECOVERY_VALIDATED_PREVIOUS_SHA_NOT_PROVEN_PROMOTED",
+        "VALIDATED_PREPROMOTION_INTERRUPTION_LEGACY_WARM_BOOT",
+        "legacy_warm_boot_boundary_verified",
         "HHS_RECOVERY_LIVE_HEAD_NOT_ROLLBACK_BOUNDARY",
         "service_restart_before_new_promotion_required",
     )
