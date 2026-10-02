@@ -87,7 +87,7 @@ def _address(label: bytes, workload_sha256: bytes) -> int:
 
 
 def _route_candidate(workload_sha256: bytes) -> Lane5RouteCandidate:
-    phase_slot = int.from_bytes(workload_sha256[:2], "big") % 72
+    phase_slot = (int.from_bytes(workload_sha256[:2], "big") % 4) * 18
     trinary = (-1, 0, 1)[workload_sha256[2] % 3]
     binary = workload_sha256[3] & 1
     return Lane5RouteCandidate(
