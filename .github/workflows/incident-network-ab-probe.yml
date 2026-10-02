@@ -22,13 +22,13 @@ jobs:
           TARGET_SHA: e6b56828e85e1a49c370407f93e1fe156bc5bd50
         run: |
           set -euo pipefail
-          gh workflow run digitalocean-production-main.yml --ref main
+          gh workflow run digitalocean-production-main.yml --repo danonbrez/Holofractal_Harmonicode --ref main
           echo "EXACT_MAIN_RECOVERY_DISPATCHED=1"
 
           deadline=$((SECONDS + 90))
           run_id=""
           while [[ -z "$run_id" ]]; do
-            run_id=$(gh run list \
+            run_id=$(gh run list --repo danonbrez/Holofractal_Harmonicode \
               --workflow digitalocean-production-main.yml \
               --event workflow_dispatch \
               --branch main \
