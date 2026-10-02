@@ -177,9 +177,9 @@ jobs:
           }
           trap rollback ERR
 
-          REPO_ROOT="$RELEASE" \
           # Production deployment must not mutate the host network/desktop stack.
           # GUI provisioning is a separate explicit bootstrap operation.
+          REPO_ROOT="$RELEASE" \
           HHS_APPLICATION_VM_REQUIRE_GUI=1 \
           HHS_APPLICATION_VM_INSTALL_GUI=0 \
             bash "$RELEASE/deployment/ubuntu/application_vm/install.sh"
