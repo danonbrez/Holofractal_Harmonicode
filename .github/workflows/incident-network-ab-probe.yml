@@ -99,4 +99,14 @@ jobs:
           cat /var/lib/hhs/warm-boot/releases/d29d23e1750f9ac33c824e539b127e416b8c22b6.json 2>/dev/null || true
           echo '=== CURRENT SERVICE UNIT ==='
           systemctl cat hhs.service || true
+          echo '=== LIVE SERVICE STATE ==='
+          systemctl is-active hhs.service || true
+          systemctl is-failed hhs.service || true
+          ss -H -ltnp 'sport = :8080' || true
+          echo '=== ROLLBACK WARM-BOOT IDENTITY VERIFY ==='
+          HHS_DISABLE_C_AUTOBUILD=1 \
+            /opt/hhs/venv/bin/python \
+            /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify \
+            --repo-root /opt/hhs/app \
+            --manifest-root /var/lib/hhs/warm-boot/releases
           REMOTE
