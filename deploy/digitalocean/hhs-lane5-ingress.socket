@@ -1,0 +1,13 @@
+[Unit]
+Description=HHS Lane 5 Host Ingress Socket
+After=network-online.target
+Wants=network-online.target
+
+[Socket]
+ListenStream=127.0.0.1:8715
+NoDelay=true
+Backlog=1024
+Service=hhs-lane5-ingress.service
+
+[Install]
+WantedBy=sockets.target
