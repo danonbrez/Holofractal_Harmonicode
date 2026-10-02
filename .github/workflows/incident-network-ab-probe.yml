@@ -1,4 +1,4 @@
-name: Incident Restored Production Verify
+name: Incident Dispatch Exact Main Recovery
 
 on:
   pull_request:
@@ -7,54 +7,39 @@ on:
       - '.github/workflows/incident-network-ab-probe.yml'
 
 permissions:
+  actions: write
   contents: read
 
 jobs:
-  verify:
+  dispatch:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - name: Verify restored production network and pinned SSH
+      - name: Dispatch authoritative Exact-Main recovery promotion
         shell: bash
         env:
-          HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
-          HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: e6b56828e85e1a49c370407f93e1fe156bc5bd50
         run: |
           set -euo pipefail
+          gh workflow run digitalocean-production-main.yml --ref main
+          echo "EXACT_MAIN_RECOVERY_DISPATCHED=1"
 
-          for port in 22 80 443; do
-            timeout 5 bash -c "exec 3<>/dev/tcp/159.65.178.254/$port"
-            echo "RESTORED_PRODUCTION_PORT_${port}=OPEN"
+          deadline=$((SECONDS + 90))
+          run_id=""
+          while [[ -z "$run_id" ]]; do
+            run_id=$(gh run list \
+              --workflow digitalocean-production-main.yml \
+              --event workflow_dispatch \
+              --branch main \
+              --limit 20 \
+              --json databaseId,headSha,createdAt \
+              --jq '.[] | select(.headSha == env.TARGET_SHA) | .databaseId' \
+              | head -n 1)
+            if (( SECONDS >= deadline )); then
+              echo "Exact-Main dispatch did not register for $TARGET_SHA" >&2
+              exit 2
+            fi
+            [[ -n "$run_id" ]] || sleep 2
           done
-
-          install -d -m 0700 "$HOME/.ssh"
-          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/production"
-          chmod 0600 "$HOME/.ssh/production"
-          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
-          chmod 0600 "$HOME/.ssh/known_hosts"
-          ssh-keygen -F 159.65.178.254 -f "$HOME/.ssh/known_hosts" >/dev/null
-
-          ssh -i "$HOME/.ssh/production" \
-            -o BatchMode=yes \
-            -o IdentitiesOnly=yes \
-            -o ConnectTimeout=10 \
-            -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
-            root@159.65.178.254 'bash -s' <<'PROD'
-          set -euo pipefail
-          echo "RESTORED_PRODUCTION_PINNED_SSH_OK=1"
-          printf 'RESTORED_PRODUCTION_SHA='
-          git -C /opt/hhs/app rev-parse HEAD
-          printf 'RESTORED_PRODUCTION_BRANCH='
-          git -C /opt/hhs/app branch --show-current
-          for svc in ssh nginx hhs.service NetworkManager systemd-networkd; do
-            printf 'RESTORED_SERVICE_%s=' "$svc"
-            systemctl is-active "$svc" 2>/dev/null || true
-          done
-          echo 'RESTORED_LISTENERS_BEGIN'
-          ss -ltnp | grep -E ':(22|80|443|8080|8720)\b' || true
-          echo 'RESTORED_LISTENERS_END'
-          curl -kfsS --connect-timeout 5 --max-time 10 https://127.0.0.1/ >/tmp/restored-root.html
-          test -s /tmp/restored-root.html
-          echo "RESTORED_LOCAL_HTTPS_OK=1"
-          PROD
+          echo "EXACT_MAIN_RECOVERY_RUN_ID=$run_id"
