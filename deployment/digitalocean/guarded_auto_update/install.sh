@@ -21,6 +21,7 @@ PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-perm
 RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}
 STATIC_FIRST_CONFIGURATOR=${HHS_RUNTIME_OS_STATIC_FIRST_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_runtime_os_static_first.py}
 LANE5_INGRESS_SERVICE=${HHS_LANE5_INGRESS_SERVICE:-$SOURCE_ROOT/deploy/digitalocean/hhs-lane5-ingress.service}
+LANE5_INGRESS_SOCKET=${HHS_LANE5_INGRESS_SOCKET:-$SOURCE_ROOT/deploy/digitalocean/hhs-lane5-ingress.socket}
 LANE5_INGRESS_CONFIGURATOR=${HHS_LANE5_INGRESS_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_lane5_ingress_nginx.py}
 LANE5_INGRESS_HEALTH_URL=${HHS_LANE5_INGRESS_HEALTH_URL:-http://127.0.0.1:8715/__hhs_lane5_ingress_health}
 NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
