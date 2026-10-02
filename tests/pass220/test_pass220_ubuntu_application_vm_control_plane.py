@@ -254,7 +254,7 @@ server {
     server_name 165.227.220.193;
 
     location / {
-        proxy_pass http://127.0.0.1:8080;
+        proxy_pass http://127.0.0.1:8715;
     }
 }
 """
