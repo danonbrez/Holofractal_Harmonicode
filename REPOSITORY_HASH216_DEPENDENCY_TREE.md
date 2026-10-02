@@ -6,22 +6,22 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [86524a1213c0351720e84705ff4820fc3a100083](https://github.com/danonbrez/Holofractal_Harmonicode/commit/86524a1213c0351720e84705ff4820fc3a100083)
-- Git tree: 760d62ba7bb82f4de62354bb6b5da620afa5dca1
-- Tracked tree entries: 9,777
-- Tracked files in Git tree: 8,995
-- Content-bound indexed files: 8,944
+- Source commit: [f82f1f5b81dd8cbbda397d9eb110667012726123](https://github.com/danonbrez/Holofractal_Harmonicode/commit/f82f1f5b81dd8cbbda397d9eb110667012726123)
+- Git tree: 5f3e428c2a426f1ec0d4db6864a0caa3a4e01b62
+- Tracked tree entries: 9,779
+- Tracked files in Git tree: 8,997
+- Content-bound indexed files: 8,946
 - Projection artifacts excluded from content root: 51
-- Text files deep-scanned: 8,501
-- Internal dependency edges: 74,028
-- Containment edges: 9,723
+- Text files deep-scanned: 8,503
+- Internal dependency edges: 74,049
+- Containment edges: 9,725
 - Lane 5 capability nodes: 2,085
 
 ## Hash216 graph roots
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCp5PNWV><Xb>uq3zUVKdL*)PR>(LtRRBN(huORb!XjIWB(rSJvu>4<545Ly8A-fwzwfG<gZP+nK(IrXT<PgICSP)4GV((C4K+7QAu6baUAiiMu?!FD*P(BmMtWofK?(BuxE?+)Y9hq2uFwmwCv
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpipHY+0YYM)<huXQ8OoIf54QvHSZW84t31i9?M)Bu1yo9UWsDu!9KU0RfvBH!k28XD8wG0d8h?*+Bp0iSDuTC9C<XE(d(WuON4</Bo!ns3MEtQYJfdu7MSflR264qh5<kipD6HZad7Yr?5(xf
 
 ### directory_node_root_hash216
 
@@ -29,11 +29,11 @@ m+>+KVW+Fd9M3>)OrHc)LCeL3KR8MzR39U2SOa2yjrS?mOjKOHgrRSwBBOQIzw7Uk54u>Vdf8e8BeyN>
 
 ### containment_edge_root_hash216
 
-Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+p-ZB->xrsNRw2KDIuJqAXI0+FLGZ/76>bjSDRE?ppS*nuy>o)2C!nUoXAw)ZTrDxDbwModrgHb2J5t)Wz-+y+4wlLuRf8Ox!Lc<qQZ*4si6EPUpr(8TlPP6b2)cOFdu/a<jFRg3a>KmB)Od7
+Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+>+HHlx/<C9b>Z*+Z-d/t+ZsZqaEPHG11cokPaH!Vm(WJf3G1tC6QeR/VfMATA1Ul6Pm+dC6>m?8PIPtosW!TLMA5/B8Pogs(4c-Rzru?G)Y/XT?GSQ-QgLyDy+A4S)-Kyz2uC)xADpU12-h8
 
 ### dependency_edge_root_hash216
 
-GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-y/LM43*D1*<z>AEC?Gn4Nz-YpY8z!BUjuVd2M-u3!Z6lB2g1HPV?k-KtbvnFV2HoG6oJneRxDs!yXdyVD2u+BKN5aa<lAK+Kf8cSZTs>bs)J37wfpYn84nI>Uh+IJQbLYcq1b>LH)2bLY8SX
+GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-98Mh50>j9xrM<keX1+bb(unhmmUIlOIA*q40bMomp205txHG?TZMBs4QEa0swmhSUe-iS9m8ilxK1Ut78XXdPu+TuNxDuK-f9qo-VjdZROzH-CISeQ3tGvKG-Gb0Kq5X95tSWsFCQ!oFw>Gg
 
 ### lane5_capability_binding_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLWWO+S!*nsxkToJCpPt3Y3KQ)bbUqPejV/L<jUIy6rVsnw7-Qu>kllRxJL5YZkouCjCzfKNFl8L+9Cj2ym0cv+p-Hl/PAz*7ZkA99PNOpiIC7kdVL>I69F8?)cs9B3VF>+7Tx5K(!1Q7dTwzP
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLAFUtEsoA9LqSazL2lbyB?))a8kLZfb9GP!J14yUF*a2SkNk5uZ+Mkh54m6L3/9hUpujavjXVK>(hjkL?39?07qzloE9Ou(uC/d3>lmWRIrQqkgsTn9B4Eva!P0AzF*QN+BRoK)L+tF-9-u?Z
 
 ## Lane 5 evidence binding
 
@@ -64,7 +64,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 - Capabilities: 2,085
 - Constructors: 4,330
 - Knowledge relations: 13,415
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXV0IOQ2pH>zY7wWUkc*m(K+(FO>8wWOlmz*+0t)OQ2PZMg8/d+*o)nQjTU/AK0A1IasyLJfrDx((wiAaQZoe!GaFwj(i2nUs2Z/1m/vExQVuZ6fCq>oXXQCJk(DAbcEmMA24xm*ZKBUTCdfTb
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXZhT>CPrCPVnLUByHbRztF/sIU4>JS29JVuWr/IhrliYn-0XMzZI*px)sj/O6dU0+YCLPf*Kna1L0Gqg(7!w7MEuj7UKR29mt(ugKWrFuNO*gQLeyr*GpMLKHtJXKtglBvz23Qv4K?7LSy92<
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
@@ -80,12 +80,12 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 | [artifacts](docs/repository_index/files/artifacts.md) | 12 |
 | [benchmarks](docs/repository_index/files/benchmarks.md) | 81 |
 | [bin](docs/repository_index/files/bin.md) | 4 |
-| [contracts](docs/repository_index/files/contracts.md) | 285 |
+| [contracts](docs/repository_index/files/contracts.md) | 286 |
 | [creative_writing](docs/repository_index/files/creative_writing.md) | 62 |
 | [data](docs/repository_index/files/data.md) | 15 |
 | [deploy](docs/repository_index/files/deploy.md) | 7 |
 | [deployment](docs/repository_index/files/deployment.md) | 41 |
-| [docs](docs/repository_index/files/docs.md) | 928 |
+| [docs](docs/repository_index/files/docs.md) | 929 |
 | [evidence](docs/repository_index/files/evidence.md) | 515 |
 | [examples](docs/repository_index/files/examples.md) | 8 |
 | [formal](docs/repository_index/files/formal.md) | 25 |
@@ -124,11 +124,11 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 ### .github
 
 - -> tests: 3,634 edges
-- -> hhs_runtime: 2,894 edges
+- -> hhs_runtime: 2,898 edges
 - -> hhs_backend: 1,897 edges
 - -> docs: 716 edges
 - -> contracts: 688 edges
-- -> tools: 512 edges
+- -> tools: 515 edges
 - -> evidence: 362 edges
 - -> scripts: 301 edges
 - -> benchmarks: 225 edges
@@ -242,7 +242,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 
 - -> hhs_runtime: 168 edges
 - -> tests: 58 edges
-- -> hhs_backend: 47 edges
+- -> hhs_backend: 48 edges
 - -> benchmarks: 25 edges
 - -> .github: 22 edges
 - -> docs: 20 edges
@@ -279,13 +279,13 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 
 ### docs
 
-- -> hhs_runtime: 1,017 edges
+- -> hhs_runtime: 1,018 edges
 - -> tests: 867 edges
-- -> .github: 438 edges
-- -> hhs_backend: 392 edges
-- -> contracts: 310 edges
+- -> .github: 440 edges
+- -> hhs_backend: 393 edges
+- -> contracts: 312 edges
 - -> evidence: 210 edges
-- -> tools: 154 edges
+- -> tools: 161 edges
 - -> scripts: 113 edges
 - -> benchmarks: 110 edges
 - -> hhs_gui: 75 edges

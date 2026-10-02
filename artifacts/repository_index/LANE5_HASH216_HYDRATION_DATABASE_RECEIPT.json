@@ -9,18 +9,18 @@
     "capabilities": 2085,
     "constructors": 4330,
     "execution_authority": false,
-    "file_dependencies": 74028,
+    "file_dependencies": 74049,
     "hash216_positions": 4283280,
     "journal_mode": "wal",
     "knowledge_edges": 13415,
-    "repository_files": 8944,
+    "repository_files": 8946,
     "restart_rehydratable": true,
     "schema": "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_HASH216_DATABASE_1_69",
     "synchronous_full": true
   },
-  "projection_root_hash216": ")OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXV0IOQ2pH>zY7wWUkc*m(K+(FO>8wWOlmz*+0t)OQ2PZMg8/d+*o)nQjTU/AK0A1IasyLJfrDx((wiAaQZoe!GaFwj(i2nUs2Z/1m/vExQVuZ6fCq>oXXQCJk(DAbcEmMA24xm*ZKBUTCdfTb",
+  "projection_root_hash216": ")OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXZhT>CPrCPVnLUByHbRztF/sIU4>JS29JVuWr/IhrliYn-0XMzZI*px)sj/O6dU0+YCLPf*Kna1L0Gqg(7!w7MEuj7UKR29mt(ugKWrFuNO*gQLeyr*GpMLKHtJXKtglBvz23Qv4K?7LSy92<",
   "restart_rehydratable_from_repository_artifacts": true,
   "schema": "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_DATABASE_RECEIPT_1_69",
-  "source_commit": "86524a1213c0351720e84705ff4820fc3a100083",
-  "source_dependency_graph_root_hash216": "*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLWWO+S!*nsxkToJCpPt3Y3KQ)bbUqPejV/L<jUIy6rVsnw7-Qu>kllRxJL5YZkouCjCzfKNFl8L+9Cj2ym0cv+p-Hl/PAz*7ZkA99PNOpiIC7kdVL>I69F8?)cs9B3VF>+7Tx5K(!1Q7dTwzP"
+  "source_commit": "f82f1f5b81dd8cbbda397d9eb110667012726123",
+  "source_dependency_graph_root_hash216": "*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLAFUtEsoA9LqSazL2lbyB?))a8kLZfb9GP!J14yUF*a2SkNk5uZ+Mkh54m6L3/9hUpujavjXVK>(hjkL?39?07qzloE9Ou(uC/d3>lmWRIrQqkgsTn9B4Eva!P0AzF*QN+BRoK)L+tF-9-u?Z"
 }
