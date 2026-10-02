@@ -76,10 +76,12 @@ def test_updater_normalizes_before_every_service_start() -> None:
 
 def test_installer_requires_healthy_rollback_boundary_before_promotion() -> None:
     source = (ROOT / "deployment" / "digitalocean" / "guarded_auto_update" / "install.sh").read_text(encoding="utf-8")
-    receipt_gate = source.index('ROLLBACK_HEALTH_FAILED')
     normalize = source.index("normalize_production_checkout")
-    rollback_healthy = source.index("HHS_ROLLBACK_BOUNDARY_HEALTHY=1")
-    updater_start = source.index("systemctl start hhs-guarded-update.service")
-    assert normalize < rollback_healthy < updater_start
-    assert receipt_gate < rollback_healthy
+    recovery_verifier = source.index('--receipt-log "$STATE_ROOT/receipts.jsonl"')
+    receipt_verified = source.index("HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1")
+    rollback_restart = source.index("systemctl start hhs.service", receipt_verified)
+    rollback_healthy = source.index("HHS_ROLLBACK_BOUNDARY_HEALTHY=1", rollback_restart)
+    updater_start = source.index("systemctl start hhs-guarded-update.service", rollback_healthy)
+    assert normalize < recovery_verifier < receipt_verified < rollback_restart < rollback_healthy < updater_start
+    assert "Rollback boundary service failed health after permission normalization; refusing a new promotion." in source
     assert "Existing production service is active but unhealthy; refusing promotion." in source
