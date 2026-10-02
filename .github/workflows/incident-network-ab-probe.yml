@@ -103,6 +103,14 @@ jobs:
           systemctl is-active hhs.service || true
           systemctl is-failed hhs.service || true
           ss -H -ltnp 'sport = :8080' || true
+          echo '=== RUNTIME OS RELEASE MAP ==='
+          readlink -f /var/lib/hhs/runtime-os/current || true
+          ls -ld /var/lib/hhs/runtime-os/current /var/lib/hhs/runtime-os/releases/* 2>/dev/null || true
+          sha256sum /opt/hhs/app/hhs_runtime/builds/libhhs_runtime.so 2>/dev/null || true
+          sha256sum /var/lib/hhs/runtime-os/current/index.html 2>/dev/null || true
+          find /var/lib/hhs/runtime-os/releases -mindepth 2 -maxdepth 2 -name index.html -type f -print0 2>/dev/null \
+            | sort -z \
+            | xargs -0 -r sha256sum || true
           echo '=== ROLLBACK WARM-BOOT IDENTITY VERIFY ==='
           HHS_DISABLE_C_AUTOBUILD=1 \
             /opt/hhs/venv/bin/python \
