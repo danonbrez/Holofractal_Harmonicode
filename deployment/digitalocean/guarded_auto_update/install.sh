@@ -146,7 +146,9 @@ if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service
     --receipt-log "$STATE_ROOT/receipts.jsonl" \
     --current-head "$current_head" \
     --repository-root "$REPO_ROOT" \
-    --branch main)
+    --branch main \
+    --warm-boot-verifier "$SOURCE_ROOT/deployment/digitalocean/warm_boot_manifest.py" \
+    --warm-boot-manifest-root /var/lib/hhs/warm-boot/releases)
   printf '%s\n' "$recovery_report"
   echo "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1"
   echo "HHS_GUARDED_UPDATE_RECOVERY_MODE=1"
