@@ -293,6 +293,31 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
     assert "bash bin/post_compile\n" not in example
 
 
+def test_production_candidate_validation_uses_explicit_hhs_venv_python() -> None:
+    installer = read("install.sh")
+    example = read("hhs-guarded-update.env.example")
+    validator = read("validate-candidate.sh")
+
+    binding = (
+        'VALIDATE_PYTHON=${HHS_VALIDATE_PYTHON:-/opt/hhs/venv/bin/python}'
+    )
+    assert binding in installer
+    assert '[[ -x "$VALIDATE_PYTHON" ]]' in installer
+    assert '"$VALIDATE_PYTHON" -c \'import pytest\'' in installer
+    assert "HHS_PRODUCTION_VALIDATE_PYTHON_VERIFIED=$VALIDATE_PYTHON" in installer
+
+    assert "HHS_VALIDATE_PYTHON=$VALIDATE_PYTHON" in installer
+    assert 'VALIDATE_PYTHON_VALUE="$VALIDATE_PYTHON"' in installer
+    assert 'values["HHS_VALIDATE_PYTHON"] = validate_python' in installer
+    assert '"HHS_VALIDATE_PYTHON",' in installer
+    assert "HHS_VALIDATE_PYTHON=/opt/hhs/venv/bin/python\n" in example
+
+    # Generic CI/development validation remains overridable and does not require
+    # a production filesystem layout. The production installer supplies the
+    # explicit venv path through its EnvironmentFile.
+    assert 'PYTHON=${HHS_VALIDATE_PYTHON:-python3}' in validator
+
+
 def test_installer_binds_lane5_socket_before_strict_unbound_use() -> None:
     installer = read("install.sh")
     binding = (
