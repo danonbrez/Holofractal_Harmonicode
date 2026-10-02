@@ -148,6 +148,7 @@ sync_installed_assets() {
   local service_root=${2:-$controller_root}
   local source="$controller_root/deployment/digitalocean/guarded_auto_update"
   local warm_boot_tool="$controller_root/deployment/digitalocean/warm_boot_manifest.py"
+  local warm_boot_dropin="$controller_root/deploy/digitalocean/hhs-warm-boot-identity.conf"
   local hhs_service="$service_root/deploy/digitalocean/hhs-pass196-integrated-environment.service"
   [[ -d "$source" ]] || return 0
   log "Synchronizing guarded updater from $controller_root and production service from $service_root"
@@ -160,6 +161,10 @@ sync_installed_assets() {
   [[ -f "$source/normalize-service-permissions.py" ]] && install -m 0755 "$source/normalize-service-permissions.py" /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py
   [[ -f "$source/verify-recovery-state.py" ]] && install -m 0755 "$source/verify-recovery-state.py" /usr/local/lib/hhs-guarded-update/verify-recovery-state.py
   [[ -f "$warm_boot_tool" ]] && install -m 0755 "$warm_boot_tool" /usr/local/lib/hhs-guarded-update/warm_boot_manifest.py
+  if [[ -f "$warm_boot_dropin" ]]; then
+    install -d -m 0755 /etc/systemd/system/hhs.service.d
+    install -m 0644 "$warm_boot_dropin" /etc/systemd/system/hhs.service.d/20-hhs-warm-boot-identity.conf
+  fi
   [[ -f "$source/hhs-guarded-update.service" ]] && install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
   [[ -f "$source/hhs-guarded-update.timer" ]] && install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
   [[ -f "$hhs_service" ]] && install -m 0644 "$hhs_service" /etc/systemd/system/hhs.service
