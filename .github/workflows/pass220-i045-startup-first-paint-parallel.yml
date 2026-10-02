@@ -46,7 +46,9 @@ jobs:
           set -euo pipefail
           bash -n deployment/digitalocean/guarded_auto_update/install.sh
           grep -Fq 'OnBootSec=15min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer
-          grep -Fq 'OnUnitActiveSec=30min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer\n          grep -Fq 'RandomizedDelaySec=2min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer\n          ! grep -Fq 'OnBootSec=3min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer
+          grep -Fq 'OnUnitActiveSec=30min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer
+          grep -Fq 'RandomizedDelaySec=2min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer
+          ! grep -Fq 'OnBootSec=3min' deployment/digitalocean/guarded_auto_update/hhs-guarded-update.timer
           grep -Fq 'HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2' deploy/digitalocean/hhs-pass196-integrated-environment.service
           grep -Fq 'HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90' deploy/digitalocean/hhs-pass196-integrated-environment.service
 
