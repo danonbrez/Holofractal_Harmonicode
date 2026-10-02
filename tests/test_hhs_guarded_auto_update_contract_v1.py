@@ -155,6 +155,106 @@ def test_runtime_os_bundle_is_sha_bound_hash_complete_and_rollback_safe() -> Non
         assert "index identity missing" in (rejected.stderr + rejected.stdout)
 
 
+def test_runtime_os_bundle_restores_legacy_current_after_first_activation_failure() -> None:
+    with tempfile.TemporaryDirectory(prefix="hhs-runtime-os-legacy-rollback-") as tmp:
+        root = Path(tmp)
+        dist = root / "dist"
+        assets = dist / "assets"
+        assets.mkdir(parents=True)
+        (dist / "index.html").write_text(
+            '<!doctype html><title>HHS Visual Runtime OS Workspace</title>'
+            '<script type="module" src="/assets/index-test.js"></script>\n',
+            encoding="utf-8",
+        )
+        (assets / "index-test.js").write_text(
+            "globalThis.HHS=true;\n",
+            encoding="utf-8",
+        )
+
+        bundle_root = root / "host-runtime-os"
+        legacy_current = bundle_root / "current"
+        (legacy_current / "assets").mkdir(parents=True)
+        (legacy_current / "index.html").write_text(
+            "<!doctype html><title>legacy accepted runtime</title>\n",
+            encoding="utf-8",
+        )
+        (legacy_current / "assets" / "old.js").write_text("// old\n", encoding="utf-8")
+        legacy_index = (legacy_current / "index.html").read_bytes()
+
+        sha = "d" * 40
+        archive = root / "candidate.tar.gz"
+        manifest = root / "candidate.json"
+        subprocess.run(
+            [
+                "python3", str(BUNDLE_TOOL), "create",
+                "--dist", str(dist),
+                "--repository-sha", sha,
+                "--archive", str(archive),
+                "--manifest", str(manifest),
+            ],
+            check=True,
+        )
+        release = subprocess.check_output(
+            [
+                "python3", str(BUNDLE_TOOL), "stage",
+                "--root", str(bundle_root),
+                "--archive", str(archive),
+                "--manifest", str(manifest),
+                "--expected-sha", sha,
+            ],
+            text=True,
+        ).strip()
+
+        subprocess.run(
+            [
+                "python3", str(BUNDLE_TOOL), "activate",
+                "--root", str(bundle_root),
+                "--expected-sha", sha,
+            ],
+            check=True,
+        )
+        assert (bundle_root / "current").is_symlink()
+        assert (bundle_root / "current").resolve() == Path(release).resolve()
+        legacy = list(bundle_root.glob("legacy-current-*"))
+        assert len(legacy) == 1
+        assert (legacy[0] / "index.html").read_bytes() == legacy_index
+
+        restored = subprocess.check_output(
+            [
+                "python3", str(BUNDLE_TOOL), "restore",
+                "--root", str(bundle_root),
+                "--release", "",
+            ],
+            text=True,
+        ).strip()
+        assert Path(restored).resolve() == (bundle_root / "current").resolve()
+        assert (bundle_root / "current").is_dir()
+        assert not (bundle_root / "current").is_symlink()
+        assert (bundle_root / "current" / "index.html").read_bytes() == legacy_index
+        assert not list(bundle_root.glob("legacy-current-*"))
+
+
+def test_runtime_os_bundle_rejects_ambiguous_legacy_rollback_roots() -> None:
+    with tempfile.TemporaryDirectory(prefix="hhs-runtime-os-legacy-ambiguous-") as tmp:
+        root = Path(tmp)
+        bundle_root = root / "host-runtime-os"
+        (bundle_root / "legacy-current-1").mkdir(parents=True)
+        (bundle_root / "legacy-current-2").mkdir(parents=True)
+        result = subprocess.run(
+            [
+                "python3", str(BUNDLE_TOOL), "restore",
+                "--root", str(bundle_root),
+                "--release", "",
+            ],
+            text=True,
+            capture_output=True,
+        )
+        assert result.returncode != 0
+        assert "ambiguous legacy Runtime OS rollback roots" in (
+            result.stdout + result.stderr
+        )
+
+
 def test_updater_is_fail_closed_fast_forward_only_drift_preserving_and_bundle_atomic() -> None:
     source = read("hhs-guarded-update.sh")
     required = [
