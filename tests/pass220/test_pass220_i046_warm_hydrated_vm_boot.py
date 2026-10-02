@@ -243,12 +243,23 @@ def test_recovery_bootstrap_binds_authorized_sha_before_service_start() -> None:
     assert 'prepare_recovery_warm_boot_service "$current_head"' in installer
     assert 'install -m 0755 "$WARM_BOOT_TOOL" "$INSTALLED_WARM_BOOT_TOOL"' in installer
     assert (
-        'install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service'
+        'install -m 0644 "$WARM_BOOT_SERVICE_DROPIN" /etc/systemd/system/hhs.service.d/20-hhs-warm-boot-identity.conf'
         in installer
     )
     assert installer.index('prepare_recovery_warm_boot_service "$current_head"') < installer.index(
         "systemctl start hhs.service"
     )
+
+
+def test_rollback_safe_service_dropin_overrides_only_warm_boot_preflight() -> None:
+    dropin = (
+        ROOT / "deploy/digitalocean/hhs-warm-boot-identity.conf"
+    ).read_text(encoding="utf-8")
+    assert "[Service]" in dropin
+    assert "ExecStartPre=" in dropin
+    assert "/usr/local/lib/hhs-guarded-update/warm_boot_manifest.py verify" in dropin
+    assert "--repository-sha-file /var/lib/hhs/warm-boot/current-repository-sha" in dropin
+    assert "ExecStart=" not in dropin
 
 
 def test_restart_verifier_contains_no_build_or_hydration_commands() -> None:
