@@ -159,14 +159,17 @@ def test_lane5_gateway_systemd_and_installer_are_restartable_and_ssh_independent
     service = (
         ROOT / "deploy/digitalocean/hhs-lane5-ingress.service"
     ).read_text(encoding="utf-8")
+    socket = (
+        ROOT / "deploy/digitalocean/hhs-lane5-ingress.socket"
+    ).read_text(encoding="utf-8")
     installer = (
         ROOT / "deployment/digitalocean/guarded_auto_update/install.sh"
     ).read_text(encoding="utf-8")
 
     for token in (
-        "--host 127.0.0.1 --port 8715",
+        "--fd 3",
+        "Sockets=hhs-lane5-ingress.socket",
         "HHS_DISABLE_C_AUTOBUILD=1",
-        "Requires=hhs.service",
         "StartLimitIntervalSec=300",
         "StartLimitBurst=5",
         "RestartSec=10",
@@ -179,9 +182,15 @@ def test_lane5_gateway_systemd_and_installer_are_restartable_and_ssh_independent
         "configure_lane5_ingress_nginx.py",
         "http://127.0.0.1:8715/__hhs_lane5_ingress_health",
         "HHS_LANE5_HOST_INGRESS_READY=1",
+        "HHS_LANE5_HOST_INGRESS_SOCKET_ACTIVATED=1",
         "HHS_LANE5_HOST_INGRESS_NGINX_ZERO_BYPASS=1",
     ):
         assert token in installer
 
+    assert "Requires=hhs.service" not in service
+    assert "After=network-online.target hhs.service" not in service
+    assert "ListenStream=127.0.0.1:8715" in socket
+    assert "Service=hhs-lane5-ingress.service" in socket
+    assert "WantedBy=sockets.target" in socket
     assert "sshd.service" not in service
     assert "port 22" not in service.lower()
