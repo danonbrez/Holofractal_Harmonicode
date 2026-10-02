@@ -1,4 +1,4 @@
-name: Incident Sep27 Recovery Inspect
+name: Incident Restored Production Verify
 
 on:
   pull_request:
@@ -10,64 +10,51 @@ permissions:
   contents: read
 
 jobs:
-  inspect:
+  verify:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - name: Pin provider-created Sep27 clone and inspect guest
+      - name: Verify restored production network and pinned SSH
         shell: bash
         env:
-          HHS_RECOVERY_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+          HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+          HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
         run: |
           set -euo pipefail
-          test -n "$HHS_RECOVERY_SSH_PRIVATE_KEY"
+
+          for port in 22 80 443; do
+            timeout 5 bash -c "exec 3<>/dev/tcp/159.65.178.254/$port"
+            echo "RESTORED_PRODUCTION_PORT_${port}=OPEN"
+          done
+
           install -d -m 0700 "$HOME/.ssh"
-          printf '%s\n' "$HHS_RECOVERY_SSH_PRIVATE_KEY" > "$HOME/.ssh/recovery"
-          chmod 0600 "$HOME/.ssh/recovery"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/production"
+          chmod 0600 "$HOME/.ssh/production"
+          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh-keygen -F 159.65.178.254 -f "$HOME/.ssh/known_hosts" >/dev/null
 
-          # The target IP was assigned to Droplet 605518652 by the authenticated
-          # DigitalOcean control plane in this incident. Pin its observed host
-          # key before the first authenticated SSH session, then require strict
-          # checking for every subsequent command.
-          ssh-keyscan -T 8 162.243.186.202 > "$HOME/.ssh/recovery_known_hosts" 2>/dev/null
-          test -s "$HOME/.ssh/recovery_known_hosts"
-          chmod 0600 "$HOME/.ssh/recovery_known_hosts"
-
-          ssh -i "$HOME/.ssh/recovery" \
+          ssh -i "$HOME/.ssh/production" \
             -o BatchMode=yes \
             -o IdentitiesOnly=yes \
             -o ConnectTimeout=10 \
             -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile="$HOME/.ssh/recovery_known_hosts" \
-            root@162.243.186.202 'bash -s' <<'RECOVERY'
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            root@159.65.178.254 'bash -s' <<'PROD'
           set -euo pipefail
-          echo "RECOVERY_SSH_OK=1"
-          printf 'RECOVERY_HOSTNAME='; hostname
-          printf 'RECOVERY_UPTIME='; uptime -p || true
-          printf 'RECOVERY_ROOT_FS='; df -h / | tail -1
-          printf 'RECOVERY_MAIN_SHA='
-          git -C /opt/hhs/app rev-parse HEAD 2>/dev/null || echo MISSING
-          printf 'RECOVERY_MAIN_BRANCH='
-          git -C /opt/hhs/app branch --show-current 2>/dev/null || true
-          echo 'RECOVERY_SERVICES_BEGIN'
-          for svc in ssh nginx hhs.service hhs-application-vm.service hhs-guarded-update.service hhs-guarded-update.timer NetworkManager systemd-networkd; do
-            printf '%s=' "$svc"
+          echo "RESTORED_PRODUCTION_PINNED_SSH_OK=1"
+          printf 'RESTORED_PRODUCTION_SHA='
+          git -C /opt/hhs/app rev-parse HEAD
+          printf 'RESTORED_PRODUCTION_BRANCH='
+          git -C /opt/hhs/app branch --show-current
+          for svc in ssh nginx hhs.service NetworkManager systemd-networkd; do
+            printf 'RESTORED_SERVICE_%s=' "$svc"
             systemctl is-active "$svc" 2>/dev/null || true
           done
-          echo 'RECOVERY_SERVICES_END'
-          echo 'RECOVERY_LISTENERS_BEGIN'
+          echo 'RESTORED_LISTENERS_BEGIN'
           ss -ltnp | grep -E ':(22|80|443|8080|8720)\b' || true
-          echo 'RECOVERY_LISTENERS_END'
-          echo 'RECOVERY_FAILED_UNITS_BEGIN'
-          systemctl --failed --no-pager || true
-          echo 'RECOVERY_FAILED_UNITS_END'
-          echo 'RECOVERY_NETWORK_BEGIN'
-          ip -brief addr
-          ip route
-          echo 'RECOVERY_NETWORK_END'
-          if curl -kfsS --connect-timeout 5 --max-time 10 https://127.0.0.1/ -o /tmp/recovery-root.html; then
-            echo "RECOVERY_LOCAL_HTTPS_BODY=1"
-          else
-            echo "RECOVERY_LOCAL_HTTPS_BODY=0"
-          fi
-          RECOVERY
+          echo 'RESTORED_LISTENERS_END'
+          curl -kfsS --connect-timeout 5 --max-time 10 https://127.0.0.1/ >/tmp/restored-root.html
+          test -s /tmp/restored-root.html
+          echo "RESTORED_LOCAL_HTTPS_OK=1"
+          PROD
