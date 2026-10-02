@@ -287,3 +287,37 @@ repository evidence above to guide offline repair: disable the failing
 Application-VM unit, restore the intended server network renderer/authority,
 remove or neutralize unintended desktop network ownership as required, then boot
 the disposable clone and prove SSH/nginx/HHS before touching production.
+
+
+## 2026-10-02 repair-forward validation checkpoint
+
+Current repair head before this checkpoint: `ca607ca07de49409cb3dfb0eb9a12e17b307c13b`.
+
+Dependency-scoped source audit passes all current repair invariants:
+
+- Application-VM production is manual-only and no longer has a `push: main` trigger;
+- production deployment does not set `HHS_APPLICATION_VM_INSTALL_GUI=1`;
+- Exact-Main and Application-VM share `/run/lock/hhs-production-mutation.lock`;
+- root-created Application-VM releases are normalized for `hhs` traversal/read access;
+- Application-VM restart failures are bounded by
+  `StartLimitIntervalSec=300`, `StartLimitBurst=5`, and `RestartSec=30`;
+- guarded updater CPU/memory/I/O/OOM/task controls are present;
+- updater watchdog is `OnBootSec=15min`, `OnUnitActiveSec=30min`,
+  `RandomizedDelaySec=2min`, `AccuracySec=30s`;
+- I045 workflow/test/spec now bind that safer watchdog cadence;
+- Pass 202 I122 current-successor blobs are resealed to:
+  - service: `dedac12e79bbe84f1df9d363e14e31de6d469fa9`;
+  - timer: `3a0749a71e085180f2e524f9e9fe3c6183bfe273`;
+- historical Pass 202 service/timer blobs remain frozen at
+  `1cc1dce920213df7c0a5f1ee4e9823a9dc727ec5` and
+  `3296ee9787544542697d3915e01569562ef30046`.
+
+The previous CI head showed green Application-VM control-plane and DigitalOcean
+deployment-contract checks. Its only attributable failures were the stale I045
+ten-minute timer assertion and stale I122 current-successor blob seals; both are
+repaired on the current head.
+
+GitHub reruns for I045 and I122 are queued behind the repository Actions workload.
+Per the restartability policy, queued external CI does not block this checkpoint.
+Merge remains gated on those dependency-scoped reruns or an equivalent verified
+successor check.
