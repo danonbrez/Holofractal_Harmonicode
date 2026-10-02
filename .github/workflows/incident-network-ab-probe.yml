@@ -1,4 +1,4 @@
-name: Incident Inspect Production Mutation Lock
+name: Incident Inspect Production Recovery Boundary
 
 on:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
           printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
           chmod 0600 "$HOME/.ssh/known_hosts"
           ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
-      - name: Inspect production mutation owner
+      - name: Inspect rollback boundary without mutation
         shell: bash
         run: |
           set -euo pipefail
@@ -40,20 +40,42 @@ jobs:
             -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
             "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" 'bash -s' <<'REMOTE'
           set +e
-          echo '=== HHS PRODUCTION MUTATION LOCK ==='
-          lslocks -o COMMAND,PID,TYPE,MODE,PATH 2>/dev/null | grep -E 'hhs-production-mutation|COMMAND' || true
-          owner_pid=$(lslocks -n -o PID,PATH 2>/dev/null | awk '$2 == "/run/lock/hhs-production-mutation.lock" {print $1; exit}')
-          echo "HHS_PRODUCTION_MUTATION_OWNER_PID=${owner_pid:-none}"
-          if [[ -n "$owner_pid" ]]; then
-            ps -o pid,ppid,etimes,lstart,args -p "$owner_pid" || true
-            command -v pstree >/dev/null 2>&1 && pstree -aps "$owner_pid" || true
-            parent=$(ps -o ppid= -p "$owner_pid" | tr -d ' ')
-            [[ -n "$parent" ]] && ps -o pid,ppid,etimes,lstart,args -p "$parent" || true
-          fi
-          echo '=== SYSTEMD ==='
-          systemctl status hhs-guarded-update.service hhs-guarded-update.timer hhs.service hhs-lane5-ingress.socket hhs-lane5-ingress.service --no-pager --full || true
+          echo '=== CHECKOUT ==='
+          git -C /opt/hhs/app rev-parse HEAD || true
+          git -C /opt/hhs/app branch --show-current || true
+          git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal || true
+          git -C /opt/hhs/app rev-parse origin/main || true
+
+          echo '=== RUNTIME OS ==='
+          readlink -f /var/lib/hhs/runtime-os/current || true
+          ls -ld /var/lib/hhs/runtime-os/current /var/lib/hhs/runtime-os/releases/* 2>/dev/null | tail -20 || true
+
+          echo '=== GUARDED UPDATE RECEIPTS ==='
+          tail -n 25 /var/lib/hhs-guarded-update/receipts.jsonl 2>/dev/null || true
+          echo '=== LAST SUCCESS ==='
+          cat /var/lib/hhs-guarded-update/last-success.json 2>/dev/null || true
+
+          echo '=== WARM BOOT MANIFESTS ==='
+          ls -lt /var/lib/hhs/warm-boot/releases 2>/dev/null | head -15 || true
+          current=$(git -C /opt/hhs/app rev-parse HEAD 2>/dev/null || true)
+          [[ -n "$current" ]] && cat "/var/lib/hhs/warm-boot/releases/$current.json" 2>/dev/null || true
+
+          echo '=== SERVICES ==='
+          systemctl status hhs.service hhs-guarded-update.service hhs-guarded-update.timer hhs-lane5-ingress.socket hhs-lane5-ingress.service --no-pager --full || true
+
           echo '=== LISTENERS ==='
           ss -ltnp | grep -E ':(22|80|443|8080|8715|8720)\b' || true
-          echo '=== SSH SESSIONS ==='
-          ss -tnp | grep ':22' || true
+
+          echo '=== INSTALLED CONTROLLER IDENTITIES ==='
+          sha256sum \
+            /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py \
+            /usr/local/lib/hhs-guarded-update/hhs-guarded-update.sh \
+            /usr/local/lib/hhs-guarded-update/verify-recovery-state.py \
+            2>/dev/null || true
+          grep -nE 'source_root|repository_root = root.resolve|sys.path.insert' \
+            /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py \
+            2>/dev/null || true
+
+          echo '=== PRODUCTION MUTATION LOCK ==='
+          lslocks -o COMMAND,PID,TYPE,MODE,PATH 2>/dev/null | grep -E 'hhs-production-mutation|COMMAND' || true
           REMOTE
