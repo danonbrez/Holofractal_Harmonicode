@@ -24,6 +24,7 @@ BUNDLE_MODE=${HHS_RUNTIME_OS_BUNDLE_MODE:-prebuilt}
 BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
 BUNDLE_TOOL=${HHS_RUNTIME_OS_BUNDLE_TOOL:-/usr/local/lib/hhs-guarded-update/runtime-os-bundle.py}
 BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
+EXACT_CANDIDATE_SHA=${HHS_EXACT_CANDIDATE_SHA:-}
 PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-/usr/local/lib/hhs-guarded-update/normalize-service-permissions.py}
@@ -234,14 +235,27 @@ current_branch=$(git -C "$REPO_ROOT" branch --show-current)
 log "Fetching $REMOTE/$BRANCH"
 git -C "$REPO_ROOT" fetch --prune "$REMOTE" "$BRANCH"
 PREVIOUS_SHA=$(git -C "$REPO_ROOT" rev-parse HEAD)
-CANDIDATE_SHA=$(git -C "$REPO_ROOT" rev-parse "$REMOTE/$BRANCH")
+REMOTE_TIP_SHA=$(git -C "$REPO_ROOT" rev-parse "$REMOTE/$BRANCH")
 
-if [[ "$PREVIOUS_SHA" == "$CANDIDATE_SHA" ]]; then
-  write_receipt "fetch" "NO_CHANGE" "already at remote branch tip"; log "No new commit"; exit 0
+if [[ -n "$EXACT_CANDIDATE_SHA" ]]; then
+  [[ "$EXACT_CANDIDATE_SHA" =~ ^[0-9a-fA-F]{40}$ ]] \
+    || fail "HHS_EXACT_CANDIDATE_SHA is not exact"
+  git -C "$REPO_ROOT" cat-file -e "$EXACT_CANDIDATE_SHA^{commit}" \
+    || fail "Pinned exact candidate commit is unavailable: $EXACT_CANDIDATE_SHA"
+  git -C "$REPO_ROOT" merge-base --is-ancestor "$EXACT_CANDIDATE_SHA" "$REMOTE_TIP_SHA" \
+    || fail "Pinned exact candidate is not on current $REMOTE/$BRANCH history"
+  CANDIDATE_SHA="$EXACT_CANDIDATE_SHA"
+  log "Using transient exact candidate pin $CANDIDATE_SHA (remote tip $REMOTE_TIP_SHA)"
+else
+  CANDIDATE_SHA="$REMOTE_TIP_SHA"
 fi
 
-git -C "$REPO_ROOT" merge-base --is-ancestor "$PREVIOUS_SHA" "$CANDIDATE_SHA" || fail "Remote history is not a fast-forward descendant of the deployed commit"
-[[ "$BUNDLE_SHA" == "$CANDIDATE_SHA" ]] || fail "prebuilt Runtime OS bundle is not pinned to remote candidate"
+if [[ "$PREVIOUS_SHA" == "$CANDIDATE_SHA" ]]; then
+  write_receipt "fetch" "NO_CHANGE" "already at selected candidate"; log "No new commit"; exit 0
+fi
+
+git -C "$REPO_ROOT" merge-base --is-ancestor "$PREVIOUS_SHA" "$CANDIDATE_SHA" || fail "Selected candidate is not a fast-forward descendant of the deployed commit"
+[[ "$BUNDLE_SHA" == "$CANDIDATE_SHA" ]] || fail "prebuilt Runtime OS bundle is not pinned to selected candidate"
 capture_current_runtime_os
 
 CURRENT_CANDIDATE="$CANDIDATE_ROOT/$CANDIDATE_SHA"

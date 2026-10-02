@@ -313,10 +313,27 @@ fi
 systemctl daemon-reload
 systemctl reset-failed hhs-guarded-update.service 2>/dev/null || true
 
+# Exact-main promotion seals the Runtime OS bundle before the host transaction.
+# Pin that already-authorized commit only for this synchronous oneshot. A later
+# repository-index commit may advance origin/main while the deployment runs;
+# the updater proves the pin is still on current main history rather than
+# silently switching candidates. Remove the manager environment before the
+# periodic follower is resumed so timer runs continue to follow latest main.
+systemctl unset-environment HHS_EXACT_CANDIDATE_SHA >/dev/null 2>&1 || true
+clear_exact_candidate_pin() {
+  systemctl unset-environment HHS_EXACT_CANDIDATE_SHA >/dev/null 2>&1 || true
+}
+if [[ "$ENABLE_PROMOTION" == "1" ]]; then
+  systemctl set-environment HHS_EXACT_CANDIDATE_SHA="$BUNDLE_SHA"
+  trap clear_exact_candidate_pin EXIT
+fi
+
 # Run exactly one synchronous updater while the timer is stopped. Type=oneshot
 # makes systemctl start return only after validation/promotion/rollback reaches
 # a terminal result. The periodic follower is re-enabled only after success.
 if ! systemctl start hhs-guarded-update.service; then
+  clear_exact_candidate_pin
+  trap - EXIT
   echo "HHS guarded updater failed during exclusive installation/promotion; timer remains stopped." >&2
   systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
   journalctl -u hhs-guarded-update.service -n 400 --no-pager >&2 || true
@@ -327,6 +344,9 @@ if ! systemctl start hhs-guarded-update.service; then
   journalctl -u hhs.service -n 400 --no-pager >&2 || true
   exit 10
 fi
+
+clear_exact_candidate_pin
+trap - EXIT
 
 systemctl enable hhs-guarded-update.timer >/dev/null
 systemctl start hhs-guarded-update.timer

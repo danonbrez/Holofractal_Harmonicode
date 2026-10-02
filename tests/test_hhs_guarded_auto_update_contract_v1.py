@@ -306,6 +306,38 @@ def test_installer_binds_lane5_socket_before_strict_unbound_use() -> None:
     )
 
 
+def test_exact_main_uses_transient_candidate_pin_without_freezing_periodic_updates() -> None:
+    installer = read("install.sh")
+    updater = read("hhs-guarded-update.sh")
+
+    assert 'EXACT_CANDIDATE_SHA=${HHS_EXACT_CANDIDATE_SHA:-}' in updater
+    assert 'REMOTE_TIP_SHA=$(git -C "$REPO_ROOT" rev-parse "$REMOTE/$BRANCH")' in updater
+    assert 'CANDIDATE_SHA="$EXACT_CANDIDATE_SHA"' in updater
+    assert (
+        'merge-base --is-ancestor "$EXACT_CANDIDATE_SHA" "$REMOTE_TIP_SHA"'
+        in updater
+    )
+    assert "Pinned exact candidate is not on current" in updater
+    assert '[[ "$BUNDLE_SHA" == "$CANDIDATE_SHA" ]]' in updater
+    assert "prebuilt Runtime OS bundle is not pinned to selected candidate" in updater
+
+    set_pin = installer.index(
+        'systemctl set-environment HHS_EXACT_CANDIDATE_SHA="$BUNDLE_SHA"'
+    )
+    start = installer.index("systemctl start hhs-guarded-update.service", set_pin)
+    clear_after = installer.index("clear_exact_candidate_pin", start)
+    timer_enable = installer.index("systemctl enable hhs-guarded-update.timer", clear_after)
+    assert set_pin < start < clear_after < timer_enable
+
+    # The candidate pin is deliberately transient. It must never be serialized
+    # into the persistent guarded-update environment file used by the timer.
+    persistent_env_block = installer[
+        installer.index('if [[ ! -f "$ENV_FILE" ]]'):
+        installer.index("chown root:root", installer.index('if [[ ! -f "$ENV_FILE" ]]'))
+    ]
+    assert "HHS_EXACT_CANDIDATE_SHA" not in persistent_env_block
+
+
 def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_gated_recovery() -> None:
     installer = read("install.sh")
     workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
