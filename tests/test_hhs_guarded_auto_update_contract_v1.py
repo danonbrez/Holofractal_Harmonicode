@@ -591,8 +591,8 @@ def test_delivery_workflows_pin_active_production_target_and_skip_stale_index_wi
         ROOT / ".github" / "workflows" / "repository-hash216-dependency-index.yml"
     ).read_text(encoding="utf-8")
 
-    active_host = "159.65.178.254"
-    retired_host = "165.227.220.193"
+    active_host = "165.227.99.132"
+    retired_host = "159.65.178.254"
 
     for workflow in (production, application_vm, real_guest):
         assert f"HHS_PRODUCTION_HOST: '{active_host}'" in workflow
