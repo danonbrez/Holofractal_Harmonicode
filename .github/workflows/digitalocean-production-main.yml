@@ -382,6 +382,7 @@ jobs:
             exit 22
           }
           systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet hhs-lane5-ingress.service
           systemctl is-active --quiet hhs-guarded-update.timer
           runuser -u hhs -- test -x /opt
           runuser -u hhs -- test -x /opt/hhs
@@ -403,6 +404,19 @@ jobs:
             ss -H -ltnp 'sport = :8080' >&2 || true
             exit 23
           }
+          lane5_listener_count=$(ss -H -ltnp 'sport = :8715' | wc -l)
+          [[ "$lane5_listener_count" -eq 1 ]] || {
+            echo "expected exactly one Lane 5 ingress listener on 8715, found $lane5_listener_count" >&2
+            ss -H -ltnp 'sport = :8715' >&2 || true
+            exit 23
+          }
+          systemctl show hhs-lane5-ingress.service -p ExecStart --value | grep -Fq 'hhs_backend.lane5_ingress_gateway:app'
+          curl -fsS --max-time 10 http://127.0.0.1:8715/__hhs_lane5_ingress_health >/tmp/hhs-lane5-ingress-health.json
+          nginx_dump=$(nginx -T 2>&1)
+          ! grep -Fq 'proxy_pass http://127.0.0.1:8080' <<<"$nginx_dump"
+          ! grep -Fq 'proxy_pass http://127.0.0.1:8720' <<<"$nginx_dump"
+          grep -Fq 'proxy_pass http://127.0.0.1:8715' <<<"$nginx_dump"
+          echo "HHS_DIGITALOCEAN_LANE5_HOST_INGRESS_VERIFIED=1"
 
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/dev/null
           curl -fsS --max-time 10 http://127.0.0.1:8080/api/interface/status >/tmp/hhs-exact-main-interface.json
