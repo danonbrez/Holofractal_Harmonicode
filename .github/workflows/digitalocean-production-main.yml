@@ -382,6 +382,7 @@ jobs:
             exit 22
           }
           systemctl is-active --quiet hhs.service
+          systemctl is-active --quiet hhs-lane5-ingress.socket
           systemctl is-active --quiet hhs-lane5-ingress.service
           systemctl is-active --quiet hhs-guarded-update.timer
           runuser -u hhs -- test -x /opt
