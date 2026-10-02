@@ -1,0 +1,51 @@
+name: Recovery SSH Port Probe 20261001
+
+on:
+  push:
+    branches:
+      - recovery/ssh-probe-20261001
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Probe SSH reachability only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import socket
+          import sys
+          import time
+
+          targets = [
+              ("production", "159.65.178.254", 22),
+              ("clean-control", "165.227.99.132", 22),
+          ]
+          failed = False
+          for name, host, port in targets:
+              started = time.monotonic()
+              sock = socket.socket()
+              sock.settimeout(8)
+              try:
+                  sock.connect((host, port))
+                  elapsed = (time.monotonic() - started) * 1000
+                  print(f"HHS_RECOVERY_SSH_PROBE name={name} host={host} port={port} state=OPEN elapsed_ms={elapsed:.1f}")
+              except Exception as exc:
+                  failed = True
+                  elapsed = (time.monotonic() - started) * 1000
+                  print(
+                      f"HHS_RECOVERY_SSH_PROBE name={name} host={host} port={port} "
+                      f"state=FAILED error={type(exc).__name__}:{exc} elapsed_ms={elapsed:.1f}",
+                      file=sys.stderr,
+                  )
+              finally:
+                  sock.close()
+          if failed:
+              raise SystemExit(1)
+          PY
