@@ -537,6 +537,9 @@ def test_repair_sources_reject_literal_escaped_newline_artifacts() -> None:
     escaped_newline = chr(92) + "n"
     targets = (
         ROOT / ".github" / "workflows" / "pass220-i045-startup-first-paint-parallel.yml",
+        ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm.yml",
+        ROOT / ".github" / "workflows" / "pass220-lane5-host-ingress-membrane.yml",
+        ROOT / ".github" / "workflows" / "digitalocean-production-main.yml",
         ROOT / "tests" / "pass220" / "test_pass220_i045_startup_first_paint_parallel.py",
     )
     for path in targets:
