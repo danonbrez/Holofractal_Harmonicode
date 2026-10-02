@@ -20,6 +20,10 @@ PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 VALIDATE_PYTHON=${HHS_VALIDATE_PYTHON:-/opt/hhs/venv/bin/python}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-$SOURCE/normalize-service-permissions.py}
 RECOVERY_VERIFIER=${HHS_PRODUCTION_RECOVERY_VERIFIER:-$SOURCE/verify-recovery-state.py}
+WARM_BOOT_TOOL=${HHS_WARM_BOOT_TOOL:-$SOURCE_ROOT/deployment/digitalocean/warm_boot_manifest.py}
+INSTALLED_WARM_BOOT_TOOL=$INSTALL_ROOT/warm_boot_manifest.py
+WARM_BOOT_ROOT=${HHS_WARM_BOOT_MANIFEST_ROOT:-/var/lib/hhs/warm-boot/releases}
+WARM_BOOT_REPOSITORY_SHA_FILE=${HHS_WARM_BOOT_REPOSITORY_SHA_FILE:-/var/lib/hhs/warm-boot/current-repository-sha}
 STATIC_FIRST_CONFIGURATOR=${HHS_RUNTIME_OS_STATIC_FIRST_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_runtime_os_static_first.py}
 LANE5_INGRESS_SERVICE=${HHS_LANE5_INGRESS_SERVICE:-$SOURCE_ROOT/deploy/digitalocean/hhs-lane5-ingress.service}
 LANE5_INGRESS_SOCKET=${HHS_LANE5_INGRESS_SOCKET:-$SOURCE_ROOT/deploy/digitalocean/hhs-lane5-ingress.socket}
@@ -74,6 +78,7 @@ python3 -m py_compile \
   "$SOURCE/runtime-os-bundle.py" \
   "$SOURCE/normalize-service-permissions.py" \
   "$RECOVERY_VERIFIER" \
+  "$WARM_BOOT_TOOL" \
   "$LANE5_INGRESS_CONFIGURATOR" \
   "$SOURCE_ROOT/hhs_backend/lane5_ingress_gateway.py"
 
@@ -82,6 +87,41 @@ normalize_production_checkout() {
     --repo-root "$REPO_ROOT" \
     --service-user "$PRODUCTION_SERVICE_USER" \
     --service-group "$PRODUCTION_SERVICE_GROUP"
+}
+
+prepare_recovery_warm_boot_service() {
+  local repository_sha=$1
+  [[ "$repository_sha" =~ ^[0-9a-fA-F]{40}$ ]] || {
+    echo "Recovery warm-boot identity is not an exact SHA: $repository_sha" >&2
+    exit 8
+  }
+  [[ -f "$WARM_BOOT_TOOL" ]] || {
+    echo "Warm-boot verifier missing from deployment source: $WARM_BOOT_TOOL" >&2
+    exit 8
+  }
+  [[ -f "$CANONICAL_HHS_SERVICE" ]] || {
+    echo "Canonical HHS service missing from deployment source: $CANONICAL_HHS_SERVICE" >&2
+    exit 8
+  }
+  [[ -f "$WARM_BOOT_ROOT/$repository_sha.json" ]] || {
+    echo "Authorized rollback warm-boot manifest missing: $WARM_BOOT_ROOT/$repository_sha.json" >&2
+    exit 8
+  }
+
+  install -d -m 0755 "$INSTALL_ROOT"
+  install -d -o "$PRODUCTION_SERVICE_USER" -g "$PRODUCTION_SERVICE_GROUP" -m 0750 \
+    "$(dirname "$WARM_BOOT_REPOSITORY_SHA_FILE")" "$WARM_BOOT_ROOT"
+  install -m 0755 "$WARM_BOOT_TOOL" "$INSTALLED_WARM_BOOT_TOOL"
+  install -m 0644 "$CANONICAL_HHS_SERVICE" /etc/systemd/system/hhs.service
+
+  local temporary
+  temporary=$(mktemp "$(dirname "$WARM_BOOT_REPOSITORY_SHA_FILE")/.current-repository-sha.XXXXXX")
+  printf '%s\n' "$repository_sha" >"$temporary"
+  chown "$PRODUCTION_SERVICE_USER:$PRODUCTION_SERVICE_GROUP" "$temporary"
+  chmod 0640 "$temporary"
+  mv -f "$temporary" "$WARM_BOOT_REPOSITORY_SHA_FILE"
+  systemctl daemon-reload
+  printf 'HHS_RECOVERY_WARM_BOOT_REPOSITORY_IDENTITY_BOUND=%s\n' "$repository_sha"
 }
 
 wait_for_production_health() {
@@ -152,6 +192,7 @@ if [[ "$ENABLE_PROMOTION" == "1" ]] && ! systemctl is-active --quiet hhs.service
   printf '%s\n' "$recovery_report"
   echo "HHS_GUARDED_UPDATE_RECOVERY_RECEIPT_VERIFIED=1"
   echo "HHS_GUARDED_UPDATE_RECOVERY_MODE=1"
+  prepare_recovery_warm_boot_service "$current_head"
   systemctl reset-failed hhs.service 2>/dev/null || true
   systemctl start hhs.service
   if ! wait_for_production_health; then
@@ -178,6 +219,7 @@ install -m 0755 "$SOURCE/validate-candidate.sh" "$INSTALL_ROOT/validate-candidat
 install -m 0755 "$SOURCE/runtime-os-bundle.py" "$INSTALL_ROOT/runtime-os-bundle.py"
 install -m 0755 "$SOURCE/normalize-service-permissions.py" "$INSTALL_ROOT/normalize-service-permissions.py"
 install -m 0755 "$RECOVERY_VERIFIER" "$INSTALL_ROOT/verify-recovery-state.py"
+install -m 0755 "$WARM_BOOT_TOOL" "$INSTALLED_WARM_BOOT_TOOL"
 install -m 0644 "$SOURCE/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
 install -m 0644 "$SOURCE/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
 
