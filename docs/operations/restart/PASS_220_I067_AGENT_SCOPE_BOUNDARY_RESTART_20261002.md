@@ -58,6 +58,8 @@ I067 does not encode denial as a workflow-wide halt. A denial terminates only th
 
 The minimum required scope is an audit projection over the complete declared workflow. It is not permitted to silently shrink or expand the externally authorized live scope.
 
+Repair-forward note: the first candidate exposed an in-band grant function keyed by a caller-supplied authority string. Adversarial review rejected that design because a caller could spoof the label. The repair removes the grant API entirely from I067. Scope expansion must occur through the existing authenticated Pass 146 authority boundary and re-enter I067 only as a newly supplied external Scope.
+
 ## Next action
 
 Run the I067 branch workflow. Repair forward only if the dependency-scoped Python or Lean validation identifies an implementation/proof divergence. When green, merge to main and verify the merged commit.

@@ -1,6 +1,8 @@
 ClearAll["Global`*"];
 boolProof[expr_, vars_] := TrueQ[Resolve[ForAll[vars, expr], Booleans]];
 compile3[a_, b_, c_] := Or[a, b, c];
+agentGrant[current_, requested_] := current;
+agentSemanticRoot[current_, replacement_] := current;
 
 checks = <|
   "compiled_scope_no_under_limit" ->
@@ -20,16 +22,12 @@ checks = <|
     boolProof[
       Implies[And[Not[firstAdmit], secondAdmit], secondAdmit],
       {firstAdmit, secondAdmit}],
-  "agent_grant_cannot_expand" ->
-    boolProof[
-      Implies[Not[externalAuthority],
-        Equivalent[Or[current, And[externalAuthority, requested]], current]],
-      {externalAuthority,current,requested}],
-  "external_grant_covers_requested_capability" ->
-    boolProof[
-      Implies[And[externalAuthority, requested],
-        Or[current, And[externalAuthority, requested]]],
-      {externalAuthority,current,requested}]
+  "agent_grant_attempt_is_identity" ->
+    boolProof[Equivalent[agentGrant[current, requested], current],
+      {current,requested}],
+  "agent_semantic_rewrite_attempt_is_identity" ->
+    boolProof[Equivalent[agentSemanticRoot[current, replacement], current],
+      {current,replacement}]
 |>;
 
 checks["bounded_retry_complete_0_2048"] = And @@ Table[

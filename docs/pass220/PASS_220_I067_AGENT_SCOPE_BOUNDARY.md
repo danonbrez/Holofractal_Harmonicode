@@ -20,7 +20,7 @@ steps(S')       <= steps(S)
 retries(S')     <= retries(S)
 ~~~
 
-Authority expansion is a separate typed operation and is accepted only from EXTERNAL_USER_GOVERNOR.
+I067 exposes no in-band scope-expansion API. A caller-supplied label is not authority. Any scope expansion must be established outside the agent transition surface by the repository's authenticated authority layer (Pass 146), then supplied to I067 as a new externally authorized Scope. Pass 146 already binds grants to authenticated identities, active grants, parent authority, resource bounds, and recursive no-expansion checks.
 
 A denied request has the transition:
 
@@ -44,7 +44,7 @@ Dependency-scoped execution on 2026-10-02:
 7 passed in 0.06s
 ~~~
 
-The runtime self-test additionally reported 10/10 PASS, covering workflow preservation, request-local denial, semantic-root preservation, bounded retry, agent self-grant rejection, and explicit external expansion.
+The runtime self-test additionally reported 10/10 PASS, covering workflow preservation, request-local denial, semantic-root preservation, bounded retry, absence of any in-band grant API and preservation of authority dimensions.
 
 ## Wolfram verification
 
@@ -57,7 +57,7 @@ PASS
 failed = {}
 ~~~
 
-The bounded scans cover retry budgets 0..2048 and nonincreasing agent budgets 0..64. Boolean proof obligations cover exact workflow-scope compilation, denial side effects, independent continuation after denial, self-grant rejection, and explicit external grants.
+The bounded scans cover retry budgets 0..2048 and nonincreasing agent budgets 0..64. Boolean proof obligations cover exact workflow-scope compilation, denial side effects, independent continuation after denial, in-band self-grant identity behavior and semantic-rewrite identity behavior.
 
 ## Lean surface
 

@@ -17,7 +17,6 @@ from typing import Iterable, Sequence
 
 SCHEMA = "HHS_PASS_220_I067_AGENT_SCOPE_BOUNDARY_V1"
 VERSION = "1.0.0"
-EXTERNAL_GRANT_AUTHORITY = "EXTERNAL_USER_GOVERNOR"
 
 
 class Decision(str, Enum):
@@ -65,23 +64,6 @@ class Request:
 
 
 @dataclass(frozen=True)
-class Grant:
-    capabilities: frozenset[str] = frozenset()
-    readable: frozenset[str] = frozenset()
-    writable: frozenset[str] = frozenset()
-    interfaces: frozenset[str] = frozenset()
-    step_budget_delta: int = 0
-    retry_budget_delta: int = 0
-    replacement_semantic_root: str | None = None
-
-    def __post_init__(self) -> None:
-        if self.step_budget_delta < 0 or self.retry_budget_delta < 0:
-            raise ValueError("grant deltas must be non-negative")
-        if self.replacement_semantic_root == "":
-            raise ValueError("replacement_semantic_root cannot be empty")
-
-
-@dataclass(frozen=True)
 class Transition:
     request_id: str
     decision: Decision
@@ -97,20 +79,6 @@ class Transition:
         out["decision"] = self.decision.value
         out["next_scope"] = scope_to_dict(self.next_scope)
         return out
-
-
-@dataclass(frozen=True)
-class GrantDecision:
-    accepted: bool
-    next_scope: Scope
-    reasons: tuple[str, ...]
-
-    def to_dict(self) -> dict:
-        return {
-            "accepted": self.accepted,
-            "next_scope": scope_to_dict(self.next_scope),
-            "reasons": list(self.reasons),
-        }
 
 
 def scope_to_dict(scope: Scope) -> dict:
@@ -227,30 +195,6 @@ def transition(scope: Scope, request: Request, outcome: Outcome) -> Transition:
     )
 
 
-def apply_grant(scope: Scope, grant: Grant, *, authority: str) -> GrantDecision:
-    if authority != EXTERNAL_GRANT_AUTHORITY:
-        return GrantDecision(
-            accepted=False,
-            next_scope=scope,
-            reasons=("AGENT_SELF_GRANT_FORBIDDEN",),
-        )
-
-    semantic_root = grant.replacement_semantic_root or scope.semantic_root
-    return GrantDecision(
-        accepted=True,
-        next_scope=Scope(
-            capabilities=scope.capabilities | grant.capabilities,
-            readable=scope.readable | grant.readable,
-            writable=scope.writable | grant.writable,
-            interfaces=scope.interfaces | grant.interfaces,
-            step_budget=scope.step_budget + grant.step_budget_delta,
-            retry_budget=scope.retry_budget + grant.retry_budget_delta,
-            semantic_root=semantic_root,
-        ),
-        reasons=(),
-    )
-
-
 def scope_covers_scope(authorized: Scope, required: Scope) -> bool:
     return (
         required.capabilities <= authorized.capabilities
@@ -314,16 +258,6 @@ def run_agent_scope_boundary_self_test() -> dict:
     denied_transition = transition(authorized, denied, Outcome.SUCCESS)
     later_authorized = transition(denied_transition.next_scope, workflow[2], Outcome.SUCCESS)
 
-    self_grant = apply_grant(
-        authorized,
-        Grant(capabilities=frozenset({"host.root.write"})),
-        authority="AGENT",
-    )
-    external_grant = apply_grant(
-        authorized,
-        Grant(capabilities=frozenset({"deploy.publish"}), interfaces=frozenset({"deployment"}), step_budget_delta=1),
-        authority=EXTERNAL_GRANT_AUTHORITY,
-    )
 
     semantic_drift = transition(
         authorized,
@@ -360,8 +294,8 @@ def run_agent_scope_boundary_self_test() -> dict:
         "denied_request_has_no_scope_side_effect": denied_transition.next_scope == authorized,
         "denied_request_is_terminal": denied_transition.request_terminal and not denied_transition.retry_allowed,
         "denial_does_not_poison_workflow": later_authorized.decision is Decision.EXECUTE,
-        "agent_self_grant_rejected": (not self_grant.accepted and self_grant.next_scope == authorized),
-        "external_grant_can_expand": external_grant.accepted and "deploy.publish" in external_grant.next_scope.capabilities,
+        "agent_transition_preserves_capabilities": later_authorized.next_scope.capabilities == authorized.capabilities,
+        "no_in_band_grant_api": "apply_grant" not in globals(),
         "semantic_drift_rejected": semantic_drift.decision is Decision.DENY and semantic_drift.next_scope == authorized,
         "retry_is_finite": retry_trace == ["RETRY", "RETRY", "FAIL"],
         "no_generic_soft_refusal_outcome": "REFUSE" not in {d.value for d in Decision},

@@ -11,8 +11,8 @@
     "denied_never_retries": true,
     "denied_has_no_write_side_effect": true,
     "denial_preserves_independent_next_step_admission": true,
-    "agent_grant_cannot_expand": true,
-    "external_grant_covers_requested_capability": true,
+    "agent_grant_attempt_is_identity": true,
+    "agent_semantic_rewrite_attempt_is_identity": true,
     "bounded_retry_complete_0_2048": true,
     "agent_budget_nonincrease_complete_0_64": true
   },

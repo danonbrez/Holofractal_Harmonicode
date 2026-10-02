@@ -1,11 +1,8 @@
 from hhs_runtime.hhs_pass220_i067_agent_scope_boundary_v1 import (
     Decision,
-    EXTERNAL_GRANT_AUTHORITY,
-    Grant,
     Outcome,
     Request,
     Scope,
-    apply_grant,
     audit_workflow,
     required_scope,
     run_agent_scope_boundary_self_test,
@@ -64,18 +61,17 @@ def test_authorized_workflow_is_not_under_scoped_or_implicitly_shrunk():
     assert audit["scope_projection_is_audit_only"] is True
 
 
-def test_agent_cannot_self_grant_but_external_governor_can():
-    scope = base_scope()
-    grant = Grant(capabilities=frozenset({"deploy.publish"}), interfaces=frozenset({"deployment"}), step_budget_delta=1)
-    rejected = apply_grant(scope, grant, authority="AGENT")
-    assert rejected.accepted is False
-    assert rejected.next_scope == scope
+def test_no_in_band_scope_expansion_api_exists():
+    import hhs_runtime.hhs_pass220_i067_agent_scope_boundary_v1 as boundary
+    assert not hasattr(boundary, "apply_grant")
 
-    accepted = apply_grant(scope, grant, authority=EXTERNAL_GRANT_AUTHORITY)
-    assert accepted.accepted is True
-    assert "deploy.publish" in accepted.next_scope.capabilities
-    assert "deployment" in accepted.next_scope.interfaces
-    assert accepted.next_scope.step_budget == scope.step_budget + 1
+    scope = base_scope()
+    request = Request("write", "repo.write", writes=frozenset({"workspace"}), semantic_root=SEM)
+    result = transition(scope, request, Outcome.SUCCESS)
+    assert result.next_scope.capabilities == scope.capabilities
+    assert result.next_scope.readable == scope.readable
+    assert result.next_scope.writable == scope.writable
+    assert result.next_scope.interfaces == scope.interfaces
 
 
 def test_semantic_root_cannot_drift_during_agent_transition():

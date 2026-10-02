@@ -90,45 +90,24 @@ theorem positive_retry_consumes_one (n : Nat) :
     retryNext (n + 1) = n := by
   simp [retryNext]
 
-/-- Scope expansion is typed by who is allowed to grant it. -/
-inductive GrantAuthority
-  | agent
-  | externalUserGovernor
-deriving Repr, BEq, DecidableEq
-
-def grantCapabilities
-    (who : GrantAuthority)
+/-- An in-band agent grant attempt is an identity operation on authority. -/
+def agentGrantAttempt
     (current requested : List String) : List String :=
-  match who with
-  | .agent => current
-  | .externalUserGovernor => current ++ requested
-
-def grantSemanticRoot
-    (who : GrantAuthority)
-    (current replacement : String) : String :=
-  match who with
-  | .agent => current
-  | .externalUserGovernor => replacement
+  current
 
 theorem agent_cannot_self_grant
     (current requested : List String) :
-    grantCapabilities .agent current requested = current := by
+    agentGrantAttempt current requested = current := by
   rfl
 
-theorem external_grant_is_explicit
-    (current requested : List String) :
-    grantCapabilities .externalUserGovernor current requested =
-      current ++ requested := by
-  rfl
+/-- User semantics cannot be replaced by an agent-local rewrite attempt. -/
+def agentSemanticRewriteAttempt
+    (current replacement : String) : String :=
+  current
 
 theorem agent_cannot_rewrite_user_semantics
     (current replacement : String) :
-    grantSemanticRoot .agent current replacement = current := by
-  rfl
-
-theorem external_governor_can_replace_semantic_root
-    (current replacement : String) :
-    grantSemanticRoot .externalUserGovernor current replacement = replacement := by
+    agentSemanticRewriteAttempt current replacement = current := by
   rfl
 
 /-- A denial is local to the request: it does not poison the workflow scope. -/
