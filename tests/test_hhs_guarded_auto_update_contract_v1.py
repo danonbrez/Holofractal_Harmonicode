@@ -597,6 +597,15 @@ def test_delivery_workflows_pin_active_production_target_and_skip_stale_index_wi
     for workflow in (production, application_vm, real_guest):
         assert f"HHS_PRODUCTION_HOST: '{active_host}'" in workflow
         assert "vars.HHS_DIGITALOCEAN_HOST" not in workflow
+        assert "HHS_DIGITALOCEAN_KNOWN_HOSTS" not in workflow
+        assert ".github/known_hosts/hhs-production" in workflow
+
+    pinned_hosts = (
+        ROOT / ".github" / "known_hosts" / "hhs-production"
+    ).read_text(encoding="utf-8")
+    assert active_host in pinned_hosts
+    assert retired_host not in pinned_hosts
+    assert "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHDcWuVvuj1Qm4hkchQ+HEu+iLONn3UL5NUDItwiS5s" in pinned_hosts
 
     assert active_host in mobile_gate
     assert f'! grep -Fq "{retired_host}"' in mobile_gate
