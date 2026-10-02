@@ -534,6 +534,9 @@ def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
 
 
 def test_repair_sources_reject_literal_escaped_newline_artifacts() -> None:
+    # Reject the patch-corruption shape that previously wrote a literal "\\n"
+    # followed by YAML/shell indentation on one physical source line. Normal
+    # shell escapes such as printf '%s\\n' remain valid.
     escaped_newline = chr(92) + "n"
     targets = (
         ROOT / ".github" / "workflows" / "pass220-i045-startup-first-paint-parallel.yml",
@@ -543,7 +546,8 @@ def test_repair_sources_reject_literal_escaped_newline_artifacts() -> None:
         ROOT / "tests" / "pass220" / "test_pass220_i045_startup_first_paint_parallel.py",
     )
     for path in targets:
-        assert escaped_newline not in path.read_text(encoding="utf-8")
+        for line in path.read_text(encoding="utf-8").splitlines():
+            assert escaped_newline + "          " not in line
 
 
 def test_application_vm_production_shell_continuations_are_comment_free() -> None:
