@@ -1,4 +1,4 @@
-name: Incident Production Python Probe
+name: Incident Dispatch Exact Main Recovery
 
 on:
   pull_request:
@@ -7,61 +7,28 @@ on:
       - '.github/workflows/incident-network-ab-probe.yml'
 
 permissions:
+  actions: write
   contents: read
 
 jobs:
-  probe:
+  dispatch:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
-    env:
-      HHS_PRODUCTION_HOST: '159.65.178.254'
-      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
-      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
-      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
     steps:
-      - name: Probe production validation interpreters
+      - name: Dispatch authoritative Exact-Main recovery promotion
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_MAIN: 6fa5c1e0d8b773c91539154d3e53bfc1564cfc71
         run: |
           set -euo pipefail
-          install -d -m 0700 "$HOME/.ssh"
-          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
-          chmod 0600 "$HOME/.ssh/hhs-production"
-          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
-          chmod 0600 "$HOME/.ssh/known_hosts"
-          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
-
-          ssh \
-            -i "$HOME/.ssh/hhs-production" \
-            -o BatchMode=yes \
-            -o IdentitiesOnly=yes \
-            -o ConnectTimeout=10 \
-            -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
-            "$HHS_PRODUCTION_USER@$HHS_PRODUCTION_HOST" 'bash -s' <<'REMOTE'
-          set -euo pipefail
-          echo "SYSTEM_PYTHON=$(command -v python3)"
-          python3 --version
-          if python3 -m pytest --version >/tmp/system-pytest.out 2>&1; then
-            echo "SYSTEM_PYTEST=present"
-            cat /tmp/system-pytest.out
-          else
-            echo "SYSTEM_PYTEST=missing"
-            cat /tmp/system-pytest.out
-          fi
-
-          test -x /opt/hhs/venv/bin/python
-          echo "HHS_VENV_PYTHON=/opt/hhs/venv/bin/python"
-          /opt/hhs/venv/bin/python --version
-          /opt/hhs/venv/bin/python - <<'PY'
-          import importlib.util
-          for name in ("pytest","fastapi","uvicorn","httpx","cryptography"):
-              print(f"HHS_VENV_MODULE name={name} present={importlib.util.find_spec(name) is not None}")
-          PY
-          if /opt/hhs/venv/bin/python -m pytest --version >/tmp/hhs-venv-pytest.out 2>&1; then
-            echo "HHS_VENV_PYTEST=present"
-            cat /tmp/hhs-venv-pytest.out
-          else
-            echo "HHS_VENV_PYTEST=missing"
-            cat /tmp/hhs-venv-pytest.out
-          fi
-          REMOTE
+          actual=$(gh api repos/danonbrez/Holofractal_Harmonicode/commits/main --jq '.sha')
+          [[ "$actual" == "$EXPECTED_MAIN" ]] || {
+            echo "main moved before dispatch: expected=$EXPECTED_MAIN actual=$actual" >&2
+            exit 2
+          }
+          gh workflow run digitalocean-production-main.yml \
+            --repo danonbrez/Holofractal_Harmonicode \
+            --ref main
+          echo "EXACT_MAIN_RECOVERY_DISPATCHED=1"
+          echo "EXACT_MAIN_RECOVERY_TARGET=$EXPECTED_MAIN"
