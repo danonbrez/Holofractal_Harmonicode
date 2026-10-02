@@ -326,6 +326,9 @@ def test_exact_main_promotion_has_one_updater_owner_timer_follower_and_receipt_g
         "flock -w 10 8",
         '$PROMOTION_HANDOFF" == "0"',
         "systemctl start hhs-guarded-update.timer",
+        "PRODUCTION_LOCK_FILE=/run/lock/hhs-production-mutation.lock",
+        "HHS_PRODUCTION_MUTATION_OWNERSHIP_CLAIMED=1",
+        "flock -w 30 7",
     ]:
         assert token in workflow
 
@@ -528,6 +531,20 @@ def test_promotion_normalizes_stale_candidate_validation_timeout() -> None:
     assert 'values["HHS_VALIDATE_TIMEOUT_SECONDS"] = str(' in source
     assert "max(minimum_validate_timeout, current_validate_timeout)" in source
     assert '"HHS_VALIDATE_TIMEOUT_SECONDS",' in source
+
+
+def test_application_vm_production_is_manual_and_cannot_reprovision_host_network_stack() -> None:
+    application_vm = (
+        ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "push:" not in application_vm
+    assert "workflow_dispatch:" in application_vm
+    assert "LOCK_FILE=/run/lock/hhs-production-mutation.lock" in application_vm
+    assert "HHS_APPLICATION_VM_INSTALL_GUI=1" not in application_vm
+    assert "HHS_APPLICATION_VM_INSTALL_GUI=0" in application_vm
+    assert 'chown -R root:hhs "$RELEASE"' in application_vm
+    assert 'runuser -u hhs -- test -x "$RELEASE"' in application_vm
 
 
 def test_delivery_workflows_pin_active_production_target_and_skip_stale_index_without_failure() -> None:
