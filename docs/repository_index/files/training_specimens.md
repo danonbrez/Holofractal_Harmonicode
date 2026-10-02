@@ -1,10 +1,10 @@
 # Repository file/dependency shard - training_specimens
 
-Source commit: [e6b56828e85e1a49c370407f93e1fe156bc5bd50](https://github.com/danonbrez/Holofractal_Harmonicode/commit/e6b56828e85e1a49c370407f93e1fe156bc5bd50)
+Source commit: [1a6c1af1e69bdf11a7814538aa4ee3f5da5479a0](https://github.com/danonbrez/Holofractal_Harmonicode/commit/1a6c1af1e69bdf11a7814538aa4ee3f5da5479a0)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## training_specimens
 
-- [training_specimens/HHS_NINE_LOOP_FOREIGN_EQUIVALENCE_FEEDBACK_SPECIMEN_1_71.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/e6b56828e85e1a49c370407f93e1fe156bc5bd50/training_specimens/HHS_NINE_LOOP_FOREIGN_EQUIVALENCE_FEEDBACK_SPECIMEN_1_71.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
-- [training_specimens/HHS_RECURSIVE_PROSE_LANGUAGE_SPECIMEN_v1.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/e6b56828e85e1a49c370407f93e1fe156bc5bd50/training_specimens/HHS_RECURSIVE_PROSE_LANGUAGE_SPECIMEN_v1.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 13
+- [training_specimens/HHS_NINE_LOOP_FOREIGN_EQUIVALENCE_FEEDBACK_SPECIMEN_1_71.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/1a6c1af1e69bdf11a7814538aa4ee3f5da5479a0/training_specimens/HHS_NINE_LOOP_FOREIGN_EQUIVALENCE_FEEDBACK_SPECIMEN_1_71.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 10
+- [training_specimens/HHS_RECURSIVE_PROSE_LANGUAGE_SPECIMEN_v1.md](https://github.com/danonbrez/Holofractal_Harmonicode/blob/1a6c1af1e69bdf11a7814538aa4ee3f5da5479a0/training_specimens/HHS_RECURSIVE_PROSE_LANGUAGE_SPECIMEN_v1.md) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; documentation ; out 0 ; in 13
