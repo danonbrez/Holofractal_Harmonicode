@@ -6,8 +6,8 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b](https://github.com/danonbrez/Holofractal_Harmonicode/commit/deb60572fd45e922ae4d9a29a79bcb1bcf2ab93b)
-- Git tree: 05d039eb6cb20268c7420b768fd5a5421e2d5de9
+- Source commit: [63b40bbb158c5f4c43595cd601a05afe054a6551](https://github.com/danonbrez/Holofractal_Harmonicode/commit/63b40bbb158c5f4c43595cd601a05afe054a6551)
+- Git tree: 985b6eef2b0d5fac0d4dfebff181b12aa9fb4054
 - Tracked tree entries: 9,776
 - Tracked files in Git tree: 8,994
 - Content-bound indexed files: 8,943
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLjnNKf0CA2dhDb*(o35i<>n4ZWp+DX<JJgopqLXek5A!k5v1XNOheNXSQv(gbQlmzTawYNc?N-UzPy-wtnRyDN/FNdhYVipGePSq0)?ICSWrvsjtleeuKzXfe)eeMz37o9l7JZ3zF?>?bbr86
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLE*eoqyfxLHEsSK>M!EgvaV<f/yuwk+FFlip5AyGS4KIoIHq93cqwTYNQlnGSKVhfqrE>loIM5m3IIZ>yGYZmsVN/4eIdhFrBzYSdBj2gqD*IrzX1FfWd(JZrgdvudymAgx>N>FvlR?Z99?ZE
 
 ## Lane 5 evidence binding
 
@@ -64,7 +64,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9dKz(/MveD
 - Capabilities: 2,085
 - Constructors: 4,330
 - Knowledge relations: 13,415
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX146/+i33vi0Fx(0L)DQjOKYObv9ZWI4IU22Tm-VYcPaB703*KKi+OuKQhrfb>uC)HKg9Hu3bvFsOWO93paHVl2?UCS2MX*o/6mOvzrOsP<pe)Mg9B/4UHcgWOgt)8<V8VVGSq>K)O9)6hdGH
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX*j?VqgWycC8RWPLFcbi(Jvqno>W4nmwPqXuxe0lpnrjNC!QIEksTmdeuBnpE*xQ9dG8CFm5dUcEzKp6Dq*0waVJrDN/ZT*+aHJ-VAjtefmQshv2NWXzWb74uA+iiC/BB1NGEbqYp<>rJx?u5
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
