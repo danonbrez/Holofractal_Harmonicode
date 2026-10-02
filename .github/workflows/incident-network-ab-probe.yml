@@ -50,3 +50,52 @@ jobs:
           curl -kIsS --connect-timeout 5 --max-time 8 https://134.209.161.168/ || true
           echo '--- HTTPS production ---'
           curl -kIsS --connect-timeout 5 --max-time 8 https://159.65.178.254/ || true
+
+      - name: Probe production private NIC from inside NYC3 VPC
+        shell: bash
+        env:
+          HHS_CONTROL_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$HHS_CONTROL_SSH_PRIVATE_KEY"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_CONTROL_SSH_PRIVATE_KEY" > "$HOME/.ssh/control"
+          chmod 0600 "$HOME/.ssh/control"
+          ssh-keyscan -T 5 -H 134.209.161.168 > "$HOME/.ssh/control_known_hosts" 2>/dev/null
+          test -s "$HOME/.ssh/control_known_hosts"
+          chmod 0600 "$HOME/.ssh/control_known_hosts"
+
+          ssh -i "$HOME/.ssh/control" \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            -o ConnectTimeout=8 \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/control_known_hosts" \
+            root@134.209.161.168 'bash -s' <<'REMOTE'
+          set +e
+          ip route get 10.108.0.5 || true
+          probe() {
+            host="$1"
+            port="$2"
+            label="$3"
+            started=$(date +%s)
+            timeout 5 bash -c "exec 3<>/dev/tcp/$host/$port" >/dev/null 2>&1
+            rc=$?
+            elapsed=$(( $(date +%s) - started ))
+            if [ "$rc" -eq 0 ]; then
+              state=open
+            elif [ "$rc" -eq 124 ]; then
+              state=timeout_or_filtered
+            else
+              state=refused_or_unreachable
+            fi
+            printf 'VPC_PROBE label=%s host=%s port=%s state=%s rc=%s elapsed_s=%s\n' \
+              "$label" "$host" "$port" "$state" "$rc" "$elapsed"
+          }
+          for port in 22 80 443 8080 8720; do
+            probe 10.108.0.5 "$port" production-private
+          done
+          for port in 22 80 443; do
+            probe 159.65.178.254 "$port" production-public-from-vpc
+          done
+          REMOTE
