@@ -581,6 +581,30 @@ def test_application_vm_production_is_manual_and_cannot_reprovision_host_network
     assert 'runuser -u hhs -- test -x "$RELEASE"' in application_vm
 
 
+def test_all_production_host_mutators_share_one_lock_and_avoid_implicit_host_provisioning() -> None:
+    exact_main = (
+        ROOT / ".github" / "workflows" / "digitalocean-production-main.yml"
+    ).read_text(encoding="utf-8")
+    application_vm = (
+        ROOT / ".github" / "workflows" / "pass220-ubuntu-application-vm-production.yml"
+    ).read_text(encoding="utf-8")
+    real_guest = (
+        ROOT / ".github" / "workflows" / "pass220-i044-real-ubuntu-guest.yml"
+    ).read_text(encoding="utf-8")
+
+    shared_lock = "/run/lock/hhs-production-mutation.lock"
+    for workflow in (exact_main, application_vm, real_guest):
+        assert shared_lock in workflow
+        assert "flock -w 30" in workflow
+
+    assert "workflow_dispatch:" in application_vm
+    assert "push:" not in application_vm
+    assert "github.event_name == 'workflow_dispatch'" in real_guest
+    assert "inputs.run_real_guest == true" in real_guest
+    assert "HHS_GUEST_INSTALL_PACKAGES=0" in real_guest
+    assert "HHS_APPLICATION_VM_INSTALL_GUI=0" in application_vm
+
+
 def test_delivery_workflows_pin_active_production_target_and_skip_stale_index_without_failure() -> None:
     production = (
         ROOT / ".github" / "workflows" / "digitalocean-production-main.yml"
