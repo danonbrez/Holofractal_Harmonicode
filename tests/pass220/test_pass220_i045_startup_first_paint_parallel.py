@@ -123,8 +123,8 @@ def test_boot_recovery_defers_heavy_updater_and_bounds_probe_contention() -> Non
         ROOT / "deployment/digitalocean/guarded_auto_update/install.sh"
     ).read_text(encoding="utf-8")
 
-    assert "OnBootSec=10min" in timer
-    assert "OnBootSec=3min" not in timer
+    assert "OnBootSec=15min" in timer\n    assert "OnUnitActiveSec=30min" in timer\n    assert "RandomizedDelaySec=2min" in timer
+    assert "OnBootSec=3min" not in timer\n    assert "OnUnitActiveSec=5min" not in timer
     assert "HHS_RUNTIME_STATUS_PROBE_START_DELAY_SECONDS=90" in service
     assert "HHS_RUNTIME_STATUS_PROBE_CONCURRENCY=2" in service
     assert "configure_runtime_os_static_first.py" in installer
