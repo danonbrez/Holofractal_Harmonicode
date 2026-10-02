@@ -162,10 +162,14 @@ def test_runtime_os_bundle_restores_legacy_current_after_first_activation_failur
         assets = dist / "assets"
         assets.mkdir(parents=True)
         (dist / "index.html").write_text(
-            '<!doctype html><title>HHS Visual Runtime OS Workspace</title>\n',
+            '<!doctype html><title>HHS Visual Runtime OS Workspace</title>'
+            '<script type="module" src="/assets/index-test.js"></script>\n',
             encoding="utf-8",
         )
-        (assets / "index.js").write_text("globalThis.HHS=true;\n", encoding="utf-8")
+        (assets / "index-test.js").write_text(
+            "globalThis.HHS=true;\n",
+            encoding="utf-8",
+        )
 
         bundle_root = root / "host-runtime-os"
         legacy_current = bundle_root / "current"
