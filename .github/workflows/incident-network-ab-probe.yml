@@ -1,0 +1,122 @@
+name: Incident Verify Rollback Receipt Lineage
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/incident-network-ab-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      HHS_PRODUCTION_HOST: '159.65.178.254'
+      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
+    steps:
+      - name: Configure pinned SSH
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+      - name: Inspect exact rollback lineage without mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=12 \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" 'python3 -' <<'PY'
+          import json
+          from pathlib import Path
+          rollback = "cf2764c24e85ff4980d599f528218f1328b81627"
+          path = Path("/var/lib/hhs-guarded-update/receipts.jsonl")
+          rows = []
+          if path.is_file():
+              for n, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                  try:
+                      rec = json.loads(raw)
+                  except Exception:
+                      continue
+                  if isinstance(rec, dict):
+                      rows.append((n, rec))
+          print("HHS_RECEIPT_COUNT=" + str(len(rows)))
+          relevant = [
+              (n, r) for n, r in rows
+              if rollback in {
+                  str(r.get("previous_sha") or ""),
+                  str(r.get("candidate_sha") or ""),
+                  str(r.get("runtime_os_bundle_sha") or ""),
+              }
+          ]
+          print("HHS_ROLLBACK_RELEVANT_RECEIPTS=" + str(len(relevant)))
+          for n, r in relevant:
+              print(json.dumps({
+                  "line": n,
+                  "timestamp": r.get("timestamp"),
+                  "phase": r.get("phase"),
+                  "outcome": r.get("outcome"),
+                  "previous_sha": r.get("previous_sha"),
+                  "candidate_sha": r.get("candidate_sha"),
+                  "runtime_os_bundle_sha": r.get("runtime_os_bundle_sha"),
+                  "detail": r.get("detail"),
+              }, sort_keys=True))
+          promoted = [
+              r for _, r in rows
+              if r.get("phase") == "promotion"
+              and r.get("outcome") == "PROMOTED"
+          ]
+          print("HHS_PROMOTED_RECEIPT_COUNT=" + str(len(promoted)))
+          for r in promoted[-10:]:
+              print("PROMOTED " + json.dumps(r, sort_keys=True))
+          PY
+
+          ssh -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes -o ConnectTimeout=12 -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" 'bash -s' <<'REMOTE'
+          set +e
+          echo '=== LIVE CHECKOUT / DRIFT ==='
+          git -C /opt/hhs/app rev-parse HEAD
+          git -C /opt/hhs/app status --porcelain=v1 --untracked-files=normal
+          git -C /opt/hhs/app diff --stat
+          git -C /opt/hhs/app diff -- data/runtime/hhs_filesystem_ledger.json | head -120
+          echo '=== ROLLBACK WARM MANIFEST ==='
+          cat /var/lib/hhs/warm-boot/releases/cf2764c24e85ff4980d599f528218f1328b81627.json 2>/dev/null || true
+          echo '=== CANDIDATE WARM MANIFEST ==='
+          cat /var/lib/hhs/warm-boot/releases/d29d23e1750f9ac33c824e539b127e416b8c22b6.json 2>/dev/null || true
+          echo '=== CURRENT SERVICE UNIT ==='
+          systemctl cat hhs.service || true
+          echo '=== LIVE SERVICE STATE ==='
+          systemctl is-active hhs.service || true
+          systemctl is-failed hhs.service || true
+          ss -H -ltnp 'sport = :8080' || true
+          echo '=== RUNTIME OS RELEASE MAP ==='
+          readlink -f /var/lib/hhs/runtime-os/current || true
+          ls -ld /var/lib/hhs/runtime-os/current /var/lib/hhs/runtime-os/releases/* 2>/dev/null || true
+          ls -ld /var/lib/hhs/runtime-os/legacy-current-* 2>/dev/null || true
+          sha256sum /var/lib/hhs/runtime-os/legacy-current-*/index.html 2>/dev/null || true
+          sha256sum /opt/hhs/app/hhs_runtime/builds/libhhs_runtime.so 2>/dev/null || true
+          sha256sum /var/lib/hhs/runtime-os/current/index.html 2>/dev/null || true
+          find /var/lib/hhs/runtime-os/releases -mindepth 2 -maxdepth 2 -name index.html -type f -print0 2>/dev/null \
+            | sort -z \
+            | xargs -0 -r sha256sum || true
+          echo '=== ROLLBACK WARM-BOOT IDENTITY VERIFY ==='
+          HHS_DISABLE_C_AUTOBUILD=1 \
+            /opt/hhs/venv/bin/python \
+            /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify \
+            --repo-root /opt/hhs/app \
+            --manifest-root /var/lib/hhs/warm-boot/releases
+          REMOTE
