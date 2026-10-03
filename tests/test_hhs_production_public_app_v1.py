@@ -104,6 +104,47 @@ def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec(
     assert turn["runtime_mutation_admitted"] is False
 
 
+def test_deployment_health_probes_native_without_optional_provider_health():
+    from hhs_backend.runtime.hhs_production_assistant_v1 import (
+        DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+    )
+
+    service = DEFAULT_PRODUCTION_ASSISTANT_SERVICE
+    optional_calls: list[str] = []
+    original_model_health = service.model_service.health
+    original_pass153_health = (
+        service.pass153_service.health if service.pass153_service is not None else None
+    )
+
+    async def forbidden_model_health():
+        optional_calls.append("gemma")
+        raise AssertionError("deployment liveness must not probe optional Gemma health")
+
+    async def forbidden_pass153_health():
+        optional_calls.append("pass153")
+        raise AssertionError("deployment liveness must not probe optional Pass 153 health")
+
+    service.model_service.health = forbidden_model_health
+    if service.pass153_service is not None:
+        service.pass153_service.health = forbidden_pass153_health
+    try:
+        health = asyncio.run(service.deployment_health())
+    finally:
+        service.model_service.health = original_model_health
+        if service.pass153_service is not None and original_pass153_health is not None:
+            service.pass153_service.health = original_pass153_health
+
+    assert optional_calls == []
+    assert health["ok"] is True, health
+    assert health["online"] is True, health
+    assert health["selected_provider_id"] == "provider:hhs.local.text", health
+    assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", health
+    assert health["deployment_liveness_scope"] == "NATIVE_HHS_LOCAL_EXECUTABLE_AUTHORITY"
+    assert health["optional_provider_health_deferred"] is True
+    assert health["native_hhs"]["ready"] is True
+    assert health["native_hhs"]["health"]["ok"] is True
+
+
 def test_runtime_authority_boots_and_reports_real_workflow_state():
     from hhs_backend import production_server
     from hhs_backend import server as canonical
