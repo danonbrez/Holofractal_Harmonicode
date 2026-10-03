@@ -1,0 +1,63 @@
+{
+  "schema": "HHS_PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CANDIDATE",
+  "base_main": "88989c7d4b0a85f3209f2ab964f430d37ae17b24",
+  "branch": "pass220/i068-dwave-dual-rail-candidate-bridge-20261003",
+  "merge_target": "main",
+  "inherits": [
+    "HHS_PASS_220_I027_QUANTUM_COLLAPSE_ADMISSION_BRIDGE_V1",
+    "HHS_PASS219_EXACT_VM81_CANDIDATE_ADAPTER_1_21_3"
+  ],
+  "purpose": "Transcribe D-Wave Leap QCDL dual-rail simulator results into exact HHS candidate evidence while preserving detected erasures, explicit register order, ordered control/target geometry, and the canonical VM81/Hash72/Hash216 authority boundary.",
+  "upstream_surface": {
+    "provider": "D-Wave Leap QCDL simulator beta",
+    "sdk_surface": "dwave.gate.leap.LeapQCDLSimulator",
+    "documented_qpus": [
+      "DRsim_17qubits",
+      "DRsim_21qubits"
+    ],
+    "erasure_symbol": "*",
+    "numerical_erasure_value": -1,
+    "mced_supported": true,
+    "raw_counts_post_select": false
+  },
+  "ordered_nine_state_mapping": {
+    "symbols": ["0", "1", "*"],
+    "codes": {
+      "0": 0,
+      "1": 1,
+      "*": 2
+    },
+    "rule": "i027_outcome=3*control_code+target_code",
+    "output_range": [0, 8],
+    "ordered_control_target": true,
+    "reversal_of_unequal_pair_changes_address": true
+  },
+  "receipt": {
+    "form": "config_hash72 || result_hash72 || authority_hash72",
+    "positions": 216,
+    "canonical_commit_authority": false
+  },
+  "invariants": {
+    "candidate_only": true,
+    "external_simulator_source": true,
+    "erasure_channel_preserved": true,
+    "post_selection_for_provenance_forbidden": true,
+    "explicit_register_order_required": true,
+    "ordered_control_target_preserved": true,
+    "exact_integer_transcription": true,
+    "floating_point_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_persistence_authority": false,
+    "external_egress_authority": false
+  },
+  "validation": {
+    "python_dependency_scoped_tests": "12 passed",
+    "runtime_self_test": "8/8 PASS",
+    "wolfram_exact_checks": "7/7 PASS",
+    "branch_ci": "PENDING"
+  }
+}
