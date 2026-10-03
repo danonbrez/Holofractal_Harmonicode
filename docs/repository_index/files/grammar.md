@@ -1,9 +1,9 @@
 # Repository file/dependency shard - grammar
 
-Source commit: [c1a40f2ce26656c2f9ebb98d8fc279cca68661fc](https://github.com/danonbrez/Holofractal_Harmonicode/commit/c1a40f2ce26656c2f9ebb98d8fc279cca68661fc)
+Source commit: [ed02cfef4c3fcb6230604d321447d9a6fe1bf9b5](https://github.com/danonbrez/Holofractal_Harmonicode/commit/ed02cfef4c3fcb6230604d321447d9a6fe1bf9b5)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## grammar/pass187
 
-- [grammar/pass187/harmonicode_graph_grammar.ebnf](https://github.com/danonbrez/Holofractal_Harmonicode/blob/c1a40f2ce26656c2f9ebb98d8fc279cca68661fc/grammar/pass187/harmonicode_graph_grammar.ebnf) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 3
+- [grammar/pass187/harmonicode_graph_grammar.ebnf](https://github.com/danonbrez/Holofractal_Harmonicode/blob/ed02cfef4c3fcb6230604d321447d9a6fe1bf9b5/grammar/pass187/harmonicode_graph_grammar.ebnf) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; binary_or_unclassified ; out 0 ; in 3
