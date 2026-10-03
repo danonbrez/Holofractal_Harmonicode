@@ -8,6 +8,7 @@ owned by ``hhs_backend.server``.
 """
 from __future__ import annotations
 
+import asyncio
 import inspect
 import os
 from pathlib import Path
@@ -193,11 +194,14 @@ async def _assistant_health() -> dict[str, Any]:
             DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
         )
 
-        DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout = max(
-            float(DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout),
+        DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout = min(
+            max(float(DEFAULT_PRODUCTION_ASSISTANT_SERVICE._health_timeout), 0.5),
             5.0,
         )
-        return await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.health()
+        return await asyncio.wait_for(
+            DEFAULT_PRODUCTION_ASSISTANT_SERVICE.deployment_health(),
+            timeout=8.0,
+        )
     except Exception as exc:
         return {
             "ok": False,

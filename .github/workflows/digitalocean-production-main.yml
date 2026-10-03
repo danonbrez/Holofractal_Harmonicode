@@ -15,6 +15,9 @@ on:
       - "hhs_backend/runtime_os_visual_server.py"
       - "hhs_backend/runtime_os_application_server.py"
       - "hhs_backend/production_visual_server.py"
+      - "hhs_backend/production_server.py"
+      - "hhs_backend/runtime/hhs_production_assistant_v1.py"
+      - ".github/workflows/repository-hash216-dependency-index.yml"
       - "deployment/digitalocean/guarded_auto_update/**"
       - "deployment/digitalocean/warm_boot_manifest.py"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
@@ -22,6 +25,8 @@ on:
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
       - "tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py"
       - "tests/test_runtime_os_production_root.py"
+      - "tests/test_hhs_production_public_app_v1.py"
+      - "tests/test_hash216_exact_main_convergence_v1.py"
       - "docs/deployment/DIGITALOCEAN_EXACT_MAIN*.md"
   workflow_dispatch:
 

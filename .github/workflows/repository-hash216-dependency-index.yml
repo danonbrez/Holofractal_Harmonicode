@@ -468,6 +468,7 @@ jobs:
           gh workflow run repository-hash216-dependency-index.yml --ref main
 
       - name: Commit generated projection to main
+        id: commit_projection
         if: github.event_name != 'pull_request'
         env:
           EXPECTED_HEAD: ${{ github.sha }}
@@ -476,14 +477,31 @@ jobs:
           remote_head="$(git rev-parse origin/main)"
           if [ "$remote_head" != "$EXPECTED_HEAD" ]; then
             echo "::notice title=Stale Hash216 projection skipped::main advanced from $EXPECTED_HEAD to $remote_head; refusing stale generated projection without marking the safe no-op as a workflow failure"
+            echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git add REPOSITORY_HASH216_DEPENDENCY_TREE.md artifacts/repository_index docs/repository_index/files
           if git diff --cached --quiet; then
             echo 'repository Hash216 index already current'
+            echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'docs: refresh Hash216 repository dependency index'
           git push origin HEAD:main
+          committed_sha="$(git rev-parse HEAD)"
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+          echo "committed_sha=$committed_sha" >> "$GITHUB_OUTPUT"
+          echo "HHS_HASH216_GENERATED_MAIN=$committed_sha"
+
+      - name: Dispatch Exact-Main for generated current main
+        if: github.event_name != 'pull_request' && steps.commit_projection.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          remote_head="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test -n "$remote_head"
+          gh workflow run digitalocean-production-main.yml --ref main
+          echo "HHS_HASH216_EXACT_MAIN_DISPATCHED=$remote_head"
