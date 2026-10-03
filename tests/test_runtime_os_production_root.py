@@ -403,6 +403,25 @@ def test_guarded_candidate_uses_bounded_liveness_before_slow_status_surfaces():
     assert validator.index(interface) < validator.index(product)
     assert validator.index(product) < validator.index(pass174)
     assert inherited_heavy not in validator
+    assert 'assistant_health.get("ok") is not True' in validator
+    assert 'assistant_health.get("online") is not True' in validator
+    assert '"provider:hhs.local.text"' in validator
+    assert '"NATIVE_HHS_LOCAL_EXECUTABLE_AUTHORITY"' in validator
+    assert 'assistant_health.get("optional_provider_health_deferred") is not True' in validator
+
+    production_server = Path("hhs_backend/production_server.py").read_text(encoding="utf-8")
+    assistant_service = Path(
+        "hhs_backend/runtime/hhs_production_assistant_v1.py"
+    ).read_text(encoding="utf-8")
+    assert "DEFAULT_PRODUCTION_ASSISTANT_SERVICE.deployment_health()" in production_server
+    assert "timeout=8.0" in production_server
+    assert "async def deployment_health" in assistant_service
+    deployment_block = assistant_service.split(
+        "async def deployment_health", 1
+    )[1].split("async def health", 1)[0]
+    assert '"native", self.native_service, force=True' in deployment_block
+    assert 'self.model_service' not in deployment_block
+    assert 'self.pass153_service' not in deployment_block
 
 
 
