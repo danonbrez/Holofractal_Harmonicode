@@ -4710,6 +4710,93 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.canonical_stem_physics_law_objects.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_i063_canonical_stem_physics_law_objects_v1"
+        ),
+        function="canonical_stem_physics_law_self_test",
+        service_type="pass220_validated_canonical_stem_physics_law_constructor",
+        description=(
+            "Validate I063 canonical STEM/physics law objects before solver "
+            "state construction. Each law binds exact repository source/blob "
+            "identity, verbatim expression, typed variables, unit and seven-"
+            "axis SI dimension witnesses, assumptions, boundary conditions, "
+            "law domain, I060 theorem/dependency Hash72 identities, and one "
+            "Lane 5 5,184 coordinate. Standard physics equations, HHS "
+            "admissibility constraints, HHS physical hypotheses, and "
+            "projection-only relations remain distinct classes. Measured "
+            "behavior routes through the independent I061 empirical axis. "
+            "The law is intrinsically bound to I061 before any solver state "
+            "exists; no VM81/Hash authority is transferred."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I063_LAW_TO_I061_ADMISSION_ENVELOPE_V1",
+        ],
+        validators=[
+            "validate_physics_law_object",
+            "validate_law_to_i061_envelope",
+            "canonical_stem_physics_law_self_test",
+        ],
+        guards=[
+            "i061_i062_lineage_inherited",
+            "exact_repository_source_blob_identity",
+            "verbatim_equation_identity_preserved",
+            "typed_variables_and_unit_witnesses_required",
+            "si_seven_axis_dimension_witnesses_required",
+            "dimensionally_invalid_law_rejected",
+            "assumptions_and_boundaries_part_of_law_identity",
+            "i060_theorem_identity_intrinsic",
+            "i060_dependency_identity_intrinsic",
+            "standard_physics_and_hhs_admissibility_classes_distinct",
+            "hhs_admissibility_not_promoted_to_measured_physics",
+            "hhs_physical_hypothesis_requires_i061_empirical_axis_when_measured",
+            "shared_lane5_5184_coordinate_with_i061",
+            "law_binding_precedes_solver_state_construction",
+            "post_hoc_law_attachment_forbidden",
+            "canonical_authority_escalation_forbidden",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I063_SOURCE_IDENTITY_DRIFT",
+            "REJECT_I063_UNKNOWN_LAW_CLASS",
+            "REJECT_I063_VARIABLE_IDENTITY_DRIFT",
+            "REJECT_I063_UNIT_DIMENSION_MISSING",
+            "REJECT_I063_DIMENSION_MISMATCH",
+            "REJECT_I063_ASSUMPTION_BOUNDARY_DRIFT",
+            "REJECT_I063_I060_PROOF_IDENTITY_DRIFT",
+            "REJECT_I063_HHS_ADMISSION_PROMOTED_TO_MEASURED_PHYSICS",
+            "REJECT_I063_EMPIRICAL_POLICY_BYPASS",
+            "REJECT_I063_5184_COORDINATE_DRIFT",
+            "REJECT_I063_POST_HOC_LAW_ATTACHMENT",
+            "REJECT_I063_LAW_I061_BINDING_DRIFT",
+            "REJECT_I063_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy=(
+            "CANDIDATE_ONLY_CANONICAL_PHYSICS_LAW_I061_ADMISSION_REQUIRED"
+        ),
+        persistence_policy=(
+            "NO_DIRECT_VM81_HASH72_HASH216_PERSISTENCE_FROM_I063_LAW_OBJECT"
+        ),
+        boundedness_policy=(
+            "TYPED_LAW_OBJECT_X_SI7_DIMENSIONS_X_5184_COORDINATE_X_"
+            "PRE_SOLVER_I061_BINDING"
+        ),
+    )
+
+    registry.register_function(
         name="pass220.unified_scientific_physics_synthesis.self_test",
         module=(
             "hhs_runtime."
