@@ -263,6 +263,18 @@ if "project" not in workspace and "objects" not in workspace:
 product = json.loads(Path("/tmp/hhs-candidate-product-health.json").read_text(encoding="utf-8"))
 if "runtime" not in product or "assistant" not in product:
     raise SystemExit("candidate product health route is not the production product surface")
+runtime_health = product.get("runtime") or {}
+assistant_health = product.get("assistant") or {}
+if runtime_health.get("ok") is not True:
+    raise SystemExit(f"candidate runtime authority is not online: {runtime_health}")
+if assistant_health.get("ok") is not True or assistant_health.get("online") is not True:
+    raise SystemExit(f"candidate assistant authority is not online: {assistant_health}")
+if assistant_health.get("selected_provider_id") != "provider:hhs.local.text":
+    raise SystemExit(f"candidate deployment liveness did not prove native assistant: {assistant_health}")
+if assistant_health.get("deployment_liveness_scope") != "NATIVE_HHS_LOCAL_EXECUTABLE_AUTHORITY":
+    raise SystemExit(f"candidate assistant liveness scope drifted: {assistant_health}")
+if assistant_health.get("optional_provider_health_deferred") is not True:
+    raise SystemExit(f"candidate assistant liveness reintroduced optional provider coupling: {assistant_health}")
 pass174 = json.loads(Path("/tmp/hhs-candidate-pass174.json").read_text(encoding="utf-8"))
 if not pass174.get("classification"):
     raise SystemExit("candidate Pass 174 status route did not return runtime classification")
