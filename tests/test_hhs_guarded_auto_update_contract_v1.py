@@ -814,3 +814,46 @@ def test_delivery_workflows_pin_active_production_target_and_skip_stale_index_wi
     assert stale_guard[1] in stale_block
     assert stale_guard[2] in stale_block
     assert "exit 1" not in stale_block
+
+def test_product_health_deployment_liveness_is_bounded_and_native_only() -> None:
+    production = (
+        ROOT / "hhs_backend" / "production_server.py"
+    ).read_text(encoding="utf-8")
+    assistant = (
+        ROOT / "hhs_backend" / "runtime" / "hhs_production_assistant_v1.py"
+    ).read_text(encoding="utf-8")
+    validator = (
+        ROOT / "deployment" / "digitalocean" / "guarded_auto_update" / "validate-candidate.sh"
+    ).read_text(encoding="utf-8")
+
+    assert "DEFAULT_PRODUCTION_ASSISTANT_SERVICE.deployment_health()" in production
+    assert "timeout=8.0" in production
+    deployment_block = assistant.split(
+        "async def deployment_health", 1
+    )[1].split("async def health", 1)[0]
+    assert '"native", self.native_service, force=True' in deployment_block
+    assert "self.model_service" not in deployment_block
+    assert "self.pass153_service" not in deployment_block
+    assert '"NATIVE_HHS_LOCAL_EXECUTABLE_AUTHORITY"' in deployment_block
+    assert 'status["optional_provider_health_deferred"] = True' in deployment_block
+
+    assert 'assistant_health.get("ok") is not True' in validator
+    assert 'assistant_health.get("online") is not True' in validator
+    assert '"provider:hhs.local.text"' in validator
+    assert '"NATIVE_HHS_LOCAL_EXECUTABLE_AUTHORITY"' in validator
+
+
+def test_hash216_generated_main_dispatches_exact_main() -> None:
+    workflow = (
+        ROOT / ".github" / "workflows" / "repository-hash216-dependency-index.yml"
+    ).read_text(encoding="utf-8")
+    exact_main = (
+        ROOT / ".github" / "workflows" / "digitalocean-production-main.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "actions: write" in workflow
+    assert "id: commit_projection" in workflow
+    assert "steps.commit_projection.outputs.committed == 'true'" in workflow
+    assert "gh workflow run digitalocean-production-main.yml --ref main" in workflow
+    assert "workflow_dispatch:" in exact_main
+
