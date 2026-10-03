@@ -179,3 +179,41 @@ install.sh
 ```
 
 This does not alter the frozen historical blob table.
+
+
+## Pass 214 inherited membrane repair-forward closure
+
+The next exact/synthetic Pass 202 run advanced through:
+
+- historical Pass 202 identities: PASS;
+- current successor Pass 202 identities: PASS;
+- cumulative exact ABI C/C++ conformance: PASS;
+- sealed legacy rollback recovery: PASS.
+
+The kernel-derived preflight then entered inherited Pass 214 and failed with:
+
+```text
+PASS214_EXACT_VM81_REBIND_IDENTITY_DRIFT
+```
+
+This was an obsolete whole-file VM81 identity expectation. The current authoritative
+Pass 214 validation surfaces already define the repair-forward policy as:
+
+- freeze legacy VM81 opcode prefix `0..23`;
+- preserve `OP_HALT == 23`;
+- permit later append-only opcode families;
+- forbid direct adapter mutation through `apply_instruction` / `vm81_step`;
+- do not treat the entire `HARMONICODE_VM_RUNTIME.c` Git blob as permanent authority.
+
+The inherited Pass 214 membrane now implements that same policy. The old exact
+runtime blob remains recorded only as historical provenance and is explicitly
+marked non-current authority. The current adapter validation script/test identities
+are pinned, the runtime opcode prefix is parsed and verified directly, and the
+direct-mutation guard remains fail-closed.
+
+Additional changed files:
+
+- `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i116_pass214.py`
+- `tests/pass219/test_pass219_cumulative_pass214_membrane_i116.py`
+
+No canonical VM81 mutation authority or runtime behavior changed.
