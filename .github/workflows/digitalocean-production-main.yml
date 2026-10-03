@@ -366,6 +366,22 @@ jobs:
             HHS_PRODUCTION_HEALTH_TIMEOUT_SECONDS=600 \
               bash "$bootstrap_root/deployment/digitalocean/guarded_auto_update/install.sh"; then
             echo "=== EXACT-MAIN PRODUCTION RECOVERY DIAGNOSTICS ===" >&2
+            printf 'HHS_EXACT_MAIN_FAILURE_HEAD=%s\n' "$(git -C "$APP_ROOT" rev-parse HEAD 2>/dev/null || printf unknown)" >&2
+            git -C "$APP_ROOT" status --short >&2 || true
+            echo "=== GUARDED UPDATER SERVICE STATUS ===" >&2
+            systemctl status hhs-guarded-update.service --no-pager --full >&2 || true
+            systemctl show hhs-guarded-update.service -p ActiveState -p SubState -p Result -p ExecMainCode -p ExecMainStatus --no-pager >&2 || true
+            echo "=== GUARDED UPDATER JOURNAL ===" >&2
+            journalctl -u hhs-guarded-update.service -n 800 --no-pager >&2 || true
+            if [[ -f "$STATE_ROOT/receipts.jsonl" ]]; then
+              echo "=== GUARDED UPDATE RECEIPTS ===" >&2
+              tail -n 30 "$STATE_ROOT/receipts.jsonl" >&2 || true
+            fi
+            if [[ -f "$STATE_ROOT/last-success.json" ]]; then
+              echo "=== GUARDED UPDATE LAST SUCCESS ===" >&2
+              cat "$STATE_ROOT/last-success.json" >&2 || true
+            fi
+            echo "=== HHS SERVICE STATUS ===" >&2
             systemctl status hhs.service --no-pager --full >&2 || true
             systemctl show hhs.service -p ActiveState -p SubState -p MainPID -p ExecStart -p WorkingDirectory -p Environment --no-pager >&2 || true
             ss -ltnp | grep ':8080' >&2 || true
