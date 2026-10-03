@@ -68,6 +68,8 @@ def _litert_members(
             "role": "PRIMARY_GENERATOR" if model_id == primary else "GENERATOR_FALLBACK",
             "ready": True,
             "callable_from_unified_chat": True,
+            "terminal_text_generation": True,
+            "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
             "capabilities": ["TEXT_GENERATION"],
             "priority_ordinal": index,
             "configured_primary": model_id == configured_model_id,
@@ -105,6 +107,8 @@ def build_unified_language_model_fabric(
             "configured": bool(causal.get("configured")),
             "loaded": bool(causal.get("loaded")),
             "callable_from_unified_chat": True,
+            "terminal_text_generation": True,
+            "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
             "capabilities": ["TEXT_GENERATION", "MEMORY_RETRIEVAL"],
         })
 
@@ -112,10 +116,16 @@ def build_unified_language_model_fabric(
         "member_id": "native-semantic:hhs-native-language-v1",
         "provider_id": "provider:hhs.local.text",
         "model_id": "hhs-native-language-v1",
-        "role": "EXACT_SEMANTIC_FALLBACK",
-        "ready": bool(native_health.get("ok") and native_health.get("online")),
+        "role": "EXACT_SEMANTIC_RESPONSE_CANDIDATE",
+        "ready": bool(
+            native_health.get("ok")
+            and native_health.get("online")
+            and native_installation.get("semantic_candidate_ready")
+        ),
         "callable_from_unified_chat": True,
-        "capabilities": ["TEXT_GENERATION", "SEARCH", "MEMORY_RETRIEVAL"],
+        "terminal_text_generation": False,
+        "assistant_turn_disposition": "NONTERMINAL_SEMANTIC_CANDIDATE",
+        "capabilities": ["SEMANTIC_REASONING", "SEARCH", "MEMORY_RETRIEVAL"],
         "full_causal_generation_ready": bool(causal.get("ready")),
     })
 
@@ -131,6 +141,8 @@ def build_unified_language_model_fabric(
             "role": "PASS153_OPEN_MODEL_FALLBACK",
             "ready": True,
             "callable_from_unified_chat": True,
+            "terminal_text_generation": True,
+            "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
             "capabilities": list(model.get("capabilities") or ["text-generation"]),
             "backend": model.get("backend"),
             "source": model.get("source"),
@@ -186,7 +198,9 @@ def build_unified_language_model_fabric(
         primary_member = next(
             (
                 member for member in members
-                if member.get("callable_from_unified_chat") and member.get("ready")
+                if member.get("callable_from_unified_chat")
+                and member.get("ready")
+                and member.get("terminal_text_generation") is True
             ),
             None,
         )
@@ -207,6 +221,8 @@ def build_unified_language_model_fabric(
         "litert_registered_model_ids": list(registered_model_ids),
         "litert_route_order": [member["model_id"] for member in litert],
         "lane5_tooling_expected": True,
+        "capability_visibility_authority": "HHS_PASS_219_LANE5_GLOBAL_CAPABILITY_VISIBILITY_1_76",
+        "local_member_inventory_is_lane5_projection_not_parallel_authority": True,
         "provider_output_is_canonical_authority": False,
         "vm81_admission_boundary_preserved": True,
         "hash72_receipt_boundary_preserved": True,

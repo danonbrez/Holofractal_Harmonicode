@@ -310,11 +310,16 @@ class ProductionAssistantService:
             and pass153_health.get("ok")
         )
         fabric = self.unified_model_fabric()
+        native_installation = self._native_installation_status()
+        native_terminal_ready = bool(
+            native_ready
+            and (native_installation.get("causal_lm") or {}).get("ready")
+        )
         selected = (
             litert_status.get("provider_id")
             if litert_ready
             else native_status.get("provider_id")
-            if native_ready
+            if native_terminal_ready
             else pass153_status.get("provider_id")
             if pass153_ready
             else None
@@ -360,6 +365,10 @@ class ProductionAssistantService:
                 "health": native_health,
                 "installation": self._native_installation_status(),
                 "ready": native_ready,
+                "terminal_generation_ready": native_terminal_ready,
+                "semantic_candidate_ready": bool(
+                    native_installation.get("semantic_candidate_ready")
+                ),
             },
             "pass153": {
                 "status": pass153_status,
@@ -434,9 +443,20 @@ class ProductionAssistantService:
 
     @staticmethod
     def _completed(result: Mapping[str, Any]) -> bool:
+        if not result.get("ok"):
+            return False
+        metadata = dict(result.get("provider_metadata") or {})
+        disposition = str(
+            result.get("assistant_turn_disposition")
+            or metadata.get("assistant_turn_disposition")
+            or ""
+        )
+        if disposition.startswith("NONTERMINAL_"):
+            return False
+        if str(metadata.get("generation_path") or "") == "EXACT_SEMANTIC_FALLBACK":
+            return False
         return bool(
-            result.get("ok")
-            and str((result.get("assistant_message") or {}).get("content") or "").strip()
+            str((result.get("assistant_message") or {}).get("content") or "").strip()
         )
 
     def _unavailable_turn(
