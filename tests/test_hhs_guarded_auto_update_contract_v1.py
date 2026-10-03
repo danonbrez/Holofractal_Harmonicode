@@ -888,3 +888,23 @@ def test_candidate_boot_externalizes_filesystem_ledger_and_preserves_fail_closed
     assert "production checkout is dirty after promotion" in exact_main
     assert 'status --porcelain=v1 --untracked-files=normal' in exact_main
 
+def test_installer_rebinds_lane5_socket_only_after_stopping_existing_ingress_owners() -> None:
+    installer = read("install.sh")
+
+    enable_socket = installer.index("systemctl enable hhs-lane5-ingress.socket")
+    stop_socket = installer.index("systemctl stop hhs-lane5-ingress.socket", enable_socket)
+    stop_service = installer.index("systemctl stop hhs-lane5-ingress.service", stop_socket)
+    start_socket = installer.index("systemctl start hhs-lane5-ingress.socket", stop_service)
+    start_service = installer.index("systemctl start hhs-lane5-ingress.service", start_socket)
+    health_probe = installer.index("lane5_deadline=$((SECONDS + 120))", start_service)
+
+    assert enable_socket < stop_socket < stop_service < start_socket < start_service < health_probe
+    for token in [
+        "Lane 5 ingress socket could not stop before deterministic rebind.",
+        "Lane 5 ingress service could not stop before deterministic rebind.",
+        "Lane 5 ingress socket could not bind after service shutdown.",
+        "Lane 5 ingress service could not start from the rebound socket.",
+        "lane5_failure_diagnostics",
+    ]:
+        assert token in installer
+
