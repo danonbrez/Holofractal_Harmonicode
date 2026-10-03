@@ -217,6 +217,29 @@ let tick = 0, rendered = 0, rafCount = 0, paused = false, topoInvert = 0;
 let manualTestMode = false;
 let path = { seed:"HHS-I041-LANE5-5184", start:0, stride:1, inverseStride:1 };
 let lastPhaseWord = "";
+let lastHudText = "";
+let dynamicsProjectionCache = null;
+const q144RotationCache = new Array(Q144);
+const phaseWordCache = new Map();
+const PHASE_WORD_CACHE_LIMIT = 128;
+let drawingBufferSizeScratch = null;
+let compositorWidth = 0, compositorHeight = 0;
+const ZERO_LOSS_RUNTIME_OPTIMIZATION = Object.freeze({
+  schema:"HHS_PASS_220_I055_I041_ZERO_LOSS_RUNTIME_OPTIMIZATION_V1",
+  benchmarkReference:"artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json",
+  latencyPolicyReference:"contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json",
+  deviceReference:"SM-F966U",
+  persistentResourceReuse:true,
+  q144Memoization:true,
+  dynamicsProjectionMemoization:true,
+  boundedPhaseWordMemoization:true,
+  tesseractAllocationReuse:true,
+  hudDomWriteDeduplication:true,
+  renderTargetResizeDeduplication:true,
+  simulationLogicRemoved:false,
+  projectionLogicRemoved:false,
+  canonicalMutationAuthority:false
+});
 function gcd(a,b){ while(b!==0){ const t=a%b; a=b; b=t; } return Math.abs(a); }
 
 async function sha256Bytes(text){
@@ -312,9 +335,11 @@ function brFloor(a){
   return -((-a.n+a.d-1n)/a.d);
 }
 function dynamicsProjection(){
-  return Object.fromEntries(Object.entries(dynamicsTuneExact).map(
+  if(dynamicsProjectionCache) return dynamicsProjectionCache;
+  dynamicsProjectionCache=Object.freeze(Object.fromEntries(Object.entries(dynamicsTuneExact).map(
     ([key,value])=>[key,projectionFloatRational(exactRatioFromText(value))]
-  ));
+  )));
+  return dynamicsProjectionCache;
 }
 function exactDynamicsReceipt(){
   return Object.freeze({...dynamicsTuneExact});
@@ -334,10 +359,12 @@ function rot72Exact(j,k){
 }
 function q144RotationExact(k){
   const q=((Number(k)%Q144)+Q144)%Q144;
+  const cached=q144RotationCache[q];
+  if(cached) return cached;
   const inverse=(Q144-q)%Q144;
   const cos="(zeta_144^"+q+"+zeta_144^"+inverse+")/2";
   const sin="(zeta_144^"+q+"-zeta_144^"+inverse+")/(2*i)";
-  return Object.freeze({
+  const rotation=Object.freeze({
     field:"Q(zeta_144)",
     q144Index:q,
     inverseIndex:inverse,
@@ -349,6 +376,8 @@ function q144RotationExact(k){
     ]),
     hostFloatArithmeticUsed:false
   });
+  q144RotationCache[q]=rotation;
+  return rotation;
 }
 function lane5ExactSchedule(targetTick){
   if(!Number.isSafeInteger(targetTick)||targetTick<0)
@@ -671,21 +700,31 @@ const postFragmentShader=[
 "}"
 ].join("\n");
 
+function readDrawingBufferSize(){
+  if(!drawingBufferSizeScratch) drawingBufferSizeScratch=new HHS3D.Vector2();
+  renderer.getDrawingBufferSize(drawingBufferSizeScratch);
+  return drawingBufferSizeScratch;
+}
+
 function resizePixelCompositor(){
-  if(!renderer||!sourceTarget||!postMaterial) return;
-  const size=new HHS3D.Vector2();
-  renderer.getDrawingBufferSize(size);
+  if(!renderer||!sourceTarget||!postMaterial) return false;
+  const size=readDrawingBufferSize();
   const w=Math.max(1,Math.floor(size.x)), h=Math.max(1,Math.floor(size.y));
+  if(w===compositorWidth&&h===compositorHeight) return false;
   sourceTarget.setSize(w,h);
   postMaterial.uniforms.uResolution.value.set(w,h);
+  compositorWidth=w;
+  compositorHeight=h;
+  return true;
 }
 
 function buildPixelCompositor(){
-  const size=new HHS3D.Vector2();
-  renderer.getDrawingBufferSize(size);
+  const size=readDrawingBufferSize();
+  const initialWidth=Math.max(1,Math.floor(size.x));
+  const initialHeight=Math.max(1,Math.floor(size.y));
   sourceTarget=new HHS3D.WebGLRenderTarget(
-    Math.max(1,Math.floor(size.x)),
-    Math.max(1,Math.floor(size.y)),
+    initialWidth,
+    initialHeight,
     {
       format:HHS3D.RGBAFormat,
       minFilter:HHS3D.NearestFilter,
@@ -695,6 +734,8 @@ function buildPixelCompositor(){
     }
   );
   sourceTarget.texture.generateMipmaps=false;
+  compositorWidth=initialWidth;
+  compositorHeight=initialHeight;
 
   postScene=new HHS3D.Scene();
   postCamera=new HHS3D.OrthographicCamera(-1,1,1,-1,0,1);
@@ -736,8 +777,7 @@ function installRenderPacketResources(){
 function buildLane5ProjectionPacket(){
   if(!nativePacketBuilder) throw new Error("native render packet WASM bridge is not ready");
   if(!renderResources) throw new Error("HHS render resources are not registered");
-  const size=new HHS3D.Vector2();
-  renderer.getDrawingBufferSize(size);
+  const size=readDrawingBufferSize();
   const w=Math.max(1,Math.floor(size.x)), h=Math.max(1,Math.floor(size.y));
   const O=HHSRenderPacket.OPCODE;
   const exactTime=simulationTickExact||brZero();
@@ -778,8 +818,7 @@ function renderProjectionFrame(){
 
 function pixelDisplayContract(){
   resizePixelCompositor();
-  const size=new HHS3D.Vector2();
-  renderer.getDrawingBufferSize(size);
+  const size=readDrawingBufferSize();
   return {
     schema:"HHS_I041_HOLOGRAPHIC_PIXEL_SPRITE_DISPLAY_V1",
     canonicalSeedTitle:CANONICAL_SEED_TITLE,
@@ -818,6 +857,7 @@ function pixelDisplayContract(){
     renderPacketJavaScriptSerialization:false,
     renderPacketCompatibilityUnadmitted:true,
     renderPacketCanonicalIdentity:false,
+    runtimeOptimization:ZERO_LOSS_RUNTIME_OPTIMIZATION,
     tuning:{...pixelTune}
   };
 }
@@ -860,6 +900,7 @@ function bindDynamicsControl(id,key,readoutId){
   const apply=()=>{
     const ratio=exactRatioFromText(el.value);
     dynamicsTuneExact[key]=brToString(ratio);
+    dynamicsProjectionCache=null;
     if(out) out.textContent=brToString(ratio);
   };
   el.addEventListener("input",apply);
@@ -920,31 +961,49 @@ function buildTesseract(){
   for(let v=0;v<16;v++) for(let b=0;b<4;b++){ const u=v^(1<<b); if(u>v) edges.push([v,u]); }
   return {verts,edges,lastChecksum:0,visibleGuide:false};
 }
-function updateTesseract(t){
+function updateTesseract(t,dynamics=null){
   /* Projection-only diagnostic. Canonical SO(4)/Q144 state is symbolic above. */
-  const d=dynamicsProjection();
+  const d=dynamics||dynamicsProjection();
   const h1=t*d.tesseractRate,h2=h1/PHI_RENDER;
   const c1=Math.cos(h1),s1=Math.sin(h1),c2=Math.cos(h2),s2=Math.sin(h2);
   let checksum=0;
   for(let k=0;k<tess.edges.length;k++){
     const e=tess.edges[k], a=tess.verts[e[0]], b=tess.verts[e[1]];
-    for(const [v,weight] of [[a,k*2+1],[b,k*2+2]]){
-      const x1=c1*v[0]-s1*v[3],w1=s1*v[0]+c1*v[3];
-      const y1=c2*v[1]-s2*v[2],z1=s2*v[1]+c2*v[2];
-      checksum+=(x1+y1+z1+w1)*weight;
-    }
+    const weightA=k*2+1, weightB=k*2+2;
+    let x1=c1*a[0]-s1*a[3],w1=s1*a[0]+c1*a[3];
+    let y1=c2*a[1]-s2*a[2],z1=s2*a[1]+c2*a[2];
+    checksum+=(x1+y1+z1+w1)*weightA;
+    x1=c1*b[0]-s1*b[3]; w1=s1*b[0]+c1*b[3];
+    y1=c2*b[1]-s2*b[2]; z1=s2*b[1]+c2*b[2];
+    checksum+=(x1+y1+z1+w1)*weightB;
   }
   tess.lastChecksum=checksum;
   return checksum;
 }
 
 async function refreshPhaseWord(address,rank){
-  lastPhaseWord=await hash72FromSeed(path.seed,"PATH72:"+rank+":"+address);
+  const key=path.seed+"\u0000"+rank+"\u0000"+address;
+  let pending=phaseWordCache.get(key);
+  if(!pending){
+    pending=hash72FromSeed(path.seed,"PATH72:"+rank+":"+address);
+    phaseWordCache.set(key,pending);
+    if(phaseWordCache.size>PHASE_WORD_CACHE_LIMIT){
+      const oldest=phaseWordCache.keys().next().value;
+      if(oldest!==key) phaseWordCache.delete(oldest);
+    }
+  }
+  try{
+    lastPhaseWord=await pending;
+  }catch(error){
+    phaseWordCache.delete(key);
+    throw error;
+  }
+  return lastPhaseWord;
 }
 
 function updateHud(address,rank,bott){
   const c=coord5184(address);
-  document.getElementById("hud").textContent=
+  const text=
     "HHS Lane 5 holographic shader projection\n"+
     "nodes=5184 (72x72)  Hash72 word-space=72^72\n"+
     "seed="+path.seed+"\n"+
@@ -965,6 +1024,10 @@ function updateHud(address,rank,bott){
     "spritemap="+(I041_SPRITEMAP_BINDING.canonicalAnimatedSeedBound?"canonical-frame-bound":"preview-unbound")+"\n"+
     "exact=BigInt/rational + symbolic Q(zeta_144); float=render-only\n"+
     "authority=projection-only; no VM81/Hash72/Hash216 mutation";
+  if(text!==lastHudText){
+    document.getElementById("hud").textContent=text;
+    lastHudText=text;
+  }
 }
 
 
@@ -999,7 +1062,7 @@ function projectionTick(targetTick, options={}){
   if(postMaterial) postMaterial.uniforms.uTick.value=tick;
   const uniformEnd=performance.now();
 
-  updateTesseract(seconds);
+  updateTesseract(seconds,dyn);
   const tesseractEnd=performance.now();
 
   let renderMs=0;
@@ -1193,6 +1256,7 @@ function installTestApi(){
     mathRepairReceipt:canonicalSeedMathRepairReceipt,
     foundationPreservationReceipt,
     selfHostedExactContract(){return SELF_HOSTED_HHS_EXACT;},
+    runtimeOptimizationContract(){return ZERO_LOSS_RUNTIME_OPTIMIZATION;},
     exactSchedule(targetTick){return exactScheduleReceipt(lane5ExactSchedule(targetTick));},
     exactQ144Rotation:q144RotationExact,
     setTune(values={}){
