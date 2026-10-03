@@ -166,3 +166,33 @@ After merge require:
 Open the repair PR, validate the dependency-scoped gates, merge only on green, then
 follow the push deployment and any generated-index Exact-Main redispatch until
 production identity equals authoritative current main and HTTPS closes.
+
+
+## Pass 202 successor reseal
+
+The first PR membrane run `37114186609` failed only at
+`Prove current successor-hardened Pass 202 deployment identities`.
+
+Both exact and synthetic jobs passed:
+
+- frozen I121 / accepted Pass 202 integration;
+- historical Pass 202 source identities.
+
+The intentional validator hardening changed the current successor blob:
+
+- old current-successor validator blob:
+  `0e74e2508c00507f7045dc8eecaab8a1a29f80ca`
+- new validator blob:
+  `188b72531eb72665fdf28cdbd96b73af44ea72ac`
+
+Only the current successor seal in
+`.github/workflows/pass219-cumulative-pass202-membrane-i122.yml` was updated.
+Frozen historical identities remain unchanged.
+
+At the time of this reseal, authoritative `main` had advanced by one generated
+Hash216 projection commit to:
+
+`2776a18c205ff188fdcffa6f69f72869e3b80655`
+
+The drift touched generated repository-index artifacts only and did not overlap
+the production/runtime implementation surfaces in PR #695.
