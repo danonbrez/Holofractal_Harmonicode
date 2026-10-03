@@ -1,0 +1,36 @@
+{
+  "schema": "HHS_PASS_220_I068_DWAVE_DUAL_RAIL_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 7,
+  "pass_count": 7,
+  "failed": [],
+  "outcomes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "shots": 5,
+  "erased": 2,
+  "clean": 3,
+  "exact_yield": [
+    3,
+    5
+  ],
+  "checks": {
+    "nine_state_bijection": true,
+    "unique_cardinality": true,
+    "ordered_reversal_separates_unequal_pairs": true,
+    "shots_preserved": true,
+    "erasure_shots_preserved": true,
+    "clean_shots_preserved": true,
+    "exact_yield": true
+  },
+  "evaluated_on": "2026-10-03",
+  "evaluator": "connected Wolfram Language kernel"
+}
