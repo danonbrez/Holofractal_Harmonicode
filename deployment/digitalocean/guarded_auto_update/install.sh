@@ -428,9 +428,39 @@ if [[ "$ENABLE_PROMOTION" == "1" ]]; then
   # Bring up Lane 5 on loopback before changing any public nginx route. SSH is
   # deliberately outside this dependency chain so recovery access never depends
   # on application or Lane 5 startup.
+  lane5_failure_diagnostics() {
+    systemctl status hhs-lane5-ingress.socket --no-pager --full >&2 || true
+    systemctl status hhs-lane5-ingress.service --no-pager --full >&2 || true
+    journalctl -u hhs-lane5-ingress.socket -n 200 --no-pager >&2 || true
+    journalctl -u hhs-lane5-ingress.service -n 300 --no-pager >&2 || true
+    ss -H -ltnp 'sport = :8715' >&2 || true
+  }
+
   systemctl enable hhs-lane5-ingress.socket >/dev/null
-  systemctl restart hhs-lane5-ingress.socket
-  systemctl restart hhs-lane5-ingress.service
+
+  # A running socket-activated service retains the inherited listening FD.
+  # Stop both owners before rebinding the socket so repeated exact-main
+  # promotions cannot collide with the already-serving Lane 5 process.
+  if ! systemctl stop hhs-lane5-ingress.socket; then
+    echo "Lane 5 ingress socket could not stop before deterministic rebind." >&2
+    lane5_failure_diagnostics
+    exit 12
+  fi
+  if ! systemctl stop hhs-lane5-ingress.service; then
+    echo "Lane 5 ingress service could not stop before deterministic rebind." >&2
+    lane5_failure_diagnostics
+    exit 12
+  fi
+  if ! systemctl start hhs-lane5-ingress.socket; then
+    echo "Lane 5 ingress socket could not bind after service shutdown." >&2
+    lane5_failure_diagnostics
+    exit 12
+  fi
+  if ! systemctl start hhs-lane5-ingress.service; then
+    echo "Lane 5 ingress service could not start from the rebound socket." >&2
+    lane5_failure_diagnostics
+    exit 12
+  fi
   lane5_deadline=$((SECONDS + 120))
   until curl -fsS --max-time 10 "$LANE5_INGRESS_HEALTH_URL" >/dev/null; do
     if (( SECONDS >= lane5_deadline )); then
