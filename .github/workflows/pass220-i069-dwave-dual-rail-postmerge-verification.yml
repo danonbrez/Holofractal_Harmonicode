@@ -1,0 +1,111 @@
+name: Pass 220 I069 D-Wave Dual-Rail Post-Merge Verification
+
+on:
+  push:
+    branches:
+      - pass220/i069-dwave-dual-rail-postmerge-verification-20261003
+    paths:
+      - "hhs_runtime/hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_quantum_collapse_admission_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_i069_dwave_dual_rail_postmerge_verification_v1.py"
+      - "formal/wolfram/pass220_i069_dwave_dual_rail_postmerge_verification_v1.wl"
+      - "evidence/pass220/i069_dwave_dual_rail_postmerge_wolfram_20261003_v1.output.json"
+      - "contracts/pass220/PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_VERIFICATION_V1.json"
+      - "docs/pass220/PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_VERIFICATION.md"
+      - "docs/whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md"
+      - "docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_VERIFICATION_RESTART_20261003.md"
+      - ".github/workflows/pass220-i069-dwave-dual-rail-postmerge-verification.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_quantum_collapse_admission_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_i069_dwave_dual_rail_postmerge_verification_v1.py"
+      - "formal/wolfram/pass220_i069_dwave_dual_rail_postmerge_verification_v1.wl"
+      - "evidence/pass220/i069_dwave_dual_rail_postmerge_wolfram_20261003_v1.output.json"
+      - "contracts/pass220/PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_VERIFICATION_V1.json"
+      - "docs/pass220/PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_VERIFICATION.md"
+      - "docs/whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md"
+      - "docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md"
+      - "docs/operations/restart/PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_VERIFICATION_RESTART_20261003.md"
+      - ".github/workflows/pass220-i069-dwave-dual-rail-postmerge-verification.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postmerge-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove merged I068 authority ancestor
+        run: |
+          git merge-base --is-ancestor 87c5283730d27f94ddca694ab6fc01f982c7e165 HEAD
+          git show --no-patch --format='%H %s' 87c5283730d27f94ddca694ab6fc01f982c7e165
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run I068 and I069 dependency-scoped suites
+        run: |
+          python -m pytest -q             tests/pass220/test_hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py             tests/pass220/test_hhs_pass220_i069_dwave_dual_rail_postmerge_verification_v1.py
+          python -m hhs_runtime.hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1
+
+      - name: Verify frozen I069 Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "evidence/pass220/i069_dwave_dual_rail_postmerge_wolfram_20261003_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["schema"] == "HHS_PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_WOLFRAM_V1"
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 9
+          assert data["failed"] == []
+          assert data["outcomes"] == list(range(9))
+          assert data["erasure_pair_count"] == 5
+          assert data["clean_pair_count"] == 4
+          assert data["cells_min"] == 0
+          assert data["cells_max"] == 80
+          assert data["cell_count"] == 81
+          assert data["authoritative_merge_sha"] == "87c5283730d27f94ddca694ab6fc01f982c7e165"
+          PY
+
+      - name: Enforce white-paper proof bindings
+        run: |
+          grep -F '87c5283730d27f94ddca694ab6fc01f982c7e165'             docs/whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md
+          grep -F 'detected erasure'             docs/whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md
+          grep -F '9 nuclei'             docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md
+          grep -F '81 exact VM81 collapse addresses'             docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md
+
+      - name: Reassert candidate-only authority
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1 import AUTHORITY_BOUNDARY
+
+          assert AUTHORITY_BOUNDARY["candidate_only"] is True
+          assert AUTHORITY_BOUNDARY["erasure_channel_preserved"] is True
+          assert AUTHORITY_BOUNDARY["post_selection_for_provenance_forbidden"] is True
+          assert AUTHORITY_BOUNDARY["floating_point_authority"] is False
+          assert AUTHORITY_BOUNDARY["canonical_vm81_mutation_authority"] is False
+          assert AUTHORITY_BOUNDARY["canonical_hash72_commit_authority"] is False
+          assert AUTHORITY_BOUNDARY["canonical_hash216_commit_authority"] is False
+          assert AUTHORITY_BOUNDARY["canonical_persistence_authority"] is False
+          PY
