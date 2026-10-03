@@ -1,0 +1,37 @@
+{
+  "schema": "HHS_PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 9,
+  "pass_count": 9,
+  "failed": [],
+  "outcomes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "erasure_pair_count": 5,
+  "clean_pair_count": 4,
+  "cells_min": 0,
+  "cells_max": 80,
+  "cell_count": 81,
+  "checks": {
+    "nine_state_bijection": true,
+    "nine_state_unique_cardinality": true,
+    "erasure_pair_count": true,
+    "clean_pair_count": true,
+    "ordered_reversal_separates_unequal_pairs": true,
+    "vm81_81_cell_bijection": true,
+    "vm81_81_cell_unique_cardinality": true,
+    "cell_bounds_exact": true,
+    "generic_histogram_total_identity": true
+  },
+  "evaluated_on": "2026-10-03",
+  "evaluator": "connected Wolfram Language kernel",
+  "authoritative_merge_sha": "87c5283730d27f94ddca694ab6fc01f982c7e165"
+}
