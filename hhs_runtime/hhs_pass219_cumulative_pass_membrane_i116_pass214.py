@@ -12,6 +12,7 @@ historical runtime-blob expectation.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any, Dict, MutableMapping, Optional
@@ -46,9 +47,19 @@ PASS214_I8_RECORD_GIT_BLOB = "b8c565f4b443b139249dfded44a1b36c70b43e70"
 PASS214_SEMANTIC_REUSE_GIT_BLOB = "60ff714c1de5976bfb428ccf33c82f8a208d8fe4"
 PASS215_I1_CONTRACT_GIT_BLOB = "6ce1a0ea7ed2ca61597398b1197387fec8e3505d"
 PASS215_PROFILE_GIT_BLOB = "b458d674a75a4cfc64a32b9203dd693e3603576e"
-PASS214_VM81_REBIND_SCRIPT_GIT_BLOB = "4abd1387926c214ee8b07867aae05a1545ff7efe"
-PASS214_VM81_REBIND_TEST_GIT_BLOB = "8120feb77ad1c2adef05ef9857a779df6c9b8414"
+PASS214_VM81_REBIND_SCRIPT_GIT_BLOB = "2c4d647f95ac3ae3873cd822d466397176710231"
+PASS214_VM81_REBIND_TEST_GIT_BLOB = "a879d0ba602de07fc5267d217167070e551d6784"
+# Historical provenance anchor only. The repair-forward authority below freezes
+# the legacy opcode prefix instead of the complete append-only runtime file.
 EXACT_VM81_RUNTIME_GIT_BLOB = "81d9699b2d28d5d6a09ea4763653f3ba9eda9e15"
+PASS214_VM81_RUNTIME_IDENTITY_POLICY = "LEGACY_OPCODE_PREFIX_0_23_APPEND_ONLY"
+LEGACY_VM81_OPCODE_PREFIX = (
+    "OP_NOP", "OP_ADD", "OP_SUB", "OP_ROT", "OP_XOR", "OP_AND", "OP_OR",
+    "OP_LOAD", "OP_STORE", "OP_BRANCH", "OP_BZ", "OP_BNZ", "OP_MULXY",
+    "OP_MULYX", "OP_QGU", "OP_GATE_APB", "OP_GATE_CLOSURE",
+    "OP_GATE_IDENTITY", "OP_QBRANCH", "OP_CONSTRAIN", "OP_RELAX",
+    "OP_SWEEP81", "OP_CLOSE81", "OP_HALT",
+)
 
 PASS214_VALIDATED_TERMINAL_HEAD = "fb167f0ae88346c7894d60b794eeba0e1967a971"
 PASS214_MERGE_COMMIT = "1114a50c677f3f205d5858bc09b1249d3d365842"
@@ -106,6 +117,24 @@ PASS214_CAPABILITIES = (
     "PROOF_BACKED_SEMANTIC_EQUIVALENCE_REUSE",
     "EXACT_VM81_KERNEL_ADAPTER_REBIND",
 )
+
+
+def _git_blob_sha1(path: Path) -> str:
+    data = (ROOT / path).read_bytes()
+    return hashlib.sha1(f"blob {len(data)}\0".encode("ascii") + data).hexdigest()
+
+
+def _vm81_opcode_names() -> tuple[str, ...]:
+    source = (ROOT / EXACT_VM81_RUNTIME_PATH).read_text("utf-8")
+    marker = source.index("// OPCODES")
+    start = source.index("typedef enum {", marker)
+    end = source.index("} Opcode;", start)
+    names: list[str] = []
+    for line in source[start:end].splitlines():
+        token = line.strip().split("=", 1)[0].strip().rstrip(",")
+        if token.startswith("OP_"):
+            names.append(token)
+    return tuple(names)
 
 
 def _load_json(path: Path) -> Dict[str, Any]:
@@ -240,8 +269,20 @@ def pass214_membrane_source_evidence() -> Dict[str, Any]:
 
     script_text = (ROOT / PASS214_VM81_REBIND_SCRIPT_PATH).read_text("utf-8")
     test_text = (ROOT / PASS214_VM81_REBIND_TEST_PATH).read_text("utf-8")
-    if EXACT_VM81_RUNTIME_GIT_BLOB not in script_text or EXACT_VM81_RUNTIME_GIT_BLOB not in test_text:
-        raise RuntimeError("PASS214_EXACT_VM81_REBIND_IDENTITY_DRIFT")
+    if _git_blob_sha1(PASS214_VM81_REBIND_SCRIPT_PATH) != PASS214_VM81_REBIND_SCRIPT_GIT_BLOB:
+        raise RuntimeError("PASS214_VM81_REBIND_SCRIPT_IDENTITY_DRIFT")
+    if _git_blob_sha1(PASS214_VM81_REBIND_TEST_PATH) != PASS214_VM81_REBIND_TEST_GIT_BLOB:
+        raise RuntimeError("PASS214_VM81_REBIND_TEST_IDENTITY_DRIFT")
+    if "legacy VM81 opcode prefix 0..23" not in script_text:
+        raise RuntimeError("PASS214_VM81_OPCODE_PREFIX_POLICY_DRIFT")
+    if "LEGACY_OPCODE_PREFIX" not in test_text:
+        raise RuntimeError("PASS214_VM81_OPCODE_PREFIX_TEST_DRIFT")
+    opcode_names = _vm81_opcode_names()
+    if opcode_names[:24] != LEGACY_VM81_OPCODE_PREFIX:
+        raise RuntimeError("PASS214_LEGACY_VM81_OPCODE_PREFIX_DRIFT")
+    runtime_text = (ROOT / EXACT_VM81_RUNTIME_PATH).read_text("utf-8")
+    if '_Static_assert(OP_HALT == 23' not in runtime_text:
+        raise RuntimeError("PASS214_LEGACY_VM81_HALT_POSITION_DRIFT")
     if "PASS214_VM81_IR_ADAPTER_DIRECT_MUTATION_BYPASS" not in script_text:
         raise RuntimeError("PASS214_VM81_DIRECT_MUTATION_GUARD_DRIFT")
 
@@ -270,6 +311,10 @@ def pass214_membrane_source_evidence() -> Dict[str, Any]:
         "semantic_reuse_run": PASS214_SEMANTIC_REUSE_RUN,
         "semantic_reuse_artifact_sha256": PASS214_SEMANTIC_REUSE_ARTIFACT_SHA256,
         "exact_vm81_kernel_git_blob": EXACT_VM81_RUNTIME_GIT_BLOB,
+        "exact_vm81_kernel_git_blob_is_current_authority": False,
+        "vm81_runtime_identity_policy": PASS214_VM81_RUNTIME_IDENTITY_POLICY,
+        "vm81_legacy_opcode_prefix": list(LEGACY_VM81_OPCODE_PREFIX),
+        "vm81_observed_runtime_git_blob": _git_blob_sha1(EXACT_VM81_RUNTIME_PATH),
         "vm81_rebind_script_commit": PASS214_VM81_REBIND_SCRIPT_COMMIT,
         "vm81_rebind_test_commit": PASS214_VM81_REBIND_TEST_COMMIT,
         "git_blobs": {
@@ -281,7 +326,8 @@ def pass214_membrane_source_evidence() -> Dict[str, Any]:
             "pass215_profile": PASS215_PROFILE_GIT_BLOB,
             "vm81_rebind_script": PASS214_VM81_REBIND_SCRIPT_GIT_BLOB,
             "vm81_rebind_test": PASS214_VM81_REBIND_TEST_GIT_BLOB,
-            "exact_vm81_runtime": EXACT_VM81_RUNTIME_GIT_BLOB,
+            "historical_exact_vm81_runtime": EXACT_VM81_RUNTIME_GIT_BLOB,
+            "observed_vm81_runtime": _git_blob_sha1(EXACT_VM81_RUNTIME_PATH),
         },
     }
 
@@ -370,6 +416,12 @@ def pass214_membrane_manifest() -> Dict[str, Any]:
         "execution_authority_changed_by_semantic_reuse": False,
         "automatic_semantic_promotion": False,
         "exact_vm81_kernel_git_blob": evidence["exact_vm81_kernel_git_blob"],
+        "exact_vm81_kernel_git_blob_is_current_authority": evidence[
+            "exact_vm81_kernel_git_blob_is_current_authority"
+        ],
+        "vm81_runtime_identity_policy": evidence["vm81_runtime_identity_policy"],
+        "vm81_legacy_opcode_prefix": evidence["vm81_legacy_opcode_prefix"],
+        "vm81_observed_runtime_git_blob": evidence["vm81_observed_runtime_git_blob"],
         "pass213_gates_preserved": True,
         "runtime_mutation_authority_promoted": False,
         "canonical_mutation_authorized": False,

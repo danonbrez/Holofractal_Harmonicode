@@ -1,5 +1,7 @@
 from hhs_runtime.hhs_pass219_cumulative_pass_membrane_i116_pass214 import (
     EXACT_VM81_RUNTIME_GIT_BLOB,
+    LEGACY_VM81_OPCODE_PREFIX,
+    PASS214_VM81_RUNTIME_IDENTITY_POLICY,
     PASS214_BIND_SYMBOL,
     PASS214_CAPABILITIES,
     PASS214_CLASSIFICATION,
@@ -55,6 +57,13 @@ def main() -> None:
     assert semantic["isolation_accounting"]["remaining_reusable_extraction_backlog"] == 1383
     assert semantic["first_reusable_module_promotion"]["canonical_mutation_authority"] == "NONE"
     assert evidence["exact_vm81_kernel_git_blob"] == EXACT_VM81_RUNTIME_GIT_BLOB
+    assert evidence["exact_vm81_kernel_git_blob_is_current_authority"] is False
+    assert (
+        evidence["vm81_runtime_identity_policy"]
+        == PASS214_VM81_RUNTIME_IDENTITY_POLICY
+    )
+    assert tuple(evidence["vm81_legacy_opcode_prefix"]) == LEGACY_VM81_OPCODE_PREFIX
+    assert len(evidence["vm81_observed_runtime_git_blob"]) == 40
 
     declaration = pass214_membrane_surface_declaration()
     manifest = pass214_membrane_manifest()
@@ -67,6 +76,9 @@ def main() -> None:
     assert manifest["pass213_gates_preserved"] is True
     assert manifest["execution_authority_changed_by_semantic_reuse"] is False
     assert manifest["automatic_semantic_promotion"] is False
+    assert manifest["exact_vm81_kernel_git_blob_is_current_authority"] is False
+    assert manifest["vm81_runtime_identity_policy"] == PASS214_VM81_RUNTIME_IDENTITY_POLICY
+    assert tuple(manifest["vm81_legacy_opcode_prefix"]) == LEGACY_VM81_OPCODE_PREFIX
     assert manifest["runtime_mutation_authority_promoted"] is False
     assert manifest["canonical_mutation_authorized"] is False
     assert manifest["migration_active"] is False
