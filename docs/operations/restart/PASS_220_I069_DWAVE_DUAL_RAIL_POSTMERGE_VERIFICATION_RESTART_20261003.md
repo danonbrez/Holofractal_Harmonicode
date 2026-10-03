@@ -146,9 +146,20 @@ canonical_persistence_authority        = false
 ```text
 I068 merged integration matrix before merge: green
 I068 authoritative merge: 87c5283730d27f94ddca694ab6fc01f982c7e165
-main equality at verification: identical to merge SHA
+automated repository-index main used for clean replay: 160fc2579367529543f82db4ef98fc462d4416a7
 Wolfram I069: 9/9 PASS
 official D-Wave API semantics cross-checked
+
+first I069 dependency-scoped head 524804513d1648cf7ea885eff01399f25d522168:
+  I068 + I069 suite = 41 passed
+  I069 workflow = success
+  source-text integrity = success
+
+main-synced I069 head 6ded86b1b0b8db07f63f0cae7ac6054b53fa7c21:
+  branch compare against 160fc257... = 9 files ahead / 0 behind
+  I069 workflow 37154960657 = success
+  I039 quantum-geometric closure 37154960597 = success
+  source-text integrity 37154960579 = success
 ```
 
 ## Validation remaining
@@ -164,14 +175,12 @@ post-merge repository-index refresh if automatically generated
 
 ## Next action
 
-1. inspect the latest I069 workflow run;
-2. repair forward only observed failures;
-3. once dependency-scoped checks are green, open the I069 PR;
-4. require the PR integration matrix to close without substantive failures;
-5. merge normally;
-6. verify authoritative main contains the two white-paper updates and I069 proof
+1. open the main-synced I069 PR against current main;
+2. require the PR integration matrix to close without substantive failures;
+3. merge normally;
+4. verify authoritative main contains the two white-paper updates and I069 proof
    evidence;
-7. preserve external D-Wave execution as candidate evidence unless a later
+5. preserve external D-Wave execution as candidate evidence unless a later
    separately authorized pass proves a canonical admission path.
 
 
