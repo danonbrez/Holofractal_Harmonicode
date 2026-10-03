@@ -1,0 +1,94 @@
+name: Pass 220 I068 D-Wave Dual-Rail Candidate Bridge
+
+on:
+  push:
+    branches:
+      - pass220/i068-dwave-dual-rail-candidate-bridge-20261003
+    paths:
+      - "hhs_runtime/hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "formal/wolfram/pass220_i068_dwave_dual_rail_candidate_bridge_v1.wl"
+      - "evidence/pass220/i068_dwave_dual_rail_wolfram_20261003_v1.output.json"
+      - "contracts/pass220/PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE_V1.json"
+      - "docs/pass220/PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE.md"
+      - "docs/operations/restart/PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE_RESTART_20261003.md"
+      - ".github/workflows/pass220-i068-dwave-dual-rail-candidate-bridge.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "tests/pass220/test_hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+      - "formal/wolfram/pass220_i068_dwave_dual_rail_candidate_bridge_v1.wl"
+      - "evidence/pass220/i068_dwave_dual_rail_wolfram_20261003_v1.output.json"
+      - "contracts/pass220/PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE_V1.json"
+      - "docs/pass220/PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE.md"
+      - "docs/operations/restart/PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE_RESTART_20261003.md"
+      - ".github/workflows/pass220-i068-dwave-dual-rail-candidate-bridge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dual-rail-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run I068 dependency-scoped validation
+        run: |
+          python -m pytest -q tests/pass220/test_hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py
+          python -m hhs_runtime.hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1
+
+      - name: Enforce erasure preservation and authority boundary
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1 import (
+              AUTHORITY_BOUNDARY,
+              self_test,
+          )
+
+          source = Path(
+              "hhs_runtime/hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py"
+          ).read_text(encoding="utf-8")
+          assert "get_counts(post_select=False)" in source
+          assert "get_counts(post_select=True)" not in source
+          assert AUTHORITY_BOUNDARY["candidate_only"] is True
+          assert AUTHORITY_BOUNDARY["canonical_vm81_mutation_authority"] is False
+          assert AUTHORITY_BOUNDARY["canonical_hash72_commit_authority"] is False
+          assert AUTHORITY_BOUNDARY["canonical_hash216_commit_authority"] is False
+          assert AUTHORITY_BOUNDARY["canonical_persistence_authority"] is False
+          report = self_test()
+          assert report["status"] == "PASS"
+          assert len(report["receipt_hash216"]) == 216
+          PY
+
+      - name: Verify frozen Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          evidence = json.loads(
+              Path(
+                  "evidence/pass220/i068_dwave_dual_rail_wolfram_20261003_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert evidence["schema"] == "HHS_PASS_220_I068_DWAVE_DUAL_RAIL_WOLFRAM_V1"
+          assert evidence["status"] == "PASS"
+          assert evidence["check_count"] == evidence["pass_count"] == 7
+          assert evidence["failed"] == []
+          assert evidence["outcomes"] == list(range(9))
+          assert evidence["shots"] == evidence["clean"] + evidence["erased"] == 5
+          assert evidence["exact_yield"] == [3, 5]
+          PY
