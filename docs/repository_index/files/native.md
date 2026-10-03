@@ -1,10 +1,10 @@
 # Repository file/dependency shard - native
 
-Source commit: [7c7e984c8763d89d023c3a388c575345c6dedd77](https://github.com/danonbrez/Holofractal_Harmonicode/commit/7c7e984c8763d89d023c3a388c575345c6dedd77)
+Source commit: [5faf9b1edb86a4b5fe57bb5b5b0e0ea729a4d057](https://github.com/danonbrez/Holofractal_Harmonicode/commit/5faf9b1edb86a4b5fe57bb5b5b0e0ea729a4d057)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## native/pass213
 
-- [native/pass213/hhs_pass213_native_dispatch.c](https://github.com/danonbrez/Holofractal_Harmonicode/blob/7c7e984c8763d89d023c3a388c575345c6dedd77/native/pass213/hhs_pass213_native_dispatch.c) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; c ; out 0 ; in 12
-- [native/pass213/hhs_pass213_secure_arena.c](https://github.com/danonbrez/Holofractal_Harmonicode/blob/7c7e984c8763d89d023c3a388c575345c6dedd77/native/pass213/hhs_pass213_secure_arena.c) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; c ; out 0 ; in 16
+- [native/pass213/hhs_pass213_native_dispatch.c](https://github.com/danonbrez/Holofractal_Harmonicode/blob/5faf9b1edb86a4b5fe57bb5b5b0e0ea729a4d057/native/pass213/hhs_pass213_native_dispatch.c) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; c ; out 0 ; in 12
+- [native/pass213/hhs_pass213_secure_arena.c](https://github.com/danonbrez/Holofractal_Harmonicode/blob/5faf9b1edb86a4b5fe57bb5b5b0e0ea729a4d057/native/pass213/hhs_pass213_secure_arena.c) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; c ; out 0 ; in 16
