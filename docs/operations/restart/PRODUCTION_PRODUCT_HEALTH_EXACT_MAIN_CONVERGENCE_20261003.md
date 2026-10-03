@@ -196,3 +196,36 @@ Hash216 projection commit to:
 
 The drift touched generated repository-index artifacts only and did not overlap
 the production/runtime implementation surfaces in PR #695.
+
+
+## Pass 202 kernel-derived successor reseal
+
+The next fresh Pass 202 run on head
+`78c1972417750e0284c4f45532ca13ff967ae1ee` advanced through the workflow-level
+current-successor identity gate and then failed in the kernel-derived membrane with:
+
+```text
+PASS202_SUCCESSOR_HARDENING_BLOB_DRIFT:
+deployment/digitalocean/guarded_auto_update/validate-candidate.sh:
+188b72531eb72665fdf28cdbd96b73af44ea72ac
+```
+
+This proved the second duplicate current-successor table in
+`hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py` still carried
+the pre-repair validator blob.
+
+Only that current-successor validator entry was changed to:
+
+`188b72531eb72665fdf28cdbd96b73af44ea72ac`
+
+The historical Pass 202 validator identity
+`82250c50fa9d20a82d0b957d2637398760b1c416` remains unchanged.
+
+At this checkpoint authoritative `main` is:
+
+`c1a40f2ce26656c2f9ebb98d8fc279cca68661fc`
+
+Compared with the branch base `54b869852452a632e78041a11392b966b9d8cca3`,
+main is ahead by two commits and every changed path is generated Hash216 repository
+index material. No production/runtime implementation file in PR #695 overlaps that
+drift.
