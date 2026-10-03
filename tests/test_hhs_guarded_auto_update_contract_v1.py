@@ -857,3 +857,30 @@ def test_hash216_generated_main_dispatches_exact_main() -> None:
     assert "gh workflow run digitalocean-production-main.yml --ref main" in workflow
     assert "workflow_dispatch:" in exact_main
 
+def test_candidate_boot_externalizes_filesystem_ledger_and_preserves_fail_closed_checkout_integrity() -> None:
+    validator = read("validate-candidate.sh")
+    production_service = (
+        ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service"
+    ).read_text(encoding="utf-8")
+    exact_main = (
+        ROOT / ".github" / "workflows" / "digitalocean-production-main.yml"
+    ).read_text(encoding="utf-8")
+
+    for token in [
+        "HHS_CANDIDATE_STATE_ROOT",
+        "HHS_FILESYSTEM_LEDGER_CANDIDATE_PATH",
+        'HHS_FILESYSTEM_LEDGER_PATH="$filesystem_ledger_abs"',
+        "candidate filesystem ledger must be external to repository checkout",
+        "tracked_filesystem_ledger_before",
+        "tracked_filesystem_ledger_after",
+        "candidate validation mutated tracked filesystem ledger",
+    ]:
+        assert token in validator
+
+    assert (
+        "Environment=HHS_FILESYSTEM_LEDGER_PATH="
+        "/var/lib/hhs/data/runtime/hhs_filesystem_ledger.json"
+    ) in production_service
+    assert "production checkout is dirty after promotion" in exact_main
+    assert 'status --porcelain=v1 --untracked-files=normal' in exact_main
+

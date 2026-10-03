@@ -13,6 +13,9 @@ BOOT_TIMEOUT=${HHS_CANDIDATE_BOOT_TIMEOUT_SECONDS:-120}
 LOG_FILE=${HHS_CANDIDATE_LOG_FILE:-/tmp/hhs-candidate-${PORT}.log}
 PASS205_DB=${HHS_PASS205_CANDIDATE_DB:-/tmp/hhs-pass205-candidate-${PORT}.sqlite3}
 PASS205_EVIDENCE=${HHS_PASS205_CANDIDATE_EVIDENCE:-/tmp/PASS205_PRODUCTION_VALIDATION_RECEIPT.json}
+CANDIDATE_STATE_ROOT=${HHS_CANDIDATE_STATE_ROOT:-}
+FILESYSTEM_LEDGER=${HHS_FILESYSTEM_LEDGER_CANDIDATE_PATH:-}
+CANDIDATE_STATE_ROOT_OWNED=0
 BUNDLE_MODE=${HHS_RUNTIME_OS_BUNDLE_MODE:-auto}
 BUNDLE_SHA=${HHS_RUNTIME_OS_BUNDLE_SHA:-}
 BUNDLE_ROOT=${HHS_RUNTIME_OS_BUNDLE_ROOT:-/var/lib/hhs/runtime-os}
@@ -179,10 +182,39 @@ grep -Fq 'HHS Visual Runtime OS Workspace' "$RUNTIME_OS_ROOT/index.html"
 printf 'HHS_RUNTIME_OS_CANDIDATE_ASSET_ROOT=%s\n' "$RUNTIME_OS_ROOT"
 
 if [[ "$BOOT" == "1" ]]; then
+  if [[ -z "$CANDIDATE_STATE_ROOT" ]]; then
+    CANDIDATE_STATE_ROOT=$(mktemp -d "/tmp/hhs-candidate-state-${PORT}-XXXXXX")
+    CANDIDATE_STATE_ROOT_OWNED=1
+  else
+    install -d -m 0700 "$CANDIDATE_STATE_ROOT"
+  fi
+  if [[ -z "$FILESYSTEM_LEDGER" ]]; then
+    FILESYSTEM_LEDGER="$CANDIDATE_STATE_ROOT/hhs_filesystem_ledger.json"
+  fi
+
+  repo_root_abs=$("$PYTHON" -c 'from pathlib import Path; import sys; print(Path(sys.argv[1]).resolve())' "$ROOT")
+  filesystem_ledger_abs=$("$PYTHON" -c 'from pathlib import Path; import sys; print(Path(sys.argv[1]).resolve())' "$FILESYSTEM_LEDGER")
+  case "$filesystem_ledger_abs" in
+    "$repo_root_abs"|"$repo_root_abs"/*)
+      echo "candidate filesystem ledger must be external to repository checkout: $filesystem_ledger_abs" >&2
+      [[ "$CANDIDATE_STATE_ROOT_OWNED" == "1" ]] && rm -rf "$CANDIDATE_STATE_ROOT"
+      exit 1
+      ;;
+  esac
+  install -d -m 0700 "$(dirname "$filesystem_ledger_abs")"
+
+  TRACKED_FILESYSTEM_LEDGER="$ROOT/data/runtime/hhs_filesystem_ledger.json"
+  if [[ -e "$TRACKED_FILESYSTEM_LEDGER" ]]; then
+    tracked_filesystem_ledger_before="present:$(git hash-object "$TRACKED_FILESYSTEM_LEDGER")"
+  else
+    tracked_filesystem_ledger_before="absent"
+  fi
+
   : >"$LOG_FILE"
   env -u HHS_RUNTIME_OS_ROOT \
     HHS_RUNTIME_OS_ASSET_ROOT="$RUNTIME_OS_ROOT" \
     HHS_PASS205_DB="$PASS205_DB" \
+    HHS_FILESYSTEM_LEDGER_PATH="$filesystem_ledger_abs" \
     "$PYTHON" -m uvicorn "$PRODUCTION_GATEWAY_ENTRYPOINT" \
       --host 127.0.0.1 --port "$PORT" --workers 1 --log-level info \
       >"$LOG_FILE" 2>&1 &
@@ -190,6 +222,9 @@ if [[ "$BOOT" == "1" ]]; then
   cleanup() {
     kill "$server_pid" 2>/dev/null || true
     wait "$server_pid" 2>/dev/null || true
+    if [[ "$CANDIDATE_STATE_ROOT_OWNED" == "1" ]]; then
+      rm -rf "$CANDIDATE_STATE_ROOT"
+    fi
   }
   fail_with_log() {
     cat "$LOG_FILE" >&2 || true
@@ -290,6 +325,16 @@ studio = Path("/tmp/hhs-candidate-pass205-studio.html").read_text(encoding="utf-
 if "VM5184 × G243" not in studio or "Advance committed state" not in studio:
     raise SystemExit("Pass 205 visual studio surface incomplete")
 PY
+
+  if [[ -e "$TRACKED_FILESYSTEM_LEDGER" ]]; then
+    tracked_filesystem_ledger_after="present:$(git hash-object "$TRACKED_FILESYSTEM_LEDGER")"
+  else
+    tracked_filesystem_ledger_after="absent"
+  fi
+  if [[ "$tracked_filesystem_ledger_after" != "$tracked_filesystem_ledger_before" ]]; then
+    echo "candidate validation mutated tracked filesystem ledger" >&2
+    fail_with_log
+  fi
 
   cleanup
   trap - EXIT

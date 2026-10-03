@@ -99,7 +99,7 @@ jobs:
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/hhs-guarded-update.env.example)" = b63972db7da2497fd7ede8581644b597ff963862
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/install.sh)" = 51fb5fab508324f42acf2da1caf5202ab39bd2bb
           # Current successor: exact production validator/liveness repair while historical Pass 202 identity remains frozen above.
-          test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 188b72531eb72665fdf28cdbd96b73af44ea72ac
+          test "$(git hash-object deployment/digitalocean/guarded_auto_update/validate-candidate.sh)" = 18febf52f56a794edb25bcd0ee18d0f3a9c1dcf5
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/verify-recovery-state.py)" = 5327fa1ac832d48adf4389c19a0e45dac93a59b1
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py)" = d8fc6406abfd0f9a3225993e4706919a21c3bc70
           test "$(git hash-object deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py)" = 63aa752b53fcb0b9c5224329eb4fb5201b3e7fb8
