@@ -50,18 +50,32 @@ or alter the production recovery semantics.
 
 ## Repair
 
-Changed only:
+Changed:
 
-`tests/test_hhs_production_service_permissions_v2.py`
+- `tests/test_hhs_production_service_permissions_v2.py`
+- `.github/workflows/pass219-cumulative-pass202-membrane-i122.yml`
 
-Added the missing standard-library import:
+The test adds the missing standard-library import:
 
 ```python
 import sys
 ```
 
+The first PR run exposed a separate inherited successor-identity drift from PR #693:
+the Pass 202 membrane still pinned the pre-#693 blobs for the guarded updater and
+installer. Historical Pass 202 identities remain frozen; only the current successor
+pins were refreshed to the repository-visible current blobs:
+
+```text
+hhs-guarded-update.sh
+444d8015a06444771d30bc8992c3881570c4bced
+
+install.sh
+51fb5fab508324f42acf2da1caf5202ab39bd2bb
+```
+
 No runtime, service, warm-boot, VM81, Hash72, Hash216, ledger, permission,
-promotion, rollback, or deployment authority changed.
+promotion, rollback, or deployment authority changed by this repair.
 
 ## Commands executed
 
@@ -90,7 +104,10 @@ Result before repair:
 - failure reproduced from production workflow logs;
 - exact failing exception identified as missing `sys` import;
 - production normalizer explicit repo-root path confirmed present;
-- repair committed on exact current-main base.
+- repair committed on exact current-main base;
+- first inherited Pass 202 PR run failed before pytest on stale successor hashes;
+- current updater and installer blob identities were read from authoritative main and
+  substituted only into the current-successor identity assertions.
 
 ## Validation remaining
 
