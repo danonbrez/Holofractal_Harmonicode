@@ -16,8 +16,11 @@ on:
       - "hhs_backend/runtime_os_application_server.py"
       - "hhs_backend/production_visual_server.py"
       - "deployment/digitalocean/guarded_auto_update/**"
+      - "deployment/digitalocean/warm_boot_manifest.py"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
+      - "deploy/digitalocean/hhs-warm-boot-identity.conf"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
+      - "tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py"
       - "tests/test_runtime_os_production_root.py"
       - "docs/deployment/DIGITALOCEAN_EXACT_MAIN*.md"
   workflow_dispatch:
@@ -49,7 +52,8 @@ jobs:
           python3 -m py_compile \
             deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py \
             deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py \
-            deployment/digitalocean/guarded_auto_update/verify-recovery-state.py
+            deployment/digitalocean/guarded_auto_update/verify-recovery-state.py \
+            deployment/digitalocean/warm_boot_manifest.py
           python3 - <<'PY'
           import runpy
           namespace = runpy.run_path("tests/test_hhs_guarded_auto_update_contract_v1.py")

@@ -28,6 +28,8 @@ EXACT_CANDIDATE_SHA=${HHS_EXACT_CANDIDATE_SHA:-}
 PRODUCTION_SERVICE_USER=${HHS_PRODUCTION_SERVICE_USER:-hhs}
 PRODUCTION_SERVICE_GROUP=${HHS_PRODUCTION_SERVICE_GROUP:-hhs}
 PERMISSION_TOOL=${HHS_PRODUCTION_PERMISSION_TOOL:-/usr/local/lib/hhs-guarded-update/normalize-service-permissions.py}
+WARM_BOOT_ROOT=${HHS_WARM_BOOT_MANIFEST_ROOT:-/var/lib/hhs/warm-boot/releases}
+WARM_BOOT_REPOSITORY_SHA_FILE=${HHS_WARM_BOOT_REPOSITORY_SHA_FILE:-/var/lib/hhs/warm-boot/current-repository-sha}
 
 CANDIDATE_ROOT="$STATE_ROOT/candidates"
 RECEIPT_LOG="$STATE_ROOT/receipts.jsonl"
@@ -84,6 +86,22 @@ normalize_service_permissions() {
     --service-group "$PRODUCTION_SERVICE_GROUP"
 }
 
+bind_warm_boot_repository_sha() {
+  local sha=$1
+  [[ "$sha" =~ ^[0-9a-fA-F]{40}$ ]] || fail "warm-boot repository identity is not an exact SHA: $sha"
+  [[ -f "$WARM_BOOT_ROOT/$sha.json" ]] || fail "warm-boot manifest missing for repository identity $sha"
+  local identity_dir temporary
+  identity_dir=$(dirname "$WARM_BOOT_REPOSITORY_SHA_FILE")
+  install -d -o "$PRODUCTION_SERVICE_USER" -g "$PRODUCTION_SERVICE_GROUP" -m 0750 \
+    "$identity_dir" "$WARM_BOOT_ROOT"
+  temporary=$(mktemp "$identity_dir/.current-repository-sha.XXXXXX")
+  printf '%s\n' "$sha" >"$temporary"
+  chown "$PRODUCTION_SERVICE_USER:$PRODUCTION_SERVICE_GROUP" "$temporary"
+  chmod 0640 "$temporary"
+  mv -f "$temporary" "$WARM_BOOT_REPOSITORY_SHA_FILE"
+  printf 'HHS_WARM_BOOT_REPOSITORY_IDENTITY_BOUND=%s\n' "$sha"
+}
+
 stop_units() { local index; for ((index=${#HHS_UNITS[@]}-1; index>=0; index--)); do log "Stopping ${HHS_UNITS[$index]}"; systemctl stop "${HHS_UNITS[$index]}"; done; }
 start_units() {
   local unit
@@ -129,6 +147,8 @@ sync_installed_assets() {
   local controller_root=${1:-$REPO_ROOT}
   local service_root=${2:-$controller_root}
   local source="$controller_root/deployment/digitalocean/guarded_auto_update"
+  local warm_boot_tool="$controller_root/deployment/digitalocean/warm_boot_manifest.py"
+  local warm_boot_dropin="$controller_root/deploy/digitalocean/hhs-warm-boot-identity.conf"
   local hhs_service="$service_root/deploy/digitalocean/hhs-pass196-integrated-environment.service"
   [[ -d "$source" ]] || return 0
   log "Synchronizing guarded updater from $controller_root and production service from $service_root"
@@ -140,6 +160,11 @@ sync_installed_assets() {
   [[ -f "$source/runtime-os-bundle.py" ]] && install -m 0755 "$source/runtime-os-bundle.py" /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py
   [[ -f "$source/normalize-service-permissions.py" ]] && install -m 0755 "$source/normalize-service-permissions.py" /usr/local/lib/hhs-guarded-update/normalize-service-permissions.py
   [[ -f "$source/verify-recovery-state.py" ]] && install -m 0755 "$source/verify-recovery-state.py" /usr/local/lib/hhs-guarded-update/verify-recovery-state.py
+  [[ -f "$warm_boot_tool" ]] && install -m 0755 "$warm_boot_tool" /usr/local/lib/hhs-guarded-update/warm_boot_manifest.py
+  if [[ -f "$warm_boot_dropin" ]]; then
+    install -d -m 0755 /etc/systemd/system/hhs.service.d
+    install -m 0644 "$warm_boot_dropin" /etc/systemd/system/hhs.service.d/20-hhs-warm-boot-identity.conf
+  fi
   [[ -f "$source/hhs-guarded-update.service" ]] && install -m 0644 "$source/hhs-guarded-update.service" /etc/systemd/system/hhs-guarded-update.service
   [[ -f "$source/hhs-guarded-update.timer" ]] && install -m 0644 "$source/hhs-guarded-update.timer" /etc/systemd/system/hhs-guarded-update.timer
   [[ -f "$hhs_service" ]] && install -m 0644 "$hhs_service" /etc/systemd/system/hhs.service
@@ -196,6 +221,7 @@ rollback_live_checkout() {
     local rollback_service="$REPO_ROOT/deploy/digitalocean/hhs-pass196-integrated-environment.service"
     [[ -f "$rollback_service" ]] && install -m 0644 "$rollback_service" /etc/systemd/system/hhs.service
   fi
+  bind_warm_boot_repository_sha "$PREVIOUS_SHA"
   systemctl daemon-reload
   start_units
   if wait_for_health; then
@@ -289,7 +315,6 @@ fi
 if ! activate_candidate_runtime_os; then rollback_live_checkout "Runtime OS activation failed"; exit 1; fi
 
 log "Sealing warm hydrated VM boot identity"
-WARM_BOOT_ROOT=/var/lib/hhs/warm-boot/releases
 install -d -o "$PRODUCTION_SERVICE_USER" -g "$PRODUCTION_SERVICE_GROUP" -m 0750 \
   /var/lib/hhs/data \
   /var/lib/hhs/data/runtime \
@@ -320,6 +345,7 @@ python3 "$REPO_ROOT/deployment/digitalocean/warm_boot_manifest.py" create \
 chown "$PRODUCTION_SERVICE_USER:$PRODUCTION_SERVICE_GROUP" \
   "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
 chmod 0640 "$WARM_BOOT_ROOT/$CANDIDATE_SHA.json"
+bind_warm_boot_repository_sha "$CANDIDATE_SHA"
 
 sync_installed_assets
 systemctl daemon-reload

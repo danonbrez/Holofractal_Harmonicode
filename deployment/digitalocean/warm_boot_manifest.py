@@ -14,6 +14,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import subprocess
 from typing import Any
 
@@ -33,6 +34,13 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _validated_repository_sha(value: str, *, source: str) -> str:
+    normalized = value.strip().lower()
+    if not re.fullmatch(r"[0-9a-f]{40}", normalized):
+        raise WarmBootError(f"HHS_WARM_BOOT_REPOSITORY_IDENTITY_INVALID:{source}")
+    return normalized
+
+
 def _head(repo_root: Path) -> str:
     completed = subprocess.run(
         ["git", "-C", str(repo_root), "rev-parse", "HEAD"],
@@ -41,9 +49,28 @@ def _head(repo_root: Path) -> str:
         check=False,
     )
     value = completed.stdout.strip()
-    if completed.returncode != 0 or len(value) != 40:
+    if completed.returncode != 0:
         raise WarmBootError("HHS_WARM_BOOT_REPOSITORY_HEAD_UNAVAILABLE")
-    return value
+    return _validated_repository_sha(value, source="git-head")
+
+
+def _repository_identity(
+    repo_root: Path,
+    *,
+    repository_sha_file: Path | None = None,
+) -> str:
+    if repository_sha_file is None:
+        return _head(repo_root)
+    try:
+        value = repository_sha_file.read_text(encoding="ascii")
+    except OSError as exc:
+        raise WarmBootError(
+            f"HHS_WARM_BOOT_REPOSITORY_IDENTITY_FILE_UNAVAILABLE:{repository_sha_file}"
+        ) from exc
+    return _validated_repository_sha(
+        value,
+        source=str(repository_sha_file),
+    )
 
 
 def _runtime_library(repo_root: Path) -> Path:
@@ -156,13 +183,21 @@ def create_manifest(
     return destination
 
 
-def verify_manifest(*, repo_root: Path, manifest_root: Path) -> dict[str, Any]:
+def verify_manifest(
+    *,
+    repo_root: Path,
+    manifest_root: Path,
+    repository_sha_file: Path | None = None,
+) -> dict[str, Any]:
     if os.environ.get("HHS_DISABLE_C_AUTOBUILD", "").strip().lower() not in {
         "1", "true", "yes", "on"
     }:
         raise WarmBootError("HHS_WARM_BOOT_AUTOBUILD_NOT_DISABLED")
 
-    head = _head(repo_root)
+    head = _repository_identity(
+        repo_root,
+        repository_sha_file=repository_sha_file,
+    )
     manifest_path = manifest_root / f"{head}.json"
     if not manifest_path.is_file():
         raise WarmBootError(f"HHS_WARM_BOOT_MANIFEST_MISSING:{manifest_path}")
@@ -233,6 +268,10 @@ def main() -> int:
     verify.add_argument(
         "--manifest-root", default="/var/lib/hhs/warm-boot/releases"
     )
+    verify.add_argument(
+        "--repository-sha-file",
+        help="service-readable sealed repository identity; avoids Git metadata at restart",
+    )
 
     args = parser.parse_args()
     repo_root = Path(args.repo_root).resolve()
@@ -247,7 +286,15 @@ def main() -> int:
         print(f"HHS_WARM_BOOT_MANIFEST_CREATED={path}")
         return 0
 
-    result = verify_manifest(repo_root=repo_root, manifest_root=manifest_root)
+    result = verify_manifest(
+        repo_root=repo_root,
+        manifest_root=manifest_root,
+        repository_sha_file=(
+            Path(args.repository_sha_file).resolve()
+            if args.repository_sha_file
+            else None
+        ),
+    )
     print(json.dumps(result, sort_keys=True))
     return 0
 

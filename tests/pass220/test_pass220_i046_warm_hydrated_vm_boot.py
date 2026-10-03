@@ -83,6 +83,62 @@ def test_manifest_create_then_restart_verify_adopts_without_build(
     assert verified["canonical_state_authority"] is False
 
 
+def test_restart_verify_uses_sealed_repository_identity_without_git_metadata(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    _prepare_state(monkeypatch, tmp_path)
+    repo, runtime_os = _prepare_artifacts(tmp_path)
+    manifest_root = tmp_path / "warm-boot" / "releases"
+    monkeypatch.setattr(warm_boot_manifest, "_head", lambda _repo: SHA_A)
+    warm_boot_manifest.create_manifest(
+        repo_root=repo,
+        runtime_os_root=runtime_os,
+        manifest_root=manifest_root,
+    )
+
+    repository_sha_file = tmp_path / "warm-boot" / "current-repository-sha"
+    repository_sha_file.write_text(SHA_A + "\n", encoding="ascii")
+
+    def _git_must_not_run(_repo: Path) -> str:
+        raise AssertionError("service restart must not require Git metadata")
+
+    monkeypatch.setattr(warm_boot_manifest, "_head", _git_must_not_run)
+    verified = warm_boot_manifest.verify_manifest(
+        repo_root=repo,
+        manifest_root=manifest_root,
+        repository_sha_file=repository_sha_file,
+    )
+    assert verified["repository_sha"] == SHA_A
+
+
+def test_restart_rejects_invalid_sealed_repository_identity(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    _prepare_state(monkeypatch, tmp_path)
+    repo, runtime_os = _prepare_artifacts(tmp_path)
+    manifest_root = tmp_path / "warm-boot" / "releases"
+    monkeypatch.setattr(warm_boot_manifest, "_head", lambda _repo: SHA_A)
+    warm_boot_manifest.create_manifest(
+        repo_root=repo,
+        runtime_os_root=runtime_os,
+        manifest_root=manifest_root,
+    )
+    repository_sha_file = tmp_path / "warm-boot" / "current-repository-sha"
+    repository_sha_file.write_text("not-a-commit\n", encoding="ascii")
+
+    with pytest.raises(
+        warm_boot_manifest.WarmBootError,
+        match="HHS_WARM_BOOT_REPOSITORY_IDENTITY_INVALID",
+    ):
+        warm_boot_manifest.verify_manifest(
+            repo_root=repo,
+            manifest_root=manifest_root,
+            repository_sha_file=repository_sha_file,
+        )
+
+
 def test_restart_rejects_when_autobuild_is_not_disabled(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -151,7 +207,8 @@ def test_production_service_binds_all_warm_durable_state_and_preflight() -> None
         "HHS_PASS219_LANE5_STATE_ROOT=/var/lib/hhs/pass219/lane5",
         "HHS_RUNTIME_BOOTSTRAP_ROOT=/var/lib/hhs/runtime-bootstrap",
         "HHS_WARM_BOOT_MANIFEST_ROOT=/var/lib/hhs/warm-boot/releases",
-        "ExecStartPre=/opt/hhs/venv/bin/python /opt/hhs/app/deployment/digitalocean/warm_boot_manifest.py verify",
+        "ExecStartPre=/opt/hhs/venv/bin/python /usr/local/lib/hhs-guarded-update/warm_boot_manifest.py verify",
+        "--repository-sha-file /var/lib/hhs/warm-boot/current-repository-sha",
     )
     for needle in required:
         assert needle in service
@@ -172,6 +229,37 @@ def test_promotion_builds_once_then_seals_before_service_start() -> None:
     assert "/var/lib/hhs/pass194" in updater
     assert "/var/lib/hhs/pass213/surface" in updater
     assert "/var/lib/hhs/pass219/lane5" in updater
+    assert 'bind_warm_boot_repository_sha "$CANDIDATE_SHA"' in updater
+    assert 'bind_warm_boot_repository_sha "$PREVIOUS_SHA"' in updater
+    assert updater.index('bind_warm_boot_repository_sha "$CANDIDATE_SHA"') < updater.index(
+        "if ! start_units; then"
+    )
+
+
+def test_recovery_bootstrap_binds_authorized_sha_before_service_start() -> None:
+    installer = (
+        ROOT / "deployment/digitalocean/guarded_auto_update/install.sh"
+    ).read_text(encoding="utf-8")
+    assert 'prepare_recovery_warm_boot_service "$current_head"' in installer
+    assert 'install -m 0755 "$WARM_BOOT_TOOL" "$INSTALLED_WARM_BOOT_TOOL"' in installer
+    assert (
+        'install -m 0644 "$WARM_BOOT_SERVICE_DROPIN" /etc/systemd/system/hhs.service.d/20-hhs-warm-boot-identity.conf'
+        in installer
+    )
+    assert installer.index('prepare_recovery_warm_boot_service "$current_head"') < installer.index(
+        "systemctl start hhs.service"
+    )
+
+
+def test_rollback_safe_service_dropin_overrides_only_warm_boot_preflight() -> None:
+    dropin = (
+        ROOT / "deploy/digitalocean/hhs-warm-boot-identity.conf"
+    ).read_text(encoding="utf-8")
+    assert "[Service]" in dropin
+    assert "ExecStartPre=" in dropin
+    assert "/usr/local/lib/hhs-guarded-update/warm_boot_manifest.py verify" in dropin
+    assert "--repository-sha-file /var/lib/hhs/warm-boot/current-repository-sha" in dropin
+    assert "ExecStart=" not in dropin
 
 
 def test_restart_verifier_contains_no_build_or_hydration_commands() -> None:

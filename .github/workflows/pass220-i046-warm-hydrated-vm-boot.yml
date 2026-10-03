@@ -7,7 +7,9 @@ on:
     paths:
       - "deployment/digitalocean/warm_boot_manifest.py"
       - "deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh"
+      - "deployment/digitalocean/guarded_auto_update/install.sh"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
+      - "deploy/digitalocean/hhs-warm-boot-identity.conf"
       - ".github/workflows/pass196-integrated-environment.yml"
       - "tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py"
       - "docs/pass220/PASS_220_I046_WARM_HYDRATED_VM_BOOT_V1.md"
@@ -38,8 +40,10 @@ jobs:
             deployment/digitalocean/warm_boot_manifest.py \
             tests/pass220/test_pass220_i046_warm_hydrated_vm_boot.py
 
-      - name: Validate promotion shell
-        run: bash -n deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh
+      - name: Validate promotion and recovery shells
+        run: |
+          bash -n deployment/digitalocean/guarded_auto_update/hhs-guarded-update.sh
+          bash -n deployment/digitalocean/guarded_auto_update/install.sh
 
       - name: Run warm hydrated VM boot regressions
         run: |
