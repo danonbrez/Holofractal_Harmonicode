@@ -1,0 +1,36 @@
+{
+  "schema": "HHS_PASS_220_I069_HARMONICODE_I_TENSOR_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-03",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 26,
+  "pass_count": 26,
+  "failed": [],
+  "base_main": "fb1f57cb4eb3b0b4f19384c51c37279c41c4b0a3",
+  "branch": "pass220/i069-harmonicode-i-tensor-20261003",
+  "formal_source": "formal/wolfram/pass220_i069_harmonicode_i_tensor_v1.wl",
+  "formal_source_blob_sha": "9a17f8fa713a47a59cb19812e1a595458724d64f",
+  "runtime_source": "hhs_runtime/hhs_pass220_i069_harmonicode_i_tensor_v1.py",
+  "runtime_source_blob_sha": "b44f7660a7804ccd8d048c37797a0923fe17346f",
+  "test_source": "tests/pass220/test_hhs_pass220_i069_harmonicode_i_tensor_v1.py",
+  "test_source_blob_sha": "2b4827c86c2e2aeac8b74679f18a94737990f8fb",
+  "output_path": "evidence/pass220/i069_harmonicode_i_tensor_wolfram_20261003_v1.output.json",
+  "repository_replay_command": "wolframscript -file formal/wolfram/pass220_i069_harmonicode_i_tensor_v1.wl",
+  "optimization": {
+    "matrix_a_generated_from_phase_kernel": true,
+    "matrix_b_generated_as_mod9_complement": true,
+    "matrix_c_generated_by_loshu_routing_of_e": true,
+    "independent_matrix_literal_sets_required": 0,
+    "exact_roundtrip": true
+  },
+  "authority": {
+    "formal_projection_only": true,
+    "verbatim_source_authoritative": true,
+    "e_membrane_not_host_boolean_division": true,
+    "ordered_xy_preserved": true,
+    "floating_point_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false
+  }
+}
