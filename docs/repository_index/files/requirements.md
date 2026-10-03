@@ -1,9 +1,9 @@
 # Repository file/dependency shard - requirements
 
-Source commit: [8f40341dece6ba9189e968712c1bbdbba171ac38](https://github.com/danonbrez/Holofractal_Harmonicode/commit/8f40341dece6ba9189e968712c1bbdbba171ac38)
+Source commit: [f88ce8672b3afaa8b7499a0b370d1f9c2cb55c71](https://github.com/danonbrez/Holofractal_Harmonicode/commit/f88ce8672b3afaa8b7499a0b370d1f9c2cb55c71)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## requirements
 
-- [requirements/pass213-pqc.txt](https://github.com/danonbrez/Holofractal_Harmonicode/blob/8f40341dece6ba9189e968712c1bbdbba171ac38/requirements/pass213-pqc.txt) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 7
+- [requirements/pass213-pqc.txt](https://github.com/danonbrez/Holofractal_Harmonicode/blob/f88ce8672b3afaa8b7499a0b370d1f9c2cb55c71/requirements/pass213-pqc.txt) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 7
