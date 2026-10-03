@@ -54,6 +54,7 @@ Changed:
 
 - `tests/test_hhs_production_service_permissions_v2.py`
 - `.github/workflows/pass219-cumulative-pass202-membrane-i122.yml`
+- `hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py`
 
 The test adds the missing standard-library import:
 
@@ -64,7 +65,9 @@ import sys
 The first PR run exposed a separate inherited successor-identity drift from PR #693:
 the Pass 202 membrane still pinned the pre-#693 blobs for the guarded updater and
 installer. Historical Pass 202 identities remain frozen; only the current successor
-pins were refreshed to the repository-visible current blobs:
+pins were refreshed to the repository-visible current blobs. The workflow-level
+identity gate and the kernel-derived Pass 202 membrane each carry their own current
+successor table, so both were updated consistently:
 
 ```text
 hhs-guarded-update.sh
@@ -147,3 +150,32 @@ After merge, allow exact-current-main promotion to rerun and verify:
 Open the repair PR, inspect the production-permission and inherited membrane
 checks, merge with expected-head protection when green, then follow the newest
 exact-main production run through HTTPS closure.
+
+
+## Additional membrane evidence
+
+The refreshed workflow-level successor hashes passed on PR #694.
+
+Both exact and synthetic jobs then advanced through:
+
+- frozen I121 / accepted Pass 202 integration: PASS;
+- historical Pass 202 source identities: PASS;
+- current successor-hardened workflow identities: PASS;
+- no approximate arithmetic/new authority exports: PASS;
+- cumulative exact ABI C/C++ Pass 202 conformance: PASS;
+- sealed legacy rollback recovery bridge: PASS.
+
+They then failed in the kernel-derived preflight because
+`hhs_runtime/hhs_pass219_cumulative_pass_membrane_i122_pass202.py` contained a
+second stale current-successor table. That table was repaired to the same accepted
+current blobs:
+
+```text
+hhs-guarded-update.sh
+444d8015a06444771d30bc8992c3881570c4bced
+
+install.sh
+51fb5fab508324f42acf2da1caf5202ab39bd2bb
+```
+
+This does not alter the frozen historical blob table.
