@@ -384,6 +384,52 @@ class ProductionAssistantService:
         )
         return status
 
+    async def deployment_health(self) -> Dict[str, Any]:
+        """Bounded production liveness using the guaranteed local native provider.
+
+        Deployment admission proves a real executable assistant authority without
+        coupling service liveness to optional external LiteRT or Pass 153 provider
+        probes. Full provider diagnostics remain available through health().
+        """
+
+        native_health = await self._provider_health(
+            "native", self.native_service, force=True
+        )
+        native_ready = bool(
+            native_health.get("ok") and native_health.get("online")
+        )
+        status = dict(self.status())
+        status["ok"] = native_ready
+        status["online"] = native_ready
+        status["status"] = (
+            "HHS_PRODUCTION_ASSISTANT_DEPLOYMENT_LIVENESS_READY"
+            if native_ready
+            else "HHS_PRODUCTION_ASSISTANT_DEPLOYMENT_LIVENESS_UNAVAILABLE"
+        )
+        status["selected_provider_id"] = NATIVE_PROVIDER_ID if native_ready else None
+        status["selected_model_id"] = NATIVE_MODEL_ID if native_ready else None
+        status["effective_mode"] = (
+            "HHS_NATIVE_LITERT_COMPATIBLE" if native_ready else "UNAVAILABLE"
+        )
+        status["deployment_liveness_scope"] = (
+            "NATIVE_HHS_LOCAL_EXECUTABLE_AUTHORITY"
+        )
+        status["optional_provider_health_deferred"] = True
+        status["native_hhs"] = {
+            **dict(status.get("native_hhs") or {}),
+            "health": dict(native_health),
+            "ready": native_ready,
+        }
+        status["status_root_hash72"] = hash72(
+            STATUS_SCHEMA,
+            {
+                key: value
+                for key, value in status.items()
+                if key != "status_root_hash72"
+            },
+        )
+        return status
+
     async def health(self) -> Dict[str, Any]:
         if self.native_first:
             gemma_health = {
