@@ -1,0 +1,57 @@
+{
+  "schema": "HHS_PASS_220_I069_HARMONICODE_I_TENSOR_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CHECKPOINT",
+  "base_main": "fb1f57cb4eb3b0b4f19384c51c37279c41c4b0a3",
+  "branch": "pass220/i069-harmonicode-i-tensor-20261003",
+  "merge_target": "main",
+  "purpose": "Preserve the HARMONICODE I Tensor verbatim while providing an exact generator/reconstruction surface for its reciprocal matrix pair and Lo Shu-routed E product matrix.",
+  "verbatim_semantics": {
+    "matrix_times_order_preserved": true,
+    "ordered_xy_preserved": true,
+    "e_membrane_preserved": true,
+    "e_membrane_interpreted_as_host_boolean_division": false,
+    "u72_outer_closure_preserved": true
+  },
+  "exact_generator": {
+    "scale": 8,
+    "phase_modulus": 9,
+    "residue_modulus": 72,
+    "phase_kernel_rule": "K[row0,col0]=Mod[2*(row0+col0)-1,9]",
+    "matrix_a_rule": "A=8*K",
+    "matrix_b_rule": "B=8*(9-K)",
+    "e_vector": [8, 24, 40, 56, 72, 16, 32, 48, 64],
+    "lo_shu": [[4, 9, 2], [3, 5, 7], [8, 1, 6]],
+    "matrix_c_rule": "C=Partition[E[[Flatten[LoShu]]],3]"
+  },
+  "proven_invariants": {
+    "A_plus_B_pointwise": 72,
+    "B_equals_mod72_negative_A": true,
+    "A_equals_mod72_negative_B": true,
+    "C_over_8_is_permutation_1_to_9": true,
+    "C_center": 72,
+    "C_center_mod72": 0,
+    "determinants": [-18432, 18432, 32256],
+    "normalized_determinants": [-36, 36, 63],
+    "all_determinants_divisible_by_72": true
+  },
+  "candidate_receipt": {
+    "form": "Hash72(verbatim_source) || Hash72(generator) || Hash72(proof_and_authority)",
+    "positions": 216,
+    "canonical_commit_authority": false
+  },
+  "authority": {
+    "formal_projection_only": true,
+    "floating_point_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_persistence_authority": false
+  },
+  "validation": {
+    "connected_wolfram": "26/26 PASS",
+    "python_dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "runtime_self_test": "PENDING_BRANCH_CI",
+    "branch_ci": "PENDING"
+  }
+}
