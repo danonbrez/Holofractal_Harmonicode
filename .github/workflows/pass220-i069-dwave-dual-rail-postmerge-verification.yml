@@ -56,8 +56,8 @@ jobs:
           git merge-base --is-ancestor 87c5283730d27f94ddca694ab6fc01f982c7e165 HEAD
           git show --no-patch --format='%H %s' 87c5283730d27f94ddca694ab6fc01f982c7e165
 
-      - name: Install bounded test dependency
-        run: python -m pip install --disable-pip-version-check pytest
+      - name: Install bounded test dependencies
+        run: python -m pip install --disable-pip-version-check pytest cryptography
 
       - name: Run I068 and I069 dependency-scoped suites
         run: |
