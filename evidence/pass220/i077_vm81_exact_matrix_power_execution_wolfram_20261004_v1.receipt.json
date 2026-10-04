@@ -1,0 +1,79 @@
+{
+  "schema": "HHS_PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "status": "PASS",
+  "connected_wolfram_kernel": true,
+  "source_path": "formal/wolfram/pass220_i077_vm81_exact_matrix_power_execution_v1.wl",
+  "source_git_blob_sha": "21a494c62fe790b7f63abdb974b087e356d259ac",
+  "output_path": "evidence/pass220/i077_vm81_exact_matrix_power_execution_wolfram_20261004_v1.output.json",
+  "output_git_blob_sha": "5ae83875bdfb924882e00723f33c133795b4a07d",
+  "check_count": 30,
+  "pass_count": 30,
+  "failed": [],
+  "structural_witness": {
+    "node_count": 2,
+    "rectangular_shapes": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "source_nodes": [
+      "MatrixPower[M_wz,x^2]",
+      "MatrixPower[M_xy,x^4]"
+    ],
+    "exponent_tokens": [
+      "x^2",
+      "x^4"
+    ],
+    "cell_token_sequences": [
+      [
+        0,
+        1,
+        1,
+        2,
+        2,
+        0,
+        3,
+        1
+      ],
+      [
+        4,
+        3,
+        3,
+        5,
+        5,
+        4,
+        3,
+        1
+      ]
+    ]
+  },
+  "transport_witness": {
+    "P": 2,
+    "p": 1,
+    "q": 3,
+    "delta": 1,
+    "A": 4,
+    "B": 4,
+    "qr_bit": 0,
+    "expected_phase": 0
+  },
+  "authority": {
+    "host_matrixpower_authority": false,
+    "square_matrix_fallback": false,
+    "numeric_exponent_evaluation": false,
+    "matrix_power_value_derivation": false,
+    "vm81_transport_execution_expected": true,
+    "deterministic_replay_expected": true,
+    "canonical_persistence": false
+  },
+  "hydration": {
+    "hash216_width": 216,
+    "full_attached_components": 15552
+  }
+}
