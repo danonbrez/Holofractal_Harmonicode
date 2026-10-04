@@ -94,3 +94,22 @@ runtime/formal blobs on authoritative main.
 
 No canonical mutation, Hash minting, persistence, float, or egress authority is
 added by I071.
+
+
+## Live PR checkpoint
+
+```text
+pull request: #703
+validated branch head at checkpoint: b40d5cecb9f7407fee8c26af513304dc03d38264
+PR mergeable: true
+scoped workflow run: 37186610552
+scoped job: 111389752098
+job state at checkpoint: in_progress
+current step: Validate I071 and merged I070 dependency
+failure observed at checkpoint: none
+```
+
+Per forward-progress policy, this restartable checkpoint is not delayed for
+queued/running external CI. If the scoped job later fails, repair only the
+concrete dependency-scoped divergence. If it succeeds and PR #703 remains
+mergeable, merge normally and verify authoritative main.
