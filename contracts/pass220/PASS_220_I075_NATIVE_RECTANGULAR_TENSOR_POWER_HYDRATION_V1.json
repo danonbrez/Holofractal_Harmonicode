@@ -1,0 +1,93 @@
+{
+  "schema": "HHS_PASS_220_I075_NATIVE_RECTANGULAR_TENSOR_POWER_HYDRATION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CHECKPOINT",
+  "date": "2026-10-04",
+  "base_main": "45c1dfa8378541fa141de6d19f347cb88cb37d2c",
+  "branch": "pass220/i075-native-rectangular-tensor-power-hydration-20261004",
+  "merge_target": "main",
+  "purpose": "Lower the two I074 held 4x2 MatrixPower source nodes into typed native HARMONICODE rectangular tensor-power AST records without assigning host MatrixPower or numeric exponent semantics; bind exact provenance into Hash216 hydration.",
+  "parent": {
+    "pass": "Pass 220 I074",
+    "merged_main_sha": "45c1dfa8378541fa141de6d19f347cb88cb37d2c"
+  },
+  "native_operator": {
+    "tag": "HARMONICODE_RECTANGULAR_TENSOR_POWER",
+    "nodes": [
+      {
+        "base_role": "M_WZ",
+        "shape": [
+          4,
+          2
+        ],
+        "exponent_token": "x^2",
+        "source_node": "MatrixPower[M_wz,x^2]"
+      },
+      {
+        "base_role": "M_XY",
+        "shape": [
+          4,
+          2
+        ],
+        "exponent_token": "x^4",
+        "source_node": "MatrixPower[M_xy,x^4]"
+      }
+    ],
+    "host_matrixpower_evaluated": false,
+    "numeric_exponent_evaluated": false,
+    "ordered_cell_identity_preserved": true
+  },
+  "structural_hydration": {
+    "node_count": 2,
+    "cell_occurrences": 16,
+    "unique_cell_expressions": 6,
+    "all_occurrence_witnesses_retained": true,
+    "source_nodes_reconstructible": true,
+    "hash72_width": 72,
+    "hash216_width": 216,
+    "planes": 3,
+    "vertices_per_plane": 5184,
+    "full_attached_components": 15552,
+    "persist_expanded_geometry": false,
+    "reconstruct_on_demand": true
+  },
+  "wolfram": {
+    "source": "formal/wolfram/pass220_i075_native_rectangular_tensor_power_hydration_v1.wl",
+    "evidence": "evidence/pass220/i075_native_rectangular_tensor_power_hydration_wolfram_20261004_v1.output.json",
+    "receipt": "evidence/pass220/i075_native_rectangular_tensor_power_hydration_wolfram_20261004_v1.receipt.json",
+    "connected_kernel": "24/24 PASS",
+    "native_rectangular_matrixpower_evaluated": false
+  },
+  "lean": {
+    "module": "HHS.Pass220.I075",
+    "source": "formal/lean/HHS/Pass220/NativeRectangularTensorPowerHydration.lean",
+    "inherits": [
+      "HHS.Pass220.I074"
+    ],
+    "required_checks": [
+      "build",
+      "leanchecker",
+      "axiom-audit"
+    ]
+  },
+  "authority": {
+    "candidate_only": true,
+    "host_matrixpower_authority": false,
+    "host_rectangular_matrixpower_authority": false,
+    "numeric_exponent_evaluation_authority": false,
+    "projection_substitution_authorized": false,
+    "floating_point_authority": false,
+    "vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "external_egress_authority": false
+  },
+  "validation": {
+    "connected_wolfram": "24/24 PASS",
+    "python_dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "runtime_self_test": "PENDING_BRANCH_CI",
+    "lean_build_kernel_check_axiom_audit": "PENDING_BRANCH_CI",
+    "source_bundle_identity": "PENDING_BRANCH_CI"
+  }
+}
