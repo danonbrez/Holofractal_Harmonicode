@@ -30,7 +30,7 @@ from hhs_runtime.hhs_pass118_symbolic_harmonicode_runtime_v1 import (
     HarmonicodeRuntimeEngine,
     PROGRAM_SCHEMA,
 )
-from hhs_runtime.hhs_pass219_fibonacci_compression_reference_v1 import (
+from hhs_runtime.pass219_fibonacci_compression_reference_v1 import (
     MAGNITUDES,
     OUTER_HYDRATION_MODULUS,
     build_witness as build_fibonacci_witness,
