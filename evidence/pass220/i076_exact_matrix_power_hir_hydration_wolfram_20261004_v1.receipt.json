@@ -1,0 +1,51 @@
+{
+  "schema": "HHS_PASS_220_I076_EXACT_MATRIX_POWER_HIR_HYDRATION_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "status": "PASS",
+  "connected_wolfram_kernel": true,
+  "source_path": "formal/wolfram/pass220_i076_exact_matrix_power_hir_hydration_v1.wl",
+  "source_git_blob_sha": "4d04cd6a58fa419323a372be8267393c7ad6c2d9",
+  "output_path": "evidence/pass220/i076_exact_matrix_power_hir_hydration_wolfram_20261004_v1.output.json",
+  "output_git_blob_sha": "3718ac1db6351ade7404c1bd6a16dd739c166636",
+  "check_count": 26,
+  "pass_count": 26,
+  "failed": [],
+  "structural_witness": {
+    "canonical_type": "ExactMatrixPower",
+    "node_kind": "EXACT_SYMBOLIC_MATRIX_POWER",
+    "node_count": 2,
+    "rectangular_shapes": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "source_nodes": [
+      "MatrixPower[M_wz,x^2]",
+      "MatrixPower[M_xy,x^4]"
+    ],
+    "exponent_tokens": [
+      "x^2",
+      "x^4"
+    ],
+    "ordered_cell_occurrences": 16
+  },
+  "authority": {
+    "host_matrixpower_evaluations": 0,
+    "square_matrix_requirement_imported": false,
+    "numeric_exponent_evaluations": 0,
+    "matrix_power_values_derived": 0,
+    "vm81_executions_verified": 0,
+    "vm81_admission_required": true,
+    "candidate_only": true
+  },
+  "hydration": {
+    "hash216_width": 216,
+    "full_attached_components": 15552,
+    "expanded_geometry_persisted": false
+  }
+}
