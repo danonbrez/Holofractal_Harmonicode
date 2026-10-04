@@ -12,6 +12,7 @@ import HHS.Provenance.OriginMarker
 import HHS.Pass219.QGUHNANTransport
 import HHS.Pass220.LosslessEmergentCompressionHydration
 import HHS.Pass220.TheoryConstructorHash216Hydration
+import HHS.Pass220.PalindromicRNAFibonacciSymbolicTensor
 import HHS.Pass220.Oldenburg3DLightEmpirical
 import HHS.Pass220.AgentScopeBoundary
 

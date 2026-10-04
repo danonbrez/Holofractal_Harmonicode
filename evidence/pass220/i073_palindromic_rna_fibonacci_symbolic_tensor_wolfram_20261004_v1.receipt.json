@@ -1,0 +1,41 @@
+{
+  "schema": "HHS_PASS_220_I073_PALINDROMIC_RNA_FIBONACCI_SYMBOLIC_TENSOR_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 48,
+  "pass_count": 48,
+  "failed": [],
+  "stacked_parent_head": "915ba24dcf2e8c62ceead3d9ba695941ff588dc1",
+  "branch": "pass220/i073-palindromic-rna-fibonacci-symbolic-tensor-20261004",
+  "formal_source": "formal/wolfram/pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.wl",
+  "runtime_source": "hhs_runtime/hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py",
+  "lean_source": "formal/lean/HHS/Pass220/PalindromicRNAFibonacciSymbolicTensor.lean",
+  "test_source": "tests/pass220/test_hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py",
+  "repository_replay_command": "wolframscript -file formal/wolfram/pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.wl",
+  "proven": {
+    "serialized_characters": 5184,
+    "rna_windows": 1728,
+    "operation64": 64,
+    "fibonacci_terminal_pair": [
+      144,
+      233
+    ],
+    "fibonacci_cumulative_scale": "1/144",
+    "tensor_shape": [
+      5,
+      9
+    ],
+    "tensor_elements": 45,
+    "hash216_width": 216,
+    "full_attached_components": 15552
+  },
+  "authority": {
+    "candidate_only": true,
+    "ieee_binary64_boundary_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false
+  }
+}
