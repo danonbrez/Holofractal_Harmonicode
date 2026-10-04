@@ -57,14 +57,31 @@ jobs:
           PYTHONPATH=. python tests/pass220/test_hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py
           python -m hhs_runtime.hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1
 
-      - name: Revalidate inherited I065 and I027 dependency surfaces
+      - name: Revalidate inherited I065 and I027 address dependencies
         run: |
-          python -m hhs_runtime.testing.native_pytest_provider_v1 -q             tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py
-          python -m hhs_runtime.testing.native_pytest_provider_v1 -q             tests/pass220/test_hhs_pass220_quantum_collapse_admission_bridge_v1.py
+          python -m hhs_runtime.testing.native_pytest_provider_v1 -q \
+            tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py
+          python - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "hhs_runtime/hhs_pass220_quantum_collapse_admission_bridge_v1.py"
+          ).read_text(encoding="utf-8")
+          for required in (
+              "row, column = divmod(k, 3)",
+              "vm81_cell_id = nucleus * 9 + k",
+              "lo_shu_value = LO_SHU[row][column]",
+          ):
+              assert required in source
+          PY
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_quantum_collapse_admission_bridge_v1.py
 
       - name: Compile changed Python surfaces
         run: |
-          python -m py_compile             hhs_runtime/hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py             tests/pass220/test_hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py
 
       - name: Verify frozen formal evidence and authority
         run: |
