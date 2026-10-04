@@ -1,0 +1,34 @@
+{
+  "schema": "HHS_PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 36,
+  "pass_count": 36,
+  "failed": [],
+  "base_main": "0d92a9cd7086b8a2bbe2ea73e8996a89431dc127",
+  "branch": "pass220/i071-shared-root-phase-gear-loop-closure-20261004",
+  "formal_source": "formal/wolfram/pass220_i071_shared_root_phase_gear_loop_closure_v1.wl",
+  "runtime_source": "hhs_runtime/hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py",
+  "test_source": "tests/pass220/test_hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py",
+  "repository_replay_command": "wolframscript -file formal/wolfram/pass220_i071_shared_root_phase_gear_loop_closure_v1.wl",
+  "proven": {
+    "phase_slot_count": 72,
+    "first_repeat_period": 72,
+    "premature_repeat": false,
+    "vm81_address_count": 81,
+    "vm81_exact_cover_0_80": true,
+    "lower_lift_orbit_period_equal": true,
+    "coordinate_closure_5184": true,
+    "phase_lock_period_5184": true,
+    "geometry_returns": true,
+    "lineage_advances": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false
+  }
+}
