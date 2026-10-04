@@ -6,22 +6,22 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [0d92a9cd7086b8a2bbe2ea73e8996a89431dc127](https://github.com/danonbrez/Holofractal_Harmonicode/commit/0d92a9cd7086b8a2bbe2ea73e8996a89431dc127)
-- Git tree: d5165db1838000e8e23b8edbf3586b0db90fadfc
-- Tracked tree entries: 9,813
-- Tracked files in Git tree: 9,031
-- Content-bound indexed files: 8,980
+- Source commit: [970ef2fa519eae32edf1cddc18a0cbe4bc001be6](https://github.com/danonbrez/Holofractal_Harmonicode/commit/970ef2fa519eae32edf1cddc18a0cbe4bc001be6)
+- Git tree: 5be7764572b5ed3ecb26a8043a11881a87e1d0dd
+- Tracked tree entries: 9,822
+- Tracked files in Git tree: 9,040
+- Content-bound indexed files: 8,989
 - Projection artifacts excluded from content root: 51
-- Text files deep-scanned: 8,533
-- Internal dependency edges: 74,304
-- Containment edges: 9,759
+- Text files deep-scanned: 8,541
+- Internal dependency edges: 74,371
+- Containment edges: 9,768
 - Lane 5 capability nodes: 2,109
 
 ## Hash216 graph roots
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpjv4Q2*YwIp9LfO)uOAnZL?)1>NH)4w-M35oqbfwW17<fWEp+dNrm/)i19)oA97d?JSuz3U7hiH+RzacIjDYha38p*)Inlw5<5hEfTZdKZ4A8RoT5G-TIB7S/nvE7KSihC*e!!74gM4V)PRLz
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpAjakSsxI4!R(?QSE*PP!ADZyVDtF*0ovrNI*4y36AsgvXp!L/2UxQTEMZw9T1FZHQ!BLDR6B0TSIqtsabZIEApJLKF3*l3j*vKFe2q5F9gdz62Uk/!moifzQXziUGFkLAy7N*it-UE1gbDA?
 
 ### directory_node_root_hash216
 
@@ -29,11 +29,11 @@ m+>+KVW+Fd9M3>)OrHc)LCeL3KR8MzR39U2SOa2yjrS?mOjKOHgrRSwBBOQIzw7Uk54u>Vdf8e8BeyN>
 
 ### containment_edge_root_hash216
 
-Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+E(k95l?6>stO?pUKtenK6WNRWYjIvCRZ56oCPEv83HMB?0Lzla1+TzvBrOk488nz-WYGzo>0zA0wunr36A<fT0UR<St?esf7/Q)KivF0E<)p!rh2srW)HU/>qD36yTyHsIKDO54XDyxZ(HB5
+Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+mPAuhO(W(uVuK*kPBm!92YitvV(h1?p0*LVN92cqMK1y/q>rs8XsFeNXH4gwuPu5re+83Pq0n2d-AiRPTsb1jXwbAR4mNijxAMUw56QraBUQy?AnledZ<hVS-B!/r8MeILBWU0cJ+oU1!X7x
 
 ### dependency_edge_root_hash216
 
-GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-T*iHmLmcU*BxSk7e/ckS39PsyP9I1txBF8Vi3hf04cgBB9JB6mrFO3Fy2N97U6YUftfZ5wbvylAhurubcp/D81UfBgyE6QdAE/cyT><p/XchM(epq>0DiWJ8YvQ83P5L-4geczAbhqBXJ6fr
+GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-YiE7r/fahsb-A5lGG*>Sna2(IALTcg+nPoz>zOyFb8lg1)kudSE-qe9Vj0pQ<556qS3ESJh/hAj4FffYXMFQ54Hq<PuF?mj>G1XtCe8WUXQX8Ne!0O1+cjnMf6axj9w2kEuDiL496LYoTG-x
 
 ### lane5_capability_binding_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiL?83ZurfV6Dsgt?j*(j?M6?iCqgGMYWCKqbeTCVJOd<PfdQ+U<oF/ePh/BVtdBLLtmC?EiG*clX1hJz-6+RZLAX3>G0O5X>OJsqVUzVZA-Qh3BsiDB8dC7j)Y+3+TJHCU*+D)Xz-sbszhjbmZ
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLSInGh0/pGa-rcNpXGbfkKa2Zs/2L/P4Lh+?N3pAnu/7xtTZW7NEZG7yW?f)QWXXsVTIIzY>kZiT9deG+26Kuy7qoNfEow?8d-RmU/tGAQA*oqP/s2ypJh/O*gPcGfGcpX9/K/o2sht3AS7P?
 
 ## Lane 5 evidence binding
 
@@ -62,16 +62,16 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 [artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json)
 
 - Capabilities: 2,109
-- Constructors: 4,346
-- Knowledge relations: 13,455
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX3i!TBfFp-MJ*J!iWXDkLs0jntp1Qk-PJsV9fijZrzbuIQdMy-nu4fGtl?07CEAQJ?bMPAF05xFVRPsZPqFAxZEA51G7)mM*5))kh7+l)(/zr8>SM+/B-P)ke4dWFJ6YfJuirNa6l!j+DxrD0
+- Constructors: 4,351
+- Knowledge relations: 13,460
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX2?rSC8zeu8(E<Vgti<<y8002zQr?j9oa*Z<o57PsWv)3Ypo?5fqq(x!?ZJafZFU(bSgsBd+S6N8+Per7X>85Y2(Z9p0N-9AVEkkKi1/?/>EPo*-2TqsO4M(izgasQ>?5qM(VZj5MqObtUL/A
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
 
 | Shard | Files |
 |---|---:|
-| [.github](docs/repository_index/files/.github.md) | 487 |
+| [.github](docs/repository_index/files/.github.md) | 488 |
 | [PASS_137_EGRESS](docs/repository_index/files/PASS_137_EGRESS.md) | 3 |
 | [_root](docs/repository_index/files/_root.md) | 1,651 |
 | [android](docs/repository_index/files/android.md) | 18 |
@@ -80,15 +80,15 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 | [artifacts](docs/repository_index/files/artifacts.md) | 12 |
 | [benchmarks](docs/repository_index/files/benchmarks.md) | 81 |
 | [bin](docs/repository_index/files/bin.md) | 4 |
-| [contracts](docs/repository_index/files/contracts.md) | 289 |
+| [contracts](docs/repository_index/files/contracts.md) | 290 |
 | [creative_writing](docs/repository_index/files/creative_writing.md) | 62 |
 | [data](docs/repository_index/files/data.md) | 15 |
 | [deploy](docs/repository_index/files/deploy.md) | 8 |
 | [deployment](docs/repository_index/files/deployment.md) | 41 |
-| [docs](docs/repository_index/files/docs.md) | 941 |
-| [evidence](docs/repository_index/files/evidence.md) | 520 |
+| [docs](docs/repository_index/files/docs.md) | 943 |
+| [evidence](docs/repository_index/files/evidence.md) | 522 |
 | [examples](docs/repository_index/files/examples.md) | 8 |
-| [formal](docs/repository_index/files/formal.md) | 28 |
+| [formal](docs/repository_index/files/formal.md) | 29 |
 | [grammar](docs/repository_index/files/grammar.md) | 1 |
 | [gui](docs/repository_index/files/gui.md) | 26 |
 | [hhs_backend](docs/repository_index/files/hhs_backend.md) | 590 |
@@ -97,7 +97,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 | [hhs_gui](docs/repository_index/files/hhs_gui.md) | 294 |
 | [hhs_installer](docs/repository_index/files/hhs_installer.md) | 33 |
 | [hhs_python](docs/repository_index/files/hhs_python.md) | 49 |
-| [hhs_runtime](docs/repository_index/files/hhs_runtime.md) | 1,158 |
+| [hhs_runtime](docs/repository_index/files/hhs_runtime.md) | 1,159 |
 | [hhs_storage](docs/repository_index/files/hhs_storage.md) | 3 |
 | [hhs_verification](docs/repository_index/files/hhs_verification.md) | 31 |
 | [manifests](docs/repository_index/files/manifests.md) | 4 |
@@ -113,7 +113,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 | [scripts](docs/repository_index/files/scripts.md) | 92 |
 | [sdk](docs/repository_index/files/sdk.md) | 1 |
 | [test_corpus](docs/repository_index/files/test_corpus.md) | 16 |
-| [tests](docs/repository_index/files/tests.md) | 1,014 |
+| [tests](docs/repository_index/files/tests.md) | 1,015 |
 | [tools](docs/repository_index/files/tools.md) | 140 |
 | [training_specimens](docs/repository_index/files/training_specimens.md) | 2 |
 | [web](docs/repository_index/files/web.md) | 3 |
@@ -123,20 +123,20 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 
 ### .github
 
-- -> tests: 3,652 edges
-- -> hhs_runtime: 2,915 edges
+- -> tests: 3,657 edges
+- -> hhs_runtime: 2,926 edges
 - -> hhs_backend: 1,899 edges
-- -> docs: 728 edges
-- -> contracts: 696 edges
+- -> docs: 732 edges
+- -> contracts: 699 edges
 - -> tools: 515 edges
-- -> evidence: 377 edges
+- -> evidence: 382 edges
 - -> scripts: 301 edges
 - -> benchmarks: 225 edges
 - -> applications: 209 edges
 - -> native_projects: 158 edges
 - -> hhs_gui: 146 edges
 - -> deployment: 92 edges
-- -> formal: 61 edges
+- -> formal: 63 edges
 - -> deploy: 54 edges
 - -> hhs_python: 54 edges
 - -> hhs_verification: 49 edges
@@ -240,7 +240,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 
 ### contracts
 
-- -> hhs_runtime: 168 edges
+- -> hhs_runtime: 169 edges
 - -> tests: 58 edges
 - -> hhs_backend: 48 edges
 - -> benchmarks: 25 edges
@@ -279,18 +279,18 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 
 ### docs
 
-- -> hhs_runtime: 1,031 edges
-- -> tests: 891 edges
-- -> .github: 453 edges
+- -> hhs_runtime: 1,032 edges
+- -> tests: 892 edges
+- -> .github: 454 edges
 - -> hhs_backend: 395 edges
-- -> contracts: 315 edges
-- -> evidence: 219 edges
+- -> contracts: 316 edges
+- -> evidence: 221 edges
 - -> tools: 161 edges
 - -> scripts: 113 edges
 - -> benchmarks: 110 edges
 - -> hhs_gui: 75 edges
 - -> deployment: 72 edges
-- -> formal: 50 edges
+- -> formal: 51 edges
 - -> hhs_python: 37 edges
 - -> native_projects: 35 edges
 - -> applications: 30 edges
@@ -318,8 +318,8 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 - -> docs: 79 edges
 - -> hhs_backend: 75 edges
 - -> .github: 73 edges
-- -> hhs_runtime: 72 edges
-- -> tests: 58 edges
+- -> hhs_runtime: 73 edges
+- -> tests: 59 edges
 - -> contracts: 43 edges
 - -> hhs_verification: 28 edges
 - -> native_projects: 27 edges
@@ -329,7 +329,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 - -> benchmarks: 23 edges
 - -> hhs_installer: 23 edges
 - -> applications: 18 edges
-- -> formal: 6 edges
+- -> formal: 8 edges
 - -> android: 1 edges
 - -> deployment: 1 edges
 - -> manifests: 1 edges
@@ -533,7 +533,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d-I+z/!3c
 
 ### tests
 
-- -> hhs_runtime: 5,170 edges
+- -> hhs_runtime: 5,188 edges
 - -> hhs_backend: 1,683 edges
 - -> native_projects: 387 edges
 - -> hhs_installer: 151 edges

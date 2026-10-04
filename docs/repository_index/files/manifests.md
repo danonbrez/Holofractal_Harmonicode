@@ -1,12 +1,12 @@
 # Repository file/dependency shard - manifests
 
-Source commit: [0d92a9cd7086b8a2bbe2ea73e8996a89431dc127](https://github.com/danonbrez/Holofractal_Harmonicode/commit/0d92a9cd7086b8a2bbe2ea73e8996a89431dc127)
+Source commit: [970ef2fa519eae32edf1cddc18a0cbe4bc001be6](https://github.com/danonbrez/Holofractal_Harmonicode/commit/970ef2fa519eae32edf1cddc18a0cbe4bc001be6)
 
 Every content-bound tracked file in this shard is linked to the exact source commit. Complete 216-symbol identities and edge records are in the machine graph.
 
 ## manifests/pass172
 
-- [manifests/pass172/dependencies.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/0d92a9cd7086b8a2bbe2ea73e8996a89431dc127/manifests/pass172/dependencies.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 1
-- [manifests/pass172/native_targets.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/0d92a9cd7086b8a2bbe2ea73e8996a89431dc127/manifests/pass172/native_targets.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 3
-- [manifests/pass172/platforms.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/0d92a9cd7086b8a2bbe2ea73e8996a89431dc127/manifests/pass172/platforms.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 0
-- [manifests/pass172/profiles.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/0d92a9cd7086b8a2bbe2ea73e8996a89431dc127/manifests/pass172/profiles.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 1
+- [manifests/pass172/dependencies.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/970ef2fa519eae32edf1cddc18a0cbe4bc001be6/manifests/pass172/dependencies.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 1
+- [manifests/pass172/native_targets.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/970ef2fa519eae32edf1cddc18a0cbe4bc001be6/manifests/pass172/native_targets.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 3
+- [manifests/pass172/platforms.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/970ef2fa519eae32edf1cddc18a0cbe4bc001be6/manifests/pass172/platforms.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 0
+- [manifests/pass172/profiles.json](https://github.com/danonbrez/Holofractal_Harmonicode/blob/970ef2fa519eae32edf1cddc18a0cbe4bc001be6/manifests/pass172/profiles.json) - H216 SV119ypbUxFD0LwXj)(Fuk)R... ; data ; out 0 ; in 1
