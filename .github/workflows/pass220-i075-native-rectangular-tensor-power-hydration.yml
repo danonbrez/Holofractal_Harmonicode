@@ -1,0 +1,174 @@
+name: Pass 220 I075 Native Rectangular Tensor Power Hydration
+
+on:
+  push:
+    branches:
+      - pass220/i075-native-rectangular-tensor-power-hydration-20261004
+    paths:
+      - "hhs_runtime/hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1.py"
+      - "tests/pass220/test_hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/NativeRectangularTensorPowerHydration.lean"
+      - "formal/wolfram/pass220_i075_native_rectangular_tensor_power_hydration_v1.wl"
+      - "evidence/pass220/i075_native_rectangular_tensor_power_hydration_wolfram_20261004_v1.output.json"
+      - "evidence/pass220/i075_native_rectangular_tensor_power_hydration_wolfram_20261004_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I075_NATIVE_RECTANGULAR_TENSOR_POWER_HYDRATION_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I075_NATIVE_RECTANGULAR_TENSOR_POWER_HYDRATION_V1.md"
+      - "docs/operations/restart/PASS_220_I075_NATIVE_RECTANGULAR_TENSOR_POWER_HYDRATION_RESTART_20261004.md"
+      - ".github/workflows/pass220-i075-native-rectangular-tensor-power-hydration.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i075-native-rectangular-tensor-power-hydration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I075 runtime and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1.py \
+            tests/pass220/test_hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1.py
+
+      - name: Execute I075 and inherited I074 dependency-scoped tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1.py \
+            tests/pass220/test_hhs_pass220_i074_full_tensor_hnan_closure_hydration_v1.py
+
+      - name: Execute I075 runtime self-test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1 import self_test
+          result = self_test()
+          assert result["status"] == "PASS", result
+          assert result["check_count"] == result["pass_count"], result
+          assert result["failed"] == [], result
+          print(result)
+          PY
+
+      - name: Verify inherited source bundle identities
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          import subprocess
+          from hhs_runtime.hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1 import SOURCE_BUNDLE
+          for row in SOURCE_BUNDLE:
+              actual = subprocess.check_output(
+                  ["git", "hash-object", row["path"]], text=True
+              ).strip()
+              assert actual == row["git_blob_sha"], (
+                  row["path"], actual, row["git_blob_sha"]
+              )
+          PY
+
+      - name: Verify typed native tensor-power descriptor
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1 import (
+              native_tensor_power_nodes,
+              tensor_power_hydration_descriptor,
+          )
+          nodes = native_tensor_power_nodes()
+          assert len(nodes) == 2
+          assert [(n.rows, n.columns) for n in nodes] == [(4,2),(4,2)]
+          assert [n.exponent_token for n in nodes] == ["x^2","x^4"]
+          assert all(n.host_evaluated is False for n in nodes)
+          assert all(n.numeric_exponent_evaluated is False for n in nodes)
+          descriptor = tensor_power_hydration_descriptor()
+          assert descriptor["cell_occurrences"] == 16
+          assert descriptor["unique_cell_expressions"] == 6
+          assert descriptor["all_occurrence_witnesses_retained"] is True
+          assert descriptor["source_nodes_reconstructible"] is True
+          PY
+
+      - name: Enforce I075 Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "formal/wolfram/pass220_i075_native_rectangular_tensor_power_hydration_v1.wl"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "HARMONICODE_RECTANGULAR_TENSOR_POWER",
+              "host_evaluated",
+              "numeric_exponent_evaluated",
+              "cell_occurrences",
+              "unique_cell_expressions",
+              "24_candidate_only",
+          ):
+              assert token in source, token
+
+          output = json.loads(Path(
+              "evidence/pass220/i075_native_rectangular_tensor_power_hydration_wolfram_20261004_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert output["status"] == "PASS"
+          assert output["check_count"] == output["pass_count"] == 24
+          assert output["failed"] == []
+          assert output["node_count"] == 2
+          assert output["rectangular_shapes"] == [[4,2],[4,2]]
+          assert output["cell_occurrences"] == 16
+          assert output["unique_cell_expressions"] == 6
+          assert output["host_matrixpower_evaluations"] == 0
+          assert output["numeric_exponent_evaluations"] == 0
+          assert output["hash216_width"] == 216
+          assert output["full_attached_components"] == 15552
+          PY
+
+      - name: Verify I075 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "formal/lean/HHS/Pass220/NativeRectangularTensorPowerHydration.lean"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "theorem twoNativeNodes",
+              "theorem mwzShapeExact",
+              "theorem mxyShapeExact",
+              "theorem operatorTagsExact",
+              "theorem exponentTokensExact",
+              "theorem sourceNodesExact",
+              "theorem heldNativeNodes",
+              "theorem hydrationFactor",
+              "theorem inheritsI074Hydration",
+              "theorem authorityBoundary",
+          ):
+              assert token in source, token
+          root = Path("formal/lean/HHS.lean").read_text(encoding="utf-8")
+          assert "import HHS.Pass220.NativeRectangularTensorPowerHydration" in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
