@@ -66,6 +66,7 @@ class SeenState:
 
 @dataclass(frozen=True)
 class PhaseGearGeometry:
+    schema: str
     shared_root_sha256: str
     nucleus_index: int
     phase_slot: int
