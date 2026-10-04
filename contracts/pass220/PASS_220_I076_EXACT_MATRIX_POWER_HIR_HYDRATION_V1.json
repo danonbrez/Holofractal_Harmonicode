@@ -1,0 +1,102 @@
+{
+  "schema": "HHS_PASS_220_I076_EXACT_MATRIX_POWER_HIR_HYDRATION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CHECKPOINT",
+  "date": "2026-10-04",
+  "base_main": "cc8c47ee2f654215ace2677e213c6e7c8d531107",
+  "branch": "pass220/i076-exact-matrix-power-hir-hydration-20261004",
+  "merge_target": "main",
+  "purpose": "Lower the two I075 typed 4x2 native HARMONICODE tensor-power nodes into the Pass169 registered ExactMatrixPower HIR type while preserving source identity and ordered topology without host MatrixPower, square-matrix fallback, numeric exponent evaluation, matrix-power value derivation, or unverified VM81 execution.",
+  "parent": {
+    "pass": "Pass 220 I075",
+    "merged_main_sha": "cc8c47ee2f654215ace2677e213c6e7c8d531107"
+  },
+  "pass169": {
+    "contract_id": "HHS-P169-HSAE-VM81-ESCPR",
+    "canonical_type": "ExactMatrixPower",
+    "node_kind": "EXACT_SYMBOLIC_MATRIX_POWER",
+    "rule": "NcalcMatrixPower lowers to an exact symbolic matrix-power node; host floating-point semantics are not implied."
+  },
+  "hir": {
+    "node_count": 2,
+    "nodes": [
+      {
+        "source_node": "MatrixPower[M_wz,x^2]",
+        "shape": [
+          4,
+          2
+        ],
+        "exponent_token": "x^2"
+      },
+      {
+        "source_node": "MatrixPower[M_xy,x^4]",
+        "shape": [
+          4,
+          2
+        ],
+        "exponent_token": "x^4"
+      }
+    ],
+    "source_identity_preserved": true,
+    "ordered_cell_topology_preserved": true,
+    "host_matrixpower_evaluations": 0,
+    "square_matrix_requirement_imported": false,
+    "numeric_exponent_evaluations": 0,
+    "matrix_power_values_derived": 0,
+    "vm81_executions_verified": 0,
+    "vm81_admission_required": true
+  },
+  "hydration": {
+    "hash72_width": 72,
+    "hash216_width": 216,
+    "planes": 3,
+    "vertices_per_plane": 5184,
+    "full_attached_components": 15552,
+    "persist_expanded_geometry": false,
+    "reconstruct_on_demand": true
+  },
+  "wolfram": {
+    "source": "formal/wolfram/pass220_i076_exact_matrix_power_hir_hydration_v1.wl",
+    "evidence": "evidence/pass220/i076_exact_matrix_power_hir_hydration_wolfram_20261004_v1.output.json",
+    "receipt": "evidence/pass220/i076_exact_matrix_power_hir_hydration_wolfram_20261004_v1.receipt.json",
+    "connected_kernel": "26/26 PASS"
+  },
+  "lean": {
+    "module": "HHS.Pass220.I076",
+    "source": "formal/lean/HHS/Pass220/ExactMatrixPowerHIRHydration.lean",
+    "inherits": [
+      "HHS.Pass220.I075"
+    ],
+    "required_checks": [
+      "build",
+      "leanchecker",
+      "axiom-audit"
+    ]
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "projection_substitution_authorized": false,
+    "external_egress_authority": false
+  },
+  "next_transition": {
+    "required": "VM81_NATIVE_EXACT_MATRIX_POWER_EXECUTION_SURFACE",
+    "constraints": [
+      "must consume source-bound ExactMatrixPower HIR",
+      "must preserve 4x2 native operator semantics",
+      "must not import ordinary square-matrix semantics",
+      "must emit VM81 execution evidence before admission"
+    ]
+  },
+  "validation": {
+    "connected_wolfram": "26/26 PASS",
+    "python_dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "runtime_self_test": "PENDING_BRANCH_CI",
+    "lean_build_kernel_check_axiom_audit": "PENDING_BRANCH_CI",
+    "source_bundle_identity": "PENDING_BRANCH_CI"
+  }
+}
