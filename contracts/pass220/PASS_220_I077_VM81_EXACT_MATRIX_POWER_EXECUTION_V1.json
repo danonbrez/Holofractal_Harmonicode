@@ -1,0 +1,160 @@
+{
+  "schema": "HHS_PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CHECKPOINT",
+  "date": "2026-10-04",
+  "base_main": "631cb7a4a59a518475358f454604dbd36fa8d489",
+  "branch": "pass220/i077-vm81-exact-matrix-power-execution-20261004",
+  "merge_target": "main",
+  "purpose": "Execute the two I076 source-bound ExactMatrixPower HIR nodes as exact symbolic VM81 candidate frames, emit Hash72/Hash216 execution and replay evidence, and preserve native 4x2 ordered topology without importing host MatrixPower, square-matrix, floating-point, or premature matrix-value semantics.",
+  "parent": {
+    "pass": "Pass 220 I076",
+    "merged_main_sha": "631cb7a4a59a518475358f454604dbd36fa8d489"
+  },
+  "native_abi": {
+    "header": "hhs_runtime/include/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.h",
+    "implementation": "hhs_runtime/c/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc",
+    "aggregate_header": "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "aggregate_source": "hhs_runtime/c/hhs_runtime_exact_abi.c",
+    "public_functions": [
+      "hhs_exact_pass220_i077_version",
+      "hhs_exact_pass220_i077_descriptor",
+      "hhs_exact_pass220_i077_execute"
+    ],
+    "python_binding": "hhs_runtime/hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py",
+    "native_probe": "tools/pass220/pass220_i077_vm81_exact_matrix_power_probe.c"
+  },
+  "nodes": [
+    {
+      "node_id": 0,
+      "source_node": "MatrixPower[M_wz,x^2]",
+      "shape": [
+        4,
+        2
+      ],
+      "exponent_token": "x^2",
+      "exponent_degree_token": 2,
+      "cell_tokens": [
+        0,
+        1,
+        1,
+        2,
+        2,
+        0,
+        3,
+        1
+      ]
+    },
+    {
+      "node_id": 1,
+      "source_node": "MatrixPower[M_xy,x^4]",
+      "shape": [
+        4,
+        2
+      ],
+      "exponent_token": "x^4",
+      "exponent_degree_token": 4,
+      "cell_tokens": [
+        4,
+        3,
+        3,
+        5,
+        5,
+        4,
+        3,
+        1
+      ]
+    }
+  ],
+  "cell_dictionary": {
+    "0": "-w*z",
+    "1": "z-w",
+    "2": "w*z",
+    "3": "y+x",
+    "4": "-x*y",
+    "5": "x*y"
+  },
+  "execution_semantics": {
+    "exact_symbolic_node_execution": true,
+    "source_identity_exact": true,
+    "ordered_topology_required": true,
+    "native_rectangular_4x2_supported": true,
+    "host_matrixpower_used": false,
+    "square_matrix_requirement_imported": false,
+    "numeric_exponent_evaluated": false,
+    "matrix_power_value_derived": false,
+    "note": "I077 executes the exact symbolic HIR node through VM81 admission/replay. It does not claim a conventional rectangular matrix-power value."
+  },
+  "uqcel_transport": {
+    "role": "COMPATIBILITY_TRANSPORT_ONLY_AFTER_SOURCE_BOUND_HIR_VERIFICATION",
+    "P": 2,
+    "p": 1,
+    "q": 3,
+    "delta": 1,
+    "A": 4,
+    "B": 4,
+    "p2_equals_pq_plus_delta": true,
+    "ab_equals_p4": true,
+    "left_basis": "X",
+    "right_basis": "Y",
+    "qr_bit": 0,
+    "expected_phase": 0,
+    "node_cell81_binding": "node_id"
+  },
+  "execution_evidence": {
+    "exact_vm81_admission_required": true,
+    "atomic_frame_commit_required": true,
+    "hash72_receipt_required": true,
+    "hash216_transition_identity_required": true,
+    "deterministic_replay_required": true,
+    "vm81_steps_per_node": 1,
+    "replay_vm81_steps_per_node": 1
+  },
+  "wolfram": {
+    "source": "formal/wolfram/pass220_i077_vm81_exact_matrix_power_execution_v1.wl",
+    "evidence": "evidence/pass220/i077_vm81_exact_matrix_power_execution_wolfram_20261004_v1.output.json",
+    "receipt": "evidence/pass220/i077_vm81_exact_matrix_power_execution_wolfram_20261004_v1.receipt.json",
+    "connected_kernel": "30/30 PASS",
+    "host_matrixpower_evaluated": false
+  },
+  "lean": {
+    "module": "HHS.Pass220.I077",
+    "source": "formal/lean/HHS/Pass220/VM81ExactMatrixPowerExecution.lean",
+    "inherits": [
+      "HHS.Pass220.I076"
+    ],
+    "required_checks": [
+      "build",
+      "leanchecker",
+      "axiom-audit"
+    ]
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_state_persisted": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "floating_point_authority": false,
+    "host_matrixpower_authority": false,
+    "host_square_matrix_requirement_authority": false,
+    "numeric_exponent_evaluation_authority": false,
+    "external_egress_authority": false
+  },
+  "negative_tests": [
+    "invalid node_id rejects",
+    "host MatrixPower authority remains false",
+    "square-matrix fallback remains false",
+    "numeric exponent evaluation remains false",
+    "matrix-power value derivation remains false"
+  ],
+  "validation": {
+    "connected_wolfram": "30/30 PASS",
+    "native_shared_library_build": "PENDING_BRANCH_CI",
+    "native_probe": "PENDING_BRANCH_CI",
+    "python_native_binding": "PENDING_BRANCH_CI",
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "lean_build_kernel_check_axiom_audit": "PENDING_BRANCH_CI"
+  }
+}
