@@ -1,0 +1,92 @@
+{
+  "schema": "HHS_PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 30,
+  "pass_count": 30,
+  "failed": [],
+  "node_count": 2,
+  "source_nodes": [
+    "MatrixPower[M_wz,x^2]",
+    "MatrixPower[M_xy,x^4]"
+  ],
+  "rectangular_shapes": [
+    [
+      4,
+      2
+    ],
+    [
+      4,
+      2
+    ]
+  ],
+  "exponent_tokens": [
+    "x^2",
+    "x^4"
+  ],
+  "cell_token_sequences": [
+    [
+      0,
+      1,
+      1,
+      2,
+      2,
+      0,
+      3,
+      1
+    ],
+    [
+      4,
+      3,
+      3,
+      5,
+      5,
+      4,
+      3,
+      1
+    ]
+  ],
+  "transport": {
+    "P": 2,
+    "p": 1,
+    "q": 3,
+    "delta": 1,
+    "A": 4,
+    "B": 4,
+    "qr_bit": 0,
+    "expected_phase": 0
+  },
+  "hash216_width": 216,
+  "full_attached_components": 15552,
+  "checks": {
+    "01_two_nodes": true,
+    "02_node_ids": true,
+    "03_shapes_4x2": true,
+    "04_sources_exact": true,
+    "05_exponent_tokens_exact": true,
+    "06_exponent_degree_tokens_exact": true,
+    "07_each_node_8_cells": true,
+    "08_token_range": true,
+    "09_mwz_cells_exact": true,
+    "10_mxy_cells_exact": true,
+    "11_transport_P2": true,
+    "12_transport_pq_delta": true,
+    "13_transport_A": true,
+    "14_transport_B": true,
+    "15_transport_AB_quartic": true,
+    "16_qr_bit_zero": true,
+    "17_expected_phase_zero": true,
+    "18_p_odd": true,
+    "19_q_odd": true,
+    "20_delta_unit": true,
+    "21_hash72_square_5184": true,
+    "22_hash216_width": true,
+    "23_hydration_15552": true,
+    "24_host_matrixpower_authority_false": true,
+    "25_square_matrix_fallback_false": true,
+    "26_numeric_exponent_eval_false": true,
+    "27_matrix_power_value_derivation_false": true,
+    "28_vm81_transport_execution_expected": true,
+    "29_deterministic_replay_expected": true,
+    "30_canonical_persistence_false": true
+  }
+}
