@@ -9,7 +9,7 @@ Date: 2026-10-04
 - Base state: merged Pass 220 I073
 - Branch: `pass220/i074-full-tensor-hnan-closure-hydration-20261004`
 - Merge target: `main`
-- Status: implementation checkpoint; branch CI/Lean validation pending
+- Status: implementation checkpoint; first CI exposed one Lean root-import placement defect, repaired at `e8cfc785bb7e25b52cbe266ef86e2ca5670e62aa`; replacement CI queued
 
 ## Objective
 
@@ -166,3 +166,35 @@ Do not reopen unrelated historical passes.
 
 Open the I074 pull request against main, run dependency-scoped CI, repair only
 I074 defects, then merge after the I074 workflow is green and verify main.
+
+
+## CI repair-forward update — 2026-10-04
+
+Initial PR #706 CI reached the I074 Lean build after the Python compile,
+dependency-scoped tests, runtime self-test, source identity, tensor census,
+Wolfram evidence, and Lean theorem-surface checks had all passed.
+
+The Lean build then failed at:
+
+```text
+formal/lean/HHS.lean:29:0:
+invalid 'import' command, it must be used in the beginning of the file
+```
+
+Cause: the I074 root import had been appended after `namespace HHS ... end HHS`.
+That single root-module syntax defect also propagated into multiple inherited
+Lean-dependent workflow failures; those failures are not evidence of separate
+algebra/runtime regressions.
+
+Repair:
+
+```text
+commit = e8cfc785bb7e25b52cbe266ef86e2ca5670e62aa
+change = move import HHS.Pass220.FullTensorHNANClosureHydration into the HHS.lean import header
+```
+
+No runtime, tensor, HNAN, Hash216, or authority semantics changed.
+
+Current next action: allow replacement PR #706 CI to run. Merge only after the
+I074 workflow is green and required inherited checks no longer fail from the
+root Lean import defect.
