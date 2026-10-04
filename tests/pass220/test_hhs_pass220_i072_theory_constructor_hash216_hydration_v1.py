@@ -166,7 +166,10 @@ class I072TheoryConstructorHash216HydrationTests(unittest.TestCase):
             validate_theory_constructor(mutated)
 
         mutated = copy.deepcopy(self.constructor)
-        mutated["theory_hash216"] = mutated["theory_hash216"][:-1] + "0"
+        original_tail = mutated["theory_hash216"][-1]
+        replacement = "0" if original_tail != "0" else "1"
+        mutated["theory_hash216"] = mutated["theory_hash216"][:-1] + replacement
+        self.assertNotEqual(mutated["theory_hash216"], self.constructor["theory_hash216"])
         with self.assertRaises(Pass220I072TheoryHydrationError):
             validate_theory_constructor(mutated)
 
