@@ -674,6 +674,8 @@ def build_generator(
         "version": VERSION,
         "profile": PROFILE,
         "parent_i072": {
+            "nucleus_index": nucleus_index,
+            "nesting_depth": nesting_depth,
             "theory_constructor_root_sha256": parent[
                 "theory_constructor_root_sha256"
             ],
@@ -760,10 +762,12 @@ def validate_generator(generator: Mapping[str, Any]) -> bool:
         decimal_text=ingress["decimal_source_text"],
         offsets=offsets,
         fibonacci_depth=fib["depth"],
-        nucleus_index=generator["parent_i072"].get("nucleus_index", 0)
-        if "nucleus_index" in generator["parent_i072"] else 0,
-        nesting_depth=generator["parent_i072"].get("nesting_depth", 0)
-        if "nesting_depth" in generator["parent_i072"] else 0,
+        nucleus_index=_exact_int(
+            parent["nucleus_index"], "nucleus_index", 0, 8
+        ),
+        nesting_depth=_exact_int(
+            parent["nesting_depth"], "nesting_depth", 0, 1_000_000
+        ),
     )
 
     # Parent identity is included explicitly in every derived root. If a caller
