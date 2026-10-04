@@ -78,7 +78,11 @@ typedef struct HHSExactPass220I077DescriptorV1 {
     uint8_t numeric_exponent_evaluation_authority;
     uint8_t floating_point_authority;
     uint8_t canonical_state_persistence_authority;
-    uint8_t reserved0;
+    uint8_t canonical_vm81_mutation_authority;
+    uint8_t canonical_hash72_commit_authority;
+    uint8_t canonical_hash216_commit_authority;
+    uint8_t external_egress_authority;
+    uint8_t reserved0[2];
 } HHSExactPass220I077DescriptorV1;
 
 typedef struct HHSExactPass220I077ExecutionV1 {
