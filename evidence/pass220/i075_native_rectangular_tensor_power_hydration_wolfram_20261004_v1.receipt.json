@@ -1,0 +1,43 @@
+{
+  "schema": "HHS_PASS_220_I075_NATIVE_RECTANGULAR_TENSOR_POWER_HYDRATION_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "status": "PASS",
+  "connected_wolfram_kernel": true,
+  "source_path": "formal/wolfram/pass220_i075_native_rectangular_tensor_power_hydration_v1.wl",
+  "source_git_blob_sha": "c2ae9f8a4604f3249befbd3d114979a4c024961d",
+  "output_path": "evidence/pass220/i075_native_rectangular_tensor_power_hydration_wolfram_20261004_v1.output.json",
+  "output_git_blob_sha": "c0c7dbf035d26015dd5f278f3ff5db96e00afb81",
+  "check_count": 24,
+  "pass_count": 24,
+  "failed": [],
+  "authority": {
+    "host_matrixpower_evaluations": 0,
+    "numeric_exponent_evaluations": 0,
+    "candidate_only": true,
+    "native_rectangular_tensor_power_typed": true
+  },
+  "structural_witness": {
+    "node_count": 2,
+    "rectangular_shapes": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "cell_occurrences": 16,
+    "unique_cell_expressions": 6,
+    "source_nodes": [
+      "MatrixPower[M_wz,x^2]",
+      "MatrixPower[M_xy,x^4]"
+    ]
+  },
+  "hydration_witness": {
+    "hash216_width": 216,
+    "full_attached_components": 15552,
+    "expanded_geometry_persisted": false
+  }
+}
