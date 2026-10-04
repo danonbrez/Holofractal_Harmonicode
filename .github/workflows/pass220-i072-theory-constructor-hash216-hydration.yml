@@ -1,0 +1,128 @@
+name: Pass 220 I072 Theory Constructor Hash216 Hydration
+
+on:
+  push:
+    branches:
+      - pass220/i072-theory-constructor-hash216-hydration-20261004
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i072-theory-constructor-hydration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I072 runtime and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py \
+            tests/pass220/test_hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py
+
+      - name: Execute I072 dependency-scoped tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py
+
+      - name: Execute I072 runtime self-test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i072_theory_constructor_hash216_hydration_v1 import self_test
+          result = self_test()
+          assert result["status"] == "PASS", result
+          assert result["check_count"] == result["pass_count"], result
+          print(result)
+          PY
+
+      - name: Verify exact repository source bundle identities
+        run: |
+          python - <<'PY'
+          import subprocess
+          from hhs_runtime.hhs_pass220_i072_theory_constructor_hash216_hydration_v1 import SOURCE_BUNDLE
+          for row in SOURCE_BUNDLE:
+              actual = subprocess.check_output(
+                  ["git", "hash-object", row["path"]], text=True
+              ).strip()
+              assert actual == row["git_blob_sha"], (row["path"], actual, row["git_blob_sha"])
+          PY
+
+      - name: Enforce I072 Wolfram proof evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          source = Path(
+              "formal/wolfram/pass220_i072_theory_constructor_hash216_hydration_v1.wl"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "phaseSlots = phaseChannels loShuPositions",
+              "hash216Width = hash216Planes hash72Positions",
+              "expandedPerLane = hash72Positions hash72Positions",
+              "fullAttached = hash216Planes expandedPerLane",
+              "vm81Cells local64===5184",
+              "q144 h36===5184",
+              "firstRepeatPeriod",
+              "full_expansion_persisted",
+          ):
+              assert token in source, token
+          output = json.loads(Path(
+              "evidence/pass220/i072_theory_constructor_hash216_hydration_wolfram_20261004_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert output["status"] == "PASS"
+          assert output["check_count"] == output["pass_count"] == 42
+          assert output["phase_loop_period"] == 72
+          assert output["phase_lock_period"] == 5184
+          assert output["full_attached_components"] == 15552
+          assert output["full_expansion_persisted"] is False
+          PY
+
+      - name: Verify I072 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "formal/lean/HHS/Pass220/TheoryConstructorHash216Hydration.lean"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "theorem phaseTheoryFactor",
+              "theorem hash216TheoryFactor",
+              "theorem theoryLaneHydrationFactor",
+              "theorem allHydrationFactorizationsAgree",
+              "theorem fullAttachedFactor",
+              "theorem compactHydrationPolicy",
+              "theorem authorityBoundary",
+              "theorem inheritsI065Hash72Geometry",
+              "theorem inheritsI065Hash216Width",
+          ):
+              assert token in source, token
+          root = Path("formal/lean/HHS.lean").read_text(encoding="utf-8")
+          assert "import HHS.Pass220.TheoryConstructorHash216Hydration" in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS

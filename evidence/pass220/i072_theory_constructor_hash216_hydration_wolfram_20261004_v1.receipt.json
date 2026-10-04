@@ -1,0 +1,33 @@
+{
+  "schema": "HHS_PASS_220_I072_THEORY_CONSTRUCTOR_HASH216_HYDRATION_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 42,
+  "pass_count": 42,
+  "failed": [],
+  "base_main": "970ef2fa519eae32edf1cddc18a0cbe4bc001be6",
+  "branch": "pass220/i072-theory-constructor-hash216-hydration-20261004",
+  "formal_source": "formal/wolfram/pass220_i072_theory_constructor_hash216_hydration_v1.wl",
+  "runtime_source": "hhs_runtime/hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py",
+  "lean_source": "formal/lean/HHS/Pass220/TheoryConstructorHash216Hydration.lean",
+  "test_source": "tests/pass220/test_hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py",
+  "repository_replay_command": "wolframscript -file formal/wolfram/pass220_i072_theory_constructor_hash216_hydration_v1.wl",
+  "proven": {
+    "phase_slots": 72,
+    "hash216_width": 216,
+    "expanded_per_lane": 5184,
+    "full_attached_components": 15552,
+    "phase_loop_period": 72,
+    "phase_lock_period": 5184,
+    "full_expansion_persisted": false
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "empirical_claim_authority": false
+  }
+}
