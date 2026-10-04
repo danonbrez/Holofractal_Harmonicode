@@ -1,0 +1,182 @@
+name: Pass 220 I076 ExactMatrixPower HIR Hydration
+
+on:
+  push:
+    branches:
+      - pass220/i076-exact-matrix-power-hir-hydration-20261004
+    paths:
+      - "hhs_runtime/hhs_pass220_i076_exact_matrix_power_hir_hydration_v1.py"
+      - "tests/pass220/test_hhs_pass220_i076_exact_matrix_power_hir_hydration_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/ExactMatrixPowerHIRHydration.lean"
+      - "formal/wolfram/pass220_i076_exact_matrix_power_hir_hydration_v1.wl"
+      - "evidence/pass220/i076_exact_matrix_power_hir_hydration_wolfram_20261004_v1.output.json"
+      - "evidence/pass220/i076_exact_matrix_power_hir_hydration_wolfram_20261004_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I076_EXACT_MATRIX_POWER_HIR_HYDRATION_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I076_EXACT_MATRIX_POWER_HIR_HYDRATION_V1.md"
+      - "docs/operations/restart/PASS_220_I076_EXACT_MATRIX_POWER_HIR_HYDRATION_RESTART_20261004.md"
+      - ".github/workflows/pass220-i076-exact-matrix-power-hir-hydration.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i076-exact-matrix-power-hir-hydration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I076 runtime and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i076_exact_matrix_power_hir_hydration_v1.py \
+            tests/pass220/test_hhs_pass220_i076_exact_matrix_power_hir_hydration_v1.py
+
+      - name: Execute I076 and inherited I075 dependency-scoped tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i076_exact_matrix_power_hir_hydration_v1.py \
+            tests/pass220/test_hhs_pass220_i075_native_rectangular_tensor_power_hydration_v1.py
+
+      - name: Execute I076 runtime self-test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i076_exact_matrix_power_hir_hydration_v1 import self_test
+          result = self_test()
+          assert result["status"] == "PASS", result
+          assert result["check_count"] == result["pass_count"], result
+          assert result["failed"] == [], result
+          print(result)
+          PY
+
+      - name: Verify inherited source bundle identities
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          import subprocess
+          from hhs_runtime.hhs_pass220_i076_exact_matrix_power_hir_hydration_v1 import SOURCE_BUNDLE
+          for row in SOURCE_BUNDLE:
+              actual = subprocess.check_output(
+                  ["git", "hash-object", row["path"]], text=True
+              ).strip()
+              assert actual == row["git_blob_sha"], (
+                  row["path"], actual, row["git_blob_sha"]
+              )
+          PY
+
+      - name: Verify ExactMatrixPower HIR descriptor
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i076_exact_matrix_power_hir_hydration_v1 import (
+              exact_matrix_power_hir_nodes,
+              hir_lowering_descriptor,
+          )
+          nodes = exact_matrix_power_hir_nodes()
+          assert len(nodes) == 2
+          assert [n["canonical_pass169_type"] for n in nodes] == [
+              "ExactMatrixPower", "ExactMatrixPower"
+          ]
+          assert [n["base_shape"] for n in nodes] == [(4,2),(4,2)]
+          assert [n["exponent_token"] for n in nodes] == ["x^2","x^4"]
+          assert all(n["host_matrixpower_evaluated"] is False for n in nodes)
+          assert all(n["host_square_matrix_requirement_imported"] is False for n in nodes)
+          assert all(n["numeric_exponent_evaluated"] is False for n in nodes)
+          assert all(n["matrix_power_value_derived"] is False for n in nodes)
+          assert all(n["vm81_execution_verified"] is False for n in nodes)
+          assert all(n["vm81_admission_required"] is True for n in nodes)
+          d = hir_lowering_descriptor()
+          assert d["vm81_executions_verified"] == 0
+          assert d["vm81_admission_required"] is True
+          PY
+
+      - name: Enforce I076 Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "formal/wolfram/pass220_i076_exact_matrix_power_hir_hydration_v1.wl"
+          ).read_text(encoding="utf-8")
+          for token in (
+              'pass169Type="ExactMatrixPower"',
+              'nodeKind="EXACT_SYMBOLIC_MATRIX_POWER"',
+              '"17_no_host_matrixpower"',
+              '"18_no_square_requirement"',
+              '"21_no_vm81_execution_claim"',
+              '"22_vm81_admission_required"',
+          ):
+              assert token in source, token
+
+          output = json.loads(Path(
+              "evidence/pass220/i076_exact_matrix_power_hir_hydration_wolfram_20261004_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert output["status"] == "PASS"
+          assert output["check_count"] == output["pass_count"] == 26
+          assert output["failed"] == []
+          assert output["canonical_type"] == "ExactMatrixPower"
+          assert output["node_kind"] == "EXACT_SYMBOLIC_MATRIX_POWER"
+          assert output["node_count"] == 2
+          assert output["rectangular_shapes"] == [[4,2],[4,2]]
+          assert output["host_matrixpower_evaluations"] == 0
+          assert output["numeric_exponent_evaluations"] == 0
+          assert output["matrix_power_values_derived"] == 0
+          assert output["vm81_executions_verified"] == 0
+          assert output["vm81_admission_required"] is True
+          assert output["hash216_width"] == 216
+          assert output["full_attached_components"] == 15552
+          PY
+
+      - name: Verify I076 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "formal/lean/HHS/Pass220/ExactMatrixPowerHIRHydration.lean"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "theorem pass169TypeExact",
+              "theorem twoHIRNodes",
+              "theorem sourceNodesExact",
+              "theorem exponentTokensExact",
+              "theorem sourceAndTopologyPreserved",
+              "theorem noHostMatrixPowerImport",
+              "theorem noPrematureValueOrVM81Claim",
+              "theorem hydrationFactor",
+              "theorem inheritsI075NodeCount",
+              "theorem authorityBoundary",
+          ):
+              assert token in source, token
+          root = Path("formal/lean/HHS.lean").read_text(encoding="utf-8")
+          assert "import HHS.Pass220.ExactMatrixPowerHIRHydration" in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
