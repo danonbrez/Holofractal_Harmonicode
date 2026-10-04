@@ -1,0 +1,88 @@
+name: Pass 220 I069 HARMONICODE I Tensor
+
+on:
+  push:
+    branches:
+      - pass220/i069-harmonicode-i-tensor-20261003
+    paths:
+      - "hhs_runtime/hhs_pass220_i069_harmonicode_i_tensor_v1.py"
+      - "tests/pass220/test_hhs_pass220_i069_harmonicode_i_tensor_v1.py"
+      - "formal/wolfram/pass220_i069_harmonicode_i_tensor_v1.wl"
+      - "evidence/pass220/i069_harmonicode_i_tensor_wolfram_20261003_v1.output.json"
+      - "evidence/pass220/i069_harmonicode_i_tensor_wolfram_20261003_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I069_HARMONICODE_I_TENSOR_V1.json"
+      - "docs/pass220/PASS_220_I069_HARMONICODE_I_TENSOR.md"
+      - "docs/operations/restart/PASS_220_I069_HARMONICODE_I_TENSOR_RESTART_20261003.md"
+      - ".github/workflows/pass220-i069-harmonicode-i-tensor.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/hhs_pass220_i069_harmonicode_i_tensor_v1.py"
+      - "tests/pass220/test_hhs_pass220_i069_harmonicode_i_tensor_v1.py"
+      - "formal/wolfram/pass220_i069_harmonicode_i_tensor_v1.wl"
+      - "evidence/pass220/i069_harmonicode_i_tensor_wolfram_20261003_v1.output.json"
+      - "evidence/pass220/i069_harmonicode_i_tensor_wolfram_20261003_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I069_HARMONICODE_I_TENSOR_V1.json"
+      - "docs/pass220/PASS_220_I069_HARMONICODE_I_TENSOR.md"
+      - "docs/operations/restart/PASS_220_I069_HARMONICODE_I_TENSOR_RESTART_20261003.md"
+      - ".github/workflows/pass220-i069-harmonicode-i-tensor.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i-tensor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run dependency-scoped standard-library tests
+        run: |
+          PYTHONPATH=. python tests/pass220/test_hhs_pass220_i069_harmonicode_i_tensor_v1.py
+          python -m hhs_runtime.hhs_pass220_i069_harmonicode_i_tensor_v1
+
+      - name: Compile I069 Python surfaces
+        run: |
+          python -m py_compile             hhs_runtime/hhs_pass220_i069_harmonicode_i_tensor_v1.py             tests/pass220/test_hhs_pass220_i069_harmonicode_i_tensor_v1.py
+
+      - name: Verify frozen Wolfram evidence and contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          output = json.loads(
+              Path(
+                  "evidence/pass220/i069_harmonicode_i_tensor_wolfram_20261003_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          receipt = json.loads(
+              Path(
+                  "evidence/pass220/i069_harmonicode_i_tensor_wolfram_20261003_v1.receipt.json"
+              ).read_text(encoding="utf-8")
+          )
+          contract = json.loads(
+              Path(
+                  "contracts/pass220/PASS_220_I069_HARMONICODE_I_TENSOR_V1.json"
+              ).read_text(encoding="utf-8")
+          )
+
+          assert output["schema"] == "HHS_PASS_220_I069_HARMONICODE_I_TENSOR_WOLFRAM_V1"
+          assert output["status"] == "PASS"
+          assert output["check_count"] == output["pass_count"] == 26
+          assert output["failed"] == []
+          assert output["lo_shu_route"] == [4, 9, 2, 3, 5, 7, 8, 1, 6]
+          assert output["determinants"] == [-18432, 18432, 32256]
+          assert receipt["status"] == "PASS"
+          assert receipt["check_count"] == receipt["pass_count"] == 26
+          assert contract["exact_generator"]["residue_modulus"] == 72
+          assert contract["authority"]["canonical_vm81_mutation_authority"] is False
+          assert contract["authority"]["canonical_hash216_commit_authority"] is False
+          PY
