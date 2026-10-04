@@ -1,0 +1,116 @@
+name: Pass 220 I071 Shared Root Phase Gear Loop Closure
+
+on:
+  push:
+    branches:
+      - pass220/i071-shared-root-phase-gear-loop-closure-20261004
+    paths:
+      - "hhs_runtime/hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py"
+      - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+      - "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "HHS_PASS_174_HARMONIC_PHASE_GEAR_HASH216_VM81_VISUAL_IDE_MULTIMODAL_SDLC_RUNTIME.md"
+      - "formal/wolfram/pass220_i071_shared_root_phase_gear_loop_closure_v1.wl"
+      - "evidence/pass220/i071_shared_root_phase_gear_loop_closure_wolfram_20261004_v1.output.json"
+      - "evidence/pass220/i071_shared_root_phase_gear_loop_closure_wolfram_20261004_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE_V1.json"
+      - "docs/pass220/PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE.md"
+      - "docs/operations/restart/PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE_RESTART_20261004.md"
+      - ".github/workflows/pass220-i071-shared-root-phase-gear-loop-closure.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py"
+      - "tests/pass220/test_hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py"
+      - "hhs_runtime/hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py"
+      - "hhs_runtime/HARMONICODE_VM_RUNTIME.c"
+      - "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+      - "HHS_PASS_174_HARMONIC_PHASE_GEAR_HASH216_VM81_VISUAL_IDE_MULTIMODAL_SDLC_RUNTIME.md"
+      - "formal/wolfram/pass220_i071_shared_root_phase_gear_loop_closure_v1.wl"
+      - "evidence/pass220/i071_shared_root_phase_gear_loop_closure_wolfram_20261004_v1.output.json"
+      - "evidence/pass220/i071_shared_root_phase_gear_loop_closure_wolfram_20261004_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE_V1.json"
+      - "docs/pass220/PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE.md"
+      - "docs/operations/restart/PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE_RESTART_20261004.md"
+      - ".github/workflows/pass220-i071-shared-root-phase-gear-loop-closure.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shared-root-phase-gear-loop:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate I071 and merged I070 dependency
+        run: |
+          PYTHONPATH=. python tests/pass220/test_hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py
+          PYTHONPATH=. python tests/pass220/test_hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py
+          python -m hhs_runtime.hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1
+
+      - name: Compile exact runtime surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py \
+            tests/pass220/test_hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py
+
+      - name: Verify VM81 orbit source membrane
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path("hhs_runtime/HARMONICODE_VM_RUNTIME.c").read_text(encoding="utf-8")
+          required = (
+              "#define MAX_SEEN                      8192",
+              "static uint64_t detect_orbit",
+              "strcmp(vm->seen[i].hash, hash) == 0",
+              "return cur - vm->seen[i].step",
+              "vm->seen_count < MAX_SEEN",
+              "vm->orbit_halted = 1",
+              "if (opt->halt_on_orbit && vm->orbit_halted) break",
+          )
+          for item in required:
+              assert item in source, item
+          PY
+
+      - name: Verify shared-root and formal evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          shared = Path(
+              "hhs_runtime/hhs_pass220_lane5_multimodal_shared_root_fabric_v1.py"
+          ).read_text(encoding="utf-8")
+          for item in (
+              'ROOT_METADATA_SEED_TEXT = "179971.179971"',
+              'INVARIANT_GATE_TEXT = "1.001"',
+              "def shared_multimodal_root_sha256()",
+          ):
+              assert item in shared
+
+          output = json.loads(Path(
+              "evidence/pass220/i071_shared_root_phase_gear_loop_closure_wolfram_20261004_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          contract = json.loads(Path(
+              "contracts/pass220/PASS_220_I071_SHARED_ROOT_PHASE_GEAR_LOOP_CLOSURE_V1.json"
+          ).read_text(encoding="utf-8"))
+          assert output["status"] == "PASS"
+          assert output["check_count"] == output["pass_count"] == 36
+          assert output["local_orbit_period"] == 72
+          assert output["phase_lock_period"] == 5184
+          assert output["geometry_returns"] is True
+          assert output["lineage_advances"] is True
+          assert contract["vm81_orbit_semantics"]["max_seen"] == 8192
+          assert contract["history"]["geometry_may_return"] is True
+          assert contract["history"]["hash216_ancestry_must_advance"] is True
+          assert contract["authority"]["canonical_vm81_mutation_authority"] is False
+          PY
