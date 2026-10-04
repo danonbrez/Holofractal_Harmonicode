@@ -1,0 +1,154 @@
+name: Pass 220 I073 Palindromic RNA Fibonacci Symbolic Tensor
+
+on:
+  push:
+    branches:
+      - pass220/i073-palindromic-rna-fibonacci-symbolic-tensor-20261004
+    paths:
+      - "hhs_runtime/hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py"
+      - "tests/pass220/test_hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/PalindromicRNAFibonacciSymbolicTensor.lean"
+      - "formal/wolfram/pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.wl"
+      - "evidence/pass220/i073_palindromic_rna_fibonacci_symbolic_tensor_wolfram_20261004_v1.output.json"
+      - "evidence/pass220/i073_palindromic_rna_fibonacci_symbolic_tensor_wolfram_20261004_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I073_PALINDROMIC_RNA_FIBONACCI_SYMBOLIC_TENSOR_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I073_PALINDROMIC_RNA_FIBONACCI_SYMBOLIC_TENSOR_V1.md"
+      - "docs/operations/restart/PASS_220_I073_PALINDROMIC_RNA_FIBONACCI_SYMBOLIC_TENSOR_RESTART_20261004.md"
+      - ".github/workflows/pass220-i073-palindromic-rna-fibonacci-symbolic-tensor.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i073-palindromic-rna-fibonacci-symbolic-tensor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I073 runtime and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py \
+            tests/pass220/test_hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py
+
+      - name: Execute I073 and parent I072 dependency-scoped tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py \
+            tests/pass220/test_hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py
+
+      - name: Execute I073 runtime self-test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1 import self_test
+          result = self_test()
+          assert result["status"] == "PASS", result
+          assert result["check_count"] == result["pass_count"], result
+          print(result)
+          PY
+
+      - name: Verify exact repository source bundle identities
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          import subprocess
+          from hhs_runtime.hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1 import SOURCE_BUNDLE
+          for row in SOURCE_BUNDLE:
+              actual = subprocess.check_output(
+                  ["git", "hash-object", row["path"]], text=True
+              ).strip()
+              assert actual == row["git_blob_sha"], (
+                  row["path"], actual, row["git_blob_sha"]
+              )
+          PY
+
+      - name: Enforce I073 Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "formal/wolfram/pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.wl"
+          ).read_text(encoding="utf-8")
+          required = (
+              "rnaWindows=Quotient[chars,rnaWindow]",
+              "operation64=dnaAlphabet^rnaWindow",
+              "fib={1,2,3,5,8,13,21,34,55,89,144,233}",
+              "Times@@ratios===1/144",
+              "Outer[Times,magnitudes,loShu]",
+              "hash216Width=hash216Planes hash72",
+              "fullAttached=hash216Planes chars",
+          )
+          for token in required:
+              assert token in source, token
+
+          output = json.loads(Path(
+              "evidence/pass220/i073_palindromic_rna_fibonacci_symbolic_tensor_wolfram_20261004_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert output["status"] == "PASS"
+          assert output["check_count"] == output["pass_count"] == 48
+          assert output["serialized_characters"] == 5184
+          assert output["rna_windows"] == 1728
+          assert output["operation64"] == 64
+          assert output["fibonacci_terminal_pair"] == [144, 233]
+          assert output["fibonacci_cumulative_scale"] == {
+              "numerator": 1, "denominator": 144
+          }
+          assert output["tensor_shape"] == [5, 9]
+          assert output["tensor_elements"] == 45
+          assert output["hash216_width"] == 216
+          assert output["full_attached_components"] == 15552
+          PY
+
+      - name: Verify I073 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "formal/lean/HHS/Pass220/PalindromicRNAFibonacciSymbolicTensor.lean"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "theorem scientificSerializationFactor",
+              "theorem rnaHash72Factor",
+              "theorem operation64FromRNAAlphabet",
+              "theorem fibonacciTensorFactor",
+              "theorem fibonacciTerminalPair",
+              "theorem compactPersistencePolicy",
+              "theorem authorityBoundary",
+              "theorem inheritsI072TheorySlots",
+              "theorem inheritsI072PhaseLock",
+          ):
+              assert token in source, token
+          root = Path("formal/lean/HHS.lean").read_text(encoding="utf-8")
+          assert "import HHS.Pass220.PalindromicRNAFibonacciSymbolicTensor" in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
