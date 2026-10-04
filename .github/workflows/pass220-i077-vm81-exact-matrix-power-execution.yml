@@ -1,0 +1,290 @@
+name: Pass 220 I077 VM81 ExactMatrixPower Execution
+
+on:
+  push:
+    branches:
+      - pass220/i077-vm81-exact-matrix-power-execution-20261004
+    paths:
+      - "hhs_runtime/include/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.h"
+      - "hhs_runtime/c/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc"
+      - "hhs_runtime/include/hhs_runtime_exact_abi.h"
+      - "hhs_runtime/c/hhs_runtime_exact_abi.c"
+      - "hhs_runtime/hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py"
+      - "tools/pass220/pass220_i077_vm81_exact_matrix_power_probe.c"
+      - "tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/VM81ExactMatrixPowerExecution.lean"
+      - "formal/wolfram/pass220_i077_vm81_exact_matrix_power_execution_v1.wl"
+      - "evidence/pass220/i077_vm81_exact_matrix_power_execution_wolfram_20261004_v1.output.json"
+      - "evidence/pass220/i077_vm81_exact_matrix_power_execution_wolfram_20261004_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_V1.md"
+      - "docs/operations/restart/PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_RESTART_20261004.md"
+      - ".github/workflows/pass220-i077-vm81-exact-matrix-power-execution.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i077-vm81-exact-matrix-power-execution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse and compile I077 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool \
+            contracts/pass220/PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_V1.json \
+            >/dev/null
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py \
+            tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py
+
+      - name: Enforce source semantics and authority guards
+        run: |
+          set -euo pipefail
+          grep -F 'MatrixPower[M_wz,x^2]' \
+            hhs_runtime/c/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc
+          grep -F 'MatrixPower[M_xy,x^4]' \
+            hhs_runtime/c/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc
+          grep -F 'hhs_exact_vm81_admit_uqcel' \
+            hhs_runtime/c/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc
+          grep -F 'hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.h' \
+            hhs_runtime/include/hhs_runtime_exact_abi.h
+          grep -F 'hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc' \
+            hhs_runtime/c/hhs_runtime_exact_abi.c
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.h \
+            hhs_runtime/c/hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc \
+            tools/pass220/pass220_i077_vm81_exact_matrix_power_probe.c
+
+      - name: Build deployed shared exact Runtime ABI
+        run: |
+          set -euo pipefail
+          make clean
+          make c-abi
+          test -f hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_exact_pass220_i077_version|hhs_exact_pass220_i077_descriptor|hhs_exact_pass220_i077_execute'
+
+      - name: Build and run native I077 probe
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/i077 /tmp/pass220-i077
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_i077_vm81_exact_matrix_power_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-i077/i077-native-probe
+          /tmp/pass220-i077/i077-native-probe \
+            > artifacts/pass220/i077/native_execution.json
+          python -m json.tool artifacts/pass220/i077/native_execution.json >/dev/null
+          cat artifacts/pass220/i077/native_execution.json
+
+      - name: Validate native I077 execution evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(
+              Path('artifacts/pass220/i077/native_execution.json').read_text()
+          )
+          assert report['schema'] == 'HHS_PASS_220_I077_NATIVE_PROBE_V1'
+          assert report['negative_node_rejected'] is True
+          d=report['descriptor']
+          assert d['node_count'] == 2
+          assert (d['rows'],d['columns']) == (4,2)
+          for key in (
+              'native_symbolic_executor',
+              'rectangular_4x2_supported',
+              'vm81_transport_admission',
+              'hash72_execution_receipt',
+              'hash216_transition_identity',
+              'deterministic_replay',
+          ):
+              assert d[key] == 1, key
+          for key in (
+              'matrix_power_value_derivation',
+              'host_matrixpower_authority',
+              'host_square_matrix_requirement_authority',
+              'numeric_exponent_evaluation_authority',
+              'floating_point_authority',
+              'canonical_state_persistence_authority',
+              'canonical_vm81_mutation_authority',
+              'canonical_hash72_commit_authority',
+              'canonical_hash216_commit_authority',
+              'external_egress_authority',
+          ):
+              assert d[key] == 0, key
+
+          rows=report['executions']
+          assert len(rows) == 2
+          assert [r['source_node'] for r in rows] == [
+              'MatrixPower[M_wz,x^2]',
+              'MatrixPower[M_xy,x^4]',
+          ]
+          assert [r['exponent_token'] for r in rows] == ['x^2','x^4']
+          assert [r['shape'] for r in rows] == [[4,2],[4,2]]
+          for row in rows:
+              assert row['decision'] == 1
+              assert row['reason'] == 0
+              for key in (
+                  'source_identity_exact',
+                  'ordered_topology_verified',
+                  'exact_symbolic_node_executed',
+                  'exact_vm81_admission_verified',
+                  'atomic_frame_commit_verified',
+                  'hash72_receipt_verified',
+                  'hash216_transition_identity_verified',
+                  'deterministic_replay_verified',
+              ):
+                  assert row[key] == 1, (row['node_id'],key)
+              for key in (
+                  'host_matrixpower_used',
+                  'square_matrix_requirement_imported',
+                  'numeric_exponent_evaluated',
+                  'matrix_power_value_derived',
+                  'canonical_state_persisted',
+                  'floating_point_authority',
+              ):
+                  assert row[key] == 0, (row['node_id'],key)
+              assert row['vm81_steps'] == 1
+              assert row['replay_vm81_steps'] == 1
+              assert len(row['source_node_sha256']) == 64
+              assert len(row['ordered_cells_sha256']) == 64
+              assert len(row['change_hash72']) == 72
+              assert len(row['receipt_hash72']) == 72
+              assert row['receipt_hash72'] == row['replay_hash72']
+              assert len(row['proof_hash216']) == 216
+              assert len(row['transition_hash216']) == 216
+          assert rows[0]['change_hash72'] != rows[1]['change_hash72']
+          assert rows[0]['transition_hash216'] != rows[1]['transition_hash216']
+          PY
+
+      - name: Run Python binding and dependency-scoped tests
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py \
+            tests/pass220/test_hhs_pass220_i076_exact_matrix_power_hir_hydration_v1.py
+
+      - name: Verify Python binding uses same native shared library
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.hhs_pass220_i077_vm81_exact_matrix_power_execution_v1 import (
+              VM81ExactMatrixPowerExecutor,
+          )
+          x=VM81ExactMatrixPowerExecutor(
+              Path('hhs_runtime/builds/libhhs_runtime.so')
+          )
+          rows=x.execute_all()
+          assert len(rows) == 2
+          assert all(r.exact_vm81_admission_verified for r in rows)
+          assert all(r.deterministic_replay_verified for r in rows)
+          assert all(not r.matrix_power_value_derived for r in rows)
+          PY
+
+      - name: Enforce I077 Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path(
+              'formal/wolfram/pass220_i077_vm81_exact_matrix_power_execution_v1.wl'
+          ).read_text(encoding='utf-8')
+          for token in (
+              'MatrixPower[M_wz,x^2]',
+              'MatrixPower[M_xy,x^4]',
+              '"15_transport_AB_quartic"',
+              '"24_host_matrixpower_authority_false"',
+              '"29_deterministic_replay_expected"',
+              '"30_canonical_persistence_false"',
+          ):
+              assert token in source, token
+          output=json.loads(Path(
+              'evidence/pass220/i077_vm81_exact_matrix_power_execution_wolfram_20261004_v1.output.json'
+          ).read_text(encoding='utf-8'))
+          assert output['status'] == 'PASS'
+          assert output['check_count'] == output['pass_count'] == 30
+          assert output['failed'] == []
+          assert output['node_count'] == 2
+          assert output['rectangular_shapes'] == [[4,2],[4,2]]
+          assert output['transport'] == {
+              'P':2,'p':1,'q':3,'delta':1,'A':4,'B':4,
+              'qr_bit':0,'expected_phase':0,
+          }
+          assert output['hash216_width'] == 216
+          assert output['full_attached_components'] == 15552
+          PY
+
+      - name: Verify I077 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source=Path(
+              'formal/lean/HHS/Pass220/VM81ExactMatrixPowerExecution.lean'
+          ).read_text(encoding='utf-8')
+          for token in (
+              'theorem transportPDeltaClosure',
+              'theorem transportABQuarticClosure',
+              'theorem twoExecutionNodes',
+              'theorem sourceNodesExact',
+              'theorem exponentTokensExact',
+              'theorem cellTopologyExact',
+              'theorem symbolicExecutionVerified',
+              'theorem noHostOrPrematureValueSemantics',
+              'theorem hydrationFactor',
+              'theorem inheritsI076NodeCount',
+              'theorem authorityBoundary',
+          ):
+              assert token in source, token
+          root=Path('formal/lean/HHS.lean').read_text(encoding='utf-8')
+          assert 'import HHS.Pass220.VM81ExactMatrixPowerExecution' in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
+
+      - name: Verify legacy VM81 runtime remains callable
+        run: |
+          set -euo pipefail
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_runtime_init|hhs_runtime_step|hhs_validate_abi|hhs_hash216_compute'
+
+      - name: Upload I077 native evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i077-vm81-exact-matrix-power-\${{ github.sha }}
+          path: artifacts/pass220/i077/
+          if-no-files-found: error
+          retention-days: 90
