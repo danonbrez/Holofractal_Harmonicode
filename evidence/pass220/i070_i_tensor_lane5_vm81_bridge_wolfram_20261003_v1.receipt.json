@@ -1,0 +1,36 @@
+{
+  "schema": "HHS_PASS_220_I070_I_TENSOR_LANE5_VM81_BRIDGE_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-03",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 30,
+  "pass_count": 30,
+  "failed": [],
+  "base_main": "f8b906df1b1f917eebaad75789527326ae481268",
+  "branch": "pass220/i070-i-tensor-lane5-vm81-bridge-20261003",
+  "formal_source": "formal/wolfram/pass220_i070_i_tensor_lane5_vm81_bridge_v1.wl",
+  "formal_source_blob_sha": "dab1a45672e2feda26d84e7a33013b9de373702b",
+  "runtime_source": "hhs_runtime/hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py",
+  "runtime_source_blob_sha": "28a54a9d053097bf1cf8e1b7c4fc1e886734d163",
+  "test_source": "tests/pass220/test_hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py",
+  "test_source_blob_sha": "42010212a5bc14ee7b07c4fa90bdd035af6b90e4",
+  "output_path": "evidence/pass220/i070_i_tensor_lane5_vm81_bridge_wolfram_20261003_v1.output.json",
+  "repository_replay_command": "wolframscript -file formal/wolfram/pass220_i070_i_tensor_lane5_vm81_bridge_v1.wl",
+  "proven": {
+    "tensor_cell_count": 9,
+    "vm81_global_address_count": 81,
+    "vm81_unique_address_count": 81,
+    "vm81_exact_cover_0_80": true,
+    "reciprocal_72_preserved": true,
+    "lo_shu_e_route_preserved": true,
+    "generator_only_reconstruction": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "floating_point_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false
+  }
+}
