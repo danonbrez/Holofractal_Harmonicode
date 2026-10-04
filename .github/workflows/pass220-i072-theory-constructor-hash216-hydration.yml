@@ -72,12 +72,12 @@ jobs:
               "formal/wolfram/pass220_i072_theory_constructor_hash216_hydration_v1.wl"
           ).read_text(encoding="utf-8")
           for token in (
-              "8*9",
-              "3*72",
-              "72^2",
-              "81*64",
-              "144*36",
-              "fullAttached",
+              "phaseSlots = phaseChannels loShuPositions",
+              "hash216Width = hash216Planes hash72Positions",
+              "expandedPerLane = hash72Positions hash72Positions",
+              "fullAttached = hash216Planes expandedPerLane",
+              "vm81Cells local64===5184",
+              "q144 h36===5184",
               "firstRepeatPeriod",
               "full_expansion_persisted",
           ):
