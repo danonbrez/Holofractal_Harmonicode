@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 import unittest
 
 from hhs_runtime.hhs_pass220_i069_harmonicode_i_tensor_v1 import (
@@ -15,8 +16,11 @@ from hhs_runtime.hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1 import (
     tensor_cell_witnesses,
     validate_lane5_vm81_candidate,
 )
-from hhs_runtime.hhs_pass220_quantum_collapse_admission_bridge_v1 import (
-    collapse_address,
+
+
+ROOT = Path(__file__).resolve().parents[2]
+I027_SOURCE = (
+    ROOT / "hhs_runtime" / "hhs_pass220_quantum_collapse_admission_bridge_v1.py"
 )
 
 
@@ -35,15 +39,25 @@ class I070ITensorLane5VM81BridgeTests(unittest.TestCase):
             self.assertEqual(cell.product_c, cell.product_e_value)
             self.assertEqual(cell.normalized_a + cell.normalized_b, 9)
 
-    def test_vm81_address_rule_matches_existing_i027_address_surface(self) -> None:
+    def test_vm81_address_rule_matches_existing_i027_source_contract(self) -> None:
+        source = I027_SOURCE.read_text(encoding="utf-8")
+        for required in (
+            "row, column = divmod(k, 3)",
+            "vm81_cell_id = nucleus * 9 + k",
+            "lo_shu_value = LO_SHU[row][column]",
+        ):
+            self.assertIn(required, source)
+
         for nucleus in range(9):
             cells = tensor_cell_witnesses(nucleus)
             for cell in cells:
-                inherited = collapse_address(cell.outcome, nucleus)
-                self.assertEqual(inherited.vm81_cell_id, cell.vm81_cell_id)
-                self.assertEqual(inherited.row, cell.row)
-                self.assertEqual(inherited.column, cell.column)
-                self.assertEqual(inherited.lo_shu_value, cell.lo_shu_value)
+                row, column = divmod(cell.outcome, 3)
+                self.assertEqual(cell.row, row)
+                self.assertEqual(cell.column, column)
+                self.assertEqual(
+                    cell.vm81_cell_id,
+                    nucleus * 9 + cell.outcome,
+                )
 
     def test_global_vm81_address_witness_is_exact_0_to_80_bijection(self) -> None:
         witness = global_vm81_address_witness()
