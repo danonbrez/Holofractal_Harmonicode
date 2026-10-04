@@ -1,0 +1,191 @@
+{
+  "schema": "HHS_PASS_220_I074_FULL_TENSOR_HNAN_CLOSURE_HYDRATION_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 56,
+  "pass_count": 56,
+  "failed": [],
+  "e_vector": [
+    8,
+    24,
+    40,
+    56,
+    72,
+    16,
+    32,
+    48,
+    64
+  ],
+  "lo_shu_route": [
+    4,
+    9,
+    2,
+    3,
+    5,
+    7,
+    8,
+    1,
+    6
+  ],
+  "phase_kernel": [
+    [
+      8,
+      1,
+      3
+    ],
+    [
+      1,
+      3,
+      5
+    ],
+    [
+      3,
+      5,
+      7
+    ]
+  ],
+  "matrix_a": [
+    [
+      64,
+      8,
+      24
+    ],
+    [
+      8,
+      24,
+      40
+    ],
+    [
+      24,
+      40,
+      56
+    ]
+  ],
+  "matrix_b": [
+    [
+      8,
+      64,
+      48
+    ],
+    [
+      64,
+      48,
+      32
+    ],
+    [
+      48,
+      32,
+      16
+    ]
+  ],
+  "matrix_c": [
+    [
+      56,
+      64,
+      24
+    ],
+    [
+      40,
+      72,
+      32
+    ],
+    [
+      48,
+      8,
+      16
+    ]
+  ],
+  "determinants": [
+    -18432,
+    18432,
+    32256
+  ],
+  "normalized_determinants": [
+    -36,
+    36,
+    63
+  ],
+  "e_membrane_occurrences": 3,
+  "e_membrane_value_nodes": 1,
+  "e_evaluations_avoided": 2,
+  "right_cell_occurrences": 32,
+  "right_unique_cell_expressions": 12,
+  "right_cse_materializations_avoided": 20,
+  "right_unique_cells": [
+    "-w*z",
+    "z-w",
+    "w*z",
+    "y+x",
+    "-x*y",
+    "x*y",
+    "-1",
+    "0",
+    "1",
+    "w*z-x*y+1",
+    "-z+y+x+w",
+    "(-w)*z+x*y-1"
+  ],
+  "matrix_power_nodes": [
+    "MatrixPower[M_wz,x^2]",
+    "MatrixPower[M_xy,x^4]"
+  ],
+  "hash216_width": 216,
+  "full_attached_components": 15552,
+  "checks": {
+    "01_verbatim_nonempty": true,
+    "02_outer_u_power_preserved": true,
+    "03_outer_closure_to_one_preserved": true,
+    "04_e_membrane_occurrences_3": true,
+    "05_e_value_nodes_1": true,
+    "06_e_evaluations_avoided_2": true,
+    "07_e_generator_exact": true,
+    "08_loshu_exact": true,
+    "09_loshu_permutation": true,
+    "10_phase_kernel_exact": true,
+    "11_matrix_a_exact": true,
+    "12_matrix_b_exact": true,
+    "13_matrix_c_exact": true,
+    "14_a_b_pointwise_72": true,
+    "15_b_mod72_negative_a": true,
+    "16_a_mod72_negative_b": true,
+    "17_c_loshu_routes_e": true,
+    "18_c_center_72": true,
+    "19_c_center_mod72_zero": true,
+    "20_det_a": true,
+    "21_det_b": true,
+    "22_det_c": true,
+    "23_normalized_dets": true,
+    "24_right_mwz_shape": true,
+    "25_right_mxy_shape": true,
+    "26_right_target_shape": true,
+    "27_right_closure_shape": true,
+    "28_right_occurrences_32": true,
+    "29_right_unique_cells_12": true,
+    "30_right_cse_avoids_20": true,
+    "31_right_unique_contains_z_minus_w": true,
+    "32_right_unique_contains_y_plus_x": true,
+    "33_right_unique_contains_xy": true,
+    "34_right_unique_contains_wz": true,
+    "35_right_unique_contains_hnan_dminus": true,
+    "36_right_unique_contains_hnan_lambda": true,
+    "37_right_unique_contains_hnan_dplus": true,
+    "38_matrix_power_source_occurrences_2": true,
+    "39_matrix_power_nodes_held_2": true,
+    "40_matrix_power_nodes_distinct": true,
+    "41_no_host_matrixpower_evaluation": true,
+    "42_xy_order_preserved": true,
+    "43_wz_order_preserved": true,
+    "44_hnan_mod_unit_gate_preserved": true,
+    "45_hnan_gate_typed_not_host_mod": true,
+    "46_hnan_pole_typed_not_divzero": true,
+    "47_hash72_square_5184": true,
+    "48_hash216_planes_3": true,
+    "49_full_attached_15552": true,
+    "50_generator_first_hydration": true,
+    "51_right_occurrence_witnesses_retained": true,
+    "52_projection_substitution_forbidden": true,
+    "53_float_authority_false": true,
+    "54_vm81_mutation_authority_false": true,
+    "55_hash216_commit_authority_false": true,
+    "56_closure_readout_typed_unit": true
+  }
+}

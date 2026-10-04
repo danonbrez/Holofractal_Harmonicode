@@ -1,0 +1,173 @@
+{
+  "schema": "HHS_PASS_220_I074_FULL_TENSOR_HNAN_CLOSURE_HYDRATION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CHECKPOINT",
+  "date": "2026-10-04",
+  "base_main": "a6c227d40d3602fc4ec0339dcad5007dadb96179",
+  "branch": "pass220/i074-full-tensor-hnan-closure-hydration-20261004",
+  "merge_target": "main",
+  "purpose": "Formalize the full supplied HARMONICODE I Tensor extension after merged I073, preserve native HNAN/ordered x,y,z,w semantics, and bind source-preserving generator/CSE optimizations into exact Hash216 hydration without widening canonical authority.",
+  "parent": {
+    "pass": "Pass 220 I073",
+    "merged_main_sha": "a6c227d40d3602fc4ec0339dcad5007dadb96179"
+  },
+  "source_semantics": {
+    "verbatim_source_authoritative": true,
+    "interpretation": "HARMONICODE_NATIVE",
+    "interpretation_locked": true,
+    "host_scalar_reinterpretation": false,
+    "host_boolean_reinterpretation": false,
+    "host_rectangular_matrixpower_evaluation": false,
+    "host_mod_one_rewrite": false,
+    "host_division_by_zero": false,
+    "ordered_xy_yx_preserved": true,
+    "ordered_zw_wz_preserved": true,
+    "hnan_gate_native": true,
+    "closure_readout": "1_H",
+    "delta_e": "0",
+    "psi": "0",
+    "omega": true
+  },
+  "exact_left_generator": {
+    "phase_scale": 8,
+    "phase_modulus": 9,
+    "phase_ring": 72,
+    "e_vector": [
+      8,
+      24,
+      40,
+      56,
+      72,
+      16,
+      32,
+      48,
+      64
+    ],
+    "lo_shu": [
+      [
+        4,
+        9,
+        2
+      ],
+      [
+        3,
+        5,
+        7
+      ],
+      [
+        8,
+        1,
+        6
+      ]
+    ],
+    "phase_kernel": [
+      [
+        8,
+        1,
+        3
+      ],
+      [
+        1,
+        3,
+        5
+      ],
+      [
+        3,
+        5,
+        7
+      ]
+    ],
+    "determinants": [
+      -18432,
+      18432,
+      32256
+    ],
+    "normalized_determinants": [
+      -36,
+      36,
+      63
+    ],
+    "e_membrane_source_occurrences": 3,
+    "e_membrane_value_nodes": 1,
+    "e_membrane_value_evaluations_avoided": 2,
+    "source_occurrence_witnesses_retained": 3
+  },
+  "exact_right_symbolic_cse": {
+    "matrix_shapes": [
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "cell_occurrences": 32,
+    "unique_cell_expressions": 12,
+    "materializations_avoided": 20,
+    "occurrence_witnesses_retained": 32,
+    "matrix_power_nodes": [
+      "MatrixPower[M_wz,x^2]",
+      "MatrixPower[M_xy,x^4]"
+    ],
+    "matrix_power_nodes_held": true,
+    "host_matrixpower_evaluated": false
+  },
+  "hydration": {
+    "hash72_width": 72,
+    "hash216_width": 216,
+    "planes": 3,
+    "vertices_per_plane": 5184,
+    "full_attached_components": 15552,
+    "exact_recompression_required": true,
+    "persist_expanded_geometry": false,
+    "persist_generator_and_plane_roots": true,
+    "reconstruct_on_demand": true
+  },
+  "wolfram": {
+    "source": "formal/wolfram/pass220_i074_full_tensor_hnan_closure_hydration_v1.wl",
+    "evidence": "evidence/pass220/i074_full_tensor_hnan_closure_hydration_wolfram_20261004_v1.output.json",
+    "receipt": "evidence/pass220/i074_full_tensor_hnan_closure_hydration_wolfram_20261004_v1.receipt.json",
+    "connected_kernel": "56/56 PASS",
+    "native_rectangular_matrixpower_evaluated": false
+  },
+  "lean": {
+    "module": "HHS.Pass220.I074",
+    "source": "formal/lean/HHS/Pass220/FullTensorHNANClosureHydration.lean",
+    "inherits": [
+      "HHS.Pass220.I073",
+      "HHS.Pass219.QGUHNANTransport"
+    ],
+    "required_checks": [
+      "build",
+      "leanchecker",
+      "axiom-audit"
+    ]
+  },
+  "authority": {
+    "candidate_only": true,
+    "floating_point_authority": false,
+    "vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "external_egress_authority": false,
+    "projection_substitution_authorized": false
+  },
+  "validation": {
+    "connected_wolfram": "56/56 PASS",
+    "python_dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "runtime_self_test": "PENDING_BRANCH_CI",
+    "lean_build_kernel_check_axiom_audit": "PENDING_BRANCH_CI",
+    "source_bundle_identity": "PENDING_BRANCH_CI"
+  }
+}
