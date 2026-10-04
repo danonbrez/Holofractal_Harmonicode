@@ -284,7 +284,7 @@ jobs:
       - name: Upload I077 native evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass220-i077-vm81-exact-matrix-power-\${{ github.sha }}
+          name: pass220-i077-vm81-exact-matrix-power-${{ github.sha }}
           path: artifacts/pass220/i077/
           if-no-files-found: error
           retention-days: 90
