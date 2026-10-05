@@ -229,3 +229,62 @@ Compared with the branch base `54b869852452a632e78041a11392b966b9d8cca3`,
 main is ahead by two commits and every changed path is generated Hash216 repository
 index material. No production/runtime implementation file in PR #695 overlaps that
 drift.
+
+
+## 2026-10-05 serialized delivery repair
+
+Authoritative main advanced through generated Hash216 projection commits
+`ad1f995c6d5e7d7fdac9f8f5a467ec03f8ae2993` and
+`7bd585a0a0c9a2a964fee4f56d58baeafda2932e` after the I077 merge
+`c54a9d5d0b57e113f895091065c76b5f4e21e998`.
+
+The preceding Exact-Main transaction was cancelled as newer main state appeared,
+and the exact-`7bd585a0` transaction then reached the host while
+`/run/lock/hhs-production-mutation.lock` was still occupied. Promotion did not
+complete and public HTTPS verification was skipped.
+
+The repair changes repository orchestration rather than weakening the host lock:
+
+1. every non-PR Exact-Main run, whether push-triggered or explicitly dispatched,
+   uses one concurrency group: `hhs-production-main-delivery`;
+2. that group uses `cancel-in-progress: false`, so an active remote mutation
+   transaction cannot be cancelled by later main movement;
+3. authoritative Hash216 index refresh uses the same non-PR concurrency group;
+4. the Hash216 workflow no longer advances main independently on every main push;
+5. after Exact-Main reaches a matching `PROMOTED` receipt and public HTTPS
+   Runtime OS/service-registry verification, it explicitly queues the Hash216
+   refresh;
+6. if that refresh creates a generated current-main commit, it explicitly queues
+   Exact-Main for that generated SHA;
+7. PR validation for both workflows remains in PR-specific concurrency groups and
+   therefore cannot occupy the production delivery mutex.
+
+This creates the closed chain:
+
+```text
+development main
+-> Exact-Main promotion
+-> PROMOTED receipt
+-> public HTTPS + service registry verification
+-> queued Hash216 index refresh
+-> optional generated-main commit
+-> queued Exact-Main promotion
+-> convergence
+```
+
+The production bundle build also runs the Runtime OS workspace, live GUI E2E
+source, and frontend telemetry source verification before sealing the frontend.
+The inherited production integration continues to hydrate every descriptor
+returned by `GET /api/runtime/services` into the frontend registry and route
+execution through guarded backend dispatch.
+
+Restart state:
+
+- base: `7bd585a0a0c9a2a964fee4f56d58baeafda2932e`
+- branch: `repair/serialized-production-delivery-20261005`
+- merge target: `main`
+- changed authority: repository orchestration only; host mutation authority remains
+  the shared `/run/lock/hhs-production-mutation.lock`
+- post-merge acceptance remains fail-closed on exact SHA `PROMOTED`, local
+  service-registry verification, public service-registry verification, and public
+  HTTPS Runtime OS verification.
