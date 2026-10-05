@@ -16,6 +16,7 @@ const files = {
   productionAssistant: "runtime_os/workspace/ProductionAssistantChat.tsx",
   commandClient: "runtime_os/workspace/WorkspaceCommandClient.ts",
   applicationRegistry: "runtime_os/core/RuntimeApplicationRegistry.tsx",
+  globalStyles: "src/styles/global.css",
   vite: "vite.config.ts",
 }
 
@@ -53,6 +54,14 @@ assert(content.canonicalIDE.includes("IntegratedRuntimeClient"), "CanonicalRunti
 assert(!content.integratedClient.includes("RuntimeWindowManager"), "public client imports legacy window manager")
 assert(!content.canonicalIDE.includes("RuntimeCommandPanel"), "isolated runtime command panel remains public")
 assert(!content.canonicalIDE.includes("RuntimeMutationPanel"), "isolated runtime mutation panel remains public")
+
+assert(content.globalStyles.includes("overflow-y: auto"), "canonical production document does not permit vertical scrolling")
+assert(content.globalStyles.includes("touch-action: manipulation"), "production touch controls lack direct mobile touch-action")
+const rootStyleBlock = content.globalStyles.slice(
+  content.globalStyles.indexOf("html,"),
+  content.globalStyles.indexOf("/* =======================================================\n   Global Reset"),
+)
+assert(!rootStyleBlock.includes("overflow: hidden"), "canonical production root still clips the document viewport")
 
 for (const token of [
   "Paste → build → run",
