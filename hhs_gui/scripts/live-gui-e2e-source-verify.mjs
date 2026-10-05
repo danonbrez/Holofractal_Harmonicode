@@ -13,6 +13,7 @@ const files = {
   programmer: "runtime_os/workspace/RegistryVisualProgrammer.tsx",
   workspace: "runtime_os/workspace/HHSWorkspaceShell.tsx",
   assistant: "runtime_os/assistant/RuntimeAssistantPanel.tsx",
+  productionAssistant: "runtime_os/workspace/ProductionAssistantChat.tsx",
   commandClient: "runtime_os/workspace/WorkspaceCommandClient.ts",
   applicationRegistry: "runtime_os/core/RuntimeApplicationRegistry.tsx",
   vite: "vite.config.ts",
@@ -85,6 +86,9 @@ for (const token of [
 
 assert(content.control.includes("Runtime and Build controls remain usable"), "vector warming still blocks the primary mobile workflow")
 assert(content.control.includes("Advanced: open-source acquisition and replay"), "advanced acquisition is not progressively disclosed")
+assert(content.control.includes("acquisitionOpen"), "advanced acquisition is not lazy-mounted")
+assert(content.control.includes("onToggle={(event) => setAcquisitionOpen(event.currentTarget.open)}"), "advanced acquisition does not bind explicit open state")
+assert(content.control.includes("acquisitionOpen ? <div"), "collapsed advanced acquisition still mounts backend work")
 
 for (const modality of ["HARMONICODE_SOURCE", "JSON", "YAML", "CSV", "PDF", "IMAGE", "AUDIO", "VIDEO", "CODE", "TEXT", "BINARY"]) {
   assert(content.control.includes(modality), `mobile file ingress missing ${modality}`)
@@ -132,6 +136,9 @@ for (const token of [
 ]) {
   assert(content.assistant.includes(token), `assistant integration missing ${token}`)
 }
+
+assert(content.productionAssistant.includes("/api/assistant/deployment-health"), "production assistant boot does not use bounded deployment liveness")
+assert(!content.productionAssistant.includes("/api/assistant/health"), "production assistant boot reintroduced full provider diagnostic health")
 
 for (const token of ["lazyLoader", "resolveLazyComponent", "runtime_console", "calculator", "breadboard", "receipt_inspector", "replay_timeline"]) {
   assert(content.applicationRegistry.includes(token), `application registry missing ${token}`)
