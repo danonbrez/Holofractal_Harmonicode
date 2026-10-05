@@ -39,6 +39,9 @@ from hhs_runtime.hhs_pass220_i065_lossless_emergent_compression_hydration_v1 imp
     hydrate_hash216_geometry,
     validate_serialized5184,
 )
+from hhs_runtime.hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1 import (
+    deterministic_qpu_witness,
+)
 from hhs_runtime.hhs_pass220_i069_harmonicode_i_tensor_v1 import hash72
 from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
     SERIALIZED_CHARACTERS,
@@ -87,6 +90,12 @@ HNAN_GATE_GIT_BLOB_SHA = "a0ccd47620301ef2cc864e9e86834c8608b7b200"
 
 LOSHU_SERIALIZER_PATH = "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
 LOSHU_SERIALIZER_GIT_BLOB_SHA = "cb18ec3f1d35017cb6c7b2b40848b398930270bc"
+
+I080_QPU_RUNTIME_PATH = "hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py"
+I080_QPU_RUNTIME_GIT_BLOB_SHA = "5f7af7c57f78f5be17659f715d639b9614557f34"
+
+I080_QPU_HTML_PATH = "examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html"
+I080_QPU_HTML_GIT_BLOB_SHA = "0f01eb814623512eda6afb2a5ef2005d4df99a2b"
 
 I041_MARKERS = (
     "function computeManifoldHash()",
@@ -165,6 +174,14 @@ def source_bindings() -> dict[str, Any]:
         LOSHU_SERIALIZER_PATH,
         LOSHU_SERIALIZER_GIT_BLOB_SHA,
     )
+    qpu_runtime = _read_blob_bound(
+        I080_QPU_RUNTIME_PATH,
+        I080_QPU_RUNTIME_GIT_BLOB_SHA,
+    )
+    qpu_html = _read_blob_bound(
+        I080_QPU_HTML_PATH,
+        I080_QPU_HTML_GIT_BLOB_SHA,
+    )
 
     missing = tuple(marker for marker in I041_MARKERS if marker not in i041)
     if missing:
@@ -183,6 +200,23 @@ def source_bindings() -> dict[str, Any]:
             raise Pass220I080Error(f"HNAN gate marker missing: {marker}")
     if "def serialize_offsets_5184" not in serializer:
         raise Pass220I080Error("5184 BigInt serializer marker missing")
+    for marker in (
+        "def deterministic_qpu_witness",
+        "def ieee754_symbolic_ingress",
+        "def phase_gear_tick",
+        '"state_space_source": "3^5183"',
+    ):
+        if marker not in qpu_runtime:
+            raise Pass220I080Error(f"I080 deterministic QPU runtime marker missing: {marker}")
+    for marker in (
+        "I080DeterministicKnowledgeGraphQPU",
+        "100=90+10=81*81",
+        "3^5183",
+        "u^16",
+        "15552",
+    ):
+        if marker not in qpu_html:
+            raise Pass220I080Error(f"I080 deterministic QPU HTML marker missing: {marker}")
 
     return {
         "schema": f"{SCHEMA}_SOURCE_BINDINGS_V1",
@@ -222,6 +256,15 @@ def source_bindings() -> dict[str, Any]:
             "path": LOSHU_SERIALIZER_PATH,
             "git_blob_sha": LOSHU_SERIALIZER_GIT_BLOB_SHA,
         },
+        "i080_deterministic_qpu_runtime": {
+            "path": I080_QPU_RUNTIME_PATH,
+            "git_blob_sha": I080_QPU_RUNTIME_GIT_BLOB_SHA,
+        },
+        "i080_deterministic_qpu_html": {
+            "path": I080_QPU_HTML_PATH,
+            "git_blob_sha": I080_QPU_HTML_GIT_BLOB_SHA,
+            "frozen_i041_seed_unchanged": True,
+        },
     }
 
 
@@ -235,6 +278,8 @@ def default_seed_hash216() -> str:
             "role": "receipt",
             "hydration": bindings["i065_hash216_hydration"],
             "serializer": bindings["bigint_5184_serializer"],
+            "qpu_runtime": bindings["i080_deterministic_qpu_runtime"],
+            "qpu_html": bindings["i080_deterministic_qpu_html"],
         }),
     )
     seed = "".join(lanes)
@@ -896,6 +941,7 @@ def build_candidate(seed_hash216: str | None = None) -> dict[str, Any]:
     if output_hydration["full_attached_components"] != FULL_HASH216_COMPONENTS:
         raise Pass220I080Error("output Hash216 hydration component drift")
     state_offset = bigint_hash216_state_offset_interpretation(output_hash216)
+    deterministic_qpu = deterministic_qpu_witness(output_hash216)
 
     candidate = {
         "schema": SCHEMA,
@@ -910,6 +956,7 @@ def build_candidate(seed_hash216: str | None = None) -> dict[str, Any]:
         "hash72_lanes": lanes,
         "candidate_hash216": output_hash216,
         "hash216_bigint_state_offset": state_offset,
+        "deterministic_knowledge_graph_qpu": deterministic_qpu,
         "candidate_hash216_hydration": {
             "roundtrip_exact": output_hydration["roundtrip_exact"],
             "full_attached_components": output_hydration["full_attached_components"],
@@ -1053,6 +1100,31 @@ def self_test() -> dict[str, Any]:
             and candidate["hash216_bigint_state_offset"]["state_space_per_tick"][
                 "ordinary_scalar_equality_evaluated"
             ] is False
+        ),
+        "qpu_genesis_5184": (
+            candidate["deterministic_knowledge_graph_qpu"]["genesis"]["all_width_5184"] is True
+        ),
+        "qpu_offsets_cover_5184": (
+            candidate["deterministic_knowledge_graph_qpu"]["offset_tensor"]["all_addresses_covered"] is True
+            and candidate["deterministic_knowledge_graph_qpu"]["offset_tensor"]["offset_cardinality"] == 19
+        ),
+        "qpu_trinary_3_pow_5183": (
+            candidate["deterministic_knowledge_graph_qpu"]["trinary_tensor"]["state_space_source"] == "3^5183"
+        ),
+        "qpu_u16_phase_gear": (
+            candidate["deterministic_knowledge_graph_qpu"]["phase_gear"]["tick0"]["common_closure_5184"] == 5184
+            and candidate["deterministic_knowledge_graph_qpu"]["phase_gear"]["tick0"]["nine_steps"] == 144
+        ),
+        "qpu_hash216_lossless_hydration": (
+            candidate["deterministic_knowledge_graph_qpu"]["hash216_hydration"]["full_attached_components"] == 15552
+            and candidate["deterministic_knowledge_graph_qpu"]["hash216_hydration"]["roundtrip_exact"] is True
+        ),
+        "qpu_ieee_rna_lossless": (
+            candidate["deterministic_knowledge_graph_qpu"]["lossless_ieee_all_vectors"] is True
+        ),
+        "qpu_authority_fail_closed": (
+            candidate["deterministic_knowledge_graph_qpu"]["authority"]["ieee_float_internal_logic_authority"] is False
+            and candidate["deterministic_knowledge_graph_qpu"]["authority"]["lossy_scalar_projection_authority"] is False
         ),
         "replay_bit_exact": candidate == replay,
         "changed_seed_changes_schedule": (
