@@ -95,7 +95,7 @@ I080_QPU_RUNTIME_PATH = "hhs_runtime/hhs_pass220_i080_deterministic_knowledge_gr
 I080_QPU_RUNTIME_GIT_BLOB_SHA = "5f7af7c57f78f5be17659f715d639b9614557f34"
 
 I080_QPU_HTML_PATH = "examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html"
-I080_QPU_HTML_GIT_BLOB_SHA = "0f01eb814623512eda6afb2a5ef2005d4df99a2b"
+I080_QPU_HTML_GIT_BLOB_SHA = "2d51aa27dd8881d0f841966a9c9ee610f56dec05"
 
 I041_MARKERS = (
     "function computeManifoldHash()",
