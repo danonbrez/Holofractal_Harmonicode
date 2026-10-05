@@ -1,0 +1,71 @@
+name: Pass 220 I080 BigInt Memristor Hash216 Probability Synthesis
+
+on:
+  push:
+    branches:
+      - pass220/i080-bigint-memristor-probability-synthesis-20261005
+    paths:
+      - "hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py"
+      - "tests/pass220/test_hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py"
+      - "contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.md"
+      - "docs/operations/restart/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_RESTART_20261005.md"
+      - ".github/workflows/pass220-i080-bigint-memristor-probability-synthesis.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i080-bigint-memristor-probability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse and compile I080 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool             contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json             >/dev/null
+          python -m py_compile             hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py             tests/pass220/test_hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+
+      - name: Enforce per-tick source semantics
+        run: |
+          set -euo pipefail
+          grep -F 'one_tick_one_lane5_optimization_operation'             hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'A/B'             hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'B/A'             hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'AB=P^4'             hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'u^(5184=81*64=72²/72⁷²MOD72)=HNAN periodicity'             hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F '"browser_math_random_authority": false'             contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json
+          grep -F '"canonical_hash216_commit_authority": false'             contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json
+
+      - name: Run I080 and dependency-scoped exact regressions
+        run: |
+          python -m pytest -q --tb=short             tests/pass220/test_hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py             tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py             tests/test_hhs_pass163_vmrc_v1.py             tests/pass219/test_pass219_fold_primitive_probe.py             tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py             tests/pass219/test_pass219_hnan_qgu_transport_v1.py
+
+      - name: Execute deterministic I080 self-test
+        run: |
+          python -m hhs_runtime.hhs_pass220_i080_bigint_memristor_probability_synthesis_v1             | tee /tmp/i080-self-test.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/i080-self-test.json').read_text())
+          assert report['status'] == 'PASS'
+          assert report['check_count'] == report['pass_count'] == 24
+          assert report['failed'] == []
+          assert len(report['input_hash216']) == 216
+          assert len(report['candidate_hash216']) == 216
+          PY
