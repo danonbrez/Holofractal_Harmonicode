@@ -206,3 +206,55 @@ Still zero:
 3. Repair only failures attributable to this implementation cone.
 4. When dependency-scoped validation is green, merge.
 5. Verify exact main contains the I080 files and record the merge/main SHA.
+
+
+## Deterministic knowledge-graph QPU / ingress-egress closure checkpoint
+
+Checkpoint immediately before this restart refresh:
+\`5e3e9f19d1b1bd3dfa80c5aafd19043385d8dd1c\`.
+
+The I080 dependency cone now includes the complete additive deterministic
+browser/QPU boundary requested after the original 29-check checkpoint:
+
+- \`hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py\`
+  covers all 5184 character addresses, the signed -9..+9 character-offset
+  alphabet, Genesis 10/20/30/100 constructors, the nucleus-anchored
+  \`3^5183\` trinary phase tensor, the u^16 nine-position 64:72:81 gear,
+  three-plane Hash216 hydration, and exact symbolic IEEE bit-string RNA
+  ingress/egress.
+- \`examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html\`
+  is an additive deterministic HTML QPU surface. The frozen
+  \`examples/ParticleSimulation.html\` I041 seed is unchanged.
+- \`formal/lean/HHS/Pass220/I080DeterministicKnowledgeGraphQPU.lean\`
+  is registered from \`formal/lean/HHS.lean\` and constrains the 5184
+  factorizations, phase gear, Hash216 hydration count, Genesis widths,
+  palindromic RNA roundtrip, IEEE field widths, and fail-closed authority.
+- \`formal/wolfram/pass220_i080_deterministic_knowledge_graph_qpu_v1.wl\`
+  was evaluated in a Wolfram Language kernel and passed **31/31** exact checks.
+  Evidence is frozen at
+  \`evidence/pass220/i080_deterministic_knowledge_graph_qpu_wolfram_20261005_v1.output.json\`.
+- The primary I080 candidate now embeds
+  \`deterministic_knowledge_graph_qpu\`; its self-test was expanded from
+  29 to **36** checks. The dedicated QPU self-test has **19** checks.
+- The dedicated workflow now compiles both Python surfaces, parses the HTML
+  JavaScript with Node, runs the I080/I065/Pass163/Pass219 dependency cone,
+  verifies the 31/31 Wolfram evidence, and performs Lean build + leanchecker +
+  axiom audit.
+
+### Validation state at checkpoint
+
+Completed:
+- Wolfram Language evaluation: 31/31 PASS.
+- Repository source/contract/whitepaper/workflow integration completed.
+- PR #722 remains open and mergeable.
+
+External exact-head CI:
+- dedicated workflow run \`37380849882\` for head
+  \`5e3e9f19d1b1bd3dfa80c5aafd19043385d8dd1c\` is queued;
+- repository-wide workflows are heavily queued/pending;
+- no green-CI or merge claim is made.
+
+Per the restartability/forward-progress policy, do not wait on the external
+queue. If the dedicated run fails, inspect only the I080 dependency cone,
+repair forward, commit the fix, and rerun the dedicated gate. If it succeeds,
+verify exact-head status and proceed to merge/verified-main closure.
