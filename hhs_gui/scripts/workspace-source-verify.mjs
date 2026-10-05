@@ -91,7 +91,7 @@ for (const token of [
 }
 
 for (const token of [
-  "/api/assistant/health",
+  "/api/assistant/deployment-health",
   "/api/assistant/chat",
   "New chat",
   "Message HHS",
