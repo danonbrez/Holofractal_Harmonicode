@@ -56,13 +56,13 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#061018;border-radius
     if(VM81*LOCAL64!==WIDTH||HASH72*HASH72!==WIDTH||64n*81n!==72n*72n)fail("5184 gear drift");
     if(PHASE_ORBIT*PHASE_STEP!==2n*PHASE_MOD)fail("u^16 orbit drift");
     const linear=tick%WIDTH,p=tick%PHASE_ORBIT;
-    return Object.freeze({tick:tick.toString(),one_tick_one_lane5_optimization_operation:true,address:coordinate5184(linear),phase_gear_E:E.map(x=>x.toString()),u16_phase_index9:p.toString(),u16_phase_value:E[Number(p)].toString(),ratio_64_72:"8/9",ratio_72_81:"8/9",common_closure_5184:"5184",nine_u16_steps:"144",two_u72_turns:"144",quartic_closure:"AB=P^4",mirror_quartic_closure:"BA=-P^4",hnan_closure:true,full_5184_tick_period_restores_address:((tick+WIDTH)%WIDTH)===linear});
+    return Object.freeze({tick:tick.toString(),one_tick_one_lane5_optimization_operation:true,address:coordinate5184(linear),phase_gear_E:E.map(x=>x.toString()),u16_phase_index9:p.toString(),u16_phase_value:E[p.toString()].toString(),ratio_64_72:"8/9",ratio_72_81:"8/9",common_closure_5184:"5184",nine_u16_steps:"144",two_u72_turns:"144",quartic_closure:"AB=P^4",mirror_quartic_closure:"BA=-P^4",hnan_closure:true,full_5184_tick_period_restores_address:((tick+WIDTH)%WIDTH)===linear});
   }
   function validateHash216(source){if(typeof source!=="string"||BigInt(source.length)!==HASH216)fail("Hash216 must be exactly 216 characters");return source}
   function hydrateHash216(source){
     const h=validateHash216(source),lanes=[h.slice(0,72),h.slice(72,144),h.slice(144,216)],roles=["PREVIOUS:A","STATE:B","RECEIPT:C"];
     const planes=lanes.map((lane,planeIndex)=>{
-      const rows=[];for(let row=0n;row<HASH72;row+=1n){rows.push({row72:row.toString(),source_symbol:lane[Number(row)],linear_start:(row*HASH72).toString(),linear_end:(row*HASH72+71n).toString()})}
+      const rows=[];for(let row=0n;row<HASH72;row+=1n){rows.push({row72:row.toString(),source_symbol:lane[row.toString()],linear_start:(row*HASH72).toString(),linear_end:(row*HASH72+71n).toString()})}
       if(rows.map(r=>r.source_symbol).join("")!==lane)fail("Hash72 recompression mismatch");
       return Object.freeze({role:roles[planeIndex],generator_hash72:lane,expanded_positions:"5184",roundtrip_exact:true});
     });
@@ -71,9 +71,10 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#061018;border-radius
   function reverseString(s){return Array.from(s).reverse().join("")}
   function ieeeLayout(width){if(width===16n)return [5n,10n];if(width===32n)return [8n,23n];if(width===64n)return [11n,52n];fail("IEEE ingress width must be 16, 32, or 64 bits")}
   function bitsToBigInt(bits){let value=0n;for(const bit of bits)value=(value<<1n)|(bit==="1"?1n:0n);return value}
+  function sliceBig(source,start,end){let out="";for(let i=start;i<end;i+=1n)out+=source[i.toString()];return out}
   function ieeeIngress(raw){
     if(typeof raw!=="string"||! /^[01]+$/.test(raw))fail("IEEE source must be a raw bit string");
-    const width=BigInt(raw.length),layout=ieeeLayout(width),ew=layout[0],fw=layout[1],end=1n+ew,sign=raw[0],exp=raw.slice(1,Number(end)),frac=raw.slice(Number(end));
+    const width=BigInt(raw.length),layout=ieeeLayout(width),ew=layout[0],fw=layout[1],end=1n+ew,sign=raw[0],exp=sliceBig(raw,1n,end),frac=sliceBig(raw,end,width);
     if(BigInt(frac.length)!==fw)fail("fraction width drift");
     const expAllZero=exp===zeros(ew),expAllOne=Array.from(exp).every(x=>x==="1"),fracZero=bitsToBigInt(frac)===0n;
     let classification="NORMAL";if(expAllOne)classification=fracZero?"INFINITY":"NAN";else if(expAllZero)classification=fracZero?"ZERO":"SUBNORMAL";
