@@ -921,7 +921,6 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "HHS_PRODUCTION_EXPECTED_SERVICE_COUNT",
         "HHS_PRODUCTION_EXPECTED_SHA",
         "HHS_PRODUCTION_BROWSER_EVIDENCE_DIR",
-        "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_SURFACE_VERIFIED",
         "Upload production frontend capability evidence",
         "production-live-browser.json",
         "production-live-browser.png",
@@ -934,14 +933,15 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
     assert public_probe < browser_gate < hash216_queue
 
     for token in [
-        'fetch("/api/runtime/services")',
-        'fetch("/api/interface/status")',
+        'request("/api/runtime/services")',
+        'request("/api/interface/status")',
         'data-testid="hhs-canonical-runtime-ide"',
         'data-testid="hhs-product-workspace"',
         '"Visual Program"',
         'data-testid="registry-visual-programmer"',
         "missingServices",
         "renderedTitleSet",
+        "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_SURFACE_VERIFIED",
         'guarded_dispatch_route: "/api/runtime/services/dispatch"',
         "frontend_authority: false",
     ]:
