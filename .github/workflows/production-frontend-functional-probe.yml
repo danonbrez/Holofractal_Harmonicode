@@ -104,7 +104,9 @@ jobs:
           node-version: "20"
       - name: Install frontend verification runtime
         working-directory: hhs_gui
-        run: npm install
+        run: |
+          npm install
+          npm install --no-save --package-lock=false playwright@1.55.0
       - name: Install Chromium
         working-directory: hhs_gui
         run: npx playwright install --with-deps chromium
