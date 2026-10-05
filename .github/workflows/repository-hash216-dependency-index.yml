@@ -5,17 +5,17 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'REPOSITORY_HASH216_DEPENDENCY_TREE.md'
-      - 'artifacts/repository_index/**'
-      - 'docs/repository_index/files/**'
 
 permissions:
   contents: write
   actions: write
+
+concurrency:
+  # PR validation is isolated. Authoritative main refresh shares the same
+  # delivery queue as Exact-Main so generated index advancement cannot overlap
+  # or cancel a remote production promotion.
+  group: ${{ github.event_name == 'pull_request' && format('hhs-hash216-index-pr-{0}', github.event.pull_request.number) || 'hhs-production-main-delivery' }}
+  cancel-in-progress: false
 
 jobs:
   deep-index:
@@ -459,13 +459,6 @@ jobs:
             artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json
             artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json
             docs/repository_index/files/*.md
-
-      - name: Dispatch authoritative main refresh
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow run repository-hash216-dependency-index.yml --ref main
 
       - name: Commit generated projection to main
         id: commit_projection

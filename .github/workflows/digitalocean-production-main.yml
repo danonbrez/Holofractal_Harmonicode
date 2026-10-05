@@ -32,10 +32,15 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 concurrency:
-  group: hhs-digitalocean-production-main-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: true
+  # PR contract validation must never occupy the production delivery mutex.
+  # Every non-PR Exact-Main run, including push and explicit redispatch, shares
+  # one queue with the generated Hash216 index so active remote promotion is
+  # never cancelled by a newer main state.
+  group: ${{ github.event_name == 'pull_request' && format('hhs-digitalocean-production-pr-{0}', github.event.pull_request.number) || 'hhs-production-main-delivery' }}
+  cancel-in-progress: false
 
 jobs:
   validate-deployment-contract:
@@ -119,6 +124,9 @@ jobs:
           pushd hhs_gui >/dev/null
           npm install --no-audit --no-fund
           npm run typecheck
+          npm run test:workspace:source
+          npm run test:e2e:source
+          npm run test:frontend-telemetry:source
           npm run build
           popd >/dev/null
 
@@ -506,3 +514,13 @@ jobs:
           print('HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED')
           print(f'HHS_DIGITALOCEAN_PUBLIC_SERVICE_REGISTRY_VERIFIED={len(services)}')
           PY
+
+      - name: Queue Hash216 repository index after verified promotion
+        if: github.event_name != 'pull_request'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run repository-hash216-dependency-index.yml --ref main
+          echo "HHS_EXACT_MAIN_HASH216_INDEX_QUEUED=$TARGET_SHA"
