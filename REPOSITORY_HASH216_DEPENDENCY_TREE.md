@@ -6,14 +6,14 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [ad1f995c6d5e7d7fdac9f8f5a467ec03f8ae2993](https://github.com/danonbrez/Holofractal_Harmonicode/commit/ad1f995c6d5e7d7fdac9f8f5a467ec03f8ae2993)
-- Git tree: ee75403a79e8081bf784e1566e6b7c5774d74d16
+- Source commit: [9cff9a823a91d5eecdb6b35f99cdd704093fb22d](https://github.com/danonbrez/Holofractal_Harmonicode/commit/9cff9a823a91d5eecdb6b35f99cdd704093fb22d)
+- Git tree: d0d2339cd0a24076e8cc0003b82a4fe2632754db
 - Tracked tree entries: 9,885
 - Tracked files in Git tree: 9,103
 - Content-bound indexed files: 9,052
 - Projection artifacts excluded from content root: 51
 - Text files deep-scanned: 8,591
-- Internal dependency edges: 74,787
+- Internal dependency edges: 74,790
 - Containment edges: 9,831
 - Lane 5 capability nodes: 2,112
 
@@ -21,7 +21,7 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpZWC)fk3Ni0417jMxr0cP9S-fgq<Mi>KKMLDk?9E3Lc!Rod*Rc2y3bK+zJ-9kkHkK6MH8LT)Dcez5<M39!d0H(YjvZ!42<rxG30VGMAhc9v8mgH5Y9iXICprG+K0+V7PiCwv4JD!XYvR-X/Fq
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCp3T7jA!5VnZtMXUDDfat2?SkeNPxblZTeaGqCUJu1uB-r)9zKMV!*bMvyKAO8ZOUtvFSes-rBK86o-N<GVu1a+9aat90w!rBqajubkTHaoOUrLva)qrY7dL>C27(xqqv+VXPZZFzQc4fiRnE8
 
 ### directory_node_root_hash216
 
@@ -33,7 +33,7 @@ Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+Ej4SJOr>
 
 ### dependency_edge_root_hash216
 
-GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-Ez6?gxo/ydTltZAnU58b6WGRCzx++g7LiM)f!ouuQgT*IBoJxwwYiS)QexyKNqfAIIPCW7R*hQlB!nPGpKL+<f5qPjx*U)>BO1I+<pPO4ty22(5xJb/Ha6d8aAT3D4Gtw+h2pMHAw*FPYG?/
+GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-!c8ZmFhDrcAG3PvWWtoYUrBeP-7qlCJ1z6B2Fho*l(Z?X!7P+jT64AlruVaoG83KxHhwh31Tk>ghzQzp>FamC002VWwHfexrtredYpWGDxwDrnEe?Wubn7z79g!B<Qt*h+tAFq!WO-+lNgq?
 
 ### lane5_capability_binding_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiL8sCktfFip9UJjP-osT(gfp1KK?lZW8dEycmzncKRII(-5hUL2e4PK(GBF<HiRcdjUfpfQeLl3MT?Te8NPEoZ2RY6uEnw4zclbBct*lUSVD3DS5P(GxXpep4iBz4HZt(yYVd(Lv>h3vVyvYIs
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLTK!eH*-ZWvc(6vHUI(qJ2zIEoED7igJD+y47(vzH+RDn<1/xqj7>?IWGJnM)Z3TzO94s?HARzZQ9pKXhi0UftP7nvBzeXE-+rOA?fSGO(6g0jvrK-+<Y>C>SWn6f-vSMBwT0x7kZUqCzhK)x
 
 ## Lane 5 evidence binding
 
@@ -64,7 +64,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 - Capabilities: 2,112
 - Constructors: 4,375
 - Knowledge relations: 13,487
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXB?C1B<zztLyM0I9zvk1CQpowiYBzIPq*UkSSdL0Q(BGkgB>6ljC3j//RDzq)vcl3iCC2yq7*uw-FpVx(-yT8AWYDUs*w*7KtB<y7VV-L?rsYjd>cZ1-YU8yBjb5YRGil*L<asJlnf9gJ?V+v
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX7PV5FjjzMlNE79XKaoq2aC?K5XbLqF8tAlOwf-r5t8NAYkJleG2DxHseZPePgdH*k5tb9JYD(sIuAVn<O*cKcCWkfrBYf/+C-hN*MSfW?4PksijWEI/aIKqBQd!3wiac>?hl*n*2PAi!uohx
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
@@ -546,8 +546,8 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 - -> docs: 26 edges
 - -> applications: 20 edges
 - -> tools: 20 edges
+- -> .github: 19 edges
 - -> scripts: 18 edges
-- -> .github: 16 edges
 - -> _root: 16 edges
 - -> benchmarks: 16 edges
 - -> deploy: 15 edges
