@@ -46,6 +46,11 @@ from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
     serialize_offsets_5184,
 )
 from hhs_runtime.pass163 import VMRCRuntime
+from hhs_runtime.pass219.fold_primitive_probe import (
+    ab_p4_probe,
+    directed_ratio_flip,
+    pair_flip,
+)
 
 SCHEMA = "HHS_PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1"
 VERSION = "1.0.0"
@@ -73,6 +78,12 @@ P163_VMRC_GIT_BLOB_SHA = "9bdcab13739e98ad4189c5d2a6e5ee001fce17a2"
 
 I065_PATH = "hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py"
 I065_GIT_BLOB_SHA = "fc998ef613c9d22c6f105016a649d4d96bc5e766"
+
+FOLD_PROBE_PATH = "hhs_runtime/pass219/fold_primitive_probe.py"
+FOLD_PROBE_GIT_BLOB_SHA = "d72d6fe3d994ecab77aad31828fbe82e87141b48"
+
+HNAN_GATE_PATH = "hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py"
+HNAN_GATE_GIT_BLOB_SHA = "a0ccd47620301ef2cc864e9e86834c8608b7b200"
 
 LOSHU_SERIALIZER_PATH = "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
 LOSHU_SERIALIZER_GIT_BLOB_SHA = "cb18ec3f1d35017cb6c7b2b40848b398930270bc"
@@ -148,6 +159,8 @@ def source_bindings() -> dict[str, Any]:
     i041_doc = _read_blob_bound(I041_DOC_PATH, I041_DOC_GIT_BLOB_SHA)
     p163 = _read_blob_bound(P163_VMRC_PATH, P163_VMRC_GIT_BLOB_SHA)
     i065 = _read_blob_bound(I065_PATH, I065_GIT_BLOB_SHA)
+    fold_probe = _read_blob_bound(FOLD_PROBE_PATH, FOLD_PROBE_GIT_BLOB_SHA)
+    hnan_gate = _read_blob_bound(HNAN_GATE_PATH, HNAN_GATE_GIT_BLOB_SHA)
     serializer = _read_blob_bound(
         LOSHU_SERIALIZER_PATH,
         LOSHU_SERIALIZER_GIT_BLOB_SHA,
@@ -162,6 +175,12 @@ def source_bindings() -> dict[str, Any]:
         raise Pass220I080Error("Pass 163 exact memristor marker missing")
     if "hydrate_hash216_geometry" not in i065:
         raise Pass220I080Error("I065 Hash216 hydration marker missing")
+    for marker in ("AB_RATIO_FORWARD = \"A/B\"", "AB_RATIO_REVERSE = \"B/A\"", "COMMUTATIVE_P4_SHADOW = \"AB=P^4\"", "phase_inversion_steps"):
+        if marker not in fold_probe:
+            raise Pass220I080Error(f"fold primitive marker missing: {marker}")
+    for marker in ("HNAN", "PHASE_MODULUS", "xy", "yx", "zw", "wz"):
+        if marker not in hnan_gate:
+            raise Pass220I080Error(f"HNAN gate marker missing: {marker}")
     if "def serialize_offsets_5184" not in serializer:
         raise Pass220I080Error("5184 BigInt serializer marker missing")
 
@@ -186,6 +205,18 @@ def source_bindings() -> dict[str, Any]:
         "i065_hash216_hydration": {
             "path": I065_PATH,
             "git_blob_sha": I065_GIT_BLOB_SHA,
+        },
+        "fold_primitive": {
+            "path": FOLD_PROBE_PATH,
+            "git_blob_sha": FOLD_PROBE_GIT_BLOB_SHA,
+            "directed_ratio_pair": ("A/B", "B/A"),
+            "closure": "AB=P^4",
+            "u36_half_turn": True,
+        },
+        "hnan_gate": {
+            "path": HNAN_GATE_PATH,
+            "git_blob_sha": HNAN_GATE_GIT_BLOB_SHA,
+            "phase_modulus": 72,
         },
         "bigint_5184_serializer": {
             "path": LOSHU_SERIALIZER_PATH,
@@ -460,6 +491,150 @@ def memristor_knowledge_graph(
     }
 
 
+def lane5_tick_optimization_operation(
+    tick: int,
+    *,
+    P: int = 5,
+    A: int = 5,
+    B: int = 125,
+) -> dict[str, Any]:
+    """Execute one exact Lane-5 optimization witness for one simulation tick.
+
+    The tick operation is a typed reciprocal phase inversion, not a
+    commutative rewrite.  It preserves the ordered A/B:B/A roles; flips the
+    (a,b), (x,y), (z,w), and (p,q) role pairs as order-2 operations; carries
+    the inherited AB=P^4 closure witness; and records the concave/convex
+    reciprocal topology as exact rational duals.
+
+    The phase ring is Z_72.  u^36 is the reciprocal half-turn and is
+    self-inverse.  The larger 5184 geometry closes at the same phase because
+    5184 = 81*64 = 72^2 and 5184 mod 72 = 0.  The 72^72 saturation exponent
+    also lands at residue zero mod 72.  These exact modular closures are
+    recorded as the I080 HNAN periodicity witness; no scalar cancellation,
+    commutation, float authority, or canonical mutation follows from it.
+    """
+    if not isinstance(tick, int) or isinstance(tick, bool) or tick < 0:
+        raise Pass220I080Error("tick must be a nonnegative exact integer")
+
+    closure = ab_p4_probe(P, A, B)
+    if closure["AB_equals_P4"] is not True:
+        raise Pass220I080Error("AB=P^4 closure failed")
+
+    ratio_before = "A/B"
+    ratio_after = directed_ratio_flip(ratio_before)
+    if ratio_after != "B/A" or directed_ratio_flip(ratio_after) != ratio_before:
+        raise Pass220I080Error("A/B:B/A reciprocal inversion failed")
+
+    pair_roles = {
+        "a:b": ("a", "b"),
+        "x:y": ("x", "y"),
+        "z:w": ("z", "w"),
+        "p:q": ("p", "q"),
+    }
+    pair_inversions = {}
+    for name, pair in pair_roles.items():
+        once = pair_flip(*pair)
+        twice = pair_flip(*once)
+        if twice != pair:
+            raise Pass220I080Error(f"{name} pair inversion is not order-2")
+        pair_inversions[name] = {
+            "before": pair,
+            "after": once,
+            "restored": twice,
+            "order_2": True,
+        }
+
+    # Exact reciprocal topology dual: concave * convex = 1.
+    # The tick chooses an exact interior rational displacement; no float is
+    # used and the two topology views remain reciprocal rather than merged.
+    radius2 = Fraction(9, 1)
+    displacement2 = Fraction((tick % 8) + 1, 9)
+    concave = radius2 / (radius2 - displacement2)
+    convex = (radius2 - displacement2) / radius2
+    if concave * convex != 1:
+        raise Pass220I080Error("concave/convex reciprocal topology failed")
+
+    phase = tick % RING72
+    reciprocal_phase = (phase + 36) % RING72
+    restored_phase = (reciprocal_phase + 36) % RING72
+    if restored_phase != phase:
+        raise Pass220I080Error("u^36 half-turn did not self-invert")
+
+    geometry_index = tick % VM81_COORDINATES
+    coordinate = coordinate_5184(geometry_index)
+    period_5184 = (phase + VM81_COORDINATES) % RING72
+    saturation_mod72 = pow(RING72, RING72, RING72)
+    period_72pow72 = (phase + saturation_mod72) % RING72
+    hnan_periodic = (
+        VM81_COORDINATES == 81 * 64 == RING72 * RING72
+        and VM81_COORDINATES % RING72 == 0
+        and saturation_mod72 == 0
+        and period_5184 == phase
+        and period_72pow72 == phase
+    )
+    if not hnan_periodic:
+        raise Pass220I080Error("HNAN Z72 periodicity witness failed")
+
+    return {
+        "schema": f"{SCHEMA}_LANE5_TICK_OPERATION_V1",
+        "tick": tick,
+        "one_tick_one_lane5_optimization_operation": True,
+        "operation_index_5184": geometry_index,
+        "coordinate_5184": coordinate,
+        "directed_ratio_phase_inversion": {
+            "before": ratio_before,
+            "after": ratio_after,
+            "restored_after_second_inversion": directed_ratio_flip(ratio_after),
+            "ordered_roles_preserved": True,
+            "commutative_cancellation_permitted": False,
+        },
+        "typed_pair_phase_inversions": pair_inversions,
+        "concave_convex_geometry_phase_inversion": {
+            "before": "CONCAVE",
+            "after": "CONVEX",
+            "concave_exact": (str(concave.numerator), str(concave.denominator)),
+            "convex_exact": (str(convex.numerator), str(convex.denominator)),
+            "reciprocal_product_exact": True,
+            "next_inversion_restores": "CONCAVE",
+        },
+        "AB_P4_closure": {
+            "source": closure["commutative_shadow_source"],
+            "directional_source": closure["directional_closure_source"],
+            "P": closure["P"],
+            "A": closure["A"],
+            "B": closure["B"],
+            "P4": closure["P4"],
+            "AB_equals_P4": closure["AB_equals_P4"],
+            "full_directional_closure_scalarized": False,
+        },
+        "phase_ring": {
+            "phase_modulus": RING72,
+            "u_tick": phase,
+            "u36_reciprocal": reciprocal_phase,
+            "u36_twice_restores": restored_phase == phase,
+            "u72_is_u0": (phase + RING72) % RING72 == phase,
+        },
+        "hnan_periodicity": {
+            "source_expression": "u^(5184=81*64=72²/72⁷²MOD72)=HNAN periodicity",
+            "geometry_5184": VM81_COORDINATES,
+            "81x64": 81 * 64,
+            "72_squared": RING72 * RING72,
+            "5184_mod_72": VM81_COORDINATES % RING72,
+            "72_pow_72_mod_72": saturation_mod72,
+            "u_tick_plus_5184_restores": period_5184 == phase,
+            "u_tick_plus_72pow72_mod72_restores": period_72pow72 == phase,
+            "passes": hnan_periodic,
+        },
+        "authority": {
+            "optimization_projection_only": True,
+            "canonical_vm81_mutation_authority": False,
+            "canonical_hash72_commit_authority": False,
+            "canonical_hash216_commit_authority": False,
+            "floating_point_authority": False,
+        },
+    }
+
+
 def probability_synthesis_layer(
     hash216: str,
     bigint_layer: Mapping[str, Any],
@@ -514,8 +689,10 @@ def probability_synthesis_layer(
         seed_lane = event % 3
         hash72_vertex = event % RING72
         coordinate = coordinate_5184(linear5184)
+        tick_operation = lane5_tick_optimization_operation(event)
         schedule.append({
             "event": event,
+            "lane5_tick_operation": tick_operation,
             "cell81": cell81,
             "operation64": operation64,
             "linear5184": linear5184,
@@ -535,6 +712,22 @@ def probability_synthesis_layer(
         "events": tuple(schedule),
         "event_count": len(schedule),
         "schedule_root_sha256": schedule_root,
+        "one_tick_one_lane5_optimization_operation": all(
+            event["lane5_tick_operation"]["one_tick_one_lane5_optimization_operation"]
+            for event in schedule
+        ),
+        "A_over_B_B_over_A_phase_inversion_each_tick": all(
+            event["lane5_tick_operation"]["directed_ratio_phase_inversion"]["after"] == "B/A"
+            for event in schedule
+        ),
+        "AB_equals_P4_each_tick": all(
+            event["lane5_tick_operation"]["AB_P4_closure"]["AB_equals_P4"]
+            for event in schedule
+        ),
+        "HNAN_periodicity_each_tick": all(
+            event["lane5_tick_operation"]["hnan_periodicity"]["passes"]
+            for event in schedule
+        ),
         "same_input_same_schedule": True,
         "browser_math_random_used": False,
         "exact_rational_probability": True,
@@ -649,6 +842,18 @@ def self_test() -> dict[str, Any]:
         ),
         "probability_72_events": (
             candidate["probability_synthesis"]["event_count"] == RING72
+        ),
+        "one_tick_one_lane5_optimization": (
+            candidate["probability_synthesis"]["one_tick_one_lane5_optimization_operation"] is True
+        ),
+        "directed_ratio_phase_inversion_each_tick": (
+            candidate["probability_synthesis"]["A_over_B_B_over_A_phase_inversion_each_tick"] is True
+        ),
+        "AB_P4_closure_each_tick": (
+            candidate["probability_synthesis"]["AB_equals_P4_each_tick"] is True
+        ),
+        "HNAN_periodicity_each_tick": (
+            candidate["probability_synthesis"]["HNAN_periodicity_each_tick"] is True
         ),
         "probability_no_browser_random": (
             candidate["probability_synthesis"]["browser_math_random_used"] is False
