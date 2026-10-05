@@ -7,6 +7,7 @@ on:
     paths:
       - "contracts/pass220/PASS_220_I079_*"
       - "hhs_runtime/hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
       - "formal/lean/HHS/Pass220/HarmonicodeTriLayerProofHydration.lean"
       - "formal/lean/HHS.lean"
@@ -18,6 +19,7 @@ on:
     paths:
       - "contracts/pass220/PASS_220_I079_*"
       - "hhs_runtime/hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
       - "formal/lean/HHS/Pass220/HarmonicodeTriLayerProofHydration.lean"
       - "formal/lean/HHS.lean"
@@ -48,6 +50,7 @@ jobs:
       - name: Compile I079 Python surface
         run: |
           python -m py_compile hhs_runtime/hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py
+          python -m py_compile hhs_runtime/hhs_service_registry_v1.py
           python -m py_compile tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py
 
       - name: Run dependency-scoped I079 tests
@@ -84,6 +87,9 @@ jobs:
           assert contract['formalization']['wolfram']['connected_execution_evidence_present'] is False
           assert contract['authority']['candidate_only'] is True
           assert contract['authority']['canonical_hash216_commit_authority'] is False
+
+          registry=Path('hhs_runtime/hhs_service_registry_v1.py').read_text(encoding='utf-8')
+          assert 'pass220.harmonicode_trilayer_proof_hydration.self_test' in registry
 
           source=Path(
               'formal/wolfram/pass220_i079_harmonicode_trilayer_proof_hydration_v1.wl'
