@@ -8,6 +8,7 @@
 - Base commit: `5660cb38e556422f284b394d0ef72b26ca351c1a`
 - Branch: `pass220/i079-harmonicode-trilayer-proof-hydration-20261005`
 - Merge target: `main`
+- Pull request: `#720` (draft checkpoint; mergeable at checkpoint)
 - Inherited executable parent: merged I077 / I074 surfaces
 - Unmerged I078 PRs: not inherited as authority
 
@@ -22,6 +23,7 @@ co-resident Hash72 lanes forming one candidate Hash216 hydration identity.
 - `contracts/pass220/PASS_220_I079_HARMONICODE_SOURCE_A_I_TENSOR_1_0.harmonicode`
 - `contracts/pass220/PASS_220_I079_HARMONICODE_SOURCE_B_PRIME_CURVATURE_1_0.harmonicode`
 - `hhs_runtime/hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py`
+- `hhs_runtime/hhs_service_registry_v1.py` (I079 self-test registration)
 - `tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py`
 - `formal/lean/HHS/Pass220/HarmonicodeTriLayerProofHydration.lean`
 - `formal/lean/HHS.lean`
@@ -48,6 +50,10 @@ git hash-object contracts/pass220/PASS_220_I079_HARMONICODE_SOURCE_B_PRIME_CURVA
 lake build HHS
 ~~~
 
+Static source validation completed before checkpoint: both frozen Git blob IDs and all eight exact reduction markers were re-read from the branch; the legacy source, curvature registry, GOOD_CLOSED source, and 24-symbol adapter reference markers were also located exactly once.
+
+The dedicated I079 pull-request workflow is queued. Per the repository responsiveness policy, this checkpoint does not wait on queued external CI; repair-forward is limited to impacted I079 surfaces if the run reports a failure.
+
 Wolfram source is structural/formalization input in this checkpoint.  Connected
 Wolfram execution evidence is **not** claimed and must be added only after an
 actual connected-kernel run.
@@ -61,5 +67,5 @@ canonical authority, or external egress authority is added.
 ## Next action
 
 Run the dedicated CI workflow, repair forward only impacted I079 surfaces,
-then merge when required checks are green and verify `main` contains the
+then mark PR #720 ready, merge when required checks are green, and verify `main` contains the
 source blobs, Lean import, runtime, contract, tests, and documentation.
