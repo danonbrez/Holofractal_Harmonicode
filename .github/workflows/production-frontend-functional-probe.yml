@@ -104,7 +104,7 @@ jobs:
           node-version: "20"
       - name: Install frontend verification runtime
         working-directory: hhs_gui
-        run: npm ci
+        run: npm install
       - name: Install Chromium
         working-directory: hhs_gui
         run: npx playwright install --with-deps chromium
