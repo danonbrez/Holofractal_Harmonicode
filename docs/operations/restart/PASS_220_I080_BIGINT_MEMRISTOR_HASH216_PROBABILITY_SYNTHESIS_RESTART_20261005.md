@@ -8,7 +8,8 @@
 - Base main: `7b71ec336c67a268c739537a805e4fa9b191fe7f`
 - Branch: `pass220/i080-bigint-memristor-probability-synthesis-20261005`
 - Merge target: `main`
-- Checkpoint lineage: initial restart checkpoint `1a4685dcdc86159c665f99444ffeaa8077841578`; refined A/B/C state-offset implementation follows on the same branch
+- Checkpoint immediately before this restart-record refresh: `2c52233a40a1629a5089f856ea2d6794a0dff10d`
+- Earlier I080 restart checkpoint: `1a4685dcdc86159c665f99444ffeaa8077841578`
 
 ## Objective
 
@@ -177,8 +178,13 @@ It performs:
 - HNAN 4×4 and QGU transport regressions;
 - executable I080 self-test requiring 29/29 checks.
 
-At restart-record creation, the dedicated GitHub workflow has not yet been
-observed on a pull request. No green-CI or merge claim is made here.
+At this restart refresh, the dedicated I080 workflow is queued for both the
+branch push and PR #722 head `2c52233a40a1629a5089f856ea2d6794a0dff10d`:
+
+- push run `37373375971` — queued;
+- pull-request run `37373382689` — queued.
+
+No green-CI or merge claim is made here.
 
 ## Authority boundary
 
