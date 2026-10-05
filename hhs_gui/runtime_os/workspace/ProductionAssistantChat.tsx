@@ -150,7 +150,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
 
   const refreshHealth = async (): Promise<void> => {
     try {
-      setHealth(await requestJson("/api/assistant/health", undefined, 10000))
+      setHealth(await requestJson("/api/assistant/deployment-health", undefined, 10000))
       setError(null)
     } catch (reason) {
       setHealth({ online: false, status: "ASSISTANT_OFFLINE" })
