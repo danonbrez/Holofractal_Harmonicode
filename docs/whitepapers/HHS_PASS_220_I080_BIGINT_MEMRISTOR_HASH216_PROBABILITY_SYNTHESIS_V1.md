@@ -197,6 +197,76 @@ I065 then hydrates all three planes and requires exact reconstruction of:
 3 * 5184 = 15552 attached components
 ~~~
 
+## Hash216 as three 5,184-position BigInt state-offset planes
+
+The Hash216 transition is interpreted in the ordered role view:
+
+~~~text
+PREVIOUS -> A
+STATE    -> B
+RECEIPT  -> C
+~~~
+
+Each Hash72 lane hydrates to one complete 5,184-position BigInt offset plane.
+Therefore one tick carries the materialized attachment geometry:
+
+~~~text
+3 * 5184 = 15552 attached positions
+~~~
+
+The native constructor relations are retained exactly:
+
+~~~text
+A=C-B=((a^2+b^2)^6/c^2)/(BA=-P^4)
+  =HNAN+(5184)MOD(5184)
+  =(c^2-a^2)A
+
+B=C-A=((a^2+b^2)^6/c^2)/(AB=P^4)
+  =HNAN-(5184)MOD(5184)
+  =(c^2-a^2)B
+~~~
+
+with the canonical square projection:
+
+~~~text
+a^2=1
+b^2=2
+c^2=3
+c^2-a^2=2
+~~~
+
+The direct and mirror closure edges remain ordered:
+
+~~~text
+AB=P^4
+BA=-P^4
+~~~
+
+so the implementation does not cancel, commute, or scalarize the complete
+constructor chain.
+
+The positive and negative 5,184 offsets both close locally:
+
+~~~text
+(+5184) mod 5184 = 0
+(-5184) mod 5184 = 0
+~~~
+
+but their direction is retained as provenance. They therefore identify the
+same local HNAN residue while remaining distinct transition paths.
+
+The full state-space identity is preserved as supplied:
+
+~~~text
+5184*3 = 3^(5184)/72^72
+~~~
+
+I080 treats this as a typed manifold identity between the materialized
+three-plane attachment view and the declared ternary / Hash72-normalized
+state-space view. It is not collapsed into an ordinary host-scalar equality.
+This preserves the constructor equation without allowing a host modality to
+replace its native semantics.
+
 ## Authority boundary
 
 I080 grants no:
