@@ -962,6 +962,17 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "renderedTitleSet",
         "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_SURFACE_VERIFIED",
         'guarded_dispatch_route: "/api/runtime/services/dispatch"',
+        "isMobile: true",
+        "hasTouch: true",
+        "Production mobile workspace cannot scroll",
+        'data-testid="mobile-quick-build-run"',
+        'getByLabel("Message HHS assistant")',
+        'getByRole("button", { name: "Run node", exact: true })',
+        "HHS_SERVICE_DISPATCH_RECORD_V1",
+        "WORKSPACE_PROJECT_OPENED",
+        "HHS_P174_SDLC_PIPELINE_COMMITTED",
+        "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_FUNCTIONAL_ACTIONS_VERIFIED=4",
+        "functional_actions",
         "frontend_authority: false",
     ]:
         assert token in browser
