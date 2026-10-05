@@ -9,7 +9,7 @@ Date: 2026-10-04
 - Base main: `c54a9d5d0b57e113f895091065c76b5f4e21e998`
 - Branch: `genegreen872/gen-6-pass-220-i078-vm81-candidate-boundary-expansion`
 - Merge target: `main`
-- Status: implemented restartable checkpoint; native/Lean CI pending
+- Status: implemented restartable checkpoint; PR #711 open; native/Lean CI pending
 
 ## Objective
 
@@ -96,3 +96,16 @@ external-egress authority             = false
 Open the I078 pull request against main. Run the dedicated workflow and repair
 only I078 dependency-scoped defects. Merge after native probe, Python binding,
 Wolfram, Lean, inherited I077, source-integrity, and consensus gates are green.
+
+
+## PR checkpoint — 2026-10-04
+
+- PR: `#711`
+- PR head before this restart update: `5861a85b9117032f1fd1ebc4d813045aba415165`
+- Current repository main at PR open: `1e91eb301b29652fcf2542bb6e395314198f10a4`
+- Branch remains intentionally rooted at verified I077 main
+  `c54a9d5d0b57e113f895091065c76b5f4e21e998`.
+- The one intervening main commit is the dependency-index refresh; do not replace
+  the I077 authority base in the I078 contract.
+- PR #711 is mergeable; dedicated I078 validation is the remaining admission
+  gate before merge.
