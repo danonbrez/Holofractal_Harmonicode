@@ -281,6 +281,6 @@ def test_self_test_passes() -> None:
     report = self_test()
 
     assert report["status"] == "PASS"
-    assert report["check_count"] == report["pass_count"] == 29
+    assert report["check_count"] == report["pass_count"] == 36
     assert report["failed"] == ()
     assert len(report["candidate_hash216"]) == 216
