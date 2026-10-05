@@ -178,7 +178,7 @@ def source_bindings() -> dict[str, Any]:
     for marker in ("AB_RATIO_FORWARD = \"A/B\"", "AB_RATIO_REVERSE = \"B/A\"", "COMMUTATIVE_P4_SHADOW = \"AB=P^4\"", "phase_inversion_steps"):
         if marker not in fold_probe:
             raise Pass220I080Error(f"fold primitive marker missing: {marker}")
-    for marker in ("HNAN", "PHASE_MODULUS", "xy", "yx", "zw", "wz"):
+    for marker in ("HNAN", "PHASE_RING = 72", "xy", "yx", "zw", "wz"):
         if marker not in hnan_gate:
             raise Pass220I080Error(f"HNAN gate marker missing: {marker}")
     if "def serialize_offsets_5184" not in serializer:
