@@ -82,3 +82,25 @@ def test_generated_hash216_successor_is_terminal_after_verified_promotion() -> N
     assert queue_step.index("TERMINAL_GENERATED_SUCCESSOR") < queue_step.index(
         "gh workflow run repository-hash216-dependency-index.yml --ref main"
     )
+
+
+def test_hash216_authoritative_refresh_is_bound_to_verified_promoted_sha() -> None:
+    index_workflow = Path(
+        ".github/workflows/repository-hash216-dependency-index.yml"
+    ).read_text(encoding="utf-8")
+    exact_main = Path(
+        ".github/workflows/digitalocean-production-main.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "promoted_sha:" in index_workflow
+    assert "inputs.promoted_sha == github.sha" in index_workflow
+    assert "hhs-hash216-nonauthoritative-" in index_workflow
+    assert "github.event_name == 'pull_request' || inputs.promoted_sha == github.sha" in index_workflow
+
+    queue_step = exact_main.split(
+        "- name: Queue Hash216 repository index after verified promotion", 1
+    )[1]
+    assert "git ls-remote origin refs/heads/main" in queue_step
+    assert 'if [[ "$remote_head" != "$TARGET_SHA" ]]; then' in queue_step
+    assert "HHS_EXACT_MAIN_HASH216_INDEX_STALE_PROMOTION_SKIPPED=$TARGET_SHA" in queue_step
+    assert 'gh workflow run repository-hash216-dependency-index.yml --ref main -f promoted_sha="$TARGET_SHA"' in queue_step
