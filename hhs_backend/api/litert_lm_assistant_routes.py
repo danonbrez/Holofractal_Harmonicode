@@ -53,6 +53,12 @@ async def assistant_health() -> Dict[str, Any]:
     return await _service().health()
 
 
+@router.get("/deployment-health")
+async def assistant_deployment_health() -> Dict[str, Any]:
+    """Bounded production liveness without optional-provider diagnostic fan-out."""
+    return await _service().deployment_health()
+
+
 @router.get("/tools")
 async def assistant_tools() -> Dict[str, Any]:
     from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
