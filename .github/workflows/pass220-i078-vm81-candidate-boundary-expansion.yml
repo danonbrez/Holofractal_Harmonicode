@@ -1,0 +1,312 @@
+name: Pass 220 I078 VM81 Candidate Boundary Expansion
+
+on:
+  push:
+    branches:
+      - genegreen872/gen-6-pass-220-i078-vm81-candidate-boundary-expansion
+    paths:
+      - "hhs_runtime/include/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.h"
+      - "hhs_runtime/c/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.inc"
+      - "hhs_runtime/include/hhs_runtime_exact_abi.h"
+      - "hhs_runtime/c/hhs_runtime_exact_abi.c"
+      - "hhs_runtime/hhs_pass220_i078_vm81_candidate_boundary_expansion_v1.py"
+      - "tools/pass220/pass220_i078_vm81_candidate_boundary_probe.c"
+      - "tests/pass220/test_hhs_pass220_i078_vm81_candidate_boundary_expansion_v1.py"
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/VM81CandidateBoundaryExpansion.lean"
+      - "formal/wolfram/pass220_i078_vm81_candidate_boundary_expansion_v1.wl"
+      - "evidence/pass220/i078_vm81_candidate_boundary_expansion_wolfram_20261004_v1.output.json"
+      - "evidence/pass220/i078_vm81_candidate_boundary_expansion_wolfram_20261004_v1.receipt.json"
+      - "contracts/pass220/PASS_220_I078_VM81_CANDIDATE_BOUNDARY_EXPANSION_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I078_VM81_CANDIDATE_BOUNDARY_EXPANSION_V1.md"
+      - "docs/operations/restart/PASS_220_I078_VM81_CANDIDATE_BOUNDARY_EXPANSION_RESTART_20261004.md"
+      - ".github/workflows/pass220-i078-vm81-candidate-boundary-expansion.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i078-vm81-candidate-boundary-expansion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bounded validation dependencies
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse and compile I078 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool \
+            contracts/pass220/PASS_220_I078_VM81_CANDIDATE_BOUNDARY_EXPANSION_V1.json \
+            >/dev/null
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i078_vm81_candidate_boundary_expansion_v1.py \
+            tests/pass220/test_hhs_pass220_i078_vm81_candidate_boundary_expansion_v1.py
+
+      - name: Enforce exact source and authority guards
+        run: |
+          set -euo pipefail
+          grep -F 'hhs_exact_pass220_i077_execute' \
+            hhs_runtime/c/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.inc
+          grep -F 'HHS_EXACT_PASS220_I078_SCALE_NUMERATOR UINT32_C(1001)' \
+            hhs_runtime/include/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.h
+          grep -F 'HHS_EXACT_PASS220_I078_SCALE_DENOMINATOR UINT32_C(1000)' \
+            hhs_runtime/include/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.h
+          grep -F 'HHS_EXACT_PASS220_I078_ROOT_SEED_NUMERATOR UINT64_C(179971179971)' \
+            hhs_runtime/include/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.h
+          grep -F 'hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.h' \
+            hhs_runtime/include/hhs_runtime_exact_abi.h
+          grep -F 'hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.inc' \
+            hhs_runtime/c/hhs_runtime_exact_abi.c
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.h \
+            hhs_runtime/c/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.inc \
+            tools/pass220/pass220_i078_vm81_candidate_boundary_probe.c
+
+      - name: Build deployed shared exact Runtime ABI
+        run: |
+          set -euo pipefail
+          make clean
+          make c-abi
+          test -f hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_exact_pass220_i078_version|hhs_exact_pass220_i078_descriptor|hhs_exact_pass220_i078_reference_candidate|hhs_exact_pass220_i078_expand_candidate_boundary'
+
+      - name: Build and run native I078 probe
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/i078 /tmp/pass220-i078
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_i078_vm81_candidate_boundary_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-i078/i078-native-probe
+          /tmp/pass220-i078/i078-native-probe \
+            > artifacts/pass220/i078/native_boundary.json
+          python -m json.tool artifacts/pass220/i078/native_boundary.json >/dev/null
+          cat artifacts/pass220/i078/native_boundary.json
+
+      - name: Validate native I078 boundary evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report=json.loads(
+              Path('artifacts/pass220/i078/native_boundary.json').read_text()
+          )
+          assert report['schema'] == 'HHS_PASS_220_I078_NATIVE_PROBE_V1'
+          assert report['mutated_candidate_rejected'] is True
+          d=report['descriptor']
+          assert d['node_count'] == 2
+          assert d['frame_words'] == 81
+          assert d['scale'] == [1001,1000]
+          assert d['root_seed'] == [179971179971,1000000]
+
+          for key in (
+              'i077_binding_required',
+              'downstream_candidate_ingress',
+              'byte_exact_candidate_identity',
+              'uqcel_identity_evaluation',
+              'exact_rational_scale1001',
+              'zero_energy_fixed_point',
+              'delta_e_zero_required',
+              'psi_zero_required',
+              'omega_true_required',
+              'deterministic_replay_required',
+              'fail_closed_invalid_candidate',
+          ):
+              assert d[key] == 1, key
+
+          for key in (
+              'host_matrixpower_authority',
+              'host_square_matrix_fallback_authority',
+              'floating_point_authority',
+              'numeric_exponent_evaluation_authority',
+              'canonical_vm81_mutation_authority',
+              'canonical_hash72_commit_authority',
+              'canonical_hash216_commit_authority',
+              'canonical_persistence_authority',
+              'external_egress_authority',
+          ):
+              assert d[key] == 0, key
+
+          rows=report['boundaries']
+          assert len(rows) == 2
+          assert [row['node_id'] for row in rows] == [0,1]
+          for row in rows:
+              assert row['decision'] == 1
+              assert row['reason'] == 0
+              assert row['frame_words'] == 81
+              assert row['scale'] == [1001,1000]
+              assert row['scale_words_verified'] == 81
+              assert row['zero_word_count'] > 0
+              assert row['zero_fixed_point_words_verified'] == row['zero_word_count']
+              for key in (
+                  'i077_execution_verified',
+                  'candidate_frame_exact',
+                  'uqcel_identity_evaluated',
+                  'uqcel_transition_matches_i077',
+                  'exact_scale1001_verified',
+                  'zero_energy_fixed_point_verified',
+                  'delta_e_zero',
+                  'psi_zero',
+                  'omega_true',
+                  'deterministic_replay_verified',
+                  'fail_closed_boundary',
+              ):
+                  assert row[key] == 1, (row['node_id'], key)
+              for key in (
+                  'host_matrixpower_used',
+                  'square_matrix_fallback_used',
+                  'floating_point_used',
+                  'numeric_exponent_evaluated',
+                  'canonical_state_persisted',
+              ):
+                  assert row[key] == 0, (row['node_id'], key)
+              assert row['delta_e'] == [0,1]
+              assert row['psi'] == [0,1]
+              assert len(row['candidate_sha256']) == 64
+              assert len(row['scale_witness_sha256']) == 64
+              assert len(row['i077_receipt_hash72']) == 72
+              assert len(row['i077_transition_hash216']) == 216
+              assert len(row['boundary_change_hash72']) == 72
+              assert len(row['boundary_receipt_hash72']) == 72
+              assert len(row['boundary_hash216']) == 216
+              assert len(row['boundary_identity216']) == 216
+              assert row['boundary_hash216'].startswith(
+                  row['i077_receipt_hash72']
+              )
+          assert rows[0]['candidate_sha256'] != rows[1]['candidate_sha256']
+          assert rows[0]['boundary_identity216'] != rows[1]['boundary_identity216']
+          PY
+
+      - name: Run Python shared-library and inherited I077 tests
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_hhs_pass220_i078_vm81_candidate_boundary_expansion_v1.py \
+            tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py
+
+      - name: Verify Python binding uses deployed exact ABI
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.hhs_pass220_i078_vm81_candidate_boundary_expansion_v1 import (
+              VM81CandidateBoundaryExecutor,
+          )
+          x=VM81CandidateBoundaryExecutor(
+              Path('hhs_runtime/builds/libhhs_runtime.so')
+          )
+          rows=[x.expand_reference(0),x.expand_reference(1)]
+          assert all(row.i077_execution_verified for row in rows)
+          assert all(row.uqcel_transition_matches_i077 for row in rows)
+          assert all(row.exact_scale1001_verified for row in rows)
+          assert all(row.zero_energy_fixed_point_verified for row in rows)
+          assert all(row.delta_e_zero and row.psi_zero and row.omega_true for row in rows)
+          PY
+
+      - name: Enforce I078 Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path(
+              'formal/wolfram/pass220_i078_vm81_candidate_boundary_expansion_v1.wl'
+          ).read_text(encoding='utf-8')
+          for token in (
+              'Rational[179971179971,1000000]',
+              'Rational[1001,1000]',
+              '"05_zero_scale_fixed"',
+              '"21_i077_binding_required"',
+              '"25_fail_closed_invalid_candidate"',
+              '"30_canonical_persistence_false"',
+          ):
+              assert token in source, token
+          output=json.loads(Path(
+              'evidence/pass220/i078_vm81_candidate_boundary_expansion_wolfram_20261004_v1.output.json'
+          ).read_text(encoding='utf-8'))
+          assert output['status'] == 'PASS'
+          assert output['check_count'] == output['pass_count'] == 30
+          assert output['failed'] == []
+          assert output['root_seed'] == {
+              'numerator':179971179971,
+              'denominator':1000000,
+              'display':'179971.179971',
+          }
+          assert output['scale1001'] == {
+              'numerator':1001,
+              'denominator':1000,
+              'display':'1.001',
+          }
+          assert output['vm81_words'] == 81
+          assert output['hash216_width'] == 216
+          assert output['full_attached_components'] == 15552
+          PY
+
+      - name: Verify I078 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source=Path(
+              'formal/lean/HHS/Pass220/VM81CandidateBoundaryExpansion.lean'
+          ).read_text(encoding='utf-8')
+          for token in (
+              'theorem rootSeedExact',
+              'theorem scale1001Exact',
+              'theorem zeroScaleFixedPoint',
+              'theorem nodeSurfaceExact',
+              'theorem vm81GeometryExact',
+              'theorem closureBoundaryExact',
+              'theorem candidateAdmissionPolicy',
+              'theorem noFallbackAuthority',
+              'theorem inheritsI077ExecutionCount',
+              'theorem inheritsOriginScale',
+          ):
+              assert token in source, token
+          root=Path('formal/lean/HHS.lean').read_text(encoding='utf-8')
+          assert 'import HHS.Pass220.VM81CandidateBoundaryExpansion' in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
+
+      - name: Verify legacy VM81 runtime remains callable
+        run: |
+          set -euo pipefail
+          make vm81
+          hhs_runtime/builds/hhs_vm81 --verify
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -E \
+            'hhs_runtime_init|hhs_runtime_step|hhs_validate_abi|hhs_hash216_compute'
+
+      - name: Upload I078 native evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i078-vm81-candidate-boundary-\${{ github.sha }}
+          path: artifacts/pass220/i078/
+          if-no-files-found: error
+          retention-days: 90
