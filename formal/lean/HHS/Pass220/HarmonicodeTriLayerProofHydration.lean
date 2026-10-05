@@ -100,7 +100,7 @@ theorem goodClosedRemainsTypedCorrespondence :
   decide
 
 theorem inheritsI074HNANClosure :
-    HHS.Pass220.I074.hnanGateNative = true := by
+    HHS.Pass220.I074.hnanNativeGate = true := by
   decide
 
 theorem inheritsI077ExactMatrixPowerTransport :
