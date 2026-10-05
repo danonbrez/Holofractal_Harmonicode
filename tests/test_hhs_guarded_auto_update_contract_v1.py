@@ -946,3 +946,26 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "frontend_authority: false",
     ]:
         assert token in browser
+
+
+def test_exact_main_post_promotion_assertions_do_not_use_pipefail_q_pipelines() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
+
+    for forbidden in [
+        "systemctl cat hhs.service | grep -Fq",
+        "systemctl show hhs.service -p ExecStart --value | grep -Fq",
+        "systemctl show hhs-lane5-ingress.service -p ExecStart --value | grep -Fq",
+    ]:
+        assert forbidden not in workflow
+
+    for required in [
+        'hhs_service_unit="$(systemctl cat hhs.service)"',
+        "grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime' <<<\"$hhs_service_unit\"",
+        "grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current' <<<\"$hhs_service_unit\"",
+        "grep -Fq 'HHS_COGNITION_AUTO_TICK=0' <<<\"$hhs_service_unit\"",
+        'hhs_service_exec_start="$(systemctl show hhs.service -p ExecStart --value)"',
+        "grep -Fq 'hhs_backend.production_visual_server:app' <<<\"$hhs_service_exec_start\"",
+        'lane5_service_exec_start="$(systemctl show hhs-lane5-ingress.service -p ExecStart --value)"',
+        "grep -Fq 'hhs_backend.lane5_ingress_gateway:app' <<<\"$lane5_service_exec_start\"",
+    ]:
+        assert required in workflow
