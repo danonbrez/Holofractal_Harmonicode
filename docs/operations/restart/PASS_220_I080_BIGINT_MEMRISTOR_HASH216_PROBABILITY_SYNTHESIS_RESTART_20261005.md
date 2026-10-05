@@ -258,3 +258,23 @@ Per the restartability/forward-progress policy, do not wait on the external
 queue. If the dedicated run fails, inspect only the I080 dependency cone,
 repair forward, commit the fix, and rerun the dedicated gate. If it succeeds,
 verify exact-head status and proceed to merge/verified-main closure.
+
+
+### Post-checkpoint exact-ingress refinement
+
+Additional dependency-scoped repair after the closure checkpoint:
+
+- removed the browser-side \`Number(...)\` index conversions from the
+  deterministic QPU and kept phase/row addressing in BigInt/string index
+  space;
+- refreshed the fail-closed HTML Git-blob binding to
+  \`2d51aa27dd8881d0f841966a9c9ee610f56dec05\`;
+- refreshed the contract to the same source identity.
+
+Checkpoint immediately before this restart update:
+\`d0dd8066bb34334ad57eea3ce01c0d810c831a54\`.
+
+The dedicated PR workflow run \`37381101248\` for that exact checkpoint was
+queued when this restart update was written. No green-CI or merge claim is
+made. The next action is exact-head dedicated CI inspection; repair only the
+I080 dependency cone on failure, otherwise merge and verify main.
