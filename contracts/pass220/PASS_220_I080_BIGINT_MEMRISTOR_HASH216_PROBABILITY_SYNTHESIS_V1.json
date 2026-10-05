@@ -38,7 +38,17 @@
     "operations_per_cell": 64,
     "serialized_characters": 5184,
     "coordinate_law": "linear5184=64*cell81+operation64=72*hash72_row+hash72_column",
-    "offset_alphabet": [0,1,2,3,4,5,6,7,8],
+    "offset_alphabet": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
     "fixed_width_rational_scientific_serialization": true,
     "one_final_memristor_edge_per_vm81_cell": true,
     "path_dependent_reuse_updates_per_edge": 1
@@ -55,12 +65,13 @@
     "deterministic_scheduled_victims_per_turn": 1,
     "q144_phase_domain": 144,
     "ring72_events": 72,
-    "fractal_seed_bookkeeping_rule": "every 72nd event seals one (x,y):(z,w) seed"
+    "fractal_seed_bookkeeping_rule": "every 72nd event seals one (x,y):(z,w) seed",
+    "tick_semantics": "each synthesized event is the exact receipt for one Lane 5 optimization tick"
   },
   "hash216_output": {
     "lane0": "Hash72(BigInt/VM81 serialized state witness)",
     "lane1": "Hash72(memristor knowledge-graph witness)",
-    "lane2": "Hash72(deterministic probability-schedule witness)",
+    "lane2": "Hash72(deterministic probability + per-tick reciprocal/HNAN optimization schedule witness)",
     "width": 216,
     "hydrated_components": 15552,
     "roundtrip_required": true
@@ -77,5 +88,48 @@
     "host_float_probability_authority": false,
     "gpu_float_authority": false,
     "external_egress_authority": false
+  },
+  "lane5_tick_optimization": {
+    "rule": "every simulation tick executes exactly one Lane 5 optimization operation",
+    "directed_ratio_pair": [
+      "A/B",
+      "B/A"
+    ],
+    "typed_pair_inversions": [
+      [
+        "a",
+        "b"
+      ],
+      [
+        "x",
+        "y"
+      ],
+      [
+        "z",
+        "w"
+      ],
+      [
+        "p",
+        "q"
+      ]
+    ],
+    "topology_phase_inversion": [
+      "CONCAVE",
+      "CONVEX"
+    ],
+    "closure": "AB=P^4",
+    "closure_semantics": "preserved typed/directional source; no native commutation or reciprocal cancellation",
+    "phase_modulus": 72,
+    "reciprocal_half_turn": "u^36",
+    "half_turn_self_inverse": true,
+    "full_turn": "u^72=u^0",
+    "hnan_periodicity_source": "u^(5184=81*64=72²/72⁷²MOD72)=HNAN periodicity",
+    "periodicity_witness": {
+      "5184": 5184,
+      "81x64": 5184,
+      "72_squared": 5184,
+      "5184_mod_72": 0,
+      "72_pow_72_mod_72": 0
+    }
   }
 }
