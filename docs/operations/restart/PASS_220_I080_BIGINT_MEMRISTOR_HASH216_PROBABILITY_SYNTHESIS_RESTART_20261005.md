@@ -8,7 +8,7 @@
 - Base main: `7b71ec336c67a268c739537a805e4fa9b191fe7f`
 - Branch: `pass220/i080-bigint-memristor-probability-synthesis-20261005`
 - Merge target: `main`
-- Checkpoint before this restart record: `1a4685dcdc86159c665f99444ffeaa8077841578`
+- Checkpoint lineage: initial restart checkpoint `1a4685dcdc86159c665f99444ffeaa8077841578`; refined A/B/C state-offset implementation follows on the same branch
 
 ## Objective
 
@@ -92,7 +92,48 @@ Each receipt contains:
 - exact HNAN periodicity witness:
   `5184=81*64=72^2`, `5184 mod 72=0`, `72^72 mod 72=0`.
 
-### 4. Deterministic probability synthesis
+### 4. Hash216 PREVIOUS / STATE / RECEIPT as A / B / C state offsets
+
+The current refinement interprets every Hash216 tick as three hydrated
+5,184-position BigInt offset planes:
+
+~~~text
+PREVIOUS -> A
+STATE    -> B
+RECEIPT  -> C
+
+3 * 5184 = 15552 materialized attached positions
+~~~
+
+The native constructor equations are frozen as:
+
+~~~text
+A=C-B=((a^2+b^2)^6/c^2)/(BA=-P^4)
+  =HNAN+(5184)MOD(5184)
+  =(c^2-a^2)A
+
+B=C-A=((a^2+b^2)^6/c^2)/(AB=P^4)
+  =HNAN-(5184)MOD(5184)
+  =(c^2-a^2)B
+~~~
+
+with `a^2=1`, `b^2=2`, `c^2=3`, and `c^2-a^2=2`.
+
+Both signed offsets have local residue zero modulo 5,184, but the + / -
+direction is retained as provenance. `AB=P^4` and `BA=-P^4` remain ordered
+closure edges and are not commuted or cancelled.
+
+The supplied per-tick state-space identity is preserved exactly:
+
+~~~text
+5184*3=3^(5184)/72^72
+~~~
+
+The implementation records this as a typed manifold identity and does not
+evaluate it as ordinary cross-view scalar arithmetic.
+
+### 5. Deterministic probability synthesis
+
 
 The browser's `Math.random()` calls are source/demo semantics only and have
 zero Lane-5 authority.
@@ -103,7 +144,7 @@ choice bit-for-bit.
 
 The 72-event base schedule emits one tick operation per event.
 
-### 5. Hash216 hydration
+### 6. Hash216 hydration
 
 The output is:
 
@@ -134,7 +175,7 @@ It performs:
 - Pass-163 VMRC regressions;
 - Fold Primitive reciprocal/AB=P^4 regressions;
 - HNAN 4×4 and QGU transport regressions;
-- executable I080 self-test requiring 24/24 checks.
+- executable I080 self-test requiring 29/29 checks.
 
 At restart-record creation, the dedicated GitHub workflow has not yet been
 observed on a pull request. No green-CI or merge claim is made here.
