@@ -83,8 +83,15 @@ def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec(
     health = asyncio.run(production_server._assistant_health())
     assert health["ok"] is True, health
     assert health["online"] is True, health
-    assert health["selected_provider_id"] == "provider:hhs.local.text", health
-    assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", health
+    causal_ready = bool((installation.get("causal_lm") or {}).get("ready"))
+    if causal_ready:
+        assert health["selected_provider_id"] == "provider:hhs.local.text", health
+        assert health["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", health
+    else:
+        assert health["native_hhs"]["semantic_candidate_ready"] is True, health
+        assert health["native_hhs"]["terminal_generation_ready"] is False, health
+        assert health["selected_provider_id"] == "provider:hhs.pass153.open_model", health
+        assert health["effective_mode"] == "HHS_PASS153_OPEN_MODEL", health
     assert health["native_hhs"]["installation"]["ready"] is True
     assert health["native_hhs"]["installation"]["word2vec_required"] is False
     assert health["repository_search_is_provider"] is False
@@ -96,7 +103,11 @@ def test_hosted_native_assistant_executes_receipt_bearing_turn_without_word2vec(
     )
     turn = asyncio.run(service.send_message(thread["thread_id"], content="AB=P^4"))
     assert turn["ok"] is True, turn
-    assert turn["effective_mode"] == "HHS_NATIVE_LITERT_COMPATIBLE", turn
+    assert turn["effective_mode"] == (
+        "HHS_NATIVE_LITERT_COMPATIBLE"
+        if causal_ready
+        else "HHS_PASS153_OPEN_MODEL"
+    ), turn
     assert str(turn["assistant_message"]["content"]).strip(), turn
     assert turn["assistant_message"]["message_root_hash72"], turn
     assert turn["provider_invocation_receipt"]["provider_invocation_receipt_hash72"], turn

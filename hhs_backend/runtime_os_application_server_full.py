@@ -228,6 +228,12 @@ from hhs_backend.runtime_os_pass218_lifecycle import (
     install_pass218_runtime_os_lifecycle,
     resolve_pass218_state_root,
 )
+from hhs_backend.runtime_os_pass220_lane5_capability_hydration import (
+    SEARCH_PATH as PASS219_LANE5_CAPABILITY_SEARCH_PATH,
+    STATUS_PATH as PASS219_LANE5_CAPABILITY_STATUS_PATH,
+    SUMMARY_PATH as PASS219_LANE5_CAPABILITY_SUMMARY_PATH,
+    install_pass219_lane5_capability_visibility,
+)
 from hhs_backend.runtime_os_projection import (
     RUNTIME_OS_ASSETS,
     RUNTIME_OS_INDEX,
@@ -248,6 +254,10 @@ app.description = (
 app.include_router(pass184_runtime_router)
 app.include_router(probability_hydration_router)
 PASS218_RUNTIME_OS_LIFECYCLE = install_pass218_runtime_os_lifecycle(app)
+PASS219_LANE5_CAPABILITY_VISIBILITY = install_pass219_lane5_capability_visibility(
+    app,
+    repository_root=REPOSITORY_ROOT,
+)
 PASS218_AUTHORITY_CONTROL_PLANE = install_pass218_authority_control_plane(
     app,
     PASS218_RUNTIME_OS_LIFECYCLE,
@@ -608,6 +618,10 @@ __all__ = [
     "PASS218_I48_SEAL_PATH",
     "PASS218_I48_STATUS_PATH",
     "PASS218_RUNTIME_OS_LIFECYCLE",
+    "PASS219_LANE5_CAPABILITY_SEARCH_PATH",
+    "PASS219_LANE5_CAPABILITY_STATUS_PATH",
+    "PASS219_LANE5_CAPABILITY_SUMMARY_PATH",
+    "PASS219_LANE5_CAPABILITY_VISIBILITY",
     "PASS218_RUNTIME_STATUS_PATH",
     "PUBLIC_MOUNT_NAME",
     "REPOSITORY_ROOT",

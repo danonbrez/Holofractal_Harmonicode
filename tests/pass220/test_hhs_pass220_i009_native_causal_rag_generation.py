@@ -280,3 +280,52 @@ def test_pass219_prototype_compilation_is_cached(monkeypatch):
     assert calls["select"] == 2
     assert first_meta["prototype_dataset_reused"] is False
     assert second_meta["prototype_dataset_reused"] is True
+
+
+def test_causal_path_remains_executable_when_semantic_membrane_unavailable(monkeypatch):
+    import builtins
+
+    generator = FakeGenerationService()
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=generator,
+    )
+    provider._prototype_context = lambda query, top_k=3: (
+        "",
+        {
+            "available": False,
+            "reason": "TEST_NO_PROTOTYPE_CONTEXT",
+            "candidate_count": 0,
+            "candidate_only": True,
+        },
+    )
+
+    original_import = builtins.__import__
+
+    def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+        if name == "hhs_runtime.pass148.semantics":
+            raise ImportError("synthetic Pass 148 semantic membrane absence")
+        return original_import(name, globals, locals, fromlist, level)
+
+    monkeypatch.setattr(builtins, "__import__", guarded_import)
+
+    status = provider.installation_status()
+    assert status["semantic_membrane_ready"] is False
+    assert status["semantic_membrane_required_for_provider_readiness"] is False
+    assert status["causal_lm_ready"] is True
+    assert status["ready"] is True
+
+    response = asyncio.run(
+        provider.chat_completion(
+            messages=[
+                {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
+                {"role": "user", "content": "Use the executable causal path."},
+            ],
+            tools=[],
+        )
+    )
+    trace = response["hhs_native_trace"]
+    assert trace["generation_path"] == "NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM"
+    assert trace["assistant_turn_disposition"] == "TERMINAL_GENERATIVE_COMPLETION"
+    assert trace["terminal_text_generation"] is True

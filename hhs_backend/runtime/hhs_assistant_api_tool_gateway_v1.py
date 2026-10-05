@@ -7,6 +7,7 @@ boundary. Every result is returned in a Hash72-witnessed envelope.
 from __future__ import annotations
 
 import asyncio
+from functools import lru_cache
 import inspect
 import json
 import re
@@ -106,11 +107,11 @@ DEFAULT_HHS_ASSISTANT_TOOLS: List[Dict[str, Any]] = [
     ),
     _function_tool(
         "hhs_lane5_capability_status",
-        "Read the bounded Lane 5 executable capability self-model/reverse-discovery status without promoting or mutating canonical state.",
+        "Read the repository-global Pass 219 Lane 5 capability-visibility status without promoting or mutating canonical state.",
     ),
     _function_tool(
         "hhs_lane5_capability_search",
-        "Search the bounded Lane 5 repository capability graph for candidate/read-only capability evidence.",
+        "Search the repository-global Pass 219 Lane 5 visibility graph for candidate/read-only capability evidence, including classification and source-ref provenance.",
         properties={
             "query": {"type": "string", "minLength": 2},
             "limit": {"type": "integer", "minimum": 1, "maximum": 12},
@@ -173,25 +174,34 @@ async def _language_model_fabric(_: Mapping[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _lane5_status_sync() -> Dict[str, Any]:
-    from hhs_backend.runtime.hhs_pass219_lane5_repository_capability_reverse_discovery_1_44 import (
-        build_repository_capability_reverse_discovery,
+@lru_cache(maxsize=1)
+def _lane5_visibility_snapshot() -> Dict[str, Any]:
+    from hhs_backend.runtime.hhs_pass219_lane5_global_capability_visibility_1_76 import (
+        build_global_capability_visibility,
     )
-    model = build_repository_capability_reverse_discovery()
+    return build_global_capability_visibility(
+        _REPOSITORY_ROOT,
+        main_ref="HEAD",
+        include_refs=True,
+    )
+
+
+def _lane5_status_sync() -> Dict[str, Any]:
+    model = _lane5_visibility_snapshot()
     return {
-        "schema": "HHS_ASSISTANT_LANE5_CAPABILITY_STATUS_V1",
+        "schema": "HHS_ASSISTANT_LANE5_CAPABILITY_STATUS_V2",
         "ok": True,
+        "visibility_schema": model.get("schema"),
+        "main_commit": model.get("main_commit"),
         "counts": dict(model.get("counts") or {}),
-        "model_root_sha256": model.get("model_root_sha256"),
-        "public_catalog_root_hash72": model.get("public_catalog_root_hash72"),
-        "native_export_root_sha256": model.get("native_export_root_sha256"),
-        "python_registry_root_sha256": model.get("python_registry_root_sha256"),
-        "dependency_root_sha256": model.get("dependency_root_sha256"),
-        "canonical_boundary_export": model.get("canonical_boundary_export"),
-        "scope": dict(model.get("scope") or {}),
-        "promotion_policy": dict(model.get("promotion_policy") or {}),
+        "node_root_hash216": model.get("node_root_hash216"),
+        "snapshot_root_hash216": model.get("snapshot_root_hash216"),
+        "invariants": dict(model.get("invariants") or {}),
         "authority": dict(model.get("authority") or {}),
+        "ref_inventory_count": len(model.get("ref_inventory") or []),
         "candidate_only": True,
+        "repository_global_visibility": True,
+        "classification_metadata_is_visibility_filter": False,
         "runtime_mutation_admitted": False,
         "automatic_hash216_composition_promoted": False,
         "automatic_superedge_promotion_admitted": False,
@@ -203,9 +213,6 @@ async def _lane5_capability_status(_: Mapping[str, Any]) -> Dict[str, Any]:
 
 
 def _lane5_search_sync(query: str, limit: int) -> Dict[str, Any]:
-    from hhs_backend.runtime.hhs_pass219_lane5_repository_capability_reverse_discovery_1_44 import (
-        build_repository_capability_reverse_discovery,
-    )
     normalized = str(query or "").strip()
     if len(normalized) < 2:
         raise ValueError("Lane 5 capability query must contain at least two characters")
@@ -213,7 +220,7 @@ def _lane5_search_sync(query: str, limit: int) -> Dict[str, Any]:
     terms = _query_terms(normalized)
     if not terms:
         terms = [normalized.casefold()]
-    model = build_repository_capability_reverse_discovery()
+    model = _lane5_visibility_snapshot()
     matches: List[Dict[str, Any]] = []
     for node in model.get("nodes") or []:
         if not isinstance(node, Mapping):
@@ -227,28 +234,45 @@ def _lane5_search_sync(query: str, limit: int) -> Dict[str, Any]:
         matches.append({
             "score": score,
             "node_id": node.get("node_id"),
-            "source_kind": node.get("source_kind"),
-            "authority_class": node.get("authority_class"),
-            "capability_id": node.get("capability_id"),
-            "export_name": node.get("export_name"),
-            "operation_key": node.get("operation_key"),
-            "path": node.get("path") or node.get("declaring_header"),
-            "hash216_composition_eligible": node.get("hash216_composition_eligible"),
-            "superedge_promotion_eligible": node.get("superedge_promotion_eligible"),
+            "hash216": node.get("hash216"),
+            "source_state": node.get("source_state"),
+            "ref_name": node.get("ref_name"),
+            "commit_sha": node.get("commit_sha"),
+            "source_path": node.get("source_path"),
+            "symbol": node.get("symbol"),
+            "symbol_kind": node.get("symbol_kind"),
+            "line": node.get("line"),
+            "classification_labels": list(node.get("classification_labels") or []),
+            "closure_state": node.get("closure_state"),
+            "execution_state": node.get("execution_state"),
+            "validation_state": node.get("validation_state"),
+            "admission_state": node.get("admission_state"),
+            "visible_to_lane5": node.get("visible_to_lane5"),
+            "classification_is_visibility_filter": node.get(
+                "classification_is_visibility_filter"
+            ),
+            "candidate_only": node.get("candidate_only"),
         })
-    matches.sort(key=lambda item: (-int(item["score"]), str(item.get("node_id") or "")))
+    matches.sort(
+        key=lambda item: (
+            -int(item["score"]),
+            str(item.get("source_state") or ""),
+            str(item.get("node_id") or ""),
+        )
+    )
     selected = matches[:bounded_limit]
     return {
-        "schema": "HHS_ASSISTANT_LANE5_CAPABILITY_SEARCH_V1",
+        "schema": "HHS_ASSISTANT_LANE5_CAPABILITY_SEARCH_V2",
         "ok": True,
         "query": normalized,
         "terms": terms,
         "result_count": len(selected),
         "results": selected,
         "counts": dict(model.get("counts") or {}),
-        "model_root_sha256": model.get("model_root_sha256"),
-        "canonical_boundary_export": model.get("canonical_boundary_export"),
+        "node_root_hash216": model.get("node_root_hash216"),
+        "snapshot_root_hash216": model.get("snapshot_root_hash216"),
         "candidate_only": True,
+        "repository_global_visibility": True,
         "read_only": True,
         "runtime_mutation_admitted": False,
         "automatic_promotion_admitted": False,

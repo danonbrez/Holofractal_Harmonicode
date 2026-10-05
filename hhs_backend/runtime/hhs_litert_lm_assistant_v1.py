@@ -744,52 +744,104 @@ class HHSAssistantService:
                 **completion,
             },
         )
+        provider_metadata = dict(completion.get("provider_metadata") or {})
+        assistant_turn_disposition = str(
+            provider_metadata.get("assistant_turn_disposition")
+            or "TERMINAL_ASSISTANT_TURN"
+        )
+        nonterminal_candidate = assistant_turn_disposition.startswith("NONTERMINAL_")
         ingress = ingress_provider_result(
             receipt,
             project_id=str(thread.get("project_id") or "project:default"),
             output_modality="TEXT",
-            target_artifact_type="AI_THREAD_ASSISTANT_TURN",
+            target_artifact_type=(
+                "AI_ASSISTANT_PROVIDER_CANDIDATE"
+                if nonterminal_candidate
+                else "AI_THREAD_ASSISTANT_TURN"
+            ),
         )
-        assistant_message = self.threads.append(
-            thread_id,
-            role="assistant",
-            content=completion["content"],
-            tool_calls=completion["tool_calls"],
-            admission={
-                "provider_id": self.provider_id,
-                "provider_invocation_receipt_hash72": receipt.get(
-                    "provider_invocation_receipt_hash72"
-                ),
-                "provider_result_ingress_root_hash72": ingress.get(
-                    "provider_result_ingress_root_hash72"
-                ),
-                "provider_result_ingress_ok": bool(ingress.get("ok")),
-                "native_response_stream_root_hash72": (
-                    (completion.get("provider_metadata") or {})
-                    .get("response_stream_manifest", {})
-                    .get("stream_root_hash72")
-                ),
-                "native_lean_alignment_admission_root_hash72": tensor_admission.get(
-                    "admission_root_hash72"
-                ),
-                "native_lean_alignment_tensor_state": tensor_admission.get(
-                    "tensor_state"
-                ),
-                "runtime_mutation_admitted": False,
-            },
-        )
+
+        assistant_message = None
+        candidate_assistant_message = None
+        if nonterminal_candidate:
+            if ingress.get("ok"):
+                candidate_assistant_message = {
+                    "schema": "HHS_ASSISTANT_PROVIDER_CANDIDATE_V1",
+                    "thread_id": thread_id,
+                    "role": "assistant",
+                    "content": completion["content"],
+                    "tool_calls": list(completion["tool_calls"]),
+                    "provider_id": self.provider_id,
+                    "assistant_turn_disposition": assistant_turn_disposition,
+                    "provider_metadata": provider_metadata,
+                    "provider_invocation_receipt_hash72": receipt.get(
+                        "provider_invocation_receipt_hash72"
+                    ),
+                    "provider_result_ingress_root_hash72": ingress.get(
+                        "provider_result_ingress_root_hash72"
+                    ),
+                    "native_lean_alignment_admission_root_hash72": tensor_admission.get(
+                        "admission_root_hash72"
+                    ),
+                    "thread_persisted": False,
+                    "runtime_mutation_admitted": False,
+                }
+                candidate_assistant_message["candidate_root_hash72"] = hash72(
+                    "HHS_ASSISTANT_PROVIDER_CANDIDATE_V1",
+                    candidate_assistant_message,
+                )
+        else:
+            assistant_message = self.threads.append(
+                thread_id,
+                role="assistant",
+                content=completion["content"],
+                tool_calls=completion["tool_calls"],
+                admission={
+                    "provider_id": self.provider_id,
+                    "provider_invocation_receipt_hash72": receipt.get(
+                        "provider_invocation_receipt_hash72"
+                    ),
+                    "provider_result_ingress_root_hash72": ingress.get(
+                        "provider_result_ingress_root_hash72"
+                    ),
+                    "provider_result_ingress_ok": bool(ingress.get("ok")),
+                    "native_response_stream_root_hash72": (
+                        provider_metadata
+                        .get("response_stream_manifest", {})
+                        .get("stream_root_hash72")
+                    ),
+                    "native_lean_alignment_admission_root_hash72": tensor_admission.get(
+                        "admission_root_hash72"
+                    ),
+                    "native_lean_alignment_tensor_state": tensor_admission.get(
+                        "tensor_state"
+                    ),
+                    "runtime_mutation_admitted": False,
+                },
+            )
+
         result = {
             "schema": TURN_SCHEMA,
             "version": VERSION,
             "ok": bool(ingress.get("ok")),
             "status": (
-                "ADMIT_LITERT_LM_ASSISTANT_TURN"
+                "ADMIT_LITERT_LM_PROVIDER_CANDIDATE_NO_THREAD_COMMIT"
+                if ingress.get("ok") and nonterminal_candidate
+                else "ADMIT_LITERT_LM_ASSISTANT_TURN"
                 if ingress.get("ok")
                 else "PROJECT_LITERT_LM_TURN_WITH_INGRESS_REJECTION"
             ),
             "thread_id": thread_id,
             "user_message": dict(user_message),
             "assistant_message": assistant_message,
+            "candidate_assistant_message": candidate_assistant_message,
+            "assistant_turn_disposition": assistant_turn_disposition,
+            "provider_metadata": provider_metadata,
+            "provider_output_retained_as_independent_state": bool(
+                nonterminal_candidate and ingress.get("ok")
+            ),
+            "provider_result_ingress_performed": True,
+            "assistant_thread_message_persisted": assistant_message is not None,
             "proposal": proposal,
             "proposal_validation": proposal_validation,
             "policy_gate_decision": policy,

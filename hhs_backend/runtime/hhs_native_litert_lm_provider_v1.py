@@ -308,9 +308,8 @@ class HHSNativeLiteRTLMTransport:
             word2vec_status.get("offline_ready")
             and word2vec_status.get("active_model_id")
         )
-        ready = bool(
-            semantic_ready
-            and reasoner_ready
+        semantic_candidate_ready = bool(
+            reasoner_ready
             and (word2vec_ready or not self.require_word2vec)
         )
         try:
@@ -323,6 +322,9 @@ class HHSNativeLiteRTLMTransport:
                 "load_error": f"{type(exc).__name__}: {exc}",
             }
 
+        causal_ready = bool(causal_status.get("ready"))
+        ready = bool(causal_ready or semantic_candidate_ready)
+
         status = {
             "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_INSTALLATION_STATUS_V1",
             "version": VERSION,
@@ -330,19 +332,27 @@ class HHSNativeLiteRTLMTransport:
             "model_id": MODEL_ID,
             "ready": ready,
             "semantic_membrane_ready": semantic_ready,
+            "semantic_membrane_required_for_provider_readiness": False,
             "bounded_reasoner_ready": reasoner_ready,
+            "semantic_candidate_ready": semantic_candidate_ready,
             "word2vec_required": self.require_word2vec,
             "word2vec_ready": word2vec_ready,
             "word2vec": word2vec_status,
             "causal_lm": causal_status,
             "causal_lm_generation_supported": True,
             "causal_lm_required_for_provider_readiness": False,
+            "causal_lm_required_for_terminal_general_chat_completion": True,
+            "causal_lm_ready": causal_ready,
+            "semantic_fallback_supported": semantic_candidate_ready,
+            "semantic_fallback_is_terminal_text_generation": False,
             "errors": {
                 "semantic": semantic_error,
                 "reasoner": reasoner_error,
                 "word2vec": word2vec_error,
             },
-            "general_chat_prompt_response_supported": True,
+            "general_chat_prompt_response_supported": bool(
+                causal_ready or semantic_candidate_ready
+            ),
             "agentic_application_development_supported": True,
             "combined_mode_supported": True,
             "runtime_mutation_admitted": False,
@@ -357,14 +367,14 @@ class HHSNativeLiteRTLMTransport:
         status = self.installation_status()
         if not status["ready"]:
             missing: List[str] = []
-            if not status["semantic_membrane_ready"]:
-                missing.append("Pass 148 semantic membrane")
+            if not status.get("causal_lm_ready"):
+                missing.append("native causal generation path unavailable")
             if not status["bounded_reasoner_ready"]:
-                missing.append("Pass 151 bounded semantic reasoner")
+                missing.append("Pass 151 bounded semantic reasoner unavailable")
             if status["word2vec_required"] and not status["word2vec_ready"]:
-                missing.append("active offline-ready Pass 166 Word2Vec model")
+                missing.append("required active offline-ready Pass 166 Word2Vec model unavailable")
             raise HHSNativeLanguageProviderNotReady(
-                "native HHS language provider is not installation-closed: "
+                "native HHS language provider has no executable declared response path: "
                 + ", ".join(missing)
             )
         return status
@@ -931,6 +941,8 @@ class HHSNativeLiteRTLMTransport:
                     "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
                     "assistant_mode": mode,
                     "generation_path": "NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM",
+                    "assistant_turn_disposition": "TERMINAL_GENERATIVE_COMPLETION",
+                    "terminal_text_generation": True,
                     "general_chat_prompt_response_cycle": True,
                     "prototype_retrieval": prototype_trace,
                     "tool_receipt_count": len(receipts),
@@ -985,6 +997,8 @@ class HHSNativeLiteRTLMTransport:
             assistant_mode=mode,
         )
         trace["generation_path"] = "EXACT_SEMANTIC_FALLBACK"
+        trace["assistant_turn_disposition"] = "NONTERMINAL_SEMANTIC_CANDIDATE"
+        trace["terminal_text_generation"] = False
         trace["causal_generation_failure"] = causal_failure
         trace["trace_root_hash72"] = hash72(
             "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
