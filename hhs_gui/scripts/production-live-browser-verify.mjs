@@ -27,6 +27,12 @@ const publicApiAttempts = {
   interface_status: [],
   service_registry: [],
 }
+const functionalActions = {
+  quick_build: null,
+  assistant_chat: null,
+  service_dispatch: null,
+  workspace_project_create: null,
+}
 
 let browser
 let context
@@ -43,6 +49,7 @@ let evidence = {
   request_failures: requestFailures,
   http_5xx: http5xx,
   public_api_attempts: publicApiAttempts,
+  functional_actions: functionalActions,
 }
 
 const serializeError = (error) => error instanceof Error
@@ -161,6 +168,61 @@ try {
     throw new Error(`Service registry contains duplicate or unnamed descriptors: descriptors=${services.length} unique_names=${uniqueServiceNames.length}`)
   }
 
+  // Production acceptance must prove user-facing execution, not only rendered
+  // controls. Exercise the same browser paths a user invokes from the default
+  // Build surface before entering Visual Program.
+  const quickBuildPanel = page.locator('[data-testid="mobile-quick-build-panel"]')
+  await quickBuildPanel.locator('[data-testid="mobile-quick-build-source"]').fill(
+    '<!doctype html><html><body><h1>HHS production functional acceptance</h1></body></html>',
+  )
+  await quickBuildPanel.locator('[data-testid="mobile-quick-build-run"]').click()
+  await quickBuildPanel.getByText("Build evidence", { exact: true }).waitFor({ timeout: 240_000 })
+  const quickBuildRaw = await quickBuildPanel.locator("details pre").innerText()
+  const quickBuildResult = JSON.parse(quickBuildRaw)
+  if (quickBuildResult?.ok === false) {
+    throw new Error(`Production Quick Build returned ok=false: ${quickBuildRaw.slice(0, 1000)}`)
+  }
+  if (!quickBuildResult?.runtime_contract || quickBuildResult.runtime_contract.contract_type !== "api_response") {
+    throw new Error(`Production Quick Build did not return a canonical API response contract: ${quickBuildRaw.slice(0, 1000)}`)
+  }
+  functionalActions.quick_build = {
+    ok: true,
+    schema: quickBuildResult.schema ?? null,
+    classification: quickBuildResult.classification ?? quickBuildResult.status ?? null,
+    receipt_hash72: quickBuildResult.lifecycle_receipt_hash72
+      ?? quickBuildResult?.pass174_continuation?.receipt_hash72
+      ?? quickBuildResult?.pass174_continuation?.receipt?.receipt_hash72
+      ?? null,
+    lifecycle_hash216: quickBuildResult.lifecycle_hash216
+      ?? quickBuildResult?.pass174_continuation?.lifecycle_hash216
+      ?? null,
+  }
+
+  const assistantRoot = page.locator('[data-testid="production-mobile-assistant"]')
+  const assistantComposer = assistantRoot.getByLabel("Message HHS assistant")
+  await assistantComposer.fill("Reply with a concise confirmation that the production functional probe completed.")
+  await assistantRoot.getByRole("button", { name: "Send", exact: true }).click()
+  await page.waitForFunction(
+    () => {
+      const root = document.querySelector('[data-testid="production-mobile-assistant"]')
+      if (!root) return false
+      const articles = root.querySelectorAll("article")
+      const text = root.textContent || ""
+      return articles.length >= 2 && !text.includes("Generating response…") && !text.includes("The assistant request did not complete.")
+    },
+    undefined,
+    { timeout: 180_000 },
+  )
+  const assistantArticles = await assistantRoot.locator("article").allTextContents()
+  const assistantResponse = String(assistantArticles.at(-1) || "").trim()
+  if (!assistantResponse || assistantResponse.includes("The assistant request did not complete.")) {
+    throw new Error(`Production assistant did not return a real response: ${assistantResponse}`)
+  }
+  functionalActions.assistant_chat = {
+    ok: true,
+    response_preview: assistantResponse.slice(0, 240),
+  }
+
   const productNav = page.locator('[data-testid="hhs-product-workspace"] > nav')
   await productNav.getByRole("button", { name: "Visual Program", exact: true }).click()
   await page.waitForSelector('[data-testid="registry-visual-programmer"]', { timeout: 120_000 })
@@ -193,19 +255,74 @@ try {
   }, selectableService)
   if (!selected) throw new Error(`Registered service is not selectable in the frontend: ${selectableService}`)
 
+  const visualProgram = page.locator('[data-testid="registry-visual-programmer"]')
+  await visualProgram.getByRole("button", { name: "Run node", exact: true }).click()
   await page.waitForFunction(
     (serviceName) => {
       const root = document.querySelector('[data-testid="registry-visual-programmer"]')
       if (!root) return false
       const text = root.textContent || ""
-      const runButtons = [...root.querySelectorAll("button")].filter((button) => /run/i.test(button.textContent || ""))
-      return text.includes(serviceName) && runButtons.length > 0
+      return text.includes(serviceName) && text.includes("HHS_SERVICE_DISPATCH_RECORD_V1")
     },
     selectableService,
-    { timeout: 30_000 },
+    { timeout: 180_000 },
   )
+  const serviceResultHeading = visualProgram.getByRole("heading", { name: "Result", exact: true }).last()
+  const serviceResultRaw = await serviceResultHeading.locator("xpath=..").locator("pre").innerText()
+  const serviceResult = JSON.parse(serviceResultRaw)
+  if (serviceResult?.schema !== "HHS_SERVICE_DISPATCH_RECORD_V1") {
+    throw new Error(`Registered service did not return a dispatch record: ${serviceResultRaw.slice(0, 1000)}`)
+  }
+  if (serviceResult?.zero_bypass_interposition?.status && String(serviceResult.zero_bypass_interposition.status).includes("REJECT")) {
+    throw new Error(`Registered service was rejected by zero-bypass interposition: ${serviceResultRaw.slice(0, 1000)}`)
+  }
+  if (!serviceResult?.runtime_contract || serviceResult.runtime_contract.contract_type !== "api_response") {
+    throw new Error(`Registered service dispatch lacks canonical API response contract: ${serviceResultRaw.slice(0, 1000)}`)
+  }
+  functionalActions.service_dispatch = {
+    ok: true,
+    service: selectableService,
+    schema: serviceResult.schema,
+    ledger_tip_hash72: serviceResult?.unified_ledger?.tip_hash72 ?? null,
+    receipt_hash72: serviceResult?.authorized_tick?.receipt?.receipt_hash72 ?? null,
+  }
 
-  const registryText = await page.locator('[data-testid="registry-visual-programmer"]').innerText()
+  // Prove the visual programmer's workspace-command path as a second real
+  // backend mutation surface.
+  const registrySearch = visualProgram.locator('input[placeholder="Search every registered function…"]')
+  await registrySearch.fill("Create Project")
+  const createProjectEntry = visualProgram.locator("aside button").filter({ hasText: "Create Project" }).first()
+  await createProjectEntry.click()
+  await visualProgram.getByRole("button", { name: "Run node", exact: true }).click()
+  await page.waitForFunction(
+    () => {
+      const root = document.querySelector('[data-testid="registry-visual-programmer"]')
+      if (!root) return false
+      const text = root.textContent || ""
+      return text.includes("Create Project") && text.includes("HHS_WORKSPACE")
+    },
+    undefined,
+    { timeout: 120_000 },
+  )
+  const workspaceResultHeading = visualProgram.getByRole("heading", { name: "Result", exact: true }).last()
+  const workspaceResultRaw = await workspaceResultHeading.locator("xpath=..").locator("pre").innerText()
+  const workspaceResult = JSON.parse(workspaceResultRaw)
+  if (workspaceResult?.ok === false) {
+    throw new Error(`Workspace project creation returned ok=false: ${workspaceResultRaw.slice(0, 1000)}`)
+  }
+  if (!workspaceResult?.runtime_contract || workspaceResult.runtime_contract.contract_type !== "api_response") {
+    throw new Error(`Workspace project creation lacks canonical API response contract: ${workspaceResultRaw.slice(0, 1000)}`)
+  }
+  functionalActions.workspace_project_create = {
+    ok: true,
+    schema: workspaceResult.schema ?? null,
+    status: workspaceResult.status ?? null,
+    project_id: workspaceResult?.result?.project?.project_id
+      ?? workspaceResult?.project?.project_id
+      ?? null,
+  }
+
+  const registryText = await visualProgram.innerText()
   if (registryText.includes("registry unavailable")) {
     throw new Error("Production Visual Program reports registry unavailable")
   }
@@ -232,11 +349,13 @@ try {
     selectable_service: selectableService,
     visual_program_registry_ready: true,
     guarded_dispatch_route: "/api/runtime/services/dispatch",
+    functional_actions: functionalActions,
     frontend_authority: false,
   }
 
   console.log(`HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_SURFACE_VERIFIED=${services.length}`)
   console.log(`HHS_DIGITALOCEAN_PUBLIC_FRONTEND_SELECTABLE_SERVICE_VERIFIED=${selectableService}`)
+  console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_FUNCTIONAL_ACTIONS_VERIFIED=4")
 } catch (error) {
   evidence = {
     ...evidence,
