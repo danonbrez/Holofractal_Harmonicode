@@ -102,3 +102,24 @@ Fail closed on any of:
 ## Next action
 
 Observe the final-head PR gates. Repair only failures attributable to this change. When the impacted gates are green, merge #718, verify main, and follow the serialized Exact-Main/browser/Hash216 chain to terminal closure.
+
+
+## Repair-forward after merge f898e014 — stale workspace verifier
+
+After PR #718 merged as `f898e014f7107fe3ecb9a0cfdd7a51232f1434fe`, PR Runtime OS production-root run `37330535333` exposed one stale source assertion:
+
+- TypeScript typecheck: PASS;
+- calculator regression: PASS;
+- `test:e2e:source`: PASS;
+- `test:workspace:source`: FAIL because `workspace-source-verify.mjs` still required `/api/assistant/health` in `ProductionAssistantChat.tsx`.
+
+This is acceptance drift caused by the intentional #718 migration to `/api/assistant/deployment-health`; it is not evidence that full diagnostic health should return to default boot.
+
+Repair-forward branch:
+
+- `repair/workspace-source-bounded-assistant-health-20261005`
+- base: `f898e014f7107fe3ecb9a0cfdd7a51232f1434fe`
+- changed source: `hhs_gui/scripts/workspace-source-verify.mjs`
+- repair commit: `13daaf61dfe9da09b25518a1b58d8c21e9a9c043`
+
+The verifier now requires the bounded deployment-health endpoint used by the production assistant.
