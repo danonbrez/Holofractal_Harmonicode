@@ -59,6 +59,7 @@ jobs:
             deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
             deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
             deployment/digitalocean/guarded_auto_update/install.sh
+          node --check hhs_gui/scripts/production-live-browser-verify.mjs
           python3 -m py_compile \
             deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py \
             deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py \
@@ -127,6 +128,7 @@ jobs:
           npm run test:workspace:source
           npm run test:e2e:source
           npm run test:frontend-telemetry:source
+          node --check scripts/production-live-browser-verify.mjs
           npm run build
           popd >/dev/null
 
@@ -514,6 +516,42 @@ jobs:
           print('HHS_DIGITALOCEAN_PUBLIC_RUNTIME_OS_VERIFIED')
           print(f'HHS_DIGITALOCEAN_PUBLIC_SERVICE_REGISTRY_VERIFIED={len(services)}')
           PY
+
+      - name: Verify public frontend capability projection in Chromium
+        working-directory: hhs_gui
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_service_count=$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('/tmp/hhs-public-services.json').read_text(encoding='utf-8'))
+          services = payload.get('services')
+          if not isinstance(services, list) or not services:
+              raise SystemExit(f'public Runtime OS service registry is empty or malformed: {payload}')
+          print(len(services))
+          PY
+          )
+          npm install --no-save --package-lock=false playwright@1.55.0
+          timeout 600s npx playwright install --with-deps chromium
+          HHS_PRODUCTION_BASE_URL="https://${HHS_PRODUCTION_HOST}" \
+          HHS_PRODUCTION_EXPECTED_SHA="${TARGET_SHA}" \
+          HHS_PRODUCTION_EXPECTED_SERVICE_COUNT="${expected_service_count}" \
+          HHS_PRODUCTION_BROWSER_IGNORE_HTTPS_ERRORS=1 \
+          HHS_PRODUCTION_BROWSER_EVIDENCE_DIR="${RUNNER_TEMP}/production-browser" \
+            timeout 300s node scripts/production-live-browser-verify.mjs
+          cat "${RUNNER_TEMP}/production-browser/production-live-browser.json"
+
+      - name: Upload production frontend capability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-frontend-capability-${{ env.TARGET_SHA }}
+          path: |
+            ${{ runner.temp }}/production-browser/production-live-browser.json
+            ${{ runner.temp }}/production-browser/production-live-browser.png
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Queue Hash216 repository index after verified promotion
         if: github.event_name != 'pull_request'

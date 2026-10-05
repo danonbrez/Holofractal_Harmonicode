@@ -908,3 +908,41 @@ def test_installer_rebinds_lane5_socket_only_after_stopping_existing_ingress_own
     ]:
         assert token in installer
 
+
+
+def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash216_queue() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
+    browser = (ROOT / "hhs_gui" / "scripts" / "production-live-browser-verify.mjs").read_text(encoding="utf-8")
+
+    for token in [
+        "node --check hhs_gui/scripts/production-live-browser-verify.mjs",
+        "Verify public frontend capability projection in Chromium",
+        "playwright@1.55.0",
+        "HHS_PRODUCTION_EXPECTED_SERVICE_COUNT",
+        "HHS_PRODUCTION_EXPECTED_SHA",
+        "HHS_PRODUCTION_BROWSER_EVIDENCE_DIR",
+        "Upload production frontend capability evidence",
+        "production-live-browser.json",
+        "production-live-browser.png",
+    ]:
+        assert token in workflow
+
+    public_probe = workflow.index("HHS_DIGITALOCEAN_PUBLIC_SERVICE_REGISTRY_VERIFIED")
+    browser_gate = workflow.index("Verify public frontend capability projection in Chromium")
+    hash216_queue = workflow.index("Queue Hash216 repository index after verified promotion")
+    assert public_probe < browser_gate < hash216_queue
+
+    for token in [
+        'request("/api/runtime/services")',
+        'request("/api/interface/status")',
+        'data-testid="hhs-canonical-runtime-ide"',
+        'data-testid="hhs-product-workspace"',
+        '"Visual Program"',
+        'data-testid="registry-visual-programmer"',
+        "missingServices",
+        "renderedTitleSet",
+        "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_SURFACE_VERIFIED",
+        'guarded_dispatch_route: "/api/runtime/services/dispatch"',
+        "frontend_authority: false",
+    ]:
+        assert token in browser
