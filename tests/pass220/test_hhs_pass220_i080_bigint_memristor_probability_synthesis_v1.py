@@ -11,6 +11,7 @@ from hhs_runtime.hhs_pass220_i080_bigint_memristor_probability_synthesis_v1 impo
     VM81_CELLS,
     build_candidate,
     default_seed_hash216,
+    lane5_tick_optimization_operation,
     sample_below,
     self_test,
     source_bindings,
@@ -26,6 +27,10 @@ def test_repository_sources_are_bound_to_current_i041_memristor_hydration_stack(
     assert bindings["i041_browser_seed"]["math_random_occurrences"] > 0
     assert bindings["i041_browser_seed"]["math_random_authority"] is False
     assert bindings["pass163_vmrc"]["exact_memristor"] is True
+    assert bindings["fold_primitive"]["directed_ratio_pair"] == ("A/B", "B/A")
+    assert bindings["fold_primitive"]["closure"] == "AB=P^4"
+    assert bindings["fold_primitive"]["u36_half_turn"] is True
+    assert bindings["hnan_gate"]["phase_modulus"] == 72
 
 
 def test_default_seed_is_exact_hash216_and_replayable() -> None:
@@ -73,6 +78,52 @@ def test_memristor_graph_executes_path_dependent_reuse_in_isolated_vmrc() -> Non
         assert Fraction(edge["resistance"]) > 0
 
 
+def test_every_tick_is_one_lane5_reciprocal_phase_optimization() -> None:
+    for tick in (0, 1, 35, 36, 71, 72, 5183, 5184, 72**2 + 7):
+        op = lane5_tick_optimization_operation(tick)
+
+        assert op["tick"] == tick
+        assert op["one_tick_one_lane5_optimization_operation"] is True
+        assert op["operation_index_5184"] == tick % 5184
+        assert op["coordinate_5184"]["linear_index"] == tick % 5184
+
+        ratio = op["directed_ratio_phase_inversion"]
+        assert ratio["before"] == "A/B"
+        assert ratio["after"] == "B/A"
+        assert ratio["restored_after_second_inversion"] == "A/B"
+        assert ratio["ordered_roles_preserved"] is True
+        assert ratio["commutative_cancellation_permitted"] is False
+
+        for name in ("a:b", "x:y", "z:w", "p:q"):
+            pair = op["typed_pair_phase_inversions"][name]
+            assert pair["restored"] == pair["before"]
+            assert pair["order_2"] is True
+
+        topology = op["concave_convex_geometry_phase_inversion"]
+        concave = Fraction(*map(int, topology["concave_exact"]))
+        convex = Fraction(*map(int, topology["convex_exact"]))
+        assert concave * convex == 1
+        assert topology["before"] == "CONCAVE"
+        assert topology["after"] == "CONVEX"
+
+        closure = op["AB_P4_closure"]
+        assert closure["A"] * closure["B"] == closure["P"] ** 4
+        assert closure["AB_equals_P4"] is True
+        assert closure["full_directional_closure_scalarized"] is False
+
+        phase = op["phase_ring"]
+        assert phase["u36_twice_restores"] is True
+        assert phase["u72_is_u0"] is True
+
+        periodicity = op["hnan_periodicity"]
+        assert periodicity["geometry_5184"] == 81 * 64 == 72**2
+        assert periodicity["5184_mod_72"] == 0
+        assert periodicity["72_pow_72_mod_72"] == 0
+        assert periodicity["u_tick_plus_5184_restores"] is True
+        assert periodicity["u_tick_plus_72pow72_mod72_restores"] is True
+        assert periodicity["passes"] is True
+
+
 def test_probability_synthesis_is_deterministic_exact_and_holographically_addressed() -> None:
     candidate = build_candidate()
     layer = candidate["probability_synthesis"]
@@ -92,6 +143,11 @@ def test_probability_synthesis_is_deterministic_exact_and_holographically_addres
         assert event["coordinate"]["vm81_cell"] == event["cell81"]
         assert event["coordinate"]["local64"] == event["operation64"]
         assert event["victim_probability_per_turn"] == ("1", str(PARTICLE_LATTICE))
+        tick_op = event["lane5_tick_operation"]
+        assert tick_op["tick"] == event["event"]
+        assert tick_op["one_tick_one_lane5_optimization_operation"] is True
+        assert tick_op["AB_P4_closure"]["AB_equals_P4"] is True
+        assert tick_op["hnan_periodicity"]["passes"] is True
         probability = Fraction(*map(int, event["graph_choice"]["probability"]))
         assert 0 < probability <= 1
         seals += int(event["fractal_seed_seal"])
@@ -144,6 +200,6 @@ def test_self_test_passes() -> None:
     report = self_test()
 
     assert report["status"] == "PASS"
-    assert report["check_count"] == report["pass_count"] == 20
+    assert report["check_count"] == report["pass_count"] == 24
     assert report["failed"] == ()
     assert len(report["candidate_hash216"]) == 216
