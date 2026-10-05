@@ -1,0 +1,120 @@
+name: Production Frontend Functional Probe
+
+on:
+  push:
+    branches:
+      - repair/production-frontend-functional-closure-20261005
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-functional-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_URL: https://159.65.178.254
+    steps:
+      - name: Probe live frontend execution routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64, json, ssl, urllib.request, urllib.error, time, sys
+          BASE = "https://159.65.178.254"
+          ctx = ssl._create_unverified_context()
+
+          def request(method, path, payload=None, timeout=120):
+              data = None
+              headers = {"accept":"application/json"}
+              if payload is not None:
+                  data = json.dumps(payload).encode()
+                  headers["content-type"] = "application/json"
+              req = urllib.request.Request(BASE + path, data=data, headers=headers, method=method)
+              started=time.time()
+              try:
+                  with urllib.request.urlopen(req, context=ctx, timeout=timeout) as res:
+                      raw=res.read().decode("utf-8","replace")
+                      status=res.status
+              except urllib.error.HTTPError as exc:
+                  raw=exc.read().decode("utf-8","replace")
+                  status=exc.code
+              elapsed=round(time.time()-started,3)
+              print(json.dumps({"path":path,"method":method,"status":status,"elapsed_s":elapsed,"body_preview":raw[:900]}))
+              try:
+                  body=json.loads(raw) if raw else {}
+              except Exception:
+                  body={"_raw":raw}
+              if status < 200 or status >= 300:
+                  raise SystemExit(f"{method} {path} failed HTTP {status}")
+              return body
+
+          services=request("GET","/api/runtime/services",timeout=30)
+          service_list=services.get("services") or []
+          assert len(service_list) == 380, len(service_list)
+
+          service_name="agent_economy.agent_algorithm_identity_v1_self_test"
+          dispatch=request("POST","/api/runtime/services/dispatch",{
+              "service":service_name,
+              "payload":{}
+          },timeout=120)
+          dispatch_text=json.dumps(dispatch)
+          assert service_name in dispatch_text
+          assert "HHS_SERVICE_DISPATCH_REJECTION_RECORD_V1" not in dispatch_text
+
+          session=request("GET","/api/runtime/workspace/session",timeout=30)
+          workspace=request("POST","/api/runtime/workspace/command",{
+              "schema":"HHS_WORKSPACE_COMMAND_ENVELOPE_V1",
+              "operation":"project.create",
+              "project_id":"project:default",
+              "authority_tier":"ADMINISTRATIVE_PROJECT_OPERATION",
+              "payload":{"name":"Production Functional Probe"},
+              "requires_fastapi_authority":True,
+              "frontend_may_commit_runtime_truth":False
+          },timeout=120)
+          assert workspace.get("ok") is not False, workspace
+
+          assistant=request("POST","/api/assistant/chat",{
+              "thread_id":None,
+              "project_id":"project:production-functional-probe",
+              "title":"Production Functional Probe",
+              "metadata":{
+                  "workspace_surface":"production_mobile_control",
+                  "vector_identity_visible_to_user":None,
+                  "vector_payload_auto_attached_to_prompt":False,
+                  "user_approved_context_attached":False,
+                  "custom_system_instruction_present":False,
+                  "assistant_mode":"GENERAL_CHAT"
+              },
+              "content":"Reply with the exact text: HHS functional probe online",
+              "custom_system_instruction":None,
+              "assistant_mode":"GENERAL_CHAT",
+              "user_context":None
+          },timeout=180)
+          assert assistant.get("ok") is not False, assistant
+          assert assistant.get("assistant_message") or assistant.get("response"), assistant
+
+          html=b"<!doctype html><html><body><h1>HHS functional probe</h1></body></html>"
+          quick=request("POST","/api/v1/pass174/sdlc/run",{
+              "project_id":None,
+              "project_name":"Production Functional Probe",
+              "source_name":"index.html",
+              "source_modality":"TEXT",
+              "source_payload":{
+                  "source_b64":base64.b64encode(html).decode(),
+                  "mime_type":"text/html",
+                  "source_size_bytes":len(html)
+              },
+              "requested_output":"VALIDATED_ARTIFACT",
+              "expression":None,
+              "target":"HHS_IR",
+              "steps":1,
+              "provenance":"RUNTIME_OS_MOBILE_QUICK_BUILD",
+              "authorization_scope":"P174_MOBILE_APPLICATION_DEVELOPMENT_PIPELINE",
+              "thread":0
+          },timeout=240)
+          assert quick.get("ok") is not False, quick
+
+          print("HHS_PRODUCTION_FRONTEND_FUNCTIONAL_PROBE=PASS")
+          PY
