@@ -59,7 +59,9 @@ const serializeError = (error) => error instanceof Error
 try {
   browser = await chromium.launch({ headless: true })
   context = await browser.newContext({
-    viewport: { width: 1440, height: 1000 },
+    viewport: { width: 412, height: 915 },
+    isMobile: true,
+    hasTouch: true,
     ignoreHTTPSErrors: IGNORE_HTTPS_ERRORS,
   })
   page = await context.newPage()
@@ -171,6 +173,32 @@ try {
   // Production acceptance must prove user-facing execution, not only rendered
   // controls. Exercise the same browser paths a user invokes from the default
   // Build surface before entering Visual Program.
+  const scrollEvidence = await page.evaluate(() => {
+    const scrollingElement = document.scrollingElement
+    const before = window.scrollY
+    const scrollHeight = scrollingElement?.scrollHeight ?? document.body.scrollHeight
+    const viewportHeight = window.innerHeight
+    window.scrollTo(0, Math.max(0, scrollHeight - viewportHeight))
+    return {
+      before,
+      after: window.scrollY,
+      scroll_height: scrollHeight,
+      viewport_height: viewportHeight,
+      html_overflow_y: getComputedStyle(document.documentElement).overflowY,
+      body_overflow_y: getComputedStyle(document.body).overflowY,
+    }
+  })
+  await sleep(100)
+  scrollEvidence.after = await page.evaluate(() => window.scrollY)
+  functionalActions.mobile_scroll = scrollEvidence
+  if (
+    scrollEvidence.scroll_height > scrollEvidence.viewport_height + 32
+    && scrollEvidence.after <= scrollEvidence.before
+  ) {
+    throw new Error(`Production mobile workspace cannot scroll: ${JSON.stringify(scrollEvidence)}`)
+  }
+  await page.evaluate(() => window.scrollTo(0, 0))
+
   const quickBuildPanel = page.locator('[data-testid="mobile-quick-build-panel"]')
   await quickBuildPanel.locator('[data-testid="mobile-quick-build-source"]').fill(
     '<!doctype html><html><body><h1>HHS production functional acceptance</h1></body></html>',
@@ -179,11 +207,13 @@ try {
   await quickBuildPanel.getByText("Build evidence", { exact: true }).waitFor({ timeout: 240_000 })
   const quickBuildRaw = await quickBuildPanel.locator("details pre").innerText()
   const quickBuildResult = JSON.parse(quickBuildRaw)
-  if (quickBuildResult?.ok === false) {
-    throw new Error(`Production Quick Build returned ok=false: ${quickBuildRaw.slice(0, 1000)}`)
-  }
-  if (!quickBuildResult?.runtime_contract || quickBuildResult.runtime_contract.contract_type !== "api_response") {
-    throw new Error(`Production Quick Build did not return a canonical API response contract: ${quickBuildRaw.slice(0, 1000)}`)
+  if (
+    quickBuildResult?.ok !== true
+    || quickBuildResult?.classification !== "HHS_P174_SDLC_PIPELINE_COMMITTED"
+    || !quickBuildResult?.lifecycle_receipt_hash72
+    || !quickBuildResult?.lifecycle_hash216
+  ) {
+    throw new Error(`Production Quick Build did not return its native committed receipt-bearing result: ${quickBuildRaw.slice(0, 1000)}`)
   }
   functionalActions.quick_build = {
     ok: true,
@@ -276,8 +306,11 @@ try {
   if (serviceResult?.zero_bypass_interposition?.status && String(serviceResult.zero_bypass_interposition.status).includes("REJECT")) {
     throw new Error(`Registered service was rejected by zero-bypass interposition: ${serviceResultRaw.slice(0, 1000)}`)
   }
-  if (!serviceResult?.runtime_contract || serviceResult.runtime_contract.contract_type !== "api_response") {
-    throw new Error(`Registered service dispatch lacks canonical API response contract: ${serviceResultRaw.slice(0, 1000)}`)
+  if (
+    !serviceResult?.authorized_tick?.receipt?.receipt_hash72
+    || !serviceResult?.unified_ledger?.tip_hash72
+  ) {
+    throw new Error(`Registered service dispatch lacks native authority/ledger receipts: ${serviceResultRaw.slice(0, 1000)}`)
   }
   functionalActions.service_dispatch = {
     ok: true,
@@ -307,19 +340,21 @@ try {
   const workspaceResultHeading = visualProgram.getByRole("heading", { name: "Result", exact: true }).last()
   const workspaceResultRaw = await workspaceResultHeading.locator("xpath=..").locator("pre").innerText()
   const workspaceResult = JSON.parse(workspaceResultRaw)
-  if (workspaceResult?.ok === false) {
-    throw new Error(`Workspace project creation returned ok=false: ${workspaceResultRaw.slice(0, 1000)}`)
-  }
-  if (!workspaceResult?.runtime_contract || workspaceResult.runtime_contract.contract_type !== "api_response") {
-    throw new Error(`Workspace project creation lacks canonical API response contract: ${workspaceResultRaw.slice(0, 1000)}`)
+  const createdProjectId = workspaceResult?.result?.project?.project_id
+    ?? workspaceResult?.project?.project_id
+    ?? null
+  if (
+    workspaceResult?.ok !== true
+    || workspaceResult?.status !== "WORKSPACE_PROJECT_OPENED"
+    || !createdProjectId
+  ) {
+    throw new Error(`Workspace project creation did not return its native opened-project result: ${workspaceResultRaw.slice(0, 1000)}`)
   }
   functionalActions.workspace_project_create = {
     ok: true,
     schema: workspaceResult.schema ?? null,
     status: workspaceResult.status ?? null,
-    project_id: workspaceResult?.result?.project?.project_id
-      ?? workspaceResult?.project?.project_id
-      ?? null,
+    project_id: createdProjectId,
   }
 
   const registryText = await visualProgram.innerText()
