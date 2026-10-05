@@ -282,3 +282,65 @@ I080 grants no:
 
 The browser remains the source semantic/projection seed; the exact Lane 5
 candidate is the deterministic BigInt/memristor/Hash216 reconstruction path.
+
+
+## Deterministic HTML knowledge-graph QPU closure
+
+I080 now closes the browser-facing QPU as an additive surface at
+\`examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html\`; the
+frozen I041 source remains unchanged. The browser QPU and Python witness share
+the following native address contract:
+
+\[
+5184 = 81\cdot64 = 72^2,\qquad
+\frac{64}{72}=\frac{72}{81}=\frac89.
+\]
+
+One Lane 5 tick advances one addressed optimization operation. The u^16
+nine-position gear is
+
+\[
+E=\{8,24,40,56,72,16,32,48,64\},
+\qquad 9\cdot16=144=2\cdot72,
+\]
+
+and the full address period restores after 5184 ticks.
+
+The character carrier is total over addresses 0..5183. Its signed character
+offset alphabet is \(-9..+9\), while the inherited 81-cell serializer retains
+its existing 0..8 local residue encoding as a separate compatibility surface.
+The nucleus-anchored trinary phase tensor records one fixed anchor plus 5183
+free trinary positions, written natively as \`3^5183\`.
+
+Typed Genesis constructors are fixed-width 5184-character carriers:
+
+- \`10 + 0^5182\`: Lo Shu / 9x9 Sudoku-qudit nucleus and the ten-symbol decimal address alphabet with HNAN zero;
+- \`20 + 0^5182\`: 4,7,11 dyadic scaling quantization;
+- \`30 + 0^5182\`: \`a^2+b^2=c^2=(A+B=C)/(AB/P^4)\` with \`1,2,3:2,4,6:3,6,9\`;
+- \`100 + 0^5181\`: typed dual-qudit constructor \`100=90+10=81*81\`, carrying 6561 ordered qudit-pair addresses.
+
+Hash216 translation remains lossless through inherited I065 hydration: three
+ordered Hash72 lanes expand to 3x5184 = 15552 attached components and
+recompress exactly to the original 216-symbol source.
+
+### Lossless symbolic IEEE-754 RNA ingress/egress
+
+IEEE binary16, binary32, and binary64 are accepted as raw bit strings. Ingress
+splits and preserves sign, exponent, fraction, classification, and payload bits,
+then constructs the palindromic RNA carrier \`bits || "." || reverse(bits)\`.
+Lane 5 consumes the symbolic record. Egress validates the complete record and
+returns the exact original bit string. Signed zero, subnormal encodings,
+infinities, and NaN payload bits therefore remain distinguishable end-to-end.
+
+### Formal proof gates
+
+\`formal/wolfram/pass220_i080_deterministic_knowledge_graph_qpu_v1.wl\` was
+evaluated in a Wolfram Language kernel and passed 31/31 exact checks. The
+committed evidence is
+\`evidence/pass220/i080_deterministic_knowledge_graph_qpu_wolfram_20261005_v1.output.json\`.
+
+\`formal/lean/HHS/Pass220/I080DeterministicKnowledgeGraphQPU.lean\` proves the
+5184 factorizations, 64:72:81 cross-product closure, Hash216 hydration count,
+u^16 nine-phase/two-turn closure, Genesis widths, palindromic RNA roundtrip,
+IEEE field widths, and fail-closed authority boundary. CI builds the HHS Lean
+root, runs the kernel checker, and performs the axiom audit.
