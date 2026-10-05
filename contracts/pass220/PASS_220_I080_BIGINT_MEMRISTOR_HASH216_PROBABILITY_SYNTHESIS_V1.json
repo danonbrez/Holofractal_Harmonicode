@@ -31,6 +31,16 @@
     "bigint_serializer": {
       "path": "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py",
       "git_blob_sha": "cb18ec3f1d35017cb6c7b2b40848b398930270bc"
+    },
+    "deterministic_qpu_runtime": {
+      "path": "hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py",
+      "git_blob_sha": "5f7af7c57f78f5be17659f715d639b9614557f34",
+      "role": "complete 5184-address Genesis/phase-gear/Hash216/IEEE symbolic boundary witness"
+    },
+    "deterministic_qpu_html": {
+      "path": "examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html",
+      "git_blob_sha": "0f01eb814623512eda6afb2a5ef2005d4df99a2b",
+      "role": "additive deterministic browser QPU surface; frozen I041 seed remains unchanged"
     }
   },
   "bigint_knowledge_graph": {
@@ -51,7 +61,44 @@
     ],
     "fixed_width_rational_scientific_serialization": true,
     "one_final_memristor_edge_per_vm81_cell": true,
-    "path_dependent_reuse_updates_per_edge": 1
+    "path_dependent_reuse_updates_per_edge": 1,
+    "inherited_vm81_offset_alphabet": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "character_address_offset_alphabet": [
+      -9,
+      -8,
+      -7,
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "every_character_addressed": true,
+    "character_address_range": [
+      0,
+      5183
+    ]
   },
   "deterministic_probability_synthesis": {
     "browser_probability_semantics_source": "examples/ParticleSimulation.html",
@@ -88,7 +135,9 @@
     "browser_math_random_authority": false,
     "host_float_probability_authority": false,
     "gpu_float_authority": false,
-    "external_egress_authority": false
+    "external_egress_authority": false,
+    "ieee_float_internal_logic_authority": false,
+    "lossy_scalar_projection_authority": false
   },
   "lane5_tick_optimization": {
     "rule": "every simulation tick executes exactly one Lane 5 optimization operation",
@@ -177,6 +226,88 @@
       "commutative_rewrite": false,
       "reciprocal_cancellation": false,
       "constructor_scalarization": false
+    }
+  },
+  "deterministic_knowledge_graph_qpu": {
+    "genesis": {
+      "10": "10 + 5182 HNAN-zero positions = Lo Shu 9x9 Sudoku qudit nucleus / decimal address alphabet",
+      "20": "4,7,11 dyadic scaling quantization",
+      "30": "a^2+b^2=c^2=(A+B=C)/(AB/P^4), with 1,2,3:2,4,6:3,6,9",
+      "100": "100=90+10=81*81 dual 9x9 qudit entanglement constructor",
+      "zero": "5184 addressed HNAN-zero positions"
+    },
+    "trinary_phase_tensor": {
+      "carrier_positions": 5184,
+      "nucleus_anchor_positions": 1,
+      "free_positions": 5183,
+      "state_space_source": "3^5183"
+    },
+    "phase_gear": {
+      "one_tick_one_lane5_optimization_operation": true,
+      "phase_step": "u^16",
+      "E": [
+        8,
+        24,
+        40,
+        56,
+        72,
+        16,
+        32,
+        48,
+        64
+      ],
+      "ratio_64_72": "8/9",
+      "ratio_72_81": "8/9",
+      "common_closure": "64*81=72^2=5184",
+      "nine_steps": "9*16=144=2*72"
+    },
+    "hash216_hydration": {
+      "width": 216,
+      "planes": 3,
+      "positions_per_plane": 5184,
+      "attached_components": 15552,
+      "exact_recompression_required": true
+    },
+    "ieee754_ingress_egress": {
+      "formats": {
+        "binary16": [
+          1,
+          5,
+          10
+        ],
+        "binary32": [
+          1,
+          8,
+          23
+        ],
+        "binary64": [
+          1,
+          11,
+          52
+        ]
+      },
+      "pipeline": "raw IEEE bit string -> symbolic palindromic RNA record -> native Lane 5 state -> exact raw IEEE bit string",
+      "preserves": [
+        "raw bits",
+        "sign bit",
+        "exponent bits",
+        "fraction bits",
+        "zero sign",
+        "subnormal class",
+        "infinity class",
+        "NaN payload bits"
+      ],
+      "internal_ieee_float_algorithm_used": false,
+      "lossy_scalar_projection_used": false
+    },
+    "proof_constraints": {
+      "wolfram_source": "formal/wolfram/pass220_i080_deterministic_knowledge_graph_qpu_v1.wl",
+      "wolfram_evidence": "evidence/pass220/i080_deterministic_knowledge_graph_qpu_wolfram_20261005_v1.output.json",
+      "wolfram_checks": "31/31 PASS",
+      "lean_source": "formal/lean/HHS/Pass220/I080DeterministicKnowledgeGraphQPU.lean",
+      "lean_root": "formal/lean/HHS.lean",
+      "lean_kernel_check_required": true,
+      "lean_axiom_audit_required": true
     }
   }
 }
