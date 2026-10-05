@@ -614,6 +614,15 @@ def lane5_tick_optimization_operation(
             "u36_twice_restores": restored_phase == phase,
             "u72_is_u0": (phase + RING72) % RING72 == phase,
         },
+        "bigint_state_space_per_tick": {
+            "source_identity": "5184*3=3^(5184)/72^72",
+            "hash216_plane_roles": ("PREVIOUS:A", "STATE:B", "RECEIPT:C"),
+            "positions_per_plane": VM81_COORDINATES,
+            "planes": 3,
+            "materialized_components": 3 * VM81_COORDINATES,
+            "typed_manifold_identity_preserved": True,
+            "ordinary_scalar_equality_evaluated": False,
+        },
         "hnan_periodicity": {
             "source_expression": "u^(5184=81*64=72²/72⁷²MOD72)=HNAN periodicity",
             "geometry_5184": VM81_COORDINATES,
@@ -632,6 +641,113 @@ def lane5_tick_optimization_operation(
             "canonical_hash216_commit_authority": False,
             "floating_point_authority": False,
         },
+    }
+
+
+def bigint_hash216_state_offset_interpretation(
+    hash216: str,
+) -> dict[str, Any]:
+    """Interpret Hash216 as three ordered 5,184-position BigInt offset planes.
+
+    I080 preserves the supplied HARMONICODE constructor equations as typed
+    relations.  In particular, A=C-B and B=C-A are not rewritten through
+    ordinary commutative cancellation; AB=P^4 and BA=-P^4 retain distinct
+    ordered closure roles.  The +/- 5,184 HNAN offsets both close to local
+    residue zero under Mod(5184), while their direction remains provenance.
+
+    The source state-space identity
+
+        5184*3 = 3^5184 / 72^72
+
+    is retained as a typed manifold identity.  The left side is the materialized
+    PREVIOUS/STATE/RECEIPT attachment count; the right side is the declared
+    ternary state-space / Hash72 normalization view.  This layer does not
+    evaluate that cross-view identity as ordinary scalar arithmetic.
+    """
+    lanes = split_hash216(hash216)
+    hydration = hydrate_hash216_geometry(hash216)
+    if hydration["full_attached_components"] != 3 * VM81_COORDINATES:
+        raise Pass220I080Error("Hash216 offset plane geometry drift")
+
+    plane_roles = ("PREVIOUS", "STATE", "RECEIPT")
+    symbols = ("A", "B", "C")
+    plane_records = []
+    for role, symbol, lane, plane in zip(
+        plane_roles,
+        symbols,
+        lanes,
+        hydration["planes"],
+    ):
+        if plane["expanded_vertices"] != VM81_COORDINATES:
+            raise Pass220I080Error(f"{role} offset plane must hydrate to 5184")
+        plane_records.append({
+            "role": role,
+            "symbol": symbol,
+            "hash72": lane,
+            "offset_positions": plane["expanded_vertices"],
+            "expanded_geometry_sha256": plane["expanded_geometry_sha256"],
+            "roundtrip_exact": plane["roundtrip_exact"],
+        })
+
+    offset_residue = VM81_COORDINATES % VM81_COORDINATES
+    if offset_residue != 0:
+        raise Pass220I080Error("5184 state offset must close mod 5184")
+
+    a2, b2, c2 = 1, 2, 3
+    c2_minus_a2 = c2 - a2
+    if c2_minus_a2 != 2:
+        raise Pass220I080Error("canonical c^2-a^2 projection drift")
+
+    return {
+        "schema": f"{SCHEMA}_HASH216_BIGINT_STATE_OFFSET_V1",
+        "hash216_lane_order": tuple(
+            f"{role}:{symbol}" for role, symbol in zip(plane_roles, symbols)
+        ),
+        "planes": tuple(plane_records),
+        "constructor_relations": {
+            "A": (
+                "A=C-B=((a^2+b^2)^6/c^2)/(BA=-P^4)="
+                "HNAN+(5184)MOD(5184)=(c^2-a^2)A"
+            ),
+            "B": (
+                "B=C-A=((a^2+b^2)^6/c^2)/(AB=P^4)="
+                "HNAN-(5184)MOD(5184)=(c^2-a^2)B"
+            ),
+            "C": "RECEIPT_C_SHARED_CLOSURE_CARRIER",
+            "direct_closure": "AB=P^4",
+            "mirror_closure": "BA=-P^4",
+            "ordinary_commutative_rewrite_authorized": False,
+            "ordinary_reciprocal_cancellation_authorized": False,
+        },
+        "canonical_square_projection": {
+            "a^2": a2,
+            "b^2": b2,
+            "c^2": c2,
+            "c^2-a^2": c2_minus_a2,
+            "constructor_scalarization_authorized": False,
+        },
+        "hnan_5184_state_offsets": {
+            "A_direction": "+5184",
+            "B_direction": "-5184",
+            "modulus": VM81_COORDINATES,
+            "A_residue": offset_residue,
+            "B_residue": (-VM81_COORDINATES) % VM81_COORDINATES,
+            "same_local_HNAN_residue": True,
+            "directional_provenance_preserved": True,
+        },
+        "state_space_per_tick": {
+            "source_identity": "5184*3=3^(5184)/72^72",
+            "planes": 3,
+            "positions_per_plane": VM81_COORDINATES,
+            "materialized_components": 3 * VM81_COORDINATES,
+            "ternary_base": 3,
+            "ternary_exponent": VM81_COORDINATES,
+            "hash72_normalizer_base": RING72,
+            "hash72_normalizer_exponent": RING72,
+            "typed_manifold_identity_preserved": True,
+            "ordinary_scalar_equality_evaluated": False,
+        },
+        "roundtrip_exact": hydration["roundtrip_exact"],
     }
 
 
@@ -728,6 +844,15 @@ def probability_synthesis_layer(
             event["lane5_tick_operation"]["hnan_periodicity"]["passes"]
             for event in schedule
         ),
+        "hash216_3x5184_state_space_each_tick": all(
+            event["lane5_tick_operation"]["bigint_state_space_per_tick"][
+                "materialized_components"
+            ] == 3 * VM81_COORDINATES
+            and event["lane5_tick_operation"]["bigint_state_space_per_tick"][
+                "source_identity"
+            ] == "5184*3=3^(5184)/72^72"
+            for event in schedule
+        ),
         "same_input_same_schedule": True,
         "browser_math_random_used": False,
         "exact_rational_probability": True,
@@ -770,6 +895,7 @@ def build_candidate(seed_hash216: str | None = None) -> dict[str, Any]:
     output_hydration = hydrate_hash216_geometry(output_hash216)
     if output_hydration["full_attached_components"] != FULL_HASH216_COMPONENTS:
         raise Pass220I080Error("output Hash216 hydration component drift")
+    state_offset = bigint_hash216_state_offset_interpretation(output_hash216)
 
     candidate = {
         "schema": SCHEMA,
@@ -783,6 +909,7 @@ def build_candidate(seed_hash216: str | None = None) -> dict[str, Any]:
         "probability_synthesis": probability,
         "hash72_lanes": lanes,
         "candidate_hash216": output_hash216,
+        "hash216_bigint_state_offset": state_offset,
         "candidate_hash216_hydration": {
             "roundtrip_exact": output_hydration["roundtrip_exact"],
             "full_attached_components": output_hydration["full_attached_components"],
@@ -881,6 +1008,52 @@ def self_test() -> dict[str, Any]:
             and candidate["candidate_hash216_hydration"]["full_attached_components"]
             == FULL_HASH216_COMPONENTS
         ),
+        "hash216_lane_roles_A_B_C": (
+            candidate["hash216_bigint_state_offset"]["hash216_lane_order"]
+            == ("PREVIOUS:A", "STATE:B", "RECEIPT:C")
+        ),
+        "hash216_three_5184_offset_planes": (
+            candidate["hash216_bigint_state_offset"]["state_space_per_tick"][
+                "materialized_components"
+            ] == 15552
+            and all(
+                plane["offset_positions"] == 5184
+                for plane in candidate["hash216_bigint_state_offset"]["planes"]
+            )
+        ),
+        "A_B_HNAN_5184_mod_closure": (
+            candidate["hash216_bigint_state_offset"]["hnan_5184_state_offsets"][
+                "A_residue"
+            ] == 0
+            and candidate["hash216_bigint_state_offset"]["hnan_5184_state_offsets"][
+                "B_residue"
+            ] == 0
+            and candidate["hash216_bigint_state_offset"]["hnan_5184_state_offsets"][
+                "directional_provenance_preserved"
+            ] is True
+        ),
+        "AB_BA_ordered_closures_preserved": (
+            candidate["hash216_bigint_state_offset"]["constructor_relations"][
+                "direct_closure"
+            ] == "AB=P^4"
+            and candidate["hash216_bigint_state_offset"]["constructor_relations"][
+                "mirror_closure"
+            ] == "BA=-P^4"
+            and candidate["hash216_bigint_state_offset"]["constructor_relations"][
+                "ordinary_commutative_rewrite_authorized"
+            ] is False
+        ),
+        "typed_full_state_space_identity_preserved": (
+            candidate["hash216_bigint_state_offset"]["state_space_per_tick"][
+                "source_identity"
+            ] == "5184*3=3^(5184)/72^72"
+            and candidate["hash216_bigint_state_offset"]["state_space_per_tick"][
+                "typed_manifold_identity_preserved"
+            ] is True
+            and candidate["hash216_bigint_state_offset"]["state_space_per_tick"][
+                "ordinary_scalar_equality_evaluated"
+            ] is False
+        ),
         "replay_bit_exact": candidate == replay,
         "changed_seed_changes_schedule": (
             candidate["probability_synthesis"]["schedule_root_sha256"]
@@ -922,6 +1095,7 @@ __all__ = [
     "Pass220I080Error",
     "SCHEMA",
     "VERSION",
+    "bigint_hash216_state_offset_interpretation",
     "bigint_serialization_layer",
     "build_candidate",
     "default_seed_hash216",
