@@ -522,5 +522,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          subject="$(git show -s --format=%s "$TARGET_SHA")"
+          if [[ "$subject" == "docs: refresh Hash216 repository dependency index" ]]; then
+            echo "HHS_EXACT_MAIN_HASH216_INDEX_TERMINAL_GENERATED_SUCCESSOR=$TARGET_SHA"
+            exit 0
+          fi
           gh workflow run repository-hash216-dependency-index.yml --ref main
           echo "HHS_EXACT_MAIN_HASH216_INDEX_QUEUED=$TARGET_SHA"

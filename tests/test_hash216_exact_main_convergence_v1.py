@@ -66,3 +66,19 @@ def test_exact_main_bundle_build_verifies_frontend_capability_projection_sources
         "npm run test:frontend-telemetry:source",
     ):
         assert command in workflow
+
+
+def test_generated_hash216_successor_is_terminal_after_verified_promotion() -> None:
+    exact_main = Path(
+        ".github/workflows/digitalocean-production-main.yml"
+    ).read_text(encoding="utf-8")
+
+    queue_step = exact_main.split(
+        "- name: Queue Hash216 repository index after verified promotion", 1
+    )[1]
+    assert 'git show -s --format=%s "$TARGET_SHA"' in queue_step
+    assert 'docs: refresh Hash216 repository dependency index' in queue_step
+    assert "HHS_EXACT_MAIN_HASH216_INDEX_TERMINAL_GENERATED_SUCCESSOR=$TARGET_SHA" in queue_step
+    assert queue_step.index("TERMINAL_GENERATED_SUCCESSOR") < queue_step.index(
+        "gh workflow run repository-hash216-dependency-index.yml --ref main"
+    )

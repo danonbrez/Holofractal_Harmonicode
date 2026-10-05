@@ -288,3 +288,31 @@ Restart state:
 - post-merge acceptance remains fail-closed on exact SHA `PROMOTED`, local
   service-registry verification, public service-registry verification, and public
   HTTPS Runtime OS verification.
+
+
+## 2026-10-05 generated-successor terminal closure
+
+The serialized delivery chain must terminate after the generated Hash216 successor
+itself reaches Exact-Main production. The generated index projection embeds its
+bound source commit in projection artifacts, so unconditionally refreshing the
+index after a generated-only successor could otherwise produce another generated
+successor indefinitely.
+
+Exact-Main now recognizes the canonical generated projection commit subject
+`docs: refresh Hash216 repository dependency index`. After that SHA has passed
+the same `PROMOTED`, local registry, public registry, and public HTTPS gates, the
+workflow emits
+`HHS_EXACT_MAIN_HASH216_INDEX_TERMINAL_GENERATED_SUCCESSOR=<sha>` and does not
+queue another Hash216 refresh.
+
+Non-generated development/merge commits retain the normal post-promotion index
+refresh path. Thus the closed chain is finite:
+
+```text
+development main
+-> verified Exact-Main
+-> one Hash216 refresh
+-> generated successor
+-> verified Exact-Main
+-> terminal closure
+```
