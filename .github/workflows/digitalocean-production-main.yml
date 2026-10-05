@@ -428,10 +428,12 @@ jobs:
           runuser -u hhs -- test -x "$APP_ROOT/hhs_backend"
           runuser -u hhs -- test -r "$APP_ROOT/hhs_backend/__init__.py"
           echo "HHS_PRODUCTION_SERVICE_PERMISSIONS_VERIFIED=1"
-          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime'
-          systemctl cat hhs.service | grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current'
-          systemctl cat hhs.service | grep -Fq 'HHS_COGNITION_AUTO_TICK=0'
-          systemctl show hhs.service -p ExecStart --value | grep -Fq 'hhs_backend.production_visual_server:app'
+          hhs_service_unit="$(systemctl cat hhs.service)"
+          grep -Fq 'HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime' <<<"$hhs_service_unit"
+          grep -Fq 'HHS_RUNTIME_OS_ASSET_ROOT=/var/lib/hhs/runtime-os/current' <<<"$hhs_service_unit"
+          grep -Fq 'HHS_COGNITION_AUTO_TICK=0' <<<"$hhs_service_unit"
+          hhs_service_exec_start="$(systemctl show hhs.service -p ExecStart --value)"
+          grep -Fq 'hhs_backend.production_visual_server:app' <<<"$hhs_service_exec_start"
           release=$(python3 /usr/local/lib/hhs-guarded-update/runtime-os-bundle.py verify \
             --root "$BUNDLE_ROOT" --expected-sha "$TARGET_SHA")
           test "$(readlink -f "$BUNDLE_ROOT/current")" = "$release"
@@ -448,7 +450,8 @@ jobs:
             ss -H -ltnp 'sport = :8715' >&2 || true
             exit 23
           }
-          systemctl show hhs-lane5-ingress.service -p ExecStart --value | grep -Fq 'hhs_backend.lane5_ingress_gateway:app'
+          lane5_service_exec_start="$(systemctl show hhs-lane5-ingress.service -p ExecStart --value)"
+          grep -Fq 'hhs_backend.lane5_ingress_gateway:app' <<<"$lane5_service_exec_start"
           curl -fsS --max-time 10 http://127.0.0.1:8715/__hhs_lane5_ingress_health >/tmp/hhs-lane5-ingress-health.json
           nginx_dump=$(nginx -T 2>&1)
           ! grep -Fq 'proxy_pass http://127.0.0.1:8080' <<<"$nginx_dump"
