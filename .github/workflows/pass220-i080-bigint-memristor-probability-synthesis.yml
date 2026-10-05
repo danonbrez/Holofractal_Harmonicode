@@ -64,7 +64,7 @@ jobs:
           from pathlib import Path
           report=json.loads(Path('/tmp/i080-self-test.json').read_text())
           assert report['status'] == 'PASS'
-          assert report['check_count'] == report['pass_count'] == 24
+          assert report['check_count'] == report['pass_count'] == 29
           assert report['failed'] == []
           assert len(report['input_hash216']) == 216
           assert len(report['candidate_hash216']) == 216
