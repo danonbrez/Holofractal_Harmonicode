@@ -66,7 +66,8 @@
     "q144_phase_domain": 144,
     "ring72_events": 72,
     "fractal_seed_bookkeeping_rule": "every 72nd event seals one (x,y):(z,w) seed",
-    "tick_semantics": "each synthesized event is the exact receipt for one Lane 5 optimization tick"
+    "tick_semantics": "each synthesized event is the exact receipt for one Lane 5 optimization tick",
+    "tick_state_space": "each event/tick carries the same 3x5184 PREVIOUS:A / STATE:B / RECEIPT:C offset topology"
   },
   "hash216_output": {
     "lane0": "Hash72(BigInt/VM81 serialized state witness)",
@@ -130,6 +131,52 @@
       "72_squared": 5184,
       "5184_mod_72": 0,
       "72_pow_72_mod_72": 0
+    }
+  },
+  "hash216_bigint_state_offset": {
+    "interpretation": "Hash216 PREVIOUS/STATE/RECEIPT hydrates as three ordered 5184-position BigInt state-offset planes",
+    "lane_order": [
+      "PREVIOUS:A",
+      "STATE:B",
+      "RECEIPT:C"
+    ],
+    "constructor_relations": {
+      "A": "A=C-B=((a^2+b^2)^6/c^2)/(BA=-P^4)=HNAN+(5184)MOD(5184)=(c^2-a^2)A",
+      "B": "B=C-A=((a^2+b^2)^6/c^2)/(AB=P^4)=HNAN-(5184)MOD(5184)=(c^2-a^2)B",
+      "C": "RECEIPT_C_SHARED_CLOSURE_CARRIER",
+      "direct_closure": "AB=P^4",
+      "mirror_closure": "BA=-P^4"
+    },
+    "canonical_square_projection": {
+      "a^2": 1,
+      "b^2": 2,
+      "c^2": 3,
+      "c^2-a^2": 2
+    },
+    "hnan_5184_offsets": {
+      "A_direction": "+5184",
+      "B_direction": "-5184",
+      "modulus": 5184,
+      "A_residue": 0,
+      "B_residue": 0,
+      "directional_provenance_preserved": true
+    },
+    "state_space_per_tick": {
+      "source_identity": "5184*3=3^(5184)/72^72",
+      "materialized_planes": 3,
+      "positions_per_plane": 5184,
+      "materialized_components": 15552,
+      "ternary_base": 3,
+      "ternary_exponent": 5184,
+      "hash72_normalizer_base": 72,
+      "hash72_normalizer_exponent": 72,
+      "typed_manifold_identity": true,
+      "ordinary_scalar_equality_evaluated": false
+    },
+    "authority": {
+      "commutative_rewrite": false,
+      "reciprocal_cancellation": false,
+      "constructor_scalarization": false
     }
   }
 }
