@@ -1,0 +1,135 @@
+name: Pass 220 I079 HARMONICODE Tri-Layer Proof Hydration
+
+on:
+  push:
+    branches:
+      - pass220/i079-harmonicode-trilayer-proof-hydration-20261005
+    paths:
+      - "contracts/pass220/PASS_220_I079_*"
+      - "hhs_runtime/hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
+      - "tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
+      - "formal/lean/HHS/Pass220/HarmonicodeTriLayerProofHydration.lean"
+      - "formal/lean/HHS.lean"
+      - "formal/wolfram/pass220_i079_harmonicode_trilayer_proof_hydration_v1.wl"
+      - "docs/whitepapers/HHS_PASS_220_I079_HARMONICODE_TRILAYER_PROOF_HYDRATION_V1.md"
+      - "docs/operations/restart/PASS_220_I079_HARMONICODE_TRILAYER_PROOF_HYDRATION_RESTART_20261005.md"
+      - ".github/workflows/pass220-i079-harmonicode-trilayer-proof-hydration.yml"
+  pull_request:
+    paths:
+      - "contracts/pass220/PASS_220_I079_*"
+      - "hhs_runtime/hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
+      - "tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py"
+      - "formal/lean/HHS/Pass220/HarmonicodeTriLayerProofHydration.lean"
+      - "formal/lean/HHS.lean"
+      - "formal/wolfram/pass220_i079_harmonicode_trilayer_proof_hydration_v1.wl"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i079:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify frozen Harmonicode source blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object contracts/pass220/PASS_220_I079_HARMONICODE_SOURCE_A_I_TENSOR_1_0.harmonicode)" = "c8fd60209339810ad6dcb7952c3aba6c15f70f66"
+          test "$(git hash-object contracts/pass220/PASS_220_I079_HARMONICODE_SOURCE_B_PRIME_CURVATURE_1_0.harmonicode)" = "d740560374d3cb1f98f1ce7df7b636060609a589"
+
+      - name: Compile I079 Python surface
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py
+          python -m py_compile tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py
+
+      - name: Run dependency-scoped I079 tests
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1.py \
+            tests/pass220/test_hhs_pass220_i074_full_tensor_hnan_closure_hydration_v1.py
+
+      - name: Execute I079 runtime self-test
+        run: |
+          python -m hhs_runtime.hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1 > /tmp/i079.json
+          python - <<'PY'
+          import json
+          report=json.load(open('/tmp/i079.json', encoding='utf-8'))
+          assert report['status'] == 'PASS', report
+          assert report['check_count'] == report['pass_count'] == 20, report
+          assert report['failed'] == [], report
+          assert len(report['binding_hash72']) == 72
+          assert len(report['candidate_hash216']) == 216
+          PY
+
+      - name: Validate contract and Wolfram structural surface
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract=json.loads(Path(
+              'contracts/pass220/PASS_220_I079_HARMONICODE_TRILAYER_PROOF_HYDRATION_V1.json'
+          ).read_text(encoding='utf-8'))
+          assert contract['schema'] == 'HHS_PASS_220_I079_HARMONICODE_TRILAYER_PROOF_HYDRATION_V1'
+          assert contract['hash216']['width'] == 216
+          assert contract['hash216']['hydrated_components'] == 15552
+          assert contract['formalization']['wolfram']['connected_execution_evidence_present'] is False
+          assert contract['authority']['candidate_only'] is True
+          assert contract['authority']['canonical_hash216_commit_authority'] is False
+
+          source=Path(
+              'formal/wolfram/pass220_i079_harmonicode_trilayer_proof_hydration_v1.wl'
+          ).read_text(encoding='utf-8')
+          for token in (
+              'sourceAPath',
+              'sourceBPath',
+              'GOOD_CLOSED_k',
+              'hash216Planes',
+              'source_a_interpreted_as_host_expression',
+              'connected_evidence_claimed_by_repository_source',
+          ):
+              assert token in source, token
+          PY
+
+      - name: Verify I079 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source=Path(
+              'formal/lean/HHS/Pass220/HarmonicodeTriLayerProofHydration.lean'
+          ).read_text(encoding='utf-8')
+          for token in (
+              'theorem vm5184Factorization',
+              'theorem hash216ThreeHash72',
+              'theorem threeLayerBinding',
+              'theorem positionalSymbolPolicy',
+              'theorem a2LoShuAnchorExact',
+              'theorem proofRequiredForTranslation',
+              'theorem goodClosedRemainsTypedCorrespondence',
+              'theorem inheritsI074HNANClosure',
+              'theorem inheritsI077ExactMatrixPowerTransport',
+              'theorem authorityBoundary',
+          ):
+              assert token in source, token
+          root=Path('formal/lean/HHS.lean').read_text(encoding='utf-8')
+          assert 'import HHS.Pass220.HarmonicodeTriLayerProofHydration' in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
