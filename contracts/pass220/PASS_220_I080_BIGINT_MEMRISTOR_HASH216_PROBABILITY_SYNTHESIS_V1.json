@@ -1,0 +1,81 @@
+{
+  "schema": "HHS_PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1",
+  "version": 1,
+  "profile": "PASS220-I080-BIGINT-MEMRISTOR-QPU-PROBABILITY-v1",
+  "base_main": "7b71ec336c67a268c739537a805e4fa9b191fe7f",
+  "source_stack": {
+    "canonical_browser_seed": {
+      "path": "examples/ParticleSimulation.html",
+      "git_blob_sha": "218d89d67803b5b10ab86b1cdb97434438e25082",
+      "role": "I041 probability/event-topology and constructor-knowledge-graph semantic seed"
+    },
+    "knowledge_graph_contract": {
+      "path": "docs/pass220/PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE.md",
+      "git_blob_sha": "5dd0a44953ff6c8afa4558627caa584b55ff3366"
+    },
+    "memristor_qpu": {
+      "path": "hhs_runtime/pass163/vmrc.py",
+      "git_blob_sha": "9bdcab13739e98ad4189c5d2a6e5ee001fce17a2",
+      "semantics": [
+        "81x64=5184 VMRC snapshot",
+        "exact rational path-dependent memristor conductance",
+        "Hash72 state identity",
+        "inherited Hash216 operation identity",
+        "deterministic replay"
+      ]
+    },
+    "hash216_hydration": {
+      "path": "hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py",
+      "git_blob_sha": "fc998ef613c9d22c6f105016a649d4d96bc5e766"
+    },
+    "bigint_serializer": {
+      "path": "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py",
+      "git_blob_sha": "cb18ec3f1d35017cb6c7b2b40848b398930270bc"
+    }
+  },
+  "bigint_knowledge_graph": {
+    "vm81_cells": 81,
+    "operations_per_cell": 64,
+    "serialized_characters": 5184,
+    "coordinate_law": "linear5184=64*cell81+operation64=72*hash72_row+hash72_column",
+    "offset_alphabet": [0,1,2,3,4,5,6,7,8],
+    "fixed_width_rational_scientific_serialization": true,
+    "one_final_memristor_edge_per_vm81_cell": true,
+    "path_dependent_reuse_updates_per_edge": 1
+  },
+  "deterministic_probability_synthesis": {
+    "browser_probability_semantics_source": "examples/ParticleSimulation.html",
+    "browser_math_random_is_authority": false,
+    "authority_sampler": "domain-separated SHA-256 stream + exact rejection sampling",
+    "floating_point_probability_authority": false,
+    "same_hash216_and_graph_state_replays_identically": true,
+    "different_hash216_or_graph_state_changes_schedule": true,
+    "i041_virtual_decay_particles": 10368,
+    "i041_virtual_decay_probability_per_particle_per_turn": "1/10368",
+    "deterministic_scheduled_victims_per_turn": 1,
+    "q144_phase_domain": 144,
+    "ring72_events": 72,
+    "fractal_seed_bookkeeping_rule": "every 72nd event seals one (x,y):(z,w) seed"
+  },
+  "hash216_output": {
+    "lane0": "Hash72(BigInt/VM81 serialized state witness)",
+    "lane1": "Hash72(memristor knowledge-graph witness)",
+    "lane2": "Hash72(deterministic probability-schedule witness)",
+    "width": 216,
+    "hydrated_components": 15552,
+    "roundtrip_required": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "isolated_vmrc_execution_allowed": true,
+    "shared_vmrc_mutation_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "browser_math_random_authority": false,
+    "host_float_probability_authority": false,
+    "gpu_float_authority": false,
+    "external_egress_authority": false
+  }
+}
