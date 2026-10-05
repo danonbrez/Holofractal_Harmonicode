@@ -112,6 +112,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [vectorWarning, setVectorWarning] = useState<string | null>(null)
+  const [acquisitionOpen, setAcquisitionOpen] = useState(false)
 
   const selected = files[selectedIndex] ?? null
   const modality = selected ? modalityFor(selected) : "—"
@@ -412,10 +413,13 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
         </div>
       </section>
 
-      <details className="rounded-3xl border border-indigo-950 bg-indigo-950/10 p-3 md:p-5">
+      <details
+        className="rounded-3xl border border-indigo-950 bg-indigo-950/10 p-3 md:p-5"
+        onToggle={(event) => setAcquisitionOpen(event.currentTarget.open)}
+      >
         <summary className="cursor-pointer text-sm font-semibold text-indigo-200">Advanced: open-source acquisition and replay</summary>
         <p className="mt-2 text-[11px] leading-5 text-neutral-500">Immutable external source acquisition is separate from normal app building. Open this only when importing a pinned GitHub or Hugging Face artifact.</p>
-        <div className="mt-3"><OpenSourceAcquisitionPanel /></div>
+        {acquisitionOpen ? <div className="mt-3"><OpenSourceAcquisitionPanel /></div> : null}
       </details>
     </main>
   )

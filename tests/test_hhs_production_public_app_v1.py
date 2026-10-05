@@ -33,6 +33,7 @@ def test_production_server_composes_canonical_backend_and_verified_harmonizer():
         "/api/runtime/services/dispatch",
         "/api/runtime/installation/status",
         "/api/assistant/health",
+        "/api/assistant/deployment-health",
         "/api/assistant/chat",
         "/v1/modalities/language/models/word2vec/status",
         "/ws/runtime",

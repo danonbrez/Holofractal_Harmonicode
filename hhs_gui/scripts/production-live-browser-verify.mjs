@@ -23,6 +23,10 @@ const consoleErrors = []
 const pageErrors = []
 const requestFailures = []
 const http5xx = []
+const publicApiAttempts = {
+  interface_status: [],
+  service_registry: [],
+}
 
 let browser
 let context
@@ -38,6 +42,7 @@ let evidence = {
   page_errors: pageErrors,
   request_failures: requestFailures,
   http_5xx: http5xx,
+  public_api_attempts: publicApiAttempts,
 }
 
 const serializeError = (error) => error instanceof Error
@@ -74,23 +79,66 @@ try {
   await page.waitForSelector('[data-testid="hhs-canonical-runtime-ide"]', { timeout: 120_000 })
   await page.waitForSelector('[data-testid="hhs-product-workspace"]', { timeout: 120_000 })
 
-  const publicState = await page.evaluate(async () => {
-    const request = async (url) => {
-      const response = await fetch(url, { headers: { accept: "application/json" } })
-      const body = await response.json()
-      if (!response.ok) throw new Error(`${url} HTTP ${response.status}: ${JSON.stringify(body)}`)
-      return body
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+  const requestJsonWithRetry = async (url, attempts) => {
+    const absoluteUrl = new URL(url, BASE_URL).toString()
+    let lastError = null
+    for (let attempt = 1; attempt <= 6; attempt += 1) {
+      const attemptStarted = Date.now()
+      try {
+        const response = await context.request.get(absoluteUrl, {
+          headers: { accept: "application/json" },
+          timeout: 20_000,
+          failOnStatusCode: false,
+        })
+        const raw = await response.text()
+        let body = null
+        let parseError = null
+        try {
+          body = raw ? JSON.parse(raw) : {}
+        } catch (error) {
+          parseError = serializeError(error)
+        }
+        attempts.push({
+          attempt,
+          status: response.status(),
+          elapsed_ms: Date.now() - attemptStarted,
+          json: Boolean(body && typeof body === "object" && !Array.isArray(body)),
+          parse_error: parseError,
+          body_preview: raw.slice(0, 256),
+        })
+        if (response.ok() && body && typeof body === "object" && !Array.isArray(body)) {
+          return body
+        }
+        lastError = new Error(`${url} HTTP ${response.status()}: ${raw.slice(0, 256)}`)
+      } catch (error) {
+        lastError = error
+        attempts.push({
+          attempt,
+          status: null,
+          elapsed_ms: Date.now() - attemptStarted,
+          json: false,
+          error: serializeError(error),
+        })
+      }
+      if (attempt < 6) await sleep(2_500)
     }
-    const [interfaceStatus, serviceRegistry] = await Promise.all([
-      request("/api/interface/status"),
-      request("/api/runtime/services"),
-    ])
-    return { interfaceStatus, serviceRegistry }
-  })
+    throw lastError || new Error(`${url} did not reach JSON-ready state`)
+  }
 
-  const interfaceStatus = publicState.interfaceStatus
-  const services = Array.isArray(publicState.serviceRegistry?.services)
-    ? publicState.serviceRegistry.services
+  // Probe canonical public API state through the Playwright context with bounded
+  // retries. The actual browser UI must still hydrate and render the same
+  // registry below; retries do not substitute for the visible frontend gate.
+  const interfaceStatus = await requestJsonWithRetry(
+    "/api/interface/status",
+    publicApiAttempts.interface_status,
+  )
+  const serviceRegistry = await requestJsonWithRetry(
+    "/api/runtime/services",
+    publicApiAttempts.service_registry,
+  )
+  const services = Array.isArray(serviceRegistry?.services)
+    ? serviceRegistry.services
     : []
   const serviceNames = services
     .map((service) => String(service?.name ?? service?.runtime_contract?.name ?? "").trim())

@@ -846,6 +846,23 @@ def test_product_health_deployment_liveness_is_bounded_and_native_only() -> None
     assert '"provider:hhs.local.text"' in validator
     assert '"NATIVE_HHS_LOCAL_EXECUTABLE_AUTHORITY"' in validator
 
+    routes = (
+        ROOT / "hhs_backend" / "api" / "litert_lm_assistant_routes.py"
+    ).read_text(encoding="utf-8")
+    production_chat = (
+        ROOT / "hhs_gui" / "runtime_os" / "workspace" / "ProductionAssistantChat.tsx"
+    ).read_text(encoding="utf-8")
+    production_control = (
+        ROOT / "hhs_gui" / "runtime_os" / "workspace" / "ProductionMobileControlCenter.tsx"
+    ).read_text(encoding="utf-8")
+    assert '@router.get("/deployment-health")' in routes
+    assert "return await _service().deployment_health()" in routes
+    assert '"/api/assistant/deployment-health"' in production_chat
+    assert '"/api/assistant/health"' not in production_chat
+    assert "acquisitionOpen" in production_control
+    assert "onToggle={(event) => setAcquisitionOpen(event.currentTarget.open)}" in production_control
+    assert "acquisitionOpen ? <div" in production_control
+
 
 def test_hash216_generated_main_dispatches_exact_main() -> None:
     workflow = (
@@ -933,8 +950,10 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
     assert public_probe < browser_gate < hash216_queue
 
     for token in [
-        'request("/api/runtime/services")',
-        'request("/api/interface/status")',
+        'requestJsonWithRetry(\n    "/api/runtime/services"',
+        'requestJsonWithRetry(\n    "/api/interface/status"',
+        "context.request.get",
+        "public_api_attempts",
         'data-testid="hhs-canonical-runtime-ide"',
         'data-testid="hhs-product-workspace"',
         '"Visual Program"',
