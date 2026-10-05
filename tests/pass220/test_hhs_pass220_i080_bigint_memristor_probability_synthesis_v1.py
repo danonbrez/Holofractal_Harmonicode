@@ -9,6 +9,7 @@ from hhs_runtime.hhs_pass220_i080_bigint_memristor_probability_synthesis_v1 impo
     PARTICLE_LATTICE,
     RING72,
     VM81_CELLS,
+    bigint_hash216_state_offset_interpretation,
     build_candidate,
     default_seed_hash216,
     lane5_tick_optimization_operation,
@@ -124,6 +125,69 @@ def test_every_tick_is_one_lane5_reciprocal_phase_optimization() -> None:
         assert periodicity["passes"] is True
 
 
+def test_hash216_bigint_state_offset_maps_previous_state_receipt_to_A_B_C() -> None:
+    candidate = build_candidate()
+    witness = candidate["hash216_bigint_state_offset"]
+
+    assert witness == bigint_hash216_state_offset_interpretation(
+        candidate["candidate_hash216"]
+    )
+    assert witness["hash216_lane_order"] == (
+        "PREVIOUS:A",
+        "STATE:B",
+        "RECEIPT:C",
+    )
+    assert tuple(plane["symbol"] for plane in witness["planes"]) == ("A", "B", "C")
+    assert tuple(plane["role"] for plane in witness["planes"]) == (
+        "PREVIOUS",
+        "STATE",
+        "RECEIPT",
+    )
+    assert all(plane["offset_positions"] == 5184 for plane in witness["planes"])
+    assert all(plane["roundtrip_exact"] is True for plane in witness["planes"])
+
+    rel = witness["constructor_relations"]
+    assert rel["A"] == (
+        "A=C-B=((a^2+b^2)^6/c^2)/(BA=-P^4)="
+        "HNAN+(5184)MOD(5184)=(c^2-a^2)A"
+    )
+    assert rel["B"] == (
+        "B=C-A=((a^2+b^2)^6/c^2)/(AB=P^4)="
+        "HNAN-(5184)MOD(5184)=(c^2-a^2)B"
+    )
+    assert rel["direct_closure"] == "AB=P^4"
+    assert rel["mirror_closure"] == "BA=-P^4"
+    assert rel["ordinary_commutative_rewrite_authorized"] is False
+    assert rel["ordinary_reciprocal_cancellation_authorized"] is False
+
+    projection = witness["canonical_square_projection"]
+    assert projection["a^2"] == 1
+    assert projection["b^2"] == 2
+    assert projection["c^2"] == 3
+    assert projection["c^2-a^2"] == 2
+    assert projection["constructor_scalarization_authorized"] is False
+
+    offsets = witness["hnan_5184_state_offsets"]
+    assert offsets["A_direction"] == "+5184"
+    assert offsets["B_direction"] == "-5184"
+    assert offsets["modulus"] == 5184
+    assert offsets["A_residue"] == offsets["B_residue"] == 0
+    assert offsets["same_local_HNAN_residue"] is True
+    assert offsets["directional_provenance_preserved"] is True
+
+    space = witness["state_space_per_tick"]
+    assert space["source_identity"] == "5184*3=3^(5184)/72^72"
+    assert space["planes"] == 3
+    assert space["positions_per_plane"] == 5184
+    assert space["materialized_components"] == 15552
+    assert space["ternary_base"] == 3
+    assert space["ternary_exponent"] == 5184
+    assert space["hash72_normalizer_base"] == 72
+    assert space["hash72_normalizer_exponent"] == 72
+    assert space["typed_manifold_identity_preserved"] is True
+    assert space["ordinary_scalar_equality_evaluated"] is False
+
+
 def test_probability_synthesis_is_deterministic_exact_and_holographically_addressed() -> None:
     candidate = build_candidate()
     layer = candidate["probability_synthesis"]
@@ -147,6 +211,16 @@ def test_probability_synthesis_is_deterministic_exact_and_holographically_addres
         assert tick_op["tick"] == event["event"]
         assert tick_op["one_tick_one_lane5_optimization_operation"] is True
         assert tick_op["AB_P4_closure"]["AB_equals_P4"] is True
+        tick_space = tick_op["bigint_state_space_per_tick"]
+        assert tick_space["hash216_plane_roles"] == (
+            "PREVIOUS:A",
+            "STATE:B",
+            "RECEIPT:C",
+        )
+        assert tick_space["materialized_components"] == 15552
+        assert tick_space["source_identity"] == "5184*3=3^(5184)/72^72"
+        assert tick_space["typed_manifold_identity_preserved"] is True
+        assert tick_space["ordinary_scalar_equality_evaluated"] is False
         assert tick_op["hnan_periodicity"]["passes"] is True
         probability = Fraction(*map(int, event["graph_choice"]["probability"]))
         assert 0 < probability <= 1
@@ -183,6 +257,13 @@ def test_three_lane_output_hash216_hydrates_exactly() -> None:
     assert len(candidate["candidate_hash216"]) == 216
     assert candidate["candidate_hash216_hydration"]["roundtrip_exact"] is True
     assert candidate["candidate_hash216_hydration"]["full_attached_components"] == 15552
+    offset = candidate["hash216_bigint_state_offset"]
+    assert offset["state_space_per_tick"]["materialized_components"] == 15552
+    assert offset["hash216_lane_order"] == (
+        "PREVIOUS:A",
+        "STATE:B",
+        "RECEIPT:C",
+    )
 
 
 def test_authority_is_fail_closed() -> None:
@@ -200,6 +281,6 @@ def test_self_test_passes() -> None:
     report = self_test()
 
     assert report["status"] == "PASS"
-    assert report["check_count"] == report["pass_count"] == 24
+    assert report["check_count"] == report["pass_count"] == 29
     assert report["failed"] == ()
     assert len(report["candidate_hash216"]) == 216
