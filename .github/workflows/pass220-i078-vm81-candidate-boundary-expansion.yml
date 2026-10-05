@@ -306,7 +306,7 @@ jobs:
       - name: Upload I078 native evidence
         uses: actions/upload-artifact@v4
         with:
-          name: pass220-i078-vm81-candidate-boundary-\${{ github.sha }}
+          name: pass220-i078-vm81-candidate-boundary-${{ github.sha }}
           path: artifacts/pass220/i078/
           if-no-files-found: error
           retention-days: 90
