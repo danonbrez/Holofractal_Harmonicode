@@ -9,6 +9,7 @@ from hhs_backend.lane5_ingress_gateway import (
     GATEWAY_SCHEMA,
     Lane5IngressMediator,
     Lane5IngressRejected,
+    _websocket_connect_kwargs,
     serialize_environmental_ingress,
 )
 from deployment.digitalocean.configure_lane5_ingress_nginx import patch_nginx_text
@@ -115,6 +116,31 @@ def test_lane5_host_mediator_rejects_authority_drift(overrides) -> None:
     )
     with pytest.raises(Lane5IngressRejected):
         mediator.health()
+
+
+def test_lane5_websocket_upstream_stays_on_loopback_without_ambient_proxy() -> None:
+    kwargs = _websocket_connect_kwargs(
+        [
+            (b"host", b"159.65.178.254"),
+            (b"origin", b"https://159.65.178.254"),
+            (b"connection", b"Upgrade"),
+            (b"upgrade", b"websocket"),
+            (b"sec-websocket-key", b"example"),
+        ],
+        [],
+    )
+    forwarded = dict(
+        kwargs.get("additional_headers")
+        or kwargs.get("extra_headers")
+        or []
+    )
+    assert forwarded["host"] == "159.65.178.254"
+    assert forwarded["origin"] == "https://159.65.178.254"
+    assert "connection" not in forwarded
+    assert "upgrade" not in forwarded
+    assert "sec-websocket-key" not in forwarded
+    if "proxy" in kwargs:
+        assert kwargs["proxy"] is None
 
 
 def test_nginx_migration_replaces_public_backend_bypass_only() -> None:
