@@ -1068,6 +1068,55 @@ class HHSNativeLiteRTLMTransport:
                 "hhs_native_trace": trace,
             }
 
+        memory_acknowledgement = (
+            not receipts
+            and mode in {ASSISTANT_MODE_GENERAL_CHAT, ASSISTANT_MODE_BOTH}
+            and "remember" in query.casefold()
+        )
+        if memory_acknowledgement:
+            structured = _STRUCTURED_HISTORY_TOKEN_RE.findall(query)
+            remembered = structured[-1] if structured else ""
+            answer = (
+                f"I’ll keep {remembered} in this conversation for your next message."
+                if remembered
+                else "I’ll keep that in this conversation for your next message."
+            )
+            trace = {
+                "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                "assistant_mode": mode,
+                "generation_path": "EXACT_THREAD_MEMORY_ACKNOWLEDGEMENT",
+                "history_recall": False,
+                "conversation_memory_acknowledged": True,
+                "remembered_structured_token": remembered or None,
+                "general_chat_prompt_response_cycle": True,
+                "runtime_mutation_admitted": False,
+            }
+            trace["trace_root_hash72"] = hash72(
+                "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                trace,
+            )
+            completion_tokens = _word_count(answer)
+            return {
+                "id": _completion_id(),
+                "object": "chat.completion",
+                "created": int(time.time()),
+                "model": MODEL_ID,
+                "choices": [{
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": answer,
+                    },
+                    "finish_reason": "stop",
+                }],
+                "usage": {
+                    "prompt_tokens": _word_count(query),
+                    "completion_tokens": completion_tokens,
+                    "total_tokens": _word_count(query) + completion_tokens,
+                },
+                "hhs_native_trace": trace,
+            }
+
         ordinary_conversation = (
             mode in {ASSISTANT_MODE_GENERAL_CHAT, ASSISTANT_MODE_BOTH}
             and not receipts
