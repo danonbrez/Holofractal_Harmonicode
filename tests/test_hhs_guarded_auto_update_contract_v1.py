@@ -989,6 +989,14 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "assistant_execution_verified: true",
         "workspace_workbench_execution_verified: true",
         "terminal_websocket_execution_verified: true",
+        "intentional_request_aborts",
+        "BENIGN_BACKGROUND_ABORT_PATHS",
+        'entry.method === "GET"',
+        'entry.failure === "net::ERR_ABORTED"',
+        '"/api/assistant/deployment-health"',
+        '"/api/product/health"',
+        '"/health"',
+        '"/api/v1/pass174/status"',
         "frontend_authority: false",
     ]:
         assert token in browser
