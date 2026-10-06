@@ -4,10 +4,14 @@ from base64 import b64encode
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
+import asyncio
+import json
 import os
 
 import pytest
+from fastapi import HTTPException
 
+import hhs_backend.api.pass175_terminal_ws_routes as terminal_ws_routes
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from hhs_runtime.pass175 import (
     EncryptedHash216Store,
@@ -219,3 +223,48 @@ def test_terminal_completion_receipt_with_native_artifact_set(tmp_path: Path) ->
     assert receipt["native_artifacts"]["complete"] is True
     assert receipt["external_deployment_quota_not_an_acceptance_gate"] is True
     assert len(receipt["receipt_sha256"]) == 64
+
+def test_terminal_websocket_boot_failure_is_explicit(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fail_runtime():
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "schema": "HHS_PASS_175_TERMINAL_BOOT_FAILURE_V1",
+                "classification": "HHS_P175_TERMINAL_RUNTIME_INITIALIZATION_FAILED",
+                "detail": "state root is not writable",
+                "silent_freeze": False,
+            },
+        )
+
+    class FakeWebSocket:
+        def __init__(self) -> None:
+            self.accepted = False
+            self.sent: list[dict[str, Any]] = []
+            self.closed_code: int | None = None
+
+        async def accept(self) -> None:
+            self.accepted = True
+
+        async def send_text(self, value: str) -> None:
+            self.sent.append(json.loads(value))
+
+        async def close(self, code: int = 1000) -> None:
+            self.closed_code = code
+
+    monkeypatch.setattr(terminal_ws_routes, "get_terminal_runtime", fail_runtime)
+    websocket = FakeWebSocket()
+    asyncio.run(terminal_ws_routes.terminal_events(websocket))  # type: ignore[arg-type]
+
+    assert websocket.accepted is True
+    assert websocket.closed_code == 1011
+    assert len(websocket.sent) == 1
+    payload = websocket.sent[0]
+    assert payload["ok"] is False
+    assert payload["schema"] == "HHS_PASS_175_TERMINAL_WS_BOOT_FAILURE_V1"
+    assert (
+        payload["classification"]
+        == "HHS_P175_TERMINAL_RUNTIME_INITIALIZATION_FAILED"
+    )
+    assert payload["detail"] == "state root is not writable"
+    assert payload["parallel_state_authority"] is False
+

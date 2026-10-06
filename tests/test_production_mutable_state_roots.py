@@ -10,6 +10,7 @@ def test_production_mutable_state_roots_stay_out_of_checkout() -> None:
         "Environment=HHS_REPO_ROOT=/opt/hhs/app",
         "Environment=HHS_STORYBOOK_REEL_ARTIFACT_ROOT=/var/lib/hhs/storybook-reels",
         "Environment=HHS_VULKAN_RUNTIME_ROOT=/var/lib/hhs/vulkan-runtime",
+        "Environment=HHS_PASS175_STATE_DIR=/var/lib/hhs/pass175",
         "Environment=HHS_PASS203_STATE_ROOT=/var/lib/hhs/pass203",
         "Environment=HHS_PASS204_STATE_ROOT=/var/lib/hhs/pass204",
         "Environment=HHS_RUNTIME_CERTIFICATION_DIR=/var/lib/hhs/runtime-certification",

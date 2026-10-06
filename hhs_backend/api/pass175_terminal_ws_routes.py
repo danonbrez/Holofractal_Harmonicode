@@ -19,6 +19,26 @@ async def _send(websocket: WebSocket, payload: dict[str, Any]) -> None:
     )
 
 
+def _failure_payload(exc: Exception, *, schema: str) -> dict[str, Any]:
+    detail = getattr(exc, "detail", None)
+    if isinstance(detail, dict):
+        classification = str(
+            detail.get("classification")
+            or getattr(exc, "classification", type(exc).__name__)
+        )
+        message = detail.get("detail", str(exc))
+    else:
+        classification = str(getattr(exc, "classification", type(exc).__name__))
+        message = detail if detail is not None else getattr(exc, "detail", str(exc))
+    return {
+        "ok": False,
+        "schema": schema,
+        "classification": classification,
+        "detail": message,
+        "parallel_state_authority": False,
+    }
+
+
 def _instruction(item: dict[str, Any]) -> TerminalInstructionRequest:
     try:
         exact = b64decode(str(item["exact_bytes_b64"]), validate=True)
@@ -43,12 +63,23 @@ def _instruction(item: dict[str, Any]) -> TerminalInstructionRequest:
 @router.websocket("/api/v1/pass175/terminal/ws/events")
 async def terminal_events(websocket: WebSocket) -> None:
     await websocket.accept()
-    runtime = get_terminal_runtime()
-    await _send(websocket, {
-        "schema": "HHS_PASS_175_TERMINAL_WS_CONNECTED_V1",
-        "classification": "HHS_PASS_175_TERMINAL_WS_READY",
-        "runtime": runtime.status(),
-    })
+    try:
+        runtime = get_terminal_runtime()
+        await _send(websocket, {
+            "schema": "HHS_PASS_175_TERMINAL_WS_CONNECTED_V1",
+            "classification": "HHS_PASS_175_TERMINAL_WS_READY",
+            "runtime": runtime.status(),
+        })
+    except Exception as exc:
+        await _send(
+            websocket,
+            _failure_payload(
+                exc,
+                schema="HHS_PASS_175_TERMINAL_WS_BOOT_FAILURE_V1",
+            ),
+        )
+        await websocket.close(code=1011)
+        return
     try:
         while True:
             raw = await websocket.receive_text()
@@ -91,11 +122,12 @@ async def terminal_events(websocket: WebSocket) -> None:
                     raise Pass175Error("HHS_P175_TERMINAL_WS_ACTION_UNKNOWN", action)
                 await _send(websocket, {"ok": True, "action": action, "result": result})
             except Exception as exc:
-                await _send(websocket, {
-                    "ok": False,
-                    "schema": "HHS_PASS_175_TERMINAL_WS_REJECTION_V1",
-                    "classification": getattr(exc, "classification", type(exc).__name__),
-                    "detail": getattr(exc, "detail", str(exc)),
-                })
+                await _send(
+                    websocket,
+                    _failure_payload(
+                        exc,
+                        schema="HHS_PASS_175_TERMINAL_WS_REJECTION_V1",
+                    ),
+                )
     except WebSocketDisconnect:
         return
