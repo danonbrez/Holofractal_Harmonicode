@@ -6,14 +6,14 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [15f837950811e30d1675303364b611b5ec20917c](https://github.com/danonbrez/Holofractal_Harmonicode/commit/15f837950811e30d1675303364b611b5ec20917c)
-- Git tree: f6ac32aa62fd03990c2d711a2a4eea969868631e
+- Source commit: [b84459975ff69b0f485467e8b0485301ce38cb76](https://github.com/danonbrez/Holofractal_Harmonicode/commit/b84459975ff69b0f485467e8b0485301ce38cb76)
+- Git tree: a8244dc68926a930926000e48bec8d739ad91ab5
 - Tracked tree entries: 9,890
 - Tracked files in Git tree: 9,108
 - Content-bound indexed files: 9,057
 - Projection artifacts excluded from content root: 51
 - Text files deep-scanned: 8,596
-- Internal dependency edges: 74,812
+- Internal dependency edges: 74,814
 - Containment edges: 9,836
 - Lane 5 capability nodes: 2,112
 
@@ -21,7 +21,7 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpLnAq0EnUN8e6Q?QmQABGXYDZIJGi3+H4(U0+04SUkFyfvchp8TtG>x9/Mq*Hp0jH9R!NSc05wv)(TwwujeJLktg*-0t-G?oP>t>1qe0EY-x</(!piA>FU!KB6LlIei(UkGP75nYSc+I73>lQ
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpA)IoG6JydI5D!XZ)OuUGOm(LUC8t29ctFitS?Sb4RtSspyJNWtn3Svj5KSBf21+KBcvhGYWwk4lXo0g2Q<n3cpUJPBhn8Tatq8FKKyZPpUUq0ueAj!C!TGEcENd!?LsFBRe4b<2OiRZ6sUn1
 
 ### directory_node_root_hash216
 
@@ -33,7 +33,7 @@ Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+(-bSMgM<
 
 ### dependency_edge_root_hash216
 
-GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-PH<sXw60l3TbRos-wu-56h4PJRNI!XrqlNnBnQIWXsXQr8BQsKij4sv>/6SiybR9rm-UO!4g)/HFlSqwct+AoN33)ppueoEf<+wYXQXX+29Ix/GA-pUMG5iukyyooxIQ9Rx(Hfl<E*Ze>izg
+GYY0zooirr6ZgXHH/GUU/W0V-P-y8TzbLkqJF0H69WryxXFtSASPo29dOM3WjozDBv27A6J-QKfRI9UUfkWMq-z!cA5CyYKPB*JYk02L/fCW03XRm)xI29AoRwaH0/qZob1IlGY*avha/iENG+f7<+aqGw3!<7b>Xb4WL-W3+qTxhtR?aE?8Ym21YKzfp20sVmp6w9?TS<C7Mt4ZcNUy4iqH
 
 ### lane5_capability_binding_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLXD>U<K76L!Fe*FAA73K/Gd1BEQW2AIJ0BBl-iZsBPvJyiFt4pmcCiDK!sbhHepz/uNGcAno6z2e3922XyLlW!<HmVCA!k/Vg)D?!?Zqb9U!QPMCddlD+ivzEKhz+Mb</<?nxfbx)t>pjJp!o
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLs+?3LuP!339eRC-gVd29kAPxz9ts4?n>S1d7-SXDyux6q>N?kB9?Uf(v/Dj0SVvcp8OpQJZgof)4O-sw7VsvKBLo-4-bby)BlBIordXC2dz9Zeo3c-5zePixmr>1Ff?U>A6q)mtRa!t!!8AD
 
 ## Lane 5 evidence binding
 
@@ -64,7 +64,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 - Capabilities: 2,112
 - Constructors: 4,375
 - Knowledge relations: 13,487
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX8GAUXBC-L/TiE8pLCqHTuW!eibh6ZMqoqwuuJ19LHhh5ub+dl0Xt*uhwz+PN)(>S!2?(PLx7LTgUiA5Gd*)6t4JRMY6gVSD<WLK06sTW0oWTs*pK?COvW?zp)B-1NqJWK9qKiyFohc>YLy7s
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdXIX2<D5345Z0HKHbbVumH244b<J9ehqBRkPdS>p83HhsNmNJx+I?Z/(iyksB92)(A+z?+fQmY4<93dpPcepYV(qi+wE5cnjt)5z1y>AE4VgIujn0PC+NksndhaUM62le>9(hcDuDFsk<H8-Q/
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
@@ -137,7 +137,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 - -> hhs_gui: 147 edges
 - -> formal: 96 edges
 - -> deployment: 92 edges
-- -> deploy: 54 edges
+- -> deploy: 55 edges
 - -> hhs_python: 54 edges
 - -> hhs_verification: 49 edges
 - -> whitepapers: 34 edges
@@ -534,7 +534,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 ### tests
 
 - -> hhs_runtime: 5,254 edges
-- -> hhs_backend: 1,683 edges
+- -> hhs_backend: 1,684 edges
 - -> native_projects: 387 edges
 - -> hhs_installer: 151 edges
 - -> hhs_python: 100 edges
