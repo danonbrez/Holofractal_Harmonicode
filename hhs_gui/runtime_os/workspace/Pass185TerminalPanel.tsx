@@ -34,6 +34,14 @@ export const Pass185TerminalPanel: React.FC = () => {
       try {
         const payload = record(JSON.parse(String(event.data)))
         setLastMessage(payload)
+        if (payload.ok === false) {
+          const detail = payload.detail
+          setError(typeof detail === "string"
+            ? detail
+            : String(payload.classification ?? "TERMINAL_WEBSOCKET_REJECTED"))
+          setState("ERROR")
+          return
+        }
         if (payload.classification === "HHS_PASS_175_TERMINAL_WS_READY") setState("READY")
         if (payload.action === "ping" && payload.ok === true) setState("PONG")
       } catch (reason) {
