@@ -402,6 +402,11 @@ def _websocket_connect_kwargs(
         kwargs["additional_headers"] = text_headers
     elif "extra_headers" in params:
         kwargs["extra_headers"] = text_headers
+    if "proxy" in params:
+        # The authoritative upstream is always a private loopback service.
+        # Ambient proxy discovery would move the second hop outside the
+        # Lane-5-mediated host boundary and can break local WebSocket upgrade.
+        kwargs["proxy"] = None
     return kwargs
 
 
