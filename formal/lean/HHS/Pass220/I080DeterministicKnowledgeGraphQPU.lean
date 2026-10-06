@@ -20,46 +20,46 @@ def loShuQuditCells : Nat := 81
 
 theorem nucleusPlusFreeEqCarrier :
     nucleusAnchorPositions + freeTernaryPositions = serializedCharacters := by
-  native_decide
+  decide
 
 theorem vm81Factor :
     vm81Cells * local64 = serializedCharacters := by
-  native_decide
+  decide
 
 theorem hash72Square :
     hash72 * hash72 = serializedCharacters := by
-  native_decide
+  decide
 
 theorem phaseGearRatioCrossProduct :
     64 * 81 = 72 * 72 := by
-  native_decide
+  decide
 
 theorem phaseGearCommonClosure :
     64 * 81 = serializedCharacters ∧
     72 * 72 = serializedCharacters := by
-  native_decide
+  decide
 
 theorem hash216WidthFactor :
     hash216Planes * hash72 = hash216Width := by
-  native_decide
+  decide
 
 theorem hash216HydrationFactor :
     hash216Planes * serializedCharacters = fullAttachedComponents := by
-  native_decide
+  decide
 
 theorem u16NinePhaseTwoTurnClosure :
     phaseOrbit * phaseStep = 2 * phaseModulus := by
-  native_decide
+  decide
 
 theorem offsetAlphabetMinus9ThroughPlus9 :
     offsetCardinality = 9 + 1 + 9 := by
-  native_decide
+  decide
 
 def phaseGearE : List Nat := [8, 24, 40, 56, 72, 16, 32, 48, 64]
 
 theorem phaseGearELength :
     phaseGearE.length = phaseOrbit := by
-  native_decide
+  decide
 
 def genesis10 : List Nat := [1, 0] ++ List.replicate 5182 0
 def genesis20 : List Nat := [2, 0] ++ List.replicate 5182 0
@@ -121,15 +121,15 @@ def ieee64FractionBits : Nat := 52
 
 theorem ieee16Layout :
     ieee16SignBits + ieee16ExponentBits + ieee16FractionBits = 16 := by
-  native_decide
+  decide
 
 theorem ieee32Layout :
     1 + ieee32ExponentBits + ieee32FractionBits = 32 := by
-  native_decide
+  decide
 
 theorem ieee64Layout :
     1 + ieee64ExponentBits + ieee64FractionBits = 64 := by
-  native_decide
+  decide
 
 def canonicalVm81MutationAuthority : Bool := false
 def canonicalHash72CommitAuthority : Bool := false
@@ -147,12 +147,12 @@ theorem authorityBoundary :
     ieeeFloatInternalLogicAuthority = false ∧
     lossyScalarProjectionAuthority = false ∧
     browserRandomAuthority = false := by
-  native_decide
+  decide
 
 theorem inheritsI065HydrationGeometry :
     hash72 * hash72 =
       HHS.Pass220.I065.hash72Base * HHS.Pass220.I065.hash72Positions := by
-  native_decide
+  decide
 
 theorem inheritsI072FullAttachedGeometry :
     fullAttachedComponents = HHS.Pass220.I072.fullAttachedComponents := by
