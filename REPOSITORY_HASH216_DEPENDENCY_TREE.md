@@ -6,22 +6,22 @@ Generated deep index binding Pass 214 Git-tree census, Pass 173 dependency obser
 
 ## Bound repository state
 
-- Source commit: [beaa49d2bbab04465c4b09cee542be345d5f44f7](https://github.com/danonbrez/Holofractal_Harmonicode/commit/beaa49d2bbab04465c4b09cee542be345d5f44f7)
-- Git tree: a4045bc196ea2c1914e9d2e179cdfe731b101727
-- Tracked tree entries: 9,889
-- Tracked files in Git tree: 9,107
-- Content-bound indexed files: 9,056
+- Source commit: [15f837950811e30d1675303364b611b5ec20917c](https://github.com/danonbrez/Holofractal_Harmonicode/commit/15f837950811e30d1675303364b611b5ec20917c)
+- Git tree: f6ac32aa62fd03990c2d711a2a4eea969868631e
+- Tracked tree entries: 9,890
+- Tracked files in Git tree: 9,108
+- Content-bound indexed files: 9,057
 - Projection artifacts excluded from content root: 51
-- Text files deep-scanned: 8,595
+- Text files deep-scanned: 8,596
 - Internal dependency edges: 74,812
-- Containment edges: 9,835
+- Containment edges: 9,836
 - Lane 5 capability nodes: 2,112
 
 ## Hash216 graph roots
 
 ### file_node_root_hash216
 
-nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpmhjMvnafEH-Vh?zrit1OT!UY)DwVI!>HmJrgi(6/6b8!juIlAvTQXXcnfzokLOvOXdwh6G<Era!q7nk3wruXFRY95L*Cej<gZUVQI<XBftuQXVWBZz21M9IF>nn*dGaa7M9)S6OR07?ix2br
+nYmjI-7KQL0b+IM7rE>f5ekUWgS)Md6Temq6SPmg>emVgVEfJJiJr2luv97JIS8-*QpN2zCpLnAq0EnUN8e6Q?QmQABGXYDZIJGi3+H4(U0+04SUkFyfvchp8TtG>x9/Mq*Hp0jH9R!NSc05wv)(TwwujeJLktg*-0t-G?oP>t>1qe0EY-x</(!piA>FU!KB6LlIei(UkGP75nYSc+I73>lQ
 
 ### directory_node_root_hash216
 
@@ -29,7 +29,7 @@ m+>+KVW+Fd9M3>)OrHc)LCeL3KR8MzR39U2SOa2yjrS?mOjKOHgrRSwBBOQIzw7Uk54u>Vdf8e8BeyN>
 
 ### containment_edge_root_hash216
 
-Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+KcJt9DRsDhQZP3(SFw-DqMxGk9b!a*V!i?*m?NFsQ+eDt6!Cs0z5(IX>DGU8L-LKz-CE!oLOy/1ubkr3Ai)PnP2R-<Ybsp-bKVSj7uXGy9q4-k2IlchfiCWv*1kEI>XnXa7Pl/kPip7+Uukd
+Epv+C+JJOzPO9<6CryNle9O*qU7AIDdq)18yp4StU+2/5BoI4Aju!r1VtlOE24!NUrrtzXY+(-bSMgM<>PB3jQRa?SPI2Vqz>lM6LGMI-MvaJjh!BssVjhvV0O/hR*+ZnJj)3u+hdtD(9VVulArQPvflweGkhpSdkIg4j)ViXBwq4fSNQce5Xi?pd3/eX8qUr(tDwAp-dl3qdSfZs4I(F54k
 
 ### dependency_edge_root_hash216
 
@@ -41,7 +41,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 
 ### graph_root_hash216
 
-*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLKZ/4)B+-4P(NAwNv6MPvHI6aK3G4kLw9fPSAI(aPoV83/NHGbTzuPB9)!g5ROJ)mydBbGbgV8JdEWs+yh9sywPJz8oCgB?2APTabyIYAhyp63isWSQM>i!Eb9Bfb)Y/nBQMu*wJVi+jC?owt
+*O4X5zh1d60Mb62AzA-ltu!aatbo1-3PYuKDKCWSV/JkDmQ8H5URBkAJvx8UdvdCnxJlyXiLXD>U<K76L!Fe*FAA73K/Gd1BEQW2AIJ0BBl-iZsBPvJyiFt4pmcCiDK!sbhHepz/uNGcAno6z2e3922XyLlW!<HmVCA!k/Vg)D?!?Zqb9U!QPMCddlD+ivzEKhz+Mb</<?nxfbx)t>pjJp!o
 
 ## Lane 5 evidence binding
 
@@ -64,7 +64,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 - Capabilities: 2,112
 - Constructors: 4,375
 - Knowledge relations: 13,487
-- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX/S1zzGb!gkvL3lnhHH-m4Z6Yf(LqbcfKRb8A82M8WY)+tBcuC(HFJ8MW<b9bAtmJUwZWi37j+0)iczArYnEv0H6ggbRbTmpgl-z-2B2iVCXCvhU2TWi!T!0NXFRrMQeFb1mSf0TvCprkV62c
+- Projection root Hash216: )OR!IN!bnmSYA8)-BoNgpBOZghC(r-G8OJBzpBZI8GsJjbOAHnM17LzICcaX*NMI5>b4ltdX8GAUXBC-L/TiE8pLCqHTuW!eibh6ZMqoqwuuJ19LHhh5ub+dl0Xt*uhwz+PN)(>S!2?(PLx7LTgUiA5Gd*)6t4JRMY6gVSD<WLK06sTW0oWTs*pK?COvW?zp)B-1NqJWK9qKiyFohc>YLy7s
 - Database hydration receipt: [artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json](artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json)
 
 ## Full file-link shards
@@ -81,7 +81,7 @@ yT1r-v5XFIQ<Sz<4y<<niVci>l5oFW8KYn8sJvB52VdB7qVQ+jy!?ALy<flGbGv8JFQj/-9d83xx2Y3R
 | [benchmarks](docs/repository_index/files/benchmarks.md) | 81 |
 | [bin](docs/repository_index/files/bin.md) | 4 |
 | [contracts](docs/repository_index/files/contracts.md) | 296 |
-| [creative_writing](docs/repository_index/files/creative_writing.md) | 62 |
+| [creative_writing](docs/repository_index/files/creative_writing.md) | 63 |
 | [data](docs/repository_index/files/data.md) | 15 |
 | [deploy](docs/repository_index/files/deploy.md) | 8 |
 | [deployment](docs/repository_index/files/deployment.md) | 41 |
