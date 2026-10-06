@@ -207,7 +207,7 @@ try {
       && new URL(candidate.url()).pathname === "/api/runtime/services/dispatch",
     { timeout: 90_000 },
   )
-  await serviceNode.getByTestId("visual-program-run-node").click()
+  await page.getByTestId("visual-program-run-node").click()
   const dispatchResponse = await dispatchResponsePromise
   const dispatchRaw = await dispatchResponse.text()
   let dispatchBody = null
