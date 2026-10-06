@@ -84,6 +84,12 @@ for (const token of [
   "Read persisted vector",
   "type=\"file\"",
   "multiple",
+  'data-testid="mobile-ingress-file-input"',
+  'data-testid="mobile-ingress-hydrate"',
+  'data-testid="mobile-ingress-result"',
+  'data-testid="mobile-vector-read"',
+  'data-testid="mobile-vector-result"',
+  'data-testid="mobile-vector-use-in-chat"',
 ]) {
   assert(content.control.includes(token), `mobile production control missing ${token}`)
 }
@@ -141,6 +147,9 @@ for (const token of [
   assert(content.assistant.includes(token), `assistant integration missing ${token}`)
 }
 
+for (const token of ['data-testid="assistant-composer"', 'data-testid="assistant-send"', 'assistant-message-']) {
+  assert(content.productionAssistant.includes(token), `production assistant missing executable acceptance marker ${token}`)
+}
 assert(content.productionAssistant.includes("/api/assistant/deployment-health"), "production assistant boot does not use bounded deployment liveness")
 assert(!content.productionAssistant.includes("/api/assistant/health"), "production assistant boot reintroduced full provider diagnostic health")
 
