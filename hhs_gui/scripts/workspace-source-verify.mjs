@@ -49,6 +49,10 @@ assert(content.projection.includes("runtimeOS.shutdown()"), "runtime transport r
 assert(content.projection.includes("/api/runtime/authority/status"), "runtime authority is inferred only from projection traffic")
 assert(content.projection.includes("WebSockets are on-demand projection channels"), "projection channel role is not explicit")
 
+for (const token of ['data-testid="visual-program-node"', 'data-testid="visual-program-run-node"', "data-node-status"]) {
+  assert(content.programmer.includes(token), `RegistryVisualProgrammer missing executable-state marker ${token}`)
+}
+
 for (const token of [
   'useState<ProductSurface>("control")',
   "Build",
@@ -74,6 +78,7 @@ for (const token of [
   "RUNTIME_OS_MOBILE_QUICK_BUILD",
   "P174_MOBILE_APPLICATION_DEVELOPMENT_PIPELINE",
   "sandbox=\"allow-scripts\"",
+  'data-testid="mobile-quick-build-result"',
 ]) {
   assert(content.quickBuild.includes(token), `Quick Build missing ${token}`)
 }

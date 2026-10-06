@@ -180,7 +180,11 @@ try {
     throw new Error(`Production Visual Program is missing ${missingServices.length} registered services: ${missingServices.slice(0, 25).join(", ")}`)
   }
 
-  const selectableService = uniqueServiceNames[0]
+  const selectableService = "agent_economy.agent_algorithm_identity_v1_self_test"
+  if (!renderedTitleSet.has(selectableService)) {
+    throw new Error(`Deterministic execution probe service is not registered: ${selectableService}`)
+  }
+
   const selected = await page.evaluate((serviceName) => {
     const root = document.querySelector('[data-testid="registry-visual-programmer"]')
     if (!root) return false
@@ -193,14 +197,32 @@ try {
   }, selectableService)
   if (!selected) throw new Error(`Registered service is not selectable in the frontend: ${selectableService}`)
 
+  const serviceNode = page.locator(
+    `[data-testid="visual-program-node"][data-registry-id="${selectableService}"]`,
+  ).last()
+  await serviceNode.waitFor({ state: "visible", timeout: 30_000 })
+
+  const dispatchResponsePromise = page.waitForResponse(
+    (candidate) => candidate.request().method() === "POST"
+      && new URL(candidate.url()).pathname === "/api/runtime/services/dispatch",
+    { timeout: 90_000 },
+  )
+  await serviceNode.getByTestId("visual-program-run-node").click()
+  const dispatchResponse = await dispatchResponsePromise
+  const dispatchRaw = await dispatchResponse.text()
+  let dispatchBody = null
+  try {
+    dispatchBody = dispatchRaw ? JSON.parse(dispatchRaw) : {}
+  } catch (error) {
+    throw new Error(`Visual Program dispatch did not return JSON: ${serializeError(error).message}; body=${dispatchRaw.slice(0, 256)}`)
+  }
+  if (!dispatchResponse.ok() || dispatchBody?.ok === false) {
+    throw new Error(`Visual Program dispatch failed HTTP ${dispatchResponse.status()}: ${dispatchRaw.slice(0, 512)}`)
+  }
   await page.waitForFunction(
-    (serviceName) => {
-      const root = document.querySelector('[data-testid="registry-visual-programmer"]')
-      if (!root) return false
-      const text = root.textContent || ""
-      const runButtons = [...root.querySelectorAll("button")].filter((button) => /run/i.test(button.textContent || ""))
-      return text.includes(serviceName) && runButtons.length > 0
-    },
+    (serviceName) => document.querySelector(
+      `[data-testid="visual-program-node"][data-registry-id="${serviceName}"]`,
+    )?.getAttribute("data-node-status") === "success",
     selectableService,
     { timeout: 30_000 },
   )
@@ -209,6 +231,35 @@ try {
   if (registryText.includes("registry unavailable")) {
     throw new Error("Production Visual Program reports registry unavailable")
   }
+
+  await productNav.getByRole("button", { name: "Build", exact: true }).click()
+  await page.waitForSelector('[data-testid="mobile-quick-build-panel"]', { timeout: 60_000 })
+  const quickBuildSource = "<!doctype html><html><body><main id=\"hhs-production-functional-probe\">HHS production functional probe</main></body></html>"
+  await page.getByTestId("mobile-quick-build-source").fill(quickBuildSource)
+
+  const quickBuildResponsePromise = page.waitForResponse(
+    (candidate) => candidate.request().method() === "POST"
+      && new URL(candidate.url()).pathname === "/api/v1/pass174/sdlc/run",
+    { timeout: 180_000 },
+  )
+  await page.getByTestId("mobile-quick-build-run").click()
+  const quickBuildResponse = await quickBuildResponsePromise
+  const quickBuildRaw = await quickBuildResponse.text()
+  let quickBuildBody = null
+  try {
+    quickBuildBody = quickBuildRaw ? JSON.parse(quickBuildRaw) : {}
+  } catch (error) {
+    throw new Error(`Quick Build did not return JSON: ${serializeError(error).message}; body=${quickBuildRaw.slice(0, 256)}`)
+  }
+  const quickBuildStatus = String(quickBuildBody?.classification ?? quickBuildBody?.status ?? "")
+  if (
+    !quickBuildResponse.ok()
+    || quickBuildBody?.ok === false
+    || /fail|reject|error/i.test(quickBuildStatus)
+  ) {
+    throw new Error(`Quick Build execution failed HTTP ${quickBuildResponse.status()}: ${quickBuildRaw.slice(0, 512)}`)
+  }
+  await page.getByTestId("mobile-quick-build-result").waitFor({ state: "visible", timeout: 180_000 })
 
   if (consoleErrors.length || pageErrors.length || requestFailures.length || http5xx.length) {
     throw new Error(JSON.stringify({
@@ -231,12 +282,20 @@ try {
     missing_services: [],
     selectable_service: selectableService,
     visual_program_registry_ready: true,
+    visual_program_execution_verified: true,
+    visual_program_dispatch_status: dispatchResponse.status(),
+    quick_build_execution_verified: true,
+    quick_build_status: quickBuildStatus || "HTTP_OK",
+    quick_build_http_status: quickBuildResponse.status(),
     guarded_dispatch_route: "/api/runtime/services/dispatch",
+    quick_build_route: "/api/v1/pass174/sdlc/run",
     frontend_authority: false,
   }
 
   console.log(`HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_SURFACE_VERIFIED=${services.length}`)
   console.log(`HHS_DIGITALOCEAN_PUBLIC_FRONTEND_SELECTABLE_SERVICE_VERIFIED=${selectableService}`)
+  console.log(`HHS_DIGITALOCEAN_PUBLIC_FRONTEND_SERVICE_EXECUTION_VERIFIED=${selectableService}`)
+  console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_QUICK_BUILD_EXECUTION_VERIFIED=1")
 } catch (error) {
   evidence = {
     ...evidence,

@@ -961,7 +961,16 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "missingServices",
         "renderedTitleSet",
         "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_SURFACE_VERIFIED",
+        "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_SERVICE_EXECUTION_VERIFIED",
+        "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_QUICK_BUILD_EXECUTION_VERIFIED",
         'guarded_dispatch_route: "/api/runtime/services/dispatch"',
+        'quick_build_route: "/api/v1/pass174/sdlc/run"',
+        'data-testid="visual-program-node"',
+        'getByTestId("visual-program-run-node")',
+        'getByTestId("mobile-quick-build-result")',
+        "page.waitForResponse",
+        "visual_program_execution_verified: true",
+        "quick_build_execution_verified: true",
         "frontend_authority: false",
     ]:
         assert token in browser

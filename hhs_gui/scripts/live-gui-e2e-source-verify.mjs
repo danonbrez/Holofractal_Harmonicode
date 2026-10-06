@@ -42,6 +42,9 @@ assert(content.product.includes("ProductionMobileControlCenter"), "product works
 assert(content.product.includes("MobileQuickBuildPanel"), "product workspace does not expose the mobile Quick Build pipeline")
 assert(content.product.includes('useState<ProductSurface>("control")'), "mobile control center is not the default production landing surface")
 assert(content.product.includes("RegistryVisualProgrammer"), "product workspace does not expose registry visual programming")
+for (const token of ['data-testid="visual-program-node"', 'data-testid="visual-program-run-node"', "data-node-status"]) {
+  assert(content.programmer.includes(token), `registry visual programmer missing execution evidence marker ${token}`)
+}
 assert(content.product.includes("HHSWorkspaceShell"), "product workspace removed the full conventional workspace")
 assert(content.product.includes("/api/product/health"), "product does not verify runtime and assistant execution authorities")
 assert(content.product.includes("const runtimeOnline = Boolean(runtimeHealth.ok)"), "product does not derive runtime readiness from product health")
@@ -64,6 +67,7 @@ for (const token of [
   "source_b64",
   "sandbox=\"allow-scripts\"",
   "Full workspace",
+  'data-testid="mobile-quick-build-result"',
 ]) {
   assert(content.quickBuild.includes(token), `mobile Quick Build missing ${token}`)
 }
