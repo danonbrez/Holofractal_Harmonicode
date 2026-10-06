@@ -342,11 +342,12 @@ try {
   await page.getByTestId("mobile-vector-use-in-chat").click()
   await page.getByTestId("assistant-attached-context").waitFor({ state: "visible", timeout: 30_000 })
 
-  // Exercise the production assistant through the visible composer. The
-  // response text is intentionally not content-pinned; the acceptance
-  // requirement is a successful governed turn with a non-empty assistant
-  // message returned by backend authority.
-  const assistantProbe = "Acknowledge this production frontend probe briefly."
+  // Exercise the production assistant as a real create-or-continue chatbot,
+  // not merely as a one-shot text endpoint. The second visible turn must
+  // continue the first thread and recall an exact token from conversation
+  // history through backend authority.
+  const assistantMemoryToken = "HHS-PRODUCTION-CHATBOT-E2E-7249"
+  const assistantProbe = `Remember this exact token for my next message: ${assistantMemoryToken}. Reply briefly.`
   await page.getByTestId("assistant-composer").fill(assistantProbe)
   const assistantResponsePromise = page.waitForResponse(
     (candidate) => candidate.request().method() === "POST"
@@ -360,13 +361,57 @@ try {
   try {
     assistantBody = assistantRaw ? JSON.parse(assistantRaw) : {}
   } catch (error) {
-    throw new Error(`Assistant turn did not return JSON: ${serializeError(error).message}; body=${assistantRaw.slice(0, 256)}`)
+    throw new Error(`Assistant first turn did not return JSON: ${serializeError(error).message}; body=${assistantRaw.slice(0, 256)}`)
   }
   const assistantText = String(assistantBody?.assistant_message?.content ?? assistantBody?.response ?? "").trim()
-  if (!assistantResponse.ok() || assistantBody?.ok === false || !assistantText) {
-    throw new Error(`Assistant turn failed HTTP ${assistantResponse.status()}: ${assistantRaw.slice(0, 512)}`)
+  const assistantThreadId = String(assistantBody?.thread_id ?? assistantBody?.thread?.thread_id ?? "").trim()
+  if (!assistantResponse.ok() || assistantBody?.ok === false || !assistantText || !assistantThreadId) {
+    throw new Error(`Assistant first turn failed HTTP ${assistantResponse.status()}: ${assistantRaw.slice(0, 512)}`)
+  }
+  await page.getByTestId("assistant-message-user").last().waitFor({ state: "visible", timeout: 180_000 })
+  await page.getByTestId("assistant-message-assistant").last().waitFor({ state: "visible", timeout: 180_000 })
+
+  const assistantFollowUp = "What exact token did I ask you to remember in my previous message? Reply with only the token."
+  await page.getByTestId("assistant-composer").fill(assistantFollowUp)
+  const assistantSecondResponsePromise = page.waitForResponse(
+    (candidate) => candidate.request().method() === "POST"
+      && new URL(candidate.url()).pathname === "/api/assistant/chat",
+    { timeout: 180_000 },
+  )
+  await page.getByTestId("assistant-send").click()
+  const assistantSecondResponse = await assistantSecondResponsePromise
+  const assistantSecondRaw = await assistantSecondResponse.text()
+  let assistantSecondBody = null
+  try {
+    assistantSecondBody = assistantSecondRaw ? JSON.parse(assistantSecondRaw) : {}
+  } catch (error) {
+    throw new Error(`Assistant second turn did not return JSON: ${serializeError(error).message}; body=${assistantSecondRaw.slice(0, 256)}`)
+  }
+  const assistantSecondText = String(
+    assistantSecondBody?.assistant_message?.content ?? assistantSecondBody?.response ?? "",
+  ).trim()
+  const assistantSecondThreadId = String(
+    assistantSecondBody?.thread_id ?? assistantSecondBody?.thread?.thread_id ?? "",
+  ).trim()
+  if (!assistantSecondResponse.ok() || assistantSecondBody?.ok === false || !assistantSecondText) {
+    throw new Error(`Assistant second turn failed HTTP ${assistantSecondResponse.status()}: ${assistantSecondRaw.slice(0, 512)}`)
+  }
+  if (!assistantSecondThreadId || assistantSecondThreadId !== assistantThreadId) {
+    throw new Error(`Assistant thread continuity failed: first=${assistantThreadId} second=${assistantSecondThreadId || "missing"}`)
+  }
+  if (!assistantSecondText.includes(assistantMemoryToken)) {
+    throw new Error(`Assistant conversation-history recall failed: expected token ${assistantMemoryToken}; response=${assistantSecondText.slice(0, 512)}`)
   }
   await page.getByTestId("assistant-message-assistant").last().waitFor({ state: "visible", timeout: 180_000 })
+  const renderedUserTurns = await page.getByTestId("assistant-message-user").count()
+  const renderedAssistantTurns = await page.getByTestId("assistant-message-assistant").count()
+  if (renderedUserTurns < 2 || renderedAssistantTurns < 2) {
+    throw new Error(`Assistant UI did not render a two-turn conversation: user=${renderedUserTurns} assistant=${renderedAssistantTurns}`)
+  }
+  const renderedAssistantSecondText = await page.getByTestId("assistant-message-assistant").last().innerText()
+  if (!renderedAssistantSecondText.includes(assistantMemoryToken)) {
+    throw new Error(`Assistant UI did not render recalled conversation token: ${renderedAssistantSecondText.slice(0, 512)}`)
+  }
 
   // Reuse the repository's Pass 185 workbench acceptance sequence against the
   // deployed public Workspace surface: witness source, compile, create an
@@ -523,8 +568,14 @@ try {
     persisted_vector_http_status: vectorResponse.status(),
     persisted_vector_classification: String(vectorBody?.classification ?? ""),
     assistant_execution_verified: true,
+    assistant_chatbot_two_turn_verified: true,
+    assistant_thread_continuity_verified: true,
+    assistant_context_recall_verified: true,
+    assistant_turn_count: 2,
     assistant_http_status: assistantResponse.status(),
+    assistant_second_http_status: assistantSecondResponse.status(),
     assistant_response_nonempty: true,
+    assistant_second_response_nonempty: true,
     workspace_workbench_execution_verified: true,
     workspace_emulator_before_tick: beforeTick,
     workspace_emulator_after_tick: afterTick,
@@ -545,6 +596,7 @@ try {
   console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_QUICK_BUILD_EXECUTION_VERIFIED=1")
   console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_MOBILE_INGRESS_VECTOR_VERIFIED=1")
   console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_ASSISTANT_EXECUTION_VERIFIED=1")
+  console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_ASSISTANT_CHATBOT_VERIFIED=1")
   console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_WORKSPACE_EXECUTION_VERIFIED=1")
   console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_TERMINAL_WEBSOCKET_VERIFIED=1")
 } catch (error) {
