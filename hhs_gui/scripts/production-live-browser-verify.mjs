@@ -261,6 +261,201 @@ try {
   }
   await page.getByTestId("mobile-quick-build-result").waitFor({ state: "visible", timeout: 180_000 })
 
+  // Exercise the production mobile ingress/vector surface with a bounded text
+  // fixture. This verifies file selection, exact-byte ingress, persistent
+  // Hash216 lookup, and explicit user-controlled context attachment.
+  await page.getByTestId("production-mobile-control-center").waitFor({ state: "visible", timeout: 60_000 })
+  const ingressFixture = "HHS production frontend ingress probe\nA=1\n"
+  await page.getByTestId("mobile-ingress-file-input").setInputFiles({
+    name: "hhs-production-ingress-probe.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from(ingressFixture, "utf8"),
+  })
+  const ingressResponsePromise = page.waitForResponse(
+    (candidate) => candidate.request().method() === "POST"
+      && new URL(candidate.url()).pathname === "/api/v1/pass174/sdlc/run",
+    { timeout: 180_000 },
+  )
+  await page.getByTestId("mobile-ingress-hydrate").click()
+  const ingressResponse = await ingressResponsePromise
+  const ingressRaw = await ingressResponse.text()
+  let ingressBody = null
+  try {
+    ingressBody = ingressRaw ? JSON.parse(ingressRaw) : {}
+  } catch (error) {
+    throw new Error(`Mobile ingress did not return JSON: ${serializeError(error).message}; body=${ingressRaw.slice(0, 256)}`)
+  }
+  const ingressStatus = String(ingressBody?.classification ?? ingressBody?.status ?? "")
+  if (!ingressResponse.ok() || ingressBody?.ok === false || /fail|reject|error/i.test(ingressStatus)) {
+    throw new Error(`Mobile ingress failed HTTP ${ingressResponse.status()}: ${ingressRaw.slice(0, 512)}`)
+  }
+  await page.getByTestId("mobile-ingress-result").waitFor({ state: "visible", timeout: 180_000 })
+
+  const vectorResponsePromise = page.waitForResponse(
+    (candidate) => candidate.request().method() === "POST"
+      && new URL(candidate.url()).pathname === "/api/v1/pass174/hash216/query",
+    { timeout: 90_000 },
+  )
+  await page.getByTestId("mobile-vector-read").click()
+  const vectorResponse = await vectorResponsePromise
+  const vectorRaw = await vectorResponse.text()
+  let vectorBody = null
+  try {
+    vectorBody = vectorRaw ? JSON.parse(vectorRaw) : {}
+  } catch (error) {
+    throw new Error(`Persisted vector read did not return JSON: ${serializeError(error).message}; body=${vectorRaw.slice(0, 256)}`)
+  }
+  if (
+    !vectorResponse.ok()
+    || vectorBody?.ok === false
+    || String(vectorBody?.classification ?? "") !== "HHS_PASS_174_VECTOR_QUERY_HIT"
+  ) {
+    throw new Error(`Persisted vector read failed HTTP ${vectorResponse.status()}: ${vectorRaw.slice(0, 512)}`)
+  }
+  await page.getByTestId("mobile-vector-result").waitFor({ state: "visible", timeout: 90_000 })
+  await page.getByTestId("mobile-vector-use-in-chat").click()
+  await page.getByTestId("assistant-attached-context").waitFor({ state: "visible", timeout: 30_000 })
+
+  // Exercise the production assistant through the visible composer. The
+  // response text is intentionally not content-pinned; the acceptance
+  // requirement is a successful governed turn with a non-empty assistant
+  // message returned by backend authority.
+  const assistantProbe = "Acknowledge this production frontend probe briefly."
+  await page.getByTestId("assistant-composer").fill(assistantProbe)
+  const assistantResponsePromise = page.waitForResponse(
+    (candidate) => candidate.request().method() === "POST"
+      && new URL(candidate.url()).pathname === "/api/assistant/chat",
+    { timeout: 180_000 },
+  )
+  await page.getByTestId("assistant-send").click()
+  const assistantResponse = await assistantResponsePromise
+  const assistantRaw = await assistantResponse.text()
+  let assistantBody = null
+  try {
+    assistantBody = assistantRaw ? JSON.parse(assistantRaw) : {}
+  } catch (error) {
+    throw new Error(`Assistant turn did not return JSON: ${serializeError(error).message}; body=${assistantRaw.slice(0, 256)}`)
+  }
+  const assistantText = String(assistantBody?.assistant_message?.content ?? assistantBody?.response ?? "").trim()
+  if (!assistantResponse.ok() || assistantBody?.ok === false || !assistantText) {
+    throw new Error(`Assistant turn failed HTTP ${assistantResponse.status()}: ${assistantRaw.slice(0, 512)}`)
+  }
+  await page.getByTestId("assistant-message-assistant").last().waitFor({ state: "visible", timeout: 180_000 })
+
+  // Reuse the repository's Pass 185 workbench acceptance sequence against the
+  // deployed public Workspace surface: witness source, compile, create an
+  // emulator session, and advance it by four bounded steps.
+  await productNav.getByRole("button", { name: "Workspace", exact: true }).click()
+  await page.getByTestId("hhs-visual-runtime-os-workspace").waitFor({ state: "visible", timeout: 90_000 })
+  await page.getByTestId("pass185-new-file").click()
+  const workspaceSource = "GENESIS\nPRODUCTION FRONTEND WORKSPACE PROBE\n1+2*3/4\n"
+  await page.getByTestId("pass185-workbench-source-editor").fill(workspaceSource)
+
+  const waitForWorkspaceOperation = (operation, timeout = 120_000) => page.waitForResponse(
+    (candidate) => {
+      if (
+        candidate.request().method() !== "POST"
+        || new URL(candidate.url()).pathname !== "/api/runtime/workspace/command"
+      ) return false
+      try {
+        return candidate.request().postDataJSON()?.operation === operation
+      } catch {
+        return false
+      }
+    },
+    { timeout },
+  )
+  const assertWorkspaceResponse = async (operation, response) => {
+    const raw = await response.text()
+    let body = null
+    try {
+      body = raw ? JSON.parse(raw) : {}
+    } catch (error) {
+      throw new Error(`${operation} did not return JSON: ${serializeError(error).message}; body=${raw.slice(0, 256)}`)
+    }
+    if (!response.ok() || body?.ok === false) {
+      throw new Error(`${operation} failed HTTP ${response.status()}: ${raw.slice(0, 512)}`)
+    }
+    return body
+  }
+
+  const ingressWorkspaceResponsePromise = waitForWorkspaceOperation("ingress.register")
+  await page.getByTestId("pass185-workbench-save").click()
+  const ingressWorkspaceResponse = await ingressWorkspaceResponsePromise
+  await assertWorkspaceResponse("ingress.register", ingressWorkspaceResponse)
+  await page.getByTestId("pass185-workspace-object").last().waitFor({ state: "visible", timeout: 90_000 })
+
+  const compileResponsePromise = waitForWorkspaceOperation("compile.execute")
+  await page.getByTestId("pass185-workbench-build").click()
+  const compileResponse = await compileResponsePromise
+  await assertWorkspaceResponse("compile.execute", compileResponse)
+  await page.waitForFunction(
+    () => {
+      const text = document.querySelector('[data-testid="pass185-workbench-artifact-state"]')?.textContent?.trim() || ""
+      return Boolean(text && !text.includes("none"))
+    },
+    null,
+    { timeout: 120_000 },
+  )
+
+  const emulatorCreateResponsePromise = waitForWorkspaceOperation("emulator.create")
+  await page.getByTestId("pass185-workbench-create-emulator").click()
+  const emulatorCreateResponse = await emulatorCreateResponsePromise
+  await assertWorkspaceResponse("emulator.create", emulatorCreateResponse)
+  await page.waitForFunction(
+    () => {
+      const text = document.querySelector('[data-testid="pass185-workbench-emulator-state"]')?.textContent?.trim() || ""
+      return Boolean(text && !text.includes("none"))
+    },
+    null,
+    { timeout: 120_000 },
+  )
+
+  const tickLocator = page.getByTestId("pass185-workbench-emulator-tick")
+  const beforeTick = Number((await tickLocator.innerText()).replace(/[^0-9]/g, ""))
+  if (!Number.isFinite(beforeTick)) throw new Error("Workspace emulator did not expose a numeric starting tick")
+  const emulatorRunResponsePromise = waitForWorkspaceOperation("emulator.run")
+  await page.getByTestId("pass185-workbench-run").click()
+  const emulatorRunResponse = await emulatorRunResponsePromise
+  await assertWorkspaceResponse("emulator.run", emulatorRunResponse)
+  const afterTick = await page.waitForFunction(
+    (before) => {
+      const text = document.querySelector('[data-testid="pass185-workbench-emulator-tick"]')?.textContent || ""
+      const match = text.match(/([0-9]+)/)
+      const value = match ? Number(match[1]) : NaN
+      return Number.isFinite(value) && value >= before + 4 ? value : false
+    },
+    beforeTick,
+    { timeout: 120_000 },
+  ).then((handle) => handle.jsonValue())
+
+  // Verify the visible Terminal control path traverses the production
+  // WebSocket membrane and receives an actual PONG before closing cleanly.
+  await page.getByRole("button", { name: "Terminal", exact: true }).click()
+  await page.getByTestId("pass185-terminal-panel").waitFor({ state: "visible", timeout: 60_000 })
+  await page.getByTestId("pass185-terminal-open").click()
+  await page.waitForFunction(
+    () => document.querySelector('[data-testid="pass185-terminal-state"]')?.textContent?.trim() === "READY",
+    null,
+    { timeout: 60_000 },
+  )
+  await page.getByTestId("pass185-terminal-ping").click()
+  await page.waitForFunction(
+    () => document.querySelector('[data-testid="pass185-terminal-state"]')?.textContent?.trim() === "PONG",
+    null,
+    { timeout: 30_000 },
+  )
+  const terminalMessage = await page.getByTestId("pass185-terminal-message").innerText()
+  if (!terminalMessage.includes("HHS_PASS_175_TERMINAL_WS_PONG")) {
+    throw new Error(`Production terminal returned unexpected message: ${terminalMessage}`)
+  }
+  await page.getByTestId("pass185-terminal-close").click()
+  await page.waitForFunction(
+    () => document.querySelector('[data-testid="pass185-terminal-state"]')?.textContent?.trim() === "CLOSED",
+    null,
+    { timeout: 30_000 },
+  )
+
   if (consoleErrors.length || pageErrors.length || requestFailures.length || http5xx.length) {
     throw new Error(JSON.stringify({
       console_errors: consoleErrors,
@@ -287,8 +482,25 @@ try {
     quick_build_execution_verified: true,
     quick_build_status: quickBuildStatus || "HTTP_OK",
     quick_build_http_status: quickBuildResponse.status(),
+    mobile_ingress_execution_verified: true,
+    mobile_ingress_http_status: ingressResponse.status(),
+    persisted_vector_read_verified: true,
+    persisted_vector_http_status: vectorResponse.status(),
+    persisted_vector_classification: String(vectorBody?.classification ?? ""),
+    assistant_execution_verified: true,
+    assistant_http_status: assistantResponse.status(),
+    assistant_response_nonempty: true,
+    workspace_workbench_execution_verified: true,
+    workspace_emulator_before_tick: beforeTick,
+    workspace_emulator_after_tick: afterTick,
+    terminal_websocket_execution_verified: true,
+    terminal_message: terminalMessage,
     guarded_dispatch_route: "/api/runtime/services/dispatch",
     quick_build_route: "/api/v1/pass174/sdlc/run",
+    mobile_ingress_route: "/api/v1/pass174/sdlc/run",
+    persisted_vector_route: "/api/v1/pass174/hash216/query",
+    assistant_route: "/api/assistant/chat",
+    workspace_command_route: "/api/runtime/workspace/command",
     frontend_authority: false,
   }
 
@@ -296,6 +508,10 @@ try {
   console.log(`HHS_DIGITALOCEAN_PUBLIC_FRONTEND_SELECTABLE_SERVICE_VERIFIED=${selectableService}`)
   console.log(`HHS_DIGITALOCEAN_PUBLIC_FRONTEND_SERVICE_EXECUTION_VERIFIED=${selectableService}`)
   console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_QUICK_BUILD_EXECUTION_VERIFIED=1")
+  console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_MOBILE_INGRESS_VECTOR_VERIFIED=1")
+  console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_ASSISTANT_EXECUTION_VERIFIED=1")
+  console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_WORKSPACE_EXECUTION_VERIFIED=1")
+  console.log("HHS_DIGITALOCEAN_PUBLIC_FRONTEND_TERMINAL_WEBSOCKET_VERIFIED=1")
 } catch (error) {
   evidence = {
     ...evidence,
