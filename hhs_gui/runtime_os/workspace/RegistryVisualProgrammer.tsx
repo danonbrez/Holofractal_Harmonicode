@@ -631,7 +631,7 @@ export const RegistryVisualProgrammer: React.FC<RegistryVisualProgrammerProps> =
               if (!definition) return null
               const selected = node.id === selectedNodeId
               return (
-                <article key={node.id} className={`absolute w-[238px] rounded-2xl border bg-neutral-950/95 shadow-xl ${selected ? "border-cyan-500" : "border-neutral-800"}`} style={{ left: node.x, top: node.y }} onClick={() => setSelectedNodeId(node.id)}>
+                <article key={node.id} data-testid="visual-program-node" data-registry-id={definition.registryId} data-node-status={node.status} className={`absolute w-[238px] rounded-2xl border bg-neutral-950/95 shadow-xl ${selected ? "border-cyan-500" : "border-neutral-800"}`} style={{ left: node.x, top: node.y }} onClick={() => setSelectedNodeId(node.id)}>
                   <header
                     className="cursor-move rounded-t-2xl border-b border-neutral-800 bg-neutral-900 px-3 py-2 touch-none"
                     onPointerDown={(event) => {
@@ -752,7 +752,7 @@ const NodeInspector: React.FC<{
         </div>
         <p className="mt-3 text-[10px] leading-5 text-neutral-500">{definition.description}</p>
         <div className="mt-3 grid grid-cols-2 gap-2">
-          <button type="button" className="runtime-button min-h-9 text-xs" onClick={onRun}>Run node</button>
+          <button data-testid="visual-program-run-node" type="button" className="runtime-button min-h-9 text-xs" onClick={onRun}>Run node</button>
           <button type="button" className="min-h-9 rounded-lg border border-red-900 bg-red-950/30 text-xs text-red-300" onClick={onRemove}>Remove</button>
         </div>
       </section>
