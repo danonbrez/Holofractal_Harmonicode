@@ -314,7 +314,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
             <p className="mt-1 text-[11px] leading-5 text-neutral-500">Read files locally for preview, then send exact source bytes through the Pass 174 SDLC pipeline into persistent Hash216 vector hydration.</p>
           </div>
           <button type="button" onClick={() => fileInput.current?.click()} className="runtime-button min-h-11 px-4 text-sm">Choose files</button>
-          <input ref={fileInput} type="file" multiple className="hidden" onChange={(event) => { chooseFiles(event.currentTarget.files); event.currentTarget.value = "" }} />
+          <input ref={fileInput} data-testid="mobile-ingress-file-input" type="file" multiple className="hidden" onChange={(event) => { chooseFiles(event.currentTarget.files); event.currentTarget.value = "" }} />
         </header>
 
         {files.length === 0 ? (
@@ -339,7 +339,7 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
                     <div className="truncate text-sm font-medium text-white">{selected?.name}</div>
                     <div className="mt-1 text-[10px] text-neutral-500">{modality} · {selected?.type || "application/octet-stream"} · {selected ? `${selected.size} bytes` : ""}</div>
                   </div>
-                  <button type="button" disabled={busy || !selected} onClick={() => void ingest()} className="runtime-button min-h-11 px-4 text-sm">{busy ? "Working…" : "Hydrate vector store"}</button>
+                  <button data-testid="mobile-ingress-hydrate" type="button" disabled={busy || !selected} onClick={() => void ingest()} className="runtime-button min-h-11 px-4 text-sm">{busy ? "Working…" : "Hydrate vector store"}</button>
                 </div>
 
                 <div className="mt-3 min-h-48 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950">
@@ -353,13 +353,13 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
               </div>
 
               {lastIngress.classification ? (
-                <section className="rounded-2xl border border-emerald-900/60 bg-emerald-950/10 p-3">
+                <section data-testid="mobile-ingress-result" className="rounded-2xl border border-emerald-900/60 bg-emerald-950/10 p-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <div className="text-xs font-semibold text-emerald-300">{text(lastIngress.classification)}</div>
                       <div className="mt-1 font-mono text-[9px] text-neutral-500">source {short(lastIngress.source_identity_sha256)} · Hash216 {short(lastIngress.lifecycle_hash216)}</div>
                     </div>
-                    {operationKey ? <button type="button" onClick={() => void queryPersistedVector()} disabled={busy} className="runtime-button min-h-10 px-3 text-xs">Read persisted vector</button> : null}
+                    {operationKey ? <button data-testid="mobile-vector-read" type="button" onClick={() => void queryPersistedVector()} disabled={busy} className="runtime-button min-h-10 px-3 text-xs">Read persisted vector</button> : null}
                   </div>
                   {Array.isArray(lastIngress.stages) ? (
                     <div className="mt-3 grid grid-cols-2 gap-1 sm:grid-cols-4 lg:grid-cols-7">
@@ -370,13 +370,14 @@ export const ProductionMobileControlCenter: React.FC<ProductionMobileControlCent
               ) : null}
 
               {Object.keys(vectorQuery).length > 0 ? (
-                <section className="rounded-2xl border border-cyan-950 bg-cyan-950/10 p-3">
+                <section data-testid="mobile-vector-result" className="rounded-2xl border border-cyan-950 bg-cyan-950/10 p-3">
                   <div className="text-xs font-semibold text-cyan-200">Persisted vector retrieved</div>
                   <p className="mt-1 text-[11px] leading-5 text-neutral-400">
                     The encrypted Hash216 vector-store record was read successfully for this hydration operation. Technical fields stay hidden unless you choose to inspect them.
                   </p>
                   <div className="mt-3 flex flex-wrap items-center gap-2">
                     <button
+                      data-testid="mobile-vector-use-in-chat"
                       type="button"
                       onClick={() => assistantContext ? setAssistantContext(null) : attachSelectedContext()}
                       className="runtime-button min-h-10 px-4 text-xs"

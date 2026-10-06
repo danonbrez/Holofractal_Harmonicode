@@ -407,6 +407,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         ) : messages.map((message, index) => (
           <article
             key={`${message.role}:${index}`}
+            data-testid={`assistant-message-${message.role}`}
             className={`group max-w-[92%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-6 ${message.role === "user" ? "ml-auto border border-cyan-800/50 bg-cyan-950/40 text-white" : "mr-auto border border-neutral-800 bg-black/45 text-neutral-200"}`}
           >
             <div>{message.content}</div>
@@ -438,6 +439,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         ) : null}
         <div className="rounded-2xl border border-neutral-700 bg-neutral-950 p-2 focus-within:border-cyan-700">
           <textarea
+            data-testid="assistant-composer"
             value={input}
             onChange={(event) => setInput(event.target.value)}
             onKeyDown={onComposerKeyDown}
@@ -458,7 +460,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
                     : "no hydrated vector selected"}
               </span>
             </div>
-            <button type="submit" disabled={busy || !input.trim()} className="min-h-10 rounded-xl bg-cyan-700 px-5 text-sm font-semibold text-white transition hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-neutral-800 disabled:text-neutral-500">
+            <button data-testid="assistant-send" type="submit" disabled={busy || !input.trim()} className="min-h-10 rounded-xl bg-cyan-700 px-5 text-sm font-semibold text-white transition hover:bg-cyan-600 disabled:cursor-not-allowed disabled:bg-neutral-800 disabled:text-neutral-500">
               {busy ? "Working…" : "Send"}
             </button>
           </div>
