@@ -22,7 +22,14 @@ const startedAt = Date.now()
 const consoleErrors = []
 const pageErrors = []
 const requestFailures = []
+const intentionalRequestAborts = []
 const http5xx = []
+const BENIGN_BACKGROUND_ABORT_PATHS = new Set([
+  "/api/assistant/deployment-health",
+  "/api/product/health",
+  "/health",
+  "/api/v1/pass174/status",
+])
 const publicApiAttempts = {
   interface_status: [],
   service_registry: [],
@@ -41,6 +48,7 @@ let evidence = {
   console_errors: consoleErrors,
   page_errors: pageErrors,
   request_failures: requestFailures,
+  intentional_request_aborts: intentionalRequestAborts,
   http_5xx: http5xx,
   public_api_attempts: publicApiAttempts,
 }
@@ -64,10 +72,28 @@ try {
   })
   page.on("pageerror", (error) => pageErrors.push(String(error)))
   page.on("requestfailed", (request) => {
-    requestFailures.push({
+    const failure = request.failure()?.errorText || "unknown"
+    let requestPath = ""
+    try {
+      requestPath = new URL(request.url()).pathname
+    } catch {
+      requestPath = ""
+    }
+    const entry = {
+      method: request.method(),
       url: request.url(),
-      failure: request.failure()?.errorText || "unknown",
-    })
+      path: requestPath,
+      failure,
+    }
+    if (
+      entry.method === "GET"
+      && entry.failure === "net::ERR_ABORTED"
+      && BENIGN_BACKGROUND_ABORT_PATHS.has(entry.path)
+    ) {
+      intentionalRequestAborts.push(entry)
+      return
+    }
+    requestFailures.push(entry)
   })
   page.on("response", (response) => {
     if (response.status() >= 500) http5xx.push({ url: response.url(), status: response.status() })
@@ -469,6 +495,7 @@ try {
       console_errors: consoleErrors,
       page_errors: pageErrors,
       request_failures: requestFailures,
+      intentional_request_aborts: intentionalRequestAborts,
       http_5xx: http5xx,
     }))
   }
