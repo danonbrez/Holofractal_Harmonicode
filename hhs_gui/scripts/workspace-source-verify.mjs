@@ -91,6 +91,12 @@ for (const token of [
   "Files → multimodal ingress → vector store",
   "type=\"file\"",
   "multiple",
+  'data-testid="mobile-ingress-file-input"',
+  'data-testid="mobile-ingress-hydrate"',
+  'data-testid="mobile-ingress-result"',
+  'data-testid="mobile-vector-read"',
+  'data-testid="mobile-vector-result"',
+  'data-testid="mobile-vector-use-in-chat"',
 ]) {
   assert(content.mobileControl.includes(token), `mobile control surface missing ${token}`)
 }
@@ -119,6 +125,9 @@ for (const token of [
   "Agentic application development",
   "hhs.production.assistant.mode",
   "assistant_mode: assistantMode",
+  'data-testid="assistant-composer"',
+  'data-testid="assistant-send"',
+  'assistant-message-',
 ]) {
   assert(content.mobileAssistant.includes(token), `mobile LLM assistant surface missing ${token}`)
 }
