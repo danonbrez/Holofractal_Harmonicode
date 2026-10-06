@@ -131,10 +131,32 @@ server {
     assert changed is True
     assert "proxy_pass http://127.0.0.1:8715;" in updated
     assert "proxy_pass http://127.0.0.1:8080;" not in updated
+    assert "proxy_http_version 1.1;" in updated
+    assert "proxy_set_header Upgrade $http_upgrade;" in updated
+    assert "proxy_set_header Connection $http_connection;" in updated
 
     replay, replay_changed = patch_nginx_text(updated)
     assert replay == updated
     assert replay_changed is False
+
+
+def test_nginx_migration_preserves_existing_websocket_connection_policy() -> None:
+    source = """
+server {
+    listen 443 ssl;
+    location / {
+        proxy_pass http://127.0.0.1:8715;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $hhs_connection_upgrade;
+        proxy_set_header Host $host;
+    }
+}
+"""
+    updated, changed = patch_nginx_text(source)
+    assert changed is False
+    assert updated.count("proxy_set_header Connection ") == 1
+    assert "proxy_set_header Connection $hhs_connection_upgrade;" in updated
 
 
 def test_production_network_surfaces_have_no_direct_public_runtime_bypass() -> None:
