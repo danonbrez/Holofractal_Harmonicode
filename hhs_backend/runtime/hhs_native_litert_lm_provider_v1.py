@@ -1025,6 +1025,49 @@ class HHSNativeLiteRTLMTransport:
 
         receipts = self._parse_tool_receipts(tool_messages)
 
+        history_recall = (
+            self._history_recall_answer(query, message_list)
+            if not receipts
+            else None
+        )
+        if history_recall is not None:
+            trace = {
+                "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                "assistant_mode": mode,
+                "generation_path": "EXACT_THREAD_HISTORY_RECALL",
+                "history_recall": True,
+                "general_chat_prompt_response_cycle": mode in {
+                    ASSISTANT_MODE_GENERAL_CHAT,
+                    ASSISTANT_MODE_BOTH,
+                },
+                "runtime_mutation_admitted": False,
+            }
+            trace["trace_root_hash72"] = hash72(
+                "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                trace,
+            )
+            completion_tokens = _word_count(history_recall)
+            return {
+                "id": _completion_id(),
+                "object": "chat.completion",
+                "created": int(time.time()),
+                "model": MODEL_ID,
+                "choices": [{
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": history_recall,
+                    },
+                    "finish_reason": "stop",
+                }],
+                "usage": {
+                    "prompt_tokens": _word_count(query),
+                    "completion_tokens": completion_tokens,
+                    "total_tokens": _word_count(query) + completion_tokens,
+                },
+                "hhs_native_trace": trace,
+            }
+
         ordinary_conversation = (
             mode in {ASSISTANT_MODE_GENERAL_CHAT, ASSISTANT_MODE_BOTH}
             and not receipts
