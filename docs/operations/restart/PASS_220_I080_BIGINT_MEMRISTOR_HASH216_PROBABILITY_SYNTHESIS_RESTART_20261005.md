@@ -278,3 +278,33 @@ The dedicated PR workflow run \`37381101248\` for that exact checkpoint was
 queued when this restart update was written. No green-CI or merge claim is
 made. The next action is exact-head dedicated CI inspection; repair only the
 I080 dependency cone on failure, otherwise merge and verify main.
+
+
+### Lean CI repair cycle
+
+Exact-head runs for checkpoint \`84aa91508e8df78bc8d4fbaa01252d22df036cc4\`
+completed with one bounded failure: every Python regression, both I080
+self-tests, HTML determinism checks, Wolfram evidence gate, and Lean source
+surface check passed; only the Lean kernel build failed.
+
+Failure was isolated to the four Genesis width theorems in
+\`formal/lean/HHS/Pass220/I080DeterministicKnowledgeGraphQPU.lean\`. Broad
+\`simp\` unfolded the 5,182/5,181-element \`List.replicate\` definitions and
+triggered looping-simp detection. No runtime, Hash216, BigInt, HTML, Wolfram,
+or native HARMONICODE semantic defect was indicated.
+
+Repair commit:
+\`fa612a1625b541f3d38b5b1c22af72191da57864\`
+
+Repair:
+- replaced broad recursive \`simp\` on Genesis carriers with a bounded
+  \`simp only\` proof over \`List.length_append\`, \`List.length_cons\`,
+  \`List.length_nil\`, and \`List.length_replicate\`;
+- retained all four 5184-width theorem statements unchanged;
+- reran only the impacted exact-head dedicated CI through the branch update.
+
+Validation state when this checkpoint was written:
+- dedicated push run \`37404124349\`: in progress;
+- dedicated PR run \`37404128497\`: queued;
+- PR #722 remains open and mergeable;
+- no merge or green-CI claim is made until the repaired exact head closes.
