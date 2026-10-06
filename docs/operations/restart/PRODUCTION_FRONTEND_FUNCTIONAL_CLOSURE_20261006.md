@@ -136,3 +136,131 @@ For future frontend work:
 3. preserve executable browser acceptance for both service dispatch and Quick Build;
 4. do not regress to render-only or control-presence acceptance;
 5. repair-forward any later failure at the concrete layer identified by the live browser evidence.
+
+
+---
+
+# Superseding expanded functional closure — 2026-10-06
+
+The earlier closure at `6f0017da4c4f861f253707ae7c0226c3aa8ede1f` is preserved as historical evidence but is superseded by the expanded frontend acceptance lineage below.
+
+## PR #725 — expanded production frontend functional acceptance
+
+PR #725 merged as:
+
+`601059f1bc80693e0f8607fe835a3ff065ded833`
+
+It expanded the live public Chromium acceptance beyond Visual Program and Quick Build to cover additional user-facing production functions.
+
+Subsequent repair-forward/integration and Hash216 projection converged through:
+
+`b84459975ff69b0f485467e8b0485301ce38cb76`
+
+to terminal generated successor:
+
+`e8cb2e85dad0b457f7951fe078bc345a19b58b45`.
+
+## Terminal exact-current-main production proof
+
+Authoritative main:
+
+`e8cb2e85dad0b457f7951fe078bc345a19b58b45`
+
+Exact-Main run:
+
+- run: `37460574349`
+- deploy job: `112258926323`
+- conclusion: SUCCESS
+- promotion outcome: `PROMOTED`
+- candidate SHA: `e8cb2e85dad0b457f7951fe078bc345a19b58b45`
+- Runtime OS bundle SHA: `e8cb2e85dad0b457f7951fe078bc345a19b58b45`
+- previous SHA: `b84459975ff69b0f485467e8b0485301ce38cb76`
+- public service registry: 380
+
+Lane 5 ingress evidence:
+
+- `HHS_LANE5_HOST_INGRESS_READY=1`
+- `HHS_LANE5_HOST_INGRESS_SOCKET_ACTIVATED=1`
+- `HHS_LANE5_HOST_INGRESS_NGINX_ZERO_BYPASS=1`
+- `HHS_DIGITALOCEAN_LANE5_HOST_INGRESS_VERIFIED=1`
+
+## Expanded live frontend execution evidence
+
+The public production Chromium run verified all of the following against the deployed exact-main bundle.
+
+### Visual Program service execution
+
+- deterministic service:
+  `agent_economy.agent_algorithm_identity_v1_self_test`
+- real backend dispatch executed through the visible frontend
+- HTTP status: 200
+- visual node execution reached success
+- `HHS_DIGITALOCEAN_PUBLIC_FRONTEND_SERVICE_EXECUTION_VERIFIED=agent_economy.agent_algorithm_identity_v1_self_test`
+
+### Quick Build
+
+- visible Quick Build workflow executed
+- route: `/api/v1/pass174/sdlc/run`
+- HTTP status: 200
+- status: `HHS_P174_SDLC_PIPELINE_COMMITTED`
+- `HHS_DIGITALOCEAN_PUBLIC_FRONTEND_QUICK_BUILD_EXECUTION_VERIFIED=1`
+
+### Mobile ingress and Hash216 vector persistence
+
+- mobile ingress execution: verified
+- ingress HTTP status: 200
+- persisted-vector readback: verified
+- query route: `/api/v1/pass174/hash216/query`
+- query HTTP status: 200
+- classification: `HHS_PASS_174_VECTOR_QUERY_HIT`
+- `HHS_DIGITALOCEAN_PUBLIC_FRONTEND_MOBILE_INGRESS_VECTOR_VERIFIED=1`
+
+### Production assistant
+
+- assistant execution: verified
+- route: `/api/assistant/chat`
+- HTTP status: 200
+- assistant response: nonempty
+- `HHS_DIGITALOCEAN_PUBLIC_FRONTEND_ASSISTANT_EXECUTION_VERIFIED=1`
+
+### Workspace / emulator execution
+
+- workspace workbench execution: verified
+- route: `/api/runtime/workspace/command`
+- emulator tick advanced from 0 to 4
+- `HHS_DIGITALOCEAN_PUBLIC_FRONTEND_WORKSPACE_EXECUTION_VERIFIED=1`
+
+### Terminal WebSocket
+
+- terminal WebSocket behavior: verified
+- `HHS_DIGITALOCEAN_PUBLIC_FRONTEND_TERMINAL_WEBSOCKET_VERIFIED=1`
+
+### Registry projection and browser error boundary
+
+- public service registry: 380
+- Visual Program capability surface: 380
+- missing services: none
+- console errors: none
+- page errors: none
+- request failures: none
+- HTTP 5xx: none
+
+## Terminal Hash216 convergence
+
+Exact-Main emitted:
+
+`HHS_EXACT_MAIN_HASH216_INDEX_TERMINAL_GENERATED_SUCCESSOR=e8cb2e85dad0b457f7951fe078bc345a19b58b45`
+
+At final verification there were no active non-PR Exact-Main or Hash216 delivery workflows.
+
+## Current closure classification
+
+Production frontend functional closure is now established at:
+
+`e8cb2e85dad0b457f7951fe078bc345a19b58b45`
+
+This supersedes the earlier narrower closure at `6f0017da...`.
+
+The acceptance standard is now explicitly execution-based across representative primary frontend workflows. Rendering, control presence, route presence, or service enumeration alone do not qualify as functional acceptance.
+
+Future frontend changes must preserve these live execution gates and repair-forward any concrete failure without weakening them.
