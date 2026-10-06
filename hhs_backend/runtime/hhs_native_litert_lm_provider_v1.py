@@ -8,6 +8,7 @@ thread, policy, receipt, and provider-result ingress paths remain unchanged.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 from pathlib import Path
@@ -42,6 +43,26 @@ _EXPRESSION_MARKERS = (
     "==", "≠", "Δ", "Ω", "Θ", "Ψ", "Φ", "Γ", "Λ", ":=", "u^72", "u⁷²",
 )
 _WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]{1,63}")
+_STRUCTURED_HISTORY_TOKEN_RE = re.compile(
+    r"\b[A-Za-z0-9]+(?:[-_:./][A-Za-z0-9]+){2,}\b"
+)
+
+
+def _bounded_timeout_seconds(name: str, default: float) -> float:
+    try:
+        value = float(os.getenv(name, str(default)))
+    except (TypeError, ValueError):
+        value = default
+    return min(60.0, max(0.05, value))
+
+
+def _previous_user_content(messages: Sequence[Mapping[str, Any]]) -> str:
+    user_messages = [
+        str(message.get("content") or "")
+        for message in messages
+        if str(message.get("role") or "") == "user"
+    ]
+    return user_messages[-2] if len(user_messages) >= 2 else ""
 
 
 def _now_ms() -> int:
@@ -160,6 +181,14 @@ class HHSNativeLiteRTLMTransport:
             not in {"0", "false", "no", "off"}
             if require_word2vec is None
             else bool(require_word2vec)
+        )
+        self.generation_timeout_seconds = _bounded_timeout_seconds(
+            "HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS",
+            25.0,
+        )
+        self.fallback_timeout_seconds = _bounded_timeout_seconds(
+            "HHS_NATIVE_LANGUAGE_FALLBACK_TIMEOUT_SECONDS",
+            8.0,
         )
 
     def _word2vec(self) -> Any:
@@ -686,14 +715,115 @@ class HHSNativeLiteRTLMTransport:
                 sections.append(f"{tool_name}: {response}")
         return sections
 
+    def _history_recall_answer(
+        self,
+        query: str,
+        messages: Sequence[Mapping[str, Any]],
+    ) -> Optional[str]:
+        lowered = query.casefold()
+        recall_requested = any(
+            phrase in lowered
+            for phrase in (
+                "previous message",
+                "last message",
+                "earlier message",
+                "asked you to remember",
+                "did i ask",
+                "what did i say",
+                "what did i tell",
+            )
+        )
+        if not recall_requested:
+            return None
+
+        previous = _previous_user_content(messages).strip()
+        if not previous:
+            return None
+
+        if any(word in lowered for word in ("token", "code", "identifier", "marker")):
+            candidates = _STRUCTURED_HISTORY_TOKEN_RE.findall(previous)
+            if candidates:
+                return candidates[-1]
+
+        return f'Your previous message was: "{previous}"'
+
+    def _emergency_conversation_answer(
+        self,
+        query: str,
+        messages: Sequence[Mapping[str, Any]],
+        *,
+        assistant_mode: str,
+    ) -> tuple[str, Dict[str, Any]]:
+        mode = normalize_assistant_mode(assistant_mode)
+        recalled = self._history_recall_answer(query, messages)
+        lowered = query.strip().casefold()
+        if recalled is not None:
+            answer = recalled
+            classification = "BOUNDED_HISTORY_RECALL"
+        elif "remember" in lowered:
+            answer = "I’ll keep that in this conversation for your next message."
+            classification = "BOUNDED_CONVERSATION_ACK"
+        elif re.fullmatch(r"(hi|hello|hey|good morning|good afternoon|good evening)[!. ]*", lowered):
+            answer = "Hello. What would you like to talk about?"
+            classification = "BOUNDED_GREETING"
+        else:
+            answer = (
+                "I received your message. The native causal generator is temporarily slow, "
+                "so I’m continuing through the bounded conversational fallback without "
+                "claiming any runtime mutation."
+            )
+            classification = "BOUNDED_CONVERSATION_FALLBACK"
+
+        trace = {
+            "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+            "assistant_mode": mode,
+            "generation_path": "BOUNDED_CONVERSATION_FALLBACK",
+            "fallback_classification": classification,
+            "history_recall": recalled is not None,
+            "general_chat_prompt_response_cycle": mode in {
+                ASSISTANT_MODE_GENERAL_CHAT,
+                ASSISTANT_MODE_BOTH,
+            },
+            "runtime_mutation_admitted": False,
+        }
+        trace["trace_root_hash72"] = hash72(
+            "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+            trace,
+        )
+        return answer, trace
+
     def _compose_answer(
         self,
         query: str,
         receipts: Sequence[Mapping[str, Any]],
         *,
         assistant_mode: str,
+        messages: Sequence[Mapping[str, Any]] = (),
     ) -> tuple[str, Dict[str, Any]]:
         mode = normalize_assistant_mode(assistant_mode)
+        recalled = self._history_recall_answer(query, messages)
+        if recalled is not None:
+            trace = {
+                "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                "semantic_analysis": {},
+                "word2vec_context": {},
+                "bounded_reasoning": {},
+                "tool_receipt_count": len(receipts),
+                "assistant_mode": mode,
+                "history_recall": True,
+                "generation_path": "EXACT_SEMANTIC_HISTORY_FALLBACK",
+                "general_chat_prompt_response_cycle": mode in {
+                    ASSISTANT_MODE_GENERAL_CHAT,
+                    ASSISTANT_MODE_BOTH,
+                },
+                "runtime_mutation_admitted": False,
+            }
+            trace["trace_root_hash72"] = hash72(
+                "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                trace,
+            )
+            return recalled, trace
+
         semantic = self._semantic_analysis(query)
         word2vec = self._word2vec_context(query)
         evidence_sections = self._tool_evidence_lines(receipts)
@@ -914,16 +1044,23 @@ class HHSNativeLiteRTLMTransport:
                     "candidate_count": 0,
                 }
                 if ordinary_conversation:
-                    prototype_context, prototype_trace = self._prototype_context(query)
+                    prototype_context, prototype_trace = await asyncio.wait_for(
+                        asyncio.to_thread(self._prototype_context, query),
+                        timeout=self.generation_timeout_seconds,
+                    )
 
                 tool_context = self._tool_evidence_context(receipts)
                 retrieval_parts = [
                     part for part in (prototype_context, tool_context) if part
                 ]
                 retrieval_context = "\n\n".join(retrieval_parts)
-                generated = self._response_stream().generate(
-                    message_list,
-                    retrieval_context=retrieval_context or None,
+                generated = await asyncio.wait_for(
+                    asyncio.to_thread(
+                        self._response_stream().generate,
+                        message_list,
+                        retrieval_context=retrieval_context or None,
+                    ),
+                    timeout=self.generation_timeout_seconds,
                 )
                 answer = str(generated["response"])
                 stream_manifest = dict(generated.get("manifest") or {})
@@ -979,12 +1116,27 @@ class HHSNativeLiteRTLMTransport:
             except Exception as exc:
                 causal_failure = f"{type(exc).__name__}: {exc}"
 
-        answer, trace = self._compose_answer(
-            query,
-            receipts,
-            assistant_mode=mode,
-        )
-        trace["generation_path"] = "EXACT_SEMANTIC_FALLBACK"
+        try:
+            answer, trace = await asyncio.wait_for(
+                asyncio.to_thread(
+                    self._compose_answer,
+                    query,
+                    receipts,
+                    assistant_mode=mode,
+                    messages=message_list,
+                ),
+                timeout=self.fallback_timeout_seconds,
+            )
+            trace["generation_path"] = str(
+                trace.get("generation_path") or "EXACT_SEMANTIC_FALLBACK"
+            )
+        except Exception as exc:
+            answer, trace = self._emergency_conversation_answer(
+                query,
+                message_list,
+                assistant_mode=mode,
+            )
+            trace["semantic_fallback_failure"] = f"{type(exc).__name__}: {exc}"
         trace["causal_generation_failure"] = causal_failure
         trace["trace_root_hash72"] = hash72(
             "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
