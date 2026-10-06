@@ -327,11 +327,9 @@ def test_native_chat_timeout_falls_back_without_blocking_request(monkeypatch):
     content = response["choices"][0]["message"]["content"]
     trace = response["hhs_native_trace"]
     assert content
-    assert trace["generation_path"] in {
-        "EXACT_SEMANTIC_FALLBACK",
-        "BOUNDED_CONVERSATION_FALLBACK",
-    }
-    assert "TimeoutError" in str(trace["causal_generation_failure"])
+    assert trace["generation_path"] == "EXACT_THREAD_MEMORY_ACKNOWLEDGEMENT"
+    assert trace["conversation_memory_acknowledged"] is True
+    assert trace["causal_generation_failure"] is None
 
 
 def test_native_fallback_recalls_previous_turn_structured_token(monkeypatch):
