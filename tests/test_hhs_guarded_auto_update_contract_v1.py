@@ -902,6 +902,7 @@ def test_candidate_boot_externalizes_filesystem_ledger_and_preserves_fail_closed
         "Environment=HHS_FILESYSTEM_LEDGER_PATH="
         "/var/lib/hhs/data/runtime/hhs_filesystem_ledger.json"
     ) in production_service
+    assert "Environment=HHS_PASS175_STATE_DIR=/var/lib/hhs/pass175" in production_service
     assert "production checkout is dirty after promotion" in exact_main
     assert 'status --porcelain=v1 --untracked-files=normal' in exact_main
 
