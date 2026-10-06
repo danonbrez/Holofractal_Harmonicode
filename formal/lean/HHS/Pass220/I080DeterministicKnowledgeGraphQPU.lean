@@ -67,16 +67,24 @@ def genesis30 : List Nat := [3, 0] ++ List.replicate 5182 0
 def genesis100 : List Nat := [1, 0, 0] ++ List.replicate 5181 0
 
 theorem genesis10Width : genesis10.length = serializedCharacters := by
-  simp [genesis10, serializedCharacters]
+  simp only [genesis10, serializedCharacters, List.length_append, List.length_cons,
+    List.length_nil, List.length_replicate]
+  decide
 
 theorem genesis20Width : genesis20.length = serializedCharacters := by
-  simp [genesis20, serializedCharacters]
+  simp only [genesis20, serializedCharacters, List.length_append, List.length_cons,
+    List.length_nil, List.length_replicate]
+  decide
 
 theorem genesis30Width : genesis30.length = serializedCharacters := by
-  simp [genesis30, serializedCharacters]
+  simp only [genesis30, serializedCharacters, List.length_append, List.length_cons,
+    List.length_nil, List.length_replicate]
+  decide
 
 theorem genesis100Width : genesis100.length = serializedCharacters := by
-  simp [genesis100, serializedCharacters]
+  simp only [genesis100, serializedCharacters, List.length_append, List.length_cons,
+    List.length_nil, List.length_replicate]
+  decide
 
 def ternaryStateSpace : Nat := 3 ^ freeTernaryPositions
 
