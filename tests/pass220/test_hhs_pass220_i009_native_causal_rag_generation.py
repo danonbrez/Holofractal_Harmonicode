@@ -280,3 +280,94 @@ def test_pass219_prototype_compilation_is_cached(monkeypatch):
     assert calls["select"] == 2
     assert first_meta["prototype_dataset_reused"] is False
     assert second_meta["prototype_dataset_reused"] is True
+
+
+
+class SlowGenerationService(FakeGenerationService):
+    def generate(self, messages, *, retrieval_context=None, max_new_tokens=None):
+        import time as _time
+        _time.sleep(0.2)
+        return super().generate(
+            messages,
+            retrieval_context=retrieval_context,
+            max_new_tokens=max_new_tokens,
+        )
+
+
+class FailingGenerationService(FakeGenerationService):
+    def generate(self, messages, *, retrieval_context=None, max_new_tokens=None):
+        raise NativeCausalLMNotReady("forced unavailable causal model")
+
+
+def test_native_chat_timeout_falls_back_without_blocking_request(monkeypatch):
+    monkeypatch.setenv("HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS", "0.05")
+    monkeypatch.setenv("HHS_NATIVE_LANGUAGE_FALLBACK_TIMEOUT_SECONDS", "1")
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=SlowGenerationService(),
+    )
+    provider._prototype_context = lambda query, top_k=3: (
+        "",
+        {"available": False, "reason": "TEST", "candidate_count": 0},
+    )
+
+    response = asyncio.run(
+        provider.chat_completion(
+            messages=[
+                {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
+                {"role": "user", "content": "Remember this for the conversation."},
+            ],
+            tools=[],
+        )
+    )
+
+    content = response["choices"][0]["message"]["content"]
+    trace = response["hhs_native_trace"]
+    assert content
+    assert trace["generation_path"] in {
+        "EXACT_SEMANTIC_FALLBACK",
+        "BOUNDED_CONVERSATION_FALLBACK",
+    }
+    assert "TimeoutError" in str(trace["causal_generation_failure"])
+
+
+def test_native_fallback_recalls_previous_turn_structured_token(monkeypatch):
+    monkeypatch.setenv("HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS", "1")
+    monkeypatch.setenv("HHS_NATIVE_LANGUAGE_FALLBACK_TIMEOUT_SECONDS", "1")
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=FailingGenerationService(),
+    )
+    provider._prototype_context = lambda query, top_k=3: (
+        "",
+        {"available": False, "reason": "TEST", "candidate_count": 0},
+    )
+    token = "HHS-PRODUCTION-CHATBOT-E2E-7249"
+
+    response = asyncio.run(
+        provider.chat_completion(
+            messages=[
+                {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
+                {
+                    "role": "user",
+                    "content": f"Remember this exact token for my next message: {token}.",
+                },
+                {"role": "assistant", "content": "I’ll keep that in this conversation."},
+                {
+                    "role": "user",
+                    "content": (
+                        "What exact token did I ask you to remember in my previous "
+                        "message? Reply with only the token."
+                    ),
+                },
+            ],
+            tools=[],
+        )
+    )
+
+    assert response["choices"][0]["message"]["content"] == token
+    trace = response["hhs_native_trace"]
+    assert trace["history_recall"] is True
+    assert trace["generation_path"] == "EXACT_SEMANTIC_HISTORY_FALLBACK"
