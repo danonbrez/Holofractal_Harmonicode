@@ -308,3 +308,22 @@ Validation state when this checkpoint was written:
 - dedicated PR run \`37404128497\`: queued;
 - PR #722 remains open and mergeable;
 - no merge or green-CI claim is made until the repaired exact head closes.
+
+
+### Lean finite-obligation repair — 2026-10-06
+
+Exact-head dedicated run `37410008028` on `062432c89a0ad0b67f6c4161eb88c719db54a628`
+passed all I080 Python/runtime/QPU/Wolfram/source-surface gates and failed only
+the Lean kernel build. After the preceding Genesis-width repair, the remaining
+15 theorem bodies were empty `by` blocks, yielding finite unsolved goals for
+the numeric carrier identities, phase gear, IEEE layouts, fail-closed authority
+booleans, and inherited I065 hydration geometry.
+
+Repair commit: `93edbaa2bb1bf27544145f5d7c852a20c40fc1ff`.
+
+The repair closes only those finite decidable propositions with
+`native_decide`. The theorem statements and all runtime, Hash216, BigInt,
+Wolfram, browser/QPU, authority, and ordered HARMONICODE semantics are
+unchanged. Exact-head dedicated CI remains the next gate. PR #722 must not be
+merged and the next Tensor-equation cycle must not begin until that gate is
+successful.
