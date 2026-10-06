@@ -23,6 +23,7 @@ const consoleErrors = []
 const pageErrors = []
 const requestFailures = []
 const http5xx = []
+const terminalWebsocketEvents = []
 const publicApiAttempts = {
   interface_status: [],
   service_registry: [],
@@ -42,6 +43,7 @@ let evidence = {
   page_errors: pageErrors,
   request_failures: requestFailures,
   http_5xx: http5xx,
+  terminal_websocket_events: terminalWebsocketEvents,
   public_api_attempts: publicApiAttempts,
 }
 
@@ -71,6 +73,20 @@ try {
   })
   page.on("response", (response) => {
     if (response.status() >= 500) http5xx.push({ url: response.url(), status: response.status() })
+  })
+  page.on("websocket", (socket) => {
+    if (!socket.url().includes("/api/v1/pass175/terminal/ws/events")) return
+    const stamp = (event, extra = {}) => terminalWebsocketEvents.push({
+      event,
+      elapsed_ms: Date.now() - startedAt,
+      url: socket.url(),
+      ...extra,
+    })
+    stamp("created")
+    socket.on("framesent", (frame) => stamp("framesent", { payload: String(frame.payload).slice(0, 512) }))
+    socket.on("framereceived", (frame) => stamp("framereceived", { payload: String(frame.payload).slice(0, 512) }))
+    socket.on("socketerror", (error) => stamp("socketerror", { error: String(error) }))
+    socket.on("close", () => stamp("close"))
   })
 
   const response = await page.goto(`${BASE_URL.replace(/\/$/, "")}/`, { waitUntil: "domcontentloaded" })
