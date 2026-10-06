@@ -11,6 +11,9 @@ from typing import Iterable
 
 DIRECT_BACKEND_MARKER = "proxy_pass http://127.0.0.1:8080"
 LANE5_GATEWAY_MARKER = "proxy_pass http://127.0.0.1:8715"
+WEBSOCKET_HTTP_VERSION = "proxy_http_version 1.1;"
+WEBSOCKET_UPGRADE_HEADER = "proxy_set_header Upgrade $http_upgrade;"
+WEBSOCKET_CONNECTION_FALLBACK = "proxy_set_header Connection $http_connection;"
 
 
 def _matching_brace(text: str, open_index: int) -> int:
@@ -69,6 +72,32 @@ def _tls_runtime_blocks(text: str) -> list[tuple[int, int]]:
     return result
 
 
+def _ensure_generic_websocket_proxy(block: str) -> tuple[str, bool]:
+    generic = re.search(r"(?m)^(?P<indent>\\s*)location\\s+/\\s*\\{", block)
+    if generic is None:
+        raise RuntimeError("HHS_LANE5_INGRESS_GENERIC_LOCATION_MISSING")
+    open_index = block.find("{", generic.start(), generic.end())
+    close_index = _matching_brace(block, open_index)
+    location = block[generic.start() : close_index + 1]
+    if LANE5_GATEWAY_MARKER not in location:
+        raise RuntimeError("HHS_LANE5_INGRESS_GENERIC_GATEWAY_PROXY_MISSING")
+
+    indent = generic.group("indent") + "    "
+    additions: list[str] = []
+    if WEBSOCKET_HTTP_VERSION not in location:
+        additions.append(WEBSOCKET_HTTP_VERSION)
+    if WEBSOCKET_UPGRADE_HEADER not in location:
+        additions.append(WEBSOCKET_UPGRADE_HEADER)
+    if not re.search(r"(?m)^\\s*proxy_set_header\\s+Connection\\s+[^;]+;", location):
+        additions.append(WEBSOCKET_CONNECTION_FALLBACK)
+    if not additions:
+        return block, False
+
+    insertion = "".join(f"\\n{indent}{directive}" for directive in additions)
+    patched = block[: open_index + 1] + insertion + block[open_index + 1 :]
+    return patched, True
+
+
 def patch_nginx_text(text: str) -> tuple[str, bool]:
     blocks = _tls_runtime_blocks(text)
     if len(blocks) != 1:
@@ -82,7 +111,8 @@ def patch_nginx_text(text: str) -> tuple[str, bool]:
         raise RuntimeError("HHS_LANE5_INGRESS_DIRECT_BACKEND_BYPASS_REMAINS")
     if LANE5_GATEWAY_MARKER not in migrated:
         raise RuntimeError("HHS_LANE5_INGRESS_GATEWAY_PROXY_MISSING")
-    changed = migrated != block
+    migrated, websocket_changed = _ensure_generic_websocket_proxy(migrated)
+    changed = migrated != block or websocket_changed
     return text[:start] + migrated + text[end + 1 :], changed
 
 
@@ -141,6 +171,16 @@ def configure(site: Path, *, reload_nginx: bool = True) -> dict[str, str | bool]
     final = site.read_text(encoding="utf-8")
     if DIRECT_BACKEND_MARKER in final:
         raise RuntimeError("HHS_LANE5_INGRESS_DIRECT_BACKEND_BYPASS_REMAINS")
+    final_blocks = _tls_runtime_blocks(final)
+    if len(final_blocks) != 1:
+        raise RuntimeError(
+            f"HHS_LANE5_INGRESS_TLS_RUNTIME_SERVER_COUNT_INVALID:{len(final_blocks)}"
+        )
+    start, end = final_blocks[0]
+    final_block = final[start : end + 1]
+    _verified_block, websocket_changed = _ensure_generic_websocket_proxy(final_block)
+    if websocket_changed:
+        raise RuntimeError("HHS_LANE5_INGRESS_WEBSOCKET_PROXY_NOT_CLOSED")
     return {
         "site": str(site),
         "changed": changed,
