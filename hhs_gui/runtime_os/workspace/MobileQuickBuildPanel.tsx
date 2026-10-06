@@ -260,7 +260,7 @@ export const MobileQuickBuildPanel: React.FC<MobileQuickBuildPanelProps> = ({
         ) : null}
 
         {Object.keys(result).length > 0 ? (
-          <section className="mt-4 rounded-2xl border border-emerald-900/60 bg-emerald-950/10 p-3">
+          <section data-testid="mobile-quick-build-result" className="mt-4 rounded-2xl border border-emerald-900/60 bg-emerald-950/10 p-3">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="text-sm font-semibold text-emerald-300">{text(result.classification ?? result.status, "Build pipeline completed")}</div>
