@@ -370,4 +370,41 @@ def test_native_fallback_recalls_previous_turn_structured_token(monkeypatch):
     assert response["choices"][0]["message"]["content"] == token
     trace = response["hhs_native_trace"]
     assert trace["history_recall"] is True
-    assert trace["generation_path"] == "EXACT_SEMANTIC_HISTORY_FALLBACK"
+    assert trace["generation_path"] == "EXACT_THREAD_HISTORY_RECALL"
+
+
+
+def test_explicit_history_recall_does_not_depend_on_causal_generation(monkeypatch):
+    monkeypatch.setenv("HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS", "1")
+    generator = FakeGenerationService()
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=generator,
+    )
+    token = "HHS-PRODUCTION-CHATBOT-E2E-7249"
+
+    response = asyncio.run(
+        provider.chat_completion(
+            messages=[
+                {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
+                {
+                    "role": "user",
+                    "content": f"Remember this exact token for my next message: {token}.",
+                },
+                {"role": "assistant", "content": "Acknowledged."},
+                {
+                    "role": "user",
+                    "content": (
+                        "What exact token did I ask you to remember in my previous "
+                        "message? Reply with only the token."
+                    ),
+                },
+            ],
+            tools=[],
+        )
+    )
+
+    assert response["choices"][0]["message"]["content"] == token
+    assert response["hhs_native_trace"]["generation_path"] == "EXACT_THREAD_HISTORY_RECALL"
+    assert generator.calls == []
