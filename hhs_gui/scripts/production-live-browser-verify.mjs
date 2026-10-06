@@ -434,11 +434,19 @@ try {
   await page.getByRole("button", { name: "Terminal", exact: true }).click()
   await page.getByTestId("pass185-terminal-panel").waitFor({ state: "visible", timeout: 60_000 })
   await page.getByTestId("pass185-terminal-open").click()
-  await page.waitForFunction(
-    () => document.querySelector('[data-testid="pass185-terminal-state"]')?.textContent?.trim() === "READY",
+  const terminalOpenState = await page.waitForFunction(
+    () => {
+      const state = document.querySelector('[data-testid="pass185-terminal-state"]')?.textContent?.trim() || ""
+      return ["READY", "ERROR"].includes(state) ? state : false
+    },
     null,
     { timeout: 60_000 },
-  )
+  ).then((handle) => handle.jsonValue())
+  if (terminalOpenState !== "READY") {
+    const terminalError = await page.getByTestId("pass185-terminal-error").innerText().catch(() => "")
+    const terminalBootMessage = await page.getByTestId("pass185-terminal-message").innerText().catch(() => "")
+    throw new Error(`Production terminal failed to become READY: state=${terminalOpenState} error=${terminalError} message=${terminalBootMessage}`)
+  }
   await page.getByTestId("pass185-terminal-ping").click()
   await page.waitForFunction(
     () => document.querySelector('[data-testid="pass185-terminal-state"]')?.textContent?.trim() === "PONG",
