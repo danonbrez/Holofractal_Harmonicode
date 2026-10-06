@@ -941,6 +941,9 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "Upload production frontend capability evidence",
         "production-live-browser.json",
         "production-live-browser.png",
+        "HHS_DIGITALOCEAN_LANE5_WEBSOCKET_PROXY_VERIFIED",
+        "proxy_set_header Upgrade $http_upgrade",
+        "proxy_set_header[[:space:]]+Connection",
     ]:
         assert token in workflow
 
@@ -988,6 +991,8 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "assistant_execution_verified: true",
         "workspace_workbench_execution_verified: true",
         "terminal_websocket_execution_verified: true",
+        "terminal_websocket_events",
+        'page.on("websocket"',
         "frontend_authority: false",
     ]:
         assert token in browser
