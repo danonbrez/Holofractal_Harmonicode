@@ -7,7 +7,10 @@ from typing import Any
 import os
 
 import pytest
+from fastapi import FastAPI, HTTPException
+from fastapi.testclient import TestClient
 
+import hhs_backend.api.pass175_terminal_ws_routes as terminal_ws_routes
 from hhs_runtime.core.hash72_digest_v1 import hash72_digest
 from hhs_runtime.pass175 import (
     EncryptedHash216Store,
@@ -219,3 +222,33 @@ def test_terminal_completion_receipt_with_native_artifact_set(tmp_path: Path) ->
     assert receipt["native_artifacts"]["complete"] is True
     assert receipt["external_deployment_quota_not_an_acceptance_gate"] is True
     assert len(receipt["receipt_sha256"]) == 64
+
+def test_terminal_websocket_boot_failure_is_explicit(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fail_runtime():
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "schema": "HHS_PASS_175_TERMINAL_BOOT_FAILURE_V1",
+                "classification": "HHS_P175_TERMINAL_RUNTIME_INITIALIZATION_FAILED",
+                "detail": "state root is not writable",
+                "silent_freeze": False,
+            },
+        )
+
+    monkeypatch.setattr(terminal_ws_routes, "get_terminal_runtime", fail_runtime)
+    app = FastAPI()
+    app.include_router(terminal_ws_routes.router)
+
+    with TestClient(app).websocket_connect(
+        "/api/v1/pass175/terminal/ws/events"
+    ) as websocket:
+        payload = websocket.receive_json()
+        assert payload["ok"] is False
+        assert payload["schema"] == "HHS_PASS_175_TERMINAL_WS_BOOT_FAILURE_V1"
+        assert (
+            payload["classification"]
+            == "HHS_P175_TERMINAL_RUNTIME_INITIALIZATION_FAILED"
+        )
+        assert payload["detail"] == "state root is not writable"
+        assert payload["parallel_state_authority"] is False
+
