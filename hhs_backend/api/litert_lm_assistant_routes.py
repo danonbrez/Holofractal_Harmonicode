@@ -225,6 +225,8 @@ async def production_assistant_route_warmup(
         ),
         trace_label="startup-prewarm-turn-1",
     )
+    if first.get("ok") is not True:
+        raise RuntimeError(f"production assistant warmup first turn failed: {first}")
     thread_id = str(first.get("thread_id") or "")
     if not thread_id:
         raise RuntimeError(f"production assistant warmup omitted thread_id: {first}")
@@ -242,6 +244,8 @@ async def production_assistant_route_warmup(
         ),
         trace_label="startup-prewarm-turn-2",
     )
+    if second.get("ok") is not True:
+        raise RuntimeError(f"production assistant warmup second turn failed: {second}")
     recalled = str((second.get("assistant_message") or {}).get("content") or "").strip()
     if recalled != token:
         raise RuntimeError(
