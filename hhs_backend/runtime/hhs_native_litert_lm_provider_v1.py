@@ -323,14 +323,27 @@ class HHSNativeLiteRTLMTransport:
         except Exception as exc:
             reasoner_error = f"{type(exc).__name__}: {exc}"
 
-        try:
-            word2vec_status = dict(self._word2vec().status())
-        except Exception as exc:
-            word2vec_error = f"{type(exc).__name__}: {exc}"
+        # Word2Vec is optional in production. Do not import/instantiate the
+        # Pass 166 service merely to prove readiness for turns that do not use
+        # language-memory retrieval. Required or already-injected Word2Vec
+        # services are still checked exactly as before.
+        if self.require_word2vec or self._word2vec_service is not None:
+            try:
+                word2vec_status = dict(self._word2vec().status())
+            except Exception as exc:
+                word2vec_error = f"{type(exc).__name__}: {exc}"
+                word2vec_status = {
+                    "offline_ready": False,
+                    "active_model_id": None,
+                    "installed_models": 0,
+                }
+        else:
             word2vec_status = {
                 "offline_ready": False,
                 "active_model_id": None,
                 "installed_models": 0,
+                "status": "OPTIONAL_WORD2VEC_STATUS_DEFERRED",
+                "deferred": True,
             }
 
         word2vec_ready = bool(
@@ -399,7 +412,10 @@ class HHSNativeLiteRTLMTransport:
         return status
 
     async def list_models(self) -> Dict[str, Any]:
-        status = self._require_ready()
+        # Installation closure imports can be cold on a freshly promoted host.
+        # Keep those synchronous checks off the asyncio event loop so the
+        # production request path remains cancellable and observable.
+        status = await asyncio.to_thread(self._require_ready)
         return {
             "object": "list",
             "data": [{
@@ -987,7 +1003,9 @@ class HHSNativeLiteRTLMTransport:
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         del response_format
-        self._require_ready()
+        # Preserve the full installation-closure gate while preventing its
+        # cold synchronous imports from monopolizing the server event loop.
+        await asyncio.to_thread(self._require_ready)
         message_list = [dict(message) for message in messages]
         mode = _assistant_mode_from_messages(message_list)
         query = _last_user_content(message_list).strip()
