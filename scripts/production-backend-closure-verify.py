@@ -12,7 +12,13 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import sys
+from pathlib import Path
 from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 os.environ.setdefault("HHS_LITERT_LM_PROVIDER_MODE", "native")
 os.environ.setdefault("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "0")
