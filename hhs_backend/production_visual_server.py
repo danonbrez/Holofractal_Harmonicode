@@ -21,6 +21,7 @@ authority remains owned by the inherited HHS runtime.
 """
 from __future__ import annotations
 
+import json
 import os
 import time
 from collections.abc import Awaitable, Callable
@@ -59,6 +60,20 @@ def _verify_production_runtime_os_projection() -> None:
 
 _verify_production_runtime_os_projection()
 PRODUCTION_PUBLIC_PROJECTION_VERIFIED = True
+
+
+async def _prewarm_production_native_assistant() -> None:
+    """Warm native assistant installation closure before serving traffic."""
+    from hhs_backend.runtime.hhs_production_assistant_v1 import (
+        DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+    )
+
+    receipt = await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.prewarm_native_installation()
+    print(json.dumps(receipt, sort_keys=True, separators=(",", ":"), default=str), flush=True)
+
+
+authoritative_app.add_event_handler("startup", _prewarm_production_native_assistant)
+
 
 PRODUCTION_STATUS_PATHS = (
     "/api/runtime/authority/status",
@@ -146,5 +161,6 @@ __all__ = [
     "PRODUCTION_PUBLIC_PROJECTION_VERIFIED",
     "PRODUCTION_STATUS_PATHS",
     "ProductionRuntimeBootstrapGateway",
+    "_prewarm_production_native_assistant",
     "app",
 ]

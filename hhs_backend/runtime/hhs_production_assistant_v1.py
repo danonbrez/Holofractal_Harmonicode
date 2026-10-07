@@ -46,6 +46,7 @@ from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
 VERSION = "HHS_PRODUCTION_ASSISTANT_V2"
 STATUS_SCHEMA = "HHS_PRODUCTION_ASSISTANT_STATUS_V2"
 TURN_SCHEMA = "HHS_PRODUCTION_ASSISTANT_TURN_V2"
+PREWARM_SCHEMA = "HHS_PRODUCTION_ASSISTANT_PREWARM_V1"
 PROVIDER_ID = "provider:hhs.production_assistant"
 
 
@@ -142,6 +143,64 @@ class ProductionAssistantService:
             0.5,
             float(os.getenv("HHS_ASSISTANT_HEALTH_TIMEOUT_SECONDS", "3")),
         )
+
+    async def prewarm_native_installation(self) -> Dict[str, Any]:
+        """Warm the selected native provider before production accepts traffic.
+
+        This executes the same native service health/readiness path used by the
+        assistant and fails closed when the selected native provider is not
+        installation-ready. Chat turns still execute their normal
+        _require_ready() transport gate; this method only removes cold
+        module/import work from the first request path.
+        """
+        if not self.native_first:
+            receipt = {
+                "schema": PREWARM_SCHEMA,
+                "version": VERSION,
+                "ok": True,
+                "ready": True,
+                "native_first": False,
+                "status": "SKIPPED_NON_NATIVE_PRIMARY",
+                "provider_id": None,
+                "model_id": None,
+                "runtime_mutation_admitted": False,
+            }
+            receipt["prewarm_root_hash72"] = hash72(PREWARM_SCHEMA, receipt)
+            return receipt
+
+        health = dict(await self.native_service.health())
+        ready = bool(health.get("ok") and health.get("online"))
+        receipt = {
+            "schema": PREWARM_SCHEMA,
+            "version": VERSION,
+            "ok": ready,
+            "ready": ready,
+            "native_first": True,
+            "status": (
+                "NATIVE_INSTALLATION_PREWARM_READY"
+                if ready
+                else "NATIVE_INSTALLATION_PREWARM_FAILED"
+            ),
+            "provider_id": health.get("provider_id"),
+            "model_id": (
+                getattr(getattr(self.native_service, "config", None), "model_id", None)
+                or health.get("model_id")
+            ),
+            "health_status": health.get("status"),
+            "runtime_mutation_admitted": False,
+        }
+        receipt["prewarm_root_hash72"] = hash72(PREWARM_SCHEMA, receipt)
+        if not ready:
+            raise RuntimeError(
+                "HHS_PRODUCTION_NATIVE_ASSISTANT_PREWARM_FAILED:"
+                + json.dumps(receipt, sort_keys=True, separators=(",", ":"), default=str)
+            )
+
+        # Cache diagnostic health only. The native transport still re-runs
+        # its authoritative _require_ready() gate on every chat completion.
+        self._health_cache["native"] = health
+        self._health_cache_at["native"] = time.monotonic()
+        return receipt
 
     def create_thread(
         self,

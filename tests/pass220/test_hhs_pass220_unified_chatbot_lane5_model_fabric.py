@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import asyncio
 
+import pytest
+
 from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
     DEFAULT_HHS_ASSISTANT_TOOLS,
     assistant_api_tool_registry,
@@ -341,3 +343,57 @@ def test_native_first_fallback_probes_pass153_only_when_needed(monkeypatch):
     assert pass153.health_calls == 1
     assert pass153.send_calls == 1
     assert service.threads.get(thread["thread_id"])["message_count"] == 2
+
+
+def test_native_startup_prewarm_executes_selected_health_before_chat(monkeypatch):
+    monkeypatch.setenv("HHS_LITERT_LM_PROVIDER_MODE", "native")
+    native = CountingProvider(ready=True, reply="native")
+    pass153 = CountingProvider(ready=True, reply="pass153")
+    service = ProductionAssistantService(
+        native_service=native,
+        pass153_service=pass153,
+    )
+
+    receipt = asyncio.run(service.prewarm_native_installation())
+
+    assert receipt["schema"] == "HHS_PRODUCTION_ASSISTANT_PREWARM_V1"
+    assert receipt["status"] == "NATIVE_INSTALLATION_PREWARM_READY"
+    assert receipt["ready"] is True
+    assert receipt["runtime_mutation_admitted"] is False
+    assert receipt["prewarm_root_hash72"]
+    assert native.health_calls == 1
+    assert pass153.health_calls == 0
+
+    thread = service.create_thread(project_id="project:native-prewarm")
+    result = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Remember this exact token for my next message: PREWARM-123-A.",
+        )
+    )
+    assert result["ok"] is True
+    assert native.health_calls == 1
+    assert native.send_calls == 1
+    assert pass153.health_calls == 0
+    assert pass153.send_calls == 0
+
+
+def test_native_startup_prewarm_fails_closed_when_native_health_is_not_ready(monkeypatch):
+    monkeypatch.setenv("HHS_LITERT_LM_PROVIDER_MODE", "native")
+    native = CountingProvider(ready=False, reply="native")
+    pass153 = CountingProvider(ready=True, reply="pass153")
+    service = ProductionAssistantService(
+        native_service=native,
+        pass153_service=pass153,
+    )
+
+    with pytest.raises(
+        RuntimeError,
+        match="HHS_PRODUCTION_NATIVE_ASSISTANT_PREWARM_FAILED",
+    ):
+        asyncio.run(service.prewarm_native_installation())
+
+    assert native.health_calls == 1
+    assert native.send_calls == 0
+    assert pass153.health_calls == 0
+    assert pass153.send_calls == 0
