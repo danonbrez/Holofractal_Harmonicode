@@ -16,6 +16,7 @@ Environment=PYTHONPATH=/opt/hhs/app
 Environment=HHS_REPOSITORY_ROOT=/opt/hhs/app
 Environment=HHS_REPO_ROOT=/opt/hhs/app
 Environment=HHS_DISABLE_C_AUTOBUILD=1
+Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0
 Environment=HHS_DATA_DIR=/var/lib/hhs/data
 Environment=HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime
 Environment=HHS_AGENT_INDEX_DB=/var/lib/hhs/data/runtime/hhs_agent_immutable_index.sqlite3
