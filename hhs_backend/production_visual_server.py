@@ -25,6 +25,7 @@ import json
 import os
 import time
 from collections.abc import Awaitable, Callable
+from contextlib import asynccontextmanager
 from typing import Any
 
 from hhs_backend.cached_visual_server import RuntimeBootstrapGateway
@@ -62,17 +63,31 @@ _verify_production_runtime_os_projection()
 PRODUCTION_PUBLIC_PROJECTION_VERIFIED = True
 
 
-async def _prewarm_production_native_assistant() -> None:
-    """Warm native assistant installation closure before serving traffic."""
-    from hhs_backend.runtime.hhs_production_assistant_v1 import (
-        DEFAULT_PRODUCTION_ASSISTANT_SERVICE,
+async def _prewarm_production_native_assistant() -> dict[str, Any]:
+    """Exercise the identical production chat route before serving traffic."""
+    from hhs_backend.api.litert_lm_assistant_routes import (
+        production_assistant_route_warmup,
     )
 
-    receipt = await DEFAULT_PRODUCTION_ASSISTANT_SERVICE.prewarm_native_installation()
-    print(json.dumps(receipt, sort_keys=True, separators=(",", ":"), default=str), flush=True)
+    receipt = await production_assistant_route_warmup()
+    print(
+        json.dumps(receipt, sort_keys=True, separators=(",", ":"), default=str),
+        flush=True,
+    )
+    return receipt
 
 
-authoritative_app.add_event_handler("startup", _prewarm_production_native_assistant)
+_inherited_production_lifespan = authoritative_app.router.lifespan_context
+
+
+@asynccontextmanager
+async def _production_assistant_lifespan(app_instance: Any):
+    async with _inherited_production_lifespan(app_instance):
+        await _prewarm_production_native_assistant()
+        yield
+
+
+authoritative_app.router.lifespan_context = _production_assistant_lifespan
 
 
 PRODUCTION_STATUS_PATHS = (
@@ -162,5 +177,6 @@ __all__ = [
     "PRODUCTION_STATUS_PATHS",
     "ProductionRuntimeBootstrapGateway",
     "_prewarm_production_native_assistant",
+    "_production_assistant_lifespan",
     "app",
 ]
