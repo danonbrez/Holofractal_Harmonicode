@@ -5703,6 +5703,76 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
         ),
     )
 
+    registry.register_function(
+        name="pass220.harmonicode_trilayer_proof_hydration.self_test",
+        module=(
+            "hhs_runtime."
+            "hhs_pass220_i079_harmonicode_trilayer_proof_hydration_v1"
+        ),
+        function="self_test",
+        service_type="pass220_candidate_proof_bound_hash216_hydration",
+        description=(
+            "Validate the I079 HARMONICODE tri-layer hydration candidate: "
+            "two exact verbatim algebra sources, a source-span-bound typed "
+            "reduction/VM81 positional-address graph, and one proof/"
+            "reconstruction lane remain co-resident as three ordered Hash72 "
+            "lanes forming one Hash216 identity. I074 HNAN closure and the "
+            "GOOD_CLOSED typed correspondence are inherited without granting "
+            "host scalarization, canonical VM81 mutation, Hash72/Hash216 "
+            "commit/persistence, floating-point, or egress authority."
+        ),
+        invariant_ids=[
+            "HHS-I008",
+            "HHS-I010",
+            "HHS-I011",
+            "HHS-I012",
+            "HHS-I014",
+            "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS_220_I079_HARMONICODE_TRILAYER_PROOF_HYDRATION_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_I079_HARMONICODE_TRILAYER_PROOF_HYDRATION_V1_SELF_TEST",
+        ],
+        validators=[
+            "validate_candidate",
+            "self_test",
+        ],
+        guards=[
+            "verbatim_sources_git_blob_bound",
+            "reduction_source_span_bound",
+            "same_proof_binds_verbatim_and_reduction",
+            "reconstruction_required",
+            "symbol_vm81_bigint_position_identity_required",
+            "lo_shu_nucleus_reference_required",
+            "ordered_xy_yx_zw_wz_preserved",
+            "uniform_scalar_reduction_forbidden",
+            "three_hash72_lanes_form_hash216",
+            "hash216_hydration_roundtrip_required",
+            "good_closed_typed_correspondence_only",
+            "no_translation_without_computational_proof",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_I079_VERBATIM_SOURCE_DRIFT",
+            "REJECT_I079_REDUCTION_SOURCE_SPAN_DRIFT",
+            "REJECT_I079_RECONSTRUCTION_MISMATCH",
+            "REJECT_I079_SYMBOL_ADDRESS_DRIFT",
+            "REJECT_I079_HASH216_LANE_ORDER_DRIFT",
+            "REJECT_I079_HYDRATION_ROUNDTRIP_MISMATCH",
+            "REJECT_I079_GOOD_CLOSED_TYPE_ERASURE",
+            "REJECT_I079_AUTHORITY_ESCALATION",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="READ_ONLY_I079_CANDIDATE_NO_VM81_MUTATION",
+        persistence_policy="NO_CANONICAL_PERSISTENCE",
+        boundedness_policy=(
+            "FINITE_TWO_VERBATIM_SOURCES_THREE_HASH72_LANES_"
+            "24_SYMBOL_BLOCKS_5184_SERIALIZED_POSITIONS"
+        ),
+    )
+
     return registry
 
 

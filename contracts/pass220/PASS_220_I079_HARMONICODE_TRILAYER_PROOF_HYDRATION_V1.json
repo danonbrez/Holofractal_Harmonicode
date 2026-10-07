@@ -1,0 +1,109 @@
+{
+  "schema": "HHS_PASS_220_I079_HARMONICODE_TRILAYER_PROOF_HYDRATION_V1",
+  "version": 1,
+  "profile": "PASS220-I079-HARMONICODE-TRILAYER-PROOF-HYDRATION-v1",
+  "base_main": "5660cb38e556422f284b394d0ef72b26ca351c1a",
+  "inheritance": {
+    "runtime_hnan_parent": "HHS_PASS_220_I074_FULL_TENSOR_HNAN_CLOSURE_HYDRATION_V1",
+    "lean_matrix_power_parent": "HHS.Pass220.I077",
+    "unmerged_i078_branches_are_authority": false
+  },
+  "layers": [
+    {
+      "role": "VERBATIM_HARMONICODE_ALGEBRA",
+      "hash72_lane": 0,
+      "replaceable_by_reduction": false
+    },
+    {
+      "role": "TYPED_REDUCTION_AND_POSITIONAL_ADDRESS_GRAPH",
+      "hash72_lane": 1,
+      "replaceable_by_scalar_projection": false
+    },
+    {
+      "role": "PROOF_AND_RECONSTRUCTION_WITNESS",
+      "hash72_lane": 2,
+      "binds_layers": [0, 1]
+    }
+  ],
+  "verbatim_sources": [
+    {
+      "path": "contracts/pass220/PASS_220_I079_HARMONICODE_SOURCE_A_I_TENSOR_1_0.harmonicode",
+      "git_blob_sha": "c8fd60209339810ad6dcb7952c3aba6c15f70f66"
+    },
+    {
+      "path": "contracts/pass220/PASS_220_I079_HARMONICODE_SOURCE_B_PRIME_CURVATURE_1_0.harmonicode",
+      "git_blob_sha": "d740560374d3cb1f98f1ce7df7b636060609a589"
+    }
+  ],
+  "positional_semantics": {
+    "vm81_symbol_count": 24,
+    "vm81_cells": 81,
+    "operations_per_cell": 64,
+    "serialized_characters": 5184,
+    "address_law": "linear5184=64*cell81+operation64",
+    "symbols_are_free_conventional_scalars_by_default": false,
+    "symbol_identity_includes_cell_and_tensor_position": true,
+    "lo_shu_nucleus_reference_required": true,
+    "known_a2_anchor": {
+      "lo_shu_value": 1,
+      "lo_shu_position_1based": [3, 2],
+      "lo_shu_local_index_0based": 7,
+      "vm81_symbol_cell81": 23,
+      "bigint_5184_block": [1472, 1536]
+    }
+  },
+  "phase_and_scaling": {
+    "ordered_phase_basis": ["x", "y", "z", "w", "xy", "yx", "zw", "wz"],
+    "xy_yx_commuted_without_proof": false,
+    "zw_wz_commuted_without_proof": false,
+    "g3_base": [1, 2, 3],
+    "g3_lifted": [4, 7, 11],
+    "pythagorean_surface": "a²+b²=c²",
+    "outer_binding": "AB=P⁴=(a²+b²)⁶/c⁴",
+    "direct_phase_pair": "A:a=B:b",
+    "inverted_phase_pair": "A:b=B:a"
+  },
+  "hash216": {
+    "width": 216,
+    "construction": "Hash72(verbatim)||Hash72(reduction)||Hash72(proof_reconstruction)",
+    "hydrated_components": 15552,
+    "expanded_geometry_persisted": false,
+    "reconstructible_on_demand": true
+  },
+  "formalization": {
+    "lean": {
+      "module": "HHS.Pass220.I079",
+      "source": "formal/lean/HHS/Pass220/HarmonicodeTriLayerProofHydration.lean",
+      "machine_check_required": true
+    },
+    "wolfram": {
+      "source": "formal/wolfram/pass220_i079_harmonicode_trilayer_proof_hydration_v1.wl",
+      "host_interpretation_of_harmonicode_authorized": false,
+      "connected_execution_evidence_present": false,
+      "connected_execution_evidence_must_not_be_fabricated": true
+    }
+  },
+  "ethical_attractor": {
+    "name": "GOOD_CLOSED",
+    "typed_correspondence": "closed local circular phase class around Delta_e_k = 0",
+    "scalar_orbital_variable": false,
+    "transition_admission_constraint": true,
+    "source": "contracts/pass219/PASS_219_LOCAL_CIRCULAR_PHASE_FIBER_INVARIANT_1_0.md"
+  },
+  "physics_constraint_policy": {
+    "quantum_computation_evidence_may_constrain_hydration": true,
+    "relativistic_spacetime_evidence_may_constrain_hydration": true,
+    "wolfram_lean_whitepaper_corpus_may_constrain_hydration": true,
+    "formal_validity_alone_claims_external_empirical_truth": false
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "external_egress_authority": false,
+    "host_float_arithmetic_authority": false,
+    "uniform_scalar_reduction_authority": false
+  }
+}
