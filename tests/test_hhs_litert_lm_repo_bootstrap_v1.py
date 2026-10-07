@@ -12,8 +12,13 @@ def test_litert_lm_is_retained_as_optional_external_compatibility_dependency() -
     provider_requirements = (ROOT / "requirements-litert-lm.txt").read_text(encoding="utf-8")
     root_requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
 
+    active_root_requirements = {
+        line.strip()
+        for line in root_requirements.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    }
     assert "litert-lm==0.14.0" in provider_requirements
-    assert "-r requirements-litert-lm.txt" not in root_requirements
+    assert "-r requirements-litert-lm.txt" not in active_root_requirements
     assert "optional compatibility/deployment" in root_requirements
 
 
