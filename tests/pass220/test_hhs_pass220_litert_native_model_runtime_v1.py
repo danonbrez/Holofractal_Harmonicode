@@ -16,8 +16,7 @@ from hhs_backend.runtime.hhs_pass220_native_litert_runtime_v1 import (
 ROOT = Path(__file__).resolve().parents[2]
 MODEL_NATIVE = ROOT / "native_projects" / "hhs_pass220_litert_native_model_runtime"
 MODEL_SOURCE = MODEL_NATIVE / "src" / "hhs_pass220_litert_native_model_runtime_v1.c"
-EXACT_SOURCE = ROOT / "hhs_runtime" / "c" / "hhs_runtime_exact_abi.c"
-EXACT_INCLUDE = ROOT / "hhs_runtime" / "include"
+CANONICAL_RUNTIME_LIBRARY = ROOT / "hhs_runtime" / "builds" / "libhhs_runtime.so"
 
 
 @pytest.fixture()
@@ -27,8 +26,6 @@ def native_libraries(tmp_path: Path) -> tuple[Path, Path]:
         pytest.skip("C compiler unavailable")
 
     model_shared = tmp_path / "libhhs_litert_native_model_runtime_v1.so"
-    exact_shared = tmp_path / "libhhs_runtime_exact_abi.so"
-
     subprocess.run(
         [
             cc,
@@ -50,28 +47,23 @@ def native_libraries(tmp_path: Path) -> tuple[Path, Path]:
         text=True,
         capture_output=True,
     )
+
+    # The cumulative exact ABI is not a standalone one-file library. Production
+    # compiles it through the repository's c-abi target, which supplies Hash216,
+    # Pass159/Pass169 bindings, libcrypto, libm, and the inherited aggregate
+    # source closure. Exercise the same build path here.
     subprocess.run(
-        [
-            cc,
-            "-std=c11",
-            "-O2",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-pedantic",
-            "-fPIC",
-            "-shared",
-            f"-I{EXACT_INCLUDE}",
-            str(EXACT_SOURCE),
-            "-o",
-            str(exact_shared),
-        ],
+        ["make", "c-abi"],
         cwd=ROOT,
         check=True,
         text=True,
-        capture_output=True,
     )
-    return model_shared, exact_shared
+    if not CANONICAL_RUNTIME_LIBRARY.is_file():
+        raise AssertionError(
+            f"canonical runtime library missing after make c-abi: "
+            f"{CANONICAL_RUNTIME_LIBRARY}"
+        )
+    return model_shared, CANONICAL_RUNTIME_LIBRARY
 
 
 def _registry(native_libraries: tuple[Path, Path]) -> NativeLiteRTModelRegistry:
@@ -210,7 +202,12 @@ def test_default_repository_dependency_closure_excludes_external_litert_package(
     compatibility_requirements = (
         ROOT / "requirements-litert-lm.txt"
     ).read_text(encoding="utf-8")
-    assert "-r requirements-litert-lm.txt" not in root_requirements
+    active_root_requirements = {
+        line.strip()
+        for line in root_requirements.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    }
+    assert "-r requirements-litert-lm.txt" not in active_root_requirements
     assert "litert-lm==0.14.0" in compatibility_requirements
 
 

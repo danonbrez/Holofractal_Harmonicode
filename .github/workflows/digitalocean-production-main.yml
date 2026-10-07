@@ -17,6 +17,11 @@ on:
       - "hhs_backend/production_visual_server.py"
       - "hhs_backend/production_server.py"
       - "hhs_backend/runtime/hhs_production_assistant_v1.py"
+      - "hhs_backend/api/litert_lm_assistant_routes.py"
+      - "native_projects/hhs_pass220_litert_native_model_runtime/**"
+      - "scripts/production-backend-closure-verify.py"
+      - "scripts/production-assistant-http-verify.py"
+      - "tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py"
       - ".github/workflows/repository-hash216-dependency-index.yml"
       - "deployment/digitalocean/guarded_auto_update/**"
       - "deployment/digitalocean/warm_boot_manifest.py"
@@ -78,9 +83,78 @@ jobs:
               print(f"{name}: PASS")
           PY
 
+  validate-production-backend-closure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out backend candidate
+        uses: actions/checkout@v4
+      - name: Set up production Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require native compiler toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v cc
+          command -v c++
+          command -v make
+      - name: Install production backend dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Compile complete production backend Python surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 240s python -m compileall -q \
+            hhs_backend \
+            hhs_runtime \
+            scripts/production-backend-closure-verify.py \
+            scripts/production-assistant-http-verify.py
+          echo "HHS_PRODUCTION_BACKEND_PYTHON_COMPILE_CLOSURE=1"
+      - name: Compile and execute production-reachable LiteRT native registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          make -C native_projects/hhs_pass220_litert_native_model_runtime clean all test
+          echo "HHS_PRODUCTION_BACKEND_NATIVE_COMPILE_CLOSURE=1"
+      - name: Import production assistant service and route surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from hhs_backend.api import litert_lm_assistant_routes
+          from hhs_backend.runtime import hhs_production_assistant_v1
+          paths = {
+              str(getattr(route, "path", ""))
+              for route in litert_lm_assistant_routes.router.routes
+          }
+          if "/api/assistant/chat" not in paths:
+              raise SystemExit(f"production assistant chat route missing: {sorted(paths)}")
+          if not hasattr(hhs_production_assistant_v1, "ProductionAssistantService"):
+              raise SystemExit("ProductionAssistantService import missing")
+          print("HHS_PRODUCTION_ASSISTANT_IMPORT_CLOSURE=1")
+          PY
+      - name: Execute production assistant two-turn backend closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 90s python scripts/production-backend-closure-verify.py
+      - name: Run dependency-scoped production assistant regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py::test_native_first_turn_does_not_probe_optional_pass153_health \
+            tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py::test_native_first_fallback_probes_pass153_only_when_needed \
+            tests/pass220/test_hhs_pass220_litert_native_model_runtime_v1.py \
+            tests/test_hhs_litert_lm_repo_bootstrap_v1.py
+
   deploy-exact-main:
     if: github.event_name != 'pull_request'
-    needs: validate-deployment-contract
+    needs:
+      - validate-deployment-contract
+      - validate-production-backend-closure
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
@@ -480,6 +554,30 @@ jobs:
               raise SystemExit(f'local Runtime OS service registry is empty or malformed: {services_payload}')
           print(f'HHS_DIGITALOCEAN_LOCAL_SERVICE_REGISTRY_VERIFIED={len(services)}')
           PY
+
+          echo "=== VERIFY DIRECT PRODUCTION BACKEND ASSISTANT ==="
+          if ! python3 "$APP_ROOT/scripts/production-assistant-http-verify.py" \
+            --base-url http://127.0.0.1:8080 \
+            --timeout-seconds 30 \
+            --label backend; then
+            echo "direct production backend assistant verification failed" >&2
+            systemctl status hhs.service --no-pager --full >&2 || true
+            journalctl -u hhs.service -n 500 --no-pager >&2 || true
+            exit 25
+          fi
+
+          echo "=== VERIFY LANE 5 ASSISTANT INGRESS ==="
+          if ! python3 "$APP_ROOT/scripts/production-assistant-http-verify.py" \
+            --base-url http://127.0.0.1:8715 \
+            --timeout-seconds 30 \
+            --label lane5; then
+            echo "Lane 5 production assistant verification failed" >&2
+            systemctl status hhs-lane5-ingress.service --no-pager --full >&2 || true
+            journalctl -u hhs-lane5-ingress.service -n 500 --no-pager >&2 || true
+            systemctl status hhs.service --no-pager --full >&2 || true
+            journalctl -u hhs.service -n 500 --no-pager >&2 || true
+            exit 26
+          fi
 
           latest_drift_manifest=$(find "$STATE_ROOT/host-drift" -mindepth 2 -maxdepth 2 -name manifest.json -type f -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -n 1 | cut -d' ' -f2- || true)
           if [[ -n "$latest_drift_manifest" ]]; then
