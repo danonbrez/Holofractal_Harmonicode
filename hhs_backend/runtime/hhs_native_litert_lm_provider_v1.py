@@ -412,10 +412,7 @@ class HHSNativeLiteRTLMTransport:
         return status
 
     async def list_models(self) -> Dict[str, Any]:
-        # Installation closure imports can be cold on a freshly promoted host.
-        # Keep those synchronous checks off the asyncio event loop so the
-        # production request path remains cancellable and observable.
-        status = await asyncio.to_thread(self._require_ready)
+        status = self._require_ready()
         return {
             "object": "list",
             "data": [{
@@ -1003,9 +1000,7 @@ class HHSNativeLiteRTLMTransport:
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         del response_format
-        # Preserve the full installation-closure gate while preventing its
-        # cold synchronous imports from monopolizing the server event loop.
-        await asyncio.to_thread(self._require_ready)
+        self._require_ready()
         message_list = [dict(message) for message in messages]
         mode = _assistant_mode_from_messages(message_list)
         query = _last_user_content(message_list).strip()
