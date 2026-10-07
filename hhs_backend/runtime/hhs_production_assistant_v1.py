@@ -20,6 +20,7 @@ import time
 from dataclasses import replace
 from typing import Any, Dict, List, Mapping, Optional
 
+from hhs_backend.runtime.hhs_assistant_stage_timing_v1 import timed_stage
 from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     ASSISTANT_MODES,
     DEFAULT_ASSISTANT_MODE,
@@ -691,33 +692,35 @@ class ProductionAssistantService:
 
         native_result: Optional[Mapping[str, Any]] = None
         if native_ready:
-            if user_message is None:
-                native_result = await self.native_service.send_message(
-                    thread_id,
-                    content=content,
-                    tools=tools,
-                    response_format=response_format,
-                    custom_system_instruction=custom_system_instruction,
-                    assistant_mode=assistant_mode,
-                    user_context=user_context,
-                )
-            else:
-                native_result = await self.native_service.continue_message(
-                    thread_id,
-                    user_message=user_message,
-                    tools=tools,
-                    response_format=response_format,
-                    custom_system_instruction=custom_system_instruction,
-                    assistant_mode=assistant_mode,
-                    user_context=user_context,
-                )
+            with timed_stage("production.native_provider_turn"):
+                if user_message is None:
+                    native_result = await self.native_service.send_message(
+                        thread_id,
+                        content=content,
+                        tools=tools,
+                        response_format=response_format,
+                        custom_system_instruction=custom_system_instruction,
+                        assistant_mode=assistant_mode,
+                        user_context=user_context,
+                    )
+                else:
+                    native_result = await self.native_service.continue_message(
+                        thread_id,
+                        user_message=user_message,
+                        tools=tools,
+                        response_format=response_format,
+                        custom_system_instruction=custom_system_instruction,
+                        assistant_mode=assistant_mode,
+                        user_context=user_context,
+                    )
             if self._completed(native_result):
                 native_result["effective_mode"] = "HHS_NATIVE_LITERT_COMPATIBLE"
                 native_result["selected_model_id"] = NATIVE_MODEL_ID
                 native_result["production_assistant_version"] = VERSION
                 native_result["fallback_used"] = True
                 native_result["failed_provider_results"] = failed_litert_results
-                native_result["unified_model_fabric"] = self.unified_model_fabric()
+                with timed_stage("production.unified_model_fabric"):
+                    native_result["unified_model_fabric"] = self.unified_model_fabric()
                 return native_result
             candidate_user = native_result.get("user_message")
             if isinstance(candidate_user, Mapping):
@@ -727,9 +730,10 @@ class ProductionAssistantService:
         # unavailable or returned an unadmitted/incomplete result. Never pay
         # optional-provider health cost on the successful native path.
         if self.native_first and self.pass153_service is not None:
-            pass153_health = await self._provider_health(
-                "pass153", self.pass153_service
-            )
+            with timed_stage("production.pass153_fallback_health"):
+                pass153_health = await self._provider_health(
+                    "pass153", self.pass153_service
+                )
             pass153_ready = bool(
                 pass153_health.get("ok") and pass153_health.get("online")
             )
