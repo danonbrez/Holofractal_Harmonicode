@@ -25,10 +25,14 @@ def _load_permission_module():
 
 def test_guarded_updater_inherits_word2vec_optional_native_provider_contract() -> None:
     service = (DEPLOY / "hhs-guarded-update.service").read_text(encoding="utf-8")
+    runtime_service = (
+        ROOT / "deploy" / "digitalocean" / "hhs-pass196-integrated-environment.service"
+    ).read_text(encoding="utf-8")
     example = (DEPLOY / "hhs-guarded-update.env.example").read_text(encoding="utf-8")
     post_compile = (ROOT / "bin" / "post_compile").read_text(encoding="utf-8")
 
     assert "Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0" in service
+    assert "Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0" in runtime_service
     assert "HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0" in example
     assert 'export HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC="${HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC:-0}"' in post_compile
     assert "NoNewPrivileges=true" in service
