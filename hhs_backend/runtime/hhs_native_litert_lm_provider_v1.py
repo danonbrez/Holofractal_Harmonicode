@@ -323,14 +323,27 @@ class HHSNativeLiteRTLMTransport:
         except Exception as exc:
             reasoner_error = f"{type(exc).__name__}: {exc}"
 
-        try:
-            word2vec_status = dict(self._word2vec().status())
-        except Exception as exc:
-            word2vec_error = f"{type(exc).__name__}: {exc}"
+        # Word2Vec is optional in production. Do not import/instantiate the
+        # Pass 166 service merely to prove readiness for turns that do not use
+        # language-memory retrieval. Required or already-injected Word2Vec
+        # services are still checked exactly as before.
+        if self.require_word2vec or self._word2vec_service is not None:
+            try:
+                word2vec_status = dict(self._word2vec().status())
+            except Exception as exc:
+                word2vec_error = f"{type(exc).__name__}: {exc}"
+                word2vec_status = {
+                    "offline_ready": False,
+                    "active_model_id": None,
+                    "installed_models": 0,
+                }
+        else:
             word2vec_status = {
                 "offline_ready": False,
                 "active_model_id": None,
                 "installed_models": 0,
+                "status": "OPTIONAL_WORD2VEC_STATUS_DEFERRED",
+                "deferred": True,
             }
 
         word2vec_ready = bool(

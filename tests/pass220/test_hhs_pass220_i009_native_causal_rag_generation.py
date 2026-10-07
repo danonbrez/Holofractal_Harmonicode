@@ -463,3 +463,45 @@ def test_exact_memory_ack_and_recall_are_admitted_through_full_assistant_service
     assert [item["role"] for item in stored["messages"]] == [
         "user", "assistant", "user", "assistant"
     ]
+
+def test_optional_word2vec_readiness_is_lazy_for_exact_memory_turn(monkeypatch):
+    monkeypatch.setenv("HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC", "0")
+    provider = HHSNativeLiteRTLMTransport(
+        require_word2vec=False,
+        generation_service=FakeGenerationService(),
+    )
+
+    def forbidden_word2vec_probe():
+        raise AssertionError("optional Word2Vec must not be imported during readiness")
+
+    monkeypatch.setattr(provider, "_word2vec", forbidden_word2vec_probe)
+
+    status = provider.installation_status()
+    assert status["ready"] is True, status
+    assert status["word2vec_required"] is False
+    assert status["word2vec_ready"] is False
+    assert status["word2vec"]["status"] == "OPTIONAL_WORD2VEC_STATUS_DEFERRED"
+    assert status["word2vec"]["deferred"] is True
+
+    token = "HHS-PRODUCTION-COLD-MEMORY-7249"
+    first = asyncio.run(
+        provider.chat_completion(
+            messages=[
+                {"role": "system", "content": "HHS_ASSISTANT_MODE=BOTH."},
+                {
+                    "role": "user",
+                    "content": (
+                        f"Remember this exact token for my next message: {token}. "
+                        "Reply briefly."
+                    ),
+                },
+            ],
+            tools=[],
+        )
+    )
+    assert first["choices"][0]["message"]["content"]
+    assert (
+        first["hhs_native_trace"]["generation_path"]
+        == "EXACT_THREAD_MEMORY_ACKNOWLEDGEMENT"
+    )
+

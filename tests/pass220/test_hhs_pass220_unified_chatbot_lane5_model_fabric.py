@@ -264,11 +264,35 @@ class CountingProvider:
     async def send_message(self, thread_id, *, content, **_kwargs):
         self.send_calls += 1
         user = self.threads.append(thread_id, role="user", content=content)
+        if not self.ready:
+            return {
+                "ok": False,
+                "thread_id": thread_id,
+                "user_message": user,
+                "assistant_message": None,
+            }
         answer = self.threads.append(thread_id, role="assistant", content=self.reply)
         return {
             "ok": True,
             "thread_id": thread_id,
             "user_message": user,
+            "assistant_message": answer,
+        }
+
+    async def continue_message(self, thread_id, *, user_message, **_kwargs):
+        self.send_calls += 1
+        if not self.ready:
+            return {
+                "ok": False,
+                "thread_id": thread_id,
+                "user_message": user_message,
+                "assistant_message": None,
+            }
+        answer = self.threads.append(thread_id, role="assistant", content=self.reply)
+        return {
+            "ok": True,
+            "thread_id": thread_id,
+            "user_message": user_message,
             "assistant_message": answer,
         }
 
@@ -291,7 +315,7 @@ def test_native_first_turn_does_not_probe_optional_pass153_health(monkeypatch):
     )
     assert result["ok"] is True
     assert result["assistant_message"]["content"] == "native"
-    assert native.health_calls == 1
+    assert native.health_calls == 0
     assert native.send_calls == 1
     assert pass153.health_calls == 0
     assert pass153.send_calls == 0
@@ -312,8 +336,8 @@ def test_native_first_fallback_probes_pass153_only_when_needed(monkeypatch):
     )
     assert result["ok"] is True
     assert result["assistant_message"]["content"] == "pass153"
-    assert native.health_calls == 1
-    assert native.send_calls == 0
+    assert native.health_calls == 0
+    assert native.send_calls == 1
     assert pass153.health_calls == 1
     assert pass153.send_calls == 1
     assert service.threads.get(thread["thread_id"])["message_count"] == 2
