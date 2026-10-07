@@ -6,6 +6,8 @@ import pytest
 
 from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import DEFAULT_HHS_ASSISTANT_TOOLS
 from hhs_backend.runtime.hhs_native_litert_lm_provider_v1 import HHSNativeLiteRTLMTransport
+from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import LiteRTLMConfig
+from hhs_backend.runtime.hhs_litert_lm_hhs_api_assistant_v1 import HHSAPIAssistantService
 from hhs_backend.runtime.hhs_pass220_native_causal_lm_generation_v1 import (
     NativeCausalLMGenerationError,
     NativeCausalLMGenerationService,
@@ -325,11 +327,9 @@ def test_native_chat_timeout_falls_back_without_blocking_request(monkeypatch):
     content = response["choices"][0]["message"]["content"]
     trace = response["hhs_native_trace"]
     assert content
-    assert trace["generation_path"] in {
-        "EXACT_SEMANTIC_FALLBACK",
-        "BOUNDED_CONVERSATION_FALLBACK",
-    }
-    assert "TimeoutError" in str(trace["causal_generation_failure"])
+    assert trace["generation_path"] == "EXACT_THREAD_MEMORY_ACKNOWLEDGEMENT"
+    assert trace["conversation_memory_acknowledged"] is True
+    assert trace["causal_generation_failure"] is None
 
 
 def test_native_fallback_recalls_previous_turn_structured_token(monkeypatch):
@@ -408,3 +408,58 @@ def test_explicit_history_recall_does_not_depend_on_causal_generation(monkeypatc
     assert response["choices"][0]["message"]["content"] == token
     assert response["hhs_native_trace"]["generation_path"] == "EXACT_THREAD_HISTORY_RECALL"
     assert generator.calls == []
+
+
+
+def test_exact_memory_ack_and_recall_are_admitted_through_full_assistant_service():
+    generator = FakeGenerationService()
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=generator,
+    )
+    config = LiteRTLMConfig(
+        base_url="hhs-native://local/v1",
+        model_id="hhs-native-language-v1",
+        system_instruction="HHS_ASSISTANT_MODE=BOTH.",
+        temperature=0.0,
+        top_p=1.0,
+        top_k=1,
+    )
+    service = HHSAPIAssistantService(config=config, transport=provider)
+    thread = service.create_thread(project_id="project:production-chatbot-e2e")
+    token = "HHS-PRODUCTION-CHATBOT-E2E-7249"
+
+    first = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content=f"Remember this exact token for my next message: {token}. Reply briefly.",
+            assistant_mode="BOTH",
+        )
+    )
+    assert first["ok"] is True
+    assert first["thread_id"] == thread["thread_id"]
+    assert first["assistant_message"]["content"]
+    assert first["native_lean_alignment_admission"]["canonical"] is True
+    assert generator.calls == []
+
+    second = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content=(
+                "What exact token did I ask you to remember in my previous message? "
+                "Reply with only the token."
+            ),
+            assistant_mode="BOTH",
+        )
+    )
+    assert second["ok"] is True
+    assert second["thread_id"] == thread["thread_id"]
+    assert second["assistant_message"]["content"] == token
+    assert second["native_lean_alignment_admission"]["canonical"] is True
+    assert generator.calls == []
+
+    stored = service.threads.get(thread["thread_id"])
+    assert [item["role"] for item in stored["messages"]] == [
+        "user", "assistant", "user", "assistant"
+    ]
