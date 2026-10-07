@@ -1036,6 +1036,7 @@ class HHSNativeLiteRTLMTransport:
                 "assistant_mode": mode,
                 "generation_path": "EXACT_THREAD_HISTORY_RECALL",
                 "history_recall": True,
+                "causal_generation_failure": None,
                 "general_chat_prompt_response_cycle": mode in {
                     ASSISTANT_MODE_GENERAL_CHAT,
                     ASSISTANT_MODE_BOTH,
@@ -1086,6 +1087,7 @@ class HHSNativeLiteRTLMTransport:
                 "assistant_mode": mode,
                 "generation_path": "EXACT_THREAD_MEMORY_ACKNOWLEDGEMENT",
                 "history_recall": False,
+                "causal_generation_failure": None,
                 "conversation_memory_acknowledged": True,
                 "remembered_structured_token": remembered or None,
                 "general_chat_prompt_response_cycle": True,
