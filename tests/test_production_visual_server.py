@@ -8,6 +8,8 @@ from typing import Any
 from hhs_backend.production_visual_server import (
     PRODUCTION_STATUS_PATHS,
     ProductionRuntimeBootstrapGateway,
+    _prewarm_production_native_assistant,
+    authoritative_app,
 )
 from hhs_backend.runtime_bootstrap_cache import RuntimeStatusCache
 
@@ -96,3 +98,6 @@ def test_direct_status_hit_returns_cached_projection(tmp_path: Path):
     assert status == 200
     assert headers[b"x-hhs-runtime-cache"] == b"HIT"
     assert payload == {"ok": True, "status": "READY"}
+
+def test_production_native_assistant_prewarm_is_registered_on_startup():
+    assert _prewarm_production_native_assistant in authoritative_app.router.on_startup
