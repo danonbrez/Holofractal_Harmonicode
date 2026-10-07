@@ -630,25 +630,26 @@ class HHSAssistantService:
         context_root = user_context_root(context)
         mode = normalize_assistant_mode(assistant_mode)
 
-        proposal = build_provider_execution_proposal(
-            capability_class="TEXT_GENERATION",
-            project_id=str(thread.get("project_id") or "project:default"),
-            input_payload={
-                "thread_id": thread_id,
-                "message_root_hash72": user_message["message_root_hash72"],
-                "custom_system_instruction_root_hash72": custom_instruction_root,
-                "assistant_mode": mode,
-                "user_context_root_hash72": context_root,
-            },
-            requested_operation=self.requested_operation,
-            constraints={
-                "provider_id": self.provider_id,
-                "model_id": self.config.model_id,
-                "direct_mutation_allowed": False,
-            },
-        )
-        proposal_validation = validate_provider_execution_proposal(proposal)
-        policy = evaluate_capability_policy_gate(proposal)
+        with timed_stage("assistant.turn.proposal_and_policy"):
+            proposal = build_provider_execution_proposal(
+                capability_class="TEXT_GENERATION",
+                project_id=str(thread.get("project_id") or "project:default"),
+                input_payload={
+                    "thread_id": thread_id,
+                    "message_root_hash72": user_message["message_root_hash72"],
+                    "custom_system_instruction_root_hash72": custom_instruction_root,
+                    "assistant_mode": mode,
+                    "user_context_root_hash72": context_root,
+                },
+                requested_operation=self.requested_operation,
+                constraints={
+                    "provider_id": self.provider_id,
+                    "model_id": self.config.model_id,
+                    "direct_mutation_allowed": False,
+                },
+            )
+            proposal_validation = validate_provider_execution_proposal(proposal)
+            policy = evaluate_capability_policy_gate(proposal)
         if not proposal_validation.get("ok") or not policy.get("ok"):
             result = {
                 "schema": TURN_SCHEMA,
@@ -760,10 +761,10 @@ class HHSAssistantService:
             )
         with timed_stage("assistant.turn.append_assistant_message"):
             assistant_message = self.threads.append(
-            thread_id,
-            role="assistant",
-            content=completion["content"],
-            tool_calls=completion["tool_calls"],
+                thread_id,
+                role="assistant",
+                content=completion["content"],
+                tool_calls=completion["tool_calls"],
                 admission={
                     "provider_id": self.provider_id,
                     "provider_invocation_receipt_hash72": receipt.get(
