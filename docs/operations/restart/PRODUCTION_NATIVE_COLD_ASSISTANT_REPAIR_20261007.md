@@ -6,7 +6,7 @@
 - Base `main`: `813b1cdcd212fd219a0f7c1e476c01e87b74038f`
 - Repair branch: `repair/production-native-cold-assistant-20261007`
 - Pull request: #734 — `Repair production native assistant cold-turn timeout`
-- Code-bearing head before this checkpoint: `d06bf06f3121530541238cb064b87624eb1e24ac`
+- Current code-bearing head before this checkpoint update: `b03a7cf480a1f04fa4b5e460ecfd8cb7dc341771`
 - Merge target: `main`
 - Triggering Exact-Main run: `37613735841`
 - Triggering deploy job: `112769670934`
@@ -153,3 +153,50 @@ No CI result is claimed green by this checkpoint.
 
 Only external CI/deployment execution is pending at this checkpoint. The repair
 is repository-visible and restartable from the branch/PR state above.
+
+
+## Follow-up repair after first PR CI
+
+The first code-bearing head `d06bf06f3121530541238cb064b87624eb1e24ac`
+produced useful split evidence:
+
+Green:
+- Pass 220 Unified Chatbot Lane 5 Model Fabric `37632158898`: SUCCESS
+- Pass 196 I130 Repair Validation `37632159050`: SUCCESS
+- Pass 196 Integrated Environment `37632159285`: SUCCESS
+- DigitalOcean Production Exact Main `37632159127`: SUCCESS for its PR validation jobs
+  (`validate-production-backend-closure` and `validate-deployment-contract`);
+  deployment remained correctly skipped on pull_request.
+
+Broad workflow failures were then classified:
+- LiteRT-LM Gemma 4 Assistant `37632159321` failed an existing dependency-policy
+  assertion: `external LiteRT-LM must not be in the default runtime dependency closure`.
+  This is outside the changed files in PR #734.
+- I003-I010 `37632159453` reproduced several pre-existing stale integration/UI
+  assertions and also exposed one attributable regression: moving
+  `_require_ready()` into `asyncio.to_thread` caused Pass 148 semantic membrane
+  readiness to fail in the worker-thread execution context.
+
+Repair-forward:
+- commit `b03a7cf480a1f04fa4b5e460ecfd8cb7dc341771`
+  restores `_require_ready()` to the authoritative request thread in both
+  `list_models()` and `chat_completion()`.
+- The two latency repairs supported by production evidence remain intact:
+  1. native-first turns do not run the duplicate native health preflight;
+  2. optional Word2Vec is not imported/probed during readiness when production
+     explicitly declares it optional.
+- No readiness, policy, Native Lean, receipt, ingress, Lane 5, or browser gate was weakened.
+
+Fresh CI for `b03a7cf...` at checkpoint update:
+- `37633147771` Pass 196 I130 Repair Validation — IN PROGRESS
+- `37633147667` Pass 220 Unified Chatbot Lane 5 Model Fabric — QUEUED
+- `37633147414` Pass 196 Integrated Environment — QUEUED
+- `37633147660` I003-I010 — QUEUED
+- `37633147613` LiteRT-LM Gemma 4 Assistant — QUEUED
+- `37633147737` Runtime OS Production Root — QUEUED
+- `37633148243` DigitalOcean Production Exact Main — PENDING
+
+Do not merge solely from the older green head without first consuming the fresh
+assistant/model-fabric result for `b03a7cf...`. If the broad I003-I010 or
+LiteRT workflows fail only at the previously identified unrelated assertions,
+do not widen this production-timeout repair to absorb those independent debts.
