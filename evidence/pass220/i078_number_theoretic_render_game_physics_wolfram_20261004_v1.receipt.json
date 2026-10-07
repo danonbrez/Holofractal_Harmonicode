@@ -1,0 +1,34 @@
+{
+  "schema": "HHS_PASS_220_I078_NUMBER_THEORETIC_RENDER_GAME_PHYSICS_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "engine": "connected Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 24,
+  "pass_count": 24,
+  "failed": [],
+  "base_main": "1e91eb301b29652fcf2542bb6e395314198f10a4",
+  "branch": "pass220/i078-number-theoretic-render-game-physics-20261004",
+  "formal_source": "formal/wolfram/pass220_i078_number_theoretic_render_game_physics_v1.wl",
+  "runtime_source": "hhs_runtime/hhs_pass220_i078_number_theoretic_render_game_physics_v1.py",
+  "lean_source": "formal/lean/HHS/Pass220/NumberTheoreticRenderGamePhysics.lean",
+  "html_source": "examples/ParticleSimulation.html",
+  "test_source": "tests/pass220/test_hhs_pass220_i078_number_theoretic_render_game_physics_v1.py",
+  "replay_command": "wolframscript -file formal/wolfram/pass220_i078_number_theoretic_render_game_physics_v1.wl",
+  "proven": {
+    "rskip": "64/72=8/9",
+    "quartic_period": 4,
+    "quartic_writes_per_5184": 1296,
+    "bias_remainder_states": 9,
+    "closure_ticks": 5184,
+    "vm81_local64_states": 5184,
+    "hash72_surface_states": 5184,
+    "no_early_full_closure": true
+  },
+  "authority": {
+    "projection_only": true,
+    "physics_tick_always_advances": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false
+  }
+}
