@@ -7,7 +7,7 @@
 - Pull request: #733 — `Require production backend compile and assistant closure before deployment`
 - Pre-checkpoint repair head: `1ddc0873bf2e0c60cbc4797b03094515321eb8fe`
 - Merge target: `main`
-- State: **NOT MERGED; production acceptance NOT CLOSED**
+- State: **READY TO MERGE; production acceptance NOT CLOSED**
 
 This record is the restart authority for the deployment/backend-closure repair. Resume from the branch head produced by this checkpoint commit, not from an older working SHA.
 
@@ -134,7 +134,22 @@ That failure is a script-execution import-path defect, not a backend compile fai
 
 The current pre-checkpoint head `1ddc087...` repairs exactly that defect by inserting repository root into `sys.path` before importing `hhs_backend`.
 
-At checkpoint creation time, no new PR workflow run for `1ddc087...` had yet appeared in the queried Actions results.
+Post-checkpoint validation for `1ddc0873bf2e0c60cbc4797b03094515321eb8fe` is now terminal green:
+
+- Exact-Main PR run `37613202796`
+  - `validate-deployment-contract` job `112765202113`: **SUCCESS**
+  - `validate-production-backend-closure` job `112765201826`: **SUCCESS**
+  - full Python `compileall`: PASS
+  - native LiteRT registry compile/run: PASS
+  - production assistant route/service import: PASS
+  - real two-turn backend closure: PASS
+  - dependency-scoped production assistant regressions: PASS
+- Pass 220 LiteRT1 Native Model Runtime run `37613203046` / job `112765202882`: **SUCCESS**
+  - native C/C++ build and execution: PASS
+  - canonical `make c-abi`-backed native/RNA integration tests: PASS
+  - launcher syntax: PASS
+
+Therefore the code-bearing repair head has explicit Python, C, C++, canonical exact-ABI, import, and two-turn assistant execution closure.
 
 ## Known production/backend conclusions
 
@@ -149,7 +164,6 @@ Confirmed:
 
 Not yet confirmed:
 
-- `scripts/production-backend-closure-verify.py` passes after the `1ddc087...` import-path fix
 - direct two-turn HTTP assistant probe on deployed `:8080`
 - Lane 5 two-turn HTTP assistant probe on deployed `:8715`
 - Chromium two-turn assistant acceptance
@@ -200,27 +214,21 @@ python3 /opt/hhs/app/scripts/production-assistant-http-verify.py \
 ## Exact next action
 
 1. Re-read PR #733 head and canonical `main`.
-2. Inspect the newest PR workflows for the checkpoint successor head.
-3. Require `validate-production-backend-closure` to reach the actual two-turn assistant assertions after the `1ddc087...` import-path repair.
-4. If that gate fails, repair only the observed backend-closure defect.
-5. If it passes, require the dedicated LiteRT workflow and Exact-Main contract gate to remain green.
-6. Merge PR #733 only after dependency-scoped gates are green.
-7. Verify merged `main` exactly.
-8. Follow the post-merge Exact-Main deployment through:
+2. Merge PR #733; the only successor after the validated code-bearing head is this restart-document update.
+3. Verify merged `main` exactly.
+4. Follow the post-merge Exact-Main deployment through:
    - guarded promotion
    - direct `:8080` assistant two-turn probe
    - Lane 5 `:8715` assistant two-turn probe
    - public HTTPS Runtime OS
    - 380-service registry
    - Chromium full workspace + two-turn assistant memory acceptance
-9. If a Hash216 repository-index successor advances `main`, follow the serialized successor Exact-Main run to terminal convergence.
+5. If a Hash216 repository-index successor advances `main`, follow the serialized successor Exact-Main run to terminal convergence.
 
 Do not weaken the browser gate, bypass Lane 5, disable native authority, or merely increase assistant timeouts.
 
 ## Blockers at checkpoint
 
-Only one current repair-local blocker is known:
-
-- post-`1ddc087...` backend closure CI has not yet been observed to terminal completion.
+No pre-merge backend compile or assistant-execution blocker remains on the validated code-bearing head.
 
 Production remains unaccepted until merged-current-main Exact-Main passes the complete backend → Lane 5 → public/browser path.
