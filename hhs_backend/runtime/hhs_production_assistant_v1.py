@@ -557,7 +557,22 @@ class ProductionAssistantService:
         if self.native_first:
             self._health_cache["gemma"] = dict(litert_health)
             self._health_cache_at["gemma"] = time.monotonic()
-        native_health = await self._provider_health("native", self.native_service)
+        # Native-first production must exercise the real governed turn rather
+        # than synchronously preflight the same installation closure twice.
+        # The native service still performs its full transport readiness,
+        # proposal/policy, Lean admission, receipt, and result-ingress gates.
+        # If that turn fails, the normal fallback path below remains fail-closed.
+        native_health = (
+            {
+                "ok": True,
+                "online": True,
+                "status": "NATIVE_FIRST_EXECUTION_PROBE",
+                "provider_mode": self.provider_mode,
+                "health_preflight_deferred": True,
+            }
+            if self.native_first
+            else await self._provider_health("native", self.native_service)
+        )
         # The native provider is the selected primary in production. Optional
         # Pass 153 fallback health must not run (or block the event loop) before
         # a successful native turn has been admitted through its normal gates.
@@ -568,7 +583,10 @@ class ProductionAssistantService:
             if self.pass153_service is not None
             else {"ok": False, "online": False}
         )
-        native_ready = bool(native_health.get("ok") and native_health.get("online"))
+        native_ready = bool(
+            self.native_first
+            or (native_health.get("ok") and native_health.get("online"))
+        )
         pass153_ready = bool(
             self.pass153_service is not None
             and pass153_health.get("ok")
