@@ -29,6 +29,10 @@ public:
     static constexpr bool external_litert_compatibility_supported() noexcept {
         return true;
     }
+
+private:
+    HHSLiteRTNativeStatusV1 status_{HHS_LITERT_NATIVE_ERR_ARGUMENT};
+    HHSLiteRTNativeModelRegistrationV1 record_{};
 };
 
 static_assert(std::is_standard_layout_v<HHSLiteRTNativeTensorSpecV1>);
