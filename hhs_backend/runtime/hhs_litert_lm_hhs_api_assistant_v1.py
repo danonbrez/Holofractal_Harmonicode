@@ -10,6 +10,7 @@ from dataclasses import replace
 from typing import Any, Dict, Iterable, List, Mapping, Optional
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_backend.runtime.hhs_assistant_stage_timing_v1 import timed_stage
 from hhs_backend.runtime.hhs_assistant_api_tool_gateway_v1 import (
     DEFAULT_HHS_ASSISTANT_TOOLS,
     execute_hhs_assistant_api_tool,
@@ -299,17 +300,20 @@ class HHSAPIAssistantService(HHSAssistantService):
             raise KeyError(thread_id)
         mode = normalize_assistant_mode(assistant_mode)
         mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
-        async with self._thread_lock(thread_id):
-            result = await super().send_message(
-                thread_id,
-                content=content,
-                tools=mode_tools,
-                response_format=response_format,
-                custom_system_instruction=custom_system_instruction,
-                assistant_mode=mode,
-                user_context=user_context,
-            )
-            return self._decorate_result(thread_id, result)
+        with timed_stage("api_assistant.thread_lock_wait"):
+            async with self._thread_lock(thread_id):
+                with timed_stage("api_assistant.base_send_message"):
+                    result = await super().send_message(
+                        thread_id,
+                        content=content,
+                        tools=mode_tools,
+                        response_format=response_format,
+                        custom_system_instruction=custom_system_instruction,
+                        assistant_mode=mode,
+                        user_context=user_context,
+                    )
+                with timed_stage("api_assistant.decorate_result"):
+                    return self._decorate_result(thread_id, result)
 
     async def continue_message(
         self,
@@ -326,17 +330,20 @@ class HHSAPIAssistantService(HHSAssistantService):
             raise KeyError(thread_id)
         mode = normalize_assistant_mode(assistant_mode)
         mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
-        async with self._thread_lock(thread_id):
-            result = await super().continue_message(
-                thread_id,
-                user_message=user_message,
-                tools=mode_tools,
-                response_format=response_format,
-                custom_system_instruction=custom_system_instruction,
-                assistant_mode=mode,
-                user_context=user_context,
-            )
-            return self._decorate_result(thread_id, result)
+        with timed_stage("api_assistant.thread_lock_wait"):
+            async with self._thread_lock(thread_id):
+                with timed_stage("api_assistant.base_continue_message"):
+                    result = await super().continue_message(
+                        thread_id,
+                        user_message=user_message,
+                        tools=mode_tools,
+                        response_format=response_format,
+                        custom_system_instruction=custom_system_instruction,
+                        assistant_mode=mode,
+                        user_context=user_context,
+                    )
+                with timed_stage("api_assistant.decorate_result"):
+                    return self._decorate_result(thread_id, result)
 
     def status(self) -> Dict[str, Any]:
         status = super().status()
