@@ -240,3 +240,80 @@ def test_pass153_transport_is_available_as_unified_chat_fallback():
     )
     assert response["choices"][0]["message"]["content"].strip()
     assert response["hhs_pass153"]["runtime_mutation_admitted"] is False
+
+
+class CountingProvider:
+    """A full-thread stub that tracks whether optional health is eagerly probed."""
+
+    def __init__(self, *, ready: bool, reply: str) -> None:
+        self.ready = ready
+        self.reply = reply
+        self.provider_id = "provider:hhs.native" if reply == "native" else "provider:hhs.pass153"
+        self.config = LiteRTLMConfig(model_id="test-provider")
+        self.threads = None
+        self.health_calls = 0
+        self.send_calls = 0
+
+    def status(self):
+        return {"provider_id": self.provider_id, "model_id": self.config.model_id}
+
+    async def health(self):
+        self.health_calls += 1
+        return {"ok": self.ready, "online": self.ready, "provider_id": self.provider_id}
+
+    async def send_message(self, thread_id, *, content, **_kwargs):
+        self.send_calls += 1
+        user = self.threads.append(thread_id, role="user", content=content)
+        answer = self.threads.append(thread_id, role="assistant", content=self.reply)
+        return {
+            "ok": True,
+            "thread_id": thread_id,
+            "user_message": user,
+            "assistant_message": answer,
+        }
+
+
+def test_native_first_turn_does_not_probe_optional_pass153_health(monkeypatch):
+    monkeypatch.setenv("HHS_LITERT_LM_PROVIDER_MODE", "native")
+    native = CountingProvider(ready=True, reply="native")
+    pass153 = CountingProvider(ready=True, reply="pass153")
+    service = ProductionAssistantService(
+        native_service=native,
+        pass153_service=pass153,
+    )
+    assert service.native_first is True
+    thread = service.create_thread(project_id="project:native-first-health")
+    result = asyncio.run(
+        service.send_message(
+            thread["thread_id"],
+            content="Remember this exact token for my next message: TEST-123-A.",
+        )
+    )
+    assert result["ok"] is True
+    assert result["assistant_message"]["content"] == "native"
+    assert native.health_calls == 1
+    assert native.send_calls == 1
+    assert pass153.health_calls == 0
+    assert pass153.send_calls == 0
+    assert service.threads.get(thread["thread_id"])["message_count"] == 2
+
+
+def test_native_first_fallback_probes_pass153_only_when_needed(monkeypatch):
+    monkeypatch.setenv("HHS_LITERT_LM_PROVIDER_MODE", "native")
+    native = CountingProvider(ready=False, reply="native")
+    pass153 = CountingProvider(ready=True, reply="pass153")
+    service = ProductionAssistantService(
+        native_service=native,
+        pass153_service=pass153,
+    )
+    thread = service.create_thread(project_id="project:native-fallback-health")
+    result = asyncio.run(
+        service.send_message(thread["thread_id"], content="Fallback probe")
+    )
+    assert result["ok"] is True
+    assert result["assistant_message"]["content"] == "pass153"
+    assert native.health_calls == 1
+    assert native.send_calls == 0
+    assert pass153.health_calls == 1
+    assert pass153.send_calls == 1
+    assert service.threads.get(thread["thread_id"])["message_count"] == 2

@@ -558,8 +558,13 @@ class ProductionAssistantService:
             self._health_cache["gemma"] = dict(litert_health)
             self._health_cache_at["gemma"] = time.monotonic()
         native_health = await self._provider_health("native", self.native_service)
+        # The native provider is the selected primary in production. Optional
+        # Pass 153 fallback health must not run (or block the event loop) before
+        # a successful native turn has been admitted through its normal gates.
         pass153_health = (
-            await self._provider_health("pass153", self.pass153_service)
+            {"ok": False, "online": False, "status": "PASS153_HEALTH_DEFERRED_UNTIL_FALLBACK"}
+            if self.native_first
+            else await self._provider_health("pass153", self.pass153_service)
             if self.pass153_service is not None
             else {"ok": False, "online": False}
         )
@@ -640,6 +645,17 @@ class ProductionAssistantService:
             candidate_user = native_result.get("user_message")
             if isinstance(candidate_user, Mapping):
                 user_message = candidate_user
+
+        # Probe the fallback only after the primary native provider was
+        # unavailable or returned an unadmitted/incomplete result. Never pay
+        # optional-provider health cost on the successful native path.
+        if self.native_first and self.pass153_service is not None:
+            pass153_health = await self._provider_health(
+                "pass153", self.pass153_service
+            )
+            pass153_ready = bool(
+                pass153_health.get("ok") and pass153_health.get("online")
+            )
 
         pass153_result: Optional[Mapping[str, Any]] = None
         if pass153_ready and self.pass153_service is not None:
