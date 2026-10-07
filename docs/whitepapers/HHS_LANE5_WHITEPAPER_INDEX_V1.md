@@ -608,3 +608,19 @@ Pass 219 Lane 5 1.73 applies the repository-native Pass 123 bounded generalizati
 [HHS_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75.md](HHS_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75.md)
 
 Pass 219 Lane 5 1.75 continues the nine-loop workstream after the separately assigned 1.74 training cycle. It admits the green 1.73 model/relation propositions through Pass127 formal-proof and runtime-receipt evidence, projects 13 immutable non-executable Pass128 knowledge nodes with 12 directed edges, and proves twelve bounded retrieval/replay paths. Knowledge authority is granted only within the admitted graph; execution, mutation, canonical persistence, canonical hash minting, VM81 mutation, model-weight updates, learning commits, and floating-point canonical authority remain prohibited.
+
+### Pass 220 I078 — OpenAI mathematics corpus candidate hydration
+
+[HHS_PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1.md](HHS_PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1.md)
+
+I078 freezes `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a` as an external candidate corpus and
+retains only nonverbatim titles, family/proof metadata, source identities, and
+derived relation tags. The extraction covers 722 manuscripts, 372 result
+families, 162 formalized-source entries, and 185 Lean main-result declarations.
+A conservative HHS-path comparison identifies 182
+family-level, 322 manuscript-level, and
+54 formalized-source novelty candidates while
+separately preserving inspected 3x3->9x9 tensor and 72-conductor overlap
+anchors. All hydration remains candidate-only with no learning, VM81 mutation,
+canonical hash, persistence, or truth-promotion authority.
+
