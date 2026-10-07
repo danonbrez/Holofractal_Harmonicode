@@ -33,6 +33,10 @@ def test_storybook_reel_routes_are_registered_before_static_root():
         "/api/runtime/storybook-reel/status",
         "/api/runtime/storybook-reel/defaults",
         "/api/runtime/storybook-reel/audio",
+        "/api/runtime/storybook-reel/voiceover/sync",
+        "/api/runtime/storybook-reel/audio/{audio_id}/source",
+        "/api/runtime/storybook-reel/audio/{audio_id}/voice-sync.json",
+        "/api/runtime/storybook-reel/audio/{audio_id}/voice-sync.csv",
         "/api/runtime/storybook-reel/generate",
         "/api/runtime/storybook-reel/artifacts/{artifact_id}",
         "/api/runtime/storybook-reel/artifacts/{artifact_id}/download.zip",
@@ -51,7 +55,8 @@ def test_no_code_studio_and_contextual_defaults_are_reachable():
     assert studio.status_code == 200
     assert "HHS Storybook Reel Studio" in studio.text
     assert "Upload narration audio" in studio.text
-    assert "Generate 90-second reel" in studio.text
+    assert "Generate + sync 88-second voiceover" in studio.text
+    assert "Generate 88-second reel" in studio.text
     assert "no parallel workers" in studio.text
     defaults = client.post(
         "/api/runtime/storybook-reel/defaults",
@@ -103,5 +108,5 @@ def test_main_visual_ide_exposes_storybook_reel_without_route_knowledge():
     ).read_text(encoding="utf-8")
     assert "installStorybookReelLauncher" in coordinator
     assert "href = '/storybook-reel/'" in coordinator
-    assert "Open the no-code 90-second storybook reel studio" in coordinator
+    assert "Open the no-code 88-second / 22-frame storybook reel studio" in coordinator
     assert "storybook_reel_requests_never_deferred: true" in coordinator

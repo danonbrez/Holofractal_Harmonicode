@@ -124,6 +124,7 @@ jobs:
             hhs_backend/runtime_os_application_server.py \
             hhs_backend/application_ide_server.py \
             hhs_backend/production_ide_server.py \
+            hhs_backend/server.py \
             hhs_backend/api/repository_history_routes.py
           timeout 300s pytest -q \
             tests/test_hhs_full_application_ide_root_v1.py \

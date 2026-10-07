@@ -15,7 +15,7 @@ from fractions import Fraction
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 FPS = 30
-DURATION_SECONDS = 90
+DURATION_SECONDS = 88
 FRAME_COUNT = FPS * DURATION_SECONDS
 MAX_TIMING_SPANS = 256
 
@@ -455,37 +455,29 @@ def punctuation_weighted_timings(text: str) -> List[TimingSpan]:
 
 
 def _normalize_spans(spans: Sequence[TimingSpan]) -> List[TimingSpan]:
+    """Clamp provider timing without rescaling or erasing intentional pauses."""
     if not spans:
         return []
     normalized: List[TimingSpan] = []
-    cursor = 0
+    prior_end = 0
     for index, span in enumerate(spans[:MAX_TIMING_SPANS]):
-        end = max(cursor + 1, min(FRAME_COUNT, span.end_frame))
+        first = max(prior_end, min(FRAME_COUNT - 1, span.first_frame))
+        end = max(first + 1, min(FRAME_COUNT, span.end_frame))
         normalized.append(
-            TimingSpan(index, cursor, end - cursor, span.text_offset, span.text_length, span.source)
+            TimingSpan(index, first, end - first, span.text_offset, span.text_length, span.source)
         )
-        cursor = end
-        if cursor >= FRAME_COUNT:
+        prior_end = end
+        if prior_end >= FRAME_COUNT:
             break
-    if normalized and cursor < FRAME_COUNT:
-        last = normalized[-1]
-        normalized[-1] = TimingSpan(
-            last.index,
-            last.first_frame,
-            last.frame_count + FRAME_COUNT - cursor,
-            last.text_offset,
-            last.text_length,
-            last.source,
-        )
     return normalized
 
 
 def _scaled_frame(seconds: Fraction, source_duration: Fraction) -> int:
+    """Convert an external timestamp directly to the canonical 30 fps clock."""
     if source_duration <= 0:
         return 0
-    scaled = seconds * Fraction(DURATION_SECONDS, 1) / source_duration
-    return max(0, min(FRAME_COUNT, int(scaled * FPS)))
-
+    clamped = max(Fraction(0, 1), min(Fraction(DURATION_SECONDS, 1), seconds))
+    return max(0, min(FRAME_COUNT, int(clamped * FPS)))
 
 def character_alignment_timings(
     text: str,
