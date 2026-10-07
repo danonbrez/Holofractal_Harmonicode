@@ -300,20 +300,24 @@ class HHSAPIAssistantService(HHSAssistantService):
             raise KeyError(thread_id)
         mode = normalize_assistant_mode(assistant_mode)
         mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
+        lock = self._thread_lock(thread_id)
         with timed_stage("api_assistant.thread_lock_wait"):
-            async with self._thread_lock(thread_id):
-                with timed_stage("api_assistant.base_send_message"):
-                    result = await super().send_message(
-                        thread_id,
-                        content=content,
-                        tools=mode_tools,
-                        response_format=response_format,
-                        custom_system_instruction=custom_system_instruction,
-                        assistant_mode=mode,
-                        user_context=user_context,
-                    )
-                with timed_stage("api_assistant.decorate_result"):
-                    return self._decorate_result(thread_id, result)
+            await lock.acquire()
+        try:
+            with timed_stage("api_assistant.base_send_message"):
+                result = await super().send_message(
+                    thread_id,
+                    content=content,
+                    tools=mode_tools,
+                    response_format=response_format,
+                    custom_system_instruction=custom_system_instruction,
+                    assistant_mode=mode,
+                    user_context=user_context,
+                )
+            with timed_stage("api_assistant.decorate_result"):
+                return self._decorate_result(thread_id, result)
+        finally:
+            lock.release()
 
     async def continue_message(
         self,
@@ -330,20 +334,24 @@ class HHSAPIAssistantService(HHSAssistantService):
             raise KeyError(thread_id)
         mode = normalize_assistant_mode(assistant_mode)
         mode_tools = [] if mode == ASSISTANT_MODE_GENERAL_CHAT else tools
+        lock = self._thread_lock(thread_id)
         with timed_stage("api_assistant.thread_lock_wait"):
-            async with self._thread_lock(thread_id):
-                with timed_stage("api_assistant.base_continue_message"):
-                    result = await super().continue_message(
-                        thread_id,
-                        user_message=user_message,
-                        tools=mode_tools,
-                        response_format=response_format,
-                        custom_system_instruction=custom_system_instruction,
-                        assistant_mode=mode,
-                        user_context=user_context,
-                    )
-                with timed_stage("api_assistant.decorate_result"):
-                    return self._decorate_result(thread_id, result)
+            await lock.acquire()
+        try:
+            with timed_stage("api_assistant.base_continue_message"):
+                result = await super().continue_message(
+                    thread_id,
+                    user_message=user_message,
+                    tools=mode_tools,
+                    response_format=response_format,
+                    custom_system_instruction=custom_system_instruction,
+                    assistant_mode=mode,
+                    user_context=user_context,
+                )
+            with timed_stage("api_assistant.decorate_result"):
+                return self._decorate_result(thread_id, result)
+        finally:
+            lock.release()
 
     def status(self) -> Dict[str, Any]:
         status = super().status()
