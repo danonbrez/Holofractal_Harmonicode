@@ -31,6 +31,7 @@ RECOVERY_VERIFIER_PATH = P("deployment/digitalocean/guarded_auto_update/verify-r
 BUNDLE_PATH = P("deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py")
 NORMALIZER_PATH = P("deployment/digitalocean/guarded_auto_update/normalize-service-permissions.py")
 LANGUAGE_INSTALLER_PATH = P("tools/install_production_language_assets.py")
+NATIVE_CAUSAL_REQUIREMENTS_PATH = P("requirements-native-causal-lm.txt")
 DRIFT_PATH = P("deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh")
 CONTRACT_TEST_PATH = P("tests/test_hhs_guarded_auto_update_contract_v1.py")
 PERMISSION_TEST_PATH = P("tests/test_hhs_production_service_permissions_v2.py")
@@ -66,7 +67,8 @@ CURRENT_SUCCESSOR_BLOBS = {
     RECOVERY_VERIFIER_PATH: "5327fa1ac832d48adf4389c19a0e45dac93a59b1",
     BUNDLE_PATH: "d8fc6406abfd0f9a3225993e4706919a21c3bc70",
     NORMALIZER_PATH: "63aa752b53fcb0b9c5224329eb4fb5201b3e7fb8",
-    LANGUAGE_INSTALLER_PATH: "35de0676b137139554c20ee53d67be12aab65ac3",
+    LANGUAGE_INSTALLER_PATH: "f4b7d2ef6ac84fd5587bd563d16bb82ed611906a",
+    NATIVE_CAUSAL_REQUIREMENTS_PATH: "00ed586ba80681eb78261685fdf9af16c1bb0179",
 }
 
 REQUIRED_OPERATIONS = (
@@ -231,6 +233,7 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
     )
     _require(
         LANGUAGE_INSTALLER_PATH,
+        NATIVE_CAUSAL_REQUIREMENTS_PATH,
         "HHS_PRODUCTION_LANGUAGE_STATUS_PATH",
         '"provider:hhs.local.text"',
         "native HHS language provider contract",
