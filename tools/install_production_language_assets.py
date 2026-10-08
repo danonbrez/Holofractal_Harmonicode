@@ -345,9 +345,21 @@ def _normalize_model_readability(model_root: Path) -> dict[str, Any]:
         ) from exc
 
     changed = 0
-    for path in [model_root, *model_root.rglob("*")]:
-        if path.is_symlink() or not path.exists():
+    state_root = Path("/var/lib/hhs")
+    ancestors: list[Path] = []
+    parent = model_root.parent
+    while parent != state_root.parent and state_root in (parent, *parent.parents):
+        ancestors.append(parent)
+        if parent == state_root:
+            break
+        parent = parent.parent
+
+    candidates = [*reversed(ancestors), model_root, *model_root.rglob("*")]
+    seen: set[Path] = set()
+    for path in candidates:
+        if path in seen or path.is_symlink() or not path.exists():
             continue
+        seen.add(path)
         current = path.stat()
         os.chown(path, -1, gid)
         mode = stat.S_IMODE(current.st_mode) | stat.S_IRGRP
@@ -359,6 +371,7 @@ def _normalize_model_readability(model_root: Path) -> dict[str, Any]:
         "normalized": True,
         "service_group": group_name,
         "paths": changed,
+        "traversal_root": str(state_root),
     }
 
 
