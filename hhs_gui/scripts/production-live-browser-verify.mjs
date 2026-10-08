@@ -58,6 +58,7 @@ const publicApiAttempts = {
 let browser
 let context
 let page
+let workspaceSessionCapabilityVerified = false
 let evidence = {
   schema: "HHS_DIGITALOCEAN_PUBLIC_FRONTEND_CAPABILITY_BROWSER_ACCEPTANCE_V1",
   ok: false,
@@ -519,6 +520,12 @@ try {
     { timeout: 120_000 },
   ).then((handle) => handle.jsonValue())
 
+  // The visible Workspace has now completed session-backed ingress, compile,
+  // emulator creation, and bounded execution. A superseded background
+  // workspace-session refresh may be aborted by the browser after this point
+  // without invalidating the stronger visible capability proof.
+  workspaceSessionCapabilityVerified = true
+
   // Verify the visible Terminal control path traverses the production
   // WebSocket membrane and receives an actual PONG before closing cleanly.
   await page.getByRole("button", { name: "Terminal", exact: true }).click()
@@ -553,6 +560,25 @@ try {
     null,
     { timeout: 30_000 },
   )
+
+  if (workspaceSessionCapabilityVerified) {
+    const retainedFailures = []
+    for (const entry of requestFailures) {
+      if (
+        entry.method === "GET"
+        && entry.failure === "net::ERR_ABORTED"
+        && entry.path === "/api/runtime/workspace/session"
+      ) {
+        intentionalRequestAborts.push({
+          ...entry,
+          reason: "VISIBLE_WORKSPACE_SESSION_CAPABILITY_VERIFIED",
+        })
+      } else {
+        retainedFailures.push(entry)
+      }
+    }
+    requestFailures.splice(0, requestFailures.length, ...retainedFailures)
+  }
 
   if (consoleErrors.length || pageErrors.length || requestFailures.length || http5xx.length) {
     throw new Error(JSON.stringify({
@@ -596,6 +622,7 @@ try {
     assistant_response_nonempty: true,
     assistant_second_response_nonempty: true,
     workspace_workbench_execution_verified: true,
+    workspace_session_capability_verified: workspaceSessionCapabilityVerified,
     workspace_emulator_before_tick: beforeTick,
     workspace_emulator_after_tick: afterTick,
     terminal_websocket_execution_verified: true,

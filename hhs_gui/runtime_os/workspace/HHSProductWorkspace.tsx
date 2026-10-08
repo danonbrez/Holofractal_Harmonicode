@@ -89,7 +89,9 @@ export const HHSProductWorkspace: React.FC<HHSProductWorkspaceProps> = ({
   }
 
   useEffect(() => {
-    void refreshSession()
+    // Session hydration is owned by the surface effect below. Keeping the
+    // mount effect health-only avoids issuing two concurrent workspace-session
+    // GETs on the default control surface.
     void refreshHealth()
     const interval = window.setInterval(() => void refreshHealth(), 20000)
     return () => window.clearInterval(interval)

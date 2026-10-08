@@ -931,6 +931,9 @@ def test_installer_rebinds_lane5_socket_only_after_stopping_existing_ingress_own
 def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash216_queue() -> None:
     workflow = (ROOT / ".github" / "workflows" / "digitalocean-production-main.yml").read_text(encoding="utf-8")
     browser = (ROOT / "hhs_gui" / "scripts" / "production-live-browser-verify.mjs").read_text(encoding="utf-8")
+    product_workspace = (
+        ROOT / "hhs_gui" / "runtime_os" / "workspace" / "HHSProductWorkspace.tsx"
+    ).read_text(encoding="utf-8")
 
     for token in [
         "node --check hhs_gui/scripts/production-live-browser-verify.mjs",
@@ -999,6 +1002,9 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "HHS-PRODUCTION-CHATBOT-E2E-7249",
         "Assistant conversation-history recall failed",
         "workspace_workbench_execution_verified: true",
+        "workspace_session_capability_verified: workspaceSessionCapabilityVerified",
+        "VISIBLE_WORKSPACE_SESSION_CAPABILITY_VERIFIED",
+        'entry.path === "/api/runtime/workspace/session"',
         "terminal_websocket_execution_verified: true",
         "intentional_request_aborts",
         "BENIGN_BACKGROUND_ABORT_PATHS",
@@ -1011,6 +1017,28 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "frontend_authority: false",
     ]:
         assert token in browser
+
+    mount_effect = product_workspace.split(
+        "useEffect(() => {", 1
+    )[1].split("}, [])", 1)[0]
+    assert "void refreshHealth()" in mount_effect
+    assert "refreshSession()" not in mount_effect
+    assert (
+        'if (surface === "program" || surface === "control") void refreshSession()'
+        in product_workspace
+    )
+
+    assert '"/api/runtime/workspace/session"' not in browser.split(
+        "const BENIGN_BACKGROUND_ABORT_PATHS", 1
+    )[1].split("])", 1)[0]
+    reclassify = browser.split(
+        "if (workspaceSessionCapabilityVerified)", 1
+    )[1].split(
+        "if (consoleErrors.length", 1
+    )[0]
+    assert 'entry.path === "/api/runtime/workspace/session"' in reclassify
+    assert 'entry.failure === "net::ERR_ABORTED"' in reclassify
+    assert "intentionalRequestAborts.push" in reclassify
 
     assert 'requestJsonWithRetry(\n    "/api/runtime/services"' not in browser
     assert 'requestJson("/api/runtime/services")' in (
