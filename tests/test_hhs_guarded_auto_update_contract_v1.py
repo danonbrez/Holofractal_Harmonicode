@@ -949,10 +949,25 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
     ]:
         assert token in workflow
 
+    native_cli_gate = workflow.index("=== VERIFY DIRECT NATIVE CLI GENERATIVE CHAT ===")
+    backend_gate = workflow.index("=== VERIFY DIRECT PRODUCTION BACKEND ASSISTANT ===")
+    lane5_gate = workflow.index("=== VERIFY LANE 5 ASSISTANT INGRESS ===")
     public_probe = workflow.index("HHS_DIGITALOCEAN_PUBLIC_SERVICE_REGISTRY_VERIFIED")
     browser_gate = workflow.index("Verify public frontend capability projection in Chromium")
     hash216_queue = workflow.index("Queue Hash216 repository index after verified promotion")
-    assert public_probe < browser_gate < hash216_queue
+    assert backend_gate < lane5_gate < native_cli_gate < public_probe < browser_gate < hash216_queue
+
+    for token in [
+        "tools/hhs_native_chat_cli.py",
+        "--acceptance",
+        "--strict-generation",
+        "HHS_PRODUCTION_NATIVE_CLI_GENERATIVE_CHAT_VERIFIED=1",
+        'systemctl show hhs.service -p MainPID --value',
+        'done < "/proc/$hhs_pid/environ"',
+        "HHS_NATIVE_CAUSAL_LM_*",
+        "exit 27",
+    ]:
+        assert token in workflow
 
     for token in [
         'requestJsonWithRetry(\n    "/api/interface/status"',
