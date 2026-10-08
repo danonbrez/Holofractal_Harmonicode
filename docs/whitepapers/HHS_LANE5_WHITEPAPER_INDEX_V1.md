@@ -639,3 +639,17 @@ the declared audit rule. External Lean proofs remain provenance authority;
 truth promotion, model-weight updates, VM81 mutation, canonical Hash72/Hash216,
 persistence, and floating-point authority remain disabled.
 
+### Pass 220 I080 — OpenAI mathematics HOLD claim constructors
+
+[HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1.md](HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1.md)
+
+I080 gives each of the 268 remaining I078 novelty manuscripts a distinct
+source-bound HOLD claim constructor. Together with the 54 I079 formal theorem
+constructors, constructor coverage is now exact across all 322 frozen novelty
+manuscripts with zero gaps and zero duplicate assignments. HOLD constructors
+preserve immutable source identity and emit deterministic candidate
+Hash72/replay capsules, but cannot emit theorem witnesses or accept proof
+declarations until a catalogued external Lean proof or independent HHS proof
+closure is supplied. Truth, proof, execution, VM81 mutation, canonical hashes,
+persistence, learning, model-weight, and floating-point authority remain false.
+

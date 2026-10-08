@@ -1,0 +1,66 @@
+{
+  "schema": "HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-08",
+  "base_checkpoint": "be8d847f5bb107456844d38acec3bd0d053166b6",
+  "branch": "pass220/i080-openai-math-hold-claim-constructors-20261008",
+  "merge_target": "main_after_i079",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "objective": "Give every remaining I078 novelty manuscript without an I079 formal theorem constructor a distinct callable source-bound HOLD claim constructor, while refusing theorem/proof authority until a formal proof surface or independent HHS proof closure is supplied.",
+  "coverage": {
+    "i078_novelty_manuscripts": 322,
+    "i079_formal_theorem_constructors": 54,
+    "i080_hold_claim_constructors": 268,
+    "total_constructor_coverage": 322,
+    "gap": 0,
+    "duplicate_assignment": 0
+  },
+  "implementation": {
+    "registry": "data/pass220/openai_math_hold_claim_constructors_v1.json",
+    "runtime": "hhs_runtime/hhs_pass220_i080_openai_math_hold_claim_constructors_v1.py",
+    "constructor_kind": "HHS_SOURCE_BOUND_UNVERIFIED_CLAIM_CONSTRUCTOR_V1",
+    "callable_surfaces": [
+      "list_constructors",
+      "get_constructor",
+      "validate_frontier_coverage",
+      "build_registry_receipt",
+      "invoke_claim_constructor"
+    ],
+    "deterministic_replay": true,
+    "candidate_hash72_receipts": true,
+    "theorem_witness_emission": false
+  },
+  "promotion_policy": {
+    "hold_until": "CATALOGUED_EXTERNAL_LEAN_PROOF_OR_INDEPENDENT_HHS_PROOF_CLOSURE",
+    "preserve_source_identity": true,
+    "preserve_external_interface": true,
+    "require_dependency_identity": true,
+    "require_deterministic_replay": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "truth_promotion": false,
+    "theorem_truth_authority": false,
+    "proof_authority": false,
+    "execution_authority": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "validation": {
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "constructor_coverage": "268/268 remaining novelty manuscripts",
+    "full_novelty_partition": "54 theorem + 268 HOLD = 322",
+    "negative_tests": [
+      "theorem witness request",
+      "proof declaration injection",
+      "source tree identity tamper",
+      "authority drift"
+    ]
+  }
+}
