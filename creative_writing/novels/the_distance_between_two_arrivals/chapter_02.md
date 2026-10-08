@@ -72,7 +72,7 @@ Commander Elian Sev called within twelve minutes. The image that appeared above 
 
 "It proposes confirming a vibration source."
 
-"Inside a compartment evacuated ninety-six years ago."
+"Inside a compartment evacuated fifty-six years ago."
 
 "The boundary has measurable thermal activity, sir."
 
