@@ -1,0 +1,72 @@
+{
+  "schema": "HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1",
+  "version": "1.1.0",
+  "status": "CANONICAL_RECONCILED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-08",
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "branch": "pass220/i081-openai-math-constructor-promotion-audit-20261008",
+  "merge_target": "main",
+  "canonical_pr": 741,
+  "superseded_i081_prs": [
+    742,
+    743,
+    744
+  ],
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "objective": "Reconcile every competing I081 full-promotion proposal under one strict exact-source/proof-surface membrane and produce one zero-gap duplicate-free partition of the 322-source novelty frontier.",
+  "result": {
+    "conflicting_i081_prs_reconciled": 4,
+    "proposed_full_promotion_union": 29,
+    "accepted_full_promotions": 26,
+    "rejected_to_partial": 3,
+    "partial_formal_subconstructors": 13,
+    "effective_theorem_sources": 80,
+    "effective_hold_sources": 242,
+    "total_novelty_sources": 322,
+    "source_level_coverage_gap": 0,
+    "duplicate_assignment": 0
+  },
+  "promotion_rule": "EXACT_SOURCE_IDENTITY_PLUS_PINNED_PROOF_SURFACE_AND_MATCHING_DOCUMENTED_SCOPE",
+  "strict_exclusions": [
+    "partial/supporting formalization",
+    "aggregate result without exact source-contract equivalence",
+    "stronger related result without explicit source-contract derivation wrapper",
+    "same title at a different source tree/revision"
+  ],
+  "implementation": {
+    "registry": "data/pass220/openai_math_constructor_promotion_audit_i081_v1.json",
+    "runtime": "hhs_runtime/hhs_pass220_i081_openai_math_constructor_promotion_v1.py",
+    "deterministic_candidate_hash72": true,
+    "registry_receipt": "build_registry_receipt",
+    "full_promotion_call": "invoke_promoted_constructor",
+    "partial_call": "invoke_partial_subconstructor"
+  },
+  "authority": {
+    "candidate_only": true,
+    "truth_promotion": false,
+    "external_formal_proof_is_provenance_authority": true,
+    "independent_hhs_reproof": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "validation": {
+    "dependency_scoped_tests": "PENDING_CANONICAL_RERUN",
+    "required_partition": "80 theorem + 242 HOLD = 322",
+    "required_gap": 0,
+    "required_duplicate_assignment": 0,
+    "negative_tests": [
+      "Laughlin overpromotion rejection",
+      "star-height-four silent stronger-substitution rejection",
+      "Kervaire silent stronger-substitution rejection",
+      "same-title different-source-tree alias rejection",
+      "unadmitted proof declaration",
+      "nonexact full proof relation",
+      "source/doc identity tamper",
+      "authority drift"
+    ]
+  }
+}

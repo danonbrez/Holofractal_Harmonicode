@@ -1,0 +1,2240 @@
+{
+  "schema": "HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1",
+  "version": "1.1.0",
+  "date": "2026-10-08",
+  "canonical_i081": true,
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "canonical_pr": 741,
+  "superseded_i081_prs": [
+    742,
+    743,
+    744
+  ],
+  "parent_registries": [
+    "HHS_PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1",
+    "HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1",
+    "HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1"
+  ],
+  "audit_policy": {
+    "promotion_requires": [
+      "exact family-doc preprint identity matching the HOLD source slug and source tree",
+      "pinned family-doc identity at immutable source revision",
+      "pinned ComparatorChallenge configuration",
+      "nonempty admitted theorem declaration set",
+      "pinned Lean solution module/file identity",
+      "documented formal scope matching the source title-level contract"
+    ],
+    "stronger_related_result_without_explicit_source_contract_derivation_does_not_promote": true,
+    "partial_or_supporting_formalization_does_not_promote_whole_manuscript": true,
+    "same_title_different_source_tree_is_not_aliasable": true,
+    "aggregate_family_result_without_exact_source_contract_equivalence_remains_hold": true
+  },
+  "reconciliation": {
+    "conflicting_i081_prs_audited": [
+      741,
+      742,
+      743,
+      744
+    ],
+    "proposed_full_promotion_union": 29,
+    "accepted_full_promotions": 26,
+    "rejected_full_promotions_to_partial": 3,
+    "canonical_theorem_sources": 80,
+    "canonical_hold_sources": 242,
+    "novelty_frontier_sources": 322,
+    "coverage_gap": 0,
+    "duplicate_assignment": 0,
+    "corrected_bindings": [
+      "PR #742 Laughlin full promotion -> partial only because documented stability/uniqueness scope is excluded.",
+      "PR #742 Navier-Stokes proof surface -> corrected to NavierStokesAlternating for the rapidly-vanishing-forcing source.",
+      "Quasi-Riemann promotion -> binds all three documented zeta/Dirichlet/Hecke 7/8 surfaces.",
+      "Star-height-at-most-four -> remains HOLD until an explicit at-most-three -> at-most-four source-contract derivation wrapper exists.",
+      "Kervaire title-level source -> remains HOLD until an explicit coefficient-injectivity -> source-contract derivation wrapper exists."
+    ]
+  },
+  "result": {
+    "reconciled_full_promotion_proposals": 29,
+    "full_promotions": 26,
+    "partial_subconstructors": 13,
+    "additional_denied_full_promotions": 9,
+    "effective_theorem_sources": 80,
+    "effective_hold_sources": 242,
+    "novelty_frontier_sources": 322,
+    "source_level_coverage_gap": 0,
+    "duplicate_assignment": 0
+  },
+  "proposal_reconciliation": [
+    {
+      "source_slug": "A-Limiting-Satisfiability-Threshold-for-Every-Fixed-Clause-Size-September-25-2026",
+      "proposal_prs": [
+        742,
+        743,
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F235-DC41BFAEB5B0"
+    },
+    {
+      "source_slug": "A-Modulus-Proof-of-Cannons-Conjecture-September-23-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F246-8743E3A42D6F"
+    },
+    {
+      "source_slug": "A-power-saving-for-planar-halving-lines-September-25-2026",
+      "proposal_prs": [
+        742
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F183-B3DA22E09060"
+    },
+    {
+      "source_slug": "A-smooth-three-torus-diffeomorphism-with-simple-Lebesgue-spectrum-September-23-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F144-5B0CE67D3FB7"
+    },
+    {
+      "source_slug": "Catalans-constant-is-irrational-September-24-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F005-8AB267DE5C79"
+    },
+    {
+      "source_slug": "Computation-under-Rapidly-Vanishing-Navier-Stokes-Forcing-September-27-2026",
+      "proposal_prs": [
+        742,
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F376-4D453A8EB69E"
+    },
+    {
+      "source_slug": "Computing-the-Random-3-SAT-Threshold-September-27-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F235-F8DC242B6D7B"
+    },
+    {
+      "source_slug": "Continuum-Coulomb-hardness-with-binary-nuclear-charges-September-24-2026",
+      "proposal_prs": [
+        742,
+        743
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F275-94CA57B7785B"
+    },
+    {
+      "source_slug": "Cycle-clique-Ramsey-numbers-September-25-2026",
+      "proposal_prs": [
+        742,
+        743
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F189-61701AD43D10"
+    },
+    {
+      "source_slug": "Ergodicity-of-triangular-billiards-with-an-irrational-angle-September-25-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F150-D68D7A01E5A2"
+    },
+    {
+      "source_slug": "Exact-Uniform-Sampling-of-Contingency-Tables-with-Arbitrary-Margins-September-24-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F115-3472F9EF9D75"
+    },
+    {
+      "source_slug": "Finite-algebraic-envelopes-and-the-Boone-Higman-conjecture-September-23-2026",
+      "proposal_prs": [
+        742
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F250-395E88F2B358"
+    },
+    {
+      "source_slug": "Generalized-Star-Height-at-Most-Four-September-25-2026",
+      "proposal_prs": [
+        742,
+        744
+      ],
+      "decision": "KEEP_HOLD_PARTIAL_ONLY",
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F134-D79361F43851",
+      "reason": "The external theorem proves the stronger at-most-three statement. Strict I081 does not silently substitute it for the at-most-four source contract; an explicit derivation wrapper is required."
+    },
+    {
+      "source_slug": "Generalized-Star-Height-at-Most-Three-September-25-2026",
+      "proposal_prs": [
+        742,
+        743,
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F134-BE4D2DED666F"
+    },
+    {
+      "source_slug": "Generalized-outer-electron-radii-of-neutral-Coulomb-atoms-September-24-2026",
+      "proposal_prs": [
+        741
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F263-6765158F55F7"
+    },
+    {
+      "source_slug": "Integrability-of-split-tangent-bundles-on-rationally-connected-manifolds-September-23-2026",
+      "proposal_prs": [
+        742
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F052-3EBAEC4F87E8"
+    },
+    {
+      "source_slug": "Parabolic-intersections-in-Artin-groups-September-23-2026",
+      "proposal_prs": [
+        741,
+        742,
+        743
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F254-42F7C616082C"
+    },
+    {
+      "source_slug": "Sharp-nodal-length-on-smooth-surfaces-September-23-2026",
+      "proposal_prs": [
+        742
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F350-7948AA5677B1"
+    },
+    {
+      "source_slug": "Snaky-in-21-Maker-moves-September-25-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F187-2F822E4F3BE9"
+    },
+    {
+      "source_slug": "The-Kervaire-Theorem-for-Groups-September-24-2026",
+      "proposal_prs": [
+        742
+      ],
+      "decision": "KEEP_HOLD_PARTIAL_ONLY",
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F256-B20DD428ED92",
+      "reason": "The pinned doc exposes a stronger coefficient-injectivity theorem underlying Kervaire. Strict I081 requires an explicit source-contract derivation wrapper before whole-source promotion."
+    },
+    {
+      "source_slug": "The-Mahler-Conjecture-for-General-Convex-Bodies-September-22-2026",
+      "proposal_prs": [
+        741,
+        743,
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F087-9023C2424E91"
+    },
+    {
+      "source_slug": "The-Mezard-Parisi-formula-for-diluted-spin-glasses-September-23-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F221-B7AF177DE48B"
+    },
+    {
+      "source_slug": "The-Quasi-Riemann-Hypothesis-September-30-2026",
+      "proposal_prs": [
+        741,
+        742,
+        743,
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_MULTI_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F003-8A3427FA6360"
+    },
+    {
+      "source_slug": "The-free-energy-of-the-spherical-random-perceptron-September-24-2026",
+      "proposal_prs": [
+        742,
+        743
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F222-C61CA924B734"
+    },
+    {
+      "source_slug": "The-free-uniform-spanning-forest-is-a-factor-of-IID-September-25-2026",
+      "proposal_prs": [
+        742,
+        743
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F231-FF457D3983F0"
+    },
+    {
+      "source_slug": "The-joint-Dickman-law-for-consecutive-integers-September-24-2026",
+      "proposal_prs": [
+        742,
+        743
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F012-7FF876BF1B8F"
+    },
+    {
+      "source_slug": "Uniform-Stability-of-the-Spherical-Laughlin-Gap-October-5-2026",
+      "proposal_prs": [
+        742
+      ],
+      "decision": "KEEP_HOLD_PARTIAL_ONLY",
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F269-041B975282B3",
+      "reason": "The pinned scope proves only the unperturbed gap inequality; projected-potential stability and perturbed-ground-state uniqueness are explicitly outside it."
+    },
+    {
+      "source_slug": "Variance-of-the-Random-k-SAT-Hitting-Time-September-27-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F235-6A6AB6D68CF1"
+    },
+    {
+      "source_slug": "the-additive-indecomposability-of-the-primes-September-24-2026",
+      "proposal_prs": [
+        744
+      ],
+      "decision": "PROMOTE_FULL",
+      "proof_relation": "EXACT_DOC_SOURCE_MULTI_PROOF_SURFACE",
+      "promotion_id": "HHS-OAI-I081-THEOREM-F013-7EAE6F48EDC2"
+    }
+  ],
+  "full_promotions": [
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F003-8A3427FA6360",
+      "family_id": "003",
+      "source_title": "The Quasi Riemann Hypothesis",
+      "source_slug": "The-Quasi-Riemann-Hypothesis-September-30-2026",
+      "source_tree_sha": "8a3427fa6360eb9bb1234a75cb1a0327b2b35165",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/003.md",
+        "sha": "cf794e93da2e1a494434153f5b91f2990fe9fd60",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F003-8A3427FA6360",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-Quasi-Riemann-Hypothesis-September-30-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_MULTI_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/QuasiRiemannHypothesis.json",
+            "sha": "acf552468fc23c1a27d685d33983c58c50040542"
+          },
+          "solution": {
+            "module": "OAI.NumberTheory.DirichletL.Nonvanishing",
+            "path": "lean/OAI/NumberTheory/DirichletL/Nonvanishing.lean",
+            "sha": "46c67f4000906b1391a471d6e6396ac0da3c16a5"
+          },
+          "theorem_names": [
+            "OAI.riemannZeta_ne_zero_of_seven_eighths_lt_re"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        },
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/DirichletSevenEighths.json",
+            "sha": "a946bfcf544ad212fbd46056dbff913c2d75247c"
+          },
+          "solution": {
+            "module": "OAI.NumberTheory.DirichletL.Nonvanishing",
+            "path": "lean/OAI/NumberTheory/DirichletL/Nonvanishing.lean",
+            "sha": "46c67f4000906b1391a471d6e6396ac0da3c16a5"
+          },
+          "theorem_names": [
+            "OAI.DirichletCharacter.LFunction_ne_zero_of_seven_eighths_lt_re"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        },
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/HeckeSevenEighths.json",
+            "sha": "139442c594171660b9e4ce80ab01aa978bb32c51"
+          },
+          "solution": {
+            "module": "OAI.NumberTheory.DirichletL.Hecke.Nonvanishing",
+            "path": "lean/OAI/NumberTheory/DirichletL/Hecke/Nonvanishing.lean",
+            "sha": "4fb158e2dc0d50f71a313ca1c6bdc56923c9d201"
+          },
+          "theorem_names": [
+            "OAI.SevenEighths.HeckeFamily.LFunction_ne_zero_of_seven_eighths_lt_re"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.riemannZeta_ne_zero_of_seven_eighths_lt_re",
+        "OAI.DirichletCharacter.LFunction_ne_zero_of_seven_eighths_lt_re",
+        "OAI.SevenEighths.HeckeFamily.LFunction_ne_zero_of_seven_eighths_lt_re"
+      ],
+      "reconciliation_pr_origins": [
+        741,
+        742,
+        743,
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc binds the September 30 source and describes zeta, Dirichlet, and finite-order Hecke 7/8 zero-free surfaces; canonical I081 binds all three."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F005-8AB267DE5C79",
+      "family_id": "005",
+      "source_title": "Catalans constant is irrational",
+      "source_slug": "Catalans-constant-is-irrational-September-24-2026",
+      "source_tree_sha": "8ab267de5c79481ce62eff102cadd07e382cfcff",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/005.md",
+        "sha": "b8d3af65448c39017827ba4e7441b44a45f355a1",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F005-8AB267DE5C79",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Catalans-constant-is-irrational-September-24-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/Catalan.json",
+            "sha": "78b89138b45ecbe09c061b25c2e2f6177ffd4b9b"
+          },
+          "solution": {
+            "module": "OAI.NumberTheory.Catalan.Main",
+            "path": "lean/OAI/NumberTheory/Catalan/Main.lean",
+            "sha": "752588840ac791e2a8844ce20ca0cf1da508590d"
+          },
+          "theorem_names": [
+            "OAI.InternalCatalan.catalan_irrational"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.InternalCatalan.catalan_irrational"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc states the formalization proves the mathematical assertion in the paper title."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F012-7FF876BF1B8F",
+      "family_id": "012",
+      "source_title": "The joint Dickman law for consecutive integers",
+      "source_slug": "The-joint-Dickman-law-for-consecutive-integers-September-24-2026",
+      "source_tree_sha": "7ff876bf1b8f54f8ac294f4e838e2cea4dcbdbec",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/012.md",
+        "sha": "a92487d8cc5e8fa243fc0af64b8be34a06d165f0",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F012-7FF876BF1B8F",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-joint-Dickman-law-for-consecutive-integers-September-24-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/JointDickman.json",
+            "sha": "7267219acc9f42d882a8704c66c94435235d5b9c"
+          },
+          "solution": {
+            "module": "OAI.NumberTheory.JointDickman.PaperMain",
+            "path": "lean/OAI/NumberTheory/JointDickman/PaperMain.lean",
+            "sha": "ccc0cf7b37c5163324aec1a6b91dd9efd22d7aec"
+          },
+          "theorem_names": [
+            "OAI.JointDickmanPaper.joint_law",
+            "OAI.JointDickmanPaper.increasing_order",
+            "OAI.JointDickmanPaper.decreasing_order"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.JointDickmanPaper.joint_law",
+        "OAI.JointDickmanPaper.increasing_order",
+        "OAI.JointDickmanPaper.decreasing_order"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        743
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and states the joint Dickman law and ordering densities."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F013-7EAE6F48EDC2",
+      "family_id": "013",
+      "source_title": "the additive indecomposability of the primes",
+      "source_slug": "the-additive-indecomposability-of-the-primes-September-24-2026",
+      "source_tree_sha": "7eae6f48edc2a8a17c2b24b73ce7e8bbe67ba318",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/013.md",
+        "sha": "8eeb95c35a98a41433342ee053a9cf5154581e70",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F013-7EAE6F48EDC2",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "the-additive-indecomposability-of-the-primes-September-24-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_MULTI_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/OstmannComplete.json",
+            "sha": "928cf04c8547c3735c80a77a840593f19da7e995"
+          },
+          "solution": {
+            "module": "OAI.NumberTheory.Ostmann.Complete",
+            "path": "lean/OAI/NumberTheory/Ostmann/Complete.lean",
+            "sha": "1053cb06e20ad9e53bfb33f9fd2d163c4aabe282"
+          },
+          "theorem_names": [
+            "OAI.Ostmann.inverseGoldbach",
+            "OAI.Ostmann.twoInfiniteSummandsImpossible"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        },
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/OstmannPrimes.json",
+            "sha": "dc91ea228dcb7e4b2547ada49ad868dd27589fa6"
+          },
+          "solution": {
+            "module": "OAI.NumberTheory.Ostmann.Main",
+            "path": "lean/OAI/NumberTheory/Ostmann/Main.lean",
+            "sha": "aaaf78b93bccce240c570600e99b513611d91f63"
+          },
+          "theorem_names": [
+            "OAI.Ostmann.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.Ostmann.inverseGoldbach",
+        "OAI.Ostmann.twoInfiniteSummandsImpossible",
+        "OAI.Ostmann.main"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes inverse Goldbach/additive indecomposability."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F052-3EBAEC4F87E8",
+      "family_id": "052",
+      "source_title": "Integrability of split tangent bundles on rationally connected manifolds",
+      "source_slug": "Integrability-of-split-tangent-bundles-on-rationally-connected-manifolds-September-23-2026",
+      "source_tree_sha": "3ebaec4f87e8475e57ae322b71ef6e8e99730406",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/052.md",
+        "sha": "510edec7a3f990c7f8ab25bd214c19f4f1030a0f",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F052-3EBAEC4F87E8",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Integrability-of-split-tangent-bundles-on-rationally-connected-manifolds-September-23-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/SplitTangentIntegrability.json",
+            "sha": "77167031e980a1afac9c3d6e3b3691e9141d2cbb"
+          },
+          "solution": {
+            "module": "OAI.Geometry.SplitTangent.RationalVariation",
+            "path": "lean/OAI/Geometry/SplitTangent/RationalVariation.lean",
+            "sha": "3648fff52dfaed1a0cc5d8615a37b92703166bd2"
+          },
+          "theorem_names": [
+            "OAI.SplitTangent.integrability_main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.SplitTangent.integrability_main"
+      ],
+      "reconciliation_pr_origins": [
+        742
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes integrability of both tangent summands."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F087-9023C2424E91",
+      "family_id": "087",
+      "source_title": "The Mahler Conjecture for General Convex Bodies",
+      "source_slug": "The-Mahler-Conjecture-for-General-Convex-Bodies-September-22-2026",
+      "source_tree_sha": "9023c2424e91c65361e66ed43ed963b5c24585a6",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/087.md",
+        "sha": "52459dc8c7e37b2395a25c903c4edac14b08e032",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F087-9023C2424E91",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-Mahler-Conjecture-for-General-Convex-Bodies-September-22-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/GeneralMahler.json",
+            "sha": "683100b6bbdcf27ab1ee1173b475fedf4df23a34"
+          },
+          "solution": {
+            "module": "OAI.Geometry.Convex.GeneralMahler.Theorem",
+            "path": "lean/OAI/Geometry/Convex/GeneralMahler/Theorem.lean",
+            "sha": "7fed52ac196aa1d561e97cf32ef9abd5624285d9"
+          },
+          "theorem_names": [
+            "OAI.GeneralMahler.general_mahler"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.GeneralMahler.general_mahler"
+      ],
+      "reconciliation_pr_origins": [
+        741,
+        743,
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the general Mahler inequality with simplex equality."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F115-3472F9EF9D75",
+      "family_id": "115",
+      "source_title": "Exact Uniform Sampling of Contingency Tables with Arbitrary Margins",
+      "source_slug": "Exact-Uniform-Sampling-of-Contingency-Tables-with-Arbitrary-Margins-September-24-2026",
+      "source_tree_sha": "3472f9ef9d755db4a0a911c46e9abb1982859d18",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/115.md",
+        "sha": "1aa44edde15aa918b1f0773087ebfb3e98df810c",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F115-3472F9EF9D75",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Exact-Uniform-Sampling-of-Contingency-Tables-with-Arbitrary-Margins-September-24-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/ContingencyTables.json",
+            "sha": "3679538ca2b993d66451e3f75dc18796c8570529"
+          },
+          "solution": {
+            "module": "OAI.Combinatorics.ContingencyTables.UnconditionalMain",
+            "path": "lean/OAI/Combinatorics/ContingencyTables/UnconditionalMain.lean",
+            "sha": "088d181b4e2cd032a8477807e460707c985cd1d9"
+          },
+          "theorem_names": [
+            "OAI.ContingencyTables.boundedSampling",
+            "OAI.ContingencyTables.exactSampling"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.ContingencyTables.boundedSampling",
+        "OAI.ContingencyTables.exactSampling"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes exact uniform plus bounded-time sampling."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F134-BE4D2DED666F",
+      "family_id": "134",
+      "source_title": "Generalized Star Height at Most Three",
+      "source_slug": "Generalized-Star-Height-at-Most-Three-September-25-2026",
+      "source_tree_sha": "be4d2ded666fc30b266d1a7d04fa7df9e517a8a1",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/134.md",
+        "sha": "2a8a786d09dd61ebc2700b0c974d551ca911aea9",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F134-BE4D2DED666F",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Generalized-Star-Height-at-Most-Three-September-25-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+            "sha": "e6827da825e0bd15e4b4f0c49d5c176973fb1cda"
+          },
+          "solution": {
+            "module": "OAI.Computability.StarHeight.Main",
+            "path": "lean/OAI/Computability/StarHeight/Main.lean",
+            "sha": "a2248df542f494d30fbfb129c5afa12d7f5b6f16"
+          },
+          "theorem_names": [
+            "OAI.GeneralizedStarHeight.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.GeneralizedStarHeight.main"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        743,
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes star height at most three."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F144-5B0CE67D3FB7",
+      "family_id": "144",
+      "source_title": "A smooth three torus diffeomorphism with simple Lebesgue spectrum",
+      "source_slug": "A-smooth-three-torus-diffeomorphism-with-simple-Lebesgue-spectrum-September-23-2026",
+      "source_tree_sha": "5b0ce67d3fb7d5e78597afbc3e41a2f3b2bacdb6",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/144.md",
+        "sha": "bb24489bd6e237a26bf2e93e6f5c82113585be8f",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F144-5B0CE67D3FB7",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "A-smooth-three-torus-diffeomorphism-with-simple-Lebesgue-spectrum-September-23-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/ThreeTorus.json",
+            "sha": "4c6f960d349be47cf9078167ef6770dbc6449eb8"
+          },
+          "solution": {
+            "module": "OAI.Dynamics.ThreeTorus.Main",
+            "path": "lean/OAI/Dynamics/ThreeTorus/Main.lean",
+            "sha": "126984107ab5f1d83f719a83e09257c919d8b247"
+          },
+          "theorem_names": [
+            "OAI.ThreeTorus.simple_lebesgue_spectrum"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.ThreeTorus.simple_lebesgue_spectrum"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the simple Lebesgue spectrum construction."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F150-D68D7A01E5A2",
+      "family_id": "150",
+      "source_title": "Ergodicity of triangular billiards with an irrational angle",
+      "source_slug": "Ergodicity-of-triangular-billiards-with-an-irrational-angle-September-25-2026",
+      "source_tree_sha": "d68d7a01e5a2715f3e64e0747ed4e3338bb68f6b",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/150.md",
+        "sha": "80d46b5297711506dbbaf9de57f75daafe689614",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F150-D68D7A01E5A2",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Ergodicity-of-triangular-billiards-with-an-irrational-angle-September-25-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/IrrationalTriangleBilliard.json",
+            "sha": "ae782fc475a947e29457ceffa71feb2a3bef198a"
+          },
+          "solution": {
+            "module": "OAI.Dynamics.TriangleBilliards.Main",
+            "path": "lean/OAI/Dynamics/TriangleBilliards/Main.lean",
+            "sha": "9213fe8b040e059b7a5ab58404b068c23e83cb74"
+          },
+          "theorem_names": [
+            "OAI.TriangularBilliards.irrational_triangle_billiard"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.TriangularBilliards.irrational_triangle_billiard"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes irrational-triangle billiard ergodicity."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F183-B3DA22E09060",
+      "family_id": "183",
+      "source_title": "A power saving for planar halving lines",
+      "source_slug": "A-power-saving-for-planar-halving-lines-September-25-2026",
+      "source_tree_sha": "b3da22e090602def2ae094db10008e2f8a341b94",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/183.md",
+        "sha": "077bcb09f6324eb726c7b9846488743423e9ca48",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F183-B3DA22E09060",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "A-power-saving-for-planar-halving-lines-September-25-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/HalvingLines.json",
+            "sha": "8a90228b4ac38291644cbedaa07423aa4a55874b"
+          },
+          "solution": {
+            "module": "OAI.Combinatorics.HalvingLines.Main",
+            "path": "lean/OAI/Combinatorics/HalvingLines/Main.lean",
+            "sha": "fbbf778c94e396cb3f8b7c103511cbea24b0ac1c"
+          },
+          "theorem_names": [
+            "OAI.PlanarHalving.power_bounds"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.PlanarHalving.power_bounds"
+      ],
+      "reconciliation_pr_origins": [
+        742
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the power-saving halving-pair bound."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F187-2F822E4F3BE9",
+      "family_id": "187",
+      "source_title": "Snaky in 21 Maker moves",
+      "source_slug": "Snaky-in-21-Maker-moves-September-25-2026",
+      "source_tree_sha": "2f822e4f3be927d3fcc74b4b0c9bf065ac21dd20",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/187.md",
+        "sha": "b377da7e6be6705d5a7c8863b42d389f1eeecc58",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F187-2F822E4F3BE9",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Snaky-in-21-Maker-moves-September-25-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/SnakyTwentyOne.json",
+            "sha": "5f481d82221109fae8538e6ed23bea2a15d14331"
+          },
+          "solution": {
+            "module": "OAI.GameTheory.SnakyTwentyOne.Main",
+            "path": "lean/OAI/GameTheory/SnakyTwentyOne/Main.lean",
+            "sha": "88f3c5abed104c22507f89ac827d88bbdc15f051"
+          },
+          "theorem_names": [
+            "OAI.SnakyPrototype.snaky_winning_strategy_21_with_legal_states"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.SnakyPrototype.snaky_winning_strategy_21_with_legal_states"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes a legal winning strategy within 21 Maker moves."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F189-61701AD43D10",
+      "family_id": "189",
+      "source_title": "Cycle clique Ramsey numbers",
+      "source_slug": "Cycle-clique-Ramsey-numbers-September-25-2026",
+      "source_tree_sha": "61701ad43d10c7d660da999c389a2bfd7b2f2f46",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/189.md",
+        "sha": "5207b2ad41a9539b6725aff03cb19cf454fa3c31",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F189-61701AD43D10",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Cycle-clique-Ramsey-numbers-September-25-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/CycleCliqueRamsey.json",
+            "sha": "4cac85ef35469add1ab2a02803ddd1f37dff6df4"
+          },
+          "solution": {
+            "module": "OAI.Combinatorics.Ramsey.CycleClique.Main",
+            "path": "lean/OAI/Combinatorics/Ramsey/CycleClique/Main.lean",
+            "sha": "4ca7db6cbb7948977107211580c0e1190c9b9048"
+          },
+          "theorem_names": [
+            "OAI.CycleClique.thm_main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.CycleClique.thm_main"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        743
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and states the complete cycle-clique Ramsey formula."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F221-B7AF177DE48B",
+      "family_id": "221",
+      "source_title": "The Mezard Parisi formula for diluted spin glasses",
+      "source_slug": "The-Mezard-Parisi-formula-for-diluted-spin-glasses-September-23-2026",
+      "source_tree_sha": "b7af177de48be866ec2736d9187390917772adeb",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/221.md",
+        "sha": "860fb28fe29f84d0f802c55fc979d9c92732c8a1",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F221-B7AF177DE48B",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-Mezard-Parisi-formula-for-diluted-spin-glasses-September-23-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/DilutedSpin.json",
+            "sha": "dc683f0caa3960ec34ab13c4b5543061583321af"
+          },
+          "solution": {
+            "module": "OAI.Probability.DilutedSpin.Main",
+            "path": "lean/OAI/Probability/DilutedSpin/Main.lean",
+            "sha": "2a0ab1aa2e4a6c05d0a6b627978d50592edfcf9c"
+          },
+          "theorem_names": [
+            "OAI.DilutedSpinGlass.mezard_parisi"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.DilutedSpinGlass.mezard_parisi"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the Mézard–Parisi variational equality."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F222-C61CA924B734",
+      "family_id": "222",
+      "source_title": "The free energy of the spherical random perceptron",
+      "source_slug": "The-free-energy-of-the-spherical-random-perceptron-September-24-2026",
+      "source_tree_sha": "c61ca924b7341945c2f20273476ea4f20f1e2aff",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/222.md",
+        "sha": "e5e3b913b789e243430257f54d9e9c5f6378e1b8",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F222-C61CA924B734",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-free-energy-of-the-spherical-random-perceptron-September-24-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/PerceptronFreeEnergy.json",
+            "sha": "c25886ed2ea74a10813757dc99d38f03cc8a301d"
+          },
+          "solution": {
+            "module": "OAI.Probability.Perceptron.Main",
+            "path": "lean/OAI/Probability/Perceptron/Main.lean",
+            "sha": "1d8114c59ca04ca78a686655d22babf0c94d14b2"
+          },
+          "theorem_names": [
+            "OAI.SphericalPerceptronFreeEnergy.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.SphericalPerceptronFreeEnergy.main"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        743
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the spherical-perceptron limiting pressure formula."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F231-FF457D3983F0",
+      "family_id": "231",
+      "source_title": "The free uniform spanning forest is a factor of IID",
+      "source_slug": "The-free-uniform-spanning-forest-is-a-factor-of-IID-September-25-2026",
+      "source_tree_sha": "ff457d3983f02e7fb14697df56f97655a42e26de",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/231.md",
+        "sha": "5b54db53d629492e0735e554240053be59a50380",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F231-FF457D3983F0",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-free-uniform-spanning-forest-is-a-factor-of-IID-September-25-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/FreeUniformSpanningForest.json",
+            "sha": "015f336785db84710a16452fbf09c0b5e94ffd30"
+          },
+          "solution": {
+            "module": "OAI.Probability.SpanningForest.Factor",
+            "path": "lean/OAI/Probability/SpanningForest/Factor.lean",
+            "sha": "cb6232c347c97b08845509a8178154c5c43f75f0"
+          },
+          "theorem_names": [
+            "OAI.Problem336.fusf_is_factor_iid"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.Problem336.fusf_is_factor_iid"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        743
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the universal IID factor."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F235-6A6AB6D68CF1",
+      "family_id": "235",
+      "source_title": "Variance of the Random k SAT Hitting Time",
+      "source_slug": "Variance-of-the-Random-k-SAT-Hitting-Time-September-27-2026",
+      "source_tree_sha": "6a6ab6d68cf18d413549a8368b5c4a0474d26f51",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/235.md",
+        "sha": "5974e018344467e649fc50dc4f46e06703b2c6b3",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F235-6A6AB6D68CF1",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Variance-of-the-Random-k-SAT-Hitting-Time-September-27-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/SATVariance.json",
+            "sha": "a59131c3efb38968d4e9c94c4bf34fc2ea974244"
+          },
+          "solution": {
+            "module": "OAI.Probability.SATVariance.Main",
+            "path": "lean/OAI/Probability/SATVariance/Main.lean",
+            "sha": "7a4532a058a40fb9581ba64bb218e76d24c8e36b"
+          },
+          "theorem_names": [
+            "OAI.RandomKSAT.variance_main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.RandomKSAT.variance_main"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the stated variance bounds."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F235-DC41BFAEB5B0",
+      "family_id": "235",
+      "source_title": "A Limiting Satisfiability Threshold for Every Fixed Clause Size",
+      "source_slug": "A-Limiting-Satisfiability-Threshold-for-Every-Fixed-Clause-Size-September-25-2026",
+      "source_tree_sha": "dc41bfaeb5b022860c2f4ba0f8a159240cab47cc",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/235.md",
+        "sha": "5974e018344467e649fc50dc4f46e06703b2c6b3",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F235-DC41BFAEB5B0",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "A-Limiting-Satisfiability-Threshold-for-Every-Fixed-Clause-Size-September-25-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/FixedClauseThreshold.json",
+            "sha": "7897da92a1789760b0fb3759b095f61a9a95a686"
+          },
+          "solution": {
+            "module": "OAI.Probability.RandomSAT.Main",
+            "path": "lean/OAI/Probability/RandomSAT/Main.lean",
+            "sha": "30540d9a10c1d86955b05f15e1fc2c2920b37176"
+          },
+          "theorem_names": [
+            "OAI.FixedClauseThreshold.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.FixedClauseThreshold.main"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        743,
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the limiting threshold for every fixed k≥3."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F235-F8DC242B6D7B",
+      "family_id": "235",
+      "source_title": "Computing the Random 3 SAT Threshold",
+      "source_slug": "Computing-the-Random-3-SAT-Threshold-September-27-2026",
+      "source_tree_sha": "f8dc242b6d7b3c4dacb203c46e34eeca2d1b19a3",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/235.md",
+        "sha": "5974e018344467e649fc50dc4f46e06703b2c6b3",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F235-F8DC242B6D7B",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Computing-the-Random-3-SAT-Threshold-September-27-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/SATComputability.json",
+            "sha": "4a92f97765737cd809d7c951fe3f6098ebcbbd7e"
+          },
+          "solution": {
+            "module": "OAI.Probability.SATComputability.Main",
+            "path": "lean/OAI/Probability/SATComputability/Main.lean",
+            "sha": "12611645c42456aa9bddacc38b9cd017ff95e3d6"
+          },
+          "theorem_names": [
+            "OAI.FixedClauseThreshold.Computability.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.FixedClauseThreshold.Computability.main"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes computability of the limiting random 3-SAT threshold."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F246-8743E3A42D6F",
+      "family_id": "246",
+      "source_title": "A Modulus Proof of Cannons Conjecture",
+      "source_slug": "A-Modulus-Proof-of-Cannons-Conjecture-September-23-2026",
+      "source_tree_sha": "8743e3a42d6f3c0d214f94824f5e56299b72a5af",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/246.md",
+        "sha": "bef79858e71e71da41bed7429271edd013567224",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F246-8743E3A42D6F",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "A-Modulus-Proof-of-Cannons-Conjecture-September-23-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/CannonGeometricAction.json",
+            "sha": "a2e4ff2a76853252e4bf003238603f73b3ea6c62"
+          },
+          "solution": {
+            "module": "OAI.Geometry.Cannon.Main",
+            "path": "lean/OAI/Geometry/Cannon/Main.lean",
+            "sha": "431f0b1c1f4a5277ef7bf1d9944b72063664aa1c"
+          },
+          "theorem_names": [
+            "OAI.CannonRelease.cannon"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.CannonRelease.cannon"
+      ],
+      "reconciliation_pr_origins": [
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes Cannon's geometric-action conclusion."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F250-395E88F2B358",
+      "family_id": "250",
+      "source_title": "Finite algebraic envelopes and the Boone Higman conjecture",
+      "source_slug": "Finite-algebraic-envelopes-and-the-Boone-Higman-conjecture-September-23-2026",
+      "source_tree_sha": "395e88f2b3584a06f1b5e53076dc439fc027e00f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/250.md",
+        "sha": "c82fa71607d70509c56908ae7384392dca7bebe2",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F250-395E88F2B358",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Finite-algebraic-envelopes-and-the-Boone-Higman-conjecture-September-23-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/BooneHigman.json",
+            "sha": "2879f32a964cb00f97738154a088722a9576ccc6"
+          },
+          "solution": {
+            "module": "OAI.GroupTheory.BooneHigman.Main",
+            "path": "lean/OAI/GroupTheory/BooneHigman/Main.lean",
+            "sha": "e0eb21a1f3bf499d653e988f4df4c03946d044fd"
+          },
+          "theorem_names": [
+            "OAI.FiniteAlgebraicEnvelopes.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.FiniteAlgebraicEnvelopes.main"
+      ],
+      "reconciliation_pr_origins": [
+        742
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the Boone–Higman equivalence."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F254-42F7C616082C",
+      "family_id": "254",
+      "source_title": "Parabolic intersections in Artin groups",
+      "source_slug": "Parabolic-intersections-in-Artin-groups-September-23-2026",
+      "source_tree_sha": "42f7c616082cf6e60b48aef3561fadb6786c61f8",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/254.md",
+        "sha": "3daef005137f48059e9a4c37aa2c2ef43b6bdd98",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F254-42F7C616082C",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Parabolic-intersections-in-Artin-groups-September-23-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/ArtinParabolicIntersections.json",
+            "sha": "04a587ada36d497e7320bb84d8872cff86a5b932"
+          },
+          "solution": {
+            "module": "OAI.Topology.ArtinGroups.ParabolicIntersections.Main",
+            "path": "lean/OAI/Topology/ArtinGroups/ParabolicIntersections/Main.lean",
+            "sha": "3b4622851718563aeab2cbe1316cc84be6fe23de"
+          },
+          "theorem_names": [
+            "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_intersections",
+            "OAI.HarmonicArtin.ParabolicIntersections.unconditional_arbitrary_intersections",
+            "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_closure",
+            "OAI.HarmonicArtin.ParabolicIntersections.unconditional_nonclique_dynamics"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_intersections",
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_arbitrary_intersections",
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_closure",
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_nonclique_dynamics"
+      ],
+      "reconciliation_pr_origins": [
+        741,
+        742,
+        743
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes parabolic intersections, closure, and selected consequences."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F263-6765158F55F7",
+      "family_id": "263",
+      "source_title": "Generalized outer electron radii of neutral Coulomb atoms",
+      "source_slug": "Generalized-outer-electron-radii-of-neutral-Coulomb-atoms-September-24-2026",
+      "source_tree_sha": "6765158f55f7eeea8ea76f0cb5be3278841cfc7c",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/263.md",
+        "sha": "ed123c227c15aa12e1c7baa8f1adcb486d6fbbc0",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F263-6765158F55F7",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Generalized-outer-electron-radii-of-neutral-Coulomb-atoms-September-24-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/CoulombRadii.json",
+            "sha": "ade73405e3f8ceb8f85a0634e01b9eb18df86c84"
+          },
+          "solution": {
+            "module": "OAI.Analysis.CoulombRadii.Main",
+            "path": "lean/OAI/Analysis/CoulombRadii/Main.lean",
+            "sha": "588b16e7b167588cbe42017c78bacb5df5f56b58"
+          },
+          "theorem_names": [
+            "OAI.NeutralAtom.generalized_outer_radii"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.NeutralAtom.generalized_outer_radii"
+      ],
+      "reconciliation_pr_origins": [
+        741
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the generalized outer-electron radius asymptotics."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F275-94CA57B7785B",
+      "family_id": "275",
+      "source_title": "Continuum Coulomb hardness with binary nuclear charges",
+      "source_slug": "Continuum-Coulomb-hardness-with-binary-nuclear-charges-September-24-2026",
+      "source_tree_sha": "94ca57b7785b070e0ff38869eaf76324b8df0075",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/275.md",
+        "sha": "85c1f1f8df0a30bb4a69c87d689eefe0e5e6c3e4",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F275-94CA57B7785B",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Continuum-Coulomb-hardness-with-binary-nuclear-charges-September-24-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/ContinuumCoulombHardness.json",
+            "sha": "8e14b260a545147e056f55ce399a8690f69075c2"
+          },
+          "solution": {
+            "module": "OAI.MathematicalPhysics.ContinuumCoulomb.Reduction.Hardness",
+            "path": "lean/OAI/MathematicalPhysics/ContinuumCoulomb/Reduction/Hardness.lean",
+            "sha": "89e66252aab11bea3b02553d397098d7212bd235"
+          },
+          "theorem_names": [
+            "OAI.ContinuumCoulomb.binary_coulomb_qmaHard"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.ContinuumCoulomb.binary_coulomb_qmaHard"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        743
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes QMA-hardness with binary nuclear charges."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F350-7948AA5677B1",
+      "family_id": "350",
+      "source_title": "Sharp nodal length on smooth surfaces",
+      "source_slug": "Sharp-nodal-length-on-smooth-surfaces-September-23-2026",
+      "source_tree_sha": "7948aa5677b1908bf5335a35c6e2c1a7e1cb041f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/350.md",
+        "sha": "0dcd752770fb992be6b73d02268d34e6bd2189cd",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F350-7948AA5677B1",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Sharp-nodal-length-on-smooth-surfaces-September-23-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/NodalLength.json",
+            "sha": "89208a2ad593de9819d55aab0141511fe39d9e93"
+          },
+          "solution": {
+            "module": "OAI.Analysis.NodalLength.Main",
+            "path": "lean/OAI/Analysis/NodalLength/Main.lean",
+            "sha": "0aea52b4330d3b53fe8e30d5631a1d621c2770a8"
+          },
+          "theorem_names": [
+            "OAI.SharpNodal.Main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.SharpNodal.Main"
+      ],
+      "reconciliation_pr_origins": [
+        742
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source and formalizes the sharp upper nodal-length bound on smooth surfaces."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F376-4D453A8EB69E",
+      "family_id": "376",
+      "source_title": "Computation under Rapidly Vanishing Navier Stokes Forcing",
+      "source_slug": "Computation-under-Rapidly-Vanishing-Navier-Stokes-Forcing-September-27-2026",
+      "source_tree_sha": "4d453a8eb69eb7a53f5923d1b999945987f7296d",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/376.md",
+        "sha": "b43f10df2d8fb85337f2b74abe299de009d0ad38",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F376-4D453A8EB69E",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "STRICT_EXACT_SOURCE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Computation-under-Rapidly-Vanishing-Navier-Stokes-Forcing-September-27-2026",
+      "proof_relation": "EXACT_DOC_SOURCE_AND_PROOF_SURFACE",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/NavierStokesAlternating.json",
+            "sha": "0e72bc176e287e454e0d9b50ab529348c0bd95b0"
+          },
+          "solution": {
+            "module": "OAI.MathematicalPhysics.AlternatingFlow.Development",
+            "path": "lean/OAI/MathematicalPhysics/AlternatingFlow/Development.lean",
+            "sha": "1f061a84cb09d7044d5ccc4c4fb406b680c33dbb"
+          },
+          "theorem_names": [
+            "OAI.AlternatingNS.alternating"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.AlternatingNS.alternating"
+      ],
+      "reconciliation_pr_origins": [
+        742,
+        744
+      ],
+      "full_source_promotion_reason": "Pinned doc lists the exact source; canonical reconciliation binds the rapidly-decaying alternating-coordinate proof surface, replacing the mismatched balanced-transport surface proposed in PR #742."
+    }
+  ],
+  "partial_subconstructors": [
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F033-E17F30B154EB",
+      "family_id": "033",
+      "source_title": "The reverse logarithmic Kodaira inequality and additivity",
+      "source_slug": "The-reverse-logarithmic-Kodaira-inequality-and-additivity-September-26-2026",
+      "source_tree_sha": "e17f30b154eb1eda0945a8d9eede9a0037aa9c0b",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/033.md",
+        "sha": "f3524758d7b3ab1688df48551dc2bce8d817d5d0",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F033-E17F30B154EB",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-reverse-logarithmic-Kodaira-inequality-and-additivity-September-26-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/LogKodairaFiberNegative.json",
+            "sha": "ce98b6e80190efca2332a2bccb8c9f5383c43d99"
+          },
+          "solution": {
+            "module": "OAI.AlgebraicGeometry.LogKodaira.FiberNegative",
+            "path": "lean/OAI/AlgebraicGeometry/LogKodaira/FiberNegative.lean",
+            "sha": "5ed8ceefd940ac5e068bfc0a87b5a5faf112a70b"
+          },
+          "theorem_names": [
+            "OAI.ReverseLogKodaira.SmoothProjectiveVariety.veryGenerally_fiber_negative_branch"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.ReverseLogKodaira.SmoothProjectiveVariety.veryGenerally_fiber_negative_branch"
+      ],
+      "excluded_scope": "The pinned scope covers only the negative-fiber branch; other branches of the manuscript remain outside the selected statement.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F100-15EE14684A60",
+      "family_id": "100",
+      "source_title": "Slope field perturbations of the two cylinder covering",
+      "source_slug": "Slope-field-perturbations-of-the-two-cylinder-covering-September-27-2026",
+      "source_tree_sha": "15ee14684a605200a88d8274cb699e371bd09f49",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/100.md",
+        "sha": "15ce0d568caa0538de2a8aab35bf3822260424d6",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F100-15EE14684A60",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Slope-field-perturbations-of-the-two-cylinder-covering-September-27-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/CylinderCovering.json",
+            "sha": "cf34af8012f871328f266767a207e62b6ccaa54c"
+          },
+          "solution": {
+            "module": "OAI.Geometry.CylinderCovering.Main",
+            "path": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+            "sha": "5b31ad7fc33f060b002f855b45f08059aa34c026"
+          },
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.CylinderCovering.fourPaperMain"
+      ],
+      "excluded_scope": "The pinned doc exposes an aggregate cylinder-covering theorem; whole-manuscript interface equivalence is not established.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F100-248DEA999619",
+      "family_id": "100",
+      "source_title": "Finite triangular approximation of radial sweeps",
+      "source_slug": "Finite-triangular-approximation-of-radial-sweeps-September-27-2026",
+      "source_tree_sha": "248dea999619ca8344fb5fd6576ca29deea2d456",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/100.md",
+        "sha": "15ce0d568caa0538de2a8aab35bf3822260424d6",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F100-248DEA999619",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Finite-triangular-approximation-of-radial-sweeps-September-27-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/CylinderCovering.json",
+            "sha": "cf34af8012f871328f266767a207e62b6ccaa54c"
+          },
+          "solution": {
+            "module": "OAI.Geometry.CylinderCovering.Main",
+            "path": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+            "sha": "5b31ad7fc33f060b002f855b45f08059aa34c026"
+          },
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.CylinderCovering.fourPaperMain"
+      ],
+      "excluded_scope": "The pinned doc exposes the radial-sweep result through an aggregate surface; canonical I081 preserves HOLD pending exact theorem-statement binding.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F100-745B319C2EDA",
+      "family_id": "100",
+      "source_title": "Finite angular cylinder covers below the half area bound",
+      "source_slug": "Finite-angular-cylinder-covers-below-the-half-area-bound-September-27-2026",
+      "source_tree_sha": "745b319c2eda2a7e620de203282f6369c835428e",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/100.md",
+        "sha": "15ce0d568caa0538de2a8aab35bf3822260424d6",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F100-745B319C2EDA",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Finite-angular-cylinder-covers-below-the-half-area-bound-September-27-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/TriangularCovering.json",
+            "sha": "a6513114a7cc77398841a4b0ffe53593b1c03eb8"
+          },
+          "solution": {
+            "module": "OAI.Geometry.TriangularCovering.Main",
+            "path": "lean/OAI/Geometry/TriangularCovering/Main.lean",
+            "sha": "f933958dbfc844c24e6d201d09081c98aa50837a"
+          },
+          "theorem_names": [
+            "OAI.TriangularCovering.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        },
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/CylinderCovering.json",
+            "sha": "cf34af8012f871328f266767a207e62b6ccaa54c"
+          },
+          "solution": {
+            "module": "OAI.Geometry.CylinderCovering.Main",
+            "path": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+            "sha": "5b31ad7fc33f060b002f855b45f08059aa34c026"
+          },
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.TriangularCovering.main",
+        "OAI.CylinderCovering.fourPaperMain"
+      ],
+      "excluded_scope": "The pinned doc exposes below-half-area results, but canonical I081 retains HOLD pending exact source-contract equivalence across the aggregate surfaces.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F100-7B676BDF3F02",
+      "family_id": "100",
+      "source_title": "Finite cylinder approximation of ruled sets",
+      "source_slug": "Finite-cylinder-approximation-of-ruled-sets-September-27-2026",
+      "source_tree_sha": "7b676bdf3f02c76d0f5b02f762e2f98cc659cc17",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/100.md",
+        "sha": "15ce0d568caa0538de2a8aab35bf3822260424d6",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F100-7B676BDF3F02",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Finite-cylinder-approximation-of-ruled-sets-September-27-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/RuledCovering.json",
+            "sha": "3a400c06f1989017a2ba24592301e84987e0456d"
+          },
+          "solution": {
+            "module": "OAI.Geometry.RuledCovering.Main",
+            "path": "lean/OAI/Geometry/RuledCovering/Main.lean",
+            "sha": "e47148fb07f1ac3a049bdf5c36a7645a1e5597a1"
+          },
+          "theorem_names": [
+            "OAI.RuledApproximation.fullMain"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        },
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/CylinderCovering.json",
+            "sha": "cf34af8012f871328f266767a207e62b6ccaa54c"
+          },
+          "solution": {
+            "module": "OAI.Geometry.CylinderCovering.Main",
+            "path": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+            "sha": "5b31ad7fc33f060b002f855b45f08059aa34c026"
+          },
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.RuledApproximation.fullMain",
+        "OAI.CylinderCovering.fourPaperMain"
+      ],
+      "excluded_scope": "The pinned doc exposes ruled-set approximation results but does not establish whole-manuscript interface equivalence.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F134-C0D6028CBC0A",
+      "family_id": "134",
+      "source_title": "Finite Monoid Computations and a Uniform Generalized Star Height Bound",
+      "source_slug": "Finite-Monoid-Computations-and-a-Uniform-Generalized-Star-Height-Bound-September-25-2026",
+      "source_tree_sha": "c0d6028cbc0a43d75ef51d35c44a6d0c55e5d3db",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/134.md",
+        "sha": "2a8a786d09dd61ebc2700b0c974d551ca911aea9",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F134-C0D6028CBC0A",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Finite-Monoid-Computations-and-a-Uniform-Generalized-Star-Height-Bound-September-25-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+            "sha": "e6827da825e0bd15e4b4f0c49d5c176973fb1cda"
+          },
+          "solution": {
+            "module": "OAI.Computability.StarHeight.Main",
+            "path": "lean/OAI/Computability/StarHeight/Main.lean",
+            "sha": "a2248df542f494d30fbfb129c5afa12d7f5b6f16"
+          },
+          "theorem_names": [
+            "OAI.GeneralizedStarHeight.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.GeneralizedStarHeight.main"
+      ],
+      "excluded_scope": "The pinned scope formalizes the uniform bound but explicitly does not encode every construction step of the finite-monoid paper.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F134-D79361F43851",
+      "family_id": "134",
+      "source_title": "Generalized Star Height at Most Four",
+      "source_slug": "Generalized-Star-Height-at-Most-Four-September-25-2026",
+      "source_tree_sha": "d79361f438515134b99cb88ce2522ae091501220",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/134.md",
+        "sha": "2a8a786d09dd61ebc2700b0c974d551ca911aea9",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F134-D79361F43851",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Generalized-Star-Height-at-Most-Four-September-25-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+            "sha": "e6827da825e0bd15e4b4f0c49d5c176973fb1cda"
+          },
+          "solution": {
+            "module": "OAI.Computability.StarHeight.Main",
+            "path": "lean/OAI/Computability/StarHeight/Main.lean",
+            "sha": "a2248df542f494d30fbfb129c5afa12d7f5b6f16"
+          },
+          "theorem_names": [
+            "OAI.GeneralizedStarHeight.main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.GeneralizedStarHeight.main"
+      ],
+      "excluded_scope": "The external theorem proves the stronger at-most-three statement. Strict I081 does not silently substitute it for the at-most-four source contract; an explicit derivation wrapper is required.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": [
+        742,
+        744
+      ]
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F194-13C4151FAAD8",
+      "family_id": "194",
+      "source_title": "Lechs multiplicity conjecture",
+      "source_slug": "Lechs-multiplicity-conjecture-September-23-2026",
+      "source_tree_sha": "13c4151faad80f6a7837344457b3c7b5577cbdcf",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/194.md",
+        "sha": "f5bf94172539d9dee7d9534e8d256ad8d65383b6",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F194-13C4151FAAD8",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Lechs-multiplicity-conjecture-September-23-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/DuttaDomain.json",
+            "sha": "d9437c356ad186be3ed033fe6aeba8a6678ec126"
+          },
+          "solution": {
+            "module": "OAI.RingTheory.Multiplicity.Main",
+            "path": "lean/OAI/RingTheory/Multiplicity/Main.lean",
+            "sha": "acefb1a43530ae675a2c2e7b2956dc6479329dd4"
+          },
+          "theorem_names": [
+            "OAI.Lech.dutta_domain"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.Lech.dutta_domain"
+      ],
+      "excluded_scope": "The pinned scope covers the complete-domain Dutta comparison; the full flat-local Lech result remains outside it.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F222-1D931B5F3F88",
+      "family_id": "222",
+      "source_title": "The free energy of the Ising random perceptron",
+      "source_slug": "The-free-energy-of-the-Ising-random-perceptron-September-24-2026",
+      "source_tree_sha": "1d931b5f3f88cffc2148ca381290732e0d025d8a",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/222.md",
+        "sha": "e5e3b913b789e243430257f54d9e9c5f6378e1b8",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F222-1D931B5F3F88",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-free-energy-of-the-Ising-random-perceptron-September-24-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/IsingFiniteness.json",
+            "sha": "e92b742c2f00e0287193aedd9f31457706ed6f8c"
+          },
+          "solution": {
+            "module": "OAI.Probability.IsingPerceptron.VariationalFiniteness",
+            "path": "lean/OAI/Probability/IsingPerceptron/VariationalFiniteness.lean",
+            "sha": "1a9a8442c4214f42975a38a85f0901573395a6ec"
+          },
+          "theorem_names": [
+            "OAI.IsingPerceptron.variationalValue_real_of_continuous"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.IsingPerceptron.variationalValue_real_of_continuous"
+      ],
+      "excluded_scope": "The pinned scope proves only finiteness of the variational value; finite-system pressure convergence and the full free-energy result remain outside it.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F237-113C0E830048",
+      "family_id": "237",
+      "source_title": "Renewal and changes of law for critical honeycomb walks",
+      "source_slug": "Renewal-and-changes-of-law-for-critical-honeycomb-walks-September-26-2026",
+      "source_tree_sha": "113c0e83004802d41b9c2df209c37f01a4f6a6ee",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/237.md",
+        "sha": "c213a628c35e029f7f61c45b7269565c156d9016",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F237-113C0E830048",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Renewal-and-changes-of-law-for-critical-honeycomb-walks-September-26-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/HoneycombFreeEnergy.json",
+            "sha": "3f66691ed92a78d47bff96067fa5b6f625813067"
+          },
+          "solution": {
+            "module": "OAI.Probability.Honeycomb.FreeEnergy",
+            "path": "lean/OAI/Probability/Honeycomb/FreeEnergy.lean",
+            "sha": "144afa0b63687507567a04c99d0e3dd6bb0c6777"
+          },
+          "theorem_names": [
+            "OAI.HoneycombForce.logPartition_tendsto"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.HoneycombForce.logPartition_tendsto"
+      ],
+      "excluded_scope": "The pinned doc exposes a selected free-energy theorem but not whole-manuscript formal coverage.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F237-3ECE9D64CF2B",
+      "family_id": "237",
+      "source_title": "Polynomial vacuum representations and bridge mass for honeycomb walks",
+      "source_slug": "Polynomial-vacuum-representations-and-bridge-mass-for-honeycomb-walks-September-26-2026",
+      "source_tree_sha": "3ece9d64cf2b346c96ebf76641f4f01602d09aad",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/237.md",
+        "sha": "c213a628c35e029f7f61c45b7269565c156d9016",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F237-3ECE9D64CF2B",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Polynomial-vacuum-representations-and-bridge-mass-for-honeycomb-walks-September-26-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/HoneycombBridgeFiniteness.json",
+            "sha": "56178bca61329eda5117963defbe5ad0446bd23d"
+          },
+          "solution": {
+            "module": "OAI.Combinatorics.HoneycombCorridor.BridgeFiniteness",
+            "path": "lean/OAI/Combinatorics/HoneycombCorridor/BridgeFiniteness.lean",
+            "sha": "90fb403969511a05c57c405eb7f1ff29349ac00c"
+          },
+          "theorem_names": [
+            "OAI.PolynomialVacuumBridge.Corridor.finite_bridge_sums"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.PolynomialVacuumBridge.Corridor.finite_bridge_sums"
+      ],
+      "excluded_scope": "The pinned doc covers supporting bridge summability while mean-length and exponent claims remain outside.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": []
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F256-B20DD428ED92",
+      "family_id": "256",
+      "source_title": "The Kervaire Theorem for Groups",
+      "source_slug": "The-Kervaire-Theorem-for-Groups-September-24-2026",
+      "source_tree_sha": "b20dd428ed9270cd9d5a31df7b4889ecbc7b8175",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/256.md",
+        "sha": "d84092b79c3b5384daf059e00f0d18fb25453dcf",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F256-B20DD428ED92",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "The-Kervaire-Theorem-for-Groups-September-24-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/Kervaire.json",
+            "sha": "26c9bb1351e63e805cc7c67cbd71f451b530218e"
+          },
+          "solution": {
+            "module": "OAI.GroupTheory.Kervaire.Main",
+            "path": "lean/OAI/GroupTheory/Kervaire/Main.lean",
+            "sha": "4e49368257d060a0339236acb8e04a5d338c8a6f"
+          },
+          "theorem_names": [
+            "OAI.Kervaire.coefficient_injective"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.Kervaire.coefficient_injective"
+      ],
+      "excluded_scope": "The pinned doc exposes a stronger coefficient-injectivity theorem underlying Kervaire. Strict I081 requires an explicit source-contract derivation wrapper before whole-source promotion.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": [
+        742
+      ]
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F269-041B975282B3",
+      "family_id": "269",
+      "source_title": "Uniform Stability of the Spherical Laughlin Gap",
+      "source_slug": "Uniform-Stability-of-the-Spherical-Laughlin-Gap-October-5-2026",
+      "source_tree_sha": "041b975282b322e6bc597327087f3c140e5e810f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/269.md",
+        "sha": "7ae324d902f282192afe1e6c4ebdbcba6a16944a",
+        "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F269-041B975282B3",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_PINNED_PROOF_SURFACE",
+      "doc_preprint_slug": "Uniform-Stability-of-the-Spherical-Laughlin-Gap-October-5-2026",
+      "formal_surfaces": [
+        {
+          "comparator": {
+            "path": "lean/ComparatorChallenges/LaughlinGap.json",
+            "sha": "0d084b8c12cfe9eebf3325616ac4bb2ec50d7707"
+          },
+          "solution": {
+            "module": "OAI.Analysis.LaughlinGap.Main",
+            "path": "lean/OAI/Analysis/LaughlinGap/Main.lean",
+            "sha": "dc4098415bdd516e6491ec63ef82b953f42d0548"
+          },
+          "theorem_names": [
+            "OAI.LaughlinGap.thm_main"
+          ],
+          "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+        }
+      ],
+      "theorem_names": [
+        "OAI.LaughlinGap.thm_main"
+      ],
+      "excluded_scope": "The pinned scope proves only the unperturbed gap inequality; projected-potential stability and perturbed-ground-state uniqueness are explicitly outside it.",
+      "full_source_promotion": false,
+      "reconciliation_pr_origins": [
+        742
+      ]
+    }
+  ],
+  "additional_denied_full_promotions": [
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F003-B46286ACFA00",
+      "family_id": "003",
+      "source_title": "The Quasi Riemann Hypothesis",
+      "source_slug": "The-Quasi-Riemann-Hypothesis-October-5-2026",
+      "source_tree_sha": "b46286acfa00dca1008962a0276b3fa1c3679404",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/003.md",
+        "sha": "cf794e93da2e1a494434153f5b91f2990fe9fd60"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/QuasiRiemannHypothesis.json",
+      "reason": "The family documentation binds the formalized Quasi-Riemann source to the September 30 preprint; this HOLD source is the October 5 preprint tree and is not silently aliased across source identity.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F039-17A7D0653D43",
+      "family_id": "039",
+      "source_title": "Maximal multipoint Seshadri constants in positive characteristic",
+      "source_slug": "Maximal-multipoint-Seshadri-constants-in-positive-characteristic-October-5-2026",
+      "source_tree_sha": "17a7d0653d4394e919ccbc70e68c465ced124e32",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/039.md",
+        "sha": "a0287fe5262399b08105a47be6ece7aec89f0212"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/MaximalSeshadriConstants.json",
+      "reason": "The documented formalized source is maximal Seshadri constants on arbitrary polarized surfaces; the positive-characteristic manuscript is not an exact documented source match.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F039-A46979B6BDA3",
+      "family_id": "039",
+      "source_title": "Maximal Multipoint Seshadri Constants in Higher Dimensions",
+      "source_slug": "Maximal-Multipoint-Seshadri-Constants-in-Higher-Dimensions-October-5-2026",
+      "source_tree_sha": "a46979b6bda3d7b23837201f1d160341bf8aa148",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/039.md",
+        "sha": "a0287fe5262399b08105a47be6ece7aec89f0212"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/MaximalSeshadriConstants.json",
+      "reason": "The documented formalized source is the surface theorem; the higher-dimensional manuscript is not an exact documented source match.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F114-9F39C67F9E29",
+      "family_id": "114",
+      "source_title": "An FPRAS for Common Integer Polymatroid Bases with Binary Capacities",
+      "source_slug": "An-FPRAS-for-Common-Integer-Polymatroid-Bases-with-Binary-Capacities-October-5-2026",
+      "source_tree_sha": "9f39c67f9e2954d666d7f4034d11197af89d9c4c",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/114.md",
+        "sha": "b8e106e9c6c21ef6709291eb1a7af477f505b73a"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/CommonBasesFPRAS.json",
+      "reason": "The documented formalized source concerns common bases of two matroids, not common integer polymatroid bases with binary capacities.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F117-8A7BA653190E",
+      "family_id": "117",
+      "source_title": "Constant factor hardness of uniform sparsest cut",
+      "source_slug": "Constant-factor-hardness-of-uniform-sparsest-cut-September-24-2026",
+      "source_tree_sha": "8a7ba653190e3d318515edd39621cd60f4656f5f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/117.md",
+        "sha": "c0a5aa25ad26baf580e0e95920348166b460e7a3"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/UniformSparsestCut.json",
+      "reason": "The documented formalization is an existential Goemans-Linial integrality-gap result, not the constant-factor hardness manuscript.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F143-F78511FA9920",
+      "family_id": "143",
+      "source_title": "uniform bounds for planar polynomial limit cycles",
+      "source_slug": "uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026",
+      "source_tree_sha": "f78511fa99202409f65893d62d4d9c1fa730148f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/143.md",
+        "sha": "c5bd183a050b32edf8c9c59f585de18e73a352bd"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/PlanarL1.json",
+      "reason": "The family documentation formalizes the quintic Lienard two-cycle theorem; the broader planar polynomial limit-cycle manuscript is not the same documented source/result.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F212-B5F6224DCF0A",
+      "family_id": "212",
+      "source_title": "No bigeodesics in planar first passage percolation",
+      "source_slug": "No-bigeodesics-in-planar-first-passage-percolation-September-24-2026",
+      "source_tree_sha": "b5f6224dcf0a2d31a5d4af06be10d033ac559d08",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/212.md",
+        "sha": "f5a9f6b38dca98f93f03f010a879fb6129fcbce0"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/PlanarFirstPassage.json",
+      "reason": "The documented source/result concerns differentiability of the first-passage limit shape, not the no-bigeodesics manuscript.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F262-AEDD4EC01854",
+      "family_id": "262",
+      "source_title": "Sharp one dimensional Lieb Thirring inequalities for matrix potentials",
+      "source_slug": "Sharp-one-dimensional-Lieb-Thirring-inequalities-for-matrix-potentials-October-5-2026",
+      "source_tree_sha": "aedd4ec0185475fa123ea5e4d988ba1f7adf1223",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/262.md",
+        "sha": "760f71a5932e6898ce90c6ffce78cad8c288034d"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/LiebThirring.json",
+      "reason": "The documented theorem is the scalar-potential sharp one-dimensional Lieb-Thirring inequality; the matrix-potential manuscript is not an exact documented source match.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F291-50144E14B0C1",
+      "family_id": "291",
+      "source_title": "Cuntz comparison and Jiang Su absorption",
+      "source_slug": "Cuntz-comparison-and-Jiang-Su-absorption-September-23-2026",
+      "source_tree_sha": "50144e14b0c1793ae5f59369ca671e1402abf17e",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/291.md",
+        "sha": "b0918b0dc20ad3fcd50e73b0555aabeb00aa0044"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/C0Absorption.json",
+      "reason": "The family documentation source is the tracial-projection/uniform-Gamma paper. Jiang-Su absorption appears as a linked comparison consequence, not as a proof surface bound to this HOLD manuscript identity.",
+      "classification": "ADDITIONAL_STRICT_AUDIT_DENIAL_NOT_IN_CONFLICTING_FULL_PROMOTION_UNION"
+    }
+  ],
+  "authority": {
+    "candidate_only": true,
+    "truth_promotion": false,
+    "external_formal_proof_is_provenance_authority": true,
+    "independent_hhs_reproof": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  }
+}
