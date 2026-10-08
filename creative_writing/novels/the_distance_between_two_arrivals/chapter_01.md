@@ -26,7 +26,7 @@ Seventy-Two.
 
 Anja looked at the number until the loose end of the ladder strap touched her cheek.
 
-Seventy-Two was a dead habitat. Her father had taught her that before he taught her the planets. It had gone down ninety-six years earlier in a containment fire; its surviving population had been evacuated, its atmosphere reclaimed, its name removed from the distribution rolls. Children still used the number as a dare. Tell a joke in Seventy-Two and the vacuum laughs back.
+Seventy-Two was a dead habitat. Her father had taught her that before he taught her the planets. It had gone down fifty-six years earlier in a containment fire; its surviving population had been evacuated, its atmosphere reclaimed, its name removed from the distribution rolls. Children still used the number as a dare. Tell a joke in Seventy-Two and the vacuum laughs back.
 
 She reran the forward check. The apparent excess returned to the opposite side of the ship. Reverse. Seventy-Two.
 
@@ -124,7 +124,7 @@ She studied him. "You know about Seventy-Two."
 
 "Why are you telling me this?"
 
-"Because the acoustic event that sent me here is a child of a record signed ninety-six years ago. That record has no verified predecessor."
+"Because the acoustic event that sent me here is a child of a record signed fifty-six years ago. That record has no verified predecessor."
 
 Above them the choir found the anthem's refrain, eighty imperfect voices pulling the same melody into a plausible harmony. Holt glanced at his watch.
 
