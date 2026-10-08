@@ -149,7 +149,8 @@ jobs:
             tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py::test_native_first_fallback_probes_pass153_only_when_needed \
             tests/pass220/test_hhs_pass220_litert_native_model_runtime_v1.py \
             tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
-            tests/test_hhs_service_registry_catalog_cache_v1.py
+            tests/test_hhs_service_registry_catalog_cache_v1.py \
+            tests/test_hhs_wordnet_targeted_runtime_v1.py
 
   deploy-exact-main:
     if: github.event_name != 'pull_request'
