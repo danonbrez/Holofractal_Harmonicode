@@ -624,3 +624,18 @@ separately preserving inspected 3x3->9x9 tensor and 72-conductor overlap
 anchors. All hydration remains candidate-only with no learning, VM81 mutation,
 canonical hash, persistence, or truth-promotion authority.
 
+### Pass 220 I079 — OpenAI mathematics formal-theorem constructors
+
+[HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1.md](HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1.md)
+
+I079 closes the dedicated-constructor gap for the I078 formalized novelty
+frontier. All 54 formalized novelty sources receive distinct source-bound HHS
+theorem constructors, with 57 admitted Lean proof surfaces and
+zero unresolved bindings. Each callable constructor preserves the pinned
+OpenAI source/proof identity, accepts an opaque typed theorem-assumption binding,
+and emits deterministic candidate Hash72/replay evidence. The frozen pre-I078
+tree contained zero exact dedicated source-specific constructor matches under
+the declared audit rule. External Lean proofs remain provenance authority;
+truth promotion, model-weight updates, VM81 mutation, canonical Hash72/Hash216,
+persistence, and floating-point authority remain disabled.
+

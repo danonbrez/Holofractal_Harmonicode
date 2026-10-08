@@ -1,0 +1,3526 @@
+{
+  "schema": "HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1",
+  "version": "1.0.0",
+  "date": "2026-10-07",
+  "base_main": "5823c2676452d0594fe1144f568d318e6b5da9a3",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "parent": "HHS_PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1",
+  "scope": {
+    "formalized_novelty_sources": 54,
+    "new_source_bound_constructors": 54,
+    "proof_surfaces": 57,
+    "unresolved_proof_surfaces": 0,
+    "preexisting_dedicated_constructor_matches": 0
+  },
+  "constructor_semantics": {
+    "definition": "A source-bound HHS constructor preserves the pinned external Lean proposition interface and proof declaration identity while producing deterministic HHS invocation/witness capsules. It does not silently replace the external theorem proof with an invented native proof.",
+    "constructor_is_callable": true,
+    "constructor_is_source_bound": true,
+    "constructor_is_deterministic": true,
+    "constructor_receipts_are_candidate_hash72": true,
+    "external_proof_rechecked_at_runtime": false,
+    "truth_promotion": false
+  },
+  "domain_constructor_counts": {
+    "Algebra": 1,
+    "AlgebraicGeometry": 2,
+    "Analysis": 20,
+    "CategoryTheory": 1,
+    "Combinatorics": 10,
+    "Computability": 2,
+    "Geometry": 7,
+    "GroupTheory": 1,
+    "LinearAlgebra": 1,
+    "MeasureTheory": 1,
+    "ModelTheory": 1,
+    "NumberTheory": 2,
+    "Probability": 4,
+    "RepresentationTheory": 1,
+    "Topology": 1
+  },
+  "constructors": [
+    {
+      "constructor_id": "HHS-OAI-F003-C074E8CE9058",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "003",
+      "source_title": "Uniform exclusion of Landau–Siegel zeros",
+      "source_slug": "Uniform-exclusion-of-Landau-Siegel-zeros-October-1-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/SiegelZeros.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/SiegelZeros.json",
+          "declaration": "OAI.SiegelZeros.WeightedTorusJets.exists_absolute_real_zero_gap",
+          "file": "OAI/NumberTheory/SiegelZeros/Conclusions/Theorem.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "NumberTheory"
+      ],
+      "concept_tags": [
+        "exclusion",
+        "landau",
+        "siegel",
+        "uniform",
+        "zeros"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "c074e8ce90584cf18844c216d660d9b74bdfd2ed"
+    },
+    {
+      "constructor_id": "HHS-OAI-F008-CAB473B902EF",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "008",
+      "source_title": "The Deligne-Drinfeld conjecture",
+      "source_slug": "The-Deligne-Drinfeld-conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/DeligneDrinfeld.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/DeligneDrinfeld.json",
+          "declaration": "OAI.DeligneDrinfeld.main",
+          "file": "OAI/Algebra/Drinfeld/Completion.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Algebra"
+      ],
+      "concept_tags": [
+        "deligne",
+        "drinfeld"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "cab473b902ef6ec48fc61fddca6153d73c0c4c68"
+    },
+    {
+      "constructor_id": "HHS-OAI-F025-3D2C221E721A",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "025",
+      "source_title": "Short Egyptian fractions",
+      "source_slug": "Short-Egyptian-fractions-September-25-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/ShortEgyptianFractions.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/ShortEgyptianFractions.json",
+          "declaration": "OAI.ShortEgyptian.main",
+          "file": "OAI/NumberTheory/ShortEgyptian/Main.lean",
+          "source": "comparator_config"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "NumberTheory"
+      ],
+      "concept_tags": [
+        "egyptian",
+        "fractions",
+        "short"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "3d2c221e721afed38b3d9be2b92da30f2a949177"
+    },
+    {
+      "constructor_id": "HHS-OAI-F039-3585A87C3298",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "039",
+      "source_title": "Nagata's conjecture for plane curves",
+      "source_slug": "Nagatas-Conjecture-for-Plane-Curves-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/Nagata.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/Nagata.json",
+          "declaration": "OAI.Nagata.nagata_conjecture",
+          "file": "OAI/AlgebraicGeometry/PlaneCurves/Nagata.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "AlgebraicGeometry"
+      ],
+      "concept_tags": [
+        "curves",
+        "nagata",
+        "plane"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "3585a87c32985c42914327a01213f37880e26a82"
+    },
+    {
+      "constructor_id": "HHS-OAI-F039-3E7E694258EC",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "039",
+      "source_title": "Maximal Seshadri constants on arbitrary polarized surfaces",
+      "source_slug": "Maximal-Seshadri-Constants-on-Arbitrary-Polarized-Surfaces-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/MaximalSeshadriConstants.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/MaximalSeshadriConstants.json",
+          "declaration": "OAI.MaximalSeshadri.Geometry.maximalSeshadriConstants",
+          "file": "OAI/AlgebraicGeometry/Seshadri/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "AlgebraicGeometry"
+      ],
+      "concept_tags": [
+        "arbitrary",
+        "constants",
+        "maximal",
+        "polarized",
+        "seshadri",
+        "surfaces"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "3e7e694258ec31df04636de2c818a4dff689e864"
+    },
+    {
+      "constructor_id": "HHS-OAI-F073-1BE9B351B406",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "073",
+      "source_title": "The Falconer distance conjecture in all dimensions",
+      "source_slug": "The-Falconer-distance-conjecture-in-all-dimensions-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/FalconerAllDimensions.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/FalconerAllDimensions.json",
+          "declaration": "OAI.Falconer.falconer_distance_conjecture",
+          "file": "OAI/MeasureTheory/Falconer/Campaign123PlanarFurstenbergProof.lean",
+          "source": "comparator_config"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "MeasureTheory"
+      ],
+      "concept_tags": [
+        "all",
+        "dimensions",
+        "distance",
+        "falconer"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "1be9b351b4069074b4eb33863f138352df343010"
+    },
+    {
+      "constructor_id": "HHS-OAI-F081-BA3E151E254B",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "081",
+      "source_title": "Riesz transforms and uniform rectifiability in higher codimension",
+      "source_slug": "Riesz-transforms-and-uniform-rectifiability-in-higher-codimension-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/RieszQuantitative.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/RieszQuantitative.json",
+          "declaration": "OAI.RieszRectifiability.quantitative_higher_codimension_riesz_rectifiability",
+          "file": "OAI/Analysis/RieszRectifiability/Uniformity/Rectifiability.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "codimension",
+        "higher",
+        "quantitative",
+        "rectifiability",
+        "riesz",
+        "transforms",
+        "uniform"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "ba3e151e254b0c83fc787fb25dff9a37e1d86db6"
+    },
+    {
+      "constructor_id": "HHS-OAI-F087-351E08EEC067",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "087",
+      "source_title": "Symplectic Balls in Symmetric Polar Products",
+      "source_slug": "Symplectic-Balls-in-Symmetric-Polar-Products-September-22-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/SymmetricPolar.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/SymmetricPolar.json",
+          "declaration": "OAI.SymmetricPolar.symmetric_polar_main",
+          "file": "OAI/Geometry/PolarProducts/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Geometry"
+      ],
+      "concept_tags": [
+        "balls",
+        "polar",
+        "products",
+        "symmetric",
+        "symplectic"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "351e08eec067fbae3fa989b5dc20f9928e223304"
+    },
+    {
+      "constructor_id": "HHS-OAI-F091-CCCEBD59A3A7",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "091",
+      "source_title": "The logarithmic Brunn–Minkowski conjecture",
+      "source_slug": "The-logarithmic-Brunn-Minkowski-conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/LogBrunnMinkowski.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/LogBrunnMinkowski.json",
+          "declaration": "OAI.LogBrunnMinkowski.main",
+          "file": "OAI/Geometry/LogVolume/BrunnMinkowski.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Geometry"
+      ],
+      "concept_tags": [
+        "brunn",
+        "log",
+        "logarithmic",
+        "minkowski"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "cccebd59a3a7e7ffd61ff14ce30f0621c1930081"
+    },
+    {
+      "constructor_id": "HHS-OAI-F095-CEB8D2B6FE32",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "095",
+      "source_title": "A nonspectrahedral hyperbolicity cone",
+      "source_slug": "A-Nonspectrahedral-Hyperbolicity-Cone-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/HyperbolicCones.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/HyperbolicCones.json",
+          "declaration": "OAI.Paper256.main_result",
+          "file": "OAI/Analysis/HyperbolicCones/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "cone",
+        "cones",
+        "hyperbolic",
+        "hyperbolicity",
+        "nonspectrahedral"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "ceb8d2b6fe32a1a65ff68661dc9f9e13af9f0769"
+    },
+    {
+      "constructor_id": "HHS-OAI-F097-8D08A9F04CB5",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "097",
+      "source_title": "The Euclidean Steinitz–Bergström theorem",
+      "source_slug": "The-Euclidean-Steinitz-Bergstrom-theorem-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/SteinitzBergstrom.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/SteinitzBergstrom.json",
+          "declaration": "OAI.EuclideanSteinitzBergstrom.main",
+          "file": "OAI/Analysis/Steinitz/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "bergstr",
+        "bergstrom",
+        "euclidean",
+        "steinitz"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "8d08a9f04cb52957afdd37ca1dbac46ac551175f"
+    },
+    {
+      "constructor_id": "HHS-OAI-F098-4A51F62DF35A",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "098",
+      "source_title": "A doubling Hilbert subset with no finite-dimensional bi-Lipschitz embedding",
+      "source_slug": "A-doubling-Hilbert-subset-with-no-finite-dimensional-bi-Lipschitz-embedding-September-25-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/DoublingHilbert.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/DoublingHilbert.json",
+          "declaration": "OAI.DoublingHilbert.main",
+          "file": "OAI/Geometry/DoublingHilbert/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Geometry"
+      ],
+      "concept_tags": [
+        "dimensional",
+        "doubling",
+        "embedding",
+        "finite",
+        "hilbert",
+        "lipschitz",
+        "subset"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "4a51f62df35a53e7238829cb892b12013f7d9154"
+    },
+    {
+      "constructor_id": "HHS-OAI-F102-995A491F281A",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "102",
+      "source_title": "The Factor-Two Hardness Threshold for Vertex Cover",
+      "source_slug": "The-Factor-Two-Hardness-Threshold-for-Vertex-Cover-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/VertexCover.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/VertexCover.json",
+          "declaration": "OAI.VertexCover.every_fixed_factor_below_two",
+          "file": "OAI/Computability/VertexCover/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Computability"
+      ],
+      "concept_tags": [
+        "cover",
+        "factor",
+        "hardness",
+        "threshold",
+        "two",
+        "vertex"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "995a491f281a2859f5a64b3c016140e29841b1be"
+    },
+    {
+      "constructor_id": "HHS-OAI-F114-DEDB6666D3AC",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "114",
+      "source_title": "Approximate counting of common bases of two matroids",
+      "source_slug": "Approximate-counting-of-common-bases-of-two-matroids-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/CommonBasesFPRAS.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/CommonBasesFPRAS.json",
+          "declaration": "OAI.common_bases_fpras",
+          "file": "OAI/Combinatorics/MatroidCounting/CommonBases.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "approximate",
+        "bases",
+        "common",
+        "counting",
+        "fpras",
+        "matroids",
+        "two"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "dedb6666d3ac10dde60c6afbfa7ef0316535caab"
+    },
+    {
+      "constructor_id": "HHS-OAI-F117-8C2C888F1EDA",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "117",
+      "source_title": "Near-square-root logarithmic integrality gaps for uniform sparsest cut",
+      "source_slug": "Near-square-root-logarithmic-integrality-gaps-for-uniform-sparsest-cut-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/UniformSparsestCut.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/UniformSparsestCut.json",
+          "declaration": "OAI.UniformSparsestCut.mainGap",
+          "file": "OAI/Combinatorics/SparsestCut/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "cut",
+        "gaps",
+        "integrality",
+        "logarithmic",
+        "near",
+        "root",
+        "sparsest",
+        "square",
+        "uniform"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "8c2c888f1eda2b7971ea0cf9bb49ad4e08392db0"
+    },
+    {
+      "constructor_id": "HHS-OAI-F118-DBE8EDFC8246",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "118",
+      "source_title": "Additive hardness and unbounded configuration gaps in bin packing",
+      "source_slug": "Additive-hardness-and-unbounded-configuration-gaps-in-bin-packing-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/BinPackingGap.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/BinPackingGap.json",
+          "declaration": "OAI.BinPackingGap.main_results",
+          "file": "OAI/Computability/BinPacking/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Computability"
+      ],
+      "concept_tags": [
+        "additive",
+        "bin",
+        "configuration",
+        "gap",
+        "gaps",
+        "hardness",
+        "packing",
+        "unbounded"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "dbe8edfc824645675112758351351f8018f5c814"
+    },
+    {
+      "constructor_id": "HHS-OAI-F140-74E1C806F905",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "140",
+      "source_title": "Projection moments, positive cap domination, and Riesz estimates on the sphere",
+      "source_slug": "Projection-moments-positive-cap-domination-and-Riesz-estimates-on-the-sphere-September-27-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/ProjectionMoments.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/ProjectionMoments.json",
+          "declaration": "OAI.ProjectionMoments.main",
+          "file": "OAI/Probability/ProjectionMoments/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Probability"
+      ],
+      "concept_tags": [
+        "cap",
+        "domination",
+        "estimates",
+        "moments",
+        "positive",
+        "projection",
+        "riesz",
+        "sphere"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "74e1c806f905efa2182224505d1617ade35f6d72"
+    },
+    {
+      "constructor_id": "HHS-OAI-F143-401F6D86B092",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "143",
+      "source_title": "Two limit cycles for quintic Liénard systems",
+      "source_slug": "two-limit-cycles-for-quintic-lienard-systems-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/QuinticLienard.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/QuinticLienard.json",
+          "declaration": "OAI.QuinticLienard.main",
+          "file": "OAI/Analysis/LienardCycles/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "cycles",
+        "lienard",
+        "limit",
+        "nard",
+        "quintic",
+        "systems",
+        "two"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "401f6d86b0924a2a8f5648728783a107864a56c4"
+    },
+    {
+      "constructor_id": "HHS-OAI-F160-D0B215453E27",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "160",
+      "source_title": "Quantitative Superexponential Bounds for van der Waerden Numbers",
+      "source_slug": "Quantitative-Superexponential-Bounds-for-van-der-Waerden-Numbers-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/QuantitativeVanDerWaerden.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/QuantitativeVanDerWaerden.json",
+          "declaration": "OAI.QuantitativeVanDerWaerden.uniform_lower_bound",
+          "file": "OAI/Combinatorics/ProgressionColoring/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "bounds",
+        "der",
+        "numbers",
+        "quantitative",
+        "superexponential",
+        "van",
+        "waerden"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "d0b215453e27f5f7197d653debcbc1176d6f1882"
+    },
+    {
+      "constructor_id": "HHS-OAI-F162-13B9C6A035D6",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "162",
+      "source_title": "A counterexample to Ryser's covering conjecture",
+      "source_slug": "A-Counterexample-to-Rysers-Covering-Conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/RyserCovering.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/RyserCovering.json",
+          "declaration": "OAI.RyserCoveringCounterexample.exists_prime_eventually_counterexampleRank",
+          "file": "OAI/Combinatorics/Ryser/Construction/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "counterexample",
+        "covering",
+        "ryser"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "13b9c6a035d6e2228660d698a6c242fcb60d1d19"
+    },
+    {
+      "constructor_id": "HHS-OAI-F167-E741E7C6D82A",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "167",
+      "source_title": "The weak pinned planar distance theorem",
+      "source_slug": "The-weak-pinned-planar-distance-theorem-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/PinnedDistances.lean",
+        "lean/ComparatorChallenges/PlanarUnitDistances.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/PinnedDistances.json",
+          "declaration": "OAI.WeakPinned.main",
+          "file": "OAI/Geometry/PinnedDistances/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Geometry"
+      ],
+      "concept_tags": [
+        "distance",
+        "distances",
+        "pinned",
+        "planar",
+        "unit",
+        "weak"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "e741e7c6d82ab4a38f533f0e187fb168d711da52"
+    },
+    {
+      "constructor_id": "HHS-OAI-F172-6E5653E2E8BF",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "172",
+      "source_title": "A classification of finite Euclidean Ramsey configurations",
+      "source_slug": "A-classification-of-finite-Euclidean-Ramsey-configurations-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/EuclideanRamsey.lean",
+        "lean/ComparatorChallenges/EuclideanRamseyCircle.lean",
+        "lean/ComparatorChallenges/EuclideanRamseyNine.lean",
+        "lean/ComparatorChallenges/EuclideanRamseyQuadratic.lean",
+        "lean/ComparatorChallenges/EuclideanRamseySpherical.lean",
+        "lean/ComparatorChallenges/EuclideanRamseyTransitive.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/EuclideanRamsey.json",
+          "declaration": "OAI.EuclideanRamsey.classification",
+          "file": "OAI/Combinatorics/EuclideanRamsey/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "circle",
+        "classification",
+        "configurations",
+        "euclidean",
+        "finite",
+        "nine",
+        "quadratic",
+        "ramsey",
+        "spherical",
+        "transitive"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "6e5653e2e8bf9aafca6b7697618e5cc89332d891"
+    },
+    {
+      "constructor_id": "HHS-OAI-F173-814EABA6F658",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "173",
+      "source_title": "A proof of Seymour’s second-neighborhood conjecture",
+      "source_slug": "A-proof-of-Seymours-second-neighborhood-conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/SeymourSecondNeighborhood.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/SeymourSecondNeighborhood.json",
+          "declaration": "OAI.SeymourSecondNeighborhood.exists_goodVertex",
+          "file": "OAI/Combinatorics/SecondNeighborhood/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "neighborhood",
+        "second",
+        "seymour"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "814eaba6f65802514be8a76c437dca25e9f8f7b4"
+    },
+    {
+      "constructor_id": "HHS-OAI-F174-4384757EFF9E",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "174",
+      "source_title": "The strong thin tree conjecture",
+      "source_slug": "The-strong-thin-tree-conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/StrongThinTree.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/StrongThinTree.json",
+          "declaration": "OAI.StrongThinTree.strongThinTree",
+          "file": "OAI/Combinatorics/ThinTrees/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "strong",
+        "thin",
+        "tree"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "4384757eff9e7ef49771a9e20c2cffc04d538e40"
+    },
+    {
+      "constructor_id": "HHS-OAI-F175-5BC35E0472DD",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "175",
+      "source_title": "Talagrand's discrete-convexity conjecture",
+      "source_slug": "Talagrands-discrete-convexity-conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/TalagrandDiscreteConvexity.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/TalagrandDiscreteConvexity.json",
+          "declaration": "OAI.TalagrandDiscreteConvexity.talagrand_discrete_convexity",
+          "file": "OAI/Combinatorics/DiscreteConvexity/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "convexity",
+        "discrete",
+        "talagrand"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "5bc35e0472dd7d076e2d4875a6ae42517e00e9c8"
+    },
+    {
+      "constructor_id": "HHS-OAI-F175-E3877AF7C5C6",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "175",
+      "source_title": "Integral and fractional expectation thresholds are equivalent",
+      "source_slug": "Integral-and-fractional-expectation-thresholds-are-equivalent-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/TalagrandExpectationThreshold.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/TalagrandExpectationThreshold.json",
+          "declaration": "OAI.TalagrandThreshold.talagrand_expectation_threshold_equivalence",
+          "file": "OAI/Combinatorics/ExpectationThreshold/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "are",
+        "equivalent",
+        "expectation",
+        "fractional",
+        "integral",
+        "talagrand",
+        "threshold",
+        "thresholds"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "e3877af7c5c6ee8f90d6b2a78bd1b4cdcc367570"
+    },
+    {
+      "constructor_id": "HHS-OAI-F176-0C319BB1A397",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "176",
+      "source_title": "The second Kahn–Kalai conjecture",
+      "source_slug": "The-second-Kahn-Kalai-conjecture-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/SecondKahnKalai.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/SecondKahnKalai.json",
+          "declaration": "OAI.LeanBlast.SecondKahnKalai.secondKahnKalaiBounds",
+          "file": "OAI/Combinatorics/GraphThreshold/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Combinatorics"
+      ],
+      "concept_tags": [
+        "kahn",
+        "kalai",
+        "second"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "0c319bb1a397494f32fe2b707045e4bb8a064348"
+    },
+    {
+      "constructor_id": "HHS-OAI-F179-DB7A3C8B0B09",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "179",
+      "source_title": "The circulant Hadamard conjecture",
+      "source_slug": "The-circulant-Hadamard-conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/CirculantHadamard.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/CirculantHadamard.json",
+          "declaration": "OAI.CirculantHadamard.exists_iff_order_one_or_four",
+          "file": "OAI/LinearAlgebra/CirculantHadamard/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "LinearAlgebra"
+      ],
+      "concept_tags": [
+        "circulant",
+        "hadamard"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "db7a3c8b0b09eed2eccb31218567724e595a4268"
+    },
+    {
+      "constructor_id": "HHS-OAI-F205-E7CEF38256F9",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "205",
+      "source_title": "A Cyclic Polytabloid Proof of Saxl's Conjecture",
+      "source_slug": "A-Cyclic-Polytabloid-Proof-of-Saxls-Conjecture-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/Saxl.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/Saxl.json",
+          "declaration": "OAI.Saxl.saxl_conjecture",
+          "file": "OAI/RepresentationTheory/Saxl/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "RepresentationTheory"
+      ],
+      "concept_tags": [
+        "cyclic",
+        "polytabloid",
+        "saxl"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "e7cef38256f9f8451f4de988ae03060ce4957edc"
+    },
+    {
+      "constructor_id": "HHS-OAI-F212-38129E2CC8CF",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "212",
+      "source_title": "Strict convexity and differentiability of the planar exponential first-passage limit shape",
+      "source_slug": "Strict-convexity-and-differentiability-of-the-planar-exponential-first-passage-limit-shape-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/PlanarFirstPassage.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/PlanarFirstPassage.json",
+          "declaration": "OAI.PlanarFPP.manuscriptMain",
+          "file": "OAI/Probability/FirstPassage/BoundaryCurve.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Probability"
+      ],
+      "concept_tags": [
+        "convexity",
+        "differentiability",
+        "exponential",
+        "first",
+        "limit",
+        "passage",
+        "planar",
+        "shape",
+        "strict"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "38129e2cc8cf7e8c0f9df889e8cee3bcf256db3d"
+    },
+    {
+      "constructor_id": "HHS-OAI-F220-C440397ACB00",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "220",
+      "source_title": "Directional transience implies ballisticity",
+      "source_slug": "Directional-transience-implies-ballisticity-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/DirectionalBallisticity.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/DirectionalBallisticity.json",
+          "declaration": "OAI.DirectionalTransience.directional_transience_implies_ballisticity",
+          "file": "OAI/Probability/Ballisticity/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Probability"
+      ],
+      "concept_tags": [
+        "ballisticity",
+        "directional",
+        "implies",
+        "transience"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "c440397acb0085396225df8c82b423f1b214c4c1"
+    },
+    {
+      "constructor_id": "HHS-OAI-F236-576487B70BE8",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "236",
+      "source_title": "The sharp factor-of-IID threshold for the free Ising model on regular trees",
+      "source_slug": "The-sharp-factor-of-IID-threshold-for-the-free-Ising-model-on-regular-trees-September-26-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/FreeIsing.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/FreeIsing.json",
+          "declaration": "OAI.Problem367.free_ising_factor_iff_threshold",
+          "file": "OAI/Probability/FreeIsing/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Probability"
+      ],
+      "concept_tags": [
+        "factor",
+        "free",
+        "iid",
+        "ising",
+        "model",
+        "regular",
+        "sharp",
+        "threshold",
+        "trees"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "576487b70be8834a6384d52d034a361caa46cab4"
+    },
+    {
+      "constructor_id": "HHS-OAI-F240-1A8B7DC52757",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "240",
+      "source_title": "A CH obstruction to a prescribed categoricity threshold",
+      "source_slug": "A-CH-Obstruction-to-a-Prescribed-Categoricity-Threshold-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/CHObstruction.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/CHObstruction.json",
+          "declaration": "OAI.CHObstruction.main",
+          "file": "OAI/ModelTheory/Categoricity/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "ModelTheory"
+      ],
+      "concept_tags": [
+        "categoricity",
+        "chobstruction",
+        "obstruction",
+        "prescribed",
+        "threshold"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "1a8b7dc5275739798dbda04bfc5b2ded58896ef0"
+    },
+    {
+      "constructor_id": "HHS-OAI-F251-4692A497A23B",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "251",
+      "source_title": "Unitarizability implies amenability for discrete groups",
+      "source_slug": "Unitarizability-Implies-Amenability-for-Countable-Groups-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/DixmierAllDiscrete.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/DixmierAllDiscrete.json",
+          "declaration": "OAI.Dixmier.current_main_theorem",
+          "file": "OAI/Analysis/Unitarizability/AllDiscrete.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "all",
+        "amenability",
+        "discrete",
+        "dixmier",
+        "groups",
+        "implies",
+        "unitarizability"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "4692a497a23b16c7af845a30fcc3f6c3af4fcf44"
+    },
+    {
+      "constructor_id": "HHS-OAI-F252-E521314869FE",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "252",
+      "source_title": "A torsion-free hyperbolic group that is not residually finite",
+      "source_slug": "a-torsion-free-hyperbolic-group-that-is-not-residually-finite-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/TorsionFreeHyperbolic.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/TorsionFreeHyperbolic.json",
+          "declaration": "OAI.Release075.main",
+          "file": "OAI/GroupTheory/Hyperbolic/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "GroupTheory"
+      ],
+      "concept_tags": [
+        "finite",
+        "free",
+        "group",
+        "hyperbolic",
+        "not",
+        "residually",
+        "that",
+        "torsion"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "e521314869fec7d98d67808818b0705b6a21cd75"
+    },
+    {
+      "constructor_id": "HHS-OAI-F254-67E4D0EA0B40",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "254",
+      "source_title": "Harmonic heights and the Artin K(π,1) conjecture",
+      "source_slug": "Harmonic-heights-and-the-Artin-K-pi-1-conjecture-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/HarmonicArtin.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/HarmonicArtin.json",
+          "declaration": "OAI.HarmonicArtin.salvetti_cover_contractible",
+          "file": "OAI/Topology/ArtinGroups/Realizations/SalvettiCoverContractible.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Topology"
+      ],
+      "concept_tags": [
+        "artin",
+        "harmonic",
+        "heights"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "67e4d0ea0b40a2c1fd8af8e52c1f5e93a43b351b"
+    },
+    {
+      "constructor_id": "HHS-OAI-F262-5CFED9B509B6",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "262",
+      "source_title": "Sharp one-dimensional Lieb–Thirring constants",
+      "source_slug": "Sharp-One-Dimensional-Lieb-Thirring-Constants-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/LiebThirring.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/LiebThirring.json",
+          "declaration": "OAI.SharpLiebThirring.sharp_lieb_thirring",
+          "file": "OAI/Analysis/LiebThirring/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "constants",
+        "dimensional",
+        "lieb",
+        "one",
+        "sharp",
+        "thirring"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "5cfed9b509b6606885a78bd0e972a7f5b946578c"
+    },
+    {
+      "constructor_id": "HHS-OAI-F263-F8151B2A1E87",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "263",
+      "source_title": "Generalized ionization energies for full Coulomb atoms",
+      "source_slug": "Generalized-ionization-energies-for-full-Coulomb-atoms-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/CoulombIonization.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/CoulombIonization.json",
+          "declaration": "OAI.CoulombAtom.generalized_ionization",
+          "file": "OAI/Analysis/CoulombIonization/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "atoms",
+        "coulomb",
+        "energies",
+        "full",
+        "generalized",
+        "ionization"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "f8151b2a1e875ca01206982f20a230072564865d"
+    },
+    {
+      "constructor_id": "HHS-OAI-F269-A98339167402",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "269",
+      "source_title": "A Fock-space inequality and the Laughlin spectral gap",
+      "source_slug": "A-Fock-space-inequality-and-the-Laughlin-spectral-gap-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/LaughlinGap.lean",
+        "lean/ComparatorChallenges/LaughlinFock.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/LaughlinGap.json",
+          "declaration": "OAI.LaughlinGap.thm_main",
+          "file": "OAI/Analysis/LaughlinGap/Main.lean",
+          "source": "comparator_config"
+        },
+        {
+          "comparator_config": "ComparatorChallenges/LaughlinFock.json",
+          "declaration": "OAI.LaughlinFock.thm_fock",
+          "file": "OAI/Analysis/LaughlinFock/Main.lean",
+          "source": "comparator_config"
+        }
+      ],
+      "proof_surface_count": 2,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "fock",
+        "gap",
+        "inequality",
+        "laughlin",
+        "space",
+        "spectral"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "a98339167402056a57366bcd9c425cfbd3f7e34e"
+    },
+    {
+      "constructor_id": "HHS-OAI-F291-84822EDD4B4A",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "291",
+      "source_title": "Tracial projection methods and uniform property Γ",
+      "source_slug": "Tracial-projection-methods-and-uniform-property-Gamma-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/UniformGamma.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/UniformGamma.json",
+          "declaration": "OAI.ComparatorModel.CurrentMain.main",
+          "file": "OAI/Analysis/TracialSplitting/Challenge.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "gamma",
+        "methods",
+        "projection",
+        "property",
+        "tracial",
+        "uniform"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "84822edd4b4aacf70e9da037d6fcd4d7c0982ba6"
+    },
+    {
+      "constructor_id": "HHS-OAI-F293-29A72C9E502E",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "293",
+      "source_title": "Backward intertwiners and a transitive commutant",
+      "source_slug": "Backward-intertwiners-and-a-transitive-commutant-September-27-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/BackwardIntertwiners.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/BackwardIntertwiners.json",
+          "declaration": "OAI.BackwardIntertwiners.direct_algebra_corollary",
+          "file": "OAI/Analysis/BackwardIntertwiners/AlgebraCorollary.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "backward",
+        "commutant",
+        "intertwiners",
+        "transitive"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "29a72c9e502eb281129ff4a69497c49d4aee6961"
+    },
+    {
+      "constructor_id": "HHS-OAI-F299-9277B056EF23",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "299",
+      "source_title": "The Kirchberg–Rørdam character criterion",
+      "source_slug": "The-Kirchberg-Rordam-character-criterion-September-25-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/CharacterCriterion.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/CharacterCriterion.json",
+          "declaration": "OAI.KirchbergRordam.character_criterion",
+          "file": "OAI/Analysis/CharacterCriterion/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "character",
+        "criterion",
+        "kirchberg",
+        "rdam"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "9277b056ef23a556f5bdc12eb0ac39d889165ca7"
+    },
+    {
+      "constructor_id": "HHS-OAI-F312-8CA40DA9CD48",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "312",
+      "source_title": "The Grothendieck homotopy hypothesis via elementary expansions",
+      "source_slug": "The-Grothendieck-homotopy-hypothesis-via-elementary-expansions-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/GrothendieckElementaryExpansion.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/GrothendieckElementaryExpansion.json",
+          "declaration": "OAI.Grothendieck.elementary_expansion",
+          "file": "OAI/CategoryTheory/Globular/ElementaryExpansion.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "CategoryTheory"
+      ],
+      "concept_tags": [
+        "elementary",
+        "expansion",
+        "expansions",
+        "grothendieck",
+        "homotopy",
+        "hypothesis",
+        "via"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "8ca40da9cd4869b398fe4fec9d4fd1a4271d7683"
+    },
+    {
+      "constructor_id": "HHS-OAI-F324-0982F3E63A50",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "324",
+      "source_title": "Bi-Lipschitz Absorption of $c_0$ Without a Linear Copy of $c_0$",
+      "source_slug": "Bi-Lipschitz-Absorption-of-c0-Without-a-Linear-Copy-of-c0-September-26-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/LipschitzEquivalence.lean",
+        "lean/ComparatorChallenges/C0Absorption.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/LipschitzEquivalence.json",
+          "declaration": "OAI.LipschitzCounterexample.main",
+          "file": "OAI/Analysis/LipschitzEquivalence/Main.lean",
+          "source": "formalization.yaml"
+        },
+        {
+          "comparator_config": "ComparatorChallenges/C0Absorption.json",
+          "declaration": "OAI.C0Absorption.main_result",
+          "file": "OAI/Analysis/C0Absorption/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 2,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "absorption",
+        "copy",
+        "equivalence",
+        "linear",
+        "lipschitz"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "0982f3e63a50ad0f250bf2fd797592dfa7177256"
+    },
+    {
+      "constructor_id": "HHS-OAI-F324-85E52934E475",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "324",
+      "source_title": "Lipschitz Equivalent Separable Banach Spaces Need Not Be Linearly Isomorphic",
+      "source_slug": "Lipschitz-Equivalent-Separable-Banach-Spaces-Need-Not-Be-Linearly-Isomorphic-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/LipschitzEquivalence.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/LipschitzEquivalence.json",
+          "declaration": "OAI.LipschitzCounterexample.main",
+          "file": "OAI/Analysis/LipschitzEquivalence/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "banach",
+        "equivalence",
+        "equivalent",
+        "isomorphic",
+        "linearly",
+        "lipschitz",
+        "need",
+        "not",
+        "separable",
+        "spaces"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "85e52934e47597e5b32797e0f848a6366f6cae79"
+    },
+    {
+      "constructor_id": "HHS-OAI-F326-8F65D34BB34E",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "326",
+      "source_title": "The cotype–cotype conjecture under the approximation property",
+      "source_slug": "The-cotype-cotype-conjecture-under-the-approximation-property-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/Cotype.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/Cotype.json",
+          "declaration": "OAI.Cotype.mainTarget_proved",
+          "file": "OAI/Analysis/Cotype/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "approximation",
+        "cotype",
+        "property",
+        "under"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "8f65d34bb34e2ec72eb80638c2456dfb747c34df"
+    },
+    {
+      "constructor_id": "HHS-OAI-F327-4D2564FF8658",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "327",
+      "source_title": "Nontrivial Markov Type Forces Superreflexivity",
+      "source_slug": "Nontrivial-Markov-Type-Forces-Superreflexivity-September-23-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/MarkovType.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/MarkovType.json",
+          "declaration": "OAI.MarkovSuperreflexivity.hasNontrivialMarkovType_iff_hasEquivalentUCNorm",
+          "file": "OAI/Analysis/MarkovType/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "forces",
+        "markov",
+        "nontrivial",
+        "superreflexivity",
+        "type"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "4d2564ff865875142fd453bc129401387aaf1703"
+    },
+    {
+      "constructor_id": "HHS-OAI-F328-945F49062FCA",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "328",
+      "source_title": "Fixed Points of Nonexpansive Maps in Reflexive Banach Spaces",
+      "source_slug": "Fixed-Points-of-Nonexpansive-Maps-in-Reflexive-Banach-Spaces-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/ReflexiveFixedPoints.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/ReflexiveFixedPoints.json",
+          "declaration": "OAI.ReflexiveFixedPoints.exists_fixedPoint_of_canonicallyReflexive",
+          "file": "OAI/Analysis/Nonexpansive/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "banach",
+        "fixed",
+        "maps",
+        "nonexpansive",
+        "points",
+        "reflexive",
+        "spaces"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "945f49062fca3ae1a11ace2eb3e29ca3d0f4971c"
+    },
+    {
+      "constructor_id": "HHS-OAI-F331-11A69F556449",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "331",
+      "source_title": "Midpoint lenses in segment spaces",
+      "source_slug": "Midpoint-lenses-in-segment-spaces-September-27-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/MidpointLenses.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/MidpointLenses.json",
+          "declaration": "OAI.SegmentLenses.midpoint_lens_main",
+          "file": "OAI/Analysis/SegmentLenses/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "lenses",
+        "midpoint",
+        "segment",
+        "spaces"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "11a69f556449808aefc28e40f9cbfc1821576b56"
+    },
+    {
+      "constructor_id": "HHS-OAI-F331-9B82BDE699E4",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "331",
+      "source_title": "Exact asymptotic moduli in a Daugavet subspace of L1",
+      "source_slug": "Exact-asymptotic-moduli-in-a-Daugavet-subspace-of-L1-September-27-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/DaugavetModuli.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/DaugavetModuli.json",
+          "declaration": "OAI.ExactModuli.exact_example",
+          "file": "OAI/Analysis/Daugavet/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "asymptotic",
+        "daugavet",
+        "exact",
+        "moduli",
+        "subspace"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "9b82bde699e4bddfcfed380a12e6eba42885eeea"
+    },
+    {
+      "constructor_id": "HHS-OAI-F356-A51DED6E079D",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "356",
+      "source_title": "Weak Hessian bounds along every geodesic in RCD spaces",
+      "source_slug": "Weak-Hessian-bounds-along-every-geodesic-in-RCD-spaces-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/WeakHessian.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/WeakHessian.json",
+          "declaration": "OAI.WeakHessian.every_geodesic",
+          "file": "OAI/Geometry/WeakHessian/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Geometry"
+      ],
+      "concept_tags": [
+        "along",
+        "bounds",
+        "every",
+        "geodesic",
+        "hessian",
+        "rcd",
+        "spaces",
+        "weak"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "a51ded6e079d8d583b0d4d6422d7e7858387adec"
+    },
+    {
+      "constructor_id": "HHS-OAI-F359-938A5C761A9E",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "359",
+      "source_title": "A negatively pinched Kähler threefold without bounded holomorphic coordinates",
+      "source_slug": "A-negatively-pinched-Kahler-threefold-without-bounded-holomorphic-coordinates-September-25-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/PinchedKahler.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/PinchedKahler.json",
+          "declaration": "OAI.PinchedHartogs.main_theorem",
+          "file": "OAI/Geometry/Kahler/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Geometry"
+      ],
+      "concept_tags": [
+        "bounded",
+        "coordinates",
+        "hler",
+        "holomorphic",
+        "kahler",
+        "negatively",
+        "pinched",
+        "threefold"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "938a5c761a9e42bcc0940abd0e2fb873c708e6a5"
+    },
+    {
+      "constructor_id": "HHS-OAI-F360-499AA4109EDE",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "360",
+      "source_title": "Uniform Bi-Hölder Transport from Weak MTW",
+      "source_slug": "Uniform-Bi-Holder-Transport-from-Weak-MTW-September-25-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/WeakMTWGlobalSupport.lean",
+        "lean/ComparatorChallenges/BiholderTransport.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/WeakMTWGlobalSupport.json",
+          "declaration": "OAI.WeakMTWGlobalSupport.current_main_convexity",
+          "file": "OAI/Geometry/WeakMTW/Convexity.lean",
+          "source": "formalization.yaml"
+        },
+        {
+          "comparator_config": "ComparatorChallenges/BiholderTransport.json",
+          "declaration": "OAI.WeakMTWTransport.uniform_biHolder_transport",
+          "file": "OAI/Analysis/BiholderTransport/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 2,
+      "domain_tags": [
+        "Analysis",
+        "Geometry"
+      ],
+      "concept_tags": [
+        "biholder",
+        "lder",
+        "mtw",
+        "mtwglobal",
+        "support",
+        "transport",
+        "uniform",
+        "weak"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "499aa4109ededed27d1b48df82d0948af63fa95f"
+    },
+    {
+      "constructor_id": "HHS-OAI-F370-E7FAD8BDCF9F",
+      "constructor_kind": "HHS_SOURCE_BOUND_FORMAL_THEOREM_CONSTRUCTOR_V1",
+      "status": "NEW_IMPLEMENTED_I079",
+      "family_id": "370",
+      "source_title": "The Subcritical Hénon–Lane–Emden Conjecture",
+      "source_slug": "The-Subcritical-Henon-Lane-Emden-Conjecture-September-24-2026",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "pre_i078_dedicated_constructor_found": false,
+      "pre_i078_constructor_audit": "exact source slug and comparator-stem path audit against frozen HHS tree 1757cf6441c919e9152c95d9c06d60b285a11f96",
+      "primary_comparator_contracts": [
+        "lean/ComparatorChallenges/HenonEmden.lean"
+      ],
+      "proof_surfaces": [
+        {
+          "comparator_config": "ComparatorChallenges/HenonEmden.json",
+          "declaration": "OAI.HenonLaneEmden.main_nonexistence",
+          "file": "OAI/Analysis/HenonEmden/Main.lean",
+          "source": "formalization.yaml"
+        }
+      ],
+      "proof_surface_count": 1,
+      "domain_tags": [
+        "Analysis"
+      ],
+      "concept_tags": [
+        "emden",
+        "henon",
+        "lane",
+        "non",
+        "subcritical"
+      ],
+      "ingress_contract": {
+        "type": "LEAN_PROPOSITION_BINDING",
+        "source_bound": true,
+        "preserve_external_types": true,
+        "opaque_assumption_binding_permitted": true
+      },
+      "egress_contract": {
+        "type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "source_bound": true,
+        "proof_declaration_required": true,
+        "truth_promotion": false
+      },
+      "lowering_policy": {
+        "hhs_native_constructor_available": true,
+        "external_lean_proof_remains_provenance_authority": true,
+        "direct_harmonicode_reproof_required": false,
+        "later_internal_algebraic_optimization_permitted": true,
+        "observable_theorem_contract_must_be_preserved": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      },
+      "source_tree_sha": "e7fad8bdcf9f6a4e3cf51c81f2d9be2781574b33"
+    }
+  ],
+  "authority": {
+    "candidate_only": true,
+    "truth_promotion": false,
+    "action_authority_minted": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "repair": {
+    "date": "2026-10-08",
+    "defect": "I079 initial generator read source_tree_sha from formalized-source rows, where it is not stored, producing UNDEFINED constructor suffixes and duplicate IDs for multi-manuscript families.",
+    "repair": "Join every formalized source back to the pinned I078 manuscript record by source_slug, restore the immutable preprint tree SHA, and derive constructor identity from family plus the first 12 hex characters of that tree SHA.",
+    "impacted_surface": "constructor registry only",
+    "expected_ci": "dependency-scoped I079 rerun"
+  }
+}
