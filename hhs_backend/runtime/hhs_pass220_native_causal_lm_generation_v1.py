@@ -156,6 +156,7 @@ class NativeCausalLMGenerationService:
             "ready": self.loaded,
             "model_id": self.model_id,
             "local_files_only": self.local_files_only,
+            "cpu_float32": _env_flag("HHS_NATIVE_CAUSAL_LM_CPU_FLOAT32", True),
             "max_new_tokens": self.max_new_tokens,
             "generation_limit_semantics": "PER_CALL_BUFFER_NOT_WHOLE_RESPONSE_LIMIT",
             "serialized_response_block_stream_supported": True,
@@ -192,10 +193,20 @@ class NativeCausalLMGenerationService:
                 model_name,
                 local_files_only=self.local_files_only,
             )
+            model_kwargs: dict[str, Any] = {
+                "local_files_only": self.local_files_only,
+            }
+            if _env_flag("HHS_NATIVE_CAUSAL_LM_CPU_FLOAT32", True):
+                import torch
+
+                model_kwargs["torch_dtype"] = torch.float32
             model = AutoModelForCausalLM.from_pretrained(
                 model_name,
-                local_files_only=self.local_files_only,
+                **model_kwargs,
             )
+            eval_model = getattr(model, "eval", None)
+            if callable(eval_model):
+                eval_model()
         except Exception as exc:
             self._load_error = f"{type(exc).__name__}: {exc}"
             raise NativeCausalLMNotReady(

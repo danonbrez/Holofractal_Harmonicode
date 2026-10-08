@@ -17,6 +17,14 @@ Environment=HHS_REPOSITORY_ROOT=/opt/hhs/app
 Environment=HHS_REPO_ROOT=/opt/hhs/app
 Environment=HHS_DISABLE_C_AUTOBUILD=1
 Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0
+Environment=HHS_NATIVE_CAUSAL_LM_MODEL=/var/lib/hhs/native-language/models/smollm2-135m-instruct-ee72e5415c002e8fc0566a191a07c0b2b708875a
+Environment=HHS_NATIVE_CAUSAL_LM_LOCAL_FILES_ONLY=1
+Environment=HHS_NATIVE_CAUSAL_LM_CPU_FLOAT32=1
+Environment=HHS_NATIVE_CAUSAL_LM_MAX_NEW_TOKENS=128
+Environment=HHS_NATIVE_RESPONSE_BLOCK_MAX_NEW_TOKENS=128
+Environment=HHS_NATIVE_RESPONSE_MAX_BLOCKS=2
+Environment=HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS=60
+Environment=HF_HOME=/var/lib/hhs/native-language/hf-cache
 Environment=HHS_DATA_DIR=/var/lib/hhs/data
 Environment=HHS_RUNTIME_OUTPUT_DIR=/var/lib/hhs/data/runtime
 Environment=HHS_AGENT_INDEX_DB=/var/lib/hhs/data/runtime/hhs_agent_immutable_index.sqlite3

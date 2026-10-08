@@ -1,0 +1,10 @@
+# Production-only native causal LM runtime.
+# PyTorch is resolved from the official CPU wheel index to avoid CUDA packages
+# on the 2-vCPU / 4-GB production host.
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch==2.5.1+cpu
+transformers==4.46.3
+huggingface-hub==0.26.2
+safetensors==0.4.5
+tokenizers==0.20.3
