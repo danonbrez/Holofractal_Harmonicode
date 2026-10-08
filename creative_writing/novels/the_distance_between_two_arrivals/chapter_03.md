@@ -12,7 +12,7 @@ Holt opened that door for Anja with two keys.
 
 The air inside smelled of machine oil and dry wood. A wall clock ticked over a table made of material imported from Earth. Anja had never felt wood that old beneath her fingers. It was scarred by cups, burns and knife marks, small human violations the wood had survived.
 
-Holt spread an accident log before her. INCIDENT E-72. PRESSURE AND FIRE LOSS. Ninety-six years and four months earlier, during a solar-particle event, a ventilation-control failure had caused fire and rapid decompression. The entry listed three hundred fourteen dead, eight hundred sixty evacuated, and a permanent sealing order. The signatures belonged to the captain, the chief engineer and the civic recorder.
+Holt spread an accident log before her. INCIDENT E-72. PRESSURE AND FIRE LOSS. Fifty-six years and four months earlier, during a solar-particle event, a ventilation-control failure had caused fire and rapid decompression. The entry listed three hundred fourteen dead, eight hundred sixty evacuated, and a permanent sealing order. The signatures belonged to the captain, the chief engineer and the civic recorder.
 
 "That is what we teach," Anja said.
 
@@ -44,7 +44,7 @@ Anja had known that. She had known it the way a person knows a place name from a
 
 "His name is on the technical supplement," Holt said.
 
-He opened the supplement. It contained pressure measurements, flame-front predictions and a recommendation to isolate the cell for six minutes. Six minutes. The seal had lasted ninety-six years.
+He opened the supplement. It contained pressure measurements, flame-front predictions and a recommendation to isolate the cell for six minutes. Six minutes. The seal had lasted fifty-six years.
 
 Anja saw a note in handwriting she recognized from her father's small repair cards: TEMPORARY HOLD PENDING MANUAL ACCOUNTING.
 
@@ -146,7 +146,7 @@ Anja unrolled the ribbon.
 
 Numbers had been hammered into it by hand, not in a uniform machine typeface but at different depths, some almost invisible. Beside each number was a single word. Alive. Born. Dead. Alive. Born. Alive.
 
-The entries continued through ninety-six years of ship time.
+The entries continued through fifty-six years of ship time.
 
 When she reached the last line her vision blurred. The date was from the previous morning.
 
