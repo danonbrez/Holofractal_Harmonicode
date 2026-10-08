@@ -82,9 +82,13 @@ def _hash72(label: str, value: Any) -> str:
     return hash72_digest({"domain": VERSION, "label": label}, _canonical(value))
 
 
-@lru_cache(maxsize=1)
-def _relation_db() -> Mapping[str, WordRelationEntry]:
-    return load_wordnet_relations(default_wordnet_paths(), require_all=True)
+@lru_cache(maxsize=256)
+def _relation_db_for_prompt_tokens(tokens: tuple[str, ...]) -> Mapping[str, WordRelationEntry]:
+    return load_wordnet_relations(
+        default_wordnet_paths(),
+        require_all=True,
+        target_words=tokens,
+    )
 
 
 def _norm(value: Any) -> str:
@@ -210,16 +214,16 @@ def admit_native_lean_alignment_tensor(
     if len(prompt) > MAX_TEXT_CHARS or len(response) > MAX_TEXT_CHARS:
         reasons.append("PROMPT_RESPONSE_TEXT_BOUND_EXCEEDED")
 
+    prompt_tokens = set(_tokens(prompt))
+    response_tokens = set(_tokens(response))
+
     db_error = None
     if relation_db is None:
         try:
-            relation_db = _relation_db()
+            relation_db = _relation_db_for_prompt_tokens(tuple(sorted(prompt_tokens)))
         except Exception as exc:
             relation_db = {}
             db_error = f"{type(exc).__name__}: {exc}"
-
-    prompt_tokens = set(_tokens(prompt))
-    response_tokens = set(_tokens(response))
     inferred = _inferred_edges(prompt, response, relation_db)
     explicit, explicit_reasons = _explicit_edges(
         explicit_relations, prompt_tokens, response_tokens
