@@ -653,3 +653,17 @@ declarations until a catalogued external Lean proof or independent HHS proof
 closure is supplied. Truth, proof, execution, VM81 mutation, canonical hashes,
 persistence, learning, model-weight, and floating-point authority remain false.
 
+### Pass 220 I081 — exact-source constructor promotion audit
+
+[HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1.md](HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1.md)
+
+I081 begins deep hydration of the I080 HOLD frontier using an exact-source
+promotion membrane: a HOLD may become a theorem constructor only when its
+immutable manuscript identity is explicitly named by the family documentation
+and bound to a pinned comparator, theorem declaration, solution module, and
+compatible formal scope. The first 14-source priority tranche yields 4 full
+promotions, 1 formal subconstructor that correctly leaves its manuscript in
+HOLD, and 9 rejected false/full-promotion matches. The effective source
+partition becomes 58 theorem sources plus 264 HOLD sources, still exactly
+covering all 322 I078 novelty manuscripts.
+

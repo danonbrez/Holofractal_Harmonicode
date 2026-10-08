@@ -1,0 +1,339 @@
+{
+  "schema": "HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1",
+  "version": "1.0.0",
+  "date": "2026-10-08",
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "parent_registries": [
+    "HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1",
+    "HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1"
+  ],
+  "audit_policy": {
+    "priority_surface": "HOLD constructors with strong comparator-name match and an already-formalized theorem in the same result family",
+    "audited_hold_count": 14,
+    "full_promotion_requires": [
+      "exact family-doc preprint target matching the HOLD source slug",
+      "matching comparator configuration",
+      "nonempty theorem declaration list",
+      "pinned solution module/file identity",
+      "documented formal scope compatible with the source result"
+    ],
+    "partial_formalization_does_not_promote_whole_manuscript": true,
+    "same_title_different_source_tree_is_not_aliasable": true
+  },
+  "result": {
+    "full_promotions": 4,
+    "partial_subconstructors": 1,
+    "keep_hold_after_audit": 9,
+    "effective_theorem_sources": 58,
+    "effective_hold_sources": 264,
+    "novelty_frontier_sources": 322,
+    "source_level_coverage_gap": 0
+  },
+  "full_promotions": [
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F003-8A3427FA6360",
+      "family_id": "003",
+      "source_title": "The Quasi Riemann Hypothesis",
+      "source_slug": "The-Quasi-Riemann-Hypothesis-September-30-2026",
+      "source_tree_sha": "8a3427fa6360eb9bb1234a75cb1a0327b2b35165",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/003.md",
+        "sha": "cf794e93da2e1a494434153f5b91f2990fe9fd60"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F003-8A3427FA6360",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PLUS_COMPARATOR_PLUS_SOLUTION",
+      "doc_preprint_slug": "The-Quasi-Riemann-Hypothesis-September-30-2026",
+      "comparator": {
+        "path": "lean/ComparatorChallenges/QuasiRiemannHypothesis.json",
+        "sha": "acf552468fc23c1a27d685d33983c58c50040542"
+      },
+      "solution": {
+        "module": "OAI.NumberTheory.DirichletL.Nonvanishing",
+        "path": "lean/OAI/NumberTheory/DirichletL/Nonvanishing.lean",
+        "sha": "46c67f4000906b1391a471d6e6396ac0da3c16a5"
+      },
+      "theorem_names": [
+        "OAI.riemannZeta_ne_zero_of_seven_eighths_lt_re"
+      ],
+      "formal_scope": "Riemann zeta zero-free half-plane Re(s) > 7/8.",
+      "full_source_promotion_reason": "The family documentation names the exact September 30 source and exposes the matching Riemann-zeta comparator result."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F087-9023C2424E91",
+      "family_id": "087",
+      "source_title": "The Mahler Conjecture for General Convex Bodies",
+      "source_slug": "The-Mahler-Conjecture-for-General-Convex-Bodies-September-22-2026",
+      "source_tree_sha": "9023c2424e91c65361e66ed43ed963b5c24585a6",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/087.md",
+        "sha": "52459dc8c7e37b2395a25c903c4edac14b08e032"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F087-9023C2424E91",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PLUS_COMPARATOR_PLUS_SOLUTION",
+      "doc_preprint_slug": "The-Mahler-Conjecture-for-General-Convex-Bodies-September-22-2026",
+      "comparator": {
+        "path": "lean/ComparatorChallenges/GeneralMahler.json",
+        "sha": "683100b6bbdcf27ab1ee1173b475fedf4df23a34"
+      },
+      "solution": {
+        "module": "OAI.Geometry.Convex.GeneralMahler.Theorem",
+        "path": "lean/OAI/Geometry/Convex/GeneralMahler/Theorem.lean",
+        "sha": "7fed52ac196aa1d561e97cf32ef9abd5624285d9"
+      },
+      "theorem_names": [
+        "OAI.GeneralMahler.general_mahler"
+      ],
+      "formal_scope": "General Mahler volume-product inequality with simplex equality characterization.",
+      "full_source_promotion_reason": "The family documentation names the exact source and directly links the general Mahler comparator."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F254-42F7C616082C",
+      "family_id": "254",
+      "source_title": "Parabolic intersections in Artin groups",
+      "source_slug": "Parabolic-intersections-in-Artin-groups-September-23-2026",
+      "source_tree_sha": "42f7c616082cf6e60b48aef3561fadb6786c61f8",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/254.md",
+        "sha": "3daef005137f48059e9a4c37aa2c2ef43b6bdd98"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F254-42F7C616082C",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PLUS_COMPARATOR_PLUS_SOLUTION",
+      "doc_preprint_slug": "Parabolic-intersections-in-Artin-groups-September-23-2026",
+      "comparator": {
+        "path": "lean/ComparatorChallenges/ArtinParabolicIntersections.json",
+        "sha": "04a587ada36d497e7320bb84d8872cff86a5b932"
+      },
+      "solution": {
+        "module": "OAI.Topology.ArtinGroups.ParabolicIntersections.Main",
+        "path": "lean/OAI/Topology/ArtinGroups/ParabolicIntersections/Main.lean",
+        "sha": "3b4622851718563aeab2cbe1316cc84be6fe23de"
+      },
+      "theorem_names": [
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_intersections",
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_arbitrary_intersections",
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_closure",
+        "OAI.HarmonicArtin.ParabolicIntersections.unconditional_nonclique_dynamics"
+      ],
+      "formal_scope": "Parabolic intersections, bounded subfamily intersection, parabolic closure, and selected structural consequences for finite-rank Artin groups.",
+      "full_source_promotion_reason": "The family documentation names the exact source and directly links the parabolic-intersections comparator."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F263-6765158F55F7",
+      "family_id": "263",
+      "source_title": "Generalized outer electron radii of neutral Coulomb atoms",
+      "source_slug": "Generalized-outer-electron-radii-of-neutral-Coulomb-atoms-September-24-2026",
+      "source_tree_sha": "6765158f55f7eeea8ea76f0cb5be3278841cfc7c",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/263.md",
+        "sha": "ed123c227c15aa12e1c7baa8f1adcb486d6fbbc0"
+      },
+      "promotion_id": "HHS-OAI-I081-THEOREM-F263-6765158F55F7",
+      "decision": "PROMOTE_FULL_THEOREM_CONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PLUS_COMPARATOR_PLUS_SOLUTION",
+      "doc_preprint_slug": "Generalized-outer-electron-radii-of-neutral-Coulomb-atoms-September-24-2026",
+      "comparator": {
+        "path": "lean/ComparatorChallenges/CoulombRadii.json",
+        "sha": "ade73405e3f8ceb8f85a0634e01b9eb18df86c84"
+      },
+      "solution": {
+        "module": "OAI.Analysis.CoulombRadii.Main",
+        "path": "lean/OAI/Analysis/CoulombRadii/Main.lean",
+        "sha": "588b16e7b167588cbe42017c78bacb5df5f56b58"
+      },
+      "theorem_names": [
+        "OAI.NeutralAtom.generalized_outer_radii"
+      ],
+      "formal_scope": "Asymptotic generalized outer-electron radii for neutral two-spin Coulomb atoms.",
+      "full_source_promotion_reason": "The family documentation names the exact source and directly links the Coulomb-radii comparator."
+    }
+  ],
+  "partial_subconstructors": [
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F269-041B975282B3",
+      "family_id": "269",
+      "source_title": "Uniform Stability of the Spherical Laughlin Gap",
+      "source_slug": "Uniform-Stability-of-the-Spherical-Laughlin-Gap-October-5-2026",
+      "source_tree_sha": "041b975282b322e6bc597327087f3c140e5e810f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/269.md",
+        "sha": "7ae324d902f282192afe1e6c4ebdbcba6a16944a"
+      },
+      "subconstructor_id": "HHS-OAI-I081-SUBTHEOREM-F269-041B975282B3-LAUGHLIN-GAP",
+      "decision": "KEEP_HOLD_ADD_FORMAL_SUBCONSTRUCTOR",
+      "evidence_class": "EXACT_DOC_SOURCE_PARTIAL_SCOPE_PLUS_COMPARATOR_PLUS_SOLUTION",
+      "doc_preprint_slug": "Uniform-Stability-of-the-Spherical-Laughlin-Gap-October-5-2026",
+      "comparator": {
+        "path": "lean/ComparatorChallenges/LaughlinGap.json",
+        "sha": "0d084b8c12cfe9eebf3325616ac4bb2ec50d7707"
+      },
+      "solution": {
+        "module": "OAI.Analysis.LaughlinGap.Main",
+        "path": "lean/OAI/Analysis/LaughlinGap/Main.lean",
+        "sha": "dc4098415bdd516e6491ec63ef82b953f42d0548"
+      },
+      "theorem_names": [
+        "OAI.LaughlinGap.thm_main"
+      ],
+      "formal_scope": "Uniform unperturbed spherical Laughlin gap inequality used in the stability argument.",
+      "excluded_scope": "Stability under projected one-body potentials and uniqueness of the perturbed ground state remain outside the selected formalization.",
+      "full_source_promotion": false
+    }
+  ],
+  "denied_full_promotions": [
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F003-B46286ACFA00",
+      "family_id": "003",
+      "source_title": "The Quasi Riemann Hypothesis",
+      "source_slug": "The-Quasi-Riemann-Hypothesis-October-5-2026",
+      "source_tree_sha": "b46286acfa00dca1008962a0276b3fa1c3679404",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/003.md",
+        "sha": "cf794e93da2e1a494434153f5b91f2990fe9fd60"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/QuasiRiemannHypothesis.json",
+      "reason": "The family documentation binds the formalized Quasi-Riemann source to the September 30 preprint; this HOLD source is the October 5 preprint tree and is not silently aliased across source identity."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F039-17A7D0653D43",
+      "family_id": "039",
+      "source_title": "Maximal multipoint Seshadri constants in positive characteristic",
+      "source_slug": "Maximal-multipoint-Seshadri-constants-in-positive-characteristic-October-5-2026",
+      "source_tree_sha": "17a7d0653d4394e919ccbc70e68c465ced124e32",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/039.md",
+        "sha": "a0287fe5262399b08105a47be6ece7aec89f0212"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/MaximalSeshadriConstants.json",
+      "reason": "The documented formalized source is maximal Seshadri constants on arbitrary polarized surfaces; the positive-characteristic manuscript is not an exact documented source match."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F039-A46979B6BDA3",
+      "family_id": "039",
+      "source_title": "Maximal Multipoint Seshadri Constants in Higher Dimensions",
+      "source_slug": "Maximal-Multipoint-Seshadri-Constants-in-Higher-Dimensions-October-5-2026",
+      "source_tree_sha": "a46979b6bda3d7b23837201f1d160341bf8aa148",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/039.md",
+        "sha": "a0287fe5262399b08105a47be6ece7aec89f0212"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/MaximalSeshadriConstants.json",
+      "reason": "The documented formalized source is the surface theorem; the higher-dimensional manuscript is not an exact documented source match."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F114-9F39C67F9E29",
+      "family_id": "114",
+      "source_title": "An FPRAS for Common Integer Polymatroid Bases with Binary Capacities",
+      "source_slug": "An-FPRAS-for-Common-Integer-Polymatroid-Bases-with-Binary-Capacities-October-5-2026",
+      "source_tree_sha": "9f39c67f9e2954d666d7f4034d11197af89d9c4c",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/114.md",
+        "sha": "b8e106e9c6c21ef6709291eb1a7af477f505b73a"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/CommonBasesFPRAS.json",
+      "reason": "The documented formalized source concerns common bases of two matroids, not common integer polymatroid bases with binary capacities."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F117-8A7BA653190E",
+      "family_id": "117",
+      "source_title": "Constant factor hardness of uniform sparsest cut",
+      "source_slug": "Constant-factor-hardness-of-uniform-sparsest-cut-September-24-2026",
+      "source_tree_sha": "8a7ba653190e3d318515edd39621cd60f4656f5f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/117.md",
+        "sha": "c0a5aa25ad26baf580e0e95920348166b460e7a3"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/UniformSparsestCut.json",
+      "reason": "The documented formalization is an existential Goemans-Linial integrality-gap result, not the constant-factor hardness manuscript."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F143-F78511FA9920",
+      "family_id": "143",
+      "source_title": "uniform bounds for planar polynomial limit cycles",
+      "source_slug": "uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026",
+      "source_tree_sha": "f78511fa99202409f65893d62d4d9c1fa730148f",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/143.md",
+        "sha": "c5bd183a050b32edf8c9c59f585de18e73a352bd"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/PlanarL1.json",
+      "reason": "The family documentation formalizes the quintic Lienard two-cycle theorem; the broader planar polynomial limit-cycle manuscript is not the same documented source/result."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F212-B5F6224DCF0A",
+      "family_id": "212",
+      "source_title": "No bigeodesics in planar first passage percolation",
+      "source_slug": "No-bigeodesics-in-planar-first-passage-percolation-September-24-2026",
+      "source_tree_sha": "b5f6224dcf0a2d31a5d4af06be10d033ac559d08",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/212.md",
+        "sha": "f5a9f6b38dca98f93f03f010a879fb6129fcbce0"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/PlanarFirstPassage.json",
+      "reason": "The documented source/result concerns differentiability of the first-passage limit shape, not the no-bigeodesics manuscript."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F262-AEDD4EC01854",
+      "family_id": "262",
+      "source_title": "Sharp one dimensional Lieb Thirring inequalities for matrix potentials",
+      "source_slug": "Sharp-one-dimensional-Lieb-Thirring-inequalities-for-matrix-potentials-October-5-2026",
+      "source_tree_sha": "aedd4ec0185475fa123ea5e4d988ba1f7adf1223",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/262.md",
+        "sha": "760f71a5932e6898ce90c6ffce78cad8c288034d"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/LiebThirring.json",
+      "reason": "The documented theorem is the scalar-potential sharp one-dimensional Lieb-Thirring inequality; the matrix-potential manuscript is not an exact documented source match."
+    },
+    {
+      "hold_constructor_id": "HHS-OAI-HOLD-F291-50144E14B0C1",
+      "family_id": "291",
+      "source_title": "Cuntz comparison and Jiang Su absorption",
+      "source_slug": "Cuntz-comparison-and-Jiang-Su-absorption-September-23-2026",
+      "source_tree_sha": "50144e14b0c1793ae5f59369ca671e1402abf17e",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family_doc": {
+        "path": "lean/docs/291.md",
+        "sha": "b0918b0dc20ad3fcd50e73b0555aabeb00aa0044"
+      },
+      "decision": "KEEP_HOLD",
+      "matched_comparator": "lean/ComparatorChallenges/C0Absorption.json",
+      "reason": "The family documentation source is the tracial-projection/uniform-Gamma paper. Jiang-Su absorption appears as a linked comparison consequence, not as a proof surface bound to this HOLD manuscript identity."
+    }
+  ],
+  "authority": {
+    "candidate_only": true,
+    "truth_promotion": false,
+    "external_formal_proof_is_provenance_authority": true,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  }
+}
