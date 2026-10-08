@@ -1,106 +1,129 @@
-# HHS Pass 220 I081 — Exact-Source Constructor Promotion Audit
+# HHS Pass 220 I081 — Canonical Reconciled Exact-Source Constructor Promotion Audit
 
-## Purpose
+## Canonical identity
 
-I081 begins deep hydration of the 268 I080 HOLD constructors. It does not
-promote a manuscript merely because its title resembles a ComparatorChallenge
-or because another paper in the same OpenAI result family has a Lean proof.
+PR #741 is the sole canonical Pass 220 I081 ancestry.
 
-The promotion condition is:
+PRs #742, #743, and #744 are superseded I081 implementations and must not be
+merged independently. Their promotion proposals were treated as audit inputs,
+not discarded.
 
-```text
-exact HOLD source slug
-= exact family-doc preprint target
-+ matching comparator configuration
-+ nonempty theorem declaration
-+ pinned solution-module identity
-+ compatible documented formal scope
-```
+All four branches share the same base main:
 
-Anything weaker remains HOLD.
+`e2e4fcfa539e2c80997eb796abe5dbce1227d559`
 
-## First priority tranche
+and the same pinned external source:
 
-The first audit covers 14 HOLD constructors selected because they had both a
-strong comparator-name match and/or close formalized-family adjacency.
+`openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 
-Result:
+## Conflict reconciliation
+
+The four I081 implementations proposed 29 distinct HOLD-to-theorem promotions.
+Every proposed source was re-evaluated under the stricter membrane:
 
 ```text
-audited HOLDs              = 14
-full theorem promotions    =  4
-partial formalization      =  1
-kept HOLD                  =  9
+exact HOLD source slug/tree
++ exact source listing in pinned family documentation
++ pinned ComparatorChallenge config
++ nonempty admitted theorem declaration(s)
++ pinned Lean solution module/file
++ documented scope matching the source contract
+= eligible full promotion
 ```
 
-### Full promotions
+A supporting/partial theorem, an aggregate family theorem without exact source
+contract equivalence, or a stronger related theorem without an explicit
+source-contract derivation wrapper does not promote the whole manuscript.
 
-1. **The Quasi-Riemann Hypothesis — September 30 source**  
-   Bound to `QuasiRiemannHypothesis.json`,
-   `OAI.riemannZeta_ne_zero_of_seven_eighths_lt_re`, and the pinned
-   `DirichletL/Nonvanishing.lean` implementation.
-
-2. **The Mahler Conjecture for General Convex Bodies**  
-   Bound to `GeneralMahler.json` and
-   `OAI.GeneralMahler.general_mahler`.
-
-3. **Parabolic intersections in Artin groups**  
-   Bound to `ArtinParabolicIntersections.json` and its four admitted
-   unconditional theorem declarations.
-
-4. **Generalized outer-electron radii of neutral Coulomb atoms**  
-   Bound to `CoulombRadii.json` and
-   `OAI.NeutralAtom.generalized_outer_radii`.
-
-These four source identities leave HOLD and become source-bound formal theorem
-constructors.
-
-## Partial formalization
-
-**Uniform Stability of the Spherical Laughlin Gap** remains a manuscript-level
-HOLD. The family documentation binds the exact October 5 source to the
-`LaughlinGap` proof surface only for the unperturbed spherical gap estimate
-used in the stability argument. The documentation explicitly excludes stability
-under projected one-body potentials and uniqueness of the perturbed ground
-state from the selected formalization.
-
-I081 therefore creates a formal subconstructor for the admitted gap theorem
-without misreporting the whole manuscript as formally closed.
-
-## Rejected false promotions
-
-Nine superficially strong matches remain HOLD. Examples include positive-
-characteristic or higher-dimensional Seshadri manuscripts versus the documented
-surface theorem, constant-factor sparsest-cut hardness versus an integrality-gap
-proof, no-bigeodesics versus first-passage differentiability, matrix-potential
-Lieb-Thirring versus the documented scalar-potential theorem, and a Jiang-Su
-manuscript whose family documentation exposes absorption only as a comparison
-consequence under another source identity.
-
-The October 5 Quasi-Riemann manuscript also remains separate: the family
-documentation binds the formal proof to the September 30 preprint tree. I081
-does not alias equal titles across immutable source identity.
-
-## Effective frontier after I081
+Canonical result:
 
 ```text
-I079 theorem sources          54
-I081 full promotions          +4
-effective theorem sources     58
+conflicting full-promotion proposal union = 29
+accepted full promotions                 = 26
+rejected to partial/HOLD                 =  3
 
-I080 HOLD sources            268
-I081 full promotions          -4
-effective HOLD sources       264
+inherited I079 theorem sources           = 54
+canonical I081 promotions                = 26
+effective theorem sources                = 80
 
-58 + 264 = 322
+inherited I080 HOLD sources              = 268
+superseded HOLD sources                  = 26
+effective HOLD sources                   = 242
+
+80 + 242                                 = 322
+coverage gap                             = 0
+duplicate assignment                     = 0
 ```
 
-The Laughlin partial subconstructor is attached to one of the 264 remaining
-HOLD sources and therefore does not alter the source-level partition.
+## Three overpromotions rejected
+
+### Spherical Laughlin stability
+
+PR #742 promoted the full source, but the pinned family documentation explicitly
+states that the selected Lean theorem is the unperturbed gap inequality and
+that projected-potential stability and perturbed-ground-state uniqueness are
+outside the formalization.
+
+The source remains HOLD with a formal subconstructor.
+
+### Generalized star height at most four
+
+The external theorem proves the stronger numerical bound "at most three", and
+the docs state that it implies the accompanying at-most-four result. Canonical
+I081 nevertheless does not silently substitute a different theorem interface.
+An explicit source-contract derivation wrapper is required before promotion.
+
+### Kervaire theorem for groups
+
+The family documentation exposes a stronger coefficient-injectivity theorem
+underlying Kervaire. That is formal evidence, but canonical I081 requires an
+explicit derivation wrapper from that proof surface to the exact source
+contract before whole-source promotion.
+
+## Other reconciliation corrections
+
+The rapidly-vanishing-forcing Navier–Stokes source remains promotable, but its
+canonical proof binding is the rapidly decaying alternating-coordinate surface
+(`NavierStokesAlternating`), not the balanced-transport surface used by PR
+#742.
+
+The September 30 quasi-Riemann source remains promotable, with all three
+documented 7/8 surfaces bound: Riemann zeta, Dirichlet L-functions, and
+finite-order Hecke L-functions.
+
+The October 5 quasi-Riemann source remains HOLD because the pinned family
+documentation names the September 30 preprint tree; same-title cross-tree
+aliasing is forbidden.
+
+## Partial evidence
+
+Canonical I081 retains 13 HOLD sources with formal subconstructors, including
+the three rejected overpromotions plus source-limited Log Kodaira, cylinder
+covering, finite-monoid/star-height, Lech multiplicity, honeycomb, and Ising
+perceptron evidence.
+
+Partial proof surfaces are useful constructor evidence, but they do not alter
+the theorem/HOLD partition.
+
+## Runtime invariant
+
+`effective_frontier()` reconstructs the parent I078/I079/I080 source sets and
+requires:
+
+```text
+effective_theorem ∩ effective_hold = {}
+effective_theorem ∪ effective_hold = I078 novelty frontier
+|effective_theorem| = 80
+|effective_hold|    = 242
+|frontier|          = 322
+```
+
+Any gap, duplicate assignment, source-tree mismatch, nonexact full proof
+relation, missing proof declaration, or authority drift fails closed.
 
 ## Authority
 
-Promoted constructors remain source/proof-bound candidate objects. External
-Lean proof identity remains provenance authority. I081 does not mint canonical
-VM81/Hash72/Hash216 state, update weights, persist canonical state, or promote
-unproved manuscript scope to truth.
+The pinned external Lean proof remains provenance authority. I081 grants no
+independent HHS reproof claim, canonical truth promotion, model-weight update,
+VM81 mutation, canonical Hash72/Hash216 minting, canonical persistence, or
+floating-point authority.

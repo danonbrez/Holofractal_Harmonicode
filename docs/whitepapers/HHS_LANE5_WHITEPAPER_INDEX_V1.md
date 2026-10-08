@@ -653,17 +653,17 @@ declarations until a catalogued external Lean proof or independent HHS proof
 closure is supplied. Truth, proof, execution, VM81 mutation, canonical hashes,
 persistence, learning, model-weight, and floating-point authority remain false.
 
-### Pass 220 I081 — exact-source constructor promotion audit
+### Pass 220 I081 — canonical reconciled exact-source promotion audit
 
 [HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1.md](HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1.md)
 
-I081 begins deep hydration of the I080 HOLD frontier using an exact-source
-promotion membrane: a HOLD may become a theorem constructor only when its
-immutable manuscript identity is explicitly named by the family documentation
-and bound to a pinned comparator, theorem declaration, solution module, and
-compatible formal scope. The first 14-source priority tranche yields 4 full
-promotions, 1 formal subconstructor that correctly leaves its manuscript in
-HOLD, and 9 rejected false/full-promotion matches. The effective source
-partition becomes 58 theorem sources plus 264 HOLD sources, still exactly
-covering all 322 I078 novelty manuscripts.
+I081 has one canonical ancestry: PR #741. Competing I081 PRs #742, #743, and
+#744 are superseded after their promotion proposals are reconciled into the
+strict exact-source/proof-surface audit. The 29-source conflicting promotion
+union resolves to 26 full theorem promotions and 3 partial/HOLD decisions.
+Thirteen HOLD sources retain formal subconstructors. The effective novelty
+partition is exactly 80 theorem sources plus 242 HOLD sources = 322, with zero
+gap and zero duplicate assignment. Supporting, aggregate, or stronger-but-
+interface-different proofs cannot silently promote a manuscript; explicit
+source-contract equivalence or derivation is required.
 
