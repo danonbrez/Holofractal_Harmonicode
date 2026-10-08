@@ -638,6 +638,7 @@ jobs:
           HHS_PRODUCTION_BASE_URL="https://${HHS_PRODUCTION_HOST}" \
           HHS_PRODUCTION_EXPECTED_SHA="${TARGET_SHA}" \
           HHS_PRODUCTION_EXPECTED_SERVICE_COUNT="${expected_service_count}" \
+          HHS_PRODUCTION_PUBLIC_SERVICE_REGISTRY_FILE="/tmp/hhs-public-services.json" \
           HHS_PRODUCTION_BROWSER_IGNORE_HTTPS_ERRORS=1 \
           HHS_PRODUCTION_BROWSER_EVIDENCE_DIR="${RUNNER_TEMP}/production-browser" \
             timeout 300s node scripts/production-live-browser-verify.mjs
