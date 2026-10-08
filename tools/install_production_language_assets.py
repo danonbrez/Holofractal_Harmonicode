@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import argparse
 import grp
+from hashlib import sha256
+import importlib.metadata
 import json
 import os
 from pathlib import Path
@@ -34,6 +36,25 @@ def _production_status_path() -> Path:
 
 
 STATUS_PATH = _production_status_path()
+
+NATIVE_CAUSAL_REQUIREMENTS = ROOT / "requirements-native-causal-lm.txt"
+NATIVE_CAUSAL_MODEL_REPO = "HuggingFaceTB/SmolLM2-135M-Instruct"
+NATIVE_CAUSAL_MODEL_REVISION = "ee72e5415c002e8fc0566a191a07c0b2b708875a"
+NATIVE_CAUSAL_MODEL_FILE_SHA256 = "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c"
+NATIVE_CAUSAL_MODEL_ROOT = Path(
+    os.getenv(
+        "HHS_NATIVE_CAUSAL_LM_INSTALL_ROOT",
+        "/var/lib/hhs/native-language/models/"
+        "smollm2-135m-instruct-ee72e5415c002e8fc0566a191a07c0b2b708875a",
+    )
+)
+NATIVE_CAUSAL_PACKAGE_VERSIONS = {
+    "torch": "2.5.1+cpu",
+    "transformers": "4.46.3",
+    "huggingface-hub": "0.26.2",
+    "safetensors": "0.4.5",
+    "tokenizers": "0.20.3",
+}
 
 
 def _truthy(name: str, default: bool = False) -> bool:
@@ -254,31 +275,267 @@ def _word2vec_install(*, install_if_configured: bool) -> dict[str, Any]:
     }
 
 
+def _sha256_file(path: Path) -> str:
+    digest = sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _native_causal_packages_ready() -> tuple[bool, dict[str, str | None]]:
+    observed: dict[str, str | None] = {}
+    ready = True
+    for package, expected in NATIVE_CAUSAL_PACKAGE_VERSIONS.items():
+        try:
+            actual = importlib.metadata.version(package)
+        except importlib.metadata.PackageNotFoundError:
+            actual = None
+        observed[package] = actual
+        if actual != expected:
+            ready = False
+    return ready, observed
+
+
+def _install_native_causal_packages() -> dict[str, Any]:
+    ready_before, before = _native_causal_packages_ready()
+    if not ready_before:
+        if not NATIVE_CAUSAL_REQUIREMENTS.is_file():
+            raise RuntimeError(
+                f"native causal requirements missing: {NATIVE_CAUSAL_REQUIREMENTS}"
+            )
+        subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "--disable-pip-version-check",
+                "--no-cache-dir",
+                "-r",
+                str(NATIVE_CAUSAL_REQUIREMENTS),
+            ],
+            cwd=ROOT,
+            check=True,
+            timeout=1800,
+        )
+    ready_after, after = _native_causal_packages_ready()
+    if not ready_after:
+        raise RuntimeError(
+            f"native causal runtime dependency closure failed: {after}"
+        )
+    return {
+        "ready": True,
+        "installed_now": not ready_before,
+        "before": before,
+        "after": after,
+        "requirements": str(NATIVE_CAUSAL_REQUIREMENTS),
+    }
+
+
+def _normalize_model_readability(model_root: Path) -> dict[str, Any]:
+    if os.geteuid() != 0:
+        return {"normalized": False, "reason": "not-root"}
+    group_name = os.getenv("HHS_PRODUCTION_SERVICE_GROUP", "hhs").strip() or "hhs"
+    try:
+        gid = grp.getgrnam(group_name).gr_gid
+    except KeyError as exc:
+        raise RuntimeError(
+            f"production service group does not exist: {group_name}"
+        ) from exc
+
+    changed = 0
+    for path in [model_root, *model_root.rglob("*")]:
+        if path.is_symlink() or not path.exists():
+            continue
+        current = path.stat()
+        os.chown(path, -1, gid)
+        mode = stat.S_IMODE(current.st_mode) | stat.S_IRGRP
+        if path.is_dir():
+            mode |= stat.S_IXGRP
+        os.chmod(path, mode)
+        changed += 1
+    return {
+        "normalized": True,
+        "service_group": group_name,
+        "paths": changed,
+    }
+
+
+def _install_pinned_native_causal_model() -> dict[str, Any]:
+    _install_native_causal_packages()
+    from huggingface_hub import snapshot_download
+
+    NATIVE_CAUSAL_MODEL_ROOT.mkdir(parents=True, exist_ok=True)
+    model_file = NATIVE_CAUSAL_MODEL_ROOT / "model.safetensors"
+    existing_ok = (
+        model_file.is_file()
+        and _sha256_file(model_file) == NATIVE_CAUSAL_MODEL_FILE_SHA256
+    )
+    if not existing_ok:
+        snapshot_download(
+            repo_id=NATIVE_CAUSAL_MODEL_REPO,
+            revision=NATIVE_CAUSAL_MODEL_REVISION,
+            local_dir=str(NATIVE_CAUSAL_MODEL_ROOT),
+            allow_patterns=[
+                "config.json",
+                "generation_config.json",
+                "model.safetensors",
+                "tokenizer.json",
+                "tokenizer_config.json",
+                "special_tokens_map.json",
+            ],
+        )
+    if not model_file.is_file():
+        raise RuntimeError(f"pinned native causal model file missing: {model_file}")
+    actual_sha256 = _sha256_file(model_file)
+    if actual_sha256 != NATIVE_CAUSAL_MODEL_FILE_SHA256:
+        raise RuntimeError(
+            "pinned native causal model SHA-256 mismatch: "
+            f"expected={NATIVE_CAUSAL_MODEL_FILE_SHA256} actual={actual_sha256}"
+        )
+    permissions = _normalize_model_readability(NATIVE_CAUSAL_MODEL_ROOT)
+    return {
+        "ready": True,
+        "model_root": str(NATIVE_CAUSAL_MODEL_ROOT),
+        "repo_id": NATIVE_CAUSAL_MODEL_REPO,
+        "revision": NATIVE_CAUSAL_MODEL_REVISION,
+        "model_file_sha256": actual_sha256,
+        "downloaded_now": not existing_ok,
+        "permissions": permissions,
+    }
+
+
+def _native_causal_smoke(model_path: str) -> dict[str, Any]:
+    env = dict(os.environ)
+    env.update({
+        "PYTHONPATH": str(ROOT),
+        "HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC": "0",
+        "HHS_NATIVE_CAUSAL_LM_MODEL": model_path,
+        "HHS_NATIVE_CAUSAL_LM_LOCAL_FILES_ONLY": "1",
+        "HHS_NATIVE_CAUSAL_LM_CPU_FLOAT32": "1",
+        "HHS_NATIVE_CAUSAL_LM_MAX_NEW_TOKENS": "128",
+        "HHS_NATIVE_RESPONSE_BLOCK_MAX_NEW_TOKENS": "128",
+        "HHS_NATIVE_RESPONSE_MAX_BLOCKS": "2",
+        "HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS": "60",
+    })
+    process = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "tools" / "hhs_native_chat_cli.py"),
+            "--prompt",
+            "Explain in two concise sentences why ice floats on liquid water.",
+            "--strict-generation",
+            "--json",
+        ],
+        cwd=ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=180,
+    )
+    if process.returncode != 0:
+        raise RuntimeError(
+            "native causal CLI smoke failed: "
+            + (process.stderr or process.stdout)[-4000:]
+        )
+    return {
+        "ready": True,
+        "returncode": process.returncode,
+        "stdout_tail": process.stdout[-4000:],
+    }
+
+
+def _native_causal_install(
+    *,
+    install_if_configured: bool,
+    require_assistant: bool,
+) -> dict[str, Any]:
+    configured = os.getenv("HHS_NATIVE_CAUSAL_LM_MODEL", "").strip()
+    auto_install = _truthy(
+        "HHS_NATIVE_CAUSAL_LM_AUTO_INSTALL",
+        default=require_assistant,
+    )
+    package_report: dict[str, Any] | None = None
+    model_report: dict[str, Any] | None = None
+
+    if configured:
+        if install_if_configured:
+            package_report = _install_native_causal_packages()
+        model_path = configured
+    elif install_if_configured and auto_install:
+        package_report = _install_native_causal_packages()
+        model_report = _install_pinned_native_causal_model()
+        model_path = str(NATIVE_CAUSAL_MODEL_ROOT)
+        os.environ["HHS_NATIVE_CAUSAL_LM_MODEL"] = model_path
+    else:
+        return {
+            "ready": False,
+            "configured": False,
+            "auto_install": auto_install,
+            "model_path": None,
+            "package_runtime": package_report,
+            "model": model_report,
+            "smoke": None,
+        }
+
+    os.environ.setdefault("HHS_NATIVE_CAUSAL_LM_LOCAL_FILES_ONLY", "1")
+    os.environ.setdefault("HHS_NATIVE_CAUSAL_LM_CPU_FLOAT32", "1")
+    os.environ.setdefault("HHS_NATIVE_CAUSAL_LM_MAX_NEW_TOKENS", "128")
+    os.environ.setdefault("HHS_NATIVE_RESPONSE_BLOCK_MAX_NEW_TOKENS", "128")
+    os.environ.setdefault("HHS_NATIVE_RESPONSE_MAX_BLOCKS", "2")
+    os.environ.setdefault("HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS", "60")
+
+    smoke = (
+        _native_causal_smoke(model_path)
+        if install_if_configured
+        else None
+    )
+    return {
+        "ready": bool(smoke and smoke.get("ready")),
+        "configured": True,
+        "auto_install": auto_install,
+        "model_path": model_path,
+        "package_runtime": package_report,
+        "model": model_report,
+        "smoke": smoke,
+    }
+
+
 def execute(*, install_if_configured: bool, require_assistant: bool) -> dict[str, Any]:
     word2vec = _word2vec_install(install_if_configured=install_if_configured)
     litert_cli = _litert_cli_status()
     gemma = _gemma_registry_status()
+    native_causal = _native_causal_install(
+        install_if_configured=install_if_configured,
+        require_assistant=require_assistant,
+    )
 
     from hhs_backend.runtime.hhs_native_litert_lm_provider_v1 import (
         HHSNativeLiteRTLMTransport,
     )
 
     native = HHSNativeLiteRTLMTransport().installation_status()
-    assistant_ready = bool(gemma.get("ready") or native.get("ready"))
+    native_generative_ready = bool(
+        native.get("ready") and native_causal.get("ready")
+    )
+    assistant_ready = bool(gemma.get("ready") or native_generative_ready)
     report: dict[str, Any] = {
-        "schema": "HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V1",
+        "schema": "HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V2",
         "assistant_ready": assistant_ready,
+        "native_generative_ready": native_generative_ready,
         "selected_provider": (
-            "provider:hhs.litert_lm.gemma4"
+            "provider:hhs.local.text"
+            if native_generative_ready
+            else "provider:hhs.litert_lm.gemma4"
             if gemma.get("ready")
-            else "provider:hhs.local.text"
-            if native.get("ready")
             else None
         ),
         "gemma": gemma,
         "litert_lm_cli": litert_cli,
         "word2vec": word2vec,
         "native_hhs": native,
+        "native_causal": native_causal,
         "require_assistant": require_assistant,
         "fixture_substitution_allowed": False,
         "status_path": str(STATUS_PATH),
@@ -290,9 +547,9 @@ def execute(*, install_if_configured: bool, require_assistant: bool) -> dict[str
     )
     if require_assistant and not assistant_ready:
         raise RuntimeError(
-            "production assistant installation is incomplete: configure a reachable "
-            "LiteRT-LM Gemma model, enable the native HHS language provider contract, "
-            "or install an authoritative Pass 166 Word2Vec manifest"
+            "production assistant installation is incomplete: native-first production "
+            "requires a real causal generator that passes direct CLI acceptance, or a "
+            "reachable LiteRT-LM generative provider"
         )
     return report
 
