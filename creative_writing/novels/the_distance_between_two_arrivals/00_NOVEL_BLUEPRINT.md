@@ -9,7 +9,7 @@
 
 ### Premise and decisive question
 
-The *Meridian* has crossed interstellar space for 164 years and is preparing to enter orbit around Nacre, an ocean planet whose strange resonant weather has long been declared nonbiological. Its eighty-one structural cells comprise seventy-two peripheral habitats and nine central machine cells. Officially, only seventy-one habitats remain occupied. The last was lost in an accident ninety-six years earlier.
+The *Meridian* has crossed interstellar space for 164 years and is preparing to enter orbit around Nacre, an ocean planet whose strange resonant weather has long been declared nonbiological. Its eighty-one structural cells comprise seventy-two peripheral habitats and nine central machine cells. Officially, only seventy-one habitats remain occupied. The last was lost in an accident fifty-six years earlier.
 
 Anja Sorel, a hull-acoustics engineer, finds a mass discrepancy that responds differently to the *order* of two identical diagnostics. It leads to the supposedly dead habitat, whose inhabitants have survived outside the census. An inherited clerical fiction now contaminates navigation, food allocation, and the legal authority to colonize Nacre. At the same time, a signal rising through the planet's oceans is evidence of a nonhuman ecology. Both discoveries make the same demand: recognize witnesses who were not counted, and do not mistake a projection for permission.
 
@@ -67,7 +67,7 @@ Each chapter contains two major irreversible beats: revelation/decision and its 
 08. The Ledger of Copper — Tavi produces ancestor-linked evidence and one essential unsealed name.  
 09. The Nine Empty Cells — the Witness's Genesis topology exposes the 'destroyed' vs 'unregistered' category error.  
 10. The Cost of an Address — census recognition would trigger power cuts; the inhabitants resist symbolic representation without rights.  
-11. The Original Closing — Sada recounts the 96-year-old emergency and the decision to quarantine instead of repair.  
+11. The Original Closing — Sada recounts the 56-year-old emergency and the decision to quarantine instead of repair.  
 12. Terms of Witness — an agreement permits independent verification and binds Anja to publish the same truth to both sides.
 
 **Part III — A World Already Speaking (Ch. 13–18): Capture → Inversion**  
@@ -104,7 +104,7 @@ Each chapter contains two major irreversible beats: revelation/decision and its 
 
 ### Time, matter, and character continuity
 
-- Ship age: 164 years since Earth departure. Original Cell 72 accident: 96 years before present.
+- Ship age: 164 years since Earth departure. Original Cell 72 accident: 56 years before present.
 - Nacre approach window: 19 days at opening. The narrow direct capture window closes in Act IV; extended plan adds eleven years until permanent orbit/resupply equilibrium; no instant faster-than-light remedy.
 - Physical resource needs: combined registered/hidden population and stored mass must be included in maneuver planning. Scarcity remains; ending includes rations and finite work.
 - Anja's father died nine years earlier; Sada is alive and was present for the closing at age 14. Anja initially believes Sada abandoned the household; actual reasons unfold but do not excuse deception.
