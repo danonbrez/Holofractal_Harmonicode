@@ -233,11 +233,20 @@ def pass202_membrane_source_evidence() -> Dict[str, Any]:
     )
     _require(
         LANGUAGE_INSTALLER_PATH,
-        NATIVE_CAUSAL_REQUIREMENTS_PATH,
         "HHS_PRODUCTION_LANGUAGE_STATUS_PATH",
         '"provider:hhs.local.text"',
-        "native HHS language provider contract",
+        "native_generative_ready",
+        "HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V2",
+        "_native_causal_smoke",
         '"status_path": str(STATUS_PATH)',
+    )
+    _require(
+        NATIVE_CAUSAL_REQUIREMENTS_PATH,
+        "torch==2.5.1+cpu",
+        "transformers==4.46.3",
+        "huggingface-hub==0.26.2",
+        "safetensors==0.4.5",
+        "tokenizers==0.20.3",
     )
     _require(
         CONTRACT_TEST_PATH,
