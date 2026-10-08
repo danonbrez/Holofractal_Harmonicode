@@ -1,10 +1,13 @@
 """FastAPI routes for the production governed HHS assistant interface."""
 from __future__ import annotations
 
+import time
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
+
+from hhs_backend.runtime.hhs_assistant_stage_timing_v1 import assistant_trace, timed_stage
 
 router = APIRouter(prefix="/api/assistant", tags=["assistant", "production", "hhs-tools"])
 _SERVICE: Any = None
@@ -156,44 +159,111 @@ async def assistant_send_message(
         ) from exc
 
 
+async def _execute_chat_request(
+    request: ChatRequest,
+    *,
+    trace_label: str | None = None,
+) -> Dict[str, Any]:
+    with assistant_trace(trace_label):
+        with timed_stage("route.assistant_chat.total"):
+            thread_id = request.thread_id
+            if not thread_id:
+                with timed_stage("route.assistant_chat.create_thread"):
+                    thread = _service().create_thread(
+                        project_id=request.project_id,
+                        title=request.title,
+                        metadata=request.metadata,
+                    )
+                    thread_id = thread["thread_id"]
+            try:
+                with timed_stage("route.assistant_chat.service_send_message"):
+                    return await _service().send_message(
+                        thread_id,
+                        content=request.content,
+                        tools=request.tools,
+                        response_format=request.response_format,
+                        custom_system_instruction=request.custom_system_instruction,
+                        assistant_mode=request.assistant_mode,
+                        user_context=request.user_context,
+                    )
+            except KeyError as exc:
+                raise HTTPException(
+                    status_code=404,
+                    detail={
+                        "schema": "HHS_AI_CONVERSATION_THREAD_NOT_FOUND_V1",
+                        "ok": False,
+                        "thread_id": thread_id,
+                    },
+                ) from exc
+            except ValueError as exc:
+                raise HTTPException(
+                    status_code=422,
+                    detail={
+                        "schema": "HHS_AI_CONVERSATION_MESSAGE_REJECTION_V1",
+                        "ok": False,
+                        "reason": str(exc),
+                    },
+                ) from exc
+
+
 @router.post("/chat")
 async def assistant_chat(request: ChatRequest) -> Dict[str, Any]:
-    thread_id = request.thread_id
+    return await _execute_chat_request(request)
+
+
+async def production_assistant_route_warmup(
+    token: str = "HHS-PRODUCTION-CHATBOT-E2E-7249",
+) -> Dict[str, Any]:
+    """Exercise the identical two-turn production chat route before readiness."""
+    started = time.perf_counter()
+    first = await _execute_chat_request(
+        ChatRequest(
+            project_id="project:production-startup-prewarm",
+            title="Production Startup Prewarm",
+            content=f"Remember this exact token for my next message: {token}. Reply briefly.",
+            assistant_mode="BOTH",
+        ),
+        trace_label="startup-prewarm-turn-1",
+    )
+    if first.get("ok") is not True:
+        raise RuntimeError(f"production assistant warmup first turn failed: {first}")
+    thread_id = str(first.get("thread_id") or "")
     if not thread_id:
-        thread = _service().create_thread(
-            project_id=request.project_id,
-            title=request.title,
-            metadata=request.metadata,
+        raise RuntimeError(f"production assistant warmup omitted thread_id: {first}")
+
+    second = await _execute_chat_request(
+        ChatRequest(
+            thread_id=thread_id,
+            project_id="project:production-startup-prewarm",
+            title="Production Startup Prewarm",
+            content=(
+                "What exact token did I ask you to remember in my previous message? "
+                "Reply with only the token."
+            ),
+            assistant_mode="BOTH",
+        ),
+        trace_label="startup-prewarm-turn-2",
+    )
+    if second.get("ok") is not True:
+        raise RuntimeError(f"production assistant warmup second turn failed: {second}")
+    recalled = str((second.get("assistant_message") or {}).get("content") or "").strip()
+    if recalled != token:
+        raise RuntimeError(
+            f"production assistant warmup recall mismatch: expected={token!r} actual={recalled!r}"
         )
-        thread_id = thread["thread_id"]
-    try:
-        return await _service().send_message(
-            thread_id,
-            content=request.content,
-            tools=request.tools,
-            response_format=request.response_format,
-            custom_system_instruction=request.custom_system_instruction,
-            assistant_mode=request.assistant_mode,
-            user_context=request.user_context,
-        )
-    except KeyError as exc:
-        raise HTTPException(
-            status_code=404,
-            detail={
-                "schema": "HHS_AI_CONVERSATION_THREAD_NOT_FOUND_V1",
-                "ok": False,
-                "thread_id": thread_id,
-            },
-        ) from exc
-    except ValueError as exc:
-        raise HTTPException(
-            status_code=422,
-            detail={
-                "schema": "HHS_AI_CONVERSATION_MESSAGE_REJECTION_V1",
-                "ok": False,
-                "reason": str(exc),
-            },
-        ) from exc
+    if str(second.get("thread_id") or "") != thread_id:
+        raise RuntimeError("production assistant warmup thread changed between turns")
+
+    return {
+        "schema": "HHS_PRODUCTION_ASSISTANT_ROUTE_WARMUP_V1",
+        "ok": True,
+        "thread_id": thread_id,
+        "token": token,
+        "two_turn_exact_memory_verified": True,
+        "thread_continuity_verified": True,
+        "elapsed_ms": int((time.perf_counter() - started) * 1000),
+        "runtime_mutation_admitted": False,
+    }
 
 
 @router.websocket("/ws/{thread_id}")

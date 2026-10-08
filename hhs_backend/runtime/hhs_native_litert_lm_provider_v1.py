@@ -18,6 +18,7 @@ import uuid
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_backend.runtime.hhs_assistant_stage_timing_v1 import timed_stage
 from hhs_backend.runtime.hhs_pass220_native_causal_lm_generation_v1 import (
     NativeCausalLMGenerationService,
     NativeCausalLMNotReady,
@@ -1000,20 +1001,24 @@ class HHSNativeLiteRTLMTransport:
         response_format: Optional[Mapping[str, Any]] = None,
     ) -> Dict[str, Any]:
         del response_format
-        self._require_ready()
-        message_list = [dict(message) for message in messages]
-        mode = _assistant_mode_from_messages(message_list)
-        query = _last_user_content(message_list).strip()
+        with timed_stage("native_transport.require_ready"):
+            self._require_ready()
+        with timed_stage("native_transport.project_messages"):
+            message_list = [dict(message) for message in messages]
+            mode = _assistant_mode_from_messages(message_list)
+            query = _last_user_content(message_list).strip()
         if not query:
             raise ValueError("native HHS provider requires a user message")
 
-        tool_messages = _tool_messages_after_last_user(message_list)
+        with timed_stage("native_transport.tool_message_projection"):
+            tool_messages = _tool_messages_after_last_user(message_list)
         if not tool_messages:
-            tool_calls = self._select_tool_calls(
-                query,
-                tools,
-                assistant_mode=mode,
-            )
+            with timed_stage("native_transport.select_tool_calls"):
+                tool_calls = self._select_tool_calls(
+                    query,
+                    tools,
+                    assistant_mode=mode,
+                )
             if tool_calls:
                 return {
                     "id": _completion_id(),
@@ -1036,13 +1041,15 @@ class HHSNativeLiteRTLMTransport:
                     },
                 }
 
-        receipts = self._parse_tool_receipts(tool_messages)
+        with timed_stage("native_transport.parse_tool_receipts"):
+            receipts = self._parse_tool_receipts(tool_messages)
 
-        history_recall = (
-            self._history_recall_answer(query, message_list)
-            if not receipts
-            else None
-        )
+        with timed_stage("native_transport.history_recall"):
+            history_recall = (
+                self._history_recall_answer(query, message_list)
+                if not receipts
+                else None
+            )
         if history_recall is not None:
             trace = {
                 "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",

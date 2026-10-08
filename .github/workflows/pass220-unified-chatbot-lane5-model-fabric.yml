@@ -4,7 +4,9 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'hhs_backend/api/litert_lm_assistant_routes.py'
       - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
+      - 'hhs_backend/runtime/hhs_assistant_stage_timing_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
@@ -15,6 +17,7 @@ on:
       - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
       - 'tests/test_hhs_litert_lm_hhs_api_tools_v1.py'
+      - 'tests/test_hhs_production_assistant_route_warmup_v1.py'
       - 'tests/test_hhs_production_public_app_v1.py'
       - 'docs/pass220/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5.md'
       - 'docs/operations/restart/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5_20260925.md'
@@ -24,7 +27,9 @@ on:
       - main
       - pass220/unified-chatbot-lane5-model-fabric-20260925
     paths:
+      - 'hhs_backend/api/litert_lm_assistant_routes.py'
       - 'hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py'
+      - 'hhs_backend/runtime/hhs_assistant_stage_timing_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py'
       - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
@@ -35,6 +40,7 @@ on:
       - 'tests/pass220/test_hhs_pass220_i008_assistant_modes.py'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
       - 'tests/test_hhs_litert_lm_hhs_api_tools_v1.py'
+      - 'tests/test_hhs_production_assistant_route_warmup_v1.py'
       - 'tests/test_hhs_production_public_app_v1.py'
       - 'docs/pass220/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5.md'
       - 'docs/operations/restart/PASS_220_UNIFIED_CHATBOT_MODEL_FABRIC_LANE5_20260925.md'
@@ -69,7 +75,9 @@ jobs:
       - name: Compile unified chatbot surfaces
         run: |
           python -m py_compile \
+            hhs_backend/api/litert_lm_assistant_routes.py \
             hhs_backend/runtime/hhs_assistant_api_tool_gateway_v1.py \
+            hhs_backend/runtime/hhs_assistant_stage_timing_v1.py \
             hhs_backend/runtime/hhs_litert_lm_assistant_v1.py \
             hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py \
             hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
@@ -80,6 +88,7 @@ jobs:
             tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
+            tests/test_hhs_production_assistant_route_warmup_v1.py \
             tests/test_hhs_production_public_app_v1.py
 
       - name: Run unified chatbot dependency-scoped regression
@@ -93,4 +102,5 @@ jobs:
             tests/pass220/test_hhs_pass220_i008_assistant_modes.py \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
             tests/test_hhs_litert_lm_hhs_api_tools_v1.py \
+            tests/test_hhs_production_assistant_route_warmup_v1.py \
             tests/test_hhs_production_public_app_v1.py

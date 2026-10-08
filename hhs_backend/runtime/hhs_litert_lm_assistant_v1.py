@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Mapping, Optional
 
 from hhs_backend.runtime.runtime_workspace_object_v1 import hash72
+from hhs_backend.runtime.hhs_assistant_stage_timing_v1 import timed_stage
 from hhs_backend.runtime.hhs_provider_execution_proposal_v1 import (
     build_provider_execution_proposal,
     validate_provider_execution_proposal,
@@ -629,25 +630,26 @@ class HHSAssistantService:
         context_root = user_context_root(context)
         mode = normalize_assistant_mode(assistant_mode)
 
-        proposal = build_provider_execution_proposal(
-            capability_class="TEXT_GENERATION",
-            project_id=str(thread.get("project_id") or "project:default"),
-            input_payload={
-                "thread_id": thread_id,
-                "message_root_hash72": user_message["message_root_hash72"],
-                "custom_system_instruction_root_hash72": custom_instruction_root,
-                "assistant_mode": mode,
-                "user_context_root_hash72": context_root,
-            },
-            requested_operation=self.requested_operation,
-            constraints={
-                "provider_id": self.provider_id,
-                "model_id": self.config.model_id,
-                "direct_mutation_allowed": False,
-            },
-        )
-        proposal_validation = validate_provider_execution_proposal(proposal)
-        policy = evaluate_capability_policy_gate(proposal)
+        with timed_stage("assistant.turn.proposal_and_policy"):
+            proposal = build_provider_execution_proposal(
+                capability_class="TEXT_GENERATION",
+                project_id=str(thread.get("project_id") or "project:default"),
+                input_payload={
+                    "thread_id": thread_id,
+                    "message_root_hash72": user_message["message_root_hash72"],
+                    "custom_system_instruction_root_hash72": custom_instruction_root,
+                    "assistant_mode": mode,
+                    "user_context_root_hash72": context_root,
+                },
+                requested_operation=self.requested_operation,
+                constraints={
+                    "provider_id": self.provider_id,
+                    "model_id": self.config.model_id,
+                    "direct_mutation_allowed": False,
+                },
+            )
+            proposal_validation = validate_provider_execution_proposal(proposal)
+            policy = evaluate_capability_policy_gate(proposal)
         if not proposal_validation.get("ok") or not policy.get("ok"):
             result = {
                 "schema": TURN_SCHEMA,
@@ -666,17 +668,21 @@ class HHSAssistantService:
             return result
 
         try:
-            raw_response = await self.transport.chat_completion(
-                messages=self._model_messages(
+            with timed_stage("assistant.turn.model_messages"):
+                model_messages = self._model_messages(
                     thread,
                     custom_system_instruction=custom_instruction,
                     assistant_mode=mode,
                     user_context=context,
-                ),
-                tools=(None if tools is None else [dict(tool) for tool in tools]),
-                response_format=response_format,
-            )
-            completion = self._extract_completion(raw_response)
+                )
+            with timed_stage("assistant.turn.transport_chat_completion"):
+                raw_response = await self.transport.chat_completion(
+                    messages=model_messages,
+                    tools=(None if tools is None else [dict(tool) for tool in tools]),
+                    response_format=response_format,
+                )
+            with timed_stage("assistant.turn.extract_completion"):
+                completion = self._extract_completion(raw_response)
         except Exception as exc:
             result = {
                 "schema": TURN_SCHEMA,
@@ -707,11 +713,12 @@ class HHSAssistantService:
             )
             response_tensor_kind = "TOOL_CALL"
 
-        tensor_admission = admit_native_lean_alignment_tensor(
-            str(user_message.get("content") or ""),
-            response_tensor_payload,
-            response_kind=response_tensor_kind,
-        )
+        with timed_stage("assistant.turn.native_lean_alignment"):
+            tensor_admission = admit_native_lean_alignment_tensor(
+                str(user_message.get("content") or ""),
+                response_tensor_payload,
+                response_kind=response_tensor_kind,
+            )
         if not tensor_admission.get("canonical"):
             result = {
                 "schema": TURN_SCHEMA,
@@ -734,50 +741,53 @@ class HHSAssistantService:
             result["turn_root_hash72"] = hash72(TURN_SCHEMA, result)
             return result
 
-        receipt = invoke_provider_with_receipt(
-            proposal,
-            simulated_raw_result={
-                "schema": "HHS_LITERT_LM_RAW_COMPLETION_V1",
-                "provider_id": self.provider_id,
-                "model_id": completion.get("model") or self.config.model_id,
-                "native_lean_alignment_admission": tensor_admission,
-                **completion,
-            },
-        )
-        ingress = ingress_provider_result(
-            receipt,
-            project_id=str(thread.get("project_id") or "project:default"),
-            output_modality="TEXT",
-            target_artifact_type="AI_THREAD_ASSISTANT_TURN",
-        )
-        assistant_message = self.threads.append(
-            thread_id,
-            role="assistant",
-            content=completion["content"],
-            tool_calls=completion["tool_calls"],
-            admission={
-                "provider_id": self.provider_id,
-                "provider_invocation_receipt_hash72": receipt.get(
-                    "provider_invocation_receipt_hash72"
-                ),
-                "provider_result_ingress_root_hash72": ingress.get(
-                    "provider_result_ingress_root_hash72"
-                ),
-                "provider_result_ingress_ok": bool(ingress.get("ok")),
-                "native_response_stream_root_hash72": (
-                    (completion.get("provider_metadata") or {})
-                    .get("response_stream_manifest", {})
-                    .get("stream_root_hash72")
-                ),
-                "native_lean_alignment_admission_root_hash72": tensor_admission.get(
-                    "admission_root_hash72"
-                ),
-                "native_lean_alignment_tensor_state": tensor_admission.get(
-                    "tensor_state"
-                ),
-                "runtime_mutation_admitted": False,
-            },
-        )
+        with timed_stage("assistant.turn.provider_receipt"):
+            receipt = invoke_provider_with_receipt(
+                proposal,
+                simulated_raw_result={
+                    "schema": "HHS_LITERT_LM_RAW_COMPLETION_V1",
+                    "provider_id": self.provider_id,
+                    "model_id": completion.get("model") or self.config.model_id,
+                    "native_lean_alignment_admission": tensor_admission,
+                    **completion,
+                },
+            )
+        with timed_stage("assistant.turn.provider_result_ingress"):
+            ingress = ingress_provider_result(
+                receipt,
+                project_id=str(thread.get("project_id") or "project:default"),
+                output_modality="TEXT",
+                target_artifact_type="AI_THREAD_ASSISTANT_TURN",
+            )
+        with timed_stage("assistant.turn.append_assistant_message"):
+            assistant_message = self.threads.append(
+                thread_id,
+                role="assistant",
+                content=completion["content"],
+                tool_calls=completion["tool_calls"],
+                admission={
+                    "provider_id": self.provider_id,
+                    "provider_invocation_receipt_hash72": receipt.get(
+                        "provider_invocation_receipt_hash72"
+                    ),
+                    "provider_result_ingress_root_hash72": ingress.get(
+                        "provider_result_ingress_root_hash72"
+                    ),
+                    "provider_result_ingress_ok": bool(ingress.get("ok")),
+                    "native_response_stream_root_hash72": (
+                        (completion.get("provider_metadata") or {})
+                        .get("response_stream_manifest", {})
+                        .get("stream_root_hash72")
+                    ),
+                    "native_lean_alignment_admission_root_hash72": tensor_admission.get(
+                        "admission_root_hash72"
+                    ),
+                    "native_lean_alignment_tensor_state": tensor_admission.get(
+                        "tensor_state"
+                    ),
+                    "runtime_mutation_admitted": False,
+                },
+            )
         result = {
             "schema": TURN_SCHEMA,
             "version": VERSION,

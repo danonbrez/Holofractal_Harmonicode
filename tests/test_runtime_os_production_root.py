@@ -28,6 +28,9 @@ def test_digitalocean_gateway_selects_full_runtime_os_application_projection_by_
     assert "from hhs_backend.runtime_os_application_server import app as authoritative_app" in source
     assert "from hhs_backend.runtime_os_visual_server import app as authoritative_app" not in source
     assert "Pass Runtime OS HTML/assets through unchanged" in source
+    assert "authoritative_app.router.lifespan_context = _production_assistant_lifespan" in source
+    assert "production_assistant_route_warmup" in source
+    assert "add_event_handler" not in source
     assert "runtime_os_application_server_full" in application_source
     assert "from hhs_backend.application_ide_server import app as inherited_app" in full_source
     assert "project_runtime_os(app, mount_name=PUBLIC_MOUNT_NAME)" in full_source
