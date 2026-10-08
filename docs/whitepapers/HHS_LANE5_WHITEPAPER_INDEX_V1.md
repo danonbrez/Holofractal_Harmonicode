@@ -653,3 +653,17 @@ declarations until a catalogued external Lean proof or independent HHS proof
 closure is supplied. Truth, proof, execution, VM81 mutation, canonical hashes,
 persistence, learning, model-weight, and floating-point authority remain false.
 
+### Pass 220 I081 — Doc-bound formalization promotions
+
+[HHS_PASS_220_I081_DOC_BOUND_FORMALIZATION_PROMOTIONS_V1.md](HHS_PASS_220_I081_DOC_BOUND_FORMALIZATION_PROMOTIONS_V1.md)
+
+I081 deep-hydrates twenty priority I080 HOLD families against the pinned OpenAI
+family formalization documentation. Twenty-five HOLD sources are exact
+source/doc matches. Sixteen are promoted to source-bound theorem constructors
+because the pinned documentation covers their main title-level claim; nine
+remain HOLD with partial formal evidence because only selected/supporting
+results are formalized. The active novelty frontier is now 70 theorem
+constructors plus 252 HOLD constructors, preserving exact 322-source coverage
+with no gap. External Lean formalization remains proof authority; no independent
+HHS reproof or canonical runtime authority is implied.
+

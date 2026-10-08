@@ -1,0 +1,56 @@
+{
+  "schema": "HHS_PASS_220_I081_DOC_BOUND_FORMALIZATION_PROMOTIONS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-08",
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "branch": "pass220/i081-doc-bound-formalization-promotions-20261008",
+  "merge_target": "main",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "objective": "Deep-hydrate the first 20 priority HOLD families against pinned OpenAI family formalization docs; promote only exact source-linked main-claim coverage and preserve partial/source-limited formalizations as HOLD evidence.",
+  "audit": {
+    "priority_families": 20,
+    "exact_doc_bound_hold_sources": 25,
+    "promoted_full_main_claim_sources": 16,
+    "partial_formalization_sources": 9
+  },
+  "frontier": {
+    "i079_theorems": 54,
+    "i081_promotions": 16,
+    "active_theorems": 70,
+    "i080_holds_before_i081": 268,
+    "active_holds_after_i081": 252,
+    "active_frontier_total": 322,
+    "gap": 0
+  },
+  "implementation": {
+    "registry": "data/pass220/openai_math_doc_bound_formalization_promotions_v1.json",
+    "runtime": "hhs_runtime/hhs_pass220_i081_doc_bound_formalization_promotions_v1.py",
+    "callable_surfaces": [
+      "validate_active_frontier",
+      "build_registry_receipt",
+      "invoke_promoted_constructor",
+      "invoke_partial_binding"
+    ],
+    "deterministic_replay": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "independent_hhs_reproof": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "validation": {
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "negative_tests": [
+      "unadmitted theorem",
+      "partial whole-claim authority escalation",
+      "promotion authority drift"
+    ]
+  }
+}

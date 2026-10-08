@@ -1,0 +1,1008 @@
+{
+  "schema": "HHS_PASS_220_I081_DOC_BOUND_FORMALIZATION_PROMOTIONS_V1",
+  "version": "1.0.0",
+  "date": "2026-10-08",
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "parent_hold_registry": "HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1",
+  "audit_scope": {
+    "priority_family_count": 20,
+    "exact_doc_bound_hold_sources": 25,
+    "full_main_claim_promotions": 16,
+    "partial_formalization_bindings": 9,
+    "prior_i079_theorem_constructors": 54,
+    "prior_i080_hold_constructors": 268,
+    "active_theorem_constructors_after_i081": 70,
+    "active_hold_constructors_after_i081": 252,
+    "active_frontier_total": 322,
+    "coverage_gap": 0
+  },
+  "semantics": {
+    "doc_verified_main_claim_coverage": "The pinned OpenAI family documentation explicitly links the source preprint and describes formalized result(s) that cover the manuscript's main title-level claim. The external Lean proof remains proof authority.",
+    "partial_selected_result_only": "The pinned family documentation links the source but explicitly limits formal coverage to supporting or selected results. The I080 manuscript constructor remains HOLD.",
+    "no_independent_hhs_reproof_claim": true,
+    "deterministic_candidate_receipts": true
+  },
+  "promotions": [
+    {
+      "family_id": "003",
+      "source_title": "The Quasi Riemann Hypothesis",
+      "source_slug": "The-Quasi-Riemann-Hypothesis-September-30-2026",
+      "source_tree_sha": "8a3427fa6360eb9bb1234a75cb1a0327b2b35165",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/003.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F003-8A3427FA6360",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/QuasiRiemannHypothesis.json",
+          "solution_module": "OAI.NumberTheory.DirichletL.Nonvanishing",
+          "solution_file": "lean/OAI/NumberTheory/DirichletL/Nonvanishing.lean",
+          "theorem_names": [
+            "OAI.riemannZeta_ne_zero_of_seven_eighths_lt_re"
+          ]
+        },
+        {
+          "comparator": "lean/ComparatorChallenges/DirichletSevenEighths.json",
+          "solution_module": "OAI.NumberTheory.DirichletL.Nonvanishing",
+          "solution_file": "lean/OAI/NumberTheory/DirichletL/Nonvanishing.lean",
+          "theorem_names": [
+            "OAI.DirichletCharacter.LFunction_ne_zero_of_seven_eighths_lt_re"
+          ]
+        },
+        {
+          "comparator": "lean/ComparatorChallenges/HeckeSevenEighths.json",
+          "solution_module": "OAI.NumberTheory.DirichletL.Hecke.Nonvanishing",
+          "solution_file": "lean/OAI/NumberTheory/DirichletL/Hecke/Nonvanishing.lean",
+          "theorem_names": [
+            "OAI.SevenEighths.HeckeFamily.LFunction_ne_zero_of_seven_eighths_lt_re"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links this preprint and states the 7/8 zero-free results for zeta, Dirichlet L-functions, and finite-order Hecke L-functions.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F003-8A3427FA6360",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "005",
+      "source_title": "Catalans constant is irrational",
+      "source_slug": "Catalans-constant-is-irrational-September-24-2026",
+      "source_tree_sha": "8ab267de5c79481ce62eff102cadd07e382cfcff",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/005.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F005-8AB267DE5C79",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/Catalan.json",
+          "solution_module": "OAI.NumberTheory.Catalan.Main",
+          "solution_file": "lean/OAI/NumberTheory/Catalan/Main.lean",
+          "theorem_names": [
+            "OAI.InternalCatalan.catalan_irrational"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc says the formalization proves the mathematical assertion in the paper title.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F005-8AB267DE5C79",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "013",
+      "source_title": "the additive indecomposability of the primes",
+      "source_slug": "the-additive-indecomposability-of-the-primes-September-24-2026",
+      "source_tree_sha": "7eae6f48edc2a8a17c2b24b73ce7e8bbe67ba318",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/013.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F013-7EAE6F48EDC2",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/OstmannComplete.json",
+          "solution_module": "OAI.NumberTheory.Ostmann.Complete",
+          "solution_file": "lean/OAI/NumberTheory/Ostmann/Complete.lean",
+          "theorem_names": [
+            "OAI.Ostmann.inverseGoldbach",
+            "OAI.Ostmann.twoInfiniteSummandsImpossible"
+          ]
+        },
+        {
+          "comparator": "lean/ComparatorChallenges/OstmannPrimes.json",
+          "solution_module": "OAI.NumberTheory.Ostmann.Main",
+          "solution_file": "lean/OAI/NumberTheory/Ostmann/Main.lean",
+          "theorem_names": [
+            "OAI.Ostmann.main"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the preprint and identifies the formalized inverse-Goldbach/additive-indecomposability theorem.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F013-7EAE6F48EDC2",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "087",
+      "source_title": "The Mahler Conjecture for General Convex Bodies",
+      "source_slug": "The-Mahler-Conjecture-for-General-Convex-Bodies-September-22-2026",
+      "source_tree_sha": "9023c2424e91c65361e66ed43ed963b5c24585a6",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/087.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F087-9023C2424E91",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/GeneralMahler.json",
+          "solution_module": "OAI.Geometry.Convex.GeneralMahler.Theorem",
+          "solution_file": "lean/OAI/Geometry/Convex/GeneralMahler/Theorem.lean",
+          "theorem_names": [
+            "OAI.GeneralMahler.general_mahler"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and formalizes the general Mahler lower bound with simplex equality.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F087-9023C2424E91",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "115",
+      "source_title": "Exact Uniform Sampling of Contingency Tables with Arbitrary Margins",
+      "source_slug": "Exact-Uniform-Sampling-of-Contingency-Tables-with-Arbitrary-Margins-September-24-2026",
+      "source_tree_sha": "3472f9ef9d755db4a0a911c46e9abb1982859d18",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/115.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F115-3472F9EF9D75",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/ContingencyTables.json",
+          "solution_module": "OAI.Combinatorics.ContingencyTables.UnconditionalMain",
+          "solution_file": "lean/OAI/Combinatorics/ContingencyTables/UnconditionalMain.lean",
+          "theorem_names": [
+            "OAI.ContingencyTables.boundedSampling",
+            "OAI.ContingencyTables.exactSampling"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and states exact uniform and bounded-time sampling theorems.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F115-3472F9EF9D75",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "134",
+      "source_title": "Generalized Star Height at Most Three",
+      "source_slug": "Generalized-Star-Height-at-Most-Three-September-25-2026",
+      "source_tree_sha": "be4d2ded666fc30b266d1a7d04fa7df9e517a8a1",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/134.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F134-BE4D2DED666F",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+          "solution_module": "OAI.Computability.StarHeight.Main",
+          "solution_file": "lean/OAI/Computability/StarHeight/Main.lean",
+          "theorem_names": [
+            "OAI.GeneralizedStarHeight.main"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links this paper and states the uniform generalized star-height bound of three.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F134-BE4D2DED666F",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "134",
+      "source_title": "Generalized Star Height at Most Four",
+      "source_slug": "Generalized-Star-Height-at-Most-Four-September-25-2026",
+      "source_tree_sha": "d79361f438515134b99cb88ce2522ae091501220",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/134.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F134-D79361F43851",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+          "solution_module": "OAI.Computability.StarHeight.Main",
+          "solution_file": "lean/OAI/Computability/StarHeight/Main.lean",
+          "theorem_names": [
+            "OAI.GeneralizedStarHeight.main"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc states the formalized bound of three implies the accompanying bound of four.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F134-D79361F43851",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "144",
+      "source_title": "A smooth three torus diffeomorphism with simple Lebesgue spectrum",
+      "source_slug": "A-smooth-three-torus-diffeomorphism-with-simple-Lebesgue-spectrum-September-23-2026",
+      "source_tree_sha": "5b0ce67d3fb7d5e78597afbc3e41a2f3b2bacdb6",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/144.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F144-5B0CE67D3FB7",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/ThreeTorus.json",
+          "solution_module": "OAI.Dynamics.ThreeTorus.Main",
+          "solution_file": "lean/OAI/Dynamics/ThreeTorus/Main.lean",
+          "theorem_names": [
+            "OAI.ThreeTorus.simple_lebesgue_spectrum"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and states the simple-Lebesgue-spectrum construction.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F144-5B0CE67D3FB7",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "150",
+      "source_title": "Ergodicity of triangular billiards with an irrational angle",
+      "source_slug": "Ergodicity-of-triangular-billiards-with-an-irrational-angle-September-25-2026",
+      "source_tree_sha": "d68d7a01e5a2715f3e64e0747ed4e3338bb68f6b",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/150.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F150-D68D7A01E5A2",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/IrrationalTriangleBilliard.json",
+          "solution_module": "OAI.Dynamics.TriangleBilliards.Main",
+          "solution_file": "lean/OAI/Dynamics/TriangleBilliards/Main.lean",
+          "theorem_names": [
+            "OAI.TriangularBilliards.irrational_triangle_billiard"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and formalizes ergodicity for every triangle with an irrational angle.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F150-D68D7A01E5A2",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "187",
+      "source_title": "Snaky in 21 Maker moves",
+      "source_slug": "Snaky-in-21-Maker-moves-September-25-2026",
+      "source_tree_sha": "2f822e4f3be927d3fcc74b4b0c9bf065ac21dd20",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/187.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F187-2F822E4F3BE9",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/SnakyTwentyOne.json",
+          "solution_module": "OAI.GameTheory.SnakyTwentyOne.Main",
+          "solution_file": "lean/OAI/GameTheory/SnakyTwentyOne/Main.lean",
+          "theorem_names": [
+            "OAI.SnakyPrototype.snaky_winning_strategy_21_with_legal_states"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and proves a legal winning strategy within 21 Maker moves.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F187-2F822E4F3BE9",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "221",
+      "source_title": "The Mezard Parisi formula for diluted spin glasses",
+      "source_slug": "The-Mezard-Parisi-formula-for-diluted-spin-glasses-September-23-2026",
+      "source_tree_sha": "b7af177de48be866ec2736d9187390917772adeb",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/221.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F221-B7AF177DE48B",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/DilutedSpin.json",
+          "solution_module": "OAI.Probability.DilutedSpin.Main",
+          "solution_file": "lean/OAI/Probability/DilutedSpin/Main.lean",
+          "theorem_names": [
+            "OAI.DilutedSpinGlass.mezard_parisi"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and states the Mézard–Parisi variational equality in the declared class.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F221-B7AF177DE48B",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "235",
+      "source_title": "Variance of the Random k SAT Hitting Time",
+      "source_slug": "Variance-of-the-Random-k-SAT-Hitting-Time-September-27-2026",
+      "source_tree_sha": "6a6ab6d68cf18d413549a8368b5c4a0474d26f51",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/235.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F235-6A6AB6D68CF1",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/SATVariance.json",
+          "solution_module": "OAI.Probability.SATVariance.Main",
+          "solution_file": "lean/OAI/Probability/SATVariance/Main.lean",
+          "theorem_names": [
+            "OAI.RandomKSAT.variance_main"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and states the variance bounds for the random k-SAT hitting time.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F235-6A6AB6D68CF1",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "235",
+      "source_title": "A Limiting Satisfiability Threshold for Every Fixed Clause Size",
+      "source_slug": "A-Limiting-Satisfiability-Threshold-for-Every-Fixed-Clause-Size-September-25-2026",
+      "source_tree_sha": "dc41bfaeb5b022860c2f4ba0f8a159240cab47cc",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/235.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F235-DC41BFAEB5B0",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/FixedClauseThreshold.json",
+          "solution_module": "OAI.Probability.RandomSAT.Main",
+          "solution_file": "lean/OAI/Probability/RandomSAT/Main.lean",
+          "theorem_names": [
+            "OAI.FixedClauseThreshold.main"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and proves a limiting threshold for every fixed k>=3.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F235-DC41BFAEB5B0",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "235",
+      "source_title": "Computing the Random 3 SAT Threshold",
+      "source_slug": "Computing-the-Random-3-SAT-Threshold-September-27-2026",
+      "source_tree_sha": "f8dc242b6d7b3c4dacb203c46e34eeca2d1b19a3",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/235.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F235-F8DC242B6D7B",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/SATComputability.json",
+          "solution_module": "OAI.Probability.SATComputability.Main",
+          "solution_file": "lean/OAI/Probability/SATComputability/Main.lean",
+          "theorem_names": [
+            "OAI.FixedClauseThreshold.Computability.main"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and proves computability of the limiting random 3-SAT threshold.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F235-F8DC242B6D7B",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "246",
+      "source_title": "A Modulus Proof of Cannons Conjecture",
+      "source_slug": "A-Modulus-Proof-of-Cannons-Conjecture-September-23-2026",
+      "source_tree_sha": "8743e3a42d6f3c0d214f94824f5e56299b72a5af",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/246.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F246-8743E3A42D6F",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/CannonGeometricAction.json",
+          "solution_module": "OAI.Geometry.Cannon.Main",
+          "solution_file": "lean/OAI/Geometry/Cannon/Main.lean",
+          "theorem_names": [
+            "OAI.CannonRelease.cannon"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and proves Cannon's geometric-action conclusion.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F246-8743E3A42D6F",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "376",
+      "source_title": "Computation under Rapidly Vanishing Navier Stokes Forcing",
+      "source_slug": "Computation-under-Rapidly-Vanishing-Navier-Stokes-Forcing-September-27-2026",
+      "source_tree_sha": "4d453a8eb69eb7a53f5923d1b999945987f7296d",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/376.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F376-4D453A8EB69E",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/NavierStokesAlternating.json",
+          "solution_module": "OAI.MathematicalPhysics.AlternatingFlow.Development",
+          "solution_file": "lean/OAI/MathematicalPhysics/AlternatingFlow/Development.lean",
+          "theorem_names": [
+            "OAI.AlternatingNS.alternating"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc explicitly links the paper and formalizes finite-machine halting detection under rapidly decaying smooth incompressible Navier–Stokes forcing.",
+      "constructor_id": "HHS-OAI-DOC-THEOREM-F376-4D453A8EB69E",
+      "constructor_kind": "HHS_SOURCE_BOUND_DOC_VERIFIED_THEOREM_CONSTRUCTOR_V1",
+      "status": "PROMOTED_FROM_I080_HOLD",
+      "coverage_class": "DOC_VERIFIED_MAIN_CLAIM_COVERAGE",
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_authority": true,
+        "independent_hhs_reproof": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    }
+  ],
+  "partial_bindings": [
+    {
+      "family_id": "033",
+      "source_title": "The reverse logarithmic Kodaira inequality and additivity",
+      "source_slug": "The-reverse-logarithmic-Kodaira-inequality-and-additivity-September-26-2026",
+      "source_tree_sha": "e17f30b154eb1eda0945a8d9eede9a0037aa9c0b",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/033.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F033-E17F30B154EB",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/LogKodairaFiberNegative.json",
+          "solution_module": "OAI.AlgebraicGeometry.LogKodaira.FiberNegative",
+          "solution_file": "lean/OAI/AlgebraicGeometry/LogKodaira/FiberNegative.lean",
+          "theorem_names": [
+            "OAI.ReverseLogKodaira.SmoothProjectiveVariety.veryGenerally_fiber_negative_branch"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc limits the selected formalization to the negative-fiber branch; other branches of the paper remain outside scope.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F033-E17F30B154EB",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "100",
+      "source_title": "Slope field perturbations of the two cylinder covering",
+      "source_slug": "Slope-field-perturbations-of-the-two-cylinder-covering-September-27-2026",
+      "source_tree_sha": "15ee14684a605200a88d8274cb699e371bd09f49",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/100.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F100-15EE14684A60",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/CylinderCovering.json",
+          "solution_module": "OAI.Geometry.CylinderCovering.Main",
+          "solution_file": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc links the paper into an aggregate cylinder-covering formalization; I081 does not equate the aggregate theorem with every paper claim.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F100-15EE14684A60",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "100",
+      "source_title": "Finite triangular approximation of radial sweeps",
+      "source_slug": "Finite-triangular-approximation-of-radial-sweeps-September-27-2026",
+      "source_tree_sha": "248dea999619ca8344fb5fd6576ca29deea2d456",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/100.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F100-248DEA999619",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/CylinderCovering.json",
+          "solution_module": "OAI.Geometry.CylinderCovering.Main",
+          "solution_file": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc exposes a radial-sweep selected result inside the aggregate; whole-manuscript equivalence is not asserted.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F100-248DEA999619",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "100",
+      "source_title": "Finite angular cylinder covers below the half area bound",
+      "source_slug": "Finite-angular-cylinder-covers-below-the-half-area-bound-September-27-2026",
+      "source_tree_sha": "745b319c2eda2a7e620de203282f6369c835428e",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/100.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F100-745B319C2EDA",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/TriangularCovering.json",
+          "solution_module": "OAI.Geometry.TriangularCovering.Main",
+          "solution_file": "lean/OAI/Geometry/TriangularCovering/Main.lean",
+          "theorem_names": [
+            "OAI.TriangularCovering.main"
+          ]
+        },
+        {
+          "comparator": "lean/ComparatorChallenges/CylinderCovering.json",
+          "solution_module": "OAI.Geometry.CylinderCovering.Main",
+          "solution_file": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc exposes explicit below-half-area cover results, but I081 keeps the manuscript claim on HOLD pending exact theorem-statement equivalence.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F100-745B319C2EDA",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "100",
+      "source_title": "Finite cylinder approximation of ruled sets",
+      "source_slug": "Finite-cylinder-approximation-of-ruled-sets-September-27-2026",
+      "source_tree_sha": "7b676bdf3f02c76d0f5b02f762e2f98cc659cc17",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/100.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F100-7B676BDF3F02",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/RuledCovering.json",
+          "solution_module": "OAI.Geometry.RuledCovering.Main",
+          "solution_file": "lean/OAI/Geometry/RuledCovering/Main.lean",
+          "theorem_names": [
+            "OAI.RuledApproximation.fullMain"
+          ]
+        },
+        {
+          "comparator": "lean/ComparatorChallenges/CylinderCovering.json",
+          "solution_module": "OAI.Geometry.CylinderCovering.Main",
+          "solution_file": "lean/OAI/Geometry/CylinderCovering/Main.lean",
+          "theorem_names": [
+            "OAI.CylinderCovering.fourPaperMain"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc exposes ruled-set approximation results; whole-manuscript equivalence is not asserted.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F100-7B676BDF3F02",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "134",
+      "source_title": "Finite Monoid Computations and a Uniform Generalized Star Height Bound",
+      "source_slug": "Finite-Monoid-Computations-and-a-Uniform-Generalized-Star-Height-Bound-September-25-2026",
+      "source_tree_sha": "c0d6028cbc0a43d75ef51d35c44a6d0c55e5d3db",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/134.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F134-C0D6028CBC0A",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+          "solution_module": "OAI.Computability.StarHeight.Main",
+          "solution_file": "lean/OAI/Computability/StarHeight/Main.lean",
+          "theorem_names": [
+            "OAI.GeneralizedStarHeight.main"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc states the uniform expression bound is formalized but not every construction step of the finite-monoid paper.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F134-C0D6028CBC0A",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "194",
+      "source_title": "Lechs multiplicity conjecture",
+      "source_slug": "Lechs-multiplicity-conjecture-September-23-2026",
+      "source_tree_sha": "13c4151faad80f6a7837344457b3c7b5577cbdcf",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/194.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F194-13C4151FAAD8",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/DuttaDomain.json",
+          "solution_module": "OAI.RingTheory.Multiplicity.Main",
+          "solution_file": "lean/OAI/RingTheory/Multiplicity/Main.lean",
+          "theorem_names": [
+            "OAI.Lech.dutta_domain"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc states only the complete-domain Dutta comparison is selected; the paper's full flat-local result is outside the formalization.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F194-13C4151FAAD8",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "237",
+      "source_title": "Renewal and changes of law for critical honeycomb walks",
+      "source_slug": "Renewal-and-changes-of-law-for-critical-honeycomb-walks-September-26-2026",
+      "source_tree_sha": "113c0e83004802d41b9c2df209c37f01a4f6a6ee",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/237.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F237-113C0E830048",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/HoneycombFreeEnergy.json",
+          "solution_module": "OAI.Probability.Honeycomb.FreeEnergy",
+          "solution_file": "lean/OAI/Probability/Honeycomb/FreeEnergy.lean",
+          "theorem_names": [
+            "OAI.HoneycombForce.logPartition_tendsto"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc exposes a selected free-energy theorem but does not assert whole-manuscript formal coverage.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F237-113C0E830048",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "family_id": "237",
+      "source_title": "Polynomial vacuum representations and bridge mass for honeycomb walks",
+      "source_slug": "Polynomial-vacuum-representations-and-bridge-mass-for-honeycomb-walks-September-26-2026",
+      "source_tree_sha": "3ece9d64cf2b346c96ebf76641f4f01602d09aad",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "source_doc": "lean/docs/237.md",
+      "source_doc_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "supersedes_hold_constructor_id": "HHS-OAI-HOLD-F237-3ECE9D64CF2B",
+      "formal_surfaces": [
+        {
+          "comparator": "lean/ComparatorChallenges/HoneycombBridgeFiniteness.json",
+          "solution_module": "OAI.Combinatorics.HoneycombCorridor.BridgeFiniteness",
+          "solution_file": "lean/OAI/Combinatorics/HoneycombCorridor/BridgeFiniteness.lean",
+          "theorem_names": [
+            "OAI.PolynomialVacuumBridge.Corridor.finite_bridge_sums"
+          ]
+        }
+      ],
+      "coverage_reason": "Pinned family doc says the formalization covers supporting bridge summability; the paper's mean-length and exponent claims remain outside.",
+      "binding_id": "HHS-OAI-DOC-PARTIAL-F237-3ECE9D64CF2B",
+      "binding_kind": "HHS_SOURCE_BOUND_PARTIAL_FORMALIZATION_BINDING_V1",
+      "status": "HOLD_WITH_PARTIAL_FORMAL_EVIDENCE",
+      "coverage_class": "PARTIAL_SELECTED_RESULT_ONLY",
+      "whole_claim_truth_authority": false,
+      "authority": {
+        "candidate_only": true,
+        "partial_formal_evidence": true,
+        "whole_claim_truth_authority": false,
+        "execution_authority": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    }
+  ],
+  "authority": {
+    "candidate_only": true,
+    "independent_hhs_reproof": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  }
+}
