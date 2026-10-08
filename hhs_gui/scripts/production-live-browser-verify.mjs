@@ -5,16 +5,36 @@ import { chromium } from "playwright"
 const BASE_URL = process.env.HHS_PRODUCTION_BASE_URL
 const EXPECTED_SHA = process.env.HHS_PRODUCTION_EXPECTED_SHA
 const EXPECTED_SERVICE_COUNT = Number(process.env.HHS_PRODUCTION_EXPECTED_SERVICE_COUNT || "0")
+const PUBLIC_SERVICE_REGISTRY_FILE = process.env.HHS_PRODUCTION_PUBLIC_SERVICE_REGISTRY_FILE
 const IGNORE_HTTPS_ERRORS = process.env.HHS_PRODUCTION_BROWSER_IGNORE_HTTPS_ERRORS === "1"
 const EVIDENCE_DIR = process.env.HHS_PRODUCTION_BROWSER_EVIDENCE_DIR || "/tmp/hhs-production-browser"
 
 if (!BASE_URL) throw new Error("HHS_PRODUCTION_BASE_URL is required")
 if (!EXPECTED_SHA) throw new Error("HHS_PRODUCTION_EXPECTED_SHA is required")
+if (!PUBLIC_SERVICE_REGISTRY_FILE) throw new Error("HHS_PRODUCTION_PUBLIC_SERVICE_REGISTRY_FILE is required")
 if (!Number.isInteger(EXPECTED_SERVICE_COUNT) || EXPECTED_SERVICE_COUNT <= 0) {
   throw new Error("HHS_PRODUCTION_EXPECTED_SERVICE_COUNT must be a positive integer")
 }
 
 await fs.mkdir(EVIDENCE_DIR, { recursive: true })
+
+const publicRegistryRaw = await fs.readFile(PUBLIC_SERVICE_REGISTRY_FILE, "utf8")
+const publicRegistry = JSON.parse(publicRegistryRaw)
+const expectedServices = Array.isArray(publicRegistry?.services) ? publicRegistry.services : []
+const expectedServiceNames = expectedServices
+  .map((service) => String(service?.name ?? service?.runtime_contract?.name ?? "").trim())
+  .filter(Boolean)
+const expectedUniqueServiceNames = [...new Set(expectedServiceNames)].sort((a, b) => a.localeCompare(b))
+if (expectedServices.length !== EXPECTED_SERVICE_COUNT) {
+  throw new Error(
+    `Pre-browser registry count ${expectedServices.length} != expected service count ${EXPECTED_SERVICE_COUNT}`,
+  )
+}
+if (expectedUniqueServiceNames.length !== expectedServices.length) {
+  throw new Error(
+    `Pre-browser registry contains duplicate or unnamed descriptors: descriptors=${expectedServices.length} unique_names=${expectedUniqueServiceNames.length}`,
+  )
+}
 
 const evidencePath = path.join(EVIDENCE_DIR, "production-live-browser.json")
 const screenshotPath = path.join(EVIDENCE_DIR, "production-live-browser.png")
@@ -51,6 +71,7 @@ let evidence = {
   intentional_request_aborts: intentionalRequestAborts,
   http_5xx: http5xx,
   public_api_attempts: publicApiAttempts,
+  public_service_registry_file: PUBLIC_SERVICE_REGISTRY_FILE,
 }
 
 const serializeError = (error) => error instanceof Error
@@ -159,17 +180,15 @@ try {
     "/api/interface/status",
     publicApiAttempts.interface_status,
   )
-  const serviceRegistry = await requestJsonWithRetry(
-    "/api/runtime/services",
-    publicApiAttempts.service_registry,
-  )
-  const services = Array.isArray(serviceRegistry?.services)
-    ? serviceRegistry.services
-    : []
-  const serviceNames = services
-    .map((service) => String(service?.name ?? service?.runtime_contract?.name ?? "").trim())
-    .filter(Boolean)
-  const uniqueServiceNames = [...new Set(serviceNames)].sort((a, b) => a.localeCompare(b))
+  publicApiAttempts.service_registry.push({
+    source: "pre_browser_curl_verified_snapshot",
+    status: 200,
+    elapsed_ms: 0,
+    json: true,
+    service_count: expectedServices.length,
+  })
+  const services = expectedServices
+  const uniqueServiceNames = expectedUniqueServiceNames
 
   if (interfaceStatus?.interface !== "HHS_VISUAL_RUNTIME_OS_WORKSPACE") {
     throw new Error(`Unexpected interface identity: ${JSON.stringify(interfaceStatus)}`)

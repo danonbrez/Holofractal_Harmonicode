@@ -148,7 +148,8 @@ jobs:
             tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py::test_native_first_turn_does_not_probe_optional_pass153_health \
             tests/pass220/test_hhs_pass220_unified_chatbot_lane5_model_fabric.py::test_native_first_fallback_probes_pass153_only_when_needed \
             tests/pass220/test_hhs_pass220_litert_native_model_runtime_v1.py \
-            tests/test_hhs_litert_lm_repo_bootstrap_v1.py
+            tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
+            tests/test_hhs_service_registry_catalog_cache_v1.py
 
   deploy-exact-main:
     if: github.event_name != 'pull_request'
@@ -638,6 +639,7 @@ jobs:
           HHS_PRODUCTION_BASE_URL="https://${HHS_PRODUCTION_HOST}" \
           HHS_PRODUCTION_EXPECTED_SHA="${TARGET_SHA}" \
           HHS_PRODUCTION_EXPECTED_SERVICE_COUNT="${expected_service_count}" \
+          HHS_PRODUCTION_PUBLIC_SERVICE_REGISTRY_FILE="/tmp/hhs-public-services.json" \
           HHS_PRODUCTION_BROWSER_IGNORE_HTTPS_ERRORS=1 \
           HHS_PRODUCTION_BROWSER_EVIDENCE_DIR="${RUNNER_TEMP}/production-browser" \
             timeout 300s node scripts/production-live-browser-verify.mjs

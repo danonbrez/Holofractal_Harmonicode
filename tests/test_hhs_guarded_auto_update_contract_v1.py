@@ -937,6 +937,7 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "Verify public frontend capability projection in Chromium",
         "playwright@1.55.0",
         "HHS_PRODUCTION_EXPECTED_SERVICE_COUNT",
+        "HHS_PRODUCTION_PUBLIC_SERVICE_REGISTRY_FILE",
         "HHS_PRODUCTION_EXPECTED_SHA",
         "HHS_PRODUCTION_BROWSER_EVIDENCE_DIR",
         "Upload production frontend capability evidence",
@@ -951,8 +952,10 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
     assert public_probe < browser_gate < hash216_queue
 
     for token in [
-        'requestJsonWithRetry(\n    "/api/runtime/services"',
         'requestJsonWithRetry(\n    "/api/interface/status"',
+        "PUBLIC_SERVICE_REGISTRY_FILE",
+        "pre_browser_curl_verified_snapshot",
+        "expectedUniqueServiceNames",
         "context.request.get",
         "public_api_attempts",
         'data-testid="hhs-canonical-runtime-ide"',
@@ -1008,6 +1011,11 @@ def test_exact_main_live_browser_gate_covers_public_service_registry_before_hash
         "frontend_authority: false",
     ]:
         assert token in browser
+
+    assert 'requestJsonWithRetry(\n    "/api/runtime/services"' not in browser
+    assert 'requestJson("/api/runtime/services")' in (
+        ROOT / "hhs_gui" / "runtime_os" / "workspace" / "RegistryVisualProgrammer.tsx"
+    ).read_text(encoding="utf-8")
 
 
 def test_exact_main_post_promotion_assertions_do_not_use_pipefail_q_pipelines() -> None:

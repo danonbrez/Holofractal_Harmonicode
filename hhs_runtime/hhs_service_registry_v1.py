@@ -16,6 +16,7 @@ preserving the non-bypass rule established by the authority gate.
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import asdict, dataclass, field
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional
 import importlib
@@ -87,6 +88,7 @@ class HHSServiceRegistry:
         self._services: Dict[str, HHSServiceSpec] = {}
         self._handlers: Dict[str, ServiceHandler] = {}
         self._dispatch_history: List[Dict[str, Any]] = []
+        self._service_catalog_cache: Optional[List[Dict[str, Any]]] = None
 
     # ------------------------------------------------------------------
     # REGISTRATION
@@ -130,6 +132,7 @@ class HHSServiceRegistry:
         )
         self._services[spec.name] = spec
         self._handlers[spec.name] = handler
+        self._service_catalog_cache = None
         return spec
 
     def register_function(
@@ -207,12 +210,21 @@ class HHSServiceRegistry:
     # ------------------------------------------------------------------
 
     def services(self) -> List[Dict[str, Any]]:
-        services = []
-        for name in sorted(self._services):
-            spec = self._services[name].to_dict()
-            spec["runtime_contract"] = make_service_descriptor_contract(spec)
-            services.append(spec)
-        return services
+        # Service declarations are frozen after guarded registration. Building
+        # each runtime_contract is materially more expensive than serializing
+        # the resulting catalog and production has hundreds of services, so
+        # derive the exact catalog once per registration generation.
+        if self._service_catalog_cache is None:
+            services: List[Dict[str, Any]] = []
+            for name in sorted(self._services):
+                spec = self._services[name].to_dict()
+                spec["runtime_contract"] = make_service_descriptor_contract(spec)
+                services.append(spec)
+            self._service_catalog_cache = services
+
+        # Callers receive an isolated projection: UI/API consumers cannot
+        # mutate the authoritative cached descriptor catalog.
+        return deepcopy(self._service_catalog_cache)
 
     def has_service(self, name: str) -> bool:
         return name in self._services
