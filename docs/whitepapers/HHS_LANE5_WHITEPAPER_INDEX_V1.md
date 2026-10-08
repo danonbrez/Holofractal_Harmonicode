@@ -653,3 +653,17 @@ declarations until a catalogued external Lean proof or independent HHS proof
 closure is supplied. Truth, proof, execution, VM81 mutation, canonical hashes,
 persistence, learning, model-weight, and floating-point authority remain false.
 
+### Pass 220 I081 — latent Lean formalization promotion tranche 1
+
+[HHS_PASS_220_I081_LATENT_LEAN_PROMOTION_TRANCHE1_V1.md](HHS_PASS_220_I081_LATENT_LEAN_PROMOTION_TRANCHE1_V1.md)
+
+I081 re-audits high-priority I080 HOLD constructors against exact accompanying
+paper links in pinned OpenAI Lean family scope documents. Ten HOLD sources are
+promoted to source-bound formal theorem constructors with 18 bound Lean theorem
+declarations; three related/partial formalizations remain HOLD because their
+selected Lean scope does not preserve the complete source claim without an
+explicit derivation wrapper. Effective coverage becomes 64 theorem constructors
+plus 258 HOLD constructors = 322/322, with candidate-only deterministic
+Hash72/replay evidence and no canonical truth, VM81, hash, persistence, learning,
+model-weight, or floating-point authority.
+

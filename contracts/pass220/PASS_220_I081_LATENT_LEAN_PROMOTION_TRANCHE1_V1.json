@@ -1,0 +1,62 @@
+{
+  "schema": "HHS_PASS_220_I081_LATENT_LEAN_PROMOTION_TRANCHE1_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-08",
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "branch": "pass220/i081-latent-lean-promotion-tranche1-20261008",
+  "merge_target": "main",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "objective": "Audit high-priority I080 HOLD constructors for latent source-linked Lean formalization and promote only exact source-scoped formal theorem surfaces, retaining partial/supporting matches on HOLD.",
+  "scope": {
+    "prior_formal_theorem_constructors": 54,
+    "prior_hold_claim_constructors": 268,
+    "promoted_from_hold": 10,
+    "partial_formalization_hold_records": 3,
+    "promoted_proof_declarations": 18,
+    "effective_formal_theorem_constructors": 64,
+    "effective_hold_claim_constructors": 258,
+    "effective_total_constructor_coverage": 322,
+    "coverage_gap": 0
+  },
+  "promotion_rule": {
+    "requires_exact_source_link_in_family_scope_doc": true,
+    "requires_bound_comparator_config": true,
+    "requires_bound_solution_module": true,
+    "requires_at_least_one_theorem_declaration": true,
+    "partial_or_supporting_formalization_does_not_promote": true,
+    "stronger_related_result_without_explicit_source_contract_derivation_does_not_promote": true
+  },
+  "implementation": {
+    "registry": "data/pass220/openai_math_latent_lean_promotion_tranche1_v1.json",
+    "runtime": "hhs_runtime/hhs_pass220_i081_latent_lean_promotion_tranche1_v1.py",
+    "callable_surfaces": [
+      "list_promoted_constructors",
+      "get_promoted_constructor",
+      "invoke_promoted_constructor",
+      "validate_effective_frontier",
+      "build_promotion_receipt"
+    ],
+    "deterministic_replay": true,
+    "candidate_hash72_receipts": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "truth_promotion": false,
+    "action_authority_minted": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "validation": {
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "exact_promotions": "10/10 selected exact source-linked formalizations",
+    "proof_declarations": "18/18",
+    "frontier": "64 theorem + 258 HOLD = 322",
+    "partials_retained_hold": 3
+  }
+}
