@@ -167,11 +167,21 @@ def _merge_entry(db: Dict[str, WordRelationEntry], word: str, *, pos: Sequence[s
     )
 
 
-def load_wordnet_relations(paths: Sequence[str | Path], *, require_all: bool = True) -> Dict[str, WordRelationEntry]:
+def load_wordnet_relations(
+    paths: Sequence[str | Path],
+    *,
+    require_all: bool = True,
+    target_words: Iterable[str] | None = None,
+) -> Dict[str, WordRelationEntry]:
     missing = [str(Path(p)) for p in paths if not Path(p).exists()]
     if require_all and missing:
         raise FileNotFoundError("Missing WordNet CSV files: " + "; ".join(missing))
 
+    targets = (
+        {_norm(word) for word in target_words if _norm(word)}
+        if target_words is not None
+        else None
+    )
     db: Dict[str, WordRelationEntry] = {}
     for raw_path in paths:
         path = Path(raw_path)
@@ -181,23 +191,30 @@ def load_wordnet_relations(paths: Sequence[str | Path], *, require_all: bool = T
         with path.open("r", encoding="utf-8-sig", newline="") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                row_word = (
+                    row.get("lemma", "")
+                    if "hypernyms" in name or "hyponyms" in name
+                    else row.get("Word", "")
+                )
+                if targets is not None and _norm(row_word) not in targets:
+                    continue
                 if "nouns" in name:
-                    _merge_entry(db, row.get("Word", ""), pos=[_pos(row.get("POS", "noun"))], definitions=[row.get("Definition", "")])
+                    _merge_entry(db, row_word, pos=[_pos(row.get("POS", "noun"))], definitions=[row.get("Definition", "")])
                 elif "verbs" in name:
-                    _merge_entry(db, row.get("Word", ""), pos=["verb"], definitions=[row.get("Definition", "")], examples=[row.get("Example 1", ""), row.get("Example 2", "")])
+                    _merge_entry(db, row_word, pos=["verb"], definitions=[row.get("Definition", "")], examples=[row.get("Example 1", ""), row.get("Example 2", "")])
                 elif "adjectives" in name:
-                    _merge_entry(db, row.get("Word", ""), pos=["adjective"], definitions=[row.get("Definition", "")], examples=[row.get("Example 1", ""), row.get("Example 2", ""), row.get("Example 3", ""), row.get("Example 4", "")])
+                    _merge_entry(db, row_word, pos=["adjective"], definitions=[row.get("Definition", "")], examples=[row.get("Example 1", ""), row.get("Example 2", ""), row.get("Example 3", ""), row.get("Example 4", "")])
                 elif "adverbs" in name:
-                    _merge_entry(db, row.get("Word", ""), pos=["adverb"], definitions=[row.get("Definition", "")], examples=[row.get("Example", "")])
+                    _merge_entry(db, row_word, pos=["adverb"], definitions=[row.get("Definition", "")], examples=[row.get("Example", "")])
                 elif "synonyms" in name:
-                    _merge_entry(db, row.get("Word", ""), pos=[_pos(row.get("POS", ""))], synonyms=_split(row.get("Synonyms", "")))
+                    _merge_entry(db, row_word, pos=[_pos(row.get("POS", ""))], synonyms=_split(row.get("Synonyms", "")))
                 elif "antonyms" in name:
-                    _merge_entry(db, row.get("Word", ""), pos=[_pos(row.get("POS", ""))], antonyms=_split(row.get("Antonyms", "")))
+                    _merge_entry(db, row_word, pos=[_pos(row.get("POS", ""))], antonyms=_split(row.get("Antonyms", "")))
                 elif "hypernyms" in name:
-                    _merge_entry(db, row.get("lemma", ""), pos=[_pos(row.get("part_of_speech", ""))], hypernyms=_split(row.get("hypernyms", "")))
+                    _merge_entry(db, row_word, pos=[_pos(row.get("part_of_speech", ""))], hypernyms=_split(row.get("hypernyms", "")))
                 elif "hyponyms" in name:
-                    _merge_entry(db, row.get("lemma", ""), pos=[_pos(row.get("part_of_speech", ""))], hyponyms=_split(row.get("hyponyms", "")))
-    if require_all and not db:
+                    _merge_entry(db, row_word, pos=[_pos(row.get("part_of_speech", ""))], hyponyms=_split(row.get("hyponyms", "")))
+    if require_all and target_words is None and not db:
         raise ValueError("WordNet relation database loaded zero entries")
     return db
 

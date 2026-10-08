@@ -82,8 +82,12 @@ _inherited_production_lifespan = authoritative_app.router.lifespan_context
 
 @asynccontextmanager
 async def _production_assistant_lifespan(app_instance: Any):
+    # Complete the exact production chat warmup before inherited startup
+    # launches Pass174's background whole-repository readiness scan. Both
+    # authority paths remain mandatory, but they no longer contend for the
+    # same cold CPU/filesystem budget during candidate boot.
+    await _prewarm_production_native_assistant()
     async with _inherited_production_lifespan(app_instance):
-        await _prewarm_production_native_assistant()
         yield
 
 

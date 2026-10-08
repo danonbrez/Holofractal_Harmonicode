@@ -105,3 +105,12 @@ def test_production_native_assistant_prewarm_uses_lifespan_registration():
     source = Path("hhs_backend/production_visual_server.py").read_text(encoding="utf-8")
     assert "add_event_handler" not in source
     assert "production_assistant_route_warmup" in source
+
+    lifespan_block = source.split(
+        "async def _production_assistant_lifespan", 1
+    )[1].split(
+        "authoritative_app.router.lifespan_context", 1
+    )[0]
+    warmup = lifespan_block.index("await _prewarm_production_native_assistant()")
+    inherited = lifespan_block.index("async with _inherited_production_lifespan")
+    assert warmup < inherited
