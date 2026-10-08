@@ -82,7 +82,7 @@ Nalin listened. "Reentry into what?"
 
 "The registry is not the body."
 
-Sev breathed out. "We cannot reconcile ninety-six—" He stopped, corrected himself. "Fifty-six years of disputed documents in sixteen days."
+Sev breathed out. "We cannot reconcile fifty-six years of disputed documents in sixteen days."
 
 "Then you should have begun earlier," Jori said.
 
