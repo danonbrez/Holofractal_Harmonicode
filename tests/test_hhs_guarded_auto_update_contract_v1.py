@@ -1039,3 +1039,22 @@ def test_exact_main_post_promotion_assertions_do_not_use_pipefail_q_pipelines() 
         "grep -Fq 'hhs_backend.lane5_ingress_gateway:app' <<<\"$lane5_service_exec_start\"",
     ]:
         assert required in workflow
+
+def test_candidate_boot_membrane_stays_120_seconds_while_startup_work_is_sequenced() -> None:
+    validator = read("validate-candidate.sh")
+    production = (
+        ROOT / "hhs_backend" / "production_visual_server.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'BOOT_TIMEOUT=${HHS_CANDIDATE_BOOT_TIMEOUT_SECONDS:-120}' in validator
+    assert 'curl --max-time 10 --fail --silent "http://127.0.0.1:${PORT}/api/system/status"' in validator
+
+    lifespan = production.split(
+        "async def _production_assistant_lifespan", 1
+    )[1].split(
+        "authoritative_app.router.lifespan_context", 1
+    )[0]
+    assert lifespan.index("await _prewarm_production_native_assistant()") < lifespan.index(
+        "async with _inherited_production_lifespan"
+    )
+
