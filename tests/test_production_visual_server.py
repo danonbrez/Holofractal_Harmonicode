@@ -9,6 +9,7 @@ from hhs_backend.production_visual_server import (
     PRODUCTION_STATUS_PATHS,
     ProductionRuntimeBootstrapGateway,
     _prewarm_production_native_assistant,
+    _production_assistant_lifespan,
     authoritative_app,
 )
 from hhs_backend.runtime_bootstrap_cache import RuntimeStatusCache
@@ -99,5 +100,8 @@ def test_direct_status_hit_returns_cached_projection(tmp_path: Path):
     assert headers[b"x-hhs-runtime-cache"] == b"HIT"
     assert payload == {"ok": True, "status": "READY"}
 
-def test_production_native_assistant_prewarm_is_registered_on_startup():
-    assert _prewarm_production_native_assistant in authoritative_app.router.on_startup
+def test_production_native_assistant_prewarm_uses_lifespan_registration():
+    assert authoritative_app.router.lifespan_context is _production_assistant_lifespan
+    source = Path("hhs_backend/production_visual_server.py").read_text(encoding="utf-8")
+    assert "add_event_handler" not in source
+    assert "production_assistant_route_warmup" in source
