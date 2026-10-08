@@ -1,0 +1,83 @@
+{
+  "schema": "HHS_PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-07",
+  "base_main": "d616f4b72dc149d92159119276e6ac150fdf3828",
+  "branch": "pass220/i078-openai-math-corpus-hydration-20261007",
+  "merge_target": "main",
+  "purpose": "Extract the revision-pinned OpenAI mathematics release into a nonverbatim candidate metadata graph, preserve independently inspected HHS/OpenAI structural-overlap anchors, and prioritize mathematically novel proof families for later Lane 5 study without granting truth, learning, VM81, canonical-hash, or persistence authority.",
+  "source": {
+    "repository": "openai/math",
+    "immutable_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+    "tree_sha": "a8e3481a92772ee311cdc9dd6409cd7b927a3fc1",
+    "license": "Apache-2.0",
+    "manuscripts": 722,
+    "result_families": 372,
+    "formalized_sources": 162,
+    "lean_main_results": 185,
+    "unique_lean_files": 180,
+    "lean_toolchain": "leanprover/lean4:v4.34.1",
+    "review_status": "unchecked"
+  },
+  "hhs_reference": {
+    "immutable_revision": "d616f4b72dc149d92159119276e6ac150fdf3828",
+    "tree_sha": "1757cf6441c919e9152c95d9c06d60b285a11f96",
+    "frozen_path_vocabulary_count": 2639
+  },
+  "analysis": {
+    "manuscripts": {
+      "HIGH_PATH_OVERLAP": 110,
+      "MIXED_PATH_OVERLAP": 290,
+      "NOVELTY_CANDIDATE": 322
+    },
+    "families": {
+      "HIGH_PATH_OVERLAP": 45,
+      "MIXED_PATH_OVERLAP": 145,
+      "NOVELTY_CANDIDATE": 182
+    },
+    "formalized_sources": {
+      "HIGH_PATH_OVERLAP": 34,
+      "MIXED_PATH_OVERLAP": 74,
+      "NOVELTY_CANDIDATE": 54
+    },
+    "interpretation": "NOVELTY_CANDIDATE is a low path-vocabulary-overlap discovery signal only; it is not a proof that HHS lacks the theorem or concept.",
+    "structural_overlap_anchors": [
+      "OPENAI_MATH_EUCLIDEAN_RAMSEY_3X3_9X9_SYMBOLIC_TENSOR",
+      "OPENAI_MATH_DIRICHLETL_72_CONDUCTOR",
+      "OPENAI_MATH_MATRIX_MULTIPLICATION_TENSOR_POWER"
+    ]
+  },
+  "hydration": {
+    "runtime": "hhs_runtime/hhs_pass220_i078_openai_math_corpus_hydration_v1.py",
+    "dataset": "data/pass220/openai_math_corpus_hydration_20261006_v1.json",
+    "graph_nodes": 1442,
+    "graph_edges": 1069,
+    "receipt": "candidate Hash72 plus SHA-256 graph identity",
+    "candidate_only": true
+  },
+  "retention": {
+    "titles_and_structural_metadata_only": true,
+    "abstracts_retained": false,
+    "manuscript_body_retained": false,
+    "pdf_bytes_retained": false,
+    "lean_source_bodies_retained": false
+  },
+  "authority": {
+    "truth_promotion": false,
+    "action_authority_minted": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "validation": {
+    "extraction_mapping": "722/722 manuscripts mapped to 372/372 families",
+    "formalization_mapping": "162/162 formalized source entries mapped to manuscript metadata",
+    "main_result_catalog": "185 declarations across 180 unique Lean files",
+    "dependency_scoped_tests": "PENDING_BRANCH_CI"
+  }
+}
