@@ -1,0 +1,63 @@
+{
+  "schema": "HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-07",
+  "base_main": "5823c2676452d0594fe1144f568d318e6b5da9a3",
+  "branch": "pass220/i079-openai-math-theorem-constructors-20261007",
+  "merge_target": "main",
+  "parent": "HHS_PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "objective": "Give every one of the 54 formalized I078 novelty sources a distinct callable source-bound HHS formal theorem constructor, preserving exact Lean proof-surface identity and deterministic candidate receipts.",
+  "audit": {
+    "pre_i078_tree": "1757cf6441c919e9152c95d9c06d60b285a11f96",
+    "dedicated_constructor_match_method": "exact normalized source-slug or comparator-stem path match",
+    "preexisting_dedicated_constructor_matches": 0
+  },
+  "implementation": {
+    "constructor_count": 54,
+    "proof_surface_count": 57,
+    "unresolved_proof_surfaces": 0,
+    "runtime": "hhs_runtime/hhs_pass220_i079_openai_math_theorem_constructors_v1.py",
+    "registry": "data/pass220/openai_math_formalized_novelty_constructors_v1.json",
+    "callable_surfaces": [
+      "list_constructors",
+      "get_constructor",
+      "build_registry_receipt",
+      "invoke_constructor"
+    ],
+    "deterministic_replay": true,
+    "candidate_hash72_receipts": true
+  },
+  "semantics": {
+    "source_bound": true,
+    "preserve_external_lean_contract": true,
+    "external_proof_rechecked_at_runtime": false,
+    "direct_harmonicode_reproof_required": false,
+    "later_internal_algebraic_optimization_permitted": true,
+    "truth_promotion": false
+  },
+  "authority": {
+    "candidate_only": true,
+    "truth_promotion": false,
+    "action_authority_minted": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "validation": {
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "constructor_coverage": "54/54 formalized novelty sources",
+    "proof_surface_binding": "57/57",
+    "negative_tests": [
+      "unknown constructor",
+      "unadmitted proof declaration",
+      "missing proof surface",
+      "authority drift"
+    ]
+  }
+}
