@@ -66,3 +66,20 @@ After I079 is green, deep-lower constructors in priority order by proof/domain
 reuse. Reuse existing HHS primitives where exact; introduce new native
 mathematical primitives only where the theorem contract cannot be represented
 without them.
+
+## Repair-forward 2026-10-08
+
+The first I079 CI attempt failed only at registry loading with
+`I079_DUPLICATE_CONSTRUCTOR_ID`. Root cause: constructor generation attempted
+to read `source_tree_sha` from formalized-source rows, but that field lives on
+the pinned I078 manuscript records. The missing value serialized as
+`UNDEFINED`, colliding for families with multiple novelty manuscripts.
+
+Repair: join each constructor back to the I078 manuscript record by exact
+`source_slug`, restore its immutable preprint-tree SHA, and derive the
+constructor ID from `family_id + source_tree_sha[:12]`. No constructor
+semantics, proof bindings, authority, or source revision changed.
+
+Validation remaining: rerun only the I079 dependency-scoped workflow and
+inherited required gates.
+
