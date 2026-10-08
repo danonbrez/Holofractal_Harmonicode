@@ -4,6 +4,7 @@ import csv
 from pathlib import Path
 
 from hhs_runtime.hhs_wordnet_relation_enforcer_v1 import load_wordnet_relations
+from hhs_runtime import hhs_pass220_i051_native_lean_alignment_v1 as alignment
 
 
 def _write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> Path:
@@ -67,3 +68,32 @@ def test_targeted_wordnet_hydration_allows_unknown_prompt_tokens(tmp_path: Path)
     )
 
     assert targeted == {}
+
+def test_native_lean_runtime_hydrates_only_prompt_tokens(monkeypatch):
+    observed: dict[str, object] = {}
+
+    def fake_loader(paths, *, require_all=True, target_words=None):
+        observed["require_all"] = require_all
+        observed["target_words"] = tuple(target_words or ())
+        return {}
+
+    monkeypatch.setattr(alignment, "load_wordnet_relations", fake_loader)
+    monkeypatch.setattr(
+        alignment,
+        "default_wordnet_paths",
+        lambda: [Path("/tmp/hhs-wordnet-runtime-test.csv")],
+    )
+    alignment._relation_db_for_prompt_tokens.cache_clear()
+    try:
+        result = alignment.admit_native_lean_alignment_tensor(
+            "Remember this exact token",
+            "response-only-word",
+        )
+    finally:
+        alignment._relation_db_for_prompt_tokens.cache_clear()
+
+    assert observed["require_all"] is True
+    assert set(observed["target_words"]) == {"remember", "this", "exact", "token"}
+    assert "response-only-word" not in observed["target_words"]
+    assert result["wordnet_geometry"]["relation_db_error"] is None
+
