@@ -1,0 +1,69 @@
+{
+  "schema": "HHS_PASS_220_I081_OPENAI_MATH_PROOF_SURFACE_PROMOTIONS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-08",
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "branch": "pass220/i081-openai-math-proof-surface-promotions-20261008",
+  "merge_target": "main",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "objective": "Mine proof surfaces omitted from the I079 formalization.yaml source list and promote only HOLD constructors with explicit source documentation plus comparator configs carrying theorem declarations.",
+  "coverage": {
+    "inherited_i079_formal_theorem_sources": 54,
+    "inherited_i080_hold_sources": 268,
+    "promoted_hold_sources": 17,
+    "active_formal_theorem_sources": 71,
+    "active_hold_sources": 251,
+    "total_novelty_sources": 322,
+    "gap": 0
+  },
+  "discovery": {
+    "comparator_configs_scanned": 405,
+    "strong_structural_match_candidates": 25,
+    "promoted_after_source_documentation_and_proof_checks": 17,
+    "rejected_or_retained_hold": 8,
+    "no_title_similarity_only_promotion": true
+  },
+  "implementation": {
+    "registry": "data/pass220/openai_math_proof_surface_promotions_v1.json",
+    "runtime": "hhs_runtime/hhs_pass220_i081_openai_math_proof_surface_promotions_v1.py",
+    "callable_surfaces": [
+      "list_promotions",
+      "get_promotion",
+      "validate_active_partition",
+      "build_overlay_receipt",
+      "invoke_promoted_constructor"
+    ],
+    "promotion_overlay": true,
+    "immutable_parent_histories": true,
+    "deterministic_replay": true
+  },
+  "special_case": {
+    "source": "Generalized Star Height at Most Four",
+    "relation": "DOC_EXPLICIT_STRONGER_FORMAL_RESULT_IMPLIES_SOURCE",
+    "reason": "The OpenAI family documentation explicitly states that the formal bound of three implies the accompanying paper's bound of four."
+  },
+  "authority": {
+    "candidate_only": true,
+    "external_formal_proof_bound": true,
+    "canonical_truth_promotion": false,
+    "execution_authority": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  },
+  "validation": {
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "promotion_coverage": "17/17",
+    "active_partition": "71 theorem + 251 HOLD = 322",
+    "negative_tests": [
+      "unadmitted proof declaration",
+      "documentation identity tamper",
+      "authority drift"
+    ]
+  }
+}

@@ -1,0 +1,916 @@
+{
+  "schema": "HHS_PASS_220_I081_OPENAI_MATH_PROOF_SURFACE_PROMOTIONS_V1",
+  "version": "1.0.0",
+  "date": "2026-10-08",
+  "base_main": "e2e4fcfa539e2c80997eb796abe5dbce1227d559",
+  "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+  "parents": [
+    "HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1",
+    "HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1"
+  ],
+  "scope": {
+    "i078_novelty_sources": 322,
+    "inherited_i079_formal_theorem_sources": 54,
+    "inherited_i080_hold_sources": 268,
+    "i081_promoted_hold_sources": 17,
+    "active_formal_theorem_sources": 71,
+    "active_hold_sources": 251,
+    "coverage_gap": 0,
+    "duplicate_assignment_count": 0
+  },
+  "discovery_policy": {
+    "candidate_generation": "title-to-comparator structural matching over the pinned 405 ComparatorChallenge configs",
+    "promotion_requires_documentation_source_listing": true,
+    "promotion_requires_comparator_config": true,
+    "promotion_requires_nonempty_theorem_names": true,
+    "exact_or_explicit_stronger_implication_only": true,
+    "no_title_similarity_only_promotion": true
+  },
+  "promotions": [
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F003-8A3427FA6360",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F003-8A3427FA6360",
+      "hold_constructor_id": "HHS-OAI-HOLD-F003-8A3427FA6360",
+      "source_title": "The Quasi Riemann Hypothesis",
+      "source_slug": "The-Quasi-Riemann-Hypothesis-September-30-2026",
+      "source_date": "2026-09-30",
+      "source_tree_sha": "8a3427fa6360eb9bb1234a75cb1a0327b2b35165",
+      "family_id": "003",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/003.md",
+        "blob_sha": "cf794e93da2e1a494434153f5b91f2990fe9fd60",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/QuasiRiemannHypothesis.json",
+        "blob_sha": "acf552468fc23c1a27d685d33983c58c50040542",
+        "label": "Riemann zeta 7/8 bound",
+        "solution_module": "OAI.NumberTheory.DirichletL.Nonvanishing",
+        "admitted_theorem_names": [
+          "OAI.riemannZeta_ne_zero_of_seven_eighths_lt_re"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F012-7FF876BF1B8F",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F012-7FF876BF1B8F",
+      "hold_constructor_id": "HHS-OAI-HOLD-F012-7FF876BF1B8F",
+      "source_title": "The joint Dickman law for consecutive integers",
+      "source_slug": "The-joint-Dickman-law-for-consecutive-integers-September-24-2026",
+      "source_date": "2026-09-24",
+      "source_tree_sha": "7ff876bf1b8f54f8ac294f4e838e2cea4dcbdbec",
+      "family_id": "012",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/012.md",
+        "blob_sha": "a92487d8cc5e8fa243fc0af64b8be34a06d165f0",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/JointDickman.json",
+        "blob_sha": "7267219acc9f42d882a8704c66c94435235d5b9c",
+        "label": "Joint Dickman law and equal ordering densities for consecutive integers",
+        "solution_module": "OAI.NumberTheory.JointDickman.PaperMain",
+        "admitted_theorem_names": [
+          "OAI.JointDickmanPaper.joint_law",
+          "OAI.JointDickmanPaper.increasing_order",
+          "OAI.JointDickmanPaper.decreasing_order"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F052-3EBAEC4F87E8",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F052-3EBAEC4F87E8",
+      "hold_constructor_id": "HHS-OAI-HOLD-F052-3EBAEC4F87E8",
+      "source_title": "Integrability of split tangent bundles on rationally connected manifolds",
+      "source_slug": "Integrability-of-split-tangent-bundles-on-rationally-connected-manifolds-September-23-2026",
+      "source_date": "2026-09-23",
+      "source_tree_sha": "3ebaec4f87e8475e57ae322b71ef6e8e99730406",
+      "family_id": "052",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/052.md",
+        "blob_sha": "510edec7a3f990c7f8ab25bd214c19f4f1030a0f",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/SplitTangentIntegrability.json",
+        "blob_sha": "77167031e980a1afac9c3d6e3b3691e9141d2cbb",
+        "label": "Integrability of both holomorphic tangent summands",
+        "solution_module": "OAI.Geometry.SplitTangent.RationalVariation",
+        "admitted_theorem_names": [
+          "OAI.SplitTangent.integrability_main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F134-BE4D2DED666F",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F134-BE4D2DED666F",
+      "hold_constructor_id": "HHS-OAI-HOLD-F134-BE4D2DED666F",
+      "source_title": "Generalized Star Height at Most Three",
+      "source_slug": "Generalized-Star-Height-at-Most-Three-September-25-2026",
+      "source_date": "2026-09-25",
+      "source_tree_sha": "be4d2ded666fc30b266d1a7d04fa7df9e517a8a1",
+      "family_id": "134",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/134.md",
+        "blob_sha": "2a8a786d09dd61ebc2700b0c974d551ca911aea9",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+        "blob_sha": "e6827da825e0bd15e4b4f0c49d5c176973fb1cda",
+        "label": "Generalized star height at most three",
+        "solution_module": "OAI.Computability.StarHeight.Main",
+        "admitted_theorem_names": [
+          "OAI.GeneralizedStarHeight.main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F134-D79361F43851",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F134-D79361F43851",
+      "hold_constructor_id": "HHS-OAI-HOLD-F134-D79361F43851",
+      "source_title": "Generalized Star Height at Most Four",
+      "source_slug": "Generalized-Star-Height-at-Most-Four-September-25-2026",
+      "source_date": "2026-09-25",
+      "source_tree_sha": "d79361f438515134b99cb88ce2522ae091501220",
+      "family_id": "134",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/134.md",
+        "blob_sha": "2a8a786d09dd61ebc2700b0c974d551ca911aea9",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/GeneralizedStarHeight.json",
+        "blob_sha": "e6827da825e0bd15e4b4f0c49d5c176973fb1cda",
+        "label": "Uniform generalized star-height bound of three",
+        "solution_module": "OAI.Computability.StarHeight.Main",
+        "admitted_theorem_names": [
+          "OAI.GeneralizedStarHeight.main"
+        ]
+      },
+      "proof_relation": "DOC_EXPLICIT_STRONGER_FORMAL_RESULT_IMPLIES_SOURCE",
+      "relation_note": "The family scope explicitly states that the formal bound of three implies the accompanying paper's bound of four.",
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F183-B3DA22E09060",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F183-B3DA22E09060",
+      "hold_constructor_id": "HHS-OAI-HOLD-F183-B3DA22E09060",
+      "source_title": "A power saving for planar halving lines",
+      "source_slug": "A-power-saving-for-planar-halving-lines-September-25-2026",
+      "source_date": "2026-09-25",
+      "source_tree_sha": "b3da22e090602def2ae094db10008e2f8a341b94",
+      "family_id": "183",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/183.md",
+        "blob_sha": "077bcb09f6324eb726c7b9846488743423e9ca48",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/HalvingLines.json",
+        "blob_sha": "8a90228b4ac38291644cbedaa07423aa4a55874b",
+        "label": "Power-saving bounds for halving pairs and level switches",
+        "solution_module": "OAI.Combinatorics.HalvingLines.Main",
+        "admitted_theorem_names": [
+          "OAI.PlanarHalving.power_bounds"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F189-61701AD43D10",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F189-61701AD43D10",
+      "hold_constructor_id": "HHS-OAI-HOLD-F189-61701AD43D10",
+      "source_title": "Cycle clique Ramsey numbers",
+      "source_slug": "Cycle-clique-Ramsey-numbers-September-25-2026",
+      "source_date": "2026-09-25",
+      "source_tree_sha": "61701ad43d10c7d660da999c389a2bfd7b2f2f46",
+      "family_id": "189",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/189.md",
+        "blob_sha": "5207b2ad41a9539b6725aff03cb19cf454fa3c31",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/CycleCliqueRamsey.json",
+        "blob_sha": "4cac85ef35469add1ab2a02803ddd1f37dff6df4",
+        "label": "Exact cycle-clique Ramsey numbers",
+        "solution_module": "OAI.Combinatorics.Ramsey.CycleClique.Main",
+        "admitted_theorem_names": [
+          "OAI.CycleClique.thm_main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F222-C61CA924B734",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F222-C61CA924B734",
+      "hold_constructor_id": "HHS-OAI-HOLD-F222-C61CA924B734",
+      "source_title": "The free energy of the spherical random perceptron",
+      "source_slug": "The-free-energy-of-the-spherical-random-perceptron-September-24-2026",
+      "source_date": "2026-09-24",
+      "source_tree_sha": "c61ca924b7341945c2f20273476ea4f20f1e2aff",
+      "family_id": "222",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/222.md",
+        "blob_sha": "e5e3b913b789e243430257f54d9e9c5f6378e1b8",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/PerceptronFreeEnergy.json",
+        "blob_sha": "c25886ed2ea74a10813757dc99d38f03cc8a301d",
+        "label": "Variational formula for spherical-perceptron pressure",
+        "solution_module": "OAI.Probability.Perceptron.Main",
+        "admitted_theorem_names": [
+          "OAI.SphericalPerceptronFreeEnergy.main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F231-FF457D3983F0",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F231-FF457D3983F0",
+      "hold_constructor_id": "HHS-OAI-HOLD-F231-FF457D3983F0",
+      "source_title": "The free uniform spanning forest is a factor of IID",
+      "source_slug": "The-free-uniform-spanning-forest-is-a-factor-of-IID-September-25-2026",
+      "source_date": "2026-09-25",
+      "source_tree_sha": "ff457d3983f02e7fb14697df56f97655a42e26de",
+      "family_id": "231",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/231.md",
+        "blob_sha": "5b54db53d629492e0735e554240053be59a50380",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/FreeUniformSpanningForest.json",
+        "blob_sha": "015f336785db84710a16452fbf09c0b5e94ffd30",
+        "label": "A universal IID factor for the free uniform spanning forest",
+        "solution_module": "OAI.Probability.SpanningForest.Factor",
+        "admitted_theorem_names": [
+          "OAI.Problem336.fusf_is_factor_iid"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F235-DC41BFAEB5B0",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F235-DC41BFAEB5B0",
+      "hold_constructor_id": "HHS-OAI-HOLD-F235-DC41BFAEB5B0",
+      "source_title": "A Limiting Satisfiability Threshold for Every Fixed Clause Size",
+      "source_slug": "A-Limiting-Satisfiability-Threshold-for-Every-Fixed-Clause-Size-September-25-2026",
+      "source_date": "2026-09-25",
+      "source_tree_sha": "dc41bfaeb5b022860c2f4ba0f8a159240cab47cc",
+      "family_id": "235",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/235.md",
+        "blob_sha": "5974e018344467e649fc50dc4f46e06703b2c6b3",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/FixedClauseThreshold.json",
+        "blob_sha": "7897da92a1789760b0fb3759b095f61a9a95a686",
+        "label": "Limiting satisfiability threshold for every fixed k>=3",
+        "solution_module": "OAI.Probability.RandomSAT.Main",
+        "admitted_theorem_names": [
+          "OAI.FixedClauseThreshold.main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F250-395E88F2B358",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F250-395E88F2B358",
+      "hold_constructor_id": "HHS-OAI-HOLD-F250-395E88F2B358",
+      "source_title": "Finite algebraic envelopes and the Boone Higman conjecture",
+      "source_slug": "Finite-algebraic-envelopes-and-the-Boone-Higman-conjecture-September-23-2026",
+      "source_date": "2026-09-23",
+      "source_tree_sha": "395e88f2b3584a06f1b5e53076dc439fc027e00f",
+      "family_id": "250",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/250.md",
+        "blob_sha": "c82fa71607d70509c56908ae7384392dca7bebe2",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/BooneHigman.json",
+        "blob_sha": "2879f32a964cb00f97738154a088722a9576ccc6",
+        "label": "Boone-Higman equivalence",
+        "solution_module": "OAI.GroupTheory.BooneHigman.Main",
+        "admitted_theorem_names": [
+          "OAI.FiniteAlgebraicEnvelopes.main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F254-42F7C616082C",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F254-42F7C616082C",
+      "hold_constructor_id": "HHS-OAI-HOLD-F254-42F7C616082C",
+      "source_title": "Parabolic intersections in Artin groups",
+      "source_slug": "Parabolic-intersections-in-Artin-groups-September-23-2026",
+      "source_date": "2026-09-23",
+      "source_tree_sha": "42f7c616082cf6e60b48aef3561fadb6786c61f8",
+      "family_id": "254",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/254.md",
+        "blob_sha": "3daef005137f48059e9a4c37aa2c2ef43b6bdd98",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/ArtinParabolicIntersections.json",
+        "blob_sha": "04a587ada36d497e7320bb84d8872cff86a5b932",
+        "label": "Parabolic intersections, closures, and structural consequences",
+        "solution_module": "OAI.Topology.ArtinGroups.ParabolicIntersections.Main",
+        "admitted_theorem_names": [
+          "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_intersections",
+          "OAI.HarmonicArtin.ParabolicIntersections.unconditional_arbitrary_intersections",
+          "OAI.HarmonicArtin.ParabolicIntersections.unconditional_parabolic_closure",
+          "OAI.HarmonicArtin.ParabolicIntersections.unconditional_nonclique_dynamics"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F256-B20DD428ED92",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F256-B20DD428ED92",
+      "hold_constructor_id": "HHS-OAI-HOLD-F256-B20DD428ED92",
+      "source_title": "The Kervaire Theorem for Groups",
+      "source_slug": "The-Kervaire-Theorem-for-Groups-September-24-2026",
+      "source_date": "2026-09-24",
+      "source_tree_sha": "b20dd428ed9270cd9d5a31df7b4889ecbc7b8175",
+      "family_id": "256",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/256.md",
+        "blob_sha": "d84092b79c3b5384daf059e00f0d18fb25453dcf",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/Kervaire.json",
+        "blob_sha": "26c9bb1351e63e805cc7c67cbd71f451b530218e",
+        "label": "Coefficient-group injectivity for unimodular one-relator quotients",
+        "solution_module": "OAI.GroupTheory.Kervaire.Main",
+        "admitted_theorem_names": [
+          "OAI.Kervaire.coefficient_injective"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F269-041B975282B3",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F269-041B975282B3",
+      "hold_constructor_id": "HHS-OAI-HOLD-F269-041B975282B3",
+      "source_title": "Uniform Stability of the Spherical Laughlin Gap",
+      "source_slug": "Uniform-Stability-of-the-Spherical-Laughlin-Gap-October-5-2026",
+      "source_date": "2026-10-05",
+      "source_tree_sha": "041b975282b322e6bc597327087f3c140e5e810f",
+      "family_id": "269",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/269.md",
+        "blob_sha": "7ae324d902f282192afe1e6c4ebdbcba6a16944a",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/LaughlinGap.json",
+        "blob_sha": "0d084b8c12cfe9eebf3325616ac4bb2ec50d7707",
+        "label": "Uniform unperturbed spherical Laughlin gap inequality",
+        "solution_module": "OAI.Analysis.LaughlinGap.Main",
+        "admitted_theorem_names": [
+          "OAI.LaughlinGap.thm_main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F275-94CA57B7785B",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F275-94CA57B7785B",
+      "hold_constructor_id": "HHS-OAI-HOLD-F275-94CA57B7785B",
+      "source_title": "Continuum Coulomb hardness with binary nuclear charges",
+      "source_slug": "Continuum-Coulomb-hardness-with-binary-nuclear-charges-September-24-2026",
+      "source_date": "2026-09-24",
+      "source_tree_sha": "94ca57b7785b070e0ff38869eaf76324b8df0075",
+      "family_id": "275",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/275.md",
+        "blob_sha": "85c1f1f8df0a30bb4a69c87d689eefe0e5e6c3e4",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/ContinuumCoulombHardness.json",
+        "blob_sha": "8e14b260a545147e056f55ce399a8690f69075c2",
+        "label": "QMA-hardness of continuum Coulomb energy with binary charges",
+        "solution_module": "OAI.MathematicalPhysics.ContinuumCoulomb.Reduction.Hardness",
+        "admitted_theorem_names": [
+          "OAI.ContinuumCoulomb.binary_coulomb_qmaHard"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F350-7948AA5677B1",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F350-7948AA5677B1",
+      "hold_constructor_id": "HHS-OAI-HOLD-F350-7948AA5677B1",
+      "source_title": "Sharp nodal length on smooth surfaces",
+      "source_slug": "Sharp-nodal-length-on-smooth-surfaces-September-23-2026",
+      "source_date": "2026-09-23",
+      "source_tree_sha": "7948aa5677b1908bf5335a35c6e2c1a7e1cb041f",
+      "family_id": "350",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/350.md",
+        "blob_sha": "0dcd752770fb992be6b73d02268d34e6bd2189cd",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/NodalLength.json",
+        "blob_sha": "89208a2ad593de9819d55aab0141511fe39d9e93",
+        "label": "Sharp upper bound for nodal length on smooth surfaces",
+        "solution_module": "OAI.Analysis.NodalLength.Main",
+        "admitted_theorem_names": [
+          "OAI.SharpNodal.Main"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    },
+    {
+      "promotion_id": "HHS-OAI-PROMOTION-F376-4D453A8EB69E",
+      "promoted_constructor_id": "HHS-OAI-THEOREM-F376-4D453A8EB69E",
+      "hold_constructor_id": "HHS-OAI-HOLD-F376-4D453A8EB69E",
+      "source_title": "Computation under Rapidly Vanishing Navier Stokes Forcing",
+      "source_slug": "Computation-under-Rapidly-Vanishing-Navier-Stokes-Forcing-September-27-2026",
+      "source_date": "2026-09-27",
+      "source_tree_sha": "4d453a8eb69eb7a53f5923d1b999945987f7296d",
+      "family_id": "376",
+      "source_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "previous_status": "HOLD_NO_CATALOGUED_MAIN_RESULT_PROOF",
+      "promoted_status": "FORMAL_PROOF_SURFACE_BOUND",
+      "discovery_origin": "LEAN_DOCS_PLUS_COMPARATOR_CONFIG",
+      "documentation": {
+        "path": "lean/docs/376.md",
+        "blob_sha": "b43f10df2d8fb85337f2b74abe299de009d0ad38",
+        "source_listed": true
+      },
+      "comparator": {
+        "path": "lean/ComparatorChallenges/ForcedNavierStokesComputation.json",
+        "blob_sha": "f55d322aef19ab1e444c83cf9d9cdbf887455807",
+        "label": "Effective finite computation detected by a fixed particle",
+        "solution_module": "OAI.MathematicalPhysics.NavierStokes.BalancedTransport.MainResult",
+        "admitted_theorem_names": [
+          "OAI.BalancedTransport.balanced_three_stack_realization"
+        ]
+      },
+      "proof_relation": "EXACT_DOC_SOURCE_AND_COMPARATOR",
+      "relation_note": null,
+      "theorem_interface": {
+        "ingress_type": "LEAN_PROPOSITION_BINDING",
+        "egress_type": "FORMAL_THEOREM_WITNESS_CAPSULE",
+        "preserve_external_types": true,
+        "source_bound": true,
+        "proof_declaration_required": true
+      },
+      "authority": {
+        "candidate_only": true,
+        "external_formal_proof_bound": true,
+        "source_claim_formal_support": true,
+        "canonical_truth_promotion": false,
+        "execution_authority": false,
+        "canonical_learning_commit_invoked": false,
+        "model_weight_mutation_invoked": false,
+        "vm81_mutation_invoked": false,
+        "canonical_hash72_minted": false,
+        "canonical_hash216_minted": false,
+        "canonical_persistence_invoked": false,
+        "floating_point_authority": false
+      }
+    }
+  ],
+  "authority": {
+    "candidate_only": true,
+    "external_formal_proof_bound": true,
+    "canonical_truth_promotion": false,
+    "execution_authority": false,
+    "canonical_learning_commit_invoked": false,
+    "model_weight_mutation_invoked": false,
+    "vm81_mutation_invoked": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_minted": false,
+    "canonical_persistence_invoked": false,
+    "floating_point_authority": false
+  }
+}

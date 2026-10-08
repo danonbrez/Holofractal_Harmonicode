@@ -653,3 +653,18 @@ declarations until a catalogued external Lean proof or independent HHS proof
 closure is supplied. Truth, proof, execution, VM81 mutation, canonical hashes,
 persistence, learning, model-weight, and floating-point authority remain false.
 
+### Pass 220 I081 — OpenAI mathematics proof-surface promotions
+
+[HHS_PASS_220_I081_OPENAI_MATH_PROOF_SURFACE_PROMOTIONS_V1.md](HHS_PASS_220_I081_OPENAI_MATH_PROOF_SURFACE_PROMOTIONS_V1.md)
+
+I081 re-audits the I080 HOLD frontier against all 405 pinned
+ComparatorChallenge configs and then requires explicit source listing,
+documentation/comparator identity, and nonempty theorem declarations before any
+promotion. Seventeen HOLD constructors gain source-bound formal proof support,
+raising the active theorem-constructor set from 54 to 71 and reducing active
+HOLD from 268 to 251 while preserving exact 322-source coverage. Eight strong
+title matches remain HOLD because the proof/source relationship was not strong
+enough. Promotions are an immutable overlay over I079/I080 and grant no
+canonical truth, execution, VM81, canonical-hash, persistence, learning,
+model-weight, or floating-point authority.
+
