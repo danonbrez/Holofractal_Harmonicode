@@ -200,8 +200,13 @@ def mediate_prepared_candidate(
         "native_learning_stage": receipt.learning_stage,
         "closure_signature64": int(receipt.closure_signature64),
         "mediation_signature64": int(receipt.mediation_signature64),
-        "ordered_transition_word216": candidate.ordered_transition_word216,
-        "raw5184": candidate.raw5184,
+        # The full raw 5184 carrier and ordered transition are retained by
+        # the caller's PreparedLane5Candidate; they must never be exposed in
+        # ordinary health, receipt, or model-visible result projections.
+        "ordered_transition_word216_length": len(candidate.ordered_transition_word216),
+        "raw5184_character_count": len(candidate.raw5184),
+        "raw_state_exposed_in_result": False,
+        "full_native_state_recoverable_from_signature64_alone": False,
         "native_input_signatures": {k: getattr(request, k) for k in SIGNATURE_FIELDS},
         "native_hash216_reference_signatures": list(candidate.hash216_references),
         "native_capability_reference_signatures": list(candidate.capability_references),
