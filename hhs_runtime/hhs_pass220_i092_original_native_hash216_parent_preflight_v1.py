@@ -139,8 +139,13 @@ def bind_i092_original_native_hash216_parent_preflight(
         native_identity=validated.get("native_parent_identity216")
         if not isinstance(native_identity,str) or len(native_identity)!=216:
             raise I092NativePreflightError("native derived transition identity missing")
-        if native_identity!=ordered.get("native_parent_identity216"):
-            raise I092NativePreflightError("original parent identity changed outside negative")
+        reversed_identity=ordered.get("native_parent_identity216")
+        if (
+            not isinstance(reversed_identity,str)
+            or len(reversed_identity)!=216
+            or native_identity==reversed_identity
+        ):
+            raise I092NativePreflightError("original native reverse-lane identity aliased")
     else:
         native_identity=None
 
