@@ -33,6 +33,8 @@ sourceCellPolynomials = {
    "b^2 c^2=a^2+b^2+c^2"}
 };
 a2=1; b2=2; c2=3; d2=5; e2=8; xy=1; zw=1;
+(* c is the original positive geometric root, NOT a new free parameter. *)
+cRoot=Sqrt[a2+b2];
 P4=c2^2;
 
 matrix={
@@ -49,7 +51,7 @@ diagonalSums={Tr[matrix],Tr[Reverse[matrix,2]]};
    does not exclude P^2=-3 over the complex projection. *)
 branches=Flatten[Table[
   Module[{pRoot,delta,pRootSum,pLower,qUpper,ok},
-    pRoot=sP*Sqrt[3];
+    pRoot=sP*cRoot;
     delta=2*sDelta;
     pRootSum=pRoot*delta;
     pLower=(pRootSum-delta)/2;
@@ -63,6 +65,7 @@ branches=Flatten[Table[
        pRoot^2-pLower*qUpper==1
     ];
     <|"P_sign"->sP, "q_minus_p_sign"->sDelta, "verified"->TrueQ[ok],
+      "P_relative_to_c"->If[sP==1,"P=c","P=-c"],
       "P"->ToString[InputForm[pRoot]],
       "p"->ToString[InputForm[FullSimplify[pLower]]],
       "q"->ToString[InputForm[FullSimplify[qUpper]]]|>
@@ -84,6 +87,8 @@ checks=<|
  "13_center_five" -> (matrix[[2,2]]===5),
  "14_four_real_quadratic_branches" -> (Length[branches]===4 && And@@(Lookup[branches,"verified"])),
  "15_outer_nine" -> (P4===9),
+ "15a_canonical_c_is_positive_geometric_root" -> (cRoot===Sqrt[3] && cRoot^2===c2 && c2===a2+b2),
+ "15b_signed_P_branch_equals_plus_or_minus_c" -> (And@@Table[Lookup[b,"P_relative_to_c"]==If[Lookup[b,"P_sign"]==1,"P=c","P=-c"],{b,branches}]),
  "16_72_phase_surface_8x9" -> (8*9===72),
  "17_5184_shared_coordinate" -> (64*81==72*72==144*36==5184),
  "18_gate_metadata_distinct_from_unit" -> (1001/1000=!=1),
@@ -100,6 +105,9 @@ report=<|
  "lo_shu_matrix"->matrix,
  "eight_outer_vertices"->{1,2,3,4,6,7,8,9},
  "center_vertex"->5,
+ "canonical_c_relation"->"c=+Sqrt[a²+b²]=+Sqrt[3]",
+ "canonical_c_exact"->ToString[InputForm[cRoot]],
+ "P_signed_relative_to_c"->{"P=c","P=-c"},
  "rows"->rowSums, "columns"->columnSums,
  "diagonals"->diagonalSums, "total"->Total[Flatten[matrix]],
  "branches"->branches,
