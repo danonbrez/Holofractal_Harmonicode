@@ -50,7 +50,7 @@ def test_center_all_eight_ordered_signed_channels():
 def test_distinct_ordered_products_do_not_scalarize():
     assert as_exact_word_vector(lex_ordered_terms("xy-yx"))=={"xy":1,"yx":-1}
     assert as_exact_word_vector(lex_ordered_terms("zw-wz"))=={"zw":1,"wz":-1}
-    assert as_exact_word_vector(lex_ordered_terms("wx-xw")) if False else True
+    assert as_exact_word_vector(lex_ordered_terms("wx-wx"))=={}
     assert as_exact_word_vector(lex_ordered_terms("yx-yx"))=={}
     assert as_exact_word_vector(lex_ordered_terms("xy+yx"))=={"xy":1,"yx":1}
 
