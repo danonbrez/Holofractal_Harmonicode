@@ -344,3 +344,86 @@ real UI and RAG contracts. Then attach Pass219 ethical, native Lean ordered
 tensor and authentic model source evidence to the same candidate structure,
 with proof/Hash216 lineage instead of proxy flags. Ensure paired
 low-latency, exact reverse replay, and signed authority conformance.
+
+
+## Next cycle 2026-10-09 — green native profile + original Lean/Pass219 ethical composition
+
+### Frozen verified CI
+
+Source exact-head b7a1673516f5e2f33ac4ece9de196972cb77fc49:
+- Focused native workflow 37925704791: **success in both jobs**,
+  exact-provider-boundary and native-rna-lane5-continuity.
+- Broader I003-I010 workflow 37925704948: **118 passed, 5 failed**.
+  Remaining failures:
+  1. whole-record RAG context budgeting previously included full
+     Hash216 value in every model-context line;
+  2. assistant UI /api/assistant/health visibility;
+  3. source verifier missing explicit user opt-in attachment contract;
+  4. absent custom instruction did not preserve byte-identical inherited
+     default system prompt because mode BOTH was force-added;
+  5. assistant UI Ask naturally text contract.
+
+### Scope-preserving repairs
+
+- hhs_backend/runtime/hhs_pass220_hf_rag_assistant_v1.py:
+  keep full Hash216 in structured selected records and context hash; exclude
+  the repeated long Hash216 from model-facing *text*. Whole-record budgeting
+  is still exact, no truncation or Hash216 source loss.
+- hhs_backend/runtime/hhs_litert_lm_assistant_v1.py and
+  hhs_backend/runtime/hhs_litert_lm_hhs_api_assistant_v1.py:
+  preserve the original base system instruction when no mode was explicitly
+  requested; explicit GENERAL_CHAT, AGENTIC and BOTH still include their typed
+  mode constraints. Mode in action policy receipts remains normalized.
+- hhs_gui/runtime_os/workspace/ProductionAssistantChat.tsx:
+  restore provider /api/assistant/health supplementary read alongside primary
+  deployment-health; keep explicit opt-in attachment text and natural language
+  empty-chat cue.
+- hhs_gui/scripts/workspace-source-verify.mjs:
+  assert corresponding actual UI route and disclosure strings.
+
+### Additional callable native ethical candidate stage
+
+- New hhs_backend/runtime/hhs_lane5_ethical_response_cycle_v1.py
+- New tests/pass219/test_hhs_lane5_ethical_response_cycle_v1.py
+- Wired to dependency-scoped Pass215 native CI workflow.
+
+This layer does not redefine the HHS ethics equations. It invokes the
+existing *native Lean ordered prompt-response admission* and the existing
+Pass219 *simulate_and_evaluate* trajectory generator, local-state validators,
+long-horizon validator and E01..E18 ethical membrane. Typed explicit
+DIRECT_TEXT_RESPONSE binds ActionCandidate.originating_context to exact prompt,
+ActionCandidate.intent to exact response, and requires TEXT_EGRESS minimum
+scope, complete ordered E01..E18 invariant evidence, epistemic trace,
+nonempty parent Hash216 reference, and actual narrative callbacks.
+
+Fail-closed tests cover mismatched source/response, altered ordered Lean
+closure, incomplete/reordered invariants, missing provenance, missing scope,
+and long-horizon ethical denial. Positive result is only a prospective
+ethically evaluated *candidate* with original Lean/ethical reference receipts;
+no source text is rewritten.
+
+**Critical distinction:** the 216-character native Lean semantic lineage
+and the C++ VM81 Hash216 native transition are not assumed cryptographically
+equivalent. The output explicitly says equivalence unproved; it does not
+invoke native RNA mediation, VM81 commit, or mint canonical receipts.
+This service is a genuine callable composition of the original theorem
+engines, but IS NOT YET wired into every production chat turn. That still
+requires authentic prompt/response native provenance mapping, verified
+candidate identity, and signed VM81 authority when mutation is permitted.
+
+### Current CI / next actions
+
+- Last branch checkpoint: source commit 68d644ccae563b54695586c4af8755096c7d00d0
+  before this document update, 57 commits ahead of base main and 0 behind.
+- Exact-head runs:
+  native scoped: 37934156022 (queued on first check);
+  broad I003-I010: 37934155993 (queued on first check).
+- Check both before claiming success. Repair any newly exposed ethical
+  bridge or full assistant failures with native Lean/ethical original
+  routines, without changing test expectations or replacing E01..E18.
+- After green scoped checks, bind exact generated response candidates to
+  authentic native RNA/Hash216 lineage and semantic/ethical theorem receipts,
+  then prove full input↔output type and ordering fidelity.
+- Pass213 compiled ROM, Pass215 genuine arbitrary supported-prompt exact
+  inference, real pinned GGUF replay, low-latency performance, security
+  replay and verified production deploy remain open.
