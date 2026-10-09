@@ -52,7 +52,7 @@ def test_native_causal_runtime_is_cpu_only_and_separately_pinned() -> None:
     assert "torch" not in requirements
 
     source = PROVISIONER_PATH.read_text(encoding="utf-8")
-    assert "torch.version" in source
+    assert 'getattr(torch, "version", None)' in source
     assert '"cuda_version"' in source
     assert "TORCH_CPU_INDEX_URL" in source
     assert '"--index-url"' in source
