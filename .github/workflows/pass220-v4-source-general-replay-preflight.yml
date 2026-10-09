@@ -1,0 +1,78 @@
+name: Pass 220 V4 Source-General Replay Preflight
+
+on:
+  pull_request:
+    paths:
+      - 'tools/pass220/pass220_v4_source_general_replay_preflight.c'
+      - 'tests/pass220/test_pass220_v4_source_general_replay_preflight.py'
+      - '.github/workflows/pass220-v4-source-general-replay-preflight.yml'
+      - 'contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-general-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install bounded test requirements
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run exact source/occurrence inventory and fail-closed witness tests
+        run: python -m pytest -q tests/pass220/test_pass220_v4_source_general_replay_preflight.py -k 'not test_native_hold_replay_and_compiler_evidence_not_canonical_commit'
+      - name: Build preexisting Runtime C ABI
+        run: make c-abi
+      - name: Compile native source-general replay preflight
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_v4_source_general_replay_preflight.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-v4-source-general-preflight
+      - name: Execute real Pass159 HOLD, deterministic replay and compiler parity
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/v4-source-general
+          /tmp/pass220-v4-source-general-preflight contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode \
+            | tee artifacts/pass220/v4-source-general/replay_preflight.txt
+          grep -Fx "native_source_preflight=PASS" artifacts/pass220/v4-source-general/replay_preflight.txt
+          grep -Fx "canonical_vm81_admission_verified=0" artifacts/pass220/v4-source-general/replay_preflight.txt
+          grep -Fx "all_40_gate_truth_witnesses_verified=0" artifacts/pass220/v4-source-general/replay_preflight.txt
+      - name: Enforce exact 40-occurrence inventory and receipt identity
+        run: python -m pytest -q tests/pass220/test_pass220_v4_source_general_replay_preflight.py
+      - name: Show source mutation does not reuse source root
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          data=Path("contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode").read_bytes()
+          assert b"==x==-y*(" in data
+          Path("/tmp/pass220-v4-swap-chain.harmonicode").write_bytes(
+              data.replace(b"==x==-y*(",b"==-y==x*(",1))
+          PY
+          /tmp/pass220-v4-source-general-preflight /tmp/pass220-v4-swap-chain.harmonicode \
+            > /tmp/pass220-v4-swap-chain.out
+          source_root=$(grep '^source_hash216=' artifacts/pass220/v4-source-general/replay_preflight.txt)
+          swapped_root=$(grep '^source_hash216=' /tmp/pass220-v4-swap-chain.out)
+          test "$source_root" != "$swapped_root"
+          printf 'V4_SOURCE_GENERAL_REPLAY_MUTATION_DIFFERENT_HASH216\n'
+      - name: Upload diagnostic receipts and gate inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-v4-source-general-replay-preflight-${{ github.sha }}
+          path: artifacts/pass220/v4-source-general/
+          if-no-files-found: warn
+          retention-days: 90
