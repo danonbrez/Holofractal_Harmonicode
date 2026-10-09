@@ -292,3 +292,84 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
     *out_receipt = receipt;
     return HHS_EXACT_STATUS_OK;
 }
+
+/*
+ * Never reconstruct RNA tensor/decision fingerprints from unsigned Python or
+ * heuristic text features: execute the original C++ cell wall and compare the
+ * exact native fields before admitting the same candidate to Lane 5.
+ */
+HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *transition,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    HHSExactPass219Holo4PreparedV1 *out_prepared,
+    HHSExactPass219Holo4DecisionV1 *out_decision,
+    HHSExactPass219Lane5MediationReceiptV1 *out_receipt
+) {
+    HHSExactPass219Holo4PreparedV1 prepared;
+    HHSExactPass219Holo4DecisionV1 decision;
+    HHSExactPass219Lane5MediationReceiptV1 mediation;
+    HHSExactStatus status;
+
+    if (out_prepared != NULL)
+        memset(out_prepared, 0, sizeof(*out_prepared));
+    if (out_decision != NULL)
+        memset(out_decision, 0, sizeof(*out_decision));
+    if (out_receipt != NULL)
+        memset(out_receipt, 0, sizeof(*out_receipt));
+
+    if (input == NULL || candidate_frame == NULL || transition == NULL ||
+        request == NULL || out_prepared == NULL || out_decision == NULL ||
+        out_receipt == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+    memset(&prepared, 0, sizeof(prepared));
+    memset(&decision, 0, sizeof(decision));
+    memset(&mediation, 0, sizeof(mediation));
+    status = hhs_exact_pass219_rna_vm5184_route(
+        input, candidate_frame, transition, feedback_lane, feedback_trinary,
+        &prepared, &decision
+    );
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+
+    /*
+     * Mandatory binding to actual C++ RNA outputs; caller-side projections
+     * cannot replace the tensor and decision witness by choosing arbitrary
+     * nonzero 64-bit values.
+     */
+    if (prepared.tensor_signature64 == 0U ||
+        decision.decision_signature64 == 0U ||
+        request->rna_prepared_signature64 != prepared.tensor_signature64 ||
+        request->rna_decision_signature64 != decision.decision_signature64 ||
+        memcmp(prepared.source_transition_identity216,
+               transition->transition_identity216,
+               HHS_EXACT_UQCEL_HASH216_STRLEN) != 0 ||
+        memcmp(decision.source_transition_identity216,
+               transition->transition_identity216,
+               HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    status = hhs_exact_pass219_lane5_mediate_candidate(request, &mediation);
+    if (status != HHS_EXACT_STATUS_OK)
+        return status;
+    if (mediation.decision != HHS_EXACT_PASS219_LANE5_DECISION_CANDIDATE_READY ||
+        mediation.candidate_only != 1U ||
+        mediation.exact_vm5184_bound != 1U ||
+        mediation.rna_cell_wall_bound != 1U ||
+        mediation.zero_sum_closure_passed != 1U ||
+        mediation.requires_environmental_admission != 1U ||
+        mediation.canonical_mutation_authority != 0U ||
+        mediation.canonical_hash72_authority != 0U ||
+        mediation.canonical_hash216_authority != 0U ||
+        mediation.canonical_persistence_authority != 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    memcpy(out_prepared, &prepared, sizeof(prepared));
+    memcpy(out_decision, &decision, sizeof(decision));
+    memcpy(out_receipt, &mediation, sizeof(mediation));
+    return HHS_EXACT_STATUS_OK;
+}
