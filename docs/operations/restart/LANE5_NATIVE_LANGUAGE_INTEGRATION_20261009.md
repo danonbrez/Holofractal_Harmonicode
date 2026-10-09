@@ -283,3 +283,64 @@ or native ethical generation closure is claimed.
 - commit and merge only after dependency-scoped validation, with
   explicit open Pass213/215 general generation and Lane5 ethical chain
   obligations preserved.
+
+## I001 exact codec -> real C++ RNA -> Lane 5 continuation
+
+This stage now adds explicit safe same-candidate transport using the repository's
+already implemented Pass220-I001 normalization object, rather than inventing a
+simplified tensor arithmetic system:
+
+- Source: hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py
+  (81 ordered 0..8 Lo Shu normalized offset cells, 64-character exact
+  rational-scientific tokens, 5184 total source characters).
+- New guarded binary ingress/egress:
+  hhs_backend/runtime/hhs_lane5_exact_offset_vm81_codec_v1.py.
+  Uses original Python I001 token serializer/decoder, native
+  hhs_exact_vm81_frame_import_le, and
+  hhs_exact_vm81_frame_export_le (81 x 64-bit = 648 native bytes).
+  Every address position and exact source byte spelling must roundtrip.
+  No arbitrary 5184-bit tensor is silently treated as 81 ordinary scalars.
+- Typed source preservation: a NativeOffsetFrame retains the protected full
+  5184-character original and exact native frame. public_status excludes
+  all underlying source/VM81 bytes.
+- Security: allow only nine canonical source spellings produced by the
+  original I001 serializer per cell, before parsing an untrusted exponent,
+  preventing huge-exponent allocations or semantic source normalization.
+  Noncanonical rational spellings, even with mathematically equal projected
+  offsets, fail closed.
+- Actual RNA integration:
+  hhs_backend/runtime/hhs_lane5_native_candidate_mediation_v1.py now
+  exposes mediate_canonical_i001_offset_candidate, which verifies
+  bidirectional source identity, imports the exact native VM81 frame,
+  and calls the existing same-call C++ RNA + native C Lane 5 mediator.
+  This remains candidate-only and requires the separate UQCEL/Hash216
+  and other non-RNA provenance from the authentic caller.
+- Tests: tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py;
+  tests/pass219/test_hhs_lane5_python_coupled_native_vm5184_v1.py now
+  checks true same-candidate I001/CPP-RNA/Lane5 dispatch.
+
+Workflow dependency repair:
+- .github/workflows/pass215-native-exact-provider.yml now installs the
+  inherited Pass148 cryptography dependency for the semantic import check.
+- .github/workflows/pass220-i003-four-phase-abc-max-hardware.yml installs
+  cryptography only AFTER the mandatory unmodified cold raw x86_64
+  calibration step. This does not pollute cold benchmark measurements.
+
+**Exact scope limitation:** This is an end-to-end codec and C-native mediator
+for I001 *normalized offset projection states*, not a general-purpose exact
+rational arbitrary-magnitude 5184-character tensor ↔ 5184-bit hardware
+isomorphism. It neither proves general noncommutative phase semantics
+nor implements Pass215 arbitrary generation/Pass213 ROM, recursive ethical
+candidate evaluation, or signed VM81 mutation. Those original obligations
+remain explicitly OPEN.
+
+**Validation:** workflow runs produced for the new head remain queued; never
+claim these new tests passed before GitHub returns matching successful logs.
+
+**Next action:** inspect exact-head two-job Pass215 native workflow. Repair
+any native I001 codec or genuine C++ RNA invocation failure. Inspect broad
+I003-I010 suite separately after the cryptography correction; preserve
+real UI and RAG contracts. Then attach Pass219 ethical, native Lean ordered
+tensor and authentic model source evidence to the same candidate structure,
+with proof/Hash216 lineage instead of proxy flags. Ensure paired
+low-latency, exact reverse replay, and signed authority conformance.
