@@ -1,0 +1,42 @@
+name: Pass 220 V4 Native Replay Evidence Integrity
+
+on:
+  pull_request:
+    paths:
+      - 'evidence/pass220/PASS220_V4_40_GATE_REPLAY_PREFLIGHT_37946520150.json'
+      - 'tests/pass220/test_pass220_v4_40_gate_replay_evidence.py'
+      - '.github/workflows/pass220-v4-40-gate-replay-evidence.yml'
+      - 'contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence-integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Evidence source binding and fail-closed negative tests
+        run: python -m pytest -q tests/pass220/test_pass220_v4_40_gate_replay_evidence.py
+      - name: Enforce noncanonical receipt scope
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          record=json.loads(Path("evidence/pass220/PASS220_V4_40_GATE_REPLAY_PREFLIGHT_37946520150.json").read_text())
+          assert record["workflow_run_id"] == 37946520150
+          assert record["source_bytes"] == 527
+          assert record["gate_count"] == 40
+          assert all(row["truth"] == "UNRESOLVED" for row in record["gates"])
+          assert not any(value for name,value in record["proof"].items()
+                         if name != "global_gate_truth")
+          print("V4_NATIVE_PREFLIGHT_EVIDENCE_REPLAYED_NO_AUTHORITY_ESCALATION")
+          PY
