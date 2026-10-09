@@ -505,3 +505,114 @@ def test_optional_word2vec_readiness_is_lazy_for_exact_memory_turn(monkeypatch):
         == "EXACT_THREAD_MEMORY_ACKNOWLEDGEMENT"
     )
 
+
+def test_optional_retrieval_failure_does_not_skip_real_causal_generation(monkeypatch):
+    monkeypatch.delenv("HHS_NATIVE_CAUSAL_LM_REQUIRED", raising=False)
+    generator = FakeGenerationService()
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=generator,
+    )
+
+    def unavailable_prototypes(query, top_k=3):
+        raise RuntimeError("optional retrieval unavailable")
+
+    monkeypatch.setattr(provider, "_prototype_context", unavailable_prototypes)
+    result = asyncio.run(provider.chat_completion(
+        messages=[
+            {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
+            {"role": "user", "content": "Explain the inverse square law."},
+        ],
+        tools=[],
+    ))
+    trace = result["hhs_native_trace"]
+    assert trace["generation_path"] == "NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM"
+    assert trace["prototype_retrieval"]["reason"] == "OPTIONAL_RETRIEVAL_UNAVAILABLE"
+    assert trace["prototype_retrieval"]["failure_type"] == "RuntimeError"
+    assert trace["prototype_retrieval"]["vm81_commit_invoked"] is False
+    assert trace["runtime_mutation_admitted"] is False
+    assert generator.calls
+    assert generator.calls[0]["retrieval_context"] is None
+
+
+def test_optional_retrieval_timeout_does_not_skip_causal_generation(monkeypatch):
+    import time as _time
+
+    monkeypatch.delenv("HHS_NATIVE_CAUSAL_LM_REQUIRED", raising=False)
+    monkeypatch.setenv("HHS_NATIVE_LANGUAGE_RETRIEVAL_TIMEOUT_SECONDS", "0.05")
+    generator = FakeGenerationService()
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=generator,
+    )
+
+    def slow_prototypes(query, top_k=3):
+        _time.sleep(0.2)
+        return "obsolete candidate", {"available": True, "candidate_count": 1}
+
+    monkeypatch.setattr(provider, "_prototype_context", slow_prototypes)
+    result = asyncio.run(provider.chat_completion(
+        messages=[
+            {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
+            {"role": "user", "content": "Describe three possible uses of clay."},
+        ],
+        tools=[],
+    ))
+    trace = result["hhs_native_trace"]
+    assert trace["generation_path"] == "NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM"
+    assert trace["prototype_retrieval"]["failure_type"] == "TimeoutError"
+    assert generator.calls
+    assert generator.calls[0]["retrieval_context"] is None
+
+
+def test_required_causal_generation_rejects_unconfigured_provider(monkeypatch):
+    monkeypatch.setenv("HHS_NATIVE_CAUSAL_LM_REQUIRED", "1")
+    monkeypatch.delenv("HHS_NATIVE_CAUSAL_LM_MODEL", raising=False)
+
+    class UnconfiguredGenerator(FakeGenerationService):
+        def status(self):
+            return {
+                "configured": False, "loaded": False, "ready": False,
+                "model_id": "none",
+            }
+
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=UnconfiguredGenerator(),
+    )
+    status = provider.installation_status()
+    assert status["ready"] is False
+    assert status["causal_lm_required_for_provider_readiness"] is True
+    assert status["causal_lm_configured"] is False
+    with pytest.raises(Exception, match="configured native causal language model"):
+        asyncio.run(provider.chat_completion(
+            messages=[{"role": "user", "content": "Why does rain fall?"}],
+            tools=[],
+        ))
+
+
+def test_required_causal_generation_rejects_semantic_fallback(monkeypatch):
+    monkeypatch.setenv("HHS_NATIVE_CAUSAL_LM_REQUIRED", "1")
+    generator = FailingGenerationService()
+    provider = HHSNativeLiteRTLMTransport(
+        word2vec_service=FakeWord2Vec(),
+        require_word2vec=False,
+        generation_service=generator,
+    )
+    provider._prototype_context = lambda query, top_k=3: (
+        "", {"available": False, "candidate_count": 0},
+    )
+    status = provider.installation_status()
+    assert status["ready"] is True  # admitted to attempt a lazy model
+    assert status["causal_lm_loaded_and_ready"] is True
+    with pytest.raises(Exception, match="required native causal generation failed"):
+        asyncio.run(provider.chat_completion(
+            messages=[
+                {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
+                {"role": "user", "content": "Explain tidal forces."},
+            ],
+            tools=[],
+        ))
