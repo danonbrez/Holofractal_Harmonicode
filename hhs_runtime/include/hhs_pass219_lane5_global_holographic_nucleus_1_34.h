@@ -141,6 +141,21 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184(
     HHSExactPass219Lane5MediationReceiptV1 *out_receipt
 );
 
+/*
+ * Python/foreign ABI compact receipt projection. Same native RNA → Lane 5
+ * verification; prepared/decision are held within trusted native stack,
+ * never copied into an untrusted model or response payload.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *transition,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    HHSExactPass219Lane5MediationReceiptV1 *out_receipt
+);
+
 #ifdef __cplusplus
 }
 #endif
