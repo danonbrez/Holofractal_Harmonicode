@@ -18,7 +18,7 @@ from hhs_runtime.hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1 import 
 )
 
 SCHEMA = "HHS_PASS_220_I082_CHIRAL_BILATERAL_LO_SHU_BIFURCATION_V1"
-PROFILE = "I082-EXACT-POLYNOMIAL-LOS-HU-PROJECTION-ONLY-v1"
+PROFILE = "I082-EXACT-POLYNOMIAL-LO-SHU-PROJECTION-ONLY-v1"
 ROOT_SEED = "179971.179971"
 BASELINE_GATE = "1.001"
 SOURCE_EQUATION = """List((u^72==xy)/List(List(x==-y,x+y==0,xy,y==a^2/x),List(z==-w,z+w==0,zw,w==a^2/w),List(c^2-b^2-a^2,a^2==c^2-b^2,b^2==c^2-a^2==xy+zw,c^2==a^2+b^2)/((xy+zw)/b^2==a^2+x+y-z-w)),-List(1==zw,1==xy,6==b^2c^2==b^2+c^2+a^2,(-(e^2==c^2+d^2==b^6==8))))==xA==-yB*(List(List(List(x==-y,x+y==0,xy,y==a^2/x),List(z==-w,z+w==0,zw,w==a^2/w),List(c^2-b^2-a^2,a^2==c^2-b^2,b^2==c^2-a^2==xy+zw,c^2==a^2+b^2)/((xy+zw)/b^2==a^2+x+y-z-w)),-List(1==zw,1==xy,6==b^2c^2==b^2+c^2+a^2,(-(e^2==c^2+d^2==b^6==8))))/(u^36==(yxwz)/a^2))"""
