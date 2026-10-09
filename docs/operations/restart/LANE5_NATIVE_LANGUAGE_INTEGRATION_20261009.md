@@ -137,3 +137,61 @@ not be called general generation.
 
 No simplified substitute for any stage is permitted. Missing authorities
 remain explicit blockers rather than fake successes.
+
+## 2026-10-09 continuation: same-call C++ RNA signature binding
+
+The native Lane 5 nucleus now exposes two additive entrypoints:
+
+- hhs_exact_pass219_lane5_mediate_rna_vm5184: execute the inherited
+  hhs_exact_pass219_rna_vm5184_route C++ cell wall on typed UQCEL,
+  VM81 (81x64-bit), and full Hash216 transition, then mediate with the
+  existing C Lane 5 nucleus.
+- hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt: preserve full
+  native prepared and decision structures within the native stack,
+  projecting only a candidate-only mediation receipt to Python.
+
+If the caller supplies both RNA signatures, each must exactly match
+the independently recomputed C++ tensor and decision signature. When
+BOTH fields are zero, this explicitly requests same-call native binding
+from the authentic C++ cell wall. Partial zero/nonzero pairs fail closed.
+All other upstream signature and capability lineage remains required
+and not independently authenticated by this adapter.
+
+Python mediate_native_rna_frame now binds real typed native UQCEL,
+HHSExactVM81Frame and a complete NativeHash216TransitionView with
+216 SHA-256 indexed occurrences. The dataclass native_rna_bind=True
+admits only the coupled native C path and requires both RNA signatures
+to be unset. No manual signature generation from plaintext is allowed.
+
+Important: 5184 characters of HARMONICODE exact rational scientific
+notation and 5184 bits (648 bytes) of binary VM81 frame are NOT the
+same representation. This patch makes no false reversibility claim.
+The private caller retains the exact representation and source history;
+the mediation result does not leak the 5184-character carrier.
+
+Changed files:
+- hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h
+- hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc
+- hhs_backend/runtime/hhs_lane5_native_candidate_mediation_v1.py
+- tests/pass219/test_pass219_lane5_rna_vm5184_coupled_mediation_v1.c
+- tests/pass219/test_hhs_lane5_python_coupled_native_vm5184_v1.py
+- tests/test_hhs_lane5_native_candidate_mediation_v1.py
+- .github/workflows/pass215-native-exact-provider.yml
+
+Validation: exact-head workflow CI queued, not yet certified. Existing
+C suite also tests authentic native RNA and deterministic mediation,
+tampering, mixed prepared/decision signatures, damaged Hash216, and
+invalid feedback. Python live-ABI tests exercise native C++ within
+the same guarded candidate lane; other signature fields are clearly
+test-only and do NOT constitute complete external provenance.
+
+Remaining mandatory work: native exact-rational serialization -> 648-byte
+binary frame identity proof, original Pass215 generalized exact model
+execution, Pass213 ROM, constraint conflict resolution by inherited
+Pass219 theorem engine, ordered Lean prompt/response admission, full
+Hash216 lineage binding, performance validation, signed VM81 authority
+where required, and a verified-main production deployment.
+
+Next action: inspect latest Pass 215 Native Exact Generation Provider
+workflow. Repair dependency-scoped failures, do not rewrite contracts,
+and continue binding actual prepared ancestry to generated candidates.
