@@ -368,7 +368,7 @@ def test_source_builder_remains_available_for_ci_and_development_without_fake_lo
 def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_receipt() -> None:
     installer = read("install.sh")
     example = read("hhs-guarded-update.env.example")
-    stable_build = "make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant"
+    stable_build = "make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && HHS_NATIVE_CAUSAL_LM_AUTO_PROVISION=1 HHS_NATIVE_CAUSAL_LM_REQUIRED=1 /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant"
     for token in [
         "HHS_RUNTIME_OS_BUNDLE_SHA",
         "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt",
@@ -388,6 +388,12 @@ def test_installer_pins_prebuilt_bundle_and_repairs_failed_service_only_by_recei
         assert token in installer
     assert "HHS_RUNTIME_OS_BUNDLE_MODE=prebuilt" in example
     assert "HHS_HEALTH_TIMEOUT_SECONDS=600\n" in example
+    assert "HHS_NATIVE_CAUSAL_LM_AUTO_PROVISION=1\n" in example
+    assert "HHS_NATIVE_CAUSAL_LM_REQUIRED=1\n" in example
+    assert (
+        "HHS_NATIVE_CAUSAL_LM_MODEL=/var/lib/hhs/models/native-causal/"
+        "smollm2-360m-instruct-a10cc1512ea\n"
+    ) in example
     assert f"HHS_POST_MERGE_COMMAND={stable_build}\n" in example
     assert f"HHS_ROLLBACK_COMMAND={stable_build}\n" in example
     assert "bash bin/post_compile\n" not in example
