@@ -362,3 +362,52 @@ def mediate_native_rna_frame(
     result["native_binary_vm5184_bytes"] = 648
     result["raw5184_scientific_notation_to_frame_equivalence_proven"] = False
     return result
+
+
+def mediate_canonical_i001_offset_candidate(
+    candidate: PreparedLane5Candidate,
+    *,
+    input_value: Any,
+    transition: NativeHash216TransitionView,
+    feedback_lane: int = 255,
+    feedback_trinary: int = 0,
+    native_library: Any = None,
+) -> dict[str, Any]:
+    """Carry the ORIGINAL Pass 220 I001 rational normalization into Lane 5.
+
+    This adapter binds *the same* protected 5184-character source to the
+    verified C-native VM81 offset carrier and the real C++ RNA cell wall.
+    It is only valid for the declared exact I001 0..8 cell profile. It
+    neither creates non-RNA signature provenance nor licenses a VM81 commit.
+    """
+    if not isinstance(candidate, PreparedLane5Candidate):
+        raise Lane5NativeMediationError("prepared exact candidate required")
+    if not candidate.native_rna_bind:
+        raise Lane5NativeMediationError(
+            "authentic C++ RNA signature binding required for I001 candidate"
+        )
+    from hhs_backend.runtime.hhs_lane5_exact_offset_vm81_codec_v1 import (
+        NativeOffsetFrameError,
+        assert_bidirectional_offset_identity,
+        typed_native_offset_frame,
+    )
+    try:
+        offset_carrier = assert_bidirectional_offset_identity(candidate.raw5184)
+        native_frame = typed_native_offset_frame(offset_carrier)
+    except NativeOffsetFrameError as exc:
+        raise Lane5NativeMediationError(
+            "I001 exact rational/VM81 reversible ingress failed"
+        ) from exc
+    result = mediate_native_rna_frame(
+        candidate,
+        input_value=input_value,
+        vm81_frame=native_frame,
+        transition=transition,
+        feedback_lane=feedback_lane,
+        feedback_trinary=feedback_trinary,
+        native_library=native_library,
+    )
+    result["native_exact_offset_profile"] = offset_carrier.profile
+    result["exact_canonical_offset_frame_roundtrip_verified"] = True
+    result["generic_tensor_to_binary_identity_proven"] = False
+    return result
