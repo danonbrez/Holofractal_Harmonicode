@@ -52,13 +52,15 @@ ordering or normalization-offset metadata is erased.
 
 ## 3. Four exact bifurcation branches
 
-Under the explicitly selected P²=3 scalar projection:
+The original geometric root is **c=√(a²+b²)=√3**, with **c²=a²+b²=3**. This is the established typed/address-bearing root c; the exact quadratic-surd projection introduces no independent parameter. Its positive P branch is **P=c**, while the retained negative phase branch is **P=−c**.
+
+Under the explicitly selected P²=c²=3 scalar projection:
 P⁴=9; pq=2; p+q=P(q−p); P²−pq=1.
 
-With P=+√3, the ordered pairs are:
+With P=c=+√3, the ordered pairs are:
 (p,q)=(√3−1,√3+1) and (1−√3,−1−√3).
 
-With P=−√3, the signed counterpart pairs are:
+With P=−c=−√3, the signed counterpart pairs are:
 (p,q)=(1+√3,√3−1) and (−1−√3,1−√3).
 
 Exactly four branches are verified in Q(√3) using exact
@@ -119,7 +121,7 @@ ordered phase operators and recurrence.
 
 The Wolfram kernel executed the exact committed script on
 2026-10-09 and reported PASS on all 19/19 checks. Checks include
-the full 4-9-2/3-5-7/8-1-6 matrix, four exact bifurcation
+the full 4-9-2/3-5-7/8-1-6 matrix, canonical c-root identity, four exact signed P=±c bifurcation
 branches, 15/45 magic invariants and 72/5184 positional geometry.
 Symbolic precision warnings did not change exact results.
 
