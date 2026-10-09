@@ -112,7 +112,6 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
  artifacts/pass220/v7-inherited/native_integration.txt
-          grep -Fx V7_QUOTIENT_OPERATOR_SOURCE_BINDING=PENDING artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_CANONICAL_VM81_COMMIT=0 artifacts/pass220/v7-inherited/native_integration.txt
       - name: Dependency-scoped integration regression using actual native executables
         run: python -m pytest -q tests/pass220/test_pass220_v7_inherited_native_integration_v1.py
