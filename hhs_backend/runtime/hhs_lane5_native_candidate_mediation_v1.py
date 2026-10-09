@@ -13,6 +13,7 @@ from __future__ import annotations
 import ctypes
 from ctypes import Structure, c_uint8, c_uint32, c_uint64
 from dataclasses import dataclass
+from types import MappingProxyType
 from typing import Any, Mapping
 
 VERSION = 0x00010022
@@ -115,6 +116,9 @@ class PreparedLane5Candidate:
                 raise Lane5NativeMediationError(f"{field}: expected 1..64 native references")
             for i, value in enumerate(values):
                 _uint(value, f"{field}[{i}]")
+        # Frozen dataclass alone does not freeze caller-owned nested mappings.
+        # The native identities cannot change between validation and dispatch.
+        object.__setattr__(self, "signatures", MappingProxyType(dict(self.signatures)))
 
     def native_request(self) -> Lane5Request:
         r = Lane5Request()
