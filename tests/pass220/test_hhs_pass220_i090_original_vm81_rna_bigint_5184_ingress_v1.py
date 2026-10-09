@@ -9,6 +9,7 @@ import pytest
 from hhs_runtime import hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1 as mod
 from hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe import (
     build_execution_cases,raw_le_to_words,words_to_raw_le,
+    VM81RNABigIntExecutionBindingProbeError,
 )
 
 
@@ -110,7 +111,8 @@ def test_corrupted_original_rna_frame_identity_fails_closed(monkeypatch):
         copy[0]["raw_bytes"]=bytes(tampered)
         return copy
     monkeypatch.setattr(mod,"build_execution_cases",bad)
-    with pytest.raises((mod.I090IngressError,Exception),match="BIGINT_GLYPH|roundtrip|crosscheck"):
+    with pytest.raises(VM81RNABigIntExecutionBindingProbeError,
+                       match="VM81_BIGINT_GLYPH_CROSSCHECK_FAILED"):
         mod.bind_i090_physical_vm81_ingress()
 
 
