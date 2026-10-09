@@ -88,7 +88,7 @@ static int scan_exact_gates(const uint8_t *data, size_t n,
             /* Source-bound occurrence metadata only; neither a truth
              * witness nor canonical Hash216/VM81 authorization. */
             if (SHA256(material, sizeof(material), digest) == NULL) return 0;
-            printf("gate_%02u_offset=%zu;depth=%u;truth=UNRESOLVED\\n",
+            printf("gate_%02u_offset=%zu;depth=%u;truth=UNRESOLVED\n",
                 count, i, depth);
             printf("gate_%02u_identity_sha256=", count);
             for (k = 0U; k < sizeof(digest); ++k)
