@@ -81,63 +81,7 @@ jobs:
           grep -Fx V7_INHERITED_PASS159_NATIVE_FRONTEND=VERIFIED artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_INHERITED_PASS219_HNAN_15_RULES=VERIFIED artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_INHERITED_LANE5_NATIVE_CANDIDATE=VERIFIED artifacts/pass220/v7-inherited/native_integration.txt
-          grep -E '^V7_INHERITED_PASS159_PURE_EXEC_STATUS=-?[0-9]+          grep -Fx V7_CANONICAL_VM81_COMMIT=0 artifacts/pass220/v7-inherited/native_integration.txt
-      - name: Dependency-scoped integration regression using actual native executables
-        run: python -m pytest -q tests/pass220/test_pass220_v7_inherited_native_integration_v1.py
-      - name: Constrain inherited receipts to the correct source and proof scope
-        run: |
-          python - <<'PY'
-          import hashlib,json
-          from pathlib import Path
-          src=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
-          doc=json.loads(Path('artifacts/pass220/v7-inherited/native_integration.json').read_text())
-          assert doc["source_sha256"]==hashlib.sha256(src).hexdigest()
-          assert doc["source_bytes"]==70
-          assert doc["pass169_canonical_632_byte_corpus_receipt_borrowed"] is False
-          assert doc["source_specific_quotient_operator_binding_present"] is False
-          assert doc["native_pure_execution_attempted"] is True
-          assert doc["inherited_native_pass159_pure_execution"]["canonical_mutation"] is False
-          assert doc["vm81_signed_environmental_commit_performed"] is False
-          assert doc["canonical_hash72_hash216_ledger_written"] is False
-          assert doc["inherited_native_hnan_and_pass169_intent"]["xy_yx_and_zw_wz_order_inherited"]
-          print("V7_PROOF_INHERITANCE_WITH_EXACT_SOURCE_SCOPE_VERIFIED")
-          PY
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: pass220-v7-inherited-native-${{ github.sha }}
-          path: artifacts/pass220/v7-inherited/
-          if-no-files-found: warn
-          retention-days: 90
- artifacts/pass220/v7-inherited/native_integration.txt
-          grep -Fx V7_QUOTIENT_OPERATOR_SOURCE_BINDING=PENDING artifacts/pass220/v7-inherited/native_integration.txt
-          grep -Fx V7_CANONICAL_VM81_COMMIT=0 artifacts/pass220/v7-inherited/native_integration.txt
-      - name: Dependency-scoped integration regression using actual native executables
-        run: python -m pytest -q tests/pass220/test_pass220_v7_inherited_native_integration_v1.py
-      - name: Constrain inherited receipts to the correct source and proof scope
-        run: |
-          python - <<'PY'
-          import hashlib,json
-          from pathlib import Path
-          src=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
-          doc=json.loads(Path('artifacts/pass220/v7-inherited/native_integration.json').read_text())
-          assert doc["source_sha256"]==hashlib.sha256(src).hexdigest()
-          assert doc["source_bytes"]==70
-          assert doc["pass169_canonical_632_byte_corpus_receipt_borrowed"] is False
-          assert doc["source_specific_quotient_operator_binding_present"] is False
-          assert doc["vm81_signed_environmental_commit_performed"] is False
-          assert doc["canonical_hash72_hash216_ledger_written"] is False
-          assert doc["inherited_native_hnan_and_pass169_intent"]["xy_yx_and_zw_wz_order_inherited"]
-          print("V7_PROOF_INHERITANCE_WITH_EXACT_SOURCE_SCOPE_VERIFIED")
-          PY
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: pass220-v7-inherited-native-${{ github.sha }}
-          path: artifacts/pass220/v7-inherited/
-          if-no-files-found: warn
-          retention-days: 90
- artifacts/pass220/v7-inherited/native_integration.txt
+          grep -E '^V7_INHERITED_PASS159_PURE_EXEC_STATUS=-?[0-9]+$' artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_QUOTIENT_OPERATOR_SOURCE_BINDING=PENDING artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_CANONICAL_VM81_COMMIT=0 artifacts/pass220/v7-inherited/native_integration.txt
       - name: Dependency-scoped integration regression using actual native executables
