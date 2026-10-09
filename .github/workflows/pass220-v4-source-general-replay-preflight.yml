@@ -52,7 +52,7 @@ jobs:
           grep -Fx "all_40_gate_truth_witnesses_verified=0" artifacts/pass220/v4-source-general/replay_preflight.txt
       - name: Enforce exact 40-occurrence inventory and receipt identity
         run: python -m pytest -q tests/pass220/test_pass220_v4_source_general_replay_preflight.py
-      - name: Show source mutation does not reuse source root
+      - name: Changed outer-chain gate source must fail closed
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -62,12 +62,12 @@ jobs:
           Path("/tmp/pass220-v4-swap-chain.harmonicode").write_bytes(
               data.replace(b"==x==-y*(",b"==-y==x*(",1))
           PY
-          /tmp/pass220-v4-source-general-preflight /tmp/pass220-v4-swap-chain.harmonicode \
-            > /tmp/pass220-v4-swap-chain.out
-          source_root=$(grep '^source_hash216=' artifacts/pass220/v4-source-general/replay_preflight.txt)
-          swapped_root=$(grep '^source_hash216=' /tmp/pass220-v4-swap-chain.out)
-          test "$source_root" != "$swapped_root"
-          printf 'V4_SOURCE_GENERAL_REPLAY_MUTATION_DIFFERENT_HASH216\n'
+          if /tmp/pass220-v4-source-general-preflight /tmp/pass220-v4-swap-chain.harmonicode > /tmp/pass220-v4-swap-chain.out 2>&1; then
+            exit 1
+          fi
+          grep -Fx P220_V4_SOURCE_OCCURRENCES_INVALID /tmp/pass220-v4-swap-chain.out
+          ! grep -Fq native_source_preflight=PASS /tmp/pass220-v4-swap-chain.out
+          echo V4_MUTATED_OUTER_CHAIN_FAILS_CLOSED
       - name: Upload diagnostic receipts and gate inventory
         if: always()
         uses: actions/upload-artifact@v4
