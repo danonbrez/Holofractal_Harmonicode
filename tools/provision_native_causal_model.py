@@ -33,8 +33,9 @@ REQUIREMENTS_PATH = ROOT / "requirements-native-causal-lm.txt"
 
 EXPECTED_RUNTIME_VERSIONS = {
     "transformers": "4.57.6",
-    "torch": "2.14.1",
+    "torch": "2.14.1+cpu",
 }
+TORCH_CPU_INDEX_URL = "https://download.pytorch.org/whl/cpu"
 
 ALLOWED_MODEL_FILES = (
     "config.json",
@@ -87,37 +88,81 @@ def _installed_versions() -> dict[str, str | None]:
     return values
 
 
+def _run_pip(arguments: list[str], *, timeout: int = 1800) -> None:
+    process = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "--disable-pip-version-check",
+            "--no-cache-dir",
+            *arguments,
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
+    if process.returncode != 0:
+        detail = (process.stderr or process.stdout or "").strip()
+        if len(detail) > 12000:
+            detail = detail[-12000:]
+        raise RuntimeError(
+            f"pip install failed with exit {process.returncode}: {detail}"
+        )
+
+
+def _torch_cpu_runtime() -> dict[str, Any]:
+    try:
+        import torch
+    except Exception as exc:
+        return {
+            "ready": False,
+            "version": _installed_versions().get("torch"),
+            "cuda_version": None,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+    return {
+        "ready": bool(
+            str(getattr(torch, "__version__", "")) == EXPECTED_RUNTIME_VERSIONS["torch"]
+            and getattr(getattr(torch, "version", None), "cuda", None) is None
+        ),
+        "version": str(getattr(torch, "__version__", "")),
+        "cuda_version": getattr(getattr(torch, "version", None), "cuda", None),
+        "error": None,
+    }
+
+
 def _runtime_ready() -> bool:
     versions = _installed_versions()
-    return all(
-        versions.get(package) == expected
-        for package, expected in EXPECTED_RUNTIME_VERSIONS.items()
-    )
+    if versions.get("transformers") != EXPECTED_RUNTIME_VERSIONS["transformers"]:
+        return False
+    if versions.get("torch") != EXPECTED_RUNTIME_VERSIONS["torch"]:
+        return False
+    return bool(_torch_cpu_runtime().get("ready"))
 
 
 def _install_runtime() -> dict[str, Any]:
     before = _installed_versions()
-    if not _runtime_ready():
-        if not REQUIREMENTS_PATH.is_file():
-            raise RuntimeError(
-                f"native causal requirements file missing: {REQUIREMENTS_PATH}"
-            )
-        subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "pip",
-                "install",
-                "--disable-pip-version-check",
-                "--no-cache-dir",
-                "--requirement",
-                str(REQUIREMENTS_PATH),
-            ],
-            check=True,
-            timeout=1800,
+    if not REQUIREMENTS_PATH.is_file():
+        raise RuntimeError(
+            f"native causal requirements file missing: {REQUIREMENTS_PATH}"
         )
 
+    if before.get("torch") != EXPECTED_RUNTIME_VERSIONS["torch"] or not _torch_cpu_runtime().get("ready"):
+        _run_pip([
+            f"torch=={EXPECTED_RUNTIME_VERSIONS['torch']}",
+            "--index-url",
+            TORCH_CPU_INDEX_URL,
+        ])
+
+    current = _installed_versions()
+    if current.get("transformers") != EXPECTED_RUNTIME_VERSIONS["transformers"]:
+        _run_pip(["--requirement", str(REQUIREMENTS_PATH)])
+
     after = _installed_versions()
+    torch_cpu = _torch_cpu_runtime()
     mismatches = {
         package: {
             "expected": expected,
@@ -126,12 +171,17 @@ def _install_runtime() -> dict[str, Any]:
         for package, expected in EXPECTED_RUNTIME_VERSIONS.items()
         if after.get(package) != expected
     }
-    if mismatches:
-        raise RuntimeError(f"native causal runtime version mismatch: {mismatches}")
+    if mismatches or not torch_cpu.get("ready"):
+        raise RuntimeError(
+            f"native causal runtime verification failed: versions={mismatches} "
+            f"torch_cpu={torch_cpu}"
+        )
     return {
         "before": before,
         "after": after,
         "requirements_path": str(REQUIREMENTS_PATH),
+        "torch_cpu_index_url": TORCH_CPU_INDEX_URL,
+        "torch_cpu": torch_cpu,
         "exact_versions_verified": True,
     }
 
