@@ -105,7 +105,7 @@ report=<|
  "lo_shu_matrix"->matrix,
  "eight_outer_vertices"->{1,2,3,4,6,7,8,9},
  "center_vertex"->5,
- "canonical_c_relation"->"c=+Sqrt[a²+b²]=+Sqrt[3]",
+ "canonical_c_relation"->"c=+Sqrt[a^2+b^2]=+Sqrt[3]",
  "canonical_c_exact"->ToString[InputForm[cRoot]],
  "P_signed_relative_to_c"->{"P=c","P=-c"},
  "rows"->rowSums, "columns"->columnSums,
