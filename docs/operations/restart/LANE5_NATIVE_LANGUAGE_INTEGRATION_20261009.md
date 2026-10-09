@@ -195,3 +195,91 @@ where required, and a verified-main production deployment.
 Next action: inspect latest Pass 215 Native Exact Generation Provider
 workflow. Repair dependency-scoped failures, do not rewrite contracts,
 and continue binding actual prepared ancestry to generated candidates.
+
+## Next cycle: 2026-10-09 exact I001 VM81 offset representation and CI repair
+
+### Frozen validations before this cycle
+
+PR #753 prior exact head 15f79916ddf25a99c1601c42a6de29a24368aee0
+workflow 37914458717 returned:
+
+- native-rna-lane5-continuity: SUCCESS, including original C++ RNA
+  conformance, coupled C RNA/Lane5 tamper tests and typed Python native
+  C++ tests;
+- exact-provider-boundary: FAIL only on the additional Pass148 semantic
+  membrane import because cryptography was absent from the Python runner;
+- exact-provider scoped Python tests before that failure: 7 passed
+  (Pass215), 18 passed (native Lane5), and 4 passed (causal boundary).
+
+Broad workflow 37914458620: 109 passed, 14 failed. Pass148 readiness
+failures share the absent cryptography dependency. Other UI/RAG and
+instruction assertion failures are separately tracked; they are not
+declared fixed by this cycle.
+
+### New working representation seam
+
+Authoritative existing codec:
+
+  hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py
+
+New module:
+
+  hhs_backend/runtime/hhs_lane5_exact_offset_vm81_codec_v1.py
+
+New native-backed regression:
+
+  tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py
+
+The new membrane uses EXACTLY the inherited Pass220-I001 offset profile,
+which has 81 ordered cells, each an integer 0..8, and the original
+64-character rational-scientific token layout, giving exactly 5184
+characters. It validates the input against the original canonical
+serializer, rejecting altered equivalent spellings rather than
+normalizing source identity away.
+
+It encodes exactly one UInt64 little-endian word per cell to a 648-byte
+frame, invokes the original C ABI
+hhs_exact_vm81_frame_import_le and
+hhs_exact_vm81_frame_export_le,
+and requires byte equality and ordered 81-cell equality on reverse
+projection. Any word outside 0..8 is rejected when decoding back.
+The prior native text canonical form, source ordering and root record
+remain protected by the caller; the ordinary public projection contains
+only counts and zero-authority flags.
+
+IMPORTANT LIMITS: This proves an I001 normalization-offset
+representation membrane, NOT arbitrary exact rational or general
+native noncommutative tensor equivalence, where more than 64 binary bits
+or positional provenance would need an appropriate typed container.
+The original source-spec of 5184-CHARACTER serialization and the VM81
+5184-BIT frame must NOT be conflated by equal-length naming.
+
+### Changed files / next exact-head jobs
+
+- .github/workflows/pass215-native-exact-provider.yml
+  Installs the required Python cryptography package for inherited Pass148
+  semantic import, and runs real native-backed I001 codec checks in the
+  native-ABI job.
+- .github/workflows/pass220-i003-four-phase-abc-max-hardware.yml
+  Installs cryptography AFTER the mandated first cold x86_64 raw
+  calibration step. This preserves hardware benchmark isolation.
+- hhs_backend/runtime/hhs_lane5_exact_offset_vm81_codec_v1.py
+- tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py
+
+Tests must be inspected on current PR SHA before claiming green.
+The continuing task is to integrate this exact offset-profile converter
+with the true UQCEL, source Hash216, address, hydration and RNA ancestry
+for an actual generated prompt-response state; no universal translation
+or native ethical generation closure is claimed.
+
+### Restart commands
+
+- make c-abi
+- python3 -m pytest -q tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py
+- python3 -m pytest -q tests/test_hhs_lane5_native_candidate_mediation_v1.py
+- python3 -m pytest -q tests/pass219/test_hhs_lane5_python_coupled_native_vm5184_v1.py
+- check Pass 215 Native Exact Generation Provider exact-head CI run
+- inspect remaining broad I003-I010 UI/RAG/assertion failures separately
+- commit and merge only after dependency-scoped validation, with
+  explicit open Pass213/215 general generation and Lane5 ethical chain
+  obligations preserved.
