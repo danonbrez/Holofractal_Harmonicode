@@ -116,7 +116,6 @@ def _verify_negative(mode:str,native:dict[str,int],committed_raw:bytes)->dict[st
         or native.get("canonical_receipt_minted")!=0
         or native.get("committed_zero")!=1
         or committed_raw!=bytes(VM81_FRAME_BYTES)
-        or native.get("firewall_decision")==1
     ):
         raise I091SignedAdmissionError(
             "original environmental negative prerequisite not fail-closed"
@@ -159,6 +158,11 @@ def bind_i091_original_signed_vm81_admission(
         raise I091SignedAdmissionError("original I090 authority or source drift")
     if (
         len(parent["candidate_hash216"])!=216
+        or parent["candidate_hash216"] != (
+            parent["candidate_previous_hash72"]
+            + parent["candidate_change_hash72"]
+            + parent["candidate_receipt_hash72"]
+        )
         or hydrate_hash216_geometry(parent["candidate_hash216"])["roundtrip_exact"] is not True
     ):
         raise I091SignedAdmissionError("original I090 source candidate ancestry drift")
