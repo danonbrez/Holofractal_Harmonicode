@@ -127,12 +127,26 @@ def scalar_vertices() -> tuple[tuple[Fraction, ...], ...]:
     return values
 
 
+def positive_geometric_c_root() -> QuadraticSurd3:
+    """Canonical c=+sqrt(a²+b²)=+sqrt(3), with provenance kept in source.
+
+    This is the explicit exact quadratic-surd PROJECTION of the typed
+    geometric root c, not a new free scalar or a native tensor replacement.
+    """
+    a2, b2, c2 = (CANONICAL_VALUES[key] for key in ("a²", "b²", "c²"))
+    c_root = QuadraticSurd3(0, 1)
+    if c2 != a2 + b2 or c_root*c_root != QuadraticSurd3(c2, 0):
+        raise I082BifurcationError("canonical positive c root does not square to a²+b²")
+    return c_root
+
+
 def bifurcation_branches() -> tuple[dict[str, Any], ...]:
-    """Four exact branches of the explicitly selected P²=3 projection."""
+    """Four signed P=±c branches with c=+sqrt(a²+b²)=+sqrt(3)."""
     two, one, zero = QuadraticSurd3(2, 0), QuadraticSurd3(1, 0), QuadraticSurd3(0, 0)
+    c_root = positive_geometric_c_root()
     records: list[dict[str, Any]] = []
     for sign_p in (1, -1):
-        P = QuadraticSurd3(0, sign_p)
+        P = c_root if sign_p == 1 else -c_root
         for sign_delta in (1, -1):
             D = QuadraticSurd3(2*sign_delta, 0)
             S = P * D
@@ -148,6 +162,8 @@ def bifurcation_branches() -> tuple[dict[str, Any], ...]:
                 raise I082BifurcationError("exact bifurcation branch not closed")
             records.append({
                 "P_sign": sign_p, "q_minus_p_sign": sign_delta,
+                "P_relative_to_c": "P=c" if sign_p == 1 else "P=-c",
+                "canonical_geometric_c": c_root.to_dict(),
                 "P": P.to_dict(), "p": p.to_dict(), "q": q.to_dict(),
                 "pq": (p*q).to_dict(),
                 "P2_minus_pq": (P*P-p*q).to_dict(),
@@ -254,6 +270,13 @@ def formalize_i082(*, hydrate_existing_phase_gear: bool = False) -> dict[str, An
         "sum45": True, "magic15": True,
         "P2_branch_selected": 3,
         "P4_outer_scale": 9,
+        "canonical_geometric_c_relation": "c=+sqrt(a²+b²)=+sqrt(3)",
+        "canonical_geometric_c_projection": positive_geometric_c_root().to_dict(),
+        "c_squared_equals_a_squared_plus_b_squared": True,
+        "P_squared_equals_c_squared": True,
+        "positive_P_branch_equals_c": True,
+        "negative_P_branch_equals_minus_c": True,
+        "native_c_tensor_address_identity_preserved": True,
         "bifurcation_exact_branches": list(branches),
         "inherited_phase_gear": gear,
         "phase_gear_hydration": hydration,
