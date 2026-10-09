@@ -160,5 +160,5 @@ def test_new_matrix_not_mistaken_for_original_hnan_perimeter(monkeypatch):
     changed=list(map(list,changed))
     changed[1][1]="x+y-z-w+xy+yx-wz-zw"
     monkeypatch.setattr(mod,"MATRIX",tuple(tuple(row) for row in changed))
-    with pytest.raises(mod.I086OrderedMatrixError,match="source text drift|matrix"):
+    with pytest.raises(mod.I086OrderedMatrixError,match="HNAN center changed"):
         mod.formalize_i086(enumerate_positions=True)
