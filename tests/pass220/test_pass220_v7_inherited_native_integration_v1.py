@@ -129,6 +129,11 @@ def test_native_full_integration_when_binaries_are_provided():
     assert record["pass169_source_registry"]["canonical_authority"] is False
     assert record["inherited_lane5_candidate"]["candidate_only"] is True
     assert record["vm81_hash72_address_bijection"]["bijective_positions"]==5184
+    routing=record["native_tensor_state_routing"]
+    assert routing["classification"]=="EVIDENCE_PENDING"
+    assert routing["pending_is_not_contradiction"] is True
+    assert routing["inherited_signed_vm81_eligible"] is False
+    assert "branch_closure" in routing["unresolved_constraints"]
     assert record["source_specific_quotient_operator_binding_present"] is False
     assert record["vm81_signed_environmental_commit_performed"] is False
     if pure:

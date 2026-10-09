@@ -9,6 +9,7 @@ on:
       - 'tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c'
       - 'tools/pass220/pass220_v7_quotient_gate_v1.c'
       - 'hhs_runtime/hhs_pass220_v7_ordered_matrix_geometry_v1.py'
+      - 'hhs_runtime/hhs_tensor_constraint_admissibility_v1.py'
       - 'tools/pass220/pass220_v7_native_pass159_pure_execution_v1.c'
       - 'tests/pass220/test_pass220_v7_native_pure_inherited_execution_v1.py'
       - 'contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode'
@@ -83,6 +84,8 @@ jobs:
           grep -Fx V7_INHERITED_LANE5_NATIVE_CANDIDATE=VERIFIED artifacts/pass220/v7-inherited/native_integration.txt
           grep -E '^V7_INHERITED_PASS159_PURE_EXEC_STATUS=-?[0-9]+$' artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_QUOTIENT_OPERATOR_SOURCE_BINDING=PENDING artifacts/pass220/v7-inherited/native_integration.txt
+          grep -Fx V7_TENSOR_STATE_INVALID=0 artifacts/pass220/v7-inherited/native_integration.txt
+          grep -Fx V7_TENSOR_STATE_BRANCH_RESOLUTION=PENDING artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_CANONICAL_VM81_COMMIT=0 artifacts/pass220/v7-inherited/native_integration.txt
       - name: Dependency-scoped integration regression using actual native executables
         run: python -m pytest -q tests/pass220/test_pass220_v7_inherited_native_integration_v1.py
@@ -96,6 +99,8 @@ jobs:
           assert doc["source_sha256"]==hashlib.sha256(src).hexdigest()
           assert doc["source_bytes"]==70
           assert doc["pass169_canonical_632_byte_corpus_receipt_borrowed"] is False
+          assert doc["native_tensor_state_routing"]["classification"]=="EVIDENCE_PENDING"
+          assert doc["native_tensor_state_routing"]["pending_is_not_contradiction"] is True
           assert doc["source_specific_quotient_operator_binding_present"] is False
           assert doc["native_pure_execution_attempted"] is True
           assert doc["inherited_native_pass159_pure_execution"]["canonical_mutation"] is False

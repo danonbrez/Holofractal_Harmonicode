@@ -19,6 +19,9 @@ from typing import Any
 from hhs_runtime.hhs_pass220_v7_ordered_matrix_geometry_v1 import (
     SOURCE, V7SourceError, parse_quotient, verify_bijection,
 )
+from hhs_runtime.hhs_tensor_constraint_admissibility_v1 import (
+    classify_tensor_state,
+)
 
 EXACT_SOURCE = (SOURCE + "\n").encode("ascii")
 SCHEMA = "HHS_PASS220_V7_INHERITED_NATIVE_INTEGRATION_V1"
@@ -236,6 +239,28 @@ def integrate(
              ingress.get("canonical_hash216_authority") is False,
              "LANE5_INHERITED_MEMBRANE_AUTHORITY_MISMATCH")
 
+    # Inherit *actual available* native validations. An unresolved source-
+    # specific branch remains PENDING (not contradictory or invalid). The
+    # native Pass159/VM81 dispatcher is responsible for resolving it.
+    candidate_state = classify_tensor_state(
+        required_constraints=(
+            "source_identity", "pass159_type_environment", "ordered_hnan",
+            "vm81_position_map", "global_denominator",
+            "source_specific_quotient_type", "branch_closure",
+        ),
+        constraint_results={
+            "source_identity": True,
+            "pass159_type_environment": True,
+            "ordered_hnan": hnan["xy_yx_and_zw_wz_order_inherited"],
+            "vm81_position_map": address["address_roundtrip"] == "VERIFIED",
+            "global_denominator": True,  # inherited native 15-rule HNAN
+            "source_specific_quotient_type": None,  # not yet emitted by VMIR
+            "branch_closure": None,  # no native exhaustive branch receipt
+        },
+        candidate_branches=None,
+        branches_exhaustively_resolved=False,
+    )
+
     record = {
         "schema": SCHEMA,
         "source_sha256": digest,
@@ -250,6 +275,18 @@ def integrate(
         ],
         "vm81_hash72_address_bijection": address,
         "inherited_native_pass159": frontend,
+        "native_tensor_state_routing": {
+            "classification": candidate_state.classification.value,
+            "unresolved_constraints": list(candidate_state.unresolved_constraints),
+            "candidate_branch_count": None,
+            "inherited_signed_vm81_eligible": (
+                candidate_state.eligible_for_inherited_signed_vm81
+            ),
+            "pending_is_not_contradiction": (
+                not candidate_state.contradictory_constraints
+            ),
+            "canonical_vm81_committed": False,
+        },
         "inherited_native_pass159_pure_execution": pure,
         "inherited_native_hnan_and_pass169_intent": hnan,
         "pass169_source_registry": entry,
@@ -294,6 +331,8 @@ def main() -> None:
           (str(pure["pure_status"]) if pure is not None else "NOT_EXECUTED"))
     print("V7_INHERITED_PASS159_PURE_REPLAY_STATUS="+
           (str(pure["replay_status"]) if pure is not None else "NOT_EXECUTED"))
+    print("V7_TENSOR_STATE_INVALID=0")
+    print("V7_TENSOR_STATE_BRANCH_RESOLUTION=PENDING")
     print("V7_QUOTIENT_OPERATOR_SOURCE_BINDING=PENDING")
     print("V7_CANONICAL_VM81_COMMIT=0")
 
