@@ -73,8 +73,16 @@ def test_native_hold_replay_and_compiler_evidence_not_canonical_commit() -> None
     lines = re.findall(r"^gate_(\d\d)_offset=(\d+);depth=(\d+);truth=(\w+)$",text,re.M)
     offsets = gate_offsets(data)
     assert len(lines) == 40
+    identities = re.findall(r"^gate_(\\d\\d)_identity_sha256=([0-9a-f]{64})$",text,re.M)
+    assert len(identities) == 40
+    assert len({digest for _,digest in identities}) == 40
+    root = sha256(data).digest()
     for index,(row,(pos,depth)) in enumerate(zip(lines,offsets)):
         assert tuple(row) == (f"{index:02d}", str(pos), str(depth), "UNRESOLVED")
+        expected = sha256(
+            b"GATE" + root + index.to_bytes(4,"big") + pos.to_bytes(4,"big")
+        ).hexdigest()
+        assert identities[index] == (f"{index:02d}", expected)
     for evidence in (
         "hold_status=0", "replay_status=0", "replay_semantic_root_equal=1",
         "interpreter_compiler_status=0","interpreter_compiler_match=1",

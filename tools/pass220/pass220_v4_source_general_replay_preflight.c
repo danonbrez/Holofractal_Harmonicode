@@ -51,7 +51,8 @@ static int copy_hash216(const void *handle, char output[HHS159_HASH216_LENGTH + 
     output[HHS159_HASH216_LENGTH] = '\0';
     return 1;
 }
-static int scan_exact_gates(const uint8_t *data, size_t n) {
+static int scan_exact_gates(const uint8_t *data, size_t n,
+                            const uint8_t source_digest[SHA256_DIGEST_LENGTH]) {
     size_t i;
     uint32_t count = 0U;
     uint32_t depth = 0U;
@@ -75,20 +76,24 @@ static int scan_exact_gates(const uint8_t *data, size_t n) {
                 outer_index++;
             }
             memcpy(material, domain, 4U);
-            material[4] = (uint8_t)(count >> 24U);
-            material[5] = (uint8_t)(count >> 16U);
-            material[6] = (uint8_t)(count >> 8U);
-            material[7] = (uint8_t)count;
-            material[8] = (uint8_t)(i >> 24U);
-            material[9] = (uint8_t)(i >> 16U);
-            material[10] = (uint8_t)(i >> 8U);
-            material[11] = (uint8_t)i;
-            for (k=0U;k<SHA256_DIGEST_LENGTH;k++)material[12U+k]=(uint8_t)0U;
-            /* This marker is occurrence metadata only, not a gate truth value.
-             * Source-specific SHA256 root is printed and bound by CI below. */
+            memcpy(material + 4U, source_digest, SHA256_DIGEST_LENGTH);
+            material[36] = (uint8_t)(count >> 24U);
+            material[37] = (uint8_t)(count >> 16U);
+            material[38] = (uint8_t)(count >> 8U);
+            material[39] = (uint8_t)count;
+            material[40] = (uint8_t)(i >> 24U);
+            material[41] = (uint8_t)(i >> 16U);
+            material[42] = (uint8_t)(i >> 8U);
+            material[43] = (uint8_t)i;
+            /* Source-bound occurrence metadata only; neither a truth
+             * witness nor canonical Hash216/VM81 authorization. */
             if (SHA256(material, sizeof(material), digest) == NULL) return 0;
-            printf("gate_%02u_offset=%zu;depth=%u;truth=UNRESOLVED\n",
+            printf("gate_%02u_offset=%zu;depth=%u;truth=UNRESOLVED\\n",
                 count, i, depth);
+            printf("gate_%02u_identity_sha256=", count);
+            for (k = 0U; k < sizeof(digest); ++k)
+                printf("%02x", (unsigned)digest[k]);
+            puts("");
             count++;
             i++;
         }
@@ -138,7 +143,7 @@ int main(int argc, char **argv) {
     }
     printf("source_sha256=");print_hex(digest,sizeof(digest));puts("");
     printf("source_bytes=%zu\n",n);
-    if (!scan_exact_gates(data,n)) {
+    if (!scan_exact_gates(data,n,digest)) {
         fprintf(stderr,"P220_V4_SOURCE_OCCURRENCES_INVALID\n");goto cleanup;
     }
     printf("gate_occurrences=%u\n",GATE_COUNT);
