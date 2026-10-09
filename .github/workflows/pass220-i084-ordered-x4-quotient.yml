@@ -1,0 +1,54 @@
+name: Pass 220 I084 Ordered x4 Unit Quotient
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i084_x4_ordered_unit_quotient_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i084_x4_ordered_unit_quotient_v1.py'
+      - 'formal/wolfram/pass220_i084_x4_ordered_unit_quotient_v1.wl'
+      - 'docs/pass220/PASS_220_I084_ORDERED_X4_UNIT_QUOTIENT.md'
+      - '.github/workflows/pass220-i084-ordered-x4-quotient.yml'
+      - 'hhs_runtime/hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py'
+      - 'hhs_spi_law_of_one_projection_rule_v1.py'
+      - 'hhs_spi_tensor_pair_cubic_normalization_rule_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-sourced-unit-quotient:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped inherited runtime
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Verify source and existing Pass 219/I082/I083 syntax
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i084_x4_ordered_unit_quotient_v1.py \
+            tests/pass220/test_hhs_pass220_i084_x4_ordered_unit_quotient_v1.py \
+            hhs_runtime/hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py \
+            hhs_spi_law_of_one_projection_rule_v1.py
+      - name: Execute original Law-of-1, I083 and I084 exact quotient tests
+        run: |
+          python -m pytest -q \
+            hhs_spi_law_of_one_projection_rule_tests_v1.py \
+            hhs_spi_tensor_pair_cubic_normalization_rule_tests_v1.py \
+            tests/pass220/test_hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_i084_x4_ordered_unit_quotient_v1.py
+      - name: Verify authentic I070/I071 phase binding remains intact
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py
+      - name: Verify proof source and native hold boundaries, without false Wolfram CI claim
+        run: |
+          test -s formal/wolfram/pass220_i084_x4_ordered_unit_quotient_v1.wl
+          grep -q 'native_quotient_inverse_direction_proven"->False' formal/wolfram/pass220_i084_x4_ordered_unit_quotient_v1.wl
+          grep -q 'native_equality_chain_proven"->False' formal/wolfram/pass220_i084_x4_ordered_unit_quotient_v1.wl
+          echo 'I084 source present; Wolfram kernel evaluation was performed separately.'
