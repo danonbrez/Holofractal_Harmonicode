@@ -1,0 +1,116 @@
+name: Pass 220 I091 Original Signed VM81 Environmental Test Admission
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i091_original_signed_vm81_environment_test_admission_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i091_original_signed_vm81_environment_test_admission_v1.py'
+      - 'formal/wolfram/pass220_i091_original_signed_vm81_environment_test_admission_v1.wl'
+      - 'docs/pass220/PASS_220_I091_ORIGINAL_SIGNED_VM81_ENVIRONMENT_TEST_ADMISSION.md'
+      - '.github/workflows/pass220-i091-original-signed-vm81-test-admission.yml'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_environment_admission_probe.py'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
+      - 'tests/pass219/test_pass219_bigint_environment_admission_native_probe.c'
+      - 'hhs_runtime/hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-ml-dsa65-signed-test-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact OpenSSL 3.5 build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            build-essential perl curl ca-certificates
+          python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Build OpenSSL 3.5.0 original ML-DSA-65 provider prerequisite
+        run: |
+          curl -fsSL --retry 3 --retry-delay 2 \
+            https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
+            -o /tmp/openssl-3.5.0.tar.gz
+          tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
+          cd /tmp/openssl-3.5.0
+          ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
+          make -j2
+          make install_sw
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib"
+          export PATH="/tmp/openssl35/bin:$PATH"
+          /tmp/openssl35/bin/openssl version -a
+          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+      - name: Compile original VM81 C++ RNA ABI with real OpenSSL 3.5
+        env:
+          CFLAGS: -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -I/tmp/openssl35/include
+          LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
+        run: |
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib"
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          ldd hhs_runtime/builds/libhhs_runtime.so | grep '/tmp/openssl35/lib'
+      - name: Verify only original public signed environmental mutation export
+        run: |
+          set -euo pipefail
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-i091-symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs-i091-symbols
+          grep -q ' hhs_exact_pass219_rna_vm5184_route$' /tmp/hhs-i091-symbols
+          grep -q ' hhs_exact_pass219_rna_raw5184_route$' /tmp/hhs-i091-symbols
+          for forbidden in \
+            hhs_exact_vm81_admit_uqcel \
+            hhs_exact_pass219_admit_composed \
+            hhs_exact_pass219_rna_admit_composed \
+            hhs_exact_pass219_vm81_pqc_admit \
+            hhs_exact_pass219_vm81_pqc_admit_signed \
+            hhs_exact_pass219_vm81_environment_checkpoint_seal
+          do
+            ! grep -q " $forbidden$" /tmp/hhs-i091-symbols
+          done
+      - name: Build real original Pass219 signed environmental native TEST helper
+        run: |
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib"
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include -I/tmp/openssl35/include \
+            tests/pass219/test_pass219_bigint_environment_admission_native_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -L/tmp/openssl35/lib -lcrypto -lstdc++ -pthread -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -Wl,-rpath,/tmp/openssl35/lib \
+            -o /tmp/test_pass219_bigint_environment_admission_native_probe
+          test -x /tmp/test_pass219_bigint_environment_admission_native_probe
+      - name: Regress unchanged original signed Pass219 positive and fail-closed cases
+        env:
+          HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
+        run: |
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib:$PWD/hhs_runtime/builds"
+          PYTHONPATH="$PWD" python -m pytest -q -s \
+            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py
+      - name: Run I090 physical ingress and I091 selected plus all 12 signed TEST cases
+        env:
+          HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
+        run: |
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib:$PWD/hhs_runtime/builds"
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py \
+            hhs_runtime/hhs_pass220_i091_original_signed_vm81_environment_test_admission_v1.py \
+            tests/pass220/test_hhs_pass220_i091_original_signed_vm81_environment_test_admission_v1.py
+          test -x "$HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE"
+          PYTHONPATH="$PWD" python -m pytest -q -s \
+            tests/pass220/test_hhs_pass220_i091_original_signed_vm81_environment_test_admission_v1.py
+      - name: Preserve original test root and no false Hash216 genesis match
+        run: |
+          test -s formal/wolfram/pass220_i091_original_signed_vm81_environment_test_admission_v1.wl
+          grep -q 'original_native_signed_vm81_probe_executed_by_wolfram"->False' \
+            formal/wolfram/pass220_i091_original_signed_vm81_environment_test_admission_v1.wl
+          grep -q 'native_signed_child_equals_i090_candidate_hash216_proven"->False' \
+            formal/wolfram/pass220_i091_original_signed_vm81_environment_test_admission_v1.wl
+          echo 'Original ML-DSA-65 signed VM81 admission test uses deterministic root in isolated CI only.'
