@@ -82,7 +82,7 @@ def encode_address(s5184: int) -> dict[str, Any]:
     root_row, root_col = divmod(q144, 12)
     pair, ring_index = divmod(q144, Q72)
     phase = Fraction(pos, Q72)
-    if Q81*Q64 != Q72*Q72 != LANES36*Q144:
+    if not (Q81 * Q64 == Q72 * Q72 == LANES36 * Q144 == N5184):
         raise I085CrosswalkError("shared 5184-coordinate geometry changed")
     return {
         "schema": SCHEMA,
@@ -209,7 +209,9 @@ def formalize_i085(*, enumerate_all: bool = False) -> dict[str, Any]:
         "eight_ordered_operation_channels": list(PHASE_BASIS_ORDERED),
         "inherited_i071_phase_gear": gear,
         "native_operator_obligations": list(NATIVE_OBLIGATIONS),
-        "full_5184_address_bijection": enumerate_all,
+        "full_5184_address_bijection": coverage.get(
+            "all_81_vm81_cells_and_64_operation_slots_covered", False
+        ),
         "native_universal_tensor_value_encoding_proven": False,
         "native_rational_exponent_phases_evaluated": False,
         "native_hash72_cryptographic_ledger_equivalence_proven": False,
@@ -221,11 +223,6 @@ def formalize_i085(*, enumerate_all: bool = False) -> dict[str, Any]:
         "canonical_hash72_mint_authority": False,
         "canonical_hash216_mint_authority": False,
     }
-    # Exclude callable from machine-readable canonical contract: the
-    # source function is an invocation mechanism, not proof data.
-    body["full_5184_address_bijection"] = coverage.get(
-        "all_81_vm81_cells_and_64_operation_slots_covered", False
-    )
     body["source_identity_sha256"] = sha256(
         json.dumps({k:v for k,v in body.items() if k!="source_identity_sha256"},
                    sort_keys=True,ensure_ascii=False,allow_nan=False,separators=(",",":")).encode()
