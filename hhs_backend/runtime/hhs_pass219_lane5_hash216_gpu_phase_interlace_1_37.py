@@ -40,7 +40,7 @@ PRIME_CELLS = (
 class Hash216CompositionCandidate:
     candidate_id: str
     hash216: str
-    validated: bool
+    validated: bool = False  # Legacy metadata only; never a state-validity gate.
     jump_span: int = 1
     lineage_signature: str = ""
 
@@ -162,23 +162,26 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
             }
 
         ids: set[str] = set()
-        hashes: set[str] = set()
+        # All well-formed native Hash216 states are valid states. A user JSON
+        # 'validated' flag cannot veto them or grant composition authority.
+        # The actual Lane5 phase route and VM81 vector-ranking kernel below
+        # decide whether a proposed composition can execute.
         canonical: list[Hash216CompositionCandidate] = []
         for candidate in candidates:
-            if not candidate.validated:
-                raise ValueError(f"unvalidated Hash216 candidate: {candidate.candidate_id}")
             if not candidate.candidate_id or candidate.candidate_id in ids:
                 raise ValueError("candidate IDs must be nonempty and unique")
             if int(candidate.jump_span) <= 0:
                 raise ValueError("jump_span must be positive")
             value = _validate_hash216(candidate.hash216)
-            if value in hashes:
-                raise ValueError("duplicate Hash216 candidate")
+            # Separate candidate IDs may reference the same valid Hash216
+            # state; deduplicating by hash is a ranking policy, NOT validity.
             ids.add(candidate.candidate_id)
-            hashes.add(value)
             canonical.append(candidate)
 
         matrix, offsets = derive_prime_matrix(query, cycle_index)
+        # These methods call inherited native C Runtime functions. A native
+        # error aborts the composition; no Python/JSON 'validated' field is
+        # ever used to override it.
         route = self.phase.prime_route(tick, matrix, offsets)
         phase_address = self.phase.phase_address(tick)
         query_segments = split_hash216(query)
@@ -240,6 +243,8 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
             "ranked": ranked[:bounded],
             "candidate_only": True,
             "validated_hash216_read_only": True,
+            "composition_decision_origin": "NATIVE_LANE5_PRIME_ROUTE_AND_VM81_VECTOR_KERNEL",
+            "legacy_validated_metadata_ignored": True,
             "gpu_may_commit_hash72": False,
             "gpu_may_commit_hash216": False,
             "canonical_vm81_mutation_authority": False,
