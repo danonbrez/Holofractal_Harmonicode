@@ -373,3 +373,24 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184(
     memcpy(out_receipt, &mediation, sizeof(mediation));
     return HHS_EXACT_STATUS_OK;
 }
+
+HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *transition,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    HHSExactPass219Lane5MediationReceiptV1 *out_receipt
+) {
+    HHSExactPass219Holo4PreparedV1 prepared;
+    HHSExactPass219Holo4DecisionV1 decision;
+    if (out_receipt == NULL)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    memset(&prepared, 0, sizeof(prepared));
+    memset(&decision, 0, sizeof(decision));
+    return hhs_exact_pass219_lane5_mediate_rna_vm5184(
+        input, candidate_frame, transition, feedback_lane, feedback_trinary,
+        request, &prepared, &decision, out_receipt
+    );
+}
