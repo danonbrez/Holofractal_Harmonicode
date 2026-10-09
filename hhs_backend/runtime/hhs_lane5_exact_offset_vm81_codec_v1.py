@@ -158,3 +158,30 @@ def assert_bidirectional_offset_identity(serialized: str) -> NativeOffsetFrame:
     ):
         raise NativeOffsetFrameError("bidirectional exact offset identity failed")
     return original
+
+
+def typed_native_offset_frame(carrier: NativeOffsetFrame) -> Any:
+    """Obtain the EXACT native VM81 input frame for the verified I001 carrier.
+
+    This is an ingress projection, not authorization to treat all VM81 frames
+    as normalized offsets or to claim a full 5184-character generic codec.
+    """
+    if not isinstance(carrier, NativeOffsetFrame) or carrier.profile != NATIVE_FRAME_PROFILE:
+        raise NativeOffsetFrameError("typed original I001 offset carrier required")
+    verified = assert_bidirectional_offset_identity(carrier.canonical_5184)
+    if (
+        verified.raw_frame_le != carrier.raw_frame_le
+        or verified.offsets != carrier.offsets
+    ):
+        raise NativeOffsetFrameError("source or native I001 frame altered after proof")
+    lib, NativeFrame = _native_frame_abi()
+    source = (ctypes.c_uint8 * FRAME_BYTES).from_buffer_copy(carrier.raw_frame_le)
+    frame = NativeFrame()
+    status = int(lib.hhs_exact_vm81_frame_import_le(
+        source, FRAME_BYTES, ctypes.byref(frame)
+    ))
+    if status != 0:
+        raise NativeOffsetFrameError("typed native I001 frame ingress failed")
+    if tuple(int(v) for v in frame.words) != carrier.offsets:
+        raise NativeOffsetFrameError("typed native I001 cell addresses reordered")
+    return frame
