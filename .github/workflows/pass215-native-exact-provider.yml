@@ -100,13 +100,7 @@ jobs:
       - name: Verify native coupled symbol and singleton signed VM81 boundary
         run: |
           nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-lane5-symbols
-          grep -q ' hhs_exact_pass219_lane5_mediate_rna_vm5184
-          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs-lane5-symbols
-          ! grep -q ' hhs_exact_pass219_admit_composed$' /tmp/hhs-lane5-symbols
- /tmp/hhs-lane5-symbols
-          grep -q ' hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt
-          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs-lane5-symbols
-          ! grep -q ' hhs_exact_pass219_admit_composed$' /tmp/hhs-lane5-symbols
- /tmp/hhs-lane5-symbols
+          grep -q ' hhs_exact_pass219_lane5_mediate_rna_vm5184$' /tmp/hhs-lane5-symbols
+          grep -q ' hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt$' /tmp/hhs-lane5-symbols
           grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs-lane5-symbols
           ! grep -q ' hhs_exact_pass219_admit_composed$' /tmp/hhs-lane5-symbols
