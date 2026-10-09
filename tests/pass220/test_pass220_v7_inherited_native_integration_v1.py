@@ -66,6 +66,9 @@ def test_native_hash216_uses_harmonicode_glyphs_not_hex():
     assert out["native_validate_only_receipt_hash216"]==glyph
     with pytest.raises(V7NativeIntegrationError,match="INVALID_NATIVE_HASH216"):
         validate_frontend_output(raw.replace(glyph,"A" * 215 + chr(9),1),0,EXACT_SOURCE)
+    # '@' is printable ASCII, but not a defined HARMONICODE glyph.
+    with pytest.raises(V7NativeIntegrationError,match="INVALID_NATIVE_HASH216"):
+        validate_frontend_output(raw.replace(glyph,"A" * 215 + "@",1),0,EXACT_SOURCE)
 
 def test_frontend_output_requires_real_hash216_and_execution_scope():
     out=validate_frontend_output(_frontend(),0,EXACT_SOURCE)

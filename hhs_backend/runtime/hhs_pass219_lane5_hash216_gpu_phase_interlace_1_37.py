@@ -183,6 +183,18 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
         # error aborts the composition; no Python/JSON 'validated' field is
         # ever used to override it.
         route = self.phase.prime_route(tick, matrix, offsets)
+        # Check the actual C-kernel receipt, not client-provided JSON
+        # "validated" or "accepted" metadata. Phase routing does not grant
+        # canonical mutation authority.
+        if (not route.get("prime_cells_validated") or
+            not route.get("upper_triangular") or
+            not route.get("invertible_mod_cycle") or
+            route.get("candidate_only") is not True or
+            route.get("canonical_mutation_authority") is not False or
+            route.get("canonical_hash72_authority") is not False or
+            route.get("canonical_hash216_authority") is not False or
+            route.get("requires_exact_cpu_vm81_replay") is not True):
+            raise RuntimeError("inherited native Lane5 phase receipt failed authority checks")
         phase_address = self.phase.phase_address(tick)
         query_segments = split_hash216(query)
         candidate_segments = [split_hash216(candidate.hash216) for candidate in canonical]
@@ -197,9 +209,26 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
                 candidate_ids=candidate_ids,
                 top_k=len(canonical),
             )
+            # Every ordered source ordinal must be returned exactly once by
+            # the native vector-ranking runtime. Never allow fabricated or
+            # partial result metadata to decide a composition.
+            entries = ranking.get("ranked")
+            if (ranking.get("candidate_count") != len(canonical) or
+                not isinstance(entries, list) or len(entries) != len(canonical)):
+                raise RuntimeError("native Hash72 vector ranking incomplete")
+            seen_ordinals = set()
+            for item in entries:
+                ordinal = item.get("source_ordinal")
+                if (type(ordinal) is not int or not 0 <= ordinal < len(canonical) or
+                    ordinal in seen_ordinals or
+                    item.get("candidate_id") != candidate_ids[ordinal] or
+                    item.get("candidate_hash72") !=
+                        candidate_segments[ordinal][segment_index] or
+                    type(item.get("distance")) is not int or item["distance"] < 0):
+                    raise RuntimeError("native Hash72 vector receipt inconsistent")
+                seen_ordinals.add(ordinal)
+                distances[ordinal] += item["distance"]
             segment_rankings.append(ranking)
-            for item in ranking["ranked"]:
-                distances[int(item["source_ordinal"])] += int(item["distance"])
 
         ranked = []
         routed_slots = [int(value) for value in route["routed_slot"]]

@@ -7,6 +7,8 @@ on:
       - 'hhs_backend/runtime/hhs_pass220_holographic_hash216_lane5_bridge_v1.py'
       - 'tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py'
       - 'tests/pass220/test_pass220_lane5_hash216_kernel_composition_policy_v1.py'
+      - 'hhs_runtime/hhs_pass220_v7_inherited_native_integration_v1.py'
+      - 'tests/pass220/test_pass220_v7_inherited_native_integration_v1.py'
       - '.github/workflows/pass220-lane5-intrinsic-hash-states-native-composition.yml'
   workflow_dispatch:
 
@@ -30,7 +32,9 @@ jobs:
       - name: Build and link inherited native VM81 and Lane5 runtime
         run: make c-abi
       - name: Intrinsic state validity without JSON boolean authorization
-        run: python -m pytest -q tests/pass220/test_pass220_lane5_hash216_kernel_composition_policy_v1.py
+        run: |
+          python -m pytest -q tests/pass220/test_pass220_lane5_hash216_kernel_composition_policy_v1.py
+          python -m pytest -q tests/pass220/test_pass220_v7_inherited_native_integration_v1.py -k 'native_hash216_uses_harmonicode_glyphs_not_hex'
       - name: Real native phase and Hash72 vector composition, negative kernel failure
         run: |
           python -m pytest -q tests/pass219/test_pass219_lane5_hash216_gpu_phase_interlace_1_37.py \

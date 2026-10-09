@@ -26,6 +26,9 @@ from hhs_runtime.hhs_tensor_constraint_admissibility_v1 import (
 EXACT_SOURCE = (SOURCE + "\n").encode("ascii")
 SCHEMA = "HHS_PASS220_V7_INHERITED_NATIVE_INTEGRATION_V1"
 PASS169_632_BYTE_CANONICAL_SOURCE_SCOPE = 632
+# Exact inherited HARMONICODE Hash72/Hash216 glyph alphabet (72 symbols).
+# Transport performs type checks only; it does not authenticate compositions.
+NATIVE_HASH72_GLYPHS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?"
 
 
 class V7NativeIntegrationError(RuntimeError):
@@ -51,9 +54,10 @@ def _fields(stdout: str) -> dict[str, str]:
 def _hash216(candidate: str | None, name: str) -> str:
     _require(isinstance(candidate, str) and len(candidate) == 216,
              "MISSING_NATIVE_HASH216_" + name)
-    # Native HARMONICODE Hash216 is a 216-GLYPH string, not SHA-hex.
-    # Preserve its ordered glyphs byte-for-byte; avoid a scalar/hex shim.
-    _require(all(33 <= ord(c) <= 126 for c in candidate),
+    # Native HARMONICODE Hash216 is 3 ordered 72-GLYPH cells, not
+    # SHA-hex or arbitrary printable ASCII. This is a type boundary, never
+    # an independent state-validity or composition-admission flag.
+    _require(all(c in NATIVE_HASH72_GLYPHS for c in candidate),
              "INVALID_NATIVE_HASH216_" + name)
     return candidate
 

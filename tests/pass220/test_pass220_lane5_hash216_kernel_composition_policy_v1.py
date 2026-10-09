@@ -51,3 +51,74 @@ def test_holographic_bridge_does_not_forge_json_validation():
 def test_invalid_serialization_rejected_as_type_boundary_not_state_invalidity(bad):
     with pytest.raises(ValueError):
         split_hash216(bad)
+
+def test_native_kernel_receipt_corruption_never_counts_as_valid_composition(monkeypatch):
+    """A true JSON boolean cannot override a failed native receipt."""
+    native_state = _hash216(31)
+    # Construct the instance without native loading. The call path itself
+    # must still consume native receipt evidence and reject forged/partial
+    # outputs, even if legacy metadata says "validated=True".
+    optimizer = object.__new__(Pass219Lane5Hash216GPUPhaseInterlaceOptimizer)
+    class Phase:
+        def prime_route(self, *_args):
+            return {
+                "prime_cells_validated": False,
+                "upper_triangular": True,
+                "invertible_mod_cycle": True,
+                "candidate_only": True,
+                "canonical_mutation_authority": False,
+                "canonical_hash72_authority": False,
+                "canonical_hash216_authority": False,
+                "requires_exact_cpu_vm81_replay": True,
+            }
+        def phase_address(self, *_args):
+            return {"phases":[0,0,0,0]}
+    optimizer.phase = Phase()
+    with pytest.raises(RuntimeError,match="native Lane5 phase receipt"):
+        optimizer.search_hash216(
+            query_hash216=native_state,
+            candidates=[Hash216CompositionCandidate("a",native_state,validated=True)],
+            tick=0, cycle_index=0,
+        )
+
+
+def test_native_vector_receipt_requires_complete_ordered_sources():
+    native_state = _hash216(41)
+    optimizer = object.__new__(Pass219Lane5Hash216GPUPhaseInterlaceOptimizer)
+    class Phase:
+        def prime_route(self,*_args):
+            return {
+                "prime_cells_validated": True,
+                "upper_triangular": True,
+                "invertible_mod_cycle": True,
+                "candidate_only": True,
+                "canonical_mutation_authority": False,
+                "canonical_hash72_authority": False,
+                "canonical_hash216_authority": False,
+                "requires_exact_cpu_vm81_replay": True,
+                "routed_slot": [0,1,2,3],
+            }
+        def phase_address(self,*_args):
+            return {"phases":[0,0,0,0]}
+    class CorruptGPU:
+        def rank_hash72_vectors(self,**kwargs):
+            return {
+                "candidate_count":len(kwargs["candidate_hash72"]),
+                "ranked":[{
+                    "candidate_id":kwargs["candidate_ids"][0],
+                    "candidate_hash72":kwargs["candidate_hash72"][0],
+                    "source_ordinal":0,
+                    "distance":0,
+                }],  # incomplete when two separate candidate references
+            }
+    optimizer.phase = Phase()
+    optimizer.gpu = CorruptGPU()
+    with pytest.raises(RuntimeError,match="native Hash72 vector ranking incomplete"):
+        optimizer.search_hash216(
+            query_hash216=native_state,
+            candidates=[
+                Hash216CompositionCandidate("a",native_state,validated=True),
+                Hash216CompositionCandidate("b",native_state,validated=False),
+            ],
+            tick=0,cycle_index=0,
+        )
