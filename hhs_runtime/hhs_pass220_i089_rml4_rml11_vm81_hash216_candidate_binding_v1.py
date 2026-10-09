@@ -251,12 +251,13 @@ def bind_i089_original_phase_vm81_candidate(
         "original_RML11_quarter_channels":action_rows,
         "original_RML11_bounded_probe_sha256":residual["transport_sha256"],
         "original_I070_binding_hash72":i070["binding_hash72"],
+        "original_I070_parent_candidate_hash216":i070["candidate_hash216"],
         "original_I071_nucleus":nucleus,
         "original_I071_phase_channel":channel,
         "original_I071_phase_slot":encode_phase_slot(channel,4),
         "source_result_authority":"CANDIDATE_ONLY",
     }
-    preceding=i070["candidate_change_hash72"]
+    preceding=i070["binding_hash72"]  # prior whole-candidate identity, not a change lane
     transition=original_candidate_hash72(source)
     receipt=original_candidate_hash72({
         "schema":SCHEMA,
