@@ -11,7 +11,7 @@ substitutes for their underlying native tensor state.
 from __future__ import annotations
 
 import ctypes
-from ctypes import Structure, c_uint8, c_uint32, c_uint64
+from ctypes import Structure, c_char, c_int8, c_uint8, c_uint16, c_uint32, c_uint64
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Any, Mapping
@@ -72,6 +72,29 @@ class Lane5Receipt(Structure):
         ("canonical_persistence_authority", c_uint8),
         ("requires_environmental_admission", c_uint8),
         ("reserved0", c_uint8 * 5),
+    ]
+
+
+class NativeHash72Occurrence(Structure):
+    """Exact C Hash72 token occurrence layout, including SHA-256 index."""
+    _fields_ = [
+        ("struct_size", c_uint32), ("version", c_uint32),
+        ("absolute_position216", c_uint16), ("lane_role", c_uint8),
+        ("lane_position72", c_uint8), ("glyph", c_uint8),
+        ("sha256_index_present", c_uint8), ("reserved0", c_uint8 * 2),
+        ("sha256_index_record", c_uint8 * 32),
+    ]
+
+
+class NativeHash216TransitionView(Structure):
+    """Exact HHS native 216-position transition, never a flattened digest."""
+    _fields_ = [
+        ("struct_size", c_uint32), ("version", c_uint32),
+        ("previous_hash72", c_char * 73), ("change_hash72", c_char * 73),
+        ("receipt_hash72", c_char * 73), ("transition_word216", c_char * 217),
+        ("transition_identity216", c_char * 217),
+        ("occurrences", NativeHash72Occurrence * 216),
+        ("resolved_index_count", c_uint16), ("reserved0", c_uint16),
     ]
 
 
