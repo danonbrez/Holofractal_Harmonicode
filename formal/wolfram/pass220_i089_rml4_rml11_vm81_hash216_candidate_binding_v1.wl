@@ -19,16 +19,13 @@ phaseState=Join[primitivePhases,Association@Table[
 
 i2=IdentityMatrix[2];s1={{0,1},{1,0}};
 s2={{1,0},{0,-1}};s12={{0,-1},{1,0}};
+(* Exactly the original first four RML10 Cl(0,8) generators.
+   Do not fabricate or assign any additional phase generators. *)
 gens={
  -KroneckerProduct[i2,i2,s2,s12],
  -KroneckerProduct[i2,i2,s12,i2],
  -KroneckerProduct[i2,s1,s1,s12],
- -KroneckerProduct[i2,s2,s1,s12],
- KroneckerProduct[i2,s12,s1,i2],
- -KroneckerProduct[i2,s12,s2,s1],
- KroneckerProduct[s1,s12,s2,s2],
- -KroneckerProduct[s1,s12,s2,s2], (* intentionally NOT used in native primitive x,y,z,w *)
- KroneckerProduct[s2,s12,s2,s2]
+ -KroneckerProduct[i2,s2,s1,s12]
 };
 primitiveMatrix=AssociationThread[primitiveNames,gens[[1;;4]]];
 actions=Join[primitiveMatrix,
