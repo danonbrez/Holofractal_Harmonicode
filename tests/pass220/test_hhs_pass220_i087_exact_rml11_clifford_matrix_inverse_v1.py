@@ -14,7 +14,7 @@ from hhs_runtime.pass219.phase_clifford_intertwiner import (
 
 def test_real_original_rml11_generators_include_distinct_new_wx_composite():
     matrices = mod._original_rml11_actions()
-    assert list(matrices) == ["x","y","z","w","xy","yx","zw","wz","wx"]
+    assert set(matrices) == {"x","y","z","w","xy","yx","zw","wz","wx"}
     assert matrices["wx"] == _matmul(matrices["w"], matrices["x"])
     assert matrices["wx"] != _matmul(matrices["w"],matrices["z"])
     assert matrices["wx"] != matrices["wz"]
@@ -62,6 +62,19 @@ def test_exact_both_sided_inverse_uses_only_inherited_rml11_actions():
     M = mod.original_i086_rml11_block_matrix()
     assert _matmul(M,values) == _identity(48)
     assert _matmul(values,M) == _identity(48)
+    quotient = result["exact_projected_quotient_coefficients"]
+    assert len(quotient)==48 and all(len(row)==48 for row in quotient)
+    Q = tuple(tuple(Fraction(v["numerator"],v["denominator"])
+                    for v in row) for row in quotient)
+    assert Q == mod._scale(values,5184)
+    assert _matmul(Q,M) == mod._scale(_identity(48),5184)
+    assert _matmul(M,Q) == mod._scale(_identity(48),5184)
+    assert result["exact_projected_left_quotient_identity"] is True
+    assert result["exact_projected_right_quotient_identity"] is True
+    assert result["exact_projected_5184_over_matrix_quotient_executed"] is True
+    assert len(result["exact_projected_quotient_sha256"]) == 64
+    assert len(result["original_i069_candidate_hash72_of_computed_quotient"]) == 72
+    assert result["candidate_hash72_of_quotient_is_not_canonical_ledger"] is True
 
 
 def test_deterministic_bounded_witness_and_native_authority_is_held():
@@ -69,6 +82,7 @@ def test_deterministic_bounded_witness_and_native_authority_is_held():
     b = mod.verify_i087_exact_clifford_inverse()
     assert a == b
     assert "exact_inverse_coefficients" not in a
+    assert "exact_projected_quotient_coefficients" not in a
     assert a["projection_only"] is True
     assert a["candidate_only"] is True
     assert a["original_vm81_native_tensor_invertibility_proven"] is False
@@ -106,3 +120,12 @@ def test_clifford_rml11_projection_is_separate_from_tensor_universality():
     assert receipt["original_hnan_center_preserved"] is True
     assert receipt["original_i086_nine_ordered_cells_executed_in_clifford_projection"] is True
     assert receipt["original_vm81_native_tensor_invertibility_proven"] is False
+
+
+def test_host_float_and_bool_matrix_input_is_denied():
+    matrix=tuple(tuple(1 if i==j else 0 for j in range(48)) for i in range(48))
+    for v in (1.0, True):
+        changed=[list(row) for row in matrix]
+        changed[0][0]=v
+        with pytest.raises(mod.I087ExactCliffordError,match="exact matrix input"):
+            mod._exact_inverse(tuple(tuple(row) for row in changed))
