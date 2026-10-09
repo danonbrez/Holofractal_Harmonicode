@@ -190,6 +190,14 @@ def mediate_prepared_candidate(
     result = int(mediate(ctypes.byref(request), ctypes.byref(receipt)))
     if result != HHS_EXACT_STATUS_OK:
         raise Lane5NativeMediationError(f"native Lane 5 rejected candidate: status={result}")
+    return _receipt_projection(candidate, request, receipt)
+
+
+def _receipt_projection(
+    candidate: PreparedLane5Candidate,
+    request: Lane5Request,
+    receipt: Lane5Receipt,
+) -> dict[str, Any]:
     expected_echo = (
         ("version", VERSION), ("namespace_id", NAMESPACE),
         ("struct_size", ctypes.sizeof(Lane5Receipt)),
