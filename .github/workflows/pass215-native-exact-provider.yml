@@ -6,6 +6,8 @@ on:
     paths:
       - 'hhs_backend/runtime/hhs_pass215_native_exact_generator_v1.py'
       - 'hhs_backend/runtime/hhs_lane5_native_candidate_mediation_v1.py'
+      - 'hhs_backend/runtime/hhs_lane5_exact_offset_vm81_codec_v1.py'
+      - 'tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py'
       - 'hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h'
       - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
       - 'tests/pass219/test_pass219_lane5_rna_vm5184_coupled_mediation_v1.c'
@@ -35,6 +37,7 @@ jobs:
           python -m py_compile \
             hhs_backend/runtime/hhs_pass215_native_exact_generator_v1.py \
             hhs_backend/runtime/hhs_lane5_native_candidate_mediation_v1.py \
+            hhs_backend/runtime/hhs_lane5_exact_offset_vm81_codec_v1.py \
             hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
             hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py \
             tests/test_hhs_pass215_native_exact_generator_v1.py \
@@ -97,6 +100,11 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check --break-system-packages pytest
           python3 -m pytest -q tests/pass219/test_hhs_lane5_python_coupled_native_vm5184_v1.py
+      - name: Validate canonical I001 5184-char to native VM81 lossless offset profile
+        env:
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python3 -m pytest -q tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py
       - name: Verify native coupled symbol and singleton signed VM81 boundary
         run: |
           nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-lane5-symbols
