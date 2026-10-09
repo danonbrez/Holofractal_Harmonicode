@@ -15,7 +15,8 @@ the meaning of xA==-yB must NOT be rewritten to commutative scalars.
 
 Scalar projections are not canonical HHS operator identities.
 No independent VM81/Hash72/Hash216 mutation, no float arithmetic.
-The P²=3 real-square branch is explicit; P⁴=9 alone does not
+The canonical positive geometric root is c=√(a²+b²)=√3, so c²=3. The P=+c branch and P=−c branch retain their separate phase signs and native tensor provenance. No new free √3 parameter is introduced.
+The P²=c²=3 real-square branch is explicit; P⁴=9 alone does not
 mathematically exclude P²=-3 over a general complex scalar projection.
 The metadata root 179971.179971 and baseline 1.001 remain exact strings,
 distinct from the scalar closure seed a²=1.
@@ -38,7 +39,7 @@ WolframLanguageEvaluator executed the exact committed I082 WL
 formalization in this conversation and returned:
   status PASS
   check_count 19
-  passed 19
+  passed 19 at initial I082 proof; 21 on the corrected c-root proof
   failed []
   matrix {{4,9,2},{3,5,7},{8,1,6}}
   row/column/diagonal sums all 15, total 45
@@ -105,3 +106,6 @@ To run:
    without projecting the address-bearing variables to free scalars.
 5. Validate dependency scope, commit, merge only after actual
    CI confirmation, verify exact main and required production host.
+
+## Explicit source correction (2026-10-09)
+The user affirmed c=√(a²+b²)=√3. Source I082 Python test, Wolfram proof and formal documentation now use c as the established positive geometric root; P is ±c by signed-branch admission, and on the forward positive branch P=c. Corrected committed Wolfram script executed with 21/21 PASS. No full native List/mask or chiral operator proof is inferred from this correction.
