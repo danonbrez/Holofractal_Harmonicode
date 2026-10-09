@@ -123,6 +123,27 @@ int main(void) {
           &replay) == HHS_EXACT_STATUS_OK);
     CHECK(memcmp(&replay, &first, sizeof(replay)) == 0);
 
+    /* Native-bound mode fills both RNA witnesses from the actual cell wall
+     * inside one mediated C call. No guessed signatures are introduced. */
+    corrupted = request;
+    corrupted.rna_prepared_signature64 = 0U;
+    corrupted.rna_decision_signature64 = 0U;
+    memset(&replay, 0, sizeof(replay));
+    CHECK(hhs_exact_pass219_lane5_mediate_rna_vm5184(
+          &input, &frame, &transition, HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE,
+          0, &corrupted, &emitted_prepared, &emitted_decision,
+          &replay) == HHS_EXACT_STATUS_OK);
+    CHECK(replay.rna_prepared_signature64 == reference_prepared.tensor_signature64);
+    CHECK(replay.rna_decision_signature64 == reference_decision.decision_signature64);
+    CHECK(memcmp(&replay, &first, sizeof(replay)) == 0);
+
+    corrupted = request;
+    corrupted.rna_prepared_signature64 = 0U;
+    CHECK(hhs_exact_pass219_lane5_mediate_rna_vm5184(
+          &input, &frame, &transition, HHS_EXACT_PASS219_HOLO4_FEEDBACK_NONE,
+          0, &corrupted, &emitted_prepared, &emitted_decision,
+          &replay) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
+
     corrupted = request;
     corrupted.rna_prepared_signature64 ^= UINT64_C(1);
     memset(&first, 0xA5, sizeof(first));
