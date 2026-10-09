@@ -19,7 +19,10 @@ from typing import Any, Mapping
 
 from hhs_runtime.hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1 import (
     MATRIX, SOURCE, SOURCE_MATRIX_CENTER, _parse_cell_expression,
-    I086OrderedMatrixError, formalize_i086,
+    formalize_i086,
+)
+from hhs_runtime.hhs_pass220_i069_harmonicode_i_tensor_v1 import (
+    hash72 as inherited_i069_candidate_hash72,
 )
 from hhs_runtime.pass219.phase_clifford_intertwiner import (
     _channel_action_matrices, _matmul,
@@ -121,6 +124,9 @@ def _exact_inverse(
     n = len(matrix)
     if n != LIFT_ORDER or any(len(row) != n for row in matrix):
         raise I087ExactCliffordError("typed 48x48 Clifford projection required")
+    if any(isinstance(v, bool) or not isinstance(v, (int, Fraction))
+           for row in matrix for v in row):
+        raise I087ExactCliffordError("exact matrix input required; floats forbidden")
     a = [[Fraction(v) for v in row] for row in matrix]
     b = [[Fraction(int(i == j)) for j in range(n)] for i in range(n)]
     determinant = Fraction(1)
@@ -175,6 +181,18 @@ def verify_i087_exact_clifford_inverse(*, include_inverse:bool=False) ->dict[str
     right = _matmul(inverse,source_matrix)
     if left != identity or right != identity:
         raise I087ExactCliffordError("I087 exact Clifford left/right inverse failed")
+    # Carry out the user's 5184 / M left/right quotient in the exact
+    # Clifford *projection*. This is not original VM81 matrix division.
+    projected_quotient = tuple(
+        tuple(Fraction(5184)*coefficient for coefficient in row)
+        for row in inverse
+    )
+    scaled_identity = _scale(identity, 5184)
+    if (
+        _matmul(source_matrix, projected_quotient) != scaled_identity
+        or _matmul(projected_quotient, source_matrix) != scaled_identity
+    ):
+        raise I087ExactCliffordError("exact 5184/M projected quotient residual")
     # Only original RML11 projection; do not conflate generator ancestry
     # with the original VM81 temporal Hash216 state.
     inherited = build_one_gyroscope_clifford_channel_actions()
@@ -183,6 +201,21 @@ def verify_i087_exact_clifford_inverse(*, include_inverse:bool=False) ->dict[str
     source_matrix_hash = sha256(json.dumps(
         source_matrix,separators=(",",":"),allow_nan=False
     ).encode()).hexdigest()
+    quotient_rationals = [
+        [[v.numerator,v.denominator] for v in row] for row in projected_quotient
+    ]
+    quotient_sha = sha256(json.dumps(
+        quotient_rationals,separators=(",",":"),allow_nan=False
+    ).encode()).hexdigest()
+    candidate_hash72 = inherited_i069_candidate_hash72({
+        "schema":SCHEMA,
+        "original_i086_source_sha256":parent["source_identity_sha256"],
+        "original_rml11_witness_sha256":inherited["witness_sha256"],
+        "exact_rational_clifford_quotient":quotient_rationals,
+        "authority":"CANDIDATE_PROJECTION_ONLY",
+    })
+    if not isinstance(candidate_hash72,str) or len(candidate_hash72)!=72:
+        raise I087ExactCliffordError("inherited I069 candidate hash72 malformed")
     witness: dict[str,Any] = {
         "schema":SCHEMA,
         "i086_source":SOURCE,
@@ -200,6 +233,12 @@ def verify_i087_exact_clifford_inverse(*, include_inverse:bool=False) ->dict[str
         "inverse_clifford_projection_sha256":_fingerprint_inverse(inverse),
         "determinant":_exact_fraction_record(determinant),
         "determinant_nonzero":True,
+        "exact_projected_5184_over_matrix_quotient_executed":True,
+        "exact_projected_quotient_sha256":quotient_sha,
+        "original_i069_candidate_hash72_of_computed_quotient":candidate_hash72,
+        "candidate_hash72_of_quotient_is_not_canonical_ledger":True,
+        "exact_projected_left_quotient_identity":True,
+        "exact_projected_right_quotient_identity":True,
         "exact_pivot_row_swaps":pivot_swaps,
         "exact_two_sided_inverse_verified":True,
         "exact_left_product_identity":True,
@@ -217,5 +256,8 @@ def verify_i087_exact_clifford_inverse(*, include_inverse:bool=False) ->dict[str
     if include_inverse:
         witness["exact_inverse_coefficients"] = [
             [_exact_fraction_record(v) for v in row] for row in inverse
+        ]
+        witness["exact_projected_quotient_coefficients"] = [
+            [_exact_fraction_record(v) for v in row] for row in projected_quotient
         ]
     return witness
