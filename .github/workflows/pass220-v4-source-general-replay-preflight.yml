@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'tools/pass220/pass220_v4_source_general_replay_preflight.c'
+      - 'hhs_runtime/hhs_pass220_v4_ordered_gate_obligations_v1.py'
+      - 'tests/pass220/test_pass220_v4_ordered_gate_obligations_v1.py'
+      - 'evidence/pass220/PASS220_V4_40_GATE_REPLAY_PREFLIGHT_37946520150.json'
       - 'tools/pass220/pass220_v4_native_hnan_phase_order_preflight.c'
       - 'tests/pass220/test_pass220_v4_source_general_replay_preflight.py'
       - '.github/workflows/pass220-v4-source-general-replay-preflight.yml'
@@ -118,6 +121,30 @@ jobs:
           }
           (root/'combined_preflight.json').write_text(json.dumps(record,sort_keys=True,indent=2)+'\n')
           print('V4_REPLAY_HNAN_COMBINED_NONCANONICAL_PREFLIGHT_PASS')
+          PY
+      - name: Require source-bound 40-gate two-copy proof-obligation compilation
+        run: |
+          set -euo pipefail
+          python -m hhs_runtime.hhs_pass220_v4_ordered_gate_obligations_v1 \
+            --source contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode \
+            --native-receipt evidence/pass220/PASS220_V4_40_GATE_REPLAY_PREFLIGHT_37946520150.json \
+            --output artifacts/pass220/v4-source-general/ordered_gate_obligations.json
+          python -m pytest -q tests/pass220/test_pass220_v4_ordered_gate_obligations_v1.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          folder=Path('artifacts/pass220/v4-source-general')
+          gate=json.loads((folder/'ordered_gate_obligations.json').read_text())
+          composite=json.loads((folder/'combined_preflight.json').read_text())
+          assert gate['source_sha256']==composite['source_sha256']
+          assert gate['gate_count']==composite['gate_occurrences']==40
+          assert len(gate['copy_pairs'])==18
+          assert composite['native_replay_observed']
+          assert composite['native_hnan_15_rules_verified']
+          assert not gate['all_40_gate_truths_proven']
+          assert not composite['all_40_boolean_truth_witnesses_verified']
+          assert not gate['pqc_signed_vm81_admission_verified']
+          print('V4_NATIVE_REPLAY_HNAN_40_GATE_OBLIGATIONS_CONJOINED')
           PY
       - name: Upload diagnostic receipts and gate inventory
         if: always()
