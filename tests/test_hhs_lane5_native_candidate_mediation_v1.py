@@ -153,3 +153,52 @@ def test_prepared_signatures_cannot_be_replaced_after_native_validation():
     with pytest.raises(TypeError):
         original.signatures["rna_prepared_signature64"] = 0
     assert original.native_request().rna_prepared_signature64 == 108
+
+
+def test_requested_native_rna_binding_preserves_other_exact_witnesses():
+    import dataclasses
+
+    baseline = candidate()
+    signatures = dict(baseline.signatures)
+    signatures["rna_prepared_signature64"] = 0
+    signatures["rna_decision_signature64"] = 0
+    bound = dataclasses.replace(
+        baseline, signatures=signatures, native_rna_bind=True,
+    )
+    req = bound.native_request()
+    assert req.rna_prepared_signature64 == 0
+    assert req.rna_decision_signature64 == 0
+    assert req.parent_hash216_signature64 == baseline.signatures["parent_hash216_signature64"]
+    assert req.capability_registry_signature64 == baseline.signatures["capability_registry_signature64"]
+    # Only the coupled native C++ RNA ingress may authenticate those fields.
+    with pytest.raises(Lane5NativeMediationError, match="requires coupled"):
+        mediate_prepared_candidate(bound, native_library=FakeLane5Native())
+
+
+def test_partial_native_rna_binding_rejected():
+    import dataclasses
+
+    original = candidate()
+    signatures = dict(original.signatures)
+    signatures["rna_prepared_signature64"] = 0
+    with pytest.raises(Lane5NativeMediationError, match="both signatures unset"):
+        dataclasses.replace(original, signatures=signatures, native_rna_bind=True)
+
+
+def test_bound_native_receipt_requires_authentic_computed_pair():
+    import dataclasses
+    from hhs_backend.runtime.hhs_lane5_native_candidate_mediation_v1 import (
+        _receipt_projection,
+    )
+    c = candidate()
+    signatures = dict(c.signatures)
+    signatures["rna_prepared_signature64"] = 0
+    signatures["rna_decision_signature64"] = 0
+    bound = dataclasses.replace(c, signatures=signatures, native_rna_bind=True)
+    native = FakeLane5Native()
+    request = bound.native_request()
+    receipt = Lane5Receipt()
+    # A fake C function cannot supply the required authentically bound pair.
+    native._mediate(ctypes.byref(request), ctypes.byref(receipt))
+    with pytest.raises(Lane5NativeMediationError, match="did not bind signatures"):
+        _receipt_projection(bound, request, receipt)
