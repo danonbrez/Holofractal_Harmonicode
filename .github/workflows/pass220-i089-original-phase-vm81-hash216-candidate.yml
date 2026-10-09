@@ -1,0 +1,70 @@
+name: Pass 220 I089 Original RML4 RML11 VM81 Hash216 Candidate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py'
+      - 'formal/wolfram/pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.wl'
+      - 'docs/pass220/PASS_220_I089_ORIGINAL_PHASE_VM81_HASH216_CANDIDATE.md'
+      - '.github/workflows/pass220-i089-original-phase-vm81-hash216-candidate.yml'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/phase_clifford_intertwiner.py'
+      - 'hhs_runtime/hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py'
+      - 'hhs_runtime/hhs_pass220_i088_exact_clifford_word_inverse_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-bound-original-phase-vm81-hash216:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped exact Python runtime
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Syntax-check original RML4 RML11 I070 I088 and new I089
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/dynamic_octonion_gyroscope.py \
+            hhs_runtime/pass219/phase_clifford_intertwiner.py \
+            hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py \
+            hhs_runtime/hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py \
+            hhs_runtime/hhs_pass220_i088_exact_clifford_word_inverse_v1.py \
+            hhs_runtime/hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py \
+            tests/pass220/test_hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py
+      - name: Execute real original RML4 RML10 RML11 source/phase conformance
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_dynamic_octonion_gyroscope.py \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py
+      - name: Execute inherited I070/I071 authentic VM81 and Hash216 hydration
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py
+      - name: Execute original I088 quotient and new I089 provenance-replay integration
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i088_exact_clifford_word_inverse_v1.py \
+            tests/pass220/test_hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py
+      - name: Inspect 30-check Wolfram proof source and signed VM81 HOLD
+        run: |
+          test -s formal/wolfram/pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.wl
+          grep -q 'native_full_VM81_Clifford_faithfulness_proven"->False' \
+            formal/wolfram/pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.wl
+          grep -q 'signed_VM81_mutation"->False' \
+            formal/wolfram/pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.wl
+          echo 'Original RML4/RML11/I070/I065 invoked; real Wolfram program evaluated separately.'

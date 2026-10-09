@@ -13,6 +13,7 @@ on:
       - 'tools/pass220/pass220_v7_native_pass159_pure_execution_v1.c'
       - 'tests/pass220/test_pass220_v7_native_pure_inherited_execution_v1.py'
       - 'contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode'
+      - 'tests/pass220/test_pass220_v7_i086_source_reconciliation_v1.py'
   workflow_dispatch:
 
 permissions:
@@ -41,6 +42,8 @@ jobs:
       - name: Dependency-scoped source, address, negative authority tests
         run: |
           python -m pytest -q tests/pass220/test_pass220_v7_inherited_native_integration_v1.py -k 'not test_native_full_integration_when_binaries_are_provided'
+      - name: Verify V7 denominator and I086 full Hash72 equation are source-identical
+        run: python -m pytest -q tests/pass220/test_pass220_v7_i086_source_reconciliation_v1.py
       - name: Build existing native Runtime only once
         run: make c-abi
       - name: Compile inherited Pass159 source-to-VMIR native entrypoint

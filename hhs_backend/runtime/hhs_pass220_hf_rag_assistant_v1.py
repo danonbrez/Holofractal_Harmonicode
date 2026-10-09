@@ -75,8 +75,12 @@ def _first_token_sequence(value: Any, *, name: str) -> list[Any]:
 def _render_record(record: Mapping[str, Any]) -> str:
     source = record.get("source")
     source_line = f" source={source}" if isinstance(source, str) and source else ""
+    # The *complete* 216-character lineage remains in selected_records and
+    # context_root_sha256. Do not spend the bounded model-context budget on
+    # repeating a long fingerprint: model text carries only record ID/source,
+    # whereas typed Hash216 identity remains unmodified in the evidence ledger.
     return (
-        f"[retrieved record_id={record['record_id']} hash216={record['hash216']}{source_line}]\n"
+        f"[retrieved record_id={record['record_id']}{source_line}]\n"
         f"{record['text']}\n"
         "[/retrieved]"
     )
