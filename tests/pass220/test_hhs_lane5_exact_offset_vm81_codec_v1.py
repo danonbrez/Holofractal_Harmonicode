@@ -81,11 +81,11 @@ def test_refuse_equivalent_but_noncanonical_rational_spelling():
 def test_refuse_zero_denominator_and_non_offset_rationals():
     good = serialize_offsets_5184((0,) * 81)
     invalid = good[:22] + "0" * 20 + good[42:]
-    with pytest.raises(NativeOffsetFrameError, match="not a valid I001"):
+    with pytest.raises(NativeOffsetFrameError, match="noncanonical"):
         from_canonical_offset_object(invalid)
     non_offset = "+00000000000000000009/00000000000000000001e+00000000000000000000"
     assert len(non_offset) == 64
-    with pytest.raises(NativeOffsetFrameError, match="not a valid I001"):
+    with pytest.raises(NativeOffsetFrameError, match="noncanonical"):
         from_canonical_offset_object(non_offset + good[64:])
 
 
@@ -93,3 +93,12 @@ def test_refuse_zero_denominator_and_non_offset_rationals():
 def test_refuse_wrong_width_or_ordinary_float_input(invalid):
     with pytest.raises(NativeOffsetFrameError, match="5184-character"):
         from_canonical_offset_object(invalid)
+
+
+def test_untrusted_massive_exponent_is_rejected_before_bigint_expansion():
+    canonical = serialize_offsets_5184((1,) * 81)
+    first = canonical[:64]
+    injected = first[:44] + ("9" * 20)
+    assert len(injected) == 64
+    with pytest.raises(NativeOffsetFrameError, match="noncanonical"):
+        from_canonical_offset_object(injected + canonical[64:])
