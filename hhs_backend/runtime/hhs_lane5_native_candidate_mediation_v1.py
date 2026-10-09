@@ -120,6 +120,7 @@ class PreparedLane5Candidate:
     learning_stage: int
     raw5184: str
     ordered_transition_word216: str
+    native_rna_bind: bool = False
 
     def __post_init__(self) -> None:
         if not isinstance(self.raw5184, str) or len(self.raw5184) != 5184:
@@ -128,8 +129,28 @@ class PreparedLane5Candidate:
             raise Lane5NativeMediationError("ordered 216-character transition is required")
         if set(self.signatures) != set(SIGNATURE_FIELDS):
             raise Lane5NativeMediationError("all native prepared signature fields are required")
+        if not isinstance(self.native_rna_bind, bool):
+            raise Lane5NativeMediationError("native RNA binding mode must be boolean")
+        if self.native_rna_bind:
+            if (
+                self.signatures["rna_prepared_signature64"] != 0
+                or self.signatures["rna_decision_signature64"] != 0
+            ):
+                raise Lane5NativeMediationError(
+                    "native RNA binding requires both signatures unset"
+                )
         for name in SIGNATURE_FIELDS:
-            _uint(self.signatures[name], name, positive=name != "compression_signature64")
+            _uint(
+                self.signatures[name],
+                name,
+                positive=(
+                    name != "compression_signature64"
+                    and not (
+                        self.native_rna_bind
+                        and name in ("rna_prepared_signature64", "rna_decision_signature64")
+                    )
+                ),
+            )
         _uint(self.learning_stage, "learning_stage", bits=32)
         for field, values in (
             ("hash216_references", self.hash216_references),
@@ -172,6 +193,10 @@ def mediate_prepared_candidate(
 ) -> dict[str, Any]:
     if not isinstance(candidate, PreparedLane5Candidate):
         raise Lane5NativeMediationError("typed prepared Lane 5 candidate required")
+    if candidate.native_rna_bind:
+        raise Lane5NativeMediationError(
+            "native RNA signature binding requires coupled RNA Lane 5 execution"
+        )
     lib = native_library if native_library is not None else _native_library()
     try:
         version_function = lib.hhs_exact_pass219_lane5_nucleus_version
@@ -204,10 +229,19 @@ def _receipt_projection(
         ("learning_stage", candidate.learning_stage),
         ("hash216_reference_count", len(candidate.hash216_references)),
         ("capability_reference_count", len(candidate.capability_references)),
-        *((field, getattr(request, field)) for field in SIGNATURE_FIELDS),
+        *((field, getattr(request, field)) for field in SIGNATURE_FIELDS
+          if not (
+              candidate.native_rna_bind
+              and field in ("rna_prepared_signature64", "rna_decision_signature64")
+          )),
     )
     if any(getattr(receipt, key) != value for key, value in expected_echo):
         raise Lane5NativeMediationError("native Lane 5 receipt/provenance mismatch")
+    if candidate.native_rna_bind and (
+        receipt.rna_prepared_signature64 == 0
+        or receipt.rna_decision_signature64 == 0
+    ):
+        raise Lane5NativeMediationError("native RNA cell wall did not bind signatures")
     positive_flags = (
         "hash216_references_validated", "capability_registry_validated",
         "exact_vm5184_bound", "rna_cell_wall_bound", "zero_sum_closure_passed",
@@ -242,7 +276,8 @@ def _receipt_projection(
         "raw5184_character_count": len(candidate.raw5184),
         "raw_state_exposed_in_result": False,
         "full_native_state_recoverable_from_signature64_alone": False,
-        "native_input_signatures": {k: getattr(request, k) for k in SIGNATURE_FIELDS},
+        "native_input_signatures": {k: getattr(receipt, k) for k in SIGNATURE_FIELDS},
+        "rna_signatures_bound_by_native_cell_wall": candidate.native_rna_bind,
         "native_hash216_reference_signatures": list(candidate.hash216_references),
         "native_capability_reference_signatures": list(candidate.capability_references),
         "read_only_candidate": True,
