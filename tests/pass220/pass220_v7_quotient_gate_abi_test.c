@@ -32,12 +32,14 @@ int main(void){
     in.source=SOURCE;
     in.source_bytes=sizeof(SOURCE)-1U;
     if(in.source_bytes!=HHS220_V7_SOURCE_BYTES)return 1;
-    if(!mode_test(&in,&out,HHS220_V7_MODE_UNDECLARED,HHS220_V7_REJECT,
-                  HHS220_V7_MODE_NOT_DECLARED) ||
+    if(!mode_test(&in,&out,HHS220_V7_MODE_UNDECLARED,
+                  HHS220_V7_INHERIT_NATIVE_DISPATCH,
+                  HHS220_V7_NATIVE_TYPE_DISPATCH_REQUIRED) ||
+       out.native_type_dispatch_required!=1U ||
        out.hnan_15_rule_graph_verified!=1U ||
        out.xy_yx_order_verified!=1U || out.zw_wz_order_verified!=1U ||
        out.native_hnan_rule_mask!=HHS220_V7_HNAN_ALL_RULES)return 1;
-    puts("v7_undeclared_matrix_quotient=REJECTED");
+    puts("v7_undeclared_matrix_quotient=INHERIT_NATIVE_DISPATCH");
     for(mode=1U;mode<=5U;mode++){
         if(!mode_test(&in,&out,mode,HHS220_V7_UNRESOLVED_PROVIDER,
                       HHS220_V7_NATIVE_QUOTIENT_PROVIDER_MISSING) ||
@@ -45,6 +47,11 @@ int main(void){
            out.native_quotient_provider_available!=0U)return 1;
     }
     puts("v7_five_pass169_modes=REGISTERED_PROVIDER_REQUIRED");
+    in.declared_mode=HHS220_V7_MODE_UNDECLARED;
+    if(!mode_test(&in,&out,in.declared_mode,
+                  HHS220_V7_INHERIT_NATIVE_DISPATCH,
+                  HHS220_V7_NATIVE_TYPE_DISPATCH_REQUIRED))return 1;
+    puts("v7_valid_tensor_states_not_blanket_blocked=VERIFIED");
     if(!mode_test(&in,&out,6U,HHS220_V7_REJECT,HHS220_V7_UNKNOWN_MODE))return 1;
     in.declared_mode=HHS220_V7_DECLARED_FRACTAL_NESTING;
     in.commute_phase_products=1U;

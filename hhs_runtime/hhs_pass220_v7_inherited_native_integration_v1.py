@@ -142,16 +142,17 @@ def validate_native_pure_output(stdout: str, exit_code: int, source: bytes) -> d
 
 
 def validate_hnan_mode_output(stdout: str, exit_code: int) -> dict[str, Any]:
-    """A REJECT on an undeclared slash is the correct HNAN-bound diagnostic."""
+    """Keep valid tensor candidates alive for inherited native type dispatch."""
     result = _fields(stdout)
-    _require(exit_code == 3, "V7_UNDECLARED_MODE_EXIT_STATUS_DRIFT")
+    _require(exit_code == 0, "V7_NATIVE_DISPATCH_PRECHECK_FAILED")
     required = {
         "v7_source_exact": "1",
         "v7_mode": "UNDECLARED",
         "hnan_15_rule_mask": "0x7FFF",
         "v7_hnan_order_verified": "1",
-        "v7_decision": "REJECT",
-        "v7_reason": "6",  # HHS220_V7_MODE_NOT_DECLARED
+        "v7_decision": "INHERIT_NATIVE_DISPATCH",
+        "v7_reason": "9",
+        "v7_native_type_dispatch_required": "1",
         "native_v7_matrix_inverse_proved": "0",
         "native_v7_global_environment_verified": "0",
         "canonical_vm81_admission": "0",
@@ -162,8 +163,8 @@ def validate_hnan_mode_output(stdout: str, exit_code: int) -> dict[str, Any]:
     return {
         "pass219_hnan_inherited_rule_mask": result["hnan_15_rule_mask"],
         "xy_yx_and_zw_wz_order_inherited": True,
-        "pass169_quotient_mode": "SOURCE_UNDECLARED",
-        "native_quotient_mode_decision": "REJECT_UNDECLARED_INTENT",
+        "pass169_quotient_mode": "NATIVE_TYPE_INFERENCE_REQUIRED",
+        "native_quotient_mode_decision": "DELEGATE_NATIVE_TYPED_DISPATCH",
         "native_quotient_semantics_not_reproven": True,
         "canonical_vm81_mutation_from_mode_gate": False,
     }

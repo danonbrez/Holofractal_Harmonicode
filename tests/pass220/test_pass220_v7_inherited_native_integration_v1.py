@@ -37,8 +37,9 @@ def _gate():
         "v7_mode=UNDECLARED\n"
         "hnan_15_rule_mask=0x7FFF\n"
         "v7_hnan_order_verified=1\n"
-        "v7_decision=REJECT\n"
-        "v7_reason=6\n"
+        "v7_decision=INHERIT_NATIVE_DISPATCH\n"
+        "v7_reason=9\n"
+        "v7_native_type_dispatch_required=1\n"
         "native_v7_matrix_inverse_proved=0\n"
         "native_v7_global_environment_verified=0\n"
         "canonical_vm81_admission=0\n"
@@ -90,18 +91,18 @@ def test_frontend_fake_or_incomplete_provenance_rejected(stdout,code):
         validate_frontend_output(stdout,code,EXACT_SOURCE)
 
 def test_inherited_hnan_decision_does_not_invent_new_operator():
-    o=validate_hnan_mode_output(_gate(),3)
+    o=validate_hnan_mode_output(_gate(),0)
     assert o["pass219_hnan_inherited_rule_mask"]=="0x7FFF"
     assert o["xy_yx_and_zw_wz_order_inherited"] is True
-    assert o["pass169_quotient_mode"]=="SOURCE_UNDECLARED"
+    assert o["pass169_quotient_mode"]=="NATIVE_TYPE_INFERENCE_REQUIRED"
     assert o["canonical_vm81_mutation_from_mode_gate"] is False
 
 @pytest.mark.parametrize("stdout,status",[
-    (_gate(),0),
-    (_gate().replace("0x7FFF","0x0000"),3),
-    (_gate().replace("v7_mode=UNDECLARED","v7_mode=RIGHT_MATRIX_SOLVE"),3),
-    (_gate().replace("v7_decision=REJECT","v7_decision=ADMITTED"),3),
-    (_gate().replace("canonical_vm81_admission=0","canonical_vm81_admission=1"),3),
+    (_gate(),3),
+    (_gate().replace("0x7FFF","0x0000"),0),
+    (_gate().replace("v7_mode=UNDECLARED","v7_mode=RIGHT_MATRIX_SOLVE"),0),
+    (_gate().replace("v7_decision=INHERIT_NATIVE_DISPATCH","v7_decision=ADMITTED"),0),
+    (_gate().replace("canonical_vm81_admission=0","canonical_vm81_admission=1"),0),
 ])
 def test_no_source_mode_or_authority_fabrication(stdout,status):
     with pytest.raises(V7NativeIntegrationError):

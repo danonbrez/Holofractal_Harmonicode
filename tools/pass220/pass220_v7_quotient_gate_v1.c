@@ -118,7 +118,13 @@ int hhs220_v7_quotient_preflight(const HHS220V7QuotientInput *input,
     out->xy_yx_order_verified=1U;
     out->zw_wz_order_verified=1U;
     if(input->declared_mode==HHS220_V7_MODE_UNDECLARED){
-        reject(out,HHS220_V7_MODE_NOT_DECLARED);return 1;
+        /* Unspecified spelling is NOT evidence of ambiguous tensor values.
+         * Let the inherited native typed VMIR choose a legal unique branch.
+         */
+        out->native_type_dispatch_required=1U;
+        out->decision=HHS220_V7_INHERIT_NATIVE_DISPATCH;
+        out->reason=HHS220_V7_NATIVE_TYPE_DISPATCH_REQUIRED;
+        return 1;
     }
     out->typed_mode_lexically_registered=1U;
     /* No caller-provided Boolean or hash can stand in for the missing
@@ -175,14 +181,19 @@ int main(int argc,char **argv){
     printf("hnan_15_rule_mask=0x%04X\n",out.native_hnan_rule_mask);
     printf("v7_hnan_order_verified=%u\n",(unsigned)(out.xy_yx_order_verified &&
                                                 out.zw_wz_order_verified));
-    printf("v7_decision=%s\n",out.decision==HHS220_V7_UNRESOLVED_PROVIDER?
-                               "UNRESOLVED_PROVIDER":"REJECT");
+    printf("v7_decision=%s\n",out.decision==HHS220_V7_INHERIT_NATIVE_DISPATCH?
+                               "INHERIT_NATIVE_DISPATCH":
+                               (out.decision==HHS220_V7_UNRESOLVED_PROVIDER?
+                               "UNRESOLVED_PROVIDER":"REJECT"));
     printf("v7_reason=%u\n",out.reason);
+    printf("v7_native_type_dispatch_required=%u\n",
+           (unsigned)out.native_type_dispatch_required);
     puts("native_v7_matrix_inverse_proved=0");
     puts("native_v7_global_environment_verified=0");
     puts("canonical_vm81_admission=0");
     puts("canonical_hash72_hash216_commit=0");
     free(source);
-    return out.decision==HHS220_V7_UNRESOLVED_PROVIDER?0:3;
+    return out.decision==HHS220_V7_UNRESOLVED_PROVIDER ||
+           out.decision==HHS220_V7_INHERIT_NATIVE_DISPATCH?0:3;
 }
 #endif

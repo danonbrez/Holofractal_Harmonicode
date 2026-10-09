@@ -48,12 +48,10 @@ jobs:
             -o /tmp/pass220-v7-quotient-gate
           mkdir -p artifacts/pass220/v7-quotient-intent
           SOURCE=contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode
-          if /tmp/pass220-v7-quotient-gate "$SOURCE" 0 >/tmp/pass220-v7-undeclared.txt; then
-            echo 'UNDECLARED_QUOTIENT_WRONGLY_ADMITTED' >&2
-            exit 1
-          fi
-          grep -Fx v7_decision=REJECT /tmp/pass220-v7-undeclared.txt
-          grep -Fx v7_reason=6 /tmp/pass220-v7-undeclared.txt
+          /tmp/pass220-v7-quotient-gate "$SOURCE" 0 >/tmp/pass220-v7-undeclared.txt
+          grep -Fx v7_decision=INHERIT_NATIVE_DISPATCH /tmp/pass220-v7-undeclared.txt
+          grep -Fx v7_native_type_dispatch_required=1 /tmp/pass220-v7-undeclared.txt
+          grep -Fx v7_reason=9 /tmp/pass220-v7-undeclared.txt
           for mode in 1 2 3 4 5; do
             /tmp/pass220-v7-quotient-gate "$SOURCE" "$mode" \
               | tee "artifacts/pass220/v7-quotient-intent/mode-$mode.txt"

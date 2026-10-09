@@ -24,7 +24,8 @@ enum HHS220V7Mode {
 };
 enum HHS220V7Decision {
     HHS220_V7_REJECT=0,
-    HHS220_V7_UNRESOLVED_PROVIDER=1
+    HHS220_V7_UNRESOLVED_PROVIDER=1,
+    HHS220_V7_INHERIT_NATIVE_DISPATCH=2
 };
 enum HHS220V7Reason {
     HHS220_V7_INVALID_CALL=1,
@@ -34,7 +35,8 @@ enum HHS220V7Reason {
     HHS220_V7_FORBIDDEN_TRANSFORMATION=5,
     HHS220_V7_MODE_NOT_DECLARED=6,
     HHS220_V7_NATIVE_QUOTIENT_PROVIDER_MISSING=7,
-    HHS220_V7_FABRICATED_COMMIT=8
+    HHS220_V7_FABRICATED_COMMIT=8,
+    HHS220_V7_NATIVE_TYPE_DISPATCH_REQUIRED=9
 };
 
 typedef struct HHS220V7QuotientInput {
@@ -73,12 +75,13 @@ typedef struct HHS220V7QuotientResult {
     uint8_t hash216_commit_authority;
     uint8_t canonical_persistence_mutated;
     uint8_t source_sha256[32];
+    uint8_t native_type_dispatch_required;
 } HHS220V7QuotientResult;
 
-/* The ONLY possible decisions are REJECT and UNRESOLVED_PROVIDER.
- * No source-specific trusted native exact quotient provider is installed.
- * This surface validates existing HNAN rules and rejects unsafe intent,
- * but deliberately cannot grant canonical authority.
+/* REJECT only actual source/order/type/security violations. A source
+ * lacking a lexical quotient mode is delegated to the existing native
+ * typed VMIR, rather than rejected as a purported invalid tensor state.
+ * INHERIT_NATIVE_DISPATCH and UNRESOLVED_PROVIDER cannot mint VM81 state.
  */
 int hhs220_v7_quotient_preflight(const HHS220V7QuotientInput *input,
                                 HHS220V7QuotientResult *out);
