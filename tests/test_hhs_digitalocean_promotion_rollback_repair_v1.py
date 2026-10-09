@@ -33,7 +33,16 @@ def test_guarded_updater_inherits_word2vec_optional_native_provider_contract() -
 
     assert "Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0" in service
     assert "Environment=HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0" in runtime_service
+    assert "Environment=HHS_NATIVE_CAUSAL_LM_REQUIRED=1" in runtime_service
+    assert (
+        "Environment=HHS_NATIVE_CAUSAL_LM_MODEL=/var/lib/hhs/models/native-causal/"
+        "smollm2-360m-instruct-a10cc1512ea"
+    ) in runtime_service
+    assert "Environment=HHS_NATIVE_CAUSAL_LM_LOCAL_FILES_ONLY=1" in runtime_service
+    assert "Environment=HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS=60" in runtime_service
     assert "HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC=0" in example
+    assert "HHS_NATIVE_CAUSAL_LM_AUTO_PROVISION=1" in example
+    assert "HHS_NATIVE_CAUSAL_LM_REQUIRED=1" in example
     assert 'export HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC="${HHS_NATIVE_LANGUAGE_REQUIRE_WORD2VEC:-0}"' in post_compile
     assert "NoNewPrivileges=true" in service
 
