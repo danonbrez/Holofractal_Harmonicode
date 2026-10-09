@@ -1,0 +1,56 @@
+name: Pass 220 I087 Exact RML11 Matrix Quotient
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py'
+      - 'formal/wolfram/pass220_i087_exact_rml11_clifford_matrix_inverse_v1.wl'
+      - 'docs/pass220/PASS_220_I087_RML11_EXACT_MATRIX_QUOTIENT.md'
+      - '.github/workflows/pass220-i087-rml11-exact-matrix-quotient.yml'
+      - 'hhs_runtime/pass219/real_clifford_morita_witness.py'
+      - 'hhs_runtime/pass219/phase_clifford_intertwiner.py'
+      - 'hhs_runtime/hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-original-rml11-quotient:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install only inherited Python test/runtime dependencies
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Compile original RML10/RML11 and new exact I087 typed projection
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/real_clifford_morita_witness.py \
+            hhs_runtime/pass219/phase_clifford_intertwiner.py \
+            hhs_runtime/hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py \
+            hhs_runtime/hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py \
+            tests/pass220/test_hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py
+      - name: Run original RML10 and RML11 Clifford generator conformance tests
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py
+      - name: Execute original I086 matrix source and actual exact 48x48 two-sided inverse
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py \
+            tests/pass220/test_hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py
+      - name: Check inherited I069 Hash72 candidate but no mint and independent Wolfram record
+        run: |
+          test -s formal/wolfram/pass220_i087_exact_rml11_clifford_matrix_inverse_v1.wl
+          grep -q 'native_VM81_matrix_inverse_proven"->False' \
+            formal/wolfram/pass220_i087_exact_rml11_clifford_matrix_inverse_v1.wl
+          grep -q 'native_hash72_ledger_equation_proven"->False' \
+            formal/wolfram/pass220_i087_exact_rml11_clifford_matrix_inverse_v1.wl
+          echo 'Original RML11 projected 5184/M candidate only. Wolfram proof executed separately.'
