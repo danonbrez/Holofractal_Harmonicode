@@ -146,3 +146,10 @@ def test_native_receipt_does_not_bypass_closure_or_mutation_authority(native, er
 def test_unprepared_prompt_response_not_accepted():
     with pytest.raises(Lane5NativeMediationError, match="typed prepared"):
         mediate_prepared_candidate({"prompt": "Hello", "response": "World"}, native_library=FakeLane5Native())
+
+
+def test_prepared_signatures_cannot_be_replaced_after_native_validation():
+    original = candidate()
+    with pytest.raises(TypeError):
+        original.signatures["rna_prepared_signature64"] = 0
+    assert original.native_request().rna_prepared_signature64 == 108
