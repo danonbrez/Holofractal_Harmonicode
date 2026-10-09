@@ -109,3 +109,34 @@ def test_native_bridge_rejects_wrong_frame_type_and_invalid_feedback():
             candidate, input_value=inp, vm81_frame=frame,
             transition=transition, feedback_trinary=2,
         )
+
+
+def test_same_canonical_i001_source_flows_into_real_cpp_rna_and_lane5():
+    from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import serialize_offsets_5184
+    from hhs_backend.runtime.hhs_lane5_native_candidate_mediation_v1 import (
+        mediate_canonical_i001_offset_candidate,
+    )
+    prepared, inp, original_frame, transition, keepalive = native_fixture()
+    source = serialize_offsets_5184(tuple((i * 7 + 2) % 9 for i in range(81)))
+    coupled = dataclasses.replace(prepared, raw5184=source)
+    result = mediate_canonical_i001_offset_candidate(
+        coupled, input_value=inp, transition=transition,
+    )
+    assert result["native_rna_vm5184_executed"] is True
+    assert result["same_candidate_rna_tensor_and_decision_bound"] is True
+    assert result["exact_canonical_offset_frame_roundtrip_verified"] is True
+    assert result["generic_tensor_to_binary_identity_proven"] is False
+    assert result["canonical_mutation_admitted"] is False
+    assert "raw5184" not in result
+    assert keepalive.value == 1
+
+
+def test_uncanonicalized_i001_source_is_not_lowered_into_native_lane5():
+    from hhs_backend.runtime.hhs_lane5_native_candidate_mediation_v1 import (
+        mediate_canonical_i001_offset_candidate,
+    )
+    prepared, inp, _, transition, keepalive = native_fixture()
+    with pytest.raises(Lane5NativeMediationError, match="reversible ingress failed"):
+        mediate_canonical_i001_offset_candidate(
+            prepared, input_value=inp, transition=transition,
+        )
