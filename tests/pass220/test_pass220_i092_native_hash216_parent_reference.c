@@ -19,14 +19,9 @@ static int fail(const char *message) {
     return 1;
 }
 static int valid_input(const char *word) {
-    size_t i;
-    if (word == NULL || strlen(word) != HHS_EXACT_HASH72_LEN)
-        return 0;
-    for (i=0U;i<HHS_EXACT_HASH72_LEN;++i) {
-        if (strchr(HHS_EXACT_HASH72_ALPHABET,word[i]) == NULL)
-            return 0;
-    }
-    return 1;
+    /* Alphabet admission is enforced by the authoritative native
+     * reference_init function, not by a copied local table. */
+    return word != NULL && strlen(word) == HHS_EXACT_HASH72_LEN;
 }
 int main(int argc,char **argv) {
     HHSExactPass219Hash216TransitionViewV1 reference;
