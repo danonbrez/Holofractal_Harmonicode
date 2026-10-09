@@ -312,6 +312,7 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184(
     HHSExactPass219Holo4PreparedV1 prepared;
     HHSExactPass219Holo4DecisionV1 decision;
     HHSExactPass219Lane5MediationReceiptV1 mediation;
+    HHSExactPass219Lane5MediationRequestV1 bound_request;
     HHSExactStatus status;
 
     if (out_prepared != NULL)
@@ -343,8 +344,6 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184(
      */
     if (prepared.tensor_signature64 == 0U ||
         decision.decision_signature64 == 0U ||
-        request->rna_prepared_signature64 != prepared.tensor_signature64 ||
-        request->rna_decision_signature64 != decision.decision_signature64 ||
         memcmp(prepared.source_transition_identity216,
                transition->transition_identity216,
                HHS_EXACT_UQCEL_HASH216_STRLEN) != 0 ||
@@ -353,7 +352,21 @@ HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184(
                HHS_EXACT_UQCEL_HASH216_STRLEN) != 0)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
-    status = hhs_exact_pass219_lane5_mediate_candidate(request, &mediation);
+    bound_request = *request;
+    /*
+     * Both zero: explicitly request same-call native RNA signature binding.
+     * Both nonzero: require exact equality with independently computed RNA.
+     * A mixed pair or mismatched caller witness is a hard failure.
+     */
+    if (request->rna_prepared_signature64 == 0U &&
+        request->rna_decision_signature64 == 0U) {
+        bound_request.rna_prepared_signature64 = prepared.tensor_signature64;
+        bound_request.rna_decision_signature64 = decision.decision_signature64;
+    } else if (request->rna_prepared_signature64 != prepared.tensor_signature64 ||
+               request->rna_decision_signature64 != decision.decision_signature64) {
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    }
+    status = hhs_exact_pass219_lane5_mediate_candidate(&bound_request, &mediation);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
     if (mediation.decision != HHS_EXACT_PASS219_LANE5_DECISION_CANDIDATE_READY ||
