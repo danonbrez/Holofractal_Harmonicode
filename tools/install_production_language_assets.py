@@ -190,12 +190,20 @@ def _native_causal_status(*, install_if_configured: bool) -> dict[str, Any]:
     try:
         process = subprocess.run(
             command,
-            check=True,
+            check=False,
             capture_output=True,
             text=True,
             timeout=2400,
             env=dict(os.environ),
         )
+        if process.returncode != 0:
+            detail = (process.stderr or process.stdout or "").strip()
+            if len(detail) > 12000:
+                detail = detail[-12000:]
+            raise RuntimeError(
+                f"native causal provisioner failed with exit "
+                f"{process.returncode}: {detail}"
+            )
         lines = [line for line in process.stdout.splitlines() if line.strip()]
         if not lines:
             raise RuntimeError("native causal provisioner returned no status JSON")
