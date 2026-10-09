@@ -1,0 +1,82 @@
+name: Pass 220 I090 Original VM81 RNA BigInt 5184 Ingress
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py'
+      - 'formal/wolfram/pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.wl'
+      - 'docs/pass220/PASS_220_I090_ORIGINAL_VM81_RNA_BIGINT_5184_INGRESS.md'
+      - '.github/workflows/pass220-i090-original-vm81-rna-bigint-ingress.yml'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_execution_binding_probe.py'
+      - 'hhs_runtime/pass219/vm81_rna_bigint_environment_admission_probe.py'
+      - 'hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py'
+      - 'hhs_runtime/hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-native-rna-vm5184-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original exact runtime native and scoped test requirements
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Verify I090 typed source syntax
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py \
+            hhs_runtime/hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py \
+            tests/pass220/test_hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py
+      - name: Compile original C/C++ VM81/RNA ABI, no substitute kernel
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_vm5184_route$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_rna_raw5184_route$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_environment_admit_signed$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$'
+      - name: Compile original Pass219 exact 648-byte RNA route probe
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_bigint_rna_native_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/test_pass219_bigint_rna_native_probe
+          test -x /tmp/test_pass219_bigint_rna_native_probe
+      - name: Inherited original Pass219 BigInt and VM81 frame ABI suite
+        env:
+          HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
+        run: |
+          export LD_LIBRARY_PATH="$PWD/hhs_runtime/builds"
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_nonary_qudit_bigint_assembly_probe.py \
+            tests/pass219/test_pass219_vm81_rna_bigint_execution_binding_probe.py \
+            tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py
+      - name: I089/I090 candidate ancestry and actual C++ ingress
+        env:
+          HHS_PASS219_BIGINT_RNA_NATIVE_PROBE: /tmp/test_pass219_bigint_rna_native_probe
+        run: |
+          export LD_LIBRARY_PATH="$PWD/hhs_runtime/builds"
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i089_rml4_rml11_vm81_hash216_candidate_binding_v1.py \
+            tests/pass220/test_hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py
+      - name: Hold signed environmental admission and canonical Hash72
+        run: |
+          test -s formal/wolfram/pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.wl
+          grep -q 'signed_VM81_environment_admission_executed"->False' \
+            formal/wolfram/pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.wl
+          grep -q 'canonical_Hash72_mint"->False' \
+            formal/wolfram/pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.wl
+          echo 'Original VM81 C++ RNA candidate ABI tested; signed environmental mutation is separate.'
