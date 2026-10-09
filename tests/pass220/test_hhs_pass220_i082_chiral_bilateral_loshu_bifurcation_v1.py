@@ -136,3 +136,13 @@ def test_native_i070_i071_lane5_phase_grid_binds_all_72_exact_positions():
         "x", "y", "z", "w", "xy", "yx", "zw", "wz"
     ]
     assert r["delta_e_zero_for_full_tensor_proven"] is False
+
+
+def test_scalar_diagnostic_is_separate_from_native_phase_semantics():
+    diagnostics = formalize_i082()["commutative_scalar_diagnostic_only"]
+    assert diagnostics["z_minus_w_and_zw_plus_one_imply_w_squared"] == -1
+    assert diagnostics["w_equals_a_squared_over_w_implies_w_squared"] == 1
+    assert diagnostics["ordinary_commutative_single_w_projection_consistent"] is False
+    assert diagnostics["native_address_phase_resolution_required"] is True
+    assert diagnostics["not_used_to_reinterpret_hhs_typed_constraints"] is True
+    assert diagnostics["reciprocal_A_over_B_inequality_alone_proves_noncommutation"] is False
