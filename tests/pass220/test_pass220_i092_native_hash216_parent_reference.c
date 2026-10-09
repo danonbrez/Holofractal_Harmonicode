@@ -121,6 +121,7 @@ int main(int argc,char **argv) {
         mode,native_valid,(unsigned)reference.resolved_index_count,
         exact_triplet,distinct_native_genesis,native_tamper_denied,
         native_swap_changes_identity,
-        mode==1 ? "" : reference.transition_identity216,triplet);
+        mode==1 ? "" : (mode==2 ? swapped.transition_identity216 :
+                            reference.transition_identity216),triplet);
     return 0;
 }
