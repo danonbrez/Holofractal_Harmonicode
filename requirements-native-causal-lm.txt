@@ -1,0 +1,4 @@
+# Production-native causal natural-language egress runtime.
+# Pinned separately from the core backend so validation hosts do not install
+# large model dependencies unless the production causal lane is provisioned.
+transformers==4.57.6

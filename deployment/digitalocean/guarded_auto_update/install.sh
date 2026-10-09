@@ -30,7 +30,7 @@ LANE5_INGRESS_SERVICE=${HHS_LANE5_INGRESS_SERVICE:-$SOURCE_ROOT/deploy/digitaloc
 LANE5_INGRESS_SOCKET=${HHS_LANE5_INGRESS_SOCKET:-$SOURCE_ROOT/deploy/digitalocean/hhs-lane5-ingress.socket}
 LANE5_INGRESS_CONFIGURATOR=${HHS_LANE5_INGRESS_CONFIGURATOR:-$SOURCE_ROOT/deployment/digitalocean/configure_lane5_ingress_nginx.py}
 LANE5_INGRESS_HEALTH_URL=${HHS_LANE5_INGRESS_HEALTH_URL:-http://127.0.0.1:8715/__hhs_lane5_ingress_health}
-NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
+NATIVE_BUILD='make c-abi && test -s hhs_runtime/builds/libhhs_runtime.so && HHS_NATIVE_CAUSAL_LM_AUTO_PROVISION=1 HHS_NATIVE_CAUSAL_LM_REQUIRED=1 /opt/hhs/venv/bin/python tools/install_production_language_assets.py --install-if-configured --require-assistant'
 LEGACY_RUNTIME_OS_BUILD='bash bin/post_compile && bash deployment/digitalocean/guarded_auto_update/build-runtime-os.sh'
 
 [[ $EUID -eq 0 ]] || {

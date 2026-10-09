@@ -166,6 +166,78 @@ def _litert_cli_status() -> dict[str, Any]:
         }
 
 
+def _native_causal_status(*, install_if_configured: bool) -> dict[str, Any]:
+    auto_provision = _truthy("HHS_NATIVE_CAUSAL_LM_AUTO_PROVISION", default=False)
+    required = _truthy("HHS_NATIVE_CAUSAL_LM_REQUIRED", default=False)
+    configured_model = os.getenv("HHS_NATIVE_CAUSAL_LM_MODEL", "").strip()
+    configured = bool(auto_provision or configured_model)
+
+    if not configured:
+        return {
+            "ready": False,
+            "required": required,
+            "auto_provision": auto_provision,
+            "configured": False,
+            "model_path": None,
+            "error": "native causal model is not configured",
+        }
+
+    script = ROOT / "tools" / "provision_native_causal_model.py"
+    command = [sys.executable, str(script)]
+    if install_if_configured:
+        command.append("--install")
+
+    try:
+        process = subprocess.run(
+            command,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=2400,
+            env=dict(os.environ),
+        )
+        if process.returncode != 0:
+            detail = (process.stderr or process.stdout or "").strip()
+            if len(detail) > 12000:
+                detail = detail[-12000:]
+            raise RuntimeError(
+                f"native causal provisioner failed with exit "
+                f"{process.returncode}: {detail}"
+            )
+        lines = [line for line in process.stdout.splitlines() if line.strip()]
+        if not lines:
+            raise RuntimeError("native causal provisioner returned no status JSON")
+        report = json.loads(lines[-1])
+        if not isinstance(report, Mapping) or report.get("ok") is not True:
+            raise RuntimeError(f"native causal provisioner returned invalid report: {report}")
+        model = dict(report.get("model") or {})
+        model_path = str(model.get("model_path") or "")
+        if not model_path:
+            raise RuntimeError("native causal provisioner omitted model_path")
+
+        os.environ["HHS_NATIVE_CAUSAL_LM_MODEL"] = model_path
+        os.environ["HHS_NATIVE_CAUSAL_LM_LOCAL_FILES_ONLY"] = "1"
+
+        return {
+            "ready": True,
+            "required": required,
+            "auto_provision": auto_provision,
+            "configured": True,
+            "model_path": model_path,
+            "report": report,
+            "error": None,
+        }
+    except Exception as exc:
+        return {
+            "ready": False,
+            "required": required,
+            "auto_provision": auto_provision,
+            "configured": configured,
+            "model_path": configured_model or None,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+
+
 def _gemma_registry_status() -> dict[str, Any]:
     base_url = os.getenv("HHS_LITERT_LM_BASE_URL", "http://127.0.0.1:9379/v1").rstrip("/")
     model_id = os.getenv("HHS_LITERT_LM_MODEL", "gemma4-12b")
@@ -258,13 +330,21 @@ def execute(*, install_if_configured: bool, require_assistant: bool) -> dict[str
     word2vec = _word2vec_install(install_if_configured=install_if_configured)
     litert_cli = _litert_cli_status()
     gemma = _gemma_registry_status()
+    native_causal = _native_causal_status(
+        install_if_configured=install_if_configured,
+    )
 
     from hhs_backend.runtime.hhs_native_litert_lm_provider_v1 import (
         HHSNativeLiteRTLMTransport,
     )
 
     native = HHSNativeLiteRTLMTransport().installation_status()
-    assistant_ready = bool(gemma.get("ready") or native.get("ready"))
+    native_required = bool(native_causal.get("required"))
+    native_ready = bool(
+        native.get("ready")
+        and (native_causal.get("ready") or not native_required)
+    )
+    assistant_ready = bool(gemma.get("ready") or native_ready)
     report: dict[str, Any] = {
         "schema": "HHS_PRODUCTION_LANGUAGE_ASSET_INSTALLATION_STATUS_V1",
         "assistant_ready": assistant_ready,
@@ -272,13 +352,15 @@ def execute(*, install_if_configured: bool, require_assistant: bool) -> dict[str
             "provider:hhs.litert_lm.gemma4"
             if gemma.get("ready")
             else "provider:hhs.local.text"
-            if native.get("ready")
+            if native_ready
             else None
         ),
         "gemma": gemma,
         "litert_lm_cli": litert_cli,
         "word2vec": word2vec,
+        "native_causal": native_causal,
         "native_hhs": native,
+        "native_hhs_conversation_ready": native_ready,
         "require_assistant": require_assistant,
         "fixture_substitution_allowed": False,
         "status_path": str(STATUS_PATH),
@@ -291,8 +373,8 @@ def execute(*, install_if_configured: bool, require_assistant: bool) -> dict[str
     if require_assistant and not assistant_ready:
         raise RuntimeError(
             "production assistant installation is incomplete: configure a reachable "
-            "LiteRT-LM Gemma model, enable the native HHS language provider contract, "
-            "or install an authoritative Pass 166 Word2Vec manifest"
+            "LiteRT-LM Gemma model or provision the required native HHS causal "
+            "language egress model"
         )
     return report
 

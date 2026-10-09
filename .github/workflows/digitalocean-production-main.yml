@@ -151,7 +151,8 @@ jobs:
             tests/test_hhs_litert_lm_repo_bootstrap_v1.py \
             tests/test_hhs_service_registry_catalog_cache_v1.py \
             tests/test_hhs_wordnet_targeted_runtime_v1.py \
-            tests/test_hhs_native_chat_cli_v1.py
+            tests/test_hhs_native_chat_cli_v1.py \
+            tests/test_hhs_native_causal_model_provision_v1.py
 
   deploy-exact-main:
     if: github.event_name != 'pull_request'
