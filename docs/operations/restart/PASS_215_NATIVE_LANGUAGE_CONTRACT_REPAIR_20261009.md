@@ -100,3 +100,87 @@ frozen contract; do not recertify the seven-token parent fixture unnecessarily.
 - No local model downloads, model weights, secrets, production environment
   mutations, or VM81 canonical state changes.
 - GitHub-hosted CI results and live host readiness must be checked separately.
+
+
+## Next implementation cycle — exact Pass 215 executor → unified language service
+
+This continuation inherits the above repaired causal path and implements a
+**real runtime call** into the frozen Pass 215 Iteration-18 symbolic/interval
+certified generation engine. It is not a proof of arbitrary-prompt inference.
+
+- Native executor adapter:
+  `hhs_backend/runtime/hhs_pass215_native_exact_generator_v1.py`
+- Provider routing:
+  `hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py`
+- Unified inventory:
+  `hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py`
+- Tests: `tests/test_hhs_pass215_native_exact_generator_v1.py`
+- Dedicated workflow: `.github/workflows/pass215-native-exact-provider.yml`
+
+### Exact native routing configuration
+
+Set `HHS_NATIVE_GENERATION_ENGINE=PASS215_EXACT_CERTIFIED` and
+`HHS_PASS215_EXACT_MODEL_PATH=/path/to/authenticated/stories15M-q4_0.gguf`.
+
+An ordinary native provider general-chat turn whose sole user message equals
+`Hello world!` now calls the original
+`hhs_pass215_iteration18_bounded_generation_control_v2.execute_bounded_generation_with_resume_from_path`
+with the immutable source SHA-256, exact 256-bit certified interval execution
+and frozen seven-token limits. The existing original evidence validator runs
+before the response. The egress trace carries its authentic control Hash216,
+suite/evidence Hash216, checkpoint Hash216 and terminal Hash72 chain.
+
+Out-of-contract prompts, additional assistant history, retrieval context,
+altered token bounds, missing model bytes, corrupt model identity, modified
+certified tokens, broken authority flags, and failed evidence validation
+are rejected rather than silently using a semantic fallback. The genuine
+original engine never receives arbitrary free-scalar rewrites of tensor state.
+
+The unified fabric exposes this path as
+`PASS215_EXACT_CERTIFIED_BOUNDED_GENERATOR`, with
+`arbitrary_prompt_generation_supported=false`. It must never be shown as a
+general native causal model or as Pass 213 ROM compilation completion.
+
+### Continuation commit lineage
+
+- `16a70b9f27fa117653b90adfa1ea262f70769e44` — exact adapter
+- `f75111c42a840a9cededf02ee3fe5b4f4d2787f2` — provider routing
+- `47b2d256635d4418f444fd2764b2f1a03cf7e8ed` — scope/ABI tests
+- `18734cdbc5db596214c46decf62ea0660e7b2a00` — isolated causal tests
+- `1b31686e83aebfb25dba5dc24058c2b50d2de52c` — fabric contract
+- `7d9bcdff8bb7db2ab12027a1ed67cabb07d10b55` — fabric regression
+- `fd7681e0b324464adea787ca7f9edc98a73da467` — dedicated scoped CI
+
+### Validation evidence / known blockers
+
+- First broad PR #753 I003-I010 workflow `37909675492` failed
+  with 17 tests (106 passed). Eleven or more failures reported inability
+  to import the required Pass 148 semantic membrane in that runner. The
+  same job also reported unrelated existing RAG/UI/settings assertions.
+  Do not suppress or mislabel the broad suite failure; inspect the runner
+  environment and unaffected-main baseline before attributing causality.
+- The new dedicated Pass 215 adapter workflow `37910391058` is **queued**
+  as of this checkpoint. It tests routing/negative admissions, **not**
+  real pinned GGUF runtime execution. Source tests use a labeled fake executor
+  fixture only for the wrapper boundary, never as a Pass 215 model proof.
+- The full source GGUF is not installed in this chat runtime; no real model
+  inference or production general-generation outcome is claimed.
+- Pass 214's original exact quantized network reproduction and Pass 213 ROM
+  compilation/full-stack general prompt interface are **unclosed**.
+
+### Next action
+
+1. Inspect new scoped workflow `37910391058` and repair code/CI dependency
+   failures without weakening the Pass 148 admission membrane.
+2. Run pinned exact model via the native provider on the production-capable
+   host; compare roots to frozen Pass 215 reference and preserve the output
+   receipt. On failure, trace upstream tensor/order/provenance divergences.
+3. Implement generalized exact tokenizer, position/KV, parameter-bound
+   forward and certified decoding over supported prompts with the same
+   Pass 213 ROM and VM81 authority; this MUST consume the existing
+   Pass 215 kernel rather than being replaced by the separate PyTorch path.
+4. Gate general-generation operational completion on real arbitrary supported
+   prompts and negative type/authority tests, then merge and verify main.
+
+This record is the restartable handoff; CI completion alone does not close
+the inherited Pass 215 capability obligation.
