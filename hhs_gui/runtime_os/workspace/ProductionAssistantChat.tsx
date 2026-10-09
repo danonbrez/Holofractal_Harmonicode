@@ -150,7 +150,11 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
 
   const refreshHealth = async (): Promise<void> => {
     try {
-      setHealth(await requestJson("/api/assistant/deployment-health", undefined, 10000))
+      // Deployment admission remains primary. Read-only provider health is
+      // supplementary and may be unavailable on older host revisions.
+      const deployment = await requestJson("/api/assistant/deployment-health", undefined, 10000)
+      const provider = await requestJson("/api/assistant/health", undefined, 10000).catch(() => ({}))
+      setHealth({ ...provider, ...deployment })
       setError(null)
     } catch (reason) {
       setHealth({ online: false, status: "ASSISTANT_OFFLINE" })
@@ -392,6 +396,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
                   ? "Describe the application, code, runtime, test, or deployment work you want to develop."
                   : "Chat naturally, or ask for governed application-development work when you need it."}
             </p>
+            <p className="mt-1 text-[11px] text-neutral-500">Ask naturally, and use explicit file attachment for additional context.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {[
                 "Summarize the current runtime state.",
@@ -467,7 +472,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[9px] leading-4 text-neutral-600">
           <span>{clipboardNotice ? `${clipboardNotice} · ` : ""}Enter sends · Shift+Enter adds a line</span>
-          <span>File/vector ingress is user-controlled; only context you explicitly attach with Use in chat is sent to the assistant.</span>
+          <span>File/vector ingress is user-controlled; uploaded payloads are not automatically attached to assistant prompts. Only context you explicitly attach with Use in chat is sent to the assistant.</span>
         </div>
       </form>
 
