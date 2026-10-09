@@ -183,6 +183,14 @@ class HHSNativeLiteRTLMTransport:
             if require_word2vec is None
             else bool(require_word2vec)
         )
+        self.require_causal_generation = (
+            os.getenv("HHS_NATIVE_CAUSAL_LM_REQUIRED", "0").lower()
+            in {"1", "true", "yes", "on"}
+        )
+        self.retrieval_timeout_seconds = _bounded_timeout_seconds(
+            "HHS_NATIVE_LANGUAGE_RETRIEVAL_TIMEOUT_SECONDS",
+            2.0,
+        )
         self.generation_timeout_seconds = _bounded_timeout_seconds(
             "HHS_NATIVE_LANGUAGE_GENERATION_TIMEOUT_SECONDS",
             25.0,
@@ -351,11 +359,6 @@ class HHSNativeLiteRTLMTransport:
             word2vec_status.get("offline_ready")
             and word2vec_status.get("active_model_id")
         )
-        ready = bool(
-            semantic_ready
-            and reasoner_ready
-            and (word2vec_ready or not self.require_word2vec)
-        )
         try:
             causal_status = dict(self._causal_generation().status())
         except Exception as exc:
@@ -365,6 +368,16 @@ class HHSNativeLiteRTLMTransport:
                 "ready": False,
                 "load_error": f"{type(exc).__name__}: {exc}",
             }
+        # A configured model may still be lazy-loaded on its first turn.
+        # Configuration is required for admission in production; actual
+        # generation is independently enforced before returning a reply.
+        causal_configured = bool(causal_status.get("configured"))
+        ready = bool(
+            semantic_ready
+            and reasoner_ready
+            and (word2vec_ready or not self.require_word2vec)
+            and (causal_configured or not self.require_causal_generation)
+        )
 
         status = {
             "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_INSTALLATION_STATUS_V1",
@@ -379,7 +392,9 @@ class HHSNativeLiteRTLMTransport:
             "word2vec": word2vec_status,
             "causal_lm": causal_status,
             "causal_lm_generation_supported": True,
-            "causal_lm_required_for_provider_readiness": False,
+            "causal_lm_required_for_provider_readiness": self.require_causal_generation,
+            "causal_lm_configured": causal_configured,
+            "causal_lm_loaded_and_ready": bool(causal_status.get("ready")),
             "errors": {
                 "semantic": semantic_error,
                 "reasoner": reasoner_error,
@@ -406,6 +421,8 @@ class HHSNativeLiteRTLMTransport:
                 missing.append("Pass 151 bounded semantic reasoner")
             if status["word2vec_required"] and not status["word2vec_ready"]:
                 missing.append("active offline-ready Pass 166 Word2Vec model")
+            if self.require_causal_generation and not status["causal_lm_configured"]:
+                missing.append("configured native causal language model")
             raise HHSNativeLanguageProviderNotReady(
                 "native HHS language provider is not installation-closed: "
                 + ", ".join(missing)
@@ -1158,10 +1175,26 @@ class HHSNativeLiteRTLMTransport:
                     "candidate_count": 0,
                 }
                 if ordinary_conversation:
-                    prototype_context, prototype_trace = await asyncio.wait_for(
-                        asyncio.to_thread(self._prototype_context, query),
-                        timeout=self.generation_timeout_seconds,
-                    )
+                    # Pass 166/219 retrieval is candidate context, not the
+                    # execution authority of the causal generator. Failure,
+                    # cold import, or timeout cannot bypass an otherwise
+                    # available model and manufacture a semantic answer.
+                    try:
+                        prototype_context, prototype_trace = await asyncio.wait_for(
+                            asyncio.to_thread(self._prototype_context, query),
+                            timeout=self.retrieval_timeout_seconds,
+                        )
+                    except Exception as retrieval_exc:
+                        prototype_context = ""
+                        prototype_trace = {
+                            "available": False,
+                            "reason": "OPTIONAL_RETRIEVAL_UNAVAILABLE",
+                            "failure_type": type(retrieval_exc).__name__,
+                            "candidate_count": 0,
+                            "candidate_only": True,
+                            "truth_promotion": False,
+                            "vm81_commit_invoked": False,
+                        }
 
                 tool_context = self._tool_evidence_context(receipts)
                 retrieval_parts = [
@@ -1229,6 +1262,11 @@ class HHSNativeLiteRTLMTransport:
                 causal_failure = f"{type(exc).__name__}: {exc}"
             except Exception as exc:
                 causal_failure = f"{type(exc).__name__}: {exc}"
+
+        if causal_failure and self.require_causal_generation and should_generate:
+            raise HHSNativeLanguageProviderNotReady(
+                "required native causal generation failed: " + causal_failure
+            )
 
         try:
             answer, trace = await asyncio.wait_for(
