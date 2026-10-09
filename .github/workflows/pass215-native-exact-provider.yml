@@ -8,6 +8,7 @@ on:
       - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
       - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
       - 'tests/test_hhs_pass215_native_exact_generator_v1.py'
+      - 'docs/operations/restart/PASS_215_NATIVE_LANGUAGE_CONTRACT_REPAIR_20261009.md'
       - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
       - '.github/workflows/pass215-native-exact-provider.yml'
   workflow_dispatch:
@@ -38,6 +39,12 @@ jobs:
           python -m pytest -q \
             tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
             -k 'optional_retrieval or required_causal_generation'
+      - name: Verify inherited Pass 148 semantic membrane is importable
+        run: |
+          python - <<'PY'
+          from hhs_runtime.pass148.semantics import analyze_expression
+          print("HHS_PASS148_SEMANTIC_IMPORT_OK")
+          PY
       - name: Preserve real-model acceptance as pending when no pinned model exists
         run: |
           printf '%s\n' 'PASS215_REPLAY_NOT_CLAIMED: the 6151b... pinned GGUF model is not installed in this CI workflow.'
