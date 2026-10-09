@@ -27,6 +27,15 @@ FRAME_BYTES = 648
 CANONICAL_CHARACTERS = 5184
 CELL_COUNT = 81
 
+# Derive the ONLY nine admitted offset token spellings directly from the
+# original Pass 220 I001 serializer. Validate lexically BEFORE entering the
+# rational decoder: an untrusted 20-digit exponent must never trigger a
+# 10**huge allocation or turn a source-identity failure into a DoS.
+_I001_CANONICAL_TOKENS = {
+    serialize_offsets_5184((value,) * CELL_COUNT)[:64]: value
+    for value in range(9)
+}
+
 
 class NativeOffsetFrameError(ValueError):
     pass
@@ -100,6 +109,11 @@ def from_canonical_offset_object(serialized: str) -> NativeOffsetFrame:
     """Encode only native I001 normalized offsets, retaining full source."""
     if not isinstance(serialized, str) or len(serialized) != CANONICAL_CHARACTERS:
         raise NativeOffsetFrameError("5184-character exact rational carrier required")
+    # Fail closed on noncanonical or adversarial token structures before
+    # the generic Fraction/scientific exponent parser performs arithmetic.
+    tokens = tuple(serialized[i:i + 64] for i in range(0, CANONICAL_CHARACTERS, 64))
+    if any(token not in _I001_CANONICAL_TOKENS for token in tokens):
+        raise NativeOffsetFrameError("noncanonical rational scientific spelling")
     try:
         offsets = deserialize_offsets_5184(serialized)
         canonical = serialize_offsets_5184(offsets)
