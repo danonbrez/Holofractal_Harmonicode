@@ -519,6 +519,9 @@ def test_optional_retrieval_failure_does_not_skip_real_causal_generation(monkeyp
         raise RuntimeError("optional retrieval unavailable")
 
     monkeypatch.setattr(provider, "_prototype_context", unavailable_prototypes)
+    # Isolate optional retrieval from unrelated Pass 148 installation status.
+    # The real provider's fail-closed membrane remains intact.
+    monkeypatch.setattr(provider, "_require_ready", lambda: {"ready": True})
     result = asyncio.run(provider.chat_completion(
         messages=[
             {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
@@ -553,6 +556,7 @@ def test_optional_retrieval_timeout_does_not_skip_causal_generation(monkeypatch)
         return "obsolete candidate", {"available": True, "candidate_count": 1}
 
     monkeypatch.setattr(provider, "_prototype_context", slow_prototypes)
+    monkeypatch.setattr(provider, "_require_ready", lambda: {"ready": True})
     result = asyncio.run(provider.chat_completion(
         messages=[
             {"role": "system", "content": "HHS_ASSISTANT_MODE=GENERAL_CHAT."},
@@ -606,8 +610,9 @@ def test_required_causal_generation_rejects_semantic_fallback(monkeypatch):
         "", {"available": False, "candidate_count": 0},
     )
     status = provider.installation_status()
-    assert status["ready"] is True  # admitted to attempt a lazy model
+    assert status["causal_lm_configured"] is True
     assert status["causal_lm_loaded_and_ready"] is True
+    monkeypatch.setattr(provider, "_require_ready", lambda: {"ready": True})
     with pytest.raises(Exception, match="required native causal generation failed"):
         asyncio.run(provider.chat_completion(
             messages=[
