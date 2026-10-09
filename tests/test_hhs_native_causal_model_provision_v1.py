@@ -109,7 +109,7 @@ def test_production_language_installer_requires_real_causal_readiness() -> None:
     for token in [
         "HHS_NATIVE_CAUSAL_LM_AUTO_PROVISION",
         "HHS_NATIVE_CAUSAL_LM_REQUIRED",
-        "tools/provision_native_causal_model.py",
+        '"provision_native_causal_model.py"',
         '"native_causal": native_causal',
         '"native_hhs_conversation_ready": native_ready',
         'native.get("ready")',
