@@ -128,6 +128,12 @@ def test_native_full_integration_when_binaries_are_provided():
     assert record["inherited_native_hnan_and_pass169_intent"]["pass219_hnan_inherited_rule_mask"]=="0x7FFF"
     assert record["pass169_source_registry"]["canonical_authority"] is False
     assert record["inherited_lane5_candidate"]["candidate_only"] is True
+    assert record["hash_state_invariant"]["hash72_state"]=="VALID_BY_NATIVE_TYPE_DEFINITION"
+    assert record["hash_state_invariant"]["hash216_state"]=="VALID_BY_NATIVE_TYPE_DEFINITION"
+    assert record["hash_state_invariant"]["json_validated_flag_is_authority"] is False
+    assert record["lane5_native_composition"]["validation_origin"]=="INHERITED_NATIVE_LANE5_C_KERNEL_STREAM"
+    assert record["lane5_native_composition"]["json_flags_define_composition_truth"] is False
+    assert type(record["lane5_native_composition"]["native_route_receipt_signature64"]) is int
     assert record["vm81_hash72_address_bijection"]["bijective_positions"]==5184
     routing=record["native_tensor_state_routing"]
     assert routing["classification"]=="EVIDENCE_PENDING"

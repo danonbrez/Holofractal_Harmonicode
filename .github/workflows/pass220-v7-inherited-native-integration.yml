@@ -82,6 +82,8 @@ jobs:
           grep -Fx V7_INHERITED_PASS159_NATIVE_FRONTEND=VERIFIED artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_INHERITED_PASS219_HNAN_15_RULES=VERIFIED artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_INHERITED_LANE5_NATIVE_CANDIDATE=VERIFIED artifacts/pass220/v7-inherited/native_integration.txt
+          grep -Fx V7_HASH72_HASH216_STATE_VALIDITY=INTRINSIC artifacts/pass220/v7-inherited/native_integration.txt
+          grep -Fx V7_LANE5_COMPOSITION_VALIDATION=NATIVE_KERNEL_NOT_JSON artifacts/pass220/v7-inherited/native_integration.txt
           grep -E '^V7_INHERITED_PASS159_PURE_EXEC_STATUS=-?[0-9]+$' artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_QUOTIENT_OPERATOR_SOURCE_BINDING=PENDING artifacts/pass220/v7-inherited/native_integration.txt
           grep -Fx V7_TENSOR_STATE_INVALID=0 artifacts/pass220/v7-inherited/native_integration.txt

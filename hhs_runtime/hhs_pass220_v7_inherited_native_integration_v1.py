@@ -239,6 +239,17 @@ def integrate(
              ingress.get("canonical_hash216_authority") is False,
              "LANE5_INHERITED_MEMBRANE_AUTHORITY_MISMATCH")
 
+    # Hash72 and Hash216 native states are intrinsically valid; this is
+    # only an operational COMPOSITION eligibility diagnostic, not state
+    # validity. Lane5 composed work is checked by the existing kernel ABI,
+    # whose receipt is returned after the native stream route executes.
+    _require(
+        type(ingress.get("route_receipt_signature64")) is int and
+        type(ingress.get("native_candidates_seen")) is int and
+        type(ingress.get("admitted_candidates")) is int and
+        ingress["native_candidates_seen"] >= ingress["admitted_candidates"] >= 1,
+        "LANE5_NATIVE_COMPOSITION_RECEIPT_MISSING",
+    )
     # Inherit *actual available* native validations. An unresolved source-
     # specific branch remains PENDING (not contradictory or invalid). The
     # native Pass159/VM81 dispatcher is responsible for resolving it.
@@ -275,7 +286,21 @@ def integrate(
         ],
         "vm81_hash72_address_bijection": address,
         "inherited_native_pass159": frontend,
+        "hash_state_invariant": {
+            "hash72_state": "VALID_BY_NATIVE_TYPE_DEFINITION",
+            "hash216_state": "VALID_BY_NATIVE_TYPE_DEFINITION",
+            "json_validated_flag_is_authority": False,
+        },
+        "lane5_native_composition": {
+            "validation_origin": "INHERITED_NATIVE_LANE5_C_KERNEL_STREAM",
+            "native_route_receipt_signature64": ingress["route_receipt_signature64"],
+            "native_candidates_seen": ingress["native_candidates_seen"],
+            "native_candidates_admitted": ingress["admitted_candidates"],
+            "json_flags_define_composition_truth": False,
+            "canonical_vm81_commit_authority": False,
+        },
         "native_tensor_state_routing": {
+            "classification_scope": "COMPOSITION_EXECUTION_ELIGIBILITY_ONLY",
             "classification": candidate_state.classification.value,
             "unresolved_constraints": list(candidate_state.unresolved_constraints),
             "candidate_branch_count": None,
@@ -322,6 +347,8 @@ def main() -> None:
     print("V7_INHERITED_PASS159_NATIVE_FRONTEND=VERIFIED")
     print("V7_INHERITED_PASS219_HNAN_15_RULES=VERIFIED")
     print("V7_INHERITED_LANE5_NATIVE_CANDIDATE=VERIFIED")
+    print("V7_HASH72_HASH216_STATE_VALIDITY=INTRINSIC")
+    print("V7_LANE5_COMPOSITION_VALIDATION=NATIVE_KERNEL_NOT_JSON")
     print("V7_INHERITED_PASS169_SOURCE_REGISTRY=VERIFIED")
     print("V7_INHERITED_VM81_HASH72_5184_ADDRESSING=VERIFIED")
     print("V7_NATIVE_VALIDATE_ONLY_STATUS="+
