@@ -15,6 +15,9 @@ from hhs_runtime import hhs_pass220_i091_original_signed_vm81_environment_test_a
 from hhs_runtime.pass219.vm81_rna_bigint_environment_admission_probe import (
     NEGATIVE_MODES,
 )
+from hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe import (
+    VM81RNABigIntExecutionBindingProbeError,
+)
 
 
 def test_original_i090_source_is_preserved_without_signed_native_probe():
@@ -75,7 +78,8 @@ def test_bad_signed_native_receipt_flags_fail_closed():
     fields.update({"status":0,"signature_length":3309,"environment_witness_sequence":1})
     raw=bytes(648)
     metadata={"opcode":0}
-    with pytest.raises(Exception):
+    with pytest.raises(VM81RNABigIntExecutionBindingProbeError,
+                       match="VM81_BINDING_HEADER_MISMATCH"):
         mod._verify_positive(fields,raw,raw,metadata,0)
     for field in mod.REQUIRED_NATIVE_POSITIVE:
         changed=dict(fields)
