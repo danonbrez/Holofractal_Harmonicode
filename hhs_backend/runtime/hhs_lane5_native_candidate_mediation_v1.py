@@ -250,3 +250,80 @@ def _receipt_projection(
         "canonical_mutation_admitted": False,
         "external_signature_provenance_independently_verified": False,
     }
+
+
+def mediate_native_rna_frame(
+    candidate: PreparedLane5Candidate,
+    *,
+    input_value: Any,
+    vm81_frame: Any,
+    transition: NativeHash216TransitionView,
+    feedback_lane: int = 255,
+    feedback_trinary: int = 0,
+    native_library: Any = None,
+) -> dict[str, Any]:
+    """Execute the real C++ RNA and C Lane 5 mediator within one native call.
+
+    The 5184-character rational carrier and 648-byte binary VM81 frame remain
+    distinct. Their reversibility is NOT inferred from matching sizes.
+    """
+    if not isinstance(candidate, PreparedLane5Candidate):
+        raise Lane5NativeMediationError("prepared exact candidate required")
+    from hhs_python.runtime.hhs_uqcel_ctypes_bridge import HHSExactUQCELInputV1
+    from hhs_python.runtime.hhs_exact_ctypes_bridge import HHSExactVM81Frame
+    if not isinstance(input_value, HHSExactUQCELInputV1):
+        raise Lane5NativeMediationError("exact native UQCEL input required")
+    if not isinstance(vm81_frame, HHSExactVM81Frame):
+        raise Lane5NativeMediationError("81x64 VM81 frame required")
+    if not isinstance(transition, NativeHash216TransitionView):
+        raise Lane5NativeMediationError("typed native Hash216 transition required")
+    try:
+        word216 = candidate.ordered_transition_word216.encode("ascii")
+    except UnicodeEncodeError as exc:
+        raise Lane5NativeMediationError("ordered transition must be native ASCII") from exc
+    if word216 != bytes(transition.transition_word216):
+        raise Lane5NativeMediationError("ordered Hash216 transition mismatch")
+    if isinstance(feedback_lane, bool) or not isinstance(feedback_lane, int) or (
+        feedback_lane not in (0, 1, 2, 3, 255)
+    ):
+        raise Lane5NativeMediationError("invalid native feedback lane")
+    if isinstance(feedback_trinary, bool) or not isinstance(feedback_trinary, int) or (
+        feedback_trinary not in (-1, 0, 1)
+    ):
+        raise Lane5NativeMediationError("invalid native feedback trinary")
+
+    lib = native_library if native_library is not None else _native_library()
+    try:
+        version_function = lib.hhs_exact_pass219_lane5_nucleus_version
+        native = lib.hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt
+    except AttributeError as exc:
+        raise Lane5NativeMediationError("coupled native RNA Lane 5 ABI unavailable") from exc
+    version_function.restype = c_uint32
+    if int(version_function()) != VERSION:
+        raise Lane5NativeMediationError("native Lane 5 ABI version mismatch")
+    native.argtypes = [
+        ctypes.POINTER(HHSExactUQCELInputV1),
+        ctypes.POINTER(HHSExactVM81Frame),
+        ctypes.POINTER(NativeHash216TransitionView),
+        c_uint8, c_int8, ctypes.POINTER(Lane5Request),
+        ctypes.POINTER(Lane5Receipt),
+    ]
+    native.restype = ctypes.c_int
+    request = candidate.native_request()
+    receipt = Lane5Receipt()
+    status = int(native(
+        ctypes.byref(input_value), ctypes.byref(vm81_frame),
+        ctypes.byref(transition), feedback_lane, feedback_trinary,
+        ctypes.byref(request), ctypes.byref(receipt),
+    ))
+    if status != HHS_EXACT_STATUS_OK:
+        raise Lane5NativeMediationError(
+            f"coupled native RNA Lane 5 rejected candidate: status={status}"
+        )
+    result = _receipt_projection(candidate, request, receipt)
+    result["native_rna_vm5184_executed"] = True
+    result["same_candidate_rna_tensor_and_decision_bound"] = True
+    result["native_binary_vm5184_bits"] = 5184
+    result["native_binary_vm5184_bytes"] = 648
+    result["raw5184_scientific_notation_to_frame_equivalence_proven"] = False
+    return result
