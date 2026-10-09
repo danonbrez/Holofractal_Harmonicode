@@ -73,7 +73,7 @@ def test_native_hold_replay_and_compiler_evidence_not_canonical_commit() -> None
     lines = re.findall(r"^gate_(\d\d)_offset=(\d+);depth=(\d+);truth=(\w+)$",text,re.M)
     offsets = gate_offsets(data)
     assert len(lines) == 40
-    identities = re.findall(r"^gate_(\\d\\d)_identity_sha256=([0-9a-f]{64})$",text,re.M)
+    identities = re.findall(r"^gate_(\d\d)_identity_sha256=([0-9a-f]{64})$",text,re.M)
     assert len(identities) == 40
     assert len({digest for _,digest in identities}) == 40
     root = sha256(data).digest()
