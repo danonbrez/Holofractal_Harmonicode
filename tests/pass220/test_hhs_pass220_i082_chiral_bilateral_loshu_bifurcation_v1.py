@@ -17,6 +17,7 @@ from hhs_runtime.hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1 import (
     I082BifurcationError,
     QuadraticSurd3,
     bifurcation_branches,
+    positive_geometric_c_root,
     formalize_i082,
     original_typed_topology,
     scalar_vertices,
@@ -66,7 +67,15 @@ def test_nine_distinct_positioned_polynomial_vertices_reconstruct_loshu():
 
 
 def test_exact_four_branch_quadratic_radicals_and_ordered_pq():
+    c = positive_geometric_c_root()
+    assert c == QuadraticSurd3(0, 1)
+    assert c*c == QuadraticSurd3(3, 0)
     branches = bifurcation_branches()
+    assert all(b["canonical_geometric_c"] == c.to_dict() for b in branches)
+    assert all(
+        b["P_relative_to_c"] == ("P=c" if b["P_sign"] == 1 else "P=-c")
+        for b in branches
+    )
     assert len(branches) == 4
     assert {(b["P_sign"], b["q_minus_p_sign"]) for b in branches} == {
         (1, 1), (1, -1), (-1, 1), (-1, -1)
@@ -86,6 +95,13 @@ def test_scalar_shadow_never_promotes_native_mask_or_chiral_theorem():
     r = formalize_i082()
     assert r["P2_branch_selected"] == 3
     assert r["P4_outer_scale"] == 9
+    assert r["canonical_geometric_c_relation"] == "c=+sqrt(a²+b²)=+sqrt(3)"
+    assert r["canonical_geometric_c_projection"] == QuadraticSurd3(0, 1).to_dict()
+    assert r["c_squared_equals_a_squared_plus_b_squared"] is True
+    assert r["P_squared_equals_c_squared"] is True
+    assert r["positive_P_branch_equals_c"] is True
+    assert r["negative_P_branch_equals_minus_c"] is True
+    assert r["native_c_tensor_address_identity_preserved"] is True
     assert r["typed_mask_collapse_to_one_proven"] is False
     assert r["delta_e_zero_for_full_tensor_proven"] is False
     assert r["ordered_chiral_A_over_B_phase_transport_proven"] is False
@@ -122,6 +138,8 @@ def test_scalar_root_drift_is_rejected_without_changing_kernel(monkeypatch):
     monkeypatch.setitem(CANONICAL_VALUES, "b²", 3)
     with pytest.raises(I082BifurcationError, match="Lo Shu address mismatch"):
         scalar_vertices()
+    with pytest.raises(I082BifurcationError, match="canonical positive c root"):
+        positive_geometric_c_root()
 
 
 def test_native_i070_i071_lane5_phase_grid_binds_all_72_exact_positions():
