@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'tools/pass220/pass220_v4_source_general_replay_preflight.c'
+      - 'tools/pass220/pass220_v4_native_hnan_phase_order_preflight.c'
       - 'tests/pass220/test_pass220_v4_source_general_replay_preflight.py'
       - '.github/workflows/pass220-v4-source-general-replay-preflight.yml'
       - 'contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode'
@@ -68,6 +69,56 @@ jobs:
           grep -Fx P220_V4_SOURCE_OCCURRENCES_INVALID /tmp/pass220-v4-swap-chain.out
           ! grep -Fq native_source_preflight=PASS /tmp/pass220-v4-swap-chain.out
           echo V4_MUTATED_OUTER_CHAIN_FAILS_CLOSED
+      - name: Mandatory exact-source native HNAN 15-rule/Jordan preflight
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_v4_native_hnan_phase_order_preflight.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-v4-hnan-combined
+          /tmp/pass220-v4-hnan-combined \
+            contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode \
+            | tee artifacts/pass220/v4-source-general/hnan_preflight.txt
+          grep -Fx hnan_15_rule_mask=0x7FFF artifacts/pass220/v4-source-general/hnan_preflight.txt
+          grep -Fx hnan_xy_yx_reverse=REJECTED_SOURCE_ORDER artifacts/pass220/v4-source-general/hnan_preflight.txt
+          grep -Fx hnan_zw_wz_commutation=REJECTED artifacts/pass220/v4-source-general/hnan_preflight.txt
+          grep -Fx 40_boolean_truth_witnesses=UNRESOLVED artifacts/pass220/v4-source-general/hnan_preflight.txt
+      - name: Bind actual Replay and HNAN run evidence into one candidate-only preflight
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import json
+          root=Path('artifacts/pass220/v4-source-general')
+          source=Path('contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode').read_bytes()
+          replay=(root/'replay_preflight.txt').read_text()
+          hnan=(root/'hnan_preflight.txt').read_text()
+          digest=sha256(source).hexdigest()
+          assert 'source_sha256='+digest in replay
+          assert 'gate_occurrences=40' in replay
+          assert 'native_source_preflight=PASS' in replay
+          assert 'hnan_15_rule_mask=0x7FFF' in hnan
+          assert 'v4_source_identity=VERIFIED' in hnan
+          assert 'v4_gate_occurrence_count=40' in hnan
+          assert 'v4_hnan_native_preflight=PASS' in hnan
+          assert 'global_gate_proof_status=UNRESOLVED' in replay
+          assert '40_boolean_truth_witnesses=UNRESOLVED' in hnan
+          record={
+              'schema':'HHS_PASS220_V4_COMBINED_NONCANONICAL_PREFLIGHT_V1',
+              'source_sha256':digest,'source_bytes':len(source),'gate_occurrences':40,
+              'native_replay_observed':True,'native_hnan_15_rules_verified':True,
+              'phase_order_negative_tests_passed':True,
+              'all_40_boolean_truth_witnesses_verified':False,
+              'signed_vm81_admission_verified':False,
+              'canonical_hash72_hash216_transition_verified':False,
+              'authority':'CANDIDATE_ONLY',
+          }
+          (root/'combined_preflight.json').write_text(json.dumps(record,sort_keys=True,indent=2)+'\n')
+          print('V4_REPLAY_HNAN_COMBINED_NONCANONICAL_PREFLIGHT_PASS')
+          PY
       - name: Upload diagnostic receipts and gate inventory
         if: always()
         uses: actions/upload-artifact@v4
