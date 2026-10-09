@@ -93,6 +93,54 @@ def validate_frontend_output(stdout: str, exit_code: int, source: bytes) -> dict
     }
 
 
+def validate_native_pure_output(stdout: str, exit_code: int, source: bytes) -> dict[str, Any]:
+    """Preserve results of existing Pass159 EVALUATE_PURE, never mint authority."""
+    _require(exit_code == 0 and source == EXACT_SOURCE,
+             "PURE_EXECUTION_EXIT_OR_SOURCE_MISMATCH")
+    result = _fields(stdout)
+    required = {
+        "v7_exact_source": "VERIFIED",
+        "source_sha256": sha256(source).hexdigest(),
+        "source_bytes": str(len(source)),
+        "native_runtime": "PASS159_INHERITED",
+        "native_execution_mode": "EVALUATE_PURE",
+        "native_commit_policy": "0",
+        "native_matrix_quotient_result_certified": "0",
+        "source_specific_signed_vm81_commit": "0",
+        "source_specific_hash72_hash216_canonical_receipt": "0",
+    }
+    for name, expected in required.items():
+        _require(result.get(name) == expected,
+                 "PURE_EXECUTION_AUTHORITY_SCOPE_" + name)
+    try:
+        status = int(result["pure_native_status"])
+        replay = int(result["pure_replay_status"])
+    except (KeyError, ValueError) as exc:
+        raise V7NativeIntegrationError("PURE_EXECUTION_STATUS_MISSING") from exc
+    candidate = result.get("pure_candidate_hash216")
+    replay_root = result.get("pure_replay_hash216")
+    if status == 0 and candidate is not None:
+        _hash216(candidate, "PURE_EXECUTION")
+        if replay == 0:
+            _hash216(replay_root, "PURE_REPLAY")
+        else:
+            _require(replay_root is None, "PURE_REPLAY_UNAUTHORIZED_GLYPH")
+    else:
+        _require(candidate is None and replay_root is None,
+                 "PURE_STATUS_INCONSISTENT_RECEIPT")
+        _require(replay != 0, "PURE_REPLAY_SUCCESS_WITHOUT_CANDIDATE")
+    return {
+        "source_sha256": required["source_sha256"],
+        "pure_status": status,
+        "replay_status": replay,
+        "native_pure_candidate_hash216": candidate,
+        "native_pure_replay_hash216": replay_root,
+        "pure_execution_complete": status == 0 and candidate is not None,
+        "pure_replay_complete": replay == 0 and replay_root is not None,
+        "canonical_mutation": False,
+    }
+
+
 def validate_hnan_mode_output(stdout: str, exit_code: int) -> dict[str, Any]:
     """A REJECT on an undeclared slash is the correct HNAN-bound diagnostic."""
     result = _fields(stdout)
@@ -133,6 +181,7 @@ def integrate(
     source_path: str | Path,
     frontend_binary: str | Path,
     mode_gate_binary: str | Path,
+    pure_binary: str | Path | None = None,
 ) -> dict[str, Any]:
     """Execute inherited real services, preserving V7 source-specific scope."""
     file_path = Path(source_path)
@@ -154,6 +203,13 @@ def integrate(
     # authoritative HHS operator mapping would be a source interpretation.
     gate = _native_call([str(mode_gate_binary), str(file_path), "0"])
     hnan = validate_hnan_mode_output(gate.stdout, gate.returncode)
+
+    # Inherited PASS159 pure expression dispatch, never EXECUTE_AND_COMMIT.
+    pure = None
+    if pure_binary is not None:
+        pure_native = _native_call([str(pure_binary), str(file_path)])
+        pure = validate_native_pure_output(pure_native.stdout,
+                                           pure_native.returncode, raw)
 
     # Existing native-backed HHS public ingress/registry; candidate transport
     # does NOT substitute for the 632-byte canonical Pass169 runtime proof.
@@ -193,10 +249,12 @@ def integrate(
         ],
         "vm81_hash72_address_bijection": address,
         "inherited_native_pass159": frontend,
+        "inherited_native_pass159_pure_execution": pure,
         "inherited_native_hnan_and_pass169_intent": hnan,
         "pass169_source_registry": entry,
         "inherited_lane5_candidate": ingress,
         "pass169_canonical_632_byte_corpus_receipt_borrowed": False,
+        "native_pure_execution_attempted": pure is not None,
         "source_specific_quotient_operator_binding_present": False,
         "native_source_specific_quotient_result_authorized": False,
         "vm81_signed_environmental_commit_performed": False,
@@ -216,9 +274,10 @@ def main() -> None:
     parser.add_argument("--source",required=True,type=Path)
     parser.add_argument("--frontend",required=True,type=Path)
     parser.add_argument("--mode-gate",required=True,type=Path)
+    parser.add_argument("--pure-binary",type=Path,default=None)
     parser.add_argument("--out",required=True,type=Path)
     args=parser.parse_args()
-    record=integrate(args.source,args.frontend,args.mode_gate)
+    record=integrate(args.source,args.frontend,args.mode_gate,args.pure_binary)
     args.out.parent.mkdir(parents=True,exist_ok=True)
     args.out.write_text(json.dumps(record,sort_keys=True,indent=2)+"\n",
                         encoding="utf-8")
@@ -229,6 +288,11 @@ def main() -> None:
     print("V7_INHERITED_VM81_HASH72_5184_ADDRESSING=VERIFIED")
     print("V7_NATIVE_VALIDATE_ONLY_STATUS="+
           str(record["inherited_native_pass159"]["native_validate_only_status"]))
+    pure = record["inherited_native_pass159_pure_execution"]
+    print("V7_INHERITED_PASS159_PURE_EXEC_STATUS="+
+          (str(pure["pure_status"]) if pure is not None else "NOT_EXECUTED"))
+    print("V7_INHERITED_PASS159_PURE_REPLAY_STATUS="+
+          (str(pure["replay_status"]) if pure is not None else "NOT_EXECUTED"))
     print("V7_QUOTIENT_OPERATOR_SOURCE_BINDING=PENDING")
     print("V7_CANONICAL_VM81_COMMIT=0")
 

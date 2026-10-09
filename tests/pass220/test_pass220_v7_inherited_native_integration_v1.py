@@ -119,7 +119,8 @@ def test_native_full_integration_when_binaries_are_provided():
     quotient=os.environ.get("HHS_P220_V7_QUOTIENT_GATE_BIN")
     if not frontend or not quotient:
         pytest.skip("Real native ABI requires binaries built by focused CI")
-    record=integrate(SOURCE,frontend,quotient)
+    pure=os.environ.get('HHS_P220_V7_PURE_EXEC_BIN')
+    record=integrate(SOURCE,frontend,quotient,pure)
     assert record["schema"]==SCHEMA
     assert record["source_sha256"]==sha256(EXACT_SOURCE).hexdigest()
     assert record["inherited_native_pass159"]["pass159_frontend_chain"]=="VERIFIED"
@@ -129,3 +130,8 @@ def test_native_full_integration_when_binaries_are_provided():
     assert record["vm81_hash72_address_bijection"]["bijective_positions"]==5184
     assert record["source_specific_quotient_operator_binding_present"] is False
     assert record["vm81_signed_environmental_commit_performed"] is False
+    if pure:
+        evidence=record["inherited_native_pass159_pure_execution"]
+        assert evidence is not None
+        assert evidence["canonical_mutation"] is False
+        assert evidence["source_sha256"]==record["source_sha256"]

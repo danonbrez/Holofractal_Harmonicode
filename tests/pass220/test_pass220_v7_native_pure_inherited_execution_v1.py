@@ -4,48 +4,12 @@ from pathlib import Path
 import pytest
 
 from hhs_runtime.hhs_pass220_v7_inherited_native_integration_v1 import (
-    EXACT_SOURCE, V7NativeIntegrationError, _fields, _hash216,
+    EXACT_SOURCE, V7NativeIntegrationError,
+    validate_native_pure_output as parse_pure,
 )
 
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=ROOT/"contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode"
-
-def parse_pure(stdout,code,raw):
-    if code != 0 or raw != EXACT_SOURCE:
-        raise V7NativeIntegrationError("PURE_EXECUTION_EXIT_OR_SOURCE_MISMATCH")
-    record=_fields(stdout)
-    required={
-        "v7_exact_source":"VERIFIED",
-        "source_sha256":sha256(raw).hexdigest(),
-        "source_bytes":str(len(raw)),
-        "native_runtime":"PASS159_INHERITED",
-        "native_execution_mode":"EVALUATE_PURE",
-        "native_commit_policy":"0",
-        "native_matrix_quotient_result_certified":"0",
-        "source_specific_signed_vm81_commit":"0",
-        "source_specific_hash72_hash216_canonical_receipt":"0",
-    }
-    for name,value in required.items():
-        if record.get(name)!=value:
-            raise V7NativeIntegrationError("PURE_EXECUTION_SCOPE:"+name)
-    try:
-        s=int(record["pure_native_status"])
-        r=int(record["pure_replay_status"])
-    except (KeyError,ValueError) as exc:
-        raise V7NativeIntegrationError("PURE_EXECUTION_STATUS_MISSING") from exc
-    candidate=record.get("pure_candidate_hash216")
-    replay=record.get("pure_replay_hash216")
-    if s==0 and candidate is not None:
-        _hash216(candidate,"PURE_EXECUTION")
-        if r==0:
-            _hash216(replay,"PURE_REPLAY")
-        elif replay is not None:
-            raise V7NativeIntegrationError("PURE_REPLAY_UNAUTHORIZED_GLYPH")
-    elif candidate is not None or replay is not None:
-        raise V7NativeIntegrationError("PURE_STATUS_INCONSISTENT_RECEIPT")
-    return {"source_sha256":record["source_sha256"],"pure_status":s,
-            "replay_status":r,"candidate_hash216":candidate,
-            "pure_replay_hash216":replay,"canonical_mutation":False}
 
 def _fixture(status="-2",replay="-2",candidate=None):
     lines=[
