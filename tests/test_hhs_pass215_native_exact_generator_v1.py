@@ -176,3 +176,25 @@ def test_explicit_native_engine_does_not_silently_fallback(monkeypatch):
         asyncio.run(provider.chat_completion(
             messages=_messages("This prompt is not certified"), tools=[]
         ))
+
+
+def test_unified_fabric_declares_pass215_bounded_capability_not_general_generation():
+    from hhs_backend.runtime.hhs_unified_language_model_fabric_v1 import (
+        build_unified_language_model_fabric,
+    )
+
+    causal_status = NativePass215CertifiedGenerator("/missing/certified.gguf").status()
+    fabric = build_unified_language_model_fabric(
+        configured_model_id="",
+        registered_model_ids=[],
+        native_installation={"causal_lm": causal_status},
+        native_health={"ok": True, "online": True},
+    )
+    members = [
+        m for m in fabric["members"]
+        if m.get("role") == "PASS215_EXACT_CERTIFIED_BOUNDED_GENERATOR"
+    ]
+    assert len(members) == 1
+    assert members[0]["frozen_exact_profile_only"] is True
+    assert members[0]["arbitrary_prompt_generation_supported"] is False
+    assert members[0]["capabilities"] == ["CERTIFIED_BOUNDED_TEXT_GENERATION"]
