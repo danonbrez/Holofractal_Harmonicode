@@ -27,6 +27,9 @@ from hhs_backend.runtime.hhs_native_response_block_stream_v1 import (
     NativeResponseBlockStream,
     NativeResponseBlockStreamError,
 )
+from hhs_backend.runtime.hhs_pass215_native_exact_generator_v1 import (
+    NativePass215CertifiedGenerator,
+)
 from hhs_backend.runtime.hhs_litert_lm_assistant_v1 import (
     ASSISTANT_MODE_AGENTIC_APPLICATION_DEVELOPMENT,
     ASSISTANT_MODE_BOTH,
@@ -209,7 +212,11 @@ class HHSNativeLiteRTLMTransport:
 
     def _causal_generation(self) -> Any:
         if self._generation_service is None:
-            self._generation_service = NativeCausalLMGenerationService()
+            engine_id = os.getenv("HHS_NATIVE_GENERATION_ENGINE", "").strip().upper()
+            if engine_id == "PASS215_EXACT_CERTIFIED":
+                self._generation_service = NativePass215CertifiedGenerator()
+            else:
+                self._generation_service = NativeCausalLMGenerationService()
         return self._generation_service
 
     def _response_stream(self) -> NativeResponseBlockStream:
@@ -391,6 +398,12 @@ class HHSNativeLiteRTLMTransport:
             "word2vec_ready": word2vec_ready,
             "word2vec": word2vec_status,
             "causal_lm": causal_status,
+            "causal_generation_engine": str(
+                causal_status.get("engine_id") or "TRANSFORMERS_CAUSAL_EGRESS"
+            ),
+            "pass215_exact_bounded_profile_only": (
+                causal_status.get("engine_id") == "PASS215_EXACT_CERTIFIED"
+            ),
             "causal_lm_generation_supported": True,
             "causal_lm_required_for_provider_readiness": self.require_causal_generation,
             "causal_lm_configured": causal_configured,
@@ -1166,6 +1179,55 @@ class HHSNativeLiteRTLMTransport:
         )
         causal_failure: Optional[str] = None
         should_generate = ordinary_conversation or bool(receipts)
+        if should_generate and isinstance(
+            self._causal_generation(), NativePass215CertifiedGenerator
+        ):
+            # Dedicated certified kernel execution. The I18 source profile
+            # admits exactly one prompt and seven tokens; it cannot be fed a
+            # composed context, silently widened, or mislabeled as a general
+            # causal or serialized-block response.
+            exact = await asyncio.wait_for(
+                asyncio.to_thread(
+                    self._causal_generation().generate,
+                    message_list,
+                ),
+                timeout=self.generation_timeout_seconds,
+            )
+            exact_receipt = dict(exact["receipt"])
+            answer = str(exact["response"])
+            trace = {
+                "schema": "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1",
+                "assistant_mode": mode,
+                "generation_path": "PASS215_EXACT_CERTIFIED_BOUNDED_GENERATION",
+                "pass215_certified_egress": exact_receipt,
+                "general_chat_prompt_response_cycle": False,
+                "arbitrary_prompt_generation_claimed": False,
+                "pass213_rom_compilation_claimed": False,
+                "runtime_mutation_admitted": False,
+                "causal_generation_failure": None,
+                "response_block_count": 0,
+            }
+            trace["trace_root_hash72"] = hash72(
+                "HHS_NATIVE_LANGUAGE_PROVIDER_TRACE_V1", trace
+            )
+            generated_tokens = int(exact_receipt["generated_token_count"])
+            return {
+                "id": _completion_id(),
+                "object": "chat.completion",
+                "created": int(time.time()),
+                "model": MODEL_ID,
+                "choices": [{
+                    "index": 0,
+                    "message": {"role": "assistant", "content": answer},
+                    "finish_reason": str(exact.get("finish_reason") or "length"),
+                }],
+                "usage": {
+                    "prompt_tokens": 4,
+                    "completion_tokens": generated_tokens,
+                    "total_tokens": 4 + generated_tokens,
+                },
+                "hhs_native_trace": trace,
+            }
         if should_generate:
             try:
                 prototype_context = ""
