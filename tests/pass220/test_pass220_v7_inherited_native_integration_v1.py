@@ -54,6 +54,18 @@ def test_original_source_inherited_graph_and_address_space():
     assert geo["source_sha256"]==sha256(source).hexdigest()
     assert verify_bijection()["bijective_positions"]==5184
 
+def test_native_hash216_uses_harmonicode_glyphs_not_hex():
+    glyph=("j/VhU!54" * 27)
+    assert len(glyph)==216
+    raw=_frontend().replace(HEX216,glyph)
+    out=validate_frontend_output(raw,0,EXACT_SOURCE)
+    assert out["native_source_hash216"]==glyph
+    assert out["native_constraint_graph_hash216"]==glyph
+    assert out["native_vmir_hash216"]==glyph
+    assert out["native_validate_only_receipt_hash216"]==glyph
+    with pytest.raises(V7NativeIntegrationError,match="INVALID_NATIVE_HASH216"):
+        validate_frontend_output(raw.replace(glyph,"A" * 215 + "\\t",1),0,EXACT_SOURCE)
+
 def test_frontend_output_requires_real_hash216_and_execution_scope():
     out=validate_frontend_output(_frontend(),0,EXACT_SOURCE)
     assert out["pass159_frontend_chain"]=="VERIFIED"

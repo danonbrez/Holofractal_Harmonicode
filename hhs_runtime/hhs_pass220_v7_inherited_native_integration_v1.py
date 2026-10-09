@@ -48,7 +48,9 @@ def _fields(stdout: str) -> dict[str, str]:
 def _hash216(candidate: str | None, name: str) -> str:
     _require(isinstance(candidate, str) and len(candidate) == 216,
              "MISSING_NATIVE_HASH216_" + name)
-    _require(all(c in "0123456789abcdefABCDEF" for c in candidate),
+    # Native HARMONICODE Hash216 is a 216-GLYPH string, not SHA-hex.
+    # Preserve its ordered glyphs byte-for-byte; avoid a scalar/hex shim.
+    _require(all(33 <= ord(c) <= 126 for c in candidate),
              "INVALID_NATIVE_HASH216_" + name)
     return candidate
 
