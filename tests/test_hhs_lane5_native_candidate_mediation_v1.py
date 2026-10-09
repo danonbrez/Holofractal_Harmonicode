@@ -103,8 +103,13 @@ def test_real_native_function_name_called_with_all_prepared_typed_evidence():
     c = candidate()
     result = mediate_prepared_candidate(c, native_library=library)
     assert result["status"] == "CANDIDATE_READY_NOT_CANONICAL_MUTATION"
-    assert result["raw5184"] == c.raw5184
-    assert result["ordered_transition_word216"] == c.ordered_transition_word216
+    assert result["raw5184_character_count"] == 5184
+    assert result["ordered_transition_word216_length"] == 216
+    assert result["raw_state_exposed_in_result"] is False
+    assert "raw5184" not in result
+    assert "ordered_transition_word216" not in result
+    assert c.raw5184 == "0" * 5184  # trusted caller retains lossless state
+    assert c.ordered_transition_word216 == "A" * 72 + "B" * 72 + "C" * 72
     assert result["native_hash216_reference_signatures"] == [201, 202, 203]
     assert result["requires_signed_environmental_vm81_admission"] is True
     assert result["canonical_mutation_admitted"] is False
