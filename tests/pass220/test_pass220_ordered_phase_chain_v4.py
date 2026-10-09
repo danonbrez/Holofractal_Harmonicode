@@ -41,12 +41,10 @@ def test_verbatim_source_two_outer_edges_and_40_gate_occurrences() -> None:
 def test_strict_v3_lineage_and_unchanged_tensor_copies() -> None:
     previous = V3.read_text(encoding="utf-8").rstrip("\n")
     assert top_level_equalities(previous) == [253]
-    left, right = previous.split("==", 1) if False else (
-        previous[:253], previous[255:]
-    )
+    left, right = previous[:253], previous[255:]
     assert SOURCE == left + "==x==-y*(" + right + ")"
     assert SOURCE[:253] == left
-    assert SOURCE[259:-1] == right
+    assert SOURCE[262:-1] == right
     assert SOURCE.count("1==z*w,1==x*y") == 2
     assert SOURCE.count("6==b^2*c^2==b^2+c^2+a^2") == 2
     assert SOURCE.count("(-(e^2==c^2+d^2==b^6==8))") == 2
