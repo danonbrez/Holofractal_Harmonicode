@@ -205,3 +205,38 @@ HHSExactStatus hhs_exact_pass220_ordered4x4_i001_carrier_validate(
  memset(&staged,0,sizeof(staged));
  return HHS_EXACT_STATUS_OK;
 }
+
+
+/* Lossless inverse of the inherited normalized-offset carrier profile.
+ * The I001 64-character exact token is copied as raw ASCII: neither host
+ * floating-point nor scalar projection participates in the operation.
+ * A private 81-cell copy permits source/destination aliasing without changing
+ * source-position identity during the output construction.
+ */
+HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+ const uint8_t offsets[HHS220_4X4_I001_CELLS],
+ uint8_t *out_bytes,size_t capacity,size_t *out_length
+) {
+ static const uint8_t zero_token[]=
+  "+00000000000000000000/00000000000000000001e+00000000000000000000";
+ uint8_t saved_offsets[HHS220_4X4_I001_CELLS];
+ size_t i;
+ _Static_assert(sizeof(zero_token)-1U==HHS220_4X4_I001_TOKEN_BYTES,
+                "I001 rational scientific token must be 64 ASCII bytes");
+ if(out_length!=NULL) *out_length=HHS220_4X4_I001_TOTAL_BYTES;
+ if(offsets==NULL || out_length==NULL)
+  return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+ /* Validate ALL symbols before exposing any partial serialization. */
+ for(i=0U;i<HHS220_4X4_I001_CELLS;++i)
+  if(offsets[i]>8U) return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+ if(out_bytes==NULL || capacity<HHS220_4X4_I001_TOTAL_BYTES)
+  return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+ memcpy(saved_offsets,offsets,sizeof(saved_offsets));
+ for(i=0U;i<HHS220_4X4_I001_CELLS;++i) {
+  uint8_t *token=out_bytes+i*HHS220_4X4_I001_TOKEN_BYTES;
+  memcpy(token,zero_token,HHS220_4X4_I001_TOKEN_BYTES);
+  token[20]=(uint8_t)('0'+saved_offsets[i]);
+ }
+ memset(saved_offsets,0,sizeof(saved_offsets));
+ return HHS_EXACT_STATUS_OK;
+}
