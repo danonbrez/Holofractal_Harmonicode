@@ -1,0 +1,92 @@
+name: Pass 220 Ordered Tensor Signed Equality V2
+
+on:
+  pull_request:
+    paths:
+      - "contracts/pass220/PASS_220_ORDERED_TENSOR_SIGNED_EQUALITY_V2_20261009.harmonicode"
+      - "tests/pass220/test_pass220_ordered_tensor_signed_equality_v2.py"
+      - ".github/workflows/pass220-ordered-tensor-signed-equality-v2.yml"
+      - 'tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-source-v2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused test dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx websockets
+      - name: Source identity, zero residual, forbidden rewrites
+        run: python -m pytest -q tests/pass220/test_pass220_ordered_tensor_signed_equality_v2.py
+      - name: Build inherited shared native Runtime
+        run: make c-abi
+      - name: Real Lane 5 candidate mediation of exact revised source
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/signed-equality-v2
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import json
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          source=Path("contracts/pass220/PASS_220_ORDERED_TENSOR_SIGNED_EQUALITY_V2_20261009.harmonicode").read_bytes()
+          med=Lane5IngressMediator()
+          receipt=med.mediate(source,provenance="pass220:ordered-tensor-signed-equality-v2")
+          assert receipt["workload_sha256"] == sha256(source).hexdigest()
+          assert receipt["candidate_only"] is True
+          assert receipt["canonical_vm81_mutation_authority"] is False
+          assert receipt["canonical_hash216_authority"] is False
+          assert receipt["requires_signed_environmental_vm81_admission"] is True
+          record={"source_sha256":sha256(source).hexdigest(),"lane5_candidate_receipt":receipt,
+             "source_specific_vm81_commit":False,"source_specific_hash72_execution_receipt":False}
+          Path("artifacts/pass220/signed-equality-v2/lane5_candidate.json").write_text(
+              json.dumps(record,sort_keys=True,indent=2)+"\n")
+          print("EXACT_V2_SOURCE_MEDIATED_IN_LANE5")
+          PY
+      - name: Existing native Pass159 source to VMIR and validate-only
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-tensor-v2
+          /tmp/pass220-tensor-v2 contracts/pass220/PASS_220_ORDERED_TENSOR_SIGNED_EQUALITY_V2_20261009.harmonicode \
+            | tee artifacts/pass220/signed-equality-v2/native_probe.txt
+          grep -Fx 'native_validate_only_status=0' artifacts/pass220/signed-equality-v2/native_probe.txt
+          grep -Fx 'vm81_source_specific_commit_verified=false' artifacts/pass220/signed-equality-v2/native_probe.txt
+      - name: Negative mutation creates a distinct native source root
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          source=Path("contracts/pass220/PASS_220_ORDERED_TENSOR_SIGNED_EQUALITY_V2_20261009.harmonicode").read_text(encoding="utf-8")
+          assert "1==z*w,1==x*y" in source
+          Path("/tmp/pass220-tensor-v2-mutated.harmonicode").write_text(
+              source.replace("1==z*w,1==x*y","1==x*y,1==z*w",1),encoding="utf-8")
+          PY
+          /tmp/pass220-tensor-v2 /tmp/pass220-tensor-v2-mutated.harmonicode > /tmp/pass220-tensor-v2-mutated.out
+          original=$(grep '^source_hash216=' artifacts/pass220/signed-equality-v2/native_probe.txt)
+          mutated=$(grep '^source_hash216=' /tmp/pass220-tensor-v2-mutated.out)
+          test "$original" != "$mutated"
+          printf 'ORDERED_SOURCE_MUTATION_HASH216_DISTINCT\n'
+      - name: Upload native source-specific witness artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-signed-equality-v2-${{ github.sha }}
+          path: artifacts/pass220/signed-equality-v2/
+          if-no-files-found: warn
+          retention-days: 90

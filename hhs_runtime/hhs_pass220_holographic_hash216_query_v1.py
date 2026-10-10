@@ -477,9 +477,13 @@ def _candidate_features(query: Mapping[str, Any], candidate: Mapping[str, Any]) 
     c_primes = tuple(cfp.get("primes", ())) if isinstance(cfp, Mapping) else ()
     q_res = tuple(qfp.get("residues", ())) if isinstance(qfp, Mapping) else ()
     c_res = tuple(cfp.get("residues", ())) if isinstance(cfp, Mapping) else ()
-    if q_primes != c_primes or len(q_res) != len(c_res):
-        raise Pass220HolographicQueryError("candidate prime fingerprint profile mismatch")
-    prime_matches = sum(a == b for a, b in zip(q_res, c_res))
+    # Foreign/absent prime metadata is an optimization feature mismatch,
+    # not a veto on a well-formed Hash216 state. Lane5's actual native kernel
+    # decides composition execution; this holographic view only weights search.
+    if q_primes == c_primes and len(q_res) == len(c_res):
+        prime_matches = sum(a == b for a, b in zip(q_res, c_res))
+    else:
+        prime_matches = 0
     qfib = tuple(query.get("fibonacci_square_states", ()))
     cfib = tuple(candidate.get("fibonacci_square_states", ()))
     fib_matches = sum(a == b for a, b in zip(qfib, cfib))

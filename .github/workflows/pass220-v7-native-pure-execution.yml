@@ -1,0 +1,77 @@
+name: Pass 220 V7 Inherited Native Pass159 Pure Execution
+
+on:
+  pull_request:
+    paths:
+      - 'tools/pass220/pass220_v7_native_pass159_pure_execution_v1.c'
+      - 'tests/pass220/test_pass220_v7_native_pure_inherited_execution_v1.py'
+      - '.github/workflows/pass220-v7-native-pure-execution.yml'
+      - 'contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode'
+      - 'hhs_runtime/hhs_pass220_v7_inherited_native_integration_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v7-inherited-pure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+      HHS_P220_V7_PURE_EXEC_BIN: /tmp/pass220-v7-pass159-pure
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Scoped exact source and authority-negative tests
+        run: python -m pytest -q tests/pass220/test_pass220_v7_native_pure_inherited_execution_v1.py -k 'not test_actual_native_pure_execution_probe_when_built'
+      - name: Compile existing native HHS runtime
+        run: make c-abi
+      - name: Compile linked native Pass159 pure execution, no new interpreter
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_v7_native_pass159_pure_execution_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o "$HHS_P220_V7_PURE_EXEC_BIN"
+      - name: Execute original V7 source using inherited EVALUATE_PURE and replay APIs
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/v7-inherited-pure
+          SOURCE=contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode
+          "$HHS_P220_V7_PURE_EXEC_BIN" "$SOURCE" | tee artifacts/pass220/v7-inherited-pure/native_pure.txt
+          grep -Fx native_execution_mode=EVALUATE_PURE artifacts/pass220/v7-inherited-pure/native_pure.txt
+          grep -Fx native_commit_policy=0 artifacts/pass220/v7-inherited-pure/native_pure.txt
+          grep -Fx source_specific_signed_vm81_commit=0 artifacts/pass220/v7-inherited-pure/native_pure.txt
+          grep -Fx source_specific_hash72_hash216_canonical_receipt=0 artifacts/pass220/v7-inherited-pure/native_pure.txt
+          digest=$(sha256sum "$SOURCE" | cut -d' ' -f1)
+          grep -Fx "source_sha256=$digest" artifacts/pass220/v7-inherited-pure/native_pure.txt
+      - name: Native malformed source and phase-order rewrite must reject
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
+          Path('/tmp/v7-mutated-pure.harmonicode').write_bytes(
+              src.replace(b'xy+yx',b'yx+xy',1))
+          PY
+          if "$HHS_P220_V7_PURE_EXEC_BIN" /tmp/v7-mutated-pure.harmonicode; then
+            echo HHS_V7_PURE_SOURCE_ORDER_BYPASS >&2
+            exit 1
+          fi
+          echo V7_PASS159_PURE_SOURCE_ORDER_MUTATION_REJECTED
+      - name: Replay scoped native pure status/receipts through strict transport parser
+        run: python -m pytest -q tests/pass220/test_pass220_v7_native_pure_inherited_execution_v1.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v7-pass159-native-pure-${{ github.sha }}
+          path: artifacts/pass220/v7-inherited-pure/
+          if-no-files-found: warn
+          retention-days: 90
