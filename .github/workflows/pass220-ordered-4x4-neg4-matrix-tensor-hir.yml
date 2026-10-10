@@ -59,6 +59,20 @@ jobs:
             -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass220-ordered4x4-native-probe
           /tmp/pass220-ordered4x4-native-probe | python -m json.tool
+      - name: Execute typed symbolic operator interpreter and tamper controls
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass220_ordered4x4_execute_symbolic'
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-ordered4x4-symbolic-probe
+          /tmp/pass220-ordered4x4-symbolic-probe | python -m json.tool
+          ! grep -REn '\\b(float|double|long[[:space:]]+double)\\b' \
+            hhs_runtime/include/hhs_pass220_ordered4x4_symbolic_execution_v1.h \
+            hhs_runtime/c/hhs_pass220_ordered4x4_symbolic_execution_v1.inc \
+            tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c
       - name: Exact native/Python bridge and ancestor I077 regression
         env:
           HHS_DISABLE_C_AUTOBUILD: '1'
@@ -66,4 +80,5 @@ jobs:
           python -m pytest -q --tb=short \
             tests/pass220/test_hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py \
             tests/pass220/test_hhs_pass220_ordered4x4_native_hir_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_ordered4x4_symbolic_execution_v1.py \
             tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py
