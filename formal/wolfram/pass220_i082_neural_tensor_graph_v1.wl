@@ -27,7 +27,7 @@ checks = <|
   "scalar_offset_exact" -> (9/2-coeff === 9/312500000000),
   "three_ordered_segments" -> (Length[orderedChain] === 3),
   "denominator_order_retained" ->
-    (lhs[[1,2,2]] === TMul[k[600000000000000],
+    (lhs[[1,2]] === TMul[k[600000000000000],
       TPow[a["a"],k[2]],a["x"],a["y"]]),
   "middle_xy_order" -> (mid[[2]] === TMul[a["x"],a["y"]]),
   "noncommuted_xy_yx" -> (TMul[a["x"],a["y"]] =!= TMul[a["y"],a["x"]]),
