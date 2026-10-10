@@ -104,6 +104,15 @@ assert.match(normal.el("agentDetail").textContent,/Agent 5184 \/ layer 1 \/ loca
 assert.match(normal.el("agentDetail").textContent,/Applied to physics: NO/);
 assert.equal(normal.el("freqSlider").disabled,true);
 assert.equal(normal.el("massSlider").disabled,true);
+normal.el("commandInput").value='{"command":"run_module","module":"AgenticElectronSpriteStatus","parameters":{"agent_index":5184}}';
+normal.el("runCommand").onclick();
+assert.match(normal.el("output").innerText,/AgenticElectronSpriteStatus/);
+normal.el("commandInput").value='{bad json';
+normal.el("runCommand").onclick();
+assert.match(normal.el("output").innerText,/Invalid JSON:/);
+normal.el("jsonCommandInput").value='{"command":"init_system","config":{"HHS_System":{"global_parameters":{"mu":2}}}}';
+assert.equal(typeof normal.window.HHS.boot.boot_halt,"boolean");
+
 assert.equal(normal.el("topoBtn").disabled,true);
 
 const noOrbit=harness(false,true);
