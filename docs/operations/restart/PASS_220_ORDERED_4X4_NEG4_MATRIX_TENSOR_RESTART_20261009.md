@@ -1,0 +1,815 @@
+# Pass 220 — Ordered 4×4 (-4) NcalcMatrixPower tensor HIR checkpoint
+
+Date: 2026-10-09 (America/New_York)
+
+## Authority and restart identity
+
+- Repository: danonbrez/Holofractal_Harmonicode
+- Base main: 7fefacde360e6a5bb537cb01e94415c96430915b
+- Branch: agent/pass220-ordered-4x4-neg4-tensor-20261009
+- Merge target: main
+- Runtime authority: inherited Pass169/VM81/Hash72/Hash216 singleton, not this candidate HIR module
+
+## Verbatim source
+
+Exact source: contracts/pass220/PASS_220_ORDERED_4X4_NEG4_MATRIX_TENSOR_V1.harmonicode
+Source: 366 ASCII/UTF-8 bytes, with no trailing newline
+SHA256: a3ba5ca5f31ee76261e5df75c7e9f43a78219d59df36a095a07c0acdf90dbd19
+
+The authoritative equation is preserved exactly. AST operations stay ordered:
+
+    EQUALITY_GATE
+      LHS: NcalcMatrixPower(
+        GROUP(
+          MatrixTimes(ORDERED_NEGATE(List4x4), ORDERED_NEGATE(List4x4))
+          / MatrixTimes(List4x4, typed s)
+        ),
+        GROUP(ORDERED_NEGATE(4))
+      )
+      RHS: MatrixTimes(typed v, List4x4)
+
+Four ordered 4×4 matrices carry 64 literal cell occurrences, with the exact negative-cell parentheses preserved. The numerator matrices are opposite in their literal entries, and the right-hand matrix is strictly lower triangular. Those are literal source structural relationships; no ordinary matrix operations are adopted as native evaluator semantics.
+
+## I076/I077 compatibility
+
+Pass169 registers ExactMatrixPower HIR nodes; Pass220 I076 creates exact 4×2 tensor-power HIR nodes, and I077 submits only two specifically source-bound 4×2 nodes via its native ABI. I077 explicitly does not compute ordinary matrix-power values. The 4×4/-4 source must not be passed to an existing I077 node id or construed as numerically evaluated.
+
+This commit creates a new source-bound HIR staging module and test suite. It does not add the missing registered native 4×4 symbolic execution/equality evaluator.
+
+## Files changed
+
+1. contracts/pass220/PASS_220_ORDERED_4X4_NEG4_MATRIX_TENSOR_V1.harmonicode
+2. hhs_runtime/pass220/hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py
+3. tests/pass220/test_hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py
+4. .github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml
+5. docs/operations/restart/PASS_220_ORDERED_4X4_NEG4_MATRIX_TENSOR_RESTART_20261009.md
+
+## Validation, environment, and remaining tasks
+
+Local prototype of the source-locked operator parser and negative controls: 13 targeted tests passed; Python compileall passed. The committed branch has a dedicated GitHub Actions validation workflow for 13 matching behavioral tests. Verify exact-head results independently; do not inherit a run from a prior commit.
+
+Available environment: connected GitHub source tree and local Python for candidate validation; no user production VM81 runtime is mounted here. The static diagnostic SHA-256 from this HIR module is not a canonical Hash72 or Hash216 receipt.
+
+Still required for full implementation:
+- Bind authentic native 5184-character and VM81 address/provenance objects to source cells, s and v.
+- Register HHS matrix times, typed quotient, negative fourth power, and the final ordered equality gate, without host scalar substitution or reordered products.
+- Build and test the native 4×4 whole-expression VM81 executor; retain exact semantic provenance.
+- Execute a valid canonical transition through the inherited singleton admission ABI, with Hash72/Hash216 lineage and deterministic replay.
+- Scope negative tests for noninvertible/exception states, order reversal, source drift, false authority, wrong tensor address and replay mismatch.
+- Commit native changes, verify dependency-scoped CI, merge only after evidence, and verify main.
+
+Status at this checkpoint: source identity and ordered HIR staging implemented; native value computation, native closure, signed VM81 admission, and canonical ledger mutation NOT claimed.
+
+## Continuation: native source-bound HIR lowering (2026-10-10)
+
+Parent source/HIR checkpoint: `540c43fc8426bc78ddffe86f9245fda3a1d48440`.
+Continuation branch: `agent/pass220-ordered-4x4-neg4-tensor-20261009`, merge target `main`.
+Base main remains `7fefacde360e6a5bb537cb01e94415c96430915b`.
+Native lowering changes through `229462fe5ace531e5bfeb88f3db8cd58f443ffb6`.
+
+New implementation:
+
+- `hhs_runtime/include/hhs_pass220_ordered4x4_neg4_1_0.h`: public exact ABI for source-bound read-only lowering.
+- `hhs_runtime/c/hhs_pass220_ordered4x4_neg4_1_0.inc`: exact 366-byte frozen source, expected SHA256, 64 ordered literal signed cell tokens, VM81 81-word candidate frame, no input symbol evaluation.
+- `hhs_runtime/include/hhs_runtime_exact_abi.h` and `hhs_runtime/c/hhs_runtime_exact_abi.c`: additive export/include registration in existing singleton aggregate, not a second runtime.
+- `tools/pass220/pass220_ordered4x4_hir_native_probe.c`: positive native frame/type/source tests and deterministic re-lowering equality, negative source drift/truncation/null controls.
+- `hhs_runtime/pass220/hhs_pass220_ordered4x4_native_hir_bridge_v1.py`: read-only ctypes binding over exact native ABI; no Python recomputation of matrix algebra.
+- `tests/pass220/test_hhs_pass220_ordered4x4_native_hir_bridge_v1.py`: exact frame, source binding, authority guard, replayed lowering conformance.
+- Expanded `.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml`: `make c-abi`, linked native probe, bridge test and inherited I077 regression.
+
+**Scope distinction**: deterministic re-lowering compares immutable HIR frame bytes; it is not canonical VM81 deterministic replay. The function does not call signed VM81 admission, does not evaluate `MatrixTimes` or `NcalcMatrixPower`, does not resolve `s`/`v`, and does not issue canonical Hash72/216 receipts. All authority flags remain zero. The negative fourth power remains an **exact source exponent token**, not host exponentiation.
+
+Commands/checks:
+- Source/HIR scoped Python 13 tests: prior exact-head run SUCCESS at `540c43...`.
+- Native probe, aggregate compilation, bridge and inherited I077 tests: configured in branch CI; inspect exact head before promoting status.
+- Connected GitHub is writable; no local copy of the full native repository/production service is mounted in the current execution environment.
+
+Remaining native closure:
+1. Register complete HHS 4x4 ordered `MatrixTimes`, typed quotient, and `NcalcMatrixPower` value executor with exact provenance/address semantics and no float/scalar substitution.
+2. Bind native symbolic `s` and `v` with their full typed constraints; enforce the whole `==` gate.
+3. Submit only fully proven native transition to inherited singleton signed VM81 admission, then verify Hash72/216 and replay on main.
+4. Resolve any CI regressions and retain a new restart checkpoint for repair-forward.
+
+
+## Continuation: typed native operator execution (2026-10-10)
+
+Inherited base main: `7fefacde360e6a5bb537cb01e94415c96430915b`.
+
+Preserved branch: `agent/pass220-ordered-4x4-neg4-tensor-20261009`.
+
+Merge target: `main`.
+
+Previous source-to-HIR and C ABI head `86d1c4f620afd1bb3d9ec113221615ab738d453c` is verified green by branch CI `38026628454` and source-integrity `38026629235`.
+
+Current continuation checkpoints through `01ad3bcde6c615c083812735caab71c0f87b5754` introduce **native typed symbolic operator execution** rather than only a packed candidate frame.
+
+New native API:
+
+- `hhs_exact_pass220_ordered4x4_program`: expose the frozen 15-opcode operator sequence.
+- `hhs_exact_pass220_ordered4x4_execute_symbolic`: source-authenticate and execute its ordered exact symbolic constructors with one typed operand stack; re-execute deterministically and compare every node root.
+
+The 15 ordered nodes:
+
+1. source matrix #0;
+2. unary negate #0;
+3. source matrix #1;
+4. unary negate #1;
+5. MatrixTimes(neg0,neg1);
+6. denominator source matrix #2;
+7. typed symbol s;
+8. MatrixTimes(matrix2,s);
+9. typed quotient of numerator and denominator products;
+10. exact negative-four exponent token;
+11. NcalcMatrixPower(quotient,(-4));
+12. typed symbol v;
+13. closure matrix #3;
+14. MatrixTimes(v,matrix3);
+15. ordered outer equality gate.
+
+Each executable node is domain-separated SHA-256-bound to the authoritative source digest, program digest, opcode position, ordered operand roots, typed output type and exact source literal/typed-symbol identity. These are diagnostic construction roots, *not* canonical Hash72/Hash216 receipts. This stage runs a real bounded native typed-symbolic DAG interpreter; it does not perform ordinary matrix or scalar arithmetic.
+
+New/updated files (in addition to inherited earlier file list):
+
+- `hhs_runtime/include/hhs_pass220_ordered4x4_symbolic_execution_v1.h`
+- `hhs_runtime/c/hhs_pass220_ordered4x4_symbolic_execution_v1.inc`
+- `hhs_runtime/include/hhs_runtime_exact_abi.h`
+- `hhs_runtime/c/hhs_runtime_exact_abi.c`
+- `hhs_runtime/pass220/hhs_pass220_ordered4x4_symbolic_execution_v1.py`
+- `tests/pass220/test_hhs_pass220_ordered4x4_symbolic_execution_v1.py`
+- `tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c`
+- `.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml`
+
+Negative tests: source byte corruption, truncation, null inputs, missing program suffix, every one of the 15 opcode mutations, injected typed substitution/false authority, and complete native-Python root equality.
+
+**Strict boundary**:
+`exact_symbolic_program_executed=true` means ordered symbolic construction operators were actually run in native C. It does **not** mean `MatrixTimes` matrix entries were calculated, quotient semantics resolved, a negative fourth matrix power value derived, s/v substituted, source `==` proved, signed VM81 admission executed, VM81 state mutated, or canonical Hash72/216 minted. All such flags are explicitly false.
+
+Validation commands in dedicated GitHub branch CI:
+
+```bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/pass220-ordered4x4-symbolic-probe
+/tmp/pass220-ordered4x4-symbolic-probe
+python -m pytest -q tests/pass220/test_hhs_pass220_ordered4x4_symbolic_execution_v1.py tests/pass220/test_hhs_pass220_ordered4x4_native_hir_bridge_v1.py tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py
+```
+
+The exact-head continuation CI must be checked before declaring native code verified. GitHub Actions may be queued; do not equate queued with failure or success.
+
+Remaining after symbolic construction: implement and prove *registered* typed 4x4 matrix entry operations, exact ordered denominator and negative-fourth-power value construction for genuine VM81 cell-addressed s/v, determine source `==` gate from those native values, and only then use inherited signed singleton VM81 admission, parent-linked Hash72/216 and deterministic VM81 replay. Never borrow I077 fixed integer/symmetric transport as a substitute.
+
+Environment: GitHub connector is available for source mutation, workflow evidence, PR; full repo/production VM81 is not locally mounted. Restart from the above branch and check workflow results before repair-forward or promotion.
+
+
+## Continuation: native addressed s/v parameter binding (2026-10-10)
+
+**Inherited green:** Source integrity and native 15-opcode exact symbolic program CI succeeded at head \`bd2f29f8b784f2e31682b503bf21b58a8d186e84\` (runs \`38048206188\`, \`38048206213\`).
+
+**Repository base:** \`main @ 7fefacde360e6a5bb537cb01e94415c96430915b\`
+
+**Development branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`
+
+**Merge target:** \`main\`
+
+**This continuation through:** \`903b76b0e1c56345f6a1c979b36b80f7d4c401e3\`
+
+### Implementation
+
+The HHS exact C ABI now accepts \(s\) and \(v\) as **opaque native HARMONICODE tensors** instead of detached scalars. Their bindings contain:
+- exact source symbol role \`s\` or \`v\`;
+- inherited VM81 cell coordinate 0..80 and operation coordinate 0..63, deriving \`64*cell+opcode\` within 5184;
+- exactly **5184 UTF-8 Unicode codepoints**, permitting UTF-8 byte width different from character width;
+- 216-character predecessor Hash216 lineage pointer;
+- immutable, domain-separated SHA-256 binding roots containing original UTF-8 bytes, source role, position and predecessor glyphs.
+
+The **same inherited 15-opcode C symbolic interpreter** now has a binding mode: its source-symbol nodes receive exact native-object binding roots rather than mere one-character identifiers. Thus changes in the \`s\` object affect the denominator/quotient/power branch but not \`MatrixTimes(v,L)\`, whereas changes in \`v\` affect that branch but not the numerator/power. Exact address changes alter binding identity even if the serialized text is identical. Complete ordered node roots are computed twice and required byte-identical.
+
+**New files:**
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_typed_bindings_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_typed_bindings_v1.inc\`
+- \`hhs_runtime/pass220/hhs_pass220_ordered4x4_typed_bindings_v1.py\`
+- \`tools/pass220/pass220_ordered4x4_typed_bindings_probe.c\`
+- \`tests/pass220/test_hhs_pass220_ordered4x4_typed_bindings_v1.py\`
+
+**Updated:**
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_symbolic_execution_v1.inc\`
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+**Negative tests:** invalid Unicode and overlong UTF-8, 5183-character state, embedded NUL, wrong cell/op range, mismatched predecessor lineage, swapped s/v roles, source tampering, and independent s/v branch locality. The C native probe also verifies Unicode character width vs byte length without scalar conversion.
+
+### Critical authority and security qualification
+
+A 216-character predecessor field and 5184-character text are **untrusted proposed bindings**, NOT authenticated signed VM81 state. This bridge validates shape and exact ordered symbolic graph behavior only. The predecessor string is compared for identity; its signed provenance is NOT cryptographically established by this candidate ABI. The exact format's full scientific-notation semantic validator remains downstream.
+
+\`native_binding_authenticity_verified = false\`
+\`matrix_times_value_derived = false\`
+\`matrix_quotient_value_derived = false\`
+\`matrix_power_value_derived = false\`
+\`equation_equality_proved = false\`
+\`vm81_admission_executed = false\`
+\`hash72_commit_authority = false\`
+\`hash216_commit_authority = false\`
+\`canonical_vm81_mutation_authority = false\`
+
+No full matrix arithmetic, scalar coercion, conventional inverse, host float, signed VM81 admission, Hash72/216 mint, or persistent mutation occurred.
+
+The new entry point is \`hhs_exact_pass220_ordered4x4_execute_bound\`, **read-only candidate execution**. Python \`NativeOrdered4x4BoundExecutor\` calls this same native ABI rather than duplicating its computations.
+
+### Validation and restart
+
+Previous exact-head CI is frozen green. The new dependency-scoped native C and Python bound-state CI workflow has been committed; CI may be queued, and results must be checked by the specific tested head before promoting success. Commands executed/configured:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_typed_bindings_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-typed-probe
+/tmp/pass220-ordered4x4-typed-probe
+python -m pytest -q tests/pass220/test_hhs_pass220_ordered4x4_typed_bindings_v1.py
+\`\`\`
+
+Remaining: signed/authenticated native predecessor and VM81 tensor-object schema admission; implementation of the established ordered 4×4 HHS \`MatrixTimes\`, quotient and negative-fourth-power *value* semantics; complete HHS equality proof; singleton signed VM81 commit and Hash72/216 deterministic replay. Any failures trigger repair-forward against the inherited exact semantics, not a scalar fallback.
+
+**Environment:** Connected GitHub read/write and GitHub Actions CI are available. The complete production VM81 state is not locally mounted in this session. New native ABI must pass real GitHub build before its validation is considered closed.
+
+
+## Continuation: inherited complete Hash216 parent reference preflight (2026-10-10)
+
+- Base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`
+- Restart branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`
+- Merge target: \`main\`
+- Previous exact-head bound 5184-character state validation: queued at start of this tranche (no result inherited).
+- Parent preflight implementation checkpoint through: \`5b8f42fb78117bd228afa09479476ac08e85c5a4\`
+
+### New implementation
+
+A public native C ABI function \`hhs_exact_pass220_ordered4x4_parent_preflight\` accepts the source, the already-typed and addressed 5184-character \`s\` and \`v\` objects, and a caller-supplied complete \`HHSExactPass219Hash216TransitionViewV1\` inherited parent reference.
+
+This function calls the registered inherited \`hhs_exact_pass219_vm81_pqc_hash216_reference_verify\`; this cryptographic **structure/index** verifier recreates every index record and requires all 216 Hash72 positional records and transition identity fields to match. This does **not** prove the reference originated in a signed VM81 admission: the indexed reference is publicly reconstructible from Hash72 lanes.
+
+The parent preflight checks that both opaque tensor bindings carry the same 216-character \`transition_identity216\` as the verified reference, then invokes the existing read-only source-locked \`hhs_exact_pass220_ordered4x4_execute_bound\` graph. It returns diagnostic parent digest and bound equality *node root* with no mathematical equality claimed.
+
+### Files changed
+
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_parent_preflight_v1.h\`: native public ABI declaration, receipt fields, no-authenticity boundary.
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_parent_preflight_v1.inc\`: use inherited complete Hash216 reference verifier and exact source-bound 4×4 operator graph.
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`, \`hhs_runtime/c/hhs_runtime_exact_abi.c\`: additive singleton exact ABI registration.
+- \`tools/pass220/pass220_ordered4x4_parent_preflight_probe.c\`: inherited genesis reference, positive indexed preflight, byte-identical replay, tampering at first token and last SHA256 index, identity mismatch, incomplete index coverage, predecessor mismatch, source mutation, wrong lineage width, and no-authority negatives.
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`: compile against existing exact ABI and execute native probe after earlier 4×4 tests.
+
+### Permanent honesty boundary
+
+- \`inherited_hash216_structure_verified=true\` and \`all_216_indexes_verified=true\` only assert complete deterministic **structural/index reconstruction** from a supplied reference, NOT that this reference is signer-authentic.
+- \`parent_signed_authenticity_verified=false\` unconditionally.
+- \`vm81_environment_signed_admission=false\` unconditionally.
+- \`tensor_equality_proved=false\` unconditionally.
+- \`hash72_commit_authority=false\`, \`hash216_commit_authority=false\` and \`canonical_vm81_mutation_authority=false\` unconditionally.
+- No scalar substitution, I077 compatibility UQCEL packet, matrix value derivation, or independent Hash216 receipt writer was introduced.
+
+### Next action and validation
+
+Inspect the dedicated exact-head native CI at GitHub Actions for PR #756. Fix any bounded failures. Do not wait on queued unrelated workflows; checkpoint is restartable. Only if registered complete HHS operator value results and genuine signed environmental references become available may full tensor equality be proved and submitted to inherited \`hhs_exact_pass219_vm81_environment_admit_signed\`. Verify actual receipt lineage and replay after admission; never infer it from a reconstructed reference alone.
+
+Environment: connected GitHub repository and Actions; production VM81 signed runtime state and signing environment are not mounted here. This repository mutation is a native ABI candidate/preflight extension, not production deployment.
+
+
+## Continuation: source-addressed 4×4 numerator product expansion (2026-10-10)
+
+Base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`.
+Branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`.
+Merge target: \`main\`.
+Source remains frozen at 366 bytes and SHA256 \`a3ba5ca5f31ee76261e5df75c7e9f43a78219d59df36a095a07c0acdf90dbd19\`.
+Current additive implementation through \`f6a4ca6aab44c3789961f341c396607cd18a89a5\`.
+
+### New executable native operator subgraph
+
+The exact ABI now exports \`hhs_exact_pass220_ordered4x4_numerator_terms\`. It takes the original source and uses the inherited source-locked 4×4 HIR verifier, then materializes the **64 source-addressed ordered product terms** and **16 ordered four-term output-cell expression nodes** of the numerator \`MatrixTimes(-List(...),-List(...))\`.
+
+For each output-cell address \`(i,j)\`, all four terms retain the exact ordered provenance:
+
+\`\`\`
+term(i,k,j) = OrderedProduct(
+    OuterNegation(Matrix0)[i,k],
+    OuterNegation(Matrix1)[k,j]
+)
+numerator_cell(i,j) = OrderedSum(
+    term(i,0,j),term(i,1,j),term(i,2,j),term(i,3,j)
+)
+\`\`\`
+
+This is a **typed source-expression routing/expansion**, not ordinary scalar matrix multiplication. The literal matrix leaves remain original source signed tokens; the two \`-List\` wrappers remain explicitly attached to their original matrices. No sign cancellation, coefficient calculation, term sorting, commutation, substitution, or matrix-power evaluation is authorized. All positional leaf/product/sum roots are deterministic, domain-separated **diagnostic SHA256** witnesses; they never grant VM81 or Hash72/Hash216 authority.
+
+Files created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_numerator_terms_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_numerator_terms_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_numerator_terms_probe.c\`
+
+Files updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Scoped negative conformance
+
+The new probe must build/run against the actual exact C ABI. It asserts:
+- Exactly 64 term roots and 16 ordered sum roots; 4×4 source shape.
+- Source roles matrix 0 left/matrix 1 right never reversed; row/column/reduction position preserved for every term.
+- Both outer matrix negation nodes preserved rather than numerically cancelling.
+- Diagnostic witness for reversing operand root order differs for every term (no commutation).
+- Complete output is deterministic under exact source replay.
+- Source byte mutation, truncation and null pointers fail closed.
+- All flags for matrix value/equality, scalar arithmetic, signed admission and canonical receipts remain false.
+
+Run dependency-scoped commands:
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+ -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_numerator_terms_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-numerator-probe
+/tmp/pass220-ordered4x4-numerator-probe
+\`\`\`
+
+Do not mark these commands complete until CI finishes. Previous bound and parent-preflight CI may be queued; check the exact branch head and repair only impacted tests.
+
+### Remaining obligations
+
+The numerator expansion does not establish the native value semantics of \`MatrixTimes\`, \`MatrixTimes(D,s)\`, \`MatrixTimes(v,L)\`, the typed quotient, or \`NcalcMatrixPower(...,(-4))\`. The inherited signed environmental admission must not be invoked on a merely constructed equality *node*. Authentic signed origin cannot be inferred from a constructible indexed Hash216 reference; a genuine signed envelope and all native operator/equality proofs remain required. No production deployment or main merge is claimed.
+
+Next action: inspect exact-head native CI for \`f6a4ca6a...\` (or later checkpoint), repair failed scoped tests, and implement address-preserving denominator/RHS typed vector/matrix operator expansion only after confirming their native operand shape/phase contracts. Do not assume \`s\` or \`v\` are free conventional scalars.
+
+
+## Continuation: denominator and RHS directional tensor geometry (2026-10-10)
+
+**Base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Branch / continuation:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\`  
+**This continuation through:** \`9b49834f79840565d216f9e974715bb9d7912825\`
+
+### Implemented
+
+Added \`hhs_exact_pass220_ordered4x4_outer_geometry\` to the same authoritative \`hhs_runtime_exact_abi\` aggregate. It **actually traverses and hashes the source-addressed typed action incidence geometry** for both remaining outer \`MatrixTimes\` branches:
+
+- Denominator: \`MatrixTimes(D,s)\`, with source matrix \`D\` fixed on the left and the entire address-bearing \`s\` HARMONICODE object on the right.
+- Right side: \`MatrixTimes(v,L)\`, with the entire address-bearing \`v\` HARMONICODE object fixed on the left and source matrix \`L\` on the right.
+
+A 4×4 matrix has exactly sixteen source-cell occurrences. Both branches together produce **32 source-cell incidence nodes**, ordered row-major within each branch; the output roots also commit to the parent reference, source SHA, tensor symbol role and native VM81 address.
+
+**Important:** 32 *incidences* is not 32 output elements or an inferred product result shape. \`s\`/\`v\` are not recast as scalar multipliers, rank-one vectors, or 4×4 matrices. Their actual registered HHS tensor action shapes remain unresolved until a native type/phase witness authorizes them. The numerator's prior 64 product terms and 16 ordered sum *expression* nodes remain separate.
+
+Before constructing incidence nodes, the new C ABI calls the inherited source-bound \`hhs_exact_pass220_ordered4x4_parent_preflight\` and the existing native 5184-character \`hhs_exact_pass220_ordered4x4_execute_bound\`, checks their exact root and source consistency, and explicitly rejects any unexpected claims of tensor-value derivation or signed VM81 authority.
+
+Each incidence root records:
+- original literal matrix source index 2 (denominator) or 3 (RHS);
+- exact source row and column, original signed token and matrix operand side;
+- full-object symbol binding root and its VM81 cell/op coordinate;
+- ordered left/right operand-root order, with no commutation or implicit broadcasting.
+
+Both branch roots and their combined outer-geometry root are domain-separated diagnostic SHA-256 values, not canonical Hash72/Hash216 receipts.
+
+New files:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_outer_geometry_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_outer_geometry_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_outer_geometry_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Dependency-scoped native conformance
+
+Dedicated C ABI probe tests 32 exact matrix-source incidences, two strict operand directions, all 16 source positions in each branch, stable repeat derivation, independent branch effects from changing s and v, typed VM81 address changes, source tampering, inherited indexed Hash216 reference tampering, wrong tensor role and wrong 5184 width. All corresponding authority flags remain zero.
+
+CI commands configured:
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+  -Ihhs_runtime/include \
+  tools/pass220/pass220_ordered4x4_outer_geometry_probe.c \
+  -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+  -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+  -o /tmp/pass220-ordered4x4-outer-geometry-probe
+/tmp/pass220-ordered4x4-outer-geometry-probe | python -m json.tool
+\`\`\`
+
+The continuation's repository sources were inspected through connected GitHub and committed. **No successful compile or native execution for this new continuation is claimed yet**: exact-head CI was queued when recorded. Previous verified-green symbolic interpreter checkpoint and its CI remain inherited evidence; queued parent/numerator/outer additions do not inherit green automatically.
+
+A direct local remote repository fetch attempt \`git ls-remote https://github.com/danonbrez/Holofractal_Harmonicode.git HEAD\` failed with a DNS resolution error in the local analysis container; this is an environment/network limitation, not an HHS source defect. The GitHub connector remains functional for repository writes.
+
+### Proof-authority and restart conditions
+
+\`s_tensor_action_shape_resolved = false\` and \`v_tensor_action_shape_resolved = false\`. Denominator and RHS matrix values, the typed quotient, negative-fourth power, final equality, signed predecessor authentication, signed VM81 admission, canonical persistence, Hash72 and Hash216 receipt authority are **all false**. A structurally valid public Hash216 transition reference does NOT authenticate signer origin.
+
+Next action: check current exact-head CI for this branch. Repair only failures attributable to the new geometry gate, then require a native signed and provenance-carrying \`s\`/\`v\` operator-rank/phase witness before implementing the matrix-value action. Do not infer type by scalar conventions. Once exact matrix/quotient/power operator values are proven, use only \`hhs_exact_pass219_vm81_environment_admit_signed\` and its established receipts/replay pathway. No merge or deployment performed by this tranche.
+
+### Follow-up negative check — exact reversal of the same two operands
+
+The native outer-geometry probe was strengthened at commit \`13d301f6ebb11355b2b553cb8cb5f9b13aee236e\`: for **each** of the 32 source-cell incidences, it independently reconstructs the same operands in reverse order, with the opposite directional tag, and verifies the diagnostic root differs from the registered source-ordered root. This checks *same-operand direction dependence*, not merely inequality between different branches. It is still an identity/construction test, not a numerical matrix equality proof.
+
+This test is included in the dedicated \`native-source-locked-lowering\` CI job. Validate at exact head. Any pending GitHub runner queue is an external validation blocker; retain this committed restart state and repair-forward any scoped failure.
+
+
+## Continuation: inherited VM81 ordered phase-address witnesses (2026-10-10)
+
+Authoritative base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+Continuation branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+Merge target: \`main\`  
+This additive checkpoint through \`f48ad56ff5751bd2726054213abc21fdacb7a71f\`.
+
+### Executable native phase-address bridge
+
+Added \`hhs_exact_pass220_ordered4x4_phase_address_gate\`. The new API reuses the **actual inherited C ABI**:
+- \`hhs_exact_vm5184_address_decode\` and \`hhs_exact_vm5184_address_encode\` to round-trip native \`(cell81, left_basis8, right_basis8)\` for the exact addressed HARMONICODE object, with \`operation64 = 8*left_basis8 + right_basis8\`.
+- \`hhs_exact_pass219_native_phase_witness\` for the ordered phase-pair product \`left_basis8,right_basis8\`. This is the registered native RNA witness; no new arithmetic model or host phase replacement was implemented.
+- Existing \`hhs_exact_pass220_ordered4x4_outer_geometry\`, \`hhs_exact_pass220_ordered4x4_execute_bound\`, inherited source lock, indexed Hash216 preflight and branch-specific symbol roots, to preserve order and source/provenance across the phase-address mapping.
+
+The new witness includes both original typed VM81 \`s/v\` addresses, ordered basis-pair identities, exact registered native \`HHSExactPass219NativePhaseWitnessV1\` results and source/parent/binding-root-separated diagnostic SHA256 values. It is a read-only phase-**address** witness, not a full tensor phase-state proof. Source expressions \`MatrixTimes(D,s)\` and \`MatrixTimes(v,L)\` remain unmodified.
+
+### Changed files
+
+Created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_phase_address_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_phase_address_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_phase_address_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Scoped native tests and negative cases
+
+The native probe exercises **all 64** legal operation64 phase-pair positions for an addressed s object, exact round-trip encoding and matching registered RNA phase witnesses; verifies native ordered \`xy\` versus \`yx\` distinction without commutation; preserves the independent v branch while s changes, and conversely; rejects invalid phase operation, invalid cell81, swapped tensor symbol role, corrupted indexed Hash216 reference, modified source and null output. The probe requires that all value, equality, signed-authority and canonical receipt flags remain false.
+
+CI recipe:
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_phase_address_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-phase-address-probe
+/tmp/pass220-ordered4x4-phase-address-probe | python -m json.tool
+\`\`\`
+
+Prior exact-head native and source-integrity CI for \`aa90650f12c508f332d862661ccc14f13aae1699\` were still queued at discovery, without any diagnosed failing job. The phase-address change is newly committed and cannot be marked green until exact-head CI passes. The local analysis container cannot resolve github.com DNS to clone and build the full monolithic runtime; GitHub connector source commits and CI workflow are available.
+
+### Security and mathematical limits
+
+\`both_native_phase_products_verified = true\` certifies that registered 8×8 **address phase-pair** calls executed for s and v. It does *not* establish the s/v tensor's native action rank, full-state phase relationships, invertibility, quotient legality, matrix-value result, negative-fourth-power result or outer equality theorem.
+
+Accordingly \`tensor_action_rank_resolved=false\`, \`tensor_phase_state_fully_verified=false\`, \`matrix_values_derived=false\`, \`equation_equality_proved=false\`, \`parent_signature_authenticated=false\`, \`signed_vm81_admitted=false\`, \`hash72_commit_authority=false\`, \`hash216_commit_authority=false\`, and \`canonical_vm81_mutation_authority=false\`. The previous public Hash216 indexed parent reference remains structurally verified but **not cryptographically signer-authenticated**.
+
+Next: inspect the CI exact head, repair only native compile/behavioral failures, bind authentic native action-rank witnesses through registered kernel semantics, implement value operators and equality proof, then route a proven transition through the inherited signed singleton VM81 admission and receipt/replay path. Do not implement an alternate mutation surface or scalar fallback.
+
+
+## Continuation: integrated whole-expression native dependency graph (2026-10-10)
+
+**Base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\`  
+**This continuation committed through:** \`d22bd1d679795d7208322b0bf1e4e857692bd657\`
+
+### Native complete-expression graph
+
+Implemented and exported \`hhs_exact_pass220_ordered4x4_full_graph\` through the existing singleton C ABI aggregate. It composes **existing executed native subgraphs**, rather than replaying their interpretation as a Python arithmetic proxy:
+
+- \`hhs_exact_pass220_ordered4x4_numerator_terms\`: 64 source-addressed ordered product construction terms and 16 ordered 4-term output-cell *expression* sums for \`MatrixTimes(-M1,-M2)\`.
+- \`hhs_exact_pass220_ordered4x4_outer_geometry\`: denominator \`MatrixTimes(D,s)\` with 16 source-cell incidences; RHS \`MatrixTimes(v,L)\` with 16 source-cell incidences, retaining original operand order and complete native 5184-character symbol identity.
+- \`hhs_exact_pass220_ordered4x4_phase_address_gate\`: native VM81 8×8 ordered phase addresses and registered RNA phase products, explicitly without full s/v rank proof.
+- \`hhs_exact_pass220_ordered4x4_execute_bound\`: source-locked 15-opcode symbolic operator result.
+- \`hhs_exact_pass219_vm81_pqc_hash216_reference_verify\` through inherited preflight (called by outer/phase): full 216-position index/structure validation; NOT signed signer provenance.
+
+The new whole-expression operation cross-checks every inherited source SHA, parent reference root and addressed s/v binding root. It composes exact **ordered source-operator construction nodes**:
+
+\`\`\`text
+Num := MatrixTimes(-M1,-M2)           (64 native expression product terms)
+Den := MatrixTimes(D,s)               (16 native source incidences)
+Q   := OrderedDivide(Num,Den)         (non-authoritative ordered node)
+Pow := NcalcMatrixPower(Q,(-4))       (verbatim -4 exponent source token)
+RHS := MatrixTimes(v,L)               (16 native source incidences)
+Eq  := OrderedEqualityGate(Pow,RHS)   (original left/right directions)
+WholeExpressionRoot := SourceBound(Num,Den,Q,Pow,RHS,Eq,Phase,Parent,BoundHIR)
+\`\`\`
+
+**Critical:** \`OrderedDivide\`, \`NcalcMatrixPower\` and \`OrderedEqualityGate\` above are native C **symbolic source construction witnesses**: no division, power, matrix values or equality have been mathematically evaluated. No s/v scalarization, matrix-rank assumption, implicit row/column broadcasting, reordering, commutation, sign cancellation, host float, false VM81 admission or canonical receipt issuance is permitted. All value, signed provenance and canonical authority fields are explicitly false.
+
+The C ABI executes the **entire graph twice** and verifies byte equality across the complete graph descriptor, then sets \`deterministic_full_graph_replay_verified=1\`. This is native *candidate-graph replay*, not canonical VM81 state replay. Root digests are ordinary domain-separated SHA256 diagnostic construction identities, never Hash72/Hash216.
+
+### Files changed
+
+New:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_full_graph_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_full_graph_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_full_graph_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Dependency-scoped conformance
+
+The native C probe asserts:
+- Complete subgraph counts: 64 numerator product terms, 16 ordered sums, 16 denominator incidences, 16 RHS incidences;
+- All native source/phase/HASH216-index role gates verified, internal and external candidate graph replay identical;
+- Exact source operand-direction **negative checks**, including reversed same-operand quotient and outer equality roots;
+- Mutating s changes Den/Q/Pow/Eq, not Num or RHS;
+- Mutating v changes RHS/Eq, not Num/Den/Q/Pow;
+- Changing s VM81 address changes Den root even if state bytes do not change;
+- Fail-closed source tamper, Hash216 index tamper, shortened predecessor and wrong s/v symbol roles;
+- Always \`tensor_action_rank_proved=false\`, \`native_matrix_values_derived=false\`, \`native_quotient_value_derived=false\`, \`native_matrix_power_value_derived=false\`, \`equality_mathematically_proved=false\`, \`predecessor_pqc_signature_authenticated=false\`, \`signed_vm81_admission_executed=false\`, \`hash72_commit_authority=false\`, \`hash216_commit_authority=false\`, \`canonical_vm81_mutation_authority=false\`.
+
+Native CI command:
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_full_graph_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/pass220-ordered4x4-full-graph-probe
+/tmp/pass220-ordered4x4-full-graph-probe | python -m json.tool
+\`\`\`
+
+**Validation state at commit:** prior exact-head CI was queued without a source failure and may remain queued due to runner backlog. This new full-expression graph is **committed but has not been verified by a completed native CI build**; do not promote it to verified or merge main until scoped CI succeeds. Local \`git clone\`/remote build is unavailable due to github.com DNS in the analysis container, but the connected GitHub repo and Actions remain accessible. Record the latest exact-head workflow URL in PR.
+
+### Required next native gate
+
+The genuine HHS s/v tensor action-rank, operator phase relation and signed provenance must be bound to the exact 5184-character addressed state through a **verifiable** inherited runtime record. Pass 158 supplies rank/shape definitions but arbitrary declared metadata alone is insufficient to authorize HHS 4×4 MatrixTimes. Once source-bound rank/action validity exists, implement exact native matrix-entry values, ordered quotient semantics, negative-fourth-power value and final equality proof; then route only the proven transition through \`hhs_exact_pass219_vm81_environment_admit_signed\` and verify actual canonical Hash72/216 receipts/replay. Do not introduce secondary mutation authority or scalar projections.
+
+
+## Continuation: verifiable rank/action challenge, fail-closed (2026-10-10)
+
+**Authoritative base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`.  
+**Branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`.  
+**Merge target:** \`main\`.  
+**Additive implementation through:** \`ba1f434351b326f019753a3da9583a328590b65e\`.
+
+### Rationale and inherited inspection
+
+The native Pass158 C API (\`native_projects/hhs_pass158_llabi_nftc_api\`) exposes registered definitions with \`tensor_rank\` and \`tensor_shape\`. In the inspected current public APIs, a bare rank/shape descriptor or definition metadata alone does NOT cryptographically authenticate its relationship to the exact signed VM81 s/v state or establish the native phase-action legality of this source equation.
+
+Consequently, it is unsafe to infer rank from a 5184-character serialization, a VM81 operation address, or a declarative Pass158 definition without an authenticated correspondence witness. Rank **admission** stays closed. This pass instead provides an executable, exact source-/state-bound proof **request** under the existing native C ABI so a later registered verifier has an unambiguous target.
+
+### Native implementation
+
+New public ABI \`hhs_exact_pass220_ordered4x4_rank_challenge\` traverses the existing native complete-expression graph and native RNA/VM81 ordered-phase-address gate. It derives precisely two independent operator-role *obligation envelopes*:
+
+- \`s\`: \`MatrixTimes(D,s)\` — source matrix #2 on LEFT, addressed native tensor s on RIGHT.
+- \`v\`: \`MatrixTimes(v,L)\` — addressed native tensor v on LEFT, source matrix #3 on RIGHT.
+
+Every obligation binds source SHA256, full expression graph SHA256, 216-index parent structural identity, its own entire 5184-character object binding root, exact VM81 \`cell81/operation64\`, inherited RNA ordered phase-address root, original matrix source role, original 4x4 literal shape, and corresponding ordered action-branch root.
+
+Seven categories of missing proof are separately recorded and required for future validation:
+
+1. Exact HARMONICODE typed tensor object + native address correspondence.
+2. Registered tensor definition and authenticated rank/shape provenance.
+3. Native ordered x/y/z/w phase action and original operand role.
+4. MatrixTimes input/output type compatibility without scalar broadcast.
+5. Canonical Hash216 ancestry, signed signer and state identity.
+6. Typed quotient/invertibility and exact negative-fourth-power compatibility.
+7. Whole-source equality proof and inherited singleton VM81 admission.
+
+The two challenge roots and their ordered set root are domain-separated SHA256 **diagnostic request identities only**, never Hash72/216 canonical receipts. The native graph is reconstructed twice and requires full byte-identical request replay.
+
+There is no API in this change that **accepts** user-submitted rank claims, manipulates signature material, invokes the environmental signer, or mutates VM81. All \`rank_proved\`, \`phase_action_proved\`, \`signed_vm81_state_authenticated\`, \`matrix_action_value_authorized\`, \`registered_rank_witness_verified\`, \`native_action_semantics_verified\`, \`mathematical_equality_proved\`, \`signed_vm81_admission_executed\`, \`hash72_commit_authority\`, \`hash216_commit_authority\`, \`canonical_vm81_mutation_authority\` stay hard-coded zero.
+
+### Source changes
+
+Created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_rank_challenge_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_rank_challenge_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_rank_challenge_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Dependency-scoped validation
+
+Native probe tests both source-locked role obligations, exact state and native phase-address dependence, s/v provenance separation, complete deterministic repeat, modified s/v or operation address, corrupted last Hash216 token index, wrong ancestry length, illegal cell, swapped symbol role, source mutation, null output, and fail-closed authority flags.
+
+CI compile + native execution command:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+  -Ihhs_runtime/include \
+  tools/pass220/pass220_ordered4x4_rank_challenge_probe.c \
+  -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+  -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+  -o /tmp/pass220-ordered4x4-rank-challenge-probe
+/tmp/pass220-ordered4x4-rank-challenge-probe | python -m json.tool
+\`\`\`
+
+**Validation status:** Previous exact-head CI at \`c435ecebd1c28a5c158c2e479244929698de03f7\` was queued, without a result to repair; this additive challenge code and C probe have been committed but NOT demonstrated to pass the complete GitHub native build. Current runner backlog is external; no local full-repo checkout is available (github.com DNS lookup fails from container). Do not assert test success until exact-head runner evidence appears.
+
+### Next action / blockers
+
+Check exact-head CI for the branch and fix only impacted failures. Integrate a **genuine** Pass158 registered rank/shape evidence + trusted signed VM81 state provenance validator or equivalent inherited canonical object verifier. A metadata declaration, diagnostic hash or a reconstructible Hash216 reference alone is insufficient. Only the inherited kernel may verify signer origin and confer canonical authority after the native MatrixTimes/quotient/negative-fourth-power *values* and ordered equality proof close. There is no production deployment or merge in this tranche.
+
+
+## Continuation: fail-closed native admission readiness and proof deficit receipts (2026-10-10)
+
+**Base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\`  
+**Current implementation commits through:** \`7cb5d0f25283c7f47062c2182dd54f8694c63b03\`
+
+### CI state at resumption
+
+At restart the exact-head native run \`38063535274\` and source-integrity run \`38063534002\` at \`57cd1b564bce1c07665c5e88043823ea9e061209\` remained **queued**. Job detail confirmed \`native-source-locked-lowering\`, \`scoped-hir-integrity\` and \`source-text-integrity\` were queued, not failing. No compiler errors or test logs were available. Local \`git ls-remote\` to GitHub fails with DNS lookup; do not treat this as a source or mathematics defect. Earlier green evidence (15-opcode checkpoint) remains frozen; no green inherited from queued newer changes.
+
+### New implemented native function
+
+\`hhs_exact_pass220_ordered4x4_readiness\` is an **observational read-only** decision API, registered in the preexisting singleton exact C ABI. It:
+- Independently rebuilds and verifies the exact source-bound \`hhs_exact_pass220_ordered4x4_rank_challenge\` and \`hhs_exact_pass220_ordered4x4_full_graph\`.
+- Cross-checks source SHA256, predecessor Hash216 indexed structural reference and graph root.
+- Verifies the previously executed source/typed HIR/native address-phase/source-cell geometry and deterministic request/graph replay.
+- Returns \`HHS220_4X4_READINESS_BLOCKED\` with \`preflight_verified_mask=0x3F\` and \`missing_authority_mask=0xFF\` for valid structurally prepared candidate requests. Explicitly keeps **all eight missing authority bits**, without accepting caller-provided readiness metadata.
+
+The eight outstanding proof/authority bits are:
+1. authentic *signed* parent origin;
+2. authenticated tensor rank/shape for exact 5184-character s/v objects;
+3. complete ordered phase/action semantics;
+4. genuine native matrix-value computation;
+5. typed ordered quotient value;
+6. exact negative-fourth-power value;
+7. mathematical equality proof;
+8. inherited **signed** singleton VM81 admission.
+
+Every successful diagnostic report is domain-separated SHA256-bound to the source, indexed parent root, rank proof challenge, full-graph identity and exact verified/missing masks. This diagnostic root is NOT a canonical Hash72 or Hash216 receipt.
+
+A structurally invalid source/reference/binding returns a non-OK exact status, with verified preflight flags zero and mutation/receipt flags zero. **No code path returns READINESS_READY**; no submitted rank declaration or rank-proof claim can bypass this denial. The apparent \`ready\` enum value is reserved for a future verified successor, not this implementation.
+
+### Source changes
+
+Created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_readiness_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_readiness_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_readiness_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+New native test scenarios:
+- A valid source-bound \(s,v\) returns BLOCKED, 6/6 structural preflight categories, 8/8 missing authority categories, not READY.
+- Two independent probes produce byte-identical diagnostic reports and native internal replay passes.
+- Tampered caller-owned output (\`decision=READY\`, zero missing mask, \`canonical_vm81_mutation_authority=1\`) is overwritten, re-derived and denied by C ABI.
+- Changing 5184-character s or v states, or the native ordered phase-operation address, changes exact diagnostic/challenge graph identity but cannot confer rank/action proof.
+- Indexed Hash216 tampering, shortened predecessor, changed verbatim source, swapped symbol roles and null output fail closed without partial admission.
+
+CI command, added to existing job after inherited dependency checks:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_readiness_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-readiness-probe
+/tmp/pass220-ordered4x4-readiness-probe | python -m json.tool
+\`\`\`
+
+### Truth boundary / next action
+
+This is an actual runnable native **admission-readiness accounting** implementation, but it **does not solve** the seven rank challenge proof classes or calculate HHS tensor values. The signed environmental VM81 admission path is deliberately never invoked; no PQC signer origin, Hash72/216 transition, persistence or production deployment is claimed. User-specified HHS typed noncommutative ordering, phase identity, source fidelity, 5184-character addresses and zero-bypass constraints remain intact.
+
+Verify current exact-head native ABI and source-integrity workflow CI; repair only concrete scoped failures, checkpoint and verify new head. Before lifting any missing authority bit, implement a trusted native verifier binding Pass158 registered tensor rank/shape (or equivalent) to the exact signed VM81 state and native ordered action semantics. Then supply actual value/equality proofs through the inherited singleton gate. Keep PR open until scope-appropriate verified acceptance and main verification. There is no authority or justification to merge/deploy from a diagnostic READY/blocked construction report.
+
+
+## Continuation: strict normalized I001 carrier profile verification (2026-10-10)
+
+- Base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`
+- Branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`
+- Merge target: \`main\`
+- Additive checkpoint through \`99b934c140c41b180208e16498ed7195b579992a\`.
+- Latest observed exact-head CI at prior \`a287ae07...\` (runs \`38064200999\` native, \`38064200686\` source integrity) remained queued. No completed compiler or native execution evidence should be inferred.
+
+### Actual deficiency addressed
+
+Prior \`hhs_exact_pass220_ordered4x4_execute_bound\` established exactly 5184 Unicode characters plus typed source, location, lineage identity, but allowed arbitrary shape-conforming text such as \`"X"*5184\`. It does not certify 81 canonical exact-rational scientific tokens. Treating this shape as the canonical HARMONICODE rational scientific carrier would have been incorrect.
+
+The inherited Pass 220 I001 Lo Shu normalizer \`hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py\` defines a **specific** normalization-offset profile: 81 fixed-width, 64-character exact rational scientific tokens, each encoding an offset in \`0..8\`; all 81 tokens concatenate to 5184 ASCII characters. The token grammar is:
+
+\`\`\`
++NNNNNNNNNNNNNNNNNNNN/DDDDDDDDDDDDDDDDDDDDe+EEEEEEEEEEEEEEEEEEEE
+\`\`\`
+
+where the 20-digit \`N\` is zero-padded exact offset 0..8; the 20-digit \`D\` must be \`00000000000000000001\`, and all 20 \`E\` characters must be zero. The fixed positive sign and normalized zero exponent are mandatory for THIS inherited profile. Other exact HARMONICODE serialization profiles must use their own registered verifier, rather than be rejected as universally invalid by this I001-specific validator.
+
+### Implementation
+
+New C ABI: \`hhs_exact_pass220_ordered4x4_i001_carrier_validate\`, added to the same authoritative exact ABI aggregate, performs:
+1. Read-only, fail-closed exact 81×64 token grammar validation on both s and v; rejects shape-only arbitrary strings and noncanonical alternate encodings within this normalization profile.
+2. Inherited source-/Hash216-index-/ordered-RNA-phase-/graph-bound *readiness* preflight (must remain BLOCKED with 8 missing authorities); verifies exact s/v typed objects via inherited bound executor.
+3. Preserves all 81 normalization offset positions as \`uint8_t[81]\`, not a free scalar; position is also committed to a diagnostic per-symbol SHA256 including source, indexed parent, entire original tensor binding root and VM81 address.
+4. Computes a combined s/v carrier-profile root and repeats exact decoding to test byte-for-byte reproducibility.
+5. Leaves tensor rank, full phase-action, signed predecessor origin, actual matrix values, quotient, negative-fourth-power, mathematical equality, signed VM81 admission, canonical Hash72/216 and persistence **all false**.
+
+New source files:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_i001_carrier_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Native and cross-language tests
+
+Native C probe validates both exact I001 normalized s/v carriers, 81 offsets, original s/v VM81 addresses and independent source-bound roots. It rejects \`X*5184\`, offsets outside 0..8, wrong slash, zero denominator, noncanonical exponent/sign, numerator padding, corruption in the last (81st) token, wrong byte width, changed equation source and incorrect predecessor width.
+
+The C probe also optionally accepts two **independent** serialized state files. The GitHub workflow generates both using the existing Python reference \`serialize_offsets_5184\` for offset sequences \`i mod 9\` and \`(i+4) mod 9\`, checks them byte-for-byte against the equivalent C fixtures, then passes those Python-origin fixtures through the new native exact ABI validator.
+
+Dependency-scoped commands in GitHub Actions:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_i001_carrier_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-i001-carrier-probe
+/tmp/pass220-ordered4x4-i001-carrier-probe
+python - <<'PY'
+from pathlib import Path
+from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import serialize_offsets_5184
+for symbol, seed in (("s", 0), ("v", 4)):
+    data = serialize_offsets_5184(tuple((seed + i) % 9 for i in range(81)))
+    Path(f"/tmp/pass220-i001-{symbol}.txt").write_bytes(data.encode("ascii"))
+PY
+/tmp/pass220-ordered4x4-i001-carrier-probe \
+ /tmp/pass220-i001-s.txt /tmp/pass220-i001-v.txt
+\`\`\`
+
+**This is an actual new profile validation rather than merely a new proof-request flag.** Its exact scope is one pre-existing 81×64 normalized rational carrier profile; it does not certify every permissible BigInt serialization or authentic HHS tensor action.
+
+### Remaining blockers / next action
+
+New exact-head CI remains to be verified; do not claim a successful native build until CI actually completes. Repair forward new scoped compiler/regression failures.
+
+Future implementation must:
+1. Register and select canonical serialization validators for other native 5184-character profiles (without weakening the I001 check);
+2. Associate an authenticated Pass158 tensor definition/rank/shape, or equivalent inherited native rank witness, with the exact signed VM81 state and serialization profile;
+3. Establish true native ordered matrix/quotient/power values and full \`==\` proof;
+4. Execute singleton \`hhs_exact_pass219_vm81_environment_admit_signed\` only on a proven state, then validate canonical receipt lineage and main deployment.
+
+There has been **no** signed admission, mutation or canonical receipt through this code.
+
+
+## Continuation: I001 ingress zero-leak repair and exact native serialization roundtrip (2026-10-10)
+
+**Base main** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Development branch** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target** \`main\`  
+**Repair/implementation commits** \`0e648fc6065df0d78e473bf971a29cb7210cf184\`, \`1a2210081a7baf7a0f0379eff79746b80b6949ad\`, \`d9ae08fbaa457d19a8627ffb194e1edbdabd1064\`, \`e9e844a2a4ff69d74db651952a674903c17f895c\`, \`ed2ac99c83ebd99af3b5a9d47f6d84ff46c08a4e\`.
+
+### Audited and repaired
+
+The I001 strict carrier validator previously decoded s/v directly into its caller-visible output before completing later semantic/source/parent lineage preflights. A late failure — for example malformed 81st v token or corrupted indexed predecessor — could expose partially decoded s/v offsets even when the C ABI returned a non-OK status. This violated the stated fail-closed output behavior and boundary between candidate private data and public release.
+
+\`hhs_exact_pass220_ordered4x4_i001_carrier_validate\` now uses a **private staged struct**. Only after the full strict 81×64 I001 token decoder, inherited registered source/graph/readiness gates, and all no-authority assertions succeed does it copy the completed staged witness into caller output. Failure returns the original exact status with **all caller output bytes zero**, including position offsets, diagnostic digests, sizes and flags. Staging is wiped before returning. The raw candidate remains read-only.
+
+A negative C probe initializes \`out\` to nonzero \`0xA5\` before invalid calls and verifies the *entire* result is zero for shape-only invalid state, malformed last v token, modified source after successful parse and invalid ancestor length. It explicitly prohibits partial s or v offset disclosure.
+
+### New exact native I001 inverse serialization
+
+A new public C ABI function \`hhs_exact_pass220_ordered4x4_i001_offsets_emit\` encodes exactly 81 individual normalized offset digits (0..8) to precisely 5184 ASCII bytes, using the same fixed 64-character exact rational scientific token profile as the inherited \`serialize_offsets_5184\` Python reference.
+
+Engineering properties:
+
+- Validate all 81 offset digits BEFORE mutating the destination; malformed 81st offset fails with no partial writes.
+- Capacity query reports the exact required 5184 bytes with \`HHS_EXACT_STATUS_BUFFER_TOO_SMALL\` and does not write any output.
+- Copies all 81 source positions into an internal snapshot before writing, preserving correct serialization even if \`offsets\` aliases the output buffer.
+- No host float, implicit scalar projection, free-variable substitution, sign cancellation, or differential VM81 mutation.
+- Exact input/output byte size and all ordered cell offsets are preserved; no Hash72 or Hash216 canonical receipt mint.
+
+The new C regression tests decode valid native s/v states, reencode the 81 extracted offset arrays and assert byte-for-byte equality with original 5184-byte carriers. They also test in-place aliasing, exact output length, too-short capacity, null arguments, invalid last-cell offset and no-output-write on rejection. The dedicated CI already cross-checks both original I001 states against *independent* Python \`serialize_offsets_5184\` output. This is a true C/Python representation compatibility test, not a semantic tensor-rank proof.
+
+### Files changed
+
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h\` — additive encoder ABI.
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc\` — atomic decoding/output publication and exact C encoder.
+- \`tools/pass220/pass220_ordered4x4_i001_carrier_probe.c\` — full-failure zero-leak and lossless native inverse round-trip tests.
+
+No other new runtime mutation path added.
+
+### Validation
+
+The exact-head native and source-integrity workflows at \`ed2ac99c83ebd99af3b5a9d47f6d84ff46c08a4e\` were observed **queued** as runs \`38073747332\` and \`38073748537\`. No compiler result was reported. The relevant CI command is the existing \`make c-abi\`, followed by compilation and execution of \`tools/pass220/pass220_ordered4x4_i001_carrier_probe.c\` and comparison against Python-origin exact-serialization fixtures. Commit only dependency-scoped repairs and do not rerun unrelated green workloads.
+
+**Persistent truth boundary:** I001 serialization and defensive output publication are proven *representation/ingress contracts only when the native CI is green*. Tensor rank, ordered action, native matrix product/quotient/power values, equality, signer-authenticated ancestry, canonical VM81 admission and Hash72/216 mutation remain unproven and explicitly unauthorized in this checkpoint.
+
+### Next action
+
+Check exact-head native and source-integrity CI. If the runner remains queued, leave source committed and restartable; do not invent green receipts. The next data-model task is to bind a registered/verified exact HHS tensor-action rank witness (e.g., authenticated Pass158 definition/instance and canonical signed VM81 identity) to the I001 carrier, instead of using untrusted declarations or generic 5184-character shape alone.
