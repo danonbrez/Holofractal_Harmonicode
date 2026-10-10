@@ -765,3 +765,51 @@ Future implementation must:
 4. Execute singleton \`hhs_exact_pass219_vm81_environment_admit_signed\` only on a proven state, then validate canonical receipt lineage and main deployment.
 
 There has been **no** signed admission, mutation or canonical receipt through this code.
+
+
+## Continuation: I001 ingress zero-leak repair and exact native serialization roundtrip (2026-10-10)
+
+**Base main** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Development branch** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target** \`main\`  
+**Repair/implementation commits** \`0e648fc6065df0d78e473bf971a29cb7210cf184\`, \`1a2210081a7baf7a0f0379eff79746b80b6949ad\`, \`d9ae08fbaa457d19a8627ffb194e1edbdabd1064\`, \`e9e844a2a4ff69d74db651952a674903c17f895c\`, \`ed2ac99c83ebd99af3b5a9d47f6d84ff46c08a4e\`.
+
+### Audited and repaired
+
+The I001 strict carrier validator previously decoded s/v directly into its caller-visible output before completing later semantic/source/parent lineage preflights. A late failure — for example malformed 81st v token or corrupted indexed predecessor — could expose partially decoded s/v offsets even when the C ABI returned a non-OK status. This violated the stated fail-closed output behavior and boundary between candidate private data and public release.
+
+\`hhs_exact_pass220_ordered4x4_i001_carrier_validate\` now uses a **private staged struct**. Only after the full strict 81×64 I001 token decoder, inherited registered source/graph/readiness gates, and all no-authority assertions succeed does it copy the completed staged witness into caller output. Failure returns the original exact status with **all caller output bytes zero**, including position offsets, diagnostic digests, sizes and flags. Staging is wiped before returning. The raw candidate remains read-only.
+
+A negative C probe initializes \`out\` to nonzero \`0xA5\` before invalid calls and verifies the *entire* result is zero for shape-only invalid state, malformed last v token, modified source after successful parse and invalid ancestor length. It explicitly prohibits partial s or v offset disclosure.
+
+### New exact native I001 inverse serialization
+
+A new public C ABI function \`hhs_exact_pass220_ordered4x4_i001_offsets_emit\` encodes exactly 81 individual normalized offset digits (0..8) to precisely 5184 ASCII bytes, using the same fixed 64-character exact rational scientific token profile as the inherited \`serialize_offsets_5184\` Python reference.
+
+Engineering properties:
+
+- Validate all 81 offset digits BEFORE mutating the destination; malformed 81st offset fails with no partial writes.
+- Capacity query reports the exact required 5184 bytes with \`HHS_EXACT_STATUS_BUFFER_TOO_SMALL\` and does not write any output.
+- Copies all 81 source positions into an internal snapshot before writing, preserving correct serialization even if \`offsets\` aliases the output buffer.
+- No host float, implicit scalar projection, free-variable substitution, sign cancellation, or differential VM81 mutation.
+- Exact input/output byte size and all ordered cell offsets are preserved; no Hash72 or Hash216 canonical receipt mint.
+
+The new C regression tests decode valid native s/v states, reencode the 81 extracted offset arrays and assert byte-for-byte equality with original 5184-byte carriers. They also test in-place aliasing, exact output length, too-short capacity, null arguments, invalid last-cell offset and no-output-write on rejection. The dedicated CI already cross-checks both original I001 states against *independent* Python \`serialize_offsets_5184\` output. This is a true C/Python representation compatibility test, not a semantic tensor-rank proof.
+
+### Files changed
+
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h\` — additive encoder ABI.
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc\` — atomic decoding/output publication and exact C encoder.
+- \`tools/pass220/pass220_ordered4x4_i001_carrier_probe.c\` — full-failure zero-leak and lossless native inverse round-trip tests.
+
+No other new runtime mutation path added.
+
+### Validation
+
+The exact-head native and source-integrity workflows at \`ed2ac99c83ebd99af3b5a9d47f6d84ff46c08a4e\` were observed **queued** as runs \`38073747332\` and \`38073748537\`. No compiler result was reported. The relevant CI command is the existing \`make c-abi\`, followed by compilation and execution of \`tools/pass220/pass220_ordered4x4_i001_carrier_probe.c\` and comparison against Python-origin exact-serialization fixtures. Commit only dependency-scoped repairs and do not rerun unrelated green workloads.
+
+**Persistent truth boundary:** I001 serialization and defensive output publication are proven *representation/ingress contracts only when the native CI is green*. Tensor rank, ordered action, native matrix product/quotient/power values, equality, signer-authenticated ancestry, canonical VM81 admission and Hash72/216 mutation remain unproven and explicitly unauthorized in this checkpoint.
+
+### Next action
+
+Check exact-head native and source-integrity CI. If the runner remains queued, leave source committed and restartable; do not invent green receipts. The next data-model task is to bind a registered/verified exact HHS tensor-action rank witness (e.g., authenticated Pass158 definition/instance and canonical signed VM81 identity) to the I001 carrier, instead of using untrusted declarations or generic 5184-character shape alone.
