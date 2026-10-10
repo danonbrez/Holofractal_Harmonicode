@@ -15,18 +15,19 @@ assert(!derived.includes('<script src="hhs_agentic_electron_sprite_v1.js"></scri
   "Single-file HTML must not require a separate local module");
 const inline=[...derived.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
   .map(m=>m[1]).filter(s=>s.trim());
-assert.equal(inline.length,2,"Embedded neural controller + main simulation source");
-new vm.Script(inline[0],{filename:"embedded_agentic_sprite_controller.js"});
-new vm.Script(inline[1],{filename:"ParticleSimulationAtomicNeural.html"});
-assert(inline[0].includes(js.trim()),"Embedded neural source must match companion source");
+assert.equal(inline.length,3,"Diagnostics + embedded neural controller + main simulation source");
+new vm.Script(inline[0],{filename:"runtime_diagnostics.js"});
+new vm.Script(inline[1],{filename:"embedded_agentic_sprite_controller.js"});
+new vm.Script(inline[2],{filename:"ParticleSimulationAtomicNeural.html"});
+assert(inline[1].includes(js.trim()),"Embedded neural source must match companion source");
 const browserLike={window:{},Float32Array,Uint8Array,Math,Number,Object};
-vm.runInNewContext(inline[0],browserLike,{filename:"standalone_inlined_controller.js"});
+vm.runInNewContext(inline[1],browserLike,{filename:"standalone_inlined_controller.js"});
 assert(browserLike.window.HHSAgenticElectronSpriteV1,
   "Opening the HTML alone must initialize the neural module");
-const nativeStart=inline[1].indexOf("    window.HHS = (function(){");
-const nativeEnd=inline[1].indexOf("    /* =====================================================================\n       POINCARÉ–PENROSE");
+const nativeStart=inline[2].indexOf("    window.HHS = (function(){");
+const nativeEnd=inline[2].indexOf("    /* =====================================================================\n       POINCARÉ–PENROSE");
 assert(nativeStart>0&&nativeEnd>nativeStart,"Embedded native HHS boot module must exist");
-vm.runInNewContext(inline[1].slice(nativeStart,nativeEnd),
+vm.runInNewContext(inline[2].slice(nativeStart,nativeEnd),
   browserLike,{filename:"standalone_hhs_boot.js"});
 assert.equal(browserLike.window.HHS.boot.boot_halt,false,
   "Normal native I041 boot must not accidentally suppress the scene");
@@ -39,6 +40,11 @@ assert(derived.includes('MODULES["AgenticElectronSpriteStatus"]'));
 assert(derived.includes("guardConfig(config.HHS_System.global_parameters)"));
 assert(derived.includes('commandOutput").textContent'));
 assert(!derived.includes('commandOutput").innerHTML'));
+assert(derived.includes("renderTick===1"),"The initial frame must render without waiting for 4 physics callbacks");
+assert(derived.includes('id="runtimeDiagnostics"'),"Visible runtime diagnostics required");
+assert(derived.includes('OrbitControls unavailable: static camera fallback active'));
+assert(!derived.includes('dat.gui.min.js'),"Unused third party dat.gui asset should not be loaded");
+assert(derived.includes('"TopoInversionTest"]'),"Unsupported mutating topology diagnostic must be quarantined");
 assert(derived.includes('observed_render_fps:1000*renderedFrames/elapsed'));
 assert(derived.includes('computedHash')===false);
 assert(derived.includes('compressedHash: "ON_DEMAND_GET_STATE_ONLY"'));
