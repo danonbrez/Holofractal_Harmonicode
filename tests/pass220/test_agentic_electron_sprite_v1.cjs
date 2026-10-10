@@ -1,0 +1,86 @@
+"use strict";
+/* Pass220 regression for the new derived browser; executes the actual
+   companion JS in a Node VM and parses the complete HTML inline script. */
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const vm=require("node:vm");
+const path=require("node:path");
+const ROOT=path.resolve(__dirname,"..","..");
+const js=fs.readFileSync(path.join(ROOT,"examples/hhs_agentic_electron_sprite_v1.js"),"utf8");
+const original=fs.readFileSync(path.join(ROOT,"examples/ParticleSimulation.html"),"utf8");
+const derived=fs.readFileSync(path.join(ROOT,"examples/ParticleSimulationAtomicNeural.html"),"utf8");
+
+assert(original.includes('schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"'));
+assert(derived.includes('<script src="hhs_agentic_electron_sprite_v1.js"></script>'));
+const inline=derived.match(/<script>\s*([\s\S]*?)<\/script>/);
+assert(inline,"Derived HTML must contain a native browser inline controller");
+new vm.Script(inline[1],{filename:"ParticleSimulationAtomicNeural.html"});
+assert(derived.includes("if(!window.HHS.boot.boot_halt) initScene()"));
+assert(!derived.includes("Object.assign(simParams, config.HHS_System.global_parameters)"));
+assert(derived.includes("FAIL_CLOSED_LIVE_STATE_MUTATING_DIAGNOSTIC"));
+assert(derived.includes('MODULES["AgenticElectronSpriteStatus"]'));
+assert(derived.includes("guardConfig(config.HHS_System.global_parameters)"));
+assert(derived.includes('commandOutput").textContent'));
+assert(!derived.includes('commandOutput").innerHTML'));
+assert(derived.includes('observed_render_fps:1000*renderedFrames/elapsed'));
+assert(derived.includes('computedHash')===false);
+assert(derived.includes('compressedHash: "ON_DEMAND_GET_STATE_ONLY"'));
+assert(original.includes("    initScene();"),"Original frozen page baseline preserved");
+assert(derived.includes("agentController.tick({"));
+
+const context={window:{},console,Math,Float32Array,Uint8Array,Number,Object};
+vm.runInNewContext(js,context,{filename:"hhs_agentic_electron_sprite_v1.js"});
+const factory=context.window.HHSAgenticElectronSpriteV1;
+assert(factory);
+assert.equal(factory.WIDTH,4);
+assert.equal(factory.LIMIT,10368);
+assert.throws(()=>factory.create(0),/INVALID_PARTICLE_POPULATION/);
+assert.throws(()=>factory.create(10369),/INVALID_PARTICLE_POPULATION/);
+function frame(n){
+  const p=new Float32Array(n*3),v=new Float32Array(n*3);
+  const phase=new Uint8Array(n),charge=new Float32Array(n);
+  const mass=new Float32Array(n),neighbors=new Float32Array(n);
+  const budget=new Uint8Array(n);
+  for(let i=0;i<n;i++){
+    p[i*3]=i%8;p[i*3+1]=i%7;p[i*3+2]=i%4;
+    v[i*3]=.04;v[i*3+1]=-.01;
+    phase[i]=i%72;charge[i]=i%2===0?1:-1;mass[i]=1;
+    neighbors[i]=i%20;budget[i]=8;
+  }
+  return {position:p,velocity:v,phase,charge,mass,neighbors,budget};
+}
+const f=frame(10368), copy0=Array.from(f.position.slice(0,48));
+const a=factory.create(10368),b=factory.create(10368);
+const t1=a.tick(f),t2=b.tick(f);
+assert.equal(t1.logical_agents,10368);
+assert.equal(t1.ticks,1);
+assert.equal(t1.flyvis_connectome_executed,false);
+assert.equal(t1.canonical_mutation_authority,false);
+assert.equal(t1.pending_native_admission,true);
+assert.equal(t2.mean_activity,t1.mean_activity);
+assert.equal(a.proposal(0).lo_shu_lane,0);
+assert.equal(a.proposal(5184).lo_shu_lane,1);
+assert.equal(a.proposal(5184).lo_shu_local,0);
+assert.equal(a.proposal(10367).lo_shu_local,5183);
+assert.deepEqual(Array.from(f.position.slice(0,48)),copy0,"Neural inference must not mutate physical positions");
+for(const i of [0,37,5184,10367]){
+  const pa=a.proposal(i),pb=b.proposal(i);
+  assert.equal(JSON.stringify(pa),JSON.stringify(pb));
+  for(const name of ["thrust","yaw","pitch","roll"]){
+    assert(Math.abs(pa[name])<=1);
+    assert(Number.isFinite(pa[name]));
+  }
+  assert.equal(pa.applied_to_physics,false);
+  assert.equal(pa.hhs_hash216_minted,false);
+}
+assert.throws(()=>a.proposal(-1),/INVALID_AGENT_ADDRESS/);
+assert.throws(()=>a.tick({}),/INCOMPLETE_PROJECTED_SENSORY_FRAME/);
+const guard=a.guardConfig({massBoost:2,unknown:8});
+assert.equal(guard.applied,false);
+assert.equal(guard.status,"FAIL_CLOSED_GLOBAL_CORPUS_NATIVE_ADMISSION_REQUIRED");
+assert.equal(a.guardConfig({}).status,"NO_PARAMETER_CHANGE");
+a.tick(f);
+b.tick(f);
+assert.equal(a.telemetry().ticks,2);
+assert.equal(a.telemetry().mean_activity,b.telemetry().mean_activity);
+console.log("PASS: derived HTML parses, strict controls, non-mutating 10368-agent deterministic recurrent preview");
