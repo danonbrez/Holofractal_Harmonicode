@@ -25,6 +25,9 @@ on:
       - 'hhs_runtime/pass220/hhs_pass220_ordered4x4_typed_bindings_v1.py'
       - 'tests/pass220/test_hhs_pass220_ordered4x4_typed_bindings_v1.py'
       - 'tools/pass220/pass220_ordered4x4_typed_bindings_probe.c'
+      - 'hhs_runtime/include/hhs_pass220_ordered4x4_parent_preflight_v1.h'
+      - 'hhs_runtime/c/hhs_pass220_ordered4x4_parent_preflight_v1.inc'
+      - 'tools/pass220/pass220_ordered4x4_parent_preflight_probe.c'
       - '.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml'
 jobs:
   scoped-hir-integrity:
@@ -97,6 +100,20 @@ jobs:
             hhs_runtime/include/hhs_pass220_ordered4x4_typed_bindings_v1.h \
             hhs_runtime/c/hhs_pass220_ordered4x4_typed_bindings_v1.inc \
             tools/pass220/pass220_ordered4x4_typed_bindings_probe.c
+      - name: Verify inherited 216-index parent preflight without signature escalation
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass220_ordered4x4_parent_preflight'
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered4x4_parent_preflight_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-ordered4x4-parent-probe
+          /tmp/pass220-ordered4x4-parent-probe | python -m json.tool
+          ! grep -REn '(^|[^[:alnum:]_])(float|double|long[[:space:]]+double)([^[:alnum:]_]|$)' \
+            hhs_runtime/include/hhs_pass220_ordered4x4_parent_preflight_v1.h \
+            hhs_runtime/c/hhs_pass220_ordered4x4_parent_preflight_v1.inc \
+            tools/pass220/pass220_ordered4x4_parent_preflight_probe.c
       - name: Exact native/Python bridge and ancestor I077 regression
         env:
           HHS_DISABLE_C_AUTOBUILD: '1'
