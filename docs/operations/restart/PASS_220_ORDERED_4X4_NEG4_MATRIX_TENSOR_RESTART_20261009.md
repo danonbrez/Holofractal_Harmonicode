@@ -413,3 +413,57 @@ Next action: check current exact-head CI for this branch. Repair only failures a
 The native outer-geometry probe was strengthened at commit \`13d301f6ebb11355b2b553cb8cb5f9b13aee236e\`: for **each** of the 32 source-cell incidences, it independently reconstructs the same operands in reverse order, with the opposite directional tag, and verifies the diagnostic root differs from the registered source-ordered root. This checks *same-operand direction dependence*, not merely inequality between different branches. It is still an identity/construction test, not a numerical matrix equality proof.
 
 This test is included in the dedicated \`native-source-locked-lowering\` CI job. Validate at exact head. Any pending GitHub runner queue is an external validation blocker; retain this committed restart state and repair-forward any scoped failure.
+
+
+## Continuation: inherited VM81 ordered phase-address witnesses (2026-10-10)
+
+Authoritative base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+Continuation branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+Merge target: \`main\`  
+This additive checkpoint through \`f48ad56ff5751bd2726054213abc21fdacb7a71f\`.
+
+### Executable native phase-address bridge
+
+Added \`hhs_exact_pass220_ordered4x4_phase_address_gate\`. The new API reuses the **actual inherited C ABI**:
+- \`hhs_exact_vm5184_address_decode\` and \`hhs_exact_vm5184_address_encode\` to round-trip native \`(cell81, left_basis8, right_basis8)\` for the exact addressed HARMONICODE object, with \`operation64 = 8*left_basis8 + right_basis8\`.
+- \`hhs_exact_pass219_native_phase_witness\` for the ordered phase-pair product \`left_basis8,right_basis8\`. This is the registered native RNA witness; no new arithmetic model or host phase replacement was implemented.
+- Existing \`hhs_exact_pass220_ordered4x4_outer_geometry\`, \`hhs_exact_pass220_ordered4x4_execute_bound\`, inherited source lock, indexed Hash216 preflight and branch-specific symbol roots, to preserve order and source/provenance across the phase-address mapping.
+
+The new witness includes both original typed VM81 \`s/v\` addresses, ordered basis-pair identities, exact registered native \`HHSExactPass219NativePhaseWitnessV1\` results and source/parent/binding-root-separated diagnostic SHA256 values. It is a read-only phase-**address** witness, not a full tensor phase-state proof. Source expressions \`MatrixTimes(D,s)\` and \`MatrixTimes(v,L)\` remain unmodified.
+
+### Changed files
+
+Created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_phase_address_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_phase_address_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_phase_address_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Scoped native tests and negative cases
+
+The native probe exercises **all 64** legal operation64 phase-pair positions for an addressed s object, exact round-trip encoding and matching registered RNA phase witnesses; verifies native ordered \`xy\` versus \`yx\` distinction without commutation; preserves the independent v branch while s changes, and conversely; rejects invalid phase operation, invalid cell81, swapped tensor symbol role, corrupted indexed Hash216 reference, modified source and null output. The probe requires that all value, equality, signed-authority and canonical receipt flags remain false.
+
+CI recipe:
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_phase_address_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-phase-address-probe
+/tmp/pass220-ordered4x4-phase-address-probe | python -m json.tool
+\`\`\`
+
+Prior exact-head native and source-integrity CI for \`aa90650f12c508f332d862661ccc14f13aae1699\` were still queued at discovery, without any diagnosed failing job. The phase-address change is newly committed and cannot be marked green until exact-head CI passes. The local analysis container cannot resolve github.com DNS to clone and build the full monolithic runtime; GitHub connector source commits and CI workflow are available.
+
+### Security and mathematical limits
+
+\`both_native_phase_products_verified = true\` certifies that registered 8×8 **address phase-pair** calls executed for s and v. It does *not* establish the s/v tensor's native action rank, full-state phase relationships, invertibility, quotient legality, matrix-value result, negative-fourth-power result or outer equality theorem.
+
+Accordingly \`tensor_action_rank_resolved=false\`, \`tensor_phase_state_fully_verified=false\`, \`matrix_values_derived=false\`, \`equation_equality_proved=false\`, \`parent_signature_authenticated=false\`, \`signed_vm81_admitted=false\`, \`hash72_commit_authority=false\`, \`hash216_commit_authority=false\`, and \`canonical_vm81_mutation_authority=false\`. The previous public Hash216 indexed parent reference remains structurally verified but **not cryptographically signer-authenticated**.
+
+Next: inspect the CI exact head, repair only native compile/behavioral failures, bind authentic native action-rank witnesses through registered kernel semantics, implement value operators and equality proof, then route a proven transition through the inherited signed singleton VM81 admission and receipt/replay path. Do not implement an alternate mutation surface or scalar fallback.
