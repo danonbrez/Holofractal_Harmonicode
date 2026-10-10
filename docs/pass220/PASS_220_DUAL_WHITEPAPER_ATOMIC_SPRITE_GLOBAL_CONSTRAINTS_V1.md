@@ -199,6 +199,39 @@ Local dependency-independent thermodynamics kernel passed **11/11 tests**
 and negative controls). The complete dual-corpus + inherited-service
 integration test lives in the repository and awaits CI execution.
 
+## I057 browser rendering regression: standalone entrypoint fix
+
+**Bug reproduced from source:** the initial derived page loaded
+`hhs_agentic_electron_sprite_v1.js` as an external *relative* script,
+then unconditionally threw `NEURAL_PROJECTION_MODULE_MISSING` when
+opened as a single HTML artifact from a location without that sibling file.
+The scene was constructed but its animation loop never started. The
+canonical HHS boot check was independently evaluated in V8 and passed
+all four boot predicates, so that gate was not the cause.
+
+**Repair:** `ParticleSimulationAtomicNeural.html` now embeds the matching
+neural controller source in its own inline `<script>` block.
+Opening that one file requires no *additional local* neural JavaScript
+asset. The inherited THREE.js/OrbitControls CDN dependencies still
+require network access, as in the frozen original I057 HTML.
+
+The preview's failure is now isolated: if controller initialization
+fails, the neural status panel shows a disabled preview, while the
+I057 particle field continues to render. If all-sensor prevalidation
+fails during recurrence, the controller is quarantined without
+modifying either the native authority or the underlying field loop.
+A true HHS boot invariant failure still blocks startup, as required.
+
+The JavaScript regression was repaired to compile **both inline scripts**,
+execute the actual embedded controller, verify the original HHS boot
+predicates, check the absence of sibling-module dependency, and assert
+the isolated preview-failure behavior. The candidate-only neural
+physics admission remains unchanged.
+
+The corrected entrypoint is:
+`examples/ParticleSimulationAtomicNeural.html`.
+No original I057 source modification or production deployment is claimed.
+
 ## I057-preserving derived agentic electron-sprite browser
 
 The I057 authority baseline `examples/ParticleSimulation.html` remains
@@ -210,8 +243,11 @@ examples/ParticleSimulationAtomicNeural.html
 examples/hhs_agentic_electron_sprite_v1.js
 ```
 
-Serve those two files together from `examples/` (Three.js and
-OrbitControls are pulled from the original page's existing CDNs). The
+Open `ParticleSimulationAtomicNeural.html` directly as a single file
+for the simulation and its embedded neural overlay (Three.js and
+OrbitControls still load from the existing external CDNs). The second
+`.js` file is preserved as the matching source module for tests and
+reusable integration; it is no longer a runtime loading prerequisite. The
 derived page preserves all 10,368 graphical particles, both 5,184-carrier
 layers, the original field equations, bond channels and receipt computations
 in source, while layering candidate neural inference over the existing
@@ -240,8 +276,8 @@ There is no browser-supplied flag/token that can unlock physical writes.
 The boot check now actually gates `initScene()` on
 `!window.HHS.boot.boot_halt`; a false boot never starts the sim.
 Invalid/nonfinite incoming neural observations are checked **before**
-changing recurrent state; a rejection halts subsequent physics callbacks
-in the derived page. Browser JSON text is rendered with `textContent`
+changing recurrent state; a rejection disables the **neural projection**
+but **does not halt particle physics or graphics rendering**. Browser JSON text is rendered with `textContent`
 rather than `innerHTML`, and the Calibration button now reports observed
 render/callback counters rather than a constant computed from `dt`.
 The O(10,368) position-text hash is computed on explicit `get_state`,
