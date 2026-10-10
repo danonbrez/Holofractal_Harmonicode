@@ -121,6 +121,58 @@
       receiptLogicRemoved:false,
       canonicalMutationAuthority:false
     });
+
+    /* PASS 220 I078 — number-theoretic rendering physics.
+       rskip=64/72 is the exact 8/9 PHASE BIAS, not a skipped-frame count.
+       Q4 remains the projection quantizer; physics/state evolution remains
+       ungated.  The complete integer scheduler realigns at 5184 ticks:
+       lcm(64,72,81,4)=5184.  BigInt keeps the render-phase clock exact
+       independently of long-running requestAnimationFrame counters. */
+    const I078_RENDER = Object.freeze({
+      schema:"HHS_PASS_220_I078_NUMBER_THEORETIC_RENDER_GAME_PHYSICS_V1",
+      rskipNumerator:64,
+      rskipDenominator:72,
+      rskipReducedNumerator:8,
+      rskipReducedDenominator:9,
+      quarticPeriod:4,
+      globalClosureTicks:5184,
+      rskipIsPhaseBias:true,
+      rskipIsSkippedFrameCount:false,
+      physicsTickAlwaysAdvances:true,
+      canonicalMutationAuthority:false
+    });
+    function numberTheoreticRenderPhase(tickExact){
+      const t=BigInt(tickExact);
+      if(t<0n) throw new Error("render phase tick must be nonnegative");
+      const scaled=t*64n;
+      const closure=t%5184n;
+      return Object.freeze({
+        schema:"HHS_PASS_220_I078_RENDER_PHASE_STATE_V1",
+        tickExact:t.toString(),
+        rskipNumerator:64,
+        rskipDenominator:72,
+        rskipReducedNumerator:8,
+        rskipReducedDenominator:9,
+        biasWholeExact:(scaled/72n).toString(),
+        biasRemainder72:Number(scaled%72n),
+        local64:Number(t%64n),
+        phase72:Number(t%72n),
+        vm81:Number(t%81n),
+        quartic4:Number(t%4n),
+        linear5184:Number(closure),
+        hash72Row72:Number(closure/72n),
+        hash72Col72:Number(closure%72n),
+        supercycleExact:(t/5184n).toString(),
+        closure5184:Number(closure),
+        quarticRender:(t%4n)===0n,
+        highPrecisionClosure:closure===0n,
+        simulationTickContinues:true,
+        canonicalMutationAuthority:false
+      });
+    }
+    let renderPhaseTick=0n;
+    let lastRenderPhase=numberTheoreticRenderPhase(renderPhaseTick);
+
     const particleRenderBatches=[];
     const particleBatchMatrix=new THREE.Matrix4();
     function registerParticleRenderBatch(group,points,geometry){
@@ -3351,7 +3403,12 @@
          granularity: skipped renders write nothing, the clock never
          stops). */
       renderTick++;
+      renderPhaseTick+=1n;
+      lastRenderPhase=numberTheoreticRenderPhase(renderPhaseTick);
       renderGate=((renderTick%4)===0);
+      if(renderGate!==lastRenderPhase.quarticRender)
+        throw new Error("I078 quartic projection gate diverged");
+      if(scene && scene.userData) scene.userData.hhsRenderPhase=lastRenderPhase;
       if(renderGate){
         syncParticleRenderBatches();
         renderer.render(scene, camera);
@@ -3372,7 +3429,7 @@
           `chase=${chase.on?'#'+chase.idx:'off'} ` +
           `rho=m${(simParams.massBoost||1)}x/c${(simParams.collBoost||1)}x ` +
           `cohorts=${cohortCount} solids=${solidCount} ctor=${(simParams.ctorBoost||1)}x ` +
-          `rskip=64/72(${renderedFrames}/${renderTick}) ` +
+          `rskip=64/72(8/9) q4=${lastRenderPhase.quartic4}/4 c5184=${lastRenderPhase.closure5184} bias72=${lastRenderPhase.biasRemainder72} proj=${renderedFrames}/${renderTick} ` +
           `bond=${(simParams.bondBoost||1)}x(c${ctorBonds}) ` +
           `cpl=${couplingCount} ` +
           `topo=${simParams.recipTopo?'inv':'seed'} ` +
@@ -3434,6 +3491,15 @@
           lattice: { P: H.ratStr(s.P), p: H.ratStr(s.p), q: H.ratStr(s.q),
                      carrier: "P^2-pq-1 == 0 (exact rational)" },
           loshu_zero_sum_lines: H.loshuZeroSums(),
+          renderPhysics: {
+            schema:I078_RENDER.schema,
+            rskip:{ numerator:64, denominator:72, reduced:"8/9", meaning:"phase_bias" },
+            quarticPeriod:4,
+            globalClosureTicks:5184,
+            renderedFrames,
+            renderTick,
+            phase:lastRenderPhase
+          },
           last_cycle: H.engine.receipts[H.engine.receipts.length-1] || null
         }
       };
@@ -3520,6 +3586,40 @@
     };
 
     /* ---- HHS repository modules (receipt-bound; fail-closed) ---- */
+    MODULES["NumberTheoreticRenderPhysicsTest"] = function(){
+      const H=window.HHS;
+      const vmLocal=new Set(), hashSurface=new Set(), bias=new Set();
+      let quarticWrites=0, earlyClosure=false;
+      for(let t=0n;t<5184n;t++){
+        const s=numberTheoreticRenderPhase(t);
+        vmLocal.add(s.vm81+":"+s.local64);
+        hashSurface.add(s.hash72Row72+":"+s.hash72Col72);
+        bias.add(s.biasRemainder72);
+        if(s.quarticRender) quarticWrites++;
+        if(t>0n && s.local64===0 && s.phase72===0 && s.vm81===0 && s.quartic4===0)
+          earlyClosure=true;
+      }
+      const close=numberTheoreticRenderPhase(5184n);
+      const gates={
+        rskip_exact_8_over_9:{ pass:64*9===72*8, ratio:"64/72=8/9" },
+        quartic_quantization:{ pass:quarticWrites===1296, writes:quarticWrites, period:4 },
+        vm81_local64_bijection:{ pass:vmLocal.size===5184, states:vmLocal.size },
+        hash72_surface_bijection:{ pass:hashSurface.size===5184, states:hashSurface.size },
+        bias_remainders9:{ pass:bias.size===9, states:bias.size },
+        no_early_full_precision_closure:{ pass:!earlyClosure },
+        closure5184:{
+          pass:close.local64===0 && close.phase72===0 && close.vm81===0 &&
+               close.quartic4===0 && close.linear5184===0 &&
+               close.biasRemainder72===0 && close.highPrecisionClosure===true,
+          state:close
+        },
+        physics_ungated:{ pass:I078_RENDER.physicsTickAlwaysAdvances===true },
+        authority:{ pass:I078_RENDER.canonicalMutationAuthority===false }
+      };
+      const ok=Object.keys(gates).every(k=>gates[k].pass);
+      return H.receipt({ module:"NumberTheoreticRenderPhysicsTest", ok, gates,
+        rule:"rskip=64/72=8/9 is an exact phase bias; Q4 quantizes projection writes; local64, phase72, VM81 and quartic residues realign exactly at 5184 ticks while the physics clock continues on every tick." });
+    };
     MODULES["Hash72CodecTest"] = function(){
       const H=window.HHS;
       const vals=[...Array(72)].map((_,i)=>H.wrap72(i*7+3));

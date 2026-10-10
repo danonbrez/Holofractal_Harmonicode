@@ -1,0 +1,79 @@
+{
+  "schema": "HHS_PASS_220_I078_NUMBER_THEORETIC_RENDER_GAME_PHYSICS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "date": "2026-10-04",
+  "base_main": "1e91eb301b29652fcf2542bb6e395314198f10a4",
+  "branch": "pass220/i078-number-theoretic-render-game-physics-20261004",
+  "merge_target": "main",
+  "canonical_html": "examples/ParticleSimulation.html",
+  "canonical_html_base_blob": "218d89d67803b5b10ab86b1cdb97434438e25082",
+  "purpose": "Make rskip=64/72 an exact 8/9 render-phase bias, retain Q4 as projection quantization, preserve every simulation/physics update, and close the complete 64/72/81/Q4 scheduler at 5184 ticks while extending the native game-engine projection state.",
+  "inherited_surfaces": [
+    "HHS_PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_V1",
+    "HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1",
+    "HHS_PASS_220_I076_EXACT_MATRIX_POWER_HIR_HYDRATION_V1",
+    "HHS_PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_V1"
+  ],
+  "render_physics": {
+    "rskip": {
+      "numerator": 64,
+      "denominator": 72,
+      "reduced_numerator": 8,
+      "reduced_denominator": 9,
+      "meaning": "PHASE_BIAS_NOT_FRAME_SKIP_COUNT"
+    },
+    "quartic_projection_period": 4,
+    "physics_tick_always_advances": true,
+    "projection_write_quantized": true,
+    "local_operation_period": 64,
+    "hash72_phase_period": 72,
+    "vm81_cell_period": 81,
+    "global_high_precision_closure_ticks": 5184,
+    "lcm_statement": "lcm(64,72,81,4)=5184",
+    "quartic_projection_writes_per_closure": 1296,
+    "bias_remainder_states": 9
+  },
+  "html_execution": {
+    "exact_phase_clock": "BigInt",
+    "existing_render_gate_preserved": "renderGate=((renderTick%4)===0);",
+    "existing_physics_substep_preserved": "for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }",
+    "renderer_projection_state_export": "scene.userData.hhsRenderPhase",
+    "os_state_surface": "HHS.renderPhysics",
+    "browser_receipt_module": "NumberTheoreticRenderPhysicsTest",
+    "legacy_function_surfaces_must_be_subset_of_updated_surfaces": true,
+    "legacy_module_surfaces_must_be_subset_of_updated_surfaces": true,
+    "physics_or_receipt_removal_allowed": false
+  },
+  "native_game_engine": {
+    "runtime": "hhs_runtime/hhs_pass220_i078_number_theoretic_render_game_physics_v1.py",
+    "inherited_animation": "hhs_pass220_holofractal_relativistic_game_engine_v1.holographic_animation_state",
+    "i041_i078_quartic_gate_equality_required": true,
+    "exact_supercycle_exhaustive": true,
+    "vm81_local64_states": 5184,
+    "hash72_surface_states": 5184,
+    "latest_main_parent": "HHS_PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_V1",
+    "latest_main_parent_merge": "c54a9d5d0b57e113f895091065c76b5f4e21e998"
+  },
+  "formal": {
+    "lean_module": "HHS.Pass220.I078",
+    "lean_kernel_build_required": true,
+    "leanchecker_required": true,
+    "axiom_audit_required": true,
+    "wolfram_file": "formal/wolfram/pass220_i078_number_theoretic_render_game_physics_v1.wl",
+    "connected_wolfram_preflight": {
+      "status": "PASS",
+      "checks": 24,
+      "failed": 0
+    },
+    "lean_parent": "HHS.Pass220.VM81ExactMatrixPowerExecution"
+  },
+  "authority": {
+    "projection_only": true,
+    "gpu_float_is_projection_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false
+  }
+}

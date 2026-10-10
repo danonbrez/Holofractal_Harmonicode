@@ -1,0 +1,182 @@
+name: Pass 220 I078 Number Theoretic Render Game Physics
+
+on:
+  push:
+    branches:
+      - pass220/i078-number-theoretic-render-game-physics-20261004
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i078-render-game-physics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile I078 runtime and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i078_number_theoretic_render_game_physics_v1.py \
+            tests/pass220/test_hhs_pass220_i078_number_theoretic_render_game_physics_v1.py
+
+      - name: Execute I078 and inherited renderer tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i078_number_theoretic_render_game_physics_v1.py \
+            tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py \
+            tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
+
+      - name: Execute I078 runtime self-test
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_i078_number_theoretic_render_game_physics_v1 import self_test
+          result = self_test()
+          assert result["status"] == "PASS", result
+          assert result["check_count"] == result["pass_count"], result
+          print(result)
+          PY
+
+      - name: Preserve every legacy ParticleSimulation function and module surface
+        run: |
+          python - <<'PY'
+          import re
+          import subprocess
+          from pathlib import Path
+
+          base = subprocess.check_output(
+              [
+                  "git", "show",
+                  "1e91eb301b29652fcf2542bb6e395314198f10a4:examples/ParticleSimulation.html",
+              ],
+              text=True,
+          )
+          current = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
+
+          function_re = re.compile(r"\bfunction\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(")
+          module_re = re.compile(r'MODULES\["([^"]+)"\]')
+
+          base_functions = set(function_re.findall(base))
+          current_functions = set(function_re.findall(current))
+          base_modules = set(module_re.findall(base))
+          current_modules = set(module_re.findall(current))
+
+          missing_functions = sorted(base_functions - current_functions)
+          missing_modules = sorted(base_modules - current_modules)
+          assert not missing_functions, missing_functions
+          assert not missing_modules, missing_modules
+
+          required = (
+              "function updateSwarmCoupling()",
+              "function constructorScan()",
+              "function virtualDecay(forceIdx)",
+              "function hnanGate(a,b)",
+              "renderGate=((renderTick%4)===0);",
+              "for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }",
+          )
+          for token in required:
+              assert token in current, token
+
+          print({
+              "legacy_functions": len(base_functions),
+              "current_functions": len(current_functions),
+              "legacy_modules": len(base_modules),
+              "current_modules": len(current_modules),
+          })
+          PY
+
+      - name: Parse all inline ParticleSimulation JavaScript
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          html = Path("examples/ParticleSimulation.html").read_text(encoding="utf-8")
+          blocks = re.findall(
+              r"<script(?:\s[^>]*)?>(.*?)</script>",
+              html,
+              flags=re.S | re.I,
+          )
+          nonempty = []
+          for index, block in enumerate(blocks):
+              if not block.strip():
+                  continue
+              path = Path(f"/tmp/i078-inline-{index}.js")
+              path.write_text(block, encoding="utf-8")
+              nonempty.append(str(path))
+          assert nonempty, "no inline JavaScript blocks found"
+          Path("/tmp/i078-inline-list.txt").write_text(
+              "\n".join(nonempty), encoding="utf-8"
+          )
+          PY
+          while IFS= read -r file; do
+            node --check "$file"
+          done < /tmp/i078-inline-list.txt
+
+      - name: Enforce I078 Wolfram evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          output = json.loads(Path(
+              "evidence/pass220/i078_number_theoretic_render_game_physics_wolfram_20261004_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert output["status"] == "PASS"
+          assert output["check_count"] == output["pass_count"] == 24
+          assert output["rskip"] == "64/72=8/9"
+          assert output["quartic_period"] == 4
+          assert output["quartic_writes_per_5184"] == 1296
+          assert output["bias_remainder_states"] == 9
+          assert output["closure_ticks"] == 5184
+          assert output["vm81_local64_states"] == 5184
+          assert output["hash72_surface_states"] == 5184
+          PY
+
+      - name: Verify I078 Lean theorem surface
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source = Path(
+              "formal/lean/HHS/Pass220/NumberTheoreticRenderGamePhysicsI078.lean"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "theorem rskipCrossMultiply",
+              "theorem vm81Local64Closure",
+              "theorem hash72SquareClosure",
+              "theorem quarticWriteCount",
+              "theorem renderSemantics",
+              "theorem authorityBoundary",
+          ):
+              assert token in source, token
+          root = Path("formal/lean/HHS.lean").read_text(encoding="utf-8")
+          assert "import HHS.Pass220.NumberTheoreticRenderGamePhysicsI078" in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
