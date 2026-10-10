@@ -19,6 +19,19 @@ assert.equal(inline.length,2,"Embedded neural controller + main simulation sourc
 new vm.Script(inline[0],{filename:"embedded_agentic_sprite_controller.js"});
 new vm.Script(inline[1],{filename:"ParticleSimulationAtomicNeural.html"});
 assert(inline[0].includes(js.trim()),"Embedded neural source must match companion source");
+const browserLike={window:{},Float32Array,Uint8Array,Math,Number,Object};
+vm.runInNewContext(inline[0],browserLike,{filename:"standalone_inlined_controller.js"});
+assert(browserLike.window.HHSAgenticElectronSpriteV1,
+  "Opening the HTML alone must initialize the neural module");
+const nativeStart=inline[1].indexOf("    window.HHS = (function(){");
+const nativeEnd=inline[1].indexOf("    /* =====================================================================\\n       POINCARÉ–PENROSE");
+assert(nativeStart>0&&nativeEnd>nativeStart,"Embedded native HHS boot module must exist");
+vm.runInNewContext(inline[1].slice(nativeStart,nativeEnd),
+  browserLike,{filename:"standalone_hhs_boot.js"});
+assert.equal(browserLike.window.HHS.boot.boot_halt,false,
+  "Normal native I041 boot must not accidentally suppress the scene");
+assert(derived.includes('try {\\n        if(!window.HHSAgenticElectronSpriteV1) throw Error'),
+  "Missing optional neural overlay must be caught before rendering");
 assert(derived.includes("if(!window.HHS.boot.boot_halt) initScene()"));
 assert(!derived.includes("Object.assign(simParams, config.HHS_System.global_parameters)"));
 assert(derived.includes("FAIL_CLOSED_LIVE_STATE_MUTATING_DIAGNOSTIC"));
