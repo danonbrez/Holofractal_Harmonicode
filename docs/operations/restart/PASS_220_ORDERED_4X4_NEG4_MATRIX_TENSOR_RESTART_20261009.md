@@ -59,3 +59,33 @@ Still required for full implementation:
 - Commit native changes, verify dependency-scoped CI, merge only after evidence, and verify main.
 
 Status at this checkpoint: source identity and ordered HIR staging implemented; native value computation, native closure, signed VM81 admission, and canonical ledger mutation NOT claimed.
+
+## Continuation: native source-bound HIR lowering (2026-10-10)
+
+Parent source/HIR checkpoint: `540c43fc8426bc78ddffe86f9245fda3a1d48440`.
+Continuation branch: `agent/pass220-ordered-4x4-neg4-tensor-20261009`, merge target `main`.
+Base main remains `7fefacde360e6a5bb537cb01e94415c96430915b`.
+Native lowering changes through `229462fe5ace531e5bfeb88f3db8cd58f443ffb6`.
+
+New implementation:
+
+- `hhs_runtime/include/hhs_pass220_ordered4x4_neg4_1_0.h`: public exact ABI for source-bound read-only lowering.
+- `hhs_runtime/c/hhs_pass220_ordered4x4_neg4_1_0.inc`: exact 366-byte frozen source, expected SHA256, 64 ordered literal signed cell tokens, VM81 81-word candidate frame, no input symbol evaluation.
+- `hhs_runtime/include/hhs_runtime_exact_abi.h` and `hhs_runtime/c/hhs_runtime_exact_abi.c`: additive export/include registration in existing singleton aggregate, not a second runtime.
+- `tools/pass220/pass220_ordered4x4_hir_native_probe.c`: positive native frame/type/source tests and deterministic re-lowering equality, negative source drift/truncation/null controls.
+- `hhs_runtime/pass220/hhs_pass220_ordered4x4_native_hir_bridge_v1.py`: read-only ctypes binding over exact native ABI; no Python recomputation of matrix algebra.
+- `tests/pass220/test_hhs_pass220_ordered4x4_native_hir_bridge_v1.py`: exact frame, source binding, authority guard, replayed lowering conformance.
+- Expanded `.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml`: `make c-abi`, linked native probe, bridge test and inherited I077 regression.
+
+**Scope distinction**: deterministic re-lowering compares immutable HIR frame bytes; it is not canonical VM81 deterministic replay. The function does not call signed VM81 admission, does not evaluate `MatrixTimes` or `NcalcMatrixPower`, does not resolve `s`/`v`, and does not issue canonical Hash72/216 receipts. All authority flags remain zero. The negative fourth power remains an **exact source exponent token**, not host exponentiation.
+
+Commands/checks:
+- Source/HIR scoped Python 13 tests: prior exact-head run SUCCESS at `540c43...`.
+- Native probe, aggregate compilation, bridge and inherited I077 tests: configured in branch CI; inspect exact head before promoting status.
+- Connected GitHub is writable; no local copy of the full native repository/production service is mounted in the current execution environment.
+
+Remaining native closure:
+1. Register complete HHS 4x4 ordered `MatrixTimes`, typed quotient, and `NcalcMatrixPower` value executor with exact provenance/address semantics and no float/scalar substitution.
+2. Bind native symbolic `s` and `v` with their full typed constraints; enforce the whole `==` gate.
+3. Submit only fully proven native transition to inherited singleton signed VM81 admission, then verify Hash72/216 and replay on main.
+4. Resolve any CI regressions and retain a new restart checkpoint for repair-forward.
