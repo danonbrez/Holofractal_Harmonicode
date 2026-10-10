@@ -68,7 +68,7 @@ static int hhs220_i001_combined_root(
  return cursor==sizeof(data) && SHA256(data,sizeof(data),out)!=NULL;
 }
 
-HHSExactStatus hhs_exact_pass220_ordered4x4_i001_carrier_validate(
+static HHSExactStatus hhs220_i001_carrier_stage_validate(
  const uint8_t *source,size_t source_bytes,
  const HHS220Ordered4x4NativeTensorBindingV1 *s,
  const HHS220Ordered4x4NativeTensorBindingV1 *v,
@@ -146,5 +146,62 @@ HHSExactStatus hhs_exact_pass220_ordered4x4_i001_carrier_validate(
  out->original_noncommutative_graph_preserved=1U;
  out->deterministic_profile_replay_verified=1U;
  /* Rank, phase-action values, equation closure, signed VM81 authority false. */
+ return HHS_EXACT_STATUS_OK;
+}
+
+
+/* All-or-nothing output publication:
+ * - caller-controlled partial results are never accepted as inputs;
+ * - even if token 0..80 decode and downstream auth checks fail, staged
+ *   private offsets/roots never reach the caller;
+ * - all return paths leave the output fully zero on failure;
+ * - original s/v ingress buffers and VM81 canonical state are read-only.
+ * This wrapper is an isolation gate, NOT an HHS signed admission.
+ */
+HHSExactStatus hhs_exact_pass220_ordered4x4_i001_carrier_validate(
+ const uint8_t *source,size_t source_bytes,
+ const HHS220Ordered4x4NativeTensorBindingV1 *s,
+ const HHS220Ordered4x4NativeTensorBindingV1 *v,
+ const HHSExactPass219Hash216TransitionViewV1 *parent,
+ HHS220Ordered4x4I001CarrierV1 *out
+) {
+ HHS220Ordered4x4I001CarrierV1 staged;
+ HHSExactStatus status;
+ if(out==NULL) return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+ memset(out,0,sizeof(*out));
+ if(source==NULL || s==NULL || v==NULL || parent==NULL)
+  return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+ memset(&staged,0,sizeof(staged));
+ status=hhs220_i001_carrier_stage_validate(
+    source,source_bytes,s,v,parent,&staged);
+ if(status!=HHS_EXACT_STATUS_OK) {
+  /* The stage may already have decoded early cells. Do not expose them. */
+  memset(&staged,0,sizeof(staged));
+  return status;
+ }
+ if(staged.profile_cells!=HHS220_4X4_I001_CELLS ||
+    staged.profile_token_bytes!=HHS220_4X4_I001_TOKEN_BYTES ||
+    staged.s_valid_cells!=HHS220_4X4_I001_CELLS ||
+    staged.v_valid_cells!=HHS220_4X4_I001_CELLS ||
+    staged.I001_normalization_token_profile_verified!=1U ||
+    staged.s_all_81_tokens_canonical!=1U ||
+    staged.v_all_81_tokens_canonical!=1U ||
+    staged.original_vm81_addresses_preserved!=1U ||
+    staged.original_noncommutative_graph_preserved!=1U ||
+    staged.deterministic_profile_replay_verified!=1U ||
+    staged.signed_predecessor_authenticated!=0U ||
+    staged.authenticated_tensor_rank_proved!=0U ||
+    staged.full_phase_action_proved!=0U ||
+    staged.native_matrix_values_computed!=0U ||
+    staged.equation_equality_proved!=0U ||
+    staged.signed_vm81_admission_executed!=0U ||
+    staged.hash72_commit_authority!=0U ||
+    staged.hash216_commit_authority!=0U ||
+    staged.canonical_vm81_mutation_authority!=0U) {
+  memset(&staged,0,sizeof(staged));
+  return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+ }
+ memcpy(out,&staged,sizeof(staged));
+ memset(&staged,0,sizeof(staged));
  return HHS_EXACT_STATUS_OK;
 }
