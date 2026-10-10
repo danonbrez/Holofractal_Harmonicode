@@ -100,7 +100,7 @@
     let scene, camera, renderer, controls;
     let particles = []; // For particles from OS shell modules and neural swarm
     let spiralData = []; // For spiral groups from the neural swarm code
-    let agentController=null,agentTelemetry=null,calibrationEpochMs=0;
+    let agentController=null,agentTelemetry=null,calibrationEpochMs=0,agentProjectionHalt=null;
     let time = 0;
     const simParams = {
       eventHorizonRadius: 12,
@@ -3315,10 +3315,20 @@
       });
       // HHS graft: neighbor coupling — the school-of-fish reactivity layer
       updateSwarmCoupling();
-      if(agentController&&thPos) agentTelemetry=agentController.tick({
-        position:thPos,velocity:thVel,phase:thPhase,charge:thChg,
-        mass:thMass,neighbors:nbCount,budget:bCount
-      }); /* Neural motor candidates do NOT write to physical state. */
+      if(agentController&&thPos) {
+        try {
+          agentTelemetry=agentController.tick({
+            position:thPos,velocity:thVel,phase:thPhase,charge:thChg,
+            mass:thMass,neighbors:nbCount,budget:bCount
+          });
+        } catch(e) {
+          agentProjectionHalt="NEURAL_SENSORY_GATE_REJECTED: "+e.message;
+          document.getElementById("output").textContent=agentProjectionHalt;
+          const status=document.getElementById("agentStatus");
+          if(status) status.textContent=agentProjectionHalt;
+          return;
+        }
+      } /* No neuronal output is applied to the physics state. */
       updateTesseract();
     }
 
@@ -3358,6 +3368,7 @@
       camera.lookAt(chase.look);
     }
     function animate() {
+      if(agentProjectionHalt) return;  /* no additional physics steps on fault */
       requestAnimationFrame(animate);
       if(!chase.on) controls.update();
       /* GLOBAL FREQUENCY CONTROL: freqScale physics substeps per frame.
@@ -3366,7 +3377,11 @@
          invariant hold per substep; the interaction rate scales linearly.
          CONTROL ONLY: no physics change at any setting. */
       const steps=Math.max(1,Math.min(10,simParams.freqScale|0));
-      for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
+      for(let s=0;s<steps;s++){
+        updateSpiralParticles();
+        if(agentProjectionHalt) return;
+        time += simParams.evolutionSpeed * simParams.timeDilationFactor;
+      }
       updatePhaseGeometry();
       constructorScan();
       if(chase.on) updateChaseCamera();
