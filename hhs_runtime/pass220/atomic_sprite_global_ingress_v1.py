@@ -234,3 +234,16 @@ def run_atomic_sprite_ingress(
         json.dumps(result, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
     ).hexdigest()
     return result
+
+
+def run_atomic_sprite_ingress_service(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Fixed-repository-root service entrypoint; no caller-controlled corpus tree."""
+    if not isinstance(payload, Mapping) or set(payload) != {
+        "parameters", "expected_bundle_sha256"
+    }:
+        raise CorpusConstraintError("INCOMPLETE_SERVICE_ENVELOPE")
+    repository_root = Path(__file__).resolve().parents[2]
+    return run_atomic_sprite_ingress(
+        repository_root, payload["parameters"],
+        expected_bundle_sha256=payload["expected_bundle_sha256"],
+    )
