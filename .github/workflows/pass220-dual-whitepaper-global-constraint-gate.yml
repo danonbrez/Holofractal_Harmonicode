@@ -10,6 +10,7 @@ on:
       - "examples/ParticleSimulationAtomicNeural.html"
       - "examples/ParticleSimulation.html"
       - "tests/pass220/test_agentic_electron_sprite_v1.cjs"
+      - "tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
       - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
@@ -27,6 +28,7 @@ on:
       - "examples/ParticleSimulationAtomicNeural.html"
       - "examples/ParticleSimulation.html"
       - "tests/pass220/test_agentic_electron_sprite_v1.cjs"
+      - "tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
       - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
@@ -78,7 +80,9 @@ jobs:
           node --version
           node --check examples/hhs_agentic_electron_sprite_v1.js
           node --check tests/pass220/test_agentic_electron_sprite_v1.cjs
+          node --check tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs
           node tests/pass220/test_agentic_electron_sprite_v1.cjs
+          node tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs
       - name: Dual corpus dependency-scoped regression
         env:
           PYTHONPATH: .
