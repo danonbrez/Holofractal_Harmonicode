@@ -42,6 +42,8 @@ static int witness_is_fully_zero(const HHS220Ordered4x4I001CarrierV1 *value) {
 int main(int argc, char **argv) {
  HHS220Ordered4x4NativeTensorBindingV1 s,v;
  uint8_t crosslang_s[5184U],crosslang_v[5184U];
+ uint8_t exact_emitted[5184U], bad_offsets[81U];
+ size_t emitted_bytes=0U;
  FILE *f=fopen("contracts/pass220/PASS_220_ORDERED_4X4_NEG4_MATRIX_TENSOR_V1.harmonicode","rb");
  size_t n,i;
  CHECK(sizeof(zero_token)-1U==64U,"exact 64-character inherited I001 token");
@@ -100,6 +102,51 @@ int main(int argc, char **argv) {
   CHECK(original.v_81_offset_digits[i]==(uint8_t)((i+4U)%9U),
         "v original 81 exact offsets");
  }
+
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   original.s_81_offset_digits,NULL,0U,&emitted_bytes)==
+       HHS_EXACT_STATUS_BUFFER_TOO_SMALL &&
+   emitted_bytes==5184U,"native I001 emitter exposes exact required width");
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   original.s_81_offset_digits,exact_emitted,sizeof(exact_emitted),
+   &emitted_bytes)==HHS_EXACT_STATUS_OK,"exact native s offsets emission");
+ CHECK(emitted_bytes==5184U && memcmp(exact_emitted,s_state,5184U)==0,
+       "native roundtrip reconstructs every source s token");
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   original.v_81_offset_digits,exact_emitted,sizeof(exact_emitted),
+   &emitted_bytes)==HHS_EXACT_STATUS_OK,"exact native v offsets emission");
+ CHECK(memcmp(exact_emitted,v_state,5184U)==0,
+       "native roundtrip reconstructs every source v token");
+
+ /* Overlapping destination and offset source is deterministic, source
+  * positions are snapshotted before the first output byte is written. */
+ memset(exact_emitted,0,sizeof(exact_emitted));
+ memcpy(exact_emitted,original.s_81_offset_digits,81U);
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   exact_emitted,exact_emitted,sizeof(exact_emitted),
+   &emitted_bytes)==HHS_EXACT_STATUS_OK,"native alias-safe s encoder");
+ CHECK(memcmp(exact_emitted,s_state,5184U)==0,
+       "in-place 81-cell s offsets emission preserves all addresses");
+
+ memcpy(bad_offsets,original.v_81_offset_digits,81U);
+ bad_offsets[80]=9U;
+ memset(exact_emitted,0xA5,sizeof(exact_emitted));
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   bad_offsets,exact_emitted,sizeof(exact_emitted),&emitted_bytes)==
+       HHS_EXACT_STATUS_INVARIANT_FAILURE,
+       "invalid last offset must fail before any output mutation");
+ for(i=0U;i<sizeof(exact_emitted);++i)
+  CHECK(exact_emitted[i]==0xA5U,"emitter rejection leaves destination unchanged");
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   original.v_81_offset_digits,exact_emitted,5183U,&emitted_bytes)==
+       HHS_EXACT_STATUS_BUFFER_TOO_SMALL,"short native carrier output rejected");
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   NULL,exact_emitted,sizeof(exact_emitted),&emitted_bytes)==
+       HHS_EXACT_STATUS_INVALID_ARGUMENT,"missing exact 81-offset input rejected");
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+   original.s_81_offset_digits,exact_emitted,sizeof(exact_emitted),NULL)==
+       HHS_EXACT_STATUS_INVALID_ARGUMENT,"missing output width pointer rejected");
+
  CHECK(!original.signed_predecessor_authenticated &&
        !original.authenticated_tensor_rank_proved &&
        !original.full_phase_action_proved &&
