@@ -541,3 +541,75 @@ gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
 ### Required next native gate
 
 The genuine HHS s/v tensor action-rank, operator phase relation and signed provenance must be bound to the exact 5184-character addressed state through a **verifiable** inherited runtime record. Pass 158 supplies rank/shape definitions but arbitrary declared metadata alone is insufficient to authorize HHS 4×4 MatrixTimes. Once source-bound rank/action validity exists, implement exact native matrix-entry values, ordered quotient semantics, negative-fourth-power value and final equality proof; then route only the proven transition through \`hhs_exact_pass219_vm81_environment_admit_signed\` and verify actual canonical Hash72/216 receipts/replay. Do not introduce secondary mutation authority or scalar projections.
+
+
+## Continuation: verifiable rank/action challenge, fail-closed (2026-10-10)
+
+**Authoritative base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`.  
+**Branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`.  
+**Merge target:** \`main\`.  
+**Additive implementation through:** \`ba1f434351b326f019753a3da9583a328590b65e\`.
+
+### Rationale and inherited inspection
+
+The native Pass158 C API (\`native_projects/hhs_pass158_llabi_nftc_api\`) exposes registered definitions with \`tensor_rank\` and \`tensor_shape\`. In the inspected current public APIs, a bare rank/shape descriptor or definition metadata alone does NOT cryptographically authenticate its relationship to the exact signed VM81 s/v state or establish the native phase-action legality of this source equation.
+
+Consequently, it is unsafe to infer rank from a 5184-character serialization, a VM81 operation address, or a declarative Pass158 definition without an authenticated correspondence witness. Rank **admission** stays closed. This pass instead provides an executable, exact source-/state-bound proof **request** under the existing native C ABI so a later registered verifier has an unambiguous target.
+
+### Native implementation
+
+New public ABI \`hhs_exact_pass220_ordered4x4_rank_challenge\` traverses the existing native complete-expression graph and native RNA/VM81 ordered-phase-address gate. It derives precisely two independent operator-role *obligation envelopes*:
+
+- \`s\`: \`MatrixTimes(D,s)\` — source matrix #2 on LEFT, addressed native tensor s on RIGHT.
+- \`v\`: \`MatrixTimes(v,L)\` — addressed native tensor v on LEFT, source matrix #3 on RIGHT.
+
+Every obligation binds source SHA256, full expression graph SHA256, 216-index parent structural identity, its own entire 5184-character object binding root, exact VM81 \`cell81/operation64\`, inherited RNA ordered phase-address root, original matrix source role, original 4x4 literal shape, and corresponding ordered action-branch root.
+
+Seven categories of missing proof are separately recorded and required for future validation:
+
+1. Exact HARMONICODE typed tensor object + native address correspondence.
+2. Registered tensor definition and authenticated rank/shape provenance.
+3. Native ordered x/y/z/w phase action and original operand role.
+4. MatrixTimes input/output type compatibility without scalar broadcast.
+5. Canonical Hash216 ancestry, signed signer and state identity.
+6. Typed quotient/invertibility and exact negative-fourth-power compatibility.
+7. Whole-source equality proof and inherited singleton VM81 admission.
+
+The two challenge roots and their ordered set root are domain-separated SHA256 **diagnostic request identities only**, never Hash72/216 canonical receipts. The native graph is reconstructed twice and requires full byte-identical request replay.
+
+There is no API in this change that **accepts** user-submitted rank claims, manipulates signature material, invokes the environmental signer, or mutates VM81. All \`rank_proved\`, \`phase_action_proved\`, \`signed_vm81_state_authenticated\`, \`matrix_action_value_authorized\`, \`registered_rank_witness_verified\`, \`native_action_semantics_verified\`, \`mathematical_equality_proved\`, \`signed_vm81_admission_executed\`, \`hash72_commit_authority\`, \`hash216_commit_authority\`, \`canonical_vm81_mutation_authority\` stay hard-coded zero.
+
+### Source changes
+
+Created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_rank_challenge_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_rank_challenge_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_rank_challenge_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Dependency-scoped validation
+
+Native probe tests both source-locked role obligations, exact state and native phase-address dependence, s/v provenance separation, complete deterministic repeat, modified s/v or operation address, corrupted last Hash216 token index, wrong ancestry length, illegal cell, swapped symbol role, source mutation, null output, and fail-closed authority flags.
+
+CI compile + native execution command:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+  -Ihhs_runtime/include \
+  tools/pass220/pass220_ordered4x4_rank_challenge_probe.c \
+  -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+  -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+  -o /tmp/pass220-ordered4x4-rank-challenge-probe
+/tmp/pass220-ordered4x4-rank-challenge-probe | python -m json.tool
+\`\`\`
+
+**Validation status:** Previous exact-head CI at \`c435ecebd1c28a5c158c2e479244929698de03f7\` was queued, without a result to repair; this additive challenge code and C probe have been committed but NOT demonstrated to pass the complete GitHub native build. Current runner backlog is external; no local full-repo checkout is available (github.com DNS lookup fails from container). Do not assert test success until exact-head runner evidence appears.
+
+### Next action / blockers
+
+Check exact-head CI for the branch and fix only impacted failures. Integrate a **genuine** Pass158 registered rank/shape evidence + trusted signed VM81 state provenance validator or equivalent inherited canonical object verifier. A metadata declaration, diagnostic hash or a reconstructible Hash216 reference alone is insufficient. Only the inherited kernel may verify signer origin and confer canonical authority after the native MatrixTimes/quotient/negative-fourth-power *values* and ordered equality proof close. There is no production deployment or merge in this tranche.
