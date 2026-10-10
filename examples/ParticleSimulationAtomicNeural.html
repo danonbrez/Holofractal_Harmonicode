@@ -67,6 +67,16 @@
     right:10px;z-index:105;background:rgba(0,20,40,.88);color:#aef;
     border:1px solid #357;border-radius:5px;padding:8px;max-width:480px;
     pointer-events:none;font-size:12px">Agentic sprites · awaiting first frame</div>
+  <div id="agentInspector" style="position:absolute;bottom:90px;right:10px;
+    z-index:105;background:rgba(0,20,40,.88);color:#aef;border:1px solid #357;
+    border-radius:5px;padding:8px;font:12px monospace;max-width:400px">
+    <label for="agentInspectIndex">Inspect neural layer</label>
+    <input id="agentInspectIndex" type="number" min="0" max="10367" step="1"
+      value="0" style="width:90px;background:#112;color:#cff;border:1px solid #357">
+    <button id="inspectAgent" type="button"
+      style="background:#123;color:#cff;border:1px solid #357;cursor:pointer">Inspect</button>
+    <div id="agentDetail" style="white-space:pre-wrap;margin-top:6px">Candidate-only; no signed VM81 admission</div>
+  </div>
   <div id="freqCtl" style="position:absolute;top:44px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
     <div>global frequency <b>&times;<span id="freqVal">1</span></b></div>
     <input id="freqSlider" type="range" min="1" max="10" step="1" value="1" style="width:150px">
@@ -4029,6 +4039,23 @@
       } catch (e) {
         document.getElementById("output").innerText = "Invalid JSON: " + e.message;
       }
+    });
+    document.getElementById("runCalibration").addEventListener("click",()=>{
+      document.getElementById("output").textContent=JSON.stringify(
+        interpretCommand({command:"run_calibration"}),null,2);
+    });
+    document.getElementById("inspectAgent").addEventListener("click",()=>{
+      const out=document.getElementById("agentDetail");
+      try{
+        if(!agentController) throw Error("NEURAL_ENGINE_NOT_INITIALIZED");
+        const n=Number(document.getElementById("agentInspectIndex").value);
+        const p=agentController.proposal(n);
+        out.textContent="Agent "+p.agent_index+" / layer "+p.lo_shu_lane+
+          " / local "+p.lo_shu_local+"\n"+
+          "Thrust "+p.thrust.toFixed(3)+" · Yaw "+p.yaw.toFixed(3)+"\n"+
+          "Pitch "+p.pitch.toFixed(3)+" · Roll "+p.roll.toFixed(3)+"\n"+
+          "Bond proposal "+(p.bond_request?"YES":"no")+" · Applied to physics: NO";
+      }catch(e){out.textContent="FAIL CLOSED: "+e.message;}
     });
     document.getElementById("stepCycle").addEventListener("click", () => {
       document.getElementById("output").innerText = JSON.stringify(interpretCommand({command:"step_cycle"}), null, 2);
