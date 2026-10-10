@@ -407,3 +407,9 @@ A direct local remote repository fetch attempt \`git ls-remote https://github.co
 \`s_tensor_action_shape_resolved = false\` and \`v_tensor_action_shape_resolved = false\`. Denominator and RHS matrix values, the typed quotient, negative-fourth power, final equality, signed predecessor authentication, signed VM81 admission, canonical persistence, Hash72 and Hash216 receipt authority are **all false**. A structurally valid public Hash216 transition reference does NOT authenticate signer origin.
 
 Next action: check current exact-head CI for this branch. Repair only failures attributable to the new geometry gate, then require a native signed and provenance-carrying \`s\`/\`v\` operator-rank/phase witness before implementing the matrix-value action. Do not infer type by scalar conventions. Once exact matrix/quotient/power operator values are proven, use only \`hhs_exact_pass219_vm81_environment_admit_signed\` and its established receipts/replay pathway. No merge or deployment performed by this tranche.
+
+### Follow-up negative check — exact reversal of the same two operands
+
+The native outer-geometry probe was strengthened at commit \`13d301f6ebb11355b2b553cb8cb5f9b13aee236e\`: for **each** of the 32 source-cell incidences, it independently reconstructs the same operands in reverse order, with the opposite directional tag, and verifies the diagnostic root differs from the registered source-ordered root. This checks *same-operand direction dependence*, not merely inequality between different branches. It is still an identity/construction test, not a numerical matrix equality proof.
+
+This test is included in the dedicated \`native-source-locked-lowering\` CI job. Validate at exact head. Any pending GitHub runner queue is an external validation blocker; retain this committed restart state and repair-forward any scoped failure.
