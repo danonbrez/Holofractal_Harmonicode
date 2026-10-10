@@ -28,6 +28,9 @@ on:
       - 'hhs_runtime/include/hhs_pass220_ordered4x4_parent_preflight_v1.h'
       - 'hhs_runtime/c/hhs_pass220_ordered4x4_parent_preflight_v1.inc'
       - 'tools/pass220/pass220_ordered4x4_parent_preflight_probe.c'
+      - 'hhs_runtime/include/hhs_pass220_ordered4x4_numerator_terms_v1.h'
+      - 'hhs_runtime/c/hhs_pass220_ordered4x4_numerator_terms_v1.inc'
+      - 'tools/pass220/pass220_ordered4x4_numerator_terms_probe.c'
       - '.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml'
 jobs:
   scoped-hir-integrity:
@@ -114,6 +117,20 @@ jobs:
             hhs_runtime/include/hhs_pass220_ordered4x4_parent_preflight_v1.h \
             hhs_runtime/c/hhs_pass220_ordered4x4_parent_preflight_v1.inc \
             tools/pass220/pass220_ordered4x4_parent_preflight_probe.c
+      - name: Native source-addressed numerator 64-product symbolic expansion
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass220_ordered4x4_numerator_terms'
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered4x4_numerator_terms_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-ordered4x4-numerator-probe
+          /tmp/pass220-ordered4x4-numerator-probe | python -m json.tool
+          ! grep -REn '(^|[^[:alnum:]_])(float|double|long[[:space:]]+double)([^[:alnum:]_]|$)' \
+            hhs_runtime/include/hhs_pass220_ordered4x4_numerator_terms_v1.h \
+            hhs_runtime/c/hhs_pass220_ordered4x4_numerator_terms_v1.inc \
+            tools/pass220/pass220_ordered4x4_numerator_terms_probe.c
       - name: Exact native/Python bridge and ancestor I077 regression
         env:
           HHS_DISABLE_C_AUTOBUILD: '1'
