@@ -75,6 +75,17 @@ for(const i of [0,37,5184,10367]){
 }
 assert.throws(()=>a.proposal(-1),/INVALID_AGENT_ADDRESS/);
 assert.throws(()=>a.tick({}),/INCOMPLETE_PROJECTED_SENSORY_FRAME/);
+const badFrame=frame(10368);
+badFrame.velocity[10367*3+2]=NaN;
+const previousTicks=a.telemetry().ticks;
+assert.throws(()=>a.tick(badFrame),/NONFINITE_SENSORY_INPUT/);
+assert.equal(a.telemetry().ticks,previousTicks,"Invalid frames cannot advance recurrence");
+assert(derived.includes("if(agentProjectionHalt) return"));
+assert(derived.includes('agentProjectionHalt="NEURAL_SENSORY_GATE_REJECTED: "'));
+assert(derived.includes("pointerActive=false; });"));
+assert(derived.includes('id="agentInspector"'));
+assert(derived.includes('id="inspectAgent"'));
+assert(derived.includes('getElementById("runCalibration").addEventListener'));
 const guard=a.guardConfig({massBoost:2,unknown:8});
 assert.equal(guard.applied,false);
 assert.equal(guard.status,"FAIL_CLOSED_GLOBAL_CORPUS_NATIVE_ADMISSION_REQUIRED");
@@ -83,4 +94,10 @@ a.tick(f);
 b.tick(f);
 assert.equal(a.telemetry().ticks,2);
 assert.equal(a.telemetry().mean_activity,b.telemetry().mean_activity);
-console.log("PASS: derived HTML parses, strict controls, non-mutating 10368-agent deterministic recurrent preview");
+const massProfile=frame(10368);
+const controller1=factory.create(10368),controller2=factory.create(10368);
+massProfile.mass[0]=1;controller1.tick(massProfile);
+massProfile.mass[0]=4;controller2.tick(massProfile);
+assert.notEqual(controller1.proposal(0).roll,controller2.proposal(0).roll,
+  "Atomic-mass projection must influence the neuronal sensory response");
+console.log("PASS: full 10368-agent transactional recurrent preview, browser syntax, visible interface and guarded input");
