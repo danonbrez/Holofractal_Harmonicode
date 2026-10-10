@@ -158,3 +158,79 @@ The exact-head continuation CI must be checked before declaring native code veri
 Remaining after symbolic construction: implement and prove *registered* typed 4x4 matrix entry operations, exact ordered denominator and negative-fourth-power value construction for genuine VM81 cell-addressed s/v, determine source `==` gate from those native values, and only then use inherited signed singleton VM81 admission, parent-linked Hash72/216 and deterministic VM81 replay. Never borrow I077 fixed integer/symmetric transport as a substitute.
 
 Environment: GitHub connector is available for source mutation, workflow evidence, PR; full repo/production VM81 is not locally mounted. Restart from the above branch and check workflow results before repair-forward or promotion.
+
+
+## Continuation: native addressed s/v parameter binding (2026-10-10)
+
+**Inherited green:** Source integrity and native 15-opcode exact symbolic program CI succeeded at head \`bd2f29f8b784f2e31682b503bf21b58a8d186e84\` (runs \`38048206188\`, \`38048206213\`).
+
+**Repository base:** \`main @ 7fefacde360e6a5bb537cb01e94415c96430915b\`
+
+**Development branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`
+
+**Merge target:** \`main\`
+
+**This continuation through:** \`903b76b0e1c56345f6a1c979b36b80f7d4c401e3\`
+
+### Implementation
+
+The HHS exact C ABI now accepts \(s\) and \(v\) as **opaque native HARMONICODE tensors** instead of detached scalars. Their bindings contain:
+- exact source symbol role \`s\` or \`v\`;
+- inherited VM81 cell coordinate 0..80 and operation coordinate 0..63, deriving \`64*cell+opcode\` within 5184;
+- exactly **5184 UTF-8 Unicode codepoints**, permitting UTF-8 byte width different from character width;
+- 216-character predecessor Hash216 lineage pointer;
+- immutable, domain-separated SHA-256 binding roots containing original UTF-8 bytes, source role, position and predecessor glyphs.
+
+The **same inherited 15-opcode C symbolic interpreter** now has a binding mode: its source-symbol nodes receive exact native-object binding roots rather than mere one-character identifiers. Thus changes in the \`s\` object affect the denominator/quotient/power branch but not \`MatrixTimes(v,L)\`, whereas changes in \`v\` affect that branch but not the numerator/power. Exact address changes alter binding identity even if the serialized text is identical. Complete ordered node roots are computed twice and required byte-identical.
+
+**New files:**
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_typed_bindings_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_typed_bindings_v1.inc\`
+- \`hhs_runtime/pass220/hhs_pass220_ordered4x4_typed_bindings_v1.py\`
+- \`tools/pass220/pass220_ordered4x4_typed_bindings_probe.c\`
+- \`tests/pass220/test_hhs_pass220_ordered4x4_typed_bindings_v1.py\`
+
+**Updated:**
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_symbolic_execution_v1.inc\`
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+**Negative tests:** invalid Unicode and overlong UTF-8, 5183-character state, embedded NUL, wrong cell/op range, mismatched predecessor lineage, swapped s/v roles, source tampering, and independent s/v branch locality. The C native probe also verifies Unicode character width vs byte length without scalar conversion.
+
+### Critical authority and security qualification
+
+A 216-character predecessor field and 5184-character text are **untrusted proposed bindings**, NOT authenticated signed VM81 state. This bridge validates shape and exact ordered symbolic graph behavior only. The predecessor string is compared for identity; its signed provenance is NOT cryptographically established by this candidate ABI. The exact format's full scientific-notation semantic validator remains downstream.
+
+\`native_binding_authenticity_verified = false\`
+\`matrix_times_value_derived = false\`
+\`matrix_quotient_value_derived = false\`
+\`matrix_power_value_derived = false\`
+\`equation_equality_proved = false\`
+\`vm81_admission_executed = false\`
+\`hash72_commit_authority = false\`
+\`hash216_commit_authority = false\`
+\`canonical_vm81_mutation_authority = false\`
+
+No full matrix arithmetic, scalar coercion, conventional inverse, host float, signed VM81 admission, Hash72/216 mint, or persistent mutation occurred.
+
+The new entry point is \`hhs_exact_pass220_ordered4x4_execute_bound\`, **read-only candidate execution**. Python \`NativeOrdered4x4BoundExecutor\` calls this same native ABI rather than duplicating its computations.
+
+### Validation and restart
+
+Previous exact-head CI is frozen green. The new dependency-scoped native C and Python bound-state CI workflow has been committed; CI may be queued, and results must be checked by the specific tested head before promoting success. Commands executed/configured:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_typed_bindings_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-typed-probe
+/tmp/pass220-ordered4x4-typed-probe
+python -m pytest -q tests/pass220/test_hhs_pass220_ordered4x4_typed_bindings_v1.py
+\`\`\`
+
+Remaining: signed/authenticated native predecessor and VM81 tensor-object schema admission; implementation of the established ordered 4×4 HHS \`MatrixTimes\`, quotient and negative-fourth-power *value* semantics; complete HHS equality proof; singleton signed VM81 commit and Hash72/216 deterministic replay. Any failures trigger repair-forward against the inherited exact semantics, not a scalar fallback.
+
+**Environment:** Connected GitHub read/write and GitHub Actions CI are available. The complete production VM81 state is not locally mounted in this session. New native ABI must pass real GitHub build before its validation is considered closed.
