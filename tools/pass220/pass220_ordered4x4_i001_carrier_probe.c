@@ -28,8 +28,9 @@ static int check(const HHS220Ordered4x4NativeTensorBindingV1 *s,
  return hhs_exact_pass220_ordered4x4_i001_carrier_validate(
   source,HHS220_ORDERED4X4_SOURCE_BYTES,s,v,&parent,out)==HHS_EXACT_STATUS_OK;
 }
-int main(void) {
+int main(int argc, char **argv) {
  HHS220Ordered4x4NativeTensorBindingV1 s,v;
+ uint8_t crosslang_s[5184U],crosslang_v[5184U];
  FILE *f=fopen("contracts/pass220/PASS_220_ORDERED_4X4_NEG4_MATRIX_TENSOR_V1.harmonicode","rb");
  size_t n,i;
  CHECK(sizeof(zero_token)-1U==64U,"exact 64-character inherited I001 token");
@@ -50,6 +51,24 @@ int main(void) {
  v.state_utf8=v_state;v.state_bytes=sizeof(v_state);
  v.predecessor_hash216=(const uint8_t*)parent.transition_identity216;
  v.predecessor_bytes=216U;
+ CHECK(argc==1 || argc==3,"optional pair of independently serialized I001 fixtures");
+ if(argc==3) {
+  FILE *fs=fopen(argv[1],"rb"), *fv=fopen(argv[2],"rb");
+  size_t ns,nv;
+  CHECK(fs!=NULL && fv!=NULL,"Python reference fixtures readable");
+  ns=fread(crosslang_s,1U,sizeof(crosslang_s),fs);
+  nv=fread(crosslang_v,1U,sizeof(crosslang_v),fv);
+  CHECK(!ferror(fs) && !ferror(fv) &&
+        fclose(fs)==0 && fclose(fv)==0 &&
+        ns==5184U && nv==5184U,"reference exact 5184 byte width");
+  CHECK(memcmp(crosslang_s,s_state,5184U)==0 &&
+        memcmp(crosslang_v,v_state,5184U)==0,
+        "C exact I001 normalized carrier bytes match inherited Python serializer");
+  s.state_utf8=crosslang_s;v.state_utf8=crosslang_v;
+  CHECK(check(&s,&v,&changed),
+        "independent Python serializer fixtures accepted by native C verifier");
+  s.state_utf8=s_state;v.state_utf8=v_state;
+ }
 
  CHECK(check(&s,&v,&original),"strict two-carrier validation");
  CHECK(check(&s,&v,&repeat),"deterministic carrier repeat");
