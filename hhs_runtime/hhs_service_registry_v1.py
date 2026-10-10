@@ -4884,6 +4884,60 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.atomic_sprite_thermal_ingress.v1",
+        module="hhs_runtime.pass220.atomic_sprite_calorimetry_v1",
+        function="run_atomic_sprite_thermal_ingress_service",
+        service_type="pass220_exact_dual_corpus_calorimetric_phase_candidate",
+        description=(
+            "Source-bound, isotope-preserving exact first-law calorimetry over "
+            "externally supplied melting/boiling/heat-capacity/latent-energy "
+            "calibration. Composes the inherited Pass131, Pass067.1, I058 "
+            "witnesses. Supports solid/liquid/gas and exact coexistence "
+            "fractions. Does not claim empirical calibration, FlyVis runtime "
+            "execution, or VM81/Hash72/Hash216 canonical mutation."
+        ),
+        invariant_ids=[
+            "HHS-I008", "HHS-I010", "HHS-I011", "HHS-I012",
+            "HHS-I014", "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS220_DUAL_CORPUS_ATOMIC_SPRITE_THERMAL_INGRESS_V1",
+            "HHS_PASS220_EXACT_ATOMIC_SPRITE_CALORIMETRY_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS220_EXACT_ATOMIC_SPRITE_CALORIMETRY_V1",
+            "HHS_PASS220_ATOMIC_NEURAL_SPRITE_CORPUS_INGRESS_V1",
+        ],
+        validators=[
+            "bind_global_parameters",
+            "run_atomic_sprite_ingress",
+            "exact_calorimetric_transition",
+        ],
+        guards=[
+            "dual_whitepaper_corpus_sha256_unchanged",
+            "all_24_parameters_corpus_bound",
+            "exact_rational_heat_and_latent_balance",
+            "no_negative_kelvin",
+            "isotope_mass_identity_preserved",
+            "material_phase_distinct_from_ordered_hhs_phase",
+            "no_unverified_empirical_calibration_claim",
+            "signed_vm81_admission_remains_separate",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_STALE_WHITEPAPER_CORPUS",
+            "REJECT_NONEXACT_CALORIMETRY",
+            "REJECT_INVALID_ISOTOPE_MASS_LINEAGE",
+            "REJECT_INVALID_THERMODYNAMIC_PHASE_TRANSITION",
+            "REJECT_ENERGY_ACCOUNTING_DRIFT",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="CANDIDATE_ONLY_NO_CANONICAL_THERMAL_OR_VM81_MUTATION",
+        persistence_policy="NO_HASH72_HASH216_CANONICAL_MINT",
+        boundedness_policy="EXACT_PIECEWISE_CALORIMETRY_EXTERNAL_PROFILE_AND_ENERGY",
+    )
+
+    registry.register_function(
         name="pass220.atomic_sprite_corpus_ingress.v1",
         module="hhs_runtime.pass220.atomic_sprite_global_ingress_v1",
         function="run_atomic_sprite_ingress_service",
