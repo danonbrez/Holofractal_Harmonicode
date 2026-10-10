@@ -684,3 +684,84 @@ gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
 This is an actual runnable native **admission-readiness accounting** implementation, but it **does not solve** the seven rank challenge proof classes or calculate HHS tensor values. The signed environmental VM81 admission path is deliberately never invoked; no PQC signer origin, Hash72/216 transition, persistence or production deployment is claimed. User-specified HHS typed noncommutative ordering, phase identity, source fidelity, 5184-character addresses and zero-bypass constraints remain intact.
 
 Verify current exact-head native ABI and source-integrity workflow CI; repair only concrete scoped failures, checkpoint and verify new head. Before lifting any missing authority bit, implement a trusted native verifier binding Pass158 registered tensor rank/shape (or equivalent) to the exact signed VM81 state and native ordered action semantics. Then supply actual value/equality proofs through the inherited singleton gate. Keep PR open until scope-appropriate verified acceptance and main verification. There is no authority or justification to merge/deploy from a diagnostic READY/blocked construction report.
+
+
+## Continuation: strict normalized I001 carrier profile verification (2026-10-10)
+
+- Base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`
+- Branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`
+- Merge target: \`main\`
+- Additive checkpoint through \`99b934c140c41b180208e16498ed7195b579992a\`.
+- Latest observed exact-head CI at prior \`a287ae07...\` (runs \`38064200999\` native, \`38064200686\` source integrity) remained queued. No completed compiler or native execution evidence should be inferred.
+
+### Actual deficiency addressed
+
+Prior \`hhs_exact_pass220_ordered4x4_execute_bound\` established exactly 5184 Unicode characters plus typed source, location, lineage identity, but allowed arbitrary shape-conforming text such as \`"X"*5184\`. It does not certify 81 canonical exact-rational scientific tokens. Treating this shape as the canonical HARMONICODE rational scientific carrier would have been incorrect.
+
+The inherited Pass 220 I001 Lo Shu normalizer \`hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py\` defines a **specific** normalization-offset profile: 81 fixed-width, 64-character exact rational scientific tokens, each encoding an offset in \`0..8\`; all 81 tokens concatenate to 5184 ASCII characters. The token grammar is:
+
+\`\`\`
++NNNNNNNNNNNNNNNNNNNN/DDDDDDDDDDDDDDDDDDDDe+EEEEEEEEEEEEEEEEEEEE
+\`\`\`
+
+where the 20-digit \`N\` is zero-padded exact offset 0..8; the 20-digit \`D\` must be \`00000000000000000001\`, and all 20 \`E\` characters must be zero. The fixed positive sign and normalized zero exponent are mandatory for THIS inherited profile. Other exact HARMONICODE serialization profiles must use their own registered verifier, rather than be rejected as universally invalid by this I001-specific validator.
+
+### Implementation
+
+New C ABI: \`hhs_exact_pass220_ordered4x4_i001_carrier_validate\`, added to the same authoritative exact ABI aggregate, performs:
+1. Read-only, fail-closed exact 81×64 token grammar validation on both s and v; rejects shape-only arbitrary strings and noncanonical alternate encodings within this normalization profile.
+2. Inherited source-/Hash216-index-/ordered-RNA-phase-/graph-bound *readiness* preflight (must remain BLOCKED with 8 missing authorities); verifies exact s/v typed objects via inherited bound executor.
+3. Preserves all 81 normalization offset positions as \`uint8_t[81]\`, not a free scalar; position is also committed to a diagnostic per-symbol SHA256 including source, indexed parent, entire original tensor binding root and VM81 address.
+4. Computes a combined s/v carrier-profile root and repeats exact decoding to test byte-for-byte reproducibility.
+5. Leaves tensor rank, full phase-action, signed predecessor origin, actual matrix values, quotient, negative-fourth-power, mathematical equality, signed VM81 admission, canonical Hash72/216 and persistence **all false**.
+
+New source files:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_i001_carrier_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Native and cross-language tests
+
+Native C probe validates both exact I001 normalized s/v carriers, 81 offsets, original s/v VM81 addresses and independent source-bound roots. It rejects \`X*5184\`, offsets outside 0..8, wrong slash, zero denominator, noncanonical exponent/sign, numerator padding, corruption in the last (81st) token, wrong byte width, changed equation source and incorrect predecessor width.
+
+The C probe also optionally accepts two **independent** serialized state files. The GitHub workflow generates both using the existing Python reference \`serialize_offsets_5184\` for offset sequences \`i mod 9\` and \`(i+4) mod 9\`, checks them byte-for-byte against the equivalent C fixtures, then passes those Python-origin fixtures through the new native exact ABI validator.
+
+Dependency-scoped commands in GitHub Actions:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_i001_carrier_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-i001-carrier-probe
+/tmp/pass220-ordered4x4-i001-carrier-probe
+python - <<'PY'
+from pathlib import Path
+from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import serialize_offsets_5184
+for symbol, seed in (("s", 0), ("v", 4)):
+    data = serialize_offsets_5184(tuple((seed + i) % 9 for i in range(81)))
+    Path(f"/tmp/pass220-i001-{symbol}.txt").write_bytes(data.encode("ascii"))
+PY
+/tmp/pass220-ordered4x4-i001-carrier-probe \
+ /tmp/pass220-i001-s.txt /tmp/pass220-i001-v.txt
+\`\`\`
+
+**This is an actual new profile validation rather than merely a new proof-request flag.** Its exact scope is one pre-existing 81×64 normalized rational carrier profile; it does not certify every permissible BigInt serialization or authentic HHS tensor action.
+
+### Remaining blockers / next action
+
+New exact-head CI remains to be verified; do not claim a successful native build until CI actually completes. Repair forward new scoped compiler/regression failures.
+
+Future implementation must:
+1. Register and select canonical serialization validators for other native 5184-character profiles (without weakening the I001 check);
+2. Associate an authenticated Pass158 tensor definition/rank/shape, or equivalent inherited native rank witness, with the exact signed VM81 state and serialization profile;
+3. Establish true native ordered matrix/quotient/power values and full \`==\` proof;
+4. Execute singleton \`hhs_exact_pass219_vm81_environment_admit_signed\` only on a proven state, then validate canonical receipt lineage and main deployment.
+
+There has been **no** signed admission, mutation or canonical receipt through this code.
