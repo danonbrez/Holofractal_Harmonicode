@@ -69,6 +69,19 @@ hhs_exact_pass220_ordered4x4_i001_carrier_validate(
  const HHSExactPass219Hash216TransitionViewV1 *parent,
  HHS220Ordered4x4I001CarrierV1 *out_carrier
 );
+
+/*
+ * Exact inverse of the inherited I001 81x64 normalization-offset serializer.
+ * Both length and offset alphabet are checked BEFORE writing any bytes.
+ * Input and output may overlap: source positions are privately snapshotted.
+ *
+ * This is a representation encoder, not signed ingress or VM81 admission.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+ const uint8_t offsets[HHS220_4X4_I001_CELLS],
+ uint8_t *out_bytes,size_t capacity,size_t *out_length
+);
+
 #ifdef __cplusplus
 }
 #endif
