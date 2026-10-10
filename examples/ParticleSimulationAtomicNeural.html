@@ -6,9 +6,32 @@
   <title>HHS Agentic Electron Sprites — Atomic Neural Projection</title>
   <!-- Three.js and OrbitControls -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-  <!-- dat.GUI for optional debugging controls -->
-  <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <!-- dat.GUI removed: there are no dat.GUI calls in this page. -->
+  <script>
+    /* External asset + unhandled runtime failures are visible instead of
+       becoming silent black-canvas errors. This diagnostic is read-only. */
+    window.__hhsStartupErrors=[];
+    window.addEventListener("error",function(e){
+      const reason=e && (e.message||(e.target&&e.target.src)) || "unknown script error";
+      if(e && e.target && e.target.src && /three|OrbitControls/.test(e.target.src)){
+        window.__hhsStartupErrors.push("CDN_ASSET_FAILED: "+e.target.src);
+      } else {
+        window.__hhsStartupErrors.push("BROWSER_RUNTIME_ERROR: "+reason);
+      }
+      const panel=document.getElementById("runtimeDiagnostics");
+      if(panel){
+        panel.textContent="Runtime diagnostic: "+window.__hhsStartupErrors.slice(-2).join(" | ");
+        panel.style.display="block";
+      }
+    },true);
+    window.addEventListener("unhandledrejection",function(e){
+      const message=String(e && e.reason || "unhandled rejection");
+      window.__hhsStartupErrors.push("UNHANDLED_REJECTION: "+message);
+      const panel=document.getElementById("runtimeDiagnostics");
+      if(panel){panel.textContent=window.__hhsStartupErrors.slice(-2).join(" | ");panel.style.display="block";}
+    });
+  </script>
   <style>
     body { margin: 0; overflow: hidden; background: radial-gradient(circle, #000022, #111111); font-family: monospace; }
     canvas { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
@@ -63,6 +86,11 @@
   </div>
   <div id="receiptBanner"></div>
   <div id="hud"></div>
+  <div id="runtimeDiagnostics" role="alert" style="display:none;position:absolute;
+    top:12px;left:50%;transform:translateX(-50%);z-index:200;
+    color:#ffdcb0;background:rgba(45,15,10,.92);border:1px solid #a65;
+    padding:8px 12px;border-radius:4px;font:12px monospace;
+    max-width:80vw;overflow-wrap:anywhere"></div>
   <div id="agentStatus" aria-live="polite" style="position:absolute;bottom:52px;
     right:10px;z-index:105;background:rgba(0,20,40,.88);color:#aef;
     border:1px solid #357;border-radius:5px;padding:8px;max-width:480px;
@@ -305,10 +333,19 @@
       renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference:"high-performance" });
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.1;
-      controls.rotateSpeed = 0.5;
+      if(typeof THREE.OrbitControls==="function"){
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.1;
+        controls.rotateSpeed = 0.5;
+      } else {
+        /* OrbitControls is optional view input, never a reason to suppress
+           the physical field. The camera remains fixed but fully usable. */
+        controls={enabled:false,update:function(){}};
+        const diag=document.getElementById("runtimeDiagnostics");
+        if(diag){diag.textContent="OrbitControls unavailable: static camera fallback active";
+                 diag.style.display="block";}
+      }
       addLighting();
       // Initialize particle groups from neural swarm
       initSpiralParticles(false);   /* L1 spirals: carriers 0..2591 */
@@ -3506,7 +3543,9 @@
          granularity: skipped renders write nothing, the clock never
          stops). */
       renderTick++;
-      renderGate=((renderTick%4)===0);
+      /* Display the very first frame immediately. Subsequent frames
+         retain the inherited every-fourth-frame projection cadence. */
+      renderGate=(renderTick===1 || (renderTick%4)===0);
       if(renderGate){
         syncParticleRenderBatches();
         renderer.render(scene, camera);
@@ -4066,7 +4105,7 @@
     /* Inherited live-mutating diagnostics need isolated replay; quarantine
        on this derived page without touching the frozen parent source. */
     for(const name of ["FractalLayer2Test","VirtualDecayTest","SolidConstructorTest",
-                       "QuarticSkipTest","EntanglementChannelTest"]){
+                       "QuarticSkipTest","EntanglementChannelTest","TopoInversionTest"]){
       MODULES[name]=function(){return window.HHS.receipt({
         module:name,ok:false,status:"FAIL_CLOSED_LIVE_STATE_MUTATING_DIAGNOSTIC",
         reason:"Isolated snapshot/replay required",canonical_mutation_authority:false
