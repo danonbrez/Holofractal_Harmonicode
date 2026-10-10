@@ -7,7 +7,7 @@
   const SCHEMA="HHS_PASS220_AGENTIC_ELECTRON_SPRITE_PROJECTION_V1";
   const WIDTH=4, LIMIT=10368, CELL_WIDTH=5184;
   const clamp=x=>Math.max(-1,Math.min(1,x));
-  const number=x=>Number.isFinite(x)?x:0;
+  const number=x=>{if(!Number.isFinite(x)) throw Error("NONFINITE_SENSORY_INPUT");return x;};
   function create(count){
     if(!Number.isSafeInteger(count)||count<1||count>LIMIT) throw Error("INVALID_PARTICLE_POPULATION");
     const memory=new Float32Array(count*WIDTH);
@@ -31,6 +31,7 @@
           number(frame.position[k]),number(frame.position[k+1]),number(frame.position[k+2])
         )/30);
         const electric=clamp(number(frame.charge[i]));
+        const inertia=Math.min(1,Math.max(0,number(frame.mass[i]))/4);
         const density=Math.min(1,Math.max(0,number(frame.neighbors[i]))/20);
         const phase=number(frame.phase[i])*Math.PI/36;
         const slots=Math.max(0,Math.min(8,number(frame.budget[i])))/8;
@@ -40,7 +41,7 @@
         const n0=Math.tanh(.63*a+.18*b+.48*density-.32*speed+.08*Math.cos(phase));
         const n1=Math.tanh(.62*b-.13*c+.36*electric-.28*distance+.10*Math.sin(phase));
         const n2=Math.tanh(.58*c+.21*d+.33*slots-.22*speed-.10*density);
-        const n3=Math.tanh(.61*d+.17*a+.30*(1-distance)+.14*electric-.15*speed);
+        const n3=Math.tanh(.61*d+.17*a+.30*(1-distance)+.14*electric-.15*speed-.18*inertia);
         memory[m]=n0;memory[m+1]=n1;memory[m+2]=n2;memory[m+3]=n3;
         /* Wing-like thrust and yaw/pitch/roll are BOUNDED proposals only.
            Bond requests do not write the existing bond/channel geometry. */
