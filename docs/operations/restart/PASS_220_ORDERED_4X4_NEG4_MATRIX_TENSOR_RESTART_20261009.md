@@ -234,3 +234,43 @@ python -m pytest -q tests/pass220/test_hhs_pass220_ordered4x4_typed_bindings_v1.
 Remaining: signed/authenticated native predecessor and VM81 tensor-object schema admission; implementation of the established ordered 4×4 HHS \`MatrixTimes\`, quotient and negative-fourth-power *value* semantics; complete HHS equality proof; singleton signed VM81 commit and Hash72/216 deterministic replay. Any failures trigger repair-forward against the inherited exact semantics, not a scalar fallback.
 
 **Environment:** Connected GitHub read/write and GitHub Actions CI are available. The complete production VM81 state is not locally mounted in this session. New native ABI must pass real GitHub build before its validation is considered closed.
+
+
+## Continuation: inherited complete Hash216 parent reference preflight (2026-10-10)
+
+- Base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`
+- Restart branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`
+- Merge target: \`main\`
+- Previous exact-head bound 5184-character state validation: queued at start of this tranche (no result inherited).
+- Parent preflight implementation checkpoint through: \`5b8f42fb78117bd228afa09479476ac08e85c5a4\`
+
+### New implementation
+
+A public native C ABI function \`hhs_exact_pass220_ordered4x4_parent_preflight\` accepts the source, the already-typed and addressed 5184-character \`s\` and \`v\` objects, and a caller-supplied complete \`HHSExactPass219Hash216TransitionViewV1\` inherited parent reference.
+
+This function calls the registered inherited \`hhs_exact_pass219_vm81_pqc_hash216_reference_verify\`; this cryptographic **structure/index** verifier recreates every index record and requires all 216 Hash72 positional records and transition identity fields to match. This does **not** prove the reference originated in a signed VM81 admission: the indexed reference is publicly reconstructible from Hash72 lanes.
+
+The parent preflight checks that both opaque tensor bindings carry the same 216-character \`transition_identity216\` as the verified reference, then invokes the existing read-only source-locked \`hhs_exact_pass220_ordered4x4_execute_bound\` graph. It returns diagnostic parent digest and bound equality *node root* with no mathematical equality claimed.
+
+### Files changed
+
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_parent_preflight_v1.h\`: native public ABI declaration, receipt fields, no-authenticity boundary.
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_parent_preflight_v1.inc\`: use inherited complete Hash216 reference verifier and exact source-bound 4×4 operator graph.
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`, \`hhs_runtime/c/hhs_runtime_exact_abi.c\`: additive singleton exact ABI registration.
+- \`tools/pass220/pass220_ordered4x4_parent_preflight_probe.c\`: inherited genesis reference, positive indexed preflight, byte-identical replay, tampering at first token and last SHA256 index, identity mismatch, incomplete index coverage, predecessor mismatch, source mutation, wrong lineage width, and no-authority negatives.
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`: compile against existing exact ABI and execute native probe after earlier 4×4 tests.
+
+### Permanent honesty boundary
+
+- \`inherited_hash216_structure_verified=true\` and \`all_216_indexes_verified=true\` only assert complete deterministic **structural/index reconstruction** from a supplied reference, NOT that this reference is signer-authentic.
+- \`parent_signed_authenticity_verified=false\` unconditionally.
+- \`vm81_environment_signed_admission=false\` unconditionally.
+- \`tensor_equality_proved=false\` unconditionally.
+- \`hash72_commit_authority=false\`, \`hash216_commit_authority=false\` and \`canonical_vm81_mutation_authority=false\` unconditionally.
+- No scalar substitution, I077 compatibility UQCEL packet, matrix value derivation, or independent Hash216 receipt writer was introduced.
+
+### Next action and validation
+
+Inspect the dedicated exact-head native CI at GitHub Actions for PR #756. Fix any bounded failures. Do not wait on queued unrelated workflows; checkpoint is restartable. Only if registered complete HHS operator value results and genuine signed environmental references become available may full tensor equality be proved and submitted to inherited \`hhs_exact_pass219_vm81_environment_admit_signed\`. Verify actual receipt lineage and replay after admission; never infer it from a reconstructed reference alone.
+
+Environment: connected GitHub repository and Actions; production VM81 signed runtime state and signing environment are not mounted here. This repository mutation is a native ABI candidate/preflight extension, not production deployment.
