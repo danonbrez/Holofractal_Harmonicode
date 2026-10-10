@@ -342,3 +342,68 @@ Do not mark these commands complete until CI finishes. Previous bound and parent
 The numerator expansion does not establish the native value semantics of \`MatrixTimes\`, \`MatrixTimes(D,s)\`, \`MatrixTimes(v,L)\`, the typed quotient, or \`NcalcMatrixPower(...,(-4))\`. The inherited signed environmental admission must not be invoked on a merely constructed equality *node*. Authentic signed origin cannot be inferred from a constructible indexed Hash216 reference; a genuine signed envelope and all native operator/equality proofs remain required. No production deployment or main merge is claimed.
 
 Next action: inspect exact-head native CI for \`f6a4ca6a...\` (or later checkpoint), repair failed scoped tests, and implement address-preserving denominator/RHS typed vector/matrix operator expansion only after confirming their native operand shape/phase contracts. Do not assume \`s\` or \`v\` are free conventional scalars.
+
+
+## Continuation: denominator and RHS directional tensor geometry (2026-10-10)
+
+**Base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Branch / continuation:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\`  
+**This continuation through:** \`9b49834f79840565d216f9e974715bb9d7912825\`
+
+### Implemented
+
+Added \`hhs_exact_pass220_ordered4x4_outer_geometry\` to the same authoritative \`hhs_runtime_exact_abi\` aggregate. It **actually traverses and hashes the source-addressed typed action incidence geometry** for both remaining outer \`MatrixTimes\` branches:
+
+- Denominator: \`MatrixTimes(D,s)\`, with source matrix \`D\` fixed on the left and the entire address-bearing \`s\` HARMONICODE object on the right.
+- Right side: \`MatrixTimes(v,L)\`, with the entire address-bearing \`v\` HARMONICODE object fixed on the left and source matrix \`L\` on the right.
+
+A 4×4 matrix has exactly sixteen source-cell occurrences. Both branches together produce **32 source-cell incidence nodes**, ordered row-major within each branch; the output roots also commit to the parent reference, source SHA, tensor symbol role and native VM81 address.
+
+**Important:** 32 *incidences* is not 32 output elements or an inferred product result shape. \`s\`/\`v\` are not recast as scalar multipliers, rank-one vectors, or 4×4 matrices. Their actual registered HHS tensor action shapes remain unresolved until a native type/phase witness authorizes them. The numerator's prior 64 product terms and 16 ordered sum *expression* nodes remain separate.
+
+Before constructing incidence nodes, the new C ABI calls the inherited source-bound \`hhs_exact_pass220_ordered4x4_parent_preflight\` and the existing native 5184-character \`hhs_exact_pass220_ordered4x4_execute_bound\`, checks their exact root and source consistency, and explicitly rejects any unexpected claims of tensor-value derivation or signed VM81 authority.
+
+Each incidence root records:
+- original literal matrix source index 2 (denominator) or 3 (RHS);
+- exact source row and column, original signed token and matrix operand side;
+- full-object symbol binding root and its VM81 cell/op coordinate;
+- ordered left/right operand-root order, with no commutation or implicit broadcasting.
+
+Both branch roots and their combined outer-geometry root are domain-separated diagnostic SHA-256 values, not canonical Hash72/Hash216 receipts.
+
+New files:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_outer_geometry_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_outer_geometry_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_outer_geometry_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Dependency-scoped native conformance
+
+Dedicated C ABI probe tests 32 exact matrix-source incidences, two strict operand directions, all 16 source positions in each branch, stable repeat derivation, independent branch effects from changing s and v, typed VM81 address changes, source tampering, inherited indexed Hash216 reference tampering, wrong tensor role and wrong 5184 width. All corresponding authority flags remain zero.
+
+CI commands configured:
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+  -Ihhs_runtime/include \
+  tools/pass220/pass220_ordered4x4_outer_geometry_probe.c \
+  -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+  -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+  -o /tmp/pass220-ordered4x4-outer-geometry-probe
+/tmp/pass220-ordered4x4-outer-geometry-probe | python -m json.tool
+\`\`\`
+
+The continuation's repository sources were inspected through connected GitHub and committed. **No successful compile or native execution for this new continuation is claimed yet**: exact-head CI was queued when recorded. Previous verified-green symbolic interpreter checkpoint and its CI remain inherited evidence; queued parent/numerator/outer additions do not inherit green automatically.
+
+A direct local remote repository fetch attempt \`git ls-remote https://github.com/danonbrez/Holofractal_Harmonicode.git HEAD\` failed with a DNS resolution error in the local analysis container; this is an environment/network limitation, not an HHS source defect. The GitHub connector remains functional for repository writes.
+
+### Proof-authority and restart conditions
+
+\`s_tensor_action_shape_resolved = false\` and \`v_tensor_action_shape_resolved = false\`. Denominator and RHS matrix values, the typed quotient, negative-fourth power, final equality, signed predecessor authentication, signed VM81 admission, canonical persistence, Hash72 and Hash216 receipt authority are **all false**. A structurally valid public Hash216 transition reference does NOT authenticate signer origin.
+
+Next action: check current exact-head CI for this branch. Repair only failures attributable to the new geometry gate, then require a native signed and provenance-carrying \`s\`/\`v\` operator-rank/phase witness before implementing the matrix-value action. Do not infer type by scalar conventions. Once exact matrix/quotient/power operator values are proven, use only \`hhs_exact_pass219_vm81_environment_admit_signed\` and its established receipts/replay pathway. No merge or deployment performed by this tranche.
