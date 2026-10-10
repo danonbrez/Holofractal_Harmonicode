@@ -20,3 +20,17 @@
 - Environment: local container has no `lean`, `lake` or `wolframscript`; Wolfram evaluated remotely through the connected kernel.
 - Blocker: no native ordered-closure witnesses or all-edge graph instantiation has been produced.
 - Next action: inspect PR CI, repair forward failing dependency-scoped checks, merge after green, verify exact `main`.
+
+## Continuation audit
+
+- PR: `#758` — https://github.com/danonbrez/Holofractal_Harmonicode/pull/758
+- PR head on audit: `6bf3313c7dbb115d5a9d8ec8019f2fcdc70761cb`
+- Dedicated CI workflow: `Pass 220 I082 Neural Tensor Graph Wolfram Lean`
+- Workflow run: `38061142395`, job `114239483530` (`verify-i082`)
+- Observed CI state at continuation: `queued` — **not** a test failure and **not** a pass.
+- PR state at continuation: open, mergeable, unmerged.
+- Authoritative main at continuation: `7fefacde360e6a5bb537cb01e94415c96430915b`.
+- Static source audit: HHS.Mathlib.Native import is present; I077 precedent also uses `by decide` exact arithmetic and Lean-recognized equality proofs. Native Lean build remains pending rather than claimed green.
+- Follow-up validation is limited to changed I082 files plus its inherited I070/I069 and formal imports. No whole-repository rerun while queued.
+- Repair forward any failing step; do not degrade ordered AST, no Float authority, candidate-only admission, or Hash216 witness chain.
+- After green, merge PR #758 normally (not force), then confirm exact `main` and I082 file blobs.
