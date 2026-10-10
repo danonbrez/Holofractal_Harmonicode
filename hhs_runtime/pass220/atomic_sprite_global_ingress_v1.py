@@ -127,7 +127,7 @@ def run_atomic_sprite_ingress(
     )
     # Every physical input becomes an exact candidate, never a renderer-only
     # value smuggled across the canonical ingress boundary.
-    for name in PHYSICAL_INPUTS:
+    for name in REQUIRED:
         if bound["parameters"][name]["role"] != "NATIVE_EXACT_CANDIDATE":
             raise CorpusConstraintError(f"PROJECTION_PARAM_USED_AS_PHYSICS:{name}")
     raw = {k: parameters[k]["value"] for k in REQUIRED}
