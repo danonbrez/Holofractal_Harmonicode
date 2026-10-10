@@ -51,7 +51,7 @@ jobs:
         run: |
           grep -F 'hhs_pass220_ordered4x4_neg4_1_0.h' hhs_runtime/include/hhs_runtime_exact_abi.h
           grep -F 'hhs_pass220_ordered4x4_neg4_1_0.inc' hhs_runtime/c/hhs_runtime_exact_abi.c
-          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+          ! grep -REn '(^|[^[:alnum:]_])(float|double|long[[:space:]]+double)([^[:alnum:]_]|$)' \
             hhs_runtime/include/hhs_pass220_ordered4x4_neg4_1_0.h \
             hhs_runtime/c/hhs_pass220_ordered4x4_neg4_1_0.inc \
             tools/pass220/pass220_ordered4x4_hir_native_probe.c
@@ -79,7 +79,7 @@ jobs:
             -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/pass220-ordered4x4-symbolic-probe
           /tmp/pass220-ordered4x4-symbolic-probe | python -m json.tool
-          ! grep -REn '\\b(float|double|long[[:space:]]+double)\\b' \
+          ! grep -REn '(^|[^[:alnum:]_])(float|double|long[[:space:]]+double)([^[:alnum:]_]|$)' \
             hhs_runtime/include/hhs_pass220_ordered4x4_symbolic_execution_v1.h \
             hhs_runtime/c/hhs_pass220_ordered4x4_symbolic_execution_v1.inc \
             tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c
