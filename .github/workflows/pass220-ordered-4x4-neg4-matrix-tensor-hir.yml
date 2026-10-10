@@ -15,6 +15,11 @@ on:
       - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
       - 'hhs_runtime/pass220/hhs_pass220_ordered4x4_native_hir_bridge_v1.py'
       - 'tools/pass220/pass220_ordered4x4_hir_native_probe.c'
+      - 'hhs_runtime/include/hhs_pass220_ordered4x4_symbolic_execution_v1.h'
+      - 'hhs_runtime/c/hhs_pass220_ordered4x4_symbolic_execution_v1.inc'
+      - 'hhs_runtime/pass220/hhs_pass220_ordered4x4_symbolic_execution_v1.py'
+      - 'tests/pass220/test_hhs_pass220_ordered4x4_symbolic_execution_v1.py'
+      - 'tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c'
       - '.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml'
 jobs:
   scoped-hir-integrity:
