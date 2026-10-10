@@ -138,9 +138,28 @@ def run_atomic_sprite_ingress(
     _fraction(raw["kappa"], "kappa")
     if raw["material_phase"] not in MATERIAL_PHASES:
         raise CorpusConstraintError("INVALID_MATERIAL_PHASE")
-    _mapping(raw["electron_configuration"], "electron_configuration")
+    cfg = _mapping(raw["electron_configuration"], "electron_configuration")
+    for orbital, count in cfg.items():
+        if not orbital:
+            raise CorpusConstraintError("EMPTY_ORBITAL_NAME")
+        _integer(count, f"electron_configuration.{orbital}", minimum=0)
     _mapping(raw["symbolic_fields"], "symbolic_fields")
-    _mapping(raw["geometry"], "geometry")
+    geometry = _mapping(raw["geometry"], "geometry")
+    if set(geometry) != {"particle_id", "local5184", "bond_pairs"}:
+        raise CorpusConstraintError("INCOMPLETE_PARTICLE_GEOMETRY")
+    particle_id = _integer(geometry["particle_id"], "particle_id", minimum=0)
+    local5184 = _integer(geometry["local5184"], "local5184", minimum=0)
+    if particle_id >= 10368 or local5184 >= 5184:
+        raise CorpusConstraintError("PARTICLE_ADDRESS_OUT_OF_RANGE")
+    if not isinstance(geometry["bond_pairs"], (tuple, list)):
+        raise CorpusConstraintError("BOND_PAIRS_REQUIRED")
+    for pair in geometry["bond_pairs"]:
+        if not isinstance(pair, (tuple, list)) or len(pair) != 2:
+            raise CorpusConstraintError("INVALID_ORDERED_BOND_PAIR")
+        src = _integer(pair[0], "bond_source", minimum=0)
+        dst = _integer(pair[1], "bond_target", minimum=0)
+        if src >= 10368 or dst >= 10368 or src == dst:
+            raise CorpusConstraintError("INVALID_BOND_ENDPOINT")
     _phase(raw["ordered_phase"])
     _physics_controls(raw["gravity_controls"], "gravity_controls")
     _physics_controls(raw["ionic_controls"], "ionic_controls")
