@@ -76,7 +76,7 @@ class Ordered4x4NativeHIRBridge:
         result = self._lower(raw, len(source), ctypes.byref(frame), ctypes.byref(witness))
         if result != 0:
             raise MatrixTensorHIRReject(f"NATIVE_HIR_LOWER_REJECTED:{result}")
-        if witness.source_sha256.hex() != SOURCE_SHA256 or hir["source_sha256"] != SOURCE_SHA256:
+        if bytes(witness.source_sha256).hex() != SOURCE_SHA256 or hir["source_sha256"] != SOURCE_SHA256:
             raise MatrixTensorHIRReject("NATIVE_SOURCE_IDENTITY_MISMATCH")
         if not (witness.ordered_topology_verified and witness.source_identity_verified):
             raise MatrixTensorHIRReject("NATIVE_HIR_TOPOLOGY_NOT_VERIFIED")
@@ -93,8 +93,8 @@ class Ordered4x4NativeHIRBridge:
                 witness.hash216_commit_authority, witness.canonical_vm81_mutation_authority)):
             raise MatrixTensorHIRReject("NATIVE_HIR_AUTHORITY_ESCALATION")
         return CandidateHIRFrame(
-            source_sha256=witness.source_sha256.hex(),
-            topology_sha256=witness.topology_sha256.hex(),
+            source_sha256=bytes(witness.source_sha256).hex(),
+            topology_sha256=bytes(witness.topology_sha256).hex(),
             words=tuple(frame.words),
             typed_s_unresolved=True,
             typed_v_unresolved=True,
