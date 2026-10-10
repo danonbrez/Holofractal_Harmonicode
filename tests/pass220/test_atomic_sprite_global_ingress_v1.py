@@ -172,3 +172,25 @@ def test_full_repository_whitepaper_trees_bind_real_runtime():
     result = _run(root, params)
     assert result["source_bound_parameter_count"] == len(REQUIRED)
     assert result["component_witnesses"]["i058_validation"]["ok"]
+
+
+def test_service_wrapper_rejects_caller_controlled_repo_path(source):
+    from hhs_runtime.pass220.atomic_sprite_global_ingress_v1 import (
+        run_atomic_sprite_ingress_service,
+    )
+    with pytest.raises(CorpusConstraintError, match="INCOMPLETE_SERVICE_ENVELOPE"):
+        run_atomic_sprite_ingress_service({
+            "repo_root": str(source),
+            "parameters": _parameters(),
+            "expected_bundle_sha256": corpus_snapshot(source)["bundle_sha256"],
+        })
+
+
+def test_registry_exposes_new_ingress_without_changing_frozen_particle_html():
+    root = Path(__file__).resolve().parents[2]
+    registry_source = (root / "hhs_runtime/hhs_service_registry_v1.py").read_text()
+    assert 'name="pass220.atomic_sprite_corpus_ingress.v1"' in registry_source
+    assert 'function="run_atomic_sprite_ingress_service"' in registry_source
+    assert 'NO_CANONICAL_PHYSICS_MUTATION_CANDIDATE_ONLY' in registry_source
+    original = (root / "examples/ParticleSimulation.html").read_text()
+    assert 'schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"' in original
