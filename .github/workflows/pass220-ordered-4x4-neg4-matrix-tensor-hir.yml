@@ -8,6 +8,13 @@ on:
       - 'contracts/pass220/PASS_220_ORDERED_4X4_NEG4_MATRIX_TENSOR_V1.harmonicode'
       - 'hhs_runtime/pass220/hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py'
       - 'tests/pass220/test_hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py'
+      - 'tests/pass220/test_hhs_pass220_ordered4x4_native_hir_bridge_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_ordered4x4_neg4_1_0.h'
+      - 'hhs_runtime/c/hhs_pass220_ordered4x4_neg4_1_0.inc'
+      - 'hhs_runtime/include/hhs_runtime_exact_abi.h'
+      - 'hhs_runtime/c/hhs_runtime_exact_abi.c'
+      - 'hhs_runtime/pass220/hhs_pass220_ordered4x4_native_hir_bridge_v1.py'
+      - 'tools/pass220/pass220_ordered4x4_hir_native_probe.c'
       - '.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml'
 jobs:
   scoped-hir-integrity:
@@ -20,3 +27,43 @@ jobs:
       - run: python -m pip install pytest
       - run: python -m compileall -q hhs_runtime/pass220/hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py
       - run: python -m pytest -q tests/pass220/test_hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py
+
+  native-source-locked-lowering:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Confirm ABI registration and forbid float authority
+        run: |
+          grep -F 'hhs_pass220_ordered4x4_neg4_1_0.h' hhs_runtime/include/hhs_runtime_exact_abi.h
+          grep -F 'hhs_pass220_ordered4x4_neg4_1_0.inc' hhs_runtime/c/hhs_runtime_exact_abi.c
+          ! grep -REn '\b(float|double|long[[:space:]]+double)\b' \
+            hhs_runtime/include/hhs_pass220_ordered4x4_neg4_1_0.h \
+            hhs_runtime/c/hhs_pass220_ordered4x4_neg4_1_0.inc \
+            tools/pass220/pass220_ordered4x4_hir_native_probe.c
+      - name: Compile existing exact ABI with additive 4x4 lowering
+        run: |
+          make c-abi
+          test -f hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass220_ordered4x4_lower'
+      - name: Execute linked native probe
+        run: |
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered4x4_hir_native_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-ordered4x4-native-probe
+          /tmp/pass220-ordered4x4-native-probe | python -m json.tool
+      - name: Exact native/Python bridge and ancestor I077 regression
+        env:
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_hhs_pass220_ordered_4x4_neg4_matrix_tensor_v1.py \
+            tests/pass220/test_hhs_pass220_ordered4x4_native_hir_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py
