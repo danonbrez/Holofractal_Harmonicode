@@ -813,3 +813,60 @@ The exact-head native and source-integrity workflows at \`ed2ac99c83ebd99af3b5a9
 ### Next action
 
 Check exact-head native and source-integrity CI. If the runner remains queued, leave source committed and restartable; do not invent green receipts. The next data-model task is to bind a registered/verified exact HHS tensor-action rank witness (e.g., authenticated Pass158 definition/instance and canonical signed VM81 identity) to the I001 carrier, instead of using untrusted declarations or generic 5184-character shape alone.
+
+
+## Continuation: standalone strict I001 inverse parser and exhaustive position tests (2026-10-10)
+
+**Authoritative base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\`  
+**Implementation through:** \`204b26e2ac759d710fa42d01fb8587bfbe39b5b6\`
+
+### Native ingress/egress completion
+
+A previously implemented I001 inverse encoder \`hhs_exact_pass220_ordered4x4_i001_offsets_emit\` could write 5184 bytes from 81 exact normalized offset positions. Decoding was only available as a static internal parser or coupled to a much larger equation/parent preflight. A dedicated type-faithful I001 ingress path was still needed for independent exact reversibility and unit-scale exhaustive tests.
+
+New **public, read-only** exact C ABI function:
+\`hhs_exact_pass220_ordered4x4_i001_offsets_parse(encoded_bytes,encoded_length,out_offsets)\`
+
+The parser:
+- Reuses the **same inherited I001 strict 81×64 rational scientific token grammar** from the previously added native profile gate; no second permissive language parser.
+- Requires precisely 5184 bytes and decodes **all 81 position-distinct offset digits** to an 81-byte exact output, without scalar projection.
+- Builds all decoded offsets privately before publishing any outputs; malformed 81st token cannot leak the first 80 entries. On nonoverlapping invalid input, all 81 output bytes are zeroed.
+- Rejects overlapping source/destination memory ranges with \`HHS_EXACT_STATUS_INVALID_ARGUMENT\` **without mutating either buffer**. This avoids destroying the encoded input when an overlap is invalid.
+- Remains a **representation-only codec**. Even a fully canonical decoded 5184-byte I001 state does not authenticate its signature, native tensor rank, ordered action, negative-fourth-power values, equality or VM81 admission.
+
+### New exhaustive native regression
+
+New \`tools/pass220/pass220_ordered4x4_i001_roundtrip_probe.c\`:
+- Cycles through **all 81 positions × all 9 legal normalized digits = 729** source-placement cases; calls registered native C encoder then registered C decoder and verifies full 81-offset-array equality.
+- Rejects malformed numerator digit 9, zero denominator and nonzero exponent at each of 81 positions (**243 distinct positional malformed-token cases**) and checks all offsets remain zero, even if the output buffer was prefilled with nonzero bytes.
+- Rejects **82 overlapping source/output offsets** and confirms the original 5184-byte carrier remains unmodified.
+- Rejects wrong carrier width, null pointers and an illegal final offset of 9 before any encoded output mutation.
+- Optionally accepts independent Python \`serialize_offsets_5184\` fixture files and proves C \`decode(encode())\` exact reversible byte equality against them.
+
+The existing scoped GitHub CI workflow now compiles the native probe against \`make c-abi\`, runs it once stand-alone, and again with each existing independent Python-origin s and v fixture. Trigger paths include the new native probe.
+
+Changed files:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_i001_roundtrip_probe.c\` (new)
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Validation and authority
+
+Earlier exact-head native and source-integrity CI at \`4202f98d81693417ce95142b7ffc37ca07d8e676\` remained **queued**, with no compiler result. This continuation is committed but is NOT declared native-CI green without exact-head job evidence. The dependency-scoped test command is:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_i001_roundtrip_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-i001-inverse-probe
+/tmp/pass220-ordered4x4-i001-inverse-probe
+/tmp/pass220-ordered4x4-i001-inverse-probe /tmp/pass220-i001-s.txt
+/tmp/pass220-ordered4x4-i001-inverse-probe /tmp/pass220-i001-v.txt
+\`\`\`
+
+No canonical Hash72/216 receipts are generated; all VM81 mutation and PQC signature gates remain external and authoritative only to the inherited signed kernel. Next execute exact-head CI repair-forward, and integrate authenticated registered rank/phase-action semantics on top of strict I001 carrier decoding rather than assuming arbitrary shape metadata is sufficient.
