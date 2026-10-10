@@ -5,6 +5,7 @@ on:
     paths:
       - "hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py"
       - "hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
       - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
       - "docs/pass220/PASS_220_DUAL_WHITEPAPER_ATOMIC_SPRITE_GLOBAL_CONSTRAINTS_V1.md"
@@ -15,6 +16,7 @@ on:
     paths:
       - "hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py"
       - "hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
       - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
       - "docs/pass220/PASS_220_DUAL_WHITEPAPER_ATOMIC_SPRITE_GLOBAL_CONSTRAINTS_V1.md"
@@ -41,6 +43,7 @@ jobs:
         run: |
           python -m py_compile hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py
           python -m py_compile hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py
+          python -m py_compile hhs_runtime/hhs_service_registry_v1.py
           python -m py_compile tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py
           python -m py_compile tests/pass220/test_atomic_sprite_global_ingress_v1.py
       - name: Validate complete repository corpora
