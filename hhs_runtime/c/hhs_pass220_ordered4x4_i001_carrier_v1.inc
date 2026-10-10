@@ -240,3 +240,43 @@ HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_emit(
  memset(saved_offsets,0,sizeof(saved_offsets));
  return HHS_EXACT_STATUS_OK;
 }
+
+
+/* Exact I001 shape decoder only: no inferred tensor semantics.
+ * Prevent source/output aliasing so rejected candidate input is not mutated.
+ * Decode all 81 source tokens privately before publishing an output byte.
+ */
+HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_parse(
+ const uint8_t *encoded_bytes,size_t encoded_length,
+ uint8_t out_offsets[HHS220_4X4_I001_CELLS]
+) {
+ HHS220Ordered4x4NativeTensorBindingV1 carrier;
+ uint8_t staged[HHS220_4X4_I001_CELLS];
+ uintptr_t input_addr, output_addr;
+ if(out_offsets==NULL) return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+ if(encoded_bytes!=NULL) {
+  input_addr=(uintptr_t)encoded_bytes;
+  output_addr=(uintptr_t)out_offsets;
+  /* Same or overlapping ranges cannot be made both source-preserving and
+   * fully zero-on-rejection. Deny them without touching either buffer. */
+  if(input_addr>UINTPTR_MAX-HHS220_4X4_I001_TOTAL_BYTES ||
+     output_addr>UINTPTR_MAX-HHS220_4X4_I001_CELLS)
+   return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+  if(input_addr<output_addr+HHS220_4X4_I001_CELLS &&
+     output_addr<input_addr+HHS220_4X4_I001_TOTAL_BYTES)
+   return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+ }
+ memset(out_offsets,0,HHS220_4X4_I001_CELLS);
+ if(encoded_bytes==NULL || encoded_length!=HHS220_4X4_I001_TOTAL_BYTES)
+  return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+ memset(&carrier,0,sizeof(carrier));
+ carrier.state_utf8=encoded_bytes;
+ carrier.state_bytes=encoded_length;
+ if(!hhs220_i001_offsets(&carrier,staged)) {
+  memset(staged,0,sizeof(staged));
+  return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+ }
+ memcpy(out_offsets,staged,sizeof(staged));
+ memset(staged,0,sizeof(staged));
+ return HHS_EXACT_STATUS_OK;
+}
