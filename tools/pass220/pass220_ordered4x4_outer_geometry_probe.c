@@ -2,6 +2,7 @@
  * Do not interpret 32 source incidences as computed MatrixTimes output values.
  */
 #include "hhs_runtime_exact_abi.h"
+#include <openssl/sha.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -21,6 +22,32 @@ static HHSExactStatus geometry(
 ) {
  return hhs_exact_pass220_ordered4x4_outer_geometry(
   equation,HHS220_ORDERED4X4_SOURCE_BYTES,s,v,reference,out);
+}
+
+static int reversed_same_operands_diff(
+ const HHS220Ordered4x4OuterIncidenceV1 *edge,
+ const uint8_t source_sha[32]
+) {
+ static const char domain[]="HHS-P220-4X4-OUTER-ORDERED-ACTION-INCIDENCE-V1";
+ uint8_t data[sizeof(domain)-1U+32U+4U+64U];
+ uint8_t reverse_root[32];
+ size_t cursor=0U;
+ memcpy(data+cursor,domain,sizeof(domain)-1U);cursor+=sizeof(domain)-1U;
+ memcpy(data+cursor,source_sha,32U);cursor+=32U;
+ data[cursor++]=edge->branch_id;
+ data[cursor++]=edge->row;
+ data[cursor++]=edge->column;
+ data[cursor++]=(uint8_t)(1U-edge->source_matrix_is_left_operand);
+ if(edge->source_matrix_is_left_operand) {
+  memcpy(data+cursor,edge->symbol_binding_root,32U);cursor+=32U;
+  memcpy(data+cursor,edge->matrix_leaf_root,32U);cursor+=32U;
+ } else {
+  memcpy(data+cursor,edge->matrix_leaf_root,32U);cursor+=32U;
+  memcpy(data+cursor,edge->symbol_binding_root,32U);cursor+=32U;
+ }
+ return cursor==sizeof(data) &&
+        SHA256(data,cursor,reverse_root)!=NULL &&
+        memcmp(reverse_root,edge->ordered_incidence_root,32U)!=0;
 }
 
 int main(void) {
@@ -88,6 +115,8 @@ int main(void) {
          "matrix source leaf and whole tensor are different types");
    CHECK(memcmp(e->ordered_incidence_root,e->symbol_binding_root,32U)!=0,
          "operator incidence distinct from bound symbol");
+   CHECK(reversed_same_operands_diff(e,a.source_sha256),
+         "same operands in reversed order are non-equivalent without native proof");
   }
  }
  CHECK(a.incidences[0].source_literal_token==2 &&
