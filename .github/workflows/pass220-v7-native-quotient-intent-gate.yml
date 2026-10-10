@@ -13,6 +13,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   fail-closed-quotient-intent:
     runs-on: ubuntu-24.04
@@ -34,10 +38,11 @@ jobs:
             -o /tmp/pass220-v7-quotient-abi-test
           /tmp/pass220-v7-quotient-abi-test | tee /tmp/pass220-v7-abi.txt
           grep -Fx v7_native_quotient_intent_abi=PASS /tmp/pass220-v7-abi.txt
-          grep -Fx v7_undeclared_matrix_quotient=REJECTED /tmp/pass220-v7-abi.txt
+          grep -Fx v7_undeclared_matrix_quotient=INHERIT_NATIVE_DISPATCH /tmp/pass220-v7-abi.txt
+          grep -Fx v7_valid_tensor_states_not_blanket_blocked=VERIFIED /tmp/pass220-v7-abi.txt
           grep -Fx v7_five_pass169_modes=REGISTERED_PROVIDER_REQUIRED /tmp/pass220-v7-abi.txt
           grep -Fx v7_negative_phase_source_and_fake_commits=REJECTED /tmp/pass220-v7-abi.txt
-      - name: Exact source allowed modes remain noncanonical and bare slash is rejected
+      - name: Undeclared slash inherits native type dispatch, named modes remain noncanonical
         run: |
           set -euo pipefail
           cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
@@ -60,7 +65,7 @@ jobs:
             grep -Fx canonical_vm81_admission=0 "artifacts/pass220/v7-quotient-intent/mode-$mode.txt"
           done
           cp /tmp/pass220-v7-abi.txt artifacts/pass220/v7-quotient-intent/abi_negative_tests.txt
-          cp /tmp/pass220-v7-undeclared.txt artifacts/pass220/v7-quotient-intent/undeclared_rejection.txt
+          cp /tmp/pass220-v7-undeclared.txt artifacts/pass220/v7-quotient-intent/undeclared_native_dispatch.txt
       - name: Negative runtime phase and canonical-commit bypass detection
         run: |
           set -euo pipefail

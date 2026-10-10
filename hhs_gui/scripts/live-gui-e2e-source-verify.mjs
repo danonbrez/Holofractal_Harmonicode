@@ -151,7 +151,10 @@ for (const token of ['data-testid="assistant-composer"', 'data-testid="assistant
   assert(content.productionAssistant.includes(token), `production assistant missing executable acceptance marker ${token}`)
 }
 assert(content.productionAssistant.includes("/api/assistant/deployment-health"), "production assistant boot does not use bounded deployment liveness")
-assert(!content.productionAssistant.includes("/api/assistant/health"), "production assistant boot reintroduced full provider diagnostic health")
+assert(content.productionAssistant.includes("const refreshHealth = async (includeProviderDiagnostics = false)"), "deployment boot polling must default to lightweight health")
+assert(content.productionAssistant.includes("const provider = includeProviderDiagnostics"), "provider diagnostics must be explicitly opt-in")
+assert(content.productionAssistant.includes("onClick={() => void refreshHealth(true)}"), "user must be able to request provider diagnostics")
+assert(content.productionAssistant.includes("void refreshHealth()"), "boot still checks bounded deployment liveness")
 
 for (const token of ["lazyLoader", "resolveLazyComponent", "runtime_console", "calculator", "breadboard", "receipt_inspector", "replay_timeline"]) {
   assert(content.applicationRegistry.includes(token), `application registry missing ${token}`)

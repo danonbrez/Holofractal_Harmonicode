@@ -12,7 +12,7 @@ LEFT_MATRIX_SOLVE
 SCALAR_DENOMINATOR
 DECLARED_FRACTAL_NESTING
 ```
-Pass169 also requires typed independent matrix, product, tensor and nested representations. **This is a semantic whitelist, not proof that V7's bare "/" selects a mode.** For `(81*64)/((yx,y+w,wx),(-xy-wz,x+y-z-w+xy+yx-zw-wz,-zw-yx),(xy,x-z,zw))`, no authoritative source-specific mode declaration was found, so mode zero must be REJECTED. Caller-supplied lexical mode (1–5) is **candidate-only** and returns UNRESOLVED_PROVIDER; no mode is accepted as canonical merely by naming it.
+Pass169 also requires typed independent matrix, product, tensor and nested representations. **This is a semantic whitelist, not proof that V7's bare "/" selects a mode.** For `(81*64)/((yx,y+w,wx),(-xy-wz,x+y-z-w+xy+yx-zw-wz,-zw-yx),(xy,x-z,zw))`, no authoritative source-specific mode declaration was found, so mode zero must remain **INHERIT_NATIVE_DISPATCH** with native type dispatch required. It is not a canonical matrix-quotient admission. Caller-supplied lexical mode (1–5) remains **candidate-only** and returns UNRESOLVED_PROVIDER; no mode is accepted as canonical merely by naming it.
 
 ## New real native callable ABI
 - `hhs_runtime/include/hhs_pass220_v7_quotient_gate_v1.h`: C ABI mode/decision/reason enums and typed source/claim/result structs.
@@ -20,7 +20,7 @@ Pass169 also requires typed independent matrix, product, tensor and nested repre
 - `tests/pass220/pass220_v7_quotient_gate_abi_test.c`: native C ABI regression of undecided mode, all five allowed named modes, unknown mode, mutations, failed source length/version, forbidden commutation/scalarization/Δ cancellation/equality reversal, and forged signed VM81/Hash72/Hash216 claims.
 - `.github/workflows/pass220-v7-native-quotient-intent-gate.yml`: dependency-scoped real ABI compile and native tests, source exactness and source-order mutations, receipt upload.
 
-The C ABI returns **only** REJECT or UNRESOLVED_PROVIDER. It cannot and does not mint native proof, mutate VM81 state, generate canonical Hash72/Hash216, or treat a caller-supplied hash/flag as environmental authority. It is a real callable native fail-closed *admission precondition* that prevents choosing a semantics inadvertently.
+The C ABI returns **INHERIT_NATIVE_DISPATCH**, **UNRESOLVED_PROVIDER**, or **REJECT**, depending on the typed mode and evidence. An undeclared but source-valid quotient remains eligible for native type inference; prohibited phase transformations, source mutations, unsupported modes, and fabricated canonical-commit claims are rejected. The ABI cannot mint proof, mutate VM81 state, generate canonical Hash72/Hash216, or treat a caller-supplied hash/flag as environmental authority.
 
 ## Scope of proof work remaining
 

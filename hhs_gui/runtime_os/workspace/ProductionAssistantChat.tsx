@@ -148,12 +148,14 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
     return assistant?.metadata ?? "No assistant turn yet"
   }, [messages])
 
-  const refreshHealth = async (): Promise<void> => {
+  const refreshHealth = async (includeProviderDiagnostics = false): Promise<void> => {
     try {
-      // Deployment admission remains primary. Read-only provider health is
-      // supplementary and may be unavailable on older host revisions.
+      // The boot/poll route is bounded deployment liveness only.
+      // Full provider diagnostics are explicitly requested by the user.
       const deployment = await requestJson("/api/assistant/deployment-health", undefined, 10000)
-      const provider = await requestJson("/api/assistant/health", undefined, 10000).catch(() => ({}))
+      const provider = includeProviderDiagnostics
+        ? await requestJson("/api/assistant/health", undefined, 10000).catch(() => ({}))
+        : {}
       setHealth({ ...provider, ...deployment })
       setError(null)
     } catch (reason) {
@@ -328,7 +330,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
           <div className="mt-1 text-[10px] text-neutral-500">{modeLabel(assistantMode)}</div>
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => void refreshHealth()} className="rounded-full border border-neutral-800 bg-black/50 px-3 py-1.5 text-[10px] text-neutral-400">
+          <button type="button" onClick={() => void refreshHealth(true)} className="rounded-full border border-neutral-800 bg-black/50 px-3 py-1.5 text-[10px] text-neutral-400" title="Show provider diagnostics">
             <span className={`mr-1.5 inline-block h-2 w-2 rounded-full ${online ? "bg-emerald-400" : "bg-amber-400"}`} />
             {modelLabel}
           </button>
