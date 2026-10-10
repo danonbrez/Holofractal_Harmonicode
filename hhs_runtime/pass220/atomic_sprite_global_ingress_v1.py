@@ -115,6 +115,11 @@ def run_atomic_sprite_ingress(
     bound = bind_global_parameters(
         repo_root, parameters, expected_bundle_sha256=expected_bundle_sha256
     )
+    # Every physical input becomes an exact candidate, never a renderer-only
+    # value smuggled across the canonical ingress boundary.
+    for name in PHYSICAL_INPUTS:
+        if bound["parameters"][name]["role"] != "NATIVE_EXACT_CANDIDATE":
+            raise CorpusConstraintError(f"PROJECTION_PARAM_USED_AS_PHYSICS:{name}")
     raw = {k: parameters[k]["value"] for k in REQUIRED}
     _integer(raw["atomic_number"], "atomic_number", minimum=1)
     _integer(raw["mass_number"], "mass_number", minimum=raw["atomic_number"])
