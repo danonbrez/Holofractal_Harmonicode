@@ -86,7 +86,7 @@ def test_executes_real_inherited_physics_and_game_frame(source):
     ("ordered_phase", {**VALUES["ordered_phase"], "operation64": 64}, "VM81_ADDRESS"),
     ("ordered_phase", {**VALUES["ordered_phase"], "parent_hash216": "broken"}, "INVALID_INHERITED"),
     ("neural_controls", {**VALUES["neural_controls"], "thrust": F(2)}, "UNBOUNDED_ACTUATOR"),
-    ("ionic_controls", {"charge_gain": F(-1)}, "RATIONAL_BOUND"),
+    ("ionic_controls", {"charge_gain": F(-1), "soft": F(1, 20)}, "RATIONAL_BOUND"),
     ("gravity_controls", {"mu": 0.5}, "FLOAT_CANONICAL"),
     ("neural_controls", {**VALUES["neural_controls"], "yaw": 0.25}, "FLOAT_CANONICAL"),
 ])
@@ -194,3 +194,16 @@ def test_registry_exposes_new_ingress_without_changing_frozen_particle_html():
     assert 'NO_CANONICAL_PHYSICS_MUTATION_CANDIDATE_ONLY' in registry_source
     original = (root / "examples/ParticleSimulation.html").read_text()
     assert 'schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"' in original
+
+
+@pytest.mark.parametrize(("field", "new_value", "reason"), [
+    ("gravity_controls", {"mu": F(1), "soft": F(0)}, "RATIONAL_BOUND"),
+    ("ionic_controls", {"charge_gain": F(1), "soft": F(0)}, "RATIONAL_BOUND"),
+    ("gravity_controls", {"mu": F(1), "soft": F(1), "unknown": 1}, "UNDECLARED_OR_MISSING"),
+    ("ionic_controls", {"charge_gain": F(1)}, "UNDECLARED_OR_MISSING"),
+])
+def test_physics_model_controls_are_declared_and_bounded(source, field, new_value, reason):
+    params = _parameters()
+    params[field]["value"] = new_value
+    with pytest.raises(CorpusConstraintError, match=reason):
+        _run(source, params)
