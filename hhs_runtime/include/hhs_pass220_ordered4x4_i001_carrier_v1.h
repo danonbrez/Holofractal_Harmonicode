@@ -82,6 +82,18 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_emit(
  uint8_t *out_bytes,size_t capacity,size_t *out_length
 );
 
+
+/*
+ * Independent exact 81x64 I001 ingress decoder, inverse to offsets_emit.
+ * Typed tensor provenance remains in the separate source/parent bound gate:
+ * successful decoding is only a representation witness, NEVER VM81 admission.
+ * Input/output buffers must not overlap. Failed inputs zero all 81 offsets.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_parse(
+ const uint8_t *encoded_bytes,size_t encoded_length,
+ uint8_t out_offsets[HHS220_4X4_I001_CELLS]
+);
+
 #ifdef __cplusplus
 }
 #endif
