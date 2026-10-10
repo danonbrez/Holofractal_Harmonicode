@@ -274,3 +274,71 @@ The parent preflight checks that both opaque tensor bindings carry the same 216-
 Inspect the dedicated exact-head native CI at GitHub Actions for PR #756. Fix any bounded failures. Do not wait on queued unrelated workflows; checkpoint is restartable. Only if registered complete HHS operator value results and genuine signed environmental references become available may full tensor equality be proved and submitted to inherited \`hhs_exact_pass219_vm81_environment_admit_signed\`. Verify actual receipt lineage and replay after admission; never infer it from a reconstructed reference alone.
 
 Environment: connected GitHub repository and Actions; production VM81 signed runtime state and signing environment are not mounted here. This repository mutation is a native ABI candidate/preflight extension, not production deployment.
+
+
+## Continuation: source-addressed 4×4 numerator product expansion (2026-10-10)
+
+Base main: \`7fefacde360e6a5bb537cb01e94415c96430915b\`.
+Branch: \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`.
+Merge target: \`main\`.
+Source remains frozen at 366 bytes and SHA256 \`a3ba5ca5f31ee76261e5df75c7e9f43a78219d59df36a095a07c0acdf90dbd19\`.
+Current additive implementation through \`f6a4ca6aab44c3789961f341c396607cd18a89a5\`.
+
+### New executable native operator subgraph
+
+The exact ABI now exports \`hhs_exact_pass220_ordered4x4_numerator_terms\`. It takes the original source and uses the inherited source-locked 4×4 HIR verifier, then materializes the **64 source-addressed ordered product terms** and **16 ordered four-term output-cell expression nodes** of the numerator \`MatrixTimes(-List(...),-List(...))\`.
+
+For each output-cell address \`(i,j)\`, all four terms retain the exact ordered provenance:
+
+\`\`\`
+term(i,k,j) = OrderedProduct(
+    OuterNegation(Matrix0)[i,k],
+    OuterNegation(Matrix1)[k,j]
+)
+numerator_cell(i,j) = OrderedSum(
+    term(i,0,j),term(i,1,j),term(i,2,j),term(i,3,j)
+)
+\`\`\`
+
+This is a **typed source-expression routing/expansion**, not ordinary scalar matrix multiplication. The literal matrix leaves remain original source signed tokens; the two \`-List\` wrappers remain explicitly attached to their original matrices. No sign cancellation, coefficient calculation, term sorting, commutation, substitution, or matrix-power evaluation is authorized. All positional leaf/product/sum roots are deterministic, domain-separated **diagnostic SHA256** witnesses; they never grant VM81 or Hash72/Hash216 authority.
+
+Files created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_numerator_terms_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_numerator_terms_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_numerator_terms_probe.c\`
+
+Files updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+### Scoped negative conformance
+
+The new probe must build/run against the actual exact C ABI. It asserts:
+- Exactly 64 term roots and 16 ordered sum roots; 4×4 source shape.
+- Source roles matrix 0 left/matrix 1 right never reversed; row/column/reduction position preserved for every term.
+- Both outer matrix negation nodes preserved rather than numerically cancelling.
+- Diagnostic witness for reversing operand root order differs for every term (no commutation).
+- Complete output is deterministic under exact source replay.
+- Source byte mutation, truncation and null pointers fail closed.
+- All flags for matrix value/equality, scalar arithmetic, signed admission and canonical receipts remain false.
+
+Run dependency-scoped commands:
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+ -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_numerator_terms_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-numerator-probe
+/tmp/pass220-ordered4x4-numerator-probe
+\`\`\`
+
+Do not mark these commands complete until CI finishes. Previous bound and parent-preflight CI may be queued; check the exact branch head and repair only impacted tests.
+
+### Remaining obligations
+
+The numerator expansion does not establish the native value semantics of \`MatrixTimes\`, \`MatrixTimes(D,s)\`, \`MatrixTimes(v,L)\`, the typed quotient, or \`NcalcMatrixPower(...,(-4))\`. The inherited signed environmental admission must not be invoked on a merely constructed equality *node*. Authentic signed origin cannot be inferred from a constructible indexed Hash216 reference; a genuine signed envelope and all native operator/equality proofs remain required. No production deployment or main merge is claimed.
+
+Next action: inspect exact-head native CI for \`f6a4ca6a...\` (or later checkpoint), repair failed scoped tests, and implement address-preserving denominator/RHS typed vector/matrix operator expansion only after confirming their native operand shape/phase contracts. Do not assume \`s\` or \`v\` are free conventional scalars.
