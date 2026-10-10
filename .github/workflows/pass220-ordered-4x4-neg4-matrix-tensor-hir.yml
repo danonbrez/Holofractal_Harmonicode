@@ -46,6 +46,10 @@ on:
       - 'hhs_runtime/include/hhs_pass220_ordered4x4_readiness_v1.h'
       - 'hhs_runtime/c/hhs_pass220_ordered4x4_readiness_v1.inc'
       - 'tools/pass220/pass220_ordered4x4_readiness_probe.c'
+      - 'hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h'
+      - 'hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc'
+      - 'tools/pass220/pass220_ordered4x4_i001_carrier_probe.c'
+      - 'hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py'
       - '.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml'
 jobs:
   scoped-hir-integrity:
@@ -216,6 +220,30 @@ jobs:
             hhs_runtime/include/hhs_pass220_ordered4x4_readiness_v1.h \
             hhs_runtime/c/hhs_pass220_ordered4x4_readiness_v1.inc \
             tools/pass220/pass220_ordered4x4_readiness_probe.c
+      - name: Native I001 exact rational 81x64 carrier and Python serializer compatibility
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass220_ordered4x4_i001_carrier_validate'
+          gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered4x4_i001_carrier_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-ordered4x4-i001-carrier-probe
+          /tmp/pass220-ordered4x4-i001-carrier-probe | python -m json.tool
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import serialize_offsets_5184
+          for symbol, seed in (("s", 0), ("v", 4)):
+              data = serialize_offsets_5184(tuple((seed+i)%9 for i in range(81)))
+              assert len(data) == 5184
+              Path(f"/tmp/pass220-i001-{symbol}.txt").write_bytes(data.encode("ascii"))
+          PY
+          /tmp/pass220-ordered4x4-i001-carrier-probe \
+            /tmp/pass220-i001-s.txt /tmp/pass220-i001-v.txt | python -m json.tool
+          ! grep -REn '(^|[^[:alnum:]_])(float|double|long[[:space:]]+double)([^[:alnum:]_]|$)' \
+            hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h \
+            hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc \
+            tools/pass220/pass220_ordered4x4_i001_carrier_probe.c
       - name: Exact native/Python bridge and ancestor I077 regression
         env:
           HHS_DISABLE_C_AUTOBUILD: '1'
