@@ -28,6 +28,17 @@ static int check(const HHS220Ordered4x4NativeTensorBindingV1 *s,
  return hhs_exact_pass220_ordered4x4_i001_carrier_validate(
   source,HHS220_ORDERED4X4_SOURCE_BYTES,s,v,&parent,out)==HHS_EXACT_STATUS_OK;
 }
+/* Invalid input MUST NOT leak a partially decoded 81-cell state, even if the
+ * caller filled the output with forged authority markers before this call. */
+static int witness_is_fully_zero(const HHS220Ordered4x4I001CarrierV1 *value) {
+ const uint8_t *bytes=(const uint8_t *)value;
+ size_t i;
+ for(i=0U;i<sizeof(*value);++i) {
+  if(bytes[i]!=0U) return 0;
+ }
+ return 1;
+}
+
 int main(int argc, char **argv) {
  HHS220Ordered4x4NativeTensorBindingV1 s,v;
  uint8_t crosslang_s[5184U],crosslang_v[5184U];
@@ -118,7 +129,9 @@ int main(int argc, char **argv) {
 
  /* These strings pass old UTF-8 length checks but are NOT I001 tokens. */
  memset(s_state,'X',sizeof(s_state));
+ memset(&invalid,0xA5,sizeof(invalid));
  CHECK(!check(&s,&v,&invalid),"shape-only X*5184 rejected");
+ CHECK(witness_is_fully_zero(&invalid),"shape-only input publishes no partial offsets");
  CHECK(!invalid.I001_normalization_token_profile_verified &&
        !invalid.hash216_commit_authority,"invalid shape no authority");
  encode_offset_profile(s_state,0U);
@@ -147,16 +160,22 @@ int main(int argc, char **argv) {
  CHECK(!check(&s,&v,&invalid),"canonical numerator padding enforced");
  s_state[2]='0';
  v_state[64U*80U+41U]='0';
+ memset(&invalid,0xA5,sizeof(invalid));
  CHECK(!check(&s,&v,&invalid),"last token denominator drift rejected");
+ CHECK(witness_is_fully_zero(&invalid),"late v token failure cannot expose valid s or earlier v cells");
  v_state[64U*80U+41U]='1';
  s.state_bytes=5183U;
  CHECK(!check(&s,&v,&invalid),"truncated 5184 carrier denied");
  s.state_bytes=5184U;
  source[0]^=1U;
+ memset(&invalid,0xA5,sizeof(invalid));
  CHECK(!check(&s,&v,&invalid),"modified equation source denied");
+ CHECK(witness_is_fully_zero(&invalid),"downstream source gate failure cannot expose decoded tensor offsets");
  source[0]^=1U;
  v.predecessor_bytes=215U;
+ memset(&invalid,0xA5,sizeof(invalid));
  CHECK(!check(&s,&v,&invalid),"invalid parent width denied");
+ CHECK(witness_is_fully_zero(&invalid),"lineage rejection zeroizes staged output");
  v.predecessor_bytes=216U;
  CHECK(hhs_exact_pass220_ordered4x4_i001_carrier_validate(
    source,n,&s,&v,&parent,NULL)!=HHS_EXACT_STATUS_OK,
