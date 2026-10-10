@@ -232,6 +232,52 @@ The corrected entrypoint is:
 `examples/ParticleSimulationAtomicNeural.html`.
 No original I057 source modification or production deployment is claimed.
 
+## Follow-up browser errors: startup, controls, diagnostics and command repairs
+
+The second browser repair cycle addresses additional integration defects
+without changing the frozen I057 HTML:
+
+1. Render the **very first** animation frame immediately rather than waiting
+   for `renderTick%4===0`. Every-fourth projection cadence resumes afterward;
+   the rendered-frame counter includes that extra first presentation frame.
+   The inherited `QuarticSkipTest` remains quarantined on this derived page
+   because the new first-frame convention intentionally differs from its
+   exact original cadence assertion.
+2. Remove unused `dat.gui` script dependency and pin OrbitControls at
+   `three@0.128.0`. If the optional OrbitControls script is unavailable,
+   use a **static-camera fallback**, preserving physical computation and
+   visible particles. Missing core THREE.js or a WebGL failure remains a
+   genuine rendering prerequisite; startup errors are now exposed in a
+   visible on-page `runtimeDiagnostics` element instead of disappearing
+   behind a black canvas.
+3. Do not allow `TopoInversionTest` to run destructively against the live
+   derived page while the physical topology control requires native
+   admission. It is quarantined alongside the other mutation-capable
+   diagnostic receipts.
+4. Catch command/module execution exceptions separately from JSON parsing.
+   Both the OS shell and QPU command interfaces report
+   `COMMAND_RUNTIME_REJECTED` or `MODULE_RUNTIME_REJECTED` for execution
+   failures, not the misleading `Invalid JSON` message.
+5. Keep the optional neural controller embedded in the standalone HTML;
+   its initialization failure or invalid sensor frame does **not** suppress
+   the underlying 10,368-particle graphics/physics.
+
+In addition to the source-regression test, this cycle commits
+`tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs`.
+It **executes both controller and simulation** against deterministic
+browser/THREE interface doubles, checking first-frame display, eight more
+animation callbacks, working agent inspection, measured-calibration
+callbacks, strict physical UI control boundaries, and successful rendering
+without either OrbitControls or the neural overlay. Both JS regression
+suites passed in the in-session V8 test harness against exact branch
+source. Repository CI includes both tests, but **real GPU/WebGL
+rendering remains pending separate graphical smoke**.
+
+These changes are targeted *browser projection/diagnostics* repairs:
+no source corpus constraint, VM81 admission authority, Hash72/Hash216
+provenance, canonical ordered phase, or original I057 force equation was
+weakened or replaced.
+
 ## I057-preserving derived agentic electron-sprite browser
 
 The I057 authority baseline `examples/ParticleSimulation.html` remains
