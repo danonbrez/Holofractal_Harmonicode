@@ -21,6 +21,17 @@
          frame.phase.length!==count||frame.charge.length!==count||
          frame.mass.length!==count||frame.neighbors.length!==count||
          frame.budget.length!==count) throw Error("INCOMPLETE_PROJECTED_SENSORY_FRAME");
+      /* Transactional preflight: reject malformed floating projections
+         before changing even one recurrent neuron state. */
+      for(let i=0;i<count;i++){
+        const k=i*3;
+        for(const values of [frame.position,frame.velocity]){
+          if(!Number.isFinite(values[k])||!Number.isFinite(values[k+1])||
+             !Number.isFinite(values[k+2])) throw Error("NONFINITE_SENSORY_INPUT");
+        }
+        if(!Number.isFinite(frame.mass[i])||!Number.isFinite(frame.charge[i])||
+           !Number.isFinite(frame.neighbors[i])) throw Error("NONFINITE_SENSORY_INPUT");
+      }
       let sum=0, attempts=0;
       for(let i=0;i<count;i++){
         const k=i*3, m=i*WIDTH;
