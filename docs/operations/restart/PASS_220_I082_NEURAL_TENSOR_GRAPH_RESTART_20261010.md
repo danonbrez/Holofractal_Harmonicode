@@ -1,0 +1,22 @@
+# Pass 220 I082 restartable checkpoint — 2026-10-10
+
+- Repository: `danonbrez/Holofractal_Harmonicode`
+- Verified starting main: `7fefacde360e6a5bb537cb01e94415c96430915b`
+- Active development branch: `agent/pass220-i082-86b-neuron-wolfram-lean-20261010`
+- Merge target: `main`
+- Policy: append-only, preserve I069/I070/I065, no force-push, dependency-scoped regression.
+- Current state: exact candidate implemented; Wolfram validated; branch not merged.
+- Changed files:
+  - `hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py`
+  - `tests/pass220/test_hhs_pass220_i082_neural_tensor_graph_v1.py`
+  - `formal/lean/HHS/Pass220/NeuralTensorGraph.lean`
+  - `formal/wolfram/pass220_i082_neural_tensor_graph_v1.wl`
+  - `evidence/pass220/i082_neural_tensor_wolfram_20261010_v1.output.json`
+  - `docs/pass220/PASS_220_I082_NEURAL_TENSOR_GRAPH.md`
+  - `docs/operations/restart/PASS_220_I082_NEURAL_TENSOR_GRAPH_RESTART_20261010.md`
+  - `.github/workflows/pass220-i082-neural-tensor-graph.yml`
+- Completed command: WolframLanguageEvaluator evaluated the committed Wolfram source: 13/13 checks PASS. This checks the arithmetic/AST only.
+- Validation remaining: targeted Python unittest, inherited I070/I069 tests, Python compile, Lean compile and kernel check, CI outcome, PR merge and verified main.
+- Environment: local container has no `lean`, `lake` or `wolframscript`; Wolfram evaluated remotely through the connected kernel.
+- Blocker: no native ordered-closure witnesses or all-edge graph instantiation has been produced.
+- Next action: inspect PR CI, repair forward failing dependency-scoped checks, merge after green, verify exact `main`.
