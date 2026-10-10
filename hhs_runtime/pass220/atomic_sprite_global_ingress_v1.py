@@ -90,10 +90,20 @@ def _bounded_actions(value: Any) -> Mapping[str, Any]:
 
 def _physics_controls(value: Any, name: str) -> Mapping[str, Any]:
     controls = _mapping(value, name)
-    if not controls:
-        raise CorpusConstraintError(f"EMPTY_PHYSICS_CONTROLS:{name}")
+    allowed = (
+        frozenset(("mu", "soft", "dt", "core", "Rb", "kw", "dragEps",
+                   "om0", "omCore", "gradG", "keRef", "aCap", "Rout",
+                   "vmax", "R0", "rc2"))
+        if name == "gravity_controls"
+        else frozenset(("charge_gain", "soft", "collision_window", "bond_strength"))
+    )
+    required = frozenset(("mu", "soft")) if name == "gravity_controls" else frozenset(("charge_gain", "soft"))
+    if not required <= controls.keys() or not controls.keys() <= allowed:
+        raise CorpusConstraintError(f"UNDECLARED_OR_MISSING_PHYSICS_CONTROL:{name}")
     for key, v in controls.items():
-        _fraction(v, f"{name}.{key}", nonnegative=True)
+        _fraction(v, f"{name}.{key}",
+                  positive=key in ("soft", "dt", "core", "collision_window"),
+                  nonnegative=key not in ("soft", "dt", "core", "collision_window"))
     return controls
 
 
