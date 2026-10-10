@@ -1,0 +1,31 @@
+{
+  "schema": "HHS_PASS_220_I082_NEURAL_TENSOR_GRAPH_WOLFRAM_V1",
+  "source": "formal/wolfram/pass220_i082_neural_tensor_graph_v1.wl",
+  "execution": "Wolfram Language kernel, October 10 2026",
+  "status": "PASS",
+  "check_count": 13,
+  "pass_count": 13,
+  "failed": [],
+  "neuron_count": 86805555555,
+  "positions_per_neuron": 5184,
+  "logical_positions": 449999999997120,
+  "coefficient_numerator": 1406249999991,
+  "coefficient_denominator": 312500000000,
+  "native_closure": "OPEN_LANE5_WITNESS_REQUIRED",
+  "native_relation_obligation_count": 2,
+  "checks": {
+    "neuron_count_exact": true,
+    "width_5184": true,
+    "positions_exact": true,
+    "a2b2c2_projection": true,
+    "coefficient_exact": true,
+    "scalar_offset_exact": true,
+    "three_ordered_segments": true,
+    "denominator_order_retained": true,
+    "middle_xy_order": true,
+    "noncommuted_xy_yx": true,
+    "rhs_w_u_order": true,
+    "native_obligations_open": true,
+    "exact_no_machine_reals": true
+  }
+}
