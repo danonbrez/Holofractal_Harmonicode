@@ -136,3 +136,39 @@ def test_stale_corpus_snapshot_rejected_before_physics(source):
     (source / "whitepapers/proof.md").write_text("modified\n")
     with pytest.raises(CorpusConstraintError, match="STALE_OR_UNBOUND"):
         run_atomic_sprite_ingress(source, params, expected_bundle_sha256=before)
+
+
+def test_untyped_orbital_counts_rejected(source):
+    params = _parameters()
+    params["electron_configuration"]["value"] = {"1s": "2", "2s": 1}
+    with pytest.raises(CorpusConstraintError, match="REQUIRES_BIGINT"):
+        _run(source, params)
+
+
+@pytest.mark.parametrize(("geometry", "message"), [
+    ({"particle_id": 10368, "local5184": 0, "bond_pairs": []}, "PARTICLE_ADDRESS"),
+    ({"particle_id": 0, "local5184": 5184, "bond_pairs": []}, "PARTICLE_ADDRESS"),
+    ({"particle_id": 0, "local5184": 0, "bond_pairs": [[0, 0]]}, "INVALID_BOND_ENDPOINT"),
+    ({"particle_id": 0, "local5184": 0, "bond_pairs": [[0, 10368]]}, "INVALID_BOND_ENDPOINT"),
+    ({"particle_id": 0, "local5184": 0, "bond_pairs": [0]}, "INVALID_ORDERED_BOND_PAIR"),
+])
+def test_particle_address_and_bond_guards(source, geometry, message):
+    params = _parameters()
+    params["geometry"]["value"] = geometry
+    with pytest.raises(CorpusConstraintError, match=message):
+        _run(source, params)
+
+
+def test_full_repository_whitepaper_trees_bind_real_runtime():
+    root = Path(__file__).resolve().parents[2]
+    assert (root / "whitepapers/HOLOFRACTAL_HARMONICODE.md").is_file()
+    assert (root / "docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md").is_file()
+    params = _parameters()
+    for item in params.values():
+        item["source_paths"] = [
+            "whitepapers/HOLOFRACTAL_HARMONICODE.md",
+            "docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md",
+        ]
+    result = _run(root, params)
+    assert result["source_bound_parameter_count"] == len(REQUIRED)
+    assert result["component_witnesses"]["i058_validation"]["ok"]
