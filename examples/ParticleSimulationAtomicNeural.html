@@ -651,7 +651,9 @@
     window.addEventListener('pointermove', e=>{
       pointerNdc.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1);
       pointerRayT();
-      pointerActive=true; });
+      /* Pointer movement is sensing-only until source-bound admission.
+         Unverified browser impulses must not steer ionic carriers. */
+      pointerActive=false; });
     window.addEventListener('pointerleave', ()=>pointerActive=false);
 
     /* =====================================================================
@@ -3962,7 +3964,10 @@
             }
           }
         }
-        return { status: "success", message: "Initialization complete.", simParams: simParams, moduleResults: moduleResults };
+        const anyFailed=Object.values(moduleResults).some(r=>r&&(r.error||r.ok===false));
+        return { status:anyFailed?"fail_closed":"success",
+          message:anyFailed?"One or more modules were rejected":"Initialization completed without parameter changes",
+          simParams:simParams,moduleResults:moduleResults };
       } else if (jsonCommand.command === "run_module") {
         let moduleName = jsonCommand.module;
         if (!moduleName) return { error: "No module specified." };
