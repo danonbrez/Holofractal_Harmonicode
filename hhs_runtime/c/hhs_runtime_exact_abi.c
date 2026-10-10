@@ -136,3 +136,4 @@
 #include "hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.inc"
 #include "hhs_pass220_ordered4x4_neg4_1_0.inc"
 #include "hhs_pass220_ordered4x4_symbolic_execution_v1.inc"
+#include "hhs_pass220_ordered4x4_typed_bindings_v1.inc"
