@@ -4137,7 +4137,12 @@
           for (let mod in config.HHS_System.modules) {
             const modConfig = config.HHS_System.modules[mod];
             if (MODULES[mod]) {
-              moduleResults[mod] = MODULES[mod](modConfig.parameters || {});
+              try {
+                moduleResults[mod] = MODULES[mod](modConfig.parameters || {});
+              } catch(e) {
+                moduleResults[mod]={ok:false,status:"MODULE_RUNTIME_REJECTED",
+                  module:mod,reason:String(e && e.message || e)};
+              }
             } else {
               moduleResults[mod] = { error: "Module not found." };
             }
@@ -4152,9 +4157,14 @@
         if (!moduleName) return { error: "No module specified." };
         let parameters = jsonCommand.parameters || {};
         if (MODULES[moduleName]) {
-          let result = MODULES[moduleName](parameters);
-          return { status:result&&result.ok===false?"fail_closed":"success",
-            module:moduleName,result:result };
+          try {
+            const result=MODULES[moduleName](parameters);
+            return { status:result&&result.ok===false?"fail_closed":"success",
+              module:moduleName,result:result };
+          } catch(e) {
+            return {status:"fail_closed",module:moduleName,
+              reason:"MODULE_RUNTIME_REJECTED",error:String(e && e.message || e)};
+          }
         } else {
           return { error: "Module '" + moduleName + "' not found." };
         }
@@ -4198,15 +4208,22 @@
     let historyIndex = -1;
     const commandInput = document.getElementById("commandInput");
     document.getElementById("runCommand").addEventListener("click", () => {
-      let input = commandInput.value;
+      const input=commandInput.value;
+      let commandObj;
       try {
-        let commandObj = JSON.parse(input);
+        commandObj=JSON.parse(input);
+      } catch(e) {
+        document.getElementById("output").innerText="Invalid JSON: "+e.message;
+        return;
+      }
+      try {
         commandHistory.push(input);
-        historyIndex = commandHistory.length;
-        let result = interpretCommand(commandObj);
-        document.getElementById("output").innerText = JSON.stringify(result, null, 2);
-      } catch (e) {
-        document.getElementById("output").innerText = "Invalid JSON: " + e.message;
+        historyIndex=commandHistory.length;
+        const result=interpretCommand(commandObj);
+        document.getElementById("output").innerText=JSON.stringify(result,null,2);
+      } catch(e) {
+        document.getElementById("output").innerText=
+          "COMMAND_RUNTIME_REJECTED: "+String(e && e.message || e);
       }
     });
     document.getElementById("runCalibration").addEventListener("click",()=>{
@@ -4296,16 +4313,23 @@
     function sendHarmonicodeCommand() {
       let el = document.getElementById("jsonCommandInput");
       let cmdInput = document.getElementById("commandInput");
+      let jsonCommand;
       try {
-        let jsonCommand = JSON.parse(el.value);
-        cmdInput.value = el.value;
-        let response = interpretCommand(jsonCommand);
-        document.getElementById("commandOutput").textContent =
+        jsonCommand=JSON.parse(el.value);
+      } catch(error) {
+        document.getElementById("commandOutput").textContent=
+          "Invalid JSON: "+error.message;
+        return;
+      }
+      try {
+        cmdInput.value=el.value;
+        const response=interpretCommand(jsonCommand);
+        document.getElementById("commandOutput").textContent=
           "Response:\n"+JSON.stringify(response,null,2);
-        document.getElementById("output").innerText = JSON.stringify(response, null, 2);
-      } catch (error) {
-        document.getElementById("commandOutput").textContent =
-          "Error: invalid JSON — "+error.message;
+        document.getElementById("output").innerText=JSON.stringify(response,null,2);
+      } catch(error) {
+        document.getElementById("commandOutput").textContent=
+          "COMMAND_RUNTIME_REJECTED: "+String(error && error.message || error);
       }
     }
 
