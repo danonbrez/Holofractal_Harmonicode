@@ -11,10 +11,14 @@ const original=fs.readFileSync(path.join(ROOT,"examples/ParticleSimulation.html"
 const derived=fs.readFileSync(path.join(ROOT,"examples/ParticleSimulationAtomicNeural.html"),"utf8");
 
 assert(original.includes('schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"'));
-assert(derived.includes('<script src="hhs_agentic_electron_sprite_v1.js"></script>'));
-const inline=derived.match(/<script>\s*([\s\S]*?)<\/script>/);
-assert(inline,"Derived HTML must contain a native browser inline controller");
+assert(!derived.includes('<script src="hhs_agentic_electron_sprite_v1.js"></script>'),
+  "Single-file HTML must not require a separate local module");
+const inline=[...derived.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
+  .map(m=>m[1]).filter(s=>s.trim());
+assert.equal(inline.length,2,"Embedded neural controller + main simulation source");
+new vm.Script(inline[0],{filename:"embedded_agentic_sprite_controller.js"});
 new vm.Script(inline[1],{filename:"ParticleSimulationAtomicNeural.html"});
+assert(inline[0].includes(js.trim()),"Embedded neural source must match companion source");
 assert(derived.includes("if(!window.HHS.boot.boot_halt) initScene()"));
 assert(!derived.includes("Object.assign(simParams, config.HHS_System.global_parameters)"));
 assert(derived.includes("FAIL_CLOSED_LIVE_STATE_MUTATING_DIAGNOSTIC"));
@@ -80,8 +84,11 @@ badFrame.velocity[10367*3+2]=NaN;
 const previousTicks=a.telemetry().ticks;
 assert.throws(()=>a.tick(badFrame),/NONFINITE_SENSORY_INPUT/);
 assert.equal(a.telemetry().ticks,previousTicks,"Invalid frames cannot advance recurrence");
-assert(derived.includes("if(agentProjectionHalt) return"));
+assert(!derived.includes("if(agentProjectionHalt) return"),
+  "Rejected neural projection must not halt the independent field loop");
 assert(derived.includes('agentProjectionHalt="NEURAL_SENSORY_GATE_REJECTED: "'));
+assert(derived.includes("agentController=null;"),
+  "Rejected neural projection must quarantine neural inference");
 assert(derived.includes("pointerActive=false; });"));
 assert(derived.includes('id="agentInspector"'));
 assert(derived.includes('id="inspectAgent"'));
