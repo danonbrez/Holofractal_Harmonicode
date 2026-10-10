@@ -207,3 +207,10 @@ def test_physics_model_controls_are_declared_and_bounded(source, field, new_valu
     params[field]["value"] = new_value
     with pytest.raises(CorpusConstraintError, match=reason):
         _run(source, params)
+
+
+def test_even_i058_clock_and_macro_parameters_cannot_be_projections(source):
+    params = _parameters()
+    params["P"]["role"] = "PROJECTION_ONLY"
+    with pytest.raises(CorpusConstraintError, match="PROJECTION_PARAM_USED_AS_PHYSICS"):
+        _run(source, params)
