@@ -117,4 +117,5 @@
 #include "hhs_pass220_rna_hash72_dna_qudit_phase_lock_1_0.h"
 #include "hhs_pass220_g72_epsilon_lo_shu_gear_1_0.h"
 #include "hhs_pass220_i077_vm81_exact_matrix_power_execution_1_0.h"
+#include "hhs_pass220_ordered4x4_neg4_1_0.h"
 #endif
