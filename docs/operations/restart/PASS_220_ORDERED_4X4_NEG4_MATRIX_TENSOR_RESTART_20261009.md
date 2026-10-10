@@ -613,3 +613,74 @@ gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
 ### Next action / blockers
 
 Check exact-head CI for the branch and fix only impacted failures. Integrate a **genuine** Pass158 registered rank/shape evidence + trusted signed VM81 state provenance validator or equivalent inherited canonical object verifier. A metadata declaration, diagnostic hash or a reconstructible Hash216 reference alone is insufficient. Only the inherited kernel may verify signer origin and confer canonical authority after the native MatrixTimes/quotient/negative-fourth-power *values* and ordered equality proof close. There is no production deployment or merge in this tranche.
+
+
+## Continuation: fail-closed native admission readiness and proof deficit receipts (2026-10-10)
+
+**Base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\`  
+**Current implementation commits through:** \`7cb5d0f25283c7f47062c2182dd54f8694c63b03\`
+
+### CI state at resumption
+
+At restart the exact-head native run \`38063535274\` and source-integrity run \`38063534002\` at \`57cd1b564bce1c07665c5e88043823ea9e061209\` remained **queued**. Job detail confirmed \`native-source-locked-lowering\`, \`scoped-hir-integrity\` and \`source-text-integrity\` were queued, not failing. No compiler errors or test logs were available. Local \`git ls-remote\` to GitHub fails with DNS lookup; do not treat this as a source or mathematics defect. Earlier green evidence (15-opcode checkpoint) remains frozen; no green inherited from queued newer changes.
+
+### New implemented native function
+
+\`hhs_exact_pass220_ordered4x4_readiness\` is an **observational read-only** decision API, registered in the preexisting singleton exact C ABI. It:
+- Independently rebuilds and verifies the exact source-bound \`hhs_exact_pass220_ordered4x4_rank_challenge\` and \`hhs_exact_pass220_ordered4x4_full_graph\`.
+- Cross-checks source SHA256, predecessor Hash216 indexed structural reference and graph root.
+- Verifies the previously executed source/typed HIR/native address-phase/source-cell geometry and deterministic request/graph replay.
+- Returns \`HHS220_4X4_READINESS_BLOCKED\` with \`preflight_verified_mask=0x3F\` and \`missing_authority_mask=0xFF\` for valid structurally prepared candidate requests. Explicitly keeps **all eight missing authority bits**, without accepting caller-provided readiness metadata.
+
+The eight outstanding proof/authority bits are:
+1. authentic *signed* parent origin;
+2. authenticated tensor rank/shape for exact 5184-character s/v objects;
+3. complete ordered phase/action semantics;
+4. genuine native matrix-value computation;
+5. typed ordered quotient value;
+6. exact negative-fourth-power value;
+7. mathematical equality proof;
+8. inherited **signed** singleton VM81 admission.
+
+Every successful diagnostic report is domain-separated SHA256-bound to the source, indexed parent root, rank proof challenge, full-graph identity and exact verified/missing masks. This diagnostic root is NOT a canonical Hash72 or Hash216 receipt.
+
+A structurally invalid source/reference/binding returns a non-OK exact status, with verified preflight flags zero and mutation/receipt flags zero. **No code path returns READINESS_READY**; no submitted rank declaration or rank-proof claim can bypass this denial. The apparent \`ready\` enum value is reserved for a future verified successor, not this implementation.
+
+### Source changes
+
+Created:
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_readiness_v1.h\`
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_readiness_v1.inc\`
+- \`tools/pass220/pass220_ordered4x4_readiness_probe.c\`
+
+Updated:
+- \`hhs_runtime/include/hhs_runtime_exact_abi.h\`
+- \`hhs_runtime/c/hhs_runtime_exact_abi.c\`
+- \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\`
+
+New native test scenarios:
+- A valid source-bound \(s,v\) returns BLOCKED, 6/6 structural preflight categories, 8/8 missing authority categories, not READY.
+- Two independent probes produce byte-identical diagnostic reports and native internal replay passes.
+- Tampered caller-owned output (\`decision=READY\`, zero missing mask, \`canonical_vm81_mutation_authority=1\`) is overwritten, re-derived and denied by C ABI.
+- Changing 5184-character s or v states, or the native ordered phase-operation address, changes exact diagnostic/challenge graph identity but cannot confer rank/action proof.
+- Indexed Hash216 tampering, shortened predecessor, changed verbatim source, swapped symbol roles and null output fail closed without partial admission.
+
+CI command, added to existing job after inherited dependency checks:
+
+\`\`\`bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_readiness_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+ -o /tmp/pass220-ordered4x4-readiness-probe
+/tmp/pass220-ordered4x4-readiness-probe | python -m json.tool
+\`\`\`
+
+### Truth boundary / next action
+
+This is an actual runnable native **admission-readiness accounting** implementation, but it **does not solve** the seven rank challenge proof classes or calculate HHS tensor values. The signed environmental VM81 admission path is deliberately never invoked; no PQC signer origin, Hash72/216 transition, persistence or production deployment is claimed. User-specified HHS typed noncommutative ordering, phase identity, source fidelity, 5184-character addresses and zero-bypass constraints remain intact.
+
+Verify current exact-head native ABI and source-integrity workflow CI; repair only concrete scoped failures, checkpoint and verify new head. Before lifting any missing authority bit, implement a trusted native verifier binding Pass158 registered tensor rank/shape (or equivalent) to the exact signed VM81 state and native ordered action semantics. Then supply actual value/equality proofs through the inherited singleton gate. Keep PR open until scope-appropriate verified acceptance and main verification. There is no authority or justification to merge/deploy from a diagnostic READY/blocked construction report.
