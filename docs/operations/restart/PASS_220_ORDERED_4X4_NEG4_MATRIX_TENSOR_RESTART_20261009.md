@@ -89,3 +89,72 @@ Remaining native closure:
 2. Bind native symbolic `s` and `v` with their full typed constraints; enforce the whole `==` gate.
 3. Submit only fully proven native transition to inherited singleton signed VM81 admission, then verify Hash72/216 and replay on main.
 4. Resolve any CI regressions and retain a new restart checkpoint for repair-forward.
+
+
+## Continuation: typed native operator execution (2026-10-10)
+
+Inherited base main: `7fefacde360e6a5bb537cb01e94415c96430915b`.
+
+Preserved branch: `agent/pass220-ordered-4x4-neg4-tensor-20261009`.
+
+Merge target: `main`.
+
+Previous source-to-HIR and C ABI head `86d1c4f620afd1bb3d9ec113221615ab738d453c` is verified green by branch CI `38026628454` and source-integrity `38026629235`.
+
+Current continuation checkpoints through `01ad3bcde6c615c083812735caab71c0f87b5754` introduce **native typed symbolic operator execution** rather than only a packed candidate frame.
+
+New native API:
+
+- `hhs_exact_pass220_ordered4x4_program`: expose the frozen 15-opcode operator sequence.
+- `hhs_exact_pass220_ordered4x4_execute_symbolic`: source-authenticate and execute its ordered exact symbolic constructors with one typed operand stack; re-execute deterministically and compare every node root.
+
+The 15 ordered nodes:
+
+1. source matrix #0;
+2. unary negate #0;
+3. source matrix #1;
+4. unary negate #1;
+5. MatrixTimes(neg0,neg1);
+6. denominator source matrix #2;
+7. typed symbol s;
+8. MatrixTimes(matrix2,s);
+9. typed quotient of numerator and denominator products;
+10. exact negative-four exponent token;
+11. NcalcMatrixPower(quotient,(-4));
+12. typed symbol v;
+13. closure matrix #3;
+14. MatrixTimes(v,matrix3);
+15. ordered outer equality gate.
+
+Each executable node is domain-separated SHA-256-bound to the authoritative source digest, program digest, opcode position, ordered operand roots, typed output type and exact source literal/typed-symbol identity. These are diagnostic construction roots, *not* canonical Hash72/Hash216 receipts. This stage runs a real bounded native typed-symbolic DAG interpreter; it does not perform ordinary matrix or scalar arithmetic.
+
+New/updated files (in addition to inherited earlier file list):
+
+- `hhs_runtime/include/hhs_pass220_ordered4x4_symbolic_execution_v1.h`
+- `hhs_runtime/c/hhs_pass220_ordered4x4_symbolic_execution_v1.inc`
+- `hhs_runtime/include/hhs_runtime_exact_abi.h`
+- `hhs_runtime/c/hhs_runtime_exact_abi.c`
+- `hhs_runtime/pass220/hhs_pass220_ordered4x4_symbolic_execution_v1.py`
+- `tests/pass220/test_hhs_pass220_ordered4x4_symbolic_execution_v1.py`
+- `tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c`
+- `.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml`
+
+Negative tests: source byte corruption, truncation, null inputs, missing program suffix, every one of the 15 opcode mutations, injected typed substitution/false authority, and complete native-Python root equality.
+
+**Strict boundary**:
+`exact_symbolic_program_executed=true` means ordered symbolic construction operators were actually run in native C. It does **not** mean `MatrixTimes` matrix entries were calculated, quotient semantics resolved, a negative fourth matrix power value derived, s/v substituted, source `==` proved, signed VM81 admission executed, VM81 state mutated, or canonical Hash72/216 minted. All such flags are explicitly false.
+
+Validation commands in dedicated GitHub branch CI:
+
+```bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tools/pass220/pass220_ordered4x4_symbolic_execution_probe.c -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/pass220-ordered4x4-symbolic-probe
+/tmp/pass220-ordered4x4-symbolic-probe
+python -m pytest -q tests/pass220/test_hhs_pass220_ordered4x4_symbolic_execution_v1.py tests/pass220/test_hhs_pass220_ordered4x4_native_hir_bridge_v1.py tests/pass220/test_hhs_pass220_i077_vm81_exact_matrix_power_execution_v1.py
+```
+
+The exact-head continuation CI must be checked before declaring native code verified. GitHub Actions may be queued; do not equate queued with failure or success.
+
+Remaining after symbolic construction: implement and prove *registered* typed 4x4 matrix entry operations, exact ordered denominator and negative-fourth-power value construction for genuine VM81 cell-addressed s/v, determine source `==` gate from those native values, and only then use inherited signed singleton VM81 admission, parent-linked Hash72/216 and deterministic VM81 replay. Never borrow I077 fixed integer/symmetric transport as a substitute.
+
+Environment: GitHub connector is available for source mutation, workflow evidence, PR; full repo/production VM81 is not locally mounted. Restart from the above branch and check workflow results before repair-forward or promotion.
