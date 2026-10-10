@@ -4884,6 +4884,59 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.atomic_sprite_corpus_ingress.v1",
+        module="hhs_runtime.pass220.atomic_sprite_global_ingress_v1",
+        function="run_atomic_sprite_ingress_service",
+        service_type="pass220_corpus_bound_atomic_neural_sprite_ingress_candidate",
+        description=(
+            "Bind every typed atomic/neural sprite parameter to the complete "
+            "whitepapers/ and docs/whitepapers/ corpus roots before invoking "
+            "inherited exact Pass131, Pass067.1 and I058 witnesses. "
+            "Candidate-only: no browser simulation mutation or VM81/Hash216 commit."
+        ),
+        invariant_ids=[
+            "HHS-I008", "HHS-I010", "HHS-I011", "HHS-I012",
+            "HHS-I014", "HHS-I015",
+        ],
+        contract_schemas=[
+            "HHS_PASS220_ATOMIC_NEURAL_SPRITE_CORPUS_INGRESS_V1",
+            "HHS_PASS220_ATOMIC_SPRITE_DUAL_WHITEPAPER_GLOBAL_GATE_V1",
+        ],
+        witness_schemas=[
+            "HHS_EXACT_ATOMIC_ELECTROCHEMICAL_STATE_V1",
+            "HHS_LO_SHU_HARMONIC_PHASE_ENERGY_SELF_TEST_V1",
+            "HHS_PASS_220_I058_WHITEPAPER_GAME_FRAME_V1",
+        ],
+        validators=[
+            "bind_global_parameters",
+            "run_atomic_sprite_ingress",
+            "validate_whitepaper_game_frame",
+        ],
+        guards=[
+            "both_whole_whitepaper_corpora_sha256_bound",
+            "all_parameters_exact_and_source_bound",
+            "reference_only_not_canonical_physics",
+            "pass131_atomic_conservation_reused",
+            "pass067_1_ordered_phase_energy_reused",
+            "i058_game_frame_exact_reused",
+            "fly_controls_bounded_candidate_only",
+            "signed_vm81_admission_remains_separate",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "REJECT_STALE_WHITEPAPER_CORPUS",
+            "REJECT_UNDECLARED_ATOMIC_SPRITE_PARAMETER",
+            "REJECT_FLOAT_CANONICAL_PHYSICS_AUTHORITY",
+            "REJECT_NEURAL_ACTUATOR_OUT_OF_BOUNDS",
+            "REJECT_INVALID_VM81_PHASE_ADDRESS",
+            "REJECT_UNDERIVED_RUNTIME_SURFACE",
+        ],
+        mutation_policy="NO_CANONICAL_PHYSICS_MUTATION_CANDIDATE_ONLY",
+        persistence_policy="NO_CANONICAL_HASH72_HASH216_PERSISTENCE",
+        boundedness_policy="PASS220_DUAL_WHITEPAPER_EXACT_PARAMETER_SOURCE_GATE",
+    )
+
+    registry.register_function(
         name="pass220.holofractal_relativistic_game_engine.self_test",
         module=(
             "hhs_runtime."
