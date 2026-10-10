@@ -49,7 +49,7 @@ typedef struct HHS220Ordered4x4RankChallengeV1 {
  uint32_t challenge_count;
  uint32_t required_flags;
  uint8_t complete_expression_source_verified;
- uint8_t signed_parent_index_structure_verified;
+ uint8_t hash216_parent_index_structure_verified;
  uint8_t full_native_graph_constructed;
  uint8_t native_phase_addresses_verified;
  uint8_t complete_proof_challenges_derived;
