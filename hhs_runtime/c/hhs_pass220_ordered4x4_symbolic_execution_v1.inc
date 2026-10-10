@@ -67,6 +67,7 @@ static int hhs220_symbolic_node_digest(
 
 static int hhs220_symbolic_execute_program(
  const uint8_t source_digest[32], const uint8_t program_digest[32],
+ const uint8_t (*bound_symbol_roots)[32],
  uint8_t roots[HHS220_ORDERED4X4_OPCODE_COUNT][32],
  uint8_t out_root[32], uint32_t *out_max_depth
 ) {
@@ -95,9 +96,15 @@ static int hhs220_symbolic_execute_program(
   case HHS220_4X4_PUSH_SOURCE_SYMBOL:
    if (symbol_index>=2U) return 0;
    type=HHS220_T_SYMBOL;
-   symbol=(symbol_index++==0U) ? (uint8_t)'s' : (uint8_t)'v';
-   literal=&symbol;
-   literal_size=1U;
+   symbol=(symbol_index==0U) ? (uint8_t)'s' : (uint8_t)'v';
+   if (bound_symbol_roots!=NULL) {
+    literal=bound_symbol_roots[symbol_index];
+    literal_size=32U;
+   } else {
+    literal=&symbol;
+    literal_size=1U;
+   }
+   ++symbol_index;
    break;
   case HHS220_4X4_PUSH_NEGATIVE_FOUR:
    type=HHS220_T_NEG4;
@@ -202,12 +209,12 @@ HHSExactStatus hhs_exact_pass220_ordered4x4_execute_symbolic(
  if (SHA256(program,program_size,program_digest)==NULL)
   return HHS_EXACT_STATUS_INVARIANT_FAILURE;
  if (!hhs220_symbolic_execute_program(
-       staged_witness.source_sha256,program_digest,
+       staged_witness.source_sha256,program_digest,NULL,
        out_execution->ordered_node_roots,
        out_execution->result_node_sha256,&max_depth))
   return HHS_EXACT_STATUS_INVARIANT_FAILURE;
  if (!hhs220_symbolic_execute_program(
-       staged_witness.source_sha256,program_digest,
+       staged_witness.source_sha256,program_digest,NULL,
        replay_roots,replay_root,&replay_depth) ||
      max_depth!=replay_depth ||
      memcmp(replay_roots,out_execution->ordered_node_roots,sizeof(replay_roots))!=0 ||
