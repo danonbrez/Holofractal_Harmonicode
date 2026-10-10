@@ -120,4 +120,5 @@
 #include "hhs_pass220_ordered4x4_neg4_1_0.h"
 #include "hhs_pass220_ordered4x4_symbolic_execution_v1.h"
 #include "hhs_pass220_ordered4x4_typed_bindings_v1.h"
+#include "hhs_pass220_ordered4x4_parent_preflight_v1.h"
 #endif
