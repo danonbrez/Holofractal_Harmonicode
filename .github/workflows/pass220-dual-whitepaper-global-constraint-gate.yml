@@ -6,6 +6,10 @@ on:
       - "hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py"
       - "hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py"
       - "hhs_runtime/pass220/atomic_sprite_calorimetry_v1.py"
+      - "examples/hhs_agentic_electron_sprite_v1.js"
+      - "examples/ParticleSimulationAtomicNeural.html"
+      - "examples/ParticleSimulation.html"
+      - "tests/pass220/test_agentic_electron_sprite_v1.cjs"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
       - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
@@ -19,6 +23,10 @@ on:
       - "hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py"
       - "hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py"
       - "hhs_runtime/pass220/atomic_sprite_calorimetry_v1.py"
+      - "examples/hhs_agentic_electron_sprite_v1.js"
+      - "examples/ParticleSimulationAtomicNeural.html"
+      - "examples/ParticleSimulation.html"
+      - "tests/pass220/test_agentic_electron_sprite_v1.cjs"
       - "hhs_runtime/hhs_service_registry_v1.py"
       - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
       - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
@@ -65,6 +73,12 @@ jobs:
           assert len(s["bundle_sha256"]) == 64
           print("CORPUS_BOUND_CANDIDATE_ONLY", s["roots"], s["bundle_sha256"])
           PY
+      - name: Validate browser-derived neural candidate surface (Node)
+        run: |
+          node --version
+          node --check examples/hhs_agentic_electron_sprite_v1.js
+          node --check tests/pass220/test_agentic_electron_sprite_v1.cjs
+          node tests/pass220/test_agentic_electron_sprite_v1.cjs
       - name: Dual corpus dependency-scoped regression
         env:
           PYTHONPATH: .
