@@ -191,12 +191,91 @@ and the signed VM81 membrane must be validated.
 Separate test:
 ```bash
 python -m pytest -q tests/pass220/test_atomic_sprite_calorimetry_v1.py
+node tests/pass220/test_agentic_electron_sprite_v1.cjs
 ```
 
 Local dependency-independent thermodynamics kernel passed **11/11 tests**
 (including phase boundary heating, cooling, source-preserving exact energy,
 and negative controls). The complete dual-corpus + inherited-service
 integration test lives in the repository and awaits CI execution.
+
+## I057-preserving derived agentic electron-sprite browser
+
+The I057 authority baseline `examples/ParticleSimulation.html` remains
+**exactly unchanged** (blob `218d89d67803b5b10ab86b1cdb97434438e25082`).
+The new complete runnable projection page is:
+
+```text
+examples/ParticleSimulationAtomicNeural.html
+examples/hhs_agentic_electron_sprite_v1.js
+```
+
+Serve those two files together from `examples/` (Three.js and
+OrbitControls are pulled from the original page's existing CDNs). The
+derived page preserves all 10,368 graphical particles, both 5,184-carrier
+layers, the original field equations, bond channels and receipt computations
+in source, while layering candidate neural inference over the existing
+particle-derived Float32 sensory buffers.
+
+The new recurrent **FlyVis-inspired surrogate** is not the original
+FlyVis connectome and is not a trained 86.8-billion-neuron model. It runs
+a deterministic four-channel recurrent state for each of the 10,368
+carriers each physics substep, with projected sensory channels for
+velocity, distance, charge, phase, neighbor density, phase budget and mass.
+It emits bounded thrust/yaw/pitch/roll and bond-request **proposals**.
+These are not connected to the particle's force or bond writes, and neither
+mint Hash216 nor update canonical VM81 state. They are explicitly a
+noncanonical candidate projection to exercise the sensory/control interface.
+
+The derived page exposes a visible per-agent inspector and live counts for
+active neural carriers, recurrent steps and candidate bond requests.
+`AgenticElectronSpriteStatus` is also callable through the inherited
+diagnostic shell. All physical slider controls and topology/key toggles
+are disabled pending *real* dual-whitepaper and signed-VM81 admission.
+`init_system` rejects direct global parameter assignment with
+`FAIL_CLOSED_GLOBAL_CORPUS_NATIVE_ADMISSION_REQUIRED`. The pointer
+observer is sensing-only and does not inject unauthenticated forces.
+There is no browser-supplied flag/token that can unlock physical writes.
+
+The boot check now actually gates `initScene()` on
+`!window.HHS.boot.boot_halt`; a false boot never starts the sim.
+Invalid/nonfinite incoming neural observations are checked **before**
+changing recurrent state; a rejection halts subsequent physics callbacks
+in the derived page. Browser JSON text is rendered with `textContent`
+rather than `innerHTML`, and the Calibration button now reports observed
+render/callback counters rather than a constant computed from `dt`.
+The O(10,368) position-text hash is computed on explicit `get_state`,
+not at every derived projection redraw.
+
+Side-effecting diagnostics `FractalLayer2Test`, `VirtualDecayTest`,
+`SolidConstructorTest`, `QuarticSkipTest` and
+`EntanglementChannelTest` are **quarantined** in the derived live page
+until isolated snapshot/replay execution is supplied. They still exist
+unmodified in the original I057 file. Other diagnostic side effects have
+not all been exhaustively isolated by this change.
+
+This is a **live graphical preview of neural proposals**, not production
+signed actuation or an empirical mass/thermal/geometry model. The next
+integration obligation remains the same: native service-specific
+authorization of the source-calibrated atomic/thermal state and trained
+motor outputs before a changed physical trajectory can be accepted.
+Neither the native VM81 membrane nor frozen I057 logic has been bypassed.
+
+Focused JavaScript regression:
+
+```bash
+node --check examples/hhs_agentic_electron_sprite_v1.js
+node tests/pass220/test_agentic_electron_sprite_v1.cjs
+```
+
+The source-equivalent V8 validation executed the committed JavaScript
+and compiled the derived HTML inline script. It passed:
+full 10,368 carriers; 5,184 split address mapping; deterministic
+recurrence; exact negative/nonfinite-frame rejection before state update;
+mass-sensitive motor output; zero canonical authority; guarded browser
+parameter input; quarantined live-destructive tests; and unchanged
+original I057 Git blob. Full Node CI is tracked separately and must not
+be marked passed until the scoped workflow completes.
 
 ## Acceptance
 
@@ -226,6 +305,9 @@ rejection, and explicitly noncanonical finite projection.
   - `tests/pass220/test_atomic_sprite_global_ingress_v1.py`
   - `hhs_runtime/pass220/atomic_sprite_calorimetry_v1.py`
   - `tests/pass220/test_atomic_sprite_calorimetry_v1.py`
+  - `examples/ParticleSimulationAtomicNeural.html`
+  - `examples/hhs_agentic_electron_sprite_v1.js`
+  - `tests/pass220/test_agentic_electron_sprite_v1.cjs`
   - `hhs_runtime/hhs_service_registry_v1.py`
   - `.github/workflows/pass220-dual-whitepaper-global-constraint-gate.yml`
   - `docs/pass220/PASS_220_DUAL_WHITEPAPER_ATOMIC_SPRITE_GLOBAL_CONSTRAINTS_V1.md`
@@ -236,7 +318,9 @@ rejection, and explicitly noncanonical finite projection.
 - Inherited physics and complete-corpus integration tests require the full
   repository dependencies; source and scoped CI committed, pending run result.
 - CI/native integration: **not claimed** at this checkpoint.
-- Next action: inspect scoped CI for both registered candidate routes,
-  repair-forward missing dependencies; ingest externally validated thermodynamic
-  profiles and actual FlyVis motor inference into the same constrained route,
-  execute native membrane proof before I057/VM81 changes, then merge and verify main.
+- Next action: inspect scoped CI for both registered candidate routes and the
+  browser regression; repair-forward failures. Introduce actual trained FlyVis
+  inference and certified isotopic calorimetry/thermal transfer, and connect
+  the resulting motor inputs through the signed native membrane before any
+  physical action is authorized. Merge and verify main only after required
+  scope validations.
