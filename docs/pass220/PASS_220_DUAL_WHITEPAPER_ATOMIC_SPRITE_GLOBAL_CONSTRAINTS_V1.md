@@ -1,6 +1,6 @@
 # Pass 220 — Dual White-Paper Global Constraint Membrane for Atomic/Neural Sprites
 
-Status: **ADDITIVE PREFLIGHT IMPLEMENTED / CANDIDATE-ONLY / NATIVE INTEGRATION OPEN**
+Status: **ADDITIVE CORPUS-BOUND SERVICE INGRESS IMPLEMENTED / CANDIDATE-ONLY / LIVE NEURAL+MATERIAL PHASE EXECUTION OPEN**
 
 ## Normative source trees
 
@@ -89,11 +89,51 @@ white-paper game mechanics kernel protects non-lowered `CANONICAL_VERBATIM`
 and `REFERENCE_ONLY` equations. Existing I057 particle physics and rendering
 are frozen; the new preflight is additive and must not modify those trajectories.
 
-A global integration is accepted only when a real participant ingress path
-invokes this gate for **all** its parameter fields, subsequently invokes
-the applicable native constraint witnesses, and observes canonical signed
-VM81 admission. Merely creating the gate does **not** yet enforce it on
-legacy callers across the repository.
+## Wired guarded input path
+
+```text
+HHS service registry:
+  pass220.atomic_sprite_corpus_ingress.v1
+    -> run_atomic_sprite_ingress_service(payload)
+    -> bind_global_parameters(complete physical inputs, two tree roots)
+    -> Pass131.create_atomic_state + validate_state
+    -> Pass067.1.harmonic_phase_energy_self_test
+    -> I058.build_whitepaper_game_frame + validate_whitepaper_game_frame
+    -> candidate receipt; signed VM81 admission still required
+```
+
+Runtime source: `hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py`.
+The service uses a **fixed repository root** derived from its source path,
+not a caller-controlled directory. Its required envelope contains exactly
+21 declared inputs: atomic species/number/isotope mass number/charge/orbitals,
+symbolic state, separately typed relative atomic mass (u), temperature (K),
+internal energy (J), material phase, ordered Lo Shu VM81 cell/operation/parent
+Hash216, exact ionic/gravitational controls, particle geometry and ordered
+bond pairs, bounded neural motor actions, and I058 tick/seed/P/m_pass/alpha/
+kappa mechanics inputs. Missing or unexpected fields, stale corpus identities,
+floating canonical input, invalid particle addresses, malformed orbital counts,
+and authority-confused projection controls all fail closed.
+
+This service **really invokes** the existing exact component validators.
+It does **not** validate an empirical thermodynamic equation of state, infer
+chemical phase-transition temperatures, certify supplied atomic weights
+against experimental sources, simulate actual FlyVis synapses, apply a novel
+ionic force, modify the frozen I057 browser state, or perform signed VM81
+mutation. Those obligations remain distinct; flags in the candidate receipt
+record them as false. The caller must supply calibrated constitutive and
+atomic-mass data under applicable approved proofs before claiming empirical
+physical fidelity.
+
+The gate is mandatory for **this new ingress route**, but legacy Pass131,
+Pass067.1, I058, and I057 direct entrypoints have not been globally
+rewritten to require it. Universal enforcement requires migration of those
+legacy dispatch paths while preserving all inherited source contracts and
+compatibility tests. Parameter binding alone is not the same as executing
+each scientific theorem or constraint.
+
+An accepted canonical state still requires the native singleton signed VM81
+admission chain after the candidate receipt passes all applicable proof
+obligations.
 
 ## Acceptance
 
@@ -101,6 +141,7 @@ Focus tests:
 
 ```bash
 python -m pytest -q tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py
+python -m pytest -q tests/pass220/test_atomic_sprite_global_ingress_v1.py
 ```
 
 Required regression behaviors: dual-tree fingerprint determinism, exact
@@ -117,11 +158,17 @@ rejection, and explicitly noncanonical finite projection.
 - Files:
   - `hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py`
   - `tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py`
+  - `hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py`
+  - `tests/pass220/test_atomic_sprite_global_ingress_v1.py`
+  - `hhs_runtime/hhs_service_registry_v1.py`
+  - `.github/workflows/pass220-dual-whitepaper-global-constraint-gate.yml`
   - `docs/pass220/PASS_220_DUAL_WHITEPAPER_ATOMIC_SPRITE_GLOBAL_CONSTRAINTS_V1.md`
-- Local focused validation: **12 passed** using equivalent new source and test
-  content in an isolated Python fixture environment.
+- Local gate validation: **12 passed**, executed under
+  `/mnt/data/hhs_corpus_gate` with matching new-gate source/tests.
+- Inherited physics integration tests require the full repository dependencies:
+  source and scoped CI committed; workflow status queued at this checkpoint.
 - CI/native integration: **not claimed** at this checkpoint.
-- Next action: dependency-scoped PR validation; wire the shared gate to
-  Pass131/Pass067.1 and fly-agent/particle ingress, with per-obligation
-  runtime witnesses and no modifications to the frozen I057 monolith;
-  commit and verify any necessary repair-forward changes.
+- Next action: inspect scoped CI for registered candidate route, repair-forward
+  any missing dependencies; integrate empirical thermodynamic transition
+  witnesses and actual FlyVis motor inference into the same source-bound route
+  before permission to mutate I057/VM81, then merge and verify main.
