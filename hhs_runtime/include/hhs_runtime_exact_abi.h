@@ -127,4 +127,5 @@
 #include "hhs_pass220_ordered4x4_full_graph_v1.h"
 #include "hhs_pass220_ordered4x4_rank_challenge_v1.h"
 #include "hhs_pass220_ordered4x4_readiness_v1.h"
+#include "hhs_pass220_ordered4x4_i001_carrier_v1.h"
 #endif
