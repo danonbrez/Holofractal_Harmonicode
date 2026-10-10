@@ -37,8 +37,8 @@ def test_216_native_glyphs_not_hex():
     glyph="jx+W/!>"*30+"jx+W/!"
     assert len(glyph)==216
     rec=parse_pure(_fixture(status="0",replay="0",candidate=glyph),0,EXACT_SOURCE)
-    assert rec["pure_replay_hash216"]==glyph
-    assert rec["candidate_hash216"]==glyph
+    assert rec["native_pure_replay_hash216"]==glyph
+    assert rec["native_pure_candidate_hash216"]==glyph
 
 @pytest.mark.parametrize("mutated",[
     "v7_exact_source=OPEN_FAILED",
