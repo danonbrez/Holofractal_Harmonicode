@@ -26,14 +26,6 @@ REQUIRED = frozenset((
 PHASES = frozenset(("x", "y", "z", "w", "xy", "yx", "zw", "wz"))
 MATERIAL_PHASES = frozenset(("SOLID", "LIQUID", "GAS", "PLASMA", "UNRESOLVED"))
 NEURAL_ACTIONS = frozenset(("thrust", "yaw", "pitch", "roll", "bond_request"))
-PHYSICAL_INPUTS = frozenset((
-    "species_id", "atomic_number", "mass_number", "charge",
-    "electron_configuration", "symbolic_fields", "relative_atomic_mass_u",
-    "temperature_kelvin", "internal_energy_joules", "material_phase",
-    "ordered_phase", "gravity_controls", "ionic_controls", "geometry",
-    "neural_controls",
-))
-
 
 def _integer(value: Any, name: str, *, minimum: int | None = None) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
@@ -125,8 +117,8 @@ def run_atomic_sprite_ingress(
     bound = bind_global_parameters(
         repo_root, parameters, expected_bundle_sha256=expected_bundle_sha256
     )
-    # Every physical input becomes an exact candidate, never a renderer-only
-    # value smuggled across the canonical ingress boundary.
+    # Every parameter, including I058 mechanics and clock inputs, must be an
+    # exact candidate; renderer-only values cannot cross the ingress membrane.
     for name in REQUIRED:
         if bound["parameters"][name]["role"] != "NATIVE_EXACT_CANDIDATE":
             raise CorpusConstraintError(f"PROJECTION_PARAM_USED_AS_PHYSICS:{name}")
