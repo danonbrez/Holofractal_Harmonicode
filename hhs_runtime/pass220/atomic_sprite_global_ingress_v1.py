@@ -24,7 +24,7 @@ REQUIRED = frozenset((
     "neural_controls", "tick", "seed", "P", "m_pass", "alpha", "kappa",
 ))
 PHASES = frozenset(("x", "y", "z", "w", "xy", "yx", "zw", "wz"))
-MATERIAL_PHASES = frozenset(("SOLID", "LIQUID", "GAS", "PLASMA", "UNRESOLVED"))
+MATERIAL_PHASES = frozenset(("SOLID", "SOLID_LIQUID", "LIQUID", "LIQUID_GAS", "GAS", "PLASMA", "UNRESOLVED"))
 NEURAL_ACTIONS = frozenset(("thrust", "yaw", "pitch", "roll", "bond_request"))
 
 def _integer(value: Any, name: str, *, minimum: int | None = None) -> int:
