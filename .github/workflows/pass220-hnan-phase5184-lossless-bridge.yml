@@ -6,6 +6,8 @@ on:
       - pass220/hnan-phase5184-lossless-bridge-20261011
     paths:
       - "hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
+      - "tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
       - "hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py"
       - "tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py"
       - "formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean"
@@ -18,6 +20,8 @@ on:
   pull_request:
     paths:
       - "hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
+      - "tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
       - "hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py"
       - "tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py"
       - "formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean"
@@ -50,7 +54,10 @@ jobs:
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
+            hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
             tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
+            tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
             hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py \
             tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py
 
