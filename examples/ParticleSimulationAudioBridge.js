@@ -27,7 +27,13 @@
     processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
     waveCanvas:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
     processorReady:null, renderedLightingFrames:0, skippedLightingFrames:0,
-    outputClockSource:"inactive", lightingLatencyMs:0, lastClockStatusTime:-1
+    outputClockSource:"inactive", lightingLatencyMs:0, lastClockStatusTime:-1,
+    analyserL:null,analyserR:null,analyserDataL:new Float32Array(2048),
+    analyserDataR:new Float32Array(2048),frameL:new Float32Array(735),
+    frameR:new Float32Array(735),frameCrossings:[],frameRmsL:0,frameRmsR:0,
+    framePeakL:0,framePeakR:0,frameSignalReady:false,lastSignalFrame:-1,
+    particleFrame:-1,particleVisualFrames:0,liveFrameCount:0,
+    renderSource:"none",decodedChannels:null
   };
   function clamp(x,a,b){return Math.min(b,Math.max(a,x));}
   function finite(x){return Number.isFinite(x)?x:0;}
@@ -135,6 +141,10 @@
   function resetLightingClock(){
     state.lastFrame=-1;
     state.lastClockStatusTime=-1;
+    state.lastSignalFrame=-1;
+    state.particleFrame=-1;
+    state.frameSignalReady=false;
+    state.frameCrossings=[];
     state.crossingEvents.length=0;
     state.lastSample=[0,0];
     if(state.processor && state.processor.port &&
@@ -151,6 +161,158 @@
     state.renderedLightingFrames++;
     return true;
   }
+  /* Browser adapter: decoded track provides sample-aligned media windows;
+     the stereo AnalyserNode provides live PCM if full-file decoding fails.
+     Both are read-only visualization ingress, never simulation authority. */
+  function attachLiveStereo(context,source){
+    if(typeof context.createChannelSplitter!=="function" ||
+       typeof context.createAnalyser!=="function")return false;
+    try{
+      const splitter=context.createChannelSplitter(2);
+      const L=context.createAnalyser(),R=context.createAnalyser();
+      L.fftSize=2048; R.fftSize=2048;
+      L.smoothingTimeConstant=0;R.smoothingTimeConstant=0;
+      source.connect(splitter);
+      splitter.connect(L,0);
+      splitter.connect(R,1);
+      state.analyserL=L;state.analyserR=R;
+      return true;
+    }catch(error){
+      report("Stereo live PCM analyzer unavailable: "+error.message);
+      return false;
+    }
+  }
+  function decodedWindow(player){
+    if(!state.buffer || !state.decodedChannels || !player ||
+       !Number.isFinite(player.currentTime))return false;
+    const decoded=state.buffer,ch=state.decodedChannels;
+    const rate=decoded.sampleRate;
+    if(!rate || !ch[0] || !ch[0].length)return false;
+    const duration=ch[0].length/rate;
+    const mediaTime=Math.max(0,Math.min(duration,player.currentTime));
+    const first=Math.floor(Math.floor(mediaTime*AUDIO_CLOCK.visualHz)*
+                           rate/AUDIO_CLOCK.visualHz);
+    const step=rate/AUDIO_CLOCK.canonicalRate;
+    for(let i=0;i<AUDIO_CLOCK.samplesPerFrame;i++){
+      const idx=Math.min(ch[0].length-1,first+Math.floor(i*step));
+      state.frameL[i]=finite(ch[0][idx]);
+      state.frameR[i]=finite(ch[1][Math.min(ch[1].length-1,idx)]);
+    }
+    state.renderSource="decoded";
+    return true;
+  }
+  function liveWindow(){
+    const L=state.analyserL,R=state.analyserR;
+    if(!L || typeof L.getFloatTimeDomainData!=="function")return false;
+    L.getFloatTimeDomainData(state.analyserDataL);
+    if(R && typeof R.getFloatTimeDomainData==="function")
+      R.getFloatTimeDomainData(state.analyserDataR);
+    else state.analyserDataR.set(state.analyserDataL);
+    const deviceRate=(state.context&&Number.isFinite(state.context.sampleRate))
+      ?state.context.sampleRate:AUDIO_CLOCK.canonicalRate;
+    const count=Math.ceil(AUDIO_CLOCK.samplesPerFrame*deviceRate/
+                          AUDIO_CLOCK.canonicalRate);
+    const offset=Math.max(0,state.analyserDataL.length-count);
+    for(let i=0;i<AUDIO_CLOCK.samplesPerFrame;i++){
+      const k=Math.min(state.analyserDataL.length-1,
+        offset+Math.floor(i*deviceRate/AUDIO_CLOCK.canonicalRate));
+      state.frameL[i]=finite(state.analyserDataL[k]);
+      state.frameR[i]=finite(state.analyserDataR[k]);
+    }
+    state.renderSource="live-analyser";
+    state.liveFrameCount++;
+    return true;
+  }
+  function frameSampleMetrics(left,right){
+    let sumL=0,sumR=0,peakL=0,peakR=0;
+    for(let i=0;i<AUDIO_CLOCK.samplesPerFrame;i++){
+      const l=finite(left[i]),r=finite(right[i]);
+      sumL+=l*l;sumR+=r*r;
+      peakL=Math.max(peakL,Math.abs(l));peakR=Math.max(peakR,Math.abs(r));
+    }
+    return {
+      rmsL:Math.sqrt(sumL/AUDIO_CLOCK.samplesPerFrame),
+      rmsR:Math.sqrt(sumR/AUDIO_CLOCK.samplesPerFrame),
+      peakL,peakR
+    };
+  }
+  function frameCrossingEvents(left,right,frame){
+    const out=[],base=sampleForFrame(frame),rate=AUDIO_CLOCK.canonicalRate;
+    for(let bus=0;bus<2;bus++){
+      const pcm=bus===0?left:right;
+      let previous=finite(pcm[0]);
+      for(let i=1;i<AUDIO_CLOCK.samplesPerFrame;i++){
+        const current=finite(pcm[i]);
+        if(previous!==0 &&
+           ((previous<0 && current>=0)||(previous>0 && current<=0))){
+          const delta=current-previous;
+          const frac=delta?clamp(-previous/delta,0,1):0;
+          out.push([bus,(base+i-1+frac)/rate,
+                  Math.min(1,Math.abs(delta)),current>=previous?1:-1]);
+        }
+        previous=current;
+      }
+    }
+    return out;
+  }
+  function prepareVisualFrame(clock){
+    if(!clock || !state.audio || state.audio.paused || state.audio.ended)
+      return false;
+    if(clock.frame===state.lastSignalFrame)return state.frameSignalReady;
+    /* Use live stereo when available, including while decoding a long
+       file. The decoded PCM window is an independent exact fallback. */
+    state.frameSignalReady=liveWindow() ||
+      decodedWindow(state.audio);
+    state.lastSignalFrame=clock.frame;
+    if(!state.frameSignalReady)return false;
+    const m=frameSampleMetrics(state.frameL,state.frameR);
+    state.frameRmsL=m.rmsL;state.frameRmsR=m.rmsR;
+    state.framePeakL=m.peakL;state.framePeakR=m.peakR;
+    state.frameCrossings=frameCrossingEvents(state.frameL,state.frameR,clock.frame);
+    state.active=true;state.geometryEnabled=true;
+    return true;
+  }
+  function currentAudioClock(){
+    return outputClockFrame(state.context,state.audio,
+      window.performance && typeof window.performance.now==="function" ?
+      window.performance.now():NaN);
+  }
+  function needsProjectionFrame(){
+    const clock=currentAudioClock();
+    if(!prepareVisualFrame(clock))return false;
+    if(clock.frame===state.particleFrame)return false;
+    state.particleFrame=clock.frame;
+    state.particleVisualFrames++;
+    return true;
+  }
+  function frameColorEnergy(index){
+    const bus=index<AUDIO_CLOCK.laneCells?0:1;
+    const local=index%AUDIO_CLOCK.laneCells;
+    const sample=bus?state.frameR[local%AUDIO_CLOCK.samplesPerFrame]:
+                      state.frameL[local%AUDIO_CLOCK.samplesPerFrame];
+    const rms=bus?state.frameRmsR:state.frameRmsL;
+    return {bus,sample:finite(sample),rms};
+  }
+  /* Never touch logical particle data. Only edit an InstancedMesh projection
+     matrix and a scratch Color used with setColorAt. */
+  function projectColor(p,color){
+    if(!state.frameSignalReady || !state.geometryEnabled)return color;
+    const idx=state.particleIndex.get(p);
+    if(idx===undefined)return color;
+    const {bus,sample,rms}=frameColorEnergy(idx);
+    const heat=clamp(Math.sqrt(rms)*2.1+Math.abs(sample)*0.65,0,1);
+    const base=p.material.color;
+    const bright=0.42+0.58*heat;
+    if(bus===0)color.setRGB(
+      clamp(base.r*bright+heat*0.22,0,1),
+      clamp(base.g*bright+heat*0.72,0,1),
+      clamp(base.b*bright+heat*0.95,0,1));
+    else color.setRGB(
+      clamp(base.r*bright+heat*0.93,0,1),
+      clamp(base.g*bright+heat*0.23,0,1),
+      clamp(base.b*bright+heat*0.75,0,1));
+    return color;
+  }
   function report(message){
     if(state.status)state.status.textContent=message;
   }
@@ -162,19 +324,24 @@
   /* Graphics-only matrix offset. The logical Mesh position remains untouched,
      so manifold hashes, physics, and deterministic receipts are unchanged. */
   function projectMatrix(p, matrix){
-    if(!state.geometryEnabled)return;
+    if(!state.geometryEnabled || !state.frameSignalReady)return;
     const i=state.particleIndex.get(p);
     if(i===undefined)return;
-    const l=state.peaksL[i],r=state.peaksR[i];
-    const audio=state.audio;
-    const playhead=(audio&&Number.isFinite(audio.duration)&&audio.duration>0)
-      ?clamp(audio.currentTime/audio.duration,0,1):0;
-    const region=i/(N-1);
-    const focus=Math.max(0,1-Math.abs(region-playhead)*24);
-    const gain=state.gain*(0.45+0.55*focus);
+    const {bus,sample,rms}=frameColorEnergy(i);
+    const energy=clamp(Math.sqrt(rms)*2.2,0,1);
+    const transient=clamp(Math.abs(sample)*2.5,0,1);
+    const gain=state.gain;
+    const strength=gain*(energy*2.8+transient*3.2);
     const e=matrix.elements;
-    e[12]+=l*gain; e[13]+=r*gain;
-    e[14]+=(l-r)*gain*0.65;
+    const radius=Math.hypot(e[12],e[13],e[14])||1;
+    const orientation=bus? -1:1;
+    e[12]+=strength*(e[12]/radius*.7+sample*orientation*1.5);
+    e[13]+=strength*(e[13]/radius*.7+sample*.9);
+    e[14]+=strength*(e[14]/radius*.5+sample*orientation*.65);
+    /* With SphereGeometry(0.1), scaling the instance basis makes transients
+       actually visible without modifying p.scale or canonical positions. */
+    const size=1+gain*(energy*1.4+transient*1.8);
+    e[0]*=size;e[5]*=size;e[10]*=size;
   }
   function enqueue(events){
     const now=state.context?state.context.currentTime:0;
@@ -264,6 +431,7 @@
       state.context=ctx;
       state.source=source;
       state.sampleRate=ctx.sampleRate;
+      attachLiveStereo(ctx,source);
       state.processorReady=installProcessor(ctx,source).then(processor=>{
         state.processor=processor;
       }).catch(err=>{
@@ -309,6 +477,7 @@
     if(!file)return;
     const thisFile=++fileVersion;
     state.active=false;state.geometryEnabled=false;state.buffer=null;
+    state.decodedChannels=null;
     resetLightingClock();
     state.audio.pause();
     if(state.objectURL)URL.revokeObjectURL(state.objectURL);
@@ -322,9 +491,11 @@
       const decoded=await decodeFile(bytes);
       if(thisFile!==fileVersion)return;
       state.buffer=decoded;
-      state.peaksL=peakEnvelope(decoded.getChannelData(0),N);
-      state.peaksR=peakEnvelope(
-        decoded.getChannelData(decoded.numberOfChannels>1?1:0),N);
+      const sourceL=decoded.getChannelData(0);
+      const sourceR=decoded.getChannelData(decoded.numberOfChannels>1?1:0);
+      state.decodedChannels=[sourceL,sourceR];
+      state.peaksL=peakEnvelope(sourceL,N);
+      state.peaksR=peakEnvelope(sourceR,N);
       state.active=true;state.geometryEnabled=true;
       if(state.audio.paused)
         report("Music ready — "+decoded.numberOfChannels+" channel(s), "+
@@ -333,8 +504,13 @@
         report("Music playing — full-track waveform and geometry ready.");
     }catch(err){
       if(thisFile!==fileVersion)return;
-      state.geometryEnabled=false;
-      report("Music ready to play; waveform decode unavailable: "+err.message);
+      /* Live analyser is a real PCM path even for large/unsupported
+         offline-decode files. Never turn off a working live visualization. */
+      state.geometryEnabled=!!state.analyserL;
+      state.active=state.geometryEnabled;
+      report("Music ready; "+(state.analyserL?
+        "live stereo waveform active.":"visual PCM unavailable.")+
+        " Offline decode: "+err.message);
     }
   }
   function resizeCanvas(){
@@ -350,13 +526,12 @@
   function draw(){
     window.requestAnimationFrame(draw);
     const canvas=state.waveCanvas;
-    if(!canvas||!state.active)return;
+    if(!canvas || !state.audio || state.audio.paused)return;
     /* The display follows the audible output sample clock, never accumulates
        timer-based FPS drift, and skips stale frames rather than replaying them. */
-    const clock=outputClockFrame(state.context,state.audio,
-      window.performance && typeof window.performance.now==="function" ?
-      window.performance.now():NaN);
+    const clock=currentAudioClock();
     if(!clock)return;
+    if(!prepareVisualFrame(clock))return;
     if(!advanceLightingGate(clock.frame))return;
     state.outputClockSource=clock.source;
     const ctx=canvas.getContext("2d");
@@ -405,23 +580,46 @@
         events[write++]=events[i];
     }
     events.length=write;
-    const cells=crossingLightingCells(events,clock.frame);
+    const cells=crossingLightingCells(
+      events.length?events:state.frameCrossings,clock.frame);
+    /* Full-scene illumination is distinct from bottom waveform tracing.
+       Stereo RMS drives two additive glow fields; zero crossings add small
+       phase-offset flashes. This is raster-only; MeshBasicMaterial itself
+       cannot react to Three.js PointLight. */
+    ctx.globalCompositeOperation="lighter";
+    const screenEnergy=[state.frameRmsL,state.frameRmsR];
+    for(let bus=0;bus<2;bus++){
+      const energy=clamp(Math.sqrt(screenEnergy[bus])*1.8,0,1);
+      if(energy<0.012)continue;
+      const x=W*(bus===0?.37:.63), y=H*.47;
+      const radius=Math.max(125,Math.min(W,H)*(.25+energy*.45));
+      const gradient=ctx.createRadialGradient(x,y,0,x,y,radius);
+      const color=bus?"184,77,255":"38,198,255";
+      gradient.addColorStop(0,"rgba("+color+","+(energy*.46)+")");
+      gradient.addColorStop(.45,"rgba("+color+","+(energy*.20)+")");
+      gradient.addColorStop(1,"rgba("+color+",0)");
+      ctx.fillStyle=gradient;
+      ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
+    }
     for(let bus=0;bus<2;bus++){
       for(let phase=0;phase<72;phase++){
         const strength=cells[bus][phase];
         if(strength<0.02)continue;
-        const x=left+t*width+(phase-35.5)*0.9;
-        const y=bus?baselineR:baselineL;
-        const radius=12+strength*75;
+        const phaseAngle=phase/72*Math.PI*2;
+        const x=W*.5+Math.cos(phaseAngle+bus*Math.PI)*W*.23;
+        const y=H*.48+Math.sin(phaseAngle+bus*Math.PI)*H*.22;
+        const radius=16+strength*Math.min(W,H)*.16;
         const gradient=ctx.createRadialGradient(x,y,0,x,y,radius);
         const color=bus?"200,120,255":"65,215,255";
-        gradient.addColorStop(0,"rgba("+color+","+(strength*0.45)+")");
-        gradient.addColorStop(0.4,"rgba("+color+","+(strength*0.15)+")");
+        gradient.addColorStop(0,"rgba("+color+","+(strength*0.7)+")");
+        gradient.addColorStop(0.4,"rgba("+color+","+(strength*0.27)+")");
         gradient.addColorStop(1,"rgba("+color+",0)");
         ctx.fillStyle=gradient;
         ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
       }
     }
+    ctx.globalCompositeOperation="source-over";
+    ctx.globalAlpha=1;
     const meter=document.getElementById("audioVizClock");
     if(meter && (clock.frame%60===0 || state.lastClockStatusTime<0 ||
         clock.frame-state.lastClockStatusTime>=60)){
@@ -429,7 +627,11 @@
       meter.textContent="44,100 PCM Hz / 735 samples = 60 audio frames/s | "+
         "device "+clock.nativeRate+" Hz | phase frame "+clock.frame+
         " | dropped visual frames "+state.skippedLightingFrames+
-        " | source "+clock.source;
+        " | source "+clock.source+
+        " | PCM "+state.renderSource+
+        " | rms L/R "+state.frameRmsL.toFixed(3)+"/"+
+        state.frameRmsR.toFixed(3)+
+        " | particles "+state.particleVisualFrames;
     }
   }
   function boot(){
@@ -486,7 +688,12 @@
       resetLightingClock();
       if(state.context && state.context.state!=="running")resumeAudio();
     });
-    player.addEventListener("playing",()=>report("Music playing through stereo output."));
+    player.addEventListener("playing",()=>{
+      state.active=!!(state.analyserL || state.buffer);
+      state.geometryEnabled=state.active;
+      report(state.active?"Music playing — audio-driven particles and glow enabled.":
+        "Music playing — no audio PCM visualization source available.");
+    });
     player.addEventListener("pause",()=>{
       resetLightingClock();
       if(!player.ended)report("Music paused.");
@@ -515,12 +722,20 @@
   window.HHSAudioViz=Object.freeze({
     busPair:PAIR,get active(){return state.active;},
     get geometryEnabled(){return state.geometryEnabled;},
-    projectMatrix,bindParticles,peakEnvelope,crossingsFromBlock,
+    projectMatrix,projectColor,bindParticles,peakEnvelope,crossingsFromBlock,
+    prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
+    frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
     sampleForFrame,outputClockFrame,crossingFrame,crossingLightingCells,
     advanceLightingGate,
     get diagnostics(){return {
       active:state.active, sampleRate:state.sampleRate,
+      geometryEnabled:state.geometryEnabled,
+      frameSignalReady:state.frameSignalReady,
+      visualSource:state.renderSource,
+      frameRmsL:state.frameRmsL,frameRmsR:state.frameRmsR,
+      particleVisualFrames:state.particleVisualFrames,
+      liveFrameCount:state.liveFrameCount,
       canonicalRate:AUDIO_CLOCK.canonicalRate,
       visualHz:AUDIO_CLOCK.visualHz,
       samplesPerFrame:AUDIO_CLOCK.samplesPerFrame,
