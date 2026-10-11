@@ -70,11 +70,22 @@ theorem hnanCenterIsNotBinary :
 
 theorem allNineTensorStatesRoundTrip :
     ∀ cell : TensorAddress, decodeCell (encodeCell cell) = cell := by
-  decide
+  intro cell
+  cases cell with
+  | hnan => rfl
+  | binary bits =>
+    cases bits with
+    | mk a bc =>
+      cases bc with
+      | mk b c =>
+        cases a <;> cases b <;> cases c <;> rfl
 
 theorem allNineTritPairsRoundTrip :
     ∀ pair : TritPair, encodeCell (decodeCell pair) = pair := by
-  decide
+  intro pair
+  cases pair with
+  | mk a b =>
+    cases a <;> cases b <;> rfl
 
 /-- The ordered x/y/z/w phase source is retained, not rearranged. -/
 def hnanTensorSource : List (List String) :=
