@@ -126,6 +126,9 @@ jobs:
           assert neural["diagnostics"]["nominal_capture_fps"]==60
           assert neural["diagnostics"]["graph_full_edge_execution_verified"] is False
           assert neural["has_native_ordered_edge_execution"] is False
+          assert neural["independent_webgl_motion_verified"] is True
+          assert neural["independent_webgl_samples"]==3
+          assert len(set(neural["independent_webgl_sha256"]))==3
           assert [x["layer_id"] for x in neural["samples"]]==[0,4322,4323,5183,5184,10367]
           audio=receipt["audio_waveform_capture"]
           assert audio["capture_surface"]=="ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"
