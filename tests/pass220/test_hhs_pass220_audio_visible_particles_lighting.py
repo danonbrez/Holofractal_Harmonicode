@@ -92,6 +92,7 @@ class AudioCtx {
   this.destination={};this.audioWorklet={addModule:()=>new Promise(()=>{})}}
  createMediaElementSource(){return {connect(){}}}
  createChannelSplitter(){return {connect(){}}}
+ createGain(){return {gain:{value:0},connect(){}}}
  createAnalyser(){return {fftSize:2048,getFloatTimeDomainData(x){
   stats.analyserCalls++;x.fill(0)}}}
  getOutputTimestamp(){return {contextTime:.2,performanceTime:1000}}
@@ -185,6 +186,7 @@ class AudioCtx{
  this.audioWorklet={addModule:()=>new Promise(()=>{})}}
  createMediaElementSource(){return {connect(){}}}
  createChannelSplitter(){return {connect(){}}}
+ createGain(){return {gain:{value:0},connect(){}}}
  createAnalyser(){
   const bus=this.analyserNumber++;
   return {fftSize:2048,getFloatTimeDomainData(d){
