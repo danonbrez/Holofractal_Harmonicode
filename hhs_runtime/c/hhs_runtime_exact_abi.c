@@ -145,3 +145,4 @@
 #include "hhs_pass220_ordered4x4_rank_challenge_v1.inc"
 #include "hhs_pass220_ordered4x4_readiness_v1.inc"
 #include "hhs_pass220_ordered4x4_i001_carrier_v1.inc"
+#include "hhs_pass220_ordered4x4_rank_i001_handoff_v1.inc"

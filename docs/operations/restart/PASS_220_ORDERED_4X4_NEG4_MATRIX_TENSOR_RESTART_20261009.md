@@ -962,3 +962,42 @@ Affected paths only:
 Exact head's workflow \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\` already compiles the modified native probe against \`make c-abi\`, runs the 729/243/82 tests and Python s/v fixtures, then inherited I077 regression. It must be checked at this continuation's final SHA, not promoted from the prior green head. No new CI workflow, duplicate application or unverified signed-admission route introduced.
 
 **Canonical authority remains blocked:** Neither I001 encoding/decoding nor diagnostic SHA roots authenticate parent PQC identity, s/v tensor rank/action, actual MatrixTimes/quotient/negative-fourth-power values, mathematical equality, or signed VM81 mutation. Continue by binding **genuinely verifiable** rank/action provenance and native value operators through inherited kernel authority, not by adding self-declared readiness bits. Keep PR open and main unchanged until acceptance gates permit merge.
+
+## 2026-10-11 — exact I001 positional state to rank-action challenge handoff
+
+Restart base `17eb0c9bf3692c89a9325a98f4857e75d200776a`; branch `agent/pass220-ordered-4x4-neg4-tensor-20261009`, target `main`.
+New additive singleton native API:
+`hhs_exact_pass220_ordered4x4_rank_i001_handoff`.
+
+This read-only stage calls the actual registered native 5184-byte I001
+carrier validator, 2-obligation rank challenge and bound symbolic executor.
+It checks matching source/parent/full graph roots, binding roots,
+all 162 normalized VM81 positional digits, original s/v VM5184 addresses,
+and right-hand `MatrixTimes(D,s)` versus left-hand `MatrixTimes(v,L)`
+action order. Domain-separated handoff root and byte-identical deterministic
+replay bind the exact proof request to the exact normalized carrier. No
+caller-declared Pass158 tensor shape or arbitrary signed-state assertion is
+trusted. Output/input aliasing is denied before input mutation.
+
+Added C ABI header/implementation, native 162-position probe, aggregate
+registration, CI stage and trigger paths. Probe covers source drift, corrupted
+Hash216 last index, malformed last I001 digit, role swap, changed tensor
+position/state/address, replay and signature/mutation denial.
+
+No authentic rank, native phase value, PQC signature, matrix quotient/power
+value, equality, canonical Hash72/216 receipt or signed VM81 admission
+is established. All eight readiness authority blockers remain present.
+Source equation and existing signed singleton admission are unchanged.
+
+Validate NEW exact head (do not inherit earlier green runs):
+```bash
+make c-abi
+gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+ tools/pass220/pass220_ordered4x4_rank_i001_handoff_probe.c \
+ -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+ -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/pass220-rank-i001
+/tmp/pass220-rank-i001
+```
+Remaining: supply genuine registered tensor-definition/instance witness,
+authenticated signed VM81 state/action and native value semantics; then
+derive equality and submit only proven transitions to inherited signer.
