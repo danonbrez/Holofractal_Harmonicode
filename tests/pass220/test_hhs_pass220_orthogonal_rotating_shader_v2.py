@@ -14,6 +14,8 @@ def test_embedded_mirror_and_separate_physics_authority():
     inline=re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>',html)
     assert inline and inline.group(1).strip()==bridge.strip()
     assert "state.gyroTransport72);" in bridge
+    assert "paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus," in bridge
+    assert 'ctx.createLinearGradient(x-extent,0,x+extent,0)' not in bridge
     assert "function gyroscopicGradientAxes72(" in bridge
     assert "if(!advanceLightingGate(clock.frame))return;" in bridge
     assert 'value="0.40"' in html
@@ -80,6 +82,22 @@ for(const p of [0,9,18]){
  assert.ok(Math.abs(dx*ex+dy*ey)<1e-6);
  assert.equal(ctx.globalCompositeOperation,"source-over");
 }
+for(const theta of [0,9,18,27]){
+ const gradients=[];
+ const ctx2={
+  beginPath(){},moveTo(){},lineTo(){},closePath(){},fill(){},
+  createLinearGradient(...v){gradients.push(v);return {addColorStop(){}}}
+ };
+ const a=viz.paintGyroscopicLightBand(ctx2,900,600,theta,0,0,60,8,.4);
+ const b=viz.paintGyroscopicLightBand(ctx2,900,600,theta,1,0,60,80,.4);
+ const lhs=gradients[0],rhs=gradients[1];
+ assert.equal(gradients.length,2);
+ const dot=(lhs[2]-lhs[0])*(rhs[2]-rhs[0])+
+           (lhs[3]-lhs[1])*(rhs[3]-rhs[1]);
+ assert.ok(Math.abs(dot)<1e-8);
+ assert.ok(Math.abs(a.normal[0]*b.normal[0]+a.normal[1]*b.normal[1])<1e-12);
+}
+assert.equal(viz.diagnostics.allLightBandsRotatingWithGyro,true);
 assert.equal(viz.diagnostics.visualGradientAxesOrthogonal,true);
 assert.equal(viz.diagnostics.canonicalMutation,false);
 """

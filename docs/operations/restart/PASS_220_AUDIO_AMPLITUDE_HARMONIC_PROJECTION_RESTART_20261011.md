@@ -138,3 +138,24 @@ pytest+Node regression; dedicated CI path; this restart record.
 The authoring-side JS parse and source inline identity were verified.
 Run exact-head CI and then visual browser/phone acceptance before
 the next physical coupling stage.
+
+## I082 — comprehensive orthogonal light-band repair
+
+Base main `6c452d4abe80eff0c77f58a12b43f2902020b5b1`, branch `agent/pass220-rotating-orthogonal-light-bands-20261011`.
+The inherited bright wide stereo glows and per-phase crossings were still
+fixed x-axis/vertical columns after the base pair was correctly rotated.
+They can dominate and visually obscure the orthogonal rotating background.
+Added a rotating narrow Canvas2D polygon/gradient helper so **every
+emissive effect**, both stereo broad light and 72 sample-phase flashes per
+bus, shares exactly the fractional harmonic-driven gyroscope normal.
+The left and right normals are perpendicular at every phase, and the
+polygons avoid the expense of full-canvas filling for every phase bin.
+Source PCM gating and Q144 opposite hue are preserved.
+
+No 5184 physics delay or xy:zw force feedback is admitted in this
+presentation-only repair; separately typed canonical tick history,
+alternating ordered phase witnesses, energy conservation, deterministic
+replay, and signed VM81 mutation will be required in the next stage.
+The existing source mirror and JS syntax passed the editor checks.
+Test mocks now exercise real Canvas2D path methods instead of assuming
+vertical fillRect. Verify exact-head CI and deployment/device separately.
