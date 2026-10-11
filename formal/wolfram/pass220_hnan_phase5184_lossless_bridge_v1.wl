@@ -36,6 +36,11 @@ Module[{tensor,addresses,loShu,alphabet,generator,vertices,recovered,half,bits,
   VerificationTest[3*Length[vertices],15552,TestID->"hash216-three-planes"],
   VerificationTest[72/5184,1/72,TestID->"admitted-structural-ratio"],
   VerificationTest["xy+epsilon"=!="xy",True,TestID->"epsilon-retained"],
+  VerificationTest[
+    And@@Flatten[Table[
+       Mod[right+Mod[left-right,72],72]===left,
+       {left,0,71},{right,0,71}]],
+    True,TestID->"all-72x72-cross-lane-phase-inverses"],
   VerificationTest[8+1,9,TestID->"eight-boundary-plus-center"]
  };
  report=TestReport[tests];
