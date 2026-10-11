@@ -312,6 +312,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     page.screenshot(path=str(frame), animations="allow")
                 else:
                     canvas.screenshot(path=str(frame))
+                if args.neural_layer_check and index in (0, args.frames//2, args.frames-1):
+                    # Independent physical WebGL motion witness, so waveform
+                    # overlay motion cannot disguise a static particle scene.
+                    canvas.screenshot(
+                        path=str(samples / f"original-webgl-physics-{index:06d}.png")
+                    )
                 if audio_capture["enabled"] and (index % 30 == 0 or index == args.frames - 1):
                     diagnostics = page.evaluate(
                         '''()=>window.HHSBrownL2
@@ -345,6 +351,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         "original HTML L2 waveform graft produced no GPU instance writes"
                     )
 
+            if args.neural_layer_check:
+                physics_frames=sorted(samples.glob("original-webgl-physics-*.png"))
+                if len(physics_frames)!=len({0,args.frames//2,args.frames-1}):
+                    raise RuntimeError("missing independent raw WebGL scene samples")
+                physical_hashes=[sha256_file(path) for path in physics_frames]
+                if len(set(physical_hashes))!=len(physical_hashes):
+                    raise RuntimeError("particle WebGL canvas is static; overlay alone cannot pass")
+                neural_binding["independent_webgl_motion_verified"]=True
+                neural_binding["independent_webgl_samples"]=len(physics_frames)
+                neural_binding["independent_webgl_sha256"]=physical_hashes
             selected = sorted(frames.glob("frame_*.png"))
             for label, idx in (
                 ("first", 0),
