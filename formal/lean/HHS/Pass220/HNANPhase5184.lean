@@ -128,6 +128,15 @@ theorem generatorHydrationUniform
       hydrateGenerator generator i ⟨0, by decide⟩ := by
   rfl
 
+/-- Exact additive relative-phase projection (separate from native products).
+    This preserves the first phase from the second phase plus their difference. -/
+def additivePhaseDifference (left right : Int) : Int := left - right
+
+theorem additivePhaseReconstruction (left right : Int) :
+    right + additivePhaseDifference left right = left := by
+  simp [additivePhaseDifference, sub_eq_add_neg,
+    add_assoc, add_left_comm, add_comm]
+
 /-- Local read-only formalization. Canonical VM81/Hash72 authority remains inherited. -/
 def newCanonicalMutationAuthority : Bool := false
 def newCanonicalHash72Authority : Bool := false
