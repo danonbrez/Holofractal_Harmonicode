@@ -14,9 +14,11 @@ def test_embedded_mirror_and_separate_physics_authority():
     inline=re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>',html)
     assert inline and inline.group(1).strip()==bridge.strip()
     assert "state.gyroTransport72);" in bridge
+    assert "paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus," in bridge
+    assert 'ctx.createLinearGradient(x-extent,0,x+extent,0)' not in bridge
     assert "function gyroscopicGradientAxes72(" in bridge
     assert "if(!advanceLightingGate(clock.frame))return;" in bridge
-    assert 'value="0.40"' in html
+    assert 'max="0.05" step="0.001" value="0.020"' in html
     assert 'canonicalMutation:false' in bridge
     assert 'p.position.' not in bridge
     # The 5,184-tick physical feedback is not permitted to leak into this UI-only pass.
@@ -80,6 +82,22 @@ for(const p of [0,9,18]){
  assert.ok(Math.abs(dx*ex+dy*ey)<1e-6);
  assert.equal(ctx.globalCompositeOperation,"source-over");
 }
+for(const theta of [0,9,18,27]){
+ const bands=[];
+ const fake={
+  beginPath(){},moveTo(){},lineTo(){},closePath(){},fill(){},
+  createLinearGradient(...args){bands.push(args);return {addColorStop(){}}}
+ };
+ const left=viz.paintGyroscopicLightBand(fake,900,600,theta,0,0,50,12,.3);
+ const right=viz.paintGyroscopicLightBand(fake,900,600,theta,1,0,50,83,.3);
+ assert.equal(bands.length,2);
+ const a=bands[0],b=bands[1];
+ assert.ok(Math.abs((a[2]-a[0])*(b[2]-b[0])+
+   (a[3]-a[1])*(b[3]-b[1]))<1e-8);
+ assert.ok(Math.abs(left.normal[0]*right.normal[0]+
+   left.normal[1]*right.normal[1])<1e-12);
+}
+assert.equal(viz.diagnostics.allLightBandsRotatingWithGyro,true);
 assert.equal(viz.diagnostics.visualGradientAxesOrthogonal,true);
 assert.equal(viz.diagnostics.canonicalMutation,false);
 """

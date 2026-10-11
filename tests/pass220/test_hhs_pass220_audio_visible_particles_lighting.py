@@ -43,7 +43,7 @@ def test_visual_projection_is_reachable_in_canonical_renderer():
         'state.frameSignalReady=decodedWindow(state.audio) ||',
         'state.renderSource="live-analyser";',
         'ctx.globalCompositeOperation="lighter";',
-        'const x=W*((bus===0?.3:.7)+Math.sin(sweep+bus*Math.PI)*.12)',
+        'paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,',
         'state.frameCrossings=frameCrossingEvents',
     ):
         assert token in bridge,token
@@ -76,7 +76,7 @@ class El {
  getContext(){return canvasCtx}
 }
 const canvasCtx={
- setTransform(){},clearRect(){stats.draw++},beginPath(){},moveTo(){},lineTo(){},stroke(){},
+ setTransform(){},clearRect(){stats.draw++},beginPath(){},moveTo(){},lineTo(){},closePath(){},stroke(){},fill(){},
  fillRect(){},createLinearGradient(...p){stats.glow.push(p);return {addColorStop(){}}}
 };
 for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay","audioVizStop",
@@ -136,13 +136,13 @@ vm.runInNewContext(src,{
  viz.projectColor(pL,a);
  viz.projectColor(pR,b);
  raf();
- assert.ok(left.elements[0]>1.1);
- assert.ok(right.elements[0]>1.1);
+ assert.ok(left.elements[0]>1.001 && left.elements[0]<1.161);
+ assert.ok(right.elements[0]>1.001 && right.elements[0]<1.161);
  assert.notEqual(left.elements[12],10);
  assert.notEqual(right.elements[12],10);
  assert.notEqual(a.r,b.r);
- assert.ok(stats.glow.some(args=>args[1]===0 && args[3]===0 &&
-  args[0]>0 && args[2]<900),"linear light columns must cross the full scene");
+ assert.ok(stats.glow.some(args=>Math.hypot(args[2]-args[0],args[3]-args[1])>10),
+  "light must have a nonzero rotating gradient axis");
  assert.ok(stats.glow.length>=2);
  assert.ok(viz.diagnostics.frameRmsL>.1);
  assert.ok(viz.diagnostics.frameRmsR>.1);
@@ -175,7 +175,7 @@ class El {
  getContext(){return canvas}
 }
 const canvas={setTransform(){},clearRect(){},beginPath(){},moveTo(){},
- lineTo(){},stroke(){},fillRect(){},createLinearGradient(){
+ lineTo(){},closePath(){},stroke(){},fill(){},fillRect(){},createLinearGradient(){
  glow++;return {addColorStop(){}}}};
 for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay","audioVizStop",
  "audioVizGain","audioVizStatus","audioVizClock","audioVizGainValue"])
@@ -234,9 +234,9 @@ def test_audio_q144_full_spectrum_changes_with_pcm_and_has_no_donut():
     assert "phaseAngle=phase/72" not in source
     assert "Math.cos(phaseAngle" not in source
     assert "Math.sin(phaseAngle" not in source
-    assert 'ctx.createLinearGradient(x-extent,0,x+extent,0)' in source
+    assert 'paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,' in source
     assert 'const Q144_RGB=new Float32Array(144*3);' in source
-    assert 'const q=q144Index(phase,sample,rms' in source
+    assert 'const q=q144Index(2*state.gyroPhase72+phase,sample,rms,0,bus);' in source
     assert 'audioVisual.projectColor(p,particleAudioColor)' in html
     _node_run(r"""
 const fs=require("fs"),vm=require("vm"),assert=require("assert");

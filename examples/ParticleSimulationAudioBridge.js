@@ -61,16 +61,36 @@
     yPlane:"ORTHOGONAL_YW_CCW",wPlane:"ORTHOGONAL_YW_CW",
     projectionOnly:true,canonicalMutationAuthority:false
   });
+  const GEOMETRY_GAIN=Object.freeze({defaultValue:0.020,max:0.050,step:0.001});
+  /* Light-emission gain remains independent of the geometry-normalization
+     control, so a subtle physical silhouette does not erase the soft glow. */
+  const HALO_EMISSION_GAIN=0.16;
+  const BACK_LIGHT=Object.freeze({layerCells:5184,layers:2,alphaCap:0.045,
+    bandCap:0.022,authority:"PRESENTATION_ONLY"});
+  function lightAttenuation(rms,frequencyHz,normalizedDistance){
+    const amp=Math.sqrt(clamp(finite(rms),0,1));
+    const hz=1/(1+Math.max(0,finite(frequencyHz))/720);
+    const d=Math.max(0,finite(normalizedDistance));
+    return clamp(BACK_LIGHT.alphaCap*amp*hz/(1+10*d*d),0,BACK_LIGHT.alphaCap);
+  }
+  /* Two 5184 particle-address layers, NOT an elapsed tick delay. */
+  function particleLayer5184(index,phase72){
+    if(!Number.isInteger(index)||index<0||index>=10368)return null;
+    const layer=index<5184?0:1,address=index%5184;
+    const phase=2*Math.PI*(finite(phase72)+(layer?18:0))/72;
+    const modulation=.55+.45*(.5+.5*Math.cos(2*Math.PI*address/5184+phase));
+    return {layer,address,phase72:(finite(phase72)+(layer?18:0))%72,modulation};
+  }
   const geometryScratch=new Float32Array(3);
   const HANN_735=new Float32Array(AUDIO_CLOCK.samplesPerFrame);
   for(let i=0;i<HANN_735.length;i++)
     HANN_735[i]=0.5-0.5*Math.cos(2*Math.PI*i/(HANN_735.length-1));
   const state={
-    active:false, geometryEnabled:false, gain:0.4,
+    active:false, geometryEnabled:false, gain:GEOMETRY_GAIN.defaultValue,
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
     crossingEvents:[], sampleRate:0, buffer:null, context:null, source:null,
     processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
-    waveCanvas:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
+    waveCanvas:null,backLightCanvas:null,backLightTexture:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
     processorReady:null, renderedLightingFrames:0, skippedLightingFrames:0,
     outputClockSource:"inactive", lightingLatencyMs:0, lastClockStatusTime:-1,
     analyserL:null,analyserR:null,analyserDataL:new Float32Array(2048),
@@ -89,7 +109,7 @@
      0=displacement, 1=cellular boundary scale, 2=particle scale.
      The visual boundary radius always grows at least as fast as particle size. */
   function amplitudeGeometry(sample,rms,gain,out){
-    const g=clamp(finite(gain),0,5);
+    const g=clamp(finite(gain),0,GEOMETRY_GAIN.max);
     const energy=clamp(Math.sqrt(Math.max(0,finite(rms)))*2.2,0,1);
     const transient=clamp(Math.abs(finite(sample))*2.5,0,1);
     out[0]=g*(energy*2.8+transient*3.2);
@@ -183,7 +203,7 @@
   /* Reciprocal vertical-raster lanes from one ordered gyroscope state.
      The inverse-address folding below belongs ONLY to the color projection.
      It never asserts equality of native x/z, xy/zw, y/w, or yx/wz tensors. */
-  function verticalReciprocalGradientPair(phase,leftSample,rightSample,leftRms,rightRms){
+  function verticalReciprocalGradientPair(phase,leftSample,rightSample,leftRms,rightRms,leftHz=432,rightHz=432){
     const g=gyroscopicPhaseGear72(phase);
     const sharedSample=(finite(leftSample)+finite(rightSample))/2;
     const sharedRms=(Math.max(0,finite(leftRms))+Math.max(0,finite(rightRms)))/2;
@@ -194,8 +214,8 @@
        The right Q144 lane is +72 in the full-color circle. */
     const leftHues=leftAddress.map(k=>q144Index(2*k,sharedSample,sharedRms,0,0));
     const rightHues=rightMirrored.map(k=>q144Index(2*k,sharedSample,sharedRms,0,1));
-    const alphaL=clamp(Math.sqrt(Math.max(0,finite(leftRms)))*0.30,0,0.30);
-    const alphaR=clamp(Math.sqrt(Math.max(0,finite(rightRms)))*0.30,0,0.30);
+    const alphaL=lightAttenuation(leftRms,leftHz,0);
+    const alphaR=lightAttenuation(rightRms,rightHz,0);
     return {phase72:g.phase72,rotors:g,leftHues,rightHues,alphaL,alphaR,
       oppositeHuePairs:leftHues.every((q,i)=>((q+72)%144)===rightHues[i]),
       quarterTurn:GYRO_SHADER.quarterTurn};
@@ -217,9 +237,9 @@
     return {phase72:p,left,right,dot:c*(-s)+s*c};
   }
   function paintGyroscopicVerticalPair(ctx,width,height,leftSample,rightSample,
-                                        leftRms,rightRms,phase){
+                                        leftRms,rightRms,phase,leftHz=432,rightHz=432){
     const pair=verticalReciprocalGradientPair(
-      phase,leftSample,rightSample,leftRms,rightRms);
+      phase,leftSample,rightSample,leftRms,rightRms,leftHz,rightHz);
     if(pair.alphaL<0.004 && pair.alphaR<0.004)return pair;
     const axes=gyroscopicGradientAxes72(phase,width,height);
     ctx.globalCompositeOperation="lighter";
@@ -229,14 +249,46 @@
       const hues=bus?pair.rightHues:pair.leftHues;
       const strength=bus?pair.alphaR:pair.alphaL;
       shader.addColorStop(0,q144Css(hues[0],0));
-      for(let k=0;k<4;k++)
-        shader.addColorStop((k+1)/5,q144Css(hues[k],strength));
+      for(let k=0;k<4;k++){
+        const d=Math.abs((k+1)/5-.5);
+        shader.addColorStop((k+1)/5,q144Css(hues[k],strength/(1+10*d*d)));
+      }
       shader.addColorStop(1,q144Css(hues[3],0));
       ctx.fillStyle=shader;
       ctx.fillRect(0,0,width,height);
     }
     ctx.globalCompositeOperation="source-over";
     return pair;
+  }
+  /* Broad lights and 72 sample-phase flashes rotate with the exact same
+     two gyroscopic normals as the global reciprocal color gradients.
+     A local quad bounds overdraw; there is no radial/donut overlay. */
+  function paintGyroscopicLightBand(ctx,width,height,phase,bus,
+                                    normalizedOffset,halfWidth,hue,opacity){
+    const axes=gyroscopicGradientAxes72(phase,width,height);
+    const axis=bus?axes.right:axes.left;
+    const dx=axis[2]-axis[0],dy=axis[3]-axis[1];
+    const length=Math.hypot(dx,dy)||1,nx=dx/length,ny=dy/length;
+    const tx=-ny,ty=nx,diagonal=Math.hypot(width,height);
+    const centerDist=finite(normalizedOffset)*diagonal;
+    const cx=width/2+nx*centerDist,cy=height/2+ny*centerDist;
+    const radius=Math.max(1,finite(halfWidth));
+    ctx.beginPath();
+    ctx.moveTo(cx-tx*diagonal-nx*radius,cy-ty*diagonal-ny*radius);
+    ctx.lineTo(cx+tx*diagonal-nx*radius,cy+ty*diagonal-ny*radius);
+    ctx.lineTo(cx+tx*diagonal+nx*radius,cy+ty*diagonal+ny*radius);
+    ctx.lineTo(cx-tx*diagonal+nx*radius,cy-ty*diagonal+ny*radius);
+    ctx.closePath();
+    const gradient=ctx.createLinearGradient(
+      cx-nx*radius,cy-ny*radius,cx+nx*radius,cy+ny*radius);
+    gradient.addColorStop(0,q144Css(hue,0));
+    const falloff=1/(1+8*Math.pow(finite(normalizedOffset),2));
+    gradient.addColorStop(.5,q144Css(hue,
+      clamp(finite(opacity)*falloff,0,BACK_LIGHT.bandCap)));
+    gradient.addColorStop(1,q144Css(hue,0));
+    ctx.fillStyle=gradient;
+    ctx.fill();
+    return {normal:[nx,ny],center:[cx,cy]};
   }
   function harmonicStep(frequencyHz,harmonicMoment){
     if(!Number.isFinite(frequencyHz)||frequencyHz<=0)return 0;
@@ -350,6 +402,15 @@
     state.lastSignalFrame=-1;
     state.particleFrame=-1;
     state.frameSignalReady=false;
+    if(state.backLightCanvas){
+      const back=state.backLightCanvas.getContext("2d");
+      if(back){
+        back.setTransform(1,0,0,1,0,0);
+        back.fillStyle="#000000";
+        back.fillRect(0,0,state.backLightCanvas.width,state.backLightCanvas.height);
+        if(state.backLightTexture)state.backLightTexture.needsUpdate=true;
+      }
+    }
     state.frameCrossings=[];
     state.crossingEvents.length=0;
     state.lastSample=[0,0];
@@ -531,6 +592,29 @@
   }
   /* Never touch logical particle data. Only edit an InstancedMesh projection
      matrix and a scratch Color used with setColorAt. */
+  /* PCM-derived peak opacity on each particle, no per-carrier allocations. */
+  function projectParticleGlow(p){
+    if(!state.geometryEnabled||!state.frameSignalReady)return 0;
+    const i=state.particleIndex.get(p);
+    if(i===undefined)return 0;
+    const bus=i<AUDIO_CLOCK.laneCells?0:1;
+    const k=i%AUDIO_CLOCK.laneCells;
+    const sample=bus?state.frameR[k%AUDIO_CLOCK.samplesPerFrame]:
+                     state.frameL[k%AUDIO_CLOCK.samplesPerFrame];
+    const rms=bus?state.frameRmsR:state.frameRmsL;
+    const layer=particleLayer5184(i,state.gyroTransport72);
+    const frequency=Math.max(0,state.harmonicFrequencyHz[bus]);
+    return clamp(HALO_EMISSION_GAIN*layer.modulation*
+      (.48*Math.sqrt(Math.max(0,rms))+.42*Math.abs(sample))/
+      (1+frequency/720),0,.12);
+  }
+  /* CPU reference for the instanced fragment smoothstep^2 falloff.
+     Zero is particle center; radius one or greater is transparent. */
+  function particleHaloOpacity(normalizedRadius,peakAlpha){
+    const r=clamp(finite(normalizedRadius),0,1);
+    const smooth=r*r*(3-2*r);
+    return (1-smooth)*(1-smooth)*clamp(finite(peakAlpha),0,1);
+  }
   function projectColor(p,color){
     const base=p.material.color;
     if(!state.frameSignalReady || !state.geometryEnabled){
@@ -546,7 +630,9 @@
     const rms=bus?state.frameRmsR:state.frameRmsL;
     const phase=(p.userData&&Number.isInteger(p.userData.q144))?
       p.userData.q144:(idx%144);
-    const q=q144Index(phase,sample,rms,state.harmonicPhase[bus],bus);
+    /* Match the exact global u72 orientation for every halo/core color.
+       Typed per-particle Q144 offset and right-bus +72 remain distinct. */
+    const q=q144Index(2*state.gyroPhase72+phase,sample,rms,0,bus);
     const c=q*3;
     const brightness=clamp(0.12+Math.sqrt(rms)*1.15+
       Math.abs(sample)*0.65,0.12,1);
@@ -769,6 +855,11 @@
     canvas.height=Math.floor(window.innerHeight*ratio);
     canvas.style.width=window.innerWidth+"px";
     canvas.style.height=window.innerHeight+"px";
+    if(state.backLightCanvas){
+      state.backLightCanvas.width=canvas.width;
+      state.backLightCanvas.height=canvas.height;
+      if(state.backLightTexture)state.backLightTexture.needsUpdate=true;
+    }
     return ratio;
   }
   function draw(){
@@ -788,11 +879,19 @@
     const W=canvas.width/scale,H=canvas.height/scale;
     ctx.setTransform(scale,0,0,scale,0,0);
     ctx.clearRect(0,0,W,H);
-    /* Full-height reciprocal pair underlays the waveform and the inherited
-       vertical crossing columns. It is display only, driven by u72 phase. */
-    paintGyroscopicVerticalPair(ctx,W,H,
+    /* Stereo fields paint behind the particle scene, not over the HUD. */
+    const lightCtx=state.backLightCanvas?
+      state.backLightCanvas.getContext("2d"):ctx;
+    if(state.backLightCanvas){
+      lightCtx.setTransform(scale,0,0,scale,0,0);
+      lightCtx.globalCompositeOperation="source-over";
+      lightCtx.fillStyle="#000000";
+      lightCtx.fillRect(0,0,W,H);
+    }
+    paintGyroscopicVerticalPair(lightCtx,W,H,
       state.frameL[367],state.frameR[367],
-      state.frameRmsL,state.frameRmsR,state.gyroTransport72);
+      state.frameRmsL,state.frameRmsR,state.gyroTransport72,
+      state.harmonicFrequencyHz[0],state.harmonicFrequencyHz[1]);
     const player=state.audio;
     const t=(player&&isFinite(player.duration)&&player.duration>0)
       ?clamp(player.currentTime/player.duration,0,1):0;
@@ -841,46 +940,35 @@
     events.length=write;
     const cells=crossingLightingCells(
       events.length?events:state.frameCrossings,clock.frame);
-    /* No torus/donut/circular halo. Stereo RMS powers broad linear
-       illumination bands. Every zero-crossing phase paints a narrow,
-       sample-clock-positioned linear light column across the particle
-       field. All hues come from Q144 PCM phase, not fixed RGB pastels. */
-    ctx.globalCompositeOperation="lighter";
+    /* Every light band uses the SAME phase and orthogonal normals as
+       the full-viewport stereo overlays, never fixed vertical x-columns. */
+    lightCtx.globalCompositeOperation="lighter";
     const screenEnergy=[state.frameRmsL,state.frameRmsR];
     for(let bus=0;bus<2;bus++){
-      const energy=clamp(Math.sqrt(screenEnergy[bus])*1.8,0,1);
-      if(energy<0.012)continue;
+      const energy=lightAttenuation(screenEnergy[bus],state.harmonicFrequencyHz[bus],0);
+      if(energy<.0005)continue;
       const sample=bus?state.frameR[367]:state.frameL[367];
       const hue=q144Index(0,sample,screenEnergy[bus],state.harmonicPhase[bus],bus);
-      const sweep=(clock.frame%144)/144*Math.PI*2;
-      const x=W*((bus===0?.3:.7)+Math.sin(sweep+bus*Math.PI)*.12);
-      const extent=W*(.12+energy*.18);
-      const gradient=ctx.createLinearGradient(x-extent,0,x+extent,0);
-      gradient.addColorStop(0,q144Css(hue,0));
-      gradient.addColorStop(.5,q144Css(hue,energy*.35));
-      gradient.addColorStop(1,q144Css(hue,0));
-      ctx.fillStyle=gradient;
-      ctx.fillRect(x-extent,0,extent*2,H);
+      const angle=2*Math.PI*state.gyroTransport72/72;
+      const offset=.13*Math.sin(angle+bus*Math.PI/2);
+      paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,
+        offset,Math.min(W,H)*(.12+energy*.18),hue,energy*.35);
     }
     for(let bus=0;bus<2;bus++){
       for(let phase=0;phase<AUDIO_CLOCK.phaseBins;phase++){
         const strength=cells[bus][phase];
-        if(strength<0.02)continue;
-        /* Two complementary linear phase lanes, not 72 markers in a ring. */
-        const cell=phase+bus*AUDIO_CLOCK.phaseBins;
-        const x=W*(cell+.5)/144;
+        if(strength<.02)continue;
+        const offset=((phase+.5)/AUDIO_CLOCK.phaseBins-.5)*.84;
         const sample=bus?state.frameR[phase]:state.frameL[phase];
         const hue=q144Index(phase,sample,screenEnergy[bus],state.harmonicPhase[bus],bus);
-        const extent=2+strength*12;
-        const gradient=ctx.createLinearGradient(x-extent,0,x+extent,0);
-        gradient.addColorStop(0,q144Css(hue,0));
-        gradient.addColorStop(.5,q144Css(hue,strength*.68));
-        gradient.addColorStop(1,q144Css(hue,0));
-        ctx.fillStyle=gradient;
-        ctx.fillRect(x-extent,0,extent*2,H);
+        paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,
+          offset,2+strength*12,hue,
+          lightAttenuation(screenEnergy[bus],state.harmonicFrequencyHz[bus],
+            Math.abs(offset))*strength*.8);
       }
     }
-    ctx.globalCompositeOperation="source-over";
+    lightCtx.globalCompositeOperation="source-over";
+    if(state.backLightTexture)state.backLightTexture.needsUpdate=true;
     ctx.globalAlpha=1;
     const meter=document.getElementById("audioVizClock");
     if(meter && (clock.frame%60===0 || state.lastClockStatusTime<0 ||
@@ -919,6 +1007,11 @@
     });
     document.body.appendChild(canvas);
     state.waveCanvas=canvas;
+    if(typeof window.HHSInstallAudioBacklight==="function"){
+      const back=document.createElement("canvas");
+      state.backLightTexture=window.HHSInstallAudioBacklight(back);
+      state.backLightCanvas=back;
+    }
     resizeCanvas();
     window.addEventListener("resize",resizeCanvas);
     window.requestAnimationFrame(draw);
@@ -972,9 +1065,9 @@
     player.addEventListener("seeked",resetLightingClock);
     player.addEventListener("ended",resetLightingClock);
     gain.addEventListener("input",()=>{
-      state.gain=clamp(Number(gain.value)||0,0,5);
+      state.gain=clamp(Number(gain.value)||0,0,GEOMETRY_GAIN.max);
       const out=document.getElementById("audioVizGainValue");
-      if(out)out.textContent=state.gain.toFixed(2);
+      if(out)out.textContent=state.gain.toFixed(3);
     });
     window.addEventListener("pagehide",()=>{
       player.pause();
@@ -988,11 +1081,14 @@
   window.HHSAudioViz=Object.freeze({
     busPair:PAIR,get active(){return state.active;},
     get geometryEnabled(){return state.geometryEnabled;},
-    projectMatrix,projectColor,q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
+    projectMatrix,projectColor,projectParticleGlow,particleHaloOpacity,
+    particleLayer5184,lightAttenuation,
+    q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
     gyroscopicGradientAxes72,spectralFallbackHz,
     verticalReciprocalGradientPair,paintGyroscopicVerticalPair,
+    paintGyroscopicLightBand,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
@@ -1005,6 +1101,14 @@
       visualSource:state.renderSource,
       palette:"Q144-full-spectrum-audio-phase",donut:false,
        geometryNormalizationGain:state.gain,
+       geometryNormalizationGainMax:GEOMETRY_GAIN.max,
+       haloEmissionGain:HALO_EMISSION_GAIN,
+       backLightLayerCells:BACK_LIGHT.layerCells,
+       backLightLayerCount:BACK_LIGHT.layers,
+       backLightOpacityCap:BACK_LIGHT.alphaCap,
+       backLightBandCap:BACK_LIGHT.bandCap,
+       backLightActive:!!state.backLightTexture,
+       lightingBehindOpaqueParticles:true,
        cellularBoundaryAmplitudeResponsive:true,
        particleSizeAmplitudeResponsive:true,
        harmonicColorWheel:true,
@@ -1013,6 +1117,8 @@
        gyroscopePhase72:state.gyroPhase72,
        gyroscopeVisualPhase72:state.gyroTransport72,
        visualGradientAxesOrthogonal:true,
+       particleHalosPhaseLocked:true,
+       allLightBandsRotatingWithGyro:true,
        gyroscopeQuarterTurn:GYRO_SHADER.quarterTurn,
        gyroscopeFullPeriod:GYRO_SHADER.phaseModulus,
        harmonicFrequencyLHz:state.harmonicFrequencyHz[0],

@@ -138,3 +138,105 @@ pytest+Node regression; dedicated CI path; this restart record.
 The authoring-side JS parse and source inline identity were verified.
 Run exact-head CI and then visual browser/phone acceptance before
 the next physical coupling stage.
+
+## I083 — phase-locked per-particle soft halo and all-band gyro coupling
+
+Date: 2026-10-11. Base main `6c452d4abe80eff0c77f58a12b43f2902020b5b1`, branch `agent/pass220-particle-centered-halo-gyro-light-20261011`,
+merge target main. Full source authority: `examples/ParticleSimulation.html`.
+Standalone PCM bridge: `examples/ParticleSimulationAudioBridge.js`.
+
+Requirement: every lighting particle has a soft opacity gradient centered at
+the particle, phase-locked with the global reciprocal stereo shaders.
+Fix previous visually dominant broad and narrow VERTICAL bands too.
+
+Implementation:
+- One additive, transparent, depth-write-disabled GPU InstancedMesh
+  billboard halo per existing I057 batch. Batch count is fixed; no
+  extra mesh/draw per particle. Halos reuse the exact physical carrier's
+  *render-only* instance matrix and Q144 instance-color GPU buffers.
+- Each halo's alpha = peakPCMOpacity*(1-smoothstep(0,1,r))^2,
+  r=distance from the particle-centered sprite UV; alpha is highest
+  at r=0 and zero at r>=1. A CPU reference tests monotone smooth falloff.
+- Peak PCM alpha uses sample and stereo RMS and the inherited 0.40
+  normalization. Silence, inactive PCM or playback stop hides the halo.
+  Every halo's Q144 hue uses the global ordered u72 gear address plus
+  its original local particle phase and the typed right-bus +72.
+- Gyroscopic full-canvas backgrounds keep continuous orthogonal rotating
+  axes. Broad RMS lighting and the 72-bin zero-crossing flashes no longer
+  draw old fixed x-strips; a short rotated quad centered along the same
+  global u72 axis normal makes phase-aligned stripes without 144
+  unnecessary full-canvas draws. No donuts or halo physics.
+- Live WebGL and audio device appearance cannot be inferred from static
+  source checks. Dedicated scoped pytest/Node probes and Source Text
+  Integrity must pass, then a real WebGL mobile/desktop viewing pass.
+
+The user-requested 5184 **physics** tick delayed feedback and per-tick
+ordered xy:zw alternation are deliberately NOT admitted by Canvas2D/
+WebGL visual state. They need a separately signed and replayable VM81
+observation ring, preserving exact tick count, stereo ancestry and
+noncommutative operator order; no bypass of native force authority.
+
+## Compatibility repair on PR #766
+
+The pinned Three.js r128 WebGLProgram injector may already declare
+`instanceColor` for instanced-color materials. To avoid duplicate GLSL
+attributes, the glow vertex shader uses a dedicated `haloColor`
+attribute, aliases the exact same existing mesh instance-color GPU
+buffer through `geometry.setAttribute("haloColor",mesh.instanceColor)`,
+and never redundantly creates or uploads a second 10,368-entry RGB
+buffer. It preserves rotor-phase color equality while leaving the
+base particle instancing untouched. Renderer compatibility must
+still be checked on actual WebGL hardware/browser.
+
+## I084 — geometry gain limited to 0.05 (2026-10-11)
+
+User requests a much subtler geometry normalization, with maximum ~0.05.
+Branch `agent/pass220-particle-centered-halo-gyro-light-20261011`; pre-change PR head `9d62717d1dbab40fa9c643df986e1959897a3fa1`; merge target main
+`6c452d4abe80eff0c77f58a12b43f2902020b5b1`.
+
+New UI default `0.020`, range `[0,0.050]`, increment `0.001`.
+Runtime GEOMETRY_GAIN uses those bounds, clamps direct calls to 0.050
+(including out-of-range programmatic access), and shows three decimal
+places. The existing amplitude-to-cell-boundary / particle-size / visible
+displacement coefficients and physical boundary isolation remain
+unchanged; thus the maximum output envelope is bounded by a gain
+of 0.050 rather than previously 5.00.
+
+**Lighting deliberately decoupled:** independent `HALO_EMISSION_GAIN=0.40`
+preserves the audible per-particle soft opacity halo even when geometry
+is visually tiny. Stereo energy still powers the glow, which vanishes
+for inactive/zero PCM. This does not create a second physical gain or
+weaken the native physics mutation boundary.
+
+Repair-forward of stale assertions found in earlier PR #766 scope run
+`38132228711`: old vertical x-band locator and original pre-gyro
+Q144 pixel-color function were already replaced by the new phase-locked
+rotating implementations. Updated only impacted tests and scaled the
+expected particle matrix range to the new small max; kept negative
+canonical-no-mutation assertions. Exact-head Node/pytest and source
+integrity must pass before merge, and real GPU device evidence remains
+unverified.
+
+## I085 — restrained 2×5184 backlighting (2026-10-11)
+
+Aurora-style foreground opacity addressed by moving all reciprocal
+stereo field gradients and 72 source-crossing stripes into an
+offscreen Canvas2D `THREE.CanvasTexture` painted as `scene.background`
+BEHIND the 10,368 opaque particles. The waveform and controls
+remain foreground UI. The scene initializes the background callback;
+the boot sequence registers the texture only when Three.js is present.
+Audio frame gating and reset-to-black on pause are preserved.
+Per-bus global alpha is capped at 0.045, flash alpha at 0.022,
+with damping from RMS amplitude, detected frequency, distance from
+the stereo layer center. Two independently indexed 5184-address
+particle shading layers are phase offset by a *visual* +18 u72 steps.
+Existing instanced center-peaked halos use softer 0.16 max emission
+before view-camera distance damping 1/(1+0.028*d²), a small behind-core
+z offset and disabled depth writes. Geometry normalization remains
+default 0.020, max 0.050.
+
+No mutation of logical particles, source VM81/Hash receipts, or native
+physics admission. The separate user-requested 5184 **physics tick**
+delayed light-to-force coupling and per-tick ordered xy:zw phase inversion
+are NOT enabled. Exact-head targeted tests/source-integrity and actual
+WebGL audio/browser rendering are required for acceptance.
