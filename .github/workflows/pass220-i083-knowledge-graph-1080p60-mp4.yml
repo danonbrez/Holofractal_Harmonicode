@@ -86,9 +86,9 @@ jobs:
           PY
           ffmpeg -hide_banner -loglevel error -y \
             -i artifacts/pass220/i083-knowledge-graph-1080p60/lane5-html-holographic-720p.mp4 \
-            -i artifacts/pass220/i083-knowledge-graph-1080p60/knowledge-graph-projection-hud.png \
+            -loop 1 -framerate 60 -i artifacts/pass220/i083-knowledge-graph-1080p60/knowledge-graph-projection-hud.png \
             -filter_complex "[0:v][1:v]overlay=0:0:shortest=1[out]" \
-            -map "[out]" -r 60 -c:v libx264 -preset medium -crf 19 \
+            -map "[out]" -frames:v 600 -r 60 -c:v libx264 -preset medium -crf 19 \
             -pix_fmt yuv420p -movflags +faststart \
             artifacts/pass220/i083-knowledge-graph-1080p60/HHS-knowledge-graph-1920x1080-60fps.mp4
 
