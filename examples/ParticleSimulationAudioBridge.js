@@ -259,10 +259,12 @@
     if(!clock || !state.audio || state.audio.paused || state.audio.ended)
       return false;
     if(clock.frame===state.lastSignalFrame)return state.frameSignalReady;
-    /* Use live stereo when available, including while decoding a long
-       file. The decoded PCM window is an independent exact fallback. */
-    state.frameSignalReady=liveWindow() ||
-      decodedWindow(state.audio);
+    /* Prefer sample-aligned decoded PCM; use live stereo when a long
+       file has not decoded or its format is unsupported by decodeAudioData.
+       Analyser nodes can return silence on some platforms even while the
+       native player remains audible, so do not hide decoded data behind them. */
+    state.frameSignalReady=decodedWindow(state.audio) ||
+      liveWindow();
     state.lastSignalFrame=clock.frame;
     if(!state.frameSignalReady)return false;
     const m=frameSampleMetrics(state.frameL,state.frameR);
@@ -545,19 +547,20 @@
       ?clamp(player.currentTime/player.duration,0,1):0;
     const left=18,right=W-18,width=Math.max(1,right-left);
     const lower=Math.max(65,H-110),baselineL=lower-35,baselineR=lower+30;
-    const buses=[{data:state.peaksL,y:baselineL,color:"#43d7fb"},
-                 {data:state.peaksR,y:baselineR,color:"#d28cff"}];
+    const waveformLength=state.buffer ? N : AUDIO_CLOCK.samplesPerFrame;
+    const buses=[{data:state.buffer?state.peaksL:state.frameL,y:baselineL,color:"#43d7fb"},
+                 {data:state.buffer?state.peaksR:state.frameR,y:baselineR,color:"#d28cff"}];
     ctx.lineWidth=1;
     for(const bus of buses){
       ctx.strokeStyle=bus.color;ctx.globalAlpha=0.55;
       ctx.beginPath();
-      const stride=Math.max(1,Math.ceil(N/Math.max(1,width)));
-      for(let i=0;i<N;i+=stride){
+      const stride=Math.max(1,Math.ceil(waveformLength/Math.max(1,width)));
+      for(let i=0;i<waveformLength;i+=stride){
         let peak=0;
-        for(let j=i;j<Math.min(N,i+stride);j++){
+        for(let j=i;j<Math.min(waveformLength,i+stride);j++){
           if(Math.abs(bus.data[j])>Math.abs(peak))peak=bus.data[j];
         }
-        const x=left+i/(N-1)*width;
+        const x=left+i/(waveformLength-1)*width;
         ctx.moveTo(x,bus.y);
         ctx.lineTo(x,bus.y-peak*27);
       }
