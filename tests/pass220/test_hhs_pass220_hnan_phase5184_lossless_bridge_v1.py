@@ -31,6 +31,12 @@ def test_arbitrary_raw_5184_recovery_without_digest_loss(seed: bytes) -> None:
     assert witness["quad_count"] == 20
     assert bridge.recover_raw(witness) == raw
     assert witness["hnan_invariants_pass"] is True
+    assert witness["phase_difference_exact"] is True
+    assert len(witness["phase_difference_witnesses"]) == 20
+    assert all(len(row) == 3 for row in witness["phase_difference_witnesses"])
+    assert all((right + delta) % 72 == left
+               for row in witness["phase_difference_witnesses"]
+               for left, right, delta in row)
     assert witness["hnan_tensor"] == bridge.EXPECTED_TENSOR
     assert witness["hnan_center_source"] == bridge.EXPECTED_TENSOR[1][1]
     assert witness["hnan_terminal_source"] == "xy+epsilon"
@@ -110,3 +116,15 @@ def test_lean_and_wolfram_proof_surfaces_present() -> None:
         "GenericUnconstrainedPayloadCompressionClaimed",
     ):
         assert token in wolfram
+
+
+def test_corrupt_relative_phase_is_detected() -> None:
+    witness = bridge.candidate_bridge(frame(b"phase-diff-tamper"), HASH72_ALPHABET)
+    values = list(witness["phase_difference_witnesses"])
+    first = list(values[0])
+    left, right, delta = first[0]
+    first[0] = (left, right, (delta + 1) % 72)
+    values[0] = tuple(first)
+    witness["phase_difference_witnesses"] = tuple(values)
+    with pytest.raises(bridge.Phase5184BridgeError, match="PHASE_DIFFERENCE"):
+        bridge.recover_raw(witness)
