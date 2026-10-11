@@ -2,15 +2,15 @@
 # HHS production incident 2026-10-11 — pinned causal egress host repair.
 # This script does NOT deploy, switch Git commits, restart services, or clear
 # the release block. It provisions only the installed venv/model and verifies
-# direct native generation using the exact deployed historical source.
+# direct native generation using the exact current deployed source; never switches release revisions.
 set -Eeuo pipefail
 umask 027
 
-PIN="6c452d4abe80eff0c77f58a12b43f2902020b5b1"
+PIN="579dbb58f7f9d99419e73cb4d686901e6d123212"
 APP="/opt/hhs/app"
 PY="/opt/hhs/venv/bin/python"
 MODEL="/var/lib/hhs/models/native-causal/smollm2-360m-instruct-a10cc1512ea"
-STATUS="/var/lib/hhs/runtime-bootstrap/native-causal-6c452d4a-recovery.jsonl"
+STATUS="/var/lib/hhs/runtime-bootstrap/native-causal-579dbb58-recovery.jsonl"
 
 fail(){ printf 'HHS_CAUSAL_REPAIR_BLOCKED: %s\n' "$*" >&2; exit 1; }
 [[ "${EUID}" == 0 ]] || fail "root host SSH authority required"
@@ -127,5 +127,5 @@ PYCODE
 
 # IMPORTANT: Do not re-enable hhs-guarded-update.timer here.
 # User-requested release block stays active until pinned HTTPS and Chromium
-# validation have explicit positive receipts; old workflow replay must not
-# silently target the now-advanced GitHub main.
+# validation have explicit positive receipts; only the same pinned exact-main deployment acceptance may
+# follow, after successful native CLI and source verification.
