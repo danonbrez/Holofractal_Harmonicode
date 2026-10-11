@@ -272,7 +272,7 @@ class Element {
 }
 const ctx={setTransform(){},clearRect(){drawn.push(seconds)},beginPath(){},
  moveTo(){},lineTo(){},stroke(){},fillRect(){},
- createRadialGradient(){return {addColorStop(){}}}};
+ createLinearGradient(){return {addColorStop(){}}}};
 for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay",
  "audioVizStop","audioVizGain","audioVizStatus","audioVizGainValue",
  "audioVizClock"])nodes[id]=new Element(id);
