@@ -7,14 +7,27 @@
     right:Object.freeze({numerator:Object.freeze(["z","zw","z-w","w"]), denominator:"xy"}),
     relation:"ordered stereo-bus equality; no scalar cancellation"
   });
+  /* Typed presentation address identities. One stereo side projects over
+     81*64 == 72*72 == 5184 positions; two ordered sides carry 10368.
+     The equality is a lane cardinality, not an authority to scalarize Hash72. */
   const N=10368;
+  const AUDIO_CLOCK=Object.freeze({
+    canonicalRate:44100,visualHz:60,samplesPerFrame:735,
+    laneCells:81*64,hash72Cells:72*72,pairedParticles:N,
+    phaseBins:72,fadeFrames:6
+  });
+  if(AUDIO_CLOCK.canonicalRate!==AUDIO_CLOCK.visualHz*AUDIO_CLOCK.samplesPerFrame ||
+     AUDIO_CLOCK.laneCells!==AUDIO_CLOCK.hash72Cells ||
+     AUDIO_CLOCK.pairedParticles!==2*AUDIO_CLOCK.laneCells)
+    throw new Error("HHS audio projection cardinality violated");
   const state={
     active:false, geometryEnabled:false, gain:1.25,
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
     crossingEvents:[], sampleRate:0, buffer:null, context:null, source:null,
     processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
-    waveCanvas:null, started:false, lastFrame:0, lastSample:[0,0], status:null,
-    processorReady:null
+    waveCanvas:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
+    processorReady:null, renderedLightingFrames:0, skippedLightingFrames:0,
+    outputClockSource:"inactive", lightingLatencyMs:0, lastClockStatusTime:-1
   };
   function clamp(x,a,b){return Math.min(b,Math.max(a,x));}
   function finite(x){return Number.isFinite(x)?x:0;}
@@ -52,6 +65,78 @@
     }
     return out;
   }
+  /* An audio sample index is the authoritative presentation clock.
+     No rAF timestamp determines phase, and no host pixel frame may mint
+     native VM81/Hash72 state. At a 48 kHz hardware rate, the same 60 Hz
+     boundary occurs every 800 device samples instead of 735 canonical ones. */
+  function canonicalSampleIndex(nativeSample, nativeRate){
+    const rate=Number(nativeRate);
+    if(!Number.isFinite(nativeSample)||!Number.isFinite(rate)||rate<=0)
+      return 0;
+    return Math.max(0,Math.floor(nativeSample*AUDIO_CLOCK.canonicalRate/rate+1e-9));
+  }
+  function frameForSample(nativeSample,nativeRate){
+    return Math.floor(canonicalSampleIndex(nativeSample,nativeRate) /
+                      AUDIO_CLOCK.samplesPerFrame);
+  }
+  function sampleForFrame(frame){return frame*AUDIO_CLOCK.samplesPerFrame;}
+  function outputClockFrame(context,player,perfNowMs){
+    if(!player || player.paused || player.ended)return null;
+    let seconds=0,source="media-playhead";
+    if(context && context.state==="running"){
+      const stamp=(typeof context.getOutputTimestamp==="function") ?
+        context.getOutputTimestamp():null;
+      if(stamp && Number.isFinite(stamp.contextTime) &&
+         Number.isFinite(stamp.performanceTime) && stamp.performanceTime>0 &&
+         Number.isFinite(perfNowMs)){
+        /* Timestamp anchors audio-output sample time to monotonic UI time.
+           Do not additionally subtract outputLatency in this branch. */
+        seconds=stamp.contextTime+
+          Math.max(0,(perfNowMs-stamp.performanceTime)/1000);
+        seconds=Math.min(seconds,context.currentTime);
+        source="output-timestamp";
+      }else{
+        /* Approximation only when the output timestamp API is unavailable. */
+        const latency=Number.isFinite(context.outputLatency)?context.outputLatency:
+          (Number.isFinite(context.baseLatency)?context.baseLatency:0);
+        seconds=Math.max(0,context.currentTime-latency);
+        source="context-latency-estimate";
+      }
+    }else if(Number.isFinite(player.currentTime)){
+      seconds=player.currentTime;
+    }
+    const nativeRate=(context&&Number.isFinite(context.sampleRate)) ?
+      context.sampleRate:AUDIO_CLOCK.canonicalRate;
+    const nativeSample=Math.max(0,Math.floor(seconds*nativeRate+1e-9));
+    const sample=canonicalSampleIndex(nativeSample,nativeRate);
+    const frame=Math.floor(sample/AUDIO_CLOCK.samplesPerFrame);
+    return {frame,sample,seconds,source,nativeRate,frameStart:sampleForFrame(frame)};
+  }
+  function crossingFrame(eventSeconds){
+    return Math.floor(Math.max(0,eventSeconds)*AUDIO_CLOCK.visualHz+1e-9);
+  }
+  function crossingLightingCells(events,frame){
+    const cells=[new Float32Array(AUDIO_CLOCK.phaseBins),
+                 new Float32Array(AUDIO_CLOCK.phaseBins)];
+    if(!Number.isFinite(frame)||frame<0)return cells;
+    for(const e of events){
+      if(!Array.isArray(e)||e.length<4||e[0]!==0&&e[0]!==1)continue;
+      const eventFrame=crossingFrame(e[1]);
+      const age=frame-eventFrame;
+      if(age<0||age>=AUDIO_CLOCK.fadeFrames)continue;
+      const strength=clamp(finite(e[2])*16,0,1)*
+                     (1-age/AUDIO_CLOCK.fadeFrames);
+      const sample=Math.max(0,Math.floor(e[1]*AUDIO_CLOCK.canonicalRate+1e-9));
+      const phase=sample % AUDIO_CLOCK.phaseBins;
+      cells[e[0]][phase]=Math.min(1,cells[e[0]][phase]+strength*0.22);
+    }
+    return cells;
+  }
+  function resetLightingClock(){
+    state.lastFrame=-1;
+    state.crossingEvents.length=0;
+    state.lastSample=[0,0];
+  }
   function report(message){
     if(state.status)state.status.textContent=message;
   }
@@ -84,11 +169,13 @@
       if(ev[1]<now-0.8||ev[1]>now+0.1)continue;
       state.crossingEvents.push(ev);
     }
-    if(state.crossingEvents.length>1800)
-      state.crossingEvents.splice(0,state.crossingEvents.length-1800);
+    if(state.crossingEvents.length>4096)
+      state.crossingEvents.splice(0,state.crossingEvents.length-4096);
   }
   function installFallback(context,source){
-    const processor=context.createScriptProcessor(1024,2,2);
+    /* 256 hardware samples < 735 canonical samples/frame. Callback jitter
+       remains browser-dependent, and only AudioWorklet is low-latency. */
+    const processor=context.createScriptProcessor(256,2,2);
     processor.onaudioprocess=function(ev){
       const input=ev.inputBuffer,output=ev.outputBuffer;
       const left=input.getChannelData(0);
@@ -118,7 +205,7 @@
     "this.pending.push([bus,(currentFrame+i-1+Math.max(0,Math.min(1,frac)))/sampleRate,\n"+
     "Math.min(1,Math.abs(delta)),cur>=prev?1:-1]);}prev=cur;}\n"+
     "this.prev[bus]=prev;}\n"+
-    "if(++this.blocks%8===0){if(this.pending.length)\n"+
+    "if(++this.blocks%2===0){if(this.pending.length)\n"+
     "this.port.postMessage({crossings:this.pending});this.pending=[];}\n"+
     "return true;}}\n"+
     "registerProcessor('hhs-stereo-crossings',HHSStereoCrossingWorklet);\n");
@@ -206,7 +293,7 @@
     if(!file)return;
     const thisFile=++fileVersion;
     state.active=false;state.geometryEnabled=false;state.buffer=null;
-    state.crossingEvents.length=0;state.lastSample=[0,0];
+    resetLightingClock();
     state.audio.pause();
     if(state.objectURL)URL.revokeObjectURL(state.objectURL);
     state.objectURL=URL.createObjectURL(file);
@@ -248,6 +335,21 @@
     window.requestAnimationFrame(draw);
     const canvas=state.waveCanvas;
     if(!canvas||!state.active)return;
+    /* The display follows the audible output sample clock, never accumulates
+       timer-based FPS drift, and skips stale frames rather than replaying them. */
+    const clock=outputClockFrame(state.context,state.audio,
+      window.performance && typeof window.performance.now==="function" ?
+      window.performance.now():NaN);
+    if(!clock)return;
+    if(clock.frame===state.lastFrame)return;
+    if(clock.frame<state.lastFrame){
+      resetLightingClock(); // pause/seek or clock discontinuity
+    }
+    if(state.lastFrame>=0 && clock.frame>state.lastFrame+1)
+      state.skippedLightingFrames+=clock.frame-state.lastFrame-1;
+    state.lastFrame=clock.frame;
+    state.renderedLightingFrames++;
+    state.outputClockSource=clock.source;
     const ctx=canvas.getContext("2d");
     if(!ctx)return;
     const scale=window.devicePixelRatio?clamp(window.devicePixelRatio,1,2):1;
@@ -281,23 +383,19 @@
     ctx.beginPath();ctx.moveTo(left+t*width,lower-68);
     ctx.lineTo(left+t*width,lower+62);ctx.stroke();
     ctx.globalAlpha=1;
-    const now=state.context?state.context.currentTime:0;
-    /* Every crossing is sampled at its exact fractional frame. Aggregate
-       intensities into bounded per-bus gradient cells for mobile raster cost. */
-    const cells=[new Float32Array(72),new Float32Array(72)];
+    /* Lighting consumes 735-sample canonical audio frames at 60 Hz.
+       Frame-relative gradients preserve each sample's crossing phase and
+       accumulate no more than six audio ticks of fading history. */
     const events=state.crossingEvents;
     let write=0;
     for(let i=0;i<events.length;i++){
-      const e=events[i],age=now-e[1];
-      if(age<0||age>0.65)continue;
-      events[write++]=e;
-      const strength=clamp(e[2]*16,0,1)*(1-age/0.65);
-      const phase=Math.floor(((e[1]*state.sampleRate)%72+72)%72);
-      const cell=cells[e[0]][phase];
-      /* Multiple crossings are additive, but bounded to opacity 1. */
-      cells[e[0]][phase]=Math.min(1,cell+strength*0.22);
+      const frame=crossingFrame(events[i][1]);
+      if(frame>clock.frame-AUDIO_CLOCK.fadeFrames &&
+         frame<=clock.frame) events[write++]=events[i];
     }
     events.length=write;
+    const cells=crossingLightingCells(events,clock.frame);
+    const phaseFrame=clock.frame;
     for(let bus=0;bus<2;bus++){
       for(let phase=0;phase<72;phase++){
         const strength=cells[bus][phase];
@@ -313,6 +411,15 @@
         ctx.fillStyle=gradient;
         ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
       }
+    }
+    const meter=document.getElementById("audioVizClock");
+    if(meter && (clock.frame%60===0 || state.lastClockStatusTime<0 ||
+        clock.frame-state.lastClockStatusTime>=60)){
+      state.lastClockStatusTime=clock.frame;
+      meter.textContent="44,100 PCM Hz / 735 samples = 60 audio frames/s | "+
+        "device "+clock.nativeRate+" Hz | phase frame "+clock.frame+
+        " | dropped visual frames "+state.skippedLightingFrames+
+        " | source "+clock.source;
     }
   }
   function boot(){
@@ -351,7 +458,7 @@
     stop.addEventListener("click",()=>{
       player.pause();
       try{player.currentTime=0;}catch(_ignored){}
-      state.crossingEvents.length=0;
+      resetLightingClock();
       report("Stopped — music and waveform retained.");
     });
     /* Native <audio controls> needs the same gesture-bound unlock; a play
@@ -377,7 +484,7 @@
       report("Media playback error "+(code||"unknown")+
         ": try a supported MP3, WAV, or OGG file.");
     });
-    player.addEventListener("seeked",()=>{state.crossingEvents.length=0;});
+    player.addEventListener("seeked",resetLightingClock);
     gain.addEventListener("input",()=>{
       state.gain=clamp(Number(gain.value)||0,0,5);
       const out=document.getElementById("audioVizGainValue");
@@ -388,13 +495,25 @@
       if(state.objectURL)URL.revokeObjectURL(state.objectURL);
     });
     report("Select an audio file to enable stereo PCM geometry.");
+    const meter=document.getElementById("audioVizClock");
+    if(meter)meter.textContent=
+      "44,100 PCM Hz / 735 samples = 60 audio frames/s | awaiting playback";
   }
   window.HHSAudioViz=Object.freeze({
     busPair:PAIR,get active(){return state.active;},
     get geometryEnabled(){return state.geometryEnabled;},
     projectMatrix,bindParticles,peakEnvelope,crossingsFromBlock,
+    audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
+    sampleForFrame,outputClockFrame,crossingFrame,crossingLightingCells,
     get diagnostics(){return {
       active:state.active, sampleRate:state.sampleRate,
+      canonicalRate:AUDIO_CLOCK.canonicalRate,
+      visualHz:AUDIO_CLOCK.visualHz,
+      samplesPerFrame:AUDIO_CLOCK.samplesPerFrame,
+      audioFrame:state.lastFrame,
+      visualFramesRendered:state.renderedLightingFrames,
+      visualFramesSkipped:state.skippedLightingFrames,
+      clockSource:state.outputClockSource,
       crossesQueued:state.crossingEvents.length,
       geometryBins:N, canonicalMutation:false
     };}
