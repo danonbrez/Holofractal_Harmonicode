@@ -31,3 +31,11 @@
 - Environment: GitHub CI Python 3.12, Node.js, Playwright Chromium/SwiftShader, ffmpeg, Pillow, pytest; CDN JavaScript for the original HTML.
 - Validate exact-head dependency tests first; then offline 600 frame MP4 and SHA/visual/waveform/L2 receipts. If CI queued, commit restartable state, return control and repair-forward via watch. Merge only when green and verify main.
 - Future native runtime stage: formally admitted edge list, ordered tensor weights, GoodnessFunction/HarmonicSoftmax execution, recurrent state, per-layer typed VM81/Hash72/Hash216 receipts, CPU canonical equals GPU candidate, measured real-time performance. No unverified full-graph closure claim.
+
+
+## Subsequent validation checkpoint
+- Structural/native dependency-scoped job passed at I085 head `6e9f6a56589a6d073cc4667216bed9523204f40c`; includes inherited I082 exact neural source and 10,368 BigInt layer exhaustive/reversible cover, Node WeakMap binding negative tests, I057/I084 physics/audio regressions.
+- Further impact-scoped strengthening: independent source WebGL screenshots first/middle/last from the **real original HTML particle canvas** must have distinct SHA256 values; overlay-only motion is not allowed to satisfy the 60fps evidence. Raw ingress records `neural_layer_binding.independent_webgl_motion_verified` and three source hashes; movie verification fails closed if absent.
+- Latest source commits: `e258a78e2c4d035357672c9ffee1312881113db8` raw canvas evidence; `d0558a1604c2944dd402065993611f0456cdf569` workflow acceptance. Earlier runs are stale.
+- The I085 PR is #773. Do not confuse lazy exact addressing with all 86.8-billion neurons executed or with FlyVis synaptic connectivity: native topology still requires explicit certified edge witnesses. No fake transition graph.
+- Next: inspect latest HEAD I085 CI run, repair only its failed step; complete 1920x1080 600 frame H.264 60fps recording and waveform+L2+WebGL motion receipts, then merge/review when green, verify `main`. CI may exceed interactive turn wall-clock; this restart record is authoritative for continuation.
