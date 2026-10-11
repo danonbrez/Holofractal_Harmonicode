@@ -41,6 +41,26 @@ fi
 exec 8>/run/lock/hhs-guarded-update.lock
 flock -w 15 8 || fail "guarded updater owns the mutation lock"
 
+# Reverify exact HEAD under both locks: reject any preflight/lock race.
+[[ "$(git -C "$APP" rev-parse HEAD)" == "$PIN" ]] ||
+  fail "production HEAD changed while waiting for lock"
+[[ "$(git -C "$APP" branch --show-current)" == main ]] ||
+  fail "production branch changed while waiting for lock"
+git -C "$APP" diff-index --quiet HEAD -- ||
+  fail "production checkout became dirty while waiting for lock"
+PROMOTION_RECEIPT="/var/lib/hhs-guarded-update/last-success.json"
+[[ -r "$PROMOTION_RECEIPT" ]] ||
+  fail "deployed release promotion receipt unavailable"
+"$PY" - "$PROMOTION_RECEIPT" "$PIN" <<'PYCODE'
+import json, sys
+from pathlib import Path
+r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+assert r.get("candidate_sha") == sys.argv[2]
+assert r.get("runtime_os_bundle_sha") == sys.argv[2]
+assert r.get("outcome") == "PROMOTED"
+print("HHS_CAUSAL_REPAIR_PROMOTION_IDENTITY_VERIFIED=1")
+PYCODE
+
 cd "$APP"
 printf 'HHS_CAUSAL_REPAIR_SOURCE_SHA=%s\n' "$PIN"
 "$PY" -m pip --version
@@ -114,13 +134,20 @@ assert len(reports)==1, "missing final acceptance report"
 r=reports[0]
 assert r.get("ok") is True
 assert r.get("prompt_count")==4
+turns=r.get("turns")
+assert isinstance(turns,list) and len(turns)==4
 assert r.get("distinct_response_count")==4
+hashes=[item.get("response_sha256") for item in turns]
+assert all(isinstance(h,str) and len(h)==64 for h in hashes)
+assert len(set(hashes))==4
 assert not r.get("failures")
-for item in r.get("turns",[]):
+for item in turns:
   assert item.get("generation_path")=="NATIVE_CAUSAL_LM_SERIALIZED_BLOCK_STREAM"
-  assert item.get("response_block_count",0)>0
+  blocks=item.get("response_block_count")
+  assert isinstance(blocks,int) and not isinstance(blocks,bool) and blocks>0
   assert item.get("runtime_mutation_admitted") is False
   assert not item.get("causal_generation_failure")
+  assert not item.get("strict_failures")
 print("HHS_CAUSAL_REPAIR_FOUR_NATIVE_SERIALIZED_RESPONSES_VERIFIED=1")
 print("HHS_CAUSAL_REPAIR_RELEASE_GATE_STILL_BLOCKED_PENDING_HTTPS_CHROMIUM=1")
 PYCODE
