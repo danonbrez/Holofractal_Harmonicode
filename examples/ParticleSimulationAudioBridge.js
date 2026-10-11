@@ -137,6 +137,9 @@
     state.lastClockStatusTime=-1;
     state.crossingEvents.length=0;
     state.lastSample=[0,0];
+    if(state.processor && state.processor.port &&
+       typeof state.processor.port.postMessage==="function")
+      state.processor.port.postMessage({type:"reset"});
   }
   function advanceLightingGate(frame){
     if(!Number.isSafeInteger(frame)||frame<0)return false;
@@ -205,7 +208,9 @@
     return processor;
   }
   const WORKLET=("class HHSStereoCrossingWorklet extends AudioWorkletProcessor {\n"+
-    "constructor(){super();this.prev=[0,0];this.pending=[];this.blocks=0;}\n"+
+    "constructor(){super();this.prev=[0,0];this.pending=[];this.blocks=0;\n"+
+    "this.port.onmessage=e=>{if(e.data&&e.data.type==='reset'){\n"+
+    "this.prev=[0,0];this.pending=[];this.blocks=0;}};}\n"+
     "process(inputs,outputs){const input=inputs[0]||[],output=outputs[0]||[];\n"+
     "const L=input[0],R=input[1]||L;if(!L)return true;\n"+
     "for(let c=0;c<output.length;c++)output[c].set(input[c]||L);\n"+
@@ -478,10 +483,12 @@
       if(player.getAttribute("src"))resumeAudio();
     });
     player.addEventListener("play",()=>{
+      resetLightingClock();
       if(state.context && state.context.state!=="running")resumeAudio();
     });
     player.addEventListener("playing",()=>report("Music playing through stereo output."));
     player.addEventListener("pause",()=>{
+      resetLightingClock();
       if(!player.ended)report("Music paused.");
     });
     player.addEventListener("error",()=>{
@@ -490,6 +497,7 @@
         ": try a supported MP3, WAV, or OGG file.");
     });
     player.addEventListener("seeked",resetLightingClock);
+    player.addEventListener("ended",resetLightingClock);
     gain.addEventListener("input",()=>{
       state.gain=clamp(Number(gain.value)||0,0,5);
       const out=document.getElementById("audioVizGainValue");
