@@ -139,7 +139,7 @@ vm.runInNewContext(src,{
  assert.ok(right.elements[0]>1.1);
  assert.notEqual(left.elements[12],10);
  assert.notEqual(right.elements[12],10);
- assert.notEqual(a.b,b.b);
+ assert.notEqual(a.r,b.r);
  assert.ok(stats.glow.some(args=>args[2]===0 &&
   args[0]>150 && args[0]<750),"glow must be in full scene");
  assert.ok(stats.glow.length>=2);
