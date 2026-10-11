@@ -41,6 +41,17 @@ SCHEMA = "HHS_PASS_220_I041_RAW_HTML_LANE5_INGRESS_V1"
 
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self) -> None:
+        # Chromium may request /favicon.ico even when the byte-for-byte HTML
+        # has no favicon. Serve a no-content transport response instead of
+        # producing a spurious 404 browser-console failure. All actual HTML,
+        # script, shader and audio asset requests retain normal strict 404s.
+        if self.path.split("?", 1)[0] == "/favicon.ico":
+            self.send_response(204)
+            self.end_headers()
+            return
+        super().do_GET()
+
     def log_message(self, _format: str, *args: Any) -> None:
         return
 
