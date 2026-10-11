@@ -57,7 +57,6 @@ jobs:
             hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
             tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
             tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
-            tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
             hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py \
             tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py
 
@@ -67,6 +66,7 @@ jobs:
         run: |
           python -m pytest -q --tb=short \
             tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
             tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py \
             tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py \
             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py \
