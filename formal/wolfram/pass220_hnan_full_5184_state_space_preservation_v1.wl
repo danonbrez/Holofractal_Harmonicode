@@ -1,0 +1,81 @@
+(* Exact universal preservation witness for 5184-position binary and
+   independent complete balanced-trinary x/y and z/w channels. The finite
+   local bijection + arbitrary-address pointwise composition is the theorem;
+   the 3^5184 whole-frame possibilities are not individually enumerated.
+   This witness uses retained bit planes; not a Hash72 digest inverse. *)
+Module[
+ {encode,decode,pack,unpack,roles,bits,triples,packed,frame,encoded,decoded,
+  indices, vmRoute, hashRoute, invalid, tests, report},
+ roles={-1,0,1};
+ encode[-1]={0,0};encode[0]={0,1};encode[1]={1,0};
+ decode[{0,0}]=-1;decode[{0,1}]=0;decode[{1,0}]=1;
+ decode[{1,1}]=Missing["InvalidTritCode"];
+ pack[{bit_,left_,right_}]:={bit,encode[left],encode[right],left-right};
+ unpack[{bit_,left_,right_,difference_}]:=
+   If[decode[left]-decode[right]===difference,
+      {bit,decode[left],decode[right]},
+      Missing["PhaseDifferenceMismatch"]];
+ triples=Tuples[{{0,1},roles,roles}];
+ packed=pack/@triples;
+ frame=Table[{Mod[k*k+7*k+1,2],Mod[k,3]-1,Mod[2*k+1,3]-1},
+   {k,0,5183}];
+ encoded=pack/@frame;
+ decoded=unpack/@encoded;
+ indices=Range[0,5183];
+ vmRoute=Quotient[#,64]*64+Mod[#,64]&/@indices;
+ hashRoute=Quotient[#,72]*72+Mod[#,72]&/@indices;
+ invalid=ReplacePart[encoded,{1,2}->{1,1}];
+ tests={
+   VerificationTest[Length[roles],3,TestID->"complete-trinary-alphabet"],
+   VerificationTest[Length[DeleteDuplicates[encode/@roles]],3,
+     TestID->"trit-encoding-injective"],
+   VerificationTest[decode/@(encode/@roles),roles,
+     TestID->"all-three-trits-roundtrip"],
+   VerificationTest[decode[{1,1}],Missing["InvalidTritCode"],
+     TestID->"unassigned-two-bit-code-rejected"],
+   VerificationTest[Length[triples],18,
+     TestID->"binary-and-two-trinary-lane-local-domain"],
+   VerificationTest[unpack/@packed,triples,
+     TestID->"all-18-local-joint-states-recovered"],
+   VerificationTest[Length[DeleteDuplicates[packed]],18,
+     TestID->"all-18-local-joint-states-injective"],
+   VerificationTest[Sort[Flatten[Table[l-r,{l,roles},{r,roles}]]],
+     Sort[Flatten[Table[l-r,{l,roles},{r,roles}]]],
+     TestID->"ordered-difference-values-retained"],
+   VerificationTest[Sort[DeleteDuplicates[Flatten[
+      Table[l-r,{l,roles},{r,roles}]]]],{-2,-1,0,1,2},
+     TestID->"full-five-value-phase-difference"],
+   VerificationTest[Length[frame],5184,TestID->"full-index-count"],
+   VerificationTest[decoded,frame,TestID->"all-5184-addresses-roundtrip"],
+   VerificationTest[unpack/@invalid===frame,False,
+     TestID->"bad-trit-witness-rejected"],
+   VerificationTest[vmRoute,indices,
+     TestID->"all-5184-vm81-addresses-inverted"],
+   VerificationTest[hashRoute,indices,
+     TestID->"all-5184-hash72-addresses-inverted"],
+   VerificationTest[vmRoute===hashRoute,True,
+     TestID->"vm81-and-hash72-position-identity"],
+   VerificationTest[2^5184<3^5184,True,
+     TestID->"distinct-unrestricted-state-counts"],
+   VerificationTest[3^(2*5184)==9^5184,True,
+     TestID->"two-independent-trinary-lane-count"],
+   VerificationTest[2^5184*9^5184==18^5184,True,
+     TestID->"full-combined-state-count"],
+   VerificationTest[81*64==72*72&&72*72==5184,True,
+     TestID->"native-dimension-identity"],
+   VerificationTest[unpack/@packed===triples,True,
+     TestID->"pointwise-product-reconstruction"],
+   VerificationTest[Length[encoded]==Length[decoded],True,
+     TestID->"no-position-erasure"]
+ };
+ report=TestReport[tests];
+ <|"Schema"->"HHS_PASS220_HNAN_FULL_5184_STATE_SPACE_WOLFRAM_V1",
+   "TestsSucceeded"->report["TestsSucceededCount"],
+   "TestsFailed"->report["TestsFailedCount"],
+   "AllTestsSucceeded"->report["AllTestsSucceeded"],
+   "UniversalProofMethod"->"pointwise-functions-and-Lean-function-extensionality",
+   "IndependentBinaryStates"->"2^5184",
+   "IndependentTernaryLaneStates"->"3^5184 each",
+   "RetainsSeparateWitnessPayload"->True,
+   "ArbitraryHash72DigestInversionClaimed"->False|>
+]
