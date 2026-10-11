@@ -72,8 +72,12 @@ hhs_exact_pass220_ordered4x4_i001_carrier_validate(
 
 /*
  * Exact inverse of the inherited I001 81x64 normalization-offset serializer.
- * Both length and offset alphabet are checked BEFORE writing any bytes.
- * Input and output may overlap: source positions are privately snapshotted.
+ * All 81 offsets are validated before any destination or length write.
+ * Input and encoded destination may overlap: source positions are snapshotted.
+ * The out_length pointer must not overlap the 81 input offset bytes or any
+ * of the 5184 encoded output bytes; such aliases fail without mutation.
+ * A valid length-only/short-capacity query returns BUFFER_TOO_SMALL with the
+ * exact required size (5184). A malformed input leaves both outputs intact.
  *
  * This is a representation encoder, not signed ingress or VM81 admission.
  */
