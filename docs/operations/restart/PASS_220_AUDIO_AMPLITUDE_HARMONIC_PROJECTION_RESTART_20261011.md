@@ -30,3 +30,24 @@ Exact-head GitHub CI must run before declaring a verified regression pass;
 external device/browser audio and rendering remain unverified. If GitHub CI
 fails, repair only changed dependencies, commit restartable state and merge
 after completed checks. Next: inspect exact-head Actions and PR.
+
+## CI repair-forward (2026-10-11)
+
+First exact head `7d90a45a455eaef03b42f1160ce07114349b61aa` native-ish browser mock workflow run
+`38129541724` completed FAILURE: 15 tests passed, four inherited
+assertions failed. New amplitude/harmonic tests and JS syntax passed.
+
+The four failures are test-harness drift, not a detected production code
+failure:
+- inherited expected gradient x-center `0.37/0.63` instead of the
+  currently embedded `0.3/0.7 + sine stereo sweep`;
+- synthetic stereo analyser omitted the actual WebAudio `connect()`
+  interface, which the already-inherited live fallback requires;
+- test mistakenly treated the JavaScript `canvas.id="audioVizOverlay"`
+  assignment as an existing static HTML canvas;
+- inherited renderer calls `audioVisual.projectMatrix` via
+  `const audioVisual=window.HHSAudioViz`, not a direct global call.
+
+Repair modifies **only the two affected tests and this restart note**;
+the particle game runtime and its inlined/standalone bridge remain
+unchanged. Re-run exact-head CI; do not inherit green from first failure.

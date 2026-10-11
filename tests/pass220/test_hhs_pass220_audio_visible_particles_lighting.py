@@ -43,7 +43,7 @@ def test_visual_projection_is_reachable_in_canonical_renderer():
         'state.frameSignalReady=decodedWindow(state.audio) ||',
         'state.renderSource="live-analyser";',
         'ctx.globalCompositeOperation="lighter";',
-        'const x=W*(bus===0?.37:.63)',
+        'const x=W*((bus===0?.3:.7)+Math.sin(sweep+bus*Math.PI)*.12)',
         'state.frameCrossings=frameCrossingEvents',
     ):
         assert token in bridge,token
@@ -93,7 +93,7 @@ class AudioCtx {
  createMediaElementSource(){return {connect(){}}}
  createChannelSplitter(){return {connect(){}}}
  createGain(){return {gain:{value:0},connect(){}}}
- createAnalyser(){return {fftSize:2048,getFloatTimeDomainData(x){
+ createAnalyser(){return {fftSize:2048,connect(){},getFloatTimeDomainData(x){
   stats.analyserCalls++;x.fill(0)}}}
  getOutputTimestamp(){return {contextTime:.2,performanceTime:1000}}
  resume(){this.state="running";return Promise.resolve()}
@@ -189,7 +189,7 @@ class AudioCtx{
  createGain(){return {gain:{value:0},connect(){}}}
  createAnalyser(){
   const bus=this.analyserNumber++;
-  return {fftSize:2048,getFloatTimeDomainData(d){
+  return {fftSize:2048,connect(){},getFloatTimeDomainData(d){
    for(let i=0;i<d.length;i++)
     d[i]=.72*Math.sin(2*Math.PI*(bus?19:11)*i/2048)}}}
  getOutputTimestamp(){return {contextTime:.5,performanceTime:1000}}
