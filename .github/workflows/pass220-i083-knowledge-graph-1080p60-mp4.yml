@@ -1,0 +1,150 @@
+name: Pass 220 I083 Knowledge Graph Cinematic 1080p60
+
+on:
+  push:
+    branches:
+      - agent/pass220-i083-knowledge-graph-1080p60-mp4-20261011
+    paths:
+      - .github/workflows/pass220-i083-knowledge-graph-1080p60-mp4.yml
+      - docs/operations/restart/PASS_220_I083_KNOWLEDGE_GRAPH_1080P60_MP4_20261011.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render-hhs-i083:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout exact repository head
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install existing HHS media dependencies
+        run: |
+          python -m pip install --disable-pip-version-check pillow playwright pytest
+          python -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+
+      - name: Verify inherited exact graphics engine and I041 capture tool
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py \
+            benchmarks/pass220/benchmark_i041_html_render_bottleneck.py \
+            native_projects/hhs_vm81_game_level10/tools/render_terminal_capture.py
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_holofractal_relativistic_game_engine_v1.py \
+            tests/pass220/test_hhs_pass220_i041_holographic_sprite_browser_v1.py
+
+      - name: Render native HHS holographic graph projection 1920x1080 at 60fps
+        env:
+          PYTHONPATH: .
+        run: |
+          python benchmarks/pass220/benchmark_i041_html_render_bottleneck.py \
+            --output artifacts/pass220/i083-knowledge-graph-1080p60 \
+            --width 1920 \
+            --height 1080 \
+            --fps 60 \
+            --frames 600 \
+            --tick-step 1 \
+            --state-ticks 1024 \
+            --render-ticks 96 \
+            --warmup 24 \
+            --phase-samples 12
+
+      - name: Attach graph-scope visual annotation without modifying renderer
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageDraw, ImageFont
+          root = Path("artifacts/pass220/i083-knowledge-graph-1080p60")
+          image = Image.new("RGBA", (1920, 1080), (0, 0, 0, 0))
+          d = ImageDraw.Draw(image)
+          try:
+              font = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
+              title = ImageFont.truetype(font, 26)
+              body = ImageFont.truetype(font, 19)
+          except OSError:
+              title = ImageFont.load_default()
+              body = ImageFont.load_default()
+          d.rounded_rectangle((24, 22, 1150, 194), radius=18, fill=(2, 9, 24, 210), outline=(67, 179, 226, 185), width=2)
+          d.text((50, 43), "HOLOFRACTAL HARMONICODE | KNOWLEDGE GRAPH", font=title, fill=(226, 246, 255, 255))
+          d.text((52, 91), "10,368 paired layer projections | VM81 5,184 positions", font=body, fill=(118, 221, 255, 255))
+          d.text((52, 123), "86,805,555,555 Lo Shu neurons: exact lazy graph scope", font=body, fill=(241, 226, 175, 255))
+          d.text((52, 154), "Presentation only | native edge execution unverified", font=body, fill=(194, 211, 228, 255))
+          image.save(root / "knowledge-graph-projection-hud.png")
+          PY
+          ffmpeg -hide_banner -loglevel error -y \
+            -i artifacts/pass220/i083-knowledge-graph-1080p60/lane5-html-holographic-720p.mp4 \
+            -loop 1 -framerate 60 -i artifacts/pass220/i083-knowledge-graph-1080p60/knowledge-graph-projection-hud.png \
+            -filter_complex "[0:v][1:v]overlay=0:0:shortest=1[out]" \
+            -map "[out]" -frames:v 600 -r 60 -c:v libx264 -preset medium -crf 19 \
+            -pix_fmt yuv420p -movflags +faststart \
+            artifacts/pass220/i083-knowledge-graph-1080p60/HHS-knowledge-graph-1920x1080-60fps.mp4
+
+      - name: Verify exact MP4 dimensions, cadence, duration, frames and origin
+        run: |
+          python - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          root = Path("artifacts/pass220/i083-knowledge-graph-1080p60")
+          video = root / "HHS-knowledge-graph-1920x1080-60fps.mp4"
+          probe = json.loads(subprocess.check_output([
+              "ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0",
+              "-show_entries", "stream=codec_name,width,height,r_frame_rate,avg_frame_rate,nb_read_frames,duration",
+              "-of", "json", str(video)], text=True))
+          s = probe["streams"][0]
+          assert s["codec_name"] == "h264", s
+          assert (s["width"],s["height"]) == (1920,1080), s
+          assert s["r_frame_rate"] == "60/1", s
+          assert s["avg_frame_rate"] == "60/1", s
+          assert int(s["nb_read_frames"]) == 600, s
+          assert abs(float(s["duration"])-10.0)<0.1, s
+          source = json.loads((root / "lane5-html-render-bottleneck-receipt.json").read_text())
+          assert source["status"]=="PASS"
+          assert source["fps"]==60
+          assert source["visual"]["frame_count"]==600
+          assert source["visual"]["width"]==1920 and source["visual"]["height"]==1080
+          sha=hashlib.sha256(video.read_bytes()).hexdigest()
+          receipt={
+            "schema":"HHS_PASS_220_I083_KNOWLEDGE_GRAPH_1080P60_PROJECTION_MP4_V1",
+            "status":"PASS",
+            "head_sha":"${{ github.sha }}",
+            "output":video.name,"sha256":sha,
+            "codec":s["codec_name"],"fps":60,"frames":600,"duration_seconds":10,
+            "width":1920,"height":1080,
+            "carrier_layer_projections":10368,
+            "vm81_positions":5184,
+            "lazy_neuron_count":86805555555,
+            "lazy_neuron_vm81_positions":449999999997120,
+            "graph_edge_execution_verified":False,
+            "canonical_vm81_mutation":False,
+            "shader_authority":"PROJECTION_ONLY",
+            "reused_encoder":"native_projects/hhs_vm81_game_level10/tools/render_terminal_capture.py",
+            "reused_game_engine":"hhs_runtime/hhs_pass220_holofractal_relativistic_game_engine_v1.py"
+          }
+          (root/"HHS-knowledge-graph-1080p60-receipt.json").write_text(json.dumps(receipt,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(receipt,indent=2,sort_keys=True))
+          PY
+
+      - name: Upload MP4 and exact-head verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i083-knowledge-graph-1080p60
+          path: |
+            artifacts/pass220/i083-knowledge-graph-1080p60/HHS-knowledge-graph-1920x1080-60fps.mp4
+            artifacts/pass220/i083-knowledge-graph-1080p60/HHS-knowledge-graph-1080p60-receipt.json
+            artifacts/pass220/i083-knowledge-graph-1080p60/lane5-html-render-bottleneck-receipt.json
+            artifacts/pass220/i083-knowledge-graph-1080p60/samples/*.png
+          if-no-files-found: warn
