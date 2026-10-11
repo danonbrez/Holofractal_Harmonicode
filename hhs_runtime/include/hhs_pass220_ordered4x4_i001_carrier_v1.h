@@ -58,7 +58,7 @@ typedef struct HHS220Ordered4x4I001CarrierV1 {
  *   +[20 zero-padded integer digits 0..8]/[20 digits = 1]e+[20 zero digits]
  * Canonical zero positions remain distinct through address and token index.
  *
- * No float, no ordinary scalar normalization, no implied rank or equality.
+ * No floating-point arithmetic, no scalar normalization, and no inferred rank/equality.
  * Never grant VM81 or receipt authority. Fail closed for shape-only strings.
  */
 HHS_EXACT_API HHSExactStatus
