@@ -68,10 +68,10 @@ const ctx={globalCompositeOperation:"source-over",
 const pair=api.paintGyroscopicVerticalPair(ctx,900,500,.6,-.3,.25,.18,18);
 assert.equal(draws.length,2);
 assert.ok(pair.oppositeHuePairs);
-assert.equal(draws[0].y0,0);
-assert.equal(draws[0].y1,500);
-assert.equal(draws[1].y0,0);
-assert.equal(draws[1].y1,500);
+const left=[draws[0].x1-draws[0].x0,draws[0].y1-draws[0].y0];
+const right=[draws[1].x1-draws[1].x0,draws[1].y1-draws[1].y0];
+const dot=left[0]*right[0]+left[1]*right[1];
+assert.ok(Math.abs(dot)<1e-6,"perpendicular gradient axes");
 assert.equal(draws[0].stops.length,6);
 assert.equal(draws[1].stops.length,6);
 assert.equal(ctx.globalCompositeOperation,"source-over");
