@@ -10,7 +10,7 @@ def test_exact_inline_shader_mirror_and_authority_separation():
     js=Path("examples/ParticleSimulationAudioBridge.js").read_text(encoding="utf-8")
     inline=re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>',html)
     assert inline and inline.group(1).strip()==js.strip()
-    assert 'value="0.40" style="width:100%;"' in html
+    assert 'max="0.05" step="0.001" value="0.020" style="width:100%;"' in html
     assert 'paintGyroscopicVerticalPair(ctx,W,H,' in js
     assert 'GYRO_SHADER.quarterTurn' in js
     assert 'canonicalMutationAuthority:false' in js
