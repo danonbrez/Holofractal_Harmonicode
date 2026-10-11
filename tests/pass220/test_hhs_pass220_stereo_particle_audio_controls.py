@@ -1,6 +1,7 @@
 """Regression guards for the canonical particle-game stereo HTML patch."""
 import shutil
 import subprocess
+import re
 from pathlib import Path
 import pytest
 
@@ -24,7 +25,9 @@ def test_game_controls_are_present_and_all_primary_bindings_work():
     assert 'toggleButton.addEventListener("click"' in html
     assert 'id="qpuConsolePanel"' in html
     assert '<details id="qpuConsolePanel"' in html
-    assert 'src="./ParticleSimulationAudioBridge.js"' in html
+    inline = re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>', html)
+    assert inline, "Standalone HTML must include audio implementation without external file"
+    assert inline.group(1).strip() == BRIDGE.read_text(encoding="utf-8").strip()
     assert 'id="audioVizOverlay"' not in html # dynamically added, not a second overlay
     assert 'document.getElementById("commandOutput").innerHTML' not in html
 
@@ -75,6 +78,75 @@ const m=code.match(/const WORKLET=\(([\s\S]*?)\);\s*async function installProces
 assert.ok(m);
 const processorSource=Function("return ("+m[1]+")")();
 new Function(processorSource); // parse generated AudioWorklet in isolation
+"""
+    run=subprocess.run([node,"-e",program],text=True,capture_output=True)
+    assert run.returncode==0,run.stderr
+
+
+def test_audio_play_is_gesture_bound_and_has_direct_speaker_connection():
+    """Catch the original regression: play() waited for asynchronous worklet
+    installation while MediaElementAudioSource had no speaker connection."""
+    node=shutil.which("node")
+    if not node:
+        pytest.skip("Node.js is not installed")
+    program=r"""
+const fs=require("fs"),vm=require("vm"),assert=require("assert");
+const code=fs.readFileSync("examples/ParticleSimulationAudioBridge.js","utf8");
+const events=[], nodes={};
+class Element {
+  constructor(id){this.id=id;this.style={};this.listeners={};this.src="";this.paused=true;}
+  addEventListener(name,fn){this.listeners[name]=fn;}
+  setAttribute(k,v){this[k]=v;}
+  getAttribute(k){return this[k]||null;}
+  pause(){this.paused=true;}
+  load(){}
+  play(){
+    // This must run before AudioWorklet.addModule resolves.
+    assert(events.includes("dry speaker connected"));
+    events.push("play invoked");
+    this.paused=false;
+    return Promise.resolve();
+  }
+}
+for(const name of ["audioVizPlayer","audioVizFile","audioVizPlay",
+   "audioVizStop","audioVizGain","audioVizStatus","audioVizGainValue"])
+   nodes[name]=new Element(name);
+nodes.audioVizPlayer.src="blob:example";
+const player=nodes.audioVizPlayer;
+class FakeContext {
+  constructor(){
+    this.destination={speaker:true};this.sampleRate=48000;
+    this.state="suspended";events.push("context created");
+    this.audioWorklet={addModule:()=>new Promise(()=>{})}; // never finishes
+  }
+  createMediaElementSource(el){
+    assert.strictEqual(el,player);
+    return {connect:(target)=>{
+       if(target===this.destination)events.push("dry speaker connected");
+       else events.push("analyzer connected");
+    }};
+  }
+  resume(){this.state="running";events.push("context resumed");return Promise.resolve();}
+}
+const window={
+  AudioContext:FakeContext,devicePixelRatio:1,innerWidth:800,innerHeight:600,
+  addEventListener(){},requestAnimationFrame(){},
+};
+const document={
+  readyState:"complete",getElementById(id){return nodes[id]},
+  createElement(tag){return new Element(tag)},
+  body:{appendChild(){}}
+};
+const FakeURL={createObjectURL(){return "blob:mock-worklet"},revokeObjectURL(){}};
+vm.runInNewContext(code,{
+   window,document,Float32Array,WeakMap,Array,Math,Number,Object,
+   isFinite,URL:FakeURL,Blob,AudioWorkletNode:function(){},
+});
+nodes.audioVizPlay.listeners.click();
+assert(events.indexOf("dry speaker connected")>=0,events);
+assert(events.indexOf("play invoked")>events.indexOf("dry speaker connected"),events);
+assert(events.indexOf("play invoked")>=0,events);
+assert(events.indexOf("context resumed")>=0,events);
 """
     run=subprocess.run([node,"-e",program],text=True,capture_output=True)
     assert run.returncode==0,run.stderr
