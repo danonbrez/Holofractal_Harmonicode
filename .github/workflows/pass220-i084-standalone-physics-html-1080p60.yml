@@ -7,6 +7,10 @@ on:
     paths:
       - .github/workflows/pass220-i084-standalone-physics-html-1080p60.yml
       - docs/operations/restart/PASS_220_I084_STANDALONE_PHYSICS_1080P60_20261011.md
+      - benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+      - tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
+      - examples/ParticleSimulation.html
+      - examples/ParticleSimulationAudioBridge.js
   workflow_dispatch:
 
 permissions:
