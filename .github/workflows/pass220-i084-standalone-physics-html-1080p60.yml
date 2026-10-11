@@ -122,6 +122,8 @@ jobs:
           audio=data["audio_waveform_capture"]
           assert audio["enabled"] is True
           assert audio["waveform_seen"] is True
+          assert audio["visual_frames_rendered"]>0
+          assert audio["audio_frame"]>=0
           assert audio["l2_writes_seen"] is True
           assert audio["graft_present"] is True
           assert audio["graft_schema"]=="HHS_PASS_220_I063_BROWN_NOISE_AUDIO_CARRIER_GRAFT_V1"
