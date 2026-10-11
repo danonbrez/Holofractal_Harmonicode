@@ -41,6 +41,17 @@ SCHEMA = "HHS_PASS_220_I041_RAW_HTML_LANE5_INGRESS_V1"
 
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self) -> None:
+        # Chromium may request /favicon.ico even when the byte-for-byte HTML
+        # has no favicon. Serve a no-content transport response instead of
+        # producing a spurious 404 browser-console failure. All actual HTML,
+        # script, shader and audio asset requests retain normal strict 404s.
+        if self.path.split("?", 1)[0] == "/favicon.ico":
+            self.send_response(204)
+            self.end_headers()
+            return
+        super().do_GET()
+
     def log_message(self, _format: str, *args: Any) -> None:
         return
 
@@ -213,10 +224,100 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     f"!= {args.width}x{args.height}"
                 )
 
+            audio_capture = {"enabled": False, "waveform_seen": False, "l2_writes_seen": False}
+            if args.audio is not None:
+                audio_path = args.audio.resolve()
+                if not audio_path.is_file():
+                    raise RuntimeError(f"audio stimulus not found: {audio_path}")
+                page.locator("#audioVizFile").set_input_files(str(audio_path))
+                page.wait_for_function(
+                    'document.getElementById("audioVizPlayer").getAttribute("src")',
+                    timeout=args.timeout_ms,
+                )
+                # Standard HTMLMediaElement looping keeps the user's real PCM
+                # lighting active during slower-than-real-time offline capture.
+                page.evaluate('document.getElementById("audioVizPlayer").loop = true')
+                page.locator("#audioVizPlay").click()
+                page.wait_for_function(
+                    '''()=>window.HHSAudioViz &&
+                    window.HHSAudioViz.diagnostics &&
+                    window.HHSAudioViz.diagnostics.frameSignalReady === true''',
+                    timeout=args.timeout_ms,
+                )
+                audio_capture = {
+                    "enabled": True,
+                    "input_sha256": sha256_file(audio_path),
+                    "input_size_bytes": audio_path.stat().st_size,
+                    "waveform_seen": True,
+                    "l2_writes_seen": False,
+                    "graft_schema": None,
+                    "graft_present": False,
+                }
             canvas = page.locator("canvas").first
+            # The audio waveform is drawn by the original HTML onto a
+            # separate transparent canvas (#audioVizOverlay, z-index 2).
+            # Canvas-only capture silently omits it. Browser viewport capture
+            # composites the unchanged WebGL scene, waveform, and native HUD.
+            # For non-audio raw ingress retain the original WebGL-only path.
+            if audio_capture["enabled"]:
+                overlay = page.evaluate("""()=>{
+                    const webgl=document.querySelector("canvas");
+                    const wave=document.querySelector("#audioVizOverlay");
+                    if(!webgl||!wave)return null;
+                    const webglZ=getComputedStyle(webgl).zIndex;
+                    const waveZ=getComputedStyle(wave).zIndex;
+                    const rect=wave.getBoundingClientRect();
+                    return {present:true,width:wave.width,height:wave.height,
+                        cssWidth:rect.width,cssHeight:rect.height,
+                        waveZ,webglZ,visible:getComputedStyle(wave).display!=="none"};
+                }""")
+                if not overlay or not overlay["visible"]:
+                    raise RuntimeError("original stereo waveform canvas missing or hidden")
+                if (round(overlay["cssWidth"]), round(overlay["cssHeight"])) != (args.width,args.height):
+                    raise RuntimeError("stereo waveform overlay viewport resolution mismatch")
+                audio_capture["overlay"] = overlay
+                audio_capture["capture_surface"] = "ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"
+            else:
+                audio_capture["capture_surface"] = "ORIGINAL_HTML_WEBGL_CANVAS_ONLY"
             for index in range(args.frames):
                 _wait_raf(page, args.raf_step)
-                canvas.screenshot(path=str(frames / f"frame_{index:06d}.png"))
+                frame = frames / f"frame_{index:06d}.png"
+                if audio_capture["enabled"]:
+                    page.screenshot(path=str(frame), animations="allow")
+                else:
+                    canvas.screenshot(path=str(frame))
+                if audio_capture["enabled"] and (index % 30 == 0 or index == args.frames - 1):
+                    diagnostics = page.evaluate(
+                        '''()=>window.HHSBrownL2
+                        ? window.HHSBrownL2.diagnostics : null'''
+                    )
+                    if diagnostics is not None:
+                        audio_capture["graft_present"] = True
+                        audio_capture["graft_schema"] = page.evaluate(
+                            'window.HHSBrownL2.schema'
+                        )
+                        audio_capture["l2_writes_seen"] |= bool(
+                            diagnostics.get("writes", 0) > 0
+                        )
+                        audio_capture["waveform_seen"] |= bool(
+                            diagnostics.get("active", False)
+                        )
+            if audio_capture["enabled"]:
+                final_diag = page.evaluate(
+                    'window.HHSAudioViz ? window.HHSAudioViz.diagnostics : null'
+                )
+                audio_capture["visual_frames_rendered"] = int(
+                    (final_diag or {}).get("visualFramesRendered", 0)
+                )
+                audio_capture["audio_frame"] = int(
+                    (final_diag or {}).get("audioFrame", -1)
+                )
+                if audio_capture["visual_frames_rendered"] < 1:
+                    raise RuntimeError("original HTML waveform never rendered a PCM visual frame")
+                if not audio_capture["l2_writes_seen"]:
+                    raise RuntimeError(
+                        "original HTML L2 waveform graft produced no GPU instance writes"
+                    )
 
             selected = sorted(frames.glob("frame_*.png"))
             for label, idx in (
@@ -277,6 +378,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "sha256": sha256_file(video_path),
             **video,
         },
+        "audio_waveform_capture": audio_capture,
         "sample_frames": {
             path.name: {
                 "sha256": sha256_file(path),
@@ -308,6 +410,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=1080)
     parser.add_argument("--fps", type=int, default=24)
     parser.add_argument("--frames", type=int, default=48)
+    parser.add_argument(
+        "--audio", type=Path, default=None,
+        help="Optional WAV/PCM audio file loaded via the original HTML audio picker"
+    )
     parser.add_argument("--raf-step", type=int, default=4)
     parser.add_argument("--warmup-raf", type=int, default=16)
     parser.add_argument("--timeout-ms", type=int, default=120000)

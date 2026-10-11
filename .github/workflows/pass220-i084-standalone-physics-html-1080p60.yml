@@ -1,0 +1,188 @@
+name: Pass 220 I084 Exact Standalone Physics HTML 1080p60
+
+on:
+  push:
+    branches:
+      - agent/pass220-i084-standalone-physics-html-1080p60-20261011
+    paths:
+      - .github/workflows/pass220-i084-standalone-physics-html-1080p60.yml
+      - docs/operations/restart/PASS_220_I084_STANDALONE_PHYSICS_1080P60_20261011.md
+      - benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+      - tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
+      - examples/ParticleSimulation.html
+      - examples/ParticleSimulationAudioBridge.js
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-and-render-original-html:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install inherited video and browser transport
+        run: |
+          python -m pip install --disable-pip-version-check playwright pillow pytest
+          python -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+
+      - name: Assert exact standalone scene path and run dependency-scoped regressions
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m py_compile benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py \
+            tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
+          python - <<'PY'
+          from pathlib import Path
+          s=Path("examples/ParticleSimulation.html").read_text()
+          for token in (
+              "function initScene()",
+              "initSpiralParticles(false)",
+              "initExchangeNuclei(false)",
+              "initSpiralParticles(true)",
+              "initExchangeNuclei(true)",
+              "const particleCount = 2592;",
+              "function updateSpiralParticles()",
+              "function updateSwarmCoupling()",
+              "function updateTesseract()",
+              "function constructorScan()",
+              "const particleRenderBatches=[];",
+              "function syncParticleRenderBatches()",
+              "renderGate=((renderTick%4)===0);",
+              "for(let s=0;s<steps;s++){ updateSpiralParticles();",
+              "renderer.render(scene, camera);",
+              'schema:"HHS_PASS_220_I057_PARTICLE_SIMULATION_ZERO_LOSS_PERF_V1"'
+          ):
+              assert token in s,token
+          PY
+
+      - name: Produce labeled stereo PCM waveform lighting input (not a replacement shader)
+        run: |
+          python - <<'PY'
+          import math,struct,wave
+          from pathlib import Path
+          path=Path("artifacts/pass220/i084-audio-stimulus/diagnostic-stereo-44100.wav")
+          path.parent.mkdir(parents=True,exist_ok=True)
+          sr=44100
+          with wave.open(str(path),"wb") as wf:
+              wf.setnchannels(2)
+              wf.setsampwidth(2)
+              wf.setframerate(sr)
+              buf=bytearray()
+              for i in range(sr*12):
+                  t=i/sr
+                  envelope=0.22+0.17*math.sin(2*math.pi*1.3*t)**2
+                  left=envelope*(math.sin(2*math.pi*216*t)+0.35*math.sin(2*math.pi*432*t))
+                  right=envelope*(math.sin(2*math.pi*324*t)+0.32*math.sin(2*math.pi*648*t))
+                  buf.extend(struct.pack("<hh",int(26000*left),int(26000*right)))
+                  if len(buf)>=262144:
+                      wf.writeframesraw(buf)
+                      buf.clear()
+              if buf:wf.writeframesraw(buf)
+          print(path,path.stat().st_size)
+          PY
+
+      - name: Render ORIGINAL ParticleSimulation HTML with actual physics and waveform-driven second layer
+        env:
+          PYTHONPATH: .
+        run: |
+          python benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py \
+            --html examples/ParticleSimulation.html \
+            --output artifacts/pass220/i084-original-html-1080p60 \
+            --width 1920 \
+            --height 1080 \
+            --fps 60 \
+            --frames 600 \
+            --audio artifacts/pass220/i084-audio-stimulus/diagnostic-stereo-44100.wav \
+            --raf-step 4 \
+            --warmup-raf 16 \
+            --timeout-ms 180000
+
+      - name: Verify physical scene identity and video evidence
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("artifacts/pass220/i084-original-html-1080p60")
+          src=Path("examples/ParticleSimulation.html")
+          data=json.loads((root/"lane5-raw-html-ingress-receipt.json").read_text())
+          vid=root/"lane5-raw-html-1920x1080.mp4"
+          assert data["status"]=="PASS",data.get("status")
+          audio=data["audio_waveform_capture"]
+          assert audio["enabled"] is True
+          assert audio["waveform_seen"] is True
+          assert audio["visual_frames_rendered"]>0
+          assert audio["audio_frame"]>=0
+          assert audio["l2_writes_seen"] is True
+          assert audio["graft_present"] is True
+          assert audio["graft_schema"]=="HHS_PASS_220_I063_BROWN_NOISE_AUDIO_CARRIER_GRAFT_V1"
+          assert audio["capture_surface"]=="ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"
+          assert audio["overlay"]["present"] is True
+          assert audio["overlay"]["visible"] is True
+          assert (round(audio["overlay"]["cssWidth"]),round(audio["overlay"]["cssHeight"]))==(1920,1080)
+          assert data["mode"]=="OPAQUE_UNALTERED_HTML"
+          assert data["html_source"]==src.as_posix()
+          assert data["source_unchanged"] is True
+          assert data["source_sha256_after"]==data["source_sha256_before"]==hashlib.sha256(src.read_bytes()).hexdigest()
+          assert data["quartic_projection"]["simulation_updates_are_not_skipped"] is True
+          assert data["quartic_projection"]["raf_step"]==4
+          assert data["quartic_projection"]["projection_render_period"]==4
+          assert data["browser_health"]["webgl"] is True
+          assert data["browser_health"]["canvasWidth"]==1920
+          assert data["browser_health"]["canvasHeight"]==1080
+          assert data["browser_health"]["page_runtime_errors"]==[]
+          assert data["browser_health"]["console_error_messages"]==[]
+          assert data["visual"]["frame_count"]==600
+          assert data["visual"]["unique_frames"]>=480,data["visual"]
+          assert (data["visual"]["width"],data["visual"]["height"])==(1920,1080)
+          m=data["mp4"]
+          assert m["path"]==vid.name and m["codec"]=="h264"
+          assert (m["width"],m["height"],m["frame_count"])==(1920,1080,600)
+          assert m["r_frame_rate"]=="60/1"
+          assert abs(m["duration_seconds"]-10)<0.05
+          assert m["sha256"]==hashlib.sha256(vid.read_bytes()).hexdigest()
+          receipt={
+            "schema":"HHS_PASS_220_I084_ORIGINAL_STANDALONE_HTML_PHYSICS_MP4_V1",
+            "status":"PASS",
+            "source":src.as_posix(),
+            "source_sha256":data["source_sha256_before"],
+            "not_i041_holographic_sprite_renderer":True,
+            "original_simulation_update_called":True,
+            "simulated_carrier_count_expected":10368,
+            "projection_gate_every_four_physics_steps":True,
+            "raw_capture":True,
+            "source_unmodified":True,
+            "width":1920,"height":1080,"fps":60,"frames":600,
+            "mp4_sha256":m["sha256"],
+            "path":vid.name,
+            "no_neural_graph_edge_execution_claim":True,
+            "original_html_i063_waveform_and_l2_gpu_graft_observed":True,
+            "diagnostic_audio_input_sha256":audio["input_sha256"]
+          }
+          (root/"HHS-I084-original-physics-verification.json").write_text(json.dumps(receipt,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(receipt,indent=2,sort_keys=True))
+          PY
+
+      - name: Upload exact HTML physics movie, sample frames and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i084-original-particle-physics-1080p60
+          path: |
+            artifacts/pass220/i084-original-html-1080p60/lane5-raw-html-1920x1080.mp4
+            artifacts/pass220/i084-original-html-1080p60/lane5-raw-html-ingress-receipt.json
+            artifacts/pass220/i084-original-html-1080p60/HHS-I084-original-physics-verification.json
+            artifacts/pass220/i084-original-html-1080p60/samples/*.png
+            artifacts/pass220/i084-audio-stimulus/diagnostic-stereo-44100.wav
+          if-no-files-found: warn
