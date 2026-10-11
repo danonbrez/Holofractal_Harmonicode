@@ -159,3 +159,11 @@ replay, and signed VM81 mutation will be required in the next stage.
 The existing source mirror and JS syntax passed the editor checks.
 Test mocks now exercise real Canvas2D path methods instead of assuming
 vertical fillRect. Verify exact-head CI and deployment/device separately.
+
+CI repair-forward: first exact-head PR #765 audio run `38131673205`
+finished 22 PASS / one stale vertical-gradient-assertion failure.
+The prior assertion matched the removed fixed-x glowing band; the new
+assertion checks the rotating `paintGyroscopicLightBand` call, while
+the new 90-degree positive and inverse tests remain in force.
+Shader/runtime source files unchanged by this focused test repair.
+Repeat exact-head CI before a merge.

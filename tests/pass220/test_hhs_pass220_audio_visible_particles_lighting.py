@@ -43,7 +43,7 @@ def test_visual_projection_is_reachable_in_canonical_renderer():
         'state.frameSignalReady=decodedWindow(state.audio) ||',
         'state.renderSource="live-analyser";',
         'ctx.globalCompositeOperation="lighter";',
-        'const x=W*((bus===0?.3:.7)+Math.sin(sweep+bus*Math.PI)*.12)',
+        'paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,',
         'state.frameCrossings=frameCrossingEvents',
     ):
         assert token in bridge,token
