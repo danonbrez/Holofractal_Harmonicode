@@ -213,10 +213,59 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     f"!= {args.width}x{args.height}"
                 )
 
+            audio_capture = {"enabled": False, "waveform_seen": False, "l2_writes_seen": False}
+            if args.audio is not None:
+                audio_path = args.audio.resolve()
+                if not audio_path.is_file():
+                    raise RuntimeError(f"audio stimulus not found: {audio_path}")
+                page.locator("#audioVizFile").set_input_files(str(audio_path))
+                page.wait_for_function(
+                    'document.getElementById("audioVizPlayer").getAttribute("src")',
+                    timeout=args.timeout_ms,
+                )
+                # Standard HTMLMediaElement looping keeps the user's real PCM
+                # lighting active during slower-than-real-time offline capture.
+                page.evaluate('document.getElementById("audioVizPlayer").loop = true')
+                page.locator("#audioVizPlay").click()
+                page.wait_for_function(
+                    '''()=>window.HHSAudioViz &&
+                    window.HHSAudioViz.diagnostics &&
+                    window.HHSAudioViz.diagnostics.frameSignalReady === true''',
+                    timeout=args.timeout_ms,
+                )
+                audio_capture = {
+                    "enabled": True,
+                    "input_sha256": sha256_file(audio_path),
+                    "input_size_bytes": audio_path.stat().st_size,
+                    "waveform_seen": True,
+                    "l2_writes_seen": False,
+                    "graft_schema": None,
+                    "graft_present": False,
+                }
             canvas = page.locator("canvas").first
             for index in range(args.frames):
                 _wait_raf(page, args.raf_step)
                 canvas.screenshot(path=str(frames / f"frame_{index:06d}.png"))
+                if audio_capture["enabled"] and (index % 30 == 0 or index == args.frames - 1):
+                    diagnostics = page.evaluate(
+                        '''()=>window.HHSBrownL2
+                        ? window.HHSBrownL2.diagnostics : null'''
+                    )
+                    if diagnostics is not None:
+                        audio_capture["graft_present"] = True
+                        audio_capture["graft_schema"] = page.evaluate(
+                            'window.HHSBrownL2.schema'
+                        )
+                        audio_capture["l2_writes_seen"] |= bool(
+                            diagnostics.get("writes", 0) > 0
+                        )
+                        audio_capture["waveform_seen"] |= bool(
+                            diagnostics.get("active", False)
+                        )
+            if audio_capture["enabled"] and not audio_capture["l2_writes_seen"]:
+                raise RuntimeError(
+                    "original HTML L2 waveform graft produced no GPU instance writes"
+                )
 
             selected = sorted(frames.glob("frame_*.png"))
             for label, idx in (
@@ -277,6 +326,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "sha256": sha256_file(video_path),
             **video,
         },
+        "audio_waveform_capture": audio_capture,
         "sample_frames": {
             path.name: {
                 "sha256": sha256_file(path),
@@ -308,6 +358,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=1080)
     parser.add_argument("--fps", type=int, default=24)
     parser.add_argument("--frames", type=int, default=48)
+    parser.add_argument(
+        "--audio", type=Path, default=None,
+        help="Optional WAV/PCM audio file loaded via the original HTML audio picker"
+    )
     parser.add_argument("--raf-step", type=int, default=4)
     parser.add_argument("--warmup-raf", type=int, default=16)
     parser.add_argument("--timeout-ms", type=int, default=120000)
