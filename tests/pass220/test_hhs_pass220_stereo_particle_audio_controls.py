@@ -28,7 +28,8 @@ def test_game_controls_are_present_and_all_primary_bindings_work():
     inline = re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>', html)
     assert inline, "Standalone HTML must include audio implementation without external file"
     assert inline.group(1).strip() == BRIDGE.read_text(encoding="utf-8").strip()
-    assert 'id="audioVizOverlay"' not in html # dynamically added, not a second overlay
+    assert '<canvas id="audioVizOverlay"' not in html # no duplicate static canvas
+    assert 'canvas.id="audioVizOverlay";' in html # the inline bridge creates one
     assert 'document.getElementById("commandOutput").innerHTML' not in html
 
 def test_audio_waveform_is_projection_only_and_preserves_physics_receipts():
@@ -37,7 +38,7 @@ def test_audio_waveform_is_projection_only_and_preserves_physics_receipts():
     assert 'for(let s=0;s<steps;s++){ updateSpiralParticles();' in html
     assert 'renderGate=((renderTick%4)===0);' in html
     assert 'compressedHash: computeManifoldHash()' in html
-    assert 'window.HHSAudioViz.projectMatrix(p,particleBatchMatrix);' in html
+    assert 'audioVisual.projectMatrix(p,particleBatchMatrix);' in html
     assert 'particleBatchMatrix.makeTranslation(q.x,q.y,q.z);' in html
     assert 'const N=10368;' in bridge
     assert 'p.position.' not in bridge
