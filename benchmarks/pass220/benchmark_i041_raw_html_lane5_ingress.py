@@ -302,10 +302,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         audio_capture["waveform_seen"] |= bool(
                             diagnostics.get("active", False)
                         )
-            if audio_capture["enabled"] and not audio_capture["l2_writes_seen"]:
-                raise RuntimeError(
-                    "original HTML L2 waveform graft produced no GPU instance writes"
+            if audio_capture["enabled"]:
+                final_diag = page.evaluate(
+                    'window.HHSAudioViz ? window.HHSAudioViz.diagnostics : null'
                 )
+                audio_capture["visual_frames_rendered"] = int(
+                    (final_diag or {}).get("visualFramesRendered", 0)
+                )
+                audio_capture["audio_frame"] = int(
+                    (final_diag or {}).get("audioFrame", -1)
+                )
+                if audio_capture["visual_frames_rendered"] < 1:
+                    raise RuntimeError("original HTML waveform never rendered a PCM visual frame")
+                if not audio_capture["l2_writes_seen"]:
+                    raise RuntimeError(
+                        "original HTML L2 waveform graft produced no GPU instance writes"
+                    )
 
             selected = sorted(frames.glob("frame_*.png"))
             for label, idx in (
