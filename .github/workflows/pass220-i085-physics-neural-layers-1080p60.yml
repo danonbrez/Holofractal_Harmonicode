@@ -1,0 +1,172 @@
+name: Pass 220 I085 Original Physics Neural Layers 1080p60
+
+on:
+  push:
+    branches:
+      - agent/pass220-i085-original-physics-10368-neural-layers-20261011
+    paths:
+      - .github/workflows/pass220-i085-physics-neural-layers-1080p60.yml
+      - examples/ParticleSimulation.html
+      - examples/ParticleSimulationNeuralLayerBridge.js
+      - hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py
+      - hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py
+      - benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+      - tests/pass220/test_hhs_pass220_i085_original_particle_neural_layers_v1.py
+      - docs/operations/restart/PASS_220_I085_PHYSICS_NEURAL_LAYERS_RESTART_20261011.md
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-native-layer-membrane:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Exact I082 native candidate and I085 layer/scene validation
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pip install --disable-pip-version-check pytest
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py \
+            hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py \
+            benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i082_neural_tensor_graph_v1.py \
+            tests/pass220/test_hhs_pass220_i085_original_particle_neural_layers_v1.py \
+            tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py \
+            tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
+          python hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py \
+            > /tmp/pass220-i085-native-self-test.json
+          python - <<'PY'
+          import json
+          result=json.load(open("/tmp/pass220-i085-native-self-test.json"))
+          assert result["status"]=="PASS"
+          assert result["coverage"]["complete_interval_cover"]
+          assert result["coverage"]["total_neurons"]=="86805555555"
+          assert result["coverage"]["exact_layer_count"]==10368
+          assert result["coverage"]["extra_neuron_layers"]==4323
+          assert result["coverage"]["base_neurons_per_layer"]=="8372449"
+          print("I085 exact native binding and full lazy address coverage PASS")
+          PY
+
+  render-original-physics-neural-atlas-60fps:
+    needs: validate-native-layer-membrane
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing HHS raw HTML ingress and MP4 transport
+        run: |
+          python -m pip install --disable-pip-version-check pillow playwright pytest
+          python -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Create labeled diagnostic stereo waveform input
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import math,struct,wave
+          p=Path("artifacts/pass220/i085-audio/diagnostic-stereo-44100.wav")
+          p.parent.mkdir(parents=True,exist_ok=True)
+          sr=44100
+          with wave.open(str(p),"wb") as w:
+              w.setnchannels(2);w.setsampwidth(2);w.setframerate(sr)
+              buffer=bytearray()
+              for i in range(sr*12):
+                  t=i/sr
+                  amp=.22+.17*math.sin(2*math.pi*1.3*t)**2
+                  left=amp*(math.sin(2*math.pi*216*t)+.35*math.sin(2*math.pi*432*t))
+                  right=amp*(math.sin(2*math.pi*324*t)+.32*math.sin(2*math.pi*648*t))
+                  buffer.extend(struct.pack("<hh",int(26000*left),int(26000*right)))
+                  if len(buffer)>=262144:
+                      w.writeframesraw(buffer);buffer.clear()
+              if buffer:w.writeframesraw(buffer)
+          print(p,p.stat().st_size)
+          PY
+      - name: Encode the ORIGINAL physics plus I063 waveform, binding every particle at 60fps
+        env:
+          PYTHONPATH: .
+        run: |
+          python benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py \
+            --html examples/ParticleSimulation.html \
+            --output artifacts/pass220/i085-original-physics-neural-1080p60 \
+            --width 1920 --height 1080 --fps 60 --frames 600 \
+            --audio artifacts/pass220/i085-audio/diagnostic-stereo-44100.wav \
+            --raf-step 4 --warmup-raf 16 --timeout-ms 180000 \
+            --neural-layer-check
+      - name: Verify exact source, full layer cover, actual PCM effects, 60fps movie
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          r=Path("artifacts/pass220/i085-original-physics-neural-1080p60")
+          receipt=json.loads((r/"lane5-raw-html-ingress-receipt.json").read_text())
+          assert receipt["status"]=="PASS"
+          assert receipt["mode"]=="OPAQUE_UNALTERED_HTML"
+          assert receipt["html_source"]=="examples/ParticleSimulation.html"
+          assert receipt["source_unchanged"] is True
+          assert receipt["source_sha256_before"]==receipt["source_sha256_after"]==hashlib.sha256(Path("examples/ParticleSimulation.html").read_bytes()).hexdigest()
+          assert receipt["browser_health"]["webgl"] is True
+          assert receipt["browser_health"]["page_runtime_errors"]==[]
+          assert receipt["browser_health"]["console_error_messages"]==[]
+          neural=receipt["neural_layer_binding"]
+          assert neural["diagnostics"]["passed"] is True
+          assert neural["diagnostics"]["original_particles_bound"]==10368
+          assert neural["diagnostics"]["neuron_count"]=="86805555555"
+          assert neural["diagnostics"]["logical_positions"]=="449999999997120"
+          assert neural["diagnostics"]["nominal_capture_fps"]==60
+          assert neural["diagnostics"]["graph_full_edge_execution_verified"] is False
+          assert neural["has_native_ordered_edge_execution"] is False
+          assert [x["layer_id"] for x in neural["samples"]]==[0,4322,4323,5183,5184,10367]
+          audio=receipt["audio_waveform_capture"]
+          assert audio["capture_surface"]=="ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"
+          assert audio["waveform_seen"] is True
+          assert audio["visual_frames_rendered"]>0
+          assert audio["l2_writes_seen"] is True
+          assert audio["graft_schema"]=="HHS_PASS_220_I063_BROWN_NOISE_AUDIO_CARRIER_GRAFT_V1"
+          assert receipt["visual"]["frame_count"]==600
+          assert receipt["visual"]["unique_frames"]>=480
+          assert (receipt["visual"]["width"],receipt["visual"]["height"])==(1920,1080)
+          clip=r/"lane5-raw-html-1920x1080.mp4"
+          mp4=receipt["mp4"]
+          assert mp4["codec"]=="h264"
+          assert mp4["frame_count"]==600
+          assert mp4["r_frame_rate"]=="60/1"
+          assert abs(mp4["duration_seconds"]-10)<.05
+          assert mp4["sha256"]==hashlib.sha256(clip.read_bytes()).hexdigest()
+          evidence={
+            "schema":"HHS_PASS_220_I085_ORIGINAL_PHYSICS_NEURAL_ATLAS_1080P60_V1",
+            "status":"PASS","git_sha":"${{ github.sha }}",
+            "mp4_sha256":mp4["sha256"],
+            "source_sha256":receipt["source_sha256_before"],
+            "neuron_count":"86805555555","particle_layers":10368,
+            "real_witnessed_edges":False,
+            "runtime_neural_graph_executed":False,
+            "gpu_waveform_and_i063_l2_preserved":True,
+            "codec":"h264","fps":60,"frames":600,
+            "width":1920,"height":1080
+          }
+          (r/"HHS-I085-neural-layer-physics-60fps-receipt.json").write_text(json.dumps(evidence,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(evidence,indent=2))
+          PY
+      - name: Upload exact physics/neural layer MP4 and witnessed provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i085-original-physics-10368-neural-layers-1080p60
+          if-no-files-found: warn
+          path: |
+            artifacts/pass220/i085-original-physics-neural-1080p60/lane5-raw-html-1920x1080.mp4
+            artifacts/pass220/i085-original-physics-neural-1080p60/lane5-raw-html-ingress-receipt.json
+            artifacts/pass220/i085-original-physics-neural-1080p60/HHS-I085-neural-layer-physics-60fps-receipt.json
+            artifacts/pass220/i085-original-physics-neural-1080p60/samples/*.png
+            artifacts/pass220/i085-audio/diagnostic-stereo-44100.wav
