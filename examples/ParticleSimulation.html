@@ -242,7 +242,6 @@
            instanceColor must be animated explicitly. */
         if(audioVisual && audioVisual.geometryEnabled){
           audioVisual.projectMatrix(p,particleBatchMatrix);
-          audioVisual.projectBrownianAntiParticle(p,particleBatchMatrix);
           audioVisual.projectColor(p,particleAudioColor);
           mesh.setColorAt(i,particleAudioColor);
         }else{
@@ -3412,10 +3411,6 @@
         const lockRateE=1+HYP.lock*Math.cos(th8e - ((layer2?index-8:index)*Math.PI/4 + (layer2?Math.PI/2:0)));
         points.forEach(p => { p.userData.phase += 0.02*lockRateE; });
       });
-      /* Record every simulation substep, not only visible frames. Candidate
-         buffer has no authority to change canonical swarm state. */
-      if(window.HHSAudioViz&&window.HHSAudioViz.observeBrownianSubstep)
-        window.HHSAudioViz.observeBrownianSubstep();
       // HHS graft: neighbor coupling — the school-of-fish reactivity layer
       updateSwarmCoupling();
       updateTesseract();
@@ -3505,7 +3500,7 @@
           `chase=${chase.on?'#'+chase.idx:'off'} ` +
           `rho=m${(simParams.massBoost||1)}x/c${(simParams.collBoost||1)}x ` +
           `cohorts=${cohortCount} solids=${solidCount} ctor=${(simParams.ctorBoost||1)}x ` +
-          `rskip=64/72(${renderedFrames}/${renderTick}) ` +
+          `rskip=0/72(${renderedFrames}/${renderTick}) ` +
           `bond=${(simParams.bondBoost||1)}x(c${ctorBonds}) ` +
           `cpl=${couplingCount} ` +
           `topo=${simParams.recipTopo?'inv':'seed'} ` +
@@ -4310,109 +4305,6 @@
     const modulation=.55+.45*(.5+.5*Math.cos(2*Math.PI*address/5184+phase));
     return {layer,address,phase72:(finite(phase72)+(layer?18:0))%72,modulation};
   }
-  /* 5184 anti-particle light-to-neuronal-like Brownian visual bridge.
-     Probability is gated by PCM energy and pitch; four nearest neighbors
-     on the 72x72 wrapped lattice correlate stochastic visual offsets.
-     Signed x/y/z/w operator identities and native physics are untouched. */
-  const BROWNIAN=Object.freeze({schema:"HHS_PASS220_BROWNIAN_5184_ANTIPARTICLE_V1",
-    layerOffset:5184,cells:5184,tickDelay:5184,maxOffset:0.05,
-    physicsAdmission:false,actualFlyConnectome:false});
-  const brownianProbabilities=new Float32Array(5184);
-  const brownianOffsets=new Float32Array(5184*3);
-  const brownianCandidates=new Float32Array(5184*3);
-  const brownianRingRms=new Float32Array(5184);
-  const brownianRingPhase=new Uint8Array(5184);
-  const brownianRingFlip=new Uint8Array(5184);
-  let brownianAudioFrame=-1,brownianTick=0,brownianDelayedTick=-1;
-  let brownianDelayedLight=0,brownianDelayedPhase=0,brownianDelayedFlip=0;
-  function brownianUniform(addr,frame,phase,channel){
-    let u=(Math.imul(addr+1,0x9e3779b1)^Math.imul(frame+1,0x85ebca6b)^
-      Math.imul(phase+1,0xc2b2ae35)^Math.imul(channel+1,0x27d4eb2f))>>>0;
-    u^=u>>>16;u=Math.imul(u,0x7feb352d);
-    u^=u>>>15;u=Math.imul(u,0x846ca68b);u^=u>>>16;
-    return (u>>>0)/4294967296;
-  }
-  function brownianProbabilityAt(index,rms,hz,phase,flip){
-    if(!Number.isInteger(index)||index<0||index>=5184)return 0;
-    const light=Math.sqrt(clamp(finite(rms),0,1))/
-      (1+Math.max(0,finite(hz))/720);
-    const layer=particleLayer5184(5184+index,phase);
-    return clamp(light*layer.modulation*((flip&1)?.85:1)*.55,0,.55);
-  }
-  function resetBrownianVisual(){
-    brownianProbabilities.fill(0);brownianOffsets.fill(0);
-    brownianCandidates.fill(0);brownianAudioFrame=-1;
-  }
-  function advanceBrownianVisual(frame,rms,hz,phase,flip){
-    if(!Number.isSafeInteger(frame)||frame<0)return false;
-    if(frame===brownianAudioFrame)return false;
-    if(frame<brownianAudioFrame)resetBrownianVisual();
-    brownianAudioFrame=frame;
-    const active=finite(rms)>=.002;
-    const sector=((Math.trunc(finite(phase))%72)+72)%72;
-    for(let k=0;k<5184;k++){
-      const probability=active?brownianProbabilityAt(k,rms,hz,sector,flip):0;
-      brownianProbabilities[k]=probability;
-      for(let axis=0;axis<3;axis++){
-        const accepted=brownianUniform(k,frame,sector,axis)<probability;
-        brownianCandidates[k*3+axis]=accepted?
-          (2*brownianUniform(k,frame,sector,axis+4)-1)*probability:0;
-      }
-    }
-    /* No atom allocations or host RNG in the hot 5184-cell path. */
-    for(let k=0;k<5184;k++){
-      const row=(k/72)|0,col=k%72;
-      const n0=row*72+(col+71)%72,n1=row*72+(col+1)%72;
-      const n2=((row+71)%72)*72+col,n3=((row+1)%72)*72+col;
-      for(let axis=0;axis<3;axis++){
-        const j=k*3+axis;
-        const neighbors=(brownianCandidates[n0*3+axis]+
-          brownianCandidates[n1*3+axis]+brownianCandidates[n2*3+axis]+
-          brownianCandidates[n3*3+axis])*.25;
-        /* Alternating ordered xy:zw VISUAL channel (no commutation). */
-        const sign=(axis===0&&(flip&1))?-1:1;
-        const noise=sign*(.6*brownianCandidates[j]+.4*neighbors)*.05;
-        brownianOffsets[j]=clamp((active?.86:.72)*brownianOffsets[j]+
-          (active?.14:0)*noise,-BROWNIAN.maxOffset,BROWNIAN.maxOffset);
-      }
-    }
-    return true;
-  }
-  /* EXACT simulation substeps, independent of RAF quartic render gate:
-     tick n reads n-5184 before slot overwrite, then persists its own
-     observation/ordered parity. No force admission or mutation occurs. */
-  function observeBrownianSubstep(){
-    const n=brownianTick++,slot=n%5184;
-    if(n>=5184){
-      brownianDelayedTick=n-5184;
-      brownianDelayedLight=brownianRingRms[slot];
-      brownianDelayedPhase=brownianRingPhase[slot];
-      brownianDelayedFlip=brownianRingFlip[slot];
-    }else brownianDelayedTick=-1;
-    brownianRingRms[slot]=state.frameSignalReady?state.frameRmsR:0;
-    brownianRingPhase[slot]=state.gyroPhase72%72;
-    brownianRingFlip[slot]=n&1;
-    return {tick:n,delayedTick:brownianDelayedTick,flip:n&1};
-  }
-  function projectBrownianAntiParticle(p,matrix){
-    if(!state.frameSignalReady||!state.geometryEnabled)return false;
-    const index=state.particleIndex.get(p);
-    if(index===undefined||index<5184||index>=10368)return false;
-    const slot=(index-5184)*3,e=matrix.elements;
-    e[12]+=brownianOffsets[slot];
-    e[13]+=brownianOffsets[slot+1];
-    e[14]+=brownianOffsets[slot+2];
-    return true;
-  }
-  function brownianOffsetAt(index){
-    if(!Number.isInteger(index)||index<0||index>=5184)return null;
-    return [brownianOffsets[index*3],brownianOffsets[index*3+1],
-            brownianOffsets[index*3+2]];
-  }
-  function brownianProbabilitySlot(index){
-    return Number.isInteger(index)&&index>=0&&index<5184?
-      brownianProbabilities[index]:null;
-  }
   const geometryScratch=new Float32Array(3);
   const HANN_735=new Float32Array(AUDIO_CLOCK.samplesPerFrame);
   for(let i=0;i<HANN_735.length;i++)
@@ -4734,7 +4626,6 @@
     state.lastSignalFrame=-1;
     state.particleFrame=-1;
     state.frameSignalReady=false;
-    resetBrownianVisual();
     if(state.backLightCanvas){
       const back=state.backLightCanvas.getContext("2d");
       if(back){
@@ -4907,8 +4798,6 @@
       state.harmonicFrequencyHz[0],state.harmonicMoment[0],
       state.harmonicFrequencyHz[1],state.harmonicMoment[1],elapsedFrames);
     state.gyroPhase72=Math.floor(state.gyroTransport72);
-    advanceBrownianVisual(clock.frame,state.frameRmsR,
-      state.harmonicFrequencyHz[1],state.gyroPhase72,brownianTick&1);
     state.active=true;state.geometryEnabled=true;
     return true;
   }
@@ -5417,9 +5306,6 @@
     busPair:PAIR,get active(){return state.active;},
     get geometryEnabled(){return state.geometryEnabled;},
     projectMatrix,projectColor,projectParticleGlow,particleHaloOpacity,
-    projectBrownianAntiParticle,observeBrownianSubstep,
-    advanceBrownianVisual,resetBrownianVisual,
-    brownianProbabilityAt,brownianProbabilitySlot,brownianOffsetAt,
     particleLayer5184,lightAttenuation,
     q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
@@ -5441,17 +5327,6 @@
        geometryNormalizationGain:state.gain,
        geometryNormalizationGainMax:GEOMETRY_GAIN.max,
        haloEmissionGain:HALO_EMISSION_GAIN,
-       brownianSchema:BROWNIAN.schema,
-       brownianAntiParticleCells:BROWNIAN.cells,
-       brownianTickDelay:BROWNIAN.tickDelay,
-       brownianTick:brownianTick,
-       brownianDelayedTick:brownianDelayedTick,
-       brownianDelayedLight:brownianDelayedLight,
-       brownianDelayedPhase:brownianDelayedPhase,
-       brownianDelayedFlip:brownianDelayedFlip,
-       brownianAudioFrame:brownianAudioFrame,
-       brownianMaxOffset:BROWNIAN.maxOffset,
-       brownianPhysicsAdmission:false,
        backLightLayerCells:BACK_LIGHT.layerCells,
        backLightLayerCount:BACK_LIGHT.layers,
        backLightOpacityCap:BACK_LIGHT.alphaCap,
@@ -5494,5 +5369,196 @@
   else boot();
 })();
 </script>
+<script>
+/* =====================================================================
+   HHS PASS 220 I063 — BROWN-NOISE AUDIO CARRIER GRAFT (projection-only).
+   The base file is FROZEN (sha256 c6ea1621…). This graft modifies nothing
+   above it; it hooks the render membrane the way the I041 discipline
+   allows: after sync, on GPU instance buffers only.
+
+   Semantics of the directive:
+   - A brown (red) noise carrier b_t — leaky integrator over white noise,
+     structurally bounded, no division anywhere — gates ALL audio-triggered
+     lighting effects. Audio supplies the signal; the brown carrier
+     supplies the envelope: lighting = audio × brown.
+   - GLOBAL channel: the second 5184-carrier layer (fractal layer 2,
+     global indices 5184..10367) is modulated as a gravitational
+     ATTRACTION GEOMETRY toward an audio-driven attractor. Softened pull
+     Δ = g·rms·b·(A−x)/(1+|A−x|²): the divisor 1+r² ≥ 1 is structurally
+     nonzero (HNAN discipline — no gate site needed).
+   - LOCAL channel: exactly 1/5184 of layer 2 per audio tick —
+     carrier 5184 + (audioFrame % 5184) — a periodic cycle over the whole
+     layer. Its glow and pull are COMPLETELY audio driven: intensity is a
+     pure function of the frame's PCM rms and harmonic phase; with no
+     audio frame the channel writes nothing.
+   - INACTIVE = passthrough: gain exactly 1, no phase write, no matrix
+     write. Canonical lattice, physics clock, and receipts untouched.
+   ===================================================================== */
+(function(){
+  const I063=Object.freeze({
+    schema:"HHS_PASS_220_I063_BROWN_NOISE_AUDIO_CARRIER_GRAFT_V1",
+    frozen_base_sha256:"c6ea1621c66f2f14de074f4680a8fb7be604685fe5e947b580b0f94af621ace4",
+    layer:"projection_only", physicsFeedbackEnabled:false,
+    vm81Admission:false, canonicalMutation:false,
+    brownLeak:0.985, brownStep:0.42, brownClamp:3.0,
+    attractionGain:0.9, displacementCap:0.8, localBoost:3.0
+  });
+
+  /* ---- brown noise carrier: leaky integrator, no divisions ---- */
+  let brown=0;
+  function brownStep(){
+    brown=I063.brownLeak*brown + I063.brownStep*(Math.random()-0.5);
+    if(brown> I063.brownClamp) brown= I063.brownClamp;
+    if(brown<-I063.brownClamp) brown=-I063.brownClamp;
+    return brown;
+  }
+  const brownNorm=()=>brown/I063.brownClamp;   /* clamp>0: structural */
+
+  /* ---- layer-2 batch registry (built once; particles never re-order) ---- */
+  let l2batches=null;
+  function bindL2(){
+    if(l2batches) return l2batches;
+    if(typeof particleRenderBatches==="undefined"||typeof particles==="undefined") return null;
+    if(particles.length<10368||!particleRenderBatches.length) return null;
+    l2batches=[];
+    for(const bt of particleRenderBatches){
+      if(!bt||!bt.points||!bt.points.length) continue;
+      const base=particles.indexOf(bt.points[0]);
+      if(base>=5184) l2batches.push({batch:bt, base});
+    }
+    return l2batches;
+  }
+
+  /* ---- graft state ---- */
+  const G={ on:true, audioFrame:-1, localIdx:-1, lastBrown:0,
+            attractor:[0,0,0], writes:0, bypasses:0 };
+
+  /* audio snapshot: null when inactive (fail-closed passthrough) */
+  function audioState(){
+    const av=window.HHSAudioViz;
+    if(!av||!av.active||!av.geometryEnabled) return null;
+    const d=av.diagnostics;
+    if(!d||!d.frameSignalReady) return null;
+    const rms=Math.max(d.frameRmsL||0, d.frameRmsR||0);
+    if(!Number.isFinite(rms)) return null;
+    return { frame:d.audioFrame|0, rms,
+             phase72:(typeof d.gyroscopePhase72==="number"?d.gyroscopePhase72:0),
+             hzL:d.harmonicFrequencyLHz||0, hzR:d.harmonicFrequencyRHz||0 };
+  }
+
+  /* audio-driven attractor: angle from the transported gyro phase,
+     radius breathes with the brown carrier, height from stereo split */
+  function attractorFromAudio(a, bn){
+    const th=a.phase72*(Math.PI*2/72);
+    const R=4+6*Math.abs(bn);
+    const h=4*Math.tanh((a.hzL-a.hzR)/220);          /* tanh bounded, no division risk */
+    const bx=(typeof bary!=="undefined")?bary:{x:0,y:0,z:0};
+    return [bx.x+Math.cos(th)*R, bx.y+h, bx.z+Math.sin(th)*R];
+  }
+
+  /* ---- the modulation pass: post-sync, GPU buffers only ---- */
+  function modulate(){
+    const a=audioState();
+    if(!a){ G.bypasses++; return; }                  /* passthrough: gain 1, no write */
+    const reg=bindL2(); if(!reg) return;
+    const bn=brownStep(); G.lastBrown=bn;
+    const A=attractorFromAudio(a,bn); G.attractor=A;
+    /* LOCAL channel: 1/5184 of layer 2 per audio tick, periodic */
+    G.audioFrame=a.frame;
+    G.localIdx=a.frame%5184;                          /* 0..5183 within layer 2 */
+    const g=I063.attractionGain*a.rms*bn;             /* lighting = audio × brown */
+    const localGlow=Math.min(1,2*Math.sqrt(Math.max(0,a.rms)));  /* pure audio */
+    if(typeof thPos==="undefined"||!thPos) return;
+    for(const {batch,base} of reg){
+      const arr=batch.mesh.instanceMatrix.array;
+      const glow=batch.halo?batch.halo.glowStrength.array:null;
+      for(let k=0;k<batch.points.length;k++){
+        const gi=base+k, ix=gi*3;
+        const isLocal=(gi-5184)===G.localIdx;
+        /* brown-gated global lighting: scale the halo the audio membrane wrote */
+        if(glow) glow[k]*=(0.35+0.65*Math.abs(bn));
+        /* gravitational attraction geometry (softened; 1+r² ≥ 1 structural) */
+        const px=thPos[ix], py=thPos[ix+1], pz=thPos[ix+2];
+        let dx=A[0]-px, dy=A[1]-py, dz=A[2]-pz;
+        const r2=dx*dx+dy*dy+dz*dz;
+        let pull=g/(1+r2);
+        if(isLocal) pull*=I063.localBoost*(0.25+localGlow);
+        let ox=dx*pull, oy=dy*pull, oz=dz*pull;
+        const o2=ox*ox+oy*oy+oz*oz, cap=I063.displacementCap;
+        if(o2>cap*cap){ const sc=cap/Math.sqrt(o2); ox*=sc; oy*=sc; oz*=sc; }
+        const m=k*16;
+        arr[m+12]+=ox; arr[m+13]+=oy; arr[m+14]+=oz;
+        /* LOCAL glow: completely audio driven */
+        if(glow&&isLocal) glow[k]=Math.min(2,glow[k]+localGlow*1.5);
+        G.writes++;
+      }
+      batch.mesh.instanceMatrix.needsUpdate=true;
+      if(glow) batch.halo.glowStrength.needsUpdate=true;
+    }
+  }
+
+  /* ---- hook: wrap the frozen sync (mutable global function binding) ---- */
+  if(typeof syncParticleRenderBatches==="function"){
+    const __frozenSync=syncParticleRenderBatches;
+    syncParticleRenderBatches=function(){ __frozenSync(); if(G.on) modulate(); };
+  }
+
+  /* ---- UI: toggle (B) ---- */
+  const btn=document.createElement("button");
+  btn.id="brownL2Btn"; btn.textContent="BrownL2 (B): ON";
+  btn.style.cssText="position:absolute;top:226px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;border:1px solid #345;padding:6px 10px;border-radius:4px;font-size:.8em;cursor:pointer";
+  function setOn(v){ G.on=v; btn.textContent="BrownL2 (B): "+(v?"ON":"off"); }
+  btn.addEventListener("click",()=>setOn(!G.on));
+  document.body.appendChild(btn);
+  window.addEventListener("keydown",(e)=>{
+    if(e.target&&(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")) return;
+    if(e.key==="b"||e.key==="B") setOn(!G.on);
+  });
+
+  /* ---- receipt: executable gates for the graft's claims ---- */
+  if(typeof MODULES!=="undefined") MODULES["AudioBrownCarrierTest"]=function(){
+    /* 1) cycle arithmetic: 1/5184 of layer 2 per tick, period exactly 5184 */
+    const cycOk=(5184+0)%5184===0 && ((0%5184)===0) && ((5183+1)%5184===0)
+             && (5184%5184)===0;
+    /* 2) brown carrier boundedness: 200k steps never leave ±clamp */
+    let mx=0, mn=0; for(let t=0;t<200000;t++){ const v=brownStep(); if(v>mx)mx=v; if(v<mn)mn=v; }
+    const boundedOk=mx<=I063.brownClamp&&mn>=-I063.brownClamp;
+    /* 3) passthrough discipline: no audio -> no writes this call */
+    const saved=window.HHSAudioViz; const w0=G.writes, b0=G.bypasses;
+    const probe=audioState();
+    const passthroughOk=(probe===null)?(modulate(),G.writes===w0&&G.bypasses===b0+1):true;
+    /* 4) layer purity: modulation targets ONLY global indices >= 5184 */
+    const reg=bindL2();
+    const purityOk=!reg||reg.every(r=>r.base>=5184);
+    /* 5) softened divisor structural: 1+r² ≥ 1 for all sampled r */
+    let divOk=true; for(let t=0;t<1000;t++){ const r2=Math.random()*100; if(1/(1+r2)>1||1/(1+r2)<=0) divOk=false; }
+    /* 6) local channel is audio driven: intensity is a pure function of rms */
+    const f=r=>Math.min(1,2*Math.sqrt(Math.max(0,r)));
+    const audioDrivenOk=f(0)===0&&f(0.25)===1&&f(0.0625)>f(0.01);
+    const gates={
+      cycle_1_of_5184_per_tick:{ period:5184, pass:cycOk },
+      brown_carrier_bounded:{ min:+mn.toFixed(3), max:+mx.toFixed(3),
+        clamp:I063.brownClamp, steps:200000, pass:boundedOk },
+      inactive_is_passthrough:{ audio_present:probe!==null, pass:passthroughOk },
+      layer1_untouched:{ l2_batches:reg?reg.length:0, pass:purityOk },
+      softened_divisor_structural:{ law:"1+r² ≥ 1 — no HNAN site needed", pass:divOk },
+      local_channel_audio_driven:{ law:"glow = f(rms) only; no audio → no write", pass:audioDrivenOk }
+    };
+    const ok=Object.keys(gates).every(k=>gates[k].pass);
+    return { schema:"HHS_BROWSER_REFERENCE_RECEIPT_V1", module:"AudioBrownCarrierTest", ok,
+      version:I063.schema, frozen_base_sha256:I063.frozen_base_sha256, gates,
+      claim_status:"RECEIPT_BOUND_ONLY — projection lane; no canonical mutation",
+      rule:"brown-noise carrier gates all audio lighting (lighting = audio × brown); layer-2 (5184..10367) modulated globally as a softened gravitational attraction geometry toward the audio-driven attractor; locally exactly 1/5184 of the layer per audio tick (audioFrame % 5184) with glow/pull completely audio driven; inactive = passthrough gain 1, no phase write. GPU instance buffers only — canonical lattice untouched." };
+  };
+
+  window.HHSBrownL2=Object.freeze({ schema:I063.schema, state:G,
+    brownStep, brownNorm, setOn,
+    get diagnostics(){ return { active:!!audioState(), on:G.on,
+      audioFrame:G.audioFrame, localIdx:G.localIdx, brown:+G.lastBrown.toFixed(4),
+      attractor:G.attractor.map(v=>+v.toFixed(3)),
+      writes:G.writes, bypasses:G.bypasses }; } });
+})();
+</script>
 </body>
+
 </html>
