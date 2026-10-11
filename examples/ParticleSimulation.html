@@ -4312,6 +4312,12 @@
       source.connect(splitter);
       splitter.connect(L,0);
       splitter.connect(R,1);
+      /* Keep a pulled, zero-volume analysis branch without sending a
+         second audible copy to the speakers on browser audio graphs. */
+      const silent=context.createGain();
+      silent.gain.value=0;
+      L.connect(silent);R.connect(silent);
+      silent.connect(context.destination);
       state.analyserL=L;state.analyserR=R;
       return true;
     }catch(error){
