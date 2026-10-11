@@ -10,6 +10,10 @@ from __future__ import annotations
 from hashlib import sha256
 from typing import Any
 
+from hhs_runtime.hhs_pass220_base64_balanced_trit_v1 import (
+    encode_frame as encode_base64_trits,
+    decode_frame as decode_base64_trits,
+)
 from hhs_runtime.hhs_pass219_raw5184_octonion_audio_hydration_v1 import (
     pipeline as raw5184_pipeline,
     words_to_bitstring,
@@ -118,6 +122,9 @@ def candidate_bridge(
         raise Phase5184BridgeError("TRINARY_LANE_ROLE_FAILURE")
 
     differences = phase_difference_witnesses(source)
+    radix_carrier = encode_base64_trits(raw_bits)
+    if decode_base64_trits(radix_carrier) != raw_bits:
+        raise Phase5184BridgeError("BASE64_TRINARY_ROUNDTRIP")
 
     roundtrip = None
     materialized = 0
@@ -140,6 +147,10 @@ def candidate_bridge(
         "hnan_tensor": HNAN_LO_SHU_TENSOR_SOURCE,
         "phase_difference_witnesses": differences,
         "phase_difference_exact": True,
+        "radix_binary3_groups": 1728,
+        "radix_balanced_trits": len(radix_carrier.trits),
+        "radix_base64_sextets": len(radix_carrier.alphabet64),
+        "base64_trinary_roundtrip_exact": True,
         "hnan_binary_addresses": ADDRESSES,
         "hnan_center_source": HNAN_CENTER_EXPRESSION,
         "hnan_terminal_source": HNAN_TERMINAL_SOURCE,
