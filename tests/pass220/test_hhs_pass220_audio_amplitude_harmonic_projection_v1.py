@@ -60,7 +60,7 @@ assert.notEqual(viz.q144Index(12,.2,.1,8,0),a);
 assert.equal(viz.q144Index(12,.2,.1,3,1),(a+72)%144);
 assert.equal(viz.diagnostics.geometryNormalizationGain,.02);
 assert.equal(viz.diagnostics.geometryNormalizationGainMax,.05);
-assert.equal(viz.diagnostics.haloEmissionGain,.4);
+assert.equal(viz.diagnostics.haloEmissionGain,.16);
 assert.equal(viz.diagnostics.harmonicColorWheel,true);
 assert.equal(viz.diagnostics.cellularBoundaryAmplitudeResponsive,true);
 assert.equal(viz.diagnostics.canonicalMutation,false);

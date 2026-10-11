@@ -14,7 +14,7 @@ def test_embedded_mirror_and_separate_physics_authority():
     inline=re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>',html)
     assert inline and inline.group(1).strip()==bridge.strip()
     assert "state.gyroTransport72);" in bridge
-    assert "paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus," in bridge
+    assert "paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus," in bridge
     assert 'ctx.createLinearGradient(x-extent,0,x+extent,0)' not in bridge
     assert "function gyroscopicGradientAxes72(" in bridge
     assert "if(!advanceLightingGate(clock.frame))return;" in bridge

@@ -24,7 +24,7 @@ def test_batch_halo_is_gpu_instanced_centered_and_noncanonical():
         "halo.mesh.visible=glowEnabled;",
         "float radius=length((vUvHalo-0.5)*2.0);",
         "float fade=1.0-smoothstep(0.0,1.0,radius);",
-        "float opacity=fade*fade*vStrengthHalo;",
+        "float opacity=fade*fade*vStrengthHalo*distanceDamp;",
         "gl_FragColor=vec4(vColorHalo,opacity);",
         "physicsFeedbackEnabled:false,vm81Admission:false",
     ):
@@ -68,7 +68,7 @@ const q=a.q144Index(2*18+0,.3,.2,0,0);
 assert.equal(p.leftHues[0],q);
 assert.equal(a.q144Index(2*18,.3,.2,0,1),(q+72)%144);
 assert.equal(a.diagnostics.geometryNormalizationGainMax,.05);
-assert.equal(a.diagnostics.haloEmissionGain,.4);
+assert.equal(a.diagnostics.haloEmissionGain,.16);
 const l=a.particleLayer5184(0,18),r=a.particleLayer5184(5184,18);
 assert.equal(l.layer,0);assert.equal(r.layer,1);
 assert.equal(l.address,0);assert.equal(r.address,0);
