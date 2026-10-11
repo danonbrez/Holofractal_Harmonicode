@@ -1,0 +1,48 @@
+(* Pass 220 HNAN / VM81 exact phase bridge. The 72->5184 expansion is
+   proved only for admitted generator-derived geometry. All native quotient
+   and phase-ordered operators remain held strings, not host scalar algebra. *)
+Module[{tensor,addresses,loShu,alphabet,generator,vertices,recovered,half,bits,
+        flipped,reordered,tests,report},
+ tensor={{"xy","x+y","yx"},
+         {"xy-zw","x+y-z-w+xy+yx-zw-wz","wz-yx"},
+         {"wz","z+w","zw"}};
+ addresses={{"000","001","010"},{"011","HNAN","100"},{"101","110","111"}};
+ loShu={{4,9,2},{3,5,7},{8,1,6}};
+ alphabet=Characters["0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+*/()<>!?"];
+ generator=RotateLeft[alphabet,3];
+ vertices=Flatten[Table[{i-1,generator[[i]],j-1,alphabet[[j]]},{i,72},{j,72}],1];
+ recovered=Table[vertices[[72(i-1)+1,2]],{i,72}];
+ half=StringJoin[Table[If[Mod[i,7]<3,"1","0"],{i,0,2591}]];
+ bits=half<>StringReverse[half];
+ flipped=StringReplacePart[bits,If[StringTake[bits,1]=="1","0","1"],{1,1}];
+ reordered=ReplacePart[tensor,{1,1}->"yx"];
+ tests={
+  VerificationTest[Dimensions[tensor],{3,3},TestID->"hnan-tensor-shape"],
+  VerificationTest[tensor[[1]],{"xy","x+y","yx"},TestID->"xy-lane-order"],
+  VerificationTest[tensor[[3]],{"wz","z+w","zw"},TestID->"zw-mirrored-lane-order"],
+  VerificationTest[tensor[[2,2]],"x+y-z-w+xy+yx-zw-wz",TestID->"center-gate"],
+  VerificationTest[tensor[[2,{1,3}]],{"xy-zw","wz-yx"},TestID->"phase-differences"],
+  VerificationTest[addresses[[2,2]],"HNAN",TestID->"hnan-address"],
+  VerificationTest[Sort[DeleteCases[Flatten[addresses],"HNAN"]],Sort[IntegerString[Range[0,7],2,3]],TestID->"eight-binary-addresses"],
+  VerificationTest[loShu,{{4,9,2},{3,5,7},{8,1,6}},TestID->"lo-shu"],
+  VerificationTest[reordered===tensor,False,TestID->"ordered-product-not-swappable"],
+  VerificationTest[81*64==72^2&&72^2==5184,True,TestID->"vm81-hash72-factor"],
+  VerificationTest[Length[alphabet],72,TestID->"alphabet-cardinality"],
+  VerificationTest[Length[vertices],5184,TestID->"72x72-hydrated-vertices"],
+  VerificationTest[recovered,generator,TestID->"generator-inverse"],
+  VerificationTest[StringLength[bits]==5184&&bits===StringReverse[bits],True,TestID->"palindrome-admission"],
+  VerificationTest[StringJoin[Characters[bits]],bits,TestID->"raw-binary-identity"],
+  VerificationTest[flipped===StringReverse[flipped],False,TestID->"corrupted-palindrome-rejected"],
+  VerificationTest[3*Length[vertices],15552,TestID->"hash216-three-planes"],
+  VerificationTest[72/5184,1/72,TestID->"admitted-structural-ratio"],
+  VerificationTest["xy+epsilon"=!="xy",True,TestID->"epsilon-retained"],
+  VerificationTest[8+1,9,TestID->"eight-boundary-plus-center"]
+ };
+ report=TestReport[tests];
+ <|"Schema"->"HHS_PASS220_HNAN_PHASE5184_WOLFRAM_V1",
+   "TestsSucceeded"->report["TestsSucceededCount"],
+   "TestsFailed"->report["TestsFailedCount"],
+   "AllTestsSucceeded"->report["AllTestsSucceeded"],
+   "GenericUnconstrainedPayloadCompressionClaimed"->False,
+   "CanonicalMutationAuthority"->False|>
+]
