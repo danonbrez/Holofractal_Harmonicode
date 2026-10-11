@@ -43,7 +43,7 @@ def test_visual_projection_is_reachable_in_canonical_renderer():
         'state.frameSignalReady=decodedWindow(state.audio) ||',
         'state.renderSource="live-analyser";',
         'ctx.globalCompositeOperation="lighter";',
-        'paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,',
+        'paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,',
         'state.frameCrossings=frameCrossingEvents',
     ):
         assert token in bridge,token
@@ -234,7 +234,7 @@ def test_audio_q144_full_spectrum_changes_with_pcm_and_has_no_donut():
     assert "phaseAngle=phase/72" not in source
     assert "Math.cos(phaseAngle" not in source
     assert "Math.sin(phaseAngle" not in source
-    assert 'paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,' in source
+    assert 'paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,' in source
     assert 'const Q144_RGB=new Float32Array(144*3);' in source
     assert 'const q=q144Index(2*state.gyroPhase72+phase,sample,rms,0,bus);' in source
     assert 'audioVisual.projectColor(p,particleAudioColor)' in html

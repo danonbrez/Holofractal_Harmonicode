@@ -216,3 +216,27 @@ expected particle matrix range to the new small max; kept negative
 canonical-no-mutation assertions. Exact-head Node/pytest and source
 integrity must pass before merge, and real GPU device evidence remains
 unverified.
+
+## I085 — restrained 2×5184 backlighting (2026-10-11)
+
+Aurora-style foreground opacity addressed by moving all reciprocal
+stereo field gradients and 72 source-crossing stripes into an
+offscreen Canvas2D `THREE.CanvasTexture` painted as `scene.background`
+BEHIND the 10,368 opaque particles. The waveform and controls
+remain foreground UI. The scene initializes the background callback;
+the boot sequence registers the texture only when Three.js is present.
+Audio frame gating and reset-to-black on pause are preserved.
+Per-bus global alpha is capped at 0.045, flash alpha at 0.022,
+with damping from RMS amplitude, detected frequency, distance from
+the stereo layer center. Two independently indexed 5184-address
+particle shading layers are phase offset by a *visual* +18 u72 steps.
+Existing instanced center-peaked halos use softer 0.16 max emission
+before view-camera distance damping 1/(1+0.028*d²), a small behind-core
+z offset and disabled depth writes. Geometry normalization remains
+default 0.020, max 0.050.
+
+No mutation of logical particles, source VM81/Hash receipts, or native
+physics admission. The separate user-requested 5184 **physics tick**
+delayed light-to-force coupling and per-tick ordered xy:zw phase inversion
+are NOT enabled. Exact-head targeted tests/source-integrity and actual
+WebGL audio/browser rendering are required for acceptance.

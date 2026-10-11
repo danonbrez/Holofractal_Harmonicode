@@ -171,11 +171,14 @@
           "varying vec2 vUvHalo;",
           "varying vec3 vColorHalo;",
           "varying float vStrengthHalo;",
+          "varying float vHaloDistance;",
           "void main(){",
           " vUvHalo=uv; vColorHalo=haloColor;",
           " vStrengthHalo=instanceGlow;",
           " vec4 center=modelViewMatrix*instanceMatrix*vec4(0.0,0.0,0.0,1.0);",
+          " vHaloDistance=length(center.xyz);",
           " float size=length(instanceMatrix[0].xyz)*uHaloDiameter;",
+          " center.z-=0.035*size;",
           " center.xy+=position.xy*size;",
           " gl_Position=projectionMatrix*center;",
           "}"
@@ -185,10 +188,12 @@
           "varying vec2 vUvHalo;",
           "varying vec3 vColorHalo;",
           "varying float vStrengthHalo;",
+          "varying float vHaloDistance;",
           "void main(){",
           " float radius=length((vUvHalo-0.5)*2.0);",
           " float fade=1.0-smoothstep(0.0,1.0,radius);",
-          " float opacity=fade*fade*vStrengthHalo;",
+          " float distanceDamp=1.0/(1.0+0.028*vHaloDistance*vHaloDistance);",
+          " float opacity=fade*fade*vStrengthHalo*distanceDamp;",
           " if(opacity<=0.001)discard;",
           " gl_FragColor=vec4(vColorHalo,opacity);",
           "}"
@@ -197,7 +202,7 @@
       const halo=new THREE.InstancedMesh(geometry,material,count);
       halo.instanceMatrix=mesh.instanceMatrix;
       halo.frustumCulled=false;
-      halo.renderOrder=1;
+      halo.renderOrder=-1;
       halo.visible=false;
       group.add(halo);
       return {mesh:halo,glowStrength};
@@ -282,6 +287,12 @@
     function initScene() {
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x000000);
+      window.HHSInstallAudioBacklight=function(canvas){
+        const texture=new THREE.CanvasTexture(canvas);
+        texture.needsUpdate=true;
+        scene.background=texture;
+        return texture;
+      };
       camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
       camera.position.set(0, 0, 15);
       renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference:"high-performance" });
@@ -4277,7 +4288,23 @@
   const GEOMETRY_GAIN=Object.freeze({defaultValue:0.020,max:0.050,step:0.001});
   /* Light-emission gain remains independent of the geometry-normalization
      control, so a subtle physical silhouette does not erase the soft glow. */
-  const HALO_EMISSION_GAIN=0.40;
+  const HALO_EMISSION_GAIN=0.16;
+  const BACK_LIGHT=Object.freeze({layerCells:5184,layers:2,alphaCap:0.045,
+    bandCap:0.022,authority:"PRESENTATION_ONLY"});
+  function lightAttenuation(rms,frequencyHz,normalizedDistance){
+    const amp=Math.sqrt(clamp(finite(rms),0,1));
+    const hz=1/(1+Math.max(0,finite(frequencyHz))/720);
+    const d=Math.max(0,finite(normalizedDistance));
+    return clamp(BACK_LIGHT.alphaCap*amp*hz/(1+10*d*d),0,BACK_LIGHT.alphaCap);
+  }
+  /* Two 5184 particle-address layers, NOT an elapsed tick delay. */
+  function particleLayer5184(index,phase72){
+    if(!Number.isInteger(index)||index<0||index>=10368)return null;
+    const layer=index<5184?0:1,address=index%5184;
+    const phase=2*Math.PI*(finite(phase72)+(layer?18:0))/72;
+    const modulation=.55+.45*(.5+.5*Math.cos(2*Math.PI*address/5184+phase));
+    return {layer,address,phase72:(finite(phase72)+(layer?18:0))%72,modulation};
+  }
   const geometryScratch=new Float32Array(3);
   const HANN_735=new Float32Array(AUDIO_CLOCK.samplesPerFrame);
   for(let i=0;i<HANN_735.length;i++)
@@ -4287,7 +4314,7 @@
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
     crossingEvents:[], sampleRate:0, buffer:null, context:null, source:null,
     processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
-    waveCanvas:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
+    waveCanvas:null,backLightCanvas:null,backLightTexture:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
     processorReady:null, renderedLightingFrames:0, skippedLightingFrames:0,
     outputClockSource:"inactive", lightingLatencyMs:0, lastClockStatusTime:-1,
     analyserL:null,analyserR:null,analyserDataL:new Float32Array(2048),
@@ -4400,7 +4427,7 @@
   /* Reciprocal vertical-raster lanes from one ordered gyroscope state.
      The inverse-address folding below belongs ONLY to the color projection.
      It never asserts equality of native x/z, xy/zw, y/w, or yx/wz tensors. */
-  function verticalReciprocalGradientPair(phase,leftSample,rightSample,leftRms,rightRms){
+  function verticalReciprocalGradientPair(phase,leftSample,rightSample,leftRms,rightRms,leftHz=432,rightHz=432){
     const g=gyroscopicPhaseGear72(phase);
     const sharedSample=(finite(leftSample)+finite(rightSample))/2;
     const sharedRms=(Math.max(0,finite(leftRms))+Math.max(0,finite(rightRms)))/2;
@@ -4411,8 +4438,8 @@
        The right Q144 lane is +72 in the full-color circle. */
     const leftHues=leftAddress.map(k=>q144Index(2*k,sharedSample,sharedRms,0,0));
     const rightHues=rightMirrored.map(k=>q144Index(2*k,sharedSample,sharedRms,0,1));
-    const alphaL=clamp(Math.sqrt(Math.max(0,finite(leftRms)))*0.30,0,0.30);
-    const alphaR=clamp(Math.sqrt(Math.max(0,finite(rightRms)))*0.30,0,0.30);
+    const alphaL=lightAttenuation(leftRms,leftHz,0);
+    const alphaR=lightAttenuation(rightRms,rightHz,0);
     return {phase72:g.phase72,rotors:g,leftHues,rightHues,alphaL,alphaR,
       oppositeHuePairs:leftHues.every((q,i)=>((q+72)%144)===rightHues[i]),
       quarterTurn:GYRO_SHADER.quarterTurn};
@@ -4434,9 +4461,9 @@
     return {phase72:p,left,right,dot:c*(-s)+s*c};
   }
   function paintGyroscopicVerticalPair(ctx,width,height,leftSample,rightSample,
-                                        leftRms,rightRms,phase){
+                                        leftRms,rightRms,phase,leftHz=432,rightHz=432){
     const pair=verticalReciprocalGradientPair(
-      phase,leftSample,rightSample,leftRms,rightRms);
+      phase,leftSample,rightSample,leftRms,rightRms,leftHz,rightHz);
     if(pair.alphaL<0.004 && pair.alphaR<0.004)return pair;
     const axes=gyroscopicGradientAxes72(phase,width,height);
     ctx.globalCompositeOperation="lighter";
@@ -4446,8 +4473,10 @@
       const hues=bus?pair.rightHues:pair.leftHues;
       const strength=bus?pair.alphaR:pair.alphaL;
       shader.addColorStop(0,q144Css(hues[0],0));
-      for(let k=0;k<4;k++)
-        shader.addColorStop((k+1)/5,q144Css(hues[k],strength));
+      for(let k=0;k<4;k++){
+        const d=Math.abs((k+1)/5-.5);
+        shader.addColorStop((k+1)/5,q144Css(hues[k],strength/(1+10*d*d)));
+      }
       shader.addColorStop(1,q144Css(hues[3],0));
       ctx.fillStyle=shader;
       ctx.fillRect(0,0,width,height);
@@ -4477,7 +4506,9 @@
     const gradient=ctx.createLinearGradient(
       cx-nx*radius,cy-ny*radius,cx+nx*radius,cy+ny*radius);
     gradient.addColorStop(0,q144Css(hue,0));
-    gradient.addColorStop(.5,q144Css(hue,clamp(finite(opacity),0,1)));
+    const falloff=1/(1+8*Math.pow(finite(normalizedOffset),2));
+    gradient.addColorStop(.5,q144Css(hue,
+      clamp(finite(opacity)*falloff,0,BACK_LIGHT.bandCap)));
     gradient.addColorStop(1,q144Css(hue,0));
     ctx.fillStyle=gradient;
     ctx.fill();
@@ -4595,6 +4626,15 @@
     state.lastSignalFrame=-1;
     state.particleFrame=-1;
     state.frameSignalReady=false;
+    if(state.backLightCanvas){
+      const back=state.backLightCanvas.getContext("2d");
+      if(back){
+        back.setTransform(1,0,0,1,0,0);
+        back.fillStyle="#000000";
+        back.fillRect(0,0,state.backLightCanvas.width,state.backLightCanvas.height);
+        if(state.backLightTexture)state.backLightTexture.needsUpdate=true;
+      }
+    }
     state.frameCrossings=[];
     state.crossingEvents.length=0;
     state.lastSample=[0,0];
@@ -4786,8 +4826,11 @@
     const sample=bus?state.frameR[k%AUDIO_CLOCK.samplesPerFrame]:
                      state.frameL[k%AUDIO_CLOCK.samplesPerFrame];
     const rms=bus?state.frameRmsR:state.frameRmsL;
-    return clamp(HALO_EMISSION_GAIN*(.48*Math.sqrt(Math.max(0,rms))+
-           .42*Math.abs(sample)),0,.75);
+    const layer=particleLayer5184(i,state.gyroTransport72);
+    const frequency=Math.max(0,state.harmonicFrequencyHz[bus]);
+    return clamp(HALO_EMISSION_GAIN*layer.modulation*
+      (.48*Math.sqrt(Math.max(0,rms))+.42*Math.abs(sample))/
+      (1+frequency/720),0,.12);
   }
   /* CPU reference for the instanced fragment smoothstep^2 falloff.
      Zero is particle center; radius one or greater is transparent. */
@@ -5036,6 +5079,11 @@
     canvas.height=Math.floor(window.innerHeight*ratio);
     canvas.style.width=window.innerWidth+"px";
     canvas.style.height=window.innerHeight+"px";
+    if(state.backLightCanvas){
+      state.backLightCanvas.width=canvas.width;
+      state.backLightCanvas.height=canvas.height;
+      if(state.backLightTexture)state.backLightTexture.needsUpdate=true;
+    }
     return ratio;
   }
   function draw(){
@@ -5055,11 +5103,19 @@
     const W=canvas.width/scale,H=canvas.height/scale;
     ctx.setTransform(scale,0,0,scale,0,0);
     ctx.clearRect(0,0,W,H);
-    /* Full-height reciprocal pair underlays the waveform and the inherited
-       vertical crossing columns. It is display only, driven by u72 phase. */
-    paintGyroscopicVerticalPair(ctx,W,H,
+    /* Stereo fields paint behind the particle scene, not over the HUD. */
+    const lightCtx=state.backLightCanvas?
+      state.backLightCanvas.getContext("2d"):ctx;
+    if(state.backLightCanvas){
+      lightCtx.setTransform(scale,0,0,scale,0,0);
+      lightCtx.globalCompositeOperation="source-over";
+      lightCtx.fillStyle="#000000";
+      lightCtx.fillRect(0,0,W,H);
+    }
+    paintGyroscopicVerticalPair(lightCtx,W,H,
       state.frameL[367],state.frameR[367],
-      state.frameRmsL,state.frameRmsR,state.gyroTransport72);
+      state.frameRmsL,state.frameRmsR,state.gyroTransport72,
+      state.harmonicFrequencyHz[0],state.harmonicFrequencyHz[1]);
     const player=state.audio;
     const t=(player&&isFinite(player.duration)&&player.duration>0)
       ?clamp(player.currentTime/player.duration,0,1):0;
@@ -5110,16 +5166,16 @@
       events.length?events:state.frameCrossings,clock.frame);
     /* Every light band uses the SAME phase and orthogonal normals as
        the full-viewport stereo overlays, never fixed vertical x-columns. */
-    ctx.globalCompositeOperation="lighter";
+    lightCtx.globalCompositeOperation="lighter";
     const screenEnergy=[state.frameRmsL,state.frameRmsR];
     for(let bus=0;bus<2;bus++){
-      const energy=clamp(Math.sqrt(screenEnergy[bus])*1.8,0,1);
-      if(energy<.012)continue;
+      const energy=lightAttenuation(screenEnergy[bus],state.harmonicFrequencyHz[bus],0);
+      if(energy<.0005)continue;
       const sample=bus?state.frameR[367]:state.frameL[367];
       const hue=q144Index(0,sample,screenEnergy[bus],state.harmonicPhase[bus],bus);
       const angle=2*Math.PI*state.gyroTransport72/72;
       const offset=.13*Math.sin(angle+bus*Math.PI/2);
-      paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,
+      paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,
         offset,Math.min(W,H)*(.12+energy*.18),hue,energy*.35);
     }
     for(let bus=0;bus<2;bus++){
@@ -5129,11 +5185,14 @@
         const offset=((phase+.5)/AUDIO_CLOCK.phaseBins-.5)*.84;
         const sample=bus?state.frameR[phase]:state.frameL[phase];
         const hue=q144Index(phase,sample,screenEnergy[bus],state.harmonicPhase[bus],bus);
-        paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,
-          offset,2+strength*12,hue,strength*.68);
+        paintGyroscopicLightBand(lightCtx,W,H,state.gyroTransport72,bus,
+          offset,2+strength*12,hue,
+          lightAttenuation(screenEnergy[bus],state.harmonicFrequencyHz[bus],
+            Math.abs(offset))*strength*.8);
       }
     }
-    ctx.globalCompositeOperation="source-over";
+    lightCtx.globalCompositeOperation="source-over";
+    if(state.backLightTexture)state.backLightTexture.needsUpdate=true;
     ctx.globalAlpha=1;
     const meter=document.getElementById("audioVizClock");
     if(meter && (clock.frame%60===0 || state.lastClockStatusTime<0 ||
@@ -5172,6 +5231,11 @@
     });
     document.body.appendChild(canvas);
     state.waveCanvas=canvas;
+    if(typeof window.HHSInstallAudioBacklight==="function"){
+      const back=document.createElement("canvas");
+      state.backLightTexture=window.HHSInstallAudioBacklight(back);
+      state.backLightCanvas=back;
+    }
     resizeCanvas();
     window.addEventListener("resize",resizeCanvas);
     window.requestAnimationFrame(draw);
@@ -5242,6 +5306,7 @@
     busPair:PAIR,get active(){return state.active;},
     get geometryEnabled(){return state.geometryEnabled;},
     projectMatrix,projectColor,projectParticleGlow,particleHaloOpacity,
+    particleLayer5184,lightAttenuation,
     q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
@@ -5262,6 +5327,12 @@
        geometryNormalizationGain:state.gain,
        geometryNormalizationGainMax:GEOMETRY_GAIN.max,
        haloEmissionGain:HALO_EMISSION_GAIN,
+       backLightLayerCells:BACK_LIGHT.layerCells,
+       backLightLayerCount:BACK_LIGHT.layers,
+       backLightOpacityCap:BACK_LIGHT.alphaCap,
+       backLightBandCap:BACK_LIGHT.bandCap,
+       backLightActive:!!state.backLightTexture,
+       lightingBehindOpaqueParticles:true,
        cellularBoundaryAmplitudeResponsive:true,
        particleSizeAmplitudeResponsive:true,
        harmonicColorWheel:true,

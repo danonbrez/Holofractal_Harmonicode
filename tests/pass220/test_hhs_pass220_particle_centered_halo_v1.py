@@ -30,9 +30,12 @@ def test_batch_halo_is_gpu_instanced_centered_and_noncanonical():
     ):
         assert token in html,token
     assert '"attribute vec3 instanceColor;"' not in html
-    assert "HALO_EMISSION_GAIN=0.40" in bridge
+    assert "HALO_EMISSION_GAIN=0.16" in bridge
     assert "return clamp(HALO_EMISSION_GAIN*" in bridge
     assert "return clamp(state.gain*" not in bridge
+    assert "scene.background=texture;" in html
+    assert '" center.z-=0.035*size;"' in html
+    assert "distanceDamp=1.0/(1.0+0.028*vHaloDistance*vHaloDistance)" in html
     assert "THREE.AdditiveBlending" in html
     assert "transparent:true,depthTest:true,depthWrite:false" in html
     assert "mesh.setMatrixAt(i,particleBatchMatrix);" in html
@@ -66,6 +69,20 @@ assert.equal(p.leftHues[0],q);
 assert.equal(a.q144Index(2*18,.3,.2,0,1),(q+72)%144);
 assert.equal(a.diagnostics.geometryNormalizationGainMax,.05);
 assert.equal(a.diagnostics.haloEmissionGain,.4);
+const l=a.particleLayer5184(0,18),r=a.particleLayer5184(5184,18);
+assert.equal(l.layer,0);assert.equal(r.layer,1);
+assert.equal(l.address,0);assert.equal(r.address,0);
+assert.equal(r.phase72,36);
+assert.equal(a.particleLayer5184(10367,18).address,5183);
+assert.equal(a.particleLayer5184(10368,18),null);
+assert.ok(a.lightAttenuation(.5,100,0)>a.lightAttenuation(.5,1000,0));
+assert.ok(a.lightAttenuation(.5,100,0)>a.lightAttenuation(.5,100,1));
+assert.ok(a.lightAttenuation(.8,100,0)>a.lightAttenuation(.1,100,0));
+assert.ok(a.lightAttenuation(1,0,0)<=.045);
+assert.equal(a.lightAttenuation(0,100,0),0);
+assert.equal(a.diagnostics.backLightLayerCells,5184);
+assert.equal(a.diagnostics.backLightLayerCount,2);
+assert.equal(a.diagnostics.backLightOpacityCap,.045);
 assert.equal(a.diagnostics.particleHalosPhaseLocked,true);
 assert.equal(a.diagnostics.allLightBandsRotatingWithGyro,true);
 assert.equal(a.diagnostics.canonicalMutation,false);
