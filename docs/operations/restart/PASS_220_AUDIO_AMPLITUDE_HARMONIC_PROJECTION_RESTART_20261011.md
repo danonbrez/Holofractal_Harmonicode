@@ -138,3 +138,40 @@ pytest+Node regression; dedicated CI path; this restart record.
 The authoring-side JS parse and source inline identity were verified.
 Run exact-head CI and then visual browser/phone acceptance before
 the next physical coupling stage.
+
+## I083 — phase-locked per-particle soft halo and all-band gyro coupling
+
+Date: 2026-10-11. Base main `6c452d4abe80eff0c77f58a12b43f2902020b5b1`, branch `agent/pass220-particle-centered-halo-gyro-light-20261011`,
+merge target main. Full source authority: `examples/ParticleSimulation.html`.
+Standalone PCM bridge: `examples/ParticleSimulationAudioBridge.js`.
+
+Requirement: every lighting particle has a soft opacity gradient centered at
+the particle, phase-locked with the global reciprocal stereo shaders.
+Fix previous visually dominant broad and narrow VERTICAL bands too.
+
+Implementation:
+- One additive, transparent, depth-write-disabled GPU InstancedMesh
+  billboard halo per existing I057 batch. Batch count is fixed; no
+  extra mesh/draw per particle. Halos reuse the exact physical carrier's
+  *render-only* instance matrix and Q144 instance-color GPU buffers.
+- Each halo's alpha = peakPCMOpacity*(1-smoothstep(0,1,r))^2,
+  r=distance from the particle-centered sprite UV; alpha is highest
+  at r=0 and zero at r>=1. A CPU reference tests monotone smooth falloff.
+- Peak PCM alpha uses sample and stereo RMS and the inherited 0.40
+  normalization. Silence, inactive PCM or playback stop hides the halo.
+  Every halo's Q144 hue uses the global ordered u72 gear address plus
+  its original local particle phase and the typed right-bus +72.
+- Gyroscopic full-canvas backgrounds keep continuous orthogonal rotating
+  axes. Broad RMS lighting and the 72-bin zero-crossing flashes no longer
+  draw old fixed x-strips; a short rotated quad centered along the same
+  global u72 axis normal makes phase-aligned stripes without 144
+  unnecessary full-canvas draws. No donuts or halo physics.
+- Live WebGL and audio device appearance cannot be inferred from static
+  source checks. Dedicated scoped pytest/Node probes and Source Text
+  Integrity must pass, then a real WebGL mobile/desktop viewing pass.
+
+The user-requested 5184 **physics** tick delayed feedback and per-tick
+ordered xy:zw alternation are deliberately NOT admitted by Canvas2D/
+WebGL visual state. They need a separately signed and replayable VM81
+observation ring, preserving exact tick count, stereo ancestry and
+noncommutative operator order; no bypass of native force authority.

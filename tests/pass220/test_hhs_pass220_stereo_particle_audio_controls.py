@@ -272,7 +272,7 @@ class Element {
  getContext(){return ctx;}
 }
 const ctx={setTransform(){},clearRect(){drawn.push(seconds)},beginPath(){},
- moveTo(){},lineTo(){},stroke(){},fillRect(){},
+ moveTo(){},lineTo(){},closePath(){},stroke(){},fill(){},fillRect(){},
  createLinearGradient(){return {addColorStop(){}}}};
 for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay",
  "audioVizStop","audioVizGain","audioVizStatus","audioVizGainValue",
