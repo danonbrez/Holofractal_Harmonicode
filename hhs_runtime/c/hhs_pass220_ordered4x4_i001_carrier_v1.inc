@@ -213,6 +213,23 @@ HHSExactStatus hhs_exact_pass220_ordered4x4_i001_carrier_validate(
  * A private 81-cell copy permits source/destination aliasing without changing
  * source-position identity during the output construction.
  */
+/* The required-length output is separate from the source digits and the
+ * destination bytes. Never let a size_t store mutate an input digit or
+ * overwrite any of the 5184 encoded bytes. Address arithmetic is guarded
+ * before computing endpoints. */
+static int hhs220_i001_ranges_intersect(
+ const void *left,size_t left_size,const void *right,size_t right_size
+) {
+ uintptr_t a,b;
+ if(left==NULL || right==NULL || left_size==0U || right_size==0U)
+  return 0;
+ a=(uintptr_t)left;
+ b=(uintptr_t)right;
+ if(left_size>UINTPTR_MAX-a || right_size>UINTPTR_MAX-b)
+  return 1;
+ return a<b+right_size && b<a+left_size;
+}
+
 HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_emit(
  const uint8_t offsets[HHS220_4X4_I001_CELLS],
  uint8_t *out_bytes,size_t capacity,size_t *out_length
@@ -223,14 +240,21 @@ HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_emit(
  size_t i;
  _Static_assert(sizeof(zero_token)-1U==HHS220_4X4_I001_TOKEN_BYTES,
                 "I001 rational scientific token must be 64 ASCII bytes");
- if(out_length!=NULL) *out_length=HHS220_4X4_I001_TOTAL_BYTES;
  if(offsets==NULL || out_length==NULL)
   return HHS_EXACT_STATUS_INVALID_ARGUMENT;
- /* Validate ALL symbols before exposing any partial serialization. */
+ if(hhs220_i001_ranges_intersect(offsets,HHS220_4X4_I001_CELLS,
+         out_length,sizeof(*out_length)) ||
+    hhs220_i001_ranges_intersect(out_bytes,HHS220_4X4_I001_TOTAL_BYTES,
+         out_length,sizeof(*out_length)))
+  return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+ /* Validate ALL 81 cells before publishing even the length field. This
+  * preserves the output on malformed input, including the 81st position. */
  for(i=0U;i<HHS220_4X4_I001_CELLS;++i)
   if(offsets[i]>8U) return HHS_EXACT_STATUS_INVARIANT_FAILURE;
- if(out_bytes==NULL || capacity<HHS220_4X4_I001_TOTAL_BYTES)
+ if(out_bytes==NULL || capacity<HHS220_4X4_I001_TOTAL_BYTES) {
+  *out_length=HHS220_4X4_I001_TOTAL_BYTES;
   return HHS_EXACT_STATUS_BUFFER_TOO_SMALL;
+ }
  memcpy(saved_offsets,offsets,sizeof(saved_offsets));
  for(i=0U;i<HHS220_4X4_I001_CELLS;++i) {
   uint8_t *token=out_bytes+i*HHS220_4X4_I001_TOKEN_BYTES;
@@ -238,9 +262,9 @@ HHSExactStatus hhs_exact_pass220_ordered4x4_i001_offsets_emit(
   token[20]=(uint8_t)('0'+saved_offsets[i]);
  }
  memset(saved_offsets,0,sizeof(saved_offsets));
+ *out_length=HHS220_4X4_I001_TOTAL_BYTES;
  return HHS_EXACT_STATUS_OK;
 }
-
 
 /* Exact I001 shape decoder only: no inferred tensor semantics.
  * Prevent source/output aliasing so rejected candidate input is not mutated.
