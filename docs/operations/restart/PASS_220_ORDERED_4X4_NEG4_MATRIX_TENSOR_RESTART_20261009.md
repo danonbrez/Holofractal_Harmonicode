@@ -914,3 +914,51 @@ The automatic follow-up exact-head runs after repair are \`38116380355\` (native
 ### Next action
 
 Inspect follow-up exact-head native job to verify the *unchanged float guard* accepts the updated header, then validate the exhaustive I001 parser/encoder probe and final inherited I077 tests which the previous run skipped. Repair concrete scoped failures forward, commit and update this restart record. No signed tensor rank or actual matrix equality has yet been demonstrated; keep singleton signed VM81, Hash72 and Hash216 authority closed.
+
+
+## 2026-10-11 continuation — CI-green evidence and alias-safe I001 encoder repair
+
+**Authoritative main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\` (NOT merged).
+**Prior CI-green head:** \`8c3e214a095ffda7c5c396771b3fb26a6fe189ae\`.  
+**This scoped implementation:** \`b7d651a8d5e72f87e40403cdebbcdd41d97fb698\` (C emitter), \`c9f811a4b6e47e223c3bb903369eb76693ff422c\` (negative native tests), \`d59b4ea452f64a0db043631d3e8818b4894b5a86\` (public ABI contract).
+
+### Exact validated predecessor
+
+GitHub Actions native run \`38116429408\` on SHA \`8c3e214...\` **completed SUCCESS**:
+- Compiled the actual singleton shared C ABI and linked native probes.
+- Passed symbolic HIR, typed 5184 ingress, indexed Hash216 parent preflight, source-ordered numerator, denominator/RHS, native RNA phase addresses, full graph, rank challenges and readiness denial.
+- Passed I001 strict carrier with independent Python fixture, **exhaustive 729 position×digit inverses**, all 243 malformed positional checks, 82 overlap denials and final inherited I077 regression.
+- Scoped HIR Python tests also passed.
+Source-integrity run \`38116428193\` completed SUCCESS at the same exact head.
+
+These **green results are frozen for \`8c3e214...\`**; the subsequent alias/length repair below must pass impacted native I001 tests at its own SHA before claiming a new green head.
+
+### Defect and concrete fix
+
+The I001 inverse emitter previously performed \`*out_length=5184\` before checking its source offset digits and before inspecting pointer overlap. If \`out_length\` aliased the 81 source digits, the length store could silently change digits before serialization. If it pointed into the destination carrier, it could corrupt the 5184-byte output. An invalid final offset also changed the length output even though no valid encoding was emitted.
+
+The emitter now:
+1. Validates nonnull offset and length pointers.
+2. Rejects \`out_length\` overlap with the 81 source bytes or the 5184 destination bytes, with overflow-checked uintptr-range comparisons and **no writes**.
+3. Validates all 81 exact offset digits before writing the length or output.
+4. For a valid insufficient-capacity or length-only query, reports exactly 5184 and returns \`BUFFER_TOO_SMALL\`.
+5. For a valid full-capacity request, snapshots the 81 digits, emits all exact rational scientific token bytes (allowing intentional \`offsets\`/destination overlap), wipes the snapshot and publishes the exact length only after successful completion.
+
+The native exhaustive probe now specifically tests:
+- A size_t length pointer aliased to an otherwise valid offset buffer → reject with **unchanged** source/destination.
+- A size_t length pointer within the 5184 encoded destination → reject with **unchanged** destination.
+- An invalid last offset with independent out_length prefilled to \`SIZE_MAX-42\` and output filled with \`0xA5\` → reject with **both outputs unchanged**.
+- All inherited 729 good round trips, 243 corrupt tokens, 82 decoder-overlap negatives and independent Python serialization remain unchanged.
+
+Affected paths only:
+- \`hhs_runtime/c/hhs_pass220_ordered4x4_i001_carrier_v1.inc\`
+- \`hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h\`
+- \`tools/pass220/pass220_ordered4x4_i001_roundtrip_probe.c\`
+
+### Regression and restart
+
+Exact head's workflow \`.github/workflows/pass220-ordered-4x4-neg4-matrix-tensor-hir.yml\` already compiles the modified native probe against \`make c-abi\`, runs the 729/243/82 tests and Python s/v fixtures, then inherited I077 regression. It must be checked at this continuation's final SHA, not promoted from the prior green head. No new CI workflow, duplicate application or unverified signed-admission route introduced.
+
+**Canonical authority remains blocked:** Neither I001 encoding/decoding nor diagnostic SHA roots authenticate parent PQC identity, s/v tensor rank/action, actual MatrixTimes/quotient/negative-fourth-power values, mathematical equality, or signed VM81 mutation. Continue by binding **genuinely verifiable** rank/action provenance and native value operators through inherited kernel authority, not by adding self-declared readiness bits. Keep PR open and main unchanged until acceptance gates permit merge.
