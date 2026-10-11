@@ -28,3 +28,14 @@ The inherited source uses **quartic presentation gating**: four requestAnimation
 - Run: branch push triggers workflow; inspect exact-head tests, raw capture output, validation receipt, and uploaded MP4. If failed, diagnose the reported issue and repair only impacted scope. Commit restartable repair, merge only when green, verify main and file presence.
 - Environment: GitHub Ubuntu runner, Python 3.12, Playwright Chromium with SwiftShader WebGL, Pillow, ffmpeg/ffprobe; original HTML obtains Three.js/OrbitControls/dat.GUI from CDNs.
 - No canonical HTML or physics/source edits authorized.
+
+
+## October 11 current-main reconciliation — audio and updated standalone HTML
+- New authoritative `main` commit: `127d7aaf7b52eea00c9eeb38be355eca73befecb` (`Update ParticleSimulation.html — latest`).
+- This HTML source is **different** from the original I084 base (old blob `46db16634ab6ff16e16b7224938cfb29eee6c61f`; new blob `fda9116827a8c4ccf80bd4011fb68d694b3b4d31`).
+- Updated original HTML removes the earlier inline 5,184-cell Brownian visual implementation and introduces the appended I063 projection-only brown-noise carrier graft. It wraps the existing `syncParticleRenderBatches` rather than replacing physics; the external `ParticleSimulationAudioBridge.js` stays an older, independently preserved artifact.
+- The actual HTML's waveform effects depend on active PCM playback. For an inspectable 60fps MP4 with those effects visible, the existing raw HTML browser-capture harness now supports an opt-in WAV file loaded through the HTML's **own** `#audioVizFile` and `#audioVizPlay` controls. The workflow creates a deterministic 44.1 kHz stereo diagnostic WAV, loops it during offline capture, and verifies `window.HHSBrownL2.diagnostics.writes > 0` before accepting the recording. This input is a labeled diagnostic stimulus, not the user's soundtrack and not a synthetic graphics effect.
+- New scoped structural regression: `tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py`. Inherited I057 physics performance regression remains required; earlier pre-I063 mirror/Brownian tests cannot serve as admission for this changed HTML without version-specific adaptation.
+- Existing source SHA validation still establishes byte-for-byte unchanged HTML before/after browser capture. No canonical VM81/Hash72/Hash216 authority changes; no integration claim for all 86,805,555,555 neurons.
+- New changed files: `benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py`; `tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py`; updated I084 workflow and this restart file.
+- Merge current main into I084 branch with a two-parent fast-forward-safe merge commit, retaining the updated HTML. Validate the resulting branch head and the refreshed exact-head render run; the older queued/running I084 workflows are **stale** and their output must not be treated as the final requested video.
