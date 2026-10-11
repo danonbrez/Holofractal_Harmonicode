@@ -90,3 +90,64 @@ lake build HHS
 - No new VM81 commit authority, Hash72 mint authority, Hash216 persistence
   authority, floating point canonical authority, or full payload compression.
 - If interrupted: resume from branch head, inspect CI/PR, repair forward.
+
+## Correction cycle: exact 3-bit -> 2-trit Base64 (2026-10-11)
+
+Supersedes the additional independent-trinary-storage assumption for binary
+ingress. The user-defined local radix relation is exact:
+
+```
+2^3 = 8 <= 3^2 = 9
+3 binary bits <-> 2 balanced trits (eight admitted pairs)
+6 binary bits <-> 4 balanced trits (64 admitted combinations)
+81 * 64 = 72^2 = 5184
+5184 bits = 1728 groups of 3 bits = 3456 balanced trits
+5184 bits = 864 Base64 six-bit groups
+```
+
+The codebook maps binary values 0..7 through base-3 digit values 0..7,
+rendered with balanced labels (-1, 0, +1). Pair (+1,+1) is reserved and
+rejected by the radix decoder until the native HNAN contract defines a
+separate permissible use. No lossful ternary digit is rounded to a bit.
+Base64's alphabet has 64 symbols; these are *not* the same object as the
+72-symbol HHS Hash72 alphabet or the separate 72-position state.
+
+Changes:
+- `hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py`:
+  exact 3-bit/2-trit codec; full 5184-bit -> 3456-trit / 864-Base64
+  candidate ingress carrier; reject ninth pair and witness mismatches.
+- `tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py`:
+  all 8 local inputs, all 64 sextets, multiple full frames, bad-code tests.
+- `formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean`:
+  forall 3-bit inputs, forall 864-sextet frame states, forall 1728
+  three-bit frame states, exact inversion and injectivity.
+- `formal/wolfram/pass220_base64_balanced_trit5184_v1.wl`:
+  external connected kernel TestReport 20 succeeded, 0 failed.
+- Candidate HNAN phase bridge now validates full radix roundtrip before
+  reporting success; HNAN existing center and phase-difference provenance
+  remain unchanged.
+- Removed overgeneralized independent-3^5184-lane witness modules from
+  *this branch*; those extra payload planes are not required to preserve
+  the source binary bits under exact 3bit/2trit encoding.
+
+Proof scope:
+- Universal over all 2^5184 *binary input patterns* through the admitted
+  eight-pair codebook, not merely sample frames.
+- Does NOT claim a bijection from all 3^3456 unrestricted trit sequences
+  back into 5184 bits. The 9th pair is not part of this radix source image.
+- Does NOT claim that a standalone 72-character Hash72 digest inverts
+  arbitrary raw bits. Hash72 hydration remains its existing typed
+  repository-owned separate law.
+- No replacement or rewriting of native HNAN gate or added canonical
+  commit/mint/persistence authority.
+
+Validation:
+- Local isolated candidate codec: 11 passed.
+- Connected Wolfram radix proof: 20/20 passed.
+- Existing Wolfram HNAN phase proof: 21/21 passed.
+- Pinned Lean CI / dependency-scoped Python tests pending GitHub Actions.
+
+Restart:
+- Branch `pass220/hnan-phase5184-lossless-bridge-20261011`.
+- PR #771 into main; inspect latest head/CI, repair forward only impacted
+  items, commit then merge/verify main once accepted.
