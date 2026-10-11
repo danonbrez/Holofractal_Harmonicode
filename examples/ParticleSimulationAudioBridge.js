@@ -224,6 +224,9 @@
     ctx.lineTo(left+t*width,lower+62);ctx.stroke();
     ctx.globalAlpha=1;
     const now=state.context?state.context.currentTime:0;
+    /* Every crossing is sampled at its exact fractional frame. Aggregate
+       intensities into bounded per-bus gradient cells for mobile raster cost. */
+    const cells=[new Float32Array(72),new Float32Array(72)];
     const events=state.crossingEvents;
     let write=0;
     for(let i=0;i<events.length;i++){
@@ -231,19 +234,28 @@
       if(age<0||age>0.65)continue;
       events[write++]=e;
       const strength=clamp(e[2]*16,0,1)*(1-age/0.65);
-      if(strength<0.015)continue;
-      const x=left+t*width+(e[0]?12:-12)+(e[3]*strength*28);
-      const y=e[0]?baselineR:baselineL;
-      const radius=12+strength*80;
-      const gradient=ctx.createRadialGradient(x,y,0,x,y,radius);
-      const color=e[0]?"200,120,255":"65,215,255";
-      gradient.addColorStop(0,"rgba("+color+","+(strength*0.45)+")");
-      gradient.addColorStop(0.4,"rgba("+color+","+(strength*0.15)+")");
-      gradient.addColorStop(1,"rgba("+color+",0)");
-      ctx.fillStyle=gradient;
-      ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
+      const phase=Math.floor(((e[1]*state.sampleRate)%72+72)%72);
+      const cell=cells[e[0]][phase];
+      /* Multiple crossings are additive, but bounded to opacity 1. */
+      cells[e[0]][phase]=Math.min(1,cell+strength*0.22);
     }
     events.length=write;
+    for(let bus=0;bus<2;bus++){
+      for(let phase=0;phase<72;phase++){
+        const strength=cells[bus][phase];
+        if(strength<0.02)continue;
+        const x=left+t*width+(phase-35.5)*0.9;
+        const y=bus?baselineR:baselineL;
+        const radius=12+strength*75;
+        const gradient=ctx.createRadialGradient(x,y,0,x,y,radius);
+        const color=bus?"200,120,255":"65,215,255";
+        gradient.addColorStop(0,"rgba("+color+","+(strength*0.45)+")");
+        gradient.addColorStop(0.4,"rgba("+color+","+(strength*0.15)+")");
+        gradient.addColorStop(1,"rgba("+color+",0)");
+        ctx.fillStyle=gradient;
+        ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
+      }
+    }
   }
   function boot(){
     const player=document.getElementById("audioVizPlayer");
