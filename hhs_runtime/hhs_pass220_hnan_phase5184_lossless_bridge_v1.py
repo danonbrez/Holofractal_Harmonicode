@@ -53,6 +53,32 @@ def validate_generator(word: str) -> str:
     return word
 
 
+def phase_difference_witnesses(source: Any) -> tuple[tuple[tuple[int, int, int], ...], ...]:
+    """Three ordered, reversible modular phase differences per octonion quad.
+
+    For every (left, right) phase pair, delta = (left-right) mod 72.
+    Reconstruct left from (right, delta), retaining role/order provenance.
+    This additive projection is not native tensor scalarization.
+    """
+    witnesses = tuple(
+        tuple(
+            (left, right, (left - right) % 72)
+            for left, right in zip(
+                quad.stereo_ternary.left_mono_phase72,
+                quad.stereo_ternary.right_mono_phase72,
+                strict=True,
+            )
+        )
+        for quad in source.quads
+    )
+    if len(witnesses) != 20 or any(len(row) != 3 for row in witnesses):
+        raise Phase5184BridgeError("THREE_PERSPECTIVES_PER_QUAD")
+    if not all((right + delta) % 72 == left for row in witnesses
+               for left, right, delta in row):
+        raise Phase5184BridgeError("PHASE_DIFFERENCE_NOT_REVERSIBLE")
+    return witnesses
+
+
 def candidate_bridge(
     raw_bits: str,
     generator: str,
@@ -91,6 +117,8 @@ def candidate_bridge(
     ):
         raise Phase5184BridgeError("TRINARY_LANE_ROLE_FAILURE")
 
+    differences = phase_difference_witnesses(source)
+
     roundtrip = None
     materialized = 0
     if expand_generator:
@@ -110,6 +138,8 @@ def candidate_bridge(
         "quad_count": len(source.quads),
         "pilot_word": source.pilot_pcm64_bits,
         "hnan_tensor": HNAN_LO_SHU_TENSOR_SOURCE,
+        "phase_difference_witnesses": differences,
+        "phase_difference_exact": True,
         "hnan_binary_addresses": ADDRESSES,
         "hnan_center_source": HNAN_CENTER_EXPRESSION,
         "hnan_terminal_source": HNAN_TERMINAL_SOURCE,
@@ -139,4 +169,7 @@ def recover_raw(receipt: dict[str, Any]) -> str:
         or receipt.get("raw_sha256") != sha256(raw.encode("ascii")).hexdigest()
     ):
         raise Phase5184BridgeError("RAW5184_WITNESS_CORRUPTED")
+    source = raw5184_pipeline(raw)
+    if receipt.get("phase_difference_witnesses") != phase_difference_witnesses(source):
+        raise Phase5184BridgeError("PHASE_DIFFERENCE_WITNESS_DRIFT")
     return raw
