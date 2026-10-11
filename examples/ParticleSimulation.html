@@ -4187,6 +4187,17 @@
       clamp(alpha,0,1).toFixed(3)+")";
   }
   const HARMONIC=Object.freeze({referenceHz:432,stepsPerFrame:12,partials:4});
+  /* RML2/RML4 integer u^72 rotor addresses, with u^18 quarter turns.
+     "Larone" names this user's visual phase-gear projection profile, not
+     an independent native VM81 operator or authenticated proof. */
+  const GYRO_SHADER=Object.freeze({
+    schema:"HHS_PASS220_LARONE_VERTICAL_RECIPROCAL_GYRO_SHADER_V1",
+    phaseModulus:72,quarterTurn:18,halfTurn:36,
+    channels:Object.freeze(["x","y","z","w","xy","yx","zw","wz"]),
+    xPlane:"PRIMARY_XZ_CW",zPlane:"PRIMARY_XZ_CCW",
+    yPlane:"ORTHOGONAL_YW_CCW",wPlane:"ORTHOGONAL_YW_CW",
+    projectionOnly:true,canonicalMutationAuthority:false
+  });
   const geometryScratch=new Float32Array(3);
   const state={
     active:false, geometryEnabled:false, gain:0.4,
@@ -4201,6 +4212,7 @@
     frameR:new Float32Array(735),frameCrossings:[],frameRmsL:0,frameRmsR:0,
     framePeakL:0,framePeakR:0,frameSignalReady:false,lastSignalFrame:-1,
     harmonicPhase:[0,0],harmonicFrequencyHz:[0,0],harmonicMoment:[1,1],
+    gyroTransport72:0,gyroPhase72:0,
     lastRisingSample:[NaN,NaN],
     particleFrame:-1,particleVisualFrames:0,liveFrameCount:0,
     renderSource:"none",decodedChannels:null
@@ -4259,6 +4271,79 @@
     }
     return {frequencyHz,harmonicMoment:sum>1e-12?
       clamp(weighted/sum,1,HARMONIC.partials):1,lastRising:last};
+  }
+  /* Signed rotor coordinates always carry their typed, ordered identity.
+     The product channels are +18 or -18 directed images, never a
+     host-language commutative rewrite of xy/yx or zw/wz. */
+  function gyroscopicPhaseGear72(phase){
+    const step=((Math.trunc(finite(phase))%72)+72)%72;
+    const x=step,z=(72-step)%72;
+    const y=(18-step+72)%72,w=(18+step)%72;
+    return {
+      phase72:step, x,y,z,w,
+      xy:(x+18)%72,yx:(y-18+72)%72,
+      zw:(z-18+72)%72,wz:(w+18)%72
+    };
+  }
+  /* Frequency-harmonic transport through one u72 carrier.
+     Only exact PCM output-clock frame advancement invokes this stage.
+     Two stereo harmonic rates contribute reciprocally to one rotor. */
+  function transportGyroscopicPhase72(current,leftHz,leftMoment,rightHz,rightMoment){
+    const l=harmonicStep(leftHz,leftMoment);
+    const r=harmonicStep(rightHz,rightMoment);
+    const active=(l>0?1:0)+(r>0?1:0);
+    if(!active)return ((finite(current)%72)+72)%72;
+    return (((finite(current)+(l+r)/(active*HARMONIC.stepsPerFrame))%72)+72)%72;
+  }
+  /* Reciprocal vertical-raster lanes from one ordered gyroscope state.
+     The inverse-address folding below belongs ONLY to the color projection.
+     It never asserts equality of native x/z, xy/zw, y/w, or yx/wz tensors. */
+  function verticalReciprocalGradientPair(phase,leftSample,rightSample,leftRms,rightRms){
+    const g=gyroscopicPhaseGear72(phase);
+    const sharedSample=(finite(leftSample)+finite(rightSample))/2;
+    const sharedRms=(Math.max(0,finite(leftRms))+Math.max(0,finite(rightRms)))/2;
+    const leftAddress=[g.x,g.xy,g.y,g.yx];
+    const rightMirrored=[(-g.z+72)%72,(-g.zw+72)%72,
+                         (36-g.w+72)%72,(36-g.wz+72)%72];
+    /* All four mirror addresses equal the left projection addresses.
+       The right Q144 lane is +72 in the full-color circle. */
+    const leftHues=leftAddress.map(k=>q144Index(2*k,sharedSample,sharedRms,0,0));
+    const rightHues=rightMirrored.map(k=>q144Index(2*k,sharedSample,sharedRms,0,1));
+    const alphaL=clamp(Math.sqrt(Math.max(0,finite(leftRms)))*0.30,0,0.30);
+    const alphaR=clamp(Math.sqrt(Math.max(0,finite(rightRms)))*0.30,0,0.30);
+    return {phase72:g.phase72,rotors:g,leftHues,rightHues,alphaL,alphaR,
+      oppositeHuePairs:leftHues.every((q,i)=>((q+72)%144)===rightHues[i]),
+      quarterTurn:GYRO_SHADER.quarterTurn};
+  }
+  /* Canvas2D uses linear gradients as fragment-color shaders: two
+     counter-tilting vertical lanes blend through the central 30% overlap.
+     The existing column flashes and all particle state stay untouched. */
+  function paintGyroscopicVerticalPair(ctx,width,height,leftSample,rightSample,
+                                        leftRms,rightRms,phase){
+    const pair=verticalReciprocalGradientPair(
+      phase,leftSample,rightSample,leftRms,rightRms);
+    if(pair.alphaL<0.004 && pair.alphaR<0.004)return pair;
+    const angle=2*Math.PI*pair.phase72/72;
+    const tilt=Math.sin(angle)*Math.min(width*0.12,height*0.16);
+    const cross=Math.cos(angle+Math.PI/2)*Math.min(width*0.08,height*0.10);
+    ctx.globalCompositeOperation="lighter";
+    for(let bus=0;bus<2;bus++){
+      const isRight=bus===1;
+      const x=width*(isRight?0.75:0.25);
+      const dir=isRight?-1:1;
+      const shader=ctx.createLinearGradient(
+        x-dir*tilt,0,x+dir*cross,height);
+      const hues=isRight?pair.rightHues:pair.leftHues;
+      const strength=isRight?pair.alphaR:pair.alphaL;
+      for(let k=0;k<4;k++)
+        shader.addColorStop((k+1)/5,q144Css(hues[k],strength));
+      shader.addColorStop(0,q144Css(hues[0],0));
+      shader.addColorStop(1,q144Css(hues[3],0));
+      ctx.fillStyle=shader;
+      ctx.fillRect(isRight?width*0.35:0,0,width*0.65,height);
+    }
+    ctx.globalCompositeOperation="source-over";
+    return pair;
   }
   function harmonicStep(frequencyHz,harmonicMoment){
     if(!Number.isFinite(frequencyHz)||frequencyHz<=0)return 0;
@@ -4376,6 +4461,7 @@
     state.crossingEvents.length=0;
     state.lastSample=[0,0];
     state.harmonicPhase=[0,0];
+    state.gyroTransport72=0;state.gyroPhase72=0;
     state.harmonicFrequencyHz=[0,0];
     state.harmonicMoment=[1,1];
     state.lastRisingSample=[NaN,NaN];
@@ -4525,6 +4611,11 @@
       state.harmonicPhase[bus]=(state.harmonicPhase[bus]+
         harmonicStep(profile.frequencyHz,profile.harmonicMoment))%144;
     }
+    state.gyroTransport72=transportGyroscopicPhase72(
+      state.gyroTransport72,
+      state.harmonicFrequencyHz[0],state.harmonicMoment[0],
+      state.harmonicFrequencyHz[1],state.harmonicMoment[1]);
+    state.gyroPhase72=Math.floor(state.gyroTransport72);
     state.active=true;state.geometryEnabled=true;
     return true;
   }
@@ -4800,6 +4891,11 @@
     const W=canvas.width/scale,H=canvas.height/scale;
     ctx.setTransform(scale,0,0,scale,0,0);
     ctx.clearRect(0,0,W,H);
+    /* Full-height reciprocal pair underlays the waveform and the inherited
+       vertical crossing columns. It is display only, driven by u72 phase. */
+    paintGyroscopicVerticalPair(ctx,W,H,
+      state.frameL[367],state.frameR[367],
+      state.frameRmsL,state.frameRmsR,state.gyroPhase72);
     const player=state.audio;
     const t=(player&&isFinite(player.duration)&&player.duration>0)
       ?clamp(player.currentTime/player.duration,0,1):0;
@@ -4995,6 +5091,8 @@
     get geometryEnabled(){return state.geometryEnabled;},
     projectMatrix,projectColor,q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
+    gyroscopicPhaseGear72,transportGyroscopicPhase72,
+    verticalReciprocalGradientPair,paintGyroscopicVerticalPair,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
@@ -5010,6 +5108,11 @@
        cellularBoundaryAmplitudeResponsive:true,
        particleSizeAmplitudeResponsive:true,
        harmonicColorWheel:true,
+       verticalReciprocalGyroscopicGradient:true,
+       gyroscopeSchema:GYRO_SHADER.schema,
+       gyroscopePhase72:state.gyroPhase72,
+       gyroscopeQuarterTurn:GYRO_SHADER.quarterTurn,
+       gyroscopeFullPeriod:GYRO_SHADER.phaseModulus,
        harmonicFrequencyLHz:state.harmonicFrequencyHz[0],
        harmonicFrequencyRHz:state.harmonicFrequencyHz[1],
        harmonicMomentL:state.harmonicMoment[0],

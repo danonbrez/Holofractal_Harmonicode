@@ -51,3 +51,38 @@ failure:
 Repair modifies **only the two affected tests and this restart note**;
 the particle game runtime and its inlined/standalone bridge remain
 unchanged. Re-run exact-head CI; do not inherit green from first failure.
+
+## Continuation — reciprocal vertical gradient x/y/z/w gyroscope (2026-10-11)
+
+Base: `480ea4cc9bcb8006150992da0f78867010469335` (PR #763) -> same branch -> main.
+Source: inline HTML / mirrored standalone PCM bridge; all prior controls retained.
+
+RML2/RML4 native *definition* contract is the source of the display address
+projection: exact integer u72 ring, u18 signed quarter-turn, u36 half-turn,
+four named primitive channels x,y,z,w; ordered directed product channels
+xy,yx,zw,wz. The display-only "Larone" shader profile names this new
+vertical reciprocal pair; it is not an independent trusted Larone operator.
+
+One stereo-shared phase gear advances only on new 735-sample PCM audio
+frames. Its rate is a bounded mean of the two already computed fundamental/
+overtone-weighted harmonic steps. The projected rotor map preserves
+x/z clockwise-counterclockwise sign, orthogonal y/w opposite directions,
+and explicitly signed product quarter images. u72 wrap is tested.
+The Q144 mirror-fold preserves right-versus-left +72 hue opposition without
+collapsing or swapping any native ordered tensor identity.
+
+The new Canvas2D vertical-gradient shader renders two full-height,
+counter-tilted continuous linear color lanes with central overlap and
+amplitude-weighted alpha. It is drawn under the existing stereo waveforms,
+scene-wide light bands and phase-crossing columns, preserving the no-donut
+policy. Silence paints no gradient and does not advance the rotor.
+Renderer-only fractional transport is not a new exact VM81 transition:
+no canonical physics, normalized state, signed ancestor, Hash72/Hash216
+or Lane 5 authority is changed.
+
+Changed files: `examples/ParticleSimulation.html`,
+`examples/ParticleSimulationAudioBridge.js`,
+`tests/pass220/test_hhs_pass220_vertical_gyroscopic_shader_v1.py`,
+`.github/workflows/pass220-audio-amplitude-harmonic-projection.yml`,
+and this restart record. JS parser check in authoring stage succeeded;
+exact-head tests and source integrity CI still required before merge.
