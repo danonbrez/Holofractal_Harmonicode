@@ -145,7 +145,8 @@ def verify_evidence(
         "native_generation_path": NATIVE_PATH, "distinct_response_count": 4,
         "service_count": len(services),
         "browser_schema": BROWSER_SCHEMA,
-        "tls_certificate_verified_by_collectors": True,
+        "tls_certificate_validation_required": True,
+        "collection_provenance_requires_operator_attestation": True,
         "evidence_sha256": {
             name: sha256(path.read_bytes()).hexdigest()
             for name, path in artifacts.items()
