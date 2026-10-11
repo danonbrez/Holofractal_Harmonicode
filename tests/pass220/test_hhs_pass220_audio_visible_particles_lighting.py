@@ -175,7 +175,7 @@ class El {
  getContext(){return canvas}
 }
 const canvas={setTransform(){},clearRect(){},beginPath(){},moveTo(){},
- lineTo(){},stroke(){},fillRect(){},createLinearGradient(){
+ lineTo(){},closePath(){},stroke(){},fill(){},fillRect(){},createLinearGradient(){
  glow++;return {addColorStop(){}}}};
 for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay","audioVizStop",
  "audioVizGain","audioVizStatus","audioVizClock","audioVizGainValue"])
