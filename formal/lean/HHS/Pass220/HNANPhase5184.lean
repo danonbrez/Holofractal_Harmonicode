@@ -1,3 +1,4 @@
+import Lean.Elab.Tactic.Omega
 import HHS.Pass220.LosslessEmergentCompressionHydration
 import HHS.Pass219.QGUHNANTransport
 
@@ -134,8 +135,8 @@ def additivePhaseDifference (left right : Int) : Int := left - right
 
 theorem additivePhaseReconstruction (left right : Int) :
     right + additivePhaseDifference left right = left := by
-  simp [additivePhaseDifference, sub_eq_add_neg,
-    add_assoc, add_left_comm, add_comm]
+  unfold additivePhaseDifference
+  omega
 
 /-- Local read-only formalization. Canonical VM81/Hash72 authority remains inherited. -/
 def newCanonicalMutationAuthority : Bool := false
