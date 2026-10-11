@@ -125,6 +125,10 @@ jobs:
           assert audio["l2_writes_seen"] is True
           assert audio["graft_present"] is True
           assert audio["graft_schema"]=="HHS_PASS_220_I063_BROWN_NOISE_AUDIO_CARRIER_GRAFT_V1"
+          assert audio["capture_surface"]=="ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"
+          assert audio["overlay"]["present"] is True
+          assert audio["overlay"]["visible"] is True
+          assert (round(audio["overlay"]["cssWidth"]),round(audio["overlay"]["cssHeight"]))==(1920,1080)
           assert data["mode"]=="OPAQUE_UNALTERED_HTML"
           assert data["html_source"]==src.as_posix()
           assert data["source_unchanged"] is True
