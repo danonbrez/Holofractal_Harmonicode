@@ -100,7 +100,7 @@
     source.connect(processor);processor.connect(context.destination);
     return processor;
   }
-  const WORKLET=String.raw("class HHSStereoCrossingWorklet extends AudioWorkletProcessor {\n"+
+  const WORKLET=("class HHSStereoCrossingWorklet extends AudioWorkletProcessor {\n"+
     "constructor(){super();this.prev=[0,0];this.pending=[];this.blocks=0;}\n"+
     "process(inputs,outputs){const input=inputs[0]||[],output=outputs[0]||[];\n"+
     "const L=input[0],R=input[1]||L;if(!L)return true;\n"+
