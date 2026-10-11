@@ -243,9 +243,38 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     "graft_present": False,
                 }
             canvas = page.locator("canvas").first
+            # The audio waveform is drawn by the original HTML onto a
+            # separate transparent canvas (#audioVizOverlay, z-index 2).
+            # Canvas-only capture silently omits it. Browser viewport capture
+            # composites the unchanged WebGL scene, waveform, and native HUD.
+            # For non-audio raw ingress retain the original WebGL-only path.
+            if audio_capture["enabled"]:
+                overlay = page.evaluate("""()=>{
+                    const webgl=document.querySelector("canvas");
+                    const wave=document.querySelector("#audioVizOverlay");
+                    if(!webgl||!wave)return null;
+                    const webglZ=getComputedStyle(webgl).zIndex;
+                    const waveZ=getComputedStyle(wave).zIndex;
+                    const rect=wave.getBoundingClientRect();
+                    return {present:true,width:wave.width,height:wave.height,
+                        cssWidth:rect.width,cssHeight:rect.height,
+                        waveZ,webglZ,visible:getComputedStyle(wave).display!=="none"};
+                }""")
+                if not overlay or not overlay["visible"]:
+                    raise RuntimeError("original stereo waveform canvas missing or hidden")
+                if (round(overlay["cssWidth"]), round(overlay["cssHeight"])) != (args.width,args.height):
+                    raise RuntimeError("stereo waveform overlay viewport resolution mismatch")
+                audio_capture["overlay"] = overlay
+                audio_capture["capture_surface"] = "ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"
+            else:
+                audio_capture["capture_surface"] = "ORIGINAL_HTML_WEBGL_CANVAS_ONLY"
             for index in range(args.frames):
                 _wait_raf(page, args.raf_step)
-                canvas.screenshot(path=str(frames / f"frame_{index:06d}.png"))
+                frame = frames / f"frame_{index:06d}.png"
+                if audio_capture["enabled"]:
+                    page.screenshot(path=str(frame), animations="allow")
+                else:
+                    canvas.screenshot(path=str(frame))
                 if audio_capture["enabled"] and (index % 30 == 0 or index == args.frames - 1):
                     diagnostics = page.evaluate(
                         '''()=>window.HHSBrownL2
