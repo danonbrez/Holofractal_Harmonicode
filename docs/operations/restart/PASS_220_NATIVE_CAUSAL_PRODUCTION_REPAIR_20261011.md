@@ -49,13 +49,13 @@
 6. Preserve the JSONL receipt emitted to
    `/var/lib/hhs/runtime-bootstrap/native-causal-579dbb58-recovery.jsonl`.
    **Do not lift release block here.**
-7. With GitHub main still frozen at `579dbb58f7f9d99419e73cb4d686901e6d123212`, rerun ONLY the
-   failed `deploy-exact-main` job `114457801946` for that exact SHA.
-   Normal `origin/main==TARGET_SHA` checks remain intact: no
-   historical-SHA workaround is necessary when main stays frozen.
-   Require all native CLI, public HTTPS Runtime OS, service registry and
-   real Chromium frontend steps to PASS (not skip), with exact SHA
-   and production receipts. This rerun must not promote a *different* SHA.
+7. Do NOT rerun the failed deploy-exact-main job while the release
+   block is active. The existing installer enables and starts the
+   guarded-update timer BEFORE native, HTTPS and Chromium admission,
+   violating the release freeze. Use the separately audited I088
+   acceptance-only operator collector after the real host repair.
+   It verifies HTTPS, Runtime OS registry and actual Chromium against
+   the pinned release WITHOUT redeployment or timer reactivation.
 8. Lift release block and resume feature merges/updater **only after**
    real native, HTTPS and Chromium evidence verifies the same source
    and the operator explicitly authorizes release resumption.
@@ -64,7 +64,7 @@
 
 - Previous repair PR HEAD: `af1da0f05f8a8ad4cee1ff05e1bb48c6fc412372`; merge target `main`.
 - Change list: rename/re-pin operator script; replace restart record
-  with latest deploy/acceptance evidence and valid exact-main rerun route.
+  with the production failure evidence and safer nonpromoting acceptance-only route.
 - Already verified: GitHub source HEAD, failed job's four canned replies,
   active droplet via control-plane inspection.
 - **NOT executed:** SSH, host provisioning, service import, model load,
@@ -108,14 +108,63 @@
   scripts/production-native-causal-host-repair-579dbb58.sh and must be
   reviewed by exact commit SHA, then executed by an authorized operator
   against deployed SHA 579dbb58f7f9d99419e73cb4d686901e6d123212.
-- After real four-response native CLI success on the host, rerun failed
-  deploy-exact-main job 114457801946 on
-  https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/38135224316
-  ONLY while GitHub main remains equal to target. Require HTTPS,
-  Runtime OS service-registry and real Chromium tests to pass, no skips.
-  Do not reenable automatic updater or merge features until all tests
-  and SHA/receipt checks are admitted.
+- After the real native CLI succeeds on host, do NOT replay the
+  deployment job: it automatically enables hhs-guarded-update.timer.
+  Use I088 public acceptance-only collector and fail-closed verifier
+  with the pinned SHA, native and promotion receipts, strict TLS HTTPS,
+  and actual Chromium. The release remains blocked until review.
 
 NEXT ACTION: authorized production SSH and dependency installation;
-then exact-main production acceptance. Fail closed on any SHA drift,
+then isolated HTTPS/Chromium acceptance without any new promotion. Fail closed on any SHA drift,
 lock conflict, untrusted model provenance or undistinct response.
+
+## I088 — fail-closed acceptance-only repair (2026-10-11)
+
+**SUPERSEDES I086/I087 instructions to rerun deploy-exact-main.**
+The preexisting production installer enables and starts the updater timer
+in deployment/digitalocean/guarded_auto_update/install.sh lines 415-416.
+The old exact-main workflow requires that timer active at line 502,
+BEFORE native, HTTPS and Chromium acceptance. Replaying failed deploy
+job 114457801946 during freeze would therefore violate incident #768.
+Do not rerun that job until production acceptance and release clearance.
+
+Added a separate operator-only evidence path on the still-UNMERGED
+draft branch:
+- scripts/collect_production_native_causal_acceptance_579dbb58.sh
+- scripts/verify_production_native_causal_acceptance_579dbb58.py
+- tests/pass220/test_hhs_pass220_i088_acceptance_evidence_v1.py
+
+After authorized host operator executes the native venv/model repair
+script under SSH and produces actual JSONL CLI and PROMOTED receipts,
+copy those two artifacts to an authorized operator machine. This host
+transfer is NOT performed by any connected tool.
+
+Run the collector from the immutable reviewed draft script with
+an independent clean checkout of pinned main HEAD
+579dbb58f7f9d99419e73cb4d686901e6d123212. Before running,
+install pinned playwright@1.55.0 and Chromium locally on the
+operator machine; these are not automatically installed or changed
+by the collector. Supply environment variables:
+  HHS_I088_OPERATOR_APPROVED=YES
+  HHS_PRODUCTION_BASE_URL=https://<production HTTPS host>
+  HHS_I088_RELEASE_ROOT=<path to clean exact-main checkout>
+  HHS_I088_NATIVE_CLI_RECEIPT=<copied host native JSONL>
+  HHS_I088_PROMOTION_RECEIPT=<copied host last-success.json>
+  HHS_I088_EVIDENCE_DIR=<absolute operator evidence output directory>
+Run: bash scripts/collect_production_native_causal_acceptance_579dbb58.sh
+
+The collector performs certificate-validated HTTPS requests without
+curl -k, refuses browser ignoreHTTPS errors, and checks public Runtime
+OS source SHA. Then it invokes existing Chromium end-to-end browser
+suite, which intentionally exercises live app workflows and therefore
+requires explicit operator approval. The separate Python verifier
+requires four distinct real native serialized-block responses,
+matching SHA and PROMOTED host receipt, correct public service registry,
+six browser execution gates, no browser errors, and a real PNG screenshot.
+It writes an evidence-hash JSON receipt only on success and NEVER
+clears the release block or re-enables the updater automatically.
+
+Offline fixtures are SYNTHETIC, useful only to test rejection logic.
+CI passes are not proof of production recovery or browser operation.
+No authenticated SSH or remote execution is available from connected
+DigitalOcean/GitHub tools. Main remains frozen and feature merges blocked.
