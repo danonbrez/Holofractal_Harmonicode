@@ -62,6 +62,9 @@
     projectionOnly:true,canonicalMutationAuthority:false
   });
   const geometryScratch=new Float32Array(3);
+  const HANN_735=new Float32Array(AUDIO_CLOCK.samplesPerFrame);
+  for(let i=0;i<HANN_735.length;i++)
+    HANN_735[i]=0.5-0.5*Math.cos(2*Math.PI*i/(HANN_735.length-1));
   const state={
     active:false, geometryEnabled:false, gain:0.4,
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
@@ -94,6 +97,24 @@
     out[2]=1+g*(energy*1.4+transient*1.8);
     return out;
   }
+  /* When a busy frame or low pitch yields fewer than two reliable rises,
+     recover a frequency from the strongest windowed PCM harmonic. The
+     scan runs only on crossing-insufficient audio frames, not per particle.
+     A silent/zero-energy window has no phase advancement. */
+  function spectralFallbackHz(samples){
+    let best=0,bestPower=0;
+    for(let bin=1;bin<=96;bin++){
+      const coeff=2*Math.cos(2*Math.PI*bin/samples.length);
+      let a=0,b=0;
+      for(let i=0;i<samples.length;i++){
+        const next=finite(samples[i])*HANN_735[i]+coeff*a-b;
+        b=a;a=next;
+      }
+      const power=Math.max(0,a*a+b*b-coeff*a*b);
+      if(power>bestPower){bestPower=power;best=bin;}
+    }
+    return bestPower>0.01?best*AUDIO_CLOCK.canonicalRate/samples.length:0;
+  }
   /* Per-bus PCM fundamental from interpolated rising zero-crossing periods;
      four ordered harmonic Goertzel powers weight the Q144 rotation rate.
      Neither display frequency nor color phase has VM81 authority. */
@@ -115,7 +136,7 @@
       previous=current;
     }
     const frequencyHz=periods?clamp(AUDIO_CLOCK.canonicalRate*periods/total,
-      0,AUDIO_CLOCK.canonicalRate/2):0;
+      0,AUDIO_CLOCK.canonicalRate/2):spectralFallbackHz(samples);
     if(!Number.isFinite(frequencyHz)||frequencyHz<20)
       return {frequencyHz:0,harmonicMoment:1,lastRising:last};
     let sum=0,weighted=0;
@@ -151,12 +172,13 @@
   /* Frequency-harmonic transport through one u72 carrier.
      Only exact PCM output-clock frame advancement invokes this stage.
      Two stereo harmonic rates contribute reciprocally to one rotor. */
-  function transportGyroscopicPhase72(current,leftHz,leftMoment,rightHz,rightMoment){
+  function transportGyroscopicPhase72(current,leftHz,leftMoment,rightHz,rightMoment,elapsedFrames=1){
     const l=harmonicStep(leftHz,leftMoment);
     const r=harmonicStep(rightHz,rightMoment);
     const active=(l>0?1:0)+(r>0?1:0);
     if(!active)return ((finite(current)%72)+72)%72;
-    return (((finite(current)+(l+r)/(active*HARMONIC.stepsPerFrame))%72)+72)%72;
+    const frames=Number.isSafeInteger(elapsedFrames)&&elapsedFrames>0?elapsedFrames:1;
+    return (((finite(current)+frames*(l+r)/(active*HARMONIC.stepsPerFrame))%72)+72)%72;
   }
   /* Reciprocal vertical-raster lanes from one ordered gyroscope state.
      The inverse-address folding below belongs ONLY to the color projection.
@@ -178,32 +200,40 @@
       oppositeHuePairs:leftHues.every((q,i)=>((q+72)%144)===rightHues[i]),
       quarterTurn:GYRO_SHADER.quarterTurn};
   }
-  /* Canvas2D uses linear gradients as fragment-color shaders: two
-     counter-tilting vertical lanes blend through the central 30% overlap.
-     The existing column flashes and all particle state stay untouched. */
+  /* Two true orthogonal gradient axes, not top-to-bottom columns.
+     The first axis is theta and the other theta+pi/2, so their dot product
+     vanishes for every continuous presentation phase. Color addresses remain
+     discrete u72 sectors; the *render angle* uses fractional phase for smooth
+     motion between audio-frame ticks. The viewport is fully covered by both
+     crossed linear fields, with no circular/radial halo. */
+  function gyroscopicGradientAxes72(phase,width,height){
+    const p=((finite(phase)%72)+72)%72;
+    const angle=2*Math.PI*p/72;
+    const c=Math.cos(angle),s=Math.sin(angle);
+    const span=Math.hypot(width,height)*1.05;
+    const cx=width/2,cy=height/2,half=span/2;
+    const left=[cx-half*c,cy-half*s,cx+half*c,cy+half*s];
+    const right=[cx+half*s,cy-half*c,cx-half*s,cy+half*c];
+    return {phase72:p,left,right,dot:c*(-s)+s*c};
+  }
   function paintGyroscopicVerticalPair(ctx,width,height,leftSample,rightSample,
                                         leftRms,rightRms,phase){
     const pair=verticalReciprocalGradientPair(
       phase,leftSample,rightSample,leftRms,rightRms);
     if(pair.alphaL<0.004 && pair.alphaR<0.004)return pair;
-    const angle=2*Math.PI*pair.phase72/72;
-    const tilt=Math.sin(angle)*Math.min(width*0.12,height*0.16);
-    const cross=Math.cos(angle+Math.PI/2)*Math.min(width*0.08,height*0.10);
+    const axes=gyroscopicGradientAxes72(phase,width,height);
     ctx.globalCompositeOperation="lighter";
     for(let bus=0;bus<2;bus++){
-      const isRight=bus===1;
-      const x=width*(isRight?0.75:0.25);
-      const dir=isRight?-1:1;
-      const shader=ctx.createLinearGradient(
-        x-dir*tilt,0,x+dir*cross,height);
-      const hues=isRight?pair.rightHues:pair.leftHues;
-      const strength=isRight?pair.alphaR:pair.alphaL;
+      const axis=bus?axes.right:axes.left;
+      const shader=ctx.createLinearGradient(axis[0],axis[1],axis[2],axis[3]);
+      const hues=bus?pair.rightHues:pair.leftHues;
+      const strength=bus?pair.alphaR:pair.alphaL;
+      shader.addColorStop(0,q144Css(hues[0],0));
       for(let k=0;k<4;k++)
         shader.addColorStop((k+1)/5,q144Css(hues[k],strength));
-      shader.addColorStop(0,q144Css(hues[0],0));
       shader.addColorStop(1,q144Css(hues[3],0));
       ctx.fillStyle=shader;
-      ctx.fillRect(isRight?width*0.35:0,0,width*0.65,height);
+      ctx.fillRect(0,0,width,height);
     }
     ctx.globalCompositeOperation="source-over";
     return pair;
@@ -446,6 +476,9 @@
     if(!clock || !state.audio || state.audio.paused || state.audio.ended)
       return false;
     if(clock.frame===state.lastSignalFrame)return state.frameSignalReady;
+    if(clock.frame<state.lastSignalFrame)resetLightingClock();
+    const priorFrame=state.lastSignalFrame;
+    const elapsedFrames=priorFrame<0?1:clock.frame-priorFrame;
     /* Prefer sample-aligned decoded PCM; use live stereo when a long
        file has not decoded or its format is unsupported by decodeAudioData.
        Analyser nodes can return silence on some platforms even while the
@@ -467,17 +500,18 @@
         continue; /* Quiet signals never rotate the color wheel. */
       }
       const profile=harmonicProfile(bus?state.frameR:state.frameL,
-        sampleForFrame(clock.frame),state.lastRisingSample[bus]);
+        sampleForFrame(clock.frame),
+        elapsedFrames===1?state.lastRisingSample[bus]:NaN);
       state.lastRisingSample[bus]=profile.lastRising;
       state.harmonicFrequencyHz[bus]=profile.frequencyHz;
       state.harmonicMoment[bus]=profile.harmonicMoment;
       state.harmonicPhase[bus]=(state.harmonicPhase[bus]+
-        harmonicStep(profile.frequencyHz,profile.harmonicMoment))%144;
+        elapsedFrames*harmonicStep(profile.frequencyHz,profile.harmonicMoment))%144;
     }
     state.gyroTransport72=transportGyroscopicPhase72(
       state.gyroTransport72,
       state.harmonicFrequencyHz[0],state.harmonicMoment[0],
-      state.harmonicFrequencyHz[1],state.harmonicMoment[1]);
+      state.harmonicFrequencyHz[1],state.harmonicMoment[1],elapsedFrames);
     state.gyroPhase72=Math.floor(state.gyroTransport72);
     state.active=true;state.geometryEnabled=true;
     return true;
@@ -758,7 +792,7 @@
        vertical crossing columns. It is display only, driven by u72 phase. */
     paintGyroscopicVerticalPair(ctx,W,H,
       state.frameL[367],state.frameR[367],
-      state.frameRmsL,state.frameRmsR,state.gyroPhase72);
+      state.frameRmsL,state.frameRmsR,state.gyroTransport72);
     const player=state.audio;
     const t=(player&&isFinite(player.duration)&&player.duration>0)
       ?clamp(player.currentTime/player.duration,0,1):0;
@@ -861,6 +895,8 @@
         state.frameRmsR.toFixed(3)+
         " | pitch L/R "+Math.round(state.harmonicFrequencyHz[0])+"/"+
         Math.round(state.harmonicFrequencyHz[1])+"Hz"+
+        " | u72 rotor "+state.gyroTransport72.toFixed(2)+
+        " | crossed gradient 90deg"+
         " | particles "+state.particleVisualFrames;
     }
   }
@@ -955,6 +991,7 @@
     projectMatrix,projectColor,q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
+    gyroscopicGradientAxes72,spectralFallbackHz,
     verticalReciprocalGradientPair,paintGyroscopicVerticalPair,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
@@ -974,6 +1011,8 @@
        verticalReciprocalGyroscopicGradient:true,
        gyroscopeSchema:GYRO_SHADER.schema,
        gyroscopePhase72:state.gyroPhase72,
+       gyroscopeVisualPhase72:state.gyroTransport72,
+       visualGradientAxesOrthogonal:true,
        gyroscopeQuarterTurn:GYRO_SHADER.quarterTurn,
        gyroscopeFullPeriod:GYRO_SHADER.phaseModulus,
        harmonicFrequencyLHz:state.harmonicFrequencyHz[0],

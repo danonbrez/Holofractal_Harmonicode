@@ -86,3 +86,55 @@ Changed files: `examples/ParticleSimulation.html`,
 `.github/workflows/pass220-audio-amplitude-harmonic-projection.yml`,
 and this restart record. JS parser check in authoring stage succeeded;
 exact-head tests and source integrity CI still required before merge.
+
+## I081 visual axis defect repair and staged physical delay specification
+
+Base main: `cf5dfc0c43d5cbbc7d577030d69f8f521db27106`; branch: `agent/pass220-orthogonal-rotor-shader-20261011`; merge target: main.
+
+User-visible regression: both Canvas2D shader gradients were constructed
+from y=0 to y=height, causing nearly vertical columns regardless of u72
+phase. The previous recorder asserted only endpoints spanning the height,
+not right-angle phase axes or visible rotation. Rendering also truncated
+fractional phase and, when the sampling loop skipped PCM frames, advanced
+the rotor by just one visual frame. A crossing-deficient PCM window could
+return frequency zero even with nonzero sound.
+
+Repair: both fields now fill the same full viewport. Their gradient
+vectors are `(cos theta, sin theta)` and `(-sin theta, cos theta)`,
+using a shared center and diagonal-length span; angle is the fractional
+harmonic-driven u72 projection phase, not integer-quantized rotor address.
+The exact x/y/z/w/xy/yx/zw/wz identities and 18-step channel offset
+remain separate. Full-screen blending, Q144 reciprocal pair opposition,
+silence and color control remain. The audio-output 735-sample clock owns
+the visual step, skipped frames accumulate the correct angular advance,
+and low-pitch/crossing-deficient signals use bounded windowed Goertzel
+fallback; zero PCM cannot rotate.
+
+NEXT physical stage — not enabled by this repair:
+1. Make an explicitly typed frame-independent simulation-tick ring of
+   exactly **5184 entries**, keyed by canonical integer physics tick
+   `n`, not RAF or the 735-sample audio display frame.
+2. After 5184 admitted ticks, and only then, read the exact delayed
+   observation at tick `n-5184`, including stereo phase provenance,
+   energy, ordered x/y/z/w/xy/yx/zw/wz identity, and signed carrier
+   authority. Neither the current shader nor its JSON diagnostics
+   authorizes a physical state update.
+3. Define a typed parity flip on each **physics tick**: `xy:zw`
+   switches phase orientation through ordered, separately witnessed
+   sectors. A flip means an alternating phase direction, **not**
+   commutation or exchanging the independent xy and zw operands.
+   Selection of the exact admissible signed operation and collision/energy
+   conservation gates remains an independent native VM81 proof obligation.
+4. Only the singleton signed VM81 environmental membrane can admit
+   physical mutation, with bounded replay, negative tests, and receipt
+   continuity. A visual WebGL gradient never directly writes forces.
+5. The delay must count every simulation substep, including quartic-
+   skipped rendering and faster frequency-control stepping; no lost tick,
+   zero-fill shortcut or identity alias may satisfy a missing history.
+
+Changed files: two matched audio source surfaces; inherited gradient
+probe updated for right-angle correctness; new responsive-motion
+pytest+Node regression; dedicated CI path; this restart record.
+The authoring-side JS parse and source inline identity were verified.
+Run exact-head CI and then visual browser/phone acceptance before
+the next physical coupling stage.
