@@ -1,0 +1,67 @@
+(* Pass 220 exact Base64 / balanced two-trit radix bridge. The ninth pair
+   (+1,+1) is reserved; it is not mapped to a 3-bit payload. *)
+Module[{encode3,decode2,bits,triples,tritPairs,decodedTriples,sextets,unpackedSextets,
+  alphabet64,tests,report},
+ encode3[n_Integer]:={Quotient[n,3]-1,Mod[n,3]-1};
+ decode2[p_List]:=Module[{n=3(p[[1]]+1)+p[[2]]+1},
+    If[Length[p]!=2 || !SubsetQ[{-1,0,1},p] || n>=8,
+      Missing["UnadmittedTritPair"],n]];
+ bits=Table[Mod[i^2+7i+1,2],{i,0,5183}];
+ triples=FromDigits[#,2]&/@Partition[bits,3];
+ tritPairs=encode3/@triples;
+ decodedTriples=Flatten[IntegerDigits[#,2,3]&/@(decode2/@tritPairs)];
+ sextets=FromDigits[#,2]&/@Partition[bits,6];
+ unpackedSextets=Table[
+   8 decode2[encode3[Quotient[n,8]]] +
+     decode2[encode3[Mod[n,8]]],{n,sextets}];
+ alphabet64=Characters["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"];
+ tests={
+  VerificationTest[2^3,8,TestID->"3-binary-input-bits-eight-values"],
+  VerificationTest[3^2,9,TestID->"two-balanced-trits-nine-values"],
+  VerificationTest[Length[DeleteDuplicates[encode3/@Range[0,7]]],8,
+    TestID->"all-eight-triplets-injective"],
+  VerificationTest[decode2/@(encode3/@Range[0,7]),Range[0,7],
+    TestID->"all-eight-triplets-invert"],
+  VerificationTest[decode2[{1,1}],Missing["UnadmittedTritPair"],
+    TestID->"ninth-pair-reserved"],
+  VerificationTest[8*8,64,TestID->"two-three-bit-chunks-base64"],
+  VerificationTest[3^4,81,TestID->"four-trit-code-space"],
+  VerificationTest[Table[
+    8 decode2[encode3[Quotient[n,8]]] +
+      decode2[encode3[Mod[n,8]]],{n,0,63}],Range[0,63],
+    TestID->"all-sixty-four-sextets-invert"],
+  VerificationTest[Length[alphabet64],64,
+    TestID->"base64-alphabet-cardinality"],
+  VerificationTest[DuplicateFreeQ[alphabet64],True,
+    TestID->"base64-symbol-uniqueness"],
+  VerificationTest[Length[bits],5184,TestID->"full5184-binary-frame"],
+  VerificationTest[Length[triples],1728,
+    TestID->"1728-binary-triples"],
+  VerificationTest[Length[Flatten[tritPairs]],3456,
+    TestID->"3456-balanced-trits"],
+  VerificationTest[decodedTriples,bits,
+    TestID->"full5184-binary-to-trinary-roundtrip"],
+  VerificationTest[Length[sextets],864,
+    TestID->"864-base64-sextets"],
+  VerificationTest[unpackedSextets,sextets,
+    TestID->"full5184-base64-to-trinary-roundtrip"],
+  VerificationTest[2^5184,8^1728,
+    TestID->"all-binary-frames-covered-by-product-law"],
+  VerificationTest[3^3456>2^5184,True,
+    TestID->"ninth-state-creates-trinary-spare-capacity"],
+  VerificationTest[81*64==72^2,True,
+    TestID->"vm81-hash72-fixed-address-factor"],
+  VerificationTest[1728*2==3456&&864*4==3456,True,
+    TestID->"trit-count-identity"]
+ };
+ report=TestReport[tests];
+ <|"Schema"->"HHS_PASS220_BASE64_BALANCED_TRIT5184_WOLFRAM_V1",
+   "TestsSucceeded"->report["TestsSucceededCount"],
+   "TestsFailed"->report["TestsFailedCount"],
+   "AllTestsSucceeded"->report["AllTestsSucceeded"],
+   "Base64GroupCount"->864,
+   "BalancedTritCount"->3456,
+   "InputBitCount"->5184,
+   "NativeHNANGateReplaced"->False,
+   "Hash72DigestInversionClaimed"->False|>
+]
