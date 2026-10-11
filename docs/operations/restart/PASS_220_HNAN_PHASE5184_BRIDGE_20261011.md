@@ -44,16 +44,19 @@ encoding. Distinguish:
 - HNAN phase values are metadata, not a substitute for the raw source.
 
 ## Executed / evidence
-- Connected Wolfram Language kernel evaluated the new 20-test `TestReport`:
-  `TestsSucceeded -> 20, TestsFailed -> 0, AllTestsSucceeded -> True`.
+- Connected Wolfram Language kernel evaluated the new 21-check `TestReport`:
+  `TestsSucceeded -> 21, TestsFailed -> 0, AllTestsSucceeded -> True`.
 - Exact symbolic 3x3 order, HNAN center, outer binary addresses, source
   palindrome witness, generator 72x72 hydration and inverse recovery,
-  5184/15552 dimensions, and negative order/mirror cases were checked.
+  5184/15552 dimensions, negative order/mirror cases, and exhaustive
+  72x72=5184 relative-phase inverse pairs were checked.
 - Lean theorem source authored, imported into `HHS.lean` for pinned native
   Lean build, leanchecker and axiom audit.
 - New Python candidate bridge checks I148 raw round-trip, inherited HNAN
   invariant receipt, both complete trinary roles, and optional I065 admitted
-  generator hydration/recompression. Generator and raw bit state remain
+  generator hydration/recompression. It carries 20 quads x 3 paired phase
+  difference witnesses with exact (right+delta)%72 == left inverse;
+  decode validates witness consistency against the recovered raw source. Generator and raw bit state remain
   separate: `recover_raw` uses retained 5184 bits, not a hash digest.
 - Candidate optimization defaults to no expanded 5184-vertex materialization.
 - New branch created from exact main commit; all changes are additive.
@@ -81,7 +84,7 @@ lake build HHS
    VM81 admission authority when that extended proof is implemented.
 
 ## Environment / authority
-- Wolfram connected evaluator available; 20-check preflight PASS.
+- Wolfram connected evaluator available; 21-check preflight PASS.
 - Local execution container lacks Lean/Lake; native proof checking is delegated
   to pinned GitHub Actions (no claimed local Lean proof).
 - No new VM81 commit authority, Hash72 mint authority, Hash216 persistence
