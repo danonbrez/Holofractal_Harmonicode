@@ -188,3 +188,78 @@ HNAN AST conformance added.
 
 Authority boundary unchanged: no parallel HNAN, VM81, Hash72 or Hash216
 commit path. Resume from PR #771 branch head and inspect CI.
+
+## Forward integration cycle: I074 Hash216 Lane 5 candidate (2026-10-11)
+
+This cycle DOES NOT reopen proven Lo Shu/HNAN binary/trinary mappings.
+It connects existing executable services under their inherited authority.
+
+Files added:
+- `hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py`
+- `tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py`
+
+Existing workflow updated:
+- `.github/workflows/pass220-hnan-phase5184-lossless-bridge.yml`
+  (add compile + dependency-scoped integration tests).
+
+Execution:
+1. Build default candidate with established I074 `build_candidate()`, or
+   validate a caller-supplied candidate with inherited `validate_candidate()`.
+2. Verify 72/72/72 ordered PREVIOUS/CHANGE/RECEIPT components concatenate
+   to the already generated 216-symbol candidate Hash216.
+3. Require existing I074/I065 15552-component hydration round-trip metadata.
+4. Bind the I074 receipt-plane Hash72 generator to I148/Pass219 HNAN ingress,
+   the exact 3-bit/2-trit mapping, and all 20x3 typed phase witnesses.
+5. Default to no fourth 5184-vertex geometry expansion; allow explicit
+   expansion on demand, using the existing I065 recompression validation.
+6. Emit a deterministic candidate receipt binding raw-frame SHA256, ordered
+   HNAN phase difference witness root, I074 lineage and the prior typed
+   center/xy+epsilon terms. No new hash72/216 mint authority is granted.
+7. Reuse the already performed I148 and radix inverse checks rather than
+   recomputing the entire VM81 hydration for an internally constructed
+   read-only receipt.
+
+Regression tests:
+- one actual inherited I074 candidate binds an entire 5184-bit VM81 frame;
+- reject modified Hash216 concatenation before binary ingress;
+- reject I074/I065 hydration false;
+- reject an externally supplied candidate if inherited validator rejects;
+- preserve I065 palindromic admission as explicit opt-in for a raw frame.
+
+Commands delegated to scoped GitHub Actions (not yet claimed complete):
+```sh
+python -m py_compile \
+ hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
+ tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py
+PYTHONPATH=. python -m pytest -q --tb=short \
+ tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
+ tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
+ tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py \
+ tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py \
+ tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py \
+ tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
+ tests/pass219/test_pass219_hnan_qgu_transport_v1.py
+```
+
+Evidence carried forward:
+- Connected Wolfram HNAN phase tests 21/21 PASS.
+- Connected Wolfram HNAN tensor-addressed base64 tests 26/26 PASS.
+- Previous isolated radix Python 11/11 PASS.
+- Existing canonical HNAN/I148/I065/I074 proofs and receipts inherited;
+  only this new integration boundary requires dependency-scoped regression.
+
+Current external state at this checkpoint:
+- PR #771 open and mergeable on existing branch; merge target main.
+- Source commits restartable; no uncommitted workspace obligations.
+- Hosted GitHub Actions were queued in latest observed status; do not
+  claim new Python or pinned Lean checks passed until reported.
+- Container lacked reachable github.com git-clone network, so no full
+  local checkout. This is an environment limitation, not a math change.
+
+Next action:
+1. Check the exact PR head and relevant HNAN integration/Lean CI statuses.
+2. If affected tests fail, inspect the actual job log; repair only those
+   integration paths, commit forward, and revalidate affected dependencies.
+3. On required green checks merge #771 and verify main includes the merge.
+4. Keep physical deployment or signed VM81 state commit a separate existing
+   authoritative runtime operation; this candidate receipt does not replace it.
