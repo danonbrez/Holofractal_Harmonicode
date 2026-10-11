@@ -290,7 +290,11 @@
   /* Never touch logical particle data. Only edit an InstancedMesh projection
      matrix and a scratch Color used with setColorAt. */
   function projectColor(p,color){
-    if(!state.frameSignalReady || !state.geometryEnabled)return color;
+    const base=p.material.color;
+    if(!state.frameSignalReady || !state.geometryEnabled){
+      color.setRGB(base.r,base.g,base.b);
+      return color;
+    }
     const idx=state.particleIndex.get(p);
     if(idx===undefined)return color;
     const bus=idx<AUDIO_CLOCK.laneCells?0:1;
@@ -299,7 +303,6 @@
                      state.frameL[local%AUDIO_CLOCK.samplesPerFrame];
     const rms=bus?state.frameRmsR:state.frameRmsL;
     const heat=clamp(Math.sqrt(rms)*2.1+Math.abs(sample)*0.65,0,1);
-    const base=p.material.color;
     const bright=0.42+0.58*heat;
     if(bus===0)color.setRGB(
       clamp(base.r*bright+heat*0.22,0,1),
