@@ -6,10 +6,10 @@ on:
       - pass220/hnan-phase5184-lossless-bridge-20261011
     paths:
       - "hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
-      - "hhs_runtime/hhs_pass220_hnan_full_state_space_preservation_v1.py"
-      - "tests/pass220/test_hhs_pass220_hnan_full_state_space_preservation_v1.py"
-      - "formal/lean/HHS/Pass220/HNANFullStateSpacePreservation.lean"
-      - "formal/wolfram/pass220_hnan_full_5184_state_space_preservation_v1.wl"
+      - "hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py"
+      - "tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py"
+      - "formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean"
+      - "formal/wolfram/pass220_base64_balanced_trit5184_v1.wl"
       - "tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
       - "formal/lean/HHS/Pass220/HNANPhase5184.lean"
       - "formal/lean/HHS.lean"
@@ -18,10 +18,10 @@ on:
   pull_request:
     paths:
       - "hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
-      - "hhs_runtime/hhs_pass220_hnan_full_state_space_preservation_v1.py"
-      - "tests/pass220/test_hhs_pass220_hnan_full_state_space_preservation_v1.py"
-      - "formal/lean/HHS/Pass220/HNANFullStateSpacePreservation.lean"
-      - "formal/wolfram/pass220_hnan_full_5184_state_space_preservation_v1.wl"
+      - "hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py"
+      - "tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py"
+      - "formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean"
+      - "formal/wolfram/pass220_base64_balanced_trit5184_v1.wl"
       - "tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
       - "formal/lean/HHS/Pass220/HNANPhase5184.lean"
       - "formal/lean/HHS.lean"
@@ -51,8 +51,8 @@ jobs:
           python -m py_compile \
             hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
             tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
-            hhs_runtime/hhs_pass220_hnan_full_state_space_preservation_v1.py \
-            tests/pass220/test_hhs_pass220_hnan_full_state_space_preservation_v1.py
+            hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py \
+            tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py
 
       - name: Execute HNAN/I148/I065 dependency cone
         env:
@@ -60,29 +60,29 @@ jobs:
         run: |
           python -m pytest -q --tb=short \
             tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
-            tests/pass220/test_hhs_pass220_hnan_full_state_space_preservation_v1.py \
+            tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py \
             tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py \
             tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py \
             tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
             tests/pass219/test_pass219_hnan_qgu_transport_v1.py
 
-      - name: Confirm both connected Wolfram preflights retain 21 checks
+      - name: Confirm connected Wolfram preflight sources retain exact checks
         run: |
           python - <<'PY'
           from pathlib import Path
           paths = (
               "formal/wolfram/pass220_hnan_phase5184_lossless_bridge_v1.wl",
-              "formal/wolfram/pass220_hnan_full_5184_state_space_preservation_v1.wl",
+              "formal/wolfram/pass220_base64_balanced_trit5184_v1.wl",
           )
-          for path in paths:
+          for path, expected in zip(paths, (21, 20)):
               s=Path(path).read_text()
-              assert s.count("VerificationTest[") == 21, path
+              assert s.count("VerificationTest[") == expected, path
               assert "TestReport[tests]" in s, path
           s=Path(paths[0]).read_text()
           assert "TestReport[tests]" in s
           assert "GenericUnconstrainedPayloadCompressionClaimed" in s
           assert "ordered-product-not-swappable" in s
-          print("Connected Wolfram preflights: 21/21 each; CI source audits OK")
+          print("Connected Wolfram preflights: 21/21 and 20/20; CI source audits OK")
           PY
 
       - name: Pinned Lean 4 build, kernel check and axiom audit
