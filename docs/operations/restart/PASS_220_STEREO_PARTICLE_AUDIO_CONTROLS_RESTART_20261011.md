@@ -70,3 +70,41 @@ The media element preserves audibility and stereo playback.
 Inspect PR CI; repair forward only defects attributable to this change.
 When checks are green, merge to main and verify merged head and static surfaces.
 Do not substitute the 5,184-node adapter for canonical 10,368-particle HTML.
+
+## Audio playback repair (2026-10-11)
+Reported symptom: music not playing despite visible player.
+
+Root causes in the original implementation:
+1. `createMediaElementSource` diverts a media element out of its native audio
+   routing; destination was not connected until asynchronous worklet loading
+   completed. Missing/blocked worklet loading could produce silence.
+2. The Start button awaited asynchronous worklet registration before
+   `player.play()`, losing user activation on mobile.
+3. PCM decode and playback graph initialization were entangled.
+4. The bridge lived in a separate JS file, so a copied standalone HTML could
+   present player controls with no JavaScript backing them.
+
+Repairs:
+- Synchronously connect `MediaElementAudioSourceNode` to
+  `AudioContext.destination` before any optional analyzer work.
+- Put worklet/ScriptProcessor on separate zero-gain observation branch.
+- Call `resumeAudio()` and `audio.play()` directly within click gesture.
+- Support direct native player pointer/touch/keyboard activation.
+- Decode waveform with independent offline context, never requiring
+  decoded PCM before music plays.
+- Embed exact bridge source in standalone HTML; retain mirrored JS source
+  for automated equality regression.
+- Keep unsupported/corrupt audio decode nonfatal to playback.
+
+New isolated runtime validation:
+- HTML and bridge V8 syntax parsed.
+- Exact bridge-inline HTML parity PASS.
+- Emulated indefinite `AudioWorklet.addModule` promise never resolves;
+  recorded order still:
+  `AudioContext created` -> `dry speaker connected` ->
+  `AudioContext resume` -> `audio.play invoked`.
+- Stop command resets playback.
+- Regression test guards same behavior on Node.js mock browser.
+
+Remaining: live physical speakers and Android media controls, browser performance,
+repository pytest/CI receipts, and post-merge verified-main status.
