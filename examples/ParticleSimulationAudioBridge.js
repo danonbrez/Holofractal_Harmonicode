@@ -134,8 +134,19 @@
   }
   function resetLightingClock(){
     state.lastFrame=-1;
+    state.lastClockStatusTime=-1;
     state.crossingEvents.length=0;
     state.lastSample=[0,0];
+  }
+  function advanceLightingGate(frame){
+    if(!Number.isSafeInteger(frame)||frame<0)return false;
+    if(frame===state.lastFrame)return false;
+    if(frame<state.lastFrame)resetLightingClock();
+    if(state.lastFrame>=0 && frame>state.lastFrame+1)
+      state.skippedLightingFrames+=frame-state.lastFrame-1;
+    state.lastFrame=frame;
+    state.renderedLightingFrames++;
+    return true;
   }
   function report(message){
     if(state.status)state.status.textContent=message;
@@ -341,14 +352,7 @@
       window.performance && typeof window.performance.now==="function" ?
       window.performance.now():NaN);
     if(!clock)return;
-    if(clock.frame===state.lastFrame)return;
-    if(clock.frame<state.lastFrame){
-      resetLightingClock(); // pause/seek or clock discontinuity
-    }
-    if(state.lastFrame>=0 && clock.frame>state.lastFrame+1)
-      state.skippedLightingFrames+=clock.frame-state.lastFrame-1;
-    state.lastFrame=clock.frame;
-    state.renderedLightingFrames++;
+    if(!advanceLightingGate(clock.frame))return;
     state.outputClockSource=clock.source;
     const ctx=canvas.getContext("2d");
     if(!ctx)return;
@@ -390,12 +394,13 @@
     let write=0;
     for(let i=0;i<events.length;i++){
       const frame=crossingFrame(events[i][1]);
-      if(frame>clock.frame-AUDIO_CLOCK.fadeFrames &&
-         frame<=clock.frame) events[write++]=events[i];
+      /* Keep future crossings until their exact audio frame is audible.
+         Drop only obsolete samples, never look-ahead audio messages. */
+      if(frame>clock.frame-AUDIO_CLOCK.fadeFrames)
+        events[write++]=events[i];
     }
     events.length=write;
     const cells=crossingLightingCells(events,clock.frame);
-    const phaseFrame=clock.frame;
     for(let bus=0;bus<2;bus++){
       for(let phase=0;phase<72;phase++){
         const strength=cells[bus][phase];
@@ -505,6 +510,7 @@
     projectMatrix,bindParticles,peakEnvelope,crossingsFromBlock,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
     sampleForFrame,outputClockFrame,crossingFrame,crossingLightingCells,
+    advanceLightingGate,
     get diagnostics(){return {
       active:state.active, sampleRate:state.sampleRate,
       canonicalRate:AUDIO_CLOCK.canonicalRate,
