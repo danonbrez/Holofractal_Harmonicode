@@ -75,3 +75,47 @@
 - Failures during operator execution leave the release blocked and updater
   stopped; record exact failed command, pinned host HEAD and partial receipt
   before repair-forward.
+
+
+## I087 — guarded remediation checkpoint (2026-10-11)
+
+**RELEASE BLOCKED. PR #769 MUST REMAIN DRAFT AND UNMERGED.**
+
+- Production main and promoted-but-unaccepted source: 579dbb58f7f9d99419e73cb4d686901e6d123212.
+- Repair branch: agent/production-native-causal-repair-20261011.
+- Previous draft head: ae0e1e9c906f80ca27bb240bb8b68f2ec97e0513.
+- Completed repair-only commit 58f0eee02e1107c1a765ec22b4474eb93ac21533:
+  after BOTH exclusive locks, recheck host HEAD, main branch and clean tree;
+  verify authoritative last-success.json promotion receipt contains exact
+  matching candidate SHA, Runtime OS bundle SHA, and PROMOTED outcome
+  before any dependency installation. Accept only four generated answers
+  with four distinct 64-character response hashes, positive integer
+  serialized-block counts, no per-turn errors and no mutation admission.
+- Offline test commit ae0e1e9c906f80ca27bb240bb8b68f2ec97e0513:
+  adds tests/pass220/test_hhs_pass220_native_causal_host_repair_audit_v1.py
+  and .github/workflows/pass220-native-causal-host-repair-audit.yml.
+  Uses no secrets, SSH, remote host, service mutation or deployment.
+  Static audit CI: https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/38157319118
+  passed. Source integrity:
+  https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/38157319084
+  (recheck conclusion for the final PR head).
+- GitHub main branch protection could not be read (403 forbidden by
+  integration). Documented release freeze is not proof of branch protection.
+- Host SSH, production venv provision/import, genuine native generation,
+  public HTTPS and Chromium have NOT been run by this agent.
+  No technical acceptance or release unfreeze is asserted.
+- The repair script remains
+  scripts/production-native-causal-host-repair-579dbb58.sh and must be
+  reviewed by exact commit SHA, then executed by an authorized operator
+  against deployed SHA 579dbb58f7f9d99419e73cb4d686901e6d123212.
+- After real four-response native CLI success on the host, rerun failed
+  deploy-exact-main job 114457801946 on
+  https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/38135224316
+  ONLY while GitHub main remains equal to target. Require HTTPS,
+  Runtime OS service-registry and real Chromium tests to pass, no skips.
+  Do not reenable automatic updater or merge features until all tests
+  and SHA/receipt checks are admitted.
+
+NEXT ACTION: authorized production SSH and dependency installation;
+then exact-main production acceptance. Fail closed on any SHA drift,
+lock conflict, untrusted model provenance or undistinct response.
