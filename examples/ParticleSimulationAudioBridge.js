@@ -287,21 +287,17 @@
     state.particleVisualFrames++;
     return true;
   }
-  function frameColorEnergy(index){
-    const bus=index<AUDIO_CLOCK.laneCells?0:1;
-    const local=index%AUDIO_CLOCK.laneCells;
-    const sample=bus?state.frameR[local%AUDIO_CLOCK.samplesPerFrame]:
-                      state.frameL[local%AUDIO_CLOCK.samplesPerFrame];
-    const rms=bus?state.frameRmsR:state.frameRmsL;
-    return {bus,sample:finite(sample),rms};
-  }
   /* Never touch logical particle data. Only edit an InstancedMesh projection
      matrix and a scratch Color used with setColorAt. */
   function projectColor(p,color){
     if(!state.frameSignalReady || !state.geometryEnabled)return color;
     const idx=state.particleIndex.get(p);
     if(idx===undefined)return color;
-    const {bus,sample,rms}=frameColorEnergy(idx);
+    const bus=idx<AUDIO_CLOCK.laneCells?0:1;
+    const local=idx%AUDIO_CLOCK.laneCells;
+    const sample=bus?state.frameR[local%AUDIO_CLOCK.samplesPerFrame]:
+                     state.frameL[local%AUDIO_CLOCK.samplesPerFrame];
+    const rms=bus?state.frameRmsR:state.frameRmsL;
     const heat=clamp(Math.sqrt(rms)*2.1+Math.abs(sample)*0.65,0,1);
     const base=p.material.color;
     const bright=0.42+0.58*heat;
@@ -329,7 +325,11 @@
     if(!state.geometryEnabled || !state.frameSignalReady)return;
     const i=state.particleIndex.get(p);
     if(i===undefined)return;
-    const {bus,sample,rms}=frameColorEnergy(i);
+    const bus=i<AUDIO_CLOCK.laneCells?0:1;
+    const local=i%AUDIO_CLOCK.laneCells;
+    const sample=bus?state.frameR[local%AUDIO_CLOCK.samplesPerFrame]:
+                     state.frameL[local%AUDIO_CLOCK.samplesPerFrame];
+    const rms=bus?state.frameRmsR:state.frameRmsL;
     const energy=clamp(Math.sqrt(rms)*2.2,0,1);
     const transient=clamp(Math.abs(sample)*2.5,0,1);
     const gain=state.gain;
