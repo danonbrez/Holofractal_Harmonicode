@@ -240,3 +240,34 @@ physics admission. The separate user-requested 5184 **physics tick**
 delayed light-to-force coupling and per-tick ordered xy:zw phase inversion
 are NOT enabled. Exact-head targeted tests/source-integrity and actual
 WebGL audio/browser rendering are required for acceptance.
+
+## I086 — brownian 5184 anti-particle light probability / neuronal-like graph
+
+Date 2026-10-11, base `db2b30adc55a52d2618d57c85c9afc4b3acf34a5`, branch `agent/pass220-light-brownian-antiparticle-buffer-20261011`, target main.
+
+Implement an exactly 5184-address deterministic optical Brownian
+probability and displacement buffer for second-layer antiparticles
+(HTML indices 5184..10367). Reciprocally lit stereo PCM right channel
+controls energy probability, weighted down by high audio frequency and
+phase geometry. Four-neighbor 72x72 toroidal graph smoothing joins each
+offset to adjacent neuronal-like graph addresses (±1/±72), forming a
+visual stochastic network, but NOT claiming an existing biological FlyWire
+connectome. A seeded integer hash from cell address/audio frame/phase/
+channel replaces Math.random. Per component displacement is <=0.05,
+time-smoothed and decays in silence; only the existing I057 GPU projection
+matrix is changed. First 5184-particle visual layer and every logical
+particle/force/receipt stay unchanged.
+
+A separate, exact 5184-entry simulation SUBSTEP FIFO records stereo
+light, gyro u72 sector and ordered per-tick xy:zw *display* parity. It
+admits reading tick n-5184 only after 5184 full substeps; respects
+frequency multiplier and quartic visual skip, with no shortcut, buffer
+wrapping or direct native mutation. Native physics force-coupling is
+NOT ADMITTED; this is an optical/observational prototype, not physical
+field interaction. A genuine physical link needs signed VM81/Lane5
+membrane, exact constraints, noncommutative phase witness, conservation,
+Hash72/216 provenance and replay before moving thPos/thVel.
+
+Changes: two mirrored browser sources; dedicated pytest+Node replay;
+scoped workflow and restart doc. Need head CI, merge, verify main;
+real device WebGL acceptance not yet checked.
