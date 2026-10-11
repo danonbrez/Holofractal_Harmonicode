@@ -263,3 +263,33 @@ Next action:
 3. On required green checks merge #771 and verify main includes the merge.
 4. Keep physical deployment or signed VM81 state commit a separate existing
    authoritative runtime operation; this candidate receipt does not replace it.
+
+
+## Targeted Lean compilation repair — 2026-10-11
+
+- Prior PR head: `94f49dcc3502285e91b55b33d36edd630223a65c`.
+- Authoritative failing HNAN CI: `38175328946`, job `114576401280`.
+- Inherited Python dependency cone: 81 passed, 1 warning (4.32s).
+- Lean 4 v4.34.0 build failed at
+  `formal/lean/HHS/Pass220/HNANPhase5184.lean:137-138`:
+  unresolved identifiers `sub_eq_add_neg`, `add_assoc`,
+  `add_left_comm`, `add_comm`; goal
+  `right + (left - right) = left`.
+- Dependency-scoped repair applied directly to that file only:
+  `import Lean.Elab.Tactic.Omega`;
+  `unfold additivePhaseDifference; omega`.
+- Repair commit: `7ce3ef9f88d7731bf558f5df2f3980edd6305edc`.
+- No changes to HNAN tensor, eight binary addresses/HNAN ninth center,
+  x/y and z/w ordering, `xy+epsilon`, VM81/Hash72/Hash216 authority,
+  I148/I065/I074 data contracts or production execution.
+- Following repair commit, the required PR checks were queued:
+  HNAN `38185487414`, native Lean alignment `38185487244`,
+  I065 `38185487062`, consensus `38185487433`,
+  source integrity `38185487472`.
+- No green Lean kernel/axiom audit or verified-main claim until CI reports it.
+- Repository write access worked through connected GitHub tool. Do not
+  re-enable disabled closure automation without new authorization.
+
+Next: check these exact latest-head CI runs, inspect any actual failures,
+repair only impacted dependency cone and commit forward. When required
+checks are passing, merge PR #771 with expected head SHA and verify main.
