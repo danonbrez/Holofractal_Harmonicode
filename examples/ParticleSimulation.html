@@ -21,7 +21,7 @@
     }
     #osShell {
       position: absolute; top: 50px; left: 10px;
-      width: 350px;
+      width: min(350px, calc(100vw - 40px)); box-sizing: border-box;
       background: linear-gradient(135deg, rgba(0,0,0,0.5), rgba(0,0,0,0.3));
       padding: 10px; color: #eee; border-radius: 5px;
       z-index: 100; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
@@ -37,6 +37,10 @@
       background: rgba(51,51,51,0.8); color: #eee;
       border: none; cursor: pointer; border-radius: 3px;
     }
+    #osShell #audioVizPanel { margin: 8px 0; border: 1px solid #3a5377; padding: 6px; border-radius: 5px; }
+    #osShell #audioVizPanel input[type=file], #osShell #audioVizPanel audio { width: 100%; max-width: 100%; box-sizing: border-box; }
+    #osShell #audioVizPanel label { display: block; margin: 5px 0; }
+    #osShell button, #qpuConsolePanel button { touch-action: manipulation; }
     #osShell #output { margin-top: 5px; font-size: 0.9em; white-space: pre-wrap; }
     #osShell #stateOutput { margin-top: 10px; font-size: 0.8em; border-top: 1px solid #444; padding-top: 5px; }
     #hud { position: absolute; bottom: 14px; left: 10px; color: #9cf; font-size: .75em; z-index: 104;
@@ -55,6 +59,16 @@
     <button id="runCommand">Run Command</button>
     <button id="runCalibration">Run Calibration</button>
     <button id="stepCycle">Step Engine Cycle (tick + gates + block648)</button>
+    <fieldset id="audioVizPanel">
+      <legend>Stereo PCM / tensor waveform visualizer</legend>
+      <input id="audioVizFile" type="file" accept="audio/*" aria-label="Choose local audio file" />
+      <audio id="audioVizPlayer" controls preload="metadata" style="width:100%;margin-top:4px;"></audio>
+      <button id="audioVizPlay" type="button">Start / Resume Audio</button>
+      <button id="audioVizStop" type="button">Stop / Reset Audio</button>
+      <label for="audioVizGain">Geometry projection gain: <output id="audioVizGainValue">1.25</output></label>
+      <input id="audioVizGain" type="range" min="0" max="5" step="0.05" value="1.25" style="width:100%;" />
+      <div id="audioVizStatus" role="status" aria-live="polite">Select an audio file.</div>
+    </fieldset>
     <div id="output"></div>
     <div id="stateOutput">
       <strong>Current State:</strong>
@@ -147,6 +161,9 @@
       for(let i=0;i<points.length;i++){
         const p=points[i], q=p.position;
         particleBatchMatrix.makeTranslation(q.x,q.y,q.z);
+        /* Presentation-only stereo waveform offset. Never write to p.position. */
+        if(window.HHSAudioViz && window.HHSAudioViz.geometryEnabled)
+          window.HHSAudioViz.projectMatrix(p,particleBatchMatrix);
         mesh.setMatrixAt(i,particleBatchMatrix);
         mesh.setColorAt(i,p.material.color);
       }
@@ -640,6 +657,11 @@
       return false;
     }
     window.addEventListener('pointermove', e=>{
+      /* UI touches must not inject field impulses or steal camera gestures. */
+      if(e.target && e.target.closest &&
+         e.target.closest("#osShell, #qpuConsolePanel, #freqCtl, #densityCtl, #chaseBtn, #toggleShell")){
+        pointerActive=false; return;
+      }
       pointerNdc.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1);
       pointerRayT();
       pointerActive=true; });
@@ -3984,6 +4006,14 @@
         document.getElementById("output").innerText = "Invalid JSON: " + e.message;
       }
     });
+    document.getElementById("runCalibration").addEventListener("click", () => {
+      try {
+        const result=interpretCommand({command:"run_calibration",iterations:100});
+        document.getElementById("output").textContent=JSON.stringify(result,null,2);
+      } catch(err) {
+        document.getElementById("output").textContent="Calibration error: "+err.message;
+      }
+    });
     document.getElementById("stepCycle").addEventListener("click", () => {
       document.getElementById("output").innerText = JSON.stringify(interpretCommand({command:"step_cycle"}), null, 2);
     });
@@ -4055,12 +4085,12 @@
         let jsonCommand = JSON.parse(el.value);
         cmdInput.value = el.value;
         let response = interpretCommand(jsonCommand);
-        document.getElementById("commandOutput").innerHTML =
-          `<strong>Response:</strong> <pre>${JSON.stringify(response, null, 2)}</pre>`;
+        document.getElementById("commandOutput").textContent =
+          "Response:\n" + JSON.stringify(response, null, 2);
         document.getElementById("output").innerText = JSON.stringify(response, null, 2);
       } catch (error) {
-        document.getElementById("commandOutput").innerHTML =
-          `<strong>Error:</strong> invalid JSON — ${error.message}`;
+        document.getElementById("commandOutput").textContent =
+          "Error: invalid JSON — " + error.message;
       }
     }
 
@@ -4076,13 +4106,14 @@
     initScene();
   </script>
 
-<!-- UI for sending Harmonicode JSON commands -->
-<div style="position:absolute; top:50px; right:10px; width:340px; background: rgba(34,34,34,.85); padding: 12px; border-radius: 10px; color: white; font-family: monospace; z-index:100; max-height:80vh; overflow-y:auto;">
-    <h3 style="margin-top:0;">Harmonicode QPU JSON Command Interface</h3>
-    <textarea id="jsonCommandInput" rows="6" style="width:100%; background:rgba(17,17,17,.9); color:#eee; border:none;"
-        placeholder='{"command":"step_cycle"}'></textarea><br><br>
-    <button onclick="sendHarmonicodeCommand()" style="padding: 8px; font-size: 14px; width:100%;">Send Command</button>
-    <div id="commandOutput" style="margin-top: 10px; padding: 8px; background: black; border-radius: 5px; font-size:.8em; white-space:pre-wrap;"></div>
-</div>
+<!-- Collapsed by default: never cover frequency, density, or chase controls. -->
+<details id="qpuConsolePanel" style="position:fixed;bottom:10px;right:10px;width:min(340px,calc(100vw - 20px));box-sizing:border-box;background:rgba(34,34,34,.88);padding:10px;border:1px solid #345;border-radius:8px;color:#eee;font-family:monospace;z-index:102;max-height:42vh;overflow-y:auto;">
+  <summary style="cursor:pointer;touch-action:manipulation;">Harmonicode QPU JSON Console</summary>
+  <textarea id="jsonCommandInput" rows="5" style="width:100%;box-sizing:border-box;margin-top:8px;background:#111;color:#eee;border:1px solid #345;"
+    placeholder='{"command":"step_cycle"}'></textarea>
+  <button id="sendQpuCommand" type="button" onclick="sendHarmonicodeCommand()" style="padding:8px;font-size:14px;width:100%;">Send Command</button>
+  <div id="commandOutput" role="status" aria-live="polite" style="margin-top:8px;padding:8px;background:#000;border-radius:5px;font-size:.8em;white-space:pre-wrap;"></div>
+</details>
+<script src="./ParticleSimulationAudioBridge.js"></script>
 </body>
 </html>
