@@ -105,24 +105,30 @@ ingress. The user-defined local radix relation is exact:
 5184 bits = 864 Base64 six-bit groups
 ```
 
-The codebook maps binary values 0..7 through base-3 digit values 0..7,
-rendered with balanced labels (-1, 0, +1). Pair (+1,+1) is reserved and
-rejected by the radix decoder until the native HNAN contract defines a
-separate permissible use. No lossful ternary digit is rounded to a bit.
+Correction / native authority: the codebook is NOT free ascending base-3.
+It assigns binary 000..111 to the eight HNAN outer Lo Shu cells, row-major
+in the user's exact x/y/z/w tensor. The ninth valid trinary pair (0,0)
+IS the pre-existing native HNAN center gate, not a reserved or invalid state.
+Only a *binary-only* projection is undefined at the HNAN gate; the nine-state
+native tensor decoder resolves the center with the existing typed gate AST.
+No lossful ternary digit is rounded to a bit.
 Base64's alphabet has 64 symbols; these are *not* the same object as the
 72-symbol HHS Hash72 alphabet or the separate 72-position state.
 
 Changes:
 - `hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py`:
   exact 3-bit/2-trit codec; full 5184-bit -> 3456-trit / 864-Base64
-  candidate ingress carrier; reject ninth pair and witness mismatches.
+  candidate ingress carrier; resolve the ninth pair through the repository
+  HNAN gate and reject binary-only decoding of the gate.
 - `tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py`:
-  all 8 local inputs, all 64 sextets, multiple full frames, bad-code tests.
+  all eight outer binary addresses, native ninth HNAN center, all 64
+  sextets, multiple full frames, tensor expression and mismatch tests.
 - `formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean`:
   forall 3-bit inputs, forall 864-sextet frame states, forall 1728
-  three-bit frame states, exact inversion and injectivity.
+  three-bit frame states, exact inversion and injectivity, plus exact
+  nine-state tensor-cell bijection and HNAN center proof.
 - `formal/wolfram/pass220_base64_balanced_trit5184_v1.wl`:
-  external connected kernel TestReport 20 succeeded, 0 failed.
+  external connected kernel TestReport 26 succeeded, 0 failed.
 - Candidate HNAN phase bridge now validates full radix roundtrip before
   reporting success; HNAN existing center and phase-difference provenance
   remain unchanged.
@@ -134,7 +140,8 @@ Proof scope:
 - Universal over all 2^5184 *binary input patterns* through the admitted
   eight-pair codebook, not merely sample frames.
 - Does NOT claim a bijection from all 3^3456 unrestricted trit sequences
-  back into 5184 bits. The 9th pair is not part of this radix source image.
+  back into 5184 bits. The 9th pair is the HNAN center and is not part
+  of the eight-address *binary ingress* image.
 - Does NOT claim that a standalone 72-character Hash72 digest inverts
   arbitrary raw bits. Hash72 hydration remains its existing typed
   repository-owned separate law.
@@ -143,7 +150,7 @@ Proof scope:
 
 Validation:
 - Local isolated candidate codec: 11 passed.
-- Connected Wolfram radix proof: 20/20 passed.
+- Connected Wolfram tensor-addressed radix proof: 26/26 passed.
 - Existing Wolfram HNAN phase proof: 21/21 passed.
 - Pinned Lean CI / dependency-scoped Python tests pending GitHub Actions.
 
@@ -151,3 +158,33 @@ Restart:
 - Branch `pass220/hnan-phase5184-lossless-bridge-20261011`.
 - PR #771 into main; inspect latest head/CI, repair forward only impacted
   items, commit then merge/verify main once accepted.
+
+## Superseding exact HNAN-centered tensor address map
+
+```
+  3bit        Lo Shu cell    Ordered native expression    Trit coordinate
+   000             4          xy                           (-1,-1)
+   001             9          x+y                          (-1,0)
+   010             2          yx                           (-1,+1)
+   011             3          xy-zw                        (0,-1)
+   HNAN            5          x+y-z-w+xy+yx-zw-wz          (0,0)
+   100             7          wz-yx                        (0,+1)
+   101             8          wz                           (+1,-1)
+   110             1          z+w                          (+1,0)
+   111             6          zw                           (+1,+1)
+```
+
+The center invokes `hnan_gate(1,0)` and inherits its typed EmptySet
+denominator, native order, and xy+epsilon terminal semantics from existing
+Pass 219; it is neither an invalid trit code nor an invented scalar value.
+The ordered tensor in the image, not a generic radix enumeration,
+determines the binary-to-balanced-trit codebook. The 64-state Base64 sextet
+bundling remains an exact carrier over two *outer* addressed 3-bit groups.
+
+Additional checks: Wolfram nine-address source mapping and tensor source
+identity, 26/26; Lean total typed nine-state encoder/decoder proof authored
+and awaiting pinned kernel CI; Python nine-source-cell mapping / inherited
+HNAN AST conformance added.
+
+Authority boundary unchanged: no parallel HNAN, VM81, Hash72 or Hash216
+commit path. Resume from PR #771 branch head and inspect CI.
