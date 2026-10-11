@@ -10,6 +10,14 @@
 static uint8_t canonical[5184U],malformed[5184U];
 static uint8_t offsets[81U],recovered[81U],rejected[81U];
 static uint8_t shared[5184U+81U];
+static union {
+ size_t aligned_size;
+ uint8_t source_digits[81U];
+} alias_length_source;
+static union {
+ size_t aligned_size;
+ uint8_t encoded_bytes[5184U];
+} alias_length_destination;
 
 static int entirely_zero(const uint8_t *buffer,size_t count) {
  size_t i;
@@ -114,6 +122,42 @@ int main(int argc,char **argv) {
    offsets,canonical,sizeof(canonical),&out_length)!=HHS_EXACT_STATUS_OK &&
    entirely_equal(canonical,sizeof(canonical),0xA5U),
    "last invalid offset rejected before any output byte");
+ offsets[80]=0U;
+ /* out_length aliases source offsets: old implementation wrote 5184 before
+  * reading the offsets, which could corrupt their bytes silently. */
+ memset(&alias_length_source,0,sizeof(alias_length_source));
+ memset(canonical,0xA5,sizeof(canonical));
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+    alias_length_source.source_digits,canonical,sizeof(canonical),
+    &alias_length_source.aligned_size)==HHS_EXACT_STATUS_INVALID_ARGUMENT,
+    "length pointer inside source offsets rejected");
+ CHECK(entirely_zero(alias_length_source.source_digits,81U) &&
+       entirely_equal(canonical,sizeof(canonical),0xA5U),
+       "length alias rejection never mutates source or destination");
+
+ /* out_length aliases encoded output: old code could produce a mismatched
+  * exact string by overwriting a segment of the emitted token stream. */
+ memset(&alias_length_destination,0xA5,sizeof(alias_length_destination));
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+    offsets,alias_length_destination.encoded_bytes,
+    sizeof(alias_length_destination.encoded_bytes),
+    &alias_length_destination.aligned_size)==HHS_EXACT_STATUS_INVALID_ARGUMENT,
+    "length pointer inside emitted carrier rejected");
+ CHECK(entirely_equal(alias_length_destination.encoded_bytes,5184U,0xA5U),
+       "length alias rejection preserves all destination bytes");
+
+ /* A malformed last digit must leave both the output buffer and the
+  * independent required-length field untouched. */
+ offsets[80]=9U;
+ out_length=SIZE_MAX-42U;
+ memset(canonical,0xA5,sizeof(canonical));
+ CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_emit(
+    offsets,canonical,sizeof(canonical),&out_length)==
+        HHS_EXACT_STATUS_INVARIANT_FAILURE,
+    "invalid last digit rejected without publishing a length");
+ CHECK(out_length==SIZE_MAX-42U &&
+       entirely_equal(canonical,sizeof(canonical),0xA5U),
+       "malformed input never changes either output parameter");
  offsets[80]=0U;
  CHECK(hhs_exact_pass220_ordered4x4_i001_offsets_parse(
    NULL,5184U,rejected)==HHS_EXACT_STATUS_INVALID_ARGUMENT &&
