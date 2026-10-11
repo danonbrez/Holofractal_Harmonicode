@@ -20,6 +20,35 @@
      AUDIO_CLOCK.laneCells!==AUDIO_CLOCK.hash72Cells ||
      AUDIO_CLOCK.pairedParticles!==2*AUDIO_CLOCK.laneCells)
     throw new Error("HHS audio projection cardinality violated");
+
+  /* Full-saturation Q144 color spectrum. Each Q144 index is retained as
+     an integer phase address; RGB is derived only for the display. */
+  const Q144_RGB=new Float32Array(144*3);
+  for(let q=0;q<144;q++){
+    const sector=Math.floor(q/24), fraction=(q%24)/24;
+    let r=0,g=0,b=0;
+    if(sector===0){r=1;g=fraction;}
+    else if(sector===1){r=1-fraction;g=1;}
+    else if(sector===2){g=1;b=fraction;}
+    else if(sector===3){g=1-fraction;b=1;}
+    else if(sector===4){r=fraction;b=1;}
+    else {r=1;b=1-fraction;}
+    Q144_RGB[q*3]=r;Q144_RGB[q*3+1]=g;Q144_RGB[q*3+2]=b;
+  }
+  function q144Index(address,sample,rms,frame,bus){
+    /* No commutation or scalarization of HHS tensor operands. These are
+       raster-only hue addresses with the declared reciprocal +72 turn. */
+    const original=((Math.trunc(address)%144)+144)%144;
+    const audioStep=Math.round(finite(sample)*36)+Math.round(finite(rms)*36);
+    return ((original+(frame%144)+audioStep+(bus?72:0))%144+144)%144;
+  }
+  function q144Css(q,alpha){
+    const i=((Math.trunc(q)%144)+144)%144*3;
+    return "rgba("+Math.round(Q144_RGB[i]*255)+","+
+      Math.round(Q144_RGB[i+1]*255)+","+
+      Math.round(Q144_RGB[i+2]*255)+","+
+      clamp(alpha,0,1).toFixed(3)+")";
+  }
   const state={
     active:false, geometryEnabled:false, gain:1.25,
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
@@ -308,16 +337,15 @@
     const sample=bus?state.frameR[local%AUDIO_CLOCK.samplesPerFrame]:
                      state.frameL[local%AUDIO_CLOCK.samplesPerFrame];
     const rms=bus?state.frameRmsR:state.frameRmsL;
-    const heat=clamp(Math.sqrt(rms)*2.1+Math.abs(sample)*0.65,0,1);
-    const bright=0.42+0.58*heat;
-    if(bus===0)color.setRGB(
-      clamp(base.r*bright+heat*0.22,0,1),
-      clamp(base.g*bright+heat*0.72,0,1),
-      clamp(base.b*bright+heat*0.95,0,1));
-    else color.setRGB(
-      clamp(base.r*bright+heat*0.93,0,1),
-      clamp(base.g*bright+heat*0.23,0,1),
-      clamp(base.b*bright+heat*0.75,0,1));
+    const phase=(p.userData&&Number.isInteger(p.userData.q144))?
+      p.userData.q144:(idx%144);
+    const q=q144Index(phase,sample,rms,Math.max(0,state.lastSignalFrame),bus);
+    const c=q*3;
+    const brightness=clamp(0.12+Math.sqrt(rms)*1.15+
+      Math.abs(sample)*0.65,0.12,1);
+    color.setRGB(Q144_RGB[c]*brightness,
+                 Q144_RGB[c+1]*brightness,
+                 Q144_RGB[c+2]*brightness);
     return color;
   }
   function report(message){
@@ -557,8 +585,14 @@
     const left=18,right=W-18,width=Math.max(1,right-left);
     const lower=Math.max(65,H-110),baselineL=lower-35,baselineR=lower+30;
     const waveformLength=state.buffer ? N : AUDIO_CLOCK.samplesPerFrame;
-    const buses=[{data:state.buffer?state.peaksL:state.frameL,y:baselineL,color:"#43d7fb"},
-                 {data:state.buffer?state.peaksR:state.frameR,y:baselineR,color:"#d28cff"}];
+    const hueFrame=Math.max(0,clock.frame);
+    const buses=[{
+      data:state.buffer?state.peaksL:state.frameL,y:baselineL,
+      color:q144Css(q144Index(0,state.frameL[0],state.frameRmsL,hueFrame,0),.85)
+    },{
+      data:state.buffer?state.peaksR:state.frameR,y:baselineR,
+      color:q144Css(q144Index(0,state.frameR[0],state.frameRmsR,hueFrame,1),.85)
+    }];
     ctx.lineWidth=1;
     for(const bus of buses){
       ctx.strokeStyle=bus.color;ctx.globalAlpha=0.55;
@@ -594,40 +628,43 @@
     events.length=write;
     const cells=crossingLightingCells(
       events.length?events:state.frameCrossings,clock.frame);
-    /* Full-scene illumination is distinct from bottom waveform tracing.
-       Stereo RMS drives two additive glow fields; zero crossings add small
-       phase-offset flashes. This is raster-only; MeshBasicMaterial itself
-       cannot react to Three.js PointLight. */
+    /* No torus/donut/circular halo. Stereo RMS powers broad linear
+       illumination bands. Every zero-crossing phase paints a narrow,
+       sample-clock-positioned linear light column across the particle
+       field. All hues come from Q144 PCM phase, not fixed RGB pastels. */
     ctx.globalCompositeOperation="lighter";
     const screenEnergy=[state.frameRmsL,state.frameRmsR];
     for(let bus=0;bus<2;bus++){
       const energy=clamp(Math.sqrt(screenEnergy[bus])*1.8,0,1);
       if(energy<0.012)continue;
-      const x=W*(bus===0?.37:.63), y=H*.47;
-      const radius=Math.max(125,Math.min(W,H)*(.25+energy*.45));
-      const gradient=ctx.createRadialGradient(x,y,0,x,y,radius);
-      const color=bus?"184,77,255":"38,198,255";
-      gradient.addColorStop(0,"rgba("+color+","+(energy*.46)+")");
-      gradient.addColorStop(.45,"rgba("+color+","+(energy*.20)+")");
-      gradient.addColorStop(1,"rgba("+color+",0)");
+      const sample=bus?state.frameR[367]:state.frameL[367];
+      const hue=q144Index(0,sample,screenEnergy[bus],clock.frame,bus);
+      const sweep=(clock.frame%144)/144*Math.PI*2;
+      const x=W*((bus===0?.3:.7)+Math.sin(sweep+bus*Math.PI)*.12);
+      const extent=W*(.12+energy*.18);
+      const gradient=ctx.createLinearGradient(x-extent,0,x+extent,0);
+      gradient.addColorStop(0,q144Css(hue,0));
+      gradient.addColorStop(.5,q144Css(hue,energy*.35));
+      gradient.addColorStop(1,q144Css(hue,0));
       ctx.fillStyle=gradient;
-      ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
+      ctx.fillRect(x-extent,0,extent*2,H);
     }
     for(let bus=0;bus<2;bus++){
-      for(let phase=0;phase<72;phase++){
+      for(let phase=0;phase<AUDIO_CLOCK.phaseBins;phase++){
         const strength=cells[bus][phase];
         if(strength<0.02)continue;
-        const phaseAngle=phase/72*Math.PI*2;
-        const x=W*.5+Math.cos(phaseAngle+bus*Math.PI)*W*.23;
-        const y=H*.48+Math.sin(phaseAngle+bus*Math.PI)*H*.22;
-        const radius=16+strength*Math.min(W,H)*.16;
-        const gradient=ctx.createRadialGradient(x,y,0,x,y,radius);
-        const color=bus?"200,120,255":"65,215,255";
-        gradient.addColorStop(0,"rgba("+color+","+(strength*0.7)+")");
-        gradient.addColorStop(0.4,"rgba("+color+","+(strength*0.27)+")");
-        gradient.addColorStop(1,"rgba("+color+",0)");
+        /* Two complementary linear phase lanes, not 72 markers in a ring. */
+        const cell=phase+bus*AUDIO_CLOCK.phaseBins;
+        const x=W*(cell+.5)/144;
+        const sample=bus?state.frameR[phase]:state.frameL[phase];
+        const hue=q144Index(phase,sample,screenEnergy[bus],clock.frame,bus);
+        const extent=2+strength*12;
+        const gradient=ctx.createLinearGradient(x-extent,0,x+extent,0);
+        gradient.addColorStop(0,q144Css(hue,0));
+        gradient.addColorStop(.5,q144Css(hue,strength*.68));
+        gradient.addColorStop(1,q144Css(hue,0));
         ctx.fillStyle=gradient;
-        ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
+        ctx.fillRect(x-extent,0,extent*2,H);
       }
     }
     ctx.globalCompositeOperation="source-over";
@@ -734,7 +771,7 @@
   window.HHSAudioViz=Object.freeze({
     busPair:PAIR,get active(){return state.active;},
     get geometryEnabled(){return state.geometryEnabled;},
-    projectMatrix,projectColor,bindParticles,peakEnvelope,crossingsFromBlock,
+    projectMatrix,projectColor,q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
@@ -745,6 +782,7 @@
       geometryEnabled:state.geometryEnabled,
       frameSignalReady:state.frameSignalReady,
       visualSource:state.renderSource,
+      palette:"Q144-full-spectrum-audio-phase",donut:false,
       frameRmsL:state.frameRmsL,frameRmsR:state.frameRmsR,
       particleVisualFrames:state.particleVisualFrames,
       liveFrameCount:state.liveFrameCount,

@@ -77,7 +77,7 @@ class El {
 }
 const canvasCtx={
  setTransform(){},clearRect(){stats.draw++},beginPath(){},moveTo(){},lineTo(){},stroke(){},
- fillRect(){},createRadialGradient(...p){stats.glow.push(p);return {addColorStop(){}}}
+ fillRect(){},createLinearGradient(...p){stats.glow.push(p);return {addColorStop(){}}}
 };
 for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay","audioVizStop",
  "audioVizGain","audioVizStatus","audioVizClock","audioVizGainValue"])
@@ -141,8 +141,8 @@ vm.runInNewContext(src,{
  assert.notEqual(left.elements[12],10);
  assert.notEqual(right.elements[12],10);
  assert.notEqual(a.r,b.r);
- assert.ok(stats.glow.some(args=>args[2]===0 &&
-  args[0]>150 && args[0]<750),"glow must be in full scene");
+ assert.ok(stats.glow.some(args=>args[1]===0 && args[3]===0 &&
+  args[0]>0 && args[2]<900),"linear light columns must cross the full scene");
  assert.ok(stats.glow.length>=2);
  assert.ok(viz.diagnostics.frameRmsL>.1);
  assert.ok(viz.diagnostics.frameRmsR>.1);
@@ -175,7 +175,7 @@ class El {
  getContext(){return canvas}
 }
 const canvas={setTransform(){},clearRect(){},beginPath(){},moveTo(){},
- lineTo(){},stroke(){},fillRect(){},createRadialGradient(){
+ lineTo(){},stroke(){},fillRect(){},createLinearGradient(){
  glow++;return {addColorStop(){}}}};
 for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay","audioVizStop",
  "audioVizGain","audioVizStatus","audioVizClock","audioVizGainValue"])
@@ -224,4 +224,41 @@ vm.runInNewContext(src,{window:win,document:doc,URL:URLMock,
  assert.ok(glow>2);
  assert.equal(els.audioVizPlayer.paused,false);
 })().catch(e=>{console.error(e);process.exitCode=1});
+""")
+
+
+def test_audio_q144_full_spectrum_changes_with_pcm_and_has_no_donut():
+    source=BRIDGE.read_text(encoding="utf-8")
+    html=HTML.read_text(encoding="utf-8")
+    assert "createRadialGradient" not in source
+    assert "phaseAngle=phase/72" not in source
+    assert "Math.cos(phaseAngle" not in source
+    assert "Math.sin(phaseAngle" not in source
+    assert 'ctx.createLinearGradient(x-extent,0,x+extent,0)' in source
+    assert 'const Q144_RGB=new Float32Array(144*3);' in source
+    assert 'const q=q144Index(phase,sample,rms' in source
+    assert 'audioVisual.projectColor(p,particleAudioColor)' in html
+    _node_run(r"""
+const fs=require("fs"),vm=require("vm"),assert=require("assert");
+const source=fs.readFileSync("examples/ParticleSimulationAudioBridge.js","utf8");
+const win={},doc={readyState:"loading",addEventListener(){}};
+vm.runInNewContext(source,{window:win,document:doc,
+ Float32Array,WeakMap,Array,Math,Number,Object,isFinite});
+const api=win.HHSAudioViz;
+const css=Array.from({length:144},(_,q)=>api.q144Css(q,1));
+assert.equal(new Set(css).size,144);
+for(const q of [0,7,24,40,72,101,143]){
+ const front=api.q144Index(q,.37,.21,47,0);
+ const reciprocal=api.q144Index(q,.37,.21,47,1);
+ assert.equal(reciprocal,(front+72)%144);
+}
+assert.equal(api.q144Css(0,1),"rgba(255,0,0,1.000)");
+assert.equal(api.q144Css(48,1),"rgba(0,255,0,1.000)");
+assert.equal(api.q144Css(96,1),"rgba(0,0,255,1.000)");
+assert.notEqual(api.q144Index(21,-.5,.2,0,0),
+ api.q144Index(21,.5,.2,0,0));
+assert.notEqual(api.q144Index(21,.3,.2,0,0),
+ api.q144Index(21,.3,.2,1,0));
+assert.equal(api.diagnostics.donut,false);
+assert.equal(api.diagnostics.palette,"Q144-full-spectrum-audio-phase");
 """)
