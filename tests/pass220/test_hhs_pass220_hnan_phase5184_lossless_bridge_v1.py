@@ -32,6 +32,10 @@ def test_arbitrary_raw_5184_recovery_without_digest_loss(seed: bytes) -> None:
     assert bridge.recover_raw(witness) == raw
     assert witness["hnan_invariants_pass"] is True
     assert witness["phase_difference_exact"] is True
+    assert witness["radix_binary3_groups"] == 1728
+    assert witness["radix_balanced_trits"] == 3456
+    assert witness["radix_base64_sextets"] == 864
+    assert witness["base64_trinary_roundtrip_exact"] is True
     assert len(witness["phase_difference_witnesses"]) == 20
     assert all(len(row) == 3 for row in witness["phase_difference_witnesses"])
     assert all((right + delta) % 72 == left
