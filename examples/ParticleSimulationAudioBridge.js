@@ -61,12 +61,16 @@
     yPlane:"ORTHOGONAL_YW_CCW",wPlane:"ORTHOGONAL_YW_CW",
     projectionOnly:true,canonicalMutationAuthority:false
   });
+  const GEOMETRY_GAIN=Object.freeze({defaultValue:0.020,max:0.050,step:0.001});
+  /* Light-emission gain remains independent of the geometry-normalization
+     control, so a subtle physical silhouette does not erase the soft glow. */
+  const HALO_EMISSION_GAIN=0.40;
   const geometryScratch=new Float32Array(3);
   const HANN_735=new Float32Array(AUDIO_CLOCK.samplesPerFrame);
   for(let i=0;i<HANN_735.length;i++)
     HANN_735[i]=0.5-0.5*Math.cos(2*Math.PI*i/(HANN_735.length-1));
   const state={
-    active:false, geometryEnabled:false, gain:0.4,
+    active:false, geometryEnabled:false, gain:GEOMETRY_GAIN.defaultValue,
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
     crossingEvents:[], sampleRate:0, buffer:null, context:null, source:null,
     processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
@@ -89,7 +93,7 @@
      0=displacement, 1=cellular boundary scale, 2=particle scale.
      The visual boundary radius always grows at least as fast as particle size. */
   function amplitudeGeometry(sample,rms,gain,out){
-    const g=clamp(finite(gain),0,5);
+    const g=clamp(finite(gain),0,GEOMETRY_GAIN.max);
     const energy=clamp(Math.sqrt(Math.max(0,finite(rms)))*2.2,0,1);
     const transient=clamp(Math.abs(finite(sample))*2.5,0,1);
     out[0]=g*(energy*2.8+transient*3.2);
@@ -569,7 +573,7 @@
     const sample=bus?state.frameR[k%AUDIO_CLOCK.samplesPerFrame]:
                      state.frameL[k%AUDIO_CLOCK.samplesPerFrame];
     const rms=bus?state.frameRmsR:state.frameRmsL;
-    return clamp(state.gain*(.48*Math.sqrt(Math.max(0,rms))+
+    return clamp(HALO_EMISSION_GAIN*(.48*Math.sqrt(Math.max(0,rms))+
            .42*Math.abs(sample)),0,.75);
   }
   /* CPU reference for the instanced fragment smoothstep^2 falloff.
@@ -1008,9 +1012,9 @@
     player.addEventListener("seeked",resetLightingClock);
     player.addEventListener("ended",resetLightingClock);
     gain.addEventListener("input",()=>{
-      state.gain=clamp(Number(gain.value)||0,0,5);
+      state.gain=clamp(Number(gain.value)||0,0,GEOMETRY_GAIN.max);
       const out=document.getElementById("audioVizGainValue");
-      if(out)out.textContent=state.gain.toFixed(2);
+      if(out)out.textContent=state.gain.toFixed(3);
     });
     window.addEventListener("pagehide",()=>{
       player.pause();
@@ -1043,6 +1047,8 @@
       visualSource:state.renderSource,
       palette:"Q144-full-spectrum-audio-phase",donut:false,
        geometryNormalizationGain:state.gain,
+       geometryNormalizationGainMax:GEOMETRY_GAIN.max,
+       haloEmissionGain:HALO_EMISSION_GAIN,
        cellularBoundaryAmplitudeResponsive:true,
        particleSizeAmplitudeResponsive:true,
        harmonicColorWheel:true,

@@ -43,7 +43,7 @@ def test_visual_projection_is_reachable_in_canonical_renderer():
         'state.frameSignalReady=decodedWindow(state.audio) ||',
         'state.renderSource="live-analyser";',
         'ctx.globalCompositeOperation="lighter";',
-        'const x=W*((bus===0?.3:.7)+Math.sin(sweep+bus*Math.PI)*.12)',
+        'paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,',
         'state.frameCrossings=frameCrossingEvents',
     ):
         assert token in bridge,token
@@ -136,8 +136,8 @@ vm.runInNewContext(src,{
  viz.projectColor(pL,a);
  viz.projectColor(pR,b);
  raf();
- assert.ok(left.elements[0]>1.1);
- assert.ok(right.elements[0]>1.1);
+ assert.ok(left.elements[0]>1.001 && left.elements[0]<1.161);
+ assert.ok(right.elements[0]>1.001 && right.elements[0]<1.161);
  assert.notEqual(left.elements[12],10);
  assert.notEqual(right.elements[12],10);
  assert.notEqual(a.r,b.r);
@@ -236,7 +236,7 @@ def test_audio_q144_full_spectrum_changes_with_pcm_and_has_no_donut():
     assert "Math.sin(phaseAngle" not in source
     assert 'paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,' in source
     assert 'const Q144_RGB=new Float32Array(144*3);' in source
-    assert 'const q=q144Index(phase,sample,rms' in source
+    assert 'const q=q144Index(2*state.gyroPhase72+phase,sample,rms,0,bus);' in source
     assert 'audioVisual.projectColor(p,particleAudioColor)' in html
     _node_run(r"""
 const fs=require("fs"),vm=require("vm"),assert=require("assert");

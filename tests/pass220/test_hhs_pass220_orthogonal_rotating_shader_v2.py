@@ -18,7 +18,7 @@ def test_embedded_mirror_and_separate_physics_authority():
     assert 'ctx.createLinearGradient(x-extent,0,x+extent,0)' not in bridge
     assert "function gyroscopicGradientAxes72(" in bridge
     assert "if(!advanceLightingGate(clock.frame))return;" in bridge
-    assert 'value="0.40"' in html
+    assert 'max="0.05" step="0.001" value="0.020"' in html
     assert 'canonicalMutation:false' in bridge
     assert 'p.position.' not in bridge
     # The 5,184-tick physical feedback is not permitted to leak into this UI-only pass.

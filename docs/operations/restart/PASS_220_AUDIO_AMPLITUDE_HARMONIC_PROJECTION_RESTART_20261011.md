@@ -187,3 +187,32 @@ and never redundantly creates or uploads a second 10,368-entry RGB
 buffer. It preserves rotor-phase color equality while leaving the
 base particle instancing untouched. Renderer compatibility must
 still be checked on actual WebGL hardware/browser.
+
+## I084 — geometry gain limited to 0.05 (2026-10-11)
+
+User requests a much subtler geometry normalization, with maximum ~0.05.
+Branch `agent/pass220-particle-centered-halo-gyro-light-20261011`; pre-change PR head `9d62717d1dbab40fa9c643df986e1959897a3fa1`; merge target main
+`6c452d4abe80eff0c77f58a12b43f2902020b5b1`.
+
+New UI default `0.020`, range `[0,0.050]`, increment `0.001`.
+Runtime GEOMETRY_GAIN uses those bounds, clamps direct calls to 0.050
+(including out-of-range programmatic access), and shows three decimal
+places. The existing amplitude-to-cell-boundary / particle-size / visible
+displacement coefficients and physical boundary isolation remain
+unchanged; thus the maximum output envelope is bounded by a gain
+of 0.050 rather than previously 5.00.
+
+**Lighting deliberately decoupled:** independent `HALO_EMISSION_GAIN=0.40`
+preserves the audible per-particle soft opacity halo even when geometry
+is visually tiny. Stereo energy still powers the glow, which vanishes
+for inactive/zero PCM. This does not create a second physical gain or
+weaken the native physics mutation boundary.
+
+Repair-forward of stale assertions found in earlier PR #766 scope run
+`38132228711`: old vertical x-band locator and original pre-gyro
+Q144 pixel-color function were already replaced by the new phase-locked
+rotating implementations. Updated only impacted tests and scaled the
+expected particle matrix range to the new small max; kept negative
+canonical-no-mutation assertions. Exact-head Node/pytest and source
+integrity must pass before merge, and real GPU device evidence remains
+unverified.

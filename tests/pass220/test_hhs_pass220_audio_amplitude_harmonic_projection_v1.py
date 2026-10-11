@@ -12,9 +12,9 @@ def test_mirrored_projection_low_gain_and_pure_render_authority():
     js=BRIDGE.read_text(encoding="utf8")
     inline=re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>',html)
     assert inline and inline.group(1).strip()==js.strip()
-    assert 'id="audioVizGainValue">0.40</output>' in html
-    assert 'value="0.40" style="width:100%;"' in html
-    assert 'geometryEnabled:false, gain:0.4' in js
+    assert 'id="audioVizGainValue">0.020</output>' in html
+    assert 'min="0" max="0.05" step="0.001" value="0.020"' in html
+    assert 'geometryEnabled:false, gain:GEOMETRY_GAIN.defaultValue' in js
     assert 'x*cellularBoundaryScale' in js
     assert 'e[0]*=particleSize' in js
     assert 'state.harmonicPhase[bus]' in js
@@ -36,8 +36,11 @@ function sizes(sample,rms,gain){
  const x=new Float32Array(3);viz.amplitudeGeometry(sample,rms,gain,x);
  return Array.from(x);
 }
-const zero=sizes(0,0,.4),noGain=sizes(.8,.6,0);
-const quiet=sizes(.05,.01,.4),loud=sizes(.7,.4,.4);
+const zero=sizes(0,0,.02),noGain=sizes(.8,.6,0);
+const quiet=sizes(.05,.01,.02),loud=sizes(.7,.4,.02);
+const max=sizes(1,1,.05),clamped=sizes(1,1,5);
+assert.deepStrictEqual(clamped,max,"geometry must fail closed at .05");
+assert.ok(max[1]<=1.221&&max[2]<=1.161,"amplitude scale bounded");
 assert.deepStrictEqual(zero,[0,1,1]);
 assert.deepStrictEqual(noGain,[0,1,1]);
 assert.ok(loud[0]>quiet[0]&&loud[1]>quiet[1]&&loud[2]>quiet[2]);
@@ -55,7 +58,9 @@ assert.equal(viz.harmonicStep(0,4),0);
 const a=viz.q144Index(12,.2,.1,3,0);
 assert.notEqual(viz.q144Index(12,.2,.1,8,0),a);
 assert.equal(viz.q144Index(12,.2,.1,3,1),(a+72)%144);
-assert.equal(viz.diagnostics.geometryNormalizationGain,.4);
+assert.equal(viz.diagnostics.geometryNormalizationGain,.02);
+assert.equal(viz.diagnostics.geometryNormalizationGainMax,.05);
+assert.equal(viz.diagnostics.haloEmissionGain,.4);
 assert.equal(viz.diagnostics.harmonicColorWheel,true);
 assert.equal(viz.diagnostics.cellularBoundaryAmplitudeResponsive,true);
 assert.equal(viz.diagnostics.canonicalMutation,false);

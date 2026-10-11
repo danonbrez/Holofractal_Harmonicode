@@ -30,6 +30,9 @@ def test_batch_halo_is_gpu_instanced_centered_and_noncanonical():
     ):
         assert token in html,token
     assert '"attribute vec3 instanceColor;"' not in html
+    assert "HALO_EMISSION_GAIN=0.40" in bridge
+    assert "return clamp(HALO_EMISSION_GAIN*" in bridge
+    assert "return clamp(state.gain*" not in bridge
     assert "THREE.AdditiveBlending" in html
     assert "transparent:true,depthTest:true,depthWrite:false" in html
     assert "mesh.setMatrixAt(i,particleBatchMatrix);" in html
@@ -61,6 +64,8 @@ assert.equal(p.oppositeHuePairs,true);
 const q=a.q144Index(2*18+0,.3,.2,0,0);
 assert.equal(p.leftHues[0],q);
 assert.equal(a.q144Index(2*18,.3,.2,0,1),(q+72)%144);
+assert.equal(a.diagnostics.geometryNormalizationGainMax,.05);
+assert.equal(a.diagnostics.haloEmissionGain,.4);
 assert.equal(a.diagnostics.particleHalosPhaseLocked,true);
 assert.equal(a.diagnostics.allLightBandsRotatingWithGyro,true);
 assert.equal(a.diagnostics.canonicalMutation,false);
