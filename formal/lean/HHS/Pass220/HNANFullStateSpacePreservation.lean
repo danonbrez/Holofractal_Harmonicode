@@ -128,6 +128,26 @@ def decodeState (encoded : EncodedState) : FullState :=
     zwLane := unpackFrame encoded.zwCode
   }
 
+/-- Reject malformed trit codes and altered cross-lane phase witnesses.
+    The total decoder below is valid only under this admission predicate. -/
+def admissibleEncoded (e : EncodedState) : Prop :=
+  (∀ i : Address, unpackTrit (e.xyCode i) ≠ none ∧
+      unpackTrit (e.zwCode i) ≠ none) ∧
+  (∀ i : Address, e.difference i =
+      relativePhase ((decodeState e).xyLane i)
+        ((decodeState e).zwLane i))
+
+theorem encodedStatesAreAdmissible (state : FullState) :
+    admissibleEncoded (encodeState state) := by
+  constructor
+  · intro i
+    constructor
+    · simp [encodeState, packFrame, tritRoundTrip]
+    · simp [encodeState, packFrame, tritRoundTrip]
+  · intro i
+    simp [encodeState, decodeState, unpackFrame, packFrame,
+      tritAdmittedRoundTrip]
+
 theorem fullStateRoundTrip (state : FullState) :
     decodeState (encodeState state) = state := by
   cases state with
