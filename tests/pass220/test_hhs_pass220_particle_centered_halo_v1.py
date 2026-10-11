@@ -17,7 +17,8 @@ def test_batch_halo_is_gpu_instanced_centered_and_noncanonical():
         "new THREE.ShaderMaterial({",
         "new THREE.InstancedMesh(geometry,material,count)",
         "halo.instanceMatrix=mesh.instanceMatrix;",
-        "halo.mesh.instanceColor=mesh.instanceColor;",
+        'halo.mesh.geometry.setAttribute("haloColor",mesh.instanceColor);',
+        '"attribute vec3 haloColor;"',
         "halo.glowStrength.array[i]=glowEnabled?",
         "audioVisual.projectParticleGlow(p):0;",
         "halo.mesh.visible=glowEnabled;",
@@ -28,6 +29,7 @@ def test_batch_halo_is_gpu_instanced_centered_and_noncanonical():
         "physicsFeedbackEnabled:false,vm81Admission:false",
     ):
         assert token in html,token
+    assert '"attribute vec3 instanceColor;"' not in html
     assert "THREE.AdditiveBlending" in html
     assert "transparent:true,depthTest:true,depthWrite:false" in html
     assert "mesh.setMatrixAt(i,particleBatchMatrix);" in html

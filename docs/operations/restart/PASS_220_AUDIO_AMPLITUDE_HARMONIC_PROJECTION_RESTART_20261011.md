@@ -175,3 +175,15 @@ ordered xy:zw alternation are deliberately NOT admitted by Canvas2D/
 WebGL visual state. They need a separately signed and replayable VM81
 observation ring, preserving exact tick count, stereo ancestry and
 noncommutative operator order; no bypass of native force authority.
+
+## Compatibility repair on PR #766
+
+The pinned Three.js r128 WebGLProgram injector may already declare
+`instanceColor` for instanced-color materials. To avoid duplicate GLSL
+attributes, the glow vertex shader uses a dedicated `haloColor`
+attribute, aliases the exact same existing mesh instance-color GPU
+buffer through `geometry.setAttribute("haloColor",mesh.instanceColor)`,
+and never redundantly creates or uploads a second 10,368-entry RGB
+buffer. It preserves rotor-phase color equality while leaving the
+base particle instancing untouched. Renderer compatibility must
+still be checked on actual WebGL hardware/browser.

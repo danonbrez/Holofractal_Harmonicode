@@ -165,14 +165,14 @@
         blending:THREE.AdditiveBlending,
         uniforms:{uHaloDiameter:{value:1.0}},
         vertexShader:[
-          "attribute vec3 instanceColor;",
+          "attribute vec3 haloColor;",
           "attribute float instanceGlow;",
           "uniform float uHaloDiameter;",
           "varying vec2 vUvHalo;",
           "varying vec3 vColorHalo;",
           "varying float vStrengthHalo;",
           "void main(){",
-          " vUvHalo=uv; vColorHalo=instanceColor;",
+          " vUvHalo=uv; vColorHalo=haloColor;",
           " vStrengthHalo=instanceGlow;",
           " vec4 center=modelViewMatrix*instanceMatrix*vec4(0.0,0.0,0.0,1.0);",
           " float size=length(instanceMatrix[0].xyz)*uHaloDiameter;",
@@ -250,7 +250,8 @@
       if(halo){
         /* The glow consumes the particle's identical GPU instance buffers,
            preserving position and the shader's reciprocal Q144 hue. */
-        halo.mesh.instanceColor=mesh.instanceColor;
+        if(halo.mesh.geometry.getAttribute("haloColor")!==mesh.instanceColor)
+          halo.mesh.geometry.setAttribute("haloColor",mesh.instanceColor);
         halo.glowStrength.needsUpdate=true;
       }
       if(mesh.instanceColor){
