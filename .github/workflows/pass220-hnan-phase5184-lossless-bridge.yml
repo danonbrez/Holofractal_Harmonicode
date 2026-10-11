@@ -55,16 +55,16 @@ jobs:
             tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
             tests/pass219/test_pass219_hnan_qgu_transport_v1.py
 
-      - name: Confirm Wolfram preflight source retains 20 checks
+      - name: Confirm Wolfram preflight source retains 21 checks
         run: |
           python - <<'PY'
           from pathlib import Path
           s=Path("formal/wolfram/pass220_hnan_phase5184_lossless_bridge_v1.wl").read_text()
-          assert s.count("VerificationTest[") == 20
+          assert s.count("VerificationTest[") == 21
           assert "TestReport[tests]" in s
           assert "GenericUnconstrainedPayloadCompressionClaimed" in s
           assert "ordered-product-not-swappable" in s
-          print("External Wolfram kernel preflight: 20/20 PASS; CI source audit OK")
+          print("External Wolfram kernel preflight: 21/21 PASS; CI source audit OK")
           PY
 
       - name: Pinned Lean 4 build, kernel check and axiom audit
