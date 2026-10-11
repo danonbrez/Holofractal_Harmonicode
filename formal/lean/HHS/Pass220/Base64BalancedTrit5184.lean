@@ -3,9 +3,10 @@ import HHS.Pass220.HNANPhase5184
 /-!
 # Pass 220: exact radix correspondence for full 5184-bit VM81 frames
 
-3 binary bits have eight states and encode as two balanced trits (nine
-possible codes), with the final code reserved. Two such octets constitute
-one six-bit Base64 sextet (64 states), represented by four trits.
+Three binary bits have eight outer tensor addresses, encoded by two balanced
+trits in the supplied 3x3 HNAN Lo Shu tensor. The ninth, central (0,0) pair
+is HNAN itself, not a spare or invalid state. Two such three-bit groups
+form one Base64 sextet (64 binary states), represented by four trits.
 
 This is a source-preserving ingress radix theorem; it neither rewrites
 ordered HNAN products nor claims digest-only Hash72 inversion.
@@ -20,39 +21,102 @@ deriving Repr, BEq, DecidableEq
 abbrev BinaryTriple := Bool × Bool × Bool
 abbrev TritPair := Trit × Trit
 
+/-- 3x3 tensor pair coordinates: -1/0/+1 in each dimension.
+    The central (.neutral,.neutral) is the existing HNAN gate. -/
 def encodeBits : BinaryTriple → TritPair
-  | (false, false, false) => (.negative, .negative)
-  | (false, false, true)  => (.negative, .neutral)
-  | (false, true, false)  => (.negative, .positive)
-  | (false, true, true)   => (.neutral, .negative)
-  | (true, false, false)  => (.neutral, .neutral)
-  | (true, false, true)   => (.neutral, .positive)
-  | (true, true, false)   => (.positive, .negative)
-  | (true, true, true)    => (.positive, .neutral)
+  | (false, false, false) => (.negative, .negative) -- xy
+  | (false, false, true)  => (.negative, .neutral)  -- x+y
+  | (false, true, false)  => (.negative, .positive) -- yx
+  | (false, true, true)   => (.neutral, .negative) -- xy-zw
+  | (true, false, false)  => (.neutral, .positive) -- wz-yx
+  | (true, false, true)   => (.positive, .negative) -- wz
+  | (true, true, false)   => (.positive, .neutral)  -- z+w
+  | (true, true, true)    => (.positive, .positive) -- zw
 
-def decodePair : TritPair → Option BinaryTriple
-  | (.negative, .negative) => some (false, false, false)
-  | (.negative, .neutral)  => some (false, false, true)
-  | (.negative, .positive) => some (false, true, false)
-  | (.neutral, .negative)  => some (false, true, true)
-  | (.neutral, .neutral)   => some (true, false, false)
-  | (.neutral, .positive)  => some (true, false, true)
-  | (.positive, .negative) => some (true, true, false)
-  | (.positive, .neutral)  => some (true, true, true)
-  | (.positive, .positive) => none
+/-- A genuine nine-state typed tensor address; the center is HNAN. -/
+inductive TensorAddress where
+  | binary (bits : BinaryTriple)
+  | hnan
+deriving Repr, BEq, DecidableEq
+
+def decodeCell : TritPair → TensorAddress
+  | (.negative, .negative) => .binary (false, false, false)
+  | (.negative, .neutral)  => .binary (false, false, true)
+  | (.negative, .positive) => .binary (false, true, false)
+  | (.neutral, .negative)  => .binary (false, true, true)
+  | (.neutral, .neutral)   => .hnan
+  | (.neutral, .positive) => .binary (true, false, false)
+  | (.positive, .negative) => .binary (true, false, true)
+  | (.positive, .neutral)  => .binary (true, true, false)
+  | (.positive, .positive) => .binary (true, true, true)
+
+def encodeCell : TensorAddress → TritPair
+  | .binary bits => encodeBits bits
+  | .hnan => (.neutral, .neutral)
+
+/-- Binary-only interpretation is undefined for HNAN; tensor decode is total. -/
+def decodePair (pair : TritPair) : Option BinaryTriple :=
+  match decodeCell pair with
+  | .binary bits => some bits
+  | .hnan => none
+
+theorem hnanCenterDecoded :
+    decodeCell (.neutral, .neutral) = .hnan := by
+  rfl
+
+theorem hnanCenterIsNotBinary :
+    decodePair (.neutral, .neutral) = none := by
+  rfl
+
+theorem allNineTensorStatesRoundTrip :
+    ∀ cell : TensorAddress, decodeCell (encodeCell cell) = cell := by
+  decide
+
+theorem allNineTritPairsRoundTrip :
+    ∀ pair : TritPair, encodeCell (decodeCell pair) = pair := by
+  decide
+
+/-- The ordered x/y/z/w phase source is retained, not rearranged. -/
+def hnanTensorSource : List (List String) :=
+  [["xy", "x+y", "yx"],
+   ["xy-zw", "x+y-z-w+xy+yx-zw-wz", "wz-yx"],
+   ["wz", "z+w", "zw"]]
+
+def binaryAddressGrid : List (List String) :=
+  [["000", "001", "010"],
+   ["011", "HNAN", "100"],
+   ["101", "110", "111"]]
+
+def loShuPositions : List (List Nat) :=
+  [[4, 9, 2], [3, 5, 7], [8, 1, 6]]
+
+theorem nativeHNANTensorOrder :
+    hnanTensorSource =
+      [["xy", "x+y", "yx"],
+       ["xy-zw", "x+y-z-w+xy+yx-zw-wz", "wz-yx"],
+       ["wz", "z+w", "zw"]] := by
+  rfl
+
+theorem nativeBinaryAddressGrid :
+    binaryAddressGrid =
+      [["000", "001", "010"],
+       ["011", "HNAN", "100"],
+       ["101", "110", "111"]] := by
+  rfl
+
+theorem nativeLoShuOrder :
+    loShuPositions =
+      [[4, 9, 2], [3, 5, 7], [8, 1, 6]] := by
+  rfl
 
 /-- Eight exact local inputs, verified by kernel-evaluable finite cases. -/
 theorem allThreeBitTriplesRoundTrip :
     ∀ bits : BinaryTriple, decodePair (encodeBits bits) = some bits := by
   decide
 
-theorem reservedNinthRejected :
-    decodePair (.positive, .positive) = none := by
-  rfl
-
-theorem reservedNinthNeverEmitted :
+theorem centerNotEmittedAsBinary :
     ∀ bits : BinaryTriple,
-      encodeBits bits ≠ (.positive, .positive) := by
+      encodeBits bits ≠ (.neutral, .neutral) := by
   decide
 
 /-- A total decoder is used only after the admitted-pair proof. -/
