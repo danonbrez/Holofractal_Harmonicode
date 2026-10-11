@@ -12,7 +12,6 @@ from typing import Any, Mapping
 
 from hhs_runtime.hhs_pass220_hnan_phase5184_lossless_bridge_v1 import (
     candidate_bridge,
-    recover_raw,
 )
 from hhs_runtime.hhs_pass220_i074_full_tensor_hnan_closure_hydration_v1 import (
     SCHEMA as I074_SCHEMA,
@@ -87,7 +86,14 @@ def execute_candidate(
         require_i065_palindrome=require_i065_palindrome,
         expand_generator=expand_hash72_on_demand,
     )
-    if recover_raw(bridge) != raw5184:
+    # candidate_bridge has already executed the mandatory I148 recovery
+    # and exact ternary radix inverse. Do not re-hydrate the same raw source
+    # a second time merely to check a freshly constructed local receipt.
+    if (
+        bridge["raw_bits"] != raw5184
+        or bridge["raw_roundtrip_exact"] is not True
+        or bridge["raw_sha256"] != sha256(raw5184.encode("ascii")).hexdigest()
+    ):
         raise Lane5HNANBindingError("RAW5184_NOT_RECOVERED")
     if bridge["hnan_invariants_pass"] is not True:
         raise Lane5HNANBindingError("HNAN_GATE_NOT_ADMITTED")
