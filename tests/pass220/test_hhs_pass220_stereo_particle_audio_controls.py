@@ -248,3 +248,74 @@ assert.ok(128*2<735);
 """
     run=subprocess.run([node,"-e",program],text=True,capture_output=True)
     assert run.returncode==0,run.stderr
+
+
+def test_audio_lighting_renders_only_at_sample_clock_frame_boundaries():
+    """Even under a faster/repeated RAF, a new draw requires 735 audio samples."""
+    node=shutil.which("node")
+    if not node:
+        pytest.skip("Node.js is not installed")
+    program=r"""
+const fs=require("fs"),vm=require("vm"),assert=require("assert");
+const bridge=fs.readFileSync("examples/ParticleSimulationAudioBridge.js","utf8");
+const nodes={},drawn=[];let callback,seconds=0;
+class Element {
+ constructor(id){this.id=id;this.style={};this.handlers={};this.paused=true;
+  this.ended=false;this.currentTime=0;this.duration=.05;}
+ addEventListener(k,cb){this.handlers[k]=cb;}
+ setAttribute(k,v){this[k]=v;}
+ getAttribute(k){return this[k]||null;}
+ load(){}
+ pause(){this.paused=true;this.handlers.pause?.();}
+ play(){this.paused=false;this.handlers.play?.();return Promise.resolve();}
+ getContext(){return ctx;}
+}
+const ctx={setTransform(){},clearRect(){drawn.push(seconds)},beginPath(){},
+ moveTo(){},lineTo(){},stroke(){},fillRect(){},
+ createRadialGradient(){return {addColorStop(){}}}};
+for(const id of ["audioVizPlayer","audioVizFile","audioVizPlay",
+ "audioVizStop","audioVizGain","audioVizStatus","audioVizGainValue",
+ "audioVizClock"])nodes[id]=new Element(id);
+const doc={readyState:"complete",getElementById:id=>nodes[id],
+  createElement:name=>new Element(name),body:{appendChild(){}}};
+const win={
+  innerWidth:800,innerHeight:600,devicePixelRatio:1,
+  performance:{now:()=>1000},addEventListener(){},
+  requestAnimationFrame(fn){callback=fn;},
+  AudioContext:class {
+    constructor(){this.sampleRate=44100;this.state="suspended";
+      this.currentTime=1;this.destination={};
+      this.audioWorklet={addModule:()=>new Promise(()=>{})};}
+    createMediaElementSource(){return {connect(){}};}
+    getOutputTimestamp(){return {contextTime:seconds,performanceTime:1000};}
+    resume(){this.state="running";return Promise.resolve();}
+  },
+  OfflineAudioContext:class {
+    decodeAudioData(){return Promise.resolve({numberOfChannels:2,
+      sampleRate:44100,duration:.05,
+      getChannelData(){return new Float32Array(3000).fill(.5);}});}
+  }
+};
+const URLMock={createObjectURL:()=>"blob:fake",revokeObjectURL(){}};
+vm.runInNewContext(bridge,{window:win,document:doc,
+ URL:URLMock,Blob,AudioWorkletNode:class{},Float32Array,WeakMap,
+ Array,Math,Number,Object,isFinite});
+(async()=>{
+ nodes.audioVizFile.files=[{name:"demo.wav",arrayBuffer:async()=>new ArrayBuffer(10)}];
+ nodes.audioVizFile.handlers.change();
+ for(let i=0;i<6;i++)await Promise.resolve();
+ assert.ok(win.HHSAudioViz.active);
+ nodes.audioVizPlay.handlers.click();
+ for(const frame of [0,0,1,3,3,4]){
+   seconds=frame/60;callback();
+ }
+ assert.deepStrictEqual(drawn.map(t=>Math.round(t*44100)),
+  [0,735,2205,2940]);
+ assert.equal(win.HHSAudioViz.diagnostics.visualFramesSkipped,1);
+ assert.equal(win.HHSAudioViz.diagnostics.audioFrame,4);
+ assert.equal(win.HHSAudioViz.diagnostics.clockSource,"output-timestamp");
+ assert.ok(nodes.audioVizClock.textContent.includes("735 samples"));
+})().catch(e=>{console.error(e);process.exitCode=1;});
+"""
+    run=subprocess.run([node,"-e",program],text=True,capture_output=True)
+    assert run.returncode==0,run.stderr
