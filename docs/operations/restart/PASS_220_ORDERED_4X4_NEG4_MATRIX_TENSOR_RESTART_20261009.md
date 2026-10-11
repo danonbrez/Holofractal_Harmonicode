@@ -870,3 +870,47 @@ gcc -std=c11 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
 \`\`\`
 
 No canonical Hash72/216 receipts are generated; all VM81 mutation and PQC signature gates remain external and authoritative only to the inherited signed kernel. Next execute exact-head CI repair-forward, and integrate authenticated registered rank/phase-action semantics on top of strict I001 carrier decoding rather than assuming arbitrary shape metadata is sufficient.
+
+
+## 2026-10-11 — completed native CI triage and scoped guard repair
+
+**Base main:** \`7fefacde360e6a5bb537cb01e94415c96430915b\`  
+**Continuation branch:** \`agent/pass220-ordered-4x4-neg4-tensor-20261009\`  
+**Merge target:** \`main\`  
+**Prior head:** \`ca44f8409572605836214456a5a8d82ef1e1e7fd\`  
+**Guard repair commit:** \`4fd09866eddb3a675c9249b18236d81c6284a095\`
+
+### Actual completed external CI evidence
+
+Native workflow \`38085844448\` on the prior head **completed with FAILURE**, not a hanging queue. Its \`scoped-hir-integrity\` job \`114312043593\` passed. Its native \`native-source-locked-lowering\` job \`114312043773\` failed after the following previously unverified stages had each **actually passed**:
+
+1. Exact ABI registration and no-floating-point guard at earlier stages.
+2. \`make c-abi\` shared native runtime compilation, linked native lowering and source probe.
+3. Native 15-opcode typed symbolic interpreter, source tamper, addressed 5184-character binding and inherited 216-index parent preflight.
+4. Native 64 source-ordered numerator terms and 16 ordered sums.
+5. Native denominator/RHS geometry and branch isolation.
+6. Native RNA/VM81 64-coordinate phase-address witness suite.
+7. Native whole-expression graph, 2 independent rank/action requests and fail-closed readiness regression.
+8. Native exact I001 81×64 carrier tests including Python \`serialize_offsets_5184\` fixture compatibility.
+
+The actual failure was the *final no-floating-point-source-text grep* in step “Native I001 exact rational 81x64 carrier and Python serializer compatibility”: it matched the exact English documentation comment at line 61 of \`hhs_runtime/include/hhs_pass220_ordered4x4_i001_carrier_v1.h\`:
+\`\`\`
+ * No float, no ordinary scalar normalization, no implied rank or equality.
+\`\`\`
+GitHub log line \`2026-10-11T04:48:01.966Z\` showed this comment as the sole forbidden type regex hit and then shell exit 1. It was **not a C compilation error** and did not demonstrate host floating-point usage. The actual header was repaired at \`4fd09866...\` to express the same prohibition without matching the C type keyword:
+\`\`\`
+ * No floating-point arithmetic, no scalar normalization, and no inferred rank/equality.
+\`\`\`
+The effective forbidden type guard remains unchanged. No application behavior, VM81 matrix/phase semantics or security flags were weakened.
+
+Because the job halted at this source-text check, the **new exhaustive 729-position native I001 inverse probe** and inherited Python/I077 regression at the end of the workflow were **SKIPPED**, not passed. Their pending status is preserved.
+
+Source-integrity workflow \`38085844433\` on the prior head **completed SUCCESS**. The green source-integrity result applies only to that exact SHA, not by inheritance to later commits.
+
+### Current external validation queue
+
+The automatic follow-up exact-head runs after repair are \`38116380355\` (native) and \`38116381402\` (source integrity), both last observed queued. Verify them at \`4fd09866...\` or latest restart checkpoint before promoting. Avoid rerunning previous completed workflow failures as the source changes render that attempt obsolete.
+
+### Next action
+
+Inspect follow-up exact-head native job to verify the *unchanged float guard* accepts the updated header, then validate the exhaustive I001 parser/encoder probe and final inherited I077 tests which the previous run skipped. Repair concrete scoped failures forward, commit and update this restart record. No signed tensor rank or actual matrix equality has yet been demonstrated; keep singleton signed VM81, Hash72 and Hash216 authority closed.
