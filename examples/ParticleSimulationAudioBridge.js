@@ -13,7 +13,8 @@
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
     crossingEvents:[], sampleRate:0, buffer:null, context:null, source:null,
     processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
-    waveCanvas:null, started:false, lastFrame:0, lastSample:[0,0], status:null
+    waveCanvas:null, started:false, lastFrame:0, lastSample:[0,0], status:null,
+    processorReady:null
   };
   function clamp(x,a,b){return Math.min(b,Math.max(a,x));}
   function finite(x){return Number.isFinite(x)?x:0;}
@@ -97,7 +98,12 @@
       enqueue(crossingsFromBlock(left,right,
         ev.playbackTime*context.sampleRate,context.sampleRate,state.lastSample));
     };
-    source.connect(processor);processor.connect(context.destination);
+    /* The audio source ALREADY connects directly to speakers. Observation
+       remains a zero-gain side branch, so analyzer failure cannot mute music. */
+    const silence=context.createGain();
+    silence.gain.value=0;
+    source.connect(processor);processor.connect(silence);
+    silence.connect(context.destination);
     return processor;
   }
   const WORKLET=("class HHSStereoCrossingWorklet extends AudioWorkletProcessor {\n"+
@@ -125,7 +131,11 @@
           numberOfInputs:1,numberOfOutputs:1,outputChannelCount:[2]
         });
         node.port.onmessage=e=>{if(e.data && e.data.crossings)enqueue(e.data.crossings);};
-        source.connect(node);node.connect(context.destination);
+        const silence=context.createGain();
+        silence.gain.value=0;
+        source.connect(node);node.connect(silence);
+        silence.connect(context.destination);
+        node.onprocessorerror=()=>report("Music continues; the PCM light analyzer stopped.");
         return node;
       }catch(err){
         report("AudioWorklet unavailable; PCM fallback active ("+err.message+").");
@@ -133,47 +143,95 @@
     }
     return installFallback(context,source);
   }
-  async function ensureAudio(){
+  /* User gesture initialization. NEVER await a worklet or a decode before play.
+     MediaElementAudioSource captures native output, so connect the dry bus to
+     context.destination immediately, before starting optional PCM analysis. */
+  function ensureAudio(){
     if(state.context)return state.context;
     const AudioCtor=window.AudioContext||window.webkitAudioContext;
-    if(!AudioCtor)throw new Error("Web Audio is unavailable in this browser");
-    const context=new AudioCtor();
-    state.context=context;
-    state.sampleRate=context.sampleRate;
-    const source=context.createMediaElementSource(state.audio);
-    state.source=source;
-    try{state.processor=await installProcessor(context,source);}
-    catch(err){
-      /* A missing processor must not silently mute the media element. */
-      source.connect(context.destination);
-      report("Audio PCM analyzer unavailable: "+err.message);
+    if(!AudioCtor){
+      report("Native audio playback available; Web Audio visualization unsupported.");
+      return null;
     }
-    return context;
+    let ctx=null;
+    try{
+      ctx=new AudioCtor();
+      const source=ctx.createMediaElementSource(state.audio);
+      source.connect(ctx.destination); // SPEAKER PATH: synchronous, guaranteed first
+      state.context=ctx;
+      state.source=source;
+      state.sampleRate=ctx.sampleRate;
+      state.processorReady=installProcessor(ctx,source).then(processor=>{
+        state.processor=processor;
+      }).catch(err=>{
+        /* The independent dry path stays live even if analysis fails. */
+        report("Music continues; audio lighting unavailable: "+err.message);
+      });
+      return ctx;
+    }catch(err){
+      if(ctx && typeof ctx.close==="function")
+        Promise.resolve(ctx.close()).catch(()=>{});
+      report("Native playback mode: "+err.message);
+      return null;
+    }
   }
+  function resumeAudio(){
+    const ctx=ensureAudio();
+    if(ctx && ctx.state!=="running"){
+      const pending=ctx.resume();
+      if(pending && typeof pending.catch==="function")
+        pending.catch(err=>report("Tap Play to unlock audio: "+err.message));
+    }
+    return ctx;
+  }
+  async function decodeFile(bytes){
+    /* Offline decoding must not capture or suspend audible media playback.
+       The playback node is created separately under the user's Play gesture. */
+    const OfflineCtor=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+    if(OfflineCtor){
+      const decoder=new OfflineCtor(2,1,44100);
+      return decoder.decodeAudioData(bytes);
+    }
+    const AudioCtor=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtor)throw new Error("PCM decoder unavailable");
+    const decoder=new AudioCtor();
+    try{return await decoder.decodeAudioData(bytes);}
+    finally{
+      if(typeof decoder.close==="function")
+        Promise.resolve(decoder.close()).catch(()=>{});
+    }
+  }
+  let fileVersion=0;
   async function loadFile(file){
     if(!file)return;
-    state.active=false;state.geometryEnabled=false;
+    const thisFile=++fileVersion;
+    state.active=false;state.geometryEnabled=false;state.buffer=null;
     state.crossingEvents.length=0;state.lastSample=[0,0];
     state.audio.pause();
     if(state.objectURL)URL.revokeObjectURL(state.objectURL);
     state.objectURL=URL.createObjectURL(file);
-    state.audio.src=state.objectURL;state.audio.load();
-    report("Reading complete stereo PCM waveform…");
+    state.audio.src=state.objectURL;
+    state.audio.load();
+    /* Browsers can start native playback IMMEDIATELY; never wait for decode. */
+    report("Music loaded: "+file.name+". Press Play; waveform analyzing separately.");
     try{
-      const ctx=await ensureAudio();
       const bytes=await file.arrayBuffer();
-      const decoded=await ctx.decodeAudioData(bytes);
+      const decoded=await decodeFile(bytes);
+      if(thisFile!==fileVersion)return;
       state.buffer=decoded;
       state.peaksL=peakEnvelope(decoded.getChannelData(0),N);
       state.peaksR=peakEnvelope(
         decoded.getChannelData(decoded.numberOfChannels>1?1:0),N);
       state.active=true;state.geometryEnabled=true;
-      report("Ready — "+decoded.numberOfChannels+" channel(s), "+
-        decoded.sampleRate+" Hz, "+decoded.duration.toFixed(2)+
-        "s; stereo tensor geometry armed.");
+      if(state.audio.paused)
+        report("Music ready — "+decoded.numberOfChannels+" channel(s), "+
+          decoded.sampleRate+" Hz; press Play.");
+      else
+        report("Music playing — full-track waveform and geometry ready.");
     }catch(err){
+      if(thisFile!==fileVersion)return;
       state.geometryEnabled=false;
-      report("Audio decode/visualization error: "+err.message);
+      report("Music ready to play; waveform decode unavailable: "+err.message);
     }
   }
   function resizeCanvas(){
@@ -280,15 +338,44 @@
     window.addEventListener("resize",resizeCanvas);
     window.requestAnimationFrame(draw);
     picker.addEventListener("change",()=>{loadFile(picker.files&&picker.files[0]);});
-    play.addEventListener("click",async()=>{
-      if(!player.src){report("Choose a local audio file first.");return;}
-      try{const ctx=await ensureAudio();await ctx.resume();await player.play();}
-      catch(err){report("Playback error: "+err.message);}
+    play.addEventListener("click",()=>{
+      if(!player.getAttribute("src")){report("Choose a local audio file first.");return;}
+      /* Both operations are invoked synchronously within this user gesture. */
+      resumeAudio();
+      if(player.ended)player.currentTime=0;
+      const started=player.play();
+      if(started && typeof started.catch==="function")
+        started.catch(err=>report("Playback blocked: "+err.message+
+          ". Use the native audio play control."));
     });
-    stop.addEventListener("click",()=>{player.pause();player.currentTime=0;
-      state.crossingEvents.length=0;report("Stopped — waveform retained.");});
+    stop.addEventListener("click",()=>{
+      player.pause();
+      try{player.currentTime=0;}catch(_ignored){}
+      state.crossingEvents.length=0;
+      report("Stopped — music and waveform retained.");
+    });
+    /* Native <audio controls> needs the same gesture-bound unlock; a play
+       event is delivered later and may no longer carry user activation. */
+    player.addEventListener("pointerdown",()=>{
+      if(player.getAttribute("src"))resumeAudio();
+    },{passive:true});
+    player.addEventListener("touchstart",()=>{
+      if(player.getAttribute("src"))resumeAudio();
+    },{passive:true});
+    player.addEventListener("keydown",()=>{
+      if(player.getAttribute("src"))resumeAudio();
+    });
     player.addEventListener("play",()=>{
-      ensureAudio().then(ctx=>ctx.resume()).catch(err=>report(err.message));
+      if(state.context && state.context.state!=="running")resumeAudio();
+    });
+    player.addEventListener("playing",()=>report("Music playing through stereo output."));
+    player.addEventListener("pause",()=>{
+      if(!player.ended)report("Music paused.");
+    });
+    player.addEventListener("error",()=>{
+      const code=player.error&&player.error.code;
+      report("Media playback error "+(code||"unknown")+
+        ": try a supported MP3, WAV, or OGG file.");
     });
     player.addEventListener("seeked",()=>{state.crossingEvents.length=0;});
     gain.addEventListener("input",()=>{
