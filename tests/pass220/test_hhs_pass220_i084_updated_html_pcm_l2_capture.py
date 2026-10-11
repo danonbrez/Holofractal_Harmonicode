@@ -99,6 +99,11 @@ def test_raw_capture_selects_actual_html_audio_and_verifies_l2_writes():
         "window.HHSBrownL2.diagnostics",
         '"l2_writes_seen"',
         '"audio_waveform_capture": audio_capture',
+        'page.screenshot(path=str(frame), animations="allow")',
+        'page.locator("canvas").first',
+        '"ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"',
+        'document.querySelector("#audioVizOverlay")',
+        'if audio_capture["enabled"]:',
         "source_sha_before == source_sha_after",
         "encode_video(frames, video_path, args.fps)",
     ):
