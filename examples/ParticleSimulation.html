@@ -4375,6 +4375,34 @@
     ctx.globalCompositeOperation="source-over";
     return pair;
   }
+  /* Narrow rotating rectangular stripes, not fixed vertical columns:
+     broad glow and PCM crossing bins share the same orthogonal u72
+     normals as the two full-canvas reciprocal color gradients.
+     Purely visual: no physics or signed-state mutation here. */
+  function paintGyroscopicLightBand(ctx,width,height,phase,bus,
+                                    offset,halfWidth,hue,opacity){
+    const axes=gyroscopicGradientAxes72(phase,width,height);
+    const a=bus?axes.right:axes.left;
+    const dx=a[2]-a[0],dy=a[3]-a[1],len=Math.hypot(dx,dy)||1;
+    const nx=dx/len,ny=dy/len,tx=-ny,ty=nx;
+    const diagonal=Math.hypot(width,height);
+    const cx=width/2+nx*finite(offset)*diagonal;
+    const cy=height/2+ny*finite(offset)*diagonal;
+    const hw=Math.max(1,finite(halfWidth));
+    ctx.beginPath();
+    ctx.moveTo(cx-tx*diagonal-nx*hw,cy-ty*diagonal-ny*hw);
+    ctx.lineTo(cx+tx*diagonal-nx*hw,cy+ty*diagonal-ny*hw);
+    ctx.lineTo(cx+tx*diagonal+nx*hw,cy+ty*diagonal+ny*hw);
+    ctx.lineTo(cx-tx*diagonal+nx*hw,cy-ty*diagonal+ny*hw);
+    ctx.closePath();
+    const g=ctx.createLinearGradient(cx-nx*hw,cy-ny*hw,cx+nx*hw,cy+ny*hw);
+    g.addColorStop(0,q144Css(hue,0));
+    g.addColorStop(.5,q144Css(hue,clamp(finite(opacity),0,1)));
+    g.addColorStop(1,q144Css(hue,0));
+    ctx.fillStyle=g;
+    ctx.fill();
+    return {normal:[nx,ny],center:[cx,cy]};
+  }
   function harmonicStep(frequencyHz,harmonicMoment){
     if(!Number.isFinite(frequencyHz)||frequencyHz<=0)return 0;
     return clamp(frequencyHz/HARMONIC.referenceHz*HARMONIC.stepsPerFrame*
@@ -4978,10 +5006,9 @@
     events.length=write;
     const cells=crossingLightingCells(
       events.length?events:state.frameCrossings,clock.frame);
-    /* No torus/donut/circular halo. Stereo RMS powers broad linear
-       illumination bands. Every zero-crossing phase paints a narrow,
-       sample-clock-positioned linear light column across the particle
-       field. All hues come from Q144 PCM phase, not fixed RGB pastels. */
+    /* Both bright glow and sampled phase flashes use rotating normals,
+       so the visible light itself cannot remain vertical independently of
+       the rotating stereo reciprocal base layer. */
     ctx.globalCompositeOperation="lighter";
     const screenEnergy=[state.frameRmsL,state.frameRmsR];
     for(let bus=0;bus<2;bus++){
@@ -4989,32 +5016,20 @@
       if(energy<0.012)continue;
       const sample=bus?state.frameR[367]:state.frameL[367];
       const hue=q144Index(0,sample,screenEnergy[bus],state.harmonicPhase[bus],bus);
-      const sweep=(clock.frame%144)/144*Math.PI*2;
-      const x=W*((bus===0?.3:.7)+Math.sin(sweep+bus*Math.PI)*.12);
-      const extent=W*(.12+energy*.18);
-      const gradient=ctx.createLinearGradient(x-extent,0,x+extent,0);
-      gradient.addColorStop(0,q144Css(hue,0));
-      gradient.addColorStop(.5,q144Css(hue,energy*.35));
-      gradient.addColorStop(1,q144Css(hue,0));
-      ctx.fillStyle=gradient;
-      ctx.fillRect(x-extent,0,extent*2,H);
+      const angle=2*Math.PI*state.gyroTransport72/72;
+      const sweep=.13*Math.sin(angle+bus*Math.PI/2);
+      paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,
+        sweep,Math.min(W,H)*(.12+energy*.18),hue,energy*.35);
     }
     for(let bus=0;bus<2;bus++){
       for(let phase=0;phase<AUDIO_CLOCK.phaseBins;phase++){
         const strength=cells[bus][phase];
         if(strength<0.02)continue;
-        /* Two complementary linear phase lanes, not 72 markers in a ring. */
-        const cell=phase+bus*AUDIO_CLOCK.phaseBins;
-        const x=W*(cell+.5)/144;
+        const offset=((phase+.5)/AUDIO_CLOCK.phaseBins-.5)*.84;
         const sample=bus?state.frameR[phase]:state.frameL[phase];
         const hue=q144Index(phase,sample,screenEnergy[bus],state.harmonicPhase[bus],bus);
-        const extent=2+strength*12;
-        const gradient=ctx.createLinearGradient(x-extent,0,x+extent,0);
-        gradient.addColorStop(0,q144Css(hue,0));
-        gradient.addColorStop(.5,q144Css(hue,strength*.68));
-        gradient.addColorStop(1,q144Css(hue,0));
-        ctx.fillStyle=gradient;
-        ctx.fillRect(x-extent,0,extent*2,H);
+        paintGyroscopicLightBand(ctx,W,H,state.gyroTransport72,bus,
+          offset,2+strength*12,hue,strength*.68);
       }
     }
     ctx.globalCompositeOperation="source-over";
@@ -5130,6 +5145,7 @@
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
     gyroscopicGradientAxes72,spectralFallbackHz,
     verticalReciprocalGradientPair,paintGyroscopicVerticalPair,
+    paintGyroscopicLightBand,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
@@ -5150,6 +5166,7 @@
        gyroscopePhase72:state.gyroPhase72,
        gyroscopeVisualPhase72:state.gyroTransport72,
        visualGradientAxesOrthogonal:true,
+       allLightBandsRotatingWithGyro:true,
        gyroscopeQuarterTurn:GYRO_SHADER.quarterTurn,
        gyroscopeFullPeriod:GYRO_SHADER.phaseModulus,
        harmonicFrequencyLHz:state.harmonicFrequencyHz[0],
