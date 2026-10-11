@@ -74,7 +74,7 @@ jobs:
               "formal/wolfram/pass220_hnan_phase5184_lossless_bridge_v1.wl",
               "formal/wolfram/pass220_base64_balanced_trit5184_v1.wl",
           )
-          for path, expected in zip(paths, (21, 20)):
+          for path, expected in zip(paths, (21, 26)):
               s=Path(path).read_text()
               assert s.count("VerificationTest[") == expected, path
               assert "TestReport[tests]" in s, path
@@ -82,7 +82,7 @@ jobs:
           assert "TestReport[tests]" in s
           assert "GenericUnconstrainedPayloadCompressionClaimed" in s
           assert "ordered-product-not-swappable" in s
-          print("Connected Wolfram preflights: 21/21 and 20/20; CI source audits OK")
+          print("Connected Wolfram preflights: 21/21 and 26/26; CI source audits OK")
           PY
 
       - name: Pinned Lean 4 build, kernel check and axiom audit
