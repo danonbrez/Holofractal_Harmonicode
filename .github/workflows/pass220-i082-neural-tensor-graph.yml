@@ -1,0 +1,51 @@
+name: Pass 220 I082 Neural Tensor Graph Wolfram Lean
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py"
+      - "tests/pass220/test_hhs_pass220_i082_neural_tensor_graph_v1.py"
+      - "formal/lean/HHS/Pass220/NeuralTensorGraph.lean"
+      - "formal/wolfram/pass220_i082_neural_tensor_graph_v1.wl"
+      - "evidence/pass220/i082_neural_tensor_wolfram_20261010_v1.output.json"
+      - ".github/workflows/pass220-i082-neural-tensor-graph.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-i082:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile and check I082 and inherited I070
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py tests/pass220/test_hhs_pass220_i082_neural_tensor_graph_v1.py
+          PYTHONPATH=. python tests/pass220/test_hhs_pass220_i082_neural_tensor_graph_v1.py
+          PYTHONPATH=. python tests/pass220/test_hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1.py
+      - name: Check Wolfram execution receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt=json.loads(Path("evidence/pass220/i082_neural_tensor_wolfram_20261010_v1.output.json").read_text())
+          assert receipt["status"]=="PASS"
+          assert receipt["check_count"]==receipt["pass_count"]==13
+          assert not receipt["failed"]
+          assert receipt["logical_positions"]==449999999997120
+          assert receipt["native_closure"]=="OPEN_LANE5_WITNESS_REQUIRED"
+          PY
+      - name: Native Lean 4 build and kernel audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+      - name: Check I082 typed Lean theorems
+        run: |
+          lake env lean formal/lean/HHS/Pass220/NeuralTensorGraph.lean
