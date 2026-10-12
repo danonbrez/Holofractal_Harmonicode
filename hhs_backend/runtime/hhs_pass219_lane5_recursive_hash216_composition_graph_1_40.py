@@ -382,6 +382,40 @@ class Pass219Lane5RecursiveHash216CompositionGraph:
             "requires_signed_environmental_vm81_admission": True,
         }
 
+    def reuse_closed_orbit(
+        self,
+        *,
+        current_state: Sequence[int],
+        jump_ids: Sequence[str],
+        tick: int,
+        cycle_index: int,
+    ) -> dict[str, Any]:
+        """Authenticate a simple closed orbit through inherited 1.39/1.40 edges.
+
+        Only the final edge may revisit the starting Hash216 root. This is a
+        candidate closure witness, not canonical VM81 state admission.
+        """
+        if not jump_ids:
+            raise ValueError("closed orbit requires at least one persistent edge")
+        root = self.native.state_root(tuple(int(x) for x in current_state))
+        result = self.reuse_path(
+            current_state=current_state,
+            jump_ids=jump_ids,
+            goal_hash216=root,
+            tick=tick,
+            cycle_index=cycle_index,
+            allow_terminal_return=True,
+        )
+        if result["path"]["terminal_hash216"] != root or not result["path"]["exact_target"]:
+            raise ValueError("closed orbit failed exact Hash216 return")
+        return {
+            **result,
+            "schema": "HHS_PASS_220_I086_AUTHENTICATED_CLOSED_ORBIT_CANDIDATE_V1",
+            "orbit_closed": True,
+            "fundamental_period_proven": False,
+            "native_vm81_admission_proven": False,
+        }
+
     def search(
         self,
         *,
