@@ -70,3 +70,11 @@ closure, and canonical state mutation remain under existing Lane 5 authority.
 - Graph-wide execution and all edge witnesses are **NOT YET VERIFIED**.
 
 Validation: Wolfram 13/13 PASS; Python and Lean CI are pending.
+
+
+## I085 clarification — inherited Hash216 generative connectome
+The connection geometry for I082 is **not an absent independent connectome**. The existing native Lane 5 Hash216 hydration pipeline provides it: I065 reconstructs ordered PREVIOUS/CHANGE/RECEIPT planes over the exact 72×72 = 5,184 VM81 surface, including source/coupled positions, SHA-256 codewords, mirror addresses, lossless generator recovery, and precise native cell/local64 coordinates. Lane 5 1.39/1.40 persisted composition records provide authenticated directional Hash216 transitions, with exact child/parent adjacency and native receipt verification.
+
+Pass 220 I085 binds these inherited services to each of the 10,368 real physics particle/neural layers through `hhs_runtime/hhs_pass220_i085_hash216_hydrated_connectome_v1.py` and `hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py`. It does not introduce alternative graph topology or an independent neural optimizer.
+
+I082's requirement for explicitly supplied native nucleus identity remains. The verified hydrated native phase-connectome and persisted candidate routes are not interchangeable with proof that all 86,805,555,555 neurons have performed a weighted recurrent transition in real time, and the original signed VM81 admission gate still controls canonical mutation.
