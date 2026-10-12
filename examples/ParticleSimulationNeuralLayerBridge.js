@@ -74,6 +74,36 @@
   function particleOfLayer(layerId){
     return carrierByIndex[index(layerId,"layer_id")];
   }
+  function nativeTickAddress(frameId,sweep,k){
+    // This browser mapping cannot mint the native Pass174 Hash216Array.
+    // That ONE 216-position indexed array is authored in native I085,
+    // covering both successive 5184-address sweeps per logical cycle.
+    if(!Number.isSafeInteger(frameId)||frameId<0)fail("frame_id must be exact nonnegative");
+    if(!Number.isSafeInteger(sweep)||sweep<0||sweep>1)fail("sweep must be 0 or 1");
+    if(!Number.isSafeInteger(k)||k<0||k>=WIDTH)fail("tick slot outside 5184");
+    const p=sweep*WIDTH+k,layer=bounds(p);
+    return Object.freeze({
+      layer_id:p,physical_layer:sweep,position5184:k,
+      native_tick_in_array:p,
+      absolute_native_tick:(BigInt(frameId)*BigInt(COUNT)+BigInt(p)).toString(),
+      hash72_row:Math.floor(k/72),hash72_column:k%72,
+      vm81_cell:Math.floor(k/64),vm81_local64:k%64,
+      mirror5184:WIDTH-1-k,neural_layer:layer,
+      native_hash216_array_authority:false,projection_only:true
+    });
+  }
+  function pairedTick(frameId,k){
+    const a=nativeTickAddress(frameId,0,k),b=nativeTickAddress(frameId,1,k);
+    if(b.layer_id-a.layer_id!==WIDTH||
+       a.vm81_cell!==b.vm81_cell||
+       a.vm81_local64!==b.vm81_local64||
+       a.hash72_row!==b.hash72_row||
+       a.hash72_column!==b.hash72_column)
+      fail("ordered physical layer sweeps lost common VM81 coordinate");
+    return Object.freeze({position5184:k,layer0:a,layer1:b,
+      common_hash216_array_authority:"NATIVE_PASS174_ONLY",
+      candidate_only:true});
+  }
   function projectPhysicalState(layerId){
     // These numbers are float WebGL presentation coordinates only. Never
     // feed them back as native BigInt algebra or canonical VM81 state.
@@ -116,6 +146,10 @@
       logical_positions:(NEURONS*BigInt(WIDTH)).toString(),
       base_neurons_per_layer:BASE.toString(),extra_neuron_layers:EXTRA,
       nominal_capture_fps:FPS,physics_raf_per_visual_frame:QUARTIC,
+      native_sweeps_per_hash216_array:2,
+      native_layer_ticks_per_sweep:WIDTH,
+      native_ticks_per_composed_hash216_array:COUNT,
+      native_hash216_array_source:"PASS174_NATIVE",
       graph_full_edge_execution_verified:false,
       native_vm81_mutation:false,original_physics_mutated:false
     });
@@ -125,6 +159,7 @@
   global.HHSNeuralLayerMap=Object.freeze({
     schema:SCHEMA,diagnostics,layerBounds:bounds,
     layerOfParticle,particleOfLayer,particleIndexForNeuron,
+    nativeTickAddress,pairedTick,
     projectPhysicalState,validateWitnessIngress,audit
   });
 })(window);
