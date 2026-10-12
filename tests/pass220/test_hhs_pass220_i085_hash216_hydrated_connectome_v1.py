@@ -134,12 +134,19 @@ def test_real_persisted_native_lane5_composition_edge_rehydrates(tmp_path):
         assert route["native_receipt"]["exact_adjacency"] is True
         assert route["native_receipt"]["persistent_edges_authenticated"] is True
         assert route["native_receipt"]["path_sealed"] is True
-        with pytest.raises((KeyError,ValueError)):
+        with pytest.raises(NativeLayerMembraneError,match="unpersisted"):
             hydrate_persistent_connectome_path(
                 graph=graph,current_state=parent,
                 jump_ids=["not-persisted"],
                 goal_hash216=jump.child_hash216,
                 tick=5005,cycle_index=48,particle_id=7,
+            )
+        with pytest.raises(NativeLayerMembraneError,match="layer binding"):
+            hydrate_persistent_connectome_path(
+                graph=graph,current_state=parent,
+                jump_ids=["native-edge-for-layer7"],
+                goal_hash216=jump.child_hash216,
+                tick=5005,cycle_index=48,particle_id=5184,
             )
         wrong=parent.copy()
         wrong[0]^=1
