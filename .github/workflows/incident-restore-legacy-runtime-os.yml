@@ -1,0 +1,193 @@
+name: Incident Restore Sealed Legacy Runtime OS
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/incident-restore-legacy-runtime-os.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      HHS_PRODUCTION_HOST: '159.65.178.254'
+      HHS_PRODUCTION_USER: ${{ vars.HHS_DIGITALOCEAN_SSH_USER || 'root' }}
+      HHS_SSH_PRIVATE_KEY: ${{ secrets.HHS_DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      HHS_PINNED_KNOWN_HOSTS: ${{ secrets.HHS_DIGITALOCEAN_KNOWN_HOSTS }}
+      ROLLBACK_SHA: cf2764c24e85ff4980d599f528218f1328b81627
+    steps:
+      - name: Configure pinned SSH
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$HHS_SSH_PRIVATE_KEY" > "$HOME/.ssh/hhs-production"
+          chmod 0600 "$HOME/.ssh/hhs-production"
+          printf '%s\n' "$HHS_PINNED_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/known_hosts"
+          ssh-keygen -F "$HHS_PRODUCTION_HOST" -f "$HOME/.ssh/known_hosts" >/dev/null
+
+      - name: Restore exact sealed rollback Runtime OS and service
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i "$HOME/.ssh/hhs-production" \
+            -o BatchMode=yes \
+            -o ConnectTimeout=12 \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=10 \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "${HHS_PRODUCTION_USER}@${HHS_PRODUCTION_HOST}" \
+            "ROLLBACK_SHA='${ROLLBACK_SHA}' bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+          umask 027
+
+          APP_ROOT=/opt/hhs/app
+          RUNTIME_ROOT=/var/lib/hhs/runtime-os
+          WARM_ROOT=/var/lib/hhs/warm-boot/releases
+          LOCK_FILE=/run/lock/hhs-production-mutation.lock
+          INCIDENT_RECEIPT=/var/lib/hhs-guarded-update/incident-runtime-os-legacy-restore-20261002.json
+          ROLLBACK_SHA=${ROLLBACK_SHA:?missing rollback SHA}
+
+          [[ $EUID -eq 0 ]]
+          install -d -m 0755 "$(dirname "$LOCK_FILE")"
+          exec 7>"$LOCK_FILE"
+          flock -w 30 7 || { echo "production mutation lock is busy" >&2; exit 20; }
+          echo "HHS_INCIDENT_PRODUCTION_MUTATION_OWNERSHIP_CLAIMED=1"
+
+          systemctl stop hhs-guarded-update.timer 2>/dev/null || true
+          updater_state=$(systemctl show hhs-guarded-update.service -p ActiveState --value 2>/dev/null || printf inactive)
+          case "$updater_state" in
+            inactive|failed|unknown|"") ;;
+            *) echo "guarded updater must be inactive before rollback repair: $updater_state" >&2; exit 21 ;;
+          esac
+
+          current_head=$(git -C "$APP_ROOT" rev-parse HEAD)
+          [[ "$current_head" == "$ROLLBACK_SHA" ]] || {
+            echo "rollback checkout identity mismatch: $current_head" >&2
+            exit 22
+          }
+
+          if systemctl is-active --quiet hhs.service; then
+            echo "hhs.service unexpectedly active; refusing one-time inactive-boundary repair" >&2
+            exit 23
+          fi
+          if [[ -e "$RUNTIME_ROOT/current" || -L "$RUNTIME_ROOT/current" ]]; then
+            echo "Runtime OS current already exists; refusing to overwrite it" >&2
+            exit 24
+          fi
+
+          mapfile -t legacy_roots < <(find "$RUNTIME_ROOT" -mindepth 1 -maxdepth 1 -type d -name 'legacy-current-*' -print | sort)
+          [[ "${#legacy_roots[@]}" -eq 1 ]] || {
+            printf 'expected exactly one legacy Runtime OS root, found %s\n' "${#legacy_roots[@]}" >&2
+            printf '%s\n' "${legacy_roots[@]}" >&2 || true
+            exit 25
+          }
+          legacy=${legacy_roots[0]}
+          manifest="$WARM_ROOT/$ROLLBACK_SHA.json"
+          [[ -f "$manifest" ]] || { echo "rollback warm manifest missing" >&2; exit 26; }
+
+          LEGACY_ROOT="$legacy" MANIFEST="$manifest" APP_ROOT="$APP_ROOT" ROLLBACK_SHA="$ROLLBACK_SHA" \
+          /opt/hhs/venv/bin/python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+
+          rollback = os.environ["ROLLBACK_SHA"]
+          manifest_path = Path(os.environ["MANIFEST"])
+          legacy = Path(os.environ["LEGACY_ROOT"])
+          app = Path(os.environ["APP_ROOT"])
+
+          payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+          assert payload["repository_sha"] == rollback
+          claimed = payload.pop("manifest_sha256")
+          canonical = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+          actual = hashlib.sha256(canonical).hexdigest()
+          assert claimed == actual, (claimed, actual)
+          payload["manifest_sha256"] = claimed
+
+          def digest(path: Path) -> str:
+              h = hashlib.sha256()
+              with path.open("rb") as handle:
+                  for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          expected_native = payload["artifacts"]["native_runtime"]["sha256"]
+          expected_index = payload["artifacts"]["runtime_os"]["index_sha256"]
+          native = app / "hhs_runtime" / "builds" / "libhhs_runtime.so"
+          legacy_index = legacy / "index.html"
+          assert digest(native) == expected_native
+          assert digest(legacy_index) == expected_index
+          assert (legacy / "assets").is_dir()
+          print("HHS_INCIDENT_ROLLBACK_MANIFEST_DIGEST_VERIFIED=1")
+          print("HHS_INCIDENT_ROLLBACK_NATIVE_IDENTITY_VERIFIED=1")
+          print("HHS_INCIDENT_ROLLBACK_RUNTIME_OS_IDENTITY_VERIFIED=1")
+          PY
+
+          # Exact same filesystem and atomicity domain: restore the preserved
+          # predecessor directory to its original canonical path.
+          mv "$legacy" "$RUNTIME_ROOT/current"
+
+          HHS_DISABLE_C_AUTOBUILD=1 \
+            /opt/hhs/venv/bin/python \
+            "$APP_ROOT/deployment/digitalocean/warm_boot_manifest.py" verify \
+            --repo-root "$APP_ROOT" \
+            --manifest-root "$WARM_ROOT" \
+            >/tmp/hhs-incident-warm-verify.json
+          cat /tmp/hhs-incident-warm-verify.json
+          echo "HHS_INCIDENT_ROLLBACK_WARM_BOOT_VERIFIED=1"
+
+          systemctl daemon-reload
+          systemctl reset-failed hhs.service 2>/dev/null || true
+          systemctl start hhs.service
+
+          deadline=$((SECONDS + 180))
+          until curl -fsS --max-time 10 http://127.0.0.1:8080/api/system/status >/tmp/hhs-incident-status.json; do
+            if (( SECONDS >= deadline )); then
+              systemctl status hhs.service --no-pager --full >&2 || true
+              journalctl -u hhs.service -n 300 --no-pager >&2 || true
+              exit 27
+            fi
+            sleep 2
+          done
+
+          systemctl is-active --quiet hhs.service
+          listener_count=$(ss -H -ltnp 'sport = :8080' | wc -l)
+          [[ "$listener_count" -eq 1 ]] || {
+            echo "expected exactly one restored 8080 listener, found $listener_count" >&2
+            ss -H -ltnp 'sport = :8080' >&2 || true
+            exit 28
+          }
+
+          install -d -m 0750 /var/lib/hhs-guarded-update
+          ROLLBACK_SHA="$ROLLBACK_SHA" LEGACY_ORIGIN="$legacy" \
+          /opt/hhs/venv/bin/python - "$INCIDENT_RECEIPT" <<'PY'
+          import json, os, sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+          receipt = {
+              "schema": "HHS_INCIDENT_RUNTIME_OS_LEGACY_RESTORE_V1",
+              "timestamp": datetime.now(timezone.utc).isoformat(),
+              "rollback_sha": os.environ["ROLLBACK_SHA"],
+              "legacy_origin": os.environ["LEGACY_ORIGIN"],
+              "restored_current": "/var/lib/hhs/runtime-os/current",
+              "warm_boot_verified": True,
+              "service_active": True,
+              "updater_timer_left_stopped": True,
+          }
+          path = Path(sys.argv[1])
+          tmp = path.with_suffix(path.suffix + ".tmp")
+          tmp.write_text(json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          tmp.replace(path)
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+
+          # Intentional: do not restart the periodic updater here. Exact-Main
+          # owns the next promotion transaction and will restore timer policy.
+          echo "HHS_INCIDENT_ROLLBACK_SERVICE_RESTORED=1"
+          REMOTE
