@@ -10,8 +10,10 @@ on:
       - examples/ParticleSimulationNeuralLayerBridge.js
       - hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py
       - hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py
+      - hhs_runtime/hhs_pass220_i085_hash216_hydrated_connectome_v1.py
       - benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
       - tests/pass220/test_hhs_pass220_i085_original_particle_neural_layers_v1.py
+      - tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py
       - docs/operations/restart/PASS_220_I085_PHYSICS_NEURAL_LAYERS_RESTART_20261011.md
   workflow_dispatch:
 
@@ -35,12 +37,15 @@ jobs:
           python -m py_compile \
             hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py \
             hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py \
+            hhs_runtime/hhs_pass220_i085_hash216_hydrated_connectome_v1.py \
             benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
           python -m pytest -q \
             tests/pass220/test_hhs_pass220_i082_neural_tensor_graph_v1.py \
             tests/pass220/test_hhs_pass220_i085_original_particle_neural_layers_v1.py \
+            tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py \
             tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py \
-            tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
+            tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py \
+            -k 'not test_real_persisted_native_lane5_composition_edge_rehydrates'
           python hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py \
             > /tmp/pass220-i085-native-self-test.json
           python - <<'PY'
@@ -55,8 +60,30 @@ jobs:
           print("I085 exact native binding and full lazy address coverage PASS")
           PY
 
+  validate-native-hash216-connectome:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install inherited Lane 5 native build and crypto
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+          python3 -m pip --version || true
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Verify exact hydrated connectome and authenticated persisted native composition edge
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: |
+          python3 -m pytest -q \
+            tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py \
+            tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py
+
   render-original-physics-neural-atlas-60fps:
-    needs: validate-native-layer-membrane
+    needs: [validate-native-layer-membrane, validate-native-hash216-connectome]
     runs-on: ubuntu-latest
     timeout-minutes: 95
     steps:
