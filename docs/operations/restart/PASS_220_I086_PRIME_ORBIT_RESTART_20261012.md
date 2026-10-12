@@ -50,3 +50,9 @@ Do not equate GitHub commit or draft PR creation with pass acceptance.
 - This was an isolated extraction, **not** the repository's imported test module, not a native Lane 5 run, and not CI acceptance. No claim of full native execution.
 - `github.com` and `api.github.com` DNS unavailable from container; no repository checkout. `lake` and `wolframscript` absent from PATH.
 - Native test and benchmark acceptance remain pending; keep PR #774 draft.
+
+## 2026-10-12 further dependency-scope audit
+- Executed `python -m pytest -q /mnt/data/i086_validation/test_contract.py /mnt/data/i086_validation/test_conway.py`: **9 passed in 0.03s**.
+- The additional check exercises I086 projection address enumeration (81 cells, `i*64` mapping), deterministic receipt and candidate-only metadata using **explicit stubs for inherited I085 interfaces**. The I086 source was copied into the isolated harness; no actual native Lane 5 execution occurred.
+- Audited actual I086 source against inherited I085 `compose_single_hash216_array` and `address_tick`, and inherited Pass219 1.38 `build_validated_jump`. Critical acceptance gap: `compose_conway_frame` currently produces a candidate occupancy projection and references inherited frame metadata; it does **not** create or authenticate a Lane 5 Conway transition through native 1.38/1.39/1.40 services. The separate two-segment orbit fixture does not establish Conway transition integration.
+- Correct next step: use existing native validated jump registration, persistent authentication and 1.40 query/reuse for a **Conway-derived** 81-cell transition; verify child state matches B3/S23 and inherited Hash216 lineage, with no native service modification. Run real repository tests and benchmark. Do not claim native completion until executed.
