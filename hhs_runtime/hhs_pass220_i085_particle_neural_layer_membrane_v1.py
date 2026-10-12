@@ -186,11 +186,33 @@ def bind_explicit_native_neuron(
         "i070_candidate_hash216": sample["inherited_i070_candidate_hash216"],
         "i070_binding_hash72": sample["inherited_i070_binding_hash72"],
         "i082_sample_candidate_hash72": sample["sample_candidate_hash72"],
+        "connectome_hydration_schema": "HHS_PASS_220_I085_LANE5_HASH216_HYDRATED_CONNECTOME_V1",
+        "connectome_hydration_root_hash216": sample["inherited_i070_candidate_hash216"],
+        "connectome_hydration_available_on_demand": True,
+        "persisted_connectome_requires_authenticated_lane5_1_40": True,
         "ordered_neural_relation_admitted": False,
         "canonical_state_commit": False,
     }
     candidate["i085_candidate_hash72"] = hash72(candidate)
     return candidate
+
+
+def hydrate_native_layer_connectome(
+    *, neuron_id: int, nucleus_index: int, particle_id: int,
+    addresses: Sequence[int] = (0, 71, 72, 2591, 2592, 5183),
+) -> dict[str, Any]:
+    """Hydrate the inherited real Lane 5 Hash216 phase-connectome on demand.
+
+    The I065 exact generator/hydration and I070 candidate root provide the
+    relationships. The CPU VM81 authority boundary remains in force.
+    """
+    from hhs_runtime.hhs_pass220_i085_hash216_hydrated_connectome_v1 import (
+        hydrate_neuron_connectome,
+    )
+    return hydrate_neuron_connectome(
+        neuron_id=neuron_id,nucleus_index=nucleus_index,
+        particle_id=particle_id,addresses=addresses,
+    )
 
 
 def projection_tick(
