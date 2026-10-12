@@ -125,6 +125,23 @@ function simulate(incorrect){
   assert.equal(m.diagnostics.neuron_count,"86805555555");
   assert.equal(m.diagnostics.logical_positions,"449999999997120");
   assert.equal(m.diagnostics.nominal_capture_fps,60);
+  assert.equal(m.diagnostics.native_sweeps_per_hash216_array,2);
+  assert.equal(m.diagnostics.native_layer_ticks_per_sweep,5184);
+  assert.equal(m.diagnostics.native_ticks_per_composed_hash216_array,10368);
+  assert.equal(m.diagnostics.native_hash216_array_source,"PASS174_NATIVE");
+  for(const k of [0,71,72,2592,5183]){
+    const pair=m.pairedTick(7,k);
+    assert.equal(pair.layer0.layer_id,k);
+    assert.equal(pair.layer1.layer_id,5184+k);
+    assert.equal(pair.layer0.vm81_cell,Math.floor(k/64));
+    assert.equal(pair.layer1.vm81_cell,pair.layer0.vm81_cell);
+    assert.equal(pair.layer0.absolute_native_tick,(7n*10368n+BigInt(k)).toString());
+    assert.equal(pair.layer1.absolute_native_tick,(7n*10368n+5184n+BigInt(k)).toString());
+    assert.equal(pair.common_hash216_array_authority,"NATIVE_PASS174_ONLY");
+  }
+  assert.throws(()=>m.nativeTickAddress(0,2,0));
+  assert.throws(()=>m.nativeTickAddress(0,0,5184));
+  assert.throws(()=>m.pairedTick(0,-1));
   assert.equal(m.layerBounds(0).native_neuron_count,"8372450");
   assert.equal(m.layerBounds(4323).native_neuron_count,"8372449");
   for(const i of [0,1,4322,4323,5183,5184,7775,10367]){
