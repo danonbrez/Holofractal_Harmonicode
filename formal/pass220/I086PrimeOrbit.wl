@@ -32,5 +32,12 @@ VerificationTest[lifeStep[ConstantArray[0, {9, 9}]],
   ConstantArray[0, {9, 9}], TestID -> "dead-still-life"];
 VerificationTest[orbitClosure[lifeStep, ConstantArray[0, {9, 9}], 2]["period"],
   1, TestID -> "fixed-point"];
+VerificationTest[
+  Module[{g = ConstantArray[0, {9, 9}], e = ConstantArray[0, {9, 9}]},
+    Do[g[[r, 9]] = 1, {r, {4, 5, 6}}];
+    Do[e[[5, c]] = 1, {c, {8, 9, 1}}];
+    lifeStep[g] === e
+  ],
+  True, TestID -> "torus-wrap-blinker"];
 (* Native proof obligations: prime assignment provenance, ordered HNAN gates,
    authenticated Hash216 roots, VM81 admission, and reversible ingress receipts. *)
