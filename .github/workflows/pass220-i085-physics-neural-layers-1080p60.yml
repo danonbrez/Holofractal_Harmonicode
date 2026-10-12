@@ -49,7 +49,7 @@ jobs:
             tests/pass220/test_hhs_pass220_i085_two_sweep_hash216_clock_v1.py \
             tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py \
             tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py \
-            -k 'not test_real_persisted_native_lane5_composition_edge_rehydrates'
+            -k 'not test_real_persisted_native_lane5_composition_edge_rehydrates and not test_real_lane5_one_tick_search_across_both_original_sweeps'
           python hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py \
             > /tmp/pass220-i085-native-self-test.json
           python - <<'PY'
@@ -94,6 +94,7 @@ jobs:
         run: |
           python3 -m pytest -q \
             tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py \
+            tests/pass220/test_hhs_pass220_i085_two_sweep_hash216_clock_v1.py \
             tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py
 
   render-original-physics-neural-atlas-60fps:
