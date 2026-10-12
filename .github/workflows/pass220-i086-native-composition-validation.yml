@@ -1,0 +1,105 @@
+name: Pass 220 I086 Native Conway Composition Validation
+
+on:
+  push:
+    branches:
+      - agent/pass220-i086-prime-orbit-formalization-20261012
+    paths:
+      - .github/workflows/pass220-i086-native-composition-validation.yml
+      - hhs_runtime/hhs_pass220_i086_**
+      - tests/pass220/test_hhs_pass220_i086_**
+      - tests/pass220/test_i086_prime_orbit_reference.py
+      - benchmarks/pass220/benchmark_i086_**
+      - formal/pass220/I086PrimeOrbit.lean
+      - formal/pass220/I086PrimeOrbit.wl
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-integration-and-benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install inherited native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest cryptography
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Dependency-scoped I086 and inherited I085/Pass219 tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i086_conway_life_projection_v1.py \
+            hhs_runtime/hhs_pass220_i086_native_orbit_composition_v1.py \
+            benchmarks/pass220/benchmark_i086_native_lane5_composed_orbit.py
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i086_conway_life_projection_v1.py \
+            tests/pass220/test_hhs_pass220_i086_native_orbit_composition_v1.py \
+            tests/pass220/test_i086_prime_orbit_reference.py \
+            tests/pass219/test_pass219_lane5_persistent_hash216_composition_memory_1_39.py \
+            tests/pass219/test_pass219_lane5_recursive_hash216_composition_graph_1_40.py \
+            tests/pass220/test_hhs_pass220_i085_two_sweep_hash216_clock_v1.py \
+            tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py
+      - name: Authenticated native and reference benchmarks
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          mkdir -p artifacts/pass220/i086
+          uname -a | tee artifacts/pass220/i086/runner-uname.txt
+          lscpu | tee artifacts/pass220/i086/runner-cpu.txt
+          python --version | tee artifacts/pass220/i086/python-version.txt
+          git rev-parse HEAD | tee artifacts/pass220/i086/git-sha.txt
+          python benchmarks/pass220/benchmark_i086_native_lane5_composed_orbit.py | tee artifacts/pass220/i086/native-benchmark.json
+          python benchmarks/pass220/benchmark_i086_prime_orbit_reference.py --steps 256 | tee artifacts/pass220/i086/reference-benchmark.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("artifacts/pass220/i086")
+          native=json.loads((root/"native-benchmark.json").read_text())
+          reference=json.loads((root/"reference-benchmark.json").read_text())
+          assert native["native_1_39_1_40_persistent_edges"] is True
+          assert native["represented_transitions_per_sample"] == 2
+          assert native["candidate_only"] is True
+          assert len(native["baseline_samples_ns"]) == len(native["composition_samples_ns"]) == native["iterations"]
+          assert reference["native_lane5_executed"] is False
+          with open(__import__("os").environ["GITHUB_STEP_SUMMARY"], "a") as f:
+              f.write("## I086 native 1.39/1.40 benchmark\n")
+              f.write(f"- SHA: {__import__('os').environ['GITHUB_SHA']}\n")
+              f.write(f"- Samples: {native['iterations']}\n")
+              f.write(f"- Baseline median ns: {native['baseline_median_ns']}\n")
+              f.write(f"- Composed median ns: {native['composition_median_ns']}\n")
+              f.write("- Native candidate receipts checked, no canonical VM81 admission claim.\n")
+              f.write("- Reference benchmark is separate and not native.\n")
+          PY
+      - name: Archive I086 native evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-i086-native-benchmark-evidence
+          if-no-files-found: warn
+          path: artifacts/pass220/i086/
+
+  exact-lean-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+          test: false
+          use-mathlib-cache: false
+      - name: Compile the I086 finite reference lemmas with the pinned Lean toolchain
+        run: lake env lean formal/pass220/I086PrimeOrbit.lean
