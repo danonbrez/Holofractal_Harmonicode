@@ -293,3 +293,31 @@ Next action:
 Next: check these exact latest-head CI runs, inspect any actual failures,
 repair only impacted dependency cone and commit forward. When required
 checks are passing, merge PR #771 with expected head SHA and verify main.
+
+## Lean finite-domain cases repair (2026-10-11)
+
+- Inherited omega fix: `7ce3ef9f88d7731bf558f5df2f3980edd6305edc`.
+- Prior head `186baf09266bac8abadd5e3e8a3f843fd3463172`:
+  HNAN integration run `38185511107`, native Lean alignment
+  `38185511270`, and I065 `38185511257` each failed in the
+  dependent `HHS.Pass220.Base64BalancedTrit5184` Lean module.
+- HNAN Python dependency-scoped regression completed **81 PASS**.
+- Exact failures: Lean v4.34.0 could not synthesize
+  `Decidable (∀ bits : BinaryTriple, ...)` at lines 131 and 139, nor
+  `Decidable (∀ bits : BinarySextet, ...)` at line 183.
+- Dependency-scoped repair: only
+  `formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean`.
+  Replace `by decide` on three universally quantified finite tuple
+  theorems with explicit core `cases` elimination of all Bool
+  constructors followed by ground `decide`.
+- Source commit: `44c9038726f118709d5727d552738c51a06899d7`
+  (earlier `a34f23c6312b63974c865f10143a6d0cef099f6e`
+  intermediate proof skeleton). Theorem statements and all system
+  algebra/runtime code unchanged.
+- Verify latest head native Lean kernel and dependency-cone CI; pending,
+  never claim compiler success before log green. Do not reprove
+  established HNAN mathematical identities.
+- PR #771 remains open to main; after relevant required checks pass,
+  merge with expected head SHA and verify main includes the merge.
+- Disabled automation remains disabled unless user explicitly requests
+  re-enabling. Do not spawn unrelated CI reruns.
