@@ -175,6 +175,85 @@ def compose_single_hash216_array(*, frame_id: int) -> dict[str, Any]:
     return result
 
 
+
+def search_authentic_lane5_tick(
+    *, graph: Any, frame_id: int, sweep: int, position5184: int,
+    current_state: tuple[int, ...] | list[int], goal_hash216: str,
+    frame_array: dict[str, Any], max_hops: int = 1, beam_width: int = 16,
+) -> dict[str, Any]:
+    """Real 1.37/1.40 Lane 5 one-tick search using the composed array scope.
+
+    Authenticated persisted edges are read from Lane5; if none exists the
+    native search returns a fail-closed candidate miss. Never infer new edges.
+    """
+    from hhs_backend.runtime.hhs_pass219_lane5_recursive_hash216_composition_graph_1_40 import (
+        Pass219Lane5RecursiveHash216CompositionGraph,
+    )
+    from hhs_python.runtime.hhs_pass219_lane5_recursive_composition_graph_bridge import CYCLE
+    if not isinstance(graph, Pass219Lane5RecursiveHash216CompositionGraph):
+        raise NativeLayerMembraneError("one-tick search requires real Lane5 native graph")
+    a = address_tick(frame_id=frame_id, sweep=sweep, position5184=position5184)
+    if not isinstance(frame_array, dict):
+        raise NativeLayerMembraneError("one-tick search requires a sealed Hash216 array")
+    # The frame-level 216-position array is computed once for both 5184 sweeps.
+    # Validate its provenance before using it for any native graph query.
+    expected = compose_single_hash216_array(frame_id=frame_id)
+    for key in (
+        "frame_id", "source_i070_candidate_hash216",
+        "hash216_array_logical_identity_sha256",
+        "hash216_array_index_root_sha256", "one_hash216_array_per_two_sweeps",
+    ):
+        if frame_array.get(key) != expected[key]:
+            raise NativeLayerMembraneError("one-tick Hash216 array lineage mismatch")
+    hops = exact_int(max_hops, "max_hops")
+    beam = exact_int(beam_width, "beam_width")
+    if hops < 1 or beam < 1:
+        raise NativeLayerMembraneError("one-tick native search bounds invalid")
+    split_hash216(goal_hash216)
+    clock = a["absolute_native_tick"]
+    output = graph.search(
+        current_state=current_state,
+        goal_hash216=goal_hash216,
+        tick=clock % CYCLE,
+        cycle_index=clock // CYCLE,
+        max_hops=hops, beam_width=beam,
+        layer_index=a["physical_particle_layer"],
+    )
+    if output.get("candidate_only") is not True:
+        raise NativeLayerMembraneError("Lane5 search illegally promoted native candidate")
+    if output.get("found") is True:
+        receipt = output.get("native_path_receipt", {})
+        if (
+            receipt.get("accepted") is not True
+            or receipt.get("exact_adjacency") is not True
+            or receipt.get("persistent_edges_authenticated") is not True
+            or output.get("canonical_vm81_mutation_authority") is not False
+            or output.get("intermediate_vm81_transitions_executed") != 0
+        ):
+            raise NativeLayerMembraneError("one-tick native Lane5 search witness invalid")
+        by_id = {record.jump_id: record for record in graph.memory.records()}
+        for jump_id in output["path"]["jump_ids"]:
+            record = by_id.get(jump_id)
+            if (
+                record is None or record.quarantined
+                or record.layer_index != a["physical_particle_layer"]
+            ):
+                raise NativeLayerMembraneError("native composition edge crossed physical neural layer")
+    return {
+        "schema": SCHEMA + "_NATIVE_LANE5_ONE_TICK_QUERY",
+        "address": a,
+        "frame_hash216_array_index_root_sha256": expected["hash216_array_index_root_sha256"],
+        "native_phase_cycle": CYCLE,
+        "native_tick_phase": clock % CYCLE,
+        "native_cycle_index": clock // CYCLE,
+        "native_query": output,
+        "hydrated_persistent_edges_authenticated": bool(output.get("found") is True),
+        "candidate_only": True,
+        "new_connectome_edges_synthesized": False,
+        "canonical_vm81_mutation_authority": False,
+    }
+
+
 def validate_two_sweep_exact_cover(frame_id: int) -> dict[str, Any]:
     """Exhaustively verify all 10368 addresses, without visiting 86B neurons."""
     frame = exact_int(frame_id, "frame_id")
