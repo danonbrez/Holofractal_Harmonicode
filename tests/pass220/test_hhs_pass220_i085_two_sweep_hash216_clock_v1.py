@@ -108,3 +108,67 @@ def test_native_single_array_60hz_candidate_metadata_calibration(capsys):
     }
     print(report)
     assert report["sample_count"]==20
+
+
+def test_real_lane5_one_tick_search_across_both_original_sweeps(tmp_path):
+    """Two actual persisted native composition edges in one Hash216 array scope."""
+    from hhs_backend.runtime.hhs_pass219_lane5_recursive_hash216_composition_graph_1_40 import (
+        Pass219Lane5RecursiveHash216CompositionGraph,
+    )
+    from hhs_runtime.hhs_pass220_i085_two_sweep_hash216_clock_v1 import (
+        search_authentic_lane5_tick,
+    )
+    mask=(1<<64)-1
+    parent=[((73)*0x9E3779B97F4A7C15+
+             cell*0x517CC1B727220A95)&mask for cell in range(81)]
+    with Pass219Lane5RecursiveHash216CompositionGraph(
+        tmp_path/"two-sweep-live-native",vector_key=bytes(range(32)),
+        backend="CPU_REFERENCE",
+    ) as graph:
+        goals=[]
+        for sweep,physical in ((0,7),(1,5191)):
+            jump=graph.memory.jump_store.build_validated_jump(
+                jump_id=f"native-sweep-{sweep}-slot7",
+                parent_state=parent,
+                steps=[
+                    [{"cell":2+sweep,"control_g":10+sweep,"xor_mask":1<<(5+sweep)}],
+                    [{"cell":6+sweep,"control_g":22+sweep,"xor_mask":1<<(9+sweep)}],
+                ],
+                tick=5005+sweep,cycle_index=48,layer_index=physical,
+            )
+            graph.memory.persist_validated_jump(parent_state=parent,jump=jump)
+            goals.append(jump.child_hash216)
+        array=compose_single_hash216_array(frame_id=0)
+        records=[]
+        for sweep,goal in enumerate(goals):
+            record=search_authentic_lane5_tick(
+                graph=graph,frame_id=0,sweep=sweep,position5184=7,
+                current_state=parent,goal_hash216=goal,frame_array=array,
+                max_hops=1,beam_width=4,
+            )
+            assert record["native_query"]["found"] is True
+            assert record["native_query"]["exact_target"] is True
+            assert record["native_query"]["path"]["jump_ids"]==[
+                f"native-sweep-{sweep}-slot7"]
+            assert record["address"]["native_tick_in_array"]==sweep*5184+7
+            assert record["frame_hash216_array_index_root_sha256"]==array[
+                "hash216_array_index_root_sha256"]
+            assert record["hydrated_persistent_edges_authenticated"] is True
+            assert record["new_connectome_edges_synthesized"] is False
+            assert record["canonical_vm81_mutation_authority"] is False
+            records.append(record)
+        assert records[0]["frame_hash216_array_index_root_sha256"]==records[1][
+            "frame_hash216_array_index_root_sha256"]
+        invalid=dict(array)
+        invalid["hash216_array_index_root_sha256"]="0"*64
+        with pytest.raises(NativeLayerMembraneError,match="lineage"):
+            search_authentic_lane5_tick(
+                graph=graph,frame_id=0,sweep=0,position5184=7,
+                current_state=parent,goal_hash216=goals[0],frame_array=invalid,
+            )
+        with pytest.raises(NativeLayerMembraneError,match="exact"):
+            search_authentic_lane5_tick(
+                graph=graph,frame_id=0,sweep=0,position5184=7,
+                current_state=parent,goal_hash216=goals[0],frame_array=array,
+                beam_width=True,
+            )
