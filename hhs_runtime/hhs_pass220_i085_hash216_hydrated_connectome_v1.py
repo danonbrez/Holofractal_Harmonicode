@@ -166,6 +166,18 @@ def hydrate_persistent_connectome_path(
         raise NativeLayerMembraneError("ordered persistent route IDs required")
     if not jump_ids or any(not isinstance(j, str) or not j for j in jump_ids):
         raise NativeLayerMembraneError("persisted route must have authentic jump IDs")
+    if len(set(jump_ids)) != len(jump_ids):
+        raise NativeLayerMembraneError("persistent path cannot repeat a jump")
+    # The persistent Lane 5 1.39 record already binds an EXACT layer_index.
+    # Do not attach the resulting authenticated state transition to an
+    # unrelated particle/neural layer simply because the hashes validate.
+    stored = {record.jump_id: record for record in graph.memory.records()}
+    for jump_id in jump_ids:
+        if jump_id not in stored:
+            raise NativeLayerMembraneError("unpersisted neural Hash216 edge")
+        record = stored[jump_id]
+        if record.quarantined or type(record.layer_index) is not int or record.layer_index != layer:
+            raise NativeLayerMembraneError("native persisted edge's neural layer binding diverged")
     split_hash216(goal_hash216)
     reused = graph.reuse_path(
         current_state=current_state,
