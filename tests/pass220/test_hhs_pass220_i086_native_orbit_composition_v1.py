@@ -13,14 +13,15 @@ def test_native_persisted_two_segment_closed_orbit_and_negative_cases(tmp_path):
     mask = (1 << 64) - 1
     initial = [((73 * 0x9E3779B97F4A7C15) + i * 0x517CC1B727220A95) & mask
                for i in range(81)]
-    step = [{"cell": 2, "control_g": 10, "xor_mask": 1 << 5}]
+    step_a = [{"cell": 2, "control_g": 10, "xor_mask": 1 << 5}]
+    step_b = [{"cell": 3, "control_g": 11, "xor_mask": 1 << 7}]
     with Pass219Lane5RecursiveHash216CompositionGraph(
         tmp_path / "i086-authenticated", vector_key=bytes(range(32)),
         backend="CPU_REFERENCE",
     ) as graph:
         forward = graph.memory.jump_store.build_validated_jump(
             jump_id="i086-forward", parent_state=initial,
-            steps=[step], tick=5005, cycle_index=48, layer_index=7,
+            steps=[step_a, step_b], tick=5005, cycle_index=48, layer_index=7,
         )
         graph.memory.persist_validated_jump(parent_state=initial, jump=forward)
         child = graph.memory.reuse(
@@ -28,7 +29,7 @@ def test_native_persisted_two_segment_closed_orbit_and_negative_cases(tmp_path):
         )["child_state"]
         backward = graph.memory.jump_store.build_validated_jump(
             jump_id="i086-backward", parent_state=child,
-            steps=[step], tick=5006, cycle_index=48, layer_index=7,
+            steps=[step_b, step_a], tick=5006, cycle_index=48, layer_index=7,
         )
         graph.memory.persist_validated_jump(parent_state=child, jump=backward)
         assert backward.child_hash216 == graph.native.state_root(initial)
@@ -40,7 +41,7 @@ def test_native_persisted_two_segment_closed_orbit_and_negative_cases(tmp_path):
         )
         assert orbit["orbit_closed"] is True
         assert orbit["authenticated_segment_count"] == 2
-        assert orbit["represented_transitions"] == 2
+        assert orbit["represented_transitions"] == 4
         assert orbit["candidate_only"] is True
         assert orbit["canonical_vm81_mutation_authority"] is False
         assert len(orbit["composition_receipt_sha256"]) == 64

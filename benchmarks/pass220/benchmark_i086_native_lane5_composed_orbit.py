@@ -24,20 +24,21 @@ def benchmark(iterations: int = 10) -> dict:
     mask = (1 << 64) - 1
     initial = [((73 * 0x9E3779B97F4A7C15) + i * 0x517CC1B727220A95) & mask
                for i in range(81)]
-    step = [{"cell": 2, "control_g": 10, "xor_mask": 1 << 5}]
+    step_a = [{"cell": 2, "control_g": 10, "xor_mask": 1 << 5}]
+    step_b = [{"cell": 3, "control_g": 11, "xor_mask": 1 << 7}]
     with TemporaryDirectory(prefix="hhs-i086-") as tmp:
         with Pass219Lane5RecursiveHash216CompositionGraph(
             Path(tmp) / "graph", vector_key=bytes(range(32)),
             backend="CPU_REFERENCE",
         ) as graph:
             a = graph.memory.jump_store.build_validated_jump(
-                jump_id="bench-forward", parent_state=initial, steps=[step],
+                jump_id="bench-forward", parent_state=initial, steps=[step_a, step_b],
                 tick=5005, cycle_index=48, layer_index=7,
             )
             graph.memory.persist_validated_jump(parent_state=initial, jump=a)
             child = graph.memory.reuse(current_state=initial, jump_id=a.jump_id)["child_state"]
             b = graph.memory.jump_store.build_validated_jump(
-                jump_id="bench-backward", parent_state=child, steps=[step],
+                jump_id="bench-backward", parent_state=child, steps=[step_b, step_a],
                 tick=5006, cycle_index=48, layer_index=7,
             )
             graph.memory.persist_validated_jump(parent_state=child, jump=b)
@@ -68,7 +69,7 @@ def benchmark(iterations: int = 10) -> dict:
         "baseline_samples_ns": baseline,
         "composition_samples_ns": composed,
         "native_1_39_1_40_persistent_edges": True,
-        "represented_transitions_per_sample": 2,
+        "represented_transitions_per_sample": 4,
         "candidate_only": True,
         "gpu_benchmarked": False,
         "signed_vm81_admission_benchmarked": False,

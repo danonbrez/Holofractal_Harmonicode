@@ -70,7 +70,7 @@ jobs:
           native=json.loads((root/"native-benchmark.json").read_text())
           reference=json.loads((root/"reference-benchmark.json").read_text())
           assert native["native_1_39_1_40_persistent_edges"] is True
-          assert native["represented_transitions_per_sample"] == 2
+          assert native["represented_transitions_per_sample"] == 4
           assert native["candidate_only"] is True
           assert len(native["baseline_samples_ns"]) == len(native["composition_samples_ns"]) == native["iterations"]
           assert reference["native_lane5_executed"] is False

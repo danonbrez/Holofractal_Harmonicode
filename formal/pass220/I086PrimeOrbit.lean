@@ -16,16 +16,15 @@ def shift (i : Fin 9) (d : Fin 9) : Fin 9 := ⟨(i.val + d.val) % 9, Nat.mod_lt 
 def neighbor (i : Cell) (dr dc : Fin 9) : Cell :=
   address (shift (row i) dr) (shift (col i) dc)
 def evolve (f : LifeGrid → LifeGrid) (n : Nat) (s : LifeGrid) : LifeGrid :=
-  (f^[n]) s
+  Nat.rec s (fun _ state => f state) n
 theorem evolve_zero (f : LifeGrid → LifeGrid) (s : LifeGrid) :
-    evolve f 0 s = s := by simp [evolve]
+    evolve f 0 s = s := by rfl
 theorem evolve_succ (f : LifeGrid → LifeGrid) (n : Nat) (s : LifeGrid) :
-    evolve f (n+1) s = f (evolve f n s) := by
-  simp [evolve, Function.iterate_succ_apply']
+    evolve f (n+1) s = f (evolve f n s) := by rfl
 def residue (p t : Nat) : Nat := t % p
 theorem residue_period (p t : Nat) (hp : 0 < p) :
     residue p (t+p) = residue p t := by
-  simp [residue, Nat.add_mod, Nat.mod_eq_zero_of_dvd (dvd_refl p)]
+  simp [residue, Nat.add_mod]
 theorem deterministic_replay (f : LifeGrid → LifeGrid) (n : Nat)
     (a b : LifeGrid) (h : a = b) : evolve f n a = evolve f n b := by
   rw [h]
