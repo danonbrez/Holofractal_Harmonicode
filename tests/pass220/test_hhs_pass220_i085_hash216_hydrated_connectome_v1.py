@@ -109,7 +109,10 @@ def test_real_persisted_native_lane5_composition_edge_rehydrates(tmp_path):
         jump=graph.memory.jump_store.build_validated_jump(
             jump_id="native-edge-for-layer7",
             parent_state=parent,
-            steps=[[{"cell":5,"control_g":27,"xor_mask":1<<7}]],
+            steps=[
+                [{"cell":5,"control_g":27,"xor_mask":1<<7}],
+                [{"cell":6,"control_g":28,"xor_mask":1<<8}],
+            ],
             tick=5005,cycle_index=48,layer_index=7,
         )
         graph.memory.persist_validated_jump(parent_state=parent,jump=jump)
@@ -123,7 +126,7 @@ def test_real_persisted_native_lane5_composition_edge_rehydrates(tmp_path):
         assert route["connectome_source"]==SOURCE_I140
         assert route["ordered_jump_ids"]==["native-edge-for-layer7"]
         assert route["retrieved_edges"]==1
-        assert route["represented_transitions"]==1
+        assert route["represented_transitions"]==2
         assert route["candidate_only"] is True
         assert route["canonical_vm81_mutation"] is False
         assert route["synaptic_weight_execution_claimed"] is False
