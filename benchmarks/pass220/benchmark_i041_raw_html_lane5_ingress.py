@@ -268,6 +268,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         const ids=[0,4322,4323,5183,5184,10367];
                         return {diagnostics:a,
                           samples:ids.map(id=>map.layerBounds(id)),
+                          two_sweep_tick_pairs:[0,2592,5183].map(k=>map.pairedTick(0,k)),
+                          native_hash216_array_source:"PASS174_NATIVE",
                           visual_only:true,
                           has_native_ordered_edge_execution:false};
                     }'''
@@ -277,6 +279,19 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     raise RuntimeError("I085 native neural layer atlas did not close")
                 if audit.get("nominal_capture_fps") != args.fps:
                     raise RuntimeError("I085 output cadence does not match requested FPS")
+                if (
+                    audit.get("native_sweeps_per_hash216_array") != 2
+                    or audit.get("native_layer_ticks_per_sweep") != 5184
+                    or audit.get("native_ticks_per_composed_hash216_array") != 10368
+                ):
+                    raise RuntimeError("I085 two-sweep native clock drift")
+                for k, pair in zip((0, 2592, 5183), neural_binding["two_sweep_tick_pairs"]):
+                    if (
+                        pair["layer0"]["layer_id"] != k
+                        or pair["layer1"]["layer_id"] != 5184 + k
+                        or pair["layer0"]["vm81_cell"] != pair["layer1"]["vm81_cell"]
+                    ):
+                        raise RuntimeError("I085 native reciprocal tick pair diverged")
                 if audit.get("graph_full_edge_execution_verified") is not False:
                     raise RuntimeError("unsupported full neural edge execution claim")
             canvas = page.locator("canvas").first
