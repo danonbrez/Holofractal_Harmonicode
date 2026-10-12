@@ -11,9 +11,11 @@ on:
       - hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py
       - hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py
       - hhs_runtime/hhs_pass220_i085_hash216_hydrated_connectome_v1.py
+      - hhs_runtime/hhs_pass220_i085_two_sweep_hash216_clock_v1.py
       - benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
       - tests/pass220/test_hhs_pass220_i085_original_particle_neural_layers_v1.py
       - tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py
+      - tests/pass220/test_hhs_pass220_i085_two_sweep_hash216_clock_v1.py
       - docs/operations/restart/PASS_220_I085_PHYSICS_NEURAL_LAYERS_RESTART_20261011.md
   workflow_dispatch:
 
@@ -33,16 +35,18 @@ jobs:
         env:
           PYTHONPATH: .
         run: |
-          python -m pip install --disable-pip-version-check pytest
+          python -m pip install --disable-pip-version-check pytest cryptography
           python -m py_compile \
             hhs_runtime/hhs_pass220_i082_neural_tensor_graph_v1.py \
             hhs_runtime/hhs_pass220_i085_particle_neural_layer_membrane_v1.py \
             hhs_runtime/hhs_pass220_i085_hash216_hydrated_connectome_v1.py \
+            hhs_runtime/hhs_pass220_i085_two_sweep_hash216_clock_v1.py \
             benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
           python -m pytest -q \
             tests/pass220/test_hhs_pass220_i082_neural_tensor_graph_v1.py \
             tests/pass220/test_hhs_pass220_i085_original_particle_neural_layers_v1.py \
             tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py \
+            tests/pass220/test_hhs_pass220_i085_two_sweep_hash216_clock_v1.py \
             tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py \
             tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py \
             -k 'not test_real_persisted_native_lane5_composition_edge_rehydrates'
@@ -58,6 +62,16 @@ jobs:
           assert result["coverage"]["extra_neuron_layers"]==4323
           assert result["coverage"]["base_neurons_per_layer"]=="8372449"
           print("I085 exact native binding and full lazy address coverage PASS")
+          from hhs_runtime.hhs_pass220_i085_two_sweep_hash216_clock_v1 import (
+              compose_single_hash216_array, validate_two_sweep_exact_cover,
+          )
+          clock=compose_single_hash216_array(frame_id=0)
+          assert clock["one_hash216_array_per_two_sweeps"] is True
+          assert clock["native_ticks_per_sweep"]==5184
+          assert clock["native_tick_count"]==10368
+          assert clock["hash216_array_character_indexes"]==216
+          assert validate_two_sweep_exact_cover(0)["full_exact_cover"] is True
+          print("I085 one real Pass174 Hash216 array across two 5184 tick sweeps PASS")
           PY
 
   validate-native-hash216-connectome:
@@ -93,7 +107,7 @@ jobs:
           python-version: "3.12"
       - name: Install existing HHS raw HTML ingress and MP4 transport
         run: |
-          python -m pip install --disable-pip-version-check pillow playwright pytest
+          python -m pip install --disable-pip-version-check pillow playwright pytest cryptography
           python -m playwright install --with-deps chromium
           sudo apt-get update
           sudo apt-get install -y ffmpeg
@@ -151,6 +165,12 @@ jobs:
           assert neural["diagnostics"]["neuron_count"]=="86805555555"
           assert neural["diagnostics"]["logical_positions"]=="449999999997120"
           assert neural["diagnostics"]["nominal_capture_fps"]==60
+          assert neural["diagnostics"]["native_sweeps_per_hash216_array"]==2
+          assert neural["diagnostics"]["native_layer_ticks_per_sweep"]==5184
+          assert neural["diagnostics"]["native_ticks_per_composed_hash216_array"]==10368
+          assert neural["native_hash216_array_source"]=="PASS174_NATIVE"
+          assert [p["layer0"]["layer_id"] for p in neural["two_sweep_tick_pairs"]]==[0,2592,5183]
+          assert [p["layer1"]["layer_id"] for p in neural["two_sweep_tick_pairs"]]==[5184,7776,10367]
           assert neural["diagnostics"]["graph_full_edge_execution_verified"] is False
           assert neural["has_native_ordered_edge_execution"] is False
           assert neural["independent_webgl_motion_verified"] is True
@@ -173,12 +193,24 @@ jobs:
           assert mp4["r_frame_rate"]=="60/1"
           assert abs(mp4["duration_seconds"]-10)<.05
           assert mp4["sha256"]==hashlib.sha256(clip.read_bytes()).hexdigest()
+          from hhs_runtime.hhs_pass220_i085_two_sweep_hash216_clock_v1 import (
+              compose_single_hash216_array,
+          )
+          array=compose_single_hash216_array(frame_id=0)
+          assert array["hash216_array_character_indexes"]==216
+          assert array["one_hash216_array_per_two_sweeps"] is True
+          assert array["native_tick_count"]==10368
           evidence={
             "schema":"HHS_PASS_220_I085_ORIGINAL_PHYSICS_NEURAL_ATLAS_1080P60_V1",
             "status":"PASS","git_sha":"${{ github.sha }}",
             "mp4_sha256":mp4["sha256"],
             "source_sha256":receipt["source_sha256_before"],
             "neuron_count":"86805555555","particle_layers":10368,
+            "one_pass174_hash216_array_for_two_5184_native_tick_sweeps":True,
+            "hash216_array_logical_identity_sha256":array["hash216_array_logical_identity_sha256"],
+            "hash216_array_index_root_sha256":array["hash216_array_index_root_sha256"],
+            "native_ticks_per_sweep":5184,
+            "native_ticks_per_array":10368,
             "real_witnessed_edges":False,
             "runtime_neural_graph_executed":False,
             "gpu_waveform_and_i063_l2_preserved":True,
