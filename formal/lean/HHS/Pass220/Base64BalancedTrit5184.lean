@@ -129,8 +129,11 @@ theorem centerNotEmittedAsBinary :
     ∀ bits : BinaryTriple,
       encodeBits bits ≠ (.neutral, .neutral) := by
   intro bits
-  rcases bits with ⟨a, b, c⟩
-  cases a <;> cases b <;> cases c <;> decide
+  cases bits with
+  | mk a bc =>
+    cases bc with
+    | mk b c =>
+      cases a <;> cases b <;> cases c <;> decide
 
 /-- A total decoder is used only after the admitted-pair proof. -/
 def decodeAdmitted (pair : TritPair) : BinaryTriple :=
@@ -139,8 +142,11 @@ def decodeAdmitted (pair : TritPair) : BinaryTriple :=
 theorem admittedLocalRoundTrip :
     ∀ bits : BinaryTriple, decodeAdmitted (encodeBits bits) = bits := by
   intro bits
-  rcases bits with ⟨a, b, c⟩
-  cases a <;> cases b <;> cases c <;> decide
+  cases bits with
+  | mk a bc =>
+    cases bc with
+    | mk b c =>
+      cases a <;> cases b <;> cases c <;> decide
 
 /-- Every 5184-bit frame is represented by 1728 ordered triples.
     This theorem quantifies over all possible such frames, not samples. -/
@@ -185,9 +191,18 @@ theorem allBase64SextetsRoundTrip :
     ∀ bits : BinarySextet,
       decodeSextet (encodeSextet bits) = some bits := by
   intro bits
-  rcases bits with ⟨⟨a, b, c⟩, ⟨d, e, f⟩⟩
-  cases a <;> cases b <;> cases c <;>
-    cases d <;> cases e <;> cases f <;> decide
+  cases bits with
+  | mk left right =>
+    cases left with
+    | mk a bc =>
+      cases bc with
+      | mk b c =>
+        cases right with
+        | mk d ef =>
+          cases ef with
+          | mk e f =>
+            cases a <;> cases b <;> cases c <;>
+              cases d <;> cases e <;> cases f <;> decide
 
 /-- Whole-frame six-bit groups: 864 sextets, each with 4 output trits. -/
 abbrev Base64Frame864 := Fin 864 → BinarySextet
