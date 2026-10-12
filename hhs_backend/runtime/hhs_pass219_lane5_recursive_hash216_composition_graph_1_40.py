@@ -237,6 +237,7 @@ class Pass219Lane5RecursiveHash216CompositionGraph:
         records: Sequence[PersistentHash216CompositionRecord],
         tick: int,
         cycle_index: int,
+        allow_terminal_return: bool = False,
     ) -> tuple[RecursiveCompositionPath, dict[str, Any]]:
         if not records:
             raise ValueError("recursive composition path must contain at least one persistent edge")
@@ -244,10 +245,10 @@ class Pass219Lane5RecursiveHash216CompositionGraph:
             raise ValueError("recursive composition path start does not match first edge parent")
         visited = {start_hash216}
         prior = start_hash216
-        for record in records:
+        for edge_index, record in enumerate(records):
             if record.parent_hash216 != prior:
                 raise ValueError("recursive composition path exact Hash216 adjacency failure")
-            if record.child_hash216 in visited:
+            if record.child_hash216 in visited and not (allow_terminal_return and edge_index == len(records) - 1 and record.child_hash216 == start_hash216):
                 raise ValueError("recursive composition path revisits a Hash216 vertex")
             visited.add(record.child_hash216)
             prior = record.child_hash216
@@ -319,6 +320,7 @@ class Pass219Lane5RecursiveHash216CompositionGraph:
         goal_hash216: str,
         tick: int,
         cycle_index: int,
+        allow_terminal_return: bool = False,
     ) -> dict[str, Any]:
         split_hash216(goal_hash216)
         if not jump_ids:
@@ -331,7 +333,7 @@ class Pass219Lane5RecursiveHash216CompositionGraph:
         records_by_id = {record.jump_id: record for record in self.memory.records()}
         traversed: list[PersistentHash216CompositionRecord] = []
         edge_receipts: list[dict[str, Any]] = []
-        for jump_id in jump_ids:
+        for edge_index, jump_id in enumerate(jump_ids):
             try:
                 record = records_by_id[str(jump_id)]
             except KeyError as exc:
@@ -340,7 +342,7 @@ class Pass219Lane5RecursiveHash216CompositionGraph:
                 raise ValueError("recursive composition edge is quarantined")
             if record.parent_hash216 != current_hash216:
                 raise ValueError("recursive composition exact Hash216 adjacency failure")
-            if record.child_hash216 in visited:
+            if record.child_hash216 in visited and not (allow_terminal_return and edge_index == len(jump_ids) - 1 and record.child_hash216 == start_hash216):
                 raise ValueError("recursive composition path revisits a Hash216 vertex")
             reused = self.memory.reuse(current_state=current, jump_id=record.jump_id)
             child_state = tuple(int(value) for value in reused["child_state"])
@@ -361,6 +363,7 @@ class Pass219Lane5RecursiveHash216CompositionGraph:
             records=traversed,
             tick=tick,
             cycle_index=cycle_index,
+            allow_terminal_return=allow_terminal_return,
         )
         return {
             "schema": "HHS_PASS_219_LANE5_RECURSIVE_COMPOSITION_REUSE_1_40",
