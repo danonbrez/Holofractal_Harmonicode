@@ -123,7 +123,12 @@ theorem nativeLoShuOrder :
 /-- Eight exact local inputs, verified by kernel-evaluable finite cases. -/
 theorem allThreeBitTriplesRoundTrip :
     ∀ bits : BinaryTriple, decodePair (encodeBits bits) = some bits := by
-  decide
+  intro bits
+  cases bits with
+  | mk a bc =>
+    cases bc with
+    | mk b c =>
+      cases a <;> cases b <;> cases c <;> decide
 
 theorem centerNotEmittedAsBinary :
     ∀ bits : BinaryTriple,
