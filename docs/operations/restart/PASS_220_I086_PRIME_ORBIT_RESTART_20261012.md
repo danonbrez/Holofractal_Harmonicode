@@ -43,3 +43,10 @@ Native Pass219 1.40 was briefly modified then restored BYTE-IDENTICALLY to I085 
 4. Maintain candidate-only orbit semantics: this validation proves composition of authenticated existing segments and the Conway reference; it does not claim signed VM81 canonical admission, GPU performance, or physical proof.
 
 Do not equate GitHub commit or draft PR creation with pass acceptance.
+
+## 2026-10-12 focused executable Conway check
+- Executed a standalone extraction of the exact `conway_step` algorithm in the local container with pytest; command: `pytest -q /mnt/data/i086_validation/test_conway.py`.
+- Result: **8 passed in 0.05s** (dead state, block, blinker, toroidal wrap, five invalid input types/ranges).
+- This was an isolated extraction, **not** the repository's imported test module, not a native Lane 5 run, and not CI acceptance. No claim of full native execution.
+- `github.com` and `api.github.com` DNS unavailable from container; no repository checkout. `lake` and `wolframscript` absent from PATH.
+- Native test and benchmark acceptance remain pending; keep PR #774 draft.
