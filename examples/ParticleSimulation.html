@@ -242,6 +242,8 @@
            instanceColor must be animated explicitly. */
         if(audioVisual && audioVisual.geometryEnabled){
           audioVisual.projectMatrix(p,particleBatchMatrix);
+          /* Candidate-only Brownian light offset: GPU instance matrix only. */
+          audioVisual.projectBrownianAntiParticle(p,particleBatchMatrix);
           audioVisual.projectColor(p,particleAudioColor);
           mesh.setColorAt(i,particleAudioColor);
         }else{
@@ -3460,7 +3462,13 @@
          invariant hold per substep; the interaction rate scales linearly.
          CONTROL ONLY: no physics change at any setting. */
       const steps=Math.max(1,Math.min(10,simParams.freqScale|0));
-      for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
+      for(let s=0;s<steps;s++){ updateSpiralParticles();
+        /* Keep visual Brownian FIFO aligned to physical substep count;
+           this never writes to the original mesh or canonical VM81 state. */
+        if(window.HHSAudioViz &&
+            typeof window.HHSAudioViz.observeBrownianSubstep==="function")
+          window.HHSAudioViz.observeBrownianSubstep();
+        time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
       updatePhaseGeometry();
       constructorScan();
       if(chase.on) updateChaseCamera();
