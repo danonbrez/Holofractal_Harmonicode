@@ -10,7 +10,7 @@ inductive TensorExpr where
   | orderedAdd : List TensorExpr → TensorExpr
   | orderedDiv : TensorExpr → TensorExpr → TensorExpr
   | orderedPow : TensorExpr → TensorExpr → TensorExpr
-  deriving Repr, DecidableEq
+  deriving Repr
 
 open TensorExpr
 
@@ -50,7 +50,8 @@ def right : TensorExpr :=
 
 theorem orderedPairDistinct :
     orderedMul [atom "x", atom "y"] ≠
-    orderedMul [atom "y", atom "x"] := by decide
+    orderedMul [atom "y", atom "x"] := by
+  simp
 
 theorem leftPreservesOrderedDenominator :
     left ≠ orderedMul [
@@ -59,7 +60,8 @@ theorem leftPreservesOrderedDenominator :
         (orderedMul [nat 600000000000000,
           orderedPow (atom "a") (nat 2), atom "y", atom "x"]),
       orderedPow (nat 72) (nat 2), atom "b", nat 6
-    ] := by decide
+    ] := by
+  simp [left]
 
 /-- Native relation is a parameter supplied by Lane 5, never substituted by
     ordinary scalar equality. An implementation must provide both witnesses. -/
