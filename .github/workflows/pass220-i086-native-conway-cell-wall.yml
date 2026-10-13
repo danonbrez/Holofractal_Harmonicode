@@ -8,6 +8,7 @@ on:
     paths:
       - 'hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp'
       - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
+      - 'hhs_runtime/cpp/hhs_pass220_i086_lane5_conway_cell_wall_v1.cpp'
       - 'hhs_runtime/include/hhs_pass220_i086_lane5_conway_cell_wall_v1.h'
       - 'tests/pass220/test_i086_pass219_cpp_cell_wall_conway.cpp'
       - '.github/workflows/pass220-i086-native-conway-cell-wall.yml'
@@ -26,12 +27,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libssl-dev
+      - name: Verify frozen Pass219 generation integrity
+        run: |
+          python tools/pass219/verify_generation_integrity_v1.py --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json --print-seal
       - name: Build native exact ABI and C++ membrane
         run: |
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
           bash tools/pass219/build_exact_abi_link_support.sh /tmp/i086-link full
-          nm /tmp/i086-link/hhs_pass219_vm81_pqc_cell_wall.o | c++filt | grep hhs_pass220_i086_lane5_conway81_cell_wall
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -fPIC \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/cpp/hhs_pass220_i086_lane5_conway_cell_wall_v1.cpp \
+            -o /tmp/i086-link/i086-lane5-conway.o
+          nm -C /tmp/i086-link/i086-lane5-conway.o | grep hhs_pass220_i086_lane5_conway81_cell_wall
       - name: Build inherited membrane dependencies
         run: |
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/i086-link/pass188.o
@@ -47,7 +55,7 @@ jobs:
             -Inative_projects/hhs_pass189_hqlh_runtime/include \
             tests/pass220/test_i086_pass219_cpp_cell_wall_conway.cpp \
             /tmp/i086-link/pass188.o /tmp/i086-link/pass188-x86.o /tmp/i086-link/pass189.o \
-            /tmp/i086-link/hhs_pass219_vm81_pqc_cell_wall.o \
+            /tmp/i086-link/i086-lane5-conway.o \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
             -o /tmp/i086-link/test-conway
           /tmp/i086-link/test-conway
