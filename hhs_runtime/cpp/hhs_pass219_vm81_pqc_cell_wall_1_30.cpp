@@ -1,6 +1,5 @@
 #include "hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp"
 #include "hhs_pass219_vm81_pqc_firewall_1_30.h"
-#include "hhs_pass220_i086_lane5_conway_cell_wall_v1.h"
 
 #if defined(_WIN32)
 #define HHS_P219_PQC_INTERNAL
@@ -46,32 +45,4 @@ hhs_pass219_vm81_pqc_route_cpp_cell_wall(
         state,
         *out_prepared,
         *out_decision);
-}
-
-/* I086 Lane 5 ingress: route through the existing Pass 219 C++ membrane.
- * A candidate-only transition; no native VM81 commit or Hash72 mint.
- * The exact UQCEL input is required to establish the existing membrane.
- */
-extern "C" HHS_EXACT_API HHSExactStatus
-hhs_pass220_i086_lane5_conway81_cell_wall(
-    const HHSExactUQCELInputV1* input,
-    const std::uint8_t* occupancy81,
-    std::uint8_t* next81
-) noexcept {
-    if (input == nullptr || occupancy81 == nullptr || next81 == nullptr)
-        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
-    hhs::rna::OrthogonalGlyphMembrane membrane(input->delta, input->delta);
-    if (membrane.status() != HHS_EXACT_STATUS_OK)
-        return membrane.status();
-    hhs::rna::CoreHolographicRNACellWall cell_wall(membrane);
-    std::array<std::uint8_t, 81> input_cells{};
-    std::array<std::uint8_t, 81> output_cells{};
-    for (std::size_t i = 0; i < 81; ++i)
-        input_cells[i] = occupancy81[i];
-    const HHSExactStatus status = cell_wall.evolve_conway81(input_cells, output_cells);
-    if (status != HHS_EXACT_STATUS_OK)
-        return status;
-    for (std::size_t i = 0; i < 81; ++i)
-        next81[i] = output_cells[i];
-    return HHS_EXACT_STATUS_OK;
 }
