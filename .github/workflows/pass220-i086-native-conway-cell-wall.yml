@@ -1,6 +1,9 @@
 name: Pass 220 I086 Native Conway Cell Wall
 
 on:
+  push:
+    branches:
+      - agent/pass220-i086-prime-orbit-formalization-20261012
   pull_request:
     paths:
       - 'hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp'
