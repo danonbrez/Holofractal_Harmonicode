@@ -1,0 +1,22 @@
+name: Pass 220 Lean Recursive BigInt Generators
+on:
+  pull_request:
+    paths:
+      - "formal/lean/HHS/RecursiveBigIntGenerator.lean"
+      - ".github/workflows/pass220-lean-recursive-bigint-generators.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-constructor-proofs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: false
+          test: false
+      - name: Check exact recursive constructor theorems with pinned Lean
+        run: lake env lean formal/lean/HHS/RecursiveBigIntGenerator.lean
