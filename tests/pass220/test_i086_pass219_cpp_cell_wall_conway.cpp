@@ -1,4 +1,5 @@
 #include "hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp"
+#include "hhs_pass220_i086_lane5_conway_cell_wall_v1.h"
 #include <array>
 #include <cstdint>
 #include <cstdio>
@@ -28,6 +29,12 @@ int main() {
     vertical.fill(0U);
     vertical[3*9+0] = vertical[4*9+0] = vertical[5*9+0] = 1U;
     CHECK(next == vertical); // Toroidal column wrap.
+    HHSExactUQCELInputV1 ingress{};
+    ingress.delta = a2;
+    std::array<std::uint8_t, 81> ingress_output{};
+    CHECK(hhs_pass220_i086_lane5_conway81_cell_wall(&ingress, seed.data(), ingress_output.data()) == HHS_EXACT_STATUS_OK);
+    CHECK(ingress_output == vertical);
+    CHECK(hhs_pass220_i086_lane5_conway81_cell_wall(nullptr, seed.data(), ingress_output.data()) == HHS_EXACT_STATUS_INVALID_ARGUMENT);
     seed[0] = 2U;
     next.fill(7U);
     CHECK(wall.evolve_conway81(seed, next) == HHS_EXACT_STATUS_INVALID_ARGUMENT);
