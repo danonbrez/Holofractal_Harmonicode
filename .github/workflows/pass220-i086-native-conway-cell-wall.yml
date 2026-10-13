@@ -30,33 +30,18 @@ jobs:
       - name: Verify frozen Pass219 generation integrity
         run: |
           python tools/pass219/verify_generation_integrity_v1.py --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json --print-seal
-      - name: Build native exact ABI and C++ membrane
+      - name: Build production exact ABI with linked I086 Lane5 mediation
         run: |
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
-          bash tools/pass219/build_exact_abi_link_support.sh /tmp/i086-link full
-          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -fPIC \
-            -Ihhs_runtime/include -Ihhs_runtime/c \
-            -Inative_projects/hhs_pass188_bott_runtime/include \
-            -Inative_projects/hhs_pass189_hqlh_runtime/include \
-            -c hhs_runtime/cpp/hhs_pass220_i086_lane5_conway_cell_wall_v1.cpp \
-            -o /tmp/i086-link/i086-lane5-conway.o
-          nm -C /tmp/i086-link/i086-lane5-conway.o | grep hhs_pass220_i086_lane5_conway81_cell_wall
+          mkdir -p /tmp/i086-link
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_pass220_i086_lane5_conway81_cell_wall$'
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_i028_lane5_rna_g3_route$'
       - name: Build inherited membrane dependencies
         run: |
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/i086-link/pass188.o
           gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/i086-link/pass188-x86.o
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/i086-link/pass189.o
-      - name: Compile inherited I028 Lane5 BIOS and VM81 G3 adapter
-        run: |
-          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
-            -o /tmp/i086-link/i028-adapter.o
-          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
-            -Ihhs_runtime/include \
-            -c hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp \
-            -o /tmp/i086-link/i028-rna-g3-bridge.o
       - name: Run native Conway regression
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
@@ -67,8 +52,6 @@ jobs:
             -Inative_projects/hhs_pass189_hqlh_runtime/include \
             tests/pass220/test_i086_pass219_cpp_cell_wall_conway.cpp \
             /tmp/i086-link/pass188.o /tmp/i086-link/pass188-x86.o /tmp/i086-link/pass189.o \
-            /tmp/i086-link/i086-lane5-conway.o \
-            /tmp/i086-link/i028-rna-g3-bridge.o /tmp/i086-link/i028-adapter.o \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
             -o /tmp/i086-link/test-conway
           /tmp/i086-link/test-conway
