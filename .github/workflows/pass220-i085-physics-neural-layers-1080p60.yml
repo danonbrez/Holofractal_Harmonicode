@@ -13,6 +13,7 @@ on:
       - hhs_runtime/hhs_pass220_i085_hash216_hydrated_connectome_v1.py
       - hhs_runtime/hhs_pass220_i085_two_sweep_hash216_clock_v1.py
       - benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+      - tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
       - tests/pass220/test_hhs_pass220_i085_original_particle_neural_layers_v1.py
       - tests/pass220/test_hhs_pass220_i085_hash216_hydrated_connectome_v1.py
       - tests/pass220/test_hhs_pass220_i085_two_sweep_hash216_clock_v1.py
