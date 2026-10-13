@@ -73,3 +73,16 @@ The earlier standalone-extraction paragraph records a limited check and is NOT t
 - Commit 572d0dc8f44ffb6dd60451b61394d4d6fe491b10: `tests/pass220/test_hhs_pass220_i086_conway_lane5_candidate_v1.py`, blinker native candidate, unchanged state rejection, malformed state rejection.
 - CRITICAL: tests NOT executed in full repository environment; actual 1.38 native `control_g=0` event semantics and bridge acceptance must be verified, not assumed. Native representation is currently partial: 1.38 requires two nonempty steps and adapter fails closed for 0/1 changed cells. Do not claim general Conway coverage or pass closure.
 - Next: run dependency-scoped native tests and inspect failures; verify exact event semantics, native child state, persistent receipt and I085 Hash216 lineage. Repair forward using existing native interfaces; do not invent surrogate authority.
+
+
+## I086 Conway C++ cell-wall integration checkpoint (2026-10-12)
+
+- Branch: `agent/pass220-i086-prime-orbit-formalization-20261012`; base remains `agent/pass220-i085-original-physics-10368-neural-layers-20261011` at `310e05b008103097c66421a948de2ad0be3e5240`; PR #774 remains draft.
+- Latest source/test commit: `2bf88e1e7d16c1c782a905b2fe5c42438765bc85`.
+- Commits: `d4c998f` (native C++ cell-wall B3/S23), `bf9ff1a` (Lane 5 ingress through existing membrane), `1cf4ae6` (public C ABI declaration), `2bf88e1` (native C++ regression test).
+- Changed paths: `hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp`, `hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp`, `hhs_runtime/include/hhs_pass220_i086_lane5_conway_cell_wall_v1.h`, `tests/pass220/test_i086_pass219_cpp_cell_wall_conway.cpp`.
+- Exact implementation: 81-byte binary occupancy, row-major 9x9 toroidal Conway B3/S23, synchronous next-generation calculation, fail-closed input, in-place safe. Existing Pass 219 C++ membrane admission is required. Candidate only: no Hash72 mint, no VM81 mutation, no new ledger authority.
+- Source writes completed through connected GitHub API; no native C++ compile, link, ABI export audit, or repo tests have been run in this checkpoint. Do not classify as validated or merged.
+- Remaining: include new ABI header in compiled native linkage as needed, run dependency-scoped C++ test and Lane 5 C ABI ingress test against the real library, check symbol export and negative membrane admission, reconcile/remove superseded Python native-jump adapter, update PR #774, validate CI, merge and verify main when gates pass.
+- Environment: GitHub connector operational; local container cannot reach github.com by DNS, so native repository checkout/build is not established.
+- Next action: compile native Pass 219 cell-wall dependencies with test, repair any build/ABI issues, then commit results and update restart receipt. No changes to HARMONICODE_VM_RUNTIME.c are authorized for this layer.
