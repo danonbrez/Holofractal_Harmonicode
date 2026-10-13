@@ -3416,6 +3416,11 @@
       // HHS graft: neighbor coupling — the school-of-fish reactivity layer
       updateSwarmCoupling();
       updateTesseract();
+      /* One render-only Brownian FIFO observation per actual physics substep.
+         The callback carries no canonical state mutation authority. */
+      if(window.HHSAudioViz &&
+          typeof window.HHSAudioViz.observeBrownianSubstep==="function")
+        window.HHSAudioViz.observeBrownianSubstep();
     }
 
     // Animation loop
@@ -3462,13 +3467,7 @@
          invariant hold per substep; the interaction rate scales linearly.
          CONTROL ONLY: no physics change at any setting. */
       const steps=Math.max(1,Math.min(10,simParams.freqScale|0));
-      for(let s=0;s<steps;s++){ updateSpiralParticles();
-        /* Keep visual Brownian FIFO aligned to physical substep count;
-           this never writes to the original mesh or canonical VM81 state. */
-        if(window.HHSAudioViz &&
-            typeof window.HHSAudioViz.observeBrownianSubstep==="function")
-          window.HHSAudioViz.observeBrownianSubstep();
-        time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
+      for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
       updatePhaseGeometry();
       constructorScan();
       if(chase.on) updateChaseCamera();
