@@ -253,6 +253,47 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     "graft_schema": None,
                     "graft_present": False,
                 }
+            neural_binding = None
+            if args.neural_layer_check:
+                page.wait_for_function(
+                    '''()=>window.HHSNeuralLayerMap &&
+                    window.HHSNeuralLayerMap.diagnostics &&
+                    window.HHSNeuralLayerMap.diagnostics.original_particles_bound===10368''',
+                    timeout=args.timeout_ms,
+                )
+                neural_binding = page.evaluate(
+                    '''()=>{
+                        const map=window.HHSNeuralLayerMap;
+                        const a=map.audit();
+                        const ids=[0,4322,4323,5183,5184,10367];
+                        return {diagnostics:a,
+                          samples:ids.map(id=>map.layerBounds(id)),
+                          two_sweep_tick_pairs:[0,2592,5183].map(k=>map.pairedTick(0,k)),
+                          native_hash216_array_source:"PASS174_NATIVE",
+                          visual_only:true,
+                          has_native_ordered_edge_execution:false};
+                    }'''
+                )
+                audit=neural_binding["diagnostics"]
+                if not audit.get("passed") or audit.get("neuron_count")!="86805555555":
+                    raise RuntimeError("I085 native neural layer atlas did not close")
+                if audit.get("nominal_capture_fps") != args.fps:
+                    raise RuntimeError("I085 output cadence does not match requested FPS")
+                if (
+                    audit.get("native_sweeps_per_hash216_array") != 2
+                    or audit.get("native_layer_ticks_per_sweep") != 5184
+                    or audit.get("native_ticks_per_composed_hash216_array") != 10368
+                ):
+                    raise RuntimeError("I085 two-sweep native clock drift")
+                for k, pair in zip((0, 2592, 5183), neural_binding["two_sweep_tick_pairs"]):
+                    if (
+                        pair["layer0"]["layer_id"] != k
+                        or pair["layer1"]["layer_id"] != 5184 + k
+                        or pair["layer0"]["vm81_cell"] != pair["layer1"]["vm81_cell"]
+                    ):
+                        raise RuntimeError("I085 native reciprocal tick pair diverged")
+                if audit.get("graph_full_edge_execution_verified") is not False:
+                    raise RuntimeError("unsupported full neural edge execution claim")
             canvas = page.locator("canvas").first
             # The audio waveform is drawn by the original HTML onto a
             # separate transparent canvas (#audioVizOverlay, z-index 2).
@@ -286,6 +327,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     page.screenshot(path=str(frame), animations="allow")
                 else:
                     canvas.screenshot(path=str(frame))
+                if args.neural_layer_check and index in (0, args.frames//2, args.frames-1):
+                    # Independent physical WebGL motion witness, so waveform
+                    # overlay motion cannot disguise a static particle scene.
+                    canvas.screenshot(
+                        path=str(samples / f"original-webgl-physics-{index:06d}.png")
+                    )
                 if audio_capture["enabled"] and (index % 30 == 0 or index == args.frames - 1):
                     diagnostics = page.evaluate(
                         '''()=>window.HHSBrownL2
@@ -319,6 +366,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         "original HTML L2 waveform graft produced no GPU instance writes"
                     )
 
+            if args.neural_layer_check:
+                physics_frames=sorted(samples.glob("original-webgl-physics-*.png"))
+                if len(physics_frames)!=len({0,args.frames//2,args.frames-1}):
+                    raise RuntimeError("missing independent raw WebGL scene samples")
+                physical_hashes=[sha256_file(path) for path in physics_frames]
+                if len(set(physical_hashes))!=len(physical_hashes):
+                    raise RuntimeError("particle WebGL canvas is static; overlay alone cannot pass")
+                neural_binding["independent_webgl_motion_verified"]=True
+                neural_binding["independent_webgl_samples"]=len(physics_frames)
+                neural_binding["independent_webgl_sha256"]=physical_hashes
             selected = sorted(frames.glob("frame_*.png"))
             for label, idx in (
                 ("first", 0),
@@ -379,6 +436,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             **video,
         },
         "audio_waveform_capture": audio_capture,
+        "neural_layer_binding": neural_binding,
         "sample_frames": {
             path.name: {
                 "sha256": sha256_file(path),
@@ -413,6 +471,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--audio", type=Path, default=None,
         help="Optional WAV/PCM audio file loaded via the original HTML audio picker"
+    )
+    parser.add_argument(
+        "--neural-layer-check", action="store_true",
+        help="Require original particle to I085 exact 10368 neural-layer bridge"
     )
     parser.add_argument("--raf-step", type=int, default=4)
     parser.add_argument("--warmup-raf", type=int, default=16)

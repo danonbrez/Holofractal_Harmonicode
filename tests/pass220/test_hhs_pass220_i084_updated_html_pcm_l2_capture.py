@@ -78,18 +78,32 @@ def test_current_i063_graft_is_post_simulation_and_gpu_only():
         assert forbidden not in graft, forbidden
 
 
-def test_current_html_differs_from_older_external_brownian_bridge_intentionally():
+def test_current_html_preserves_canonical_audio_bridge_parity_and_native_barrier():
     html = HTML.read_text(encoding="utf8")
     bridge = BRIDGE.read_text(encoding="utf8")
     m = re.search(r'<script id="hhsAudioInline">\s*([\s\S]*?)\s*</script>', html)
     assert m
     assert "HHS_PASS_220_I063_BROWN_NOISE_AUDIO_CARRIER_GRAFT_V1" in html
-    # The external bridge remains an older standalone artifact. The updated
-    # inline implementation is the one actually executed by the HTML.
-    assert m.group(1).strip() != bridge.strip()
-    assert "function brownianProbabilityAt(" in bridge
-    assert "function brownianProbabilityAt(" not in m.group(1)
-
+    # PR #775 admitted the standalone PCM/Brownian implementation as the
+    # exact inline source. Preserve byte parity; the obsolete inequality
+    # assertion would incorrectly reject the now-admitted production source.
+    assert m.group(1).strip() == bridge.strip()
+    for operation in (
+        "function brownianProbabilityAt(",
+        "function advanceBrownianVisual(",
+        "function observeBrownianSubstep(",
+        "function projectBrownianAntiParticle(",
+        "brownianPhysicsAdmission:false",
+        "canonicalMutation:false",
+    ):
+        assert operation in m.group(1), operation
+        assert operation in bridge, operation
+    assert "audioVisual.projectBrownianAntiParticle(p,particleBatchMatrix);" in html
+    assert "window.HHSAudioViz.observeBrownianSubstep();" in html
+    assert (
+        "for(let s=0;s<steps;s++){ updateSpiralParticles(); "
+        "time += simParams.evolutionSpeed * simParams.timeDilationFactor; }"
+    ) in html
 
 def test_raw_capture_selects_actual_html_audio_and_verifies_l2_writes():
     s = RAW.read_text(encoding="utf8")
