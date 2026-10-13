@@ -47,6 +47,16 @@ jobs:
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/i086-link/pass188.o
           gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/i086-link/pass188-x86.o
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/i086-link/pass189.o
+      - name: Compile inherited I028 Lane5 BIOS and VM81 G3 adapter
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            -o /tmp/i086-link/i028-adapter.o
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp \
+            -o /tmp/i086-link/i028-rna-g3-bridge.o
       - name: Run native Conway regression
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
@@ -58,6 +68,7 @@ jobs:
             tests/pass220/test_i086_pass219_cpp_cell_wall_conway.cpp \
             /tmp/i086-link/pass188.o /tmp/i086-link/pass188-x86.o /tmp/i086-link/pass189.o \
             /tmp/i086-link/i086-lane5-conway.o \
+            /tmp/i086-link/i028-rna-g3-bridge.o /tmp/i086-link/i028-adapter.o \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
             -o /tmp/i086-link/test-conway
           /tmp/i086-link/test-conway
