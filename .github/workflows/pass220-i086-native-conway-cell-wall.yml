@@ -44,6 +44,7 @@ jobs:
             -Inative_projects/hhs_pass189_hqlh_runtime/include \
             tests/pass220/test_i086_pass219_cpp_cell_wall_conway.cpp \
             /tmp/i086-link/pass188.o /tmp/i086-link/pass188-x86.o /tmp/i086-link/pass189.o \
+            /tmp/i086-link/hhs_pass219_vm81_pqc_cell_wall.o \
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
             -o /tmp/i086-link/test-conway
           /tmp/i086-link/test-conway
