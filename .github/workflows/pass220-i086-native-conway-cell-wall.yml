@@ -36,7 +36,9 @@ jobs:
           test -s hhs_runtime/builds/libhhs_runtime.so
           bash tools/pass219/build_exact_abi_link_support.sh /tmp/i086-link full
           c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -fPIC \
-            -Ihhs_runtime/include \
+            -Ihhs_runtime/include -Ihhs_runtime/c \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
             -c hhs_runtime/cpp/hhs_pass220_i086_lane5_conway_cell_wall_v1.cpp \
             -o /tmp/i086-link/i086-lane5-conway.o
           nm -C /tmp/i086-link/i086-lane5-conway.o | grep hhs_pass220_i086_lane5_conway81_cell_wall
