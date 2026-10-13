@@ -1,0 +1,26 @@
+name: Pass 220 Ordered Antipodal Phase72
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_ordered_antipodal_phase72_v1.py"
+      - "tests/pass220/test_pass220_ordered_antipodal_phase72_v1.py"
+      - ".github/workflows/pass220-ordered-antipodal-phase72.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-antipodal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_pass220_ordered_antipodal_phase72_v1.py \
+            tests/pass220/test_pass220_complex_p_exact_raw5184_ingress_v1.py
