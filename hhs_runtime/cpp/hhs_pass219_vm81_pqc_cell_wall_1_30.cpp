@@ -1,5 +1,6 @@
 #include "hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp"
 #include "hhs_pass219_vm81_pqc_firewall_1_30.h"
+#include "hhs_pass220_i086_lane5_conway_cell_wall_v1.h"
 
 #if defined(_WIN32)
 #define HHS_P219_PQC_INTERNAL
