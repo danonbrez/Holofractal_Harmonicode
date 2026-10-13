@@ -10,7 +10,7 @@ from hashlib import sha256
 import json
 
 from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
-    VM81_CELLS, bigint_to_offsets, offsets_to_bigint,
+    VM81_CELLS,
 )
 from hhs_runtime.hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1 import (
     build_generator, validate_generator, reconstruct_serialized_state,
@@ -30,12 +30,19 @@ def compare_p_generators(P: int, *, first_depth: int = 0, second_depth: int = 1)
     if any(isinstance(d, bool) or not isinstance(d, int) or d < 0 or d > 1_000_000
            for d in (first_depth, second_depth)):
         raise GeneratorEquivalenceError("NESTING_DEPTH_INVALID")
-    try:
-        offsets = bigint_to_offsets(P, length=VM81_CELLS)
-    except (ValueError, TypeError, OverflowError) as exc:
-        raise GeneratorEquivalenceError("P_EXCEEDS_LOCAL_VM81_OFFSET_CAPACITY") from exc
-    if offsets_to_bigint(offsets) != P:
-        raise GeneratorEquivalenceError("P_INHERITED_BIGINT_ROUNDTRIP_FAILED")
+    remaining = P
+    digits = []
+    for _ in range(VM81_CELLS):
+        remaining, digit = divmod(remaining, 9)
+        digits.append(digit)
+    if remaining:
+        raise GeneratorEquivalenceError("P_REQUIRES_RECURSIVE_HIGHER_DEPTH_INGRESS")
+    offsets = tuple(digits)
+    recovered = 0
+    for digit in reversed(offsets):
+        recovered = recovered * 9 + digit
+    if recovered != P:
+        raise GeneratorEquivalenceError("P_EXACT_BASE9_ROUNDTRIP_FAILED")
     generators = tuple(build_generator(
         offsets=offsets, nesting_depth=d, fibonacci_depth=1
     ) for d in (first_depth, second_depth))
@@ -49,6 +56,9 @@ def compare_p_generators(P: int, *, first_depth: int = 0, second_depth: int = 1)
         "schema": SCHEMA,
         "sole_free_parameter": "P",
         "P_decimal": str(P),
+        "P_ingress_base": 9,
+        "P_ingress_exact_roundtrip": recovered == P,
+        "P_ingress_capacity": "LOCAL_81_CELL_SLICE",
         "lean_module": LEAN_MODULE,
         "lean_theorem": LEAN_THEOREM,
         "lean_kernel_proof_bound_to_runtime": False,
