@@ -9,6 +9,8 @@ def test_parallel_generators_preserve_one_canonical_state(P):
     receipt = compare_p_generators(P)
     assert receipt["P_decimal"] == str(P)
     assert receipt["same_exact_reconstruction"]
+    assert receipt["P_ingress_base"] == 9
+    assert receipt["P_ingress_exact_roundtrip"] is True
     assert receipt["distinct_generator_roots"]
     assert receipt["nesting_depths"] == (0,1)
     assert len(receipt["reconstructed_5184_sha256"]) == 64
@@ -32,3 +34,8 @@ def test_invalid_parameter_fails_closed(bad):
 def test_invalid_nesting_fails_closed():
     with pytest.raises(GeneratorEquivalenceError,match="NESTING_DEPTH"):
         compare_p_generators(7, second_depth=-1)
+
+
+def test_local_slice_overflow_requests_higher_depth_not_aliasing():
+    with pytest.raises(GeneratorEquivalenceError, match="REQUIRES_RECURSIVE_HIGHER_DEPTH"):
+        compare_p_generators(9**81)
