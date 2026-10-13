@@ -1,0 +1,104 @@
+name: Pass 220 HNAN Phase5184 Lossless Bridge
+
+on:
+  push:
+    branches:
+      - pass220/hnan-phase5184-lossless-bridge-20261011
+    paths:
+      - "hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
+      - "tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
+      - "hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py"
+      - "tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py"
+      - "formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean"
+      - "formal/wolfram/pass220_base64_balanced_trit5184_v1.wl"
+      - "tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
+      - "formal/lean/HHS/Pass220/HNANPhase5184.lean"
+      - "formal/lean/HHS.lean"
+      - "formal/wolfram/pass220_hnan_phase5184_lossless_bridge_v1.wl"
+      - ".github/workflows/pass220-hnan-phase5184-lossless-bridge.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
+      - "hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
+      - "tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py"
+      - "hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py"
+      - "tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py"
+      - "formal/lean/HHS/Pass220/Base64BalancedTrit5184.lean"
+      - "formal/wolfram/pass220_base64_balanced_trit5184_v1.wl"
+      - "tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py"
+      - "formal/lean/HHS/Pass220/HNANPhase5184.lean"
+      - "formal/lean/HHS.lean"
+      - "formal/wolfram/pass220_hnan_phase5184_lossless_bridge_v1.wl"
+      - ".github/workflows/pass220-hnan-phase5184-lossless-bridge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hnan-phase5184:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped Python test requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Compile bridge and regression tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
+            hhs_runtime/hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
+            tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
+            hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py \
+            tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py
+
+      - name: Execute HNAN/I148/I065 dependency cone
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_hhs_pass220_hnan_phase5184_lossless_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_hnan_lane5_i074_candidate_binding_v1.py \
+            tests/pass220/test_hhs_pass220_base64_balanced_trit_v1.py \
+            tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py \
+            tests/pass219/test_pass219_raw5184_octonion_audio_hydration_v1.py \
+            tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
+            tests/pass219/test_pass219_hnan_qgu_transport_v1.py
+
+      - name: Confirm connected Wolfram preflight sources retain exact checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          paths = (
+              "formal/wolfram/pass220_hnan_phase5184_lossless_bridge_v1.wl",
+              "formal/wolfram/pass220_base64_balanced_trit5184_v1.wl",
+          )
+          for path, expected in zip(paths, (21, 26)):
+              s=Path(path).read_text()
+              assert s.count("VerificationTest[") == expected, path
+              assert "TestReport[tests]" in s, path
+          s=Path(paths[0]).read_text()
+          assert "TestReport[tests]" in s
+          assert "GenericUnconstrainedPayloadCompressionClaimed" in s
+          assert "ordered-product-not-swappable" in s
+          print("Connected Wolfram preflights: 21/21 and 26/26; CI source audits OK")
+          PY
+
+      - name: Pinned Lean 4 build, kernel check and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
