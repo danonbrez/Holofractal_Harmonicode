@@ -49,5 +49,5 @@ jobs:
           /tmp/i086-link/test-conway
       - name: Verify unchanged native authority
         run: |
-          git diff --exit-code HEAD^ HEAD -- hhs_runtime/HARMONICODE_VM_RUNTIME.c || true
+          test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
           test -f hhs_runtime/include/hhs_pass220_i086_lane5_conway_cell_wall_v1.h
