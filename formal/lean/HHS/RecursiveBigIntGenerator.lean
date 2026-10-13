@@ -51,9 +51,9 @@ def window (P : Int) : Int × Int × Int := (P - 1, P, P + 1)
 theorem window_consecutive (P : Int) :
     let (p, center, q) := window P
     center - p = 1 ∧ q - center = 1 ∧ q - p = 2 := by
-  simp [window]
+  dsimp [window]
   omega
 
-/-- Coverage of all real numbers or arbitrary mathematical objects is a
-    distinct theorem target, not established by integer constructor coverage. -/
+/- Coverage of arbitrary real numbers or mathematical objects remains a
+   separate theorem target, not established by integer constructor coverage. -/
 end HHS.RecursiveBigIntGenerator
