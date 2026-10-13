@@ -1,0 +1,26 @@
+name: Pass 220 Complex P Native Period Admission
+on:
+  pull_request:
+    paths:
+      - "tests/pass220/test_pass220_complex_p_native_period_admission_v1.py"
+      - ".github/workflows/pass220-complex-p-native-period-admission.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-complex-period-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_pass220_complex_p_native_period_admission_v1.py \
+            tests/pass220/test_pass220_complex_p_rational_scaling_v1.py \
+            tests/pass220/test_pass220_weighted_hnan_native_lineage_v1.py
