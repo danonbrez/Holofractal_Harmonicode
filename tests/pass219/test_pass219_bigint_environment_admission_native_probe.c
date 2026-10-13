@@ -273,7 +273,14 @@ int main(int argc, char **argv) {
             (status != HHS_EXACT_STATUS_CONSTRAINT_REJECTED ||
              firewall.decision != HHS_EXACT_PASS219_VM81_PQC_DECISION_CANONICAL_REJECTED ||
              firewall.halted != 0U))
-            return fail("CONSTRAINT_REJECTION_ASSERTION_FAILED");
+            {
+                fprintf(stderr, "CONSTRAINT_REJECTION_DIAGNOSTIC status=%u expected=%u firewall_decision=%u expected_decision=%u halted=%u halt_reason=%u env_state=%u env_decision=%u env_reason=%u\\n",
+                    (unsigned)status, (unsigned)HHS_EXACT_STATUS_CONSTRAINT_REJECTED,
+                    (unsigned)firewall.decision, (unsigned)HHS_EXACT_PASS219_VM81_PQC_DECISION_CANONICAL_REJECTED,
+                    (unsigned)firewall.halted, (unsigned)firewall.halt_reason,
+                    (unsigned)environment.state, (unsigned)environment.decision, (unsigned)environment.reason);
+                return fail("CONSTRAINT_REJECTION_ASSERTION_FAILED");
+            }
     }
 
     printf(
