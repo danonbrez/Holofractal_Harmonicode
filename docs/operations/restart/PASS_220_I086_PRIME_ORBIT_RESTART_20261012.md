@@ -97,3 +97,9 @@ The earlier standalone-extraction paragraph records a limited check and is NOT t
 - PR #774 title/body corrected to native C++ cell-wall integration. GitHub connector reported draft=true, mergeable=true; **mergeability is not test success**.
 - Validation: GitHub PR workflow query for `985c852f840a9551dd50b2887c6c25ec04dbfa25` returned zero runs at query time. No compile/link/test execution verified. No main merge.
 - Next: obtain PR-triggered CI results; repair compile/link/runtime issues with dependency-scoped tests; confirm correct public symbol export and native admission behavior; verify no bypass of Pass 219 cell wall; commit and merge only after verified gates. Do not modify inherited VM81 C kernel.
+
+## I086 continuation — native CI trigger repair
+
+- Commit `731597c55cc1349fdc41a20c4bb99d4a7fd38634` updates the native cell-wall workflow to run on pushes to the I086 working branch, in addition to pull-request and manual triggers. This addresses the potential absence of PR-triggered runs for a workflow first introduced on the head branch.
+- The GitHub connector's commit-workflow lookup only exposes pull-request-triggered runs, so a missing result from that lookup does **not** prove push-triggered CI did not run.
+- Validation remains unverified. Next: inspect Actions run/job logs through GitHub when an actual run ID is available; repair native failures and confirm the Lane 5 consumer uses the exported entry point. Keep PR #774 draft until verified.
