@@ -86,3 +86,14 @@ The earlier standalone-extraction paragraph records a limited check and is NOT t
 - Remaining: include new ABI header in compiled native linkage as needed, run dependency-scoped C++ test and Lane 5 C ABI ingress test against the real library, check symbol export and negative membrane admission, reconcile/remove superseded Python native-jump adapter, update PR #774, validate CI, merge and verify main when gates pass.
 - Environment: GitHub connector operational; local container cannot reach github.com by DNS, so native repository checkout/build is not established.
 - Next action: compile native Pass 219 cell-wall dependencies with test, repair any build/ABI issues, then commit results and update restart receipt. No changes to HARMONICODE_VM_RUNTIME.c are authorized for this layer.
+
+## I086 continuation checkpoint — Lane 5 ABI and CI (2026-10-12)
+
+- Base: `agent/pass220-i085-original-physics-10368-neural-layers-20261011` @ `310e05b008103097c66421a948de2ad0be3e5240`; head branch unchanged; merge target is I085 base (not main yet); PR #774 draft.
+- Latest pre-checkpoint commit: `985c852f840a9551dd50b2887c6c25ec04dbfa25`.
+- Deleted superseded Python native jump adapter and test: `9291be9`, `f222e40`.
+- Added PR workflow `.github/workflows/pass220-i086-native-conway-cell-wall.yml` (`667a9e5`), repaired check (`f4f276c`) and linked native cell-wall object (`985c852`).
+- Included new public C ABI header from C++ translation unit (`6ad6457`); added C ABI ingress test to C++ regression (`26dab31`).
+- PR #774 title/body corrected to native C++ cell-wall integration. GitHub connector reported draft=true, mergeable=true; **mergeability is not test success**.
+- Validation: GitHub PR workflow query for `985c852f840a9551dd50b2887c6c25ec04dbfa25` returned zero runs at query time. No compile/link/test execution verified. No main merge.
+- Next: obtain PR-triggered CI results; repair compile/link/runtime issues with dependency-scoped tests; confirm correct public symbol export and native admission behavior; verify no bypass of Pass 219 cell wall; commit and merge only after verified gates. Do not modify inherited VM81 C kernel.
