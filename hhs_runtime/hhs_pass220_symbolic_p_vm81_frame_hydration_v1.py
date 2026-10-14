@@ -13,7 +13,7 @@ from hhs_runtime.hhs_pass220_symbolic_hnan_i074_lineage_adapter_v1 import (
     bind_symbolic_to_inherited_hnan,
 )
 from hhs_runtime.pass219.nonary_qudit_bigint_assembly_probe import (
-    decode_radix_digits, encode_radix_digits, GLYPH_RADIX, HASH72_DEPTH,
+    glyph_stream_from_bigint, bigint_from_glyph_stream, HASH72_DEPTH,
 )
 from hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe import (
     pack_vm81_binding_words, unpack_vm81_binding_words, words_to_raw_le,
@@ -29,10 +29,10 @@ def hydrate_symbolic_p_frame(operation: str, left: TensorRef, right: TensorRef,
     if isinstance(lane_index, bool) or not isinstance(lane_index, int) or lane_index < 0 or lane_index >= 12:
         raise SymbolicTensorError("INHERITED_SIX_LANE_INDEX_REQUIRED")
     try:
-        glyphs = decode_radix_digits(P, GLYPH_RADIX, HASH72_DEPTH)
+        glyphs = glyph_stream_from_bigint(P, HASH72_DEPTH)
     except (ValueError, RuntimeError) as exc:
         raise SymbolicTensorError("RECURSIVE_HIGHER_DEPTH_BIGINT_INGRESS_REQUIRED") from exc
-    if encode_radix_digits(glyphs, GLYPH_RADIX) != P:
+    if bigint_from_glyph_stream(glyphs) != P:
         raise SymbolicTensorError("EXACT_BIGINT_GLYPH_RECOVERY_FAILED")
     lanes = build_pPq_lane_order_surface()["directed_lanes"]
     words = pack_vm81_binding_words(P, glyphs, lanes[lane_index])
