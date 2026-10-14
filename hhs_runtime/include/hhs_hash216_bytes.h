@@ -31,6 +31,22 @@ void hhs_hash216_compute_bytes(
     char out_hash216[HHS_HASH216_BYTES_STRLEN]
 );
 
+/*
+ * Exact ordered 3 x Hash72 lineage and Python-equivalent SHA-256-per-character
+ * vector. Does not mint a VM81 transition or confer canonical authority.
+ * Returns 1 on success, 0 on malformed input. Caller provides fixed buffers.
+ * Output vector is 216 consecutive lowercase 64-char hex SHA-256 digests.
+ */
+#define HHS_HASH216_SHA256_VECTOR_HEX_LEN (216U * 64U)
+#define HHS_HASH216_SHA256_VECTOR_HEX_STRLEN (HHS_HASH216_SHA256_VECTOR_HEX_LEN + 1U)
+int hhs_hash216_lineage_vector_sha256(
+    const char previous[HHS_HASH72_BYTES_STRLEN],
+    const char change[HHS_HASH72_BYTES_STRLEN],
+    const char receipt[HHS_HASH72_BYTES_STRLEN],
+    char ordered_hash216[HHS_HASH216_BYTES_STRLEN],
+    char sha256_vector_hex[HHS_HASH216_SHA256_VECTOR_HEX_STRLEN]
+);
+
 #ifdef __cplusplus
 }
 #endif
