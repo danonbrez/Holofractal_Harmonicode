@@ -306,3 +306,53 @@ void hhs_hash216_compute_bytes(
     hhs_hash216_compute(data, size, &hash);
     memcpy(out_hash216, hash.value, HHS_HASH216_BYTES_STRLEN);
 }
+
+
+/* Pass 220: exact Python hash216_lineage_witness projection.
+ * The legacy byte-compute API above is kept ABI-stable; this additive
+ * function preserves the three ordered Hash72 layers and 216 independent
+ * SHA-256 digests. No native state mint or admission occurs here.
+ */
+#include <openssl/evp.h>
+
+int hhs_hash216_lineage_vector_sha256(
+    const char previous[HHS_HASH72_BYTES_STRLEN],
+    const char change[HHS_HASH72_BYTES_STRLEN],
+    const char receipt[HHS_HASH72_BYTES_STRLEN],
+    char ordered_hash216[HHS_HASH216_BYTES_STRLEN],
+    char sha256_vector_hex[HHS_HASH216_SHA256_VECTOR_HEX_STRLEN]
+) {
+    const char *layers[3] = {previous, change, receipt};
+    static const char hex[] = "0123456789abcdef";
+    if (!previous || !change || !receipt || !ordered_hash216 || !sha256_vector_hex)
+        return 0;
+    /* Validate all layers before touching caller outputs. */
+    for (size_t layer = 0; layer < 3; ++layer) {
+        for (size_t i = 0; i < HHS_HASH72_BYTES_LEN; ++i) {
+            char symbol = layers[layer][i];
+            if (!symbol || !memchr(HHS_HASH72_ALPHABET, symbol, HHS_HASH72_LEN))
+                return 0;
+        }
+        if (layers[layer][HHS_HASH72_BYTES_LEN] != '\0')
+            return 0;
+    }
+    for (size_t layer = 0; layer < 3; ++layer) {
+        for (size_t i = 0; i < HHS_HASH72_BYTES_LEN; ++i) {
+            size_t index = layer * HHS_HASH72_BYTES_LEN + i;
+            unsigned char digest[EVP_MAX_MD_SIZE];
+            unsigned int digest_len = 0;
+            unsigned char symbol = (unsigned char)layers[layer][i];
+            if (EVP_Digest(&symbol, 1U, digest, &digest_len, EVP_sha256(), NULL) != 1 ||
+                digest_len != 32U)
+                return 0;
+            ordered_hash216[index] = (char)symbol;
+            for (size_t byte = 0; byte < 32U; ++byte) {
+                sha256_vector_hex[index * 64U + byte * 2U] = hex[digest[byte] >> 4];
+                sha256_vector_hex[index * 64U + byte * 2U + 1U] = hex[digest[byte] & 15U];
+            }
+        }
+    }
+    ordered_hash216[HHS_HASH216_BYTES_LEN] = '\0';
+    sha256_vector_hex[HHS_HASH216_SHA256_VECTOR_HEX_LEN] = '\0';
+    return 1;
+}
