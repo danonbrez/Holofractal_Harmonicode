@@ -1,0 +1,35 @@
+name: Pass 220 Ordered Five Gate Phase36 Phase72 Native Frontend
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass220/PASS_220_ORDERED_FIVE_GATE_PHASE36_72_SOURCE_V1.harmonicode'
+      - 'tests/pass220/test_pass220_ordered_five_gate_phase36_72_source_v1.py'
+      - 'tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c'
+      - '.github/workflows/pass220-ordered-five-gate-phase36-72.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ordered-five-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify verbatim source integrity
+        run: |
+          printf '%s  %s\n' 'ceec282499ddaf48eba1d25b6313c407d9466d379e321b47f9a6b3f752c2a499' 'contracts/pass220/PASS_220_ORDERED_FIVE_GATE_PHASE36_72_SOURCE_V1.harmonicode' | sha256sum -c -
+          python -m unittest discover -s tests/pass220 -p test_pass220_ordered_five_gate_phase36_72_source_v1.py -v
+      - name: Build inherited Pass159 C ABI frontend
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain -B /tmp/pass159-five-gate -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-five-gate --parallel 2
+      - name: Parse, typecheck and lower five native equality gates
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c \
+            -L/tmp/pass159-five-gate -lhhs_pass159 \
+            -Wl,-rpath,/tmp/pass159-five-gate \
+            -o /tmp/pass220-five-gate
+          /tmp/pass220-five-gate
