@@ -5,6 +5,9 @@ from hhs_runtime.hhs_pass220_composed_registered_ieee_p_routes_v1 import compose
 def test_composed_exact_arithmetic_route():
     r=compose_ieee_p_route((2,4,5,25))
     assert r["edge_count"]==3
+    assert r["link_semantics"] == "INHERITED_BIGINT_GEOMETRY_METADATA_RELATIONS"
+    assert r["new_canonical_state_minted_per_link"] is False
+    assert r["independent_vm81_state_transition_claimed"] is False
     assert r["edge_kinds"]==["SQUARE","SUCCESSOR","SQUARE"]
     assert r["inverse_edge_kinds"]==["ROOT_SQUARE","PREDECESSOR","ROOT_SQUARE"]
     assert r["exact_edgewise_bidirectional_codec_roundtrip"]
