@@ -36,7 +36,7 @@ def test_real_compiled_native_global_rule_12(tmp_path):
                     "-Inative_projects/hhs_pass189_hqlh_runtime/include","-c",
                     "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp",
                     "-o",str(cpp_object)],check=True,timeout=180)
-    subprocess.run(["c++","-shared",str(c_object),str(cpp_object),"-o",str(library),"-lm"],check=True,timeout=180)
+    subprocess.run(["c++","-shared",str(c_object),str(cpp_object),"-o",str(library),"-lm","-lcrypto"],check=True,timeout=180)
     tree={"P":"2","candidate_sha256":"a"*64,"ordered_phase_leaves":[{
         "depth":0,"inherited_hnan_receipt_sha256":"b"*64
     }]}
