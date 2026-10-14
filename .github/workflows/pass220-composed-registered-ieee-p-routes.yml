@@ -1,0 +1,24 @@
+name: Pass 220 Composed Registered IEEE P Routes
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_composed_registered_ieee_p_routes_v1.py"
+      - "tests/pass220/test_pass220_composed_registered_ieee_p_routes_v1.py"
+      - ".github/workflows/pass220-composed-registered-ieee-p-routes.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  composed-registered-reciprocal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Exact multi-edge IEEE P route composition regression
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q --tb=short tests/pass220/test_pass220_composed_registered_ieee_p_routes_v1.py
