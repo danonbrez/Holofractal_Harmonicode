@@ -1,0 +1,24 @@
+name: Pass 220 Executed Whitepaper Native Proof Binding
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_executed_whitepaper_native_proof_binding_v1.py"
+      - "tests/pass220/test_pass220_executed_whitepaper_native_proof_binding_v1.py"
+      - ".github/workflows/pass220-executed-whitepaper-native-proof-binding.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  executed-native-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Execute inherited native HNAN and bind frozen whitepaper identity
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q --tb=short tests/pass220/test_pass220_executed_whitepaper_native_proof_binding_v1.py
