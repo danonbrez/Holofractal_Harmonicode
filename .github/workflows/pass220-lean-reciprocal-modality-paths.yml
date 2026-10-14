@@ -1,0 +1,22 @@
+name: Pass 220 Lean Reciprocal Modality Paths
+on:
+  pull_request:
+    paths:
+      - "formal/lean/HHS/Pass220/ReciprocalModalityPaths.lean"
+      - ".github/workflows/pass220-lean-reciprocal-modality-paths.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-modality-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: false
+          test: false
+      - name: Lean kernel checks exact ordered path theorem
+        run: lake env lean formal/lean/HHS/Pass220/ReciprocalModalityPaths.lean
