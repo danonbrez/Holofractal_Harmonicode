@@ -1,7 +1,6 @@
-"""Compose independently verified registered IEEE P-index arithmetic edges.
+"""Compose metadata links within the inherited P-indexed BigInt geometry.
 
-This composes existing native NumPy1/Lo Shu codec receipts without expanding
-canonical VM81 state or treating a Lean theorem name as runtime proof admission.
+Each linked P is an address into the same governed BigInt tensor geometry,\nnot an independently minted runtime state. Existing NumPy1/Lo Shu receipts\nverify the address projections, not a new VM81 transition.
 """
 from __future__ import annotations
 from hashlib import sha256
@@ -36,6 +35,9 @@ def compose_ieee_p_route(P_indices: tuple[int, ...]) -> dict:
         "lean_composition_theorem": LEAN_COMPOSITION_THEOREM,
         "P_indices": [str(p) for p in P_indices],
         "edge_count": len(receipts),
+        "link_semantics": "INHERITED_BIGINT_GEOMETRY_METADATA_RELATIONS",
+        "new_canonical_state_minted_per_link": False,
+        "independent_vm81_state_transition_claimed": False,
         "edge_kinds": [r["forward_relation"] for r in receipts],
         "inverse_edge_kinds": [r["reverse_relation"] for r in reversed(receipts)],
         "edge_candidate_roots": [r["candidate_sha256"] for r in receipts],
