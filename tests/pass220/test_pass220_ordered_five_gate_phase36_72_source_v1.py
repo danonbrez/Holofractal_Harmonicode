@@ -36,7 +36,7 @@ class TestOrderedFiveGateSource(unittest.TestCase):
         self.assertEqual(len(raw), 283)
         self.assertEqual(hashlib.sha256(raw).hexdigest(), SOURCE_SHA256)
         self.assertEqual(raw.decode("ascii").encode("ascii"), raw)
-        self.assertNotIn(b"\\n", raw)
+        self.assertNotIn(bytes((10,)), raw)
 
     def test_nested_ordered_edges(self):
         source = SOURCE.read_text(encoding="ascii")
