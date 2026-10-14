@@ -18,3 +18,24 @@ def test_native_global_rejection_fails_closed(tmp_path):
     with patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.inspect_recursive_ordered_phase_swap",return_value=tree):
         with pytest.raises(OSError):
             native_recursive_hnan_preflight("ADD",ref(1),ref(1),native_library=str(path))
+
+
+def test_real_compiled_native_global_rule_12(tmp_path):
+    """Compile repository's C runtime and invoke genuine 1.63 rule authority."""
+    import subprocess
+    from pathlib import Path
+    source=Path("hhs_runtime/c/hhs_runtime_exact_abi.c")
+    assert source.is_file()
+    library=tmp_path/"libhhs_native_hnan.so"
+    subprocess.run(["cc","-std=c11","-O0","-fPIC","-shared",
+                    "-Ihhs_runtime/include",str(source),"-o",str(library),
+                    "-lm"],check=True,timeout=180)
+    tree={"P":"2","candidate_sha256":"a"*64,"ordered_phase_leaves":[{
+        "depth":0,"inherited_hnan_receipt_sha256":"b"*64
+    }]}
+    with patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.inspect_recursive_ordered_phase_swap",return_value=tree):
+        result=native_recursive_hnan_preflight("ADD",ref(1),ref(1),native_library=str(library))
+    assert result["native_global_rule_mask_verified"]
+    assert len(result["native_ordered_rule_leaves"])==1
+    assert result["native_ordered_rule_leaves"][0]["native_ordered_xy_yx_rule_verified"]
+    assert not result["typed_yx_over_xy_equals_u_minus_108_proved"]
