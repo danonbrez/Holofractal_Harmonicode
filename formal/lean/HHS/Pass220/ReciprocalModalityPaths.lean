@@ -57,7 +57,7 @@ theorem path_trans {Admitted : ModalityNode → ModalityNode → Prop}
     Path Admitted a c := by
   induction abPath with
   | refl _ => exact bcPath
-  | step edge _ ih => exact .step edge ih
+  | step edge _ ih => exact .step edge (ih bcPath)
 
 theorem bridge_forward {Admitted : ModalityNode → ModalityNode → Prop}
     {a b : ModalityNode} (w : ReversibleBridge Admitted a b) :
