@@ -1,0 +1,24 @@
+name: Pass 220 Symbolic P VM81 Frame Hydration
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_symbolic_p_vm81_frame_hydration_v1.py"
+      - "tests/pass220/test_pass220_symbolic_p_vm81_frame_hydration_v1.py"
+      - ".github/workflows/pass220-symbolic-p-vm81-frame-hydration.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inherited-rna-frame:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Reconstruct VM81 raw frame from exact symbolic P
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q --tb=short tests/pass220/test_pass220_symbolic_p_vm81_frame_hydration_v1.py
