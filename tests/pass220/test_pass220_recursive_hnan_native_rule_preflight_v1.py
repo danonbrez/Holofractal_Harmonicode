@@ -32,7 +32,7 @@ def test_real_compiled_native_global_rule_12(tmp_path):
     subprocess.run(["cc","-std=c11","-O0","-fPIC",
                     "-Ihhs_runtime/include","-c",str(source),"-o",str(c_object)],check=True,timeout=180)
     subprocess.run(["c++","-std=c++17","-O0","-fPIC",
-                    "-Ihhs_runtime/include","-c",
+                    "-Ihhs_runtime/include","-Inative_projects/hhs_pass188_bott_runtime/include","-c",
                     "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp",
                     "-o",str(cpp_object)],check=True,timeout=180)
     subprocess.run(["c++","-shared",str(c_object),str(cpp_object),"-o",str(library),"-lm"],check=True,timeout=180)
