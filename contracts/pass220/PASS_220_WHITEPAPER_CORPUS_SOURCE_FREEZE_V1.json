@@ -1,0 +1,287 @@
+{
+  "schema": "HHS_PASS220_WHITEPAPER_SOURCE_FREEZE_V1",
+  "source_base_commit": "732e01c86df5a7ef5d0ca79aa46c6321f652312b",
+  "expected_file_count": 69,
+  "required_directories": [
+    "whitepapers/",
+    "docs/whitepapers/"
+  ],
+  "files": [
+    {
+      "path": "docs/whitepapers/HARMONICODE_24D_NONCOMMUTATIVE_QUDIT_CONSTRAINT_SPACETIME_THEOREM.md",
+      "git_blob_sha": "583fd6a9201bd7a3be12037670acaf73cb42b8da"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_COMPUTATIONAL_DETERMINISM_AND_BOUNDED_EXECUTION_THEOREM.md",
+      "git_blob_sha": "cc6ec7f44bbb6806e72e6b8ffde929c370baf1c9"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_CONSTRAINT_RELATIVE_LOGIC_AND_TRAJECTORY_INFORMATION_THEOREM.md",
+      "git_blob_sha": "8da5619b4e4edfeaac39d0fa5d9579a4bc6c4d3e"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_DESI_EXPLICIT_OBSERVATION_PROJECTION_THEOREM.md",
+      "git_blob_sha": "4ccc4d295c9dbfa39a98a3ff2af3138b63981029"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_DESI_PARALLEL_EXACT_EGRESS_THEOREM.md",
+      "git_blob_sha": "a3dc04ac36298ea3c4660294054b6581bdfcb1ac"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_EXECUTABLE_PROJECTION_CORRESPONDENCE_THEOREM.md",
+      "git_blob_sha": "2695228ab939ae368ee7ac49cd6ac1dc4225c313"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_FOUNDATIONAL_AXIOMS_AND_PROJECTION_THEOREM.md",
+      "git_blob_sha": "8bb554d1ee3b5ade80409fe9d10f4c639b61e0ae"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_G3_4711_MULTIREPRESENTATIONAL_CONSTRUCTOR_THEOREM.md",
+      "git_blob_sha": "b6e230f67d67440d436ce030f4ae3e8400094fd5"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_G3_EXACT_IEEE_SCALAR_INVOLUTION_THEOREM.md",
+      "git_blob_sha": "7ddd459a20ae6aa2ce3e9ef99085a53177f19b7b"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_G3_FULL_PHASE_IEEE_TRANSPORT_THEOREM.md",
+      "git_blob_sha": "8cd4993164d00b9c767ed7ad776e2e3f866aa172"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_G3_RECIPROCAL_SYMBOL_STRING_CODEC_THEOREM.md",
+      "git_blob_sha": "451320c11946a6047cc8e0ba3d94944de810a405"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_GENESIS_REVERSE_OFFSET_HOLOGRAPHIC_NUCLEUS_THEOREM.md",
+      "git_blob_sha": "894d493c83c169a22215b5fc6a0d7d45ad79d8a9"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_HOLOGRAPHIC_GAUGE_DYADIC_DECOUPLING_THEOREM.md",
+      "git_blob_sha": "4edc5d4aaf781d47be9150cdcc4d824570e30f05"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_LANE5_MULTIMODAL_SHARED_ROOT_PROJECTION_THEOREM.md",
+      "git_blob_sha": "d5f3c78d4924f8c069dbab68c9059e053e32b7d6"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_LO_SHU_DYADIC_QUADRATIC_RECIPROCITY_PHASE_RING_THEOREM.md",
+      "git_blob_sha": "3c180fb1c9079b8454a086f8a3eabbba2e3a9880"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_OCTONION_RECIPROCAL_BASEPAIR_DIMENSIONAL_LIFT_THEOREM.md",
+      "git_blob_sha": "c492d80a776d247c0d67c07884e70c1b583b1672"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_Q144_DYADIC_GAUGE_PHASE_TRANSPORT_THEOREM.md",
+      "git_blob_sha": "0c74f6df6fff9677e1335f679517a326b7a29ddb"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_Q144_H36_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE_THEOREM.md",
+      "git_blob_sha": "3261ab171d5e258b685adc3ef6999a3fa320de55"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md",
+      "git_blob_sha": "342e36f18e1d3ac6c96c2ef57cb97724e3e19210"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_RECEIPT_BOUND_ETHICAL_CONSTRAINT_ALIGNMENT_ARCHITECTURE.md",
+      "git_blob_sha": "06ae0a7d5ca8de08e967afd7a1d1a9b02aaad529"
+    },
+    {
+      "path": "docs/whitepapers/HARMONICODE_TYPED_ZERO_PIVOT_AND_PHASE_CLOSURE_THEOREM.md",
+      "git_blob_sha": "a914491254b204f77804a784e773234c1b0a52e3"
+    },
+    {
+      "path": "docs/whitepapers/HHS_EXACT_RATIONAL_GEOMETRY_OF_ETHICAL_COMPUTATION_V1.md",
+      "git_blob_sha": "c993a79aedfd56a113acfc8b231bcdc77c5a2874"
+    },
+    {
+      "path": "docs/whitepapers/HHS_H36_HASH216_M_EXPONENT_LATTICE_THEOREM_V1.md",
+      "git_blob_sha": "9f074a184fc2ead6c1a2f9cc41423b9944a70953"
+    },
+    {
+      "path": "docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md",
+      "git_blob_sha": "75292b89b840f9cdc5bc0521bd48e00e408073d3"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_EQUATION_AND_LOGIC_COMPENDIUM_V1.md",
+      "git_blob_sha": "947dc678dcd9d6b9937d2b7e8d52626e5fff3d3f"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_MATHEMATICAL_EXTENSIONS_1_50_1_62_V1.md",
+      "git_blob_sha": "fd7c35922ece193b494dc63defe54c4a879f9b9f"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_FEEDBACK_1_70.md",
+      "git_blob_sha": "00a3395c44b57db6eb98b4d35ce625ebae628258"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_FOREIGN_EQUIVALENCE_1_67.md",
+      "git_blob_sha": "61985eb83fbf9ef2ce200c612075fc7931a262a9"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_GENERALIZATION_1_73.md",
+      "git_blob_sha": "acf06ea3d864f7b30301bfb26fbbd255f31ecff0"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_KNOWLEDGE_HYDRATION_1_75.md",
+      "git_blob_sha": "bff4c3bb03f4f5e0327aabad17d74c6dba702d0f"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_LARGE_ARTIFACT_1_69.md",
+      "git_blob_sha": "9f54819a474d584ac1d7ce23ff40b4e072fbf8cf"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_RELATION_DATASET_1_72.md",
+      "git_blob_sha": "bb7b1fe6bac82af1605dcb49e5d8e66606bc2e89"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_SOURCE_ATTESTATION_1_68.md",
+      "git_blob_sha": "62acf8dde4acbd076ac8f65c53272816f4e87f51"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_NINE_LOOP_TRAINING_SPECIMEN_1_71.md",
+      "git_blob_sha": "9db6b689e50f086b720219190307fb16716415b9"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_PERFORMANCE_VERIFICATION_EVIDENCE_V1.md",
+      "git_blob_sha": "65acfcecfca31a5d09ee9f7fefc1958963e08774"
+    },
+    {
+      "path": "docs/whitepapers/HHS_LANE5_WHITEPAPER_INDEX_V1.md",
+      "git_blob_sha": "dd4f2d0ab01586931109fd21ca54a9217afe3b36"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I065_LOSSLESS_EMERGENT_COMPRESSION_HYDRATION_V1.md",
+      "git_blob_sha": "2479c9ddfa5b0e53598580bbec4d1851cfb8be39"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I066_OLDENBURG_3D_LIGHT_EMPIRICAL_BRIDGE_V1.md",
+      "git_blob_sha": "9799cf041692e7c9b0e8fb65f5125b6fa7e65f71"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I072_THEORY_CONSTRUCTOR_HASH216_HYDRATION_V1.md",
+      "git_blob_sha": "9b66de22e504f2f473516de819e6d06ade853e1b"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I073_PALINDROMIC_RNA_FIBONACCI_SYMBOLIC_TENSOR_V1.md",
+      "git_blob_sha": "cfcce489cb8ff90cefe5584ff6aca4fe7f5654ee"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I074_FULL_TENSOR_HNAN_CLOSURE_HYDRATION_V1.md",
+      "git_blob_sha": "23e5c15881658de4c070449fa7d54d1aed6af43d"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I075_NATIVE_RECTANGULAR_TENSOR_POWER_HYDRATION_V1.md",
+      "git_blob_sha": "c5629ef995d2d9a48fcf62788ff7148c8df4e02b"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I076_EXACT_MATRIX_POWER_HIR_HYDRATION_V1.md",
+      "git_blob_sha": "5cb225870d6de50e8c29adeb595a41563ca2d10d"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I077_VM81_EXACT_MATRIX_POWER_EXECUTION_V1.md",
+      "git_blob_sha": "bda815c5724aa7c9a0f4a2ad49028bfe1a010cd1"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1.md",
+      "git_blob_sha": "d09f6d8accdb592b90d2930cab153edd3d2ae094"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I079_OPENAI_MATH_THEOREM_CONSTRUCTORS_V1.md",
+      "git_blob_sha": "eb11a60e139dd3cbdd26a05359dced9ff6fdb7cc"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I080_OPENAI_MATH_HOLD_CLAIM_CONSTRUCTORS_V1.md",
+      "git_blob_sha": "95ba0cf6c65c7400b72a7dfb98db12abbe5a9b46"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PASS_220_I081_OPENAI_MATH_CONSTRUCTOR_PROMOTION_AUDIT_V1.md",
+      "git_blob_sha": "8b11e3f93d2c0cd5f717ec556e8f8071694a6953"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PHASE_INVERTED_PYTHAGOREAN_ENTANGLEMENT_THEOREM_V1.md",
+      "git_blob_sha": "bed768eb86614aba6b35c7105af181d202dcdbe7"
+    },
+    {
+      "path": "docs/whitepapers/HHS_PRACTICAL_APPLICATIONS_AND_VON_NEUMANN_COMPARISON_APPENDIX_V1.md",
+      "git_blob_sha": "d634006b8f6a73e40978f6932edb4be900c8bfa9"
+    },
+    {
+      "path": "docs/whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md",
+      "git_blob_sha": "6500c481ae8f551f10d6d7006bd883f6acc16355"
+    },
+    {
+      "path": "docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md",
+      "git_blob_sha": "630bbec04a96a2a60f35d02b21b2ba3819d241a5"
+    },
+    {
+      "path": "docs/whitepapers/PASS_219_SPI_V8_WHITEPAPER_INDEX.md",
+      "git_blob_sha": "cbf2fc13a0910aab61dd18c37a8a21f5429031cf"
+    },
+    {
+      "path": "whitepapers/HHS_PASS219_CROSS_MODAL_REVERSIBLE_STATE_GEOMETRY_REV1.md",
+      "git_blob_sha": "675efdd5ca0132134dbec42e11448fde5998ade4"
+    },
+    {
+      "path": "whitepapers/HHS_PASS219_DETERMINISTIC_SCALING_COMPOSITION_REV5.md",
+      "git_blob_sha": "85ad660fe62c94ecf78d9b5cb1448682299f6880"
+    },
+    {
+      "path": "whitepapers/HHS_PASS219_REV5_MONOLITHIC_UQCEL_RESIDUAL_ADDENDUM.md",
+      "git_blob_sha": "a9676ae04c4169e7ff5f2e21c44ae72c70d6a76d"
+    },
+    {
+      "path": "whitepapers/HHS_PASS219_SUDOKU_QUDIT_GENESIS_DATA_PLANE_REV5.md",
+      "git_blob_sha": "d72f7bba37c7b3197ac53bf4df3b130d15e1959e"
+    },
+    {
+      "path": "whitepapers/HHS_PASS220_G41_SUDOKU_FINGERPRINT_CELL_ALGEBRA_V1.md",
+      "git_blob_sha": "9aeeaf7d94380e5a388bbe742f666930292a78bb"
+    },
+    {
+      "path": "whitepapers/HHS_PASS220_H36_HASH72_UNIT_BRIDGE_V1.md",
+      "git_blob_sha": "961f7ba164d9dfb7c1639264ef0034c249f70a59"
+    },
+    {
+      "path": "whitepapers/HHS_PASS220_MULTIDIMENSIONAL_CONSTRAINT_MANIFOLD_V1.md",
+      "git_blob_sha": "404b2eabc00ebdedf23ffd18d3c8ec8d3f77136f"
+    },
+    {
+      "path": "whitepapers/HHS_PASS220_PALINDROMIC_ORDERED_PHASE_MIRROR_ALGEBRA_V1.md",
+      "git_blob_sha": "b70aaba63188058b6fab37f3f5ab75c706f407bf"
+    },
+    {
+      "path": "whitepapers/HHS_PASS220_RNA_HASH72_DNA_QUDIT_PHASE_LOCK_V1.md",
+      "git_blob_sha": "a7966895fa20856b731c80bcd229e0c38a6aa559"
+    },
+    {
+      "path": "whitepapers/HHS_PASS220_RNA_OPERATION64_C4_G41_RADICAL_PROOF_V1.md",
+      "git_blob_sha": "d4c1bcf2a5d00322f3ff4504558eb1a474a88fa9"
+    },
+    {
+      "path": "whitepapers/HOLOFRACTAL_HARMONICODE.md",
+      "git_blob_sha": "74fd2571d0615f650f2c9b703a58e75dab247861"
+    },
+    {
+      "path": "whitepapers/HOLOFRACTAL_HARMONICODE.md ",
+      "git_blob_sha": "15aac8667113885431723269f1ae9eb61aa066ef"
+    },
+    {
+      "path": "whitepapers/pass_144/01_INVARIANT_ALGEBRA_AS_VIRTUAL_HARDWARE.md",
+      "git_blob_sha": "86d654d417b63bca30481d52271fe22adde96edc"
+    },
+    {
+      "path": "whitepapers/pass_144/02_SYMBOLIC_LOGIC_EVOLUTIONARY_REPOSITORY.md",
+      "git_blob_sha": "b1aa1a026faf1b239229528ddc5d76d4a70db71f"
+    },
+    {
+      "path": "whitepapers/pass_144/03_PERIODIC_WAVE_MECHANICS_AND_COHERENCE.md",
+      "git_blob_sha": "db5d29854e65d19fd810eb8b1f3abb3608ac336c"
+    },
+    {
+      "path": "whitepapers/pass_144/04_ENTROPY_NEUTRAL_INFORMATION_TRANSFORMATION.md",
+      "git_blob_sha": "aedfa7a0745eb44b5f7da47cf3ef637da0caf173"
+    }
+  ]
+}
