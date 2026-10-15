@@ -33,6 +33,7 @@ struct FiveGateProofReadiness final {
     bool all_five_native_gates{false};
     bool ordered_predecessor_chain{false};
     bool source_graph_root_verified{false};
+    bool declarations_complete{false};
     bool ready_for_vm81_proof_request{false};
     bool vm81_admission_authorized{false};
 };
@@ -50,11 +51,14 @@ inline FiveGateProofReadiness audit_five_gate_proof_frontier(
             out.ordered_predecessor_chain && proof.predecessor_witness_linked[i] == 1U;
     }
     out.source_graph_root_verified = proof.source_graph_root_verified;
-    out.ready_for_vm81_proof_request =
+    out.declarations_complete =
         source.source_exact && source.order_exact && source.gate_layout_exact &&
         out.all_five_native_gates && out.ordered_predecessor_chain &&
         out.source_graph_root_verified && proof.native_proof_provider_verified &&
         proof.signed_environment_verified;
+    // Caller-supplied flags are declarations, never authentic proof evidence.
+    // No source-dependent native provider is bound here: fail closed.
+    out.ready_for_vm81_proof_request = false;
     // Readiness for a native proof request is never admission itself.
     out.vm81_admission_authorized = false;
     return out;
