@@ -51,8 +51,9 @@ all unverified authority fields.
   - `hhs_runtime/pass220/hnan_perimeter_topology_v1.py`
   - `tests/pass220/test_pass220_i086_hnan_perimeter_topology.py`
   - `docs/pass220/PASS_220_I086_HNAN_GEOMETRIC_PERIODICITY.md`
+  - `.github/workflows/pass220-i086-hnan-geometric-periodicity.yml`
 - Validation command: `python -m pytest -q tests/pass220/test_pass220_i086_hnan_perimeter_topology.py tests/pass219/test_pass219_hnan_qgu_transport_v1.py`
-- Validation state: execution not available within the GitHub content-API write surface; **not claimed PASS**.
+- Validation state: dependency-scoped CI workflow committed at `a9360ae06a34591eb0ea90efe5e89972ac534221`; its results remain to be verified; **not claimed PASS**.
 - Environment: connected GitHub repository write access; no remote shell or live signed Lane 5 runtime executed.
-- Next action: run listed tests and relevant native Lane 5 membrane checks; repair forward on failure; review and merge only after those gates.
+- Next action: inspect I086 GitHub Actions run triggered by the new workflow, repair forward any failures, and verify relevant native Lane 5 membrane checks before approval/merge.
 - Blockers: runtime execution and native membrane admission evidence remain unverified for this branch.
