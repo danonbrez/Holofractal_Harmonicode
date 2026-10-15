@@ -58,6 +58,18 @@ int main() {
         if (hhs::lane5::audit_five_gate_proof_frontier(passed, broken_link)
                 .declarations_complete) return 12;
     }
+    auto untrusted_provider = frontier;
+    untrusted_provider.native_proof_provider_verified = false;
+    if (hhs::lane5::audit_five_gate_proof_frontier(passed, untrusted_provider)
+            .declarations_complete) return 17;
+    auto not_binary = frontier;
+    not_binary.native_gate_verified[0] = 2U;
+    if (hhs::lane5::audit_five_gate_proof_frontier(passed, not_binary)
+            .declarations_complete) return 18;
+    auto not_binary_link = frontier;
+    not_binary_link.predecessor_witness_linked[4] = 2U;
+    if (hhs::lane5::audit_five_gate_proof_frontier(passed, not_binary_link)
+            .declarations_complete) return 19;
     auto wrong_source = hhs::lane5::audit_five_gate_proof_frontier(changed, frontier);
     if (wrong_source.declarations_complete) return 13;
     auto wrong_root = frontier;
