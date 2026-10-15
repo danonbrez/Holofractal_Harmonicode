@@ -111,3 +111,10 @@
 - Commits: 60c4bb432a272e7ee33ad13bc3b97cede4908289, 0f34180dc3eaf968710d7f06a3ea07dfaf29abbc, 63eed592fa54a301db3cd5ba2e65224c1fa44647.
 - This is a typed boundary and negative-regression implementation, not integrated native algebra evaluation: quantization_zero_proven is still a caller-provided Boolean, so it cannot count as authenticated proof or grant VM81 authority.
 - Next: scope CI; source-bind a certified typed-zero witness from the authorized provider, then integrate ordered gate evaluation into Pass219 C++ cell wall and signed VM81 admission. No canonical receipts minted.
+
+## HNAN declared zero vs authenticated proof (2026-10-15)
+- Previous rank1 HNAN checkpoint 61f6c0e9fddd21dee5df1f549ddb3a7803b7d1de: scoped workflow 38782305971 was queued at inspection, NOT verified.
+- Clarified fail-closed native API in 2ba985603bda20393197e44912fb4e9ab816b2b2: the Boolean supplied to evaluate_rank1_boundary is explicitly a quantization-zero declaration, not authenticated zero witness. Result reports candidate_only=true and typed_zero_authenticated=false unconditionally; canonical commit stays false.
+- Tests extended at 37459478fbc44f45ad9ff906fb0da1e73d8d0e70 to reject false representation of authenticated evidence.
+- Bypass behavior remains gain 1 and no curvature, phase or write-count mutation, but cannot be considered canonical execution.
+- Next: verify new scoped CI; implement actual typed-zero proof-verifier API bound to native VM81/environment source root and ordered predecessor, rather than a caller Boolean. All real gate semantics/receipts pending.
