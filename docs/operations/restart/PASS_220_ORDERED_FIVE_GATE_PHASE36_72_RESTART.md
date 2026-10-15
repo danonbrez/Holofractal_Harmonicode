@@ -86,3 +86,12 @@
 - Implementation commits: bf064be9bb8f832a552defdf1f9d6e2f80b3612d, afb1b5b5204f532016a69fd6eb9a0511c4ced0ff, 5052e1f277d183e079d421823c89cffd3172c098.
 - Validation of these new commits pending; do not declare SHA hardening green until CI completes.
 - Next: inspect scoped CI then connect typed native proof provider output with source-root and predecessor witness identity; current caller-supplied readiness flags are untrusted and never authorize VM81 mutation.
+
+## Caller declaration versus authenticated proof repair (2026-10-15)
+- Latest source-digest CI for checkpoint 6e43cb594e4495d103463e3f55929451c083e064 was queued at inspection: run 38769788730. No green claim for that commit.
+- Security defect in prior proof frontier: caller-controlled flags could set ready_for_vm81_proof_request=true without independently authenticated typed witness evidence. This does not mint a receipt, but it was an unsafe readiness assertion.
+- Repair in e49071f0b68a926411b2bb93e27ee50a7b6890a2 distinguishes declarations_complete from ready_for_vm81_proof_request. With no bound native proof provider, readiness is strictly false, even when all five user-provided flags are true.
+- Negative tests repaired in ef047fb44d8e08fcabddc9c647393e5dea3f0223: a full set of declarations is reportable but cannot authorize a proof request; missing native gate, missing predecessor, wrong source/root, or unsigned environment fails declaration completeness.
+- Changed files: hhs_runtime/include/hhs_pass220_five_gate_cell_wall_v1.hpp and tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp, plus this restart record.
+- Required next action: run scoped CI for this repair, then bind actual native typed witness proofs with cryptographically authenticated predecessor and signed environment through the inherited Pass219 C++ cell wall and VM81 admission provider. Do not replace with caller Booleans.
+- Canonical VM81 execution and Hash72/Hash216 mint remain unverified and unperformed for the 283-byte expression.
