@@ -28,3 +28,12 @@ def test_course_module_proof_untrusted_receipts_fail_closed():
         require_executed_module_proof(inventory,0,forged)
     with pytest.raises(ProofCorpusError,match="UNKNOWN_COURSE_MODULE"):
         require_executed_module_proof(inventory,13,forged)
+
+def test_hnan_course_passthrough_is_not_runtime_phase_gate_proof():
+    inventory=course_module_gate_inventory()
+    obligations=inventory["independent_hnan_proof_obligations"]
+    assert len(obligations)==2
+    assert obligations[0]!=obligations[1]
+    for module in inventory["ordered_modules"]:
+        assert module["hnan_passthrough_proof"]=="NOT_VERIFIED"
+        assert module["runtime_hnan_phase_gate"]=="NOT_VERIFIED"
