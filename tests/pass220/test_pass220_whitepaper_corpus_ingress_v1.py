@@ -7,8 +7,8 @@ from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import (
 
 def test_full_corpus_index_is_source_complete_and_fail_closed():
     result=build_corpus_index()
-    assert result["file_count"]==69
-    assert sum(x["path"].startswith("whitepapers/") for x in result["files"])==16
+    assert result["file_count"]==70
+    assert sum(x["path"].startswith("whitepapers/") for x in result["files"])==17
     assert sum(x["path"].startswith("docs/whitepapers/") for x in result["files"])==53
     assert any(x["path"].endswith(".md ") for x in result["files"])
     assert all(x["content_sha256"] and not x["native_admission_authority"] for x in result["files"])
