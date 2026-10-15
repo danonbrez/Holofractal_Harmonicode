@@ -70,3 +70,10 @@
 - Documentation checkpoint 60f2398e11a0e79f9066e91320e8a643c5328ded had its own queued workflow at inspection; do not treat it as verified until completed.
 - Current source-bound C++ admission audit remains candidate-only and always refuses VM81/Hash72/Hash216 authority; positive native typed five-gate proof, signed admission, terminal closure, and authoritative replay are unimplemented/unverified for this new expression.
 - Next dependency: implement actual source-dependent gate evaluation in the inherited native proof lane; retain the five-gate audit as admission prerequisite, not proof substitute.
+
+## Typed native proof-frontier audit (2026-10-15)
+- C++ header extended in d318d3337c3a3cca727ddf19025c8e4e490a1934 with FiveGateProofFrontier / FiveGateProofReadiness.
+- C++ regression extended in 3e31e62c67ef58a5c9fade0e652009deb40d8058 to require all five externally supplied native gate flags, all five predecessor-link flags, graph-root verification, provider verification and signed-environment verification to classify a candidate as ready for a proof request. Each gate or predecessor omission, foreign source, missing root and unsigned environment must fail readiness.
+- IMPORTANT: current fields are caller-provided Boolean witness declarations, not validated cryptographic proofs or typed native evaluator results. Even with all flags set, vm81_admission_authorized remains false. This is a fail-closed gate-layout interface only, NOT fulfillment of source-specific native algebra proof.
+- Scoped CI must be inspected after these commits. No native closure or canonical Hash72/Hash216 mint claimed.
+- Next: wire authoritative native provider returning independently validated witness bytes/identities; then verify binding to exact gate subtree, source graph root, predecessor state/witness and signed environment before invoking the inherited VM81 admission API.
