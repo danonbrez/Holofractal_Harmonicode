@@ -63,3 +63,10 @@
 - Test commands (workflow): g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp -o /tmp/pass220-cell-wall; /tmp/pass220-cell-wall.
 - Validation: prior source-negative-control CI run 38694326240 GREEN; current C++ audit CI not yet observed.
 - Next action: inspect scoped CI; repair-forward failing tests; then integrate native source-bound typed gate proof provider into signed VM81 path. No proof, admission or canonical mint claimed for this expression.
+
+## Native C++ dependency-scoped CI result (2026-10-15)
+- Implementation commit 1c988e1e913f226e64d6b3514f1e66017d27916d successfully passed workflow run 38727160210: https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/38727160210
+- Explicitly passed: source SHA/Python regressions; Pass159 C ABI build; Pass159 frontend/interpret/replay; C++20 cell-wall negative-admission conformance.
+- Documentation checkpoint 60f2398e11a0e79f9066e91320e8a643c5328ded had its own queued workflow at inspection; do not treat it as verified until completed.
+- Current source-bound C++ admission audit remains candidate-only and always refuses VM81/Hash72/Hash216 authority; positive native typed five-gate proof, signed admission, terminal closure, and authoritative replay are unimplemented/unverified for this new expression.
+- Next dependency: implement actual source-dependent gate evaluation in the inherited native proof lane; retain the five-gate audit as admission prerequisite, not proof substitute.
