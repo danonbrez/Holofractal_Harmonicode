@@ -23,13 +23,13 @@ jobs:
       - name: Build inherited Pass159 C ABI frontend
         run: |
           cmake -S native_projects/hhs_pass159_harmonicode_toolchain -B /tmp/pass159-five-gate -DCMAKE_BUILD_TYPE=Release
-          cmake --build /tmp/pass159-five-gate --parallel 2
+          cmake --build /tmp/pass159-five-gate --target hhs_pass159 --parallel 2
       - name: Parse, typecheck and lower five native equality gates
         run: |
           gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
             -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
             tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c \
-            -L/tmp/pass159-five-gate -lhhs_pass159 \
+            -L/tmp/pass159-five-gate -lhhs_pass159 -lcrypto \
             -Wl,-rpath,/tmp/pass159-five-gate \
             -o /tmp/pass220-five-gate
           /tmp/pass220-five-gate
