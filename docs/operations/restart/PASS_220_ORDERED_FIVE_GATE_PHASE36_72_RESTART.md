@@ -53,3 +53,13 @@
 - Required validation: source-byte and root equality; exact ordered gate decision trace; explicit negative tests for u^36 -> u^37, xy/zw order reversal, gate elision and provenance substitution; zero canonical commits for all failed admissions; positive exact VM81 frame/receipt/replay equality only after signed environmental admission succeeds.
 - No authority escalation: Pass159 frontend/replay candidate receipts and I162's different sealed candidate proof cannot serve as authority for this expression. VM81 alone may commit and mint canonical Hash72/Hash216 evidence.
 - Next action: implement source-parametric native adapter with full source-specific typed proof and negative admission tests; do not assert closure before this work.
+
+## Native C++ cell-wall admission audit, 2026-10-15
+- Base branch main; PR #806; continuing previous 825ce3315c987c24aa68e85e96fb1526e0ad510e.
+- New files: hhs_runtime/include/hhs_pass220_five_gate_cell_wall_v1.hpp and tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp.
+- Scoped workflow .github/workflows/pass220-ordered-five-gate-phase36-72.yml now compiles a native C++20 audit test with four negative controls: phase mutation, reciprocal operand substitution, root-gate elision, and foreign authoritative source.
+- Code preserves source identity and five source-depth equality offsets. Always returns candidate-only and never grants native proof, VM81 admission, or canonical receipt mint authority. It is an integration guard, NOT the five native algebraic gate proof adapter.
+- Current integration commits: 8ce5c7c6425d4919988e371ba4e34b3784bb6c61, 25c1d50e9acacb2dcbb0787d10e58090d3a45416, 1c988e1e913f226e64d6b3514f1e66017d27916d.
+- Test commands (workflow): g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp -o /tmp/pass220-cell-wall; /tmp/pass220-cell-wall.
+- Validation: prior source-negative-control CI run 38694326240 GREEN; current C++ audit CI not yet observed.
+- Next action: inspect scoped CI; repair-forward failing tests; then integrate native source-bound typed gate proof provider into signed VM81 path. No proof, admission or canonical mint claimed for this expression.
