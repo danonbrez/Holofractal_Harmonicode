@@ -28,3 +28,10 @@
 - No production deployment, canonical state mutation or Hash216 mint has been asserted.
 - Next action: scope native interpretation test to existing Pass159/219 proof bridge and verify that its native interpreter returns an execution witness for this source without authority bypass.
 - Blocker: no native interpretation or signed VM81 terminal-closure receipt for this new expression yet.
+
+## Next-cycle Pass159 interpreter / replay checkpoint (2026-10-15)
+- Commit: 1d55508a09a032a331cccdfe7823f8f4884142bd.
+- Added an execution-and-hold interpreter path to the existing C frontend conformance test, using hhs159_interpreter_create, hhs159_interpret and hhs159_interpreter_replay; commit_policy=0.
+- Native source, ordered parsing, and canonical VM81/Hash72/Hash216 authority remain unchanged.
+- The inherited Pass219 proof bridge explicitly identifies Pass159 VMIR as a fixed EXACT_PROGRAM foundation and replay as receipt rewrapping; thus a successful test proves callable interpretation/replay, not native semantic closure.
+- CI for this added test is not yet confirmed. Next: inspect dedicated workflow, repair scoped failures, and connect an actually source-dependent authorized VM81 proof lane before declaring terminal closure.
