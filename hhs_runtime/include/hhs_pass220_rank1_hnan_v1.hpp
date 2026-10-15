@@ -22,17 +22,20 @@ struct HnanResult final {
     bool bypassed{};
     bool requires_native_gate{};
     bool authorized_commit{};
+    bool typed_zero_authenticated{};
+    bool candidate_only{true};
 };
 inline HnanResult evaluate_rank1_boundary(
     const Rank1Circuit& circuit, const PhaseState& prior,
-    bool quantization_zero_proven
+    bool quantization_zero_declared
 ) noexcept {
     HnanResult result{};
     result.state = prior;
-    // Only a native typed zero witness may select the HNAN branch.
-    // Empty strings and literal "0" are not proof of typed zero.
-    if (quantization_zero_proven) {
+    // The caller's zero declaration selects a diagnostic candidate only.
+    // It is NOT a native witness or authorization to evaluate/commit.
+    if (quantization_zero_declared) {
         result.bypassed = true;
+        result.typed_zero_authenticated = false;
         return result; // gain 1, unchanged curvature, phase, write count
     }
     result.requires_native_gate = true;
