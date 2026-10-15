@@ -67,6 +67,8 @@ int main(void) {
     HHS159ByteSpan source_span;
     HHS159Context *context = NULL;
     HHS159Source *source = NULL;
+    HHS159Source *mutated_source = NULL;
+    uint8_t *mutated_bytes = NULL;
     HHS159IR *tokens = NULL;
     HHS159CST *cst = NULL;
     HHS159AST *ast = NULL;
@@ -80,6 +82,7 @@ int main(void) {
     HHS159ExecutionOptions execution_options;
     char source_hash[HHS159_HASH216_LENGTH + 1U];
     char ast_hash[HHS159_HASH216_LENGTH + 1U];
+    char mutated_source_hash[HHS159_HASH216_LENGTH + 1U];
     char graph_hash[HHS159_HASH216_LENGTH + 1U];
     char vmir_hash[HHS159_HASH216_LENGTH + 1U];
     int ok = 0;
@@ -142,7 +145,7 @@ int main(void) {
         goto cleanup;
 
     /* Hashes are identities, not proof authority.  They must be populated and
-     * deterministic, but this test deliberately does not interpret/commit. */
+     * deterministic, and must not be promoted to canonical proof authority. */
     if (source_hash[0] == '\0' || ast_hash[0] == '\0' ||
         graph_hash[0] == '\0' || vmir_hash[0] == '\0')
         goto cleanup;
@@ -167,6 +170,34 @@ int main(void) {
             HHS159_STATUS_OK || replay == NULL ||
         hhs159_artifact_kind(replay) != HHS159_ARTIFACT_RECEIPT)
         goto cleanup;
+    /* Source-dependency negative control: a one-byte, same-width phase
+     * mutation must produce a distinct source identity. This is not an
+     * assertion that the interpreter proves the changed mathematics. */
+    mutated_bytes = (uint8_t *)malloc(byte_count);
+    if (mutated_bytes == NULL)
+        goto cleanup;
+    memcpy(mutated_bytes, bytes, byte_count);
+    {
+        static const char needle[] = "u^36==z^2";
+        size_t i;
+        int changed = 0;
+        for (i = 0U; i + sizeof(needle) - 1U <= byte_count; ++i) {
+            if (memcmp(mutated_bytes + i, needle, sizeof(needle) - 1U) == 0) {
+                mutated_bytes[i + 3U] = (uint8_t)'7'; /* 36 -> 37 */
+                changed = 1;
+                break;
+            }
+        }
+        if (!changed)
+            goto cleanup;
+    }
+    source_span.data = mutated_bytes;
+    source_span.size = byte_count;
+    if (hhs159_source_open_bytes(context, source_span, &options, &mutated_source)
+            != HHS159_STATUS_OK ||
+        !copy_hash216(mutated_source, mutated_source_hash) ||
+        memcmp(source_hash, mutated_source_hash, HHS159_HASH216_LENGTH) == 0)
+        goto cleanup;
     ok = 1;
 
 cleanup:
@@ -180,8 +211,10 @@ cleanup:
     if (ast != NULL) hhs159_artifact_release(ast);
     if (cst != NULL) hhs159_artifact_release(cst);
     if (tokens != NULL) hhs159_artifact_release(tokens);
+    if (mutated_source != NULL) hhs159_source_release(mutated_source);
     if (source != NULL) hhs159_source_release(source);
     if (context != NULL) hhs159_context_release(context);
+    free(mutated_bytes);
     free(bytes);
 
     if (!ok) {
