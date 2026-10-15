@@ -35,5 +35,35 @@ int main() {
 
     auto foreign = hhs::lane5::audit_five_gate_candidate(exact, phase);
     if (foreign.source_exact || foreign.vm81_admission_authorized) return 8;
+    hhs::lane5::FiveGateProofFrontier frontier{};
+    auto absent = hhs::lane5::audit_five_gate_proof_frontier(passed, frontier);
+    if (absent.ready_for_vm81_proof_request || absent.vm81_admission_authorized) return 9;
+    frontier.native_gate_verified.fill(1U);
+    frontier.predecessor_witness_linked.fill(1U);
+    frontier.source_graph_root_verified = true;
+    frontier.native_proof_provider_verified = true;
+    frontier.signed_environment_verified = true;
+    auto ready = hhs::lane5::audit_five_gate_proof_frontier(passed, frontier);
+    if (!ready.ready_for_vm81_proof_request || ready.vm81_admission_authorized) return 10;
+    for (unsigned i = 0; i < 5; ++i) {
+        auto missing_gate = frontier;
+        missing_gate.native_gate_verified[i] = 0U;
+        if (hhs::lane5::audit_five_gate_proof_frontier(passed, missing_gate)
+                .ready_for_vm81_proof_request) return 11;
+        auto broken_link = frontier;
+        broken_link.predecessor_witness_linked[i] = 0U;
+        if (hhs::lane5::audit_five_gate_proof_frontier(passed, broken_link)
+                .ready_for_vm81_proof_request) return 12;
+    }
+    auto wrong_source = hhs::lane5::audit_five_gate_proof_frontier(changed, frontier);
+    if (wrong_source.ready_for_vm81_proof_request) return 13;
+    auto wrong_root = frontier;
+    wrong_root.source_graph_root_verified = false;
+    if (hhs::lane5::audit_five_gate_proof_frontier(passed, wrong_root)
+            .ready_for_vm81_proof_request) return 14;
+    auto unsigned_env = frontier;
+    unsigned_env.signed_environment_verified = false;
+    if (hhs::lane5::audit_five_gate_proof_frontier(passed, unsigned_env)
+            .ready_for_vm81_proof_request) return 15;
     return 0;
 }
