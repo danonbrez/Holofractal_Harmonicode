@@ -1,7 +1,7 @@
 {
   "schema": "HHS_PASS220_WHITEPAPER_SOURCE_FREEZE_V1",
-  "source_base_commit": "732e01c86df5a7ef5d0ca79aa46c6321f652312b",
-  "expected_file_count": 69,
+  "source_base_commit": "cab00e2eea3f9f064fa7b817995032cb3ef4b19a",
+  "expected_file_count": 70,
   "required_directories": [
     "whitepapers/",
     "docs/whitepapers/"
@@ -218,6 +218,10 @@
     {
       "path": "docs/whitepapers/PASS_219_SPI_V8_WHITEPAPER_INDEX.md",
       "git_blob_sha": "cbf2fc13a0910aab61dd18c37a8a21f5429031cf"
+    },
+    {
+      "path": "whitepapers/Harmonicode Algebra - Course",
+      "git_blob_sha": "2744e9ecf1f260ff9a5a02870320698ee2d7dcaf"
     },
     {
       "path": "whitepapers/HHS_PASS219_CROSS_MODAL_REVERSIBLE_STATE_GEOMETRY_REV1.md",
