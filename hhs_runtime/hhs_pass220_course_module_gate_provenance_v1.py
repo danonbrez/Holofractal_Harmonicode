@@ -9,6 +9,9 @@ from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusErro
 SOURCE="whitepapers/Harmonicode Algebra - Course"
 HEADER=re.compile(r"^MODULE (\d+) — (.+)$",re.MULTILINE)
 SCHEMA="HHS_PASS220_COURSE_MODULE_GATE_PROVENANCE_V1"
+HNAN_PASSTHROUGH_THEOREM="COURSE_HNAN_GAIN_ONE_PASSTHROUGH_PROOF"
+HNAN_RUNTIME_PHASE_GATE="RUNTIME_HNAN_PHASE_INFORMATION_PRESERVATION_GATE"
+# Independent proof obligations: neither discharges the other.
 
 def course_module_gate_inventory(root:Path=Path("."))->dict:
     graph=build_dependency_graph(root)
@@ -36,11 +39,14 @@ def course_module_gate_inventory(root:Path=Path("."))->dict:
                         "source_section":section,
                         "gate_syntax_present":"==" in section,
                         "native_verification":"NOT_EXECUTED",
+                        "hnan_passthrough_proof":"NOT_VERIFIED",
+                        "runtime_hnan_phase_gate":"NOT_VERIFIED",
                         "canonical_admission":False})
     return {"schema":SCHEMA,"source":SOURCE,"source_sha256":node["source_sha256"],
             "module_count":len(modules),"ordered_modules":modules,
             "verified_native_modules":0,"whole_course_proved":False,
-            "hash216_minted":False}
+            "hash216_minted":False,
+            "independent_hnan_proof_obligations":(HNAN_PASSTHROUGH_THEOREM,HNAN_RUNTIME_PHASE_GATE)}
 
 def require_executed_module_proof(inventory:dict,index:int,receipt:dict)->None:
     if not isinstance(index,int) or index<0 or index>=len(inventory["ordered_modules"]):
