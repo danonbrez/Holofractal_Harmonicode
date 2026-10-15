@@ -102,3 +102,12 @@
 - Scope: tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp only, plus this restart record. Existing native cell-wall already requires exactly 1 for each gate and predecessor field and never promotes caller flags to VM81 proof readiness.
 - No canonical VM81 proof provider introduced; no new native execution or canonical Hash72/Hash216 receipt.
 - Next: inspect run for this change, then implement source-bound proof provider using existing I162 native VM81 admission only after independent exact five-gate typed evaluation.
+
+## Course Modules 0–13 typed rank-1 HNAN boundary (2026-10-15)
+- Source contract: contracts/pass220/PASS_220_HARMONICODE_ALGEBRA_COURSE_GATE_ADMISSION_V1.md, commit 250902a2f079b471d0034ffd1abf2cbbfc577f92.
+- Added hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp: typed rank-1 period/quantization fields with source position and predecessor address; a native-proven-zero branch yields identity gain 1 and unchanged curvature/phase/write count.
+- Added tests/pass220/test_pass220_rank1_hnan_v1.cpp: identity bypass, textual zero without native witness must not bypass, nonzero quantum must require subsequent native gate; no canonical commit in either case.
+- CI .github/workflows/pass220-ordered-five-gate-phase36-72.yml now compiles and runs the test under C++20 with warnings as errors.
+- Commits: 60c4bb432a272e7ee33ad13bc3b97cede4908289, 0f34180dc3eaf968710d7f06a3ea07dfaf29abbc, 63eed592fa54a301db3cd5ba2e65224c1fa44647.
+- This is a typed boundary and negative-regression implementation, not integrated native algebra evaluation: quantization_zero_proven is still a caller-provided Boolean, so it cannot count as authenticated proof or grant VM81 authority.
+- Next: scope CI; source-bind a certified typed-zero witness from the authorized provider, then integrate ordered gate evaluation into Pass219 C++ cell wall and signed VM81 admission. No canonical receipts minted.
