@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
+#include <openssl/evp.h>
+#include <cstring>
 
 namespace hhs::lane5 {
 struct FiveGateAudit final {
@@ -61,11 +63,27 @@ inline FiveGateProofReadiness audit_five_gate_proof_frontier(
 inline constexpr std::array<std::size_t, 5> kFiveGateOffsets{54U,139U,223U,229U,276U};
 inline constexpr std::array<int, 5> kFiveGateDepths{3,3,1,0,1};
 
+inline bool source_digest_pinned(std::string_view source) noexcept {
+    constexpr std::array<unsigned char, 32> expected{
+        0xce,0xec,0x28,0x24,0x99,0xdd,0xaf,0x48,
+        0xeb,0xa1,0xd2,0x5b,0x63,0x13,0xc4,0x07,
+        0xd9,0x46,0x6d,0x37,0x9e,0x32,0x1b,0x47,
+        0xf9,0xa6,0xb3,0xf7,0x52,0xc2,0xa4,0x99
+    };
+    if (source.size() != 283U) return false;
+    std::array<unsigned char, EVP_MAX_MD_SIZE> digest{};
+    unsigned int size = 0U;
+    if (EVP_Digest(source.data(), source.size(), digest.data(), &size,
+                   EVP_sha256(), nullptr) != 1 || size != expected.size())
+        return false;
+    return std::memcmp(digest.data(), expected.data(), expected.size()) == 0;
+}
+
 inline FiveGateAudit audit_five_gate_candidate(
     std::string_view source, std::string_view authoritative_source
 ) noexcept {
     FiveGateAudit out{};
-    out.source_exact = source == authoritative_source && source.size() == 283U;
+    out.source_exact = source == authoritative_source && source_digest_pinned(source);
     std::size_t gate = 0U;
     int depth = 0;
     bool balanced = true;
