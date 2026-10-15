@@ -7,8 +7,8 @@ from hhs_runtime.hhs_pass220_whitepaper_proof_dependency_binding_v1 import (
 
 def test_all_69_sources_covered_deterministically():
     graph=build_dependency_graph()
-    assert graph["source_file_count"]==69
-    assert len({n["source"] for n in graph["nodes"]})==69
+    assert graph["source_file_count"]==70
+    assert len({n["source"] for n in graph["nodes"]})==70
     assert graph==build_dependency_graph()
     assert not graph["corpus_admitted"]
     assert all(not n["applicable_proof_constraints_verified"] for n in graph["nodes"])
