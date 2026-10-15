@@ -95,3 +95,10 @@
 - Changed files: hhs_runtime/include/hhs_pass220_five_gate_cell_wall_v1.hpp and tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp, plus this restart record.
 - Required next action: run scoped CI for this repair, then bind actual native typed witness proofs with cryptographically authenticated predecessor and signed environment through the inherited Pass219 C++ cell wall and VM81 admission provider. Do not replace with caller Booleans.
 - Canonical VM81 execution and Hash72/Hash216 mint remain unverified and unperformed for the 283-byte expression.
+
+## I088 proof-frontier negative regression (2026-10-15)
+- Current proof-readiness checkpoint 1aff2392d54c43a062d40cae0cfb91d755b29c7d had queued CI run 38770640402 at inspection; do not claim pass.
+- Native C++ negative tests extended at 78f83b47e1ce8ef55bc1a24321164906c8b4c6f8: untrusted native-provider declaration, nonbinary gate witness flag (2) and nonbinary predecessor-link flag (2) must fail declaration completeness.
+- Scope: tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp only, plus this restart record. Existing native cell-wall already requires exactly 1 for each gate and predecessor field and never promotes caller flags to VM81 proof readiness.
+- No canonical VM81 proof provider introduced; no new native execution or canonical Hash72/Hash216 receipt.
+- Next: inspect run for this change, then implement source-bound proof provider using existing I162 native VM81 admission only after independent exact five-gate typed evaluation.
