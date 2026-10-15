@@ -7,6 +7,8 @@ on:
       - 'tests/pass220/test_pass220_ordered_five_gate_phase36_72_source_v1.py'
       - 'tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c'
       - '.github/workflows/pass220-ordered-five-gate-phase36-72.yml'
+      - 'hhs_runtime/include/hhs_pass220_five_gate_cell_wall_v1.hpp'
+      - 'tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp'
   workflow_dispatch:
 permissions:
   contents: read
@@ -33,3 +35,9 @@ jobs:
             -Wl,-rpath,/tmp/pass159-five-gate \
             -o /tmp/pass220-five-gate
           /tmp/pass220-five-gate
+      - name: Native C++ cell-wall source and negative admission conformance
+        run: |
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp \
+            -o /tmp/pass220-cell-wall
+          /tmp/pass220-cell-wall
