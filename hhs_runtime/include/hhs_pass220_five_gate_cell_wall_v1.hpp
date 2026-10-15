@@ -17,6 +17,47 @@ struct FiveGateAudit final {
     bool canonical_hash_mint_authorized{false};
 };
 
+
+struct FiveGateProofFrontier final {
+    // Inputs must originate from the native typed proof provider, not this audit.
+    std::array<std::uint8_t, 5> native_gate_verified{};
+    std::array<std::uint8_t, 5> predecessor_witness_linked{};
+    bool source_graph_root_verified{false};
+    bool native_proof_provider_verified{false};
+    bool signed_environment_verified{false};
+};
+
+struct FiveGateProofReadiness final {
+    bool all_five_native_gates{false};
+    bool ordered_predecessor_chain{false};
+    bool source_graph_root_verified{false};
+    bool ready_for_vm81_proof_request{false};
+    bool vm81_admission_authorized{false};
+};
+
+inline FiveGateProofReadiness audit_five_gate_proof_frontier(
+    const FiveGateAudit& source, const FiveGateProofFrontier& proof
+) noexcept {
+    FiveGateProofReadiness out{};
+    out.all_five_native_gates = true;
+    out.ordered_predecessor_chain = true;
+    for (std::size_t i = 0U; i < 5U; ++i) {
+        out.all_five_native_gates =
+            out.all_five_native_gates && proof.native_gate_verified[i] == 1U;
+        out.ordered_predecessor_chain =
+            out.ordered_predecessor_chain && proof.predecessor_witness_linked[i] == 1U;
+    }
+    out.source_graph_root_verified = proof.source_graph_root_verified;
+    out.ready_for_vm81_proof_request =
+        source.source_exact && source.order_exact && source.gate_layout_exact &&
+        out.all_five_native_gates && out.ordered_predecessor_chain &&
+        out.source_graph_root_verified && proof.native_proof_provider_verified &&
+        proof.signed_environment_verified;
+    // Readiness for a native proof request is never admission itself.
+    out.vm81_admission_authorized = false;
+    return out;
+}
+
 inline constexpr std::array<std::size_t, 5> kFiveGateOffsets{54U,139U,223U,229U,276U};
 inline constexpr std::array<int, 5> kFiveGateDepths{3,3,1,0,1};
 
