@@ -77,3 +77,12 @@
 - IMPORTANT: current fields are caller-provided Boolean witness declarations, not validated cryptographic proofs or typed native evaluator results. Even with all flags set, vm81_admission_authorized remains false. This is a fail-closed gate-layout interface only, NOT fulfillment of source-specific native algebra proof.
 - Scoped CI must be inspected after these commits. No native closure or canonical Hash72/Hash216 mint claimed.
 - Next: wire authoritative native provider returning independently validated witness bytes/identities; then verify binding to exact gate subtree, source graph root, predecessor state/witness and signed environment before invoking the inherited VM81 admission API.
+
+## Native source digest hardening (2026-10-15)
+- Previous frontier checkpoint b845cbc879ce866d77b9489b0207c1789562c901: CI run 38728031342 succeeded.
+- Native C++ audit previously accepted any 283-byte source provided as both input and caller-declared authoritative_source. That allowed caller self-attestation. This cycle pins the SHA-256 digest ceec282499ddaf48eba1d25b6313c407d9466d379e321b47f9a6b3f752c2a499 in the native audit itself using OpenSSL EVP_Digest.
+- Source equality now requires both exact caller-source match and pinned digest identity. A mutated source supplied as its own authority is explicitly rejected in the C++ regression. CI links the test with -lcrypto.
+- Files modified: hhs_runtime/include/hhs_pass220_five_gate_cell_wall_v1.hpp, tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp, .github/workflows/pass220-ordered-five-gate-phase36-72.yml, this restart record.
+- Implementation commits: bf064be9bb8f832a552defdf1f9d6e2f80b3612d, afb1b5b5204f532016a69fd6eb9a0511c4ced0ff, 5052e1f277d183e079d421823c89cffd3172c098.
+- Validation of these new commits pending; do not declare SHA hardening green until CI completes.
+- Next: inspect scoped CI then connect typed native proof provider output with source-root and predecessor witness identity; current caller-supplied readiness flags are untrusted and never authorize VM81 mutation.
