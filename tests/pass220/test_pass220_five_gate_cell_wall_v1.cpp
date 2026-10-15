@@ -18,6 +18,8 @@ int main() {
     if (at == std::string::npos) return 3;
     phase[at + 3] = '7';
     auto changed = hhs::lane5::audit_five_gate_candidate(phase, exact);
+    auto forged_authority = hhs::lane5::audit_five_gate_candidate(phase, phase);
+    if (forged_authority.source_exact || forged_authority.order_exact) return 16;
     if (changed.source_exact || changed.order_exact ||
         changed.vm81_admission_authorized || changed.native_proof_observed) return 4;
 
