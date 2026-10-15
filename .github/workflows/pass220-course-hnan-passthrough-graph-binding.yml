@@ -1,0 +1,24 @@
+name: Pass 220 Course HNAN Passthrough Graph Binding
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_course_hnan_passthrough_graph_binding_v1.py"
+      - "tests/pass220/test_pass220_course_hnan_passthrough_graph_binding_v1.py"
+      - ".github/workflows/pass220-course-hnan-passthrough-graph-binding.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  executed-proof-graph:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Execute native zero-divisor witness and bind frozen proof graph
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q --tb=short tests/pass220/test_pass220_course_hnan_passthrough_graph_binding_v1.py
