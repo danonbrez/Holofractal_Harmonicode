@@ -74,6 +74,10 @@ int main(void) {
     HHS159ConstraintGraph *graph = NULL;
     HHS159IR *hir = NULL;
     HHS159IR *vmir = NULL;
+    HHS159Interpreter *interpreter = NULL;
+    HHS159Receipt *execution = NULL;
+    HHS159Receipt *replay = NULL;
+    HHS159ExecutionOptions execution_options;
     char source_hash[HHS159_HASH216_LENGTH + 1U];
     char ast_hash[HHS159_HASH216_LENGTH + 1U];
     char graph_hash[HHS159_HASH216_LENGTH + 1U];
@@ -143,9 +147,32 @@ int main(void) {
         graph_hash[0] == '\0' || vmir_hash[0] == '\0')
         goto cleanup;
 
+    /* Interpreter/replay receipts are diagnostic: Pass219's inherited bridge
+     * does not authorize their promotion to canonical VM81 proof. */
+    if (hhs159_interpreter_create(context, &interpreter) != HHS159_STATUS_OK)
+        goto cleanup;
+    memset(&execution_options, 0, sizeof(execution_options));
+    execution_options.header.struct_size = (uint32_t)sizeof(execution_options);
+    execution_options.header.struct_version = HHS159_STRUCT_VERSION_1;
+    execution_options.mode = HHS159_MODE_EXECUTE_AND_HOLD;
+    execution_options.commit_policy = 0U;
+    execution_options.max_vm81_steps = UINT64_C(1000000);
+    execution_options.max_recursion = UINT64_C(4096);
+    execution_options.max_output_bytes = UINT64_C(4194304);
+    if (hhs159_interpret(interpreter, source, &execution_options, &execution) !=
+            HHS159_STATUS_OK || execution == NULL ||
+        hhs159_artifact_kind(execution) != HHS159_ARTIFACT_RECEIPT)
+        goto cleanup;
+    if (hhs159_interpreter_replay(interpreter, execution, &replay) !=
+            HHS159_STATUS_OK || replay == NULL ||
+        hhs159_artifact_kind(replay) != HHS159_ARTIFACT_RECEIPT)
+        goto cleanup;
     ok = 1;
 
 cleanup:
+    if (replay != NULL) hhs159_receipt_release(replay);
+    if (execution != NULL) hhs159_receipt_release(execution);
+    if (interpreter != NULL) hhs159_interpreter_release(interpreter);
     if (vmir != NULL) hhs159_artifact_release(vmir);
     if (hir != NULL) hhs159_artifact_release(hir);
     if (graph != NULL) hhs159_artifact_release(graph);
