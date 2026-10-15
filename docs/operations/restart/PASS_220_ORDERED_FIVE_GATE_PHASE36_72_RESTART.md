@@ -35,3 +35,11 @@
 - Native source, ordered parsing, and canonical VM81/Hash72/Hash216 authority remain unchanged.
 - The inherited Pass219 proof bridge explicitly identifies Pass159 VMIR as a fixed EXACT_PROGRAM foundation and replay as receipt rewrapping; thus a successful test proves callable interpretation/replay, not native semantic closure.
 - CI for this added test is not yet confirmed. Next: inspect dedicated workflow, repair scoped failures, and connect an actually source-dependent authorized VM81 proof lane before declaring terminal closure.
+
+## Source-dependency negative control (2026-10-15)
+- Green interpreter/replay workflow: https://github.com/danonbrez/Holofractal_Harmonicode/actions/runs/38690894478 (all steps success).
+- Commit 58b0d02b8399ea760668719bdcd5b8d87a2c2dea adds a bounded mutation test to the inherited Pass159 C frontend: change only the first exponent equality from u^36==z^2 to u^37==z^2 in an in-memory copy. Canonical source file remains unchanged.
+- The public hhs159_source_open_bytes / hhs159_get_hash216 APIs must distinguish original and mutated source identities; fail closed if identical.
+- No source-dependent VM81 evaluation or terminal algebra proof is claimed by this negative control.
+- CI for the added negative control must be checked; inspect native test failure before further authority claims.
+- Next action: identify an existing callable source-dependent VM81 execution bridge that produces an ordered proof witness; do not mistake Pass159 fixed EXACT_PROGRAM receipt replay for VM81 terminal proof.
