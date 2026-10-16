@@ -11,6 +11,7 @@ on:
       - 'tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp'
       - 'hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp'
       - 'tests/pass220/test_pass220_rank1_hnan_v1.cpp'
+      - 'formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean'
   workflow_dispatch:
 permissions:
   contents: read
@@ -49,3 +50,9 @@ jobs:
             -Ihhs_runtime/include tests/pass220/test_pass220_rank1_hnan_v1.cpp \
             -o /tmp/pass220-rank1-hnan
           /tmp/pass220-rank1-hnan
+      - name: Check inherited Lean HNAN boundary theorem
+        run: |
+          curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          export PATH="$HOME/.elan/bin:$PATH"
+          lake build HHS.Pass220.FiveGateHNANBoundary
