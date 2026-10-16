@@ -66,6 +66,25 @@ theorem transport_epsilon_inherited (q c d : Nat) :
 
 /-- These are source addresses, not proofs of gate truth. -/
 def fiveGateOffsets : List Nat := [54, 139, 223, 229, 276]
+theorem fiveGateOffsetsDistinct : fiveGateOffsets.Nodup := by
+  decide
+
+theorem fiveGateOffsetStrictOrder :
+    54 < 139 ∧ 139 < 223 ∧ 223 < 229 ∧ 229 < 276 := by
+  decide
+
+/-- Preserve the parser-derived nesting geometry of all five native gates. -/
+def fiveGateDepths : List Nat := [3, 3, 1, 0, 1]
+
+theorem fiveGateDepthsExact :
+    fiveGateDepths = [3, 3, 1, 0, 1] := by
+  rfl
+
+theorem fiveGateLayoutLengths :
+    fiveGateOffsets.length = fiveGateDepths.length ∧
+    fiveGateOffsets.length = 5 := by
+  decide
+
 theorem fiveGateOffsetsExact :
     fiveGateOffsets = [54, 139, 223, 229, 276] := by
   rfl
