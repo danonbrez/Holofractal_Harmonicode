@@ -44,7 +44,11 @@ def compose_authenticated_orbit(
         raise ValueError("negative orbit clock")
     if not segments or any(not segment for segment in segments):
         raise ValueError("orbit must contain nonempty native path segments")
-    current = tuple(int(v) for v in initial_state)
+    if len(initial_state) != 81:
+        raise ValueError("orbit initial state requires exactly 81 uint64 words")
+    current = tuple(exact_int(v, f"initial_state[{i}]") for i, v in enumerate(initial_state))
+    if any(v < 0 or v >= (1 << 64) for v in current):
+        raise ValueError("orbit initial state word outside uint64")
     root = graph.native.state_root(current)
     array = compose_single_hash216_array(frame_id=frame)
     lineage = []
