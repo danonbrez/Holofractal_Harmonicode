@@ -22,6 +22,10 @@ int hhs_pass220_72_shell_prepare_proof_input(
     strcmp(pn,"1")!=0||strcmp(pd,"1")!=0)return 0;
  out->canonical_projection_verified=1U;
  memcpy(out->source_sha256,graph.source_sha256,sizeof(out->source_sha256));
+ memcpy(out->source_bytes,source,HHS_72_SHELL_SOURCE_BYTES);
+ memcpy(out->operand_spans,graph.operands,sizeof(out->operand_spans));
+ out->outer_left_span=graph.outer_left;
+ out->outer_right_span=graph.outer_right;
  for(i=0;i<4U;++i){
   out->source_gate_offsets[i]=graph.edges[i].source_offset;
   out->ordered_left_node[i]=graph.edges[i].left_node;
