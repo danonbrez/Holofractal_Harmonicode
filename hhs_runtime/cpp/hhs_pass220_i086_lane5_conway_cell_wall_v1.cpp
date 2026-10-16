@@ -18,6 +18,10 @@ extern "C" HHSExactStatus hhs_pass220_i086_lane5_conway81_cell_wall(
 ) noexcept {
     if (!input || !frame || !predecessor || !witness || !output)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (input->struct_size != sizeof(*input) ||
+        input->uqcel_version != hhs_exact_uqcel_version() ||
+        input->profile != HHS_EXACT_UQCEL_PROFILE_INTEGER_SYMMETRIC_V1)
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     HHSExactPass220I028Lane5RNAG3BridgeCandidateV1 mediated{};
     const HHSExactStatus checked = hhs_exact_pass220_i028_lane5_rna_g3_route(
         input, frame, predecessor, witness, ieee, p4, c4, &mediated);
