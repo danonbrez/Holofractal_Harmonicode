@@ -27,6 +27,32 @@ theorem hnan_gain_one_no_phase_write (s : PhaseSnapshot) :
     (hnanBypass s).writes = s.writes := by
   exact ⟨rfl, rfl, rfl⟩
 
+
+/-- A declared zero is a candidate, not a trusted witness. The ordered
+    boundary always preserves the original frame until native admission. -/
+structure CandidateBoundary where
+  prior : PhaseSnapshot
+  declaredZero : Bool
+  candidateOnly : Bool
+  authorizedCommit : Bool
+deriving Repr, BEq, DecidableEq
+
+def inspectBoundary (s : PhaseSnapshot) (declaredZero : Bool) :
+    CandidateBoundary :=
+  { prior := hnanBypass s, declaredZero := declaredZero,
+    candidateOnly := true, authorizedCommit := false }
+
+theorem bypass_no_write_even_on_zero_declaration
+    (s : PhaseSnapshot) :
+    (inspectBoundary s true).prior.writes = s.writes := by
+  rfl
+
+theorem boundary_never_mints_from_boolean
+    (s : PhaseSnapshot) (declaredZero : Bool) :
+    (inspectBoundary s declaredZero).authorizedCommit = false ∧
+    (inspectBoundary s declaredZero).candidateOnly = true := by
+  exact ⟨rfl, rfl⟩
+
 /-- Proofs inherit ordered roles; they cannot exchange xy with yx. -/
 theorem phase_order_inherited :
     HHS.Pass220.HNANPhase5184.PhaseCell.xy ≠
