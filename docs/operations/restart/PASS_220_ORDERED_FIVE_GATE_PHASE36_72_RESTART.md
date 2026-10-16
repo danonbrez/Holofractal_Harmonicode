@@ -151,3 +151,11 @@
 - The nativeGateClosed Bool is currently caller declaration only; it is not a proof-provider witness. This formalizes rejection propagation within the candidate cursor, not canonical VM81 proof. New VM81/Hash72/Hash216 authority remains false.
 - Modified: formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean and this restart file. Base cab00e2eea3f9f064fa7b817995032cb3ef4b19a; PR #806 branch agent/pass220-ordered-five-gate-source-20261014 to main. No local Lean command executed; CI pending.
 - Next: collect targeted Lean CI result and repair any check failure, then connect an actual authenticated gate-evaluation provider rather than a declaration flag.
+
+## 2026-10-16 scoped HNAN CI compiler repair
+- Base branch and merge target unchanged: agent/pass220-ordered-five-gate-source-20261014 -> main, original PR base cab00e2eea3f9f064fa7b817995032cb3ef4b19a.
+- Real failure observed: run 38832312888, job 116753611421 failed step "Native rank-1 HNAN gain-one no-write tests", diagnostic unused parameter 'circuit' at hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp:29 under -Werror. Source hash, Python 4 tests, Pass159 native ABI and C++ cell-wall steps passed; Lean was SKIPPED (not a theorem failure).
+- Repair commit 3db258f3739274ed3f22a0aa36454033975f0302 explicitly marks the stored but not evaluated circuit argument unused using (void)circuit; no change to gain 1, phase/curvature, witness authenticity or canonical authority.
+- Scoped local GCC C++20 compile plus execution passed against a locally reconstructed matching HNAN header and tests with -O2 -Wall -Wextra -Werror -pedantic. Repository exact-byte CI confirmation remains pending.
+- Changes this cycle: hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp, this restart file. Next: inspect PR run on this exact repair SHA or this checkpoint; if HNAN green, inspect Lean step, repair only concrete Lean errors. Do not re-run unrelated historic gates.
+- No source-specific five-gate native algebra proof, signed VM81 admission or canonical Hash72/Hash216 mint has occurred.
