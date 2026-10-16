@@ -109,6 +109,65 @@ inline bool audit_gate_witness_bindings(
     return true;
 }
 
+
+using GateDigest = std::array<unsigned char, 32>;
+struct GateLineageDeclaration final {
+    GateDigest predecessor{};
+    GateDigest claimed_digest{};
+};
+
+// Fixed-width, big-endian position encoding; domain separation forbids
+// confusing a layout declaration with an admitted Hash72/Hash216 receipt.
+inline GateDigest gate_layout_digest(
+    const GateDigest& prior, std::size_t gate_index
+) noexcept {
+    GateDigest result{};
+    if (gate_index >= kFiveGateOffsets.size()) return result;
+    EVP_MD_CTX* ctx = EVP_MD_CTX_new();
+    if (ctx == nullptr) return result;
+    constexpr unsigned char domain[] = "HHS-P220-GATE-LAYOUT-DECL-V1";
+    constexpr GateDigest source_id{
+        0xce,0xec,0x28,0x24,0x99,0xdd,0xaf,0x48,
+        0xeb,0xa1,0xd2,0x5b,0x63,0x13,0xc4,0x07,
+        0xd9,0x46,0x6d,0x37,0x9e,0x32,0x1b,0x47,
+        0xf9,0xa6,0xb3,0xf7,0x52,0xc2,0xa4,0x99
+    };
+    const std::array<unsigned char, 4> address{
+        static_cast<unsigned char>(gate_index),
+        static_cast<unsigned char>((kFiveGateOffsets[gate_index] >> 8U) & 255U),
+        static_cast<unsigned char>(kFiveGateOffsets[gate_index] & 255U),
+        static_cast<unsigned char>(kFiveGateDepths[gate_index])
+    };
+    unsigned int length = 0;
+    const bool ok = EVP_DigestInit_ex(ctx, EVP_sha256(), nullptr) == 1 &&
+        EVP_DigestUpdate(ctx, domain, sizeof(domain) - 1U) == 1 &&
+        EVP_DigestUpdate(ctx, source_id.data(), source_id.size()) == 1 &&
+        EVP_DigestUpdate(ctx, prior.data(), prior.size()) == 1 &&
+        EVP_DigestUpdate(ctx, address.data(), address.size()) == 1 &&
+        EVP_DigestFinal_ex(ctx, result.data(), &length) == 1 &&
+        length == result.size();
+    EVP_MD_CTX_free(ctx);
+    if (!ok) result.fill(0U);
+    return result;
+}
+
+inline bool audit_gate_lineage_declarations(
+    const FiveGateAudit& source,
+    const std::array<GateLineageDeclaration, 5>& lineage,
+    const GateDigest& genesis
+) noexcept {
+    if (!source.source_exact || !source.order_exact || !source.gate_layout_exact)
+        return false;
+    GateDigest prior = genesis;
+    for (std::size_t i = 0; i < lineage.size(); ++i) {
+        if (lineage[i].predecessor != prior) return false;
+        const GateDigest expected = gate_layout_digest(prior, i);
+        if (lineage[i].claimed_digest != expected) return false;
+        prior = expected;
+    }
+    return true;
+}
+
 inline FiveGateAudit audit_five_gate_candidate(
     std::string_view source, std::string_view authoritative_source
 ) noexcept {
