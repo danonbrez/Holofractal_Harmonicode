@@ -6,6 +6,7 @@ on:
       - agent/pass220-i086-prime-orbit-formalization-20261012
   pull_request:
     paths:
+      - 'GNUmakefile'
       - 'hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp'
       - 'hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp'
       - 'hhs_runtime/cpp/hhs_pass220_i086_lane5_conway_cell_wall_v1.cpp'
