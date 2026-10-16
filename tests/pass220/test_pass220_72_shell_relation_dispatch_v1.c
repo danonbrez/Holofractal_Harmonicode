@@ -1,0 +1,24 @@
+#include "hhs_pass220_72_shell_relation_dispatch_v1.h"
+#include <stdio.h>
+#include <string.h>
+static const uint8_t s[]="(x^4/(Mod(72^72,Factorial(72))/(Mod(Factorial(72),72^72)))^(-0.2752680919)==(x^2+1)^2/x^3==b==1/b^3)^2/(c^2-a^2)==a^4/b^2";
+static HHS72RelationDecision evaluate(const HHS72ProofInput *in,uint32_t gate,
+ uint32_t left,uint32_t right,void *ctx){
+ uint32_t *calls=(uint32_t*)ctx;
+ if(!in||gate>=4U||left!=(gate<3U?gate:4U)||
+    right!=(gate<3U?gate+1U:5U))return HHS72_RELATION_REJECTED;
+ ++*calls;
+ return HHS72_RELATION_CANDIDATE;
+}
+int main(void){
+ HHS72RelationDispatch r;uint32_t calls=0;uint8_t bad[sizeof(s)-1U];
+ if(!hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,evaluate,&calls,&r))return 1;
+ if(calls!=4U||r.evaluated_mask!=15U||r.candidate_mask!=15U||
+    r.authoritative_proof_mask||r.vm81_admitted)return 2;
+ memcpy(bad,s,sizeof(bad));bad[74]^=1U;
+ if(hhs_pass220_72_shell_dispatch(bad,sizeof(bad),evaluate,&calls,&r))return 3;
+ if(r.authoritative_proof_mask||r.vm81_admitted)return 4;
+ if(hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,NULL,&calls,&r))return 5;
+ puts("PASS 4 directed callback evaluations; candidates never promote proof");
+ return 0;
+}
