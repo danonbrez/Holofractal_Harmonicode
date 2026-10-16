@@ -83,6 +83,32 @@ inline bool source_digest_pinned(std::string_view source) noexcept {
     return std::memcmp(digest.data(), expected.data(), expected.size()) == 0;
 }
 
+
+struct GateWitnessBinding final {
+    std::size_t source_offset{};
+    int source_depth{};
+    std::uint32_t predecessor_gate{};
+    bool authenticated_by_native_provider{false};
+};
+
+// Ordered witness addresses are deliberately not interpreted as algebraic truth.
+// A caller cannot set an authority bit to promote any of these declarations.
+inline bool audit_gate_witness_bindings(
+    const FiveGateAudit& source,
+    const std::array<GateWitnessBinding, 5>& bindings
+) noexcept {
+    if (!source.source_exact || !source.order_exact || !source.gate_layout_exact)
+        return false;
+    for (std::size_t i = 0; i < bindings.size(); ++i) {
+        if (bindings[i].source_offset != kFiveGateOffsets[i] ||
+            bindings[i].source_depth != kFiveGateDepths[i] ||
+            bindings[i].predecessor_gate != static_cast<std::uint32_t>(i) ||
+            !bindings[i].authenticated_by_native_provider)
+            return false;
+    }
+    return true;
+}
+
 inline FiveGateAudit audit_five_gate_candidate(
     std::string_view source, std::string_view authoritative_source
 ) noexcept {
