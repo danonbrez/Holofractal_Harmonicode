@@ -24,6 +24,9 @@ on:
       - "hhs_runtime/include/hhs_pass220_72_shell_relation_dispatch_v1.h"
       - "hhs_runtime/c/hhs_pass220_72_shell_relation_dispatch_v1.c"
       - "tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_outer_projection_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c"
+      - "tests/pass220/test_pass220_72_shell_outer_projection_v1.c"
   push:
     paths:
       - "hhs_runtime/include/hhs_pass220_72_shell_source_bound_v1.h"
@@ -48,6 +51,9 @@ on:
       - "hhs_runtime/include/hhs_pass220_72_shell_relation_dispatch_v1.h"
       - "hhs_runtime/c/hhs_pass220_72_shell_relation_dispatch_v1.c"
       - "tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_outer_projection_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c"
+      - "tests/pass220/test_pass220_72_shell_outer_projection_v1.c"
 jobs:
   source-bound:
     runs-on: ubuntu-latest
@@ -172,3 +178,19 @@ jobs:
             -lcrypto -o /tmp/hhs_pass220_relation_dispatch
       - name: Execute ordered candidate evaluations and admission denials
         run: /tmp/hhs_pass220_relation_dispatch
+
+  canonical-outer-projection:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile exact outer projection
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+          -Ihhs_runtime/include \
+          hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c \
+          tests/pass220/test_pass220_72_shell_outer_projection_v1.c \
+          -lcrypto -o /tmp/hhs_pass220_outer_projection
+      - name: Verify canonical scalar projection only
+        run: /tmp/hhs_pass220_outer_projection
