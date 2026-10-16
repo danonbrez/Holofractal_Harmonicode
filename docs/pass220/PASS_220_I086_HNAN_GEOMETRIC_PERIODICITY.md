@@ -68,3 +68,12 @@ all unverified authority fields.
 - Neither independent green run proves the combined code integrated or the signed-environment admission for promoted canonical persistence.
 - #814 remains draft and strictly noncanonical. Do not transplant, fork, or replace the C++ Conway implementation owned by #774.
 - The next dependency gate is source-aligned reconciliation with #774 and its upstream PR prerequisites, then native signed admission and exact main verification. No current CI result is treated as a substitute for that gate.
+
+## Upstream merged-prerequisite checkpoint (2026-10-15)
+
+- Audio parity prerequisite PR #775: MERGED.
+- Native two-sweep Hash216 I085 prerequisite PR #773: MERGED.
+- Native Conway owner PR #774: DRAFT / UNMERGED; prior native CI success does not establish current-main signed admission.
+- I086 adjunct PR #814 remains DRAFT / NONCANONICAL.
+- Current-main inspection identified commit `e41dff460d7ec945568b74d4fe6be43b46431141`; the native #774 head was `3f53f905b3a605ff9ac553c525434fb456257d5c`.
+- Next validation: current-main synchronization and signed-environment/native generation-integrity checks for #774; do not transfer authority or claim verified-main before actual promotion.
