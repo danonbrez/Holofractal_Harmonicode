@@ -50,6 +50,19 @@ def test_native_persisted_two_segment_closed_orbit_and_negative_cases(tmp_path):
                 tick=0, cycle_index=0,
             )
 
+        for bad_clock in (-1, 1 << 64):
+            with pytest.raises(ValueError, match="orbit clock"):
+                compose_authenticated_orbit(
+                    graph=graph, initial_state=initial,
+                    segments=[["i086-forward"]],
+                    frame_id=0, tick=0, cycle_index=bad_clock,
+                )
+        with pytest.raises(ValueError, match="tick range"):
+            compose_authenticated_orbit(
+                graph=graph, initial_state=initial,
+                segments=[["i086-forward"], ["i086-backward"]],
+                frame_id=0, tick=(1 << 64) - 1, cycle_index=0,
+            )
         orbit = compose_authenticated_orbit(
             graph=graph, initial_state=initial,
             segments=[["i086-forward"], ["i086-backward"]],
