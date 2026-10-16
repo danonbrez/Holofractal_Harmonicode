@@ -68,6 +68,10 @@ int main(void) {
     HHS159Context *context = NULL;
     HHS159Source *source = NULL;
     HHS159Source *mutated_source = NULL;
+    HHS159CST *mutated_cst = NULL;
+    HHS159AST *mutated_ast = NULL;
+    HHS159TypeEnvironment *mutated_types = NULL;
+    HHS159ConstraintGraph *mutated_graph = NULL;
     uint8_t *mutated_bytes = NULL;
     HHS159IR *tokens = NULL;
     HHS159CST *cst = NULL;
@@ -84,6 +88,8 @@ int main(void) {
     char ast_hash[HHS159_HASH216_LENGTH + 1U];
     char mutated_source_hash[HHS159_HASH216_LENGTH + 1U];
     char graph_hash[HHS159_HASH216_LENGTH + 1U];
+    char mutated_ast_hash[HHS159_HASH216_LENGTH + 1U];
+    char mutated_graph_hash[HHS159_HASH216_LENGTH + 1U];
     char vmir_hash[HHS159_HASH216_LENGTH + 1U];
     int ok = 0;
 
@@ -198,9 +204,25 @@ int main(void) {
         !copy_hash216(mutated_source, mutated_source_hash) ||
         memcmp(source_hash, mutated_source_hash, HHS159_HASH216_LENGTH) == 0)
         goto cleanup;
+    /* Prove that a same-width source mutation propagates through the
+     * Pass159 AST and typed constraint graph as distinct artifacts. */
+    if (hhs159_parse_cst(context, mutated_source, &mutated_cst) != HHS159_STATUS_OK ||
+        hhs159_build_ast(context, mutated_cst, &mutated_ast) != HHS159_STATUS_OK ||
+        !copy_hash216(mutated_ast, mutated_ast_hash) ||
+        hhs159_typecheck(context, mutated_ast, &mutated_types) != HHS159_STATUS_OK ||
+        hhs159_build_constraint_graph(context, mutated_ast, mutated_types, &mutated_graph)
+            != HHS159_STATUS_OK ||
+        !copy_hash216(mutated_graph, mutated_graph_hash) ||
+        memcmp(ast_hash, mutated_ast_hash, HHS159_HASH216_LENGTH) == 0 ||
+        memcmp(graph_hash, mutated_graph_hash, HHS159_HASH216_LENGTH) == 0)
+        goto cleanup;
     ok = 1;
 
 cleanup:
+    if (mutated_graph != NULL) hhs159_artifact_release(mutated_graph);
+    if (mutated_types != NULL) hhs159_artifact_release(mutated_types);
+    if (mutated_ast != NULL) hhs159_artifact_release(mutated_ast);
+    if (mutated_cst != NULL) hhs159_artifact_release(mutated_cst);
     if (replay != NULL) hhs159_receipt_release(replay);
     if (execution != NULL) hhs159_receipt_release(execution);
     if (interpreter != NULL) hhs159_interpreter_release(interpreter);
