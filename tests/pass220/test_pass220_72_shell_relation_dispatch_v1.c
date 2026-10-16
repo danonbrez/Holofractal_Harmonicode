@@ -7,6 +7,11 @@ static HHS72RelationDecision evaluate(const HHS72ProofInput *in,uint32_t gate,
  uint32_t *calls=(uint32_t*)ctx;
  if(!in||gate>=4U||left!=(gate<3U?gate:4U)||
     right!=(gate<3U?gate+1U:5U))return HHS72_RELATION_REJECTED;
+ if(memcmp(in->source_bytes,s,sizeof(s)-1U)!=0||
+    in->operand_spans[0].byte_start!=1U||
+    in->operand_spans[3].byte_end!=99U||
+    in->outer_left_span.byte_end!=112U||
+    in->outer_right_span.byte_start!=114U)return HHS72_RELATION_REJECTED;
  ++*calls;
  return HHS72_RELATION_CANDIDATE;
 }
