@@ -12,6 +12,12 @@ int main(void){
  changed[70]^=1U;
  if(hhs_pass220_72_shell_lower(changed,sizeof(changed),&result)!=HHS_72_SHELL_INVALID_SOURCE) return 3;
  if(result.status!=HHS_72_SHELL_INVALID_SOURCE || result.vm81_admitted) return 4;
- puts("PASS source binding, four ordered gates, mutation rejection, no admission");
+ for(size_t i=0;i<sizeof(changed);++i){memcpy(changed,source,sizeof(changed));changed[i]^=1U;if(hhs_pass220_72_shell_lower(changed,sizeof(changed),&result)!=HHS_72_SHELL_INVALID_SOURCE)return 5;if(result.native_proof_admitted||result.vm81_admitted)return 6;}
+ if(hhs_pass220_72_shell_lower(NULL,sizeof(source)-1,&result)!=HHS_72_SHELL_INVALID_SOURCE)return 7;
+ if(hhs_pass220_72_shell_lower(source,sizeof(source)-2,&result)!=HHS_72_SHELL_INVALID_SOURCE)return 8;
+ if(hhs_pass220_72_shell_lower(source,sizeof(source)-1,NULL)!=HHS_72_SHELL_INVALID_SOURCE)return 9;
+ if(hhs_pass220_72_shell_lower(source,sizeof(source)-1,&result)!=HHS_72_SHELL_STRUCTURAL_ONLY)return 10;
+ for(size_t i=0;i<4;++i){const uint32_t offsets[4]={74U,89U,92U,112U};if(result.gate_offsets[i]!=offsets[i])return 11;}
+ puts("PASS exact source, 121 single-byte mutations, invalid inputs, four gates, fail closed");
  return 0;
 }
