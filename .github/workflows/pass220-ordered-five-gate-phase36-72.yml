@@ -11,6 +11,7 @@ on:
       - 'tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp'
       - 'hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp'
       - 'tests/pass220/test_pass220_rank1_hnan_v1.cpp'
+      - 'tests/pass220/test_pass220_five_gate_layout_digest_oracle_v1.py'
       - 'formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean'
   workflow_dispatch:
 permissions:
@@ -25,6 +26,8 @@ jobs:
         run: |
           printf '%s  %s\n' 'ceec282499ddaf48eba1d25b6313c407d9466d379e321b47f9a6b3f752c2a499' 'contracts/pass220/PASS_220_ORDERED_FIVE_GATE_PHASE36_72_SOURCE_V1.harmonicode' | sha256sum -c -
           python -m unittest discover -s tests/pass220 -p test_pass220_ordered_five_gate_phase36_72_source_v1.py -v
+      - name: Independent five-gate SHA256 layout oracle and tamper controls
+        run: python -m unittest discover -s tests/pass220 -p test_pass220_five_gate_layout_digest_oracle_v1.py -v
       - name: Build inherited Pass159 C ABI frontend
         run: |
           cmake -S native_projects/hhs_pass159_harmonicode_toolchain -B /tmp/pass159-five-gate -DCMAKE_BUILD_TYPE=Release
