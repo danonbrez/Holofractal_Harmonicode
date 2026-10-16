@@ -10,6 +10,11 @@ static HHS72RelationDecision evaluate(const HHS72ProofInput *in,uint32_t gate,
  ++*calls;
  return HHS72_RELATION_CANDIDATE;
 }
+static HHS72RelationDecision reject_second(const HHS72ProofInput *in,uint32_t gate,uint32_t left,uint32_t right,void *ctx){
+ (void)in;(void)left;(void)right;
+ ++*(uint32_t*)ctx;
+ return gate==1U?HHS72_RELATION_REJECTED:HHS72_RELATION_CANDIDATE;
+}
 int main(void){
  HHS72RelationDispatch r;uint32_t calls=0;uint8_t bad[sizeof(s)-1U];
  if(!hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,evaluate,&calls,&r))return 1;
@@ -19,6 +24,10 @@ int main(void){
  if(hhs_pass220_72_shell_dispatch(bad,sizeof(bad),evaluate,&calls,&r))return 3;
  if(r.authoritative_proof_mask||r.vm81_admitted)return 4;
  if(hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,NULL,&calls,&r))return 5;
- puts("PASS 4 directed callback evaluations; candidates never promote proof");
+ calls=0;
+ if(!hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,reject_second,&calls,&r))return 6;
+ if(calls!=2U||r.evaluated_mask!=3U||r.candidate_mask!=1U||
+    r.rejected_mask!=2U||r.authoritative_proof_mask||r.vm81_admitted)return 7;
+ puts("PASS ordered dispatch, early rejection, no authority promotion");
  return 0;
 }
