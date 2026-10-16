@@ -91,7 +91,7 @@ int main() {
     misordered[1].source_offset = hhs::lane5::kFiveGateOffsets[2];
     if (hhs::lane5::audit_gate_witness_bindings(passed, misordered)) return 21;
     auto unverified = bindings;
-    unverified[3].authenticated_by_native_provider = false;
+    unverified[3].native_provider_claimed_verification = false;
     if (hhs::lane5::audit_gate_witness_bindings(passed, unverified)) return 22;
     auto bad_predecessor = bindings;
     bad_predecessor[2].predecessor_gate = 0;
