@@ -115,6 +115,25 @@ int main() {
         &ingress,nullptr,&predecessor,&constructor,0U,1U,2U,&candidate)
         == HHS_EXACT_STATUS_INVALID_ARGUMENT);
     CHECK(std::memcmp(&candidate,&saved,sizeof(candidate))==0);
+    // Invalid outer UQCEL envelopes must fail before the Pass219/Lane5 route.
+    auto invalid_ingress = ingress;
+    invalid_ingress.struct_size = 0U;
+    CHECK(hhs_pass220_i086_lane5_conway81_cell_wall(
+        &invalid_ingress,&frame,&predecessor,&constructor,0U,1U,2U,&candidate)
+        == HHS_EXACT_STATUS_INVALID_ARGUMENT);
+    CHECK(std::memcmp(&candidate,&saved,sizeof(candidate))==0);
+    invalid_ingress = ingress;
+    invalid_ingress.uqcel_version ^= 1U;
+    CHECK(hhs_pass220_i086_lane5_conway81_cell_wall(
+        &invalid_ingress,&frame,&predecessor,&constructor,0U,1U,2U,&candidate)
+        == HHS_EXACT_STATUS_INVALID_ARGUMENT);
+    CHECK(std::memcmp(&candidate,&saved,sizeof(candidate))==0);
+    invalid_ingress = ingress;
+    invalid_ingress.profile = 0U;
+    CHECK(hhs_pass220_i086_lane5_conway81_cell_wall(
+        &invalid_ingress,&frame,&predecessor,&constructor,0U,1U,2U,&candidate)
+        == HHS_EXACT_STATUS_INVALID_ARGUMENT);
+    CHECK(std::memcmp(&candidate,&saved,sizeof(candidate))==0);
     seed[0] = 2U;
     next.fill(7U);
     CHECK(wall.evolve_conway81(seed, next) == HHS_EXACT_STATUS_INVALID_ARGUMENT);
