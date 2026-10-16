@@ -29,6 +29,7 @@ inline HnanResult evaluate_rank1_boundary(
     const Rank1Circuit& circuit, const PhaseState& prior,
     bool quantization_zero_declared
 ) noexcept {
+    (void)circuit;  // The circuit is preserved for later typed evaluation; no scalar inspection here.
     HnanResult result{};
     result.state = prior;
     // The caller's zero declaration selects a diagnostic candidate only.
