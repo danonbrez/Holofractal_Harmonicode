@@ -12,6 +12,8 @@ on:
       - 'hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp'
       - 'tests/pass220/test_pass220_rank1_hnan_v1.cpp'
       - 'tests/pass220/test_pass220_five_gate_layout_digest_oracle_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_foreign_proof_guard_v1.hpp'
+      - 'tests/pass220/test_pass220_foreign_proof_guard_v1.cpp'
       - 'formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean'
   workflow_dispatch:
 permissions:
@@ -47,6 +49,12 @@ jobs:
             -Ihhs_runtime/include tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp \
             -lcrypto -o /tmp/pass220-cell-wall
           /tmp/pass220-cell-wall
+      - name: Reject foreign Pass219 source-bound proof import
+        run: |
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include tests/pass220/test_pass220_foreign_proof_guard_v1.cpp \
+            -o /tmp/pass220-foreign-proof
+          /tmp/pass220-foreign-proof
       - name: Native rank-1 HNAN gain-one no-write tests
         run: |
           g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic \
