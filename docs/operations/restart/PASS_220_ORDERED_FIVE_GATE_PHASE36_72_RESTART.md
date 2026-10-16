@@ -132,3 +132,9 @@
 - These prove in Lean's definitional semantics that a declared typed-zero flag cannot confer commit authority and identity bypass preserves phase write count. They do not prove that the Boolean is an authenticated HNAN witness or that VM81 has closed any algebra gate.
 - No local Lean binary available in this execution environment, so compilation remains queued/unverified; consult CI before merging. Keep existing Pass159 and C++ validations frozen.
 - Next: inspect updated branch CI and resolve any Lean import/proof failures. Then bind checker-produced module and dependency identities to authenticated proof provider; avoid using caller flags as proof.
+
+## Lean ordered-gate layout proof extension (2026-10-15)
+- Inspected exact scoped run 38830264232 for prior checkpoint ce76fdb450641902278f7c5333464c7c139627e4: workflow and job 116747189226 both QUEUED, not failed or passed. No error logs exist yet. Do not fabricate an error-based repair.
+- Commit 9dca9305df740d732da7204fc7cca712431f8fe3 adds source-layout Lean theorems: fiveGateOffsetsDistinct, fiveGateOffsetStrictOrder, fiveGateDepthsExact and fiveGateLayoutLengths to formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean. Source offsets are [54,139,223,229,276], depth sequence [3,3,1,0,1]. This is a separate formal layout witness, not evaluation of the five ordered gate operands.
+- Changed files: formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean and this restart record. Lean build is configured in .github/workflows/pass220-ordered-five-gate-phase36-72.yml but checker result still pending.
+- Next action: wait for GitHub workflow execution result through a future inspection, repair only scoped failed stage if present, then authenticate theorem/dependency proof identity before integrating provider-signed source gate witnesses. No canonical VM81/Hash216 proof claimed.
