@@ -116,6 +116,38 @@ theorem ordered_five_gate_cursor :
 theorem rejects_sixth_gate : advanceGateCursor 5 276 = none := by
   decide
 
+
+/-- Source cursor is separate from gate truth: a failed gate cannot advance. -/
+def advanceVerifiedGate (cursor offset : Nat) (nativeGateClosed : Bool) : Option Nat :=
+  if nativeGateClosed then advanceGateCursor cursor offset else none
+
+theorem rejected_gate_does_not_advance (cursor offset : Nat) :
+    advanceVerifiedGate cursor offset false = none := by
+  rfl
+
+theorem wrong_offset_does_not_advance (cursor : Nat) (offset : Nat)
+    (h : advanceGateCursor cursor offset = none) :
+    advanceVerifiedGate cursor offset true = none := by
+  simp [advanceVerifiedGate, h]
+
+theorem all_five_require_closed_gate_flags :
+    (do
+      let a ← advanceVerifiedGate 0 54 true
+      let b ← advanceVerifiedGate a 139 true
+      let c ← advanceVerifiedGate b 223 true
+      let d ← advanceVerifiedGate c 229 true
+      advanceVerifiedGate d 276 true) = some 5 := by
+  decide
+
+theorem failed_third_gate_blocks_terminal :
+    (do
+      let a ← advanceVerifiedGate 0 54 true
+      let b ← advanceVerifiedGate a 139 true
+      let c ← advanceVerifiedGate b 223 false
+      let d ← advanceVerifiedGate c 229 true
+      advanceVerifiedGate d 276 true) = none := by
+  decide
+
 def newVM81Authority : Bool := false
 def newHashMintAuthority : Bool := false
 theorem local_formalization_fail_closed :
