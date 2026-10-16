@@ -9,6 +9,9 @@ on:
       - "hhs_runtime/include/hhs_pass220_72_shell_exact_residue_v1.h"
       - "hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c"
       - "tests/pass220/test_pass220_72_shell_exact_residue_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_typed_boundary_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_typed_boundary_v1.c"
+      - "tests/pass220/test_pass220_72_shell_typed_boundary_v1.c"
   push:
     paths:
       - "hhs_runtime/include/hhs_pass220_72_shell_source_bound_v1.h"
@@ -50,3 +53,20 @@ jobs:
             -lcrypto -o /tmp/hhs_pass220_exact_residue
       - name: Verify exact rational result and bounds
         run: /tmp/hhs_pass220_exact_residue
+
+  typed-boundary:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile source-bound native proof boundary
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_typed_boundary_v1.c \
+            tests/pass220/test_pass220_72_shell_typed_boundary_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_typed_boundary
+      - name: Verify unresolved and mutation fail-closed behavior
+        run: /tmp/hhs_pass220_typed_boundary
