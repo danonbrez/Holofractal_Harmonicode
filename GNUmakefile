@@ -139,6 +139,7 @@ $(ABI_LIB): $(PASS219_PQC_CELL_WALL_OBJ) $(PASS219_RNA_VM5184_ABI_OBJ) $(PASS219
 
 $(PASS220_I086_CONWAY_OBJ): $(PASS220_I086_CONWAY_SRC) \
 		hhs_runtime/include/hhs_pass220_i086_lane5_conway_cell_wall_v1.h \
+		hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h \
 		hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp | $(RUNTIME_BUILD_DIR)
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_I086_CONWAY_SRC) -o $@
