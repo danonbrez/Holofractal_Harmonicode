@@ -89,6 +89,8 @@ int main(void) {
     char mutated_source_hash[HHS159_HASH216_LENGTH + 1U];
     char graph_hash[HHS159_HASH216_LENGTH + 1U];
     char mutated_ast_hash[HHS159_HASH216_LENGTH + 1U];
+    char mutated_types_hash[HHS159_HASH216_LENGTH + 1U];
+    char types_hash[HHS159_HASH216_LENGTH + 1U];
     char mutated_graph_hash[HHS159_HASH216_LENGTH + 1U];
     char vmir_hash[HHS159_HASH216_LENGTH + 1U];
     int ok = 0;
@@ -136,7 +138,8 @@ int main(void) {
         !copy_hash216(ast, ast_hash))
         goto cleanup;
     if (hhs159_typecheck(context, ast, &types) != HHS159_STATUS_OK ||
-        hhs159_artifact_kind(types) != HHS159_ARTIFACT_TYPE_ENV)
+        hhs159_artifact_kind(types) != HHS159_ARTIFACT_TYPE_ENV ||
+        !copy_hash216(types, types_hash))
         goto cleanup;
     if (hhs159_build_constraint_graph(context, ast, types, &graph) != HHS159_STATUS_OK ||
         hhs159_artifact_kind(graph) != HHS159_ARTIFACT_CONSTRAINT_GRAPH ||
@@ -210,6 +213,7 @@ int main(void) {
         hhs159_build_ast(context, mutated_cst, &mutated_ast) != HHS159_STATUS_OK ||
         !copy_hash216(mutated_ast, mutated_ast_hash) ||
         hhs159_typecheck(context, mutated_ast, &mutated_types) != HHS159_STATUS_OK ||
+        !copy_hash216(mutated_types, mutated_types_hash) ||
         hhs159_build_constraint_graph(context, mutated_ast, mutated_types, &mutated_graph)
             != HHS159_STATUS_OK ||
         !copy_hash216(mutated_graph, mutated_graph_hash) ||
