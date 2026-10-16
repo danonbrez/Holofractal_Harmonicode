@@ -55,6 +55,40 @@ static int copy_hash216(const void *handle, char out[HHS159_HASH216_LENGTH + 1U]
     return 1;
 }
 
+static int verify_serialized_roundtrip(
+    HHS159Context *context, const void *artifact, uint32_t kind,
+    const char expected_hash[HHS159_HASH216_LENGTH + 1U]
+) {
+    HHS159MutableByteSpan blob;
+    uint8_t *buffer = NULL;
+    void *decoded = NULL;
+    char decoded_hash[HHS159_HASH216_LENGTH + 1U];
+    int ok = 0;
+    memset(&blob, 0, sizeof(blob));
+    if (hhs159_serialize(artifact, &blob) != HHS159_STATUS_OK ||
+        blob.size_written == 0U || blob.size_written > UINT64_C(4194304))
+        return 0;
+    buffer = (uint8_t *)malloc(blob.size_written);
+    if (buffer == NULL) return 0;
+    blob.data = buffer;
+    blob.capacity = blob.size_written;
+    if (hhs159_serialize(artifact, &blob) != HHS159_STATUS_OK) goto done;
+    {
+        HHS159ByteSpan serialized = {buffer, blob.size_written};
+        if (hhs159_deserialize(context, serialized, kind, &decoded) !=
+            HHS159_STATUS_OK || decoded == NULL ||
+            hhs159_artifact_kind(decoded) != kind ||
+            !copy_hash216(decoded, decoded_hash) ||
+            memcmp(expected_hash, decoded_hash, HHS159_HASH216_LENGTH) != 0)
+            goto done;
+    }
+    ok = 1;
+done:
+    if (decoded != NULL) hhs159_artifact_release(decoded);
+    free(buffer);
+    return ok;
+}
+
 int main(void) {
     static const uint8_t source_name[] = "pass220-ordered-five-gate-phase36-72";
     static const uint8_t encoding[] = "UTF-8";
@@ -151,6 +185,11 @@ int main(void) {
     if (hhs159_lower_vmir(context, hir, &vmir) != HHS159_STATUS_OK ||
         hhs159_artifact_kind(vmir) != HHS159_ARTIFACT_VMIR ||
         !copy_hash216(vmir, vmir_hash))
+        goto cleanup;
+
+    if (!verify_serialized_roundtrip(context, ast, HHS159_ARTIFACT_AST, ast_hash) ||
+        !verify_serialized_roundtrip(context, graph,
+                                     HHS159_ARTIFACT_CONSTRAINT_GRAPH, graph_hash))
         goto cleanup;
 
     /* Hashes are identities, not proof authority.  They must be populated and
