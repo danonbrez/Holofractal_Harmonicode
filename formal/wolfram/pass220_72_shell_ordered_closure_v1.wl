@@ -21,6 +21,10 @@ nativeOuter = HoldComplete[HHSEqual[
   HHSDivide[HHSSquare[HHSOrderedChain[gate1,gate2,gate3,gate4]],
   HHSDifference[cSquared,aSquared]],
   HHSDivide[aFourth,bSquared]]];
+sourceHash = IntegerString[Hash[source, "SHA256"], 16, 64];
+gateOffsets = (First[#] - 1) & /@ StringPosition[source, "=="];
+expectedOffsets = {74, 89, 92, 112};
+sourceMutation = StringReplace[source, "b==1/b^3" -> "b==1/b^2"];
 canonicalProjection = FullSimplify[
   eSquared/(3-1) == 1/2
 ];
@@ -30,12 +34,18 @@ checks = <|
  "ExponentExact" -> TrueQ[Denominator[exponent] == 10000000000],
  "OrderedOperandCount" -> TrueQ[Length[orderedOperands] == 4],
  "OuterProjectionUnit" -> TrueQ[canonicalProjection === (eSquared == 1)],
+ "SourceByteCount" -> TrueQ[Length[ToCharacterCode[source, "UTF-8"]] == 121],
+ "SourceSHA256Pinned" -> TrueQ[sourceHash == "cd6309c3a6ad1d71a08258322b95df127e6aab7428904a5ff903449864859bb2"],
+ "SourceMutationRejected" -> TrueQ[IntegerString[Hash[sourceMutation, "SHA256"], 16, 64] != sourceHash],
+ "GateOffsetsExact" -> TrueQ[gateOffsets === expectedOffsets],
+ "FourSourceGates" -> TrueQ[Length[gateOffsets] == 4],
  "NativeGatesEvaluated" -> False,
  "VM81Admitted" -> False
 |>;
 report = <|
  "source" -> source,
- "sourceSHA256" -> IntegerString[Hash[source, "SHA256"], 16, 64],
+ "sourceSHA256" -> sourceHash,
+ "gateOffsetsZeroBased" -> gateOffsets,
  "rootMetadataSeed" -> rootSeed,
  "invariantN" -> invariantN,
  "residueExact" -> ToString[residue, InputForm],
