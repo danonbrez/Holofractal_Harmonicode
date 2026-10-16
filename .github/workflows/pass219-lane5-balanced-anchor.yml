@@ -1,0 +1,31 @@
+name: Pass219 Lane5 balanced anchor proof
+on:
+  pull_request:
+    paths:
+      - 'formal/lean/HHS/Pass219/BalancedAnchor.lean'
+      - 'formal/lean/HHS.lean'
+      - 'formal/wolfram/pass219_balanced_anchor_projection_v1.wl'
+      - 'hhs_runtime/include/hhs_pass219_lane5_balanced_anchor_v1.hpp'
+      - 'tests/pass219/test_pass219_lane5_balanced_anchor_v1.cpp'
+      - '.github/workflows/pass219-lane5-balanced-anchor.yml'
+  workflow_dispatch:
+jobs:
+  cpp-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and test fail-closed gate
+        run: |
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_balanced_anchor_v1.cpp \
+            -o /tmp/hhs-pass219-balanced-anchor
+          /tmp/hhs-pass219-balanced-anchor
+  lean-proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          build: true
