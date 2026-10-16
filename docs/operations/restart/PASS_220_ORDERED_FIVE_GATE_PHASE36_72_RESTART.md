@@ -225,3 +225,10 @@
 - This improves typed front-end proof-dependency coverage; it is not a full per-gate operand subtree extraction and creates no native algebraic gate witness, VM81 admission or canonical Hash72/Hash216 mint.
 - Branch agent/pass220-ordered-five-gate-source-20261014 -> main PR #806; original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a. Modified test and this restart only. New CI pending.
 - Next action: inspect scoped CI for these commits and repair actual failures; expose ordered typed AST subtrees through native Pass159 API with source offsets and operand provenance before attempting gate evaluation.
+
+## 2026-10-16 Pass159 AST/constraint-graph serializable identity roundtrip
+- At inspection current checkpoint 6aa074e179c86a14d089a794f2da2d92f61d9456 scoped CI run 38977160868 remained QUEUED. No fresh result claimed.
+- Examined native_projects/hhs_pass159_harmonicode_toolchain/include/hhs_pass159_api.h and hhs_pass159_ast.h; AST is opaque to consumers and ABI offers hhs159_serialize/hhs159_deserialize, but no public typed per-gate subtree getter. Native core source is gzip-archived in src/hhs159_core.c.gz (verified in CMakeLists.txt).
+- Added test helper for serialized AST and constraint graph identity roundtrips in tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c (923c19115ecfb47498b979b5c7acb022736c2a00), intended to preserve full native artifact identities across serialization rather than invent an AST projection. This is a **new unverified experiment** pending targeted CI. If buffer length query semantics of hhs159_serialize differ, adjust to match native ABI implementation upon CI failure; do not claim green.
+- Changed native Pass159 frontend test and this restart file, branch agent/pass220-ordered-five-gate-source-20261014 -> main, original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a. No native gate equation witness or canonical VM81/Hash216 authority minted.
+- Next: check scoped CI and repair serialized-buffer-query semantics if necessary; expose source-locked ordered operands from actual Pass159 AST rather than treating serialized whole-expression roots as individual gates.
