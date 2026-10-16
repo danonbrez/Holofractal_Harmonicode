@@ -63,7 +63,7 @@ def lower_exact_source(source: str) -> Lowering:
         raise SourceBindingError("ordered equality gate offsets mismatch")
     # Offset 0 is the opening parenthesis, enclosing exactly the inner chain.
     close = source.index(")^2/(c^2-a^2)")
-    if close != 102 or source[close + 1:] != OUTER_GRAMMAR[0] + "==" + OUTER_GRAMMAR[1]:
+    if close != 99 or source[close + 1:] != OUTER_GRAMMAR[0] + "==" + OUTER_GRAMMAR[1]:
         raise SourceBindingError("outer typed square/division grammar mismatch")
     inner = source[1:close]
     operands = tuple(inner.split("=="))
