@@ -56,3 +56,23 @@ jobs:
           sh /tmp/elan-init.sh -y --default-toolchain none
           export PATH="$HOME/.elan/bin:$PATH"
           lake build HHS.Pass220.FiveGateHNANBoundary
+      - name: Capture checked Lean proof dependency identities
+        run: |
+          mkdir -p /tmp/pass220-proof-evidence
+          sha256sum \
+            contracts/pass220/PASS_220_ORDERED_FIVE_GATE_PHASE36_72_SOURCE_V1.harmonicode \
+            formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean \
+            formal/lean/HHS/Pass220/HNANPhase5184.lean \
+            formal/lean/HHS/Pass219/QGUHNANTransport.lean \
+            formal/lean/HHS/Alignment/ReciprocalTensor.lean \
+            lean-toolchain lakefile.lean \
+            > /tmp/pass220-proof-evidence/source-dependencies.sha256
+          git rev-parse HEAD > /tmp/pass220-proof-evidence/checked-commit.txt
+          printf '%s\n' 'candidate-only: does not authorize VM81 or Hash72/Hash216 mint' \
+            > /tmp/pass220-proof-evidence/authority.txt
+      - name: Publish noncanonical proof dependency evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-five-gate-lean-dependency-evidence
+          path: /tmp/pass220-proof-evidence/
+          if-no-files-found: error
