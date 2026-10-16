@@ -89,6 +89,33 @@ theorem fiveGateOffsetsExact :
     fiveGateOffsets = [54, 139, 223, 229, 276] := by
   rfl
 
+
+/-- This cursor checks source-address sequence only, not algebraic closure.
+    A gate at a later source address cannot be consumed early. -/
+def nextGateOffset (cursor : Nat) : Option Nat :=
+  fiveGateOffsets[cursor]?
+
+def advanceGateCursor (cursor offset : Nat) : Option Nat :=
+  if nextGateOffset cursor == some offset then some (cursor + 1) else none
+
+theorem rejects_second_gate_first : advanceGateCursor 0 139 = none := by
+  decide
+
+theorem rejects_skipped_third_gate : advanceGateCursor 1 223 = none := by
+  decide
+
+theorem ordered_five_gate_cursor :
+    (do
+      let a ← advanceGateCursor 0 54
+      let b ← advanceGateCursor a 139
+      let c ← advanceGateCursor b 223
+      let d ← advanceGateCursor c 229
+      advanceGateCursor d 276) = some 5 := by
+  decide
+
+theorem rejects_sixth_gate : advanceGateCursor 5 276 = none := by
+  decide
+
 def newVM81Authority : Bool := false
 def newHashMintAuthority : Bool := false
 theorem local_formalization_fail_closed :
