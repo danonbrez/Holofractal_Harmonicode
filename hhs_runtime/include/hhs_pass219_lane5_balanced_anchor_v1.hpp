@@ -60,6 +60,43 @@ constexpr bool balanced_anchor_verified(const BalancedAnchorWitnessV1& w) noexce
           w.displacement[1] + w.displacement[3] == 5);
 }
 
+
+// Ordered, address-bound proof input for inherited Hash216 CHANGE material.
+// This is NOT a hash, receipt, signature, or canonical mutation operation.
+struct BalancedAnchorProofCellV1 {
+  std::uint8_t row_one_based;
+  std::uint8_t column_one_based;
+  std::int64_t pricing_operand;
+  std::int64_t ladder_operand;
+  std::int64_t numerator;
+  std::int64_t denominator;
+};
+constexpr std::array<BalancedAnchorProofCellV1, 4>
+balanced_anchor_proof_cells() noexcept {
+  std::array<BalancedAnchorProofCellV1, 4> result{};
+  constexpr auto witness = balanced_anchor_witness();
+  for (std::uint8_t row = 0; row < 4; ++row) {
+    result[row] = {static_cast<std::uint8_t>(row + 1), 4,
+                   witness.pricing[row], witness.ladder[row],
+                   witness.balanced_twice[row], 2};
+  }
+  return result;
+}
+constexpr bool balanced_anchor_proof_cells_verified(
+    const std::array<BalancedAnchorProofCellV1, 4>& cells) noexcept {
+  if (!balanced_anchor_verified(balanced_anchor_witness())) return false;
+  for (std::uint8_t row = 0; row < 4; ++row) {
+    const auto& c = cells[row];
+    if (c.row_one_based != row + 1 || c.column_one_based != 4 ||
+        c.denominator != 2 || c.pricing_operand != pricing_anchor[row] ||
+        c.ladder_operand != ladder_anchor[row] ||
+        c.numerator != c.pricing_operand + c.ladder_operand) return false;
+  }
+  return true;
+}
+static_assert(balanced_anchor_proof_cells_verified(balanced_anchor_proof_cells()),
+              "Ordered closure cell address and operand witness must be retained");
+
 static_assert(balanced_anchor_verified(balanced_anchor_witness()),
               "Pass219 balanced anchor witness must close exactly");
 
