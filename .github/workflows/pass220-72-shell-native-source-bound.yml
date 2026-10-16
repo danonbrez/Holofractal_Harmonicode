@@ -154,6 +154,8 @@ jobs:
             hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c \
             hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c \
             hhs_runtime/c/hhs_pass220_72_shell_proof_input_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c \
             tests/pass220/test_pass220_72_shell_proof_input_v1.c \
             -lcrypto -o /tmp/hhs_pass220_proof_input
       - name: Verify 121 mutation and admission denial cases
@@ -173,6 +175,8 @@ jobs:
             hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c \
             hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c \
             hhs_runtime/c/hhs_pass220_72_shell_proof_input_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c \
             hhs_runtime/c/hhs_pass220_72_shell_relation_dispatch_v1.c \
             tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c \
             -lcrypto -o /tmp/hhs_pass220_relation_dispatch
