@@ -6,7 +6,7 @@ int main(void){
  HHS72ProofInput p;
  uint8_t bad[sizeof(s)-1U];
  if(!hhs_pass220_72_shell_prepare_proof_input(s,sizeof(s)-1U,&p))return 1;
- if(!p.provenance_authenticated||p.required_gate_mask!=15U||
+ if(!p.provenance_authenticated||!p.exact_residue_verified||!p.canonical_projection_verified||p.required_gate_mask!=15U||
      p.proven_gate_mask||p.evaluator_bound||p.vm81_admitted)return 2;
  for(size_t i=0;i<4U;++i){
   if(p.source_gate_offsets[i]!=(uint32_t)(i==0U?74U:i==1U?89U:i==2U?92U:112U))return 3;
@@ -16,7 +16,7 @@ int main(void){
  for(size_t i=0;i<sizeof(bad);++i){
   memcpy(bad,s,sizeof(bad));bad[i]^=1U;
   if(hhs_pass220_72_shell_prepare_proof_input(bad,sizeof(bad),&p))return 5;
-  if(p.provenance_authenticated||p.proven_gate_mask||p.evaluator_bound||p.vm81_admitted)return 6;
+  if(p.provenance_authenticated||p.exact_residue_verified||p.canonical_projection_verified||p.proven_gate_mask||p.evaluator_bound||p.vm81_admitted)return 6;
  }
  puts("PASS source-bound native evaluator-input construction and 121 mutations");
  return 0;
