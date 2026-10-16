@@ -44,7 +44,7 @@ def compose_authenticated_orbit(
         raise ValueError("negative orbit clock")
     if frame >= (1 << 64) or tick >= (1 << 64) or cycle >= (1 << 64):
         raise ValueError("orbit clock outside native uint64")
-    if len(segments) > (1 << 64) - tick:
+    if len(segments) - 1 > ((1 << 64) - 1) - tick:
         raise ValueError("orbit tick range exceeds native uint64")
     if not segments or any(not segment for segment in segments):
         raise ValueError("orbit must contain nonempty native path segments")
