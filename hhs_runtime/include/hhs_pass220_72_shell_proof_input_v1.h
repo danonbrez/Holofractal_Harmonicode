@@ -7,6 +7,10 @@ extern "C" {
 typedef struct {
  uint8_t source_sha256[32];
  uint32_t source_gate_offsets[4];
+ uint8_t source_bytes[HHS_72_SHELL_SOURCE_BYTES];
+ HHS72ShellSpan operand_spans[4];
+ HHS72ShellSpan outer_left_span;
+ HHS72ShellSpan outer_right_span;
  uint32_t ordered_left_node[4];
  uint32_t ordered_right_node[4];
  uint32_t required_gate_mask;
