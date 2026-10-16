@@ -144,3 +144,10 @@
 - Added sequential source-position cursor to formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean in bba8c93c6729c9a8a27d26ffa2e8c82515c2e80d. New theorems reject gate 2 first, skipping gate 3, and replay after five gates; ordered sequence 54→139→223→229→276 reaches cursor 5. This is *source-order control*, not algebraic truth or a VM81 receipt.
 - Restart: branch agent/pass220-ordered-five-gate-source-20261014, target main, original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a; files changed this cycle: formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean, this restart record. GitHub connector used, no local Lean executable; targeted Lake validation queued and still necessary. Environment must not be assumed CI-green.
 - Next: inspect this commit's scoped CI; fix only compiler errors if any; bind real source-root authenticated typed witnesses and ordered predecessor to VM81. No Hash72/Hash216 canonical mint.
+
+## Sequential gate failure stops cursor (2026-10-15)
+- Previous checkpoint dcae8af526252f2c8a6c060e71cbf267b1ed5b31 has scoped workflow 38831411990 queued at inspection, no Lean checker result.
+- Added advanceVerifiedGate and Lean theorems rejected_gate_does_not_advance, wrong_offset_does_not_advance, all_five_require_closed_gate_flags, and failed_third_gate_blocks_terminal in 86b6312558f10738936ff6e7bfeb9c7613718608.
+- The nativeGateClosed Bool is currently caller declaration only; it is not a proof-provider witness. This formalizes rejection propagation within the candidate cursor, not canonical VM81 proof. New VM81/Hash72/Hash216 authority remains false.
+- Modified: formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean and this restart file. Base cab00e2eea3f9f064fa7b817995032cb3ef4b19a; PR #806 branch agent/pass220-ordered-five-gate-source-20261014 to main. No local Lean command executed; CI pending.
+- Next: collect targeted Lean CI result and repair any check failure, then connect an actual authenticated gate-evaluation provider rather than a declaration flag.
