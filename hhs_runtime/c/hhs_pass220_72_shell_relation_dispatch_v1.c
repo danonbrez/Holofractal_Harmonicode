@@ -16,7 +16,7 @@ int hhs_pass220_72_shell_dispatch(
    out->evaluated_mask|=(1U<<i);
    if(d==HHS72_RELATION_CANDIDATE)out->candidate_mask|=(1U<<i);
    else if(d==HHS72_RELATION_REJECTED) {out->rejected_mask|=(1U<<i);break;}
-   else if(d!=HHS72_RELATION_UNRESOLVED)return 0;
+   else if(d!=HHS72_RELATION_UNRESOLVED){memset(out,0,sizeof(*out));return 0;}
    else break; /* A later ordered gate cannot execute past an unresolved predecessor. */
  }
  /* Candidate answers from a callback are not native authority witnesses. */
