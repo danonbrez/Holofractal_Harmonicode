@@ -13,5 +13,16 @@ int main() {
   corrupted = valid;
   corrupted.gate_column = 3;
   assert(!balanced_anchor_verified(corrupted));
+  const auto cells = balanced_anchor_proof_cells();
+  assert(balanced_anchor_proof_cells_verified(cells));
+  auto altered_cells = cells;
+  altered_cells[0].column_one_based = 3;
+  assert(!balanced_anchor_proof_cells_verified(altered_cells));
+  altered_cells = cells;
+  altered_cells[1].pricing_operand = 7;
+  assert(!balanced_anchor_proof_cells_verified(altered_cells));
+  altered_cells = cells;
+  altered_cells[3].numerator = 37;
+  assert(!balanced_anchor_proof_cells_verified(altered_cells));
   return 0;
 }
