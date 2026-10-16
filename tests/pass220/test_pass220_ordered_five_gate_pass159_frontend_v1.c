@@ -217,6 +217,7 @@ int main(void) {
         hhs159_build_constraint_graph(context, mutated_ast, mutated_types, &mutated_graph)
             != HHS159_STATUS_OK ||
         !copy_hash216(mutated_graph, mutated_graph_hash) ||
+        types_hash[0] == '\0' || mutated_types_hash[0] == '\0' ||
         memcmp(ast_hash, mutated_ast_hash, HHS159_HASH216_LENGTH) == 0 ||
         memcmp(graph_hash, mutated_graph_hash, HHS159_HASH216_LENGTH) == 0)
         goto cleanup;
