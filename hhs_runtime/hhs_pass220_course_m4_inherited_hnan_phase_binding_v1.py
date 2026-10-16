@@ -69,17 +69,20 @@ def bind_course_m4_inherited_native_phase_gate(library:str)->dict:
         decision.struct_size=C.sizeof(Resolution)
         if resolve(C.byref(claim),C.byref(decision))!=0:
             raise ProofCorpusError("COURSE_M4_NATIVE_ORDERED_RULE_REJECTED")
-        if (decision.struct_size!=C.sizeof(Resolution) or decision.version!=VERSION
-            or decision.decision!=1 or decision.reason!=0
-            or (decision.rule_id,decision.lhs_node,decision.rhs_node,decision.relation)
-               !=(rule_id,lhs,rhs)
-            or decision.exact_rule_match!=1 or decision.source_order_preserved!=1
-            or decision.typed_identity_preserved!=1
-            or any(getattr(decision,key) for key in (
-                "scalar_substitution_authority","delta_cancellation_authority",
-                "floating_infinity_authority","commutation_authority",
-                "emptyset_cancellation_authority","equality_reversal_authority"))):
-            raise ProofCorpusError("COURSE_M4_NATIVE_ORDERED_RULE_DRIFT: "+str({key:getattr(decision,key) for key in ("struct_size","version","decision","reason","rule_id","lhs_node","rhs_node","relation","exact_rule_match","source_order_preserved","typed_identity_preserved","scalar_substitution_authority","delta_cancellation_authority","floating_infinity_authority","commutation_authority","emptyset_cancellation_authority","equality_reversal_authority")}))
+        expected={
+            "struct_size":C.sizeof(Resolution),"version":VERSION,
+            "decision":1,"reason":0,"rule_id":rule_id,
+            "lhs_node":lhs,"rhs_node":rhs,"relation":9,
+            "exact_rule_match":1,"source_order_preserved":1,
+            "typed_identity_preserved":1,
+            "scalar_substitution_authority":0,"delta_cancellation_authority":0,
+            "floating_infinity_authority":0,"commutation_authority":0,
+            "emptyset_cancellation_authority":0,"equality_reversal_authority":0,
+        }
+        drift={key:{"expected":value,"actual":getattr(decision,key)}
+               for key,value in expected.items() if getattr(decision,key)!=value}
+        if drift:
+            raise ProofCorpusError("COURSE_M4_NATIVE_ORDERED_RULE_DRIFT: "+str(drift))
     result={
         "source":source,"source_sha256":inventory["source_sha256"],
         "module_index":MODULE,"module_sha256":module["byte_sha256"],
