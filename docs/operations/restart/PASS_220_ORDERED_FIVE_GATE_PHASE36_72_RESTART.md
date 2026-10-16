@@ -182,3 +182,10 @@
 - IMPORTANT: cryptographic *integrity of a reproducible metadata chain* is not proof authenticity. Anybody can construct such a valid metadata chain. Independently verified native algebraic gate witnesses, trusted signed-environment verifier, and VM81 admission are still absent. No mint.
 - This cycle changed header, C++ test, this restart record; branch agent/pass220-ordered-five-gate-source-20261014, target main, original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a.
 - Validation of this extension pending scoped GitHub CI. Next inspect it, repair only new failed test if necessary; bind authorized native proof-provider theorem/receipt identities (not caller Booleans) and signed admission. Do not invent source-specific five-gate closure.
+
+## 2026-10-16 independently checked ordered-lineage golden vector
+- At inspection, prior checkpoint 3fa542d53fbdd39f51a66dc34531d424fa20a120 run 38885759435 and implementation commit fedb142f9874c9d9a2a4d944d1e980e8bf2eef38 run 38885727892 remained QUEUED; do not claim green.
+- Generated an independent Python hashlib.sha256 reference over domain b"HHS-P220-GATE-LAYOUT-DECL-V1", canonical 32-byte source SHA-256, initial 32 zero bytes (test-only Genesis input) and successive four-byte [gate_index,offset_be_hi,offset_be_lo,depth] for five ordered gates.
+- The resulting terminal metadata digest is e74d56be94f6c1b5a1d19126c4d5acb3548d0ab2c41f9d5ee287f9a1d93bbe08. Embedded into tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp at 54c816976419d46cdda8a397338ebcd60a58d36f as independent golden terminal assertion. This prevents implementation and self-referential test code from agreeing on the same accidentally changed encoding.
+- Scope: C++ test and this restart only. No semantic algebra gate proof or authoritative Genesis/VM81/Hash216 receipt is established by this **zero-initialized test vector**.
+- Next: dependency-scoped CI, repair only actual failures; then provider-signed source-specific algebraic evidence and admitted VM81 replay. Branch agent/pass220-ordered-five-gate-source-20261014 -> main, original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a.
