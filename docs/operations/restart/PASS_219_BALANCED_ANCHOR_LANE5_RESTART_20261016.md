@@ -52,3 +52,10 @@
 - PR #819 first workflow run `38926908452`: `cpp-gate` PASSED; `lean-proof` FAILED specifically because new BalancedAnchor.lean imported `Mathlib` with no `Mathlib.olean` in the active module search path.
 - Corrected the new file to import inherited `HHS.Mathlib.Native`; replaced the unneeded Mathlib tactics with closed decidable exact-rational arithmetic checks. Repair commit: `720b0f0ad682bccfe6756bf6318b03911fcfeb8f`.
 - No proof, Wolfram or Hash216 validation pass claimed for the repair until the new job completes. Native Hash216 hydration binding remains outstanding.
+
+## Next cycle — ordered-address witness extension
+- Repair CI run `38977132380` was queued when checked; do not infer passing or failing Lean checks.
+- Added four fourth-column one-based row/address proof cells to the existing C++ preflight, each retaining ordered pricing and ladder operands, exact midpoint numerator, and denominator 2.
+- Added negative cases for wrong output-column address, altered pricing operand, and altered numerator. These are pure, non-authoritative witnesses, not Hash216 hashes or canonical mutation.
+- Commits: `d45d4c61a9def62534dddb0a88f1fcfe375f9201` and `3f70cf737aa86c518857bc608992b9bc2aa01392`.
+- Required next step: consume these ordered proof cells in inherited signed Pass219 proof hydrator and verify replay under canonical parent/child Hash216 identities. No hydration admission claim yet.
