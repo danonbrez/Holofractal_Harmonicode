@@ -88,7 +88,7 @@ struct GateWitnessBinding final {
     std::size_t source_offset{};
     int source_depth{};
     std::uint32_t predecessor_gate{};
-    bool authenticated_by_native_provider{false};
+    bool native_provider_claimed_verification{false};
 };
 
 // Ordered witness addresses are deliberately not interpreted as algebraic truth.
@@ -103,7 +103,7 @@ inline bool audit_gate_witness_bindings(
         if (bindings[i].source_offset != kFiveGateOffsets[i] ||
             bindings[i].source_depth != kFiveGateDepths[i] ||
             bindings[i].predecessor_gate != static_cast<std::uint32_t>(i) ||
-            !bindings[i].authenticated_by_native_provider)
+            !bindings[i].native_provider_claimed_verification)
             return false;
     }
     return true;
