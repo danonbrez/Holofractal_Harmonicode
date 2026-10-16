@@ -99,5 +99,27 @@ int main() {
     if (hhs::lane5::audit_gate_witness_bindings(changed, bindings)) return 24;
     if (hhs::lane5::audit_five_gate_proof_frontier(passed, frontier)
             .vm81_admission_authorized) return 25;
+    const hhs::lane5::GateDigest genesis{};
+    std::array<hhs::lane5::GateLineageDeclaration, 5> lineage{};
+    auto prior = genesis;
+    for (std::size_t i = 0; i < lineage.size(); ++i) {
+        auto digest = hhs::lane5::gate_layout_digest(prior, i);
+        lineage[i] = {prior, digest};
+        prior = digest;
+    }
+    if (!hhs::lane5::audit_gate_lineage_declarations(passed, lineage, genesis)) return 26;
+    auto broken_chain = lineage;
+    broken_chain[3].predecessor[0] ^= 1U;
+    if (hhs::lane5::audit_gate_lineage_declarations(passed, broken_chain, genesis)) return 27;
+    auto corrupted_gate = lineage;
+    corrupted_gate[2].claimed_digest[31] ^= 1U;
+    if (hhs::lane5::audit_gate_lineage_declarations(passed, corrupted_gate, genesis)) return 28;
+    auto forged_genesis = genesis;
+    forged_genesis[0] = 1U;
+    if (hhs::lane5::audit_gate_lineage_declarations(passed, lineage, forged_genesis)) return 29;
+    if (hhs::lane5::audit_gate_lineage_declarations(changed, lineage, genesis)) return 30;
+    // A perfectly coherent SHA-256 declaration chain cannot promote authority.
+    if (!passed.candidate_only || passed.vm81_admission_authorized ||
+        passed.canonical_hash_mint_authorized) return 31;
     return 0;
 }
