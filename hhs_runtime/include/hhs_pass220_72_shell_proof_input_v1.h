@@ -12,6 +12,8 @@ typedef struct {
  uint32_t required_gate_mask;
  uint32_t proven_gate_mask;
  uint8_t provenance_authenticated;
+ uint8_t exact_residue_verified;
+ uint8_t canonical_projection_verified;
  uint8_t evaluator_bound;
  uint8_t vm81_admitted;
 } HHS72ProofInput;
