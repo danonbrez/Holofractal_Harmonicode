@@ -47,3 +47,8 @@
 - No local Lean/Wolfram toolchains.
 - GitHub raw fetch unavailable from execution container.
 - Hydration integration remains incomplete until inherited admission replay and signing checks pass.
+
+## 2026-10-16 CI repair-forward
+- PR #819 first workflow run `38926908452`: `cpp-gate` PASSED; `lean-proof` FAILED specifically because new BalancedAnchor.lean imported `Mathlib` with no `Mathlib.olean` in the active module search path.
+- Corrected the new file to import inherited `HHS.Mathlib.Native`; replaced the unneeded Mathlib tactics with closed decidable exact-rational arithmetic checks. Repair commit: `720b0f0ad682bccfe6756bf6318b03911fcfeb8f`.
+- No proof, Wolfram or Hash216 validation pass claimed for the repair until the new job completes. Native Hash216 hydration binding remains outstanding.
