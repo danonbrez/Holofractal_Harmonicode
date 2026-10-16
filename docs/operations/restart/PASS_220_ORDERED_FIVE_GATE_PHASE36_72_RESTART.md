@@ -118,3 +118,10 @@
 - Tests extended at 37459478fbc44f45ad9ff906fb0da1e73d8d0e70 to reject false representation of authenticated evidence.
 - Bypass behavior remains gain 1 and no curvature, phase or write-count mutation, but cannot be considered canonical execution.
 - Next: verify new scoped CI; implement actual typed-zero proof-verifier API bound to native VM81/environment source root and ordered predecessor, rather than a caller Boolean. All real gate semantics/receipts pending.
+
+## Native Lean formal corpus handoff (2026-10-15)
+- Formal dependency sources inspected on main: formal/lean/HHS/Pass220/HNANPhase5184.lean, formal/lean/HHS/Pass219/QGUHNANTransport.lean, formal/lean/HHS/Alignment/ReciprocalTensor.lean; native lean-toolchain is leanprover/lean4:v4.34.0.
+- Added formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean in 2e1b7260e2e5825fdaed93e9dee5e5cbd0357258. Imports existing HNAN and ordered-transport theorem symbols, states exact five source offsets, typed rank1 roles, identity HNAN phase/no-write and fail-closed local authority.
+- Updated scoped workflow in 8889e776b9f3ab51508ca455ededc16c6284e15a to run lake build HHS.Pass220.FiveGateHNANBoundary after installing elan and honoring repository lean-toolchain.
+- Formal theorem scope is **identity bypass + typed order + inherited transport only**; no theorem asserts five-gate truth, signed VM81 admission or canonical receipt mint.
+- Validation: Lean compilation CI not yet observed. Restart at 8889e776b9f3ab51508ca455ededc16c6284e15a; check workflow, repair scoped Lean compilation errors, then bind theorem/dependency identities to C++ native cell-wall with authenticated provenance.
