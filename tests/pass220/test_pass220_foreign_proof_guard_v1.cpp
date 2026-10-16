@@ -1,5 +1,6 @@
 #include "hhs_pass220_foreign_proof_guard_v1.hpp"
 #include <algorithm>
+#include <iterator>
 
 int main() {
     HHSExactPass219Pass169AuthorityProofV1 foreign{};
