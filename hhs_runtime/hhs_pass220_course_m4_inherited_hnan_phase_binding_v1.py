@@ -79,7 +79,7 @@ def bind_course_m4_inherited_native_phase_gate(library:str)->dict:
                 "scalar_substitution_authority","delta_cancellation_authority",
                 "floating_infinity_authority","commutation_authority",
                 "emptyset_cancellation_authority","equality_reversal_authority"))):
-            raise ProofCorpusError("COURSE_M4_NATIVE_ORDERED_RULE_DRIFT")
+            raise ProofCorpusError("COURSE_M4_NATIVE_ORDERED_RULE_DRIFT: "+str({key:getattr(decision,key) for key in ("struct_size","version","decision","reason","rule_id","lhs_node","rhs_node","relation","exact_rule_match","source_order_preserved","typed_identity_preserved","scalar_substitution_authority","delta_cancellation_authority","floating_infinity_authority","commutation_authority","emptyset_cancellation_authority","equality_reversal_authority")}))
     result={
         "source":source,"source_sha256":inventory["source_sha256"],
         "module_index":MODULE,"module_sha256":module["byte_sha256"],
