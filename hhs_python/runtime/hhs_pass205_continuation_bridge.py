@@ -112,7 +112,9 @@ def build_native_library(*, force: bool = False) -> pathlib.Path:
         command.extend(["-fPIC", "-dynamiclib"])
     else:
         command.extend(["-fPIC", "-shared"])
-    command.extend([str(source), str(hash_source), "-o", str(output)])
+    # The Hash216 implementation uses OpenSSL EVP_Digest. Link libcrypto
+    # explicitly so ctypes/dlopen does not depend on ambient global symbols.
+    command.extend([str(source), str(hash_source), "-o", str(output), "-lcrypto"])
     completed = subprocess.run(
         command,
         cwd=str(root),
