@@ -80,5 +80,24 @@ int main() {
     unsigned_env.signed_environment_verified = false;
     if (hhs::lane5::audit_five_gate_proof_frontier(passed, unsigned_env)
             .declarations_complete) return 15;
+    std::array<hhs::lane5::GateWitnessBinding, 5> bindings{};
+    for (std::size_t i = 0; i < bindings.size(); ++i) {
+        bindings[i] = {hhs::lane5::kFiveGateOffsets[i],
+                       hhs::lane5::kFiveGateDepths[i],
+                       static_cast<std::uint32_t>(i), true};
+    }
+    if (!hhs::lane5::audit_gate_witness_bindings(passed, bindings)) return 20;
+    auto misordered = bindings;
+    misordered[1].source_offset = hhs::lane5::kFiveGateOffsets[2];
+    if (hhs::lane5::audit_gate_witness_bindings(passed, misordered)) return 21;
+    auto unverified = bindings;
+    unverified[3].authenticated_by_native_provider = false;
+    if (hhs::lane5::audit_gate_witness_bindings(passed, unverified)) return 22;
+    auto bad_predecessor = bindings;
+    bad_predecessor[2].predecessor_gate = 0;
+    if (hhs::lane5::audit_gate_witness_bindings(passed, bad_predecessor)) return 23;
+    if (hhs::lane5::audit_gate_witness_bindings(changed, bindings)) return 24;
+    if (hhs::lane5::audit_five_gate_proof_frontier(passed, frontier)
+            .vm81_admission_authorized) return 25;
     return 0;
 }
