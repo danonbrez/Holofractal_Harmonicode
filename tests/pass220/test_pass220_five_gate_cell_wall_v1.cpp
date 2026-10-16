@@ -107,6 +107,14 @@ int main() {
         lineage[i] = {prior, digest};
         prior = digest;
     }
+    // Independent Python hashlib SHA-256 reference: fixed domain/source/Genesis/address bytes.
+    constexpr std::array<unsigned char, 32> expected_terminal{
+        0xe7,0x4d,0x56,0xbe,0x94,0xf6,0xc1,0xb5,
+        0xa1,0xd1,0x91,0x26,0xc4,0xd5,0xac,0xb3,
+        0x54,0x8d,0x0a,0xb2,0xc4,0x1f,0x9d,0x5e,
+        0xe2,0x87,0xf9,0xa1,0xd9,0x3b,0xbe,0x08
+    };
+    if (prior != expected_terminal) return 32;
     if (!hhs::lane5::audit_gate_lineage_declarations(passed, lineage, genesis)) return 26;
     auto broken_chain = lineage;
     broken_chain[3].predecessor[0] ^= 1U;
