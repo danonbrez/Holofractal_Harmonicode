@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/pass220-i086-native-composition-validation.yml
       - hhs_runtime/hhs_pass220_i086_**
+      - hhs_python/runtime/hhs_pass205_continuation_bridge.py
       - tests/pass220/test_hhs_pass220_i086_**
       - tests/pass220/test_i086_prime_orbit_reference.py
       - benchmarks/pass220/benchmark_i086_**
@@ -18,6 +19,7 @@ on:
     paths:
       - .github/workflows/pass220-i086-native-composition-validation.yml
       - hhs_runtime/hhs_pass220_i086_**
+      - hhs_python/runtime/hhs_pass205_continuation_bridge.py
       - tests/pass220/test_hhs_pass220_i086_**
       - tests/pass220/test_i086_prime_orbit_reference.py
       - benchmarks/pass220/benchmark_i086_**
@@ -47,6 +49,17 @@ jobs:
           python -m pip install --disable-pip-version-check pytest cryptography
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Verify Pass205 continuation OpenSSL linkage before Python import
+        run: |
+          python - <<'PY'
+          from hhs_python.runtime.hhs_pass205_continuation_bridge import (
+              build_native_library, _library_path
+          )
+          build_native_library(force=True)
+          assert _library_path().is_file()
+          PY
+          ldd -r hhs_runtime/builds/libhhs_pass205_continuation.so
+          readelf -d hhs_runtime/builds/libhhs_pass205_continuation.so | grep 'libcrypto'
       - name: Dependency-scoped I086 and inherited I085/Pass219 tests
         env:
           LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
