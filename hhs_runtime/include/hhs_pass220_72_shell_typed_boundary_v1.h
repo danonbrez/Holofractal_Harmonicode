@@ -15,6 +15,7 @@ typedef struct {
  uint32_t required_gates;
  uint32_t proven_gates;
  uint8_t source_sha256[32];
+ uint8_t exact_residue_verified;
  uint8_t native_proof_admitted;
  uint8_t vm81_admitted;
 } HHS72ShellProofResult;
