@@ -12,6 +12,17 @@ on:
       - benchmarks/pass220/benchmark_i086_**
       - formal/pass220/I086PrimeOrbit.lean
       - formal/pass220/I086PrimeOrbit.wl
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/pass220-i086-native-composition-validation.yml
+      - hhs_runtime/hhs_pass220_i086_**
+      - tests/pass220/test_hhs_pass220_i086_**
+      - tests/pass220/test_i086_prime_orbit_reference.py
+      - benchmarks/pass220/benchmark_i086_**
+      - formal/pass220/I086PrimeOrbit.lean
+      - formal/pass220/I086PrimeOrbit.wl
   workflow_dispatch:
 
 permissions:
