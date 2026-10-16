@@ -159,3 +159,11 @@
 - Scoped local GCC C++20 compile plus execution passed against a locally reconstructed matching HNAN header and tests with -O2 -Wall -Wextra -Werror -pedantic. Repository exact-byte CI confirmation remains pending.
 - Changes this cycle: hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp, this restart file. Next: inspect PR run on this exact repair SHA or this checkpoint; if HNAN green, inspect Lean step, repair only concrete Lean errors. Do not re-run unrelated historic gates.
 - No source-specific five-gate native algebra proof, signed VM81 admission or canonical Hash72/Hash216 mint has occurred.
+
+## 2026-10-16 Lean checker success and proof-dependency evidence
+- GitHub Actions run 38872992233 for commit 3db258f3739274ed3f22a0aa36454033975f0302 completed SUCCESS. Source SHA/Python, Pass159 C ABI, five-gate frontend, C++ cell-wall, HNAN native C++, and Lean module checker all SUCCESS. This is the first observed green Lean check for this workstream.
+- Previous restart checkpoint eb47c700ea665ddac171d051f5ee56c2452780d6 had run 38873055434 QUEUED at inspection. Do not claim this latter run green.
+- Commit 4d054ed2b06883247c5e983c84aa4407f08f738f adds scoped workflow evidence: only after Lean success, generate SHA-256 identities for canonical original source, new Lean module, inherited HNAN, QGU transport, reciprocal alignment, lean-toolchain and lakefile, plus exact checked git HEAD; upload as noncanonical CI artifact.
+- Evidence artifacts are for audit binding and restart, not proof of the five exact native algebraic gate closures, and never a VM81 or Hash72/Hash216 mint authorization. New artifact upload CI run pending.
+- Changed files this cycle: .github/workflows/pass220-ordered-five-gate-phase36-72.yml and this restart. Worktree is GitHub connector branch agent/pass220-ordered-five-gate-source-20261014 targeting main; original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a.
+- Next: inspect CI for added evidence upload, then independently bind authentic typed five-gate witnesses and predecessor lineage to the pinned source and signed Pass219/VM81 admission. Reuse verified formal proof modules; do not elevate layout/identity theorems to source-specific algebraic closure.
