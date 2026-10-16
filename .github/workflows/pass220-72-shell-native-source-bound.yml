@@ -174,7 +174,7 @@ jobs:
             hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c \
             hhs_runtime/c/hhs_pass220_72_shell_proof_input_v1.c \
             hhs_runtime/c/hhs_pass220_72_shell_relation_dispatch_v1.c \
-            tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c
+            tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c \
             -lcrypto -o /tmp/hhs_pass220_relation_dispatch
       - name: Execute ordered candidate evaluations and admission denials
         run: /tmp/hhs_pass220_relation_dispatch
