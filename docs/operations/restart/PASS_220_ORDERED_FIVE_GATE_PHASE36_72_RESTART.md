@@ -210,3 +210,11 @@
 - New source-specific gate-provider acceptance contract contracts/pass220/PASS_220_FIVE_GATE_NATIVE_PROVIDER_ACCEPTANCE_V1.md in commit 2f036cc4367e3a5f072d2abf131aa1d1a0a71f4f. Defines exact source-bound typed operands, gate witness, predecessor, signed environment and replay requirements; prohibits importing older I162 gate mask or pretending metadata digests prove algebraic closure.
 - Changed files this cycle: new provider acceptance contract; this restart record. Branch agent/pass220-ordered-five-gate-source-20261014 -> main, original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a. No native gate evaluator implemented in this cycle; no canonical VM81/Hash72/Hash216 mint.
 - Next action: implement Pass159 AST/constraint-graph source-locked operand bridge and independently verifying native provider; regression-test and checkpoint. Existing CI green evidence frozen.
+
+## 2026-10-16 Pass159 typed-graph phase-mutation propagation
+- Verified previous checkpoint c70a888120891e7af03abb497808e39681676010: scoped run 38905388739 SUCCESS.
+- Implementation commit c530854fc63b4bd7ce7f156da1551ed8bdde2266 extends tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c: existing one-byte u^36→u^37 mutation is now parsed into independent CST, AST, type environment and constraint graph, with AST and graph Hash216 identities required to differ from unchanged source. All handles released in cleanup.
+- This is a **source-dependent frontend artifact graph test**, not full gate operand subtree projection, native algebraic closure, or canonical proof receipt. It does not alter the source, gate order, signed environment or VM81 state.
+- Files changed this cycle: tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c and this restart document; existing workflow already watches this test. GitHub remote is the execution environment; no local build run. New scoped CI outcome pending.
+- Branch agent/pass220-ordered-five-gate-source-20261014 -> main PR #806; original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a.
+- Next: inspect this test's CI, repair only impacted failures, implement complete typed operand tree exposure through Pass159 and provider-backed closure (not declaration flags), then signed VM81 replay.
