@@ -57,3 +57,14 @@ all unverified authority fields.
 - Environment: connected GitHub repository write access; no remote shell or live signed Lane 5 runtime executed.
 - Next action: independently verify native C++ cell-wall generation integrity and signed-environment admission against the actual Lane 5 entrypoint; only then assess promotion. Do not infer admission from unrelated green workflows.
 - Blockers: runtime execution and native membrane admission evidence remain unverified for this branch.
+
+
+## Native owner reconciliation (2026-10-15)
+
+- Native Conway I086 implementation is **PR #774**, not this adjunct PR #814.
+- PR #774 head inspected: `3f53f905b3a605ff9ac553c525434fb456257d5c`.
+- Native Conway CI run `38368834294`, job `115200457609` SUCCEEDED at that head. Stages include frozen Pass219 generation-integrity verification, production exact ABI build, inherited membrane compilation, native Conway regression, and unchanged native authority audit.
+- Adjunct HNAN CI run `38786987151`, job `116601408037` SUCCEEDED at head `8dc487fdf16a648345d45ffbfac9770125f2f52a`.
+- Neither independent green run proves the combined code integrated or the signed-environment admission for promoted canonical persistence.
+- #814 remains draft and strictly noncanonical. Do not transplant, fork, or replace the C++ Conway implementation owned by #774.
+- The next dependency gate is source-aligned reconciliation with #774 and its upstream PR prerequisites, then native signed admission and exact main verification. No current CI result is treated as a substitute for that gate.
