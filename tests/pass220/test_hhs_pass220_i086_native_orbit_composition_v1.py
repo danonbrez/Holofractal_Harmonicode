@@ -34,6 +34,22 @@ def test_native_persisted_two_segment_closed_orbit_and_negative_cases(tmp_path):
         graph.memory.persist_validated_jump(parent_state=child, jump=backward)
         assert backward.child_hash216 == graph.native.state_root(initial)
 
+        for invalid in (True, 1.0, "1", -1, 1 << 64):
+            bad = list(initial)
+            bad[0] = invalid
+            with pytest.raises((TypeError, ValueError)):
+                compose_authenticated_orbit(
+                    graph=graph, initial_state=bad,
+                    segments=[["i086-forward"], ["i086-backward"]],
+                    frame_id=0, tick=0, cycle_index=0,
+                )
+        with pytest.raises(ValueError, match="81"):
+            compose_authenticated_orbit(
+                graph=graph, initial_state=initial[:-1],
+                segments=[["i086-forward"]], frame_id=0,
+                tick=0, cycle_index=0,
+            )
+
         orbit = compose_authenticated_orbit(
             graph=graph, initial_state=initial,
             segments=[["i086-forward"], ["i086-backward"]],
