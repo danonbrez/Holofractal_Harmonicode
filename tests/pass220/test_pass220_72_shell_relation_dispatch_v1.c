@@ -20,6 +20,15 @@ static HHS72RelationDecision reject_second(const HHS72ProofInput *in,uint32_t ga
  ++*(uint32_t*)ctx;
  return gate==1U?HHS72_RELATION_REJECTED:HHS72_RELATION_CANDIDATE;
 }
+static HHS72RelationDecision invalid_code(const HHS72ProofInput *in,uint32_t gate,uint32_t left,uint32_t right,void *ctx){
+ (void)in;(void)gate;(void)left;(void)right;(void)ctx;
+ return (HHS72RelationDecision)99;
+}
+static HHS72RelationDecision unresolved_second(const HHS72ProofInput *in,uint32_t gate,uint32_t left,uint32_t right,void *ctx){
+ (void)in;(void)left;(void)right;
+ ++*(uint32_t*)ctx;
+ return gate==1U?HHS72_RELATION_UNRESOLVED:HHS72_RELATION_CANDIDATE;
+}
 int main(void){
  HHS72RelationDispatch r;uint32_t calls=0;uint8_t bad[sizeof(s)-1U];
  if(!hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,evaluate,&calls,&r))return 1;
@@ -33,6 +42,13 @@ int main(void){
  if(!hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,reject_second,&calls,&r))return 6;
  if(calls!=2U||r.evaluated_mask!=3U||r.candidate_mask!=1U||
     r.rejected_mask!=2U||r.authoritative_proof_mask||r.vm81_admitted)return 7;
- puts("PASS ordered dispatch, early rejection, no authority promotion");
+ calls=0;
+ if(!hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,unresolved_second,&calls,&r))return 8;
+ if(calls!=2U||r.evaluated_mask!=3U||r.candidate_mask!=1U||
+    r.rejected_mask||r.authoritative_proof_mask||r.vm81_admitted)return 9;
+ if(hhs_pass220_72_shell_dispatch(s,sizeof(s)-1U,invalid_code,&calls,&r))return 10;
+ if(r.evaluated_mask||r.candidate_mask||r.rejected_mask||
+    r.authoritative_proof_mask||r.vm81_admitted)return 11;
+ puts("PASS ordered dispatch, early rejection, unresolved stop, invalid-code reset");
  return 0;
 }
