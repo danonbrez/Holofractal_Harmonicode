@@ -1,6 +1,6 @@
 # Pass 220 I086 — HNAN geometric periodicity projection
 
-Status: ADDITIVE / NONCANONICAL / DEPENDENCY-SCOPED TESTS PENDING.
+Status: ADDITIVE / NONCANONICAL / DEPENDENCY-SCOPED GITHUB CI GREEN / NATIVE ADMISSION UNVERIFIED.
 
 ## Inherited authority
 
@@ -53,7 +53,7 @@ all unverified authority fields.
   - `docs/pass220/PASS_220_I086_HNAN_GEOMETRIC_PERIODICITY.md`
   - `.github/workflows/pass220-i086-hnan-geometric-periodicity.yml`
 - Validation command: `python -m pytest -q tests/pass220/test_pass220_i086_hnan_perimeter_topology.py tests/pass219/test_pass219_hnan_qgu_transport_v1.py`
-- Validation state: dependency-scoped CI workflow committed at `a9360ae06a34591eb0ea90efe5e89972ac534221`; its results remain to be verified; **not claimed PASS**.
+- Validation: GitHub Actions run `38786987151`, job `116601408037`, completed SUCCESS at head `8dc487fdf16a648345d45ffbfac9770125f2f52a`. Python compilation, I086 topology tests, inherited Pass 219 HNAN/QGU tests, and fail-closed receipt checks succeeded. This validates the bounded projection, not native VM81 admission.
 - Environment: connected GitHub repository write access; no remote shell or live signed Lane 5 runtime executed.
-- Next action: inspect I086 GitHub Actions run triggered by the new workflow, repair forward any failures, and verify relevant native Lane 5 membrane checks before approval/merge.
+- Next action: independently verify native C++ cell-wall generation integrity and signed-environment admission against the actual Lane 5 entrypoint; only then assess promotion. Do not infer admission from unrelated green workflows.
 - Blockers: runtime execution and native membrane admission evidence remain unverified for this branch.
