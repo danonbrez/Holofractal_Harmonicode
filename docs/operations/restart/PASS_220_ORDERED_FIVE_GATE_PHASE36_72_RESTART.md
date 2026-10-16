@@ -125,3 +125,10 @@
 - Updated scoped workflow in 8889e776b9f3ab51508ca455ededc16c6284e15a to run lake build HHS.Pass220.FiveGateHNANBoundary after installing elan and honoring repository lean-toolchain.
 - Formal theorem scope is **identity bypass + typed order + inherited transport only**; no theorem asserts five-gate truth, signed VM81 admission or canonical receipt mint.
 - Validation: Lean compilation CI not yet observed. Restart at 8889e776b9f3ab51508ca455ededc16c6284e15a; check workflow, repair scoped Lean compilation errors, then bind theorem/dependency identities to C++ native cell-wall with authenticated provenance.
+
+## Lean candidate boundary strengthened (2026-10-15)
+- Prior new Lean targeted CI runs 38828643623 and 38828663969 queued at time of inspection, no Lean green evidence.
+- Commit 7406e608178d8d6656170c638826d3cc5b31446b extends formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean with CandidateBoundary, inspectBoundary, bypass_no_write_even_on_zero_declaration and boundary_never_mints_from_boolean.
+- These prove in Lean's definitional semantics that a declared typed-zero flag cannot confer commit authority and identity bypass preserves phase write count. They do not prove that the Boolean is an authenticated HNAN witness or that VM81 has closed any algebra gate.
+- No local Lean binary available in this execution environment, so compilation remains queued/unverified; consult CI before merging. Keep existing Pass159 and C++ validations frozen.
+- Next: inspect updated branch CI and resolve any Lean import/proof failures. Then bind checker-produced module and dependency identities to authenticated proof provider; avoid using caller flags as proof.
