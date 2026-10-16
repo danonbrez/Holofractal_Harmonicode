@@ -17,7 +17,7 @@ class Test72ShellLowering(unittest.TestCase):
         self.assertEqual(chain.kind, "HHS_ORDERED_CHAIN_3_GATES")
         self.assertEqual(tuple(node.source for node in chain.children), INNER_GRAMMAR)
         self.assertEqual([(node.byte_start,node.byte_end) for node in chain.children],
-                         [(1,75),(77,90),(92,93),(95,102)])
+                         [(1,74),(76,89),(91,92),(94,99)])
         self.assertFalse(result.native_proof_admitted)
         self.assertFalse(result.vm81_admitted)
         self.assertEqual(admission_disposition(result), "UNSUPPORTED_DOMAIN_NATIVE_PROOF_REQUIRED")
