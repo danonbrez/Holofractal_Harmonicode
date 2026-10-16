@@ -6,10 +6,10 @@ int main(void) {
  HHS72ShellProofResult p;
  uint8_t bad[sizeof(s)-1U];
  if(hhs_pass220_72_shell_typed_boundary(s,sizeof(s)-1U,&p)!=HHS_72_SHELL_PROOF_UNRESOLVED)return 1;
- if(p.required_gates!=4U||p.proven_gates!=0U||p.vm81_admitted||p.native_proof_admitted)return 2;
+ if(!p.exact_residue_verified||p.required_gates!=4U||p.proven_gates!=0U||p.vm81_admitted||p.native_proof_admitted)return 2;
  memcpy(bad,s,sizeof(bad));bad[89]^=1U;
  if(hhs_pass220_72_shell_typed_boundary(bad,sizeof(bad),&p)!=HHS_72_SHELL_PROOF_INVALID)return 3;
- if(p.proven_gates||p.vm81_admitted||p.native_proof_admitted)return 4;
+ if(p.exact_residue_verified||p.proven_gates||p.vm81_admitted||p.native_proof_admitted)return 4;
  puts("PASS source-bound typed boundary remains unresolved and fail-closed");
  return 0;
 }
