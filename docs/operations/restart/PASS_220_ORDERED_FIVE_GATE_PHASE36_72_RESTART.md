@@ -218,3 +218,10 @@
 - Files changed this cycle: tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c and this restart document; existing workflow already watches this test. GitHub remote is the execution environment; no local build run. New scoped CI outcome pending.
 - Branch agent/pass220-ordered-five-gate-source-20261014 -> main PR #806; original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a.
 - Next: inspect this test's CI, repair only impacted failures, implement complete typed operand tree exposure through Pass159 and provider-backed closure (not declaration flags), then signed VM81 replay.
+
+## 2026-10-16 Pass159 exact typed-environment identity capture
+- Previous implementation c530854fc63b4bd7ce7f156da1551ed8bdde2266 passed complete scoped CI run 38976793816. Its checkpoint fa3a0f2b1cbb74b7ae463c2e104823c3275e4c7a run 38976807560 was QUEUED at inspection.
+- Added exact Pass159 Hash216 identity retrieval for unchanged and u^37-mutated type environments, asserting both are populated without falsely demanding type-environment hash changes (same types can validly hold for changed values). Changes in tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c: commits a6105828943a3bae524185f0bd1cb1c65d8c20a1 and 81f9ed3332040fddf56508d41dfd531ca0a5f85f.
+- This improves typed front-end proof-dependency coverage; it is not a full per-gate operand subtree extraction and creates no native algebraic gate witness, VM81 admission or canonical Hash72/Hash216 mint.
+- Branch agent/pass220-ordered-five-gate-source-20261014 -> main PR #806; original base cab00e2eea3f9f064fa7b817995032cb3ef4b19a. Modified test and this restart only. New CI pending.
+- Next action: inspect scoped CI for these commits and repair actual failures; expose ordered typed AST subtrees through native Pass159 API with source offsets and operand provenance before attempting gate evaluation.
