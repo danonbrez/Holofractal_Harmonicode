@@ -26,7 +26,7 @@ class TestFiveGateLayoutOracle(unittest.TestCase):
         self.assertNotEqual(chain(source_hash=bytes(32)), TERMINAL)
 
     def test_genesis_mismatch(self):
-        self.assertNotEqual(chain(genesis=b"\\x01" + bytes(31)), TERMINAL)
+        self.assertNotEqual(chain(genesis=bytes([1]) + bytes(31)), TERMINAL)
 
     def test_source_address_swap(self):
         self.assertNotEqual(chain(offsets=(54, 223, 139, 229, 276)), TERMINAL)
