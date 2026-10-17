@@ -88,18 +88,18 @@ jobs:
       - name: Validate Pass 219 I119 inherited Pass 205 exact ABI
         run: |
           mkdir -p /tmp/pass219-i119-pass205
-          gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic -ffunction-sections -fdata-sections -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass219-i119-pass205/exact.o
           gcc -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass205_1_19.c \
             /tmp/pass219-i119-pass205/exact.o \
-            -o /tmp/pass219-i119-pass205/pass205-c
+            -Wl,--gc-sections -o /tmp/pass219-i119-pass205/pass205-c -lcrypto
           /tmp/pass219-i119-pass205/pass205-c
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
             tests/pass219/test_pass219_inherited_pass205_1_19.cpp \
             /tmp/pass219-i119-pass205/exact.o \
-            -o /tmp/pass219-i119-pass205/pass205-cpp
+            -Wl,--gc-sections -o /tmp/pass219-i119-pass205/pass205-cpp -lcrypto
           /tmp/pass219-i119-pass205/pass205-cpp
 
       - name: Validate Pass 219 I119 kernel-derived membrane
