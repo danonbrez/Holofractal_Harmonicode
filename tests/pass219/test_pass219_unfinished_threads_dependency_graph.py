@@ -30,6 +30,12 @@ class GraphTests(unittest.TestCase):
                        "kind":"referenced_pr_unverified"},graph["edges"])
         self.assertEqual(graph["nodes"]["pr:11"]["status"],"unfinished")
 
+    def test_deterministic_review_order_not_merger_authority(self):
+        graph=graph_from_inventory(self.inventory)
+        self.assertEqual(graph["review_order_not_merge_authority"],
+                         sorted(["pr:10", "pr:11", "branch:thread/unfinished"]))
+        self.assertNotIn("merged", graph["nodes"]["pr:10"])
+
     def test_no_phantom_dependency(self):
         self.inventory["open_prs"][0]["body"]="References #99999"
         graph=graph_from_inventory(self.inventory)
