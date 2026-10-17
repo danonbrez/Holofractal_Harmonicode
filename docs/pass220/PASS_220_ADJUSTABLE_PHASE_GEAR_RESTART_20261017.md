@@ -38,3 +38,11 @@
 
 ## Next action
 Implement the cell-wall integration using its existing typed C ABI after inspecting the current authoritative headers and tests. Preserve the candidate service as a reusable compile-time nucleus, not a competing cryptographic mint.
+
+## 2026-10-17 correction — single Lane 5 / VM81 / BigInt / Hash216 authority
+
+The adjustable phase gear is a NEW CONSTRUCTOR / RELATION in the SAME already-existing Lane 5 5184-position VM81 BigInt-serialization Hash216 knowledge graph. It must not launch a second graph, service clock, serialization authority, stand-alone hash database, or secondary VM81. All 16 circuit cells resolve through inherited 5184 addresses; angle is typed provenance for the same graph, not permission to change canonical grid topology. Existing Lane 5 search can hydrate or optimize validated graph records; exact CPU replay, RNA C++ cell wall and signed-environment VM81 authority remain compulsory prior to canonical mutation or lineage.
+
+The C++ candidate header now includes an explicit graph projection with 16 fixed ordered addresses, exact decimal BigInt digits, and 216-symbol parent lineage, rejecting invalid ranges and malformed numeric encoding. This is candidate metadata only, not a substitution for the authoritative fixed-width VM81 BigInt serializer. Exact inherited Hash216 alphabet validation, parent lineage authenticity, position-to-frame mapping, admission service wiring and replay remain outstanding. A 216-character input by itself is not an authenticated receipt.
+
+Updated next action: connect this candidate projection to the existing Pass219 RNA VM5184 C ABI, the existing 5184 graph binding/BigInt serializer, and native Hash216 receipt path. No competing `hash216()` implementation may be introduced. Add negative tests for genuine admission, authenticated lineage, 16-cell address ownership, angle-specific graph relations, and rollback/no-write on every rejection.
