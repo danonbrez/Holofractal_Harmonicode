@@ -81,7 +81,7 @@ jobs:
           assert status["single_vm81_mutation_authority"]
           assert status["single_ordered_hash72_commit_stream"]
           assert status["cache_hit_bypasses_admission"] is False
-          assert status["accelerator_translation"]["gpu_may_commit_hash72"] is False
+          assert status["accelerator_translation"]["physical_gpu_backend_active"] is False
           PY
 
       - name: Run inherited federation and guarded deployment tests
