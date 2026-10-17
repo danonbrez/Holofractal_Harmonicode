@@ -31,6 +31,19 @@ int main() {
   try { (void)project_existing_graph(a,slots,digits,"not-a-hash216"); }
   catch(const std::invalid_argument&) { rejected=true; }
   assert(rejected);
+  const auto all=compose8(kDurer,kDurer,kFibonacciLucas,kDurer);
+  assert(all[0][0]==16 && all[0][4]==16);
+  assert(all[4][0]==16 && all[7][7]==18);
+  std::array<std::uint16_t,64> full_slots{};
+  std::array<std::string,64> full_digits{};
+  for(std::size_t i=0;i<64;++i) {
+    full_slots[i]=static_cast<std::uint16_t>(i);
+    full_digits[i]=std::to_string(all[i/8][i%8]);
+  }
+  OuterPhaseVectors outer{{-180,0,0,0,0,0,0,0}};
+  const auto full=project_full_circuit(outer,all,full_slots,full_digits,std::string(216,'0'));
+  assert(full.candidate_only && full.inherited_linear5184[63]==63);
+  assert(full.phase_vectors[0]==-180 && full.cells[7][7]==18);
   const PhasePayload p{123,27};
   const auto bypass=hnan_bypass(p);
   assert(bypass.phase==p.phase && bypass.write_count==p.write_count);
