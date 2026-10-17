@@ -71,3 +71,13 @@
 - Repaired `formal/wolfram/pass219_balanced_anchor_projection_v1.wl` on commit `e637426102a0e08f5547fce48dd531f876723478`.
 - Reexecuted the repaired file in the connected Wolfram kernel: status PASS, all 16/16 checks True, failed list empty; exact tensor {{1,2,3,9/2},{2,4,6,17/2},{3,6,9,13},{4,7,11,19}}.
 - This is exact arithmetic projection validation, not native Hash216 admission/replay. Lean latest CI run was queued when checked; no Lean PASS claimed.
+
+## 2026-10-17 global branches / green PR integration mandate
+- The Lane 5/LARONE integration must consider **all open repository branches and open PRs**, including unrelated historical branches, through a single paginated source inventory. Inventory coverage is not approval to merge an unrelated branch or override production/canonical boundaries.
+- New read-only `scripts/pass219_global_integration_inventory.py` inventories GitHub branches and open PRs, observed check runs and commit statuses, missing PR branch references, candidates and blockers. Includes all paginated results (no first-page-only claims).
+- New `.github/workflows/pass219-global-integration-inventory.yml` runs the inventory and publishes JSON artifact.
+- Exact rule: no observed checks or pending/failing checks means **not green**. A green non-draft main-targeted PR is only an integration candidate, not merge permission. Confirm required branch protection, code ancestry, scoped native tests, signed environment, Hash216 replay and production boundary before a merge.
+- At inventory time, GitHub PR search surfaced many open PRs (#822, #821, #819, #815, #814, #811, #806, etc.) and branch search yielded pagination; the result was incomplete until the new full API inventory executes. Do not report a total based on those partial search pages.
+- Merge sequencing: classify by dependencies and source overlap, deduplicate already-inherited commits, preferentially finish and land green prerequisites, repair-forward failing paths, and then validate LARONE u/x/y/z/w phase-gear + A/B/P ordered constructors through the existing Pass219 Lane5 / signed Hash216 admission surface.
+- Branches with no open PR remain in the ledger and require comparison to main. Do not blindly cherry-pick or squash their entire histories.
+- Restart: inspect the published JSON artifact, check exact head SHAs, batch candidate PRs by dependency, verify native assumptions; checkpoint on every successful batch, then verify exact main. No unverified green or merge claimed.
