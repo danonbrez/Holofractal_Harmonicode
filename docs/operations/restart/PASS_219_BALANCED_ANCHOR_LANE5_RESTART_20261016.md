@@ -59,3 +59,9 @@
 - Added negative cases for wrong output-column address, altered pricing operand, and altered numerator. These are pure, non-authoritative witnesses, not Hash216 hashes or canonical mutation.
 - Commits: `d45d4c61a9def62534dddb0a88f1fcfe375f9201` and `3f70cf737aa86c518857bc608992b9bc2aa01392`.
 - Required next step: consume these ordered proof cells in inherited signed Pass219 proof hydrator and verify replay under canonical parent/child Hash216 identities. No hydration admission claim yet.
+
+## 2026-10-17 targeted Lean repair
+- PR CI run 38977471345: cpp-gate PASS, lean-proof FAIL on missing `OfNat ℤ` and `HAdd ℚ` typeclass instances in new proof source; native infrastructure remained intact.
+- Repair commit `82e2aa6d09d1219cb22a7907646f7aad086c2cc5`: exact midpoint expressed as paired Nat numerator/denominator witnesses with ordered anchor records; proof file inherits HHS native dependency chain instead of Mathlib host arithmetic.
+- Theorem validation after this commit is pending CI; no Lean PASS asserted.
+- Remaining: Wolfram evaluation, inherited Hash216 hydration binding + signed-environment deterministic replay. No canonical mutation changes.
