@@ -69,7 +69,7 @@ def collect():
                          pr["head"]["repo"] and
                          pr["head"]["repo"]["full_name"] == REPO)
         records.append({
-            "number": pr["number"], "title": pr["title"],
+            "number": pr["number"], "title": pr["title"], "body": pr.get("body") or "",
             "head": branch, "head_sha": sha, "base": pr["base"]["ref"],
             "draft": pr["draft"], "observed_check_count": len(runs)+len(statuses),
             "observed_green": green, "integration_candidate": candidate,
