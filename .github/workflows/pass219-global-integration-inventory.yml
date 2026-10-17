@@ -8,6 +8,7 @@ on:
       - 'tests/pass219/test_pass219_unfinished_threads_dependency_graph.py'
       - 'tests/pass219/test_pass219_global_integration_inventory.py'
       - 'contracts/pass219/PASS_219_UNIFIED_CPP_LEAN_BRANCH_DEPENDENCY_ENFORCEMENT_V1.md'
+      - 'contracts/pass219/pass219_mainline_repair_obligations.json'
       - '.github/workflows/pass219-global-integration-inventory.yml'
 permissions:
   contents: read
@@ -27,12 +28,14 @@ jobs:
           python3 -m py_compile scripts/pass219_global_integration_inventory.py scripts/pass219_unfinished_threads_dependency_graph.py
           PYTHONPATH=. python3 -m unittest tests/pass219/test_pass219_unfinished_threads_dependency_graph.py tests/pass219/test_pass219_global_integration_inventory.py
           python3 scripts/pass219_global_integration_inventory.py pass219-global-integration-inventory.json
-          python3 scripts/pass219_unfinished_threads_dependency_graph.py pass219-global-integration-inventory.json pass219-unfinished-threads-graph.json
+          python3 scripts/pass219_unfinished_threads_dependency_graph.py pass219-global-integration-inventory.json pass219-unfinished-threads-graph.json contracts/pass219/pass219_mainline_repair_obligations.json
           python3 - <<'PY'
           import json
           r = json.load(open("pass219-global-integration-inventory.json", encoding="utf8"))
           g = json.load(open("pass219-unfinished-threads-graph.json", encoding="utf8"))
-          assert len(g["nodes"]) == r["open_pr_count"] + len(r["orphan_branches_without_open_pr"]) + 1
+          manifest = json.load(open("contracts/pass219/pass219_mainline_repair_obligations.json"))
+          assert len(g["nodes"]) == r["open_pr_count"] + len(r["orphan_branches_without_open_pr"]) + 1 + len(manifest["records"])
+          assert all("repair:"+str(x["source_pr"]) in g["nodes"] for x in manifest["records"])
           assert len(r["open_prs"]) == r["open_pr_count"]
           assert len({p["number"] for p in r["open_prs"]}) == r["open_pr_count"]
           for p in r["open_prs"]:
