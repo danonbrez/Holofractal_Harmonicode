@@ -30,7 +30,7 @@ HHS72ShellStatus hhs_pass220_72_shell_lower(
    return HHS_72_SHELL_INVALID_SOURCE;
  memcpy(out->gate_offsets,actual_gates,sizeof(actual_gates));
  memcpy(out->inner_operands,expected_operands,sizeof(expected_operands));
- out->squared_chain=(HHS72ShellSpan){0U,112U};
+ out->squared_chain=(HHS72ShellSpan){0U,102U};
  out->outer_left=(HHS72ShellSpan){0U,112U};
  out->outer_right=(HHS72ShellSpan){114U,121U};
  memcpy(out->source_sha256,hash,32);
