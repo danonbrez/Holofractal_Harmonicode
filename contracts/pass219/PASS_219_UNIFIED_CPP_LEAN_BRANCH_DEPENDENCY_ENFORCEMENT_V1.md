@@ -36,3 +36,18 @@ Inventory all paginated branches/PRs → reconstruct unfinished work from PR bod
 
 ## Current integration
 PR #819 contains one green C++ preflight, 16/16 verified Wolfram rational-projection checks, pending Lean CI after repair, and a graph inventory workflow. Native signed Hash216 integration and all-branches reconciliation remain unfinished until recorded verification.
+
+## Production admission dependency override — reported 2026-10-17
+The following are **reported blocker observations**, not proof of completion or an authorization to reinterpret verified prior theorems. Refresh main SHA and PR heads before remediation.
+
+| Workstream | Graph treatment | Required fail-closed evidence |
+|---|---|---|
+| PR #774 (merged) | mainline repair prerequisite | uint64 receipt-clock overflow; malformed UQCEL rejection; transitive header rebuild; signed environmental constraint probe |
+| PR #818 (merged) | mainline repair prerequisite | arbitrary-size BigInt round-trip and canonical witness; alternate checkout/root discovery |
+| PR #821 (conflicted) | repair-forward against current main | no duplicate inherited libcrypto fix; complete OpenSSL/Hash72/cell-wall symbols; `hhs_backend` import; cached and clean builds |
+| PR #819 (draft) | downstream proof branch | Lean native build, Wolfram evidence, ordered anchor witness, Hash216 replay |
+| Current-main promotion | final gate | Pass217 integration; exactly promoted main SHA; HTTPS and Chromium verification |
+
+Mandatory dependency ordering (not a branch merge order): `repair(#774,#818) -> reconcile(#821) -> native-admission -> exact-main deployment`. `#819` must be checked against the resulting main ancestry before merge, without conflating arithmetic-projection proof with signed VM81 admission.
+
+No claimed delivery acceptance until the exact-main deployment receipts establish promotion and browser/HTTPS checks. Candidate rejects and skipped checks remain failures/unknowns, never green. Preserve production's prior SHA until an actual promotion receipt is verified.
