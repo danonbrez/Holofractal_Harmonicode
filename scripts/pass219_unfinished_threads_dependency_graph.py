@@ -38,7 +38,20 @@ def graph_from_inventory(inventory):
             edges.append({"from":"pr:"+str(pr["number"]), "to":"pr:"+str(number),
                           "kind":"referenced_pr_unverified"})
     assert len(nodes) == len(prs) + len(inventory["orphan_branches_without_open_pr"]) + 1
+    # Convert only explicitly verified prerequisites into scheduling edges.
+    # Unverified references stay review hints and MUST NOT enter the order.
+    verified = [e for e in edges if e["kind"] == "verified_prerequisite"]
+    remaining = {k for k in nodes if k != CONTRACT}
+    order = []
+    while remaining:
+        ready = sorted(k for k in remaining if not any(
+            e["from"] == k and e["to"] in remaining for e in verified))
+        if not ready:
+            raise ValueError("verified prerequisite cycle; fail closed")
+        order.extend(ready)
+        remaining.difference_update(ready)
     return {"schema":"HHS_PASS219_UNFINISHED_THREADS_DEPENDENCY_GRAPH_V1",
+            "review_order_not_merge_authority": order,
             "source_schema":inventory["schema"],
             "repository":inventory["repository"],
             "nodes":nodes,"edges":edges,
