@@ -40,13 +40,6 @@ def pages(path):
             return results
         page += 1
 
-def check_state(sha, cache):
-    if sha in cache:
-        return cache[sha]
-    checks = pages(f"/commits/{urllib.parse.quote(sha, safe='')}/check-runs")
-    # checks endpoint is an object, not a paginated array; use its check_runs.
-    return checks
-
 def collect():
     pulls = pages("/pulls?state=open")
     branches = pages("/branches")
