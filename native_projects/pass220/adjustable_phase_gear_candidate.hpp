@@ -37,6 +37,67 @@ inline constexpr Matrix4 covariant(const Matrix4& a,const Matrix4& b) {
                 r[i][j]+=a[i][k]*b[k][j];
     return r;
 }
+
+// Full native circuit: four 4x4 blocks in the exact 8x8 placement.
+// T1 upper-left; T2 upper-right; T4 lower-left; T3 lower-right.
+// The eight outer computational vectors are independently addressable
+// phase-gear inputs. Four choices at eight slots yield 4^8=65536
+// potential vector configurations, distinct from the 64 cell positions.
+using OuterPhaseVectors = std::array<std::int64_t, 8>;
+using Circuit8 = std::array<std::array<std::int64_t, 8>, 8>;
+inline constexpr std::size_t kCircuitCells = 64;
+inline constexpr std::size_t kPhaseConfigurations = 65536;
+enum class CircuitBlock : std::uint8_t { T1=0, T2=1, T3=2, T4=3 };
+inline constexpr std::size_t circuit_row(CircuitBlock b,std::size_t local) {
+    return ((b==CircuitBlock::T3 || b==CircuitBlock::T4)?4U:0U)+(local/4U);
+}
+inline constexpr std::size_t circuit_col(CircuitBlock b,std::size_t local) {
+    return ((b==CircuitBlock::T2 || b==CircuitBlock::T3)?4U:0U)+(local%4U);
+}
+inline constexpr std::size_t circuit_index(CircuitBlock b,std::size_t local) {
+    return circuit_row(b,local)*8U+circuit_col(b,local);
+}
+inline constexpr Circuit8 compose8(const Matrix4& t1,const Matrix4& t2,
+                                  const Matrix4& t3,const Matrix4& t4) {
+    Circuit8 out{};
+    for(std::size_t i=0;i<16;++i) {
+        out[circuit_row(CircuitBlock::T1,i)][circuit_col(CircuitBlock::T1,i)]=t1[i/4][i%4];
+        out[circuit_row(CircuitBlock::T2,i)][circuit_col(CircuitBlock::T2,i)]=t2[i/4][i%4];
+        out[circuit_row(CircuitBlock::T3,i)][circuit_col(CircuitBlock::T3,i)]=t3[i/4][i%4];
+        out[circuit_row(CircuitBlock::T4,i)][circuit_col(CircuitBlock::T4,i)]=t4[i/4][i%4];
+    }
+    return out;
+}
+struct FullCircuitCandidate {
+    OuterPhaseVectors phase_vectors{};
+    Circuit8 cells{};
+    std::array<std::uint16_t,64> inherited_linear5184{};
+    std::array<std::string,64> exact_bigint_digits{};
+    std::string parent_hash216;
+    bool candidate_only{true};
+};
+inline FullCircuitCandidate project_full_circuit(
+    const OuterPhaseVectors& phases, const Circuit8& cells,
+    const std::array<std::uint16_t,64>& addresses,
+    const std::array<std::string,64>& digits, const std::string& parent) {
+    if(parent.size()!=216) throw std::invalid_argument("invalid parent Hash216 length");
+    for(std::size_t i=0;i<64;++i) {
+        if(addresses[i]>=5184) throw std::invalid_argument("outside VM81 5184 geometry");
+        const auto& s=digits[i];
+        if(s.empty()) throw std::invalid_argument("empty BigInt serialization");
+        std::size_t k=(s[0]=='-')?1U:0U;
+        if(k==s.size()) throw std::invalid_argument("invalid BigInt");
+        for(;k<s.size();++k)
+            if(s[k]<'0'||s[k]>'9') throw std::invalid_argument("noninteger BigInt");
+    }
+    return {phases,cells,addresses,digits,parent,true};
+}
+static_assert(kPhaseConfigurations==4*4*4*4*4*4*4*4);
+static_assert(circuit_index(CircuitBlock::T1,0)==0);
+static_assert(circuit_index(CircuitBlock::T2,0)==4);
+static_assert(circuit_index(CircuitBlock::T4,0)==32);
+static_assert(circuit_index(CircuitBlock::T3,15)==63);
+
 // An address-bearing projection into the INHERITED 81 x 64 = 5184 graph.
 // This is NOT an independent store or a serialized canonical VM81 state.
 struct Lane5GraphCandidate {
