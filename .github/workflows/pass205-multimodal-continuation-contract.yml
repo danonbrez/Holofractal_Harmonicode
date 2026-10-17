@@ -99,6 +99,7 @@ jobs:
     env:
       PYTHONFAULTHANDLER: '1'
       PYTHONUNBUFFERED: '1'
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - name: Bind runner-local HHS_PASS205_DB
         shell: bash
