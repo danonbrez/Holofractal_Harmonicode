@@ -97,3 +97,10 @@
 - Commit `649966b42ce38b0d070b095388709114f843679e` adds deterministic graph review order and explicit fail-closed cycle detection for independently verified prerequisite edges only. PR body references remain unverified hints and do not reorder or merge code.
 - Commit `c2ed8f0155a5435814c39db53fee407c00a57d28` adds isolated deterministic ordering tests. No new mutation, signed receipt, or Hash216 authority.
 - Remaining: observe graph workflow, assess complete inventory, reconcile true dependencies/unfinished thread commits, verify C++/Lean admission contract and signed replay, then merge ready dependencies.
+
+## 2026-10-17 global CI completeness repair
+- Runs `39037851675` (balanced anchor) and `39037851935` (global graph) remained queued on inspection. No outcome claimed.
+- Fixed global inventory to paginate all GitHub check runs for each exact PR head SHA and reject truncated or contradictory totals. Earlier first-100-only sampling could misclassify a PR as green.
+- Added `tests/pass219/test_pass219_global_integration_inventory.py` covering second-page retrieval, truncated result failure and inconsistent total failure; wired the tests to the graph workflow.
+- Commits: `b3fe176c450e2f18fe5c55e2b18a4f5993a13e39`, `3e160d2eb455f7b60bb02935f45a3e6efc66f528`, `3beab762818be23250029c7aed478a73a8307ceb`.
+- The inventory and native Lean proof workflow validation remain pending; full dependency edges, eligible merges and signed Hash216 replay remain unfinished.
