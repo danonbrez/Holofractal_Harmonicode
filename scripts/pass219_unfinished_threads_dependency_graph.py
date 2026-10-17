@@ -85,6 +85,10 @@ def graph_from_inventory(inventory):
 
 def main():
     inventory=json.loads(Path(sys.argv[1]).read_text(encoding="utf8"))
+    manifest_path = Path(sys.argv[3]) if len(sys.argv) > 3 else None
+    if manifest_path:
+        manifest=json.loads(manifest_path.read_text(encoding="utf8"))
+        inventory["mainline_repair_obligations"]=manifest["records"]
     graph=graph_from_inventory(inventory)
     Path(sys.argv[2]).write_text(json.dumps(graph, indent=2, sort_keys=True)+"\n", encoding="utf8")
     print("NODES",len(graph["nodes"]),"EDGES",len(graph["edges"]))
