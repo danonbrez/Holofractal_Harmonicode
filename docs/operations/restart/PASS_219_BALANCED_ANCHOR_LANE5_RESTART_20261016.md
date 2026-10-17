@@ -110,3 +110,9 @@
 - Updated canonical Pass219 graph contract in commit `a2c47a22fd5a243fb6d02d4ccd680932130f40a1` to mark #774/#818 as **mainline repair** rather than still-open prerequisites; #821 as repair-forward; #819 as draft downstream proof work; production as terminal verification gate.
 - This checkpoint records reported blocker status pending exact-main/PR refreshed retrieval. It is not a claim that production was promoted, workflows were rerun, or defect code repaired.
 - Next actions: inspect native UQCEL/clock/header, BigInt/root and Pass205 linkage/import code on updated main; isolate minimal repairs with negative tests; run signed admission and exact-main gates; then resume LARONE Lane5 integrated graph and Hash216 replay.
+
+## 2026-10-17 inherited repair-forward knowledge-graph authority
+- Merged defects remain native graph nodes governed by the **same** Pass219 C++/Lean/Hash216 contract as unfinished branches. New graph support creates `repair:<original PR>` nodes with source provenance links, unresolved blockers, original-main observation and explicit false proof/replay/exact-main verification flags.
+- Repair registry `contracts/pass219/pass219_mainline_repair_obligations.json` records reported unresolved #774 and #818 mainline obligations; `main_sha` is explicitly unverified pending exact GitHub main inspection, not a fabricated commit receipt.
+- Workflow now consumes the repair registry and asserts every entry appears in the graph, and tests check no isolated repair can inherit completion merely from status.
+- Commits: `96619962`, `88425098`, `602fedb2`, `d57a8966`, `8309b1f0`. Native repairs, cross-branch merges, signed replay and deployment remain outstanding; no acceptance or CI success newly claimed.
