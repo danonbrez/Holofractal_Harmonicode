@@ -5,6 +5,8 @@ on:
     paths:
       - 'hhs_runtime/c/hhs_pass205_continuation.h'
       - 'hhs_runtime/c/hhs_pass205_continuation.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/include/hhs_hash216_bytes.h'
       - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
       - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
       - 'hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py'
@@ -19,6 +21,8 @@ on:
     paths:
       - 'hhs_runtime/c/hhs_pass205_continuation.h'
       - 'hhs_runtime/c/hhs_pass205_continuation.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/include/hhs_hash216_bytes.h'
       - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
       - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
       - 'hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py'
