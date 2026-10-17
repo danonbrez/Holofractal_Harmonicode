@@ -40,6 +40,25 @@ def pages(path):
             return results
         page += 1
 
+def all_check_runs(sha):
+    """Enumerate every check run for one immutable head SHA; fail closed on truncation."""
+    runs = []
+    page = 1
+    while True:
+        data = api(f"/commits/{urllib.parse.quote(sha, safe='')}/check-runs?per_page=100&page={page}")
+        batch = data.get("check_runs")
+        total = data.get("total_count")
+        if not isinstance(batch, list) or not isinstance(total, int):
+            raise RuntimeError("check-run response incomplete")
+        runs.extend(batch)
+        if len(runs) >= total:
+            if len(runs) != total:
+                raise RuntimeError("check-run count mismatch")
+            return runs
+        if not batch:
+            raise RuntimeError("truncated check-runs pagination")
+        page += 1
+
 def collect():
     pulls = pages("/pulls?state=open")
     branches = pages("/branches")
@@ -51,11 +70,10 @@ def collect():
     for pr in pulls:
         sha = pr["head"]["sha"]
         if sha not in cache:
-            runs = api(f"/commits/{sha}/check-runs?per_page=100")
+            runs = all_check_runs(sha)
             statuses = api(f"/commits/{sha}/status")
-            cache[sha] = (runs.get("check_runs", []), statuses.get("statuses", []))
+            cache[sha] = (runs, statuses.get("statuses", []))
         runs, statuses = cache[sha]
-        conclusions = [r.get("conclusion") for r in runs]
         contexts = [s.get("state") for s in statuses]
         observed = bool(runs or statuses)
         green = (observed and
