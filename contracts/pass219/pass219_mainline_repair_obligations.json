@@ -20,6 +20,19 @@
         "alternate checkout root discovery"
       ],
       "next": "repair merged witness serialization and alternate-root discovery; run negative round trips"
+    },
+    {
+      "source_pr": 820,
+      "main_sha": "cf5eb2a9-reported-promoted-exact-sha-prefix",
+      "blockers": [
+        "native chat exit 27",
+        "deployed causal model environment lacks transformers",
+        "four identical canned fallbacks",
+        "zero serialized response blocks",
+        "HTTPS verification skipped",
+        "Chromium verification skipped"
+      ],
+      "next": "provision pinned causal LM runtime on production interpreter, check model identity, restart service under guarded controls, rerun strict native CLI four prompt acceptance, then HTTPS and Chromium for exactly cf5eb2a9"
     }
   ]
 }
