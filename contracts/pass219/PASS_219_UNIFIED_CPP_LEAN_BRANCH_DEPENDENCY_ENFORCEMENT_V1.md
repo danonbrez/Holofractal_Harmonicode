@@ -51,3 +51,10 @@ The following are **reported blocker observations**, not proof of completion or 
 Mandatory dependency ordering (not a branch merge order): `repair(#774,#818) -> reconcile(#821) -> native-admission -> exact-main deployment`. `#819` must be checked against the resulting main ancestry before merge, without conflating arithmetic-projection proof with signed VM81 admission.
 
 No claimed delivery acceptance until the exact-main deployment receipts establish promotion and browser/HTTPS checks. Candidate rejects and skipped checks remain failures/unknowns, never green. Preserve production's prior SHA until an actual promotion receipt is verified.
+
+## Unified knowledge-graph authority over repair-forward (normative)
+Repair-forward and unfinished implementation tasks are **the same class of graph-governed obligation**, regardless of whether their original PR is open, merged, or superseded. Merging a PR changes its source location but never releases its outstanding validation and lineage requirements. No repair-only shortcut, alternate authority, or separate dependency universe is permitted.
+
+Each repair obligation MUST carry: original thread/PR and current-main commit identity; impacted sources and consumers; inherited prerequisite and downstream nodes; ordered C++/Lean/Wolfram theorem and ABI witnesses; unresolved observations; dependency-scoped negative/regression tests; canonical Hash72/Hash216 signed admission/replay requirements; exact-main verification and disposition. When a repair is resolved, freeze its evidence and update the same graph node or its causally linked successor, retaining ancestry.
+
+A green PR or already-merged source is not equivalent to a discharged repair obligation. All edges affecting admission are fail-closed, and remediation may proceed independently on disjoint files while converging under the same graph. Final disposition is allowed only after the affected canonical tests and downstream consumers pass; deployment receipts are additional gates where the changed surface is deployed.
