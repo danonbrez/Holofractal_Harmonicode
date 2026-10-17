@@ -78,3 +78,32 @@ The second exact-head Pass 205 Repair Validation Base run built the cumulative n
 The current runtime status schema exposes `accelerator_translation.physical_gpu_backend_active` instead. The validation assertion was corrected to require that field to be `false`, while the existing runtime source/tests retain the explicit GPU no-commit boundary.
 
 No runtime implementation or canonical semantics changed in this repair-forward step.
+
+
+## Restartable checkpoint — external CI backlog
+
+Current repair head: `489aa15444843a24e4818acaed1f2b9d9f677761`
+PR: #821
+Main remains: `825b5f82d2d16c910ee38c6337770d5a876582a1`
+Branch divergence: 9 commits ahead, 0 behind; PR mergeable.
+
+Validated on the immediately preceding exact-head run:
+- cumulative native authority build: PASS;
+- complete current Pass 205 production tests: PASS;
+- combined `libhhs_pass205_continuation.so` Hash216 SHA-256 lineage parity regression: PASS;
+- source-text integrity: PASS.
+
+Repair-forward workflow issues found and repaired:
+1. stale references to removed Pass 205 governed-v2/state-deployment surfaces;
+2. repair-only assertion used a non-existent status key; corrected to the current `physical_gpu_backend_active == false` status contract.
+
+Superseding exact-head runs are queued due repository runner capacity:
+- Pass 217 Current Main Integration: `38995063184`
+- Pass 205 Production Continuation Runtime: `38995063357`
+- Pass 205 Repair Validation Base: `38995063437`
+- Pass 205 Multimodal Continuation Contract: `38995063380`
+- HHS Source Text Integrity: `38995063303`
+- Lane 5 Native Capability Provider: `38995063403`
+- Validate HHS Runtime OS Production Root: `38995063257`
+
+Next action: inspect the superseding runs when they execute; repair forward attributable failures only. Merge PR #821 only after the required Pass 205 and Pass 217 gates are green, then verify authoritative main and the DigitalOcean Production Exact Main deployment through successful public production closure.
