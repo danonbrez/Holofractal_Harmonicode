@@ -583,6 +583,24 @@ jobs:
             exit 26
           fi
 
+          echo "=== VERIFY PINNED NATIVE CAUSAL MODEL IN PRODUCTION INTERPRETER ==="
+          # The runner's requirements.txt does not install the deployed service's
+          # optional pinned transformers/torch runtime. Verify that precise venv.
+          # Install only if the inherited pinned provisioner reports it missing.
+          if ! /opt/hhs/venv/bin/python "$APP_ROOT/tools/provision_native_causal_model.py" >/tmp/hhs-native-causal-preflight.json; then
+            echo "Pinned native causal runtime/model incomplete; repair in production venv"
+            if ! /opt/hhs/venv/bin/python "$APP_ROOT/tools/provision_native_causal_model.py" --install >/tmp/hhs-native-causal-provision.json; then
+              echo "Pinned causal model provisioning failed; no fallback counts as acceptance" >&2
+              exit 27
+            fi
+          fi
+          if ! runuser -u hhs -- env PYTHONPATH="$APP_ROOT" \
+            /opt/hhs/venv/bin/python -c 'from transformers import AutoTokenizer, AutoModelForCausalLM; import torch; print("HHS_NATIVE_CAUSAL_IMPORT_READY=1")'; then
+            echo "Native causal dependencies not importable by hhs service identity" >&2
+            exit 27
+          fi
+          echo "HHS_PRODUCTION_PINNED_CAUSAL_MODEL_READY=1"
+
           echo "=== VERIFY DIRECT NATIVE CLI GENERATIVE CHAT ==="
           hhs_pid="$(systemctl show hhs.service -p MainPID --value)"
           [[ "$hhs_pid" =~ ^[0-9]+$ && "$hhs_pid" -gt 1 ]] || {
