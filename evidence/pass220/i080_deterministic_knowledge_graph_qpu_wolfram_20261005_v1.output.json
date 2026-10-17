@@ -1,0 +1,53 @@
+{
+  "schema": "HHS_PASS_220_I080_DETERMINISTIC_KNOWLEDGE_GRAPH_QPU_WOLFRAM_EVIDENCE_V1",
+  "source": "formal/wolfram/pass220_i080_deterministic_knowledge_graph_qpu_v1.wl",
+  "evaluator": "Wolfram Language kernel",
+  "status": "PASS",
+  "check_count": 31,
+  "pass_count": 31,
+  "failed": [],
+  "serialized_characters": 5184,
+  "free_trinary_positions": 5183,
+  "state_space_source": "3^5183",
+  "offset_cardinality": 19,
+  "phase_gear_E": [
+    8,
+    24,
+    40,
+    56,
+    72,
+    16,
+    32,
+    48,
+    64
+  ],
+  "phase_lock_period": 5184,
+  "hash216_width": 216,
+  "full_attached_components": 15552,
+  "genesis_prefixes": [
+    "10",
+    "20",
+    "30",
+    "100"
+  ],
+  "ieee_layouts": {
+    "binary16": [
+      1,
+      5,
+      10
+    ],
+    "binary32": [
+      1,
+      8,
+      23
+    ],
+    "binary64": [
+      1,
+      11,
+      52
+    ]
+  },
+  "rna_roundtrip_all": true,
+  "ieee_float_internal_logic_authority": false,
+  "lossy_scalar_projection_authority": false
+}

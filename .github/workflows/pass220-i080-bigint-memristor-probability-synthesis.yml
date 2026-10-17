@@ -1,0 +1,196 @@
+name: Pass 220 I080 BigInt Memristor Hash216 Probability Synthesis
+
+on:
+  push:
+    branches:
+      - pass220/i080-bigint-memristor-probability-synthesis-20261005
+    paths:
+      - "hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py"
+      - "hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py"
+      - "tests/pass220/test_hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py"
+      - "tests/pass220/test_hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py"
+      - "examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html"
+      - "formal/lean/HHS/Pass220/I080DeterministicKnowledgeGraphQPU.lean"
+      - "formal/lean/HHS.lean"
+      - "formal/wolfram/pass220_i080_deterministic_knowledge_graph_qpu_v1.wl"
+      - "evidence/pass220/i080_deterministic_knowledge_graph_qpu_wolfram_20261005_v1.output.json"
+      - "contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json"
+      - "docs/whitepapers/HHS_PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.md"
+      - "docs/operations/restart/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_RESTART_20261005.md"
+      - ".github/workflows/pass220-i080-bigint-memristor-probability-synthesis.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  i080-bigint-memristor-probability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bounded validation dependency
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Parse and compile I080 surfaces
+        run: |
+          set -euo pipefail
+          python -m json.tool \
+            contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json \
+            >/dev/null
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py \
+            hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py \
+            tests/pass220/test_hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py \
+            tests/pass220/test_hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py
+
+      - name: Enforce per-tick and deterministic QPU source semantics
+        run: |
+          set -euo pipefail
+          grep -F 'one_tick_one_lane5_optimization_operation' \
+            hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'A/B' \
+            hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'B/A' \
+            hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'AB=P^4' \
+            hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'u^(5184=81*64=72²/72⁷²MOD72)=HNAN periodicity' \
+            hhs_runtime/hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py
+          grep -F 'state_space_source": "3^5183"' \
+            hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py
+          grep -F '100=90+10=81*81' \
+            hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py
+          grep -F '"browser_math_random_authority": false' \
+            contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json
+          grep -F '"canonical_hash216_commit_authority": false' \
+            contracts/pass220/PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1.json
+
+      - name: Parse deterministic HTML QPU and enforce browser determinism
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          path=Path("examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html")
+          source=path.read_text(encoding="utf-8")
+          assert "I080DeterministicKnowledgeGraphQPU" in source
+          assert "100=90+10=81*81" in source
+          assert "3^5183" in source
+          assert "Math.random" not in source
+          assert "parseFloat" not in source
+          scripts=re.findall(r"<script>(.*?)</script>", source, flags=re.S)
+          assert len(scripts) == 1
+          Path("/tmp/i080-qpu.js").write_text(scripts[0], encoding="utf-8")
+          PY
+          node --check /tmp/i080-qpu.js
+
+      - name: Run I080 and dependency-scoped exact regressions
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_hhs_pass220_i080_bigint_memristor_probability_synthesis_v1.py \
+            tests/pass220/test_hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py \
+            tests/pass220/test_hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py \
+            tests/test_hhs_pass163_vmrc_v1.py \
+            tests/pass219/test_pass219_fold_primitive_probe.py \
+            tests/pass219/test_pass219_hnan_4x4_recursive_gate_v1.py \
+            tests/pass219/test_pass219_hnan_qgu_transport_v1.py
+
+      - name: Execute deterministic I080 self-tests
+        run: |
+          python -m hhs_runtime.hhs_pass220_i080_bigint_memristor_probability_synthesis_v1 \
+            | tee /tmp/i080-self-test.json
+          python -m hhs_runtime.hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1 \
+            | tee /tmp/i080-qpu-self-test.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          main=json.loads(Path("/tmp/i080-self-test.json").read_text())
+          qpu=json.loads(Path("/tmp/i080-qpu-self-test.json").read_text())
+          assert main["status"] == "PASS", main
+          assert main["check_count"] == main["pass_count"] == 36, main
+          assert main["failed"] == [], main
+          assert len(main["input_hash216"]) == 216
+          assert len(main["candidate_hash216"]) == 216
+          assert qpu["status"] == "PASS", qpu
+          assert qpu["check_count"] == qpu["pass_count"] == 19, qpu
+          assert qpu["failed"] == [], qpu
+          PY
+
+      - name: Enforce I080 Wolfram formalization evidence
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          source=Path(
+              "formal/wolfram/pass220_i080_deterministic_knowledge_graph_qpu_v1.wl"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "freeTernaryPositions = 5183",
+              "offsetAlphabet = Range[-9,9]",
+              "64 81 === 72^2 === serializedCharacters",
+              "phaseOrbitValues",
+              "hash216Planes serializedCharacters === fullAttached",
+              "palindromeRNA",
+              "ieeeLayouts",
+          ):
+              assert token in source, token
+          evidence=json.loads(Path(
+              "evidence/pass220/i080_deterministic_knowledge_graph_qpu_wolfram_20261005_v1.output.json"
+          ).read_text(encoding="utf-8"))
+          assert evidence["status"] == "PASS", evidence
+          assert evidence["check_count"] == evidence["pass_count"] == 31, evidence
+          assert evidence["serialized_characters"] == 5184
+          assert evidence["free_trinary_positions"] == 5183
+          assert evidence["full_attached_components"] == 15552
+          assert evidence["rna_roundtrip_all"] is True
+          PY
+
+      - name: Verify I080 Lean theorem surface
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          source=Path(
+              "formal/lean/HHS/Pass220/I080DeterministicKnowledgeGraphQPU.lean"
+          ).read_text(encoding="utf-8")
+          for token in (
+              "theorem nucleusPlusFreeEqCarrier",
+              "theorem phaseGearRatioCrossProduct",
+              "theorem hash216HydrationFactor",
+              "theorem u16NinePhaseTwoTurnClosure",
+              "theorem rnaIngressEgressRoundtrip",
+              "theorem rnaMirrorInvolution",
+              "theorem ieee16Layout",
+              "theorem ieee32Layout",
+              "theorem ieee64Layout",
+              "theorem authorityBoundary",
+              "theorem inheritsI065HydrationGeometry",
+              "theorem inheritsI072FullAttachedGeometry",
+          ):
+              assert token in source, token
+          root=Path("formal/lean/HHS.lean").read_text(encoding="utf-8")
+          assert "import HHS.Pass220.I080DeterministicKnowledgeGraphQPU" in root
+          PY
+
+      - name: Lean 4 build, kernel check, and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
