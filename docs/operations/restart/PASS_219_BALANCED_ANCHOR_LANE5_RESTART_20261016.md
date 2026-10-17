@@ -91,3 +91,9 @@
 - Pending: execute graph CI and inspect artifact, expand missing per-thread status from commit/PR diff/restart checkpoint, confirm dependency edges, validate and merge eligible green prerequisites, bind signed Hash216 replay.
 - Base is main used when branch was created for PR #819; do not rebase or merge without latest main comparison.
 - New source commits include dd090ef3, b3bbd028, cad95889, 472192f6, ba0d7da4, b2b6e429 and 1ef8f3b1; local graph execution and Actions status not asserted as passing.
+
+## 2026-10-17 deterministic review scheduling
+- Last checked global graph CI run `39037591735` and balanced anchor run `39037591845` were queued; no validation pass inferred.
+- Commit `649966b42ce38b0d070b095388709114f843679e` adds deterministic graph review order and explicit fail-closed cycle detection for independently verified prerequisite edges only. PR body references remain unverified hints and do not reorder or merge code.
+- Commit `c2ed8f0155a5435814c39db53fee407c00a57d28` adds isolated deterministic ordering tests. No new mutation, signed receipt, or Hash216 authority.
+- Remaining: observe graph workflow, assess complete inventory, reconcile true dependencies/unfinished thread commits, verify C++/Lean admission contract and signed replay, then merge ready dependencies.
