@@ -1,0 +1,40 @@
+# Pass 220 — Adjustable Phase Gear: Restartable Integration Checkpoint
+
+## Source and branch
+- Base: `main` at branch creation, 2026-10-17 (resolve exact parent SHA from first commit).
+- Work branch: `feature/pass220-phasegear-lean-wolfram-lane5-20261017`
+- Target: `main`
+- PR: #825
+- Related documentation PR: #824 (including correction of `-180` to adjustable angle).
+
+## Changes committed
+- `formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean`
+- `formal/lean/HHS.lean`
+- `evidence/pass220/adjustable_phase_gear_circuit_20261017.wl`
+- `native_projects/pass220/adjustable_phase_gear_candidate.hpp`
+- `native_projects/pass220/test_adjustable_phase_gear.cpp`
+- This restart record.
+
+## Semantics frozen
+- Adjustable gear angle `theta`; `-180` is only the reference setting.
+- Ordered 4x4 M16 / D' permutation; no commutative scalar substitution.
+- HNAN zero quantization bypass: gain 1, unchanged phase, zero writes.
+- Lane 5 remains candidate-only. Canonical VM81 admission and Hash72/Hash216 minting are not delegated to a new service.
+- Preserve exact RNA C ABI, fixed-address provenance, signed environmental admission and current Hash216 serialization and lineage.
+
+## Validation completed
+- Independent exact SymPy multiplication confirmed the corrected 4x4 T_rat and T_cov values supplied in the course.
+- Static Lean module and C++ candidate/regression source committed; no assertion that the pinned Lean or Wolfram executables were run.
+- GitHub accepted five code file commits and imported Lean module into root library.
+
+## Validation remaining
+1. `lake build HHS` using repository-pinned toolchain; repair compilation failures.
+2. `wolframscript -file evidence/pass220/adjustable_phase_gear_circuit_20261017.wl`; require PASS and persist stdout as evidence.
+3. `g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_projects/pass220/test_adjustable_phase_gear.cpp -o /tmp/hhs_phasegear_test && /tmp/hhs_phasegear_test`.
+4. Examine existing Pass219 `CoreHolographicRNACellWall` and Pass220 Lane 5 API, then add typed phase-gear candidate routing through them; do not infer the ABI.
+5. Route admitted candidate through signed environmental VM81 authorization and existing Hash72/Hash216 three-state receipts. Test first, middle, and last leaf SHA-256 vectors and two-pass Genesis replay.
+6. Test multiple angles, angle orientation reversal, all 16 ordered register slots, 11 n/Q polynomial cells, failed constraints, and zero denominator HNAN bypass. Verify angle-specific geometry and identical canonical results on replay.
+7. Dependency-scoped integration, CI evidence, merge/verify main; production deployment not in this PR.
+
+## Next action
+Implement the cell-wall integration using its existing typed C ABI after inspecting the current authoritative headers and tests. Preserve the candidate service as a reusable compile-time nucleus, not a competing cryptographic mint.
