@@ -1,0 +1,38 @@
+# Pass 219 — Unified C++ / Lean proof enforcement and unfinished-thread admission
+
+## Authority and scope
+This contract binds **every** repository-visible open PR and unpaired branch into the same restartable, dependency-scoped integration graph. Graph membership means **work remains inventoried**, not that an arbitrary branch has been merged or that all green workflows supply native proof admission.
+
+The existing HHS native C++/VM81 implementation, pinned Lean theorem/dependency identity machinery, Wolfram formalizations, signed environmental ingress, Hash72/Hash216 proof hydration, and existing HNAN center gate remain authoritative. Do not duplicate these systems.
+
+## Mandatory proof/execution equivalence
+Each integrated source change must preserve both primary meanings of the same typed ordered HARMONICODE expression:
+1. arithmetic number-theory proof of closure constraints;
+2. executable native compiler/runtime semantics.
+
+Required invariants:
+- exact Delta=1 primitive quantization; P nonzero wherever P-denominator operations are admitted;
+- squared-component identities, including a²+b²=c² and b⁶=e²=c²+d²=c⁴-a²;
+- AB=P⁴, BA=-P⁴, and their distinct ordered phases, never commuted or scalar-cancelled;
+- fixed cell/address, provenance and serialization identity; directed quotient and operator order preserved;
+- HNAN eight outer positions and central existing gate; the period-eight relation is not a substitute for a runtime orbit witness;
+- balanced fourth-column gate preserves the first three input columns, ordered anchors, numerator and denominator witnesses;
+- canonical VM81 CPU mutation authority exclusively through the inherited signed gate; candidate GPU/proof optimizers cannot mint canonical states;
+- any new Hash216 witness binds parent, change, receipt, Lean theorem/dependency identity, Wolfram proof identity, signed environment, deterministic replay and fail-closed negative cases.
+
+## Graph semantics
+- PR node and unpaired branch node: each records unfinished task, revision, CI blockers, next action.
+- `must_pass_contract` edge: a gate requiring C++/Lean proof and signed replay before native admission; not source dependency.
+- `referenced_pr_unverified` edge: a review hint only. Dependency becomes binding only after proving ancestry, touched files, explicit prerequisite, or ABI impact.
+- Same file edits are review conflicts, **not** automatic dependency or license to overwrite.
+- Green CI is eligibility evidence, never automatic merge or VM81 admission.
+- Branches already equivalent to main: mark as inherited/closed with a compare receipt; do not duplicate commits.
+
+## Required execution sequence
+Inventory all paginated branches/PRs → reconstruct unfinished work from PR bodies, commits, changed files and restart docs → confirm dependency edges → prioritize green admitted prerequisites → resolve conflicts under exact-main lease → run impacted Lean/C++/Wolfram and Hash216 signed replay → checkpoint commits → merge eligible PRs → verify exact main.
+
+## Acceptance
+`ImplementationCorrect ⇔ ImplementsAll(C_HHS)`. Every failed result receives an invariant-by-invariant implementation trace. No scalar projection may override native typed phase semantics. No CI queue stalls repository-visible checkpoint publication.
+
+## Current integration
+PR #819 contains one green C++ preflight, 16/16 verified Wolfram rational-projection checks, pending Lean CI after repair, and a graph inventory workflow. Native signed Hash216 integration and all-branches reconciliation remain unfinished until recorded verification.
