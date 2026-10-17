@@ -5,6 +5,8 @@ on:
     paths:
       - 'scripts/pass219_global_integration_inventory.py'
       - 'scripts/pass219_unfinished_threads_dependency_graph.py'
+      - 'tests/pass219/test_pass219_unfinished_threads_dependency_graph.py'
+      - 'contracts/pass219/PASS_219_UNIFIED_CPP_LEAN_BRANCH_DEPENDENCY_ENFORCEMENT_V1.md'
       - '.github/workflows/pass219-global-integration-inventory.yml'
 permissions:
   contents: read
@@ -22,6 +24,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           python3 -m py_compile scripts/pass219_global_integration_inventory.py scripts/pass219_unfinished_threads_dependency_graph.py
+          PYTHONPATH=. python3 -m unittest tests/pass219/test_pass219_unfinished_threads_dependency_graph.py
           python3 scripts/pass219_global_integration_inventory.py pass219-global-integration-inventory.json
           python3 scripts/pass219_unfinished_threads_dependency_graph.py pass219-global-integration-inventory.json pass219-unfinished-threads-graph.json
           python3 - <<'PY'
