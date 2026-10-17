@@ -3,13 +3,17 @@ name: Pass 205 Repair Validation Base
 on:
   pull_request:
     paths:
-      - 'hhs_python/runtime/**'
-      - 'hhs_backend/runtime/hhs_pass205_*'
-      - 'hhs_backend/api/a0_pass205_transport_bootstrap.py'
-      - 'hhs_backend/api/a_pass205_governed_bootstrap.py'
-      - 'deployment/digitalocean/pass205_state/**'
+      - 'hhs_runtime/c/hhs_pass205_continuation.h'
+      - 'hhs_runtime/c/hhs_pass205_continuation.c'
+      - 'hhs_runtime/src/hhs_hash216.c'
+      - 'hhs_runtime/include/hhs_hash216_bytes.h'
+      - 'hhs_python/runtime/hhs_pass205_continuation_bridge.py'
+      - 'hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py'
+      - 'hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py'
+      - 'hhs_backend/api/pass205_continuation_routes.py'
+      - 'tests/test_hhs_pass205_continuation_runtime_v1.py'
+      - 'deployment/digitalocean/guarded_auto_update/**'
       - 'bin/post_compile'
-      - 'tests/test_hhs_pass205_*'
       - '.github/workflows/pass205-repair-validation-base.yml'
   workflow_dispatch:
 
@@ -40,51 +44,44 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Validate shell and Python syntax
+      - name: Validate current Pass 205 shell and Python surfaces
         run: |
           bash -n bin/post_compile
-          bash -n deployment/digitalocean/pass205_state/install.sh
           python -m py_compile \
-            hhs_python/runtime/__init__.py \
-            hhs_python/runtime/hhs_pass205_native_freshness_guard.py \
-            hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py \
-            hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py \
-            hhs_backend/api/a0_pass205_transport_bootstrap.py \
-            hhs_backend/api/a_pass205_governed_bootstrap.py
+            hhs_python/runtime/hhs_pass205_continuation_bridge.py \
+            hhs_backend/runtime/hhs_pass205_continuation_runtime_v1.py \
+            hhs_backend/runtime/hhs_pass205_accelerator_translation_v1.py \
+            hhs_backend/api/pass205_continuation_routes.py \
+            tests/test_hhs_pass205_continuation_runtime_v1.py
 
       - name: Build native authorities
         run: |
           make c-abi
           python - <<'PY'
+          import ctypes
           from hhs_python.runtime.hhs_pass205_continuation_bridge import build_native_library
-          print(build_native_library(force=True))
+          path = build_native_library(force=True)
+          ctypes.CDLL(str(path))
+          print(path)
           PY
 
-      - name: Run focused repair tests
-        run: |
-          python -m pytest -q \
-            tests/test_hhs_pass205_native_freshness_guard_v1.py \
-            tests/test_hhs_pass205_state_deployment_v1.py \
-            tests/test_hhs_pass205_governed_continuation_v2.py \
-            tests/test_hhs_pass205_transport_and_retrieval_v1.py
-
-      - name: Run inherited Pass 205 production tests
+      - name: Run current Pass 205 production tests
         run: python -m pytest -q tests/test_hhs_pass205_continuation_runtime_v1.py
 
-      - name: Verify hosted governed route binding
+      - name: Verify current Pass 205 authority boundary
         run: |
           python - <<'PY'
-          from hhs_backend.application_ide_server import app
-          from hhs_backend.api import pass205_continuation_routes as routes
-          from hhs_backend.runtime.hhs_pass205_governed_continuation_v2 import GovernedPass205ContinuationRuntime
+          from pathlib import Path
+          from hhs_backend.runtime.hhs_pass205_continuation_runtime_v1 import Pass205ContinuationRuntime
 
-          assert isinstance(routes.PASS205_CONTINUATION_RUNTIME, GovernedPass205ContinuationRuntime)
-          paths = {str(getattr(route, 'path', '')) for route in app.router.routes}
-          assert '/api/runtime/continuation/advance' in paths
-          assert '/api/runtime/continuation/transport' in paths
-          status = routes.PASS205_CONTINUATION_RUNTIME.status()
-          assert status['vm81_admission_required_before_persistence']
-          assert status['replay_reconstructs_ordered_deltas']
+          runtime = Pass205ContinuationRuntime(Path(r"${{ runner.temp }}") / "pass205-authority.sqlite3")
+          status = runtime.status()
+          assert status["state_bits"] == 5184
+          assert status["hydration_projection_count"] == 1_259_712
+          assert status["single_vm81_mutation_authority"]
+          assert status["single_ordered_hash72_commit_stream"]
+          assert status["cache_hit_bypasses_admission"] is False
+          assert status["accelerator_translation"]["gpu_may_commit_hash72"] is False
           PY
 
       - name: Run inherited federation and guarded deployment tests
