@@ -112,7 +112,9 @@ def build_native_library(*, force: bool = False) -> pathlib.Path:
         command.extend(["-fPIC", "-dynamiclib"])
     else:
         command.extend(["-fPIC", "-shared"])
-    command.extend([str(source), str(hash_source), "-o", str(output)])
+    # The Hash216 implementation uses OpenSSL EVP_Digest. Link libcrypto
+    # explicitly so ctypes/dlopen does not depend on ambient global symbols.
+    command.extend([str(source), str(hash_source), "-o", str(output), "-lcrypto"])
     completed = subprocess.run(
         command,
         cwd=str(root),
@@ -140,7 +142,15 @@ def _load_library() -> ctypes.CDLL:
         raise FileNotFoundError(f"Pass 205 native library missing: {output}")
     if not output.exists():
         build_native_library()
-    return ctypes.CDLL(str(output))
+    try:
+        return ctypes.CDLL(str(output))
+    except OSError as exc:
+        # An older shared object may predate the explicit -lcrypto recipe.
+        # Rebuild only for that precise stale OpenSSL linkage failure.
+        if disable or "undefined symbol: EVP_Digest" not in str(exc):
+            raise
+        build_native_library(force=True)
+        return ctypes.CDLL(str(output))
 
 
 _LIB = _load_library()
