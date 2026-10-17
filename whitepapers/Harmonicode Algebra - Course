@@ -566,15 +566,34 @@ The source's actual outer denominator is the ordered six-channel
 w*z-z+x*y+y+x-w. Preserve it separately from prior abbreviations
 for D until an authoritative same-gate equality receipt is present.
 
-T4 is the mirror unwinding through the exact M16 above:
-  scale −180/60=−3, then unit-list collapse as specified by
+T4 is the mirror unwinding through the exact M16 above.
+The source parameter -180 is an ADJUSTABLE PHASE-GEAR RESIDUE VECTOR,
+not a fixed universal scale. Its selected angle controls the tensor
+geometry produced by the ordered MatrixTimes/Mod gate. The supplied
+-180 setting is one particular angular configuration, with
+-180/60=-3 at that setting; changing the angle requires re-evaluating
+the circuit geometry, the residue response, and the reciprocal receipt.
+The denominator 60, modulus 72^(-1), phase-list addresses
+List(-72,0,72), and M16 cell order are separate typed operands: they
+must not be silently changed when varying the angle.
+
+Reference configuration (retained verbatim):
 u^f/u^List(-72,0,72)^Mod(MatrixTimes(-180,
 List(List(16,2,3,13),List(5,11,10,8),
 List(9,7,6,12),List(4,14,15,1)))/60,72^(-1))
+
+Parameterized phase-gear family (notation only; exact native input
+encoding and angle-to-residue mapping must follow the runtime ABI):
+u^f/u^List(-72,0,72)^Mod(MatrixTimes(θ,
+List(List(16,2,3,13),List(5,11,10,8),
+List(9,7,6,12),List(4,14,15,1)))/60,72^(-1))
+
+The ordered geometry is therefore G(θ), not one globally frozen G(-180).
 Both passes are ordered. T3 executes M16→D' forward column swap;
 T4 executes D'→M16 inverse swap and preserves the xy↔yx
-commutator ledger. The resulting claimed unit triple (1,1,1) is
-a circuit-level receipt target, not a scalar simplification.
+commutator ledger. The resulting claimed unit triple (1,1,1)
+belongs to its verified reference configuration; it is not presumed
+unchanged at every angle.
 
 ADDENDUM D — DISTRIBUTED ELEVEN-NUMERATOR POLYNOMIAL CIRCUIT
 
@@ -613,7 +632,7 @@ receipts and the two internal cell-11 gates; (2) the two oriented spin
 layers' 16 addresses; (3) T2 determinant at its admitted state;
 (4) F rank/nullspace and D' forward/inverse permutation;
 (5) sixteen ordered T3 gate receipts with numeric coefficients;
-(6) T4 inverse and −3 modular-unit-list result;
+(6) T4 inverse and adjustable phase-gear angle/residue geometry, with -180 reference and angle-variant receipts;
 (7) HNAN bypass unchanged phase and gain=1 at each dead divisor;
 (8) exact Genesis→Hash72→Hash216 two-pass replay with no
 interchanged operands or dropped local-digit provenance.
