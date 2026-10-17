@@ -1,0 +1,39 @@
+"""Bounded tests for global unfinished-thread graph integrity."""
+import unittest
+from scripts.pass219_unfinished_threads_dependency_graph import graph_from_inventory
+
+class GraphTests(unittest.TestCase):
+    def setUp(self):
+        self.inventory = {
+            "schema": "HHS_PASS219_GLOBAL_BRANCH_PR_ADMISSION_INVENTORY_V1",
+            "repository": "owner/repo",
+            "orphan_branches_without_open_pr": ["thread/unfinished"],
+            "open_prs": [
+                {"number": 10, "title": "candidate", "head": "branch/a",
+                 "head_sha": "a"*40, "body": "Requires #11",
+                 "integration_candidate": True, "blocking_checks": [], "url": "https://example.com/10"},
+                {"number": 11, "title": "unfinished", "head": "branch/b",
+                 "head_sha": "b"*40, "body": "",
+                 "integration_candidate": False, "blocking_checks": ["lean"],
+                 "url": "https://example.com/11"}]}
+
+    def test_every_thread_and_contract(self):
+        graph=graph_from_inventory(self.inventory)
+        self.assertEqual(set(graph["nodes"]), {
+            "PASS219_CPP_LEAN_PROOF_ENFORCEMENT", "pr:10", "pr:11",
+            "branch:thread/unfinished"})
+        self.assertEqual(sum(e["kind"]=="must_pass_contract" for e in graph["edges"]), 3)
+
+    def test_reference_is_unverified_not_auto_merge(self):
+        graph=graph_from_inventory(self.inventory)
+        self.assertIn({"from":"pr:10","to":"pr:11",
+                       "kind":"referenced_pr_unverified"},graph["edges"])
+        self.assertEqual(graph["nodes"]["pr:11"]["status"],"unfinished")
+
+    def test_no_phantom_dependency(self):
+        self.inventory["open_prs"][0]["body"]="References #99999"
+        graph=graph_from_inventory(self.inventory)
+        self.assertFalse(any(e["kind"]=="referenced_pr_unverified" for e in graph["edges"]))
+
+if __name__=="__main__":
+    unittest.main()
