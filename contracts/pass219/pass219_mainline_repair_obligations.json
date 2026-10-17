@@ -1,0 +1,42 @@
+{
+  "schema": "HHS_PASS219_MAINLINE_REPAIR_OBLIGATIONS_V1",
+  "records": [
+    {
+      "source_pr": 774,
+      "main_sha": "reported-current-main-unverified",
+      "blockers": [
+        "uint64 clock overflow",
+        "malformed UQCEL envelope admission",
+        "transitive ABI header build dependencies",
+        "signed environment probe failure"
+      ],
+      "next": "repair merged native admission defects, validate exact C++ ABI and signed replay"
+    },
+    {
+      "source_pr": 818,
+      "main_sha": "reported-current-main-unverified",
+      "blockers": [
+        "large BigInt serialization",
+        "alternate checkout root discovery"
+      ],
+      "next": "repair merged witness serialization and alternate-root discovery; run negative round trips"
+    },
+    {
+      "source_pr": 820,
+      "main_sha": "cf5eb2a9-reported-promoted-exact-sha-prefix",
+      "blockers": [
+        "native chat exit 27",
+        "deployed causal model environment lacks transformers",
+        "four identical canned fallbacks",
+        "zero serialized response blocks",
+        "HTTPS verification skipped",
+        "Chromium verification skipped"
+      ],
+      "next": "provision pinned causal LM runtime on production interpreter, check model identity, restart service under guarded controls, rerun strict native CLI four prompt acceptance, then HTTPS and Chromium for exactly cf5eb2a9",
+      "repair_pr": 823,
+      "repair_branch": "repair/native-causal-model-production-acceptance-20261017",
+      "repair_commit": "fb6590ec4abb7a336f02da4c0a3f727467973d3f",
+      "acceptance": "pending native-chat four prompt, response-block, HTTPS, Chromium proof at exact deployed SHA"
+    }
+  ]
+}
