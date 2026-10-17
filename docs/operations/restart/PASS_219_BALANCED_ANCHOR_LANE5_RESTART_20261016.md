@@ -104,3 +104,9 @@
 - Added `tests/pass219/test_pass219_global_integration_inventory.py` covering second-page retrieval, truncated result failure and inconsistent total failure; wired the tests to the graph workflow.
 - Commits: `b3fe176c450e2f18fe5c55e2b18a4f5993a13e39`, `3e160d2eb455f7b60bb02935f45a3e6efc66f528`, `3beab762818be23250029c7aed478a73a8307ceb`.
 - The inventory and native Lean proof workflow validation remain pending; full dependency edges, eligible merges and signed Hash216 replay remain unfinished.
+
+## 2026-10-17 merged defects / delivery blocker carry-forward
+- User reports #818 merged 2026-10-16 and #774 merged 2026-10-17, with unresolved BigInt/root, clock-overflow/UQCEL/header dependency defects inherited by main. #821 remains conflicted with OpenSSL/Hash72/cell-wall link and Python import blockers. Exact-main deployment not confirmed; earlier EVP_Digest candidate rejected and browser checks skipped.
+- Updated canonical Pass219 graph contract in commit `a2c47a22fd5a243fb6d02d4ccd680932130f40a1` to mark #774/#818 as **mainline repair** rather than still-open prerequisites; #821 as repair-forward; #819 as draft downstream proof work; production as terminal verification gate.
+- This checkpoint records reported blocker status pending exact-main/PR refreshed retrieval. It is not a claim that production was promoted, workflows were rerun, or defect code repaired.
+- Next actions: inspect native UQCEL/clock/header, BigInt/root and Pass205 linkage/import code on updated main; isolate minimal repairs with negative tests; run signed admission and exact-main gates; then resume LARONE Lane5 integrated graph and Hash216 replay.
