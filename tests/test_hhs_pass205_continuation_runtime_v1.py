@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ctypes
 import importlib
 import json
 import os
@@ -16,6 +17,11 @@ from hhs_python.runtime.hhs_pass205_continuation_bridge import (
     Q_COUNT,
     STATE_BITS,
     Pass205NativeBridge,
+    build_native_library,
+)
+from hhs_runtime.core.hash72_validator_v1 import HASH72_ALPHABET
+from hhs_runtime.pass219.lane5_penrose8_hash216_loshu_bridge import (
+    hash216_lineage_witness,
 )
 from hhs_backend.runtime.hhs_pass205_accelerator_translation_v1 import (
     BACKENDS,
@@ -25,6 +31,33 @@ from hhs_backend.runtime.hhs_pass205_continuation_runtime_v1 import (
     ContinuationRejected,
     Pass205ContinuationRuntime,
 )
+
+
+def test_combined_pass205_library_resolves_exact_hash216_sha256_lineage() -> None:
+    library = ctypes.CDLL(str(build_native_library(force=True)))
+    native = library.hhs_hash216_lineage_vector_sha256
+    native.argtypes = [ctypes.c_char_p] * 3 + [ctypes.c_void_p, ctypes.c_void_p]
+    native.restype = ctypes.c_int
+
+    previous = HASH72_ALPHABET
+    change = HASH72_ALPHABET[::-1]
+    receipt = HASH72_ALPHABET
+    ordered = ctypes.create_string_buffer(217)
+    vector = ctypes.create_string_buffer(216 * 64 + 1)
+
+    assert native(
+        previous.encode("ascii"),
+        change.encode("ascii"),
+        receipt.encode("ascii"),
+        ordered,
+        vector,
+    ) == 1
+
+    expected = hash216_lineage_witness(previous, change, receipt)
+    assert expected["status"] == "PASS"
+    assert ordered.value.decode("ascii") == expected["hash216"]
+    assert vector.value.decode("ascii") == expected["sha256_vector_concatenated"]
+    assert len(vector.value) == 216 * 64
 
 
 def _event(cell: int, mask: int, control: int = 0) -> dict[str, int]:
