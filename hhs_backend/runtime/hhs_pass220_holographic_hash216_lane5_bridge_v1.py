@@ -94,7 +94,9 @@ class Pass220HolographicLane5QueryBridge:
                 Hash216CompositionCandidate(
                     candidate_id=candidate_id,
                     hash216=candidate_hash216,
-                    validated=True,
+                    # State validity follows native Hash216 type identity.
+                    # This legacy field is deliberately not a JSON grant.
+                    validated=False,
                     jump_span=int(candidate.get("jump_span", 1)),
                     lineage_signature=str(candidate.get("lineage_signature", candidate_hash216)),
                 )

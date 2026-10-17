@@ -1,0 +1,58 @@
+name: Pass 220 I083 Ordered Cubic Law of One Bridge
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py'
+      - 'formal/wolfram/pass220_i083_ordered_cubic_law_one_i082_bridge_v1.wl'
+      - 'docs/pass220/PASS_220_I083_ORDERED_CUBIC_LAW_ONE_BRIDGE.md'
+      - '.github/workflows/pass220-i083-ordered-cubic-law-one.yml'
+      - 'hhs_spi_tensor_pair_cubic_normalization_rule_v1.py'
+      - 'hhs_spi_law_of_one_projection_rule_v1.py'
+      - 'hhs_runtime/hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inherited-law-one-and-ordered-cubic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped original runtime
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Compile the original Pass 219 and new I083 exact integration
+        run: |
+          python -m py_compile \
+            hhs_spi_tensor_pair_cubic_normalization_rule_v1.py \
+            hhs_spi_law_of_one_projection_rule_v1.py \
+            hhs_runtime/hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py \
+            hhs_runtime/hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py
+      - name: Run original Law-of-1 and tensor-pair three-set tests
+        run: |
+          python -m pytest -q \
+            hhs_spi_law_of_one_projection_rule_tests_v1.py \
+            hhs_spi_tensor_pair_cubic_normalization_rule_tests_v1.py
+      - name: Run I082 72-cell exact geometry and I083 ordered native Hold tests
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py \
+            tests/pass220/test_hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py
+      - name: Check honest Wolfram source and original native authority boundary
+        run: |
+          test -s formal/wolfram/pass220_i083_ordered_cubic_law_one_i082_bridge_v1.wl
+          grep -q 'native_commutation_proven"->False' formal/wolfram/pass220_i083_ordered_cubic_law_one_i082_bridge_v1.wl
+          grep -q 'native_t_or_m_solved"->False' formal/wolfram/pass220_i083_ordered_cubic_law_one_i082_bridge_v1.wl
+          echo 'I083 Wolfram source present; kernel validation was performed separately. No CI Wolfram evaluation claimed.'

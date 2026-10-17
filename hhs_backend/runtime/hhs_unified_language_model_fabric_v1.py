@@ -96,16 +96,29 @@ def build_unified_language_model_fabric(
 
     causal = dict(native_installation.get("causal_lm") or {})
     if causal:
+        pass215_profile = causal.get("engine_id") == "PASS215_EXACT_CERTIFIED"
         members.append({
-            "member_id": f"native-causal:{causal.get('model_id') or 'unconfigured'}",
+            "member_id": (
+                f"pass215-exact:{causal.get('model_id') or 'unconfigured'}"
+                if pass215_profile else
+                f"native-causal:{causal.get('model_id') or 'unconfigured'}"
+            ),
             "provider_id": "provider:hhs.local.text",
             "model_id": causal.get("model_id"),
-            "role": "NATIVE_CAUSAL_GENERATOR",
+            "role": (
+                "PASS215_EXACT_CERTIFIED_BOUNDED_GENERATOR"
+                if pass215_profile else "NATIVE_CAUSAL_GENERATOR"
+            ),
             "ready": bool(causal.get("ready")),
             "configured": bool(causal.get("configured")),
             "loaded": bool(causal.get("loaded")),
             "callable_from_unified_chat": True,
-            "capabilities": ["TEXT_GENERATION", "MEMORY_RETRIEVAL"],
+            "capabilities": (
+                ["CERTIFIED_BOUNDED_TEXT_GENERATION"] if pass215_profile
+                else ["TEXT_GENERATION", "MEMORY_RETRIEVAL"]
+            ),
+            "arbitrary_prompt_generation_supported": not pass215_profile,
+            "frozen_exact_profile_only": pass215_profile,
         })
 
     members.append({

@@ -1,0 +1,91 @@
+name: Pass 220 Ordered Phase Chain V4 Native Ingress
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode'
+      - 'tests/pass220/test_pass220_ordered_phase_chain_v4.py'
+      - '.github/workflows/pass220-ordered-phase-chain-v4.yml'
+      - 'tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-phase-chain-v4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused test requirements
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx websockets
+      - name: Exact source/provenance and negative orientation tests
+        run: python -m pytest -q tests/pass220/test_pass220_ordered_phase_chain_v4.py
+      - name: Compile existing shared native Runtime ABI
+        run: make c-abi
+      - name: Mediate exact V4 source through existing Lane 5 native candidate ingress
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/ordered-phase-chain-v4
+          python - <<'PY'
+          from pathlib import Path
+          from hashlib import sha256
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          import json
+          src=Path("contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode").read_bytes()
+          receipt=Lane5IngressMediator().mediate(src,provenance="pass220:ordered-phase-chain-v4")
+          assert receipt["workload_sha256"] == sha256(src).hexdigest()
+          assert receipt["candidate_only"] is True
+          assert receipt["canonical_vm81_mutation_authority"] is False
+          assert receipt["canonical_hash216_authority"] is False
+          assert receipt["requires_signed_environmental_vm81_admission"] is True
+          record={"source_sha256":sha256(src).hexdigest(),"lane5_receipt":receipt,
+                  "source_specific_vm81_commit":False,
+                  "source_specific_hash72_execution_receipt":False}
+          Path("artifacts/pass220/ordered-phase-chain-v4/lane5_candidate.json").write_text(
+              json.dumps(record,sort_keys=True,indent=2)+"\n")
+          print("EXACT_V4_SOURCE_MEDIATED_IN_LANE5")
+          PY
+      - name: Execute inherited Pass159 native frontend and validate-only
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/pass220-tensor-v4
+          /tmp/pass220-tensor-v4 contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode \
+            | tee artifacts/pass220/ordered-phase-chain-v4/native_probe.txt
+          grep -Fx 'native_validate_only_status=0' artifacts/pass220/ordered-phase-chain-v4/native_probe.txt
+          grep -Fx 'vm81_source_specific_commit_verified=false' artifacts/pass220/ordered-phase-chain-v4/native_probe.txt
+      - name: Check native Hash216 changes on equality-chain phase mutation
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          src=Path("contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode").read_text(encoding="utf-8")
+          assert "==x==-y*(" in src
+          Path("/tmp/pass220-v4-mutated.harmonicode").write_text(
+              src.replace("==x==-y*(", "==-y==x*(", 1), encoding="utf-8")
+          PY
+          /tmp/pass220-tensor-v4 /tmp/pass220-v4-mutated.harmonicode > /tmp/pass220-v4-mutated.out
+          original=$(grep '^source_hash216=' artifacts/pass220/ordered-phase-chain-v4/native_probe.txt)
+          changed=$(grep '^source_hash216=' /tmp/pass220-v4-mutated.out)
+          test "$original" != "$changed"
+          printf 'V4_ORDERED_CHAIN_MUTATION_HASH216_DISTINCT\n'
+      - name: Upload source-specific ingress/validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-ordered-phase-chain-v4-${{ github.sha }}
+          path: artifacts/pass220/ordered-phase-chain-v4/
+          if-no-files-found: warn
+          retention-days: 90

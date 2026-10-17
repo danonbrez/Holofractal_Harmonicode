@@ -1,0 +1,97 @@
+name: Pass 220 V7 Native Matrix Quotient Intent Gate
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_v7_quotient_gate_v1.h'
+      - 'tools/pass220/pass220_v7_quotient_gate_v1.c'
+      - 'tests/pass220/pass220_v7_quotient_gate_abi_test.c'
+      - '.github/workflows/pass220-v7-native-quotient-intent-gate.yml'
+      - 'contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fail-closed-quotient-intent:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build real inherited C ABI
+        run: make c-abi
+      - name: Compile native callable quotient gate and adversarial regression suite
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_v7_quotient_gate_v1.c tests/pass220/pass220_v7_quotient_gate_abi_test.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-v7-quotient-abi-test
+          /tmp/pass220-v7-quotient-abi-test | tee /tmp/pass220-v7-abi.txt
+          grep -Fx v7_native_quotient_intent_abi=PASS /tmp/pass220-v7-abi.txt
+          grep -Fx v7_undeclared_matrix_quotient=INHERIT_NATIVE_DISPATCH /tmp/pass220-v7-abi.txt
+          grep -Fx v7_valid_tensor_states_not_blanket_blocked=VERIFIED /tmp/pass220-v7-abi.txt
+          grep -Fx v7_five_pass169_modes=REGISTERED_PROVIDER_REQUIRED /tmp/pass220-v7-abi.txt
+          grep -Fx v7_negative_phase_source_and_fake_commits=REJECTED /tmp/pass220-v7-abi.txt
+      - name: Undeclared slash inherits native type dispatch, named modes remain noncanonical
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS220_V7_CLI -Ihhs_runtime/include \
+            tools/pass220/pass220_v7_quotient_gate_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-v7-quotient-gate
+          mkdir -p artifacts/pass220/v7-quotient-intent
+          SOURCE=contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode
+          /tmp/pass220-v7-quotient-gate "$SOURCE" 0 >/tmp/pass220-v7-undeclared.txt
+          grep -Fx v7_decision=INHERIT_NATIVE_DISPATCH /tmp/pass220-v7-undeclared.txt
+          grep -Fx v7_native_type_dispatch_required=1 /tmp/pass220-v7-undeclared.txt
+          grep -Fx v7_reason=9 /tmp/pass220-v7-undeclared.txt
+          for mode in 1 2 3 4 5; do
+            /tmp/pass220-v7-quotient-gate "$SOURCE" "$mode" \
+              | tee "artifacts/pass220/v7-quotient-intent/mode-$mode.txt"
+            grep -Fx v7_decision=UNRESOLVED_PROVIDER "artifacts/pass220/v7-quotient-intent/mode-$mode.txt"
+            grep -Fx native_v7_matrix_inverse_proved=0 "artifacts/pass220/v7-quotient-intent/mode-$mode.txt"
+            grep -Fx canonical_vm81_admission=0 "artifacts/pass220/v7-quotient-intent/mode-$mode.txt"
+          done
+          cp /tmp/pass220-v7-abi.txt artifacts/pass220/v7-quotient-intent/abi_negative_tests.txt
+          cp /tmp/pass220-v7-undeclared.txt artifacts/pass220/v7-quotient-intent/undeclared_native_dispatch.txt
+      - name: Negative runtime phase and canonical-commit bypass detection
+        run: |
+          set -euo pipefail
+          SOURCE=contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode
+          for flag in --commute --scalarize --cancel-delta --reverse-equality --claim-commit; do
+            if /tmp/pass220-v7-quotient-gate "$SOURCE" 5 "$flag" > /tmp/v7-prohibited-output; then
+              echo 'NATIVE_V7_QUOTIENT_INTENT_BYPASS' >&2
+              exit 1
+            fi
+            grep -Fx v7_decision=REJECT /tmp/v7-prohibited-output
+          done
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
+          assert b'xy+yx' in src
+          Path('/tmp/v7-mutated-tensor.harmonicode').write_bytes(src.replace(b'xy+yx',b'yx+xy',1))
+          PY
+          if /tmp/pass220-v7-quotient-gate /tmp/v7-mutated-tensor.harmonicode 5; then
+            echo NATIVE_ORDERED_SOURCE_REWRITE_WRONGLY_ADMITTED >&2
+            exit 1
+          fi
+          echo V7_NATIVE_MATRIX_QUOTIENT_INTENT_FAIL_CLOSED
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v7-native-quotient-intent-${{ github.sha }}
+          path: artifacts/pass220/v7-quotient-intent/
+          if-no-files-found: warn
+          retention-days: 90

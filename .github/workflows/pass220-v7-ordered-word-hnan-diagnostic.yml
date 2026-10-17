@@ -1,0 +1,89 @@
+name: Pass 220 V7 Native HNAN and Free Word Denominator Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode'
+      - 'hhs_runtime/hhs_pass220_v7_ordered_free_word_diagnostic_v1.py'
+      - 'tests/pass220/test_pass220_v7_ordered_free_word_diagnostic_v1.py'
+      - 'tools/pass220/pass220_v7_native_ordered_word_hnan_diagnostic.c'
+      - '.github/workflows/pass220-v7-ordered-word-hnan-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ordered-denominator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Exact independent ordered-word diagnostic and mutation tests
+        run: python -m pytest -q tests/pass220/test_pass220_v7_ordered_free_word_diagnostic_v1.py -k 'not test_materialized_diagnostic_replay'
+      - name: Emit source-bound diagnostic and replay
+        run: |
+          mkdir -p artifacts/pass220/v7-ordered-words
+          python -m hhs_runtime.hhs_pass220_v7_ordered_free_word_diagnostic_v1 \
+            --source contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode \
+            --out artifacts/pass220/v7-ordered-words/diagnostic.json
+          python -m pytest -q tests/pass220/test_pass220_v7_ordered_free_word_diagnostic_v1.py
+      - name: Build inherited HHS C ABI and native source-bound ordered-word/HNAN checker
+        run: |
+          make c-abi
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_v7_native_ordered_word_hnan_diagnostic.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/pass220-v7-hnan-words
+          /tmp/pass220-v7-hnan-words contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode \
+            | tee artifacts/pass220/v7-ordered-words/native_hnan_words.txt
+          grep -Fx free_word_row_column_diagnostics=VERIFIED artifacts/pass220/v7-ordered-words/native_hnan_words.txt
+          grep -Fx hnan_15_rule_mask=0x7FFF artifacts/pass220/v7-ordered-words/native_hnan_words.txt
+          grep -Fx native_matrix_quotient_admissibility=UNRESOLVED artifacts/pass220/v7-ordered-words/native_hnan_words.txt
+      - name: Native source order reversal must fail closed
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
+          assert b'x+y-z-w+xy+yx-zw-wz' in src
+          Path('/tmp/pass220-v7-hnan-mutated.harmonicode').write_bytes(
+              src.replace(b'x+y-z-w+xy+yx-zw-wz',
+                          b'x+y-z-w+yx+xy-zw-wz',1))
+          PY
+          if /tmp/pass220-v7-hnan-words /tmp/pass220-v7-hnan-mutated.harmonicode; then
+            echo HHS_V7_ORDERED_WORD_MUTATION_ADMITTED >&2
+            exit 1
+          fi
+          echo V7_NATIVE_ORDERED_WORD_PHASE_MUTATION_REJECTED
+      - name: Conjoin native real HNAN verification with source-bound diagnostic only
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('artifacts/pass220/v7-ordered-words')
+          doc=json.loads((root/'diagnostic.json').read_text())
+          native=(root/'native_hnan_words.txt').read_text()
+          assert 'free_word_column0=yx-wz' in native
+          assert 'free_word_column2=wx-yx' in native
+          assert 'hnan_xy_yx_commutation=REJECTED' in native
+          assert 'hnan_zw_wz_commutation=REJECTED' in native
+          assert not doc['matrix_ordered_quotient_admissibility_verified']
+          assert not doc['signed_environmental_vm81_admission_verified']
+          assert not doc['canonical_hash72_hash216_transition_verified']
+          print('V7_NATIVE_HNAN_AND_EXACT_WORD_DIAGNOSTIC_NONCANONICAL_PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v7-hnan-ordered-words-${{ github.sha }}
+          path: artifacts/pass220/v7-ordered-words/
+          if-no-files-found: warn
+          retention-days: 90

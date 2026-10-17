@@ -4,12 +4,17 @@ on:
   pull_request:
     branches: [main, work]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     strategy:
       matrix:
         node: [1,2,3]
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,6 +31,7 @@ jobs:
   consensus:
     needs: verify
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:

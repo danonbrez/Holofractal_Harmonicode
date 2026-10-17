@@ -311,7 +311,7 @@ class HHSAPIAssistantService(HHSAssistantService):
                     tools=mode_tools,
                     response_format=response_format,
                     custom_system_instruction=custom_system_instruction,
-                    assistant_mode=mode,
+                    assistant_mode=assistant_mode,
                     user_context=user_context,
                 )
             with timed_stage("api_assistant.decorate_result"):
@@ -345,7 +345,7 @@ class HHSAPIAssistantService(HHSAssistantService):
                     tools=mode_tools,
                     response_format=response_format,
                     custom_system_instruction=custom_system_instruction,
-                    assistant_mode=mode,
+                    assistant_mode=assistant_mode,
                     user_context=user_context,
                 )
             with timed_stage("api_assistant.decorate_result"):

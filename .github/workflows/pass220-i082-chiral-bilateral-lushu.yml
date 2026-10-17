@@ -1,0 +1,46 @@
+name: Pass 220 I082 Ordered Chiral Lo Shu Bifurcation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py'
+      - 'formal/wolfram/pass220_i082_chiral_bilateral_loshu_bifurcation_v1.wl'
+      - 'docs/pass220/PASS_220_I082_CHIRAL_BILATERAL_LO_SHU_BIFURCATION.md'
+      - '.github/workflows/pass220-i082-chiral-bilateral-lushu.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ordered-polynomial-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped conformance runtime
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Compile only new exact tensor projection and regressions
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py \
+            tests/pass220/test_hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py
+      - name: Execute original I070/I071 Lane 5 phase binding and exact I082 projection
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py
+      - name: Preserve source-only Wolfram proof with no fake executable verification
+        run: |
+          test -s formal/wolfram/pass220_i082_chiral_bilateral_loshu_bifurcation_v1.wl
+          grep -q 'heldOrderedPromptResponse = HoldComplete' formal/wolfram/pass220_i082_chiral_bilateral_loshu_bifurcation_v1.wl
+          grep -q '"delta_e_zero_for_full_native_expression_proven"->False' formal/wolfram/pass220_i082_chiral_bilateral_loshu_bifurcation_v1.wl
+          echo 'I082 Wolfram formal source present. Wolfram evaluation must have a real Wolfram kernel receipt; no runner-side proof claimed.'

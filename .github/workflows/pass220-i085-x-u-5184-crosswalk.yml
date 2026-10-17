@@ -1,0 +1,66 @@
+name: Pass 220 I085 Exact x/u Rational 5184 Address Crosswalk
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py'
+      - 'tests/pass220/test_pass220_i085_x_over_u_native_pass186_crosswalk.c'
+      - 'formal/wolfram/pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.wl'
+      - 'docs/pass220/PASS_220_I085_X_OVER_U_RATIONAL_5184_CROSSWALK.md'
+      - '.github/workflows/pass220-i085-x-u-5184-crosswalk.yml'
+      - 'native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c'
+      - 'hhs_runtime/hhs_pass220_i084_x4_ordered_unit_quotient_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-pass186-xu-5184:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential
+          python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Re-run original x86_64 Pass 186 ABI and all 1,259,712 hydrated coordinates
+        run: |
+          make -C native_projects/hhs_pass186_x64_vm81_q144 all
+          make -C native_projects/hhs_pass186_x64_vm81_q144 test
+          make -C native_projects/hhs_pass186_x64_vm81_q144 disassemble
+      - name: Compile and execute I085 against original C ABI, 5184 positions
+        run: |
+          cc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass186_x64_vm81_q144/include \
+            native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c \
+            tests/pass220/test_pass220_i085_x_over_u_native_pass186_crosswalk.c \
+            -o /tmp/hhs_i085_native_5184
+          /tmp/hhs_i085_native_5184
+      - name: Exact Python source/negative type regression
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py \
+            tests/pass220/test_hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py \
+            tests/pass220/test_hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_i084_x4_ordered_unit_quotient_v1.py \
+            tests/pass220/test_hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py
+      - name: Preserve exact Wolfram construction, with no unsupported operator proof
+        run: |
+          test -s formal/wolfram/pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.wl
+          grep -q 'native_tensor_value_universality_proven"->False' formal/wolfram/pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.wl
+          grep -q 'native_fractional_root_branch_consistency_proven"->False' formal/wolfram/pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.wl
+          echo 'I085 executed native Pass186 ABI, not a substitute. Wolfram kernel proof was performed separately.'

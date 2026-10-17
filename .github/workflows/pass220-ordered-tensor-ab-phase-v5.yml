@@ -1,0 +1,112 @@
+name: Pass 220 V5 AB-coupled Tensor Source Ingress
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_20261009.harmonicode'
+      - 'contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_OUTER_COMPONENT_20261009.harmonicode'
+      - 'tests/pass220/test_pass220_ordered_tensor_ab_phase_v5.py'
+      - '.github/workflows/pass220-ordered-tensor-ab-phase-v5.yml'
+      - 'tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v5-native-scoped-ingress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest fastapi httpx websockets
+      - name: Exact complete two-line Unicode and 40-gate source tests
+        run: python -m pytest -q tests/pass220/test_pass220_ordered_tensor_ab_phase_v5.py
+      - name: Build inherited C/C++ native ABI
+        run: make c-abi
+      - name: Lane5 arbitrary-byte mediation of FULL two-line V5 declaration
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/v5-ab-tensor
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import json
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          full=Path('contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_20261009.harmonicode').read_bytes()
+          outer=Path('contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_OUTER_COMPONENT_20261009.harmonicode').read_bytes()
+          assert full.startswith(outer)
+          assert b'where P' in full
+          receipt=Lane5IngressMediator().mediate(
+              full,provenance='pass220:verbatim-v5-AB-typed-where-boundary')
+          assert receipt['workload_sha256']==sha256(full).hexdigest()
+          assert receipt['candidate_only'] is True
+          assert receipt['canonical_vm81_mutation_authority'] is False
+          assert receipt['canonical_hash216_authority'] is False
+          assert receipt['requires_signed_environmental_vm81_admission'] is True
+          record={
+              'full_source_sha256':sha256(full).hexdigest(),
+              'full_source_bytes':len(full),
+              'outer_component_sha256':sha256(outer).hexdigest(),
+              'outer_component_bytes':len(outer),
+              'v5_full_semantic_where_proof_verified':False,
+              'v5_all_40_equality_gate_truths_verified':False,
+              'canonical_signed_vm81_admission_verified':False,
+              'lane5_candidate_receipt':receipt,
+          }
+          Path('artifacts/pass220/v5-ab-tensor/lane5_full_source.json').write_text(
+              json.dumps(record,sort_keys=True,indent=2)+'\n')
+          print('V5_EXACT_UNICODE_COMPLETE_SOURCE_LANE5_CANDIDATE_MEDIATED')
+          PY
+      - name: Native Pass159 frontend and validate-only on outer subcomponent only
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" -o /tmp/pass220-v5-outer-probe
+          /tmp/pass220-v5-outer-probe contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_OUTER_COMPONENT_20261009.harmonicode \
+            | tee artifacts/pass220/v5-ab-tensor/native_outer_only.txt
+          grep -Fx 'native_validate_only_status=0' artifacts/pass220/v5-ab-tensor/native_outer_only.txt
+          grep -Fx 'vm81_source_specific_commit_verified=false' artifacts/pass220/v5-ab-tensor/native_outer_only.txt
+      - name: Source Hash216 changes on xA/B ordered pair mutation
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          b=Path('contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_OUTER_COMPONENT_20261009.harmonicode').read_bytes()
+          assert b'==xA==-yB*(' in b
+          Path('/tmp/pass220-v5-mutant.harmonicode').write_bytes(
+              b.replace(b'==xA==-yB*(',b'==Ax==-By*(',1))
+          PY
+          /tmp/pass220-v5-outer-probe /tmp/pass220-v5-mutant.harmonicode > /tmp/pass220-v5-mutant.log
+          original=$(grep '^source_hash216=' artifacts/pass220/v5-ab-tensor/native_outer_only.txt)
+          modified=$(grep '^source_hash216=' /tmp/pass220-v5-mutant.log)
+          test "$original" != "$modified"
+          echo V5_NATIVE_AB_PHASE_ORDER_SOURCE_HASH216_DISTINCT
+      - name: Fail closed on full Unicode where-clause semantic promotion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          r=json.loads(Path('artifacts/pass220/v5-ab-tensor/lane5_full_source.json').read_text())
+          assert r['v5_full_semantic_where_proof_verified'] is False
+          assert r['v5_all_40_equality_gate_truths_verified'] is False
+          assert r['canonical_signed_vm81_admission_verified'] is False
+          print('V5_WHERE_RELATIONS_AND_40_GATES_NOT_YET_PROVEN')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v5-AB-tensor-ingress-${{ github.sha }}
+          path: artifacts/pass220/v5-ab-tensor/
+          if-no-files-found: warn
+          retention-days: 90
