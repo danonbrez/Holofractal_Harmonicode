@@ -52,3 +52,20 @@ Open the repair PR, inspect exact-head CI, repair forward any attributable failu
 ## Blockers
 
 None known at checkpoint creation.
+
+
+## Repair-forward checkpoint — stale validation workflow
+
+PR #821 first exact-head Pass 205 Repair Validation Base run `38994703106` failed before building native code because the workflow referenced removed current-main surfaces:
+
+- `deployment/digitalocean/pass205_state/install.sh`
+- `hhs_python/runtime/hhs_pass205_native_freshness_guard.py`
+- `hhs_backend/runtime/hhs_pass205_governed_continuation_v2.py`
+- `hhs_backend/runtime/hhs_pass205_retrieval_order_v1.py`
+- `hhs_backend/api/a0_pass205_transport_bootstrap.py`
+- `hhs_backend/api/a_pass205_governed_bootstrap.py`
+- four removed governed/state-deployment tests.
+
+Repository inspection confirmed the current authoritative Pass 205 implementation is the production continuation bridge/runtime, accelerator translation, and continuation API. The stale repair workflow was therefore repaired to compile, build, dynamically load, test, and assert authority properties on those current surfaces instead of skipping validation.
+
+This workflow repair does not change runtime semantics. It removes dead validation references and strengthens current combined-library loading coverage.
