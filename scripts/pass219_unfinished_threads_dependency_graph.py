@@ -37,7 +37,26 @@ def graph_from_inventory(inventory):
         for number in sorted(mentions & known - {pr["number"]}):
             edges.append({"from":"pr:"+str(pr["number"]), "to":"pr:"+str(number),
                           "kind":"referenced_pr_unverified"})
-    assert len(nodes) == len(prs) + len(inventory["orphan_branches_without_open_pr"]) + 1
+    # Mainline repair obligations remain graph members even after source PR merge.
+    # Source PR references are provenance links, not automatically verified dependencies.
+    for repair in inventory.get("mainline_repair_obligations", []):
+        ident = "repair:" + str(repair["source_pr"])
+        if ident in nodes:
+            raise ValueError("duplicate mainline repair")
+        nodes[ident] = {
+            "kind": "mainline_repair", "status": "unfinished",
+            "source_pr": repair["source_pr"],
+            "main_sha": repair["main_sha"],
+            "blockers": list(repair["blockers"]),
+            "next": repair["next"],
+            "proof_closure_verified": False,
+            "native_replay_verified": False,
+            "exact_main_verified": False}
+        edges.append({"from": ident, "to": CONTRACT,
+                      "kind": "must_pass_contract"})
+        edges.append({"from": ident, "to": "source_pr:" + str(repair["source_pr"]),
+                      "kind": "inherited_provenance_non_scheduling"})
+    assert len(nodes) == len(prs) + len(inventory["orphan_branches_without_open_pr"]) + 1 + len(inventory.get("mainline_repair_obligations", []))
     # Convert only explicitly verified prerequisites into scheduling edges.
     # Unverified references stay review hints and MUST NOT enter the order.
     verified = [e for e in edges if e["kind"] == "verified_prerequisite"]
