@@ -89,7 +89,11 @@ def build_native_library(*, force: bool = False) -> pathlib.Path:
     source = root / "hhs_runtime" / "c" / "hhs_pass205_continuation.c"
     hash_source = root / "hhs_runtime" / "src" / "hhs_hash216.c"
     if output.exists() and not force:
-        newest_input = max(source.stat().st_mtime, hash_source.stat().st_mtime)
+        newest_input = max(
+            source.stat().st_mtime,
+            hash_source.stat().st_mtime,
+            pathlib.Path(__file__).stat().st_mtime,
+        )
         if output.stat().st_mtime >= newest_input:
             return output
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -112,7 +116,7 @@ def build_native_library(*, force: bool = False) -> pathlib.Path:
         command.extend(["-fPIC", "-dynamiclib"])
     else:
         command.extend(["-fPIC", "-shared"])
-    command.extend([str(source), str(hash_source), "-o", str(output)])
+    command.extend([str(source), str(hash_source), "-o", str(output), "-lcrypto"])
     completed = subprocess.run(
         command,
         cwd=str(root),
