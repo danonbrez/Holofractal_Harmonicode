@@ -59,6 +59,19 @@ def all_check_runs(sha):
             raise RuntimeError("truncated check-runs pagination")
         page += 1
 
+def all_commit_statuses(sha):
+    """Include all legacy status contexts, not just the first API page."""
+    statuses = pages(f"/commits/{urllib.parse.quote(sha, safe='')}/statuses")
+    # Newest status is authoritative for each context; old failures are superseded.
+    latest = {}
+    for status in statuses:
+        context = status.get("context")
+        if not isinstance(context, str) or not context:
+            raise RuntimeError("commit status lacks context")
+        if context not in latest:
+            latest[context] = status
+    return list(latest.values())
+
 def collect():
     pulls = pages("/pulls?state=open")
     branches = pages("/branches")
@@ -71,8 +84,8 @@ def collect():
         sha = pr["head"]["sha"]
         if sha not in cache:
             runs = all_check_runs(sha)
-            statuses = api(f"/commits/{sha}/status")
-            cache[sha] = (runs, statuses.get("statuses", []))
+            statuses = all_commit_statuses(sha)
+            cache[sha] = (runs, statuses)
         runs, statuses = cache[sha]
         contexts = [s.get("state") for s in statuses]
         observed = bool(runs or statuses)
