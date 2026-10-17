@@ -65,3 +65,9 @@
 - Repair commit `82e2aa6d09d1219cb22a7907646f7aad086c2cc5`: exact midpoint expressed as paired Nat numerator/denominator witnesses with ordered anchor records; proof file inherits HHS native dependency chain instead of Mathlib host arithmetic.
 - Theorem validation after this commit is pending CI; no Lean PASS asserted.
 - Remaining: Wolfram evaluation, inherited Hash216 hydration binding + signed-environment deterministic replay. No canonical mutation changes.
+
+## 2026-10-17 Wolfram kernel validation
+- Connected WolframLanguageEvaluator executed the committed exact projection. Initial audit found 15/16 passing and reversed `SubsetQ` argument order for Lo Shu representation coverage.
+- Repaired `formal/wolfram/pass219_balanced_anchor_projection_v1.wl` on commit `e637426102a0e08f5547fce48dd531f876723478`.
+- Reexecuted the repaired file in the connected Wolfram kernel: status PASS, all 16/16 checks True, failed list empty; exact tensor {{1,2,3,9/2},{2,4,6,17/2},{3,6,9,13},{4,7,11,19}}.
+- This is exact arithmetic projection validation, not native Hash216 admission/replay. Lean latest CI run was queued when checked; no Lean PASS claimed.
