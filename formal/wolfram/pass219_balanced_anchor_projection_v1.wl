@@ -25,7 +25,7 @@ checks = <|
  "eight_three_routes" -> (2^3===3+5===3^2-1===8),
  "non_fibonacci_prime_coverage" -> (And @@ (MemberQ[Flatten[tensor],#] ||
      MemberQ[Numerator /@ balanced,#] & /@ {7,11,17,19})),
- "lo_shu_coverage" -> (SubsetQ[Range[1,9], Union[Flatten[input],{5,8,9}]]),
+ "lo_shu_coverage" -> (SubsetQ[Union[Flatten[input],{5,8,9}], Range[1,9]]),
  "phase_metadata_only" -> True
 |>;
 failed = Keys@Select[checks, # =!= True &];
