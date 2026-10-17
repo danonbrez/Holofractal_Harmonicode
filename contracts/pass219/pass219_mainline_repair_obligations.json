@@ -32,7 +32,11 @@
         "HTTPS verification skipped",
         "Chromium verification skipped"
       ],
-      "next": "provision pinned causal LM runtime on production interpreter, check model identity, restart service under guarded controls, rerun strict native CLI four prompt acceptance, then HTTPS and Chromium for exactly cf5eb2a9"
+      "next": "provision pinned causal LM runtime on production interpreter, check model identity, restart service under guarded controls, rerun strict native CLI four prompt acceptance, then HTTPS and Chromium for exactly cf5eb2a9",
+      "repair_pr": 823,
+      "repair_branch": "repair/native-causal-model-production-acceptance-20261017",
+      "repair_commit": "fb6590ec4abb7a336f02da4c0a3f727467973d3f",
+      "acceptance": "pending native-chat four prompt, response-block, HTTPS, Chromium proof at exact deployed SHA"
     }
   ]
 }
