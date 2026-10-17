@@ -1,0 +1,25 @@
+{
+  "schema": "HHS_PASS219_MAINLINE_REPAIR_OBLIGATIONS_V1",
+  "records": [
+    {
+      "source_pr": 774,
+      "main_sha": "reported-current-main-unverified",
+      "blockers": [
+        "uint64 clock overflow",
+        "malformed UQCEL envelope admission",
+        "transitive ABI header build dependencies",
+        "signed environment probe failure"
+      ],
+      "next": "repair merged native admission defects, validate exact C++ ABI and signed replay"
+    },
+    {
+      "source_pr": 818,
+      "main_sha": "reported-current-main-unverified",
+      "blockers": [
+        "large BigInt serialization",
+        "alternate checkout root discovery"
+      ],
+      "next": "repair merged witness serialization and alternate-root discovery; run negative round trips"
+    }
+  ]
+}
