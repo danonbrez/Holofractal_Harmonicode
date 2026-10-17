@@ -81,3 +81,13 @@
 - Merge sequencing: classify by dependencies and source overlap, deduplicate already-inherited commits, preferentially finish and land green prerequisites, repair-forward failing paths, and then validate LARONE u/x/y/z/w phase-gear + A/B/P ordered constructors through the existing Pass219 Lane5 / signed Hash216 admission surface.
 - Branches with no open PR remain in the ledger and require comparison to main. Do not blindly cherry-pick or squash their entire histories.
 - Restart: inspect the published JSON artifact, check exact head SHAs, batch candidate PRs by dependency, verify native assumptions; checkpoint on every successful batch, then verify exact main. No unverified green or merge claimed.
+
+## 2026-10-17 unified unfinished-thread proof graph
+- All open PRs and orphan branches must become first-class restartable graph nodes, not merely a CI-green list. No inferred dependency edges become binding without verification.
+- Added `scripts/pass219_unfinished_threads_dependency_graph.py` and graph JSON artifact emitted by `.github/workflows/pass219-global-integration-inventory.yml`.
+- Inventory now retains PR descriptions for explicit referenced-PR review hints; all nodes point to single canonical Pass219 proof/admission contract gate.
+- Contract: `contracts/pass219/PASS_219_UNIFIED_CPP_LEAN_BRANCH_DEPENDENCY_ENFORCEMENT_V1.md`. Existing C++, Lean, Wolfram, VM81, HNAN and Hash216 authorities are inherited.
+- Tests: `tests/pass219/test_pass219_unfinished_threads_dependency_graph.py`: universal node coverage, contract gate, nonbinding PR refs, no phantom edges.
+- Pending: execute graph CI and inspect artifact, expand missing per-thread status from commit/PR diff/restart checkpoint, confirm dependency edges, validate and merge eligible green prerequisites, bind signed Hash216 replay.
+- Base is main used when branch was created for PR #819; do not rebase or merge without latest main comparison.
+- New source commits include dd090ef3, b3bbd028, cad95889, 472192f6, ba0d7da4, b2b6e429 and 1ef8f3b1; local graph execution and Actions status not asserted as passing.
