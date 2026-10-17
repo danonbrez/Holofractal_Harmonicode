@@ -1,0 +1,115 @@
+{
+  "schema": "HHS_PASS_220_I078_VM81_CANDIDATE_BOUNDARY_EXPANSION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CHECKPOINT",
+  "date": "2026-10-04",
+  "root_metadata_seed": {
+    "numerator": 179971179971,
+    "denominator": 1000000,
+    "display": "179971.179971"
+  },
+  "invariant_scale": {
+    "numerator": 1001,
+    "denominator": 1000,
+    "display": "1.001",
+    "exact_rational_only": true,
+    "floating_point_projection_authorized": false
+  },
+  "base_main": "c54a9d5d0b57e113f895091065c76b5f4e21e998",
+  "branch": "genegreen872/gen-6-pass-220-i078-vm81-candidate-boundary-expansion",
+  "merge_target": "main",
+  "governing_ticket": "GEN-6",
+  "purpose": "Expand the downstream VM81 candidate boundary from verified I077 execution: ingest exact candidate frames, bind byte-exactly to hhs_exact_pass220_i077_execute, re-evaluate UQCEL identity, apply exact 1001/1000 scaling witnesses across all 81 VM81 words, prove zero-energy fixed-point closure, and emit candidate-only Hash216 boundary lineage with fail-closed invalid-candidate behavior.",
+  "upstream": {
+    "pass": "Pass 220 I077",
+    "verified_merge_main": "c54a9d5d0b57e113f895091065c76b5f4e21e998",
+    "abi": "hhs_exact_pass220_i077_execute",
+    "workflow_run": 37241121115
+  },
+  "native_abi": {
+    "header": "hhs_runtime/include/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.h",
+    "implementation": "hhs_runtime/c/hhs_pass220_i078_vm81_candidate_boundary_expansion_1_0.inc",
+    "aggregate_header": "hhs_runtime/include/hhs_runtime_exact_abi.h",
+    "aggregate_source": "hhs_runtime/c/hhs_runtime_exact_abi.c",
+    "public_functions": [
+      "hhs_exact_pass220_i078_version",
+      "hhs_exact_pass220_i078_descriptor",
+      "hhs_exact_pass220_i078_reference_candidate",
+      "hhs_exact_pass220_i078_expand_candidate_boundary"
+    ],
+    "python_binding": "hhs_runtime/hhs_pass220_i078_vm81_candidate_boundary_expansion_v1.py",
+    "native_probe": "tools/pass220/pass220_i078_vm81_candidate_boundary_probe.c"
+  },
+  "candidate_boundary": {
+    "node_count": 2,
+    "vm81_words": 81,
+    "byte_exact_i077_candidate_required": true,
+    "i077_execution_required": true,
+    "uqcel_identity_evaluation": true,
+    "uqcel_transition_must_match_i077": true,
+    "deterministic_replay_required": true,
+    "invalid_candidate_fail_closed": true,
+    "exact_scale_words_required": 81,
+    "exact_scale_numerator": 1001,
+    "exact_scale_denominator": 1000,
+    "zero_words_must_remain_zero_under_scale": true,
+    "delta_e": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "psi": {
+      "numerator": 0,
+      "denominator": 1
+    },
+    "omega": true
+  },
+  "lineage": {
+    "previous": "I077 receipt Hash72",
+    "change": "Hash72(candidate SHA-256 || exact 1001/1000 scale witness SHA-256 || node id)",
+    "receipt": "Hash72(I077 transition identity || candidate digest || scale digest || exact closure flags)",
+    "hash216_triplet_width": 216,
+    "hash216_identity_width": 216,
+    "canonical_commit_authority": false
+  },
+  "wolfram": {
+    "source": "formal/wolfram/pass220_i078_vm81_candidate_boundary_expansion_v1.wl",
+    "evidence": "evidence/pass220/i078_vm81_candidate_boundary_expansion_wolfram_20261004_v1.output.json",
+    "receipt": "evidence/pass220/i078_vm81_candidate_boundary_expansion_wolfram_20261004_v1.receipt.json",
+    "connected_kernel": "30/30 PASS"
+  },
+  "lean": {
+    "module": "HHS.Pass220.I078",
+    "source": "formal/lean/HHS/Pass220/VM81CandidateBoundaryExpansion.lean",
+    "inherits": [
+      "HHS.Pass220.I077",
+      "HHS.Provenance.OriginMarker"
+    ],
+    "required_checks": [
+      "build",
+      "leanchecker",
+      "axiom-audit"
+    ]
+  },
+  "authority": {
+    "candidate_only": true,
+    "host_matrixpower_authority": false,
+    "square_matrix_fallback_authority": false,
+    "floating_point_authority": false,
+    "numeric_exponent_evaluation_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_persistence_authority": false,
+    "external_egress_authority": false
+  },
+  "validation": {
+    "connected_wolfram": "30/30 PASS",
+    "native_shared_library_build": "PENDING_BRANCH_CI",
+    "native_probe": "PENDING_BRANCH_CI",
+    "mutated_candidate_fail_closed": "PENDING_BRANCH_CI",
+    "python_native_binding": "PENDING_BRANCH_CI",
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "lean_build_kernel_check_axiom_audit": "PENDING_BRANCH_CI",
+    "legacy_vm81_callable": "PENDING_BRANCH_CI"
+  }
+}
