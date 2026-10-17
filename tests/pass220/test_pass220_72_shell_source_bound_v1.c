@@ -7,7 +7,9 @@ int main(void){
  unsigned char changed[sizeof(source)-1];
  if(hhs_pass220_72_shell_lower(source,sizeof(source)-1,&result)!=HHS_72_SHELL_STRUCTURAL_ONLY) return 1;
  if(result.native_proof_admitted || result.vm81_admitted ||
-    result.outer_right.byte_start!=114U || result.inner_operands[3].byte_end!=99U) return 2;
+    result.outer_right.byte_start!=114U || result.inner_operands[3].byte_end!=99U ||
+    result.squared_chain.byte_start!=0U || result.squared_chain.byte_end!=102U ||
+    result.outer_left.byte_end!=112U || source[101]!='2' || source[102]!='/') return 2;
  memcpy(changed,source,sizeof(changed));
  changed[70]^=1U;
  if(hhs_pass220_72_shell_lower(changed,sizeof(changed),&result)!=HHS_72_SHELL_INVALID_SOURCE) return 3;
