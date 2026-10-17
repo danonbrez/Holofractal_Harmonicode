@@ -107,3 +107,23 @@ Superseding exact-head runs are queued due repository runner capacity:
 - Validate HHS Runtime OS Production Root: `38995063257`
 
 Next action: inspect the superseding runs when they execute; repair forward attributable failures only. Merge PR #821 only after the required Pass 205 and Pass 217 gates are green, then verify authoritative main and the DigitalOcean Production Exact Main deployment through successful public production closure.
+
+
+## Repair-forward checkpoint — exact-head CI linkage and import path (2026-10-17)
+
+Inspected baseline PR head: `70d19bcabde30250217258646acb591efd4b6663`.
+Merge target: `main`; inspected main: `825b5f82d2d16c910ee38c6337770d5a876582a1` (refresh before merging).
+Branch: `repair/pass205-hash216-libcrypto-linkage-20261016`.
+
+Confirmed failures on baseline:
+- Pass 205 Production Continuation Runtime, run `38995254220`, job `117286272577`: inherited Pass 219 I119 test links the cumulative exact ABI object without its external dependencies; unresolved OpenSSL EVP/HMAC/SHA256, Hash72 provider, and hidden C++ cell-wall references. Workflow-only candidate fix: compile the exact aggregate with function/data sections and link inherited test executables with section garbage collection and `-lcrypto`. No production runtime change.
+- Pass 205 Multimodal Continuation Contract, run `38995254157`, job `117286272617`: 13 Pass 205 runtime tests passed, then direct `scripts/pass205_production_validation.py` failed importing `hhs_backend`. Fix: set production job `PYTHONPATH` to `${{ github.workspace }}`.
+
+Changed files:
+- `.github/workflows/pass205-production-runtime.yml` (commit `1c9f92bedcfbff1d71a84aa7fba51228911d1ba5`)
+- `.github/workflows/pass205-multimodal-continuation-contract.yml` (commit `d68313007bd19f0af91022c1c166403bc9342ac2`)
+- this restart record (commit pending at checkpoint write).
+
+Validation done: baseline source and exact failing job logs inspected; two workflow changes committed. Validation remaining: exact-head Pass 205 Production Continuation Runtime and Pass 205 Multimodal Continuation Contract, plus required Pass 205 Repair Validation Base, Pass 217 Current Main Integration, HHS Source Text Integrity, Lane 5 Native Capability Provider, and Runtime OS production-root checks. If reachable unresolved native references remain, link existing authoritative providers rather than adding stubs or changing semantics. No VM81/Hash72/Hash216 runtime semantics changed.
+
+Environment: GitHub Actions Ubuntu 24.04, Python 3.12; native toolchain and OpenSSL supplied by runner. Next action: inspect new exact-head runs; repair forward only attributable failures; merge when required gates pass and PR is mergeable; verify authoritative main and DigitalOcean Production Exact Main. Blockers: exact-head CI pending.
