@@ -54,3 +54,10 @@ The authoritative new construction is FOUR complete ordered 4×4 tensors assembl
 The outer parameters are COMPUTATIONAL PHASE VECTORS rather than scalar decoration. An 8-slot vector with four choices per slot has `4^8 = 65536` potential configurations; this is a configuration-space count, NOT a claim that `4^8 = 64`. The 64 circuit cells are the spatial 8×8 carrier. Neither the outer angle nor the reference -180 is globally fixed. Phase-gate geometry must be hydrated by Lane 5 and returned through existing provenance and admission.
 
 Implementation: `FullCircuitCandidate`, `OuterPhaseVectors`, `Circuit8`, `compose8`, `project_full_circuit` added to existing candidate header. This maps 64 cells to inherited 5184 indices with exact decimal BigInt text, and retains read-only parent Hash216. It does not replace the authoritative VM81 serializer; specific native angle-to-geometry evaluation, 4-choice phase encoding, 64-cell address binding to the RNA ABI, and closing proof of the full circuit remain validation obligations.
+
+## 2026-10-17 source-lock: revised complete List tensor
+
+Source-locked contract: `contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md` (full exact user expression, no elisions).
+The revision changes the source of the spin closure and the full 11-polynomial denominator, and explicitly retains gate syntax `==`. This takes precedence over earlier candidate-only simplified polynomial expressions. Native code in this PR still encodes structural block placement, not full evaluated closure of this V2 expression. Do not call the V2 implementation done until source AST, ordered BigInt serialization, Lean theorem, Wolfram exact witness, RNA C++ wall and signed VM81 Hash216 receipts agree.
+
+Next targeted action: add a typed parser/constructor for V2's exact four outer elements; validate the eleven-numerator denominator and 16 bipolar registers, then integrate with the existing 5184 knowledge graph and canonical admission ABI. No host floating-point or scalar replacement for rank-1 division.
