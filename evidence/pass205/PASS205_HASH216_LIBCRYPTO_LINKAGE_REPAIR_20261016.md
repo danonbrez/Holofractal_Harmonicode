@@ -69,3 +69,12 @@ PR #821 first exact-head Pass 205 Repair Validation Base run `38994703106` faile
 Repository inspection confirmed the current authoritative Pass 205 implementation is the production continuation bridge/runtime, accelerator translation, and continuation API. The stale repair workflow was therefore repaired to compile, build, dynamically load, test, and assert authority properties on those current surfaces instead of skipping validation.
 
 This workflow repair does not change runtime semantics. It removes dead validation references and strengthens current combined-library loading coverage.
+
+
+## Repair-forward checkpoint — authority status assertion
+
+The second exact-head Pass 205 Repair Validation Base run built the cumulative native authority successfully and passed the complete current Pass 205 production test suite, including the combined Pass205+Hash216 lineage parity regression. Its only failure was a repair-workflow assertion against a non-existent status key `accelerator_translation.gpu_may_commit_hash72`.
+
+The current runtime status schema exposes `accelerator_translation.physical_gpu_backend_active` instead. The validation assertion was corrected to require that field to be `false`, while the existing runtime source/tests retain the explicit GPU no-commit boundary.
+
+No runtime implementation or canonical semantics changed in this repair-forward step.
