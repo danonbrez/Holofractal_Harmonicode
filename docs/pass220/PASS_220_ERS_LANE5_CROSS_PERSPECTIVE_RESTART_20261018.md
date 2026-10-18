@@ -61,3 +61,14 @@ Validation done: source edits and repo commits; prior green phasegear workflow w
 Validation pending: new scoped workflow outcome; PR source-lock bypass and full ERS/Lean/Wolfram runtime integration must be checked separately.
 Environment: GitHub API write, no local checkout; restart from latest branch commit, inspect scoped CI run; repair-forward failures only.
 Next: verify new CI results, address failures, complete acceptance evidence without copying user input or bypassing VM81/Hash216 authority.
+
+## Course Module 16 / Module 8-S hinge append (2026-10-18)
+Base: `807d1b1b74c242208e3c3c55e0befcbfa8abd2a4`; branch and merge target unchanged.
+Changed files:
+- `whitepapers/Harmonicode Algebra - Course` — commit `1ab57b947eeb804786bfb7b936098864617f7d81`: append Module 16 eleven ordered Pisot polynomials, common denominator and shard-11 triple gate; Module 8-S Lucas 18 / prime 19 hinge, offset ledger, balanced midpoint and under-20 prime census.
+- `evidence/pass220/course_m16_pisot_hinge_20261018.wl` — commit `462dc8cacd572e1f81354db97f5982a32d446b1c`: exact Wolfram candidate projection checks.
+- `.github/workflows/pass220-phasegear-v2-validation.yml` — commit `70e397aafee1e50b57261548d5e8f216eb7683dc`: PR/push filters include new receipt source.
+
+No change to existing module order, prior receipts, cell-wall mutation authority, or existing production/main. The HARMONICODE master chain remains the source authority; the new append does not try to scalar-solve native ordered gates.
+Validation: files committed through GitHub Contents API; no Wolfram kernel execution or Hash216 VM81 receipts claimed. Run `wolframscript -file evidence/pass220/course_m16_pisot_hinge_20261018.wl` in an authorized runner. Check new CI run and review full source fidelity. Remaining scope: broader user-provided Module 0–15/8-R/11-R source-text parity audit, exact Pisot conjugate receipt, Lean 4 typed shard linkage, signed RNA/VM81 hydration integration.
+Next action: execute scoped Wolfram and Lean probes and repair-forward any found discrepancies, then bind exact metadata edge identities via the existing Pass219 signed cell wall.
