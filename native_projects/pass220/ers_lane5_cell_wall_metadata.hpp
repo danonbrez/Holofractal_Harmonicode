@@ -25,8 +25,22 @@ inline constexpr std::array<ERSRelation, 6> kERSRelations{{
 inline constexpr std::array<std::uint8_t,8> kPrimeRingAddresses{{2,3,5,7,11,13,17,19}};
 inline constexpr std::array<std::int8_t,8> kSignedSpins{{-4,-3,-2,-1,1,2,3,4}};
 inline constexpr std::array<std::uint8_t,8> kPrimeResiduesMod8{{2,3,5,7,3,5,1,3}};
-inline constexpr std::array<std::uint8_t,8> kLoShuOuterRing{{8,1,6,7,2,9,4,3}};
+inline constexpr std::array<std::uint8_t,8> kLoShuOuterRing{{4,9,2,7,6,1,8,3}};
+// Clockwise HNAN address orientation read from the inherited 3x3 nucleus.
+inline constexpr std::array<std::string_view,8> kHNANOuterAddresses{{
+    "000","001","010","100","111","110","101","011"
+}};
+inline constexpr std::string_view kHNANHubAddress="HNAN";
 inline constexpr std::uint8_t kLoShuHub=5;
+inline constexpr bool valid_hnan_ring_alignment() noexcept {
+    constexpr std::array<std::uint8_t,8> canonical{{4,9,2,7,6,1,8,3}};
+    constexpr std::array<std::string_view,8> addresses{{
+        "000","001","010","100","111","110","101","011"
+    }};
+    for (std::size_t i=0;i<8;++i)
+        if (kLoShuOuterRing[i]!=canonical[i] || kHNANOuterAddresses[i]!=addresses[i]) return false;
+    return kHNANHubAddress=="HNAN" && kLoShuHub==5;
+}
 inline constexpr std::size_t prime_spin_linear(std::size_t prime_index,
                                                 std::size_t spin_index) noexcept {
     return prime_index * 8 + spin_index;
