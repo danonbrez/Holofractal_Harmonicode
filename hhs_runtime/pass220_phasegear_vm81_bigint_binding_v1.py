@@ -64,6 +64,7 @@ def bind_candidate(source: str, bigint: int, coordinates: tuple[int, ...],
     if source != canonical:
         raise PhaseGearBindingError("SOURCE_NOT_CANONICAL")
     parts = _split(source)
+    coordinates = tuple(coordinates)  # freeze caller-owned address sequence
     if len(coordinates) != 64 or any(
         type(i) is not int or not 0 <= i < 5184 for i in coordinates
     ) or len(set(coordinates)) != 64:
