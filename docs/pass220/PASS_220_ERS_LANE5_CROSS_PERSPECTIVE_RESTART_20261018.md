@@ -72,3 +72,21 @@ Changed files:
 No change to existing module order, prior receipts, cell-wall mutation authority, or existing production/main. The HARMONICODE master chain remains the source authority; the new append does not try to scalar-solve native ordered gates.
 Validation: files committed through GitHub Contents API; no Wolfram kernel execution or Hash216 VM81 receipts claimed. Run `wolframscript -file evidence/pass220/course_m16_pisot_hinge_20261018.wl` in an authorized runner. Check new CI run and review full source fidelity. Remaining scope: broader user-provided Module 0–15/8-R/11-R source-text parity audit, exact Pisot conjugate receipt, Lean 4 typed shard linkage, signed RNA/VM81 hydration integration.
 Next action: execute scoped Wolfram and Lean probes and repair-forward any found discrepancies, then bind exact metadata edge identities via the existing Pass219 signed cell wall.
+
+## Module 17 prime-ring and spin-register checkpoint (2026-10-18)
+Base inherited branch commit: `8f800601d5ff3dab579bff0a20561bee2e77bfaa`. Target: PR #825 into main. No main or deployment mutation.
+Files changed:
+- `whitepapers/Harmonicode Algebra - Course` — Module17 17.1–17.5 appended (commit `f73f3232c9b07f3befd37f9e79af819b4133765b`).
+- `formal/lean/HHS/Pass220/PrimeResidue64.lean` — typed prime/spin indices, ordered residue census, 64-address bounds (`04585d014c13076bf84e6fe29fd75869bf2eb189`).
+- `formal/lean/HHS.lean` — imports new formalization (`d47b0d7df7c5153461424d4005d3660beaf7f2fb`).
+- `evidence/pass220/course_m17_prime_residue_64_20261018.wl` — Wolfram exact arithmetic diagnostic, fixed membership form (`88109b3ff43bfb1ee4238684b4220b8730011707`, `e9dc65e444675d26fab33899d61edc0ee3e745b1`).
+- `native_projects/pass220/ers_lane5_cell_wall_metadata.hpp` — candidate-only prime residue and signed-spin address metadata (`b9a202b291a227f44a9fa1ea1fa4e4cb6fc4fc9e`).
+- `native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp` — address/edge guard tests (`29d172d3b7caf7fd781ffbb62dbf9d6614c6a061`).
+- `.github/workflows/pass220-phasegear-v2-validation.yml` — source-trigger coverage (`da3c7dd567c29ed2281170453f441bb96b3620a3`).
+
+Critical separation: Lo Shu hub numeral 5 is a geometric axis; prime 5 independently remains one of eight indexed primes. The mapping from prime IDs to eight ring address locations is not fabricated without an authoritative source permutation. Residue class memberships describe the prime index, whereas the 8×4×2 tensor enumerates a full phase plane per prime, preserving all distinct states. Octonion multiplication must defer to inherited typed operators, not residue arithmetic alone.
+Validation requested:
+`g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp -o /tmp/ers_m17 && /tmp/ers_m17`
+`lake env lean formal/lean/HHS/Pass220/PrimeResidue64.lean`
+`wolframscript -file evidence/pass220/course_m17_prime_residue_64_20261018.wl`.
+No local execution or canonical Hash216 mint claimed. Scoped CI to be checked; do not mark complete before evidence. Next: verify executable receipts, fix failures, connect prime-ring index to inherited source-permutation and signed Lane 5 hydration persistence without bypass.
