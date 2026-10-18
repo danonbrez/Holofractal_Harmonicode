@@ -11,6 +11,15 @@ int main() {
  assert(kHNANOuterAddresses[0]=="000" && kHNANOuterAddresses[7]=="011");
  assert(valid_hnan_ring_alignment());
  assert(valid_orthogonal_phase_gear());
+ assert(kLaroneRotorPeriod==72 && kLaroneQuarterTurn==18 && kLaroneHalfTurn==36);
+ for (std::size_t i=0;i<8;++i) {
+   assert(orthogonal_gear_phase72(i)==kOrthogonalGearRegisters[i]);
+   assert(orthogonal_gear_phase72(i+2)==
+       (orthogonal_gear_phase72(i)+kLaroneQuarterTurn)%kLaroneRotorPeriod);
+   assert(orthogonal_gear_phase72(i+4)==
+       (orthogonal_gear_phase72(i)+kLaroneHalfTurn)%kLaroneRotorPeriod);
+   assert(orthogonal_gear_phase72(i+8)==orthogonal_gear_phase72(i));
+ }
  auto forged_addresses=kOrthogonalGearAddresses;
  forged_addresses[0]="000";
  assert(!valid_orthogonal_phase_gear(forged_addresses,kOrthogonalGearRegisters));
