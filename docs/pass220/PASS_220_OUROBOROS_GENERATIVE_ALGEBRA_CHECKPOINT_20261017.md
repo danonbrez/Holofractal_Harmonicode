@@ -64,3 +64,21 @@ g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_project
 ```
 
 Environment: GitHub connector used for source changes; executable native toolchains have not been exercised here. Next action: dependency-scoped compilation and V2 AST-to-RNA ABI integration with real Hash216 lineage validation. Blockers: no verified toolchain run or full end-to-end canonical VM81 admission evidence at this checkpoint.
+
+## Continuation checkpoint — exact V2 source AST ingress (2026-10-17)
+
+Committed new files:
+- `native_projects/pass220/phase_gear_v2_ordered_source.hpp`: embeds the verbatim V2 source expression from the canonical source contract, constructs four ordered top-level parts using delimiter-balanced scanning, preserves all native syntax instead of scalarizing it, and rejects source mutations.
+- `native_projects/pass220/test_phase_gear_v2_ordered_source.cpp`: verifies exact ordered gate counts (0,0,18,4), key 0/111 address terms, numerator and denominator witnesses, source-change failure and malformed-delimiter rejection.
+
+The complete V2 source contains exactly four top-level `List` components. Third component contains sixteen bipolar gates and two global gates; fourth contains two last-numerator and two shared-denominator gates. This is a **lexical/type-preserving candidate ingress** and does not implement Wolfram evaluation, Lean kernel checking, numeric gate closure, canonical VM81 BigInt frame materialization, cell-wall acceptance, or Hash216 minting.
+
+Validation: the four-way top-level parse and gate counts were inspected on the exact source. Native `g++` execution was attempted but blocked by execution-container DNS/network access to GitHub, so no compiled test pass is claimed.
+
+Next action: native compile the two regression files; wire ordered nodes to inherited typed constructor/RNA C ABI and 5184 graph position binding, use authentic validated parent Hash216 (not only 216-character shape), then signed VM81 admission/replay. Preserve full V2 source as the identity anchor for Wolfram and Lean witnesses.
+
+Commands still pending:
+```sh
+g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_projects/pass220/test_phase_gear_v2_ordered_source.cpp -o /tmp/hhs_v2_source_test
+/tmp/hhs_v2_source_test
+```
