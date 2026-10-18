@@ -6,7 +6,7 @@ classes=<|"+1"->{17},"+3"->{3,11,19},"-3"->{5,13},"-1"->{7},"even"->{2}|>;
 checks=<|
  "primeCensus"->(Select[Range[19],PrimeQ]===primes),
  "residueOrder"->(Mod[primes,8]==={2,3,5,7,3,5,1,3}),
- "classCensus"->(And@@(And@@(MemberQ[primes,#]& /@ #2)& @@@ Normal[classes]) && Sort[Flatten[Values[classes]]]===primes),
+ "classCensus"->(Sort[Flatten[Values[classes]]]===primes && And@@(PrimeQ /@ Flatten[Values[classes]]) && Length[classes["+3"]]==3),
  "ringEight"->(Length[ring]==8 && FreeQ[ring,hub] && Sort[Append[ring,hub]]===Range[9]),
  "hubPrime"->PrimeQ[hub],
  "spinsNoZero"->(Length[spins]==8 && FreeQ[spins,0]),
