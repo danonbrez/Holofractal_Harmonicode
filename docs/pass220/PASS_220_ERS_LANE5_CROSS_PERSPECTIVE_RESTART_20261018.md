@@ -144,3 +144,16 @@ Changes:
 I071 orientation_closed and constraint_closed remain false because M17 phase-residue arithmetic alone cannot furnish signed VM81 closed-transition admission. No second orbit detector, no new signing, no canonical mint.
 Execute: `python3 -m pytest -q tests/pass220/test_m17_larone_constructor_parallel_v1.py`; CI via `.github/workflows/pass220-phasegear-v2-validation.yml`.
 Remaining: obtain post-change scoped CI verdict; run a nonmocked bounded I071 constructor integration with valid shared root; subsequently connect signed VM81 admission only when native constraint witnesses actually close. Main/deployment untouched.
+
+## PR #825 review repair-forward: 2026-10-18, 18:00 EDT
+Base: `1d13314b9db585ca5969201abf79e24c3e72b68f`; target main, branch `feature/pass220-phasegear-lean-wolfram-lane5-20261017`. This is an incremental restartable checkpoint, **not** full delivery acceptance.
+Inherited H36 and order-5 magic-square snapshots already use tuple(tuple(...)), including prior mutation tests; no unnecessary reimplementation.
+Changed:
+- Lean `formal/lean/HHS/Pass220/PrimeResidue64.lean`: `9ebfb274e0895ffd946ba011bd606b9717fd78b9` (explicit Array.contains false propositions; omega import).
+- Wolfram `evidence/pass220/course_m16_pisot_hinge_20261018.wl`: `f4cd28cc5c38af1c44d1203fa42f6a6568bc206d` (one-argument IrreduciblePolynomialQ mapping).
+- VM81 BigInt `hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py`: `2b5e4d2aceedf99d1bd0216c1511e289c9e350f6` (coordinates copied to immutable tuple prior to validation and witness); mutation test `6a8538146d46d6ce39dd603e189ee4cb4e5feabc`.
+- Complex Lo Shu `hhs_runtime/pass220_complex_phase_loshu_v1.py`: `fbd6bd2d37a57fbf97cdb2ae0b1adcbf99ac15dc` (runtime-enforced row/col/diagonal/ordered reciprocal checks survive optimized Python), negative diagonal fixtures `8c29a734fc06dc81f5be42a07b277064af014d0f`.
+- `.github/workflows/pass220-phasegear-v2-validation.yml`: `2a01572be9965439a9d6d43bb52c413a60b5e2d2` (affected PR triggers + optimized Lo Shu test).
+- `native_projects/pass220/ers_lane5_cell_wall_metadata.hpp`: `8c0c7f3c12b2a626b9bd08ee52d2e7f4b54e889e` (periodic operator `3/4:2/5` source intact; route candidate payload, cell and 216-character parent lineage must match ERS metadata), negative tests `c79f97a0fd1a0f6874f5356d85fecafda491805d`.
+Current head `c79f97a0fd1a0f6874f5356d85fecafda491805d`: GitHub workflows queued on last query. No Wolfram or Lean local binaries available; **scripts and shared Lean build not yet executed in this environment**. Rerun/report focused CI before declaring resolved. Native signed VM81/Hash216 admission still inherited/fail-closed.
+Remaining review: independently validate Module 16 original spatial operand order against user-authoritative canonical source (candidate projections must not override it); confirm provenance source is tied to the routed authenticated frame/transition, not merely candidate circuit; inspect targeted CI failure and repair forward. Existing semantics of `==` and `:` remain ordered native gates, not scalar identities. No main or production edits.
