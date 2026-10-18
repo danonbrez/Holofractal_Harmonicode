@@ -90,3 +90,18 @@ Validation requested:
 `lake env lean formal/lean/HHS/Pass220/PrimeResidue64.lean`
 `wolframscript -file evidence/pass220/course_m17_prime_residue_64_20261018.wl`.
 No local execution or canonical Hash216 mint claimed. Scoped CI to be checked; do not mark complete before evidence. Next: verify executable receipts, fix failures, connect prime-ring index to inherited source-permutation and signed Lane 5 hydration persistence without bypass.
+
+## Module 17 authoritative HNAN ring reconciliation (2026-10-18)
+Inherited base checkpoint: `32316a67d8672316125bed275b190c9501dfc754`. PR #825; merge target main.
+Inherited source: `hhs_runtime/hhs_pass220_hnan_phase5184_lossless_bridge_v1.py` and `formal/lean/HHS/Pass220/HNANPhase5184.lean`.
+Existing canonical HNAN 3x3: `[[4,9,2],[3,5,7],[8,1,6]]`; addresses `[[000,001,010],[011,HNAN,100],[101,110,111]]`.
+Fix: clockwise ring is `[4,9,2,7,6,1,8,3]` with `[000,001,010,100,111,110,101,011]`, not the alternate Lo Shu orientation used in the prior M17 candidate.
+Changed file inventory:
+- `native_projects/pass220/ers_lane5_cell_wall_metadata.hpp` `9c836429636a420a95f0e263ed22b364d728753b`
+- `native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp` `4110c734dfcd7c63c6020b6cd8abbbbed82fecd0`
+- `formal/lean/HHS/Pass220/PrimeResidue64.lean` `425769723712dc750412037d314cf4c38364a372`
+- `whitepapers/Harmonicode Algebra - Course` `29846482b9e5b3768492233b44cf9cde79d4a0b2`
+Scoped verification command: `g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp -o /tmp/hhs_ers && /tmp/hhs_ers`. Lean: `lake env lean formal/lean/HHS/Pass220/PrimeResidue64.lean`.
+Known status: Phase Gear V2 workflow green on previous checkpoint; multiple unrelated or inherited workflows failed on earlier run. Current native regression and Lean module results must be observed before acceptance.
+Constraints: typed center HNAN remains existing native gate. No fabricated prime-to-ring assignment; index axes are kept separate. No main/deployment changes or Hash216 mint.
+Next: validate crosswalk against signed Lane 5 memory admission source, run scoped compile and exact Wolfram diagnostics; repair-forward any failing tests.
