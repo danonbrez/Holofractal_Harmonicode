@@ -19,6 +19,8 @@ on:
       - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
       - 'formal/lean/HHS.lean'
+      - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
+      - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   pull_request:
     paths:
@@ -31,6 +33,8 @@ on:
       - 'native_projects/pass220/**'
       - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
+      - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
+      - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   workflow_dispatch:
 jobs:
@@ -50,6 +54,11 @@ jobs:
         run: |
           set -euo pipefail
           g++ -std=c++17 -Wall -Wextra -pedantic -fsyntax-only -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_phase_gear_lane5_rna_bridge.cpp
+      - name: Compile ERS Lane 5 cell-wall metadata regression
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp -o /tmp/hhs_ers_lane5_metadata
+          /tmp/hhs_ers_lane5_metadata
       - name: Verify inherited BigInt VM81 source binding
         run: |
           python3 -m pip install pytest
