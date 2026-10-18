@@ -23,11 +23,9 @@ theorem sixtyFour : 8 * 4 * 2 = (64 : Nat) := by decide
 theorem primeSpinSixtyFour : 8 * 8 = (64 : Nat) := by decide
 theorem census : primes.size = 8 := by decide
 theorem spinNoZero : signedSpins.contains 0 = false := by
-  unfold signedSpins
-  decide
+  decide +kernel
 theorem ringCenterDistinct : ringLoShu.contains hub = false := by
-  unfold ringLoShu hub
-  decide
+  decide +kernel
 theorem oddResidueCensus :
     (primes.toList.map residue) = [2,3,5,7,3,5,1,3] := by decide
 theorem classCounts :
