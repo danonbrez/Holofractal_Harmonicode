@@ -608,3 +608,12 @@ Formal proof:
 ```text
 docs/whitepapers/HHS_HNAN_JORDAN_GLOBAL_CONSTRAINT_RESOLUTION_THEOREM_V1.md
 ```
+
+
+## Pass 220 ERS ordered metadata extension (2026-10-18)
+
+The existing Lane 5 RNA cell wall SHALL preserve the thread-specified Entangled Reciprocal Seesaw (ERS) metadata without creating an independent execution engine. Retain exactly ordered gates `AB=P^4`, `BA=-P^4`, `P^4=c^4=(Aa+Ab)(Ba+Bb)`, `(Aa/Ba:Bb/Ab=Ab/Aa:Bb/Ba)^4/Delta=Delta` with `A!=B!=0`, and `144=36*4=(6+6)^2=((a^2+b^2+c^2)+(a^2b^2c^2))^((pxy+qzw)/P)=b^8c^4`. The independent phase gears `3/4:2/5` retain original denominators and periodic provenance.
+
+The relation graph must preserve native x,y,z,w orientation, Lo Shu/H36/H144 source circuits, typed zero, distinct AB/BA addresses, ordered lineage, modality and payload-context tokens, and variable-length source expressions over the inherited alphabet. Shared scalar projections do not imply state-identity equivalence. Hash216 records an ordered previous/change/next native transition; no replacement of native reconstruction with copied payload or lookup substitution is authorized.
+
+The additive formalization sources are `formal/lean/HHS/Pass220/ERSLane5Metadata.lean` and `evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl`. The read-only, candidate-only C++ adapter and guards are `native_projects/pass220/ers_lane5_cell_wall_metadata.hpp` and `native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp`. This metadata adapter routes through `hhs_exact_pass219_rna_vm5184_route`; only the inherited signed VM81 boundary may admit mutation, canonical receipt minting, and persistence. Do not interpret the candidate Wolfram arithmetic receipt as VM81 native gate closure.
