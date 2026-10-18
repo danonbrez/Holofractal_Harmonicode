@@ -114,3 +114,11 @@ User's authoritative ordered gate pairs: `(111,100,101,001,110,010,011,000)` ↔
 Scoped runner command: `g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp -o /tmp/hhs_ers && /tmp/hhs_ers`.
 Environment: GitHub contents API only. New native test outcome not yet independently verified. This adapter is candidate-only, not signed canonical VM81 execution or Hash216 mint.
 Next: check workflow result and repair-forward any defect, then attach ordered orthogonal phase gear to authoritative signed Lane 5 admission without bypass or source mutation.
+
+## Existing Larone rotor reuse correction (2026-10-18)
+Base: `b442659ee29f4c6f5dc06ed975b5e7d75fe7dd35`. Discovery: the inherited Larone visual orthogonal rotor **already exists** in `examples/ParticleSimulationAudioBridge.js` and mirrored `examples/ParticleSimulation.html`; profile `HHS_PASS220_LARONE_VERTICAL_RECIPROCAL_GYRO_SHADER_V1` specifies ring modulus 72, quarter turn 18, half turn 36, ordered channels x,y,z,w,xy,yx,zw,wz. The implementation explicitly distinguishes display projection from VM81 mutation/Hash216 authority.
+The M17 eight-phase ordered register `8+9k` (mod72) carries `k+2` quarter-turn and `k+4` half-turn, and closes after eight indices; it is a **crosswalk into inherited Larone geometry**, not a separate phase engine.
+Changed:
+- `native_projects/pass220/ers_lane5_cell_wall_metadata.hpp` `425ec91e03c51ac6c7ccedaf739b624063c816da`: existing Larone constants and phase72 address projection.
+- `native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp` `e3a6c79799672b98d4991be0f35eee96ea918059`: 72/18/36 exact indexed rotation checks.
+Scope: no change to production/browser renderer, signed RNA VM81 authority, or native HNAN matrix. Run scoped C++ regression before acceptance; projection reuse does not establish new canonical signed mint. Next: inspect CI, repair-forward targeted failures, connect validated M17 register metadata to admitted native Lane5 signed source.
