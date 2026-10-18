@@ -129,3 +129,9 @@ Verified prior GitHub Actions run `39103311452` / `cpp-candidate` was green. Add
 Added ABI static type regression in `85da0a56aae21c00435ce75261a4cc2ff801a9e4`, and a dependency-scoped GitHub Actions `g++ -fsyntax-only` step in `58f1be76df7ce583fb4b8a890b91a27f0e595dd9`. The new bridge compiles against actual Pass219 headers **only if the new CI step passes**; no such result is claimed here.
 
 Further authority boundary: the mapping from full ordered typed V2 AST and arbitrarily large canonical BigInt objects into the 648-byte VM81 frame has not been constructed/verified by this bridge. The caller must supply a legitimately serialized frame: no narrowing, surrogate hash, or forced admission. Next action: observe the new CI step, repair-forward compile defects, then implement exact AST-to-existing serializer and executable integration tests requiring authentic signed admission evidence, 3×72-symbol Hash216 lineage and deterministic Genesis replay. Merge and main verification remain pending.
+
+## Verified RNA bridge syntax gate — 2026-10-18
+
+GitHub Actions run `39111637904` job `117628856071` (`cpp-candidate`) completed **success**, covering the new `g++ -std=c++17 -fsyntax-only` compatibility test against the existing Pass219 RNA VM5184 ABI in addition to inherited phase-gear candidate tests. This freezes the previous bridge's compile-gate as green. It is not a runtime signed VM81 admission result or Hash216 receipt.
+
+Next bounded implementation requires an authentic existing serializer mapping from the ordered four-part V2 AST and 64 graph coordinates to exact VM81 frame evidence, followed by executable cell-wall testing with verified transition and signed environment. Do not introduce a 64-bit truncation path, scalarize the native tensor fraction, or fabricate Hash216 lineage. Prior green job is inherited unless those dependencies change.
