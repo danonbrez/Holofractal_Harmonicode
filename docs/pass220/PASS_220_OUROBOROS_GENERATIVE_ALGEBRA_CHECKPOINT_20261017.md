@@ -109,3 +109,9 @@ Latest dependency-scoped source work: `96a0accc75dab97a8451d13de31d98b92a16792e`
 On GitHub Actions, the earlier short-delimiter repair runs `39090571935` and `39090593621` were queued when checked. The latest regression workflow result was not yet returned; do not claim these compile or pass. Prior failed C++17 errors (constexpr std::array comparison and raw-string length) were repaired by previous commits.
 
 Next: inspect PR #825 phase-gear job logs for exact head; repair only impacted C++ code; carry typed ordered gate AST into existing Lane 5 5184 BigInt/RNA cell wall and obtain canonical Hash216 Genesis replay before acceptance.
+
+## Next dependency-scoped CI repair: nested List gate scope (2026-10-18)
+
+The dedicated Pass 220 Phase Gear V2 Validation workflow run `39090849504`, job `117567094559`, finished failure (exit 134), with the C++ candidate executable asserting `register_gates.size()==3`. The parser correctly retained the third component's outer `List(...)` as ONE top-level operand. The regression incorrectly required that the two inner closure gates be split without first entering the outer List. Repair `decf0d20597529ffd7a473ee8fc68ded7d2f7b59` checks one outer component, then descends one exact `List` nesting level and checks three sequential gate operands, including terminal zero. This changes only the test, not the source, ordered gate semantics, or runtime authority.
+
+Latest repaired CI is awaiting an observed result. Next: check direct GitHub Actions job result, repair only affected regression; proceed to native typed 5184-position BigInt/RNA cell-wall admission after green.
