@@ -133,3 +133,14 @@ Changed files / commits:
 Execute `python3 -m pytest -q tests/pass220/test_m17_larone_constructor_parallel_v1.py` and existing scoped phase gear workflow; pending CI verdict, no local runner evidence. Validation still required: compare I071 native first-repeat semantics against full composed tensor closure, with signed VM81/Hash216 admission preserved.
 Important: M17 is a crosswalk composed in parallel with the preexisting RML4 rotor/Lo Shu tensors, not a causal substitute or new independently executable engine. Descriptions are authoritative causal investigation guides, equations govern ordered semantics, and repository code governs actual execution. Nothing has minted canonical Hash72 or Hash216. Main/deployment unaffected.
 Next: check latest scoped workflow output; repair any failures; integrate validated crosswalk with I071's existing loop-closure constructor rather than inventing new first-repeat logic.
+
+## I071 first-repeat parallel constructor integration (2026-10-18)
+Base commit `04dc01197b8ac166f7aef1c384652baed940ba95`; branch remains PR #825 into main.
+Validated CI inherited at base: Phase Gear V2 run `39168394665` SUCCESS. This run precedes the new integration.
+Source: `hhs_runtime/pass219/dynamic_octonion_gyroscope.py` is inherited RML4 phase engine; `hhs_runtime/hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py` defines `run_phase_gear_loop`, explicit first-repeat detection and candidate Hash216 lineage transition.
+Changes:
+- `hhs_runtime/pass220_m17_larone_constructor_parallel_v1.py` `82042f009dd8fd90d8d39aed13a3a5e22b1ec072`: `parallel_constructor_view` composes original RML4 M17 source-locked witness and existing I071 runtime, preserving independent results and first-repeat logic.
+- `tests/pass220/test_m17_larone_constructor_parallel_v1.py` `f7f57fbe639e27168fb7eb683394df0e47f5f8eb`: bounded monkeypatched delegation/negative forged closure checks.
+I071 orientation_closed and constraint_closed remain false because M17 phase-residue arithmetic alone cannot furnish signed VM81 closed-transition admission. No second orbit detector, no new signing, no canonical mint.
+Execute: `python3 -m pytest -q tests/pass220/test_m17_larone_constructor_parallel_v1.py`; CI via `.github/workflows/pass220-phasegear-v2-validation.yml`.
+Remaining: obtain post-change scoped CI verdict; run a nonmocked bounded I071 constructor integration with valid shared root; subsequently connect signed VM81 admission only when native constraint witnesses actually close. Main/deployment untouched.
