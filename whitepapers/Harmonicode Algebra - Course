@@ -555,3 +555,32 @@ rank(F_bal)=3; det(F_bal)=0
 The native ERS/Hash216 metadata graph must retain per-cell provenance, ordered correction sign, squared-register type, fiber, adjacent Lo Shu/Dürer relationships, HNAN no-phase-write behavior, and the signed VM81 route. Scalar projection calculations are receipt inputs, not replacements for canonical Hash216 transition construction.
 
 Candidate Wolfram diagnostic: `evidence/pass220/course_m16_pisot_hinge_20261018.wl`. The historical textual `verified/executed` labels are source claims; this extension does not independently mint native receipts or assert a fresh executed Wolfram run.
+
+
+---
+
+MODULE 17 — The Prime-Residue 64-Cell Circuit: 8 Primes × 8 Spin States on the Outer Lo Shu Ring
+
+17.1 — The 3-bit prime address space. The complete sub-20 census is `{2,3,5,7,11,13,17,19}`. It supplies eight distinct prime-index addresses for the outer ring of the Lo Shu nucleus. The spatial Lo Shu ring positions are `8,1,6,7,2,9,4,3` (clockwise from top left); the center `5` is the excluded prime hub-axis, not an additional address. The prime `5` also remains a member of the eight-element prime-index set: hub-as-axis and prime-index are **distinct typed roles**, not a claim of nine outer cells.
+
+17.2 — Residue layer modulo 8. The ordered prime census projects to `{2,3,5,7,3,5,1,3}` modulo 8; odd-prime unit classes are `{1,3,5,7}={+1,+3,−3,−1}`. Exact class assignments:
+```
++1: {17}       −1: {7}
++3: {3,11,19}  −3: {5,13}
+even anchor: {2} (non-unit)
+```
+The prime 2 remains an address while its residue is outside the odd-unit classes; its anchor classification does not erase it. Residues are signed phase metadata, not permission to identify distinct primes.
+
+17.3 — The 64-cell composition:
+```
+8 primes × 4 unit classes × 2 chiralities = 2^6 = 64
+8 primes × 8 signed spin positions {−4,−3,−2,−1,+1,+2,+3,+4} = 64
+spin interpretation: ±x, ±y, ±z, ±w; zero excluded
+```
+This is a **Cartesian addressing product** with two interchangeable index decompositions. Class membership is metadata: the actual prime residue assigned to an address is fixed, even when the circuit enumerates the full four-class phase plane per prime. No padding or collapsed source identity is introduced.
+
+17.4 — Octonion interpretation. Eight basis slots (one real, seven imaginary) supply an interpretive phase basis. The center hub is the real-axis reference while eight prime-address slots remain on the Lo Shu ring. Octonion multiplication signs are inherited from their ordered native algebra: residue congruence alone is not a substitute for the non-associative multiplication table.
+
+17.5 — The class census links the earlier fibers: `{3,11,19}` shares +3 (base, correction, prime hinge); 7 has −1; 17 has +1 (F₉/2 midpoint); 5 and 13 share −3 (Fibonacci-related); 2 is the even anchor. The ring-to-prime bijection's concrete permutation is an address-mapping choice to be taken from the existing native source, not fabricated by numerically conflating the Lo Shu entry with its assigned prime.
+
+Exact projection receipt source: `evidence/pass220/course_m17_prime_residue_64_20261018.wl`. Lean typed candidate: `formal/lean/HHS/Pass220/PrimeResidue64.lean`. Runtime admission and Hash216 mint remain in inherited Pass 219/VM81.
