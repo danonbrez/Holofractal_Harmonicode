@@ -82,3 +82,11 @@ Commands still pending:
 g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_projects/pass220/test_phase_gear_v2_ordered_source.cpp -o /tmp/hhs_v2_source_test
 /tmp/hhs_v2_source_test
 ```
+
+## CI repair-forward: pull-request phase-gear validation
+
+The dedicated `.github/workflows/pass220-phasegear-v2-validation.yml` now triggers on `pull_request` and on contract changes, in addition to feature-branch push and manual dispatch. This is a CI-only improvement, not an algebra change. GitHub Actions is the authoritative runtime for dependency-scoped C++ test execution: no local checkout or download is required.
+
+Verified against commit `52f331a4f3171e3ec12785553a1eb346bf96d73a`: existing PR-related Lean Alignment, Lean4 Native Mathlib1, and Lean ExactRat Value Algebra workflows returned success. These are inherited platform checks, not direct proof receipts for the V2 circuit. The connector did not return a dedicated phase-gear workflow result for commit `ad90ba0afd38cbf9bcea8e61e10b4b10cfdb48ad`.
+
+Next action: inspect phase-gear GitHub Actions job result and repair only failing test assertions or integration dependencies; do not rerun passed unrelated workflows. Complete typed V2 constructor graph integration, inherited RNA cell-wall admission, signed VM81/Hash216 replay, then verify merged main.
