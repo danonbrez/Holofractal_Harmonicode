@@ -1,4 +1,5 @@
 import Std
+import Lean.Elab.Tactic.Omega
 namespace HHS.Pass220.PrimeResidue64
 def primes : Array Nat := #[2,3,5,7,11,13,17,19]
 def ringLoShu : Array Nat := #[4,9,2,7,6,1,8,3]
@@ -21,8 +22,8 @@ def linearAddress (s : Slot) : Nat := s.primeIndex.val * 8 + s.spinIndex.val
 theorem sixtyFour : 8 * 4 * 2 = (64 : Nat) := by decide
 theorem primeSpinSixtyFour : 8 * 8 = (64 : Nat) := by decide
 theorem census : primes.size = 8 := by decide
-theorem spinNoZero : !(signedSpins.contains 0) = true := by decide
-theorem ringCenterDistinct : !(ringLoShu.contains hub) = true := by decide
+theorem spinNoZero : signedSpins.contains 0 = false := by decide
+theorem ringCenterDistinct : ringLoShu.contains hub = false := by decide
 theorem oddResidueCensus :
     (primes.toList.map residue) = [2,3,5,7,3,5,1,3] := by decide
 theorem classCounts :
