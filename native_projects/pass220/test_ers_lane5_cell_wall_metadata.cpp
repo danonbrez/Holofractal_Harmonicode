@@ -7,7 +7,9 @@ int main() {
  assert(valid_ers_metadata(m));
  assert(kPrimeRingAddresses[0]==2 && kPrimeRingAddresses[7]==19);
  assert(kPrimeResiduesMod8[6]==1 && kPrimeResiduesMod8[7]==3);
- assert(kLoShuHub==5 && kLoShuOuterRing[0]==8);
+ assert(kLoShuHub==5 && kLoShuOuterRing[0]==4);
+ assert(kHNANOuterAddresses[0]=="000" && kHNANOuterAddresses[7]=="011");
+ assert(valid_hnan_ring_alignment());
  assert(valid_prime_spin_index(7,7) && prime_spin_linear(7,7)==63);
  assert(!valid_prime_spin_index(8,0) && !valid_prime_spin_index(0,8));
  for (std::size_t p=0;p<8;++p)
