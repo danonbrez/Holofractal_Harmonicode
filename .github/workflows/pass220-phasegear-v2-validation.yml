@@ -29,6 +29,10 @@ jobs:
           /tmp/hhs_phasegear_test
           g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_projects/pass220/test_phase_gear_v2_ordered_source.cpp -o /tmp/hhs_phasegear_v2_test
           /tmp/hhs_phasegear_v2_test
+      - name: Compile native RNA VM5184 bridge against existing ABI
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -Wall -Wextra -pedantic -fsyntax-only -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_phase_gear_lane5_rna_bridge.cpp
       - name: Confirm source-locked V2 matches contract
         run: |
           python3 - <<'PY'
