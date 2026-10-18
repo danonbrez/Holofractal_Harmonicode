@@ -5,6 +5,23 @@ int main() {
  ERSMetadataView m{kERSRelations.data(), kERSRelations.size(),
     "1+1", "text", "source-transition-reference", 5, true, true};
  assert(valid_ers_metadata(m));
+ assert(kERSRelations[5].lhs=="3/4:2/5");
+ FullCircuitCandidate routed{};
+ routed.parent_hash216=std::string(216,'a');
+ routed.inherited_linear5184[0]=5*64;
+ routed.exact_bigint_digits[0]="11";
+ ERSMetadataView bound{kERSRelations.data(),kERSRelations.size(),
+    "11","text",routed.parent_hash216,5,true,true};
+ assert(ers_source_matches_circuit(bound,routed));
+ bound.source_payload="12";
+ assert(!ers_source_matches_circuit(bound,routed));
+ bound.source_payload="11";
+ bound.ancestry_reference=std::string(216,'b');
+ assert(!ers_source_matches_circuit(bound,routed));
+ bound.ancestry_reference=routed.parent_hash216;
+ routed.inherited_linear5184[0]=4*64;
+ assert(!ers_source_matches_circuit(bound,routed));
+
  assert(kPrimeRingAddresses[0]==2 && kPrimeRingAddresses[7]==19);
  assert(kPrimeResiduesMod8[6]==1 && kPrimeResiduesMod8[7]==3);
  assert(kLoShuHub==5 && kLoShuOuterRing[0]==4);
