@@ -18,6 +18,8 @@ on:
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   pull_request:
     paths:
+      - 'hhs_runtime/pass220_phase_magnitude_gate_v1.py'
+      - 'tests/pass220/test_phase_magnitude_gate_v1.py'
       - 'native_projects/pass220/**'
       - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
