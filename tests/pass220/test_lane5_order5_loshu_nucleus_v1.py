@@ -15,3 +15,16 @@ def test_altered_square_fails_closed():
     bad[0][0],bad[0][1]=bad[0][1],bad[0][0]
     with pytest.raises(ValueError):
         hydrate_order5_in_loshu(bad)
+
+def test_post_return_caller_mutation_does_not_rewrite_order5_witness():
+    mutable=[list(row) for row in build_order5()]
+    witness=hydrate_order5_in_loshu(mutable)
+    expected=witness["matrix"]
+    mutable[0][0]=-99
+    mutable[1][:]=[-5]*5
+    assert witness["matrix"]==expected==build_order5()
+    assert isinstance(witness["matrix"],tuple)
+    assert all(isinstance(row,tuple) for row in witness["matrix"])
+    assert witness["rows"]==(65,)*5
+    assert witness["columns"]==(65,)*5
+    assert witness["diagonals"]==(65,65)
