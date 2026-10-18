@@ -21,6 +21,7 @@ on:
       - 'formal/lean/HHS.lean'
       - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
       - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
+      - 'evidence/pass220/course_m16_pisot_hinge_20261018.wl'
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   pull_request:
     paths:
@@ -37,6 +38,7 @@ on:
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
       - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
       - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
+      - 'evidence/pass220/course_m16_pisot_hinge_20261018.wl'
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   workflow_dispatch:
 jobs:
