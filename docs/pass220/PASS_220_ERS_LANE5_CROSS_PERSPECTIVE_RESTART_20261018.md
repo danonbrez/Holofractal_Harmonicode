@@ -33,3 +33,11 @@ Dependency-scoped commands to run:
 Validation status: unverified until CI/tool execution receipts are available.
 Environment: GitHub Contents API write; no native C++/Lean/Wolfram execution environment supplied by connector.
 Next: compile Lean/C++, evaluate Wolfram, address any failures, then attach these typed ERS metadata edges to authoritative Lane 5 hydration/index persistence only through the signed VM81 path.
+
+## Next validation checkpoint (2026-10-18)
+Commit baseline for this iteration: `6014768e908328aef3f6f580fd7305ff35a12a79`.
+Observed PR checks on baseline: Pass 220 Phase Gear V2 Validation SUCCESS; Pass 219 Lane 5 HNAN Global Constraint 1.63 SUCCESS. These previously-green checks did not execute the new ERS metadata regression.
+Changed file: `.github/workflows/pass220-phasegear-v2-validation.yml` now compiles and executes `test_ers_lane5_cell_wall_metadata.cpp` under C++17 with source/header path triggers for ERS Lean/Wolfram files.
+Latest validation-triggering commit: `62f4462934503f1f79c36aecad087841a5e495bd`.
+Existing failures outside this scoped ERS regression include Course Modules M1/M2/M3/M4, Module Gate Provenance and Complete Whitepaper Corpus Ingress; not silently classified as passed.
+Remaining: obtain scoped CI verdict for ERS C++; compile Lean 4 new module explicitly and run Wolfram script on an appropriate runner, preserving authoritative receipts; connect validated ERS metadata to actual signed Lane 5 hydration persistence. No production closure is claimed.
