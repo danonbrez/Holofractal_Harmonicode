@@ -5,6 +5,8 @@ on:
       - feature/pass220-phasegear-lean-wolfram-lane5-20261017
     paths:
       - 'native_projects/pass220/**'
+      - 'hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py'
+      - 'tests/pass220/test_phasegear_vm81_bigint_binding_v1.py'
       - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
       - 'formal/lean/HHS.lean'
@@ -33,6 +35,10 @@ jobs:
         run: |
           set -euo pipefail
           g++ -std=c++17 -Wall -Wextra -pedantic -fsyntax-only -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_phase_gear_lane5_rna_bridge.cpp
+      - name: Verify inherited BigInt VM81 source binding
+        run: |
+          python3 -m pip install pytest
+          python3 -m pytest -q tests/pass220/test_phasegear_vm81_bigint_binding_v1.py
       - name: Confirm source-locked V2 matches contract
         run: |
           python3 - <<'PY'
