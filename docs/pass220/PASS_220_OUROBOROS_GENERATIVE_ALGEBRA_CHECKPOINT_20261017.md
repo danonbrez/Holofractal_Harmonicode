@@ -143,3 +143,13 @@ Added `hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py` (commit `ecc5c28
 Added a dependency-scoped GitHub Actions `pytest` step (commit `842a2e715c8b19e93301a1a551d4729443ef0034`) to check 648-byte roundtrip, exact identity, signed/Hash216 authority false, changed-source rejection, incorrect cell counts, duplicates, out-of-range locations, invalid BigInt values and invalid lane index. The new test results have NOT yet been observed. Existing green C++/RNA syntax gate `39111637904` remains frozen.
 
 Next: inspect GitHub Actions test result, repair-forward any affected tests, then connect typed, individually serialized tensor constructors and their provenance to actual signed VM81/Hash216 admission. Signed and Hash216 assertions may only be set by verified native runtime evidence; never by candidate-side flags.
+
+## 2026-10-18 Module 15 complex Lo Shu proof-audit addition
+
+Course source extended in `whitepapers/Harmonicode Algebra - Course` (commit `1131a81c2b4eff0aa7142c782cb568de6d192ca7`) with Module 15 and the exact source string `1/(45==...M_LHS)==M_RHS` and transfer gate `1-(x/2)==c²-a/b`. The official source operator order and gate semantics are not reduced to scalar division. The audit keeps the q-1 complex projection separate from native authorization.
+
+Exact Gaussian-rational candidate verifier: `hhs_runtime/pass220_complex_phase_loshu_v1.py` (commit `4bebe6090a6026caafb170ef703c0a024db0477b`) and targeted tests: `tests/pass220/test_complex_phase_loshu_v1.py` (commit `c8d8996d7e59a6d5a46046e71a82b77c8c495444`). Row vector `(-i/2,i,1-i)`; exact sum `1-i/2`; product `1/2-i/2`; difference `1/2` with no floats. At x=i,y=-i, the nine conventional complex entries of the y² shell are the antipodes of the xy=1 projection. The false trace-volume parity claim is explicitly rejected.
+
+New tests added to dedicated GitHub Actions workflow in `b06c7354282cde31538f37d74216779ef5194894`; validation result not yet observed. Earlier green phase-gear C++/RNA ABI passes remain frozen. Native HNAN phase-write proof, authenticated Hash216 residual exhaust, signed VM81 transition, and physical/dark-matter interpretation remain unverified and are not asserted by this candidate audit.
+
+Next action: review the targeted workflow run for Module 15, repair-forward failures, and bind the typed complex-phase Lo Shu construction under the *same* existing Lane 5 5184 BigInt VM81 RNA C++ cell-wall / Hash216 authority. No independent service or hash mint.
