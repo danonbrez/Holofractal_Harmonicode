@@ -28,3 +28,18 @@ def test_fail_closed_mutation():
         hydrate_h36(swaps=tuple(reversed(SWAPS)))
     with pytest.raises(ValueError):
         hydrate_service("H36_DIAGONAL_0")
+
+def test_post_return_caller_mutation_does_not_rewrite_h36_witness():
+    from hashlib import sha256
+    import json
+    mutable=[list(row) for row in source_quadrants()]
+    witness=hydrate_h36(mutable)
+    expected_source=witness["source"]
+    expected_hash=witness["candidate_sha256"]
+    mutable[0][0]=-999
+    mutable[1][:]=[-10]*6
+    assert witness["source"]==expected_source==source_quadrants()
+    assert witness["candidate_sha256"]==expected_hash
+    unsigned=dict(witness)
+    del unsigned["candidate_sha256"]
+    assert sha256(json.dumps(unsigned,sort_keys=True,separators=(",",":")).encode()).hexdigest()==expected_hash
