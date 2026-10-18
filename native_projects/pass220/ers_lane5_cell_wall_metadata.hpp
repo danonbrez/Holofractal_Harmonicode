@@ -49,8 +49,9 @@ inline constexpr bool valid_prime_spin_index(std::size_t p,std::size_t s) noexce
     return p < kPrimeRingAddresses.size() && s < kSignedSpins.size() &&
            prime_spin_linear(p,s)<64;
 }
-// Independent radial phase gear: the supplied ordered permutation is not
-// the clockwise ring and cannot mutate HNAN spatial-source authority.
+// Phase address crosswalk into the pre-existing u72 Larone rotor projection
+// (examples/ParticleSimulationAudioBridge.js), not a second rotor engine.
+// The clockwise HNAN source layout remains authoritative.
 inline constexpr std::array<std::string_view,8> kOrthogonalGearAddresses{{
     "111","100","101","001","110","010","011","000"
 }};
@@ -58,6 +59,12 @@ inline constexpr std::array<std::uint8_t,8> kOrthogonalGearRegisters{{
     8,17,26,35,44,53,62,71
 }};
 inline constexpr std::uint8_t kOrthogonalGearResidue=8;
+inline constexpr std::uint8_t kLaroneRotorPeriod=72;
+inline constexpr std::uint8_t kLaroneQuarterTurn=18;
+inline constexpr std::uint8_t kLaroneHalfTurn=36;
+inline constexpr std::uint8_t orthogonal_gear_phase72(std::size_t index) noexcept {
+    return static_cast<std::uint8_t>(kOrthogonalGearRegisters[index%8]%kLaroneRotorPeriod);
+}
 inline constexpr bool valid_orthogonal_phase_gear(
     const std::array<std::string_view,8>& addresses,
     const std::array<std::uint8_t,8>& registers) noexcept {
