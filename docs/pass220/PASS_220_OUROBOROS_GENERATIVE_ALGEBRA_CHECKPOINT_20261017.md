@@ -90,3 +90,9 @@ The dedicated `.github/workflows/pass220-phasegear-v2-validation.yml` now trigge
 Verified against commit `52f331a4f3171e3ec12785553a1eb346bf96d73a`: existing PR-related Lean Alignment, Lean4 Native Mathlib1, and Lean ExactRat Value Algebra workflows returned success. These are inherited platform checks, not direct proof receipts for the V2 circuit. The connector did not return a dedicated phase-gear workflow result for commit `ad90ba0afd38cbf9bcea8e61e10b4b10cfdb48ad`.
 
 Next action: inspect phase-gear GitHub Actions job result and repair only failing test assertions or integration dependencies; do not rerun passed unrelated workflows. Complete typed V2 constructor graph integration, inherited RNA cell-wall admission, signed VM81/Hash216 replay, then verify merged main.
+
+## Dependency-scoped CI repair: C++17 static_assert
+
+GitHub Actions run `39088326214` on PR #825 failed in `cpp-candidate` due to C++17 non-constexpr `std::array::operator==` in the Dürer swap involution assertion. This is an implementation portability error, not a canonical constraint falsification. Replaced the assertion with a row/column-order-preserving constexpr `matrix_equal` comparator in `native_projects/pass220/adjustable_phase_gear_candidate.hpp`. Repair commit: `c83d29cc050ae1fbd7e14433180fbd95db4c51ca`.
+
+Next: check dedicated phase-gear validation against the repair SHA, inspect job logs if failure persists, repair-forward only affected code. Do not equate successful compilation with the still-outstanding native cell-wall / signed VM81 / Hash216 admission replay.
