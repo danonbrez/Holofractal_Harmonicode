@@ -138,7 +138,13 @@ struct PhasePayload { std::int64_t phase; std::uint64_t write_count; };
 inline constexpr PhasePayload hnan_bypass(PhasePayload original) {
     return original; // gain 1; no phase write
 }
-static_assert(swap_inner_columns(swap_inner_columns(kDurer))==kDurer);
+inline constexpr bool matrix_equal(const Matrix4& a, const Matrix4& b) {
+    for(std::size_t row=0;row<4;++row)
+        for(std::size_t col=0;col<4;++col)
+            if(a[row][col]!=b[row][col]) return false;
+    return true;
+}
+static_assert(matrix_equal(swap_inner_columns(swap_inner_columns(kDurer)),kDurer));
 static_assert(covariant(kFibonacciLucas,swap_inner_columns(kDurer))[0][0]==73);
 static_assert(covariant(kFibonacciLucas,swap_inner_columns(kDurer))[3][3]==258);
 static_assert(hnan_bypass({7,9}).write_count==9);
