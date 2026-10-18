@@ -54,6 +54,35 @@ inline std::vector<std::string> split_ordered_list(std::string_view input) {
   out.emplace_back(body.substr(start));
   return out;
 }
+// A top-level ordered gate chain: preserve every segment and prohibit
+// evaluation/reordering. Nested gates remain inside their owning segment.
+inline std::vector<std::string> split_top_level_gates(std::string_view input) {
+  std::vector<char> stack;
+  std::vector<std::string> segments;
+  std::size_t start=0;
+  for(std::size_t i=0;i<input.size();++i) {
+    const char ch=input[i];
+    if(ch=='(' || ch=='[' || ch=='{') stack.push_back(ch);
+    else if(ch==')' || ch==']' || ch=='}') {
+      if(stack.empty()) throw std::invalid_argument("unexpected closer in gate");
+      const char prev=stack.back(); stack.pop_back();
+      if(!((prev=='(' && ch==')') || (prev=='[' && ch==']') ||
+           (prev=='{' && ch=='}')))
+        throw std::invalid_argument("mismatched gate delimiter");
+    } else if(ch=='=' && i+1<input.size() && input[i+1]=='=' &&
+              stack.empty()) {
+      if(i==start) throw std::invalid_argument("empty gate operand");
+      segments.emplace_back(input.substr(start,i-start));
+      start=i+2;
+      ++i;
+    }
+  }
+  if(!stack.empty() || start==input.size())
+    throw std::invalid_argument("unclosed or empty gate");
+  segments.emplace_back(input.substr(start));
+  return segments;
+}
+
 inline OrderedGateCircuit construct_source_locked(std::string_view source) {
   if(source!=kCanonicalSource)
     throw std::invalid_argument("source mismatch: fail-closed");
