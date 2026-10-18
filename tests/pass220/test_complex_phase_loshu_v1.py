@@ -19,3 +19,11 @@ def test_source_gates_preserved():
     result=audit()
     assert len(result["lhs"]) == len(result["rhs"]) == 3
     assert all(len(row)==3 for row in result["lhs"])
+
+def test_complex_loshu_diagonals_fail_closed_even_without_assertions(monkeypatch):
+    import pytest
+    from hhs_runtime import pass220_complex_phase_loshu_v1 as m
+    invalid=((4,9,2),(3,5,7),(6,1,8))
+    monkeypatch.setattr(m,"LO_SHU",invalid)
+    with pytest.raises(ValueError,match="DIAGONAL"):
+        m.audit()
