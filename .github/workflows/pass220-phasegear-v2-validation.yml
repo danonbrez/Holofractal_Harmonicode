@@ -6,6 +6,8 @@ on:
     paths:
       - 'native_projects/pass220/**'
       - 'hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py'
+      - 'hhs_runtime/pass220_m17_larone_constructor_parallel_v1.py'
+      - 'tests/pass220/test_m17_larone_constructor_parallel_v1.py'
       - 'tests/pass220/test_phasegear_vm81_bigint_binding_v1.py'
       - 'hhs_runtime/pass220_complex_phase_loshu_v1.py'
       - 'tests/pass220/test_complex_phase_loshu_v1.py'
@@ -28,6 +30,8 @@ on:
   pull_request:
     paths:
       - 'hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py'
+      - 'hhs_runtime/pass220_m17_larone_constructor_parallel_v1.py'
+      - 'tests/pass220/test_m17_larone_constructor_parallel_v1.py'
       - 'tests/pass220/test_phasegear_vm81_bigint_binding_v1.py'
       - 'hhs_runtime/pass220_phase_magnitude_gate_v1.py'
       - 'tests/pass220/test_phase_magnitude_gate_v1.py'
@@ -70,7 +74,7 @@ jobs:
       - name: Verify inherited BigInt VM81 source binding
         run: |
           python3 -m pip install pytest
-          python3 -m pytest -q tests/pass220/test_phasegear_vm81_bigint_binding_v1.py tests/pass220/test_complex_phase_loshu_v1.py tests/pass220/test_phase_magnitude_gate_v1.py tests/pass220/test_lane5_h36_111_hydration_v1.py tests/pass220/test_lane5_order5_loshu_nucleus_v1.py
+          python3 -m pytest -q tests/pass220/test_phasegear_vm81_bigint_binding_v1.py tests/pass220/test_complex_phase_loshu_v1.py tests/pass220/test_phase_magnitude_gate_v1.py tests/pass220/test_lane5_h36_111_hydration_v1.py tests/pass220/test_lane5_order5_loshu_nucleus_v1.py tests/pass220/test_m17_larone_constructor_parallel_v1.py
       - name: Confirm source-locked V2 matches contract
         run: |
           python3 - <<'PY'
