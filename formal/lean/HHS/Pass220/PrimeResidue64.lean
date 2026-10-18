@@ -1,7 +1,9 @@
 import Std
 namespace HHS.Pass220.PrimeResidue64
 def primes : Array Nat := #[2,3,5,7,11,13,17,19]
-def ringLoShu : Array Nat := #[8,1,6,7,2,9,4,3]
+def ringLoShu : Array Nat := #[4,9,2,7,6,1,8,3]
+def ringHNANAddress : Array String := #["000","001","010","100","111","110","101","011"]
+def hubHNANAddress : String := "HNAN"
 def hub : Nat := 5
 def signedSpins : Array Int := #[-4,-3,-2,-1,1,2,3,4]
 def residue (p : Nat) : Nat := p % 8
