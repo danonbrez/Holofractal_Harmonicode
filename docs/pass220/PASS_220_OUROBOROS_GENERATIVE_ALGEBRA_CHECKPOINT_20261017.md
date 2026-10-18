@@ -101,3 +101,11 @@ Next: check dedicated phase-gear validation against the repair SHA, inspect job 
 Phase-gear run `39090280502` for repair commit `c83d29cc050ae1fbd7e14433180fbd95db4c51ca` completed **failure**, but the prior matrix constexpr issue was no longer the first error. The log identifies `phase_gear_v2_ordered_source.hpp:12` raw-string delimiter `HHS_PHASE_GEAR_V2` as longer than the 16-character C++ language maximum. Repaired only the literal framing delimiter to `HHSV2` in commit `b5982e34e54c5f6c423391d9e22a2cdec5051d23`, with the 1,161-character embedded canonical expression unchanged. Native workflow revalidation on the repaired SHA has not yet returned a result. Other inherited successful jobs stay frozen.
 
 Next action: check the branch/PR GitHub Actions `Pass 220 Phase Gear V2 Validation` run for the latest repaired SHA; if green, proceed to typed BigInt/5184 RNA cell-wall routing and signed VM81 Hash216 replay. If failed, inspect exact failing step and repair-forward.
+
+## Ordered-gate ingress continuation — 2026-10-17
+
+Latest dependency-scoped source work: `96a0accc75dab97a8451d13de31d98b92a16792e` adds `split_top_level_gates`, a balanced-delimiter lexical constructor retaining order and nested source fragments. `4b4d1d0f29f2a6ff84a82d155e66ee7837f8486c` extends C++ regression tests with the 3-segment bipolar outer gate, 1-segment polynomial wrapper, and probe `P==Q==R`. This is not an evaluator or an authorized VM81 AST compiler; it does not normalize nested `==` or tensor fractions.
+
+On GitHub Actions, the earlier short-delimiter repair runs `39090571935` and `39090593621` were queued when checked. The latest regression workflow result was not yet returned; do not claim these compile or pass. Prior failed C++17 errors (constexpr std::array comparison and raw-string length) were repaired by previous commits.
+
+Next: inspect PR #825 phase-gear job logs for exact head; repair only impacted C++ code; carry typed ordered gate AST into existing Lane 5 5184 BigInt/RNA cell wall and obtain canonical Hash216 Genesis replay before acceptance.
