@@ -49,6 +49,34 @@ inline constexpr bool valid_prime_spin_index(std::size_t p,std::size_t s) noexce
     return p < kPrimeRingAddresses.size() && s < kSignedSpins.size() &&
            prime_spin_linear(p,s)<64;
 }
+// Independent radial phase gear: the supplied ordered permutation is not
+// the clockwise ring and cannot mutate HNAN spatial-source authority.
+inline constexpr std::array<std::string_view,8> kOrthogonalGearAddresses{{
+    "111","100","101","001","110","010","011","000"
+}};
+inline constexpr std::array<std::uint8_t,8> kOrthogonalGearRegisters{{
+    8,17,26,35,44,53,62,71
+}};
+inline constexpr std::uint8_t kOrthogonalGearResidue=8;
+inline constexpr bool valid_orthogonal_phase_gear(
+    const std::array<std::string_view,8>& addresses,
+    const std::array<std::uint8_t,8>& registers) noexcept {
+    for (std::size_t i=0;i<8;++i) {
+        if (addresses[i]!=kOrthogonalGearAddresses[i] ||
+            registers[i]!=kOrthogonalGearRegisters[i] ||
+            registers[i]%9!=kOrthogonalGearResidue) return false;
+        if (i && registers[i]-registers[i-1]!=9) return false;
+        bool found=false;
+        for (auto a:kHNANOuterAddresses) if (a==addresses[i]) found=true;
+        if (!found || addresses[i]==kHNANHubAddress) return false;
+        for (std::size_t j=0;j<i;++j)
+            if (addresses[i]==addresses[j]) return false;
+    }
+    return true;
+}
+inline constexpr bool valid_orthogonal_phase_gear() noexcept {
+    return valid_orthogonal_phase_gear(kOrthogonalGearAddresses,kOrthogonalGearRegisters);
+}
 struct ERSMetadataView {
     const ERSRelation* relations;
     std::size_t relation_count;
