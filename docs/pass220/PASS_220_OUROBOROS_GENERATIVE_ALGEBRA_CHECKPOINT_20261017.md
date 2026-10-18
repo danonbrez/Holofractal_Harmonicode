@@ -173,3 +173,11 @@ Added `hhs_runtime/pass220_lane5_h36_111_hydration_v1.py` commit `5ad12137da151c
 Focused tests `tests/pass220/test_lane5_h36_111_hydration_v1.py` commit `5d863e332188db3786638cc42b6da9d06ab2ab00` check twelve services, 111 rows/columns/diagonals, reversed permutation ancestry, and negative tampering. Dedicated CI workflow augmented in `ba241e3583b9cdc73a012f1eed41e828ae3b0baa`. CI result for this addition not yet observed.
 
 Next: check focused CI result, repair-forward if necessary; register callable 12 services through existing guarded service registry only with its native authorization, then bind H36 witnesses into the inherited VM5184/Hash216 knowledge graph without bypassing RNA cell-wall or signed admission.
+
+## 2026-10-18 — five-by-five Lo Shu nucleus candidate placement
+
+The user extends their inherited order-(2,3,4,6,8,9) square-circuit family with order five. Added `hhs_runtime/pass220_lane5_order5_loshu_nucleus_v1.py` in `f0ebf4a17d5b716e59590b4924764012b626182a`. This generates a normal order-5 Siamese magic square (1..25, line-sum 65), tests its five rows, five columns and both diagonals, then maps its 25 ordered cells onto central VM81 9×9 row/column coordinates 2..6 (row-major zero-based 81-cell addresses 20..60 with stride 9). This is an **explicit candidate mapping** and not an authorized change to the Genesis/HNAN center or 5184 normalization rules. The existing 6×6 H36 111 horizon and its 12 candidate checks remain independent, inherited and unchanged.
+
+Focused test added in `2cee1d636d8850a870a18ca77f88cd3cda088600` checks 65 line sums, reversible address uniqueness, reserved ROM authority flags and altered-order rejection. Phasegear workflow extended in `5e458b2d2c068851bbb711765d0fb79958375708`. New CI result not yet observed. Prior orders are inherited asserted workstream constraints, not newly re-proved by this code.
+
+Next: verify exact-head CI, then inspect preexisting canonical Lo Shu nucleus gate to replace the proposed central 25-cell placement with a sourced authorized mapping if different. Preserve the RNA VM5184 signed admission/Hash216 authority and existing 111/12 H36 services.
