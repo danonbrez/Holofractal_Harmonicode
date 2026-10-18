@@ -10,6 +10,20 @@ int main() {
  assert(kLoShuHub==5 && kLoShuOuterRing[0]==4);
  assert(kHNANOuterAddresses[0]=="000" && kHNANOuterAddresses[7]=="011");
  assert(valid_hnan_ring_alignment());
+ assert(valid_orthogonal_phase_gear());
+ auto forged_addresses=kOrthogonalGearAddresses;
+ forged_addresses[0]="000";
+ assert(!valid_orthogonal_phase_gear(forged_addresses,kOrthogonalGearRegisters));
+ auto forged_registers=kOrthogonalGearRegisters;
+ forged_registers[1]=8;
+ assert(!valid_orthogonal_phase_gear(kOrthogonalGearAddresses,forged_registers));
+ forged_registers=kOrthogonalGearRegisters;
+ forged_registers[3]=36;
+ assert(!valid_orthogonal_phase_gear(kOrthogonalGearAddresses,forged_registers));
+ for(std::size_t i=0;i<8;++i) {
+   assert(kOrthogonalGearRegisters[i]==8+9*i);
+   assert(kOrthogonalGearRegisters[i]%9==kOrthogonalGearResidue);
+ }
  assert(valid_prime_spin_index(7,7) && prime_spin_linear(7,7)==63);
  assert(!valid_prime_spin_index(8,0) && !valid_prime_spin_index(0,8));
  for (std::size_t p=0;p<8;++p)
