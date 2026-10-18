@@ -18,10 +18,13 @@ int main() {
   const auto polynomial_gates=split_top_level_gates(c.parts[3]);
   // The third and fourth components retain nested gates, so their
   // top-level chain remains one typed object until native AST parsing.
-  assert(register_gates.size()==3);
+  assert(register_gates.size()==1);
   assert(polynomial_gates.size()==1);
   assert(register_gates[0].find("0*x*y")!=std::string::npos);
-  assert(register_gates[2]=="0");
+  const auto body=c.parts[2].substr(5,c.parts[2].size()-6);
+  const auto nested=split_top_level_gates(body);
+  assert(nested.size()==3);
+  assert(nested[2]=="0");
   assert(polynomial_gates[0].find("==")!=std::string::npos);
   const auto probe=split_top_level_gates("P==Q==R");
   assert(probe.size()==3 && probe[0]=="P" && probe[1]=="Q" && probe[2]=="R");
