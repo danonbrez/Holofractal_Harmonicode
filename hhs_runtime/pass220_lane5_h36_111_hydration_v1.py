@@ -40,6 +40,7 @@ def hydrate_h36(source=None, *, swaps=SWAPS):
         type(row) not in (tuple,list) or len(row)!=SIDE for row in source
     ) or any(type(v) is not int for row in source for v in row):
         raise ValueError("H36_EXACT_6X6_INTEGER_CELLS_REQUIRED")
+    source=tuple(tuple(row) for row in source)  # freeze validated caller input
     grid=[list(row) for row in source]
     if sorted(v for row in grid for v in row)!=list(range(1,37)):
         raise ValueError("H36_PERMUTATION_REQUIRED")
