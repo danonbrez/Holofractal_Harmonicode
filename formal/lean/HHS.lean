@@ -23,6 +23,7 @@ import HHS.Pass220.Oldenburg3DLightEmpirical
 import HHS.Pass220.AgentScopeBoundary
 import HHS.Pass220.AdjustablePhaseGearCircuit
 import HHS.Pass220.ERSLane5Metadata
+import HHS.Pass220.PrimeResidue64
 
 namespace HHS
 
