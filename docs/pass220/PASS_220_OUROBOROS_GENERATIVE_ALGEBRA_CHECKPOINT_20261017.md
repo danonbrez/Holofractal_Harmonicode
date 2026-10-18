@@ -153,3 +153,13 @@ Exact Gaussian-rational candidate verifier: `hhs_runtime/pass220_complex_phase_l
 New tests added to dedicated GitHub Actions workflow in `b06c7354282cde31538f37d74216779ef5194894`; validation result not yet observed. Earlier green phase-gear C++/RNA ABI passes remain frozen. Native HNAN phase-write proof, authenticated Hash216 residual exhaust, signed VM81 transition, and physical/dark-matter interpretation remain unverified and are not asserted by this candidate audit.
 
 Next action: review the targeted workflow run for Module 15, repair-forward failures, and bind the typed complex-phase Lo Shu construction under the *same* existing Lane 5 5184 BigInt VM81 RNA C++ cell-wall / Hash216 authority. No independent service or hash mint.
+
+## 2026-10-18 — phase/magnitude reciprocal and cancellation source continuation
+
+Prior Module15 CI `39137462859` returned success at head `069d22f073a3a8bd3107e9a32aad374b13f84a3d`. Added source-locked ordered candidate gates:
+`(x/2)+(a²/b²)=x⁴/a²`
+`x-x=x+y=y+x=y-y=(x²-y²)-((x³y²)/b)+x/xy=xy-yx=(x/y)(y/x)-x⁴=1/(a²-b)`.
+
+Implementation `hhs_runtime/pass220_phase_magnitude_gate_v1.py` commit `93dc9658e97a72863beb0c065eb156aa456a247b` preserves exact ordered gate operands with balanced-delimiter parsing. No scalar cancellation, implicit commutation or alternative zero-denominator implementation is introduced. Tests `tests/pass220/test_phase_magnitude_gate_v1.py` commit `d1eddc36742881e68c9de3357ecee9c2842aa9ca` assert seven distinct ordered cancellation gates and one composition gate, commutator retention and malformed gate rejection. Workflow modifications commits `f1601d1a69d0e4b4d755d64ad072dffac82f923a` and `b1fda75a242386924816138948320ef056f04d0b` include tests and PR-path trigger. New CI result **not yet observed**.
+
+Next action: check latest phase gear workflow, repair dependency-scoped failures only; add typed AST binding to inherited 5184 VM81 BigInt/RNA membrane preserving HNAN gain-one bypass and provenance; obtain actual canonical signed Hash216 receipt. Existing CI success is not retroactively proof of these new gate semantics.
