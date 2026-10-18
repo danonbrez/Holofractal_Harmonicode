@@ -27,6 +27,7 @@ def hydrate_order5_in_loshu(square=None):
     if len(square)!=5 or any(len(line)!=5 for line in square) or any(
         type(v) is not int for line in square for v in line):
         raise ValueError("ORDER5_EXACT_MATRIX_REQUIRED")
+    square=tuple(tuple(line) for line in square)  # immutable validated witness
     if sorted(v for line in square for v in line)!=list(range(1,26)):
         raise ValueError("ORDER5_EXACT_PERMUTATION_REQUIRED")
     rows=tuple(sum(line) for line in square)
