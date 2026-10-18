@@ -11,6 +11,8 @@ on:
       - 'tests/pass220/test_complex_phase_loshu_v1.py'
       - 'hhs_runtime/pass220_phase_magnitude_gate_v1.py'
       - 'tests/pass220/test_phase_magnitude_gate_v1.py'
+      - 'hhs_runtime/pass220_lane5_h36_111_hydration_v1.py'
+      - 'tests/pass220/test_lane5_h36_111_hydration_v1.py'
       - 'whitepapers/Harmonicode Algebra - Course'
       - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
@@ -20,6 +22,8 @@ on:
     paths:
       - 'hhs_runtime/pass220_phase_magnitude_gate_v1.py'
       - 'tests/pass220/test_phase_magnitude_gate_v1.py'
+      - 'hhs_runtime/pass220_lane5_h36_111_hydration_v1.py'
+      - 'tests/pass220/test_lane5_h36_111_hydration_v1.py'
       - 'native_projects/pass220/**'
       - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
@@ -45,7 +49,7 @@ jobs:
       - name: Verify inherited BigInt VM81 source binding
         run: |
           python3 -m pip install pytest
-          python3 -m pytest -q tests/pass220/test_phasegear_vm81_bigint_binding_v1.py tests/pass220/test_complex_phase_loshu_v1.py tests/pass220/test_phase_magnitude_gate_v1.py
+          python3 -m pytest -q tests/pass220/test_phasegear_vm81_bigint_binding_v1.py tests/pass220/test_complex_phase_loshu_v1.py tests/pass220/test_phase_magnitude_gate_v1.py tests/pass220/test_lane5_h36_111_hydration_v1.py
       - name: Confirm source-locked V2 matches contract
         run: |
           python3 - <<'PY'
