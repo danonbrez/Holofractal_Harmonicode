@@ -23,7 +23,7 @@ def test_source_gates_preserved():
 def test_complex_loshu_diagonals_fail_closed_even_without_assertions(monkeypatch):
     import pytest
     from hhs_runtime import pass220_complex_phase_loshu_v1 as m
-    invalid=((4,9,2),(3,5,7),(6,1,8))
+    invalid=((9,4,2),(5,3,7),(1,8,6))
     monkeypatch.setattr(m,"LO_SHU",invalid)
     with pytest.raises(ValueError,match="DIAGONAL"):
         m.audit()
