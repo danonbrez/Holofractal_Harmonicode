@@ -105,3 +105,12 @@ Scoped verification command: `g++ -std=c++17 -Wall -Wextra -pedantic -I native_p
 Known status: Phase Gear V2 workflow green on previous checkpoint; multiple unrelated or inherited workflows failed on earlier run. Current native regression and Lean module results must be observed before acceptance.
 Constraints: typed center HNAN remains existing native gate. No fabricated prime-to-ring assignment; index axes are kept separate. No main/deployment changes or Hash216 mint.
 Next: validate crosswalk against signed Lane 5 memory admission source, run scoped compile and exact Wolfram diagnostics; repair-forward any failing tests.
+
+## Orthogonal eight-phase gear checkpoint (2026-10-18)
+Base: `0ac28c183ab44ce027e7c104abba9d5b99e96194`; PR #825 targets main.
+User's authoritative ordered gate pairs: `(111,100,101,001,110,010,011,000)` ↔ `(8,17,26,35,44,53,62,71)` `MOD9=x²`. Phase projection 8 mod 9 is a conventionally computed witness, not a scalar replacement for typed x².
+- `native_projects/pass220/ers_lane5_cell_wall_metadata.hpp` commit `b04ff23c0957056a1415f3a2779253812f1d7c60`: immutable candidate gate table and constexpr fail-closed checker. Spatial HNAN ring stays separate.
+- `native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp` commit `f830016c0fcebc978c2ad8d42d6b8984112241b9`: forged order, duplicate register, residue and exact-step rejection tests.
+Scoped runner command: `g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp -o /tmp/hhs_ers && /tmp/hhs_ers`.
+Environment: GitHub contents API only. New native test outcome not yet independently verified. This adapter is candidate-only, not signed canonical VM81 execution or Hash216 mint.
+Next: check workflow result and repair-forward any defect, then attach ordered orthogonal phase gear to authoritative signed Lane 5 admission without bypass or source mutation.
