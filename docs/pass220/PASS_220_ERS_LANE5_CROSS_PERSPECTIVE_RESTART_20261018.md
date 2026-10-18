@@ -41,3 +41,23 @@ Changed file: `.github/workflows/pass220-phasegear-v2-validation.yml` now compil
 Latest validation-triggering commit: `62f4462934503f1f79c36aecad087841a5e495bd`.
 Existing failures outside this scoped ERS regression include Course Modules M1/M2/M3/M4, Module Gate Provenance and Complete Whitepaper Corpus Ingress; not silently classified as passed.
 Remaining: obtain scoped CI verdict for ERS C++; compile Lean 4 new module explicitly and run Wolfram script on an appropriate runner, preserving authoritative receipts; connect validated ERS metadata to actual signed Lane 5 hydration persistence. No production closure is claimed.
+
+## Mutable-witness regression checkpoint (2026-10-18)
+Inherited branch base: `db9e092aef369c3b200b8c1035e52590292e1983`; target: `main` through PR #825; no main/deployment mutations.
+
+Changed files and source commits:
+- `hhs_runtime/pass220_lane5_h36_111_hydration_v1.py` — `8ea589c7d1566786bacab3a5279cd7ce17e083a0`: freeze source as tuples before validation, hashing, and return.
+- `hhs_runtime/pass220_lane5_order5_loshu_nucleus_v1.py` — `895d49f415bd1f5526a623744f1655e2078ca871`: freeze matrix before verification and witness construction.
+- `tests/pass220/test_lane5_h36_111_hydration_v1.py` — `e564c7e60d0027c3e3418b412c37f872af645008`: post-return mutation and hash recomputation regression.
+- `tests/pass220/test_lane5_order5_loshu_nucleus_v1.py` — `faa913acd8f713cdfe0f9e3df6d6eec0a8908c98`: post-return matrix mutation and cached-sum regression.
+- `.github/workflows/pass220-phasegear-v2-validation.yml` — `cd57fc45b54d7c4566a9ba216d22c41b90c28069`: both VM81/BigInt Python paths included under PR triggers.
+
+Scoped commands:
+`python3 -m pytest -q tests/pass220/test_lane5_h36_111_hydration_v1.py tests/pass220/test_lane5_order5_loshu_nucleus_v1.py tests/pass220/test_phasegear_vm81_bigint_binding_v1.py`
+`g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_projects/pass220/test_phase_gear_v2_ordered_source.cpp -o /tmp/hhs_phasegear_v2 && /tmp/hhs_phasegear_v2`
+Repository runner is GitHub Actions; commands have not been locally executed through GitHub Contents API.
+
+Validation done: source edits and repo commits; prior green phasegear workflow was observed on inherited `6014768...`.
+Validation pending: new scoped workflow outcome; PR source-lock bypass and full ERS/Lean/Wolfram runtime integration must be checked separately.
+Environment: GitHub API write, no local checkout; restart from latest branch commit, inspect scoped CI run; repair-forward failures only.
+Next: verify new CI results, address failures, complete acceptance evidence without copying user input or bypassing VM81/Hash216 authority.
