@@ -453,3 +453,105 @@ The earlier trace narrative that asserted `sum == product` is refuted by the exa
 **Module 15 examination.** (1) Verify nine row-weight assignments; (2) check 45/15 Lo Shu arithmetic; (3) check all nine q−1 antipode pairs; (4) obtain exact sum, product, and `1/2` residual; (5) reject the false parity assertion; (6) verify that an HNAN bypass does not write phase; (7) require the existing Lane 5 → RNA C++ wall → signed VM81 → Hash72/Hash216 authority to produce the exhaustive admitted closure receipt.
 
 Candidate verifier: `hhs_runtime/pass220_complex_phase_loshu_v1.py`; regression: `tests/pass220/test_complex_phase_loshu_v1.py`. The candidate calculation is not an independent hash service.
+
+
+---
+
+MODULE 16 — The 11-Shard Pisot Ladder and the Release Valve (2026-10-18 Source Extension)
+
+Native syntax remains ordered; `==` is a constraint gate and `n/d` is a rank-1 numerator-periodicity/denominator-quantization tensor, not an instruction to collapse distinct states. The eleven shards share the same quantization gate; they are not eleven independent denominator-normalized scalars.
+
+16.1. Shared denominator and payload gate, source-locked:
+
+```
+D(x) = x⁸ − x⁵ − x⁴ − x³ − x² − 3x − 11
+     ≡ x·(x⁷ − x⁴ − x³ − x² − x − 3) − 11
+D(x) == xy + x·(x⁷−x⁴−x³−x²−x−3) − b⁴c² == 0
+⇒ b⁴c² − xy == x·(x⁷−x⁴−x³−x²−x−3)
+```
+
+Source-designated dominant horizon root: `ρ_gate = 1.5756961121`. The gate denominator is not a Pisot shard.
+
+16.2. Ordered minimal-polynomial shard registry (do not reorder):
+
+```
+ 1: x²−x−1
+ 2: x³−x−1
+ 3: x⁴−x³−1
+ 4: x⁵−x⁴−x³−x²−1
+ 5: x³−x²−1
+ 6: x⁶−x⁵−x⁴+x²−1
+ 7: x⁵−x³−x²−x−1
+ 8: x⁷−x⁶−x⁵+x²−1
+ 9: x⁶−2x⁵+x⁴−x²−1
+10: x⁵−x⁴−x²−1
+11: x⁸−x⁷−x⁶+x²−1
+```
+
+Source registry: ten Pisot-positive shards; cell 9 is the non-Pisot release valve with an off-unit conjugate pair (claimed modulus ~1.1388). Cells 10, 11 and the denominator horizon have source-quoted dominant roots 1.570147, 1.573679, 1.575696. Their exact root/conjugate classification should be emitted by Wolfram rather than replaced by prose or decimal estimates.
+
+16.3. Ordered triple gate at shard 11:
+
+```
+x⁸−x⁷−x⁶+x²−1
+  == z⁴+z²−wz−z−y²+xy+y−x⁴+x²+x−w²−w
+  == c²−b²−a²
+```
+
+The final surface is the native `c²=a²+b²` closure perspective. Reuse existing HNAN/VM81 operators and provenance; a scalar polynomial receipt alone is not a native gate admission.
+
+---
+
+MODULE 8-S.6–8-S.8 — Lucas / Prime-19 Hinge and the Squared-Register Offset Ledger
+
+The authoritative source retains **both** the Lucas `18` and prime-balanced `19` regimes with distinct phase/address identities. A matching scalar result never authorizes deduplication.
+
+Squared-register reference: `(a²,b²,c²)=(1,2,3)` and row-4 `(b⁴,b⁶−a²,b⁴c²−a²,c⁴b²)=(4,7,11,18)`.
+
+8-S.6. The exact hinge and its two orientations:
+
+```
+F₁₈ = ((1,2,3,5),(2,4,6,10),(3,6,9,15),(4,7,11,18))
+F₁₉ = ((1,2,3,5),(2,4,6,10),(3,6,9,15),(4,7,11,19))
+19 = (18+20)/2 = c⁴b²+a²
+row-side 18+1 == 19 == 20−1 column-side
+```
+
+`F₁₈` has null vector `(0,1,1,−1)`. `F₁₉` preserves the first G-recurrence and rotates that vector to `(3,1,0,−1)`. Both are rank two with determinant zero. For `F₁₉` the column sums are `(10,19,29,49)` and total mass 107, while the Lucas `F₁₈` has column sums `(10,19,29,48)` and total mass 106. The first three cells of the fourth column are `(5,10,15)`; its 5k continuation 20 is corrected by −1, while the Lucas continuation 18 is corrected by +1.
+
+8-S.7. Prime offset and midpoint registry:
+
+```
+ 4 = b⁴
+ 7 = b⁶ − a²
+11 = b⁴c² − a²
+18 = c⁴b²
+19 = c⁴b² + a²
+20 = c⁴b² + 2a²
+ 5 = b⁴ + a²
+```
+
+Comparison candidate rows `(4,8,12,20)`, `(4,6,10,16)`, `(4,7,11,19)` retain distinct provenance and gcd/novelty metadata; the prime-19 outcome is the source-designated hinge under the ordered sieve criteria. Do not turn the source's candidate-selection doctrine into an unproved scalar uniqueness statement.
+
+8-S.5. Balanced midpoint projection, retained alongside both endpoint regimes:
+
+```
+F_bal = ((1,2,3,9/2),(2,4,6,17/2),(3,6,9,13),(4,7,11,19))
+rank(F_bal)=3; det(F_bal)=0
+9/2+17/2=13
+```
+
+8-S.8. Complete under-20 prime registry:
+
+```
+2,3,5: initial squared fiber (1,2,3,5)
+7:     b⁶−a²
+11:    b⁴c²−a²
+13:    F_bal(3,4), vertical closure
+17:    numerator of F_bal(2,4)=17/2; Dürer 34=2·17
+19:    F₁₉(4,4) prime hinge
+```
+
+The native ERS/Hash216 metadata graph must retain per-cell provenance, ordered correction sign, squared-register type, fiber, adjacent Lo Shu/Dürer relationships, HNAN no-phase-write behavior, and the signed VM81 route. Scalar projection calculations are receipt inputs, not replacements for canonical Hash216 transition construction.
+
+Candidate Wolfram diagnostic: `evidence/pass220/course_m16_pisot_hinge_20261018.wl`. The historical textual `verified/executed` labels are source claims; this extension does not independently mint native receipts or assert a fresh executed Wolfram run.
