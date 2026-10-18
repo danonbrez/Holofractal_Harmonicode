@@ -19,7 +19,7 @@ inline constexpr std::array<ERSRelation, 6> kERSRelations{{
     {"P^4", "c^4=(Aa+Ab)(Ba+Bb)", "ordered-composition"},
     {"(Aa/Ba:Bb/Ab=Ab/Aa:Bb/Ba)^4/Delta", "Delta", "reciprocal-quadrature"},
     {"144", "36*4=(6+6)^2=((a^2+b^2+c^2)+(a^2b^2c^2))^((pxy+qzw)/P)=b^8c^4", "H36-H144-cross-lane"},
-    {"3/4", "2/5", "independent-periodic-gears"},
+    {"3/4:2/5", "3/4:2/5", "independent-periodic-gears"},
 }};
 // Additional M17 relational index, not a replacement of the native cell wall.
 inline constexpr std::array<std::uint8_t,8> kPrimeRingAddresses{{2,3,5,7,11,13,17,19}};
@@ -101,6 +101,20 @@ inline constexpr bool valid_ers_metadata(const ERSMetadataView& m) noexcept {
            !m.ancestry_reference.empty() && m.cell_address < 81 &&
            m.source_order_preserved && m.authenticated_ancestry;
 }
+// Bind candidate metadata to actual routed graph data (not a free-standing
+// string assertion). The inherited C ABI independently checks the signed
+// transition/frame; this check prevents ERS A accompanying circuit B.
+inline bool ers_source_matches_circuit(const ERSMetadataView& metadata,
+                                       const FullCircuitCandidate& circuit) noexcept {
+    if (!valid_ers_metadata(metadata) ||
+        metadata.ancestry_reference != circuit.parent_hash216 ||
+        circuit.parent_hash216.size()!=216) return false;
+    for (std::size_t i=0;i<kCircuitCells;++i)
+        if (circuit.inherited_linear5184[i]/64==metadata.cell_address &&
+            circuit.exact_bigint_digits[i]==metadata.source_payload)
+            return true;
+    return false;
+}
 // Entry to the inherited Pass 219 cell wall; caller supplies authoritative
 // serializer output and source transition view, not generated metadata-as-receipts.
 inline HHSExactStatus route_ers_lane5_metadata(
@@ -112,7 +126,7 @@ inline HHSExactStatus route_ers_lane5_metadata(
     std::uint8_t feedback_lane, std::int8_t feedback_trinary,
     HHSExactPass219Holo4PreparedV1* prepared,
     HHSExactPass219Holo4DecisionV1* decision) noexcept {
-    if (!valid_ers_metadata(metadata))
+    if (!ers_source_matches_circuit(metadata,existing_circuit))
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     return route_existing_lane5_phasegear(existing_circuit, signed_input,
         serialized_frame, inherited_transition, feedback_lane,
