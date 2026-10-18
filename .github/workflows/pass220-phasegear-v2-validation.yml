@@ -5,8 +5,15 @@ on:
       - feature/pass220-phasegear-lean-wolfram-lane5-20261017
     paths:
       - 'native_projects/pass220/**'
+      - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
       - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
       - 'formal/lean/HHS.lean'
+      - '.github/workflows/pass220-phasegear-v2-validation.yml'
+  pull_request:
+    paths:
+      - 'native_projects/pass220/**'
+      - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
+      - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   workflow_dispatch:
 jobs:
