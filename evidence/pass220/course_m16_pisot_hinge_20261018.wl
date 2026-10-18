@@ -15,7 +15,7 @@ fourth={4,7,11,19};
 checks=<|
   "denominator_expand" -> (Expand[x*(x^7-x^4-x^3-x^2-x-3)-11]===d),
   "11_polynomials" -> (Length[polys]==11),
-  "irred_exact" -> And@@(IrreduciblePolynomialQ[#,x]& /@ polys),
+  "irred_exact" -> And@@(IrreduciblePolynomialQ /@ polys),
   "f18_rank2" -> (MatrixRank[f18]==2),
   "f19_rank2" -> (MatrixRank[f19]==2),
   "f18_kernel" -> (f18.{0,1,1,-1}=={0,0,0,0}),
