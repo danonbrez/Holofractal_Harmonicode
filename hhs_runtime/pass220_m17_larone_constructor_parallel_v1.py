@@ -43,3 +43,34 @@ def witness(addresses=ADDRESSES, registers=REGISTERS):
         "parallel_with_existing_constructor": True,
         "candidate_only": True, "hash72_minted": False, "hash216_minted": False,
     }
+
+def parallel_constructor_view(*, shared_root_sha256: str, nucleus_index: int,
+                              nesting_depth: int = 0, max_steps: int = 72):
+    """Execute inherited I071 loop beside the source-locked RML4 gear witness.
+
+    Never infer a signed constraint/orientation admission from M17 scalar
+    projections; I071 retains first-repeat detection and lineage authority.
+    """
+    from hhs_runtime.hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1 import (
+        run_phase_gear_loop,
+    )
+    m17 = witness()
+    inherited = run_phase_gear_loop(
+        shared_root_sha256=shared_root_sha256,
+        nucleus_index=nucleus_index,
+        nesting_depth=nesting_depth,
+        halt_on_orbit=True,
+        orientation_closed=False,
+        constraint_closed=False,
+        max_steps=max_steps,
+    )
+    if inherited.get("converged") is not False:
+        raise CrosswalkFailure("CANDIDATE_INHERITED_CLOSURE_SCOPE_WIDENED")
+    return {
+        "schema": SCHEMA + "_I071_COMPOSITION_V1",
+        "m17": m17,
+        "i071": inherited,
+        "parallel_evaluation": True,
+        "canonical_vm81_admitted": False,
+        "canonical_hash216_minted": False,
+    }
