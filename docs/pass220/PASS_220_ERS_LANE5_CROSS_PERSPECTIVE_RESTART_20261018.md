@@ -122,3 +122,14 @@ Changed:
 - `native_projects/pass220/ers_lane5_cell_wall_metadata.hpp` `425ec91e03c51ac6c7ccedaf739b624063c816da`: existing Larone constants and phase72 address projection.
 - `native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp` `e3a6c79799672b98d4991be0f35eee96ea918059`: 72/18/36 exact indexed rotation checks.
 Scope: no change to production/browser renderer, signed RNA VM81 authority, or native HNAN matrix. Run scoped C++ regression before acceptance; projection reuse does not establish new canonical signed mint. Next: inspect CI, repair-forward targeted failures, connect validated M17 register metadata to admitted native Lane5 signed source.
+
+## M17 existing RML4 + I071 constructor closure trace (2026-10-18)
+Base commit: `5af655e3b3b15a35622d030e7a075ef2039eed47`. Branch: `feature/pass220-phasegear-lean-wolfram-lane5-20261017`; target main via PR #825.
+Located real inherited functions in `hhs_runtime/pass219/dynamic_octonion_gyroscope.py`: `expected_product_phase`, CHANNELS, exact PHASE_MODULUS/QUARTER_CYCLE/HALF_CYCLE imported from `phase_geometry_learning`. This is RML4's native candidate phase-rotation evaluation, separate from the Larone browser projection. Existing constructor first-repeat logic in `hhs_runtime/hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py`, inherited by I072 theory constructor.
+Changed files / commits:
+- `hhs_runtime/pass220_m17_larone_constructor_parallel_v1.py` — `e047a00327e446e566888668bb5f90b80fcf724b`; reuses RML4 expected_product_phase and immutable user source permutation; candidate only.
+- `tests/pass220/test_m17_larone_constructor_parallel_v1.py` — `cd4b3fe57d6284a9929e76ab863f037ac129dba4b`; source identity / copied-input regression.
+- `.github/workflows/pass220-phasegear-v2-validation.yml` — `8ee13eb821bf955d4c61d2be28fec37bab3f0096`; source triggers and focused pytest.
+Execute `python3 -m pytest -q tests/pass220/test_m17_larone_constructor_parallel_v1.py` and existing scoped phase gear workflow; pending CI verdict, no local runner evidence. Validation still required: compare I071 native first-repeat semantics against full composed tensor closure, with signed VM81/Hash216 admission preserved.
+Important: M17 is a crosswalk composed in parallel with the preexisting RML4 rotor/Lo Shu tensors, not a causal substitute or new independently executable engine. Descriptions are authoritative causal investigation guides, equations govern ordered semantics, and repository code governs actual execution. Nothing has minted canonical Hash72 or Hash216. Main/deployment unaffected.
+Next: check latest scoped workflow output; repair any failures; integrate validated crosswalk with I071's existing loop-closure constructor rather than inventing new first-repeat logic.
