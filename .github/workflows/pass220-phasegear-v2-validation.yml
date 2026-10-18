@@ -22,6 +22,8 @@ on:
       - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
       - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
       - 'evidence/pass220/course_m16_pisot_hinge_20261018.wl'
+      - 'evidence/pass220/course_m17_prime_residue_64_20261018.wl'
+      - 'formal/lean/HHS/Pass220/PrimeResidue64.lean'
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   pull_request:
     paths:
@@ -39,6 +41,8 @@ on:
       - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
       - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
       - 'evidence/pass220/course_m16_pisot_hinge_20261018.wl'
+      - 'evidence/pass220/course_m17_prime_residue_64_20261018.wl'
+      - 'formal/lean/HHS/Pass220/PrimeResidue64.lean'
       - '.github/workflows/pass220-phasegear-v2-validation.yml'
   workflow_dispatch:
 jobs:
