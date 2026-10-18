@@ -1,0 +1,35 @@
+# Pass 220 ERS cross-perspective formalization — restart checkpoint
+
+Target branch: feature/pass220-phasegear-lean-wolfram-lane5-20261017
+Merge target: main. Parent: existing Pass 219 C++ RNA VM5184 cell-wall ABI.
+Base source baseline: inherited Pass 220 phase-gear candidate bridge, Lean phase-gear file and Wolfram witness on target branch.
+
+## Source authority
+The user-provided ERS equations are ordered native-gate syntax, not freely commutative scalar equations:
+- AB=P^4; BA=-P^4.
+- P^4=c^4=(Aa+Ab)(Ba+Bb).
+- (Aa/Ba:Bb/Ab=Ab/Aa:Bb/Ba)^4/Delta=Delta, A!=B!=0, Delta=1.
+- 144=36*4=(6+6)^2=((a^2+b^2+c^2)+(a^2b^2c^2))^((pxy+qzw)/P)=b^8c^4.
+- 3/4:2/5 is independent reciprocal polyrhythmic quantization, not compulsory denominator rewriting.
+- Ordered x,y,z,w, xy/yx, zw/wz relationships, local trinary epsilon, Lo Shu geometry and H36/H144 existing circuits must not be deduplicated.
+- Hash216 comprises ordered preceding-state, transition, resulting-state identities; native reproduction must not be replaced by echo/copy.
+- 72 symbols are the native alphabet, not compulsory padding of input token sequences.
+- The goal is cross-perspective metadata edges between existing circuits, with original addresses, ancestry, modalities and operand order.
+
+## Files
+- formal/lean/HHS/Pass220/ERSLane5Metadata.lean: typed metadata and exact Genesis projection identities.
+- evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl: source-locked gates and exact Wolfram projections, candidate receipt only.
+- native_projects/pass220/ers_lane5_cell_wall_metadata.hpp: guarded metadata view delegating to existing Pass 219 native RNA route.
+- native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp: guard checks.
+
+## Authority and remaining checks
+No second VM81 runtime, new cryptographic mint, or surrogate proof of native operator semantics.
+The existing Pass 219 ABI declares preparation only; mutation and Hash72/Hash216 commitment are VM81-governed.
+Dependency-scoped commands to run:
+- `c++ -std=c++17 -Ihhs_runtime/include -Inative_projects/pass220 -fsyntax-only native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp`
+- `lake env lean formal/lean/HHS/Pass220/ERSLane5Metadata.lean` (project-specific lake path may differ)
+- `wolframscript -file evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl`
+- rerun native Pass219 route regression and signed environment checks when integrated.
+Validation status: unverified until CI/tool execution receipts are available.
+Environment: GitHub Contents API write; no native C++/Lean/Wolfram execution environment supplied by connector.
+Next: compile Lean/C++, evaluate Wolfram, address any failures, then attach these typed ERS metadata edges to authoritative Lane 5 hydration/index persistence only through the signed VM81 path.
