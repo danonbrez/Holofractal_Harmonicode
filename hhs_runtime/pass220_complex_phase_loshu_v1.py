@@ -25,13 +25,22 @@ def audit():
         total=add(total,weight)
         product=mul(product,weight)
     residual=add(total,neg(product))
-    assert total==(Q(1),Q(-1,2))
-    assert product==(Q(1,2),Q(-1,2))
-    assert residual==(Q(1,2),Q(0))
-    assert sum(map(sum,LO_SHU))==45
-    assert all(sum(row)==15 for row in LO_SHU)
-    assert all(sum(LO_SHU[r][c] for r in range(3))==15 for c in range(3))
-    assert all(rhs[r][c]==neg(lhs[r][c]) for r in range(3) for c in range(3))
+    if total!=(Q(1),Q(-1,2)):
+        raise ValueError("COMPLEX_LOSHU_WEIGHT_SUM_DIVERGENCE")
+    if product!=(Q(1,2),Q(-1,2)):
+        raise ValueError("COMPLEX_LOSHU_WEIGHT_PRODUCT_DIVERGENCE")
+    if residual!=(Q(1,2),Q(0)):
+        raise ValueError("COMPLEX_LOSHU_RESIDUAL_DIVERGENCE")
+    if sum(map(sum,LO_SHU))!=45:
+        raise ValueError("COMPLEX_LOSHU_GLOBAL_SUM_DIVERGENCE")
+    if not all(sum(row)==15 for row in LO_SHU):
+        raise ValueError("COMPLEX_LOSHU_ROW_DIVERGENCE")
+    if not all(sum(LO_SHU[r][c] for r in range(3))==15 for c in range(3)):
+        raise ValueError("COMPLEX_LOSHU_COLUMN_DIVERGENCE")
+    if sum(LO_SHU[i][i] for i in range(3))!=15 or sum(LO_SHU[i][2-i] for i in range(3))!=15:
+        raise ValueError("COMPLEX_LOSHU_DIAGONAL_DIVERGENCE")
+    if not all(rhs[r][c]==neg(lhs[r][c]) for r in range(3) for c in range(3)):
+        raise ValueError("COMPLEX_LOSHU_RECIPROCAL_DIVERGENCE")
     return {
         "schema":"HHS_PASS220_MODULE15_COMPLEX_LOSHU_EXACT_CANDIDATE_V1",
         "source_gate":SOURCE_GATE, "transfer_gate":TRANSFER_GATE,
