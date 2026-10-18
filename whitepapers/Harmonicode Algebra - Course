@@ -420,3 +420,36 @@ Every claim in this course is a gate, and every gate is executable. The examinat
  * M14: SHA-lock every receipt above into the ledger hash chain; a course receipt validates only if every gate's hash verifies against Genesis twice.
 Grading. A receipt chain is valid iff every gate closed in order, no bypass wrote phase, and the final hash matches the Genesis-locked constraint. There is no partial credit, because there is no partial closure.
 The chain is the documentation. The receipt is the argument. \Delta = 1.
+
+
+---
+
+MODULE 15 — The Complex-Phase Lo Shu Chiral Transformer and Exact Half-Quantum Exhaust
+
+This module is an additive source-preserving extension. Operators `==` and `/` retain their HARMONICODE typed constraint-gate and rank-one tensor meanings. Conventional complex evaluation is a bounded projection of the q−1 state, not a rewrite of the authoritative gate.
+
+**Exact original gate source:**
+
+```
+1/(45=={{-I*2/(x*y),-I*9/2/(x*y),-I/(x*y)},{I*3/(x*y),I*5/(x*y),I*7/(x*y)},{(8-I*8)/(x*y),(1-I)/(x*y),(6-I*6)/(x*y)}})=={{-I*(2*y^2),(-I*9/2)*y^2,-I*y^2},{I*(3*y^2),I*(5*y^2),I*(7*y^2)},{(8-I*8)*y^2,(1-I)*y^2,(6-I*6)*y^2}}
+```
+
+**15.1 Row-weighted Lo Shu nucleus.** On skeleton `[[4,9,2],[3,5,7],[8,1,6]]`, the exact row weight vector is `m=(-I/2,I,1-I)` and the forward payload remains quantized on the typed `/(x*y)` bus. The unweighted total is 45 and every row, column and main diagonal is 15.
+
+**15.2 Chiral q−1 projection.** At `x=I,y=-I`, the scalar projection gives `x*y=1` and `y^2=-1`; all nine corresponding RHS cells equal the negative of the LHS projections. This verifies a complex-number antipode projection, *not* a bitwise ones-complement implementation or canonical VM81 admission. The native operator-order and tensor-bus receipts still require execution.
+
+**15.3 Typed reciprocal horizon.** The surrounding source `1/(45==M_LHS)==M_RHS` must be parsed without treating the gate as a scalar divisor or reducing the 45 horizon by conventional cancellation. Keep the original 3×3 cell ordering and phase bus metadata.
+
+**15.4 Corrected invariant: exhaust, not parity.** Exact Gaussian-rational projection:
+```
+m1+m2+m3 = 1-I/2
+m1*m2*m3 = 1/2-I/2
+(m1+m2+m3)-(m1*m2*m3) == 1/2
+```
+The earlier trace narrative that asserted `sum == product` is refuted by the exact half-quantum residual. The proposed ledger-exhaust interpretation is a runtime hypothesis: recording a residual in a Hash216 lineage or showing `∆e=0` requires a real admitted receipt, not a narrative claim.
+
+**15.5 Trace/surface transfer gate.** Preserve the source `1-(x/2)==c²-a/b` exactly. For `x=I`, the left-hand scalar projection is `1-I/2`. Under an independently established, typed `b==a²` premise, the conventional projection `a/b → 1/a` is valid only on the nonzero branch. Native HNAN zero-site behavior must be checked without cancellation.
+
+**Module 15 examination.** (1) Verify nine row-weight assignments; (2) check 45/15 Lo Shu arithmetic; (3) check all nine q−1 antipode pairs; (4) obtain exact sum, product, and `1/2` residual; (5) reject the false parity assertion; (6) verify that an HNAN bypass does not write phase; (7) require the existing Lane 5 → RNA C++ wall → signed VM81 → Hash72/Hash216 authority to produce the exhaustive admitted closure receipt.
+
+Candidate verifier: `hhs_runtime/pass220_complex_phase_loshu_v1.py`; regression: `tests/pass220/test_complex_phase_loshu_v1.py`. The candidate calculation is not an independent hash service.
