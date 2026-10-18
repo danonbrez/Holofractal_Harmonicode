@@ -115,3 +115,9 @@ Next: inspect PR #825 phase-gear job logs for exact head; repair only impacted C
 The dedicated Pass 220 Phase Gear V2 Validation workflow run `39090849504`, job `117567094559`, finished failure (exit 134), with the C++ candidate executable asserting `register_gates.size()==3`. The parser correctly retained the third component's outer `List(...)` as ONE top-level operand. The regression incorrectly required that the two inner closure gates be split without first entering the outer List. Repair `decf0d20597529ffd7a473ee8fc68ded7d2f7b59` checks one outer component, then descends one exact `List` nesting level and checks three sequential gate operands, including terminal zero. This changes only the test, not the source, ordered gate semantics, or runtime authority.
 
 Latest repaired CI is awaiting an observed result. Next: check direct GitHub Actions job result, repair only affected regression; proceed to native typed 5184-position BigInt/RNA cell-wall admission after green.
+
+## Verified dependency-scoped closure: V2 C++ candidate CI (2026-10-18)
+
+GitHub Actions run `39103311452`, job `117603850240` (`cpp-candidate`), completed **success** on the branch after the nested-gate assertion repair. This validates the bounded native C++ source-fidelity and candidate regression checks, including 64-cell placement, ordered List boundaries and malformed-input rejection. The previously failed static-assert, raw-string delimiter and nested-List regressions are thereby closed at this code stage; their historical failure evidence remains archived.
+
+Do not rerun already-successful candidate CI merely to restate the pass. Next required implementation is typed V2 AST mapping through inherited exact BigInt serialization, the RNA VM5184 C ABI and `CoreHolographicRNACellWall`, followed by signed VM81 admission and authentic Genesis-locked Hash72/Hash216 lineage replay. A successful `cpp-candidate` job is not proof of any of those downstream outcomes.
