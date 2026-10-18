@@ -36,3 +36,11 @@ def test_source_mismatch_fails_closed():
 def test_invalid_lane_fails_closed():
     with pytest.raises(PhaseGearBindingError):
         bind_candidate(source_locked(), 3, COORDS, lane_index=12)
+
+def test_input_mutation_after_witness_cannot_change_addresses():
+    caller=list(range(64))
+    result=bind_candidate(source_locked(),179971,caller)
+    caller[0]=5184
+    caller[1]=0
+    assert result["linear5184_positions"]==tuple(range(64))
+    assert isinstance(result["linear5184_positions"],tuple)
