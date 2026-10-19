@@ -52,3 +52,14 @@ Decision order:
 `native registry + Hash216 hydration → native constructor execution/proof → gap verdict → scoped external import if and only if authorized → decoded observable result → deployed HTTPS/Chromium acceptance`.
 
 Optimization/racing can rank competing *candidate* paths but cannot choose an unadmitted external provider, silence a native proof failure or create an independent canonical commit authority.
+
+## Mandatory repository guidance and service-index investigation (2026-10-19)
+
+Before changing a failing service, production path, hydration, admission, optimizer or frontend integration:
+1. Read `AGENTS.md` and follow its mandatory navigation order: `README.md` → `REPOSITORY_INDEX.md` → `REPOSITORY_HASH216_DEPENDENCY_TREE.md` → Lane5 hydrated repository knowledge graph and database receipt → applicable file-link shards and pass-specific contract/restart record. Also consult `ARCHITECTURE.md`, `RUNTIME_FLOW.md`, and `GLOSSARY.md`.
+2. Locate the capability in the service registry/index (`hhs_runtime/hhs_service_registry_v1.py`, repository service documentation, generated index and production service registry). Check registered name, ownership, module/function binding, required authority, schema, validators, route and user-facing caller. Do not conflate a service registry entry with working production wiring.
+3. Read its historical contract, source implementation, relevant changed commit/PR, dependency ancestry, failing workflow job logs, and deployed artifact identity. Compare each observed boundary in actual UI-to-native-to-UI order, locate the first contract divergence, and repair forward at that owner.
+4. Consult hydrated Lane5 capability knowledge before importing external dependencies or designing duplicate services. Preserve singular VM81/Hash72/Hash216 authority, typed ingress/egress, signed receipts, racing determinism and all admitted native constraints.
+5. Verify impacted scoped tests, safety and negative tests, relevant integration paths, current-main deployment and full HTTPS/Chromium UI workflows. Produce restartable state/commit/CI/deployment receipt for unresolved work.
+
+Inspection anchors confirmed on main: `AGENTS.md` is the authoritative agent navigation and execution contract; `REPOSITORY_INDEX.md` explicitly declares itself navigational, not runtime authority; `hhs_runtime/hhs_service_registry_v1.py` is a guarded runtime service discovery/dispatch surface. All three must be consulted, but none alone proves that the deployed interface route works.
