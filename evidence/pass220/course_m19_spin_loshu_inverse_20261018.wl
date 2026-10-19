@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB,literalC,literalU,literalV,literalRoots,literalFermionicRoots,literalUnitRoots,literalUserBranches,literalPhasePlus,literalPhaseMinus];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB,literalC,literalU,literalV,literalRoots,literalFermionicRoots,literalUnitRoots,literalUserBranches,literalPhasePlus,literalPhaseMinus,literalRealSurdBranches];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -87,6 +87,16 @@ literalUserBranches={
  5/(x*y)+literalPhaseMinus*literalU+literalPhasePlus*literalV,
  5/(x*y)+literalPhasePlus*literalU+literalPhaseMinus*literalV
 };
+(* Explicit RealSurd-denominator transcription of λ1..λ3 from source.
+   Preserve the original branch-specific complex coefficients. *)
+literalRealSurdBranches={
+ 5/(x*y)+literalC/(3*Surd[2,3]*(x*y)^3)+
+ literalShellA*Surd[2,3]/(3*(x*y)^3*literalC),
+ 5/(x*y)+(-I*Sqrt[3]-1)*literalC/(6*Surd[2,3]*(x*y)^3)+
+ (I*Sqrt[3]-1)*literalShellA/(3*Surd[4,3]*(x*y)^3*literalC),
+ 5/(x*y)+(I*Sqrt[3]-1)*literalC/(6*Surd[2,3]*(x*y)^3)+
+ (-I*Sqrt[3]-1)*literalShellA/(3*Surd[4,3]*(x*y)^3*literalC)
+};
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
@@ -105,6 +115,9 @@ checks=<|
     generalCubic/.lam->#,Assumptions->x*y!=0&&literalC!=0]==0]&/@literalRoots),
  "literal_cardano_fermionic_orbit"->(Sort[literalFermionicRoots]===
    Sort[RootReduce/@(spectralRoots)]),
+ "literal_realsurd_three_prefactors"->And@@(TrueQ[FullSimplify[
+   literalRealSurdBranches[[#]]==literalUserBranches[[#]],
+   Assumptions->x*y!=0&&literalC!=0]]&/@Range[3]),
  "literal_branch_explicit_phase_orbit"->(And@@(TrueQ[FullSimplify[
     generalCubic/.lam->#,Assumptions->x*y!=0&&literalC!=0]==0]&/@literalUserBranches)),
  "literal_cardano_unit_orbit"->(Sort[literalUnitRoots]===
