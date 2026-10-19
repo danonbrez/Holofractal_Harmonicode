@@ -587,3 +587,34 @@ Exact projection receipt source: `evidence/pass220/course_m17_prime_residue_64_2
 
 
 **Module 17 native address reconciliation (Pass 220).** The authoritative inherited HNAN/Lo Shu 3×3 is `[[4,9,2],[3,5,7],[8,1,6]]`, with typed address table `[[000,001,010],[011,HNAN,100],[101,110,111]]`. Accordingly, clockwise ring order from the top-left is `[4,9,2,7,6,1,8,3]` and its native address sequence is `[000,001,010,100,111,110,101,011]`. Earlier `[8,1,6,7,2,9,4,3]` was a different valid Lo Shu orientation and is **not** the HNAN runtime address permutation. Do not substitute it at the signed cell wall. Prime-index order remains `[2,3,5,7,11,13,17,19]`; a prime-ID to ring-location *assignment* remains a separate typed relational edge, not established simply by equal array indices.
+
+
+---
+
+MODULE 18 — 9×9 Balanced-Ternary Zero-Vector Square and HNAN Boundary (source extension 2026-10-18)
+
+User-authoritative source: 81 positions cover four balanced trits exactly once; each of nine rows, nine columns, and two main diagonals closes in the zero *vector*, central position (5,5) carries 0000, antipodal complementary cells preserve the ± phase ledger. Source transcription correction: R2C3 `++--` → `+++-` = 38; do not silently retain the duplicated state. Signed decimal projection is the bijection −40..40. The corrected 3×3 block-sum projection (not a replacement grid) is
+```
+ 162  -171     9
+-153     0   153
+  -9   171  -162
+```
+The companion digit Sudoku is blockwise **semi-magic** (block rows and columns 15), not nine independently full-diagonal Lo Shu squares. Preserve this distinction when admitting source datasets.
+
+The phase quadruple boundary remains the preexisting ordered native HNAN tensor:
+```
+[[xy,x+y,yx],[xy-zw,x+y-z-w+xy+yx-zw-wz,wz-yx],[wz,z+w,zw]]
+```
+Native HNAN center gate authority and the 81-position VM81 address encoding are inherited; the conventional fermionic projection at (i,−i,i,−i) is a test witness only, not a new HNAN center algorithm. Full posted 81-cell source grid must be provided to verify any exact permutation claim; do not generate a surrogate 9×9 grid.
+
+MODULE 19 — Spin–Lo Shu Circuit on the Ordered xy Bus (source extension 2026-10-18)
+
+```
+S = [[-4,-3,-2],[-1,0,1],[2,3,4]]
+L = [[4,9,2],[3,5,7],[8,1,6]]
+M1 = (x·S + L + y·(-S))/(xy)
+det(L)=360
+```
+The `/` symbol in `M1` remains the native rank-1 quantization binding; the conventional matrix determinant, inverse and eigenvalues are explicitly **projection witnesses** of that typed circuit, not replacements for gate execution. The projected determinant invariant is `det(M1)=360/(xy)^3` and projected trace `15/(xy)`; the middle spectral coefficient retains ordered chirality with `K=xy(24-18(x-y)^2)`. The posted Cardano branches remain source evidence until compared against executable exact calculations.
+
+Both modules integrate through the inherited HNAN tensor and existing VM81 signed cell wall. No independently minted Hash72/Hash216 identity, alternate serializer, or new rotor is authorized.
