@@ -1,5 +1,5 @@
 import unittest
-from hhs_runtime.hhs_pass220_transcription_hydration_membrane_v1 import transcribe_candidate
+from hhs_runtime.hhs_pass220_transcription_hydration_membrane_v1 import transcribe_candidate, verify_transcription_candidate
 
 class TranscriptionTests(unittest.TestCase):
     def test_reversible_typed_address(self):
@@ -14,6 +14,18 @@ class TranscriptionTests(unittest.TestCase):
         self.assertEqual(result["ingress_sha256"], result["egress_sha256"])
         self.assertFalse(result["signed_hash216_admission_verified"])
         self.assertFalse(result["canonical_mint_authority"])
+
+    def test_window_generation_and_replay(self):
+        codec = lambda x: b"RNA" + x[::-1]
+        inverse = lambda x: x[3:][::-1]
+        record = transcribe_candidate("123456789012345678901234567890",index5184=5183,
+                                      encode=codec,decode=inverse)
+        self.assertEqual(record["window_proof"]["window"]["difference_of_squares"], "1")
+        self.assertEqual(record, verify_transcription_candidate(record,encode=codec,decode=inverse))
+        mutated = dict(record)
+        mutated["window_proof_sha256"] = "0"*64
+        with self.assertRaisesRegex(ValueError,"REPLAY_MISMATCH"):
+            verify_transcription_candidate(mutated,encode=codec,decode=inverse)
 
     def test_zero_roundtrip_is_legal(self):
         result = transcribe_candidate("0",index5184=0,encode=lambda x:x,decode=lambda x:x)
