@@ -19,3 +19,10 @@
 - Test commit `82230293e466060e3cb15abac20d323d582bf007` exercises each distinct negative evidence path.
 - This is still an evidence-assertion boundary; no independent source ABI comparator or genuine signed I028 witness is yet wired. A `True` claim is not cryptographic proof. Follow-on requires source-grounded comparison and signed Hash216 admission as separate obligations.
 - Next: check new CI and inspect failures, then require upstream rooted constructor evidence and inherited VM81 replay before accepting production closure.
+
+## 2026-10-19 intrinsic 5184 BigInt proof evidence
+- User clarified: combined metadata and linear BigInt 5184 knowledge graph must carry own constraint-enforcement and closure proof.
+- Added pre-admission candidate verifier `hhs_runtime/hhs_pass220_lane5_5184_constraint_proof_v1.py` at `ec372dae`, six regression tests at `892299f8`, workflow update `853e80db`, boundary contract `a34b3ad`.
+- Verifies 5184 indexed canonical decimal BigInt positions and dual VM81/Hash72 local coordinates, ordered closed gates, HNAN bypass gain=1 no-phase-write, unchanged inherited 72-character root identities, SHA256 proof recomputation. Hash is candidate evidence only, not minted Hash72.
+- Limitation: this is pre-admission candidate evidence, **not yet physically bound into native I028/VM81/Hash216 signed admission nor ethical authorized_tick path**. Do not claim full proof-carrying native pipeline finished.
+- No local CI execution or signed native replay confirmed; inspect scoped workflow and repair-forward. Branch and PR #827 unchanged, target main.
