@@ -16,8 +16,8 @@ checks=<|
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
  "all_9_inverse_entries"->TrueQ[And@@Flatten[MapThread[
    (FullSimplify[#1==#2])&, {Inverse[m],x*y*adj/360},2]]],
- "two_sided_cofactor_identity"->TrueQ[And@@Flatten[
-   Thread[Flatten[Expand[n.adj]]==Flatten[360*IdentityMatrix[3]]]]],
+ "two_sided_cofactor_identity"->TrueQ[
+   Expand[n.adj-360*IdentityMatrix[3]]===ConstantArray[0,{3,3}]],
  "characteristic_polynomial"->TrueQ[FullSimplify[
    Expand[Det[lam*x*y*IdentityMatrix[3]-n]-expected]==0]],
  "trace_15"->TrueQ[FullSimplify[Tr[n]==15]]
