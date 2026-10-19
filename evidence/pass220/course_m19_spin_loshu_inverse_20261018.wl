@@ -18,7 +18,7 @@ fermionicN=n/.{x->I,y->-I};
 spectralPoly=CharacteristicPolynomial[fermionicN,lam];
 spectralRoots=lam/.Solve[spectralPoly==0,lam];
 spectralChecks=<|
- "fermi_cubic"->TrueQ[Expand[spectralPoly-(lam^3-15*lam^2+96*lam-360)]===0],
+ "fermi_cubic"->TrueQ[Expand[spectralPoly-(-lam^3+15*lam^2-96*lam+360)]===0],
  "three_exact_roots"->(Length[spectralRoots]==3 &&
     And@@(TrueQ[RootReduce[spectralPoly/.lam->#]===0]&/@spectralRoots)),
  "fermi_vieta_sum"->TrueQ[RootReduce[Total[spectralRoots]-15]===0]
