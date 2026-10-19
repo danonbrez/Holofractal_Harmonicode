@@ -224,3 +224,37 @@ def test_runtime_os_surface_is_projection_and_lane5_membrane_is_non_bypassable()
         "SIGNED_ENVIRONMENTAL_VM81_ADMISSION_REQUIRED",
         "VALID_CHILD_HASH216_ARRAY_REQUIRED",
     ]
+
+
+def test_module20_21_constructor_ingress_preserves_native_stage_order_and_authority():
+    """M20/M21 composition must reuse I028; a candidate must not skip the C++ wall."""
+    pipeline = build_lane5_g3_pipeline_contract()
+    stages = pipeline["stages"]
+    ordered = (
+        "RAW648_X86_64_INGRESS",
+        "I149_HYDRATED_RAW5184",
+        "ORDERED_XYZW_RNA_5184_TRANSCRIPTION",
+        "PASS219_CPP_RNA_CELL_WALL",
+        "HOLO4_FOUR_LANE_HYDRATION",
+        "LANE5_MANDATORY_CONSTRUCTOR_COMPOSITION",
+        "G3_OUROBOROS_VM81_CANDIDATE_MICROCODE",
+        "HASH216_SELF_SOLVING_VALIDATION",
+        "PASS219_PQC_ENVIRONMENTAL_INSTRUCTION_MEMBRANE",
+        "SIGNED_ENVIRONMENTAL_VM81_ADMISSION_IF_MUTATING",
+        "HASH72_HASH216_SUCCESSOR_LINEAGE",
+        "INVERSE_EGRESS_COMPILATION",
+        "RAW648_X86_64_EGRESS",
+    )
+    assert all(name in stages for name in ordered)
+    assert tuple(stages.index(name) for name in ordered) == tuple(
+        sorted(stages.index(name) for name in ordered)
+    )
+    for flag in (
+        "unmerged_evidence_canonical_authority",
+        "lane5_canonical_vm81_mutation_authority",
+        "lane5_hash72_mint_authority",
+        "lane5_hash216_canonical_mint_authority",
+    ):
+        assert pipeline[flag] is False
+    assert pipeline["mandatory_constructor_graph"]["unmerged_canonical_authority"] is False
+    assert pipeline["canonical_vm81_execution_requires_inherited_pass219_membrane"] is True
