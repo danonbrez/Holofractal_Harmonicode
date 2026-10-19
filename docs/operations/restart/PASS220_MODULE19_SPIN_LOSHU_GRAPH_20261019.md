@@ -10,3 +10,9 @@
 - CI workflow runs `python -m py_compile ...` and `PYTHONPATH=. python -m unittest tests/pass220/test_hhs_pass220_module19_spin_loshu_graph_ingestion_v1.py`. No passing CI result yet recorded; tests still require execution in clean repository and observed job receipt.
 - Environment: connected GitHub API source writes; production not accessed.
 - Next: read workflow results and logs, repair any scoped test failure. Then link an already admitted Pass128 node pair from the existing constructor metadata ingestion route, map Module19 exact-address witness into inherited I028 Lane5 G3 constructor, keep all mint and persistence flags zero, validate native ABI and signing boundary. No merge until verified dependency closure.
+
+## 2026-10-19 inherited I028 graph-binding continuation
+- Source commit `89e71e700a98b3a311ee58507df793efc38ee825` adds `bind_i028_constructor_graph_candidate`: verifies all four ordered Pass128 edges via inherited `verify_edge`, checks evidence SHA256 binding, refuses swapped/dropped/escalated edges, retains caller-supplied 72-character pipeline and constructor graph roots unchanged.
+- Test commit `75b55fa85b6092c7515a201314a2df393d52b0ef` adds complete-edge, missing-root, reordered-edge, and forged authority cases.
+- I028 ABI field identities inherited directly from `hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h`; no native C ABI invocation, no root minting, no proof flags set. This is candidate graph evidence association, **not** I028 native admission.
+- Prior Module19 CI run `39237637395` queued when inspected; new head tests still unverified. Next: observe scoped CI and repair-forward; obtain already-admitted Pass128 graph nodes and actual I028 rooted witness from inherited constructor graph, then test exact native I028 routing and Hash216 proof without substituting SHA256 evidence hash for Hash72.
