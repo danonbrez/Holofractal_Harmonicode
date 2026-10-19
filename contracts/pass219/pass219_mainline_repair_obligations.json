@@ -36,7 +36,9 @@
       "repair_pr": 823,
       "repair_branch": "repair/native-causal-model-production-acceptance-20261017",
       "repair_commit": "fb6590ec4abb7a336f02da4c0a3f727467973d3f",
-      "acceptance": "pending native-chat four prompt, response-block, HTTPS, Chromium proof at exact deployed SHA"
+      "acceptance": "source merged; production exact-main native-chat, HTTPS, Chromium validation still pending",
+      "repair_pr_merged": true,
+      "repair_merge_sha": "a8f41e0a59591ceb7828c50c586035d0a12bd3d2"
     }
   ]
 }
