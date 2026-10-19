@@ -1,3 +1,4 @@
+#include "../../hhs_runtime/include/hhs_pass219_lane5_integer_19_shell_v1.hpp"
 #include "hhs_pass219_lane5_balanced_anchor_v1.hpp"
 #include <cassert>
 int main() {
@@ -24,5 +25,12 @@ int main() {
   altered_cells = cells;
   altered_cells[3].numerator = 37;
   assert(!balanced_anchor_proof_cells_verified(altered_cells));
+  assert(integer_19_shell_closes(integer_19_shell));
+  auto corrupted = integer_19_shell;
+  corrupted[3][3] = 18;
+  assert(!integer_19_shell_closes(corrupted));
+  corrupted = integer_19_shell;
+  corrupted[3][1] = 8;
+  assert(!integer_19_shell_closes(corrupted));
   return 0;
 }
