@@ -50,5 +50,45 @@ class Lane5HydrationEthicalTests(unittest.TestCase):
         e["conway_candidate_only"] = False
         self.assertTrue(_lane5_hydration_ethical_veto(e)["vetoed"])
 
+
+    def test_rejected_candidate_never_enters_authorized_tick(self):
+        from unittest.mock import patch, Mock
+        from hhs_runtime.hhs_pass219_vm81_admission_bridge_v1 import admit_and_execute_local
+        from hhs_runtime.hhs_narrative_alignment_reasoning_engine_v1 import EthicalDecision
+        approved = Mock()
+        approved.evaluation.decision = EthicalDecision.EXECUTE_LOCAL_PROVISIONAL
+        approved.evaluation.scope.effective_scope = ()
+        approved.to_dict.return_value = {"checked": True}
+        approved.trace_receipt_hash72 = "A" * 72
+        controller = Mock()
+        evidence = self.evidence()
+        evidence["external_interface_equivalent"] = False
+        with patch("hhs_runtime.hhs_pass219_vm81_admission_bridge_v1.evaluate_action_v2", return_value=approved):
+            result = admit_and_execute_local(
+                Mock(), [], Mock(), controller=controller,
+                lane5_hydration_evidence=evidence,
+            )
+        self.assertFalse(result["execution_allowed"])
+        self.assertTrue(result["lane5_hydration_ethical_gate"]["vetoed"])
+        self.assertFalse(result["canonical_vm81_mutation_performed"])
+        controller.authorized_tick.assert_not_called()
+
+    def test_valid_candidate_does_not_bypass_ethics_denial(self):
+        from unittest.mock import patch, Mock
+        from hhs_runtime.hhs_pass219_vm81_admission_bridge_v1 import admit_and_execute_local
+        from hhs_runtime.hhs_narrative_alignment_reasoning_engine_v1 import EthicalDecision
+        denied = Mock()
+        denied.evaluation.decision = EthicalDecision.HOLD
+        denied.evaluation.scope.effective_scope = ()
+        denied.to_dict.return_value = {"checked": True}
+        controller = Mock()
+        with patch("hhs_runtime.hhs_pass219_vm81_admission_bridge_v1.evaluate_action_v2", return_value=denied):
+            result = admit_and_execute_local(
+                Mock(), [], Mock(), controller=controller,
+                lane5_hydration_evidence=self.evidence(),
+            )
+        self.assertFalse(result["execution_allowed"])
+        controller.authorized_tick.assert_not_called()
+
 if __name__ == "__main__":
     unittest.main()
