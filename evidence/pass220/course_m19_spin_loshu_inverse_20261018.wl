@@ -147,7 +147,10 @@ checks=<|
  "fermionic_exact_spectral_roots"->(And@@Values[spectralChecks])
 |>;
 result=<|"schema"->"HHS_PASS220_M19_SPIN_LOSHU_EXACT_PROJECTION_V1",
- "checks"->checks,"spectralChecks"->spectralChecks,"cardanoLiteralVerified"->False,"status"->If[And@@Values[checks],"PASS","FAIL"],
+ "checks"->checks,"spectralChecks"->spectralChecks,"cardanoLiteralVerified"->(TrueQ[checks["literal_first_source_grouping"]] &&
+   TrueQ[checks["literal_realsurd_three_prefactors"]] &&
+   TrueQ[checks["literal_branch_explicit_phase_orbit"]]),
+ "cardanoLiteralScope"->"symbolic equivalence under correlated nonzero cube-root branches; not byte identity","status"->If[And@@Values[checks],"PASS","FAIL"],
  "nativeGateAdmission"->False,"hash216Mint"->False|>;
 Print[ExportString[result,"RawJSON","Compact"->True]];
 If[result["status"]!="PASS",Exit[1]];
