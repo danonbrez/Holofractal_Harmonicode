@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -11,6 +11,18 @@ adj={
 {-3*x^2+6*x*y-2*x-3*y^2+2*y-37,6*x^2-12*x*y-14*x+6*y^2+14*y+68,-3*x^2+6*x*y-2*x-3*y^2+2*y-7}};
 expected=lam^3*x^3*y^3-15*lam^2*x^2*y^2+
   (-18*x^3*y+36*x^2*y^2-18*x*y^3+24*x*y)*lam-360;
+(* Independent exact spectral boundary evaluation: x=I, y=-I.
+   Do not mistake this SolveValues/Root witness for verification of
+   the separately supplied Cardano radical branch syntax. *)
+fermionicN=n/.{x->I,y->-I};
+spectralPoly=CharacteristicPolynomial[fermionicN,lam];
+spectralRoots=lam/.Solve[spectralPoly==0,lam];
+spectralChecks=<|
+ "fermi_cubic"->TrueQ[Expand[spectralPoly-(lam^3-15*lam^2+96*lam-360)]===0],
+ "three_exact_roots"->(Length[spectralRoots]==3 &&
+    And@@(TrueQ[RootReduce[spectralPoly/.lam->#]===0]&/@spectralRoots)),
+ "fermi_vieta_sum"->TrueQ[RootReduce[Total[spectralRoots]-15]===0]
+|>;
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
@@ -20,10 +32,11 @@ checks=<|
    Expand[n.adj-360*IdentityMatrix[3]]===ConstantArray[0,{3,3}]],
  "characteristic_polynomial"->TrueQ[FullSimplify[
    Expand[Det[lam*x*y*IdentityMatrix[3]-n]-expected]==0]],
- "trace_15"->TrueQ[FullSimplify[Tr[n]==15]]
+ "trace_15"->TrueQ[FullSimplify[Tr[n]==15]],
+ "fermionic_exact_spectral_roots"->(And@@Values[spectralChecks])
 |>;
 result=<|"schema"->"HHS_PASS220_M19_SPIN_LOSHU_EXACT_PROJECTION_V1",
- "checks"->checks,"status"->If[And@@Values[checks],"PASS","FAIL"],
+ "checks"->checks,"spectralChecks"->spectralChecks,"cardanoLiteralVerified"->False,"status"->If[And@@Values[checks],"PASS","FAIL"],
  "nativeGateAdmission"->False,"hash216Mint"->False|>;
 Print[ExportString[result,"RawJSON","Compact"->True]];
 If[result["status"]!="PASS",Exit[1]];
