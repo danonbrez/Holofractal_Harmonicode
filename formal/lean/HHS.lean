@@ -10,7 +10,9 @@ import HHS.Mathlib.Rat.ValueAlgebra
 import HHS.Alignment.ReciprocalTensor
 import HHS.Provenance.OriginMarker
 import HHS.Pass219.QGUHNANTransport
-import HHS.Pass219.BalancedAnchorimport HHS.Pass220.LosslessEmergentCompressionHydration
+import HHS.Pass219.BalancedAnchor
+import HHS.Pass219.Integer19Shell
+import HHS.Pass220.LosslessEmergentCompressionHydration
 import HHS.Pass220.HNANPhase5184
 import HHS.Pass220.Base64BalancedTrit5184
 import HHS.Pass220.TheoryConstructorHash216Hydration
