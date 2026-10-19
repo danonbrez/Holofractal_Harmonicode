@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 from hhs_runtime.hhs_pass220_genesis_pairwise_fingerprint_v1 import derive_genesis_pair, replay_genesis_pair, native_ordered_phase_pair, replay_native_ordered_phase_pair
 
 class GenesisPairTests(unittest.TestCase):
@@ -47,8 +48,8 @@ class GenesisPairTests(unittest.TestCase):
                 NativeSpy.calls.append((left, right))
                 return {"left_basis": left, "right_basis": right,
                         "phase": (left + right) % 8, "ordered_tag": left * 8 + right}
-        target = "hhs_python.runtime.hhs_exact_ctypes_bridge.HHSExactRuntimeBridge"
-        with patch(target, NativeSpy):
+        target = "hhs_python.runtime.hhs_exact_ctypes_bridge"
+        with patch.dict("sys.modules", {target: SimpleNamespace(HHSExactRuntimeBridge=NativeSpy)}):
             record = native_ordered_phase_pair(**self.args)
             self.assertTrue(record["native_phase_evidence"]["native_exact_phase_abi_verified"])
             self.assertFalse(record["native_phase_evidence"]["native_genesis_ancestry_verified"])
