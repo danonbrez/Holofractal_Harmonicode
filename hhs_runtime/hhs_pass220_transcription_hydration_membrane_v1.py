@@ -5,6 +5,7 @@ provided by the existing native RNA/C kernel, never minted here.
 """
 from __future__ import annotations
 from hashlib import sha256
+import json
 from typing import Callable
 
 WIDTH = 5184
@@ -46,7 +47,23 @@ def transcribe_candidate(
     _bigint(recovered.decode("ascii"))
     slot_values = (str(p_value-1), "pP", "pq", p_serialized,
                    "Pp", "Pq", str(p_value+1), "qp")
+    # Exact integer-window projection is derived locally, without evaluating
+    # the native rank-1 slash operator or commuting ordered products.
+    window = {"p": str(p_value - 1), "P": p_serialized,
+              "q": str(p_value + 1), "difference_of_squares": "1"}
+    proof_payload = {
+        "schema": "HHS_PASS220_BIGINT_WINDOW_ADDRESS_PROOF_V1",
+        "index5184": index5184, "window": window,
+        "ordered_slots": list(SLOTS),
+        "native_gate_source": "P²-(q=P+1)(p=P-1)==P²((p+q)/P(p-q))-(pq)",
+        "native_slash_is_rank1": True,
+    }
+    window_proof_digest = sha256(json.dumps(
+        proof_payload, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")).hexdigest()
     return {
+        "window_proof": proof_payload,
+        "window_proof_sha256": window_proof_digest,
         "schema": "HHS_PASS220_TRANSCRIPTION_HYDRATION_MEMBRANE_V1",
         "candidate_only": True,
         "state_bigint_decimal": p_serialized,
@@ -69,3 +86,17 @@ def transcribe_candidate(
         "signed_hash216_admission_verified": False,
         "canonical_mint_authority": False,
     }
+
+
+def verify_transcription_candidate(record: dict, *,
+                                   encode: Callable[[bytes], bytes],
+                                   decode: Callable[[bytes], bytes]) -> dict:
+    """Replay native-address candidate derivation; never attest VM81 closure."""
+    if not isinstance(record, dict):
+        raise ValueError("TRANSCRIPTION_RECORD_REQUIRED")
+    replay = transcribe_candidate(record.get("state_bigint_decimal"),
+                                  index5184=record.get("index5184"),
+                                  encode=encode, decode=decode)
+    if replay != record:
+        raise ValueError("TRANSCRIPTION_PROOF_REPLAY_MISMATCH")
+    return replay
