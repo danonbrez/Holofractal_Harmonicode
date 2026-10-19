@@ -3,9 +3,11 @@ on:
   pull_request:
     paths:
       - 'formal/lean/HHS/Pass219/BalancedAnchor.lean'
+      - 'formal/lean/HHS/Pass219/Integer19Shell.lean'
       - 'formal/lean/HHS.lean'
       - 'formal/wolfram/pass219_balanced_anchor_projection_v1.wl'
       - 'hhs_runtime/include/hhs_pass219_lane5_balanced_anchor_v1.hpp'
+      - 'hhs_runtime/include/hhs_pass219_lane5_integer_19_shell_v1.hpp'
       - 'tests/pass219/test_pass219_lane5_balanced_anchor_v1.cpp'
       - '.github/workflows/pass219-lane5-balanced-anchor.yml'
   workflow_dispatch:
