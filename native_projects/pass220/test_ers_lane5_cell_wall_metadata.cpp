@@ -19,6 +19,14 @@ int main() {
  bound.ancestry_reference=std::string(216,'b');
  assert(!ers_source_matches_circuit(bound,routed));
  bound.ancestry_reference=routed.parent_hash216;
+
+ HHSExactPass219Hash216TransitionViewV1 transition{};
+ for (std::size_t i=0;i<216;++i) transition.transition_identity216[i]='a';
+ assert(ers_transition_identity_matches(bound,&transition));
+ transition.transition_identity216[100]='b';
+ assert(!ers_transition_identity_matches(bound,&transition));
+ transition.transition_identity216[100]='a';
+ assert(!ers_transition_identity_matches(bound,nullptr));
  routed.inherited_linear5184[0]=4*64;
  assert(!ers_source_matches_circuit(bound,routed));
 
