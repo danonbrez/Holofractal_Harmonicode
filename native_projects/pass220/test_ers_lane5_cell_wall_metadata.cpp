@@ -28,6 +28,13 @@ int main() {
  assert(!ers_transition_identity_matches(bound,&transition));
  transition.transition_identity216[100]='a';
  assert(!ers_transition_identity_matches(bound,nullptr));
+ transition.transition_identity216[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN]='X';
+ assert(!ers_transition_identity_matches(bound,&transition));
+ transition.transition_identity216[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN]='\0';
+ bound.ancestry_reference=std::string_view(routed.parent_hash216.data(),215);
+ assert(!ers_transition_identity_matches(bound,&transition));
+ bound.ancestry_reference=routed.parent_hash216;
+ assert(ers_transition_identity_matches(bound,&transition));
  routed.inherited_linear5184[0]=4*64;
  assert(!ers_source_matches_circuit(bound,routed));
 
