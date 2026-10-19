@@ -64,6 +64,7 @@ class HHSServiceSpec:
     contract_schemas: List[str] = field(default_factory=list)
     witness_schemas: List[str] = field(default_factory=list)
     validators: List[str] = field(default_factory=list)
+    lean_proof_contracts: List[Dict[str, str]] = field(default_factory=list)
     guards: List[str] = field(default_factory=list)
     rejection_codes: List[str] = field(default_factory=list)
     mutation_policy: str = "NO_EXTERNAL_STATE_MUTATION"
@@ -129,7 +130,19 @@ class HHSServiceRegistry:
             boundedness_policy=str(declaration.get("boundedness_policy", "PASS_042_BOUNDED_CONFORMANCE_SUMMARY_V1")),
             contract_exempt_reason=str(declaration.get("contract_exempt_reason", "")),
             conformance_decision=dict(decision),
+            lean_proof_contracts=list(spec.lean_proof_contracts),
         )
+        # Optional service-owned Lean proofs must be independently checked at
+        # registration, not inferred from the main-branch merge status.
+        if spec.lean_proof_contracts:
+            from pathlib import Path
+            from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import check_service_lean_proofs
+            checked = check_service_lean_proofs(
+                spec.lean_proof_contracts,
+                repo_root=Path(__file__).resolve().parents[1],
+            )
+            if len(checked) != len(spec.lean_proof_contracts):
+                raise HHSServiceRegistryError("LEAN_PROOF_COVERAGE_INCOMPLETE")
         self._services[spec.name] = spec
         self._handlers[spec.name] = handler
         self._service_catalog_cache = None
@@ -149,6 +162,7 @@ class HHSServiceRegistry:
         contract_schemas: Optional[List[str]] = None,
         witness_schemas: Optional[List[str]] = None,
         validators: Optional[List[str]] = None,
+        lean_proof_contracts: Optional[List[Dict[str, str]]] = None,
         guards: Optional[List[str]] = None,
         rejection_codes: Optional[List[str]] = None,
         mutation_policy: str = "NO_EXTERNAL_STATE_MUTATION",
