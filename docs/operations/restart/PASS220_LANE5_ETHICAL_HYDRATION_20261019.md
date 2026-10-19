@@ -26,3 +26,8 @@
 - Verifies 5184 indexed canonical decimal BigInt positions and dual VM81/Hash72 local coordinates, ordered closed gates, HNAN bypass gain=1 no-phase-write, unchanged inherited 72-character root identities, SHA256 proof recomputation. Hash is candidate evidence only, not minted Hash72.
 - Limitation: this is pre-admission candidate evidence, **not yet physically bound into native I028/VM81/Hash216 signed admission nor ethical authorized_tick path**. Do not claim full proof-carrying native pipeline finished.
 - No local CI execution or signed native replay confirmed; inspect scoped workflow and repair-forward. Branch and PR #827 unchanged, target main.
+
+## 2026-10-19 R03/R04 native linker repair
+- Failing workflow run 39242731815 (exact/synthetic) identified direct C-only gcc shared-library build omission: hhs_pass219_vm81_pqc_route_cpp_cell_wall undefined. The authoritative implementation exists in hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp.
+- Commit 0c1faf2c452a999655478c377a7edc7c14990699: compile C ABI/Hash216 as C objects, C++ cell wall as C++17 object and link with g++ plus -Wl,-z,defs. Applies to both matrix variants. No dummy stubs or native authority bypass.
+- Updated run not yet green; inspect jobs and any new symbols/build errors, repair-forward. Production deploy and native HTTPS/browser acceptance not touched.
