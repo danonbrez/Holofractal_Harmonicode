@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB,literalC,literalU,literalV];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -60,6 +60,12 @@ generalRoots=Table[5/(x*y)+generalOmega^j*generalU+
 literalK=x*y*generalK;
 literalShellA=-3*x^3*y^3*literalK+225*x^4*y^4;
 literalShellB=-135*x^5*y^5*literalK+16470*x^6*y^6;
+(* Literal user Cardano shell is sqrt(B^2-4A^3)+B, not sqrt(...)-B.
+   Correlate the second cube-root via the reciprocal coefficient, rather
+   than allowing independently selected principal cube-root branches. *)
+literalC=(Sqrt[literalShellB^2-4*literalShellA^3]+literalShellB)^(1/3);
+literalU=literalC/(3*2^(1/3)*(x*y)^3);
+literalV=literalShellA*2^(1/3)/(3*(x*y)^3*literalC);
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
@@ -74,6 +80,8 @@ checks=<|
    Expand[generalCubic/.lam->lam+5/(x*y)]-(lam^3+generalP*lam+generalQ)==0]],
  "literal_cardano_shell_A"->TrueQ[FullSimplify[literalShellA==-3*(x*y)^6*generalP]],
  "literal_cardano_shell_B"->TrueQ[FullSimplify[literalShellB==-27*(x*y)^9*generalQ]],
+ "literal_cardano_prefactor_product"->TrueQ[FullSimplify[
+   literalU*literalV==-generalP/3]],
  "literal_cardano_discriminant"->TrueQ[FullSimplify[
    literalShellB^2-4*literalShellA^3==2916*(x*y)^18*generalDisc]],
  "general_cardano_three_roots"->And@@(TrueQ[FullSimplify[
