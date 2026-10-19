@@ -147,3 +147,9 @@
 - Source commits: `7a27828f`, `d513a19d`, `6dd9c0e7`, `b6f594c7`, `8f827967`, `8033f727`, `9857ba20`.
 - Current missing tests: exact-head GitHub C++/Lean CI, full module-by-module ordered-gate receipts, HNAN bypass no-write signed replay, LARONE phase-gear hydration and compiler link, global merged repair work and exact-main delivery acceptance. Do not claim these proven.
 - Restart: inspect first failing dependency-scoped CI; fix only impacted proofs/ABI while preserving existing typed gate authority; then implement inherited signed Hash216 constructor hydration and complete unified knowledge graph prerequisite closure.
+
+## 2026-10-19 CI repair-forward checkpoint
+- Exact-head run `39188574236`: C++ failed because C++17 std::array != is not constexpr; Lean failed because Integer19Shell import appeared after namespace declarations. Exact-head graph run `39188573766`: check-run pagination test mock incorrectly matches `page=1` inside `per_page=100`, yielding inconsistent mock data.
+- Scoped repairs: `2b8f1162` explicit constexpr column-by-column comparison; `69e2231f` imports ordered before declarations; `ada525ed` fixtures use `&page=1` / `&page=2`. No math or authority semantic change.
+- Last source head before this checkpoint: `69e2231f31c9973483bcafade3ad4be3a0c7bb56`; working branch unchanged, merge target main, PR #819 remains draft.
+- Next: check current-head C++/Lean/global graph workflow jobs and logs, repair only any remaining compilation or inventory issue, then proceed to the native proof/Hash216 integration and remaining user-authored course modules. No green result claimed for new commits.
