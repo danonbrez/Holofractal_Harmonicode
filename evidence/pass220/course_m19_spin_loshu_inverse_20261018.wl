@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB,literalC,literalU,literalV];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB,literalC,literalU,literalV,literalRoots];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -66,6 +66,12 @@ literalShellB=-135*x^5*y^5*literalK+16470*x^6*y^6;
 literalC=(Sqrt[literalShellB^2-4*literalShellA^3]+literalShellB)^(1/3);
 literalU=literalC/(3*2^(1/3)*(x*y)^3);
 literalV=literalShellA*2^(1/3)/(3*(x*y)^3*literalC);
+(* Literal-shell Cardano spectral reconstruction with ordered orientation:
+   principal C is paired with its constrained reciprocal, not an
+   independently selected cube root. This checks the full parametric
+   cubic but does not conflate native gates with scalar equality. *)
+literalRoots=Table[5/(x*y)+generalOmega^j*literalU+
+ generalOmega^(-j)*literalV,{j,0,2}];
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
@@ -80,6 +86,8 @@ checks=<|
    Expand[generalCubic/.lam->lam+5/(x*y)]-(lam^3+generalP*lam+generalQ)==0]],
  "literal_cardano_shell_A"->TrueQ[FullSimplify[literalShellA==-3*(x*y)^6*generalP]],
  "literal_cardano_shell_B"->TrueQ[FullSimplify[literalShellB==-27*(x*y)^9*generalQ]],
+ "literal_cardano_three_roots"->And@@(TrueQ[FullSimplify[
+    generalCubic/.lam->#,Assumptions->x*y!=0&&literalC!=0]==0]&/@literalRoots),
  "literal_cardano_prefactor_product"->TrueQ[FullSimplify[
    literalU*literalV==-generalP/3]],
  "literal_cardano_discriminant"->TrueQ[FullSimplify[
