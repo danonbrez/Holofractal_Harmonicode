@@ -1,0 +1,24 @@
+name: Pass220 Module19 ordered spin Lo Shu knowledge relations
+on:
+  push:
+    paths:
+      - 'hhs_runtime/hhs_pass220_module19_spin_loshu_graph_ingestion_v1.py'
+      - 'tests/pass220/test_hhs_pass220_module19_spin_loshu_graph_ingestion_v1.py'
+      - '.github/workflows/pass220-module19-spin-loshu-relations.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass220_module19_spin_loshu_graph_ingestion_v1.py'
+      - 'tests/pass220/test_hhs_pass220_module19_spin_loshu_graph_ingestion_v1.py'
+      - '.github/workflows/pass220-module19-spin-loshu-relations.yml'
+jobs:
+  ordered-relations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Scoped Module19 graph regression
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass220_module19_spin_loshu_graph_ingestion_v1.py
+          PYTHONPATH=. python -m unittest tests/pass220/test_hhs_pass220_module19_spin_loshu_graph_ingestion_v1.py
