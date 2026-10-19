@@ -1,5 +1,5 @@
 import unittest
-from hhs_runtime.hhs_service_contract_gap_triage_v1 import triage_error, verify_triage, EXACT_STATUS
+from hhs_runtime.hhs_service_contract_gap_triage_v1 import triage_error, verify_triage, correlate_service_gap, EXACT_STATUS
 
 class TriageTests(unittest.TestCase):
     def setUp(self):
@@ -8,6 +8,23 @@ class TriageTests(unittest.TestCase):
                        observed_boundary="cpp_cell_wall",
                        contract_path="contracts/pass219/example.md",
                        implementation_path="hhs_runtime/cpp/example.cpp")
+
+    def test_registry_and_hydration_correlation(self):
+        triage=triage_error(**self.args)
+        services=[{"name":"lane5.example","module":"hhs.native","function":"run",
+                   "contract_schemas":["ABI"],"guards":["SIGNED_VM81"]}]
+        node={"service_name":"lane5.example","hash216":"H"*216}
+        result=correlate_service_gap(triage=triage,services=services,hydration_nodes=[node])
+        self.assertTrue(result["hydration_record_found"])
+        self.assertFalse(result["hydration_proof_verified"])
+        self.assertFalse(result["first_violation_verified"])
+        self.assertEqual(result["registry_function"],"run")
+        absent=correlate_service_gap(triage=triage,services=services,hydration_nodes=[])
+        self.assertFalse(absent["hydration_record_found"])
+        with self.assertRaisesRegex(ValueError,"SERVICE_INDEX_MISSING"):
+            correlate_service_gap(triage=triage,services=[],hydration_nodes=[node])
+        with self.assertRaisesRegex(ValueError,"AMBIGUOUS_LANE5"):
+            correlate_service_gap(triage=triage,services=services,hydration_nodes=[node,node])
 
     def test_exact_status_identities(self):
         self.assertEqual(EXACT_STATUS[5],"HHS_EXACT_STATUS_INVARIANT_FAILURE")
