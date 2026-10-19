@@ -7,7 +7,9 @@ class Lane5HydrationEthicalTests(unittest.TestCase):
             **{key: True for key in (
                 "typed_ingress_verified", "inherited_lanes_1_4_verified",
                 "constructor_provenance_verified", "ordered_tensor_gates_verified",
-                "external_interface_equivalent", "scope_and_consent_verified",
+                "external_interface_equivalent", "external_input_type_verified",
+                "external_output_type_verified", "observable_behavior_verified",
+                "scope_and_consent_verified",
                 "verification_procedures_bound", "temporary_harness_release_planned",
                 "hydration_precedes_composition", "conway_candidate_only",
             )},
@@ -29,6 +31,16 @@ class Lane5HydrationEthicalTests(unittest.TestCase):
         e = self.evidence()
         e["hydration_precedes_composition"] = False
         self.assertIn("hydration_precedes_composition", _lane5_hydration_ethical_veto(e)["unresolved_constraints"])
+
+    def test_independent_input_output_behavior_checks(self):
+        for key in ("external_input_type_verified",
+                    "external_output_type_verified",
+                    "observable_behavior_verified"):
+            evidence = self.evidence()
+            evidence[key] = False
+            result = _lane5_hydration_ethical_veto(evidence)
+            self.assertTrue(result["vetoed"])
+            self.assertIn(key, result["unresolved_constraints"])
 
     def test_lost_interface_equivalence_blocks(self):
         e = self.evidence()
