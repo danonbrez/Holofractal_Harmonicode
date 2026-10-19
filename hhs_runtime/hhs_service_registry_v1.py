@@ -210,6 +210,7 @@ class HHSServiceRegistry:
             contract_schemas=list(contract_schemas or []),
             witness_schemas=list(witness_schemas or []),
             validators=list(validators or []),
+            lean_proof_contracts=list(lean_proof_contracts or []),
             guards=list(guards or []),
             rejection_codes=list(rejection_codes or []),
             mutation_policy=mutation_policy,
