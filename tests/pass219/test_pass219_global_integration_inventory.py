@@ -8,9 +8,9 @@ class CheckRunPaginationTests(unittest.TestCase):
         calls=[]
         def fake(path):
             calls.append(path)
-            if "page=1" in path:
+            if "&page=1" in path:
                 return {"total_count":101,"check_runs":[{"id":i} for i in range(100)]}
-            if "page=2" in path:
+            if "&page=2" in path:
                 return {"total_count":101,"check_runs":[{"id":100}]}
             raise AssertionError(path)
         with patch("scripts.pass219_global_integration_inventory.api",side_effect=fake):
