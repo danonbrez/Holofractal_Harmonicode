@@ -36,11 +36,31 @@ def derive_genesis_pair(*, index_a: int, index_b: int,
     f_b = _fingerprint(value_b, primes)
     residues = tuple((r_a-r_b) % prime for r_a,r_b,prime in
                      zip(f_a["residues"],f_b["residues"],f_a["primes"]))
+    # Shared exact 5184/u72 phase constraints from inherited Platonic contract.
+    # This is a candidate projection, not the native gyroscopic verifier.
+    factorizations = ((72, 72), (64, 81), (36, 144), (48, 108))
+    if any(a * b != 5184 for a, b in factorizations):
+        raise ValueError("INHERITED_QUANTIZATION_FAILURE")
+    source_phase, target_phase = index_a % 72, index_b % 72
+    geometry = {
+        "factorizations": factorizations,
+        "u72_phase_source": source_phase,
+        "u72_phase_target": target_phase,
+        "forward_step": (target_phase - source_phase) % 72,
+        "reverse_step": (source_phase - target_phase) % 72,
+        "phase_ladder": (0, 9, 18, 36, 72),
+        "pentagon_closure": 5 * 72 == 360,
+        "dodecahedron_incidence": 5 * 12 == 2 * 30
+            and 3 * 20 == 2 * 30 and 20 - 30 + 12 == 2,
+    }
+    if not geometry["pentagon_closure"] or not geometry["dodecahedron_incidence"]:
+        raise ValueError("PLATONIC_CLOSURE_FAILURE")
     payload = {"schema": SCHEMA, "genesis_identity": genesis_identity,
                "genesis_fingerprint": g,
                "source": {"coordinate": a, "fingerprint": f_a},
                "target": {"coordinate": b, "fingerprint": f_b},
                "ordered_pair_residues": residues,
+               "inherited_platonic_phase_projection": geometry,
                "genesis_relative_source": tuple(
                    (x-y)%p for x,y,p in zip(f_a["residues"],g["residues"],f_a["primes"])),
                "genesis_relative_target": tuple(
