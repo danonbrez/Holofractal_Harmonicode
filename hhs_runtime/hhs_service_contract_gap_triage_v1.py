@@ -65,3 +65,48 @@ def verify_triage(record: Mapping, **kwargs) -> bool:
     if not isinstance(record,Mapping) or dict(record)!=triage_error(**kwargs):
         raise ValueError("TRIAGE_REPLAY_MISMATCH")
     return True
+
+
+def correlate_service_gap(*, triage: Mapping, services: list[Mapping],
+                          hydration_nodes: list[Mapping]) -> dict:
+    """Read-only catalog join; absence of hydration is a gap, not proof failure.
+
+    Caller must supply snapshots from inherited guarded registry and hydrated
+    repository index; never instantiate, dispatch, mint or modify authority.
+    """
+    if not isinstance(triage, Mapping) or triage.get("schema") != "HHS_SERVICE_CONTRACT_GAP_TRIAGE_V1":
+        raise ValueError("TRIAGE_RECORD_REQUIRED")
+    name = triage.get("service_name")
+    matches = [s for s in services if isinstance(s, Mapping) and s.get("name") == name]
+    if len(matches) != 1:
+        raise ValueError("SERVICE_INDEX_MISSING_OR_AMBIGUOUS")
+    spec = matches[0]
+    for field in ("module", "function"):
+        if not isinstance(spec.get(field), str) or not spec[field]:
+            raise ValueError("SERVICE_BINDING_INCOMPLETE")
+    # The Lane5 graph may describe capabilities using service_name or name.
+    nodes = [n for n in hydration_nodes if isinstance(n, Mapping)
+             and (n.get("service_name") == name or n.get("name") == name)]
+    if len(nodes) > 1:
+        raise ValueError("AMBIGUOUS_LANE5_HYDRATION_BINDING")
+    binding = {
+        "schema": "HHS_SERVICE_CONTRACT_GAP_INDEX_CORRELATION_V1",
+        "triage_sha256": triage.get("triage_sha256"),
+        "service_name": name,
+        "registry_module": spec["module"],
+        "registry_function": spec["function"],
+        "declared_contract_schemas": list(spec.get("contract_schemas", ())),
+        "declared_witness_schemas": list(spec.get("witness_schemas", ())),
+        "declared_guards": list(spec.get("guards", ())),
+        "hydration_record_found": len(nodes) == 1,
+        "hydration_identity": (nodes[0].get("hash216") if nodes else None),
+        "hydration_proof_verified": False,
+        "cpp_cell_wall_proof_verified": False,
+        "first_violation_verified": False,
+        "production_e2e_verified": False,
+        "candidate_only": True,
+    }
+    binding["correlation_sha256"] = sha256(json.dumps(
+        binding, sort_keys=True, separators=(",",":")
+    ).encode()).hexdigest()
+    return binding
