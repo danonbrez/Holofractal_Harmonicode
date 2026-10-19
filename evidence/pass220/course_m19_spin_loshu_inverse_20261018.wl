@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB,literalC,literalU,literalV,literalRoots,literalFermionicRoots,literalUnitRoots,literalUserBranches,literalPhasePlus,literalPhaseMinus,literalRealSurdBranches];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots,literalK,literalShellA,literalShellB,literalC,literalU,literalV,literalRoots,literalFermionicRoots,literalUnitRoots,literalUserBranches,literalPhasePlus,literalPhaseMinus,literalRealSurdBranches,literalHalfCube,literalFirstSourceRoot];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -97,6 +97,14 @@ literalRealSurdBranches={
  5/(x*y)+(I*Sqrt[3]-1)*literalC/(6*Surd[2,3]*(x*y)^3)+
  (-I*Sqrt[3]-1)*literalShellA/(3*Surd[4,3]*(x*y)^3*literalC)
 };
+(* Source λ1 uses BOTH the undivided cube shell and its half-shell.
+   This explicit source grouping is compared to correlated λ1; principal
+   branches are correlated via C/Surd[2,3], not selected independently. *)
+literalHalfCube=((Sqrt[literalShellB^2-4*literalShellA^3]+
+ literalShellB)/2)^(1/3);
+literalFirstSourceRoot=
+ Surd[2,3]*literalShellA/(3*(x*y)^3*literalC)+
+ literalHalfCube/(3*(x*y)^3)+5/(x*y);
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
@@ -115,6 +123,10 @@ checks=<|
     generalCubic/.lam->#,Assumptions->x*y!=0&&literalC!=0]==0]&/@literalRoots),
  "literal_cardano_fermionic_orbit"->(Sort[literalFermionicRoots]===
    Sort[RootReduce/@(spectralRoots)]),
+ "literal_first_source_grouping"->TrueQ[FullSimplify[
+   literalFirstSourceRoot==literalUserBranches[[1]],
+   Assumptions->x*y!=0&&literalC!=0&&
+    literalHalfCube==literalC/Surd[2,3]]],
  "literal_realsurd_three_prefactors"->And@@(TrueQ[FullSimplify[
    literalRealSurdBranches[[#]]==literalUserBranches[[#]],
    Assumptions->x*y!=0&&literalC!=0]]&/@Range[3]),
