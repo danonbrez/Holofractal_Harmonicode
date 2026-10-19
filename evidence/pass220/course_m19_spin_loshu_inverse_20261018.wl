@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -38,6 +38,12 @@ spectralChecks=<|
    And@@(TrueQ[RootReduce[spectralPoly/.lam->#]===0]&/@cardanoRoots)),
  "fermi_cardano_roots_match"->(Sort[cardanoRoots]===Sort[RootReduce/@spectralRoots])
 |>;
+(* Parametric Cardano depression with exact x,y source order and symbolic
+   nonzero-bus projection; not a native quantization or ==-gate evaluator. *)
+generalK=24-18*(x-y)^2;
+generalCubic=lam^3-15*lam^2/(x*y)+generalK*lam/(x*y)^2-360/(x*y)^3;
+generalP=(generalK-75)/(x*y)^2;
+generalQ=(5*generalK-610)/(x*y)^3;
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
@@ -48,6 +54,8 @@ checks=<|
  "characteristic_polynomial"->TrueQ[FullSimplify[
    Expand[Det[lam*x*y*IdentityMatrix[3]-n]-expected]==0]],
  "trace_15"->TrueQ[FullSimplify[Tr[n]==15]],
+ "general_cardano_depression"->TrueQ[FullSimplify[
+   Expand[generalCubic/.lam->lam+5/(x*y)]-(lam^3+generalP*lam+generalQ)==0]],
  "fermionic_exact_spectral_roots"->(And@@Values[spectralChecks])
 |>;
 result=<|"schema"->"HHS_PASS220_M19_SPIN_LOSHU_EXACT_PROJECTION_V1",
