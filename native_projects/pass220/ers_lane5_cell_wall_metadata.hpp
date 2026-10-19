@@ -115,6 +115,17 @@ inline bool ers_source_matches_circuit(const ERSMetadataView& metadata,
             return true;
     return false;
 }
+// Require byte-exact identity with the inherited transition reference, rather
+// than relying on the candidate's self-reported ancestry string alone.
+// The inherited cell-wall ABI remains responsible for reference verification.
+inline bool ers_transition_identity_matches(
+    const ERSMetadataView& metadata,
+    const HHSExactPass219Hash216TransitionViewV1* transition) noexcept {
+    return transition != nullptr &&
+        metadata.ancestry_reference.size()==HHS_EXACT_UQCEL_HASH216_STRLEN &&
+        std::string_view(transition->transition_identity216,
+                         HHS_EXACT_UQCEL_HASH216_STRLEN)==metadata.ancestry_reference;
+}
 // Entry to the inherited Pass 219 cell wall; caller supplies authoritative
 // serializer output and source transition view, not generated metadata-as-receipts.
 inline HHSExactStatus route_ers_lane5_metadata(
@@ -126,7 +137,8 @@ inline HHSExactStatus route_ers_lane5_metadata(
     std::uint8_t feedback_lane, std::int8_t feedback_trinary,
     HHSExactPass219Holo4PreparedV1* prepared,
     HHSExactPass219Holo4DecisionV1* decision) noexcept {
-    if (!ers_source_matches_circuit(metadata,existing_circuit))
+    if (!ers_source_matches_circuit(metadata,existing_circuit) ||
+        !ers_transition_identity_matches(metadata,inherited_transition))
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     return route_existing_lane5_phasegear(existing_circuit, signed_input,
         serialized_frame, inherited_transition, feedback_lane,
