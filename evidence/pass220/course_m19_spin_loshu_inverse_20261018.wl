@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -17,11 +17,26 @@ expected=lam^3*x^3*y^3-15*lam^2*x^2*y^2+
 fermionicN=n/.{x->I,y->-I};
 spectralPoly=CharacteristicPolynomial[fermionicN,lam];
 spectralRoots=lam/.Solve[spectralPoly==0,lam];
+(* Cardano reconstruction of the fermionic cubic using its exact depressed
+   coefficients. This verifies branch structure, not the literal external
+   arbitrary-x,y RealSurd transcription. *)
+cardanoP=21;
+cardanoQ=-130;
+cardanoOmega=Exp[2 Pi I/3];
+cardanoRoots=Table[
+ RootReduce[5+cardanoOmega^k*
+   Surd[-cardanoQ/2+Sqrt[(cardanoQ/2)^2+(cardanoP/3)^3],3]+
+   cardanoOmega^(-k)*
+   Surd[-cardanoQ/2-Sqrt[(cardanoQ/2)^2+(cardanoP/3)^3],3]],
+ {k,0,2}];
 spectralChecks=<|
  "fermi_cubic"->TrueQ[Expand[spectralPoly-(-lam^3+15*lam^2-96*lam+360)]===0],
  "three_exact_roots"->(Length[spectralRoots]==3 &&
     And@@(TrueQ[RootReduce[spectralPoly/.lam->#]===0]&/@spectralRoots)),
- "fermi_vieta_sum"->TrueQ[RootReduce[Total[spectralRoots]-15]===0]
+ "fermi_vieta_sum"->TrueQ[RootReduce[Total[spectralRoots]-15]===0],
+ "fermi_cardano_three_branches"->(Length[cardanoRoots]==3 &&
+   And@@(TrueQ[RootReduce[spectralPoly/.lam->#]===0]&/@cardanoRoots)),
+ "fermi_cardano_roots_match"->(Sort[cardanoRoots]===Sort[RootReduce/@spectralRoots])
 |>;
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
