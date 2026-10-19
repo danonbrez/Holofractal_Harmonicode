@@ -32,3 +32,23 @@ Production validation, inherited Hash216 hydration, parallel/racing candidate se
 7. **All warnings/errors:** Determine whether each is an actionable contract, build, environment, provenance, security or performance issue; log cause, affected dependency and remedy. Do not silently waive failures or warnings solely to unblock racing/deployment.
 
 A green backend, microbenchmark or service registry cannot stand in for the fully wired deployed interface. Optimization never overrides native authority or the required production acceptance predicate.
+
+## Native-first production service selection and verified-gap imports
+
+**Default:** Route every production capability through the already available, contract-admitted native HARMONICODE service and inherited hydrated constructors before considering external packages, remote providers, libraries, or model dependencies. Native-first applies to the actual deployed service and user interface, not just a build flag.
+
+External dependencies are **conditionally admissible**, not forbidden outright. Import or provision one only after a documented and executed capability-gap check establishes that no currently admitted native path satisfies the same input/typed-output/observable-result contract under required quality, performance and safety constraints.
+
+Required gap evidence:
+- Capability and its exact externally observable input/output contract; user-visible interface workflow and service route.
+- Registry/hydration lookup and real native execution attempt using the deployed service identity, pinned native sources, and inherited signed admission where applicable.
+- Deterministic failure or measurable insufficiency of the native path, with reproducible command, result/receipt, and upstream contract diagnosis; a missing import in an optional external implementation alone is **not** proof of a native gap.
+- Reasoned external choice, exact package/model/version/ABI and permission scope, security and compatibility checks, and a bounded fallback/revocation strategy. External output remains subordinate to native VM81 admission, typed transcription and Hash216 lineage.
+- Dependency-scoped negative tests demonstrating that unnecessary external packages are not loaded when the native capability passes; a verified-gap test that triggers only the explicitly authorized import; parity and full browser-to-native-to-UI checks for both applicable paths.
+
+For the existing production causal-language lane, the pinned `transformers` import is a **present implementation requirement**, not a demonstrated universal capability gap. Preserve its current fail-closed production validation until a native-first alternative is shown to meet the same strict generative-chat, serialized-block, type/ABI and interface contracts through end-to-end validation. Do not simply remove the strict import check or substitute canned responses to obtain green deployment.
+
+Decision order:
+`native registry + Hash216 hydration → native constructor execution/proof → gap verdict → scoped external import if and only if authorized → decoded observable result → deployed HTTPS/Chromium acceptance`.
+
+Optimization/racing can rank competing *candidate* paths but cannot choose an unadmitted external provider, silence a native proof failure or create an independent canonical commit authority.
