@@ -618,3 +618,37 @@ det(L)=360
 The `/` symbol in `M1` remains the native rank-1 quantization binding; the conventional matrix determinant, inverse and eigenvalues are explicitly **projection witnesses** of that typed circuit, not replacements for gate execution. The projected determinant invariant is `det(M1)=360/(xy)^3` and projected trace `15/(xy)`; the middle spectral coefficient retains ordered chirality with `K=xy(24-18(x-y)^2)`. The posted Cardano branches remain source evidence until compared against executable exact calculations.
 
 Both modules integrate through the inherited HNAN tensor and existing VM81 signed cell wall. No independently minted Hash72/Hash216 identity, alternate serializer, or new rotor is authorized.
+
+
+---
+
+MODULE 20 — Unified master assembly (authoritative source extension 2026-10-19)
+
+This is the ordered composition specification, not an additional runtime:
+```
+((2*x-2*z)/(x^2*z^2==a^4/b^2)-a^2)/(Mod(x^4,z^4)+a^2)+1
+ == x-z+b^2-2*a^2
+ == List(
+   u^(-List(-72,0,72)^{4x4 zero blocks}+f),
+   [[5*(x-1),-1,4,-3],[5*(x^2-1),-2,0,2],
+    [5*(y-1),3,-4,1],[0,5*(x-1),5*(x^2-1),5*(y-1)]],
+   ordered-bipolar-spin-register,
+   eleven-ordered-Pisot-shards
+ )
+```
+The exact original nested `List` supplied by the author is the authoritative operand tree; the above is an indexed *outline only*, not a substitute for the source text. Do not compile an outline in its place. In particular the 16 spin-register entries are signed gates indexed in source order `-4,-3,-2,-1,+1,+2,+3,+4` twice, with payload spellings `0,1,10,11,100,101,110,111` remaining source tokens until typed interpretation in the existing native parser. The shard-11 triple gate retains `x^8-x^7-x^6+x^2-1 == z^4+z^2-w*z-z-y^2+x*y+y-x^4+x^2+x-w^2-w == c^2-b^2-a^2` without operand reordering. The eleven numerators share the same typed denominator gate `x^8-x^5-x^4-x^3-x^2-3*x-11 == x*y+x*(x^7-x^4-x^3-x^2-x-3)-b^4*c^2 == 0`.
+
+MODULE 21 — Grand chain and inherited native execution (authoritative source extension 2026-10-19)
+
+```
+[Module20 ordered assembly]
+ == MatrixTimes(MatrixTimes(d^2-c^2-a^4,
+        (MatrixTimes(x,S)+L+MatrixTimes(y,-S))/(x*y)),
+        1/(45==M_LHS)) == M_RHS
+ / [Module0 master gate chain]
+ == x^4-((((x*y)*z)*w)+x+y-z-w)+E^(x^2*Pi)+t^3-t
+ == (x*y)-(z*w)
+```
+This abbreviated dependency view does not alter the complete user-given expression or resolve its parentheses. The `((xy)z)w` multiplication nesting is explicitly preserved. M15 left/right chiral matrices have distinct bus orientation; no scalar cancellation of a gate-bound denominator is valid. The original source asserts the `d^2-c^2-a^4=1` Genesis prefactor, a determinant cross-module ledger `-64800(1-i)`, and the fermionic witness `t^3-t=-Exp[-Pi]`; each is a separate exact projection obligation. In particular no step may reinterpret `==` as Wolfram Equal for admission or `/` as ordinary division in the compiler.
+
+**Mandatory service binding:** these ordered relations must be ingested through already-registered Lane 5 constructor graph and inherited Pass 219 RNA/VM81 signed cell wall, with source-term addresses and Hash216 transition ancestry retained. Module 20 and 21 do not authorize a new resolver, serializer, route, hash mint or privileged admission. Any executable implementation must retain the complete original expression as its source of truth, not this summary.
