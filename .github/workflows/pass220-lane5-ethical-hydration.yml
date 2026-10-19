@@ -1,0 +1,24 @@
+name: Pass220 Lane5 ethical constructor hydration veto
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py'
+      - 'tests/pass219/test_pass219_lane5_ethical_hydration_veto_v1.py'
+      - '.github/workflows/pass220-lane5-ethical-hydration.yml'
+  push:
+    paths:
+      - 'hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py'
+      - 'tests/pass219/test_pass219_lane5_ethical_hydration_veto_v1.py'
+      - '.github/workflows/pass220-lane5-ethical-hydration.yml'
+jobs:
+  ethical-admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate inherited ethical admission and hydration veto
+        run: |
+          python -m py_compile hhs_runtime/hhs_pass219_vm81_admission_bridge_v1.py
+          PYTHONPATH=. python -m unittest tests/pass219/test_pass219_lane5_ethical_hydration_veto_v1.py
