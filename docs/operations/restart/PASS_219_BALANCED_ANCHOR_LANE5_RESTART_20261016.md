@@ -137,3 +137,13 @@
 - Registry commit `5d1a31522d237d4bdcfe29cb332b7405156ac443` adds unresolved mainline repair obligation #820 under exactly the same graph authority. Next: inspect deployed runtime package/model environment before service restart; provision pinned dependencies/model using production interpreter under guarded host change authority; require four distinct genuinely generated prompts with serialized response blocks; then HTTPS and Chromium with exact promoted SHA.
 - An inventory pagination repair is in commit `7279184f3ba267488c1352dd447e8cbe4af44851`. It has not been CI validated; do not assert global graph completeness until checks pass.
 - No production host mutation, package install, native-chat rerun, public HTTPS or Chromium verification performed in this checkpoint.
+
+## 2026-10-18 canonical HARMONICODE algebra course revision
+- User supplied master chain and Modules 0–19, including revised 8-R/8-S/11-R and HNAN no-write unit bypass. Source authority: user course; interpretation register: `contracts/pass219/PASS219_HARMONICODE_COURSE_20261018_REVISION.md`.
+- Supersedes *final constructor* selection: prior rational midpoint 4×4 is scaffolding only; final integer 19-shell `[[1,2,3,5],[2,4,6,10],[3,6,9,15],[4,7,11,19]]`.
+- Independent connected Wolfram kernel check PASS for final shell: rank 2, determinant 0, exact nullspace spanning [-1,-1,1,0], [-3,-1,0,1], columns [10,19,29,49], rows [11,22,33,41], total 107, prime 107 and hinge 19.
+- Added pure C++ constructor witness `hhs_runtime/include/hhs_pass219_lane5_integer_19_shell_v1.hpp`, negative corrupt-hinge and column-correction tests, Lean `HHS.Pass219.Integer19Shell` module registered in native root, workflow trigger updates.
+- Existing earlier rational `BalancedAnchor` files remain as historical derivation records and must not be treated as final Lane 5 state. HNAN bypass contract was documented but runtime HNAN/signing semantics **not rewritten or independently verified**.
+- Source commits: `7a27828f`, `d513a19d`, `6dd9c0e7`, `b6f594c7`, `8f827967`, `8033f727`, `9857ba20`.
+- Current missing tests: exact-head GitHub C++/Lean CI, full module-by-module ordered-gate receipts, HNAN bypass no-write signed replay, LARONE phase-gear hydration and compiler link, global merged repair work and exact-main delivery acceptance. Do not claim these proven.
+- Restart: inspect first failing dependency-scoped CI; fix only impacted proofs/ABI while preserving existing typed gate authority; then implement inherited signed Hash216 constructor hydration and complete unified knowledge graph prerequisite closure.
