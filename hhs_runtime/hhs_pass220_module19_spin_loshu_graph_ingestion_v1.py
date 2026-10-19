@@ -68,3 +68,52 @@ def ingest_relation(
     )
     engine.assert_no_execution_escalation(edge)
     return edge
+
+
+def bind_i028_constructor_graph_candidate(
+    engine: CanonicalKnowledgeGraphEngine,
+    edges,
+    *,
+    pipeline_root_hash72: str,
+    constructor_graph_root_hash72: str,
+    witness: Mapping,
+) -> dict:
+    """Associate verified Module19 edges with caller-supplied I028 root identities.
+
+    This does not synthesize native Hash72, set I028 witness proof bits, or call
+    its C ABI. Both roots must already come from the authoritative pipeline.
+    """
+    expected = relation_witness()
+    if dict(witness) != expected:
+        raise ValueError("MODULE19_WITNESS_MISMATCH")
+    for root in (pipeline_root_hash72, constructor_graph_root_hash72):
+        if not isinstance(root, str) or len(root) != 72 or not root.isascii():
+            raise ValueError("MODULE19_INHERITED_HASH72_ROOT_REQUIRED")
+    if not isinstance(edges, (tuple, list)) or len(edges) != len(RELATIONS):
+        raise ValueError("MODULE19_COMPLETE_DIRECTED_EDGES_REQUIRED")
+    verified = []
+    for i, edge in enumerate(edges):
+        item = engine.verify_edge(edge)
+        if (item.get("relation_type") != RELATIONS[i][1]
+                or item.get("directed") is not True
+                or expected["evidence_sha256"] not in item.get("relation_evidence_roots", ())
+                or item.get("execution_authority") is not False
+                or item.get("mutation_authority") is not False
+                or item.get("executable") is not False):
+            raise ValueError("MODULE19_ORDERED_EDGE_MISMATCH")
+        verified.append(item["knowledge_edge_root_hash72"])
+    return {
+        "schema": "HHS_PASS220_MODULE19_I028_CANDIDATE_GRAPH_BINDING_V1",
+        "i028_pipeline_root_hash72": pipeline_root_hash72,
+        "i028_constructor_graph_root_hash72": constructor_graph_root_hash72,
+        "module19_evidence_sha256": expected["evidence_sha256"],
+        "ordered_edge_roots": verified,
+        "candidate_only": True,
+        "i028_native_abi_invoked": False,
+        "i028_formal_proof_admitted": False,
+        "i028_hash216_validated_composition": False,
+        "canonical_mutation_authority": False,
+        "hash72_mint_authority": False,
+        "hash216_mint_authority": False,
+        "persistence_authority": False,
+    }
