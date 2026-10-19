@@ -110,3 +110,57 @@ def correlate_service_gap(*, triage: Mapping, services: list[Mapping],
         binding, sort_keys=True, separators=(",",":")
     ).encode()).hexdigest()
     return binding
+
+
+def correlate_repository_hydration_records(*, triage: Mapping,
+                                          services: list[Mapping],
+                                          knowledge_records: list[Mapping]) -> dict:
+    """Join actual Pass219 1.69 DB.search() row schema to guarded registry.
+
+    Matching source path + callable name is discovery evidence, not proof of
+    constructor equivalence or signed admission. Never promote fuzzy matches.
+    """
+    if not isinstance(triage, Mapping) or triage.get("schema") != "HHS_SERVICE_CONTRACT_GAP_TRIAGE_V1":
+        raise ValueError("TRIAGE_RECORD_REQUIRED")
+    matches=[s for s in services if isinstance(s, Mapping)
+             and s.get("name")==triage.get("service_name")]
+    if len(matches)!=1:
+        raise ValueError("SERVICE_INDEX_MISSING_OR_AMBIGUOUS")
+    spec=matches[0]
+    module,function=spec.get("module"),spec.get("function")
+    if not isinstance(module,str) or not isinstance(function,str) or not module or not function:
+        raise ValueError("SERVICE_BINDING_INCOMPLETE")
+    path=module.replace(".","/")+".py"
+    found=[]
+    for row in knowledge_records:
+        if not isinstance(row,Mapping) or row.get("node_kind") not in ("CAPABILITY","CONSTRUCTOR"):
+            continue
+        payload=row.get("payload")
+        if not isinstance(payload,Mapping) or payload.get("candidate_only") is not True:
+            continue
+        if row.get("source_path") != path:
+            continue
+        names=(row.get("name"),payload.get("symbol"),payload.get("name"))
+        if function not in names:
+            continue
+        if not isinstance(row.get("hash216"),str) or len(row["hash216"])!=216:
+            raise ValueError("INVALID_LANE5_KNOWLEDGE_IDENTITY")
+        found.append(row)
+    if len(found)>1:
+        raise ValueError("AMBIGUOUS_LANE5_CONSTRUCTOR_IDENTITY")
+    result={
+        "schema":"HHS_SERVICE_CONTRACT_PASS219_169_HYDRATION_JOIN_V1",
+        "triage_sha256":triage.get("triage_sha256"),
+        "registered_service":triage["service_name"],
+        "module":module,"function":function,"source_path":path,
+        "lane5_node_id":found[0].get("node_id") if found else None,
+        "lane5_hash216":found[0]["hash216"] if found else None,
+        "knowledge_node_discovered":len(found)==1,
+        "discovery_is_equivalence_proof":False,
+        "cpp_cell_wall_signed_proof":False,
+        "hydrated_receipt_verified":False,
+        "deployed_e2e_verified":False,
+        "candidate_only":True,
+    }
+    result["correlation_sha256"]=sha256(json.dumps(result,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return result
