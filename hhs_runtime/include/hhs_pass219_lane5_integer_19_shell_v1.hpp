@@ -26,7 +26,8 @@ constexpr bool integer_19_shell_closes(const std::array<ShellRow,4>& m) noexcept
            3*m[r][0]+m[r][1]!=m[r][3])return false;
         total+=row_sum;
     }
-    if(cols!=expected_cols || total!=107)return false;
+    if(total!=107)return false;
+    for(std::size_t c=0;c<4;++c)if(cols[c]!=expected_cols[c])return false;
     return m[3][3]==19 && 2*m[3][3]==18+20 &&
            m[3][0]==4 && m[3][1]==7 && m[3][2]==11;
 }
