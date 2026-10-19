@@ -122,9 +122,10 @@ inline bool ers_transition_identity_matches(
     const ERSMetadataView& metadata,
     const HHSExactPass219Hash216TransitionViewV1* transition) noexcept {
     return transition != nullptr &&
-        metadata.ancestry_reference.size()==HHS_EXACT_UQCEL_HASH216_STRLEN &&
+        metadata.ancestry_reference.size()==HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN &&
+        transition->transition_identity216[HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN]=='\0' &&
         std::string_view(transition->transition_identity216,
-                         HHS_EXACT_UQCEL_HASH216_STRLEN)==metadata.ancestry_reference;
+                         HHS_EXACT_UQCEL_HASH216_TRIPLET_LEN)==metadata.ancestry_reference;
 }
 // Entry to the inherited Pass 219 cell wall; caller supplies authoritative
 // serializer output and source transition view, not generated metadata-as-receipts.
