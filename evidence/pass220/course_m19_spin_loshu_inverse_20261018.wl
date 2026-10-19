@@ -98,9 +98,8 @@ checks=<|
    Sort[{15,2 I Sqrt[6],-2 I Sqrt[6]}]),
  "literal_realsurd_2_4_prefactor"->TrueQ[FullSimplify[
    2/Surd[4,3]==Surd[2,3]]],
- "literal_complex_branch_multiplier"->TrueQ[FullSimplify[
-   (I*Sqrt[3]-1)/(3*Surd[4,3])==
-   (-1/2+I*Sqrt[3]/2)*Surd[2,3]/3]],
+ "literal_complex_branch_multiplier"->TrueQ[
+   Expand[(I*Sqrt[3]-1)-2*(-1/2+I*Sqrt[3]/2)]===0],
  "literal_cardano_prefactor_product"->TrueQ[FullSimplify[
    literalU*literalV==-generalP/3]],
  "literal_cardano_discriminant"->TrueQ[FullSimplify[
