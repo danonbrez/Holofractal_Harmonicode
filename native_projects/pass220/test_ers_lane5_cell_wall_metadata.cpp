@@ -16,7 +16,8 @@ int main() {
  bound.source_payload="12";
  assert(!ers_source_matches_circuit(bound,routed));
  bound.source_payload="11";
- bound.ancestry_reference=std::string(216,'b');
+ const std::string mismatched_ancestry(216,'b');
+ bound.ancestry_reference=mismatched_ancestry;
  assert(!ers_source_matches_circuit(bound,routed));
  bound.ancestry_reference=routed.parent_hash216;
 
