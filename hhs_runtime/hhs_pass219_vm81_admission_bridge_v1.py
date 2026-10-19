@@ -109,6 +109,14 @@ def _lane5_hydration_ethical_veto(evidence: Mapping[str, object]) -> dict[str, o
     failures = [k for k in required_true if evidence.get(k) is not True]
     failures += [k for k in required_false if evidence.get(k) is not False]
     failures += [k for k in roots if not _is_hash72(evidence.get(k))]
+    # Candidate evidence must carry explicit external interface fidelity,
+    # not just an asserted compatible result.
+    if evidence.get("external_input_type_verified") is not True:
+        failures.append("external_input_type_verified")
+    if evidence.get("external_output_type_verified") is not True:
+        failures.append("external_output_type_verified")
+    if evidence.get("observable_behavior_verified") is not True:
+        failures.append("observable_behavior_verified")
     if evidence.get("hydration_precedes_composition") is not True:
         failures.append("hydration_precedes_composition")
     if evidence.get("conway_candidate_only") is not True:
@@ -156,6 +164,8 @@ def admit_and_execute_local(
         "vm81_execution": None,
     }
     if lane5_hydration_evidence is not None:
+        if not isinstance(lane5_hydration_evidence, Mapping):
+            raise VM81AdmissionBridgeError("Lane5 evidence must be a typed mapping")
         veto = _lane5_hydration_ethical_veto(lane5_hydration_evidence)
         result["lane5_hydration_ethical_gate"] = veto
         if veto["vetoed"]:
