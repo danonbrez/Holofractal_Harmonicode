@@ -26,11 +26,11 @@ int main() {
   altered_cells[3].numerator = 37;
   assert(!balanced_anchor_proof_cells_verified(altered_cells));
   assert(integer_19_shell_closes(integer_19_shell));
-  auto corrupted = integer_19_shell;
-  corrupted[3][3] = 18;
-  assert(!integer_19_shell_closes(corrupted));
-  corrupted = integer_19_shell;
-  corrupted[3][1] = 8;
-  assert(!integer_19_shell_closes(corrupted));
+  auto corrupted_shell = integer_19_shell;
+  corrupted_shell[3][3] = 18;
+  assert(!integer_19_shell_closes(corrupted_shell));
+  corrupted_shell = integer_19_shell;
+  corrupted_shell[3][1] = 8;
+  assert(!integer_19_shell_closes(corrupted_shell));
   return 0;
 }
