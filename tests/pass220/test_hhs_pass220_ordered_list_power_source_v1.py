@@ -15,7 +15,7 @@ class OrderedListPower(unittest.TestCase):
         self.assertEqual(len(matches), 1)
         node = matches[0]
         self.assertEqual(node["operator"], "^")
-        self.assertEqual([x["source_text"] for x in node["operands"]],
+        self.assertEqual([x["source_text"] for x in node["ordered_operands"]],
                          [SOURCE[:SOURCE.index("^List(-List")], SOURCE[SOURCE.index("^List(-List")+1:]])
         self.assertFalse(ast["canonical_admission_authority"])
         self.assertFalse(ast["capabilities"]["general_nested_expression_ast_complete"])
