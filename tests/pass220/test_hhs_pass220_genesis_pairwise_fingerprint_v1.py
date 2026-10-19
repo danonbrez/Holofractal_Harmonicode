@@ -1,5 +1,6 @@
 import unittest
-from hhs_runtime.hhs_pass220_genesis_pairwise_fingerprint_v1 import derive_genesis_pair, replay_genesis_pair
+from unittest.mock import patch
+from hhs_runtime.hhs_pass220_genesis_pairwise_fingerprint_v1 import derive_genesis_pair, replay_genesis_pair, native_ordered_phase_pair, replay_native_ordered_phase_pair
 
 class GenesisPairTests(unittest.TestCase):
     def setUp(self):
@@ -31,6 +32,31 @@ class GenesisPairTests(unittest.TestCase):
         args=dict(self.args,index_a=5183,index_b=0,value_a=29,value_b=19)
         b=derive_genesis_pair(**args)
         self.assertNotEqual(a["candidate_proof_sha256"],b["candidate_proof_sha256"])
+
+    def test_native_abi_adapter_routes_ordered_products(self):
+        class NativeSpy:
+            calls = []
+            @staticmethod
+            def validate():
+                return True
+            @staticmethod
+            def address_decode(index):
+                return (index // 64, (index % 64) // 8, index % 8)
+            @staticmethod
+            def phase_product(left, right):
+                NativeSpy.calls.append((left, right))
+                return {"left_basis": left, "right_basis": right,
+                        "phase": (left + right) % 8, "ordered_tag": left * 8 + right}
+        target = "hhs_python.runtime.hhs_exact_ctypes_bridge.HHSExactRuntimeBridge"
+        with patch(target, NativeSpy):
+            record = native_ordered_phase_pair(**self.args)
+            self.assertTrue(record["native_phase_evidence"]["native_exact_phase_abi_verified"])
+            self.assertFalse(record["native_phase_evidence"]["native_genesis_ancestry_verified"])
+            self.assertEqual(record, replay_native_ordered_phase_pair(record, **self.args))
+            tampered = dict(record, candidate_proof_sha256="0" * 64)
+            with self.assertRaisesRegex(ValueError, "REPLAY_MISMATCH"):
+                replay_native_ordered_phase_pair(tampered, **self.args)
+        self.assertEqual(len(NativeSpy.calls), 6)
 
     def test_tampered_genesis_fails_replay(self):
         witness=derive_genesis_pair(**self.args)
