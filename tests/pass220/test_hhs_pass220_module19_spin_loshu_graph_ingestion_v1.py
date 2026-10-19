@@ -9,6 +9,8 @@ class Module19Relations(unittest.TestCase):
     def setUp(self):
         self.engine = Mock()
         self.engine.verify_node.side_effect = lambda n: n
+        # Explicitly model the inherited Pass128 non-escalation method.
+        self.engine.assert_no_execution_escalation = Mock(return_value=None)
         self.engine.relate.return_value = {
             "execution_authority": False, "mutation_authority": False,
             "executable": False,
