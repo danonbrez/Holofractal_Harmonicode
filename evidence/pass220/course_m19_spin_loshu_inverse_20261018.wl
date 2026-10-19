@@ -1,6 +1,6 @@
 (* Pass220 M19 source-faithful conventional symbolic projection audit.
    Does not evaluate native ordered / or == gates and cannot mint Hash216. *)
-ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic];
+ClearAll[x,y,lam,s,l,n,m,adj,expected,checks,result,fermionicN,spectralPoly,spectralRoots,spectralChecks,cardanoP,cardanoQ,cardanoOmega,cardanoRoots,generalK,generalP,generalQ,generalCubic,generalDisc,generalU,generalV,generalOmega,generalRoots];
 s={{-4,-3,-2},{-1,0,1},{2,3,4}};
 l={{4,9,2},{3,5,7},{8,1,6}};
 n=Expand[x*s+l+y*(-s)];
@@ -44,6 +44,16 @@ generalK=24-18*(x-y)^2;
 generalCubic=lam^3-15*lam^2/(x*y)+generalK*lam/(x*y)^2-360/(x*y)^3;
 generalP=(generalK-75)/(x*y)^2;
 generalQ=(5*generalK-610)/(x*y)^3;
+(* Parametric three-branch Cardano proof with correlated cube roots.
+   The second cubic radical is fixed by v=-p/(3u): independent principal
+   roots need not satisfy the Cardano product gate. Exclude only u=0 in
+   this expression; degeneracies require inherited HNAN semantics. *)
+generalDisc=generalQ^2/4+generalP^3/27;
+generalU=(-generalQ/2+Sqrt[generalDisc])^(1/3);
+generalV=-generalP/(3*generalU);
+generalOmega=Exp[2 Pi I/3];
+generalRoots=Table[5/(x*y)+generalOmega^j*generalU+
+ generalOmega^(-j)*generalV,{j,0,2}];
 checks=<|
  "source_ordered_numerator"->(n===Expand[x*s+l+y*(-s)]),
  "det_n_360"->TrueQ[FullSimplify[Det[n]==360]],
@@ -56,6 +66,8 @@ checks=<|
  "trace_15"->TrueQ[FullSimplify[Tr[n]==15]],
  "general_cardano_depression"->TrueQ[FullSimplify[
    Expand[generalCubic/.lam->lam+5/(x*y)]-(lam^3+generalP*lam+generalQ)==0]],
+ "general_cardano_three_roots"->And@@(TrueQ[FullSimplify[
+   generalCubic/.lam->#,Assumptions->x*y!=0&&generalU!=0]==0]&/@generalRoots),
  "fermionic_exact_spectral_roots"->(And@@Values[spectralChecks])
 |>;
 result=<|"schema"->"HHS_PASS220_M19_SPIN_LOSHU_EXACT_PROJECTION_V1",
