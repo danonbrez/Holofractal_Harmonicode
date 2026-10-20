@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import (
-    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, ServiceLeanProofFailure,
+    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, verify_lean_service_provenance_chain, ServiceLeanProofFailure,
 )
 
 class GuardedLeanAdmissionTests(unittest.TestCase):
@@ -112,6 +112,30 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
             lookup_lane5_service_proof_binding(
                 service_name="wrong",module="hhs.runtime.native",
                 function="run",proof_binding=binding,knowledge_database=db)
+
+    def test_native_provenance_chain_rejects_detached_receipt(self):
+        proof={"service_name":"native.example","binding_sha256":"a"*64}
+        registry={"name":"native.example","module":"native.runtime","function":"run"}
+        lane5={"service_name":"native.example","proof_binding_sha256":"a"*64,
+               "knowledge_hash216":"X"*216}
+        receipt={"service_name":"native.example","knowledge_hash216":"X"*216,
+                 "lean_binding_sha256":"a"*64,"cpp_rna_cell_wall_routed":True,
+                 "receipt_identity":"native-fixture"}
+        result=verify_lean_service_provenance_chain(
+            proof_binding=proof,registry_descriptor=registry,
+            lane5_binding=lane5,native_receipt=receipt)
+        self.assertTrue(result["evidence_identity_consistent"])
+        self.assertFalse(result["native_signature_cryptographically_verified"])
+        for key, value, error in (
+            ("service_name","other","SERVICE_MISMATCH"),
+            ("knowledge_hash216","Y"*216,"ROOT_MISMATCH"),
+            ("lean_binding_sha256","0"*64,"ROOT_MISMATCH"),
+            ("cpp_rna_cell_wall_routed",False,"ROUTE_NOT_PROVEN"),
+        ):
+            with self.subTest(key=key), self.assertRaisesRegex(ServiceLeanProofFailure,error):
+                verify_lean_service_provenance_chain(
+                    proof_binding=proof,registry_descriptor=registry,
+                    lane5_binding=lane5,native_receipt={**receipt,key:value})
 
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
