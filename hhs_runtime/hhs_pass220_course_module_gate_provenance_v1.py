@@ -8,7 +8,7 @@ from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusErro
 
 SOURCE="whitepapers/Harmonicode Algebra - Course"
 CONTINUATION="docs/pass220/HARMONICODE_ALGEBRA_COURSE_MODULES_13_26.md"
-LEGACY_COUNT=13
+LEGACY_COUNT=15
 TOTAL_COUNT=27
 HEADER=re.compile(r"^MODULE (\d+) — (.+)$",re.MULTILINE)
 SCHEMA="HHS_PASS220_COURSE_MODULE_GATE_PROVENANCE_V1"
@@ -17,7 +17,7 @@ HNAN_RUNTIME_PHASE_GATE="RUNTIME_HNAN_PHASE_INFORMATION_PRESERVATION_GATE"
 # Independent proof obligations: neither discharges the other.
 
 def course_module_gate_inventory(root:Path=Path("."))->dict:
-    graph=build_dependency_graph(root)
+    # Preserve the existing frozen-corpus integrity gate. A source migration\n    # requires independent authorization, never implicit hash acceptance.\n    graph=build_dependency_graph(root)
     node=next((n for n in graph["nodes"] if n["source"]==SOURCE),None)
     if node is None: raise ProofCorpusError("COURSE_NOT_IN_FROZEN_CORPUS")
     raw=(root/SOURCE).read_bytes()
