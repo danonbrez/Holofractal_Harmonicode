@@ -80,3 +80,39 @@ def service_lean_proof_binding(*, service_name: str, manifest,
     body["binding_sha256"]=sha256(json.dumps(
         body,sort_keys=True,separators=(",",":")).encode()).hexdigest()
     return body
+
+
+def build_lean_cellwall_hydration_handoff(*, proof_binding: dict,
+                                          native_candidate: dict,
+                                          hydration_node: dict) -> dict:
+    """Require existing native proof/graph identities before candidate handoff.
+
+    This correlates independently supplied evidence; it never executes or
+    signs the C++ wall and cannot substitute for native admission.
+    """
+    if not isinstance(proof_binding,dict) or proof_binding.get("schema") != "HHS_GUARDED_SERVICE_LEAN_PROOF_BINDING_V1":
+        raise ServiceLeanProofFailure("LEAN_SERVICE_BINDING_REQUIRED")
+    service=proof_binding.get("service_name")
+    if not isinstance(native_candidate,dict) or native_candidate.get("service_name") != service:
+        raise ServiceLeanProofFailure("NATIVE_SERVICE_IDENTITY_MISMATCH")
+    if native_candidate.get("cpp_rna_cell_wall_routed") is not True or native_candidate.get("canonical_admission_invoked") is not False:
+        raise ServiceLeanProofFailure("NATIVE_CANDIDATE_BOUNDARY_INVALID")
+    if not isinstance(hydration_node,dict) or hydration_node.get("node_kind") not in ("CAPABILITY","CONSTRUCTOR"):
+        raise ServiceLeanProofFailure("LANE5_KNOWLEDGE_NODE_REQUIRED")
+    native_root=native_candidate.get("inherited_hash216")
+    node_root=hydration_node.get("hash216")
+    if not all(isinstance(v,str) and len(v)==216 for v in (native_root,node_root)):
+        raise ServiceLeanProofFailure("HASH216_CANDIDATE_IDENTITIES_REQUIRED")
+    payload={
+        "schema":"HHS_GUARDED_LEAN_CPP_LANE5_HANDOFF_V1",
+        "service_name":service,
+        "lean_binding_sha256":proof_binding.get("binding_sha256"),
+        "cpp_candidate_hash216":native_root,
+        "lane5_knowledge_hash216":node_root,
+        "cpp_rna_cell_wall_routed":True,
+        "signed_environmental_admission_verified":False,
+        "lean_proof_carried_in_signed_receipt":False,
+        "candidate_only":True,
+    }
+    payload["handoff_sha256"]=sha256(json.dumps(payload,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return payload
