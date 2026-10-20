@@ -29,3 +29,10 @@
 - `e9011163e0da1e9daac3d8755008709d122dd6f7`: read-only lookup of exact registered service function/source path from actual injected inherited database search, requiring a single candidate CONSTRUCTOR/CAPABILITY and a 216-character node identity.
 - `9b2319dad238c3eb5d0c8e157da86f32256d811b`: bounded query API regression and duplicate/service-identity negative tests.
 - Search evidence remains candidate-only: it does not prove theorem-to-C++ execution identity, verify real signed receipts, instantiate authoritative graph, or verify deployed frontend service. Next connect the existing initialized Lane5 DB instance and exact native immutable C++ receipt, then perform real pinned Lean and UI E2E integration verification.
+
+## 2026-10-19 strict service receipt identity continuity
+- At inspection, previous workflow run `39360793296` was queued; no passing result asserted for updated head.
+- Commit `5d400a242f6b66480eef98b52269399cbb621f1a`: proof-to-service-to-Lane5-to-native-receipt candidate correlator demands exact identical service identity, original checked Lean binding SHA, hydrated node Hash216 and C++ RNA cell-wall routed evidence. It retains signed/VM81/production flags false, and cannot create any native receipt.
+- Commit `114abf26505694bc065cf95396796d507780c22d`: negative regressions for altered native service, Lean/root identity, or cell-wall route flag.
+- Present evidence is still caller-supplied immutable receipt-shaped data; no cryptographic signature proof or actual native service end-to-end runtime execution was performed. Next: connect actual C++ receipt provenance, pinned live Lean kernel and Lane5 DB search, then signed canonical admission and HTTPS/Chromium user-interface test.
+- Branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target main; keep production acceptance blocked.
