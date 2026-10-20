@@ -14,3 +14,11 @@
 - Commit 8b341bfcb175471319d6379af8d5da5f71f3ca34: attach the checked binding to the guarded registry conformance decision at service registration. This is supplementary to the existing registration interposer; no independent canonical authority path.
 - Commit 1c9196abd860d53e20cc8d7ee933a4535607a0c4: negative mismatch test and source-bound service identity regression.
 - Updated head CI not yet established. Remaining: real Lean checker execution with pinned dependency environment; source proof dependency identity under signed C++ cell-wall and Hash216 receipt; negative integration under actual service registry and complete production UI path.
+
+## 2026-10-19 candidate Lean → C++ wall → Lane5 handoff
+- Prior updated CI run 39359866204 was queued when inspected; no green claim.
+- Read inherited I028 native bridge header `hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h`. It defines `cpp_rna_cell_wall_routed` and `canonical_admission_invoked` candidate flags, with the signed admission boundary retained outside the candidate bridge.
+- Commit `b9bd116f4959b0924eac1e245525eeab3939318b`: supplementary `build_lean_cellwall_hydration_handoff` requires the checked service proof binding, caller-supplied C++ candidate routing evidence, and Lane5 knowledge node Hash216 identity; creates a reproducible candidate correlation digest without claiming signed VM81 receipt or Lean proof embedded in canonical Hash216.
+- Commit `fa8ad78f80703f6d3408fa2847e473b1c4e47e1d`: targeted negative tests for unauthorized candidate admission flag and malformed knowledge identity.
+- **Important remaining integration**: native C++ candidate structs do not intrinsically contain this Python-added service identity/Hash216 tuple. Populate these via genuine immutable receipts/graph entries, never invented placeholders; prove binding through compiled C++ ABI, live Lean checking, signed environmental admission, and deployed interface. No production proof/merge claimed.
+- Restart: branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target main; current scoped CI pending.
