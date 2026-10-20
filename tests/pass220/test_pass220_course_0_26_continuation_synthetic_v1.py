@@ -5,12 +5,12 @@ import hhs_runtime.hhs_pass220_course_module_gate_provenance_v1 as module
 from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
 
 
-def _fixture(tmp_path, monkeypatch, continuation_indices=range(13, 27)):
+def _fixture(tmp_path, monkeypatch, continuation_indices=range(15, 27)):
     original = (
         "The notation: `==` is a gate; `n/d` is the rank-1 tensor circuit; "
         "HNAN bypasses at gain exactly 1.\n"
         + "".join(f"MODULE {i} — Historical {i}\nOriginal identity {i}\n"
-                  for i in range(13))
+                  for i in range(15))
     )
     extension = (
         "# Additive course continuation\n"
@@ -35,21 +35,21 @@ def test_additive_inventory_keeps_frozen_source_identity(tmp_path, monkeypatch):
     assert [x["index"] for x in inventory["ordered_modules"]] == list(range(27))
     assert inventory["source_sha256"] == original_sha
     assert all(x["source_sha256"] == original_sha
-               for x in inventory["ordered_modules"][:13])
+               for x in inventory["ordered_modules"][:15])
     assert all(x["source_sha256"] == inventory["continuation_source_sha256"]
-               for x in inventory["ordered_modules"][13:])
+               for x in inventory["ordered_modules"][15:])
     assert not inventory["whole_course_proved"]
     assert not inventory["hash216_minted"]
 
 
 def test_missing_module_in_continuation_fails_closed(tmp_path, monkeypatch):
-    _fixture(tmp_path, monkeypatch, range(13, 26))
+    _fixture(tmp_path, monkeypatch, range(15, 26))
     with pytest.raises(ProofCorpusError, match="COURSE_CONTINUATION_MODULE_BOUNDARY_DRIFT"):
         module.course_module_gate_inventory(tmp_path)
 
 
 def test_reordered_continuation_fails_closed(tmp_path, monkeypatch):
-    _fixture(tmp_path, monkeypatch, [14, 13, *range(15, 27)])
+    _fixture(tmp_path, monkeypatch, [16, 15, *range(17, 27)])
     with pytest.raises(ProofCorpusError, match="COURSE_CONTINUATION_MODULE_BOUNDARY_DRIFT"):
         module.course_module_gate_inventory(tmp_path)
 
