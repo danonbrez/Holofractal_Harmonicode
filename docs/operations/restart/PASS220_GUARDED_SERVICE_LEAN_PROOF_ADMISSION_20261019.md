@@ -52,3 +52,11 @@
 - `dce4bdef48fc4b6f559bdd66331bc3efb5576bf3`: scoped regression with actual sqlite metadata table; negative tests for mismatched projection/dependency roots and illegitimate execution authority claim.
 - Current head validation not yet observed. Remains to derive independently trusted expected roots from actual production generated projection/dependency receipt, correlate native C++ receipt origin and checked Lean kernel, then runtime signed admission and live HTTPS/Chromium browser workflow.
 - Branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target main; no main merge or production acceptance.
+
+## 2026-10-20 repository hydration receipt verification
+- Earlier workflow run 39405196047 was queued when inspected; no green claim for current branch.
+- Inspected repository `artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json` on main; recorded source commit `a581c431579a8cc7d19eeb337dcf3fa0087c0958`, 2112 capabilities, 4401 constructors, 13513 knowledge edges, 4325616 Hash216 positions. This receipt is candidate/projection evidence, not signed execution.
+- Commit `49eb7cb9922f333f8defbc77ba49459b72f63e44`: `verify_lane5_database_against_repository_receipt` compares the existing SQLite DB metadata roots and source commit to repository receipt and checks actual table counts with read-only SQL. Root evidence must come from the receipt; unknown/corrupt schema fails closed. No database mutation or authority promotion.
+- Commit `6953ca87d2e409f87d9612fa591cb23a75d8bfdd`: regression for invalid receipt schema. Positive real production DB comparison and full count mismatch negative test remain unexecuted/unproven.
+- Next: dependency-scoped CI of updated branch, inspect production generated receipt matching deployed commit and actual Lane5 DB, then exact signed native cell-wall/Lean proof lineage and Chromium interface path. Note that source commit may differ from current main and must be reconciled before claiming current production closure.
+- Branch `pass220/guarded-service-lean-proof-admission-20261019`; merge target main.
