@@ -1,12 +1,6 @@
-# Harmonicode Algebra — Course: Modules 13–26, source-preserving continuation
+# Harmonicode Algebra — Course: Modules 15–26 additive continuation
 
-This companion extends the numbered course without editing the SHA-256-frozen source `whitepapers/Harmonicode Algebra - Course` (Modules 0–12). Module headings are contractual integration descriptions; their presence is not executed proof evidence. Native compiler/VM81/Hash216 authority and exact operand ordering remain governed by existing repository services.
-
-MODULE 13 — Genesis-relative offset vectors
-Preserve Genesis-normalized 81-cell/5184 positions, exact BigInt serialization, typed nonzero provenance, and fixed-width Hash72/Hash216 coordinates. Source service: hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py.
-
-MODULE 14 — Localized Q^n encoding-schema substitution
-Represent each admitted modality schema as typed binary cell parameters; never treat ASCII or UTF-8 as the sole canonical character map. Preserve exact source bytes, framing, ordered addresses, and reversible egress.
+The existing current-main course already includes Modules 0–14. This separately hashed continuation covers only 15–26; it does not overwrite either the historical frozen 0–12 edition or the current 0–14 edition. Each added heading is a source declaration, not a new runtime proof receipt.
 
 MODULE 15 — Parallel ordered palindromic ingress
 Compute forward and reverse positional representations from the same immutable input. Retain operand order, independent phase provenance, and corresponding reconstruction witnesses; do not infer AB=BA.
