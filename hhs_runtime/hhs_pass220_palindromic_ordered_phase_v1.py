@@ -23,6 +23,9 @@ VERSION = "1.0.0-checkpoint.15"
 PROFILE = "PASS220-I015-PALINDROMIC-ORDERED-PHASE-v1"
 WITNESS_SCHEMA = "HHS_PASS_220_PALINDROMIC_PHASE_CLOSURE_WITNESS_V1"
 
+# Exact Module29 72-cell phase map: never simplify, reorder, or scalarize.
+MODULE29_72_CELL_PHASE_MAP_SOURCE = "List(NcalcMatrixPower((I^List(List(List(List(1,x,2),List(w,z,y),List(4,z,3)),List(List(-x,1,-y),List(4,y,2),List(-w,3,-z))),List(List(List(4,3,3),List(2,z,4),List(1,1,2)),List(List(w,3,-z),List(2,w,4),List(-x,1,y))))/List(List(4,9,2),List(3,5,7),List(8,1,6))),(-1)),I^List(List(List(List(1,x,2),List(w,z,y),List(4,z,3)),List(List(-x,1,-y),List(4,y,2),List(-w,3,-z))),List(List(List(4,3,3),List(2,z,4),List(1,1,2)),List(List(w,3,-z),List(2,w,4),List(-x,1,y))))/List(List(4,9,2),List(3,5,7),List(8,1,6)))"
+
 X_VECTOR: Tuple[int, int, int, int] = (0, 1, 1, 0)
 Y_VECTOR: Tuple[int, int, int, int] = (0, -1, 1, 0)
 
@@ -464,6 +467,9 @@ def four_way_ingress_phase_trace(
         "lhs": lhs,
         "rhs": rhs,
         "ordered_gates": gates,
+        "module29_72_cell_phase_map_source": MODULE29_72_CELL_PHASE_MAP_SOURCE,
+        "module29_72_cell_phase_map_sha256": sha256(MODULE29_72_CELL_PHASE_MAP_SOURCE.encode("utf-8")).hexdigest(),
+        "module29_phase_map_executed": False,
         "native_fraction_operator": "HHS_TYPED_FRACTION",
         "native_gate_operator": "HHS_GATE_EQ",
         "canonical_order": siamese_vm81_cell_order(),
