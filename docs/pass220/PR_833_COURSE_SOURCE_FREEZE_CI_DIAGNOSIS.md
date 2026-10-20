@@ -40,3 +40,20 @@ or bulk refresh the 70-file frozen-corpus manifest.
 - Environment: GitHub connector only; no local checkout/Lean compile
 - Remaining: source-freeze reconciliation; scope-tested suite; operational service binding
 - No new native VM81/Hash216 state authority or receipt minted.
+
+## Historical resolution found
+Historical commit `48aa9b704f43e4ede87b25b9391cf4349537b123`
+contains the exact old frozen blob `2744e9ecf1f260ff9a5a02870320698ee2d7dcaf`
+with Modules 0–12 and 17,617 decoded characters.
+The current main edition has blob
+`a36b5627b50e241ba715c607d0896cea254b2f3e`,
+44,220 decoded characters, and headings Modules 0–14.
+Consequently PR 833's independent continuation has been limited to
+Modules 15–26, avoiding duplicate Modules 13 and 14. Its 0–26 inventory
+and synthetic tests were correspondingly updated.
+
+The legacy frozen source manifest is still incompatible with current main.
+Fail-closed `build_corpus_index` is intentionally retained. No old proof
+receipt can silently be reassigned to the expanded edition. An authorized,
+explicit versioned source-freeze migration or an equivalent approved
+edition-aware binding is required before course CI may pass.
