@@ -44,3 +44,11 @@
 - `c88f32888b58417b6c5fc65a9f16eb11bbaa3d2c`: scoped regression uses disposable sqlite database with inherited schema and validates read-only discovery/no mutation/missing index case. No mounted production DB was supplied or accessed.
 - Current head CI remains unconfirmed; execute `PYTHONPATH=. python -m unittest tests/pass220/test_hhs_guarded_service_lean_proof_checker_v1.py`, review new scoped GH Actions run. Next provide actual Lane5 SQLite receipt/path from production, test real C++ wall receipt origin and Lean checker, then link signed provenance to production UI.
 - Branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target `main`; no production acceptance or full signed proof asserted.
+
+## 2026-10-20 Lane5 hydration DB root verification
+- Previous guarded-service Lean PR CI `39403295151` completed SUCCESS at `5ff3a7193cbe5ab3222136b59143a908bd447688`.
+- Inspected inherited Pass219 1.69 `Lane5RepositoryHydrationKnowledgeDatabase.hydrate()` and `status()` contract: `hydration_metadata` is populated with `projection_root_hash216`, `source_dependency_graph_root_hash216`, `candidate_only=true`, `execution_authority=false`, `canonical_mutation_authority=false`.
+- `4a8b75fae8452c9eed9dcf24925e81e47bb14fa8`: read-only `verify_lane5_hydration_metadata` checks metadata against **independently provided expected** projection and dependency roots and checks candidate-only authority flags. No database initialization/mutation/signature claims.
+- `dce4bdef48fc4b6f559bdd66331bc3efb5576bf3`: scoped regression with actual sqlite metadata table; negative tests for mismatched projection/dependency roots and illegitimate execution authority claim.
+- Current head validation not yet observed. Remains to derive independently trusted expected roots from actual production generated projection/dependency receipt, correlate native C++ receipt origin and checked Lean kernel, then runtime signed admission and live HTTPS/Chromium browser workflow.
+- Branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target main; no main merge or production acceptance.
