@@ -36,3 +36,11 @@
 - Commit `114abf26505694bc065cf95396796d507780c22d`: negative regressions for altered native service, Lean/root identity, or cell-wall route flag.
 - Present evidence is still caller-supplied immutable receipt-shaped data; no cryptographic signature proof or actual native service end-to-end runtime execution was performed. Next: connect actual C++ receipt provenance, pinned live Lean kernel and Lane5 DB search, then signed canonical admission and HTTPS/Chromium user-interface test.
 - Branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target main; keep production acceptance blocked.
+
+## 2026-10-20 read-only native Lane5 SQLite source admission
+- Previous scoped `Guarded service Lean proof admission` workflow run `39361210797` completed SUCCESS at previous checkpoint `41661cbcc6e2933a7039e292a427e20a791ac9c3`.
+- Actual inherited Pass219 1.69 database uses `knowledge_nodes(node_id,node_hash216,node_kind,name,source_path,payload_json)`; the `search` path projects `node_hash216` as `hash216`, and `payload_json` as decoded payload. The runtime class normally opens DB for writes/hydration, so diagnostic must not instantiate it for inspection.
+- `3b1b59d385399d7781f01617f5a0218d366a8d86`: new read-only SQLite `file:?mode=ro` adapter takes an **existing** DB location, queries the real indexed column schema, and delegates exact service/proof identity lookup with candidate-only false signature/VM81 claims.
+- `c88f32888b58417b6c5fc65a9f16eb11bbaa3d2c`: scoped regression uses disposable sqlite database with inherited schema and validates read-only discovery/no mutation/missing index case. No mounted production DB was supplied or accessed.
+- Current head CI remains unconfirmed; execute `PYTHONPATH=. python -m unittest tests/pass220/test_hhs_guarded_service_lean_proof_checker_v1.py`, review new scoped GH Actions run. Next provide actual Lane5 SQLite receipt/path from production, test real C++ wall receipt origin and Lean checker, then link signed provenance to production UI.
+- Branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target `main`; no production acceptance or full signed proof asserted.
