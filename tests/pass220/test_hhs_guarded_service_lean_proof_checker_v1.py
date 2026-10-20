@@ -1,10 +1,12 @@
 import hashlib
+import json
+import sqlite3
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
 from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import (
-    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, verify_lean_service_provenance_chain, ServiceLeanProofFailure,
+    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, verify_lean_service_provenance_chain, lookup_live_lane5_database, ServiceLeanProofFailure,
 )
 
 class GuardedLeanAdmissionTests(unittest.TestCase):
@@ -136,6 +138,29 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
                 verify_lean_service_provenance_chain(
                     proof_binding=proof,registry_descriptor=registry,
                     lane5_binding=lane5,native_receipt={**receipt,key:value})
+
+    def test_readonly_hydrated_sqlite_search(self):
+        db_path=self.root/"hydration.sqlite"
+        con=sqlite3.connect(db_path)
+        con.execute("CREATE TABLE knowledge_nodes (node_id TEXT,node_hash216 TEXT,"
+                    "node_kind TEXT,name TEXT,source_path TEXT,payload_json TEXT)")
+        con.execute("INSERT INTO knowledge_nodes VALUES (?,?,?,?,?,?)",
+                    ("constructor:run","Z"*216,"CONSTRUCTOR","run",
+                     "hhs/runtime/native.py",json.dumps({"candidate_only":True})))
+        con.commit()
+        con.close()
+        binding={"service_name":"native.example","binding_sha256":"a"*64}
+        result=lookup_live_lane5_database(
+            database_path=db_path,service_name="native.example",
+            module="hhs.runtime.native",function="run",proof_binding=binding)
+        self.assertEqual(result["knowledge_hash216"],"Z"*216)
+        self.assertFalse(result["canonical_hash216_signed"])
+        with sqlite3.connect(db_path) as con:
+            self.assertEqual(con.execute("SELECT COUNT(*) FROM knowledge_nodes").fetchone()[0],1)
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"MISSING_OR_AMBIGUOUS"):
+            lookup_live_lane5_database(
+                database_path=db_path,service_name="native.example",
+                module="hhs.runtime.native",function="absent",proof_binding=binding)
 
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
