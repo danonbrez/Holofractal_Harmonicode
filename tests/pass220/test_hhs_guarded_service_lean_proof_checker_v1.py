@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import (
-    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, verify_lean_service_provenance_chain, lookup_live_lane5_database, verify_lane5_hydration_metadata, ServiceLeanProofFailure,
+    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, verify_lean_service_provenance_chain, lookup_live_lane5_database, verify_lane5_hydration_metadata, verify_lane5_database_against_repository_receipt, ServiceLeanProofFailure,
 )
 
 class GuardedLeanAdmissionTests(unittest.TestCase):
@@ -184,6 +184,13 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
             con.execute("UPDATE hydration_metadata SET value='true' WHERE key='execution_authority'")
         with self.assertRaisesRegex(ServiceLeanProofFailure,"AUTHORITY_METADATA_INVALID"):
             verify_lane5_hydration_metadata(**args)
+
+    def test_receipt_source_schema_rejected(self):
+        receipt=self.root/"receipt.json"
+        receipt.write_text(json.dumps({"schema":"wrong"}))
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"RECEIPT_SCHEMA_INVALID"):
+            verify_lane5_database_against_repository_receipt(
+                database_path=self.root/"missing.sqlite",receipt_path=receipt)
 
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
