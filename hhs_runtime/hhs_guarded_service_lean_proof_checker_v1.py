@@ -5,6 +5,7 @@ This is a proof-checking admission prerequisite, never VM81 commit authority.
 from __future__ import annotations
 from hashlib import sha256
 from pathlib import Path
+import json
 import re
 import subprocess
 
@@ -52,3 +53,30 @@ def check_service_lean_proofs(proofs, *, repo_root: str | Path) -> tuple[dict, .
                         "toolchain":"leanprover/lean4:v"+PIN,"checker_exit":0,
                         "canonical_mutation_authority":False})
     return tuple(checked)
+
+
+def service_lean_proof_binding(*, service_name: str, manifest,
+                               checked_receipts: tuple[dict, ...]) -> dict:
+    """Bind executed checker receipts to service identity, not VM81 authority."""
+    if not isinstance(service_name,str) or not service_name.strip():
+        raise ServiceLeanProofFailure("LEAN_SERVICE_IDENTITY_REQUIRED")
+    if not isinstance(manifest,(tuple,list)) or not manifest:
+        raise ServiceLeanProofFailure("LEAN_PROOF_MANIFEST_REQUIRED")
+    if len(manifest)!=len(checked_receipts):
+        raise ServiceLeanProofFailure("LEAN_CHECKER_COVERAGE_MISMATCH")
+    for expected, observed in zip(manifest, checked_receipts):
+        if (not isinstance(expected,dict) or not isinstance(observed,dict)
+                or observed.get("path")!=expected.get("path")
+                or observed.get("source_sha256")!=expected.get("source_sha256")
+                or observed.get("toolchain")!="leanprover/lean4:v"+PIN
+                or observed.get("checker_exit")!=0
+                or observed.get("canonical_mutation_authority") is not False):
+            raise ServiceLeanProofFailure("LEAN_CHECKER_RECEIPT_MISMATCH")
+    body={"schema":"HHS_GUARDED_SERVICE_LEAN_PROOF_BINDING_V1",
+          "service_name":service_name,
+          "checked_proofs":[dict(x) for x in checked_receipts],
+          "candidate_only":True,"signed_hash216_admission_verified":False,
+          "native_cpp_cell_wall_verified":False,"canonical_mint_authority":False}
+    body["binding_sha256"]=sha256(json.dumps(
+        body,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return body
