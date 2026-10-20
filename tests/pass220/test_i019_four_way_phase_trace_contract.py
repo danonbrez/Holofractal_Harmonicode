@@ -75,3 +75,24 @@ def test_siamese_forward_reverse_actual_i019_payload_roundtrip():
         # round-trip preserving the original genesis-offset assignments.
         if values[order[0]] != values[0]:
             assert forward != serialize_offsets_5184(values)
+
+
+def test_four_way_trace_executes_payload_and_keeps_gate_authority_separate():
+    from hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1 import (
+        four_way_ingress_phase_trace,
+    )
+    offsets = tuple((i * 7 + 3) % 9 for i in range(81))
+    trace = four_way_ingress_phase_trace("A=LHS", "B=RHS", offsets)
+    assert trace["ordered_gates"] == (
+        ("forward_closure", "AB", "P^4"),
+        ("reverse_closure", "BA", "P^4"),
+        ("forward_rank1", "AB", "BA"),
+        ("reverse_rank1", "BA", "AB"),
+    )
+    assert trace["serial_width"] == 5184
+    assert trace["original_offsets"] == offsets
+    assert trace["reverse_offsets"] == offsets
+    assert trace["lossless_i019_address_roundtrip"] is True
+    assert trace["phase_relation_gate_executed"] is False
+    assert trace["canonical_hash72_mint_authority"] is False
+    assert trace["canonical_hash216_mint_authority"] is False
