@@ -7,3 +7,10 @@
 - Targeted negative tests commit `95d083b27e9981036071a2de43ef3d63323bf66f`; workflow `4264c2aff9969ec364c16657befc4bfec35c3644` runs PR/main path-scoped Python tests. Current head validation pending. Tests mock Lean invocation; **do not** claim compiled Lean theorem verification succeeded in CI.
 - Further obligations: native/production integration checker invoking pinned Lean with real imported Mathlib dependencies, theorem-source and proof identity in signed Hash216 receipts, service-to-theorem mapping for covered services, actual guarded registration negative tests against interposer and full end-to-end UI service validation.
 - No main merge, production promotion or browser acceptance claimed.
+
+## 2026-10-19 service proof identity binding
+- Prior scoped workflow 39332294389 completed SUCCESS at earlier checkpoint 1cfad4e68025c3c83fb1a027d1ff61e37da66774.
+- Commit a6c07a918f674c6c209bc63c24fc33582212175a: deterministic service identity ↔ exact Lean proof file digest ↔ pinned checker receipt candidate binding; forbids Hash216 admission or C++ proof claims.
+- Commit 8b341bfcb175471319d6379af8d5da5f71f3ca34: attach the checked binding to the guarded registry conformance decision at service registration. This is supplementary to the existing registration interposer; no independent canonical authority path.
+- Commit 1c9196abd860d53e20cc8d7ee933a4535607a0c4: negative mismatch test and source-bound service identity regression.
+- Updated head CI not yet established. Remaining: real Lean checker execution with pinned dependency environment; source proof dependency identity under signed C++ cell-wall and Hash216 receipt; negative integration under actual service registry and complete production UI path.
