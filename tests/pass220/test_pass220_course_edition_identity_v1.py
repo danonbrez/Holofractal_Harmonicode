@@ -23,5 +23,5 @@ def test_current_source_matches_pinned_expanded_git_blob():
     import hashlib
     edition = json.loads(CONTRACT.read_text(encoding="utf-8"))
     raw = Path(edition["source"]).read_bytes()
-    git_blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\x00" + raw).hexdigest()
+    git_blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + bytes([0]) + raw).hexdigest()
     assert git_blob == edition["expanded"]["git_blob_sha"]
