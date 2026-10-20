@@ -189,3 +189,48 @@ def verify_lean_service_provenance_chain(*, proof_binding: dict,
     body["correlation_sha256"]=sha256(json.dumps(
         body,sort_keys=True,separators=(",",":")).encode()).hexdigest()
     return body
+
+
+def lookup_live_lane5_database(*, database_path: str | Path,
+                               service_name: str, module: str,
+                               function: str, proof_binding: dict) -> dict:
+    """Query inherited hydrated knowledge_nodes SQLite in READ-ONLY mode.
+
+    Database is never created/hydrated/mutated by this diagnostic. The results
+    are still discovery candidates, NOT canonical C++ proof receipts.
+    """
+    import sqlite3
+    path = Path(database_path).resolve(strict=True)
+    if not path.is_file():
+        raise ServiceLeanProofFailure("LANE5_DATABASE_NOT_FILE")
+    try:
+        db = sqlite3.connect(path.as_uri() + "?mode=ro", uri=True, timeout=2)
+    except sqlite3.Error as exc:
+        raise ServiceLeanProofFailure("LANE5_DATABASE_UNAVAILABLE") from exc
+    try:
+        db.row_factory = sqlite3.Row
+        class ReadOnlyKnowledge:
+            def search(self, name, *, kinds, limit):
+                if not kinds or limit <= 0 or limit > 512:
+                    raise ServiceLeanProofFailure("LANE5_QUERY_OUT_OF_BOUNDS")
+                placeholders = ",".join("?" for _ in kinds)
+                rows = db.execute(
+                    "SELECT node_id,node_hash216,node_kind,name,source_path,payload_json "
+                    "FROM knowledge_nodes WHERE node_kind IN ("+placeholders+") "
+                    "AND (name LIKE ? OR node_id LIKE ? OR COALESCE(source_path,'') LIKE ?) "
+                    "ORDER BY node_kind,name,node_id LIMIT ?",
+                    (*kinds,"%"+name+"%","%"+name+"%","%"+name+"%",limit),
+                ).fetchall()
+                return [{"node_id":r["node_id"],"hash216":r["node_hash216"],
+                         "node_kind":r["node_kind"],"name":r["name"],
+                         "source_path":r["source_path"],
+                         "payload":json.loads(r["payload_json"])} for r in rows]
+        return lookup_lane5_service_proof_binding(
+            service_name=service_name,module=module,function=function,
+            proof_binding=proof_binding,knowledge_database=ReadOnlyKnowledge())
+    except (OSError, ValueError, sqlite3.Error) as exc:
+        if isinstance(exc,ServiceLeanProofFailure):
+            raise
+        raise ServiceLeanProofFailure("LANE5_DATABASE_SCHEMA_OR_QUERY_FAILURE") from exc
+    finally:
+        db.close()
