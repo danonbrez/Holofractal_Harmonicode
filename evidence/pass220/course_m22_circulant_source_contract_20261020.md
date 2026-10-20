@@ -9,3 +9,11 @@ Rotation [[0,-1],[1,0]]: square -I, fourth power I.
 Generator [[3,2],[-1,0]]: eigenvalues 1 and 2.
 
 Unresolved native acceptance: show that each occurrence of T has identical ordered typed source/address/phase provenance, then evaluate using inherited RNA/VM81/HNAN/Lane5 cell wall and validate native Hash216 receipt. Do not replace source with scalar -C, mint hashes here, or grant candidate canonical admission.
+
+## Verbatim author expression
+
+```
+List(x,x^2,y,y^4,z,z^2,w,w^4)^List(-List(0,1),List(0,1)-List(List(1,0),(-List(1,0)))/{{0,-1},List(List(-1,1),{{3,2},{-1,0}})},-(List((-List(0,1)),List(0,1)-List(List(1,0),(-List(1,0))))/{{0,-1},List(List(-1,1),{{3,2},{-1,0}})}+List(List(4,1,2,3),List(3,4,1,2),List(2,3,4,1),List(1,2,3,4))))
+```
+
+Source preservation is not equivalent to admitted or executed native gate closure.
