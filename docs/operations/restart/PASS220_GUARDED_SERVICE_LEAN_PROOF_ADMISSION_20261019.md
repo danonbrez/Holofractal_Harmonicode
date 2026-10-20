@@ -60,3 +60,9 @@
 - Commit `6953ca87d2e409f87d9612fa591cb23a75d8bfdd`: regression for invalid receipt schema. Positive real production DB comparison and full count mismatch negative test remain unexecuted/unproven.
 - Next: dependency-scoped CI of updated branch, inspect production generated receipt matching deployed commit and actual Lane5 DB, then exact signed native cell-wall/Lean proof lineage and Chromium interface path. Note that source commit may differ from current main and must be reconciled before claiming current production closure.
 - Branch `pass220/guarded-service-lean-proof-admission-20261019`; merge target main.
+
+## 2026-10-20 repository receipt SQLite regression closure
+- Previous workflow run `39406279520` was queued when inspected; current head CI not yet confirmed.
+- Commit `570404b1151c5525fdd6dd8c5a95d6794e2c8cf2`: added real disposable SQLite fixture test for inherited Lane5 metadata tables, zero-count inventory match and negative constructor-count drift. The verification invokes the production-oriented read-only receipt comparator rather than mocking its SQL.
+- This test does not validate a production database or establish native signed closure. Next: run scoped CI on this head, inspect production receipt and source-commit correspondence, bind exact C++ receipt and live Lean checker result, verify HTTPS browser E2E.
+- Working branch `pass220/guarded-service-lean-proof-admission-20261019`, target main. Resume using this source checkpoint.
