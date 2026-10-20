@@ -66,6 +66,8 @@ int main() {
     HHSExactPass220I028Lane5ConstructorWitnessV1 witness =
         constructor_witness();
     HHSExactPass220I028Lane5RNAG3BridgeCandidateV1 result{};
+    const HHSExactVM81Frame original_frame = candidate_frame;
+    const HHSExactPass219Hash216TransitionViewV1 original_transition = transition;
 
     assert(hhs_exact_pass220_i028_lane5_rna_g3_bridge_version() ==
            HHS_EXACT_PASS220_I028_LANE5_RNA_G3_BRIDGE_VERSION);
@@ -77,6 +79,8 @@ int main() {
                0U, 1U, 2U,
                &result) == HHS_EXACT_STATUS_OK);
 
+    assert(std::memcmp(&candidate_frame, &original_frame, sizeof(candidate_frame)) == 0);
+    assert(std::memcmp(&transition, &original_transition, sizeof(transition)) == 0);
     assert(result.struct_size == sizeof(result));
     assert(result.surface_linux_api_abi_ingress == 1U);
     assert(result.lane5_zero_bypass_interposer == 1U);
@@ -118,6 +122,8 @@ int main() {
                0U, 1U, 2U,
                &result) == HHS_EXACT_STATUS_INVARIANT_FAILURE);
     assert(result.struct_size == 0U);
+    assert(std::memcmp(&candidate_frame, &original_frame, sizeof(candidate_frame)) == 0);
+    assert(std::memcmp(&transition, &original_transition, sizeof(transition)) == 0);
     assert(result.canonical_admission_invoked == 0U);
 
     witness.successful_benchmark_receipt = 0U;
@@ -129,6 +135,8 @@ int main() {
                0U, 1U, 2U,
                &result) == HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
     assert(result.canonical_admission_invoked == 0U);
+    assert(std::memcmp(&candidate_frame, &original_frame, sizeof(candidate_frame)) == 0);
+    assert(std::memcmp(&transition, &original_transition, sizeof(transition)) == 0);
 
     return 0;
 }
