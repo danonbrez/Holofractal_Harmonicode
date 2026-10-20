@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import (
-    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, verify_lean_service_provenance_chain, lookup_live_lane5_database, ServiceLeanProofFailure,
+    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, verify_lean_service_provenance_chain, lookup_live_lane5_database, verify_lane5_hydration_metadata, ServiceLeanProofFailure,
 )
 
 class GuardedLeanAdmissionTests(unittest.TestCase):
@@ -161,6 +161,29 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
             lookup_live_lane5_database(
                 database_path=db_path,service_name="native.example",
                 module="hhs.runtime.native",function="absent",proof_binding=binding)
+
+    def test_hydration_roots_readonly_and_fail_closed(self):
+        db_path=self.root/"hydration-roots.sqlite"
+        with sqlite3.connect(db_path) as con:
+            con.execute("CREATE TABLE hydration_metadata (key TEXT, value TEXT)")
+            con.executemany("INSERT INTO hydration_metadata VALUES (?,?)",[
+                ("projection_root_hash216","P"*216),
+                ("source_dependency_graph_root_hash216","D"*216),
+                ("candidate_only","true"),("execution_authority","false"),
+                ("canonical_mutation_authority","false")])
+        args={"database_path":db_path,"expected_projection_root_hash216":"P"*216,
+              "expected_dependency_root_hash216":"D"*216}
+        checked=verify_lane5_hydration_metadata(**args)
+        self.assertTrue(checked["metadata_matches_expected_roots"])
+        self.assertFalse(checked["hash216_signature_verified"])
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"PROJECTION_ROOT_MISMATCH"):
+            verify_lane5_hydration_metadata(**dict(args,expected_projection_root_hash216="X"*216))
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"DEPENDENCY_ROOT_MISMATCH"):
+            verify_lane5_hydration_metadata(**dict(args,expected_dependency_root_hash216="X"*216))
+        with sqlite3.connect(db_path) as con:
+            con.execute("UPDATE hydration_metadata SET value='true' WHERE key='execution_authority'")
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"AUTHORITY_METADATA_INVALID"):
+            verify_lane5_hydration_metadata(**args)
 
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
