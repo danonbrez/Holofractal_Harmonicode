@@ -192,6 +192,45 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
             verify_lane5_database_against_repository_receipt(
                 database_path=self.root/"missing.sqlite",receipt_path=receipt)
 
+    def test_receipt_inventory_matches_actual_sqlite(self):
+        path=self.root/"inventory.sqlite"
+        receipt_path=self.root/"inventory-receipt.json"
+        tables=("repository_files","file_dependencies","knowledge_edges","hash216_positions")
+        with sqlite3.connect(path) as con:
+            con.execute("CREATE TABLE hydration_metadata (key TEXT, value TEXT)")
+            con.executemany("INSERT INTO hydration_metadata VALUES (?,?)",(
+                ("projection_root_hash216","P"*216),
+                ("source_dependency_graph_root_hash216","D"*216),
+                ("source_commit","f"*40),
+                ("candidate_only","true"),
+                ("execution_authority","false"),
+                ("canonical_mutation_authority","false"),
+            ))
+            for table in tables:
+                con.execute("CREATE TABLE "+table+" (id TEXT)")
+            con.execute("CREATE TABLE knowledge_nodes (node_kind TEXT)")
+        status={"schema":"HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_HASH216_DATABASE_1_69"}
+        for name in (*tables,"capabilities","constructors"):
+            status[name]=0
+        receipt={
+            "schema":"HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_DATABASE_RECEIPT_1_69",
+            "database_binary_is_source_authority":False,
+            "database_status":status,
+            "projection_root_hash216":"P"*216,
+            "source_dependency_graph_root_hash216":"D"*216,
+            "source_commit":"f"*40,
+        }
+        receipt_path.write_text(json.dumps(receipt))
+        verified=verify_lane5_database_against_repository_receipt(
+            database_path=path,receipt_path=receipt_path)
+        self.assertTrue(verified["recorded_counts_verified"])
+        self.assertFalse(verified["canonical_vm81_admission_verified"])
+        status["constructors"]=1
+        receipt_path.write_text(json.dumps(receipt))
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"COUNT_MISMATCH"):
+            verify_lane5_database_against_repository_receipt(
+                database_path=path,receipt_path=receipt_path)
+
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
             check_service_lean_proofs([],repo_root=self.root)
