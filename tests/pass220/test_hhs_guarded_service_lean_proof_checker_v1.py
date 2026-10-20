@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import (
-    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, ServiceLeanProofFailure,
+    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, lookup_lane5_service_proof_binding, ServiceLeanProofFailure,
 )
 
 class GuardedLeanAdmissionTests(unittest.TestCase):
@@ -84,6 +84,34 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
             build_lean_cellwall_hydration_handoff(
                 proof_binding=binding,native_candidate=native,
                 hydration_node=dict(node,hash216="bad"))
+
+    def test_real_lane5_search_api_contract(self):
+        class KnowledgeSpy:
+            def __init__(self, records):
+                self.records = records
+            def search(self, text, *, kinds, limit):
+                self.last = (text, kinds, limit)
+                return self.records
+        binding={"service_name":"native.example","binding_sha256":"a"*64}
+        row={"node_kind":"CONSTRUCTOR","source_path":"hhs/runtime/native.py",
+             "name":"run","hash216":"Z"*216,"node_id":"constructor:run",
+             "payload":{"candidate_only":True}}
+        db=KnowledgeSpy([row])
+        result=lookup_lane5_service_proof_binding(
+            service_name="native.example",module="hhs.runtime.native",
+            function="run",proof_binding=binding,knowledge_database=db)
+        self.assertEqual(db.last,("run",("CAPABILITY","CONSTRUCTOR"),64))
+        self.assertEqual(result["knowledge_hash216"],"Z"*216)
+        self.assertFalse(result["canonical_hash216_signed"])
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"MISSING_OR_AMBIGUOUS"):
+            lookup_lane5_service_proof_binding(
+                service_name="native.example",module="hhs.runtime.native",
+                function="run",proof_binding=binding,
+                knowledge_database=KnowledgeSpy([row,row]))
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"IDENTITY_MISMATCH"):
+            lookup_lane5_service_proof_binding(
+                service_name="wrong",module="hhs.runtime.native",
+                function="run",proof_binding=binding,knowledge_database=db)
 
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
