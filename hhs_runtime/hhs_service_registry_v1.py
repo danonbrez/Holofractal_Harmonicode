@@ -141,8 +141,15 @@ class HHSServiceRegistry:
                 spec.lean_proof_contracts,
                 repo_root=Path(__file__).resolve().parents[1],
             )
-            if len(checked) != len(spec.lean_proof_contracts):
-                raise HHSServiceRegistryError("LEAN_PROOF_COVERAGE_INCOMPLETE")
+            from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import service_lean_proof_binding
+            proof_binding = service_lean_proof_binding(
+                service_name=spec.name,
+                manifest=spec.lean_proof_contracts,
+                checked_receipts=checked,
+            )
+            # Proof checking is an additional prerequisite; do not add a
+            # second admission/commit path or replace interposed conformance.
+            spec.conformance_decision["lean_checked_proof_binding"] = proof_binding
         self._services[spec.name] = spec
         self._handlers[spec.name] = handler
         self._service_catalog_cache = None
