@@ -96,3 +96,16 @@ def test_four_way_trace_executes_payload_and_keeps_gate_authority_separate():
     assert trace["phase_relation_gate_executed"] is False
     assert trace["canonical_hash72_mint_authority"] is False
     assert trace["canonical_hash216_mint_authority"] is False
+
+
+def test_verbatim_module29_72_cell_map_survives_four_way_trace():
+    from hashlib import sha256
+    from hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1 import (
+        MODULE29_72_CELL_PHASE_MAP_SOURCE, four_way_ingress_phase_trace,
+    )
+    expected = "List(NcalcMatrixPower((I^List(List(List(List(1,x,2),List(w,z,y),List(4,z,3)),List(List(-x,1,-y),List(4,y,2),List(-w,3,-z))),List(List(List(4,3,3),List(2,z,4),List(1,1,2)),List(List(w,3,-z),List(2,w,4),List(-x,1,y))))/List(List(4,9,2),List(3,5,7),List(8,1,6))),(-1)),I^List(List(List(List(1,x,2),List(w,z,y),List(4,z,3)),List(List(-x,1,-y),List(4,y,2),List(-w,3,-z))),List(List(List(4,3,3),List(2,z,4),List(1,1,2)),List(List(w,3,-z),List(2,w,4),List(-x,1,y))))/List(List(4,9,2),List(3,5,7),List(8,1,6)))"
+    assert MODULE29_72_CELL_PHASE_MAP_SOURCE == expected
+    trace = four_way_ingress_phase_trace('LHS','RHS',tuple(range(9))*9)
+    assert trace['module29_72_cell_phase_map_source'] == expected
+    assert trace['module29_72_cell_phase_map_sha256'] == sha256(expected.encode('utf-8')).hexdigest()
+    assert trace['module29_phase_map_executed'] is False
