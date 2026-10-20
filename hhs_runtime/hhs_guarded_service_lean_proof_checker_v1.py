@@ -275,3 +275,53 @@ def verify_lane5_hydration_metadata(*, database_path: str | Path,
     result["verification_sha256"]=sha256(json.dumps(
         result,sort_keys=True,separators=(",",":")).encode()).hexdigest()
     return result
+
+
+def verify_lane5_database_against_repository_receipt(*, database_path: str | Path,
+                                                     receipt_path: str | Path) -> dict:
+    """Match read-only DB metadata to the inherited repository receipt.
+
+    This is source-projection conformance only, not signature verification.
+    """
+    import sqlite3
+    receipt=json.loads(Path(receipt_path).read_text())
+    if receipt.get("schema") != "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_DATABASE_RECEIPT_1_69":
+        raise ServiceLeanProofFailure("LANE5_REPOSITORY_RECEIPT_SCHEMA_INVALID")
+    status=receipt.get("database_status")
+    if not isinstance(status,dict) or status.get("schema") != "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_HASH216_DATABASE_1_69":
+        raise ServiceLeanProofFailure("LANE5_REPOSITORY_RECEIPT_STATUS_INVALID")
+    if receipt.get("database_binary_is_source_authority") is not False:
+        raise ServiceLeanProofFailure("LANE5_DATABASE_AUTHORITY_ESCALATION")
+    roots=verify_lane5_hydration_metadata(
+        database_path=database_path,
+        expected_projection_root_hash216=receipt.get("projection_root_hash216"),
+        expected_dependency_root_hash216=receipt.get("source_dependency_graph_root_hash216"),
+    )
+    try:
+        path=Path(database_path).resolve(strict=True)
+        with sqlite3.connect(path.as_uri()+"?mode=ro",uri=True,timeout=2) as db:
+            counts={
+                "repository_files":"SELECT COUNT(*) FROM repository_files",
+                "file_dependencies":"SELECT COUNT(*) FROM file_dependencies",
+                "capabilities":"SELECT COUNT(*) FROM knowledge_nodes WHERE node_kind='CAPABILITY'",
+                "constructors":"SELECT COUNT(*) FROM knowledge_nodes WHERE node_kind='CONSTRUCTOR'",
+                "knowledge_edges":"SELECT COUNT(*) FROM knowledge_edges",
+                "hash216_positions":"SELECT COUNT(*) FROM hash216_positions",
+            }
+            for key,query in counts.items():
+                if type(status.get(key)) is not int or db.execute(query).fetchone()[0] != status[key]:
+                    raise ServiceLeanProofFailure("LANE5_RECEIPT_COUNT_MISMATCH:"+key)
+            metadata=dict(db.execute("SELECT key,value FROM hydration_metadata"))
+            if metadata.get("source_commit") != receipt.get("source_commit"):
+                raise ServiceLeanProofFailure("LANE5_SOURCE_COMMIT_MISMATCH")
+    except (OSError,sqlite3.Error) as exc:
+        raise ServiceLeanProofFailure("LANE5_RECEIPT_DATABASE_UNAVAILABLE") from exc
+    result={"schema":"HHS_GUARDED_SERVICE_LANE5_REPOSITORY_RECEIPT_MATCH_V1",
+            "source_commit":receipt["source_commit"],
+            "projection_root_hash216":roots["projection_root_hash216"],
+            "dependency_root_hash216":roots["dependency_root_hash216"],
+            "recorded_counts_verified":True,
+            "source_receipt_is_signed_native_execution":False,
+            "canonical_vm81_admission_verified":False,"candidate_only":True}
+    result["comparison_sha256"]=sha256(json.dumps(result,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return result
