@@ -109,3 +109,24 @@ def test_verbatim_module29_72_cell_map_survives_four_way_trace():
     assert trace['module29_72_cell_phase_map_source'] == expected
     assert trace['module29_72_cell_phase_map_sha256'] == sha256(expected.encode('utf-8')).hexdigest()
     assert trace['module29_phase_map_executed'] is False
+
+
+def test_i073_hash216_to_inverse_egress_exact_payload_and_phase_provenance():
+    from hhs_runtime.hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1 import (
+        build_generator, trace_hash216_inverse_egress,
+    )
+    offsets = tuple((i * 7 + 3) % 9 for i in range(81))
+    generator = build_generator(
+        decimal_text="179971.179971", offsets=offsets, fibonacci_depth=10,
+    )
+    trace = trace_hash216_inverse_egress(generator)
+    expected = generator["palindromic_rna_ingress"]["scientific_serialization"]["serialized_sha256"]
+    assert trace["source_serial_sha256"] == expected
+    assert trace["egress_serial_sha256"] == expected
+    assert trace["generator_hash216"] == generator["generator_hash216"]
+    assert trace["binary64_bits_hex"] == generator["palindromic_rna_ingress"]["binary64_bits_hex"]
+    assert trace["i019_exact_inverse_egress"] is True
+    assert trace["hash216_hydration_roundtrip_exact"] is True
+    assert trace["phase_gate_executed"] is False
+    assert trace["external_egress_authorized"] is False
+    assert trace["canonical_vm81_mint_authority"] is False
