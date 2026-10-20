@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import (
-    check_service_lean_proofs, service_lean_proof_binding, ServiceLeanProofFailure,
+    check_service_lean_proofs, service_lean_proof_binding, build_lean_cellwall_hydration_handoff, ServiceLeanProofFailure,
 )
 
 class GuardedLeanAdmissionTests(unittest.TestCase):
@@ -62,6 +62,28 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
             service_lean_proof_binding(
                 service_name="native.example",manifest=[self.entry],
                 checked_receipts=({**proof,"source_sha256":"0"*64},))
+
+    def test_lean_cpp_lane5_handoff_fail_closed(self):
+        proof={"path":self.entry["path"],"source_sha256":self.entry["source_sha256"],
+               "toolchain":"leanprover/lean4:v4.34.0",
+               "checker_exit":0,"canonical_mutation_authority":False}
+        binding=service_lean_proof_binding(
+            service_name="native.example",manifest=[self.entry],
+            checked_receipts=(proof,))
+        native={"service_name":"native.example","cpp_rna_cell_wall_routed":True,
+                "canonical_admission_invoked":False,"inherited_hash216":"A"*216}
+        node={"node_kind":"CAPABILITY","hash216":"B"*216}
+        result=build_lean_cellwall_hydration_handoff(
+            proof_binding=binding,native_candidate=native,hydration_node=node)
+        self.assertFalse(result["signed_environmental_admission_verified"])
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"NATIVE_CANDIDATE_BOUNDARY"):
+            build_lean_cellwall_hydration_handoff(
+                proof_binding=binding,native_candidate={**native,"canonical_admission_invoked":True},
+                hydration_node=node)
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"HASH216_CANDIDATE"):
+            build_lean_cellwall_hydration_handoff(
+                proof_binding=binding,native_candidate=native,
+                hydration_node=dict(node,hash216="bad"))
 
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
