@@ -125,6 +125,11 @@ def test_i073_hash216_to_inverse_egress_exact_payload_and_phase_provenance():
     assert trace["egress_serial_sha256"] == expected
     assert trace["generator_hash216"] == generator["generator_hash216"]
     assert trace["binary64_bits_hex"] == generator["palindromic_rna_ingress"]["binary64_bits_hex"]
+    assert len(trace["genesis_offset_metadata_sha256"]) == 64
+    assert trace["carrier_receipt_sha256"] == generator["palindromic_rna_ingress"]["carrier_receipt_sha256"]
+    assert trace["rna_witness_receipt_sha256"] == generator["palindromic_rna_ingress"]["rna_witness_receipt_sha256"]
+    assert trace["rna_double_reverse_exact"] is True
+    assert trace["decimal_ieee_co_resident"] is True
     assert trace["i019_exact_inverse_egress"] is True
     assert trace["hash216_hydration_roundtrip_exact"] is True
     assert trace["phase_gate_executed"] is False
