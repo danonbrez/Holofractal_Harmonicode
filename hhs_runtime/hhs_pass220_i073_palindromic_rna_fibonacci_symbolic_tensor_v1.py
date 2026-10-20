@@ -861,7 +861,56 @@ def self_test() -> dict[str, Any]:
     }
 
 
+
+def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]:
+    """Bind existing I073 Hash216 candidate to exact I019 ordered ingress/egress.
+
+    No new Hash216 composition, canonical minting, or independent serializer.
+    """
+    from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
+        serialize_siamese_offsets_5184,
+        deserialize_siamese_offsets_5184,
+    )
+    from hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1 import (
+        four_way_ingress_phase_trace,
+    )
+    canonical = reconstruct_serialized_state(generator)
+    offsets = deserialize_offsets_5184(canonical)
+    ordered = serialize_siamese_offsets_5184(offsets)
+    reverse = deserialize_siamese_offsets_5184(ordered)
+    egress = serialize_offsets_5184(reverse)
+    if egress != canonical:
+        raise Pass220I073GeneratorError("Hash216 candidate inverse egress payload mismatch")
+    if sha256(egress.encode("utf-8")).hexdigest() != generator[
+        "palindromic_rna_ingress"
+    ]["scientific_serialization"]["serialized_sha256"]:
+        raise Pass220I073GeneratorError("Hash216 inverse egress root mismatch")
+    word = _hash216_word(generator["generator_hash216"], "generator_hash216")
+    hydrated = hydrate_hash216_geometry(word)
+    if hydrated.get("roundtrip_exact") is not True:
+        raise Pass220I073GeneratorError("Hash216 inverse egress hydration invalid")
+    ingress = generator["palindromic_rna_ingress"]
+    phase = four_way_ingress_phase_trace("LHS", "RHS", offsets)
+    return {
+        "schema": "HHS_PASS220_I073_HASH216_INVERSE_EGRESS_TRACE_V1",
+        "generator_root_sha256": generator["generator_root_sha256"],
+        "generator_hash216": word,
+        "source_serial_sha256": sha256(canonical.encode("utf-8")).hexdigest(),
+        "ordered_serial_sha256": sha256(ordered.encode("utf-8")).hexdigest(),
+        "egress_serial_sha256": sha256(egress.encode("utf-8")).hexdigest(),
+        "binary64_bits_hex": ingress["binary64_bits_hex"],
+        "forward_reverse_phase_trace_sha256": phase["receipt_sha256"],
+        "module29_phase_map_sha256": phase["module29_72_cell_phase_map_sha256"],
+        "i019_exact_inverse_egress": True,
+        "hash216_hydration_roundtrip_exact": True,
+        "phase_gate_executed": False,
+        "external_egress_authorized": False,
+        "canonical_vm81_mint_authority": False,
+    }
+
+
 __all__ = [
+    "trace_hash216_inverse_egress",
     "AUTHORITY_BOUNDARY",
     "DEFAULT_DECIMAL_SOURCE",
     "DEFAULT_FIBONACCI_DEPTH",
