@@ -891,6 +891,24 @@ def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]
         raise Pass220I073GeneratorError("Hash216 inverse egress hydration invalid")
     ingress = generator["palindromic_rna_ingress"]
     phase = four_way_ingress_phase_trace("LHS", "RHS", offsets)
+    # Preserve ingress metadata and raw IEEE provenance alongside the
+    # reconstructed source/egress identity; never interpret binary64 numerically.
+    if ingress["rna_double_reverse_exact"] is not True:
+        raise Pass220I073GeneratorError("I019 reciprocal RNA evidence missing")
+    if ingress["decimal_and_ieee_are_co_resident"] is not True:
+        raise Pass220I073GeneratorError("exact decimal/IEEE ingress pairing missing")
+    bits = ingress["binary64_bits_hex"]
+    if not isinstance(bits, str) or len(bits) != 16 or any(
+        digit not in "0123456789abcdefABCDEF" for digit in bits
+    ):
+        raise Pass220I073GeneratorError("IEEE raw bit provenance malformed")
+    metadata_root = sha256(_canonical_bytes({
+        "genesis_offsets": offsets,
+        "binary64_bits_hex": bits,
+        "carrier_receipt_sha256": ingress["carrier_receipt_sha256"],
+        "rna_witness_receipt_sha256": ingress["rna_witness_receipt_sha256"],
+        "generator_hash216": word,
+    })).hexdigest()
     return {
         "schema": "HHS_PASS220_I073_HASH216_INVERSE_EGRESS_TRACE_V1",
         "generator_root_sha256": generator["generator_root_sha256"],
@@ -898,7 +916,12 @@ def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]
         "source_serial_sha256": sha256(canonical.encode("utf-8")).hexdigest(),
         "ordered_serial_sha256": sha256(ordered.encode("utf-8")).hexdigest(),
         "egress_serial_sha256": sha256(egress.encode("utf-8")).hexdigest(),
-        "binary64_bits_hex": ingress["binary64_bits_hex"],
+        "binary64_bits_hex": bits,
+        "genesis_offset_metadata_sha256": metadata_root,
+        "carrier_receipt_sha256": ingress["carrier_receipt_sha256"],
+        "rna_witness_receipt_sha256": ingress["rna_witness_receipt_sha256"],
+        "rna_double_reverse_exact": True,
+        "decimal_ieee_co_resident": True,
         "forward_reverse_phase_trace_sha256": phase["receipt_sha256"],
         "module29_phase_map_sha256": phase["module29_72_cell_phase_map_sha256"],
         "i019_exact_inverse_egress": True,
