@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from hhs_runtime.hhs_guarded_service_lean_proof_checker_v1 import (
-    check_service_lean_proofs, ServiceLeanProofFailure,
+    check_service_lean_proofs, service_lean_proof_binding, ServiceLeanProofFailure,
 )
 
 class GuardedLeanAdmissionTests(unittest.TestCase):
@@ -46,6 +46,22 @@ class GuardedLeanAdmissionTests(unittest.TestCase):
         ]
         with self.assertRaisesRegex(ServiceLeanProofFailure,"CHECK_FAILED"):
             check_service_lean_proofs([self.entry],repo_root=self.root)
+
+    def test_receipt_bound_to_service_and_rejects_mismatch(self):
+        proof={"path":self.entry["path"],
+               "source_sha256":self.entry["source_sha256"],
+               "toolchain":"leanprover/lean4:v4.34.0",
+               "checker_exit":0,"canonical_mutation_authority":False}
+        bound=service_lean_proof_binding(
+            service_name="native.example",manifest=[self.entry],
+            checked_receipts=(proof,))
+        self.assertEqual(bound["service_name"],"native.example")
+        self.assertFalse(bound["signed_hash216_admission_verified"])
+        self.assertFalse(bound["native_cpp_cell_wall_verified"])
+        with self.assertRaisesRegex(ServiceLeanProofFailure,"RECEIPT_MISMATCH"):
+            service_lean_proof_binding(
+                service_name="native.example",manifest=[self.entry],
+                checked_receipts=({**proof,"source_sha256":"0"*64},))
 
     def test_manifest_required(self):
         with self.assertRaisesRegex(ServiceLeanProofFailure,"MANIFEST_REQUIRED"):
