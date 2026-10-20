@@ -15,11 +15,11 @@ def test_course_modules_zero_through_twenty_six_preserve_exact_section_identity(
     assert not index["hash216_minted"]
     assert index==course_module_gate_inventory()
     assert "The Master Chain" in index["ordered_modules"][0]["title"]
-    assert "Receipt Discipline" in index["ordered_modules"][12]["title"]
+    assert "Receipt Discipline" in index["ordered_modules"][14]["title"]
     assert "Conditional secure agentic egress" in index["ordered_modules"][26]["title"]
-    assert index["legacy_source_module_count"]==13
-    assert all(x["source_path"]==index["source"] for x in index["ordered_modules"][:13])
-    assert all(x["source_path"]==index["continuation_source"] for x in index["ordered_modules"][13:])
+    assert index["legacy_source_module_count"]==15
+    assert all(x["source_path"]==index["source"] for x in index["ordered_modules"][:15])
+    assert all(x["source_path"]==index["continuation_source"] for x in index["ordered_modules"][15:])
 
 def test_course_module_proof_untrusted_receipts_fail_closed():
     inventory=course_module_gate_inventory()
