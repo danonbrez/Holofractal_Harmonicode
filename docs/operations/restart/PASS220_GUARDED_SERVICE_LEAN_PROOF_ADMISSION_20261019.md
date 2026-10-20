@@ -22,3 +22,10 @@
 - Commit `fa8ad78f80703f6d3408fa2847e473b1c4e47e1d`: targeted negative tests for unauthorized candidate admission flag and malformed knowledge identity.
 - **Important remaining integration**: native C++ candidate structs do not intrinsically contain this Python-added service identity/Hash216 tuple. Populate these via genuine immutable receipts/graph entries, never invented placeholders; prove binding through compiled C++ ABI, live Lean checking, signed environmental admission, and deployed interface. No production proof/merge claimed.
 - Restart: branch `pass220/guarded-service-lean-proof-admission-20261019`, merge target main; current scoped CI pending.
+
+## 2026-10-19 actual Lane5 1.69 search adapter
+- Prior workflow 39360247365 was queued when observed; no updated green claim.
+- Inspected `Lane5RepositoryHydrationKnowledgeDatabase.search(text,kinds,limit)` from inherited Pass219 1.69 implementation. It yields typed `node_id/hash216/node_kind/name/source_path/payload` records.
+- `e9011163e0da1e9daac3d8755008709d122dd6f7`: read-only lookup of exact registered service function/source path from actual injected inherited database search, requiring a single candidate CONSTRUCTOR/CAPABILITY and a 216-character node identity.
+- `9b2319dad238c3eb5d0c8e157da86f32256d811b`: bounded query API regression and duplicate/service-identity negative tests.
+- Search evidence remains candidate-only: it does not prove theorem-to-C++ execution identity, verify real signed receipts, instantiate authoritative graph, or verify deployed frontend service. Next connect the existing initialized Lane5 DB instance and exact native immutable C++ receipt, then perform real pinned Lean and UI E2E integration verification.
