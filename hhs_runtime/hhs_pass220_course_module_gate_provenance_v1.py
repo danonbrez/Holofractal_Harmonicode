@@ -17,7 +17,9 @@ HNAN_RUNTIME_PHASE_GATE="RUNTIME_HNAN_PHASE_INFORMATION_PRESERVATION_GATE"
 # Independent proof obligations: neither discharges the other.
 
 def course_module_gate_inventory(root:Path=Path("."))->dict:
-    # Preserve the existing frozen-corpus integrity gate. Source migration\n    # requires independent authorization, never implicit hash acceptance.\n    graph=build_dependency_graph(root)
+    # Preserve the existing frozen-corpus integrity gate.
+    # Source migration requires independent authorization.
+    graph=build_dependency_graph(root)
     node=next((n for n in graph["nodes"] if n["source"]==SOURCE),None)
     if node is None: raise ProofCorpusError("COURSE_NOT_IN_FROZEN_CORPUS")
     raw=(root/SOURCE).read_bytes()
