@@ -42,3 +42,36 @@ def test_proof_trace_uses_inherited_hash216_and_vm81_authority():
     assert contract["lane5_hash72_mint_authority"] is False
     assert contract["lane5_hash216_canonical_mint_authority"] is False
     assert contract["candidate_ieee_egress_is_external_emission"] is False
+
+
+def test_siamese_forward_reverse_actual_i019_payload_roundtrip():
+    from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
+        siamese_vm81_cell_order,
+        serialize_siamese_offsets_5184,
+        deserialize_siamese_offsets_5184,
+        serialize_offsets_5184,
+        deserialize_offsets_5184,
+    )
+    order = siamese_vm81_cell_order()
+    assert order[0] == 4
+    assert len(set(order)) == 81
+    for values in (
+        tuple(i % 9 for i in range(81)),
+        tuple((i * 7 + 3) % 9 for i in range(81)),
+        tuple(0 for _ in range(81)),
+    ):
+        forward = serialize_siamese_offsets_5184(values)
+        assert len(forward) == 5184
+        assert deserialize_siamese_offsets_5184(forward) == values
+        # Independently decode I019 cell tokens to prove traversal, not merely
+        # an encode/decode pair that makes the same address-order mistake.
+        assert deserialize_offsets_5184(forward) == tuple(values[i] for i in order)
+        assert serialize_offsets_5184(deserialize_offsets_5184(forward)) == forward
+        backward = serialize_siamese_offsets_5184(
+            deserialize_siamese_offsets_5184(forward)
+        )
+        assert backward == forward
+        # An incorrect traversal permutation must not masquerade as a
+        # round-trip preserving the original genesis-offset assignments.
+        if values[order[0]] != values[0]:
+            assert forward != serialize_offsets_5184(values)
