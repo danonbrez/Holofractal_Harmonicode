@@ -45,3 +45,33 @@ def test_module29_ordered_matrix_source_is_preserved():
     tokens = tokenize(source)
     assert all(t.kind != "UNKNOWN" for t in tokens)
     assert "".join(source[t.start:t.end] for t in tokens if t.kind != "EOF") == source
+
+
+def test_siamese_serializer_permutation_round_trip_and_fixed_segments():
+    """Prove traversal order is a bijection over existing 81 x 64-bit cells."""
+    grid = [[None] * 9 for _ in range(9)]
+    row, col = 0, 4
+    visit = []
+    for k in range(81):
+        assert grid[row][col] is None
+        grid[row][col] = k
+        visit.append(row * 9 + col)
+        if k == 80:
+            break
+        nxt = ((row - 1) % 9, (col + 1) % 9)
+        if grid[nxt[0]][nxt[1]] is not None:
+            nxt = ((row + 1) % 9, col)
+        row, col = nxt
+    assert len(visit) == len(set(visit)) == 81
+    inverse = [None] * 81
+    for traversal_index, cell_address in enumerate(visit):
+        inverse[cell_address] = traversal_index
+    assert all(visit[inverse[a]] == a for a in range(81))
+    # Positional payloads must remain opaque: no endian rewrite or BigInt scalarization.
+    original = tuple(i.to_bytes(8, "little") for i in range(81))
+    serialized = b"".join(original[address] for address in visit)
+    assert len(serialized) == 648
+    chunks = [serialized[i:i+8] for i in range(0, 648, 8)]
+    restored = tuple(chunks[inverse[address]] for address in range(81))
+    assert restored == original
+    assert [len(serialized[i*72:(i+1)*72]) for i in range(9)] == [72] * 9
