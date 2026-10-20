@@ -234,3 +234,44 @@ def lookup_live_lane5_database(*, database_path: str | Path,
         raise ServiceLeanProofFailure("LANE5_DATABASE_SCHEMA_OR_QUERY_FAILURE") from exc
     finally:
         db.close()
+
+
+def verify_lane5_hydration_metadata(*, database_path: str | Path,
+                                    expected_projection_root_hash216: str,
+                                    expected_dependency_root_hash216: str) -> dict:
+    """Verify existing Pass219 1.69 DB roots before service discovery.
+
+    Root consistency is hydration provenance evidence, not signature or VM81
+    admission. Never initialize, rebuild, or mutate the database.
+    """
+    import sqlite3
+    for value in (expected_projection_root_hash216, expected_dependency_root_hash216):
+        if not isinstance(value,str) or len(value)!=216:
+            raise ServiceLeanProofFailure("LANE5_EXPECTED_ROOT_INVALID")
+    try:
+        path=Path(database_path).resolve(strict=True)
+        with sqlite3.connect(path.as_uri()+"?mode=ro",uri=True,timeout=2) as db:
+            rows=db.execute("SELECT key,value FROM hydration_metadata").fetchall()
+            metadata=dict(rows)
+            if len(rows)!=len(metadata):
+                raise ServiceLeanProofFailure("LANE5_DUPLICATE_METADATA_KEY")
+            if metadata.get("projection_root_hash216")!=expected_projection_root_hash216:
+                raise ServiceLeanProofFailure("LANE5_PROJECTION_ROOT_MISMATCH")
+            if metadata.get("source_dependency_graph_root_hash216")!=expected_dependency_root_hash216:
+                raise ServiceLeanProofFailure("LANE5_DEPENDENCY_ROOT_MISMATCH")
+            if (metadata.get("candidate_only")!="true"
+                or metadata.get("execution_authority")!="false"
+                or metadata.get("canonical_mutation_authority")!="false"):
+                raise ServiceLeanProofFailure("LANE5_AUTHORITY_METADATA_INVALID")
+    except (OSError, sqlite3.Error) as exc:
+        raise ServiceLeanProofFailure("LANE5_HYDRATION_METADATA_UNAVAILABLE") from exc
+    result={"schema":"HHS_GUARDED_SERVICE_LANE5_HYDRATION_ROOT_MATCH_V1",
+            "projection_root_hash216":expected_projection_root_hash216,
+            "dependency_root_hash216":expected_dependency_root_hash216,
+            "metadata_matches_expected_roots":True,
+            "hash216_signature_verified":False,
+            "canonical_admission_verified":False,
+            "candidate_only":True}
+    result["verification_sha256"]=sha256(json.dumps(
+        result,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return result
