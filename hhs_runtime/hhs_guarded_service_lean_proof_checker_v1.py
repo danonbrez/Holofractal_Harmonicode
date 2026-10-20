@@ -116,3 +116,36 @@ def build_lean_cellwall_hydration_handoff(*, proof_binding: dict,
     }
     payload["handoff_sha256"]=sha256(json.dumps(payload,sort_keys=True,separators=(",",":")).encode()).hexdigest()
     return payload
+
+
+def lookup_lane5_service_proof_binding(*, service_name: str, module: str,
+                                       function: str, proof_binding: dict,
+                                       knowledge_database) -> dict:
+    """Read actual inherited Pass219 1.69 search rows, never create graph state."""
+    if proof_binding.get("service_name") != service_name:
+        raise ServiceLeanProofFailure("LEAN_SERVICE_IDENTITY_MISMATCH")
+    if not all(isinstance(v,str) and v for v in (service_name,module,function)):
+        raise ServiceLeanProofFailure("SERVICE_BINDING_INCOMPLETE")
+    source_path=module.replace(".","/")+".py"
+    records=knowledge_database.search(function,kinds=("CAPABILITY","CONSTRUCTOR"),limit=64)
+    matching=[row for row in records if row.get("source_path")==source_path
+              and row.get("node_kind") in ("CAPABILITY","CONSTRUCTOR")
+              and row.get("name")==function
+              and isinstance(row.get("payload"),dict)
+              and row["payload"].get("candidate_only") is True]
+    if len(matching)!=1:
+        raise ServiceLeanProofFailure("LANE5_SERVICE_GRAPH_MISSING_OR_AMBIGUOUS")
+    node=matching[0]
+    if not isinstance(node.get("hash216"),str) or len(node["hash216"])!=216:
+        raise ServiceLeanProofFailure("LANE5_HASH216_IDENTITY_INVALID")
+    result={"schema":"HHS_GUARDED_LEAN_LANE5_LIVE_SEARCH_BINDING_V1",
+            "service_name":service_name,"source_path":source_path,
+            "proof_binding_sha256":proof_binding.get("binding_sha256"),
+            "knowledge_node_id":node.get("node_id"),
+            "knowledge_hash216":node["hash216"],
+            "native_cpp_cell_wall_admitted":False,
+            "canonical_hash216_signed":False,
+            "candidate_only":True}
+    result["binding_sha256"]=sha256(json.dumps(
+        result,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return result
