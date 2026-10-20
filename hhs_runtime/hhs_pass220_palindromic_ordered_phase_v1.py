@@ -426,3 +426,54 @@ def validate_palindromic_ordered_phase() -> Dict[str, Any]:
 
 def palindromic_ordered_phase_self_test() -> Dict[str, Any]:
     return validate_palindromic_ordered_phase()
+
+
+def four_way_ingress_phase_trace(
+    lhs: str,
+    rhs: str,
+    genesis_offsets: Sequence[int],
+) -> Dict[str, Any]:
+    """Execute I019 ordered-address roundtrip; preserve the four gate expressions.
+
+    This is an explicit candidate source/ingress proof trace. The canonical
+    P-phase comparison and Hash72/Hash216 mint remain beneath VM81 authority.
+    In particular AB and BA are never scalar-multiplied or commuted.
+    """
+    from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
+        serialize_siamese_offsets_5184,
+        deserialize_siamese_offsets_5184,
+        siamese_vm81_cell_order,
+    )
+    if not isinstance(lhs, str) or not lhs or not isinstance(rhs, str) or not rhs:
+        raise Pass220PalindromicPhaseError("LHS and RHS must be nonempty source strings")
+    offsets = tuple(genesis_offsets)
+    serialized = serialize_siamese_offsets_5184(offsets)
+    reverse_offsets = deserialize_siamese_offsets_5184(serialized)
+    exact = reverse_offsets == offsets
+    if not exact:
+        raise Pass220PalindromicPhaseError("I019 reverse ingress lost Genesis offsets")
+    # These are exact ordered source gates, not numeric equalities to solve.
+    gates = (
+        ("forward_closure", "AB", "P^4"),
+        ("reverse_closure", "BA", "P^4"),
+        ("forward_rank1", "AB", "BA"),
+        ("reverse_rank1", "BA", "AB"),
+    )
+    return _receipt({
+        "schema": "HHS_PASS220_FOUR_WAY_INGRESS_PHASE_TRACE_V1",
+        "lhs": lhs,
+        "rhs": rhs,
+        "ordered_gates": gates,
+        "native_fraction_operator": "HHS_TYPED_FRACTION",
+        "native_gate_operator": "HHS_GATE_EQ",
+        "canonical_order": siamese_vm81_cell_order(),
+        "serial_width": len(serialized),
+        "serial_sha256": sha256(serialized.encode("ascii")).hexdigest(),
+        "original_offsets": offsets,
+        "reverse_offsets": reverse_offsets,
+        "lossless_i019_address_roundtrip": exact,
+        "phase_relation_gate_executed": False,
+        "canonical_hash72_mint_authority": False,
+        "canonical_hash216_mint_authority": False,
+        "canonical_admission_authority": False,
+    })
