@@ -149,3 +149,43 @@ def lookup_lane5_service_proof_binding(*, service_name: str, module: str,
     result["binding_sha256"]=sha256(json.dumps(
         result,sort_keys=True,separators=(",",":")).encode()).hexdigest()
     return result
+
+
+def verify_lean_service_provenance_chain(*, proof_binding: dict,
+                                         registry_descriptor: dict,
+                                         lane5_binding: dict,
+                                         native_receipt: dict) -> dict:
+    """Reject detached/mismatched identities; signed proof remains unasserted.
+
+    Native receipt data must be supplied by the inherited runtime, not created
+    or synthesized here. Receipt equality is evidence correlation, not signature
+    verification.
+    """
+    service=proof_binding.get("service_name")
+    if not isinstance(service,str) or not service:
+        raise ServiceLeanProofFailure("LEAN_SERVICE_IDENTITY_REQUIRED")
+    if registry_descriptor.get("name") != service or lane5_binding.get("service_name") != service:
+        raise ServiceLeanProofFailure("SERVICE_PROVENANCE_IDENTITY_MISMATCH")
+    if lane5_binding.get("proof_binding_sha256") != proof_binding.get("binding_sha256"):
+        raise ServiceLeanProofFailure("LEAN_PROOF_LINEAGE_MISMATCH")
+    if native_receipt.get("service_name") != service:
+        raise ServiceLeanProofFailure("NATIVE_RECEIPT_SERVICE_MISMATCH")
+    root=lane5_binding.get("knowledge_hash216")
+    if not isinstance(root,str) or len(root)!=216 or native_receipt.get("knowledge_hash216") != root:
+        raise ServiceLeanProofFailure("NATIVE_LANE5_ROOT_MISMATCH")
+    if native_receipt.get("lean_binding_sha256") != proof_binding.get("binding_sha256"):
+        raise ServiceLeanProofFailure("NATIVE_LEAN_ROOT_MISMATCH")
+    if native_receipt.get("cpp_rna_cell_wall_routed") is not True:
+        raise ServiceLeanProofFailure("CPP_CELL_WALL_ROUTE_NOT_PROVEN")
+    body={"schema":"HHS_GUARDED_LEAN_SERVICE_PROVENANCE_CHAIN_V1",
+          "service_name":service,"lean_binding_sha256":proof_binding["binding_sha256"],
+          "knowledge_hash216":root,
+          "native_receipt_identity":native_receipt.get("receipt_identity"),
+          "evidence_identity_consistent":True,
+          "native_signature_cryptographically_verified":False,
+          "canonical_vm81_commit_verified":False,
+          "production_e2e_verified":False,
+          "candidate_only":True}
+    body["correlation_sha256"]=sha256(json.dumps(
+        body,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return body
