@@ -3486,6 +3486,7 @@
       if(renderGate){
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
+        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         renderer.render(scene, camera);
         renderedFrames++;
         /* state JSON is a presentation surface; get_state remains fresh on demand */
@@ -3494,6 +3495,7 @@
       if(!renderGate && audioVisualFrame){
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
+        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         renderer.render(scene,camera);
       }
       if (window.updateFunctions) {
@@ -5870,7 +5872,145 @@ window.HHSPhaseMembranes=Object.freeze({
 });
 })();
 </script>
-<script src="ParticleSimulationNeuralLayerBridge.js"></script>
+<script id="hhs-liquid-light-inline">\n(function(){
+"use strict";
+/* Omnidirectional 3D inverse-square liquid-light projection.
+   Separate GPU sphere instances; observes particles and recognized solidSerial.
+   Never mutates particle position, bonds, native state or receipts. */
+const SETTINGS={enabled:true,solids:true,particleRadius:0.95,solidRadius:1.8,
+  intensity:0.30,falloff:5.5,opacity:0.36};
+let particleField=null,solidField=null,initialized=false;
+const matrix=new THREE.Matrix4(),tone=new THREE.Color();
+const groups=new Map();
+function material(){
+  return new THREE.ShaderMaterial({
+    transparent:true,depthWrite:false,depthTest:true,side:THREE.FrontSide,
+    blending:THREE.NormalBlending,
+    uniforms:{uIntensity:{value:SETTINGS.intensity},
+      uFalloff:{value:SETTINGS.falloff},uOpacity:{value:SETTINGS.opacity}},
+    vertexShader:[
+      "attribute vec3 instanceColor;",
+      "varying vec3 vTint;",
+      "varying vec3 vNormal;",
+      "varying vec3 vEye;",
+      "void main(){",
+      "vTint=instanceColor;",
+      "vec4 eye=modelViewMatrix*instanceMatrix*vec4(position,1.0);",
+      "vNormal=normalize(mat3(modelViewMatrix*instanceMatrix)*normal);",
+      "vEye=normalize(-eye.xyz);",
+      "gl_Position=projectionMatrix*eye;",
+      "}"
+    ].join("\n"),
+    fragmentShader:[
+      "precision mediump float;",
+      "uniform float uIntensity;",
+      "uniform float uFalloff;",
+      "uniform float uOpacity;",
+      "varying vec3 vTint;",
+      "varying vec3 vNormal;",
+      "varying vec3 vEye;",
+      "void main(){",
+      "float facing=abs(dot(normalize(vNormal),normalize(vEye)));",
+      "float radial=1.0-facing;",
+      "float attenuation=1.0/(1.0+uFalloff*radial*radial);",
+      "float liquid=pow(max(0.0,facing),1.5);",
+      "float alpha=clamp(uOpacity*uIntensity*attenuation*(0.22+0.78*liquid),0.0,0.78);",
+      "vec3 shade=mix(vec3(0.006,0.009,0.02),vTint*0.38,attenuation);",
+      "gl_FragColor=vec4(shade,alpha);",
+      "}"
+    ].join("\n")
+  });
+}
+function setup(){
+  if(initialized||!scene||!particles.length)return;
+  const geometry=new THREE.SphereGeometry(1,8,6);
+  function batch(cap){
+    const mesh=new THREE.InstancedMesh(geometry,material(),cap);
+    mesh.frustumCulled=false;
+    mesh.renderOrder=2;
+    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    scene.add(mesh);return mesh;
+  }
+  particleField=batch(particles.length);
+  solidField=batch(256);
+  initialized=true;
+}
+function setInstance(mesh,index,x,y,z,size,col){
+  matrix.makeScale(size,size,size);
+  matrix.setPosition(x,y,z);
+  mesh.setMatrixAt(index,matrix);
+  mesh.setColorAt(index,col);
+}
+function refreshMaterial(mesh){
+  const u=mesh.material.uniforms;
+  u.uIntensity.value=SETTINGS.intensity;
+  u.uFalloff.value=SETTINGS.falloff;
+  u.uOpacity.value=SETTINGS.opacity;
+}
+function sync(){
+  setup();
+  if(!initialized)return;
+  particleField.visible=SETTINGS.enabled;
+  solidField.visible=SETTINGS.enabled&&SETTINGS.solids;
+  if(!SETTINGS.enabled)return;
+  refreshMaterial(particleField);refreshMaterial(solidField);
+  groups.clear();
+  for(let i=0;i<particles.length;i++){
+    const p=particles[i],q=p.position;
+    tone.copy(p.material.color);
+    setInstance(particleField,i,q.x,q.y,q.z,SETTINGS.particleRadius,tone);
+    const serial=p.userData&&p.userData.solidSerial;
+    if(Number.isInteger(serial)&&serial>0){
+      let g=groups.get(serial);
+      if(!g){g={members:[],r:0,g:0,b:0,x:0,y:0,z:0};groups.set(serial,g);}
+      g.members.push(i);g.x+=q.x;g.y+=q.y;g.z+=q.z;
+      g.r+=tone.r;g.g+=tone.g;g.b+=tone.b;
+    }
+  }
+  particleField.count=particles.length;
+  particleField.instanceMatrix.needsUpdate=true;
+  if(particleField.instanceColor)particleField.instanceColor.needsUpdate=true;
+  let s=0;
+  for(const g of groups.values()){
+    if(g.members.length<4||s>=solidField.instanceMatrix.count/16)continue;
+    const n=g.members.length,cx=g.x/n,cy=g.y/n,cz=g.z/n;
+    let r2=0;
+    for(const id of g.members){
+      const q=particles[id].position;
+      r2=Math.max(r2,(q.x-cx)**2+(q.y-cy)**2+(q.z-cz)**2);
+    }
+    if(r2>64)continue; // stale recognition doesn't light scattered debris
+    tone.setRGB(g.r/n,g.g/n,g.b/n);
+    setInstance(solidField,s++,cx,cy,cz,Math.max(0.6,Math.sqrt(r2))*SETTINGS.solidRadius,tone);
+  }
+  solidField.count=s;
+  solidField.instanceMatrix.needsUpdate=true;
+  if(solidField.instanceColor)solidField.instanceColor.needsUpdate=true;
+}
+function controls(){
+  const panel=document.createElement("fieldset");
+  panel.id="liquidLightPanel";
+  panel.style.cssText="position:fixed;right:10px;top:310px;z-index:130;width:230px;max-height:38vh;overflow:auto;background:rgba(4,9,22,.89);border:1px solid #456;color:#cde;padding:8px;font:12px monospace";
+  panel.innerHTML='<legend>3D Liquid Light · 360°</legend>'+
+    '<label><input type="checkbox" id="liqOn" checked> Enable color gradients</label>'+
+    '<label><input type="checkbox" id="liqSolids" checked> Closed-solid fields</label>'+
+    '<label>Gradient opacity <input id="liqOpacity" type="range" min="0" max="0.8" step="0.01" value="0.36"></label>'+
+    '<label>Light strength <input id="liqIntensity" type="range" min="0" max="1" step="0.01" value="0.30"></label>'+
+    '<label>Inverse-square falloff <input id="liqFalloff" type="range" min="0.1" max="20" step="0.1" value="5.5"></label>'+
+    '<label>Particle field radius <input id="liqRadius" type="range" min="0.2" max="4" step="0.05" value="0.95"></label>'+
+    '<label>Solid field radius <input id="liqSolidRadius" type="range" min="0.4" max="4" step="0.1" value="1.8"></label>';
+  panel.querySelectorAll("label").forEach(x=>x.style.cssText="display:block;margin:6px 0");
+  document.body.appendChild(panel);
+  for(const [id,key] of [["liqOpacity","opacity"],["liqIntensity","intensity"],["liqFalloff","falloff"],["liqRadius","particleRadius"],["liqSolidRadius","solidRadius"]])
+    document.getElementById(id).addEventListener("input",e=>SETTINGS[key]=+e.target.value);
+  document.getElementById("liqOn").addEventListener("change",e=>SETTINGS.enabled=e.target.checked);
+  document.getElementById("liqSolids").addEventListener("change",e=>SETTINGS.solids=e.target.checked);
+}
+controls();
+window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
+ get diagnostics(){return {initialized,particles:particleField?particleField.count:0,
+ solids:solidField?solidField.count:0,renderOnly:true};}});
+})();\n</script>\n<script src="ParticleSimulationNeuralLayerBridge.js"></script>
 </body>
 
 </html>
