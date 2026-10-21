@@ -245,9 +245,12 @@
           /* Candidate-only Brownian light offset: GPU instance matrix only. */
           audioVisual.projectBrownianAntiParticle(p,particleBatchMatrix);
           audioVisual.projectColor(p,particleAudioColor);
+          if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,particleAudioColor);
           mesh.setColorAt(i,particleAudioColor);
         }else{
-          mesh.setColorAt(i,p.material.color);
+          particleAudioColor.copy(p.material.color);
+          if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,particleAudioColor);
+          mesh.setColorAt(i,particleAudioColor);
         }
         mesh.setMatrixAt(i,particleBatchMatrix);
         if(halo)halo.glowStrength.array[i]=glowEnabled?
@@ -3423,6 +3426,99 @@
         window.HHSAudioViz.observeBrownianSubstep();
     }
 
+    /* Tri-vertex membrane contacts. Physics uses existing bonded triples,
+       canonical thPos/thVel, and reciprocal impulses on vertices.
+       Bounded candidate grid; no GUI color values enter this path. */
+    const MEMBRANE_CONTACT={on:true,restitution:0.84,threshold:0.75,thickness:0.12,
+      maxFaces:384,events:0};
+    const membraneCells=new Map();
+    function membraneCellKey(x,y,z){return Math.floor(x)+","+Math.floor(y)+","+Math.floor(z);}
+    function collideBondMembranes(){
+      if(!MEMBRANE_CONTACT.on||!thPos||!thVel||bondN<2)return;
+      membraneCells.clear();
+      const n=particles.length;
+      for(let i=0;i<n;i++){
+        const p=i*3,key=membraneCellKey(thPos[p],thPos[p+1],thPos[p+2]);
+        let list=membraneCells.get(key);
+        if(!list){list=[];membraneCells.set(key,list);}list.push(i);
+      }
+      let faces=0;
+      for(let a=0;a<n&&faces<MEMBRANE_CONTACT.maxFaces;a++){
+        const start=bondAdjStart[a],end=bondAdjStart[a+1];
+        if(end-start<2)continue;
+        const bs=[];
+        for(let t=start;t<end&&bs.length<8;t++){
+          const k=bondAdjIndex[t];bs.push(bondI[k]===a?bondJ[k]:bondI[k]);
+        }
+        for(let u=1;u<bs.length&&faces<MEMBRANE_CONTACT.maxFaces;u++){
+          const b=bs[u-1],d=bs[u];
+          if(b===d)continue;
+          const ia=a*3,ib=b*3,id=d*3;
+          const ax=thPos[ia],ay=thPos[ia+1],az=thPos[ia+2];
+          const ux=thPos[ib]-ax,uy=thPos[ib+1]-ay,uz=thPos[ib+2]-az;
+          const vx=thPos[id]-ax,vy=thPos[id+1]-ay,vz=thPos[id+2]-az;
+          let nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx;
+          const area=Math.hypot(nx,ny,nz);
+          if(area<1e-6)continue;
+          faces++;nx/=area;ny/=area;nz/=area;
+          const cx=(ax+thPos[ib]+thPos[id])/3;
+          const cy=(ay+thPos[ib+1]+thPos[id+1])/3;
+          const cz=(az+thPos[ib+2]+thPos[id+2])/3;
+          const reach=Math.max(Math.hypot(ux,uy,uz),Math.hypot(vx,vy,vz));
+          if(reach>2.5)continue;
+          const bound=Math.ceil(reach+MEMBRANE_CONTACT.thickness);
+          const x0=Math.floor(cx),y0=Math.floor(cy),z0=Math.floor(cz);
+          const dot00=ux*ux+uy*uy+uz*uz,dot01=ux*vx+uy*vy+uz*vz,dot11=vx*vx+vy*vy+vz*vz;
+          const denom=dot00*dot11-dot01*dot01;
+          if(denom<1e-10)continue;
+          for(let xx=x0-bound;xx<=x0+bound;xx++)
+          for(let yy=y0-bound;yy<=y0+bound;yy++)
+          for(let zz=z0-bound;zz<=z0+bound;zz++){
+            const candidates=membraneCells.get(xx+","+yy+","+zz);
+            if(!candidates)continue;
+            for(const i of candidates){
+              if(i===a||i===b||i===d)continue;
+              if((i>=LAYER_SPLIT)!==(a>=LAYER_SPLIT))continue;
+              const ix=i*3,rx=thPos[ix]-ax,ry=thPos[ix+1]-ay,rz=thPos[ix+2]-az;
+              const dist=rx*nx+ry*ny+rz*nz;
+              if(Math.abs(dist)>MEMBRANE_CONTACT.thickness)continue;
+              const dot20=rx*ux+ry*uy+rz*uz,dot21=rx*vx+ry*vy+rz*vz;
+              const l=(dot11*dot20-dot01*dot21)/denom;
+              const m=(dot00*dot21-dot01*dot20)/denom;
+              if(l<0||m<0||l+m>1)continue;
+              const weights=[1-l-m,l,m],vertices=[a,b,d];
+              const svx=weights[0]*thVel[ia]+weights[1]*thVel[ib]+weights[2]*thVel[id];
+              const svy=weights[0]*thVel[ia+1]+weights[1]*thVel[ib+1]+weights[2]*thVel[id+1];
+              const svz=weights[0]*thVel[ia+2]+weights[1]*thVel[ib+2]+weights[2]*thVel[id+2];
+              const vn=(thVel[ix]-svx)*nx+(thVel[ix+1]-svy)*ny+(thVel[ix+2]-svz)*nz;
+              if(vn*dist>=0||Math.abs(vn)<1e-5)continue;
+              const mi=thMass[i]||1;
+              let inv=1/mi;
+              for(let t=0;t<3;t++)inv+=weights[t]*weights[t]/(thMass[vertices[t]]||1);
+              const impulse=-(1+MEMBRANE_CONTACT.restitution)*vn/inv;
+              const energy=0.5*mi*vn*vn;
+              thVel[ix]+=impulse*nx/mi;thVel[ix+1]+=impulse*ny/mi;thVel[ix+2]+=impulse*nz/mi;
+              for(let t=0;t<3;t++){
+                const j=vertices[t]*3,mj=thMass[vertices[t]]||1,scale=impulse*weights[t]/mj;
+                thVel[j]-=scale*nx;thVel[j+1]-=scale*ny;thVel[j+2]-=scale*nz;
+                particles[vertices[t]].userData.velocity.set(thVel[j],thVel[j+1],thVel[j+2]);
+              }
+              // High-energy impacts transfer more momentum to the vertices.
+              // The membrane is therefore pushed rather than simply reflecting.
+              const sign=dist>=0?1:-1;
+              thPos[ix]+=sign*nx*(MEMBRANE_CONTACT.thickness-Math.abs(dist)+1e-4);
+              thPos[ix+1]+=sign*ny*(MEMBRANE_CONTACT.thickness-Math.abs(dist)+1e-4);
+              thPos[ix+2]+=sign*nz*(MEMBRANE_CONTACT.thickness-Math.abs(dist)+1e-4);
+              const gp=thGrp[i]*3;
+              particles[i].position.set(thPos[ix]-tOff[gp],thPos[ix+1]-tOff[gp+1],thPos[ix+2]-tOff[gp+2]);
+              particles[i].userData.velocity.set(thVel[ix],thVel[ix+1],thVel[ix+2]);
+              MEMBRANE_CONTACT.events++;
+            }
+          }
+        }
+      }
+    }
+    window.HHSMembraneContacts=MEMBRANE_CONTACT;
     // Animation loop
     /* CHASE CAMERA: ride one carrier through the field — camera trails the
        particle's velocity direction and looks ahead along its momentum.
@@ -3469,6 +3565,7 @@
       const steps=Math.max(1,Math.min(10,simParams.freqScale|0));
       for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
       updatePhaseGeometry();
+      collideBondMembranes();
       constructorScan();
       if(chase.on) updateChaseCamera();
       /* QUARTIC RENDER SKIP: physics advanced for ALL carriers above;
@@ -5866,6 +5963,15 @@ function controls(){
 controls();
 window.HHSPhaseMembranes=Object.freeze({
   sync,settings,
+  tint(p,c){
+    if(!enabled)return c;
+    const g=groupId(p),opts=settings[g];
+    if(!opts.visible)return c;
+    const h=c.getHSL({h:0,s:0,l:0});
+    c.setHSL(((h.h+opts.shift+themes[theme])%1+1)%1,
+      theme==="monochrome"?0:Math.min(1,h.s*opts.saturation),h.l);
+    return c;
+  },
   get enabled(){return enabled;},
   get theme(){return theme;},
   get diagnostics(){return {triangles:meshes.reduce((n,e)=>n+e.n,0),groups:GROUPS,renderOnly:true};}
