@@ -135,3 +135,36 @@ def test_i073_hash216_to_inverse_egress_exact_payload_and_phase_provenance():
     assert trace["phase_gate_executed"] is False
     assert trace["external_egress_authorized"] is False
     assert trace["canonical_vm81_mint_authority"] is False
+
+
+def test_i073_hash216_egress_trace_replay_fails_closed_on_metadata_mutation():
+    from copy import deepcopy
+    import pytest
+    from hhs_runtime.hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1 import (
+        build_generator, trace_hash216_inverse_egress,
+        validate_hash216_inverse_egress_trace, Pass220I073GeneratorError,
+    )
+    generator = build_generator(
+        decimal_text="179971.179971",
+        offsets=tuple((i * 7 + 3) % 9 for i in range(81)),
+        fibonacci_depth=10,
+    )
+    trace = trace_hash216_inverse_egress(generator)
+    assert validate_hash216_inverse_egress_trace(generator, trace) is True
+    for key, mutation in (
+        ("genesis_offset_metadata_sha256", "0" * 64),
+        ("module29_phase_map_sha256", "0" * 64),
+        ("generator_hash216", "0" * 216),
+        ("binary64_bits_hex", "0" * 16),
+        ("rna_double_reverse_exact", False),
+        ("i019_exact_inverse_egress", False),
+        ("external_egress_authorized", True),
+    ):
+        forged = deepcopy(trace)
+        forged[key] = mutation
+        with pytest.raises(Pass220I073GeneratorError):
+            validate_hash216_inverse_egress_trace(generator, forged)
+    forged = deepcopy(trace)
+    forged["unauthorized_extra_authority"] = True
+    with pytest.raises(Pass220I073GeneratorError):
+        validate_hash216_inverse_egress_trace(generator, forged)
