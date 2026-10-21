@@ -7,7 +7,7 @@ from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusErro
 
 def _fixture(tmp_path, monkeypatch, continuation_indices=range(15, 27)):
     original = (
-        "The notation: `==` is a gate; `n/d` is the rank-1 tensor circuit; "
+        "The notation: == is a gate; n/d is the rank-1 tensor circuit; "
         "HNAN bypasses at gain exactly 1.\n"
         + "".join(f"MODULE {i} — Historical {i}\nOriginal identity {i}\n"
                   for i in range(15))
