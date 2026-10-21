@@ -5548,7 +5548,11 @@ function controls(){
     get("membraneOpacityValue").textContent=s.opacity.toFixed(2);
   }
   get("membraneEnabled").addEventListener("change",e=>enabled=e.target.checked);
-  get("membraneTheme").addEventListener("change",e=>theme=e.target.value);
+  get("membraneTheme").addEventListener("change",e=>{theme=e.target.value;
+    syncParticleRenderBatches();
+    if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
+    sync();renderer.render(scene,camera);
+  });
   sel.addEventListener("change",refresh);
   get("membraneHue").addEventListener("input",e=>{settings[+sel.value].shift=+e.target.value/360;refresh()});
   get("membraneOpacity").addEventListener("input",e=>{settings[+sel.value].opacity=+e.target.value;refresh()});
@@ -5658,6 +5662,7 @@ function sync(){
   for(let i=0;i<particles.length;i++){
     const p=particles[i],q=p.position;
     tone.copy(p.material.color);
+    if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,tone);
     setInstance(particleField,i,q.x,q.y,q.z,SETTINGS.particleRadius,tone);
     const serial=p.userData&&p.userData.solidSerial;
     if(Number.isInteger(serial)&&serial>0){
