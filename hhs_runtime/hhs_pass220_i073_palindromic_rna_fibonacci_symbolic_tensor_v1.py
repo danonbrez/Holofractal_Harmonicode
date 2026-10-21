@@ -932,8 +932,33 @@ def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]
     }
 
 
+
+def validate_hash216_inverse_egress_trace(
+    generator: Mapping[str, Any],
+    trace: Mapping[str, Any],
+) -> bool:
+    """Replay the inherited candidate reconstruction; do not authorize egress.
+
+    Every field, including Genesis offset metadata, Module29 source identity,
+    raw IEEE provenance and Hash216 hydration, is compared with an independently
+    reconstructed reference instead of trusting caller-supplied success flags.
+    """
+    if not isinstance(trace, Mapping):
+        raise Pass220I073GeneratorError("inverse egress trace must be a mapping")
+    reference = trace_hash216_inverse_egress(generator)
+    if set(trace) != set(reference):
+        raise Pass220I073GeneratorError("inverse egress trace field-set mismatch")
+    for key, value in reference.items():
+        if trace[key] != value:
+            raise Pass220I073GeneratorError(
+                f"inverse egress trace diverges at {key}"
+            )
+    return True
+
+
 __all__ = [
     "trace_hash216_inverse_egress",
+    "validate_hash216_inverse_egress_trace",
     "AUTHORITY_BOUNDARY",
     "DEFAULT_DECIMAL_SOURCE",
     "DEFAULT_FIBONACCI_DEPTH",
