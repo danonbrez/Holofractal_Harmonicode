@@ -40,3 +40,25 @@ def test_harmonicode_algebra_course_source_semantics_are_frozen():
     assert "bypasses at gain exactly 1" in source
     assert all(f"MODULE {i} " in source for i in range(13))
     assert not record["native_admission_authority"]
+
+
+def test_expanded_course_edition_is_pinned_without_inheriting_old_proof_status():
+    from hhs_runtime import hhs_pass220_whitepaper_corpus_ingress_v1 as mod
+    result = mod.build_corpus_index()
+    course = next(x for x in result["files"] if x["path"] == mod.COURSE)
+    assert course["edition"] == "EXPANDED_PINNED"
+    assert course["historical_git_blob_sha"] != course["git_blob_sha"]
+    assert course["native_proof_binding_status"] == "UNRESOLVED"
+    assert not course["native_admission_authority"]
+    assert not result["all_proofs_native_admitted"]
+
+
+def test_unpinned_expanded_course_source_rejected(tmp_path, monkeypatch):
+    from hhs_runtime import hhs_pass220_whitepaper_corpus_ingress_v1 as mod
+    edition = mod.json.loads(Path(mod.EDITION_PIN).read_text("utf-8"))
+    edition["expanded"]["git_blob_sha"] = "0" * 40
+    fake = tmp_path / "editions.json"
+    fake.write_text(mod.json.dumps(edition), encoding="utf-8")
+    monkeypatch.setattr(mod, "EDITION_PIN", fake)
+    with pytest.raises(ProofCorpusError, match="SOURCE_BLOB_CHANGED"):
+        mod.build_corpus_index()
