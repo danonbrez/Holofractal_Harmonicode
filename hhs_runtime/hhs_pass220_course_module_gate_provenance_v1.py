@@ -30,7 +30,7 @@ def course_module_gate_inventory(root:Path=Path("."))->dict:
     if [int(m.group(1)) for m in matches]!=list(range(LEGACY_COUNT)):
         raise ProofCorpusError("COURSE_MODULE_BOUNDARY_DRIFT")
     preamble=text[:matches[0].start()]
-    required=("`==` is a gate","`n/d` is the rank-1 tensor circuit",
+    required=("== is a gate","n/d is the rank-1 tensor circuit",
               "bypasses at gain exactly 1")
     if not all(x in preamble for x in required):
         raise ProofCorpusError("COURSE_TYPED_GATE_PREAMBLE_DRIFT")
