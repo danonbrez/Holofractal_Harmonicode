@@ -22,7 +22,10 @@ def course_module_gate_inventory(root:Path=Path("."))->dict:
         raise ProofCorpusError("COURSE_SOURCE_IDENTITY_MISMATCH")
     text=raw.decode("utf-8")
     matches=list(HEADER.finditer(text))
-    if [int(m.group(1)) for m in matches]!=list(range(13)):
+    # Preserve every contiguous source module, including appended extensions;
+    # the original 0..12 curriculum is a prefix, not a permanent ceiling.
+    numbers=[int(m.group(1)) for m in matches]
+    if not numbers or numbers!=list(range(len(numbers))) or len(numbers)<13:
         raise ProofCorpusError("COURSE_MODULE_BOUNDARY_DRIFT")
     preamble=text[:matches[0].start()]
     required=("`==` is a gate","`n/d` is the rank-1 tensor circuit",
