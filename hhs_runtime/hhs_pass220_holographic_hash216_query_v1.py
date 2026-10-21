@@ -620,6 +620,71 @@ def build_holographic_query_record(
     return record
 
 
+
+def hydrate_p_query_weight_witness(
+    record: Mapping[str, Any],
+    *,
+    p_source: str,
+    p_address: int,
+    ordered_relations: Sequence[str],
+    query_weights: Sequence[int],
+) -> Dict[str, Any]:
+    """Materialize a deterministic first-query *candidate* for an existing P layer.
+
+    This is an exact, replayable projection of the inherited I002 query record.
+    It is not a vector-store write or a newly minted Hash216 transition.
+    Same P source at a different canonical tensor address remains distinct.
+    """
+    if not isinstance(record, Mapping) or record.get("schema") != SCHEMA:
+        raise Pass220HolographicQueryError("inherited I002 query record required")
+    if record.get("candidate_only") is not True or record.get("hash216_commit_authority") is not False:
+        raise Pass220HolographicQueryError("query record exceeded candidate authority")
+    word = record.get("hash216")
+    split_hash216(word)
+    if not isinstance(p_source, str) or not p_source:
+        raise Pass220HolographicQueryError("nonempty exact P source required")
+    address = _exact_int(p_address, name="P address")
+    if not 0 <= address < VM5184:
+        raise Pass220HolographicQueryError("P address escaped 5184 geometry")
+    if (isinstance(ordered_relations, (str, bytes)) or
+        isinstance(query_weights, (str, bytes)) or
+        not isinstance(ordered_relations, (tuple, list)) or
+        not isinstance(query_weights, (tuple, list)) or
+        not ordered_relations or len(ordered_relations) != len(query_weights)):
+        raise Pass220HolographicQueryError("ordered query relations/weights mismatch")
+    if any(not isinstance(item, str) or not item for item in ordered_relations):
+        raise Pass220HolographicQueryError("empty P relation source")
+    weights = tuple(_exact_int(v, name="query weight") for v in query_weights)
+    if any(w < 0 for w in weights):
+        raise Pass220HolographicQueryError("query weights must be nonnegative exact integers")
+    identity = {
+        "p_source": p_source,
+        "p_address": address,
+        "parent_hash216": word,
+        "serialized_root_sha256": record["serialized_root_sha256"],
+    }
+    identity_root = _root(identity)
+    edges = tuple({
+        "ordinal": i,
+        "ordered_relation": expression,
+        "query_weight": weight,
+    } for i, (expression, weight) in enumerate(zip(ordered_relations, weights)))
+    witness = {
+        "schema": "HHS_PASS220_I002_P_FIRST_QUERY_GENERATIVE_WITNESS_V1",
+        "p_identity_sha256": identity_root,
+        "p_identity": identity,
+        "weighted_relations": edges,
+        "total_query_weight": sum(weights),
+        "source_query_root_sha256": record["record_root_sha256"],
+        "candidate_only": True,
+        "materialized_in_vector_store": False,
+        "hash216_minted": False,
+        "canonical_vm81_mutation_authority": False,
+    }
+    witness["witness_root_sha256"] = _root(witness)
+    return witness
+
+
 __all__ = [
     "DEFAULT_PRIMES",
     "HASH72_ALPHABET",
@@ -627,6 +692,7 @@ __all__ = [
     "Pass220HolographicQueryError",
     "bind_normalization_to_pass068",
     "build_holographic_query_record",
+    "hydrate_p_query_weight_witness",
     "build_perspective_projection_matrix",
     "collapse_composition_path",
     "compose_hash216",
