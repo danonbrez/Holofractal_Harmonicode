@@ -889,6 +889,16 @@ def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]
     hydrated = hydrate_hash216_geometry(word)
     if hydrated.get("roundtrip_exact") is not True:
         raise Pass220I073GeneratorError("Hash216 inverse egress hydration invalid")
+    # I065 already generates 72 ordered PREVIOUS/CHANGE/RECEIPT
+    # vertices from the inherited Hash216 word. Bind its exact geometry root
+    # into I073 provenance rather than materializing a separate graph.
+    vertices = hydrated["vertex72_geometry"]
+    if len(vertices) != HASH72_WIDTH or any(
+        node["vertex72"] != i or len(node["symbols"]) != 3
+        for i, node in enumerate(vertices)
+    ):
+        raise Pass220I073GeneratorError("I065 generative 72-vertex geometry drift")
+    vertex_root = sha256(_canonical_bytes(vertices)).hexdigest()
     ingress = generator["palindromic_rna_ingress"]
     phase = four_way_ingress_phase_trace("LHS", "RHS", offsets)
     # Preserve ingress metadata and raw IEEE provenance alongside the
@@ -918,6 +928,8 @@ def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]
         "egress_serial_sha256": sha256(egress.encode("utf-8")).hexdigest(),
         "binary64_bits_hex": bits,
         "genesis_offset_metadata_sha256": metadata_root,
+        "i065_hash216_72_vertex_geometry_sha256": vertex_root,
+        "i065_hash216_72_vertex_count": len(vertices),
         "carrier_receipt_sha256": ingress["carrier_receipt_sha256"],
         "rna_witness_receipt_sha256": ingress["rna_witness_receipt_sha256"],
         "rna_double_reverse_exact": True,
