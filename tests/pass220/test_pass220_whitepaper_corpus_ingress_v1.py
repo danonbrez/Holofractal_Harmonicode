@@ -35,10 +35,10 @@ def test_harmonicode_algebra_course_source_semantics_are_frozen():
     index=build_corpus_index()
     record=next(x for x in index["files"] if x["path"]==path)
     assert record["byte_count"]==Path(path).stat().st_size
-    assert "`==` is a gate" in source
-    assert "`n/d` is the rank-1 tensor circuit" in source
+    assert "== is a gate" in source
+    assert "n/d is the rank-1 tensor circuit" in source
     assert "bypasses at gain exactly 1" in source
-    assert all(f"MODULE {i} " in source for i in range(13))
+    assert all(f"MODULE {i} " in source for i in range(15))
     assert not record["native_admission_authority"]
 
 
