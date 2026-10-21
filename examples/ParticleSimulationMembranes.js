@@ -5,7 +5,7 @@
  */
 (function(){
 "use strict";
-const GROUPS=32, MAX_TRIANGLES=24000;
+const GROUPS=32, MAX_TRIANGLES=1600;
 const settings=Array.from({length:GROUPS},(_,i)=>({shift:0,saturation:1,opacity:0.24,visible:true}));
 let enabled=true, theme="native";
 const themes={native:0,aurora:0.12,ember:-0.11,ultraviolet:0.32,monochrome:0};
