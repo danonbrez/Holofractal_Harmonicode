@@ -111,7 +111,7 @@ SOURCE_BUNDLE = (
     {
         "role": "BIGINT_SCIENTIFIC_SERIALIZER",
         "path": "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py",
-        "git_blob_sha": "cb18ec3f1d35017cb6c7b2b40848b398930270bc",
+        "git_blob_sha": "2926d92f9543dbd2eaba2b202e58b089b4e9720a",
     },
     {
         "role": "NESTED_FIBONACCI_COMPRESSION",
