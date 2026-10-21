@@ -1,0 +1,26 @@
+name: Pass 220 Course 0-26 Lean Root
+on:
+  pull_request:
+    paths:
+      - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/Module2324GenesisSerialization.lean"
+      - "formal/lean/HHS/Pass220/Module25ProofInheritance.lean"
+      - "formal/lean/HHS/Pass220/Module26TickSeedBoundary.lean"
+      - "lakefile.lean"
+      - "lean-toolchain"
+      - ".github/workflows/pass220-course-0-26-lean-root.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lean-root:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          build: false
+      - name: Compile HHS root with new course imports
+        run: lake build HHS
