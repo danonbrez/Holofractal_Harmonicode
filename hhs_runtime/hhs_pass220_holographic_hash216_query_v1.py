@@ -639,6 +639,10 @@ def hydrate_p_query_weight_witness(
         raise Pass220HolographicQueryError("inherited I002 query record required")
     if record.get("candidate_only") is not True or record.get("hash216_commit_authority") is not False:
         raise Pass220HolographicQueryError("query record exceeded candidate authority")
+    if record.get("record_root_sha256") != _root({
+        key: value for key, value in record.items() if key != "record_root_sha256"
+    }):
+        raise Pass220HolographicQueryError("inherited query record root mismatch")
     word = record.get("hash216")
     split_hash216(word)
     if not isinstance(p_source, str) or not p_source:
