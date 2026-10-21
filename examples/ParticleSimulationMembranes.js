@@ -6,7 +6,7 @@
 (function(){
 "use strict";
 const GROUPS=32, MAX_TRIANGLES=1600;
-const settings=Array.from({length:GROUPS},(_,i)=>({shift:0,saturation:1,opacity:0.24,visible:true}));
+const settings=Array.from({length:GROUPS},(_,i)=>({shift:0,saturation:1,opacity:0.43,visible:true}));
 let enabled=true, theme="native";
 const themes={native:0,aurora:0.12,ember:-0.11,ultraviolet:0.32,monochrome:0};
 let meshes=[], initialized=false;
@@ -78,7 +78,7 @@ function ribbon(g,i,j){
   if(edge.lengthSq()<1e-12)return;
   side.crossVectors(edge,up);
   if(side.lengthSq()<1e-12)side.set(1,0,0);
-  side.normalize().multiplyScalar(0.035);
+  side.normalize().multiplyScalar(0.12);
   const aa=a.clone().add(side),ab=a.clone().sub(side);
   const ba=b.clone().add(side),bb=b.clone().sub(side);
   push(g,aa,ab,ba,[i,j]);push(g,ab,bb,ba,[i,j]);
@@ -135,12 +135,13 @@ function controls(){
     '<label>Theme <select id="membraneTheme"><option value="native">Native</option><option value="aurora">Aurora</option><option value="ember">Ember</option><option value="ultraviolet">Ultraviolet</option><option value="monochrome">Monochrome</option></select></label>'+
     '<label>Group <select id="membraneGroup"></select></label>'+
     '<label>Group hue shift <input type="range" id="membraneHue" min="-180" max="180" value="0"> <output id="membraneHueValue">0°</output></label>'+
-    '<label>Group opacity <input type="range" id="membraneOpacity" min="0" max="0.7" step="0.01" value="0.24"> <output id="membraneOpacityValue">0.24</output></label>'+
+    '<label>Group opacity <input type="range" id="membraneOpacity" min="0" max="0.7" step="0.01" value="0.43"> <output id="membraneOpacityValue">0.43</output></label>'+
     '<label>Group saturation <input type="range" id="membraneSat" min="0" max="2" step="0.05" value="1"></label>'+
     '<label><input id="membraneGroupVisible" type="checkbox" checked> Selected group visible</label>';
   field.style.cssText="border:1px solid #3a5377;border-radius:5px;margin:8px 0;padding:6px";
   for(const label of field.querySelectorAll("label"))label.style.cssText="display:block;margin:6px 0";
-  parent.insertBefore(field,document.getElementById("audioVizPanel"));
+  field.style.cssText+=";position:fixed;right:10px;bottom:70px;width:245px;max-height:45vh;overflow:auto;background:rgba(5,12,30,.88);color:#def;z-index:125;box-shadow:0 0 16px rgba(75,180,240,.35)";
+  document.body.appendChild(field);
   const get=id=>document.getElementById(id);
   const sel=get("membraneGroup");
   for(let g=0;g<GROUPS;g++){
