@@ -893,11 +893,22 @@ def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]
     # vertices from the inherited Hash216 word. Bind its exact geometry root
     # into I073 provenance rather than materializing a separate graph.
     vertices = hydrated["vertex72_geometry"]
+    # Verify each vertex is precisely the previous/change/receipt symbol
+    # at the SAME offset. This prevents an otherwise well-sized but
+    # permuted three-lane knowledge-graph relation from being receipted.
+    lanes = tuple(word[start:start + HASH72_WIDTH]
+                  for start in range(0, HASH216_WIDTH, HASH72_WIDTH))
     if len(vertices) != HASH72_WIDTH or any(
-        node["vertex72"] != i or len(node["symbols"]) != 3
+        node["vertex72"] != i or
+        tuple(node["symbols"]) != tuple(lane[i] for lane in lanes) or
+        len(node["sha256_codewords"]) != len(lanes) or
+        any(
+            digest != sha256(symbol.encode("utf-8")).hexdigest()
+            for digest, symbol in zip(node["sha256_codewords"], node["symbols"])
+        )
         for i, node in enumerate(vertices)
     ):
-        raise Pass220I073GeneratorError("I065 generative 72-vertex geometry drift")
+        raise Pass220I073GeneratorError("I065 ordered Hash216 vertex geometry drift")
     vertex_root = sha256(_canonical_bytes(vertices)).hexdigest()
     ingress = generator["palindromic_rna_ingress"]
     phase = four_way_ingress_phase_trace("LHS", "RHS", offsets)
