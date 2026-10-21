@@ -5578,8 +5578,8 @@ window.HHSPhaseMembranes=Object.freeze({
 /* Omnidirectional 3D inverse-square liquid-light projection.
    Separate GPU sphere instances; observes particles and recognized solidSerial.
    Never mutates particle position, bonds, native state or receipts. */
-const SETTINGS={enabled:true,solids:true,particleRadius:0.95,solidRadius:1.8,
-  intensity:0.30,falloff:5.5,opacity:0.36};
+const SETTINGS={enabled:true,solids:true,particleRadius:1.75,solidRadius:2.4,
+  intensity:0.78,falloff:2.6,opacity:0.62};
 let particleField=null,solidField=null,initialized=false;
 const matrix=new THREE.Matrix4(),tone=new THREE.Color();
 const groups=new Map();
@@ -5615,7 +5615,7 @@ function material(){
       "float attenuation=1.0/(1.0+uFalloff*radial*radial);",
       "float liquid=pow(max(0.0,facing),1.5);",
       "float alpha=clamp(uOpacity*uIntensity*attenuation*(0.22+0.78*liquid),0.0,0.78);",
-      "vec3 shade=mix(vec3(0.006,0.009,0.02),vTint*0.38,attenuation);",
+      "vec3 shade=mix(vec3(0.006,0.009,0.02),vTint*0.72,attenuation);",
       "gl_FragColor=vec4(shade,alpha);",
       "}"
     ].join("\n")
@@ -5694,11 +5694,11 @@ function controls(){
   panel.innerHTML='<legend>3D Liquid Light · 360°</legend>'+
     '<label><input type="checkbox" id="liqOn" checked> Enable color gradients</label>'+
     '<label><input type="checkbox" id="liqSolids" checked> Closed-solid fields</label>'+
-    '<label>Gradient opacity <input id="liqOpacity" type="range" min="0" max="0.8" step="0.01" value="0.36"></label>'+
-    '<label>Light strength <input id="liqIntensity" type="range" min="0" max="1" step="0.01" value="0.30"></label>'+
-    '<label>Inverse-square falloff <input id="liqFalloff" type="range" min="0.1" max="20" step="0.1" value="5.5"></label>'+
-    '<label>Particle field radius <input id="liqRadius" type="range" min="0.2" max="4" step="0.05" value="0.95"></label>'+
-    '<label>Solid field radius <input id="liqSolidRadius" type="range" min="0.4" max="4" step="0.1" value="1.8"></label>';
+    '<label>Gradient opacity <input id="liqOpacity" type="range" min="0" max="0.8" step="0.01" value="0.62"></label>'+
+    '<label>Light strength <input id="liqIntensity" type="range" min="0" max="1" step="0.01" value="0.78"></label>'+
+    '<label>Inverse-square falloff <input id="liqFalloff" type="range" min="0.1" max="20" step="0.1" value="2.6"></label>'+
+    '<label>Particle field radius <input id="liqRadius" type="range" min="0.2" max="4" step="0.05" value="1.75"></label>'+
+    '<label>Solid field radius <input id="liqSolidRadius" type="range" min="0.4" max="4" step="0.1" value="2.4"></label>';
   panel.querySelectorAll("label").forEach(x=>x.style.cssText="display:block;margin:6px 0");
   document.body.appendChild(panel);
   for(const [id,key] of [["liqOpacity","opacity"],["liqIntensity","intensity"],["liqFalloff","falloff"],["liqRadius","particleRadius"],["liqSolidRadius","solidRadius"]])
