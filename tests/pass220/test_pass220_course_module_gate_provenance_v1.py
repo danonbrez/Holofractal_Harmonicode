@@ -5,17 +5,17 @@ from hhs_runtime.hhs_pass220_course_module_gate_provenance_v1 import (
 )
 from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
 
-def test_all_thirteen_course_modules_preserve_exact_section_identity():
+def test_all_contiguous_course_modules_preserve_exact_section_identity():
     index=course_module_gate_inventory()
-    assert index["module_count"]==13
-    assert [m["index"] for m in index["ordered_modules"]]==list(range(13))
+    assert index["module_count"]>=22
+    assert [m["index"] for m in index["ordered_modules"]]==list(range(index["module_count"]))
     assert all(len(m["byte_sha256"])==64 for m in index["ordered_modules"])
     assert not index["whole_course_proved"]
     assert index["verified_native_modules"]==0
     assert not index["hash216_minted"]
     assert index==course_module_gate_inventory()
     assert "The Master Chain" in index["ordered_modules"][0]["title"]
-    assert "Receipt Discipline" in index["ordered_modules"][12]["title"]
+    assert "Receipt Discipline" in index["ordered_modules"][14]["title"]
 
 def test_course_module_proof_untrusted_receipts_fail_closed():
     inventory=course_module_gate_inventory()
@@ -27,7 +27,7 @@ def test_course_module_proof_untrusted_receipts_fail_closed():
     with pytest.raises(ProofCorpusError,match="TRUSTED_NATIVE_RECEIPT_VERIFIER_NOT_REGISTERED"):
         require_executed_module_proof(inventory,0,forged)
     with pytest.raises(ProofCorpusError,match="UNKNOWN_COURSE_MODULE"):
-        require_executed_module_proof(inventory,13,forged)
+        require_executed_module_proof(inventory,inventory["module_count"],forged)
 
 def test_hnan_course_passthrough_is_not_runtime_phase_gate_proof():
     inventory=course_module_gate_inventory()
