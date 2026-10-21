@@ -3485,6 +3485,7 @@
                                 window.HHSAudioViz.needsProjectionFrame());
       if(renderGate){
         syncParticleRenderBatches();
+        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         renderer.render(scene, camera);
         renderedFrames++;
         /* state JSON is a presentation surface; get_state remains fresh on demand */
@@ -3492,6 +3493,7 @@
       }
       if(!renderGate && audioVisualFrame){
         syncParticleRenderBatches();
+        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         renderer.render(scene,camera);
       }
       if (window.updateFunctions) {
@@ -5689,6 +5691,7 @@
 <!-- Pass 220 I085: exact read-only native neural-layer addresses, one per
      ORIGINAL 10,368 physical carrier. All I063 waveform + layer2 graphics,
      gravitational/ionic physics and the I084 60fps capture remain unchanged. -->
+<script src="ParticleSimulationMembranes.js"></script>
 <script src="ParticleSimulationNeuralLayerBridge.js"></script>
 </body>
 
