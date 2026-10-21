@@ -5583,8 +5583,10 @@ window.HHSPhaseMembranes=Object.freeze({
    Separate GPU sphere instances; observes particles and recognized solidSerial.
    Never mutates particle position, bonds, native state or receipts. */
 const SETTINGS={enabled:true,solids:true,particleRadius:1.75,solidRadius:2.4,
-  intensity:0.78,falloff:2.6,opacity:0.62};
+  intensity:0.78,falloff:2.6,opacity:0.62,overlap:true,mix:0.85};
 let particleField=null,solidField=null,initialized=false;
+const fieldRecords=[];const fieldBuckets=new Map();
+const GRID=3.5, MAX_PARTNERS=1;
 const matrix=new THREE.Matrix4(),tone=new THREE.Color();
 const groups=new Map();
 function material(){
@@ -5592,13 +5594,22 @@ function material(){
     transparent:true,depthWrite:false,depthTest:true,side:THREE.FrontSide,
     blending:THREE.NormalBlending,
     uniforms:{uIntensity:{value:SETTINGS.intensity},
-      uFalloff:{value:SETTINGS.falloff},uOpacity:{value:SETTINGS.opacity}},
+      uFalloff:{value:SETTINGS.falloff},uOpacity:{value:SETTINGS.opacity},
+      uBlend:{value:SETTINGS.mix},uOverlap:{value:1}},
     vertexShader:[
       "varying vec3 vTint;",
       "varying vec3 vNormal;",
       "varying vec3 vEye;",
+      "attribute vec4 partnerSphere;",
+      "attribute vec3 partnerTint;",
+      "varying vec3 vWorldPoint;",
+      "varying vec4 vPartner;",
+      "varying vec3 vPartnerTint;",
       "void main(){",
       "vTint=instanceColor;",
+      "vPartner=partnerSphere;",
+      "vPartnerTint=partnerTint;",
+      "vWorldPoint=(modelMatrix*instanceMatrix*vec4(position,1.0)).xyz;",
       "vec4 eye=modelViewMatrix*instanceMatrix*vec4(position,1.0);",
       "vNormal=normalize(mat3(modelViewMatrix*instanceMatrix)*normal);",
       "vEye=normalize(-eye.xyz);",
@@ -5610,9 +5621,14 @@ function material(){
       "uniform float uIntensity;",
       "uniform float uFalloff;",
       "uniform float uOpacity;",
+      "uniform float uBlend;",
+      "uniform float uOverlap;",
       "varying vec3 vTint;",
       "varying vec3 vNormal;",
       "varying vec3 vEye;",
+      "varying vec3 vWorldPoint;",
+      "varying vec4 vPartner;",
+      "varying vec3 vPartnerTint;",
       "void main(){",
       "float facing=abs(dot(normalize(vNormal),normalize(vEye)));",
       "float radial=1.0-facing;",
@@ -5620,6 +5636,12 @@ function material(){
       "float liquid=pow(max(0.0,facing),1.5);",
       "float alpha=clamp(uOpacity*uIntensity*attenuation*(0.22+0.78*liquid),0.0,0.78);",
       "vec3 shade=mix(vec3(0.006,0.009,0.02),vTint*0.72,attenuation);",
+      "float d=length(vWorldPoint-vPartner.xyz);",
+      "float inside=1.0-smoothstep(max(0.0,vPartner.w*0.55),max(0.001,vPartner.w),d);",
+      "float overlap=step(0.001,vPartner.w)*inside*uOverlap;",
+      "vec3 blended=mix(vTint,vPartnerTint,0.5);",
+      "shade=mix(shade,blended*0.7,clamp(overlap*uBlend,0.0,1.0));",
+      "alpha=clamp(alpha+0.14*overlap*uBlend,0.0,0.78);",
       "gl_FragColor=vec4(shade,alpha);",
       "}"
     ].join("\n")
@@ -5629,7 +5651,14 @@ function setup(){
   if(initialized||!scene||!particles.length)return;
   const geometry=new THREE.SphereGeometry(1,8,6);
   function batch(cap){
-    const mesh=new THREE.InstancedMesh(geometry,material(),cap);
+    const geo=geometry.clone();
+    const partners=new THREE.InstancedBufferAttribute(new Float32Array(cap*4),4);
+    const partnerColors=new THREE.InstancedBufferAttribute(new Float32Array(cap*3),3);
+    partners.setUsage(THREE.DynamicDrawUsage);
+    partnerColors.setUsage(THREE.DynamicDrawUsage);
+    geo.setAttribute("partnerSphere",partners);
+    geo.setAttribute("partnerTint",partnerColors);
+    const mesh=new THREE.InstancedMesh(geo,material(),cap);
     mesh.frustumCulled=false;
     mesh.renderOrder=2;
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -5650,6 +5679,51 @@ function refreshMaterial(mesh){
   u.uIntensity.value=SETTINGS.intensity;
   u.uFalloff.value=SETTINGS.falloff;
   u.uOpacity.value=SETTINGS.opacity;
+  u.uBlend.value=SETTINGS.mix;
+  u.uOverlap.value=SETTINGS.overlap?1:0;
+}
+function setOverlapRecords(){
+  fieldBuckets.clear();
+  function key(x,y,z){return x+","+y+","+z;}
+  for(let k=0;k<fieldRecords.length;k++){
+    const r=fieldRecords[k];
+    const x=Math.floor(r.x/GRID),y=Math.floor(r.y/GRID),z=Math.floor(r.z/GRID);
+    const id=key(x,y,z);
+    if(!fieldBuckets.has(id))fieldBuckets.set(id,[]);
+    fieldBuckets.get(id).push(k);
+  }
+  for(let k=0;k<fieldRecords.length;k++){
+    const r=fieldRecords[k];
+    let best=null,bestScore=Infinity;
+    const x=Math.floor(r.x/GRID),y=Math.floor(r.y/GRID),z=Math.floor(r.z/GRID);
+    for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)for(let dz=-1;dz<=1;dz++){
+      const bucket=fieldBuckets.get(key(x+dx,y+dy,z+dz));
+      if(!bucket)continue;
+      for(const j of bucket){
+        if(j===k)continue;
+        const p=fieldRecords[j];
+        const d2=(r.x-p.x)**2+(r.y-p.y)**2+(r.z-p.z)**2;
+        if(d2>(r.radius+p.radius)**2||d2>=bestScore)continue;
+        bestScore=d2;best=p;
+      }
+    }
+    const geo=r.mesh.geometry;
+    const spheres=geo.getAttribute("partnerSphere"),colors=geo.getAttribute("partnerTint");
+    const i=r.index*4,j=r.index*3;
+    if(best){
+      spheres.array[i]=best.x;spheres.array[i+1]=best.y;
+      spheres.array[i+2]=best.z;spheres.array[i+3]=best.radius;
+      colors.array[j]=best.r;colors.array[j+1]=best.g;colors.array[j+2]=best.b;
+    }else{
+      spheres.array[i]=0;spheres.array[i+1]=0;
+      spheres.array[i+2]=0;spheres.array[i+3]=0;
+      colors.array[j]=0;colors.array[j+1]=0;colors.array[j+2]=0;
+    }
+  }
+  for(const mesh of [particleField,solidField]){
+    mesh.geometry.getAttribute("partnerSphere").needsUpdate=true;
+    mesh.geometry.getAttribute("partnerTint").needsUpdate=true;
+  }
 }
 function sync(){
   setup();
@@ -5659,11 +5733,14 @@ function sync(){
   if(!SETTINGS.enabled)return;
   refreshMaterial(particleField);refreshMaterial(solidField);
   groups.clear();
+  fieldRecords.length=0;
   for(let i=0;i<particles.length;i++){
     const p=particles[i],q=p.position;
     tone.copy(p.material.color);
     if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,tone);
     setInstance(particleField,i,q.x,q.y,q.z,SETTINGS.particleRadius,tone);
+    fieldRecords.push({mesh:particleField,index:i,x:q.x,y:q.y,z:q.z,
+      radius:SETTINGS.particleRadius,r:tone.r,g:tone.g,b:tone.b});
     const serial=p.userData&&p.userData.solidSerial;
     if(Number.isInteger(serial)&&serial>0){
       let g=groups.get(serial);
@@ -5686,11 +5763,15 @@ function sync(){
     }
     if(r2>64)continue; // stale recognition doesn't light scattered debris
     tone.setRGB(g.r/n,g.g/n,g.b/n);
-    setInstance(solidField,s++,cx,cy,cz,Math.max(0.6,Math.sqrt(r2))*SETTINGS.solidRadius,tone);
+    const radius=Math.max(0.6,Math.sqrt(r2))*SETTINGS.solidRadius;
+    setInstance(solidField,s,cx,cy,cz,radius,tone);
+    fieldRecords.push({mesh:solidField,index:s,x:cx,y:cy,z:cz,
+      radius,r:tone.r,g:tone.g,b:tone.b});s++;
   }
   solidField.count=s;
   solidField.instanceMatrix.needsUpdate=true;
   if(solidField.instanceColor)solidField.instanceColor.needsUpdate=true;
+  setOverlapRecords();
 }
 function controls(){
   const panel=document.createElement("fieldset");
@@ -5699,6 +5780,8 @@ function controls(){
   panel.innerHTML='<legend>3D Liquid Light · 360°</legend>'+
     '<label><input type="checkbox" id="liqOn" checked> Enable color gradients</label>'+
     '<label><input type="checkbox" id="liqSolids" checked> Closed-solid fields</label>'+
+    '<label><input type="checkbox" id="liqOverlap" checked> Volume overlap colors</label>'+ 
+    '<label>Overlap color mixing <input id="liqMix" type="range" min="0" max="1" step="0.05" value="0.85"></label>'+ 
     '<label>Gradient opacity <input id="liqOpacity" type="range" min="0" max="0.8" step="0.01" value="0.62"></label>'+
     '<label>Light strength <input id="liqIntensity" type="range" min="0" max="1" step="0.01" value="0.78"></label>'+
     '<label>Inverse-square falloff <input id="liqFalloff" type="range" min="0.1" max="20" step="0.1" value="2.6"></label>'+
@@ -5708,6 +5791,8 @@ function controls(){
   document.body.appendChild(panel);
   for(const [id,key] of [["liqOpacity","opacity"],["liqIntensity","intensity"],["liqFalloff","falloff"],["liqRadius","particleRadius"],["liqSolidRadius","solidRadius"]])
     document.getElementById(id).addEventListener("input",e=>SETTINGS[key]=+e.target.value);
+  document.getElementById("liqMix").addEventListener("input",e=>SETTINGS.mix=+e.target.value);
+  document.getElementById("liqOverlap").addEventListener("change",e=>SETTINGS.overlap=e.target.checked);
   document.getElementById("liqOn").addEventListener("change",e=>SETTINGS.enabled=e.target.checked);
   document.getElementById("liqSolids").addEventListener("change",e=>SETTINGS.solids=e.target.checked);
 }
