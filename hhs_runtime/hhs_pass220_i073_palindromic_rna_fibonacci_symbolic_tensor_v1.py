@@ -136,7 +136,7 @@ SOURCE_BUNDLE = (
     {
         "role": "PALINDROMIC_ORDERED_PHASE_ALGEBRA",
         "path": "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py",
-        "git_blob_sha": "535375bf8cd043a5c84f7d4cc9325fdf469a399e",
+        "git_blob_sha": "ef47e9f42cdbbb7d88b782f452ff155e4ce88d27",
     },
 )
 
