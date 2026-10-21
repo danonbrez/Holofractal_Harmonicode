@@ -172,3 +172,28 @@ def test_i073_hash216_egress_trace_replay_fails_closed_on_metadata_mutation():
     forged["unauthorized_extra_authority"] = True
     with pytest.raises(Pass220I073GeneratorError):
         validate_hash216_inverse_egress_trace(generator, forged)
+
+
+def test_i073_vertex_geometry_same_address_three_lane_codewords():
+    from hashlib import sha256
+    from hhs_runtime.hhs_pass220_i065_lossless_emergent_compression_hydration_v1 import hydrate_hash216_geometry
+    from hhs_runtime.hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1 import (
+        build_generator, trace_hash216_inverse_egress,
+    )
+    generator = build_generator(
+        decimal_text="179971.179971",
+        offsets=tuple(i % 9 for i in range(81)),
+        fibonacci_depth=10,
+    )
+    word = generator["generator_hash216"]
+    vertices = hydrate_hash216_geometry(word)["vertex72_geometry"]
+    assert len(vertices) == 72
+    for i, vertex in enumerate(vertices):
+        symbols = (word[i], word[72 + i], word[144 + i])
+        assert vertex["vertex72"] == i
+        assert vertex["symbols"] == symbols
+        assert vertex["sha256_codewords"] == tuple(
+            sha256(symbol.encode("utf-8")).hexdigest() for symbol in symbols
+        )
+    trace = trace_hash216_inverse_egress(generator)
+    assert trace["i065_hash216_72_vertex_count"] == len(vertices)
