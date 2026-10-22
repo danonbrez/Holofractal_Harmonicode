@@ -17,3 +17,9 @@
 - Commit `083d63916e134d3a7a19f3ac9cf610673df7bd77` adds synthetic import-error regression, checking failing traceback, stderr, and no ready marker.
 - Commit `39d826585b036f172eaef49b1bb47552f59e6094` creates dedicated GitHub Actions workflow for scoped `py_compile` and `pytest` on PR; this executes only diagnostics and does not deploy production or install model weights.
 - CI execution on this update is pending until observed. If green, retain draft until actual host service-identity failure traceback is captured and real root cause is repaired. Do not infer production-ready from a skipped deployment.
+
+## 2026-10-22 CI acceptance update
+- Exact branch-head CI run 39765751273 (`Production Native Causal Import Diagnostic`): SUCCESS, including Python compile and isolated failure-path regression.
+- `HHS Source Text Integrity` run 39765751060 SUCCESS.
+- `DigitalOcean Production Exact Main` run 39765751300 parent SUCCESS: `validate-production-backend-closure` SUCCESS, `validate-deployment-contract` SUCCESS, **`deploy-exact-main` SKIPPED**. No live service-identity import or production deployment occurred in this run.
+- Diagnostic-only PR #842 remains draft; maintain exact dependency/model pins and fail-closed acceptance. Root cause of original import failure is not yet evidenced by a live failing traceback. Next: controlled exact-main production run under authorized deployment path; inspect diagnostic traceback; repair-forward only demonstrated defect. No unverified production-ready claim.
