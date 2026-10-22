@@ -1,0 +1,72 @@
+{
+  "schema": "HHS_PASS220_I087_DETERMINISTIC_GLOBAL_CONSTRAINT_RECONCILIATION_V1",
+  "status": "NORMATIVE_PROOF_OBLIGATIONS_NOT_NATIVE_EXECUTION",
+  "successor": {
+    "p": "P-1",
+    "q": "P+1",
+    "ordered_window": [
+      "p",
+      "P",
+      "q"
+    ],
+    "target_policy": "FIXED_NO_BRANCH_SUBSTITUTION"
+  },
+  "authority": {
+    "global_graph": "contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_GRAPH_1_63.json",
+    "inherit_rule_count": 15,
+    "inherit_rule_mask": 32767,
+    "resolution_precedence": [
+      "SOURCE_ORDER",
+      "TYPE_IDENTITY",
+      "FORBIDDEN_SCALARIZATION_AND_CANCELLATION",
+      "REGISTERED_DIRECTED_RULE",
+      "UNRESOLVED_FAIL_CLOSED"
+    ],
+    "cpp_cell_wall": "INHERIT_EXISTING_IMPLEMENTATION",
+    "lane5": "CANDIDATE_HYDRATION_AND_DEPENDENCY_VALIDATION_ONLY",
+    "canonical_mutation": "VM81_ONLY",
+    "receipts": "VM81_HASH72_HASH216_ONLY"
+  },
+  "disagreement": {
+    "witness_order": [
+      "left_constraint",
+      "right_constraint",
+      "native_address",
+      "typed_disagreement",
+      "previous_proof"
+    ],
+    "resolve_order": [
+      "resolution_address",
+      "authorized_ordered_transform",
+      "resolution_proof"
+    ],
+    "unregistered_address": "UNRESOLVED_FAIL_CLOSED",
+    "forbidden_scalarization": "REJECTED"
+  },
+  "transition": {
+    "order": "SINGLE_CANONICAL_SEQUENCE",
+    "inherited_constraints": "PROOF_PRESERVATION_REQUIRED_EACH_ACCEPTED_STEP",
+    "no_authoritative_branch_fork": true,
+    "hydrated_reuse": "VERIFY_IDENTITY_ADDRESS_PROVENANCE_AND_DEPENDENCIES_BEFORE_APPLY"
+  },
+  "closure": {
+    "requires": [
+      "SUCCESSOR_RELATION_PROVEN",
+      "ALL_INHERITED_CONSTRAINTS_PROVEN",
+      "ALL_DISAGREEMENTS_RESOLVED",
+      "INPUT_OUTPUT_CLOSURE_PROVEN",
+      "AUTHORIZED_VM81_ADMISSION"
+    ],
+    "unresolved": "HALT_WITHOUT_CANONICAL_RECEIPT",
+    "verified": "VM81_ISSUES_HASH72_RECEIPT_AND_HASH216_TICK_SEED_THEN_HALT"
+  },
+  "normal_form": {
+    "idempotence": "N_C(N_C(S))=N_C(S)",
+    "fixed_point": "N_C(S*)=S*",
+    "identity": "RETAIN_TYPED_ADDRESS_ORDER_SOURCE_PROVENANCE_AND_PROOF_ANCESTRY",
+    "proof_status": "OBLIGATION_NOT_ESTABLISHED"
+  },
+  "admission": false,
+  "hash72_minted": false,
+  "hash216_minted": false
+}
