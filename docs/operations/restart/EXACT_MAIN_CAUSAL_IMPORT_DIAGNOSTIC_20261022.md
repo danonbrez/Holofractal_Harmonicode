@@ -11,3 +11,9 @@
 - Validation: static source inspected. Run `python -m pytest -q tests/production/test_native_causal_import_diagnostics.py` and `python -m py_compile tools/diagnose_native_causal_import.py` before integration; neither command executed in connected repository environment in this conversation. No production deployment verified.
 - Next action: execute scoped validation, open PR, obtain failed production import trace from next controlled deployment run, then repair only the confirmed root cause. Preserve pinned versions, model SHA, VM81/Hash72/Hash216 authority, exact-main acceptance and fail-closed behavior.
 - Changed files: `tools/diagnose_native_causal_import.py`, `.github/workflows/digitalocean-production-main.yml`, `tests/production/test_native_causal_import_diagnostics.py`, this checkpoint.
+
+## 2026-10-22 scoped validation follow-up
+- PR #842 checks at original commit 21392c3b: Source Text Integrity, I073–I077 successful; DigitalOcean Production Exact Main parent workflow successful but actual `deploy-exact-main` job **SKIPPED**, therefore production repair not verified.
+- Commit `083d63916e134d3a7a19f3ac9cf610673df7bd77` adds synthetic import-error regression, checking failing traceback, stderr, and no ready marker.
+- Commit `39d826585b036f172eaef49b1bb47552f59e6094` creates dedicated GitHub Actions workflow for scoped `py_compile` and `pytest` on PR; this executes only diagnostics and does not deploy production or install model weights.
+- CI execution on this update is pending until observed. If green, retain draft until actual host service-identity failure traceback is captured and real root cause is repaired. Do not infer production-ready from a skipped deployment.
