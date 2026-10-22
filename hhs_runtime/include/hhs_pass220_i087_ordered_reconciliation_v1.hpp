@@ -39,7 +39,20 @@ inline CandidateTrace reconcile_ordered(const std::vector<OrderedWitness>& witne
             != HHS_EXACT_STATUS_OK ||
         result.inherited_global.decision != HHS_EXACT_HNAN_DECISION_VERIFIED ||
         result.inherited_global.verified_rule_mask !=
-            HHS_EXACT_PASS219_HNAN_GLOBAL_ALL_RULES)
+            HHS_EXACT_PASS219_HNAN_GLOBAL_ALL_RULES ||
+        result.inherited_global.jordan_depth2_verified != 1U ||
+        result.inherited_global.minimal_polynomial_degree4_verified != 1U ||
+        result.inherited_global.ordered_zero_closure_preserved != 1U ||
+        result.inherited_global.global_delta_denominator_preserved != 1U ||
+        result.inherited_global.delta_cancellation_forbidden != 1U ||
+        result.inherited_global.unbounded_carrier_symbolic != 1U ||
+        result.inherited_global.u72_to_u0_closure_preserved != 1U ||
+        result.inherited_global.xy_yx_distinct != 1U ||
+        result.inherited_global.zw_wz_distinct != 1U ||
+        result.inherited_global.canonical_vm81_mutation_authority != 0U ||
+        result.inherited_global.canonical_hash72_authority != 0U ||
+        result.inherited_global.canonical_hash216_authority != 0U ||
+        result.inherited_global.floating_point_canonical_authority != 0U)
         return result;
 
     std::uint32_t last_rule = 0U;
