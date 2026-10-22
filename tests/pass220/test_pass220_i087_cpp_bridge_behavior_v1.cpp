@@ -2,6 +2,7 @@
 #include <cassert>
 
 static unsigned g_global_ok = 1;
+static unsigned g_jordan_ok = 1;
 static unsigned g_mode = HHS_EXACT_HNAN_DECISION_VERIFIED;
 
 extern "C" HHSExactStatus hhs_exact_pass219_hnan_global_system_verify(
@@ -11,6 +12,15 @@ extern "C" HHSExactStatus hhs_exact_pass219_hnan_global_system_verify(
                                 : HHS_EXACT_HNAN_DECISION_UNRESOLVED;
     out->verified_rule_mask = g_global_ok ?
         HHS_EXACT_PASS219_HNAN_GLOBAL_ALL_RULES : 0U;
+    out->jordan_depth2_verified = g_jordan_ok;
+    out->minimal_polynomial_degree4_verified = 1;
+    out->ordered_zero_closure_preserved = 1;
+    out->global_delta_denominator_preserved = 1;
+    out->delta_cancellation_forbidden = 1;
+    out->unbounded_carrier_symbolic = 1;
+    out->u72_to_u0_closure_preserved = 1;
+    out->xy_yx_distinct = 1;
+    out->zw_wz_distinct = 1;
     return HHS_EXACT_STATUS_OK;
 }
 extern "C" HHSExactStatus hhs_exact_pass219_hnan_resolve(
@@ -43,6 +53,9 @@ int main() {
     g_mode = HHS_EXACT_HNAN_DECISION_UNRESOLVED;
     assert(!reconcile_ordered({witness(10,1)}).candidate_preflight_verified);
     g_mode = HHS_EXACT_HNAN_DECISION_VERIFIED;
+    g_jordan_ok = 0;
+    assert(!reconcile_ordered({witness(10,1)}).candidate_preflight_verified);
+    g_jordan_ok = 1;
     g_global_ok = 0;
     assert(!reconcile_ordered({witness(10,1)}).candidate_preflight_verified);
 }
