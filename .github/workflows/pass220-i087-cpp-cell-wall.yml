@@ -1,0 +1,20 @@
+name: Pass 220 I087 C++ Cell Wall Bridge
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/include/hhs_pass220_i087_ordered_reconciliation_v1.hpp"
+      - "hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h"
+      - ".github/workflows/pass220-i087-cpp-cell-wall.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpp-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile I087 against inherited native ABI
+        run: |
+          printf '#include "hhs_pass220_i087_ordered_reconciliation_v1.hpp"\nint main() { return 0; }\n' |
+            g++ -std=c++17 -Wall -Wextra -Werror -fsyntax-only -x c++ -Ihhs_runtime/include -
