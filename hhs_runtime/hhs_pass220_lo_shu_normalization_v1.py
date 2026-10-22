@@ -325,3 +325,42 @@ def normalization_witness(state: Sequence[int] | None = None) -> Dict[str, Any]:
         "projection_only": True,
         "canonical_admission_authority": False,
     })
+
+
+def siamese_vm81_cell_order() -> Tuple[int, ...]:
+    """Canonical 81-cell torus permutation; does not change the inherited ABI."""
+    occupied = [False] * VM81_CELLS
+    row, col = 0, 4
+    order = []
+    for tick in range(VM81_CELLS):
+        address = 9 * row + col
+        if occupied[address]:
+            raise Pass220NormalizationError("Siamese address repeated")
+        occupied[address] = True
+        order.append(address)
+        if tick == VM81_CELLS - 1:
+            break
+        next_row, next_col = (row - 1) % 9, (col + 1) % 9
+        if occupied[9 * next_row + next_col]:
+            next_row, next_col = (row + 1) % 9, col
+        row, col = next_row, next_col
+    if len(order) != VM81_CELLS or len(set(order)) != VM81_CELLS:
+        raise Pass220NormalizationError("invalid canonical Siamese permutation")
+    return tuple(order)
+
+
+def serialize_siamese_offsets_5184(offsets: Sequence[int]) -> str:
+    """Use existing 64-character cell tokens in canonical traversal order."""
+    values = tuple(offsets)
+    if len(values) != VM81_CELLS:
+        raise Pass220NormalizationError("Siamese ingress requires 81 offsets")
+    return serialize_offsets_5184(tuple(values[i] for i in siamese_vm81_cell_order()))
+
+
+def deserialize_siamese_offsets_5184(payload: str) -> Tuple[int, ...]:
+    """Inverse order restores original address-bound digits with no phase write."""
+    ordered = deserialize_offsets_5184(payload)
+    restored = [0] * VM81_CELLS
+    for ordinal, address in enumerate(siamese_vm81_cell_order()):
+        restored[address] = ordered[ordinal]
+    return tuple(restored)

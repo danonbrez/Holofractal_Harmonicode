@@ -23,6 +23,9 @@ VERSION = "1.0.0-checkpoint.15"
 PROFILE = "PASS220-I015-PALINDROMIC-ORDERED-PHASE-v1"
 WITNESS_SCHEMA = "HHS_PASS_220_PALINDROMIC_PHASE_CLOSURE_WITNESS_V1"
 
+# Exact Module29 72-cell phase map: never simplify, reorder, or scalarize.
+MODULE29_72_CELL_PHASE_MAP_SOURCE = "List(NcalcMatrixPower((I^List(List(List(List(1,x,2),List(w,z,y),List(4,z,3)),List(List(-x,1,-y),List(4,y,2),List(-w,3,-z))),List(List(List(4,3,3),List(2,z,4),List(1,1,2)),List(List(w,3,-z),List(2,w,4),List(-x,1,y))))/List(List(4,9,2),List(3,5,7),List(8,1,6))),(-1)),I^List(List(List(List(1,x,2),List(w,z,y),List(4,z,3)),List(List(-x,1,-y),List(4,y,2),List(-w,3,-z))),List(List(List(4,3,3),List(2,z,4),List(1,1,2)),List(List(w,3,-z),List(2,w,4),List(-x,1,y))))/List(List(4,9,2),List(3,5,7),List(8,1,6)))"
+
 X_VECTOR: Tuple[int, int, int, int] = (0, 1, 1, 0)
 Y_VECTOR: Tuple[int, int, int, int] = (0, -1, 1, 0)
 
@@ -426,3 +429,57 @@ def validate_palindromic_ordered_phase() -> Dict[str, Any]:
 
 def palindromic_ordered_phase_self_test() -> Dict[str, Any]:
     return validate_palindromic_ordered_phase()
+
+
+def four_way_ingress_phase_trace(
+    lhs: str,
+    rhs: str,
+    genesis_offsets: Sequence[int],
+) -> Dict[str, Any]:
+    """Execute I019 ordered-address roundtrip; preserve the four gate expressions.
+
+    This is an explicit candidate source/ingress proof trace. The canonical
+    P-phase comparison and Hash72/Hash216 mint remain beneath VM81 authority.
+    In particular AB and BA are never scalar-multiplied or commuted.
+    """
+    from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
+        serialize_siamese_offsets_5184,
+        deserialize_siamese_offsets_5184,
+        siamese_vm81_cell_order,
+    )
+    if not isinstance(lhs, str) or not lhs or not isinstance(rhs, str) or not rhs:
+        raise Pass220PalindromicPhaseError("LHS and RHS must be nonempty source strings")
+    offsets = tuple(genesis_offsets)
+    serialized = serialize_siamese_offsets_5184(offsets)
+    reverse_offsets = deserialize_siamese_offsets_5184(serialized)
+    exact = reverse_offsets == offsets
+    if not exact:
+        raise Pass220PalindromicPhaseError("I019 reverse ingress lost Genesis offsets")
+    # These are exact ordered source gates, not numeric equalities to solve.
+    gates = (
+        ("forward_closure", "AB", "P^4"),
+        ("reverse_closure", "BA", "P^4"),
+        ("forward_rank1", "AB", "BA"),
+        ("reverse_rank1", "BA", "AB"),
+    )
+    return _receipt({
+        "schema": "HHS_PASS220_FOUR_WAY_INGRESS_PHASE_TRACE_V1",
+        "lhs": lhs,
+        "rhs": rhs,
+        "ordered_gates": gates,
+        "module29_72_cell_phase_map_source": MODULE29_72_CELL_PHASE_MAP_SOURCE,
+        "module29_72_cell_phase_map_sha256": sha256(MODULE29_72_CELL_PHASE_MAP_SOURCE.encode("utf-8")).hexdigest(),
+        "module29_phase_map_executed": False,
+        "native_fraction_operator": "HHS_TYPED_FRACTION",
+        "native_gate_operator": "HHS_GATE_EQ",
+        "canonical_order": siamese_vm81_cell_order(),
+        "serial_width": len(serialized),
+        "serial_sha256": sha256(serialized.encode("ascii")).hexdigest(),
+        "original_offsets": offsets,
+        "reverse_offsets": reverse_offsets,
+        "lossless_i019_address_roundtrip": exact,
+        "phase_relation_gate_executed": False,
+        "canonical_hash72_mint_authority": False,
+        "canonical_hash216_mint_authority": False,
+        "canonical_admission_authority": False,
+    })

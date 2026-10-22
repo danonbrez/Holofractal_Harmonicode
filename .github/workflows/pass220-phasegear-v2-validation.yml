@@ -1,0 +1,96 @@
+name: Pass 220 Phase Gear V2 Validation
+on:
+  push:
+    branches:
+      - feature/pass220-phasegear-lean-wolfram-lane5-20261017
+    paths:
+      - 'native_projects/pass220/**'
+      - 'hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py'
+      - 'hhs_runtime/pass220_m17_larone_constructor_parallel_v1.py'
+      - 'tests/pass220/test_m17_larone_constructor_parallel_v1.py'
+      - 'tests/pass220/test_phasegear_vm81_bigint_binding_v1.py'
+      - 'hhs_runtime/pass220_complex_phase_loshu_v1.py'
+      - 'tests/pass220/test_complex_phase_loshu_v1.py'
+      - 'hhs_runtime/pass220_phase_magnitude_gate_v1.py'
+      - 'tests/pass220/test_phase_magnitude_gate_v1.py'
+      - 'hhs_runtime/pass220_lane5_h36_111_hydration_v1.py'
+      - 'tests/pass220/test_lane5_h36_111_hydration_v1.py'
+      - 'hhs_runtime/pass220_lane5_order5_loshu_nucleus_v1.py'
+      - 'tests/pass220/test_lane5_order5_loshu_nucleus_v1.py'
+      - 'whitepapers/Harmonicode Algebra - Course'
+      - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
+      - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
+      - 'formal/lean/HHS.lean'
+      - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
+      - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
+      - 'evidence/pass220/course_m16_pisot_hinge_20261018.wl'
+      - 'evidence/pass220/course_m17_prime_residue_64_20261018.wl'
+      - 'evidence/pass220/course_m19_spin_loshu_inverse_20261018.wl'
+      - 'formal/lean/HHS/Pass220/PrimeResidue64.lean'
+      - '.github/workflows/pass220-phasegear-v2-validation.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass220_complex_phase_loshu_v1.py'
+      - 'tests/pass220/test_complex_phase_loshu_v1.py'
+      - 'hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py'
+      - 'hhs_runtime/pass220_phasegear_vm81_bigint_binding_v1.py'
+      - 'hhs_runtime/pass220_m17_larone_constructor_parallel_v1.py'
+      - 'tests/pass220/test_m17_larone_constructor_parallel_v1.py'
+      - 'tests/pass220/test_phasegear_vm81_bigint_binding_v1.py'
+      - 'hhs_runtime/pass220_phase_magnitude_gate_v1.py'
+      - 'tests/pass220/test_phase_magnitude_gate_v1.py'
+      - 'hhs_runtime/pass220_lane5_h36_111_hydration_v1.py'
+      - 'tests/pass220/test_lane5_h36_111_hydration_v1.py'
+      - 'hhs_runtime/pass220_lane5_order5_loshu_nucleus_v1.py'
+      - 'tests/pass220/test_lane5_order5_loshu_nucleus_v1.py'
+      - 'native_projects/pass220/**'
+      - 'contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md'
+      - 'formal/lean/HHS/Pass220/AdjustablePhaseGearCircuit.lean'
+      - 'formal/lean/HHS/Pass220/ERSLane5Metadata.lean'
+      - 'evidence/pass220/ers_lane5_cross_modal_metadata_20261018.wl'
+      - 'evidence/pass220/course_m16_pisot_hinge_20261018.wl'
+      - 'evidence/pass220/course_m17_prime_residue_64_20261018.wl'
+      - 'evidence/pass220/course_m19_spin_loshu_inverse_20261018.wl'
+      - 'formal/lean/HHS/Pass220/PrimeResidue64.lean'
+      - '.github/workflows/pass220-phasegear-v2-validation.yml'
+  workflow_dispatch:
+jobs:
+  cpp-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run phase gear native candidate tests
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_projects/pass220/test_adjustable_phase_gear.cpp -o /tmp/hhs_phasegear_test
+          /tmp/hhs_phasegear_test
+          g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 native_projects/pass220/test_phase_gear_v2_ordered_source.cpp -o /tmp/hhs_phasegear_v2_test
+          /tmp/hhs_phasegear_v2_test
+      - name: Compile native RNA VM5184 bridge against existing ABI
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -Wall -Wextra -pedantic -fsyntax-only -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_phase_gear_lane5_rna_bridge.cpp
+      - name: Compile ERS Lane 5 cell-wall metadata regression
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -Wall -Wextra -pedantic -I native_projects/pass220 -I hhs_runtime/include native_projects/pass220/test_ers_lane5_cell_wall_metadata.cpp -o /tmp/hhs_ers_lane5_metadata
+          /tmp/hhs_ers_lane5_metadata
+      - name: Verify inherited BigInt VM81 source binding
+        run: |
+          python3 -m pip install pytest
+          python3 -m pytest -q tests/pass220/test_phasegear_vm81_bigint_binding_v1.py tests/pass220/test_complex_phase_loshu_v1.py tests/pass220/test_phase_magnitude_gate_v1.py tests/pass220/test_lane5_h36_111_hydration_v1.py tests/pass220/test_lane5_order5_loshu_nucleus_v1.py tests/pass220/test_m17_larone_constructor_parallel_v1.py
+      - name: Verify Lo Shu invariants with Python assertions disabled
+        run: |
+          python3 -O -m pytest -q tests/pass220/test_complex_phase_loshu_v1.py
+      - name: Confirm source-locked V2 matches contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          contract=Path('contracts/pass220/PASS_220_LANE5_FOUR_COMPONENT_PHASE_GEAR_CIRCUIT_V2.md').read_text()
+          source=contract.split('```wolfram\n',1)[1].split('\n```',1)[0].strip()
+          header=Path('native_projects/pass220/phase_gear_v2_ordered_source.hpp').read_text()
+          assert source in header
+          assert source.count('==') == 22
+          print('V2_SOURCE_IDENTITY_PASS: 4 components, 22 gates')
+          PY

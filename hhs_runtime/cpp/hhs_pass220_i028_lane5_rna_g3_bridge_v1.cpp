@@ -113,12 +113,17 @@ extern "C" HHSExactStatus hhs_exact_pass220_i028_lane5_rna_g3_route(
     HHSExactPass219Holo4DecisionV1 rna_decision{};
     HHSExactPass219Holo4StateV1 g3_state{};
     HHSExactPass220I028Lane5G3CandidateV1 g3_candidate{};
+    HHSExactVM81Frame original_frame{};
+    HHSExactPass219Hash216TransitionViewV1 original_transition{};
 
     if (out_candidate != nullptr)
         std::memset(out_candidate, 0, sizeof(*out_candidate));
     if (input == nullptr || frame == nullptr || source_transition == nullptr ||
         constructor_witness == nullptr || out_candidate == nullptr)
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+    std::memcpy(&original_frame, frame, sizeof(original_frame));
+    std::memcpy(&original_transition, source_transition, sizeof(original_transition));
 
     HHSExactStatus status = hhs_exact_pass219_rna_vm5184_route(
         input,
@@ -130,6 +135,9 @@ extern "C" HHSExactStatus hhs_exact_pass220_i028_lane5_rna_g3_route(
         &rna_decision);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
+    if (std::memcmp(frame, &original_frame, sizeof(original_frame)) != 0 ||
+        std::memcmp(source_transition, &original_transition, sizeof(original_transition)) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     status = hhs_exact_pass219_holo4_state_init(&g3_state);
     if (status != HHS_EXACT_STATUS_OK)
@@ -146,6 +154,9 @@ extern "C" HHSExactStatus hhs_exact_pass220_i028_lane5_rna_g3_route(
         &g3_candidate);
     if (status != HHS_EXACT_STATUS_OK)
         return status;
+    if (std::memcmp(frame, &original_frame, sizeof(original_frame)) != 0 ||
+        std::memcmp(source_transition, &original_transition, sizeof(original_transition)) != 0)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
 
     if (!same_prepared(rna_prepared, g3_candidate.holo4_prepared) ||
         !same_decision(rna_decision, g3_candidate.holo4_decision))

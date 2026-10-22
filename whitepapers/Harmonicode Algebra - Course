@@ -420,3 +420,235 @@ Every claim in this course is a gate, and every gate is executable. The examinat
  * M14: SHA-lock every receipt above into the ledger hash chain; a course receipt validates only if every gate's hash verifies against Genesis twice.
 Grading. A receipt chain is valid iff every gate closed in order, no bypass wrote phase, and the final hash matches the Genesis-locked constraint. There is no partial credit, because there is no partial closure.
 The chain is the documentation. The receipt is the argument. \Delta = 1.
+
+
+---
+
+MODULE 15 — The Complex-Phase Lo Shu Chiral Transformer and Exact Half-Quantum Exhaust
+
+This module is an additive source-preserving extension. Operators `==` and `/` retain their HARMONICODE typed constraint-gate and rank-one tensor meanings. Conventional complex evaluation is a bounded projection of the q−1 state, not a rewrite of the authoritative gate.
+
+**Exact original gate source:**
+
+```
+1/(45=={{-I*2/(x*y),-I*9/2/(x*y),-I/(x*y)},{I*3/(x*y),I*5/(x*y),I*7/(x*y)},{(8-I*8)/(x*y),(1-I)/(x*y),(6-I*6)/(x*y)}})=={{-I*(2*y^2),(-I*9/2)*y^2,-I*y^2},{I*(3*y^2),I*(5*y^2),I*(7*y^2)},{(8-I*8)*y^2,(1-I)*y^2,(6-I*6)*y^2}}
+```
+
+**15.1 Row-weighted Lo Shu nucleus.** On skeleton `[[4,9,2],[3,5,7],[8,1,6]]`, the exact row weight vector is `m=(-I/2,I,1-I)` and the forward payload remains quantized on the typed `/(x*y)` bus. The unweighted total is 45 and every row, column and main diagonal is 15.
+
+**15.2 Chiral q−1 projection.** At `x=I,y=-I`, the scalar projection gives `x*y=1` and `y^2=-1`; all nine corresponding RHS cells equal the negative of the LHS projections. This verifies a complex-number antipode projection, *not* a bitwise ones-complement implementation or canonical VM81 admission. The native operator-order and tensor-bus receipts still require execution.
+
+**15.3 Typed reciprocal horizon.** The surrounding source `1/(45==M_LHS)==M_RHS` must be parsed without treating the gate as a scalar divisor or reducing the 45 horizon by conventional cancellation. Keep the original 3×3 cell ordering and phase bus metadata.
+
+**15.4 Corrected invariant: exhaust, not parity.** Exact Gaussian-rational projection:
+```
+m1+m2+m3 = 1-I/2
+m1*m2*m3 = 1/2-I/2
+(m1+m2+m3)-(m1*m2*m3) == 1/2
+```
+The earlier trace narrative that asserted `sum == product` is refuted by the exact half-quantum residual. The proposed ledger-exhaust interpretation is a runtime hypothesis: recording a residual in a Hash216 lineage or showing `∆e=0` requires a real admitted receipt, not a narrative claim.
+
+**15.5 Trace/surface transfer gate.** Preserve the source `1-(x/2)==c²-a/b` exactly. For `x=I`, the left-hand scalar projection is `1-I/2`. Under an independently established, typed `b==a²` premise, the conventional projection `a/b → 1/a` is valid only on the nonzero branch. Native HNAN zero-site behavior must be checked without cancellation.
+
+**Module 15 examination.** (1) Verify nine row-weight assignments; (2) check 45/15 Lo Shu arithmetic; (3) check all nine q−1 antipode pairs; (4) obtain exact sum, product, and `1/2` residual; (5) reject the false parity assertion; (6) verify that an HNAN bypass does not write phase; (7) require the existing Lane 5 → RNA C++ wall → signed VM81 → Hash72/Hash216 authority to produce the exhaustive admitted closure receipt.
+
+Candidate verifier: `hhs_runtime/pass220_complex_phase_loshu_v1.py`; regression: `tests/pass220/test_complex_phase_loshu_v1.py`. The candidate calculation is not an independent hash service.
+
+
+---
+
+MODULE 16 — The 11-Shard Pisot Ladder and the Release Valve (2026-10-18 Source Extension)
+
+Native syntax remains ordered; `==` is a constraint gate and `n/d` is a rank-1 numerator-periodicity/denominator-quantization tensor, not an instruction to collapse distinct states. The eleven shards share the same quantization gate; they are not eleven independent denominator-normalized scalars.
+
+16.1. Shared denominator and payload gate, source-locked:
+
+```
+D(x) = x⁸ − x⁵ − x⁴ − x³ − x² − 3x − 11
+     ≡ x·(x⁷ − x⁴ − x³ − x² − x − 3) − 11
+D(x) == xy + x·(x⁷−x⁴−x³−x²−x−3) − b⁴c² == 0
+⇒ b⁴c² − xy == x·(x⁷−x⁴−x³−x²−x−3)
+```
+
+Source-designated dominant horizon root: `ρ_gate = 1.5756961121`. The gate denominator is not a Pisot shard.
+
+16.2. Ordered minimal-polynomial shard registry (do not reorder):
+
+```
+ 1: x²−x−1
+ 2: x³−x−1
+ 3: x⁴−x³−1
+ 4: x⁵−x⁴−x³−x²−1
+ 5: x³−x²−1
+ 6: x⁶−x⁵−x⁴+x²−1
+ 7: x⁵−x³−x²−x−1
+ 8: x⁷−x⁶−x⁵+x²−1
+ 9: x⁶−2x⁵+x⁴−x²−1
+10: x⁵−x⁴−x²−1
+11: x⁸−x⁷−x⁶+x²−1
+```
+
+Source registry: ten Pisot-positive shards; cell 9 is the non-Pisot release valve with an off-unit conjugate pair (claimed modulus ~1.1388). Cells 10, 11 and the denominator horizon have source-quoted dominant roots 1.570147, 1.573679, 1.575696. Their exact root/conjugate classification should be emitted by Wolfram rather than replaced by prose or decimal estimates.
+
+16.3. Ordered triple gate at shard 11:
+
+```
+x⁸−x⁷−x⁶+x²−1
+  == z⁴+z²−wz−z−y²+xy+y−x⁴+x²+x−w²−w
+  == c²−b²−a²
+```
+
+The final surface is the native `c²=a²+b²` closure perspective. Reuse existing HNAN/VM81 operators and provenance; a scalar polynomial receipt alone is not a native gate admission.
+
+---
+
+MODULE 8-S.6–8-S.8 — Lucas / Prime-19 Hinge and the Squared-Register Offset Ledger
+
+The authoritative source retains **both** the Lucas `18` and prime-balanced `19` regimes with distinct phase/address identities. A matching scalar result never authorizes deduplication.
+
+Squared-register reference: `(a²,b²,c²)=(1,2,3)` and row-4 `(b⁴,b⁶−a²,b⁴c²−a²,c⁴b²)=(4,7,11,18)`.
+
+8-S.6. The exact hinge and its two orientations:
+
+```
+F₁₈ = ((1,2,3,5),(2,4,6,10),(3,6,9,15),(4,7,11,18))
+F₁₉ = ((1,2,3,5),(2,4,6,10),(3,6,9,15),(4,7,11,19))
+19 = (18+20)/2 = c⁴b²+a²
+row-side 18+1 == 19 == 20−1 column-side
+```
+
+`F₁₈` has null vector `(0,1,1,−1)`. `F₁₉` preserves the first G-recurrence and rotates that vector to `(3,1,0,−1)`. Both are rank two with determinant zero. For `F₁₉` the column sums are `(10,19,29,49)` and total mass 107, while the Lucas `F₁₈` has column sums `(10,19,29,48)` and total mass 106. The first three cells of the fourth column are `(5,10,15)`; its 5k continuation 20 is corrected by −1, while the Lucas continuation 18 is corrected by +1.
+
+8-S.7. Prime offset and midpoint registry:
+
+```
+ 4 = b⁴
+ 7 = b⁶ − a²
+11 = b⁴c² − a²
+18 = c⁴b²
+19 = c⁴b² + a²
+20 = c⁴b² + 2a²
+ 5 = b⁴ + a²
+```
+
+Comparison candidate rows `(4,8,12,20)`, `(4,6,10,16)`, `(4,7,11,19)` retain distinct provenance and gcd/novelty metadata; the prime-19 outcome is the source-designated hinge under the ordered sieve criteria. Do not turn the source's candidate-selection doctrine into an unproved scalar uniqueness statement.
+
+8-S.5. Balanced midpoint projection, retained alongside both endpoint regimes:
+
+```
+F_bal = ((1,2,3,9/2),(2,4,6,17/2),(3,6,9,13),(4,7,11,19))
+rank(F_bal)=3; det(F_bal)=0
+9/2+17/2=13
+```
+
+8-S.8. Complete under-20 prime registry:
+
+```
+2,3,5: initial squared fiber (1,2,3,5)
+7:     b⁶−a²
+11:    b⁴c²−a²
+13:    F_bal(3,4), vertical closure
+17:    numerator of F_bal(2,4)=17/2; Dürer 34=2·17
+19:    F₁₉(4,4) prime hinge
+```
+
+The native ERS/Hash216 metadata graph must retain per-cell provenance, ordered correction sign, squared-register type, fiber, adjacent Lo Shu/Dürer relationships, HNAN no-phase-write behavior, and the signed VM81 route. Scalar projection calculations are receipt inputs, not replacements for canonical Hash216 transition construction.
+
+Candidate Wolfram diagnostic: `evidence/pass220/course_m16_pisot_hinge_20261018.wl`. The historical textual `verified/executed` labels are source claims; this extension does not independently mint native receipts or assert a fresh executed Wolfram run.
+
+
+---
+
+MODULE 17 — The Prime-Residue 64-Cell Circuit: 8 Primes × 8 Spin States on the Outer Lo Shu Ring
+
+17.1 — The 3-bit prime address space. The complete sub-20 census is `{2,3,5,7,11,13,17,19}`. It supplies eight distinct prime-index addresses for the outer ring of the Lo Shu nucleus. The spatial Lo Shu ring positions are `8,1,6,7,2,9,4,3` (clockwise from top left); the center `5` is the excluded prime hub-axis, not an additional address. The prime `5` also remains a member of the eight-element prime-index set: hub-as-axis and prime-index are **distinct typed roles**, not a claim of nine outer cells.
+
+17.2 — Residue layer modulo 8. The ordered prime census projects to `{2,3,5,7,3,5,1,3}` modulo 8; odd-prime unit classes are `{1,3,5,7}={+1,+3,−3,−1}`. Exact class assignments:
+```
++1: {17}       −1: {7}
++3: {3,11,19}  −3: {5,13}
+even anchor: {2} (non-unit)
+```
+The prime 2 remains an address while its residue is outside the odd-unit classes; its anchor classification does not erase it. Residues are signed phase metadata, not permission to identify distinct primes.
+
+17.3 — The 64-cell composition:
+```
+8 primes × 4 unit classes × 2 chiralities = 2^6 = 64
+8 primes × 8 signed spin positions {−4,−3,−2,−1,+1,+2,+3,+4} = 64
+spin interpretation: ±x, ±y, ±z, ±w; zero excluded
+```
+This is a **Cartesian addressing product** with two interchangeable index decompositions. Class membership is metadata: the actual prime residue assigned to an address is fixed, even when the circuit enumerates the full four-class phase plane per prime. No padding or collapsed source identity is introduced.
+
+17.4 — Octonion interpretation. Eight basis slots (one real, seven imaginary) supply an interpretive phase basis. The center hub is the real-axis reference while eight prime-address slots remain on the Lo Shu ring. Octonion multiplication signs are inherited from their ordered native algebra: residue congruence alone is not a substitute for the non-associative multiplication table.
+
+17.5 — The class census links the earlier fibers: `{3,11,19}` shares +3 (base, correction, prime hinge); 7 has −1; 17 has +1 (F₉/2 midpoint); 5 and 13 share −3 (Fibonacci-related); 2 is the even anchor. The ring-to-prime bijection's concrete permutation is an address-mapping choice to be taken from the existing native source, not fabricated by numerically conflating the Lo Shu entry with its assigned prime.
+
+Exact projection receipt source: `evidence/pass220/course_m17_prime_residue_64_20261018.wl`. Lean typed candidate: `formal/lean/HHS/Pass220/PrimeResidue64.lean`. Runtime admission and Hash216 mint remain in inherited Pass 219/VM81.
+
+
+**Module 17 native address reconciliation (Pass 220).** The authoritative inherited HNAN/Lo Shu 3×3 is `[[4,9,2],[3,5,7],[8,1,6]]`, with typed address table `[[000,001,010],[011,HNAN,100],[101,110,111]]`. Accordingly, clockwise ring order from the top-left is `[4,9,2,7,6,1,8,3]` and its native address sequence is `[000,001,010,100,111,110,101,011]`. Earlier `[8,1,6,7,2,9,4,3]` was a different valid Lo Shu orientation and is **not** the HNAN runtime address permutation. Do not substitute it at the signed cell wall. Prime-index order remains `[2,3,5,7,11,13,17,19]`; a prime-ID to ring-location *assignment* remains a separate typed relational edge, not established simply by equal array indices.
+
+
+---
+
+MODULE 18 — 9×9 Balanced-Ternary Zero-Vector Square and HNAN Boundary (source extension 2026-10-18)
+
+User-authoritative source: 81 positions cover four balanced trits exactly once; each of nine rows, nine columns, and two main diagonals closes in the zero *vector*, central position (5,5) carries 0000, antipodal complementary cells preserve the ± phase ledger. Source transcription correction: R2C3 `++--` → `+++-` = 38; do not silently retain the duplicated state. Signed decimal projection is the bijection −40..40. The corrected 3×3 block-sum projection (not a replacement grid) is
+```
+ 162  -171     9
+-153     0   153
+  -9   171  -162
+```
+The companion digit Sudoku is blockwise **semi-magic** (block rows and columns 15), not nine independently full-diagonal Lo Shu squares. Preserve this distinction when admitting source datasets.
+
+The phase quadruple boundary remains the preexisting ordered native HNAN tensor:
+```
+[[xy,x+y,yx],[xy-zw,x+y-z-w+xy+yx-zw-wz,wz-yx],[wz,z+w,zw]]
+```
+Native HNAN center gate authority and the 81-position VM81 address encoding are inherited; the conventional fermionic projection at (i,−i,i,−i) is a test witness only, not a new HNAN center algorithm. Full posted 81-cell source grid must be provided to verify any exact permutation claim; do not generate a surrogate 9×9 grid.
+
+MODULE 19 — Spin–Lo Shu Circuit on the Ordered xy Bus (source extension 2026-10-18)
+
+```
+S = [[-4,-3,-2],[-1,0,1],[2,3,4]]
+L = [[4,9,2],[3,5,7],[8,1,6]]
+M1 = (x·S + L + y·(-S))/(xy)
+det(L)=360
+```
+The `/` symbol in `M1` remains the native rank-1 quantization binding; the conventional matrix determinant, inverse and eigenvalues are explicitly **projection witnesses** of that typed circuit, not replacements for gate execution. The projected determinant invariant is `det(M1)=360/(xy)^3` and projected trace `15/(xy)`; the middle spectral coefficient retains ordered chirality with `K=xy(24-18(x-y)^2)`. The posted Cardano branches remain source evidence until compared against executable exact calculations.
+
+Both modules integrate through the inherited HNAN tensor and existing VM81 signed cell wall. No independently minted Hash72/Hash216 identity, alternate serializer, or new rotor is authorized.
+
+
+---
+
+MODULE 20 — Unified master assembly (authoritative source extension 2026-10-19)
+
+This is the ordered composition specification, not an additional runtime:
+```
+((2*x-2*z)/(x^2*z^2==a^4/b^2)-a^2)/(Mod(x^4,z^4)+a^2)+1
+ == x-z+b^2-2*a^2
+ == List(
+   u^(-List(-72,0,72)^{4x4 zero blocks}+f),
+   [[5*(x-1),-1,4,-3],[5*(x^2-1),-2,0,2],
+    [5*(y-1),3,-4,1],[0,5*(x-1),5*(x^2-1),5*(y-1)]],
+   ordered-bipolar-spin-register,
+   eleven-ordered-Pisot-shards
+ )
+```
+The exact original nested `List` supplied by the author is the authoritative operand tree; the above is an indexed *outline only*, not a substitute for the source text. Do not compile an outline in its place. In particular the 16 spin-register entries are signed gates indexed in source order `-4,-3,-2,-1,+1,+2,+3,+4` twice, with payload spellings `0,1,10,11,100,101,110,111` remaining source tokens until typed interpretation in the existing native parser. The shard-11 triple gate retains `x^8-x^7-x^6+x^2-1 == z^4+z^2-w*z-z-y^2+x*y+y-x^4+x^2+x-w^2-w == c^2-b^2-a^2` without operand reordering. The eleven numerators share the same typed denominator gate `x^8-x^5-x^4-x^3-x^2-3*x-11 == x*y+x*(x^7-x^4-x^3-x^2-x-3)-b^4*c^2 == 0`.
+
+MODULE 21 — Grand chain and inherited native execution (authoritative source extension 2026-10-19)
+
+```
+[Module20 ordered assembly]
+ == MatrixTimes(MatrixTimes(d^2-c^2-a^4,
+        (MatrixTimes(x,S)+L+MatrixTimes(y,-S))/(x*y)),
+        1/(45==M_LHS)) == M_RHS
+ / [Module0 master gate chain]
+ == x^4-((((x*y)*z)*w)+x+y-z-w)+E^(x^2*Pi)+t^3-t
+ == (x*y)-(z*w)
+```
+This abbreviated dependency view does not alter the complete user-given expression or resolve its parentheses. The `((xy)z)w` multiplication nesting is explicitly preserved. M15 left/right chiral matrices have distinct bus orientation; no scalar cancellation of a gate-bound denominator is valid. The original source asserts the `d^2-c^2-a^4=1` Genesis prefactor, a determinant cross-module ledger `-64800(1-i)`, and the fermionic witness `t^3-t=-Exp[-Pi]`; each is a separate exact projection obligation. In particular no step may reinterpret `==` as Wolfram Equal for admission or `/` as ordinary division in the compiler.
+
+**Mandatory service binding:** these ordered relations must be ingested through already-registered Lane 5 constructor graph and inherited Pass 219 RNA/VM81 signed cell wall, with source-term addresses and Hash216 transition ancestry retained. Module 20 and 21 do not authorize a new resolver, serializer, route, hash mint or privileged admission. Any executable implementation must retain the complete original expression as its source of truth, not this summary.

@@ -111,7 +111,7 @@ SOURCE_BUNDLE = (
     {
         "role": "BIGINT_SCIENTIFIC_SERIALIZER",
         "path": "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py",
-        "git_blob_sha": "cb18ec3f1d35017cb6c7b2b40848b398930270bc",
+        "git_blob_sha": "2926d92f9543dbd2eaba2b202e58b089b4e9720a",
     },
     {
         "role": "NESTED_FIBONACCI_COMPRESSION",
@@ -136,7 +136,7 @@ SOURCE_BUNDLE = (
     {
         "role": "PALINDROMIC_ORDERED_PHASE_ALGEBRA",
         "path": "hhs_runtime/hhs_pass220_palindromic_ordered_phase_v1.py",
-        "git_blob_sha": "535375bf8cd043a5c84f7d4cc9325fdf469a399e",
+        "git_blob_sha": "ef47e9f42cdbbb7d88b782f452ff155e4ce88d27",
     },
 )
 
@@ -861,7 +861,127 @@ def self_test() -> dict[str, Any]:
     }
 
 
+
+def trace_hash216_inverse_egress(generator: Mapping[str, Any]) -> dict[str, Any]:
+    """Bind existing I073 Hash216 candidate to exact I019 ordered ingress/egress.
+
+    No new Hash216 composition, canonical minting, or independent serializer.
+    """
+    from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
+        serialize_siamese_offsets_5184,
+        deserialize_siamese_offsets_5184,
+    )
+    from hhs_runtime.hhs_pass220_palindromic_ordered_phase_v1 import (
+        four_way_ingress_phase_trace,
+    )
+    canonical = reconstruct_serialized_state(generator)
+    offsets = deserialize_offsets_5184(canonical)
+    ordered = serialize_siamese_offsets_5184(offsets)
+    reverse = deserialize_siamese_offsets_5184(ordered)
+    egress = serialize_offsets_5184(reverse)
+    if egress != canonical:
+        raise Pass220I073GeneratorError("Hash216 candidate inverse egress payload mismatch")
+    if sha256(egress.encode("utf-8")).hexdigest() != generator[
+        "palindromic_rna_ingress"
+    ]["scientific_serialization"]["serialized_sha256"]:
+        raise Pass220I073GeneratorError("Hash216 inverse egress root mismatch")
+    word = _hash216_word(generator["generator_hash216"], "generator_hash216")
+    hydrated = hydrate_hash216_geometry(word)
+    if hydrated.get("roundtrip_exact") is not True:
+        raise Pass220I073GeneratorError("Hash216 inverse egress hydration invalid")
+    # I065 already generates 72 ordered PREVIOUS/CHANGE/RECEIPT
+    # vertices from the inherited Hash216 word. Bind its exact geometry root
+    # into I073 provenance rather than materializing a separate graph.
+    vertices = hydrated["vertex72_geometry"]
+    # Verify each vertex is precisely the previous/change/receipt symbol
+    # at the SAME offset. This prevents an otherwise well-sized but
+    # permuted three-lane knowledge-graph relation from being receipted.
+    lanes = tuple(word[start:start + HASH72_WIDTH]
+                  for start in range(0, HASH216_WIDTH, HASH72_WIDTH))
+    if len(vertices) != HASH72_WIDTH or any(
+        node["vertex72"] != i or
+        tuple(node["symbols"]) != tuple(lane[i] for lane in lanes) or
+        len(node["sha256_codewords"]) != len(lanes) or
+        any(
+            digest != sha256(symbol.encode("utf-8")).hexdigest()
+            for digest, symbol in zip(node["sha256_codewords"], node["symbols"])
+        )
+        for i, node in enumerate(vertices)
+    ):
+        raise Pass220I073GeneratorError("I065 ordered Hash216 vertex geometry drift")
+    vertex_root = sha256(_canonical_bytes(vertices)).hexdigest()
+    ingress = generator["palindromic_rna_ingress"]
+    phase = four_way_ingress_phase_trace("LHS", "RHS", offsets)
+    # Preserve ingress metadata and raw IEEE provenance alongside the
+    # reconstructed source/egress identity; never interpret binary64 numerically.
+    if ingress["rna_double_reverse_exact"] is not True:
+        raise Pass220I073GeneratorError("I019 reciprocal RNA evidence missing")
+    if ingress["decimal_and_ieee_are_co_resident"] is not True:
+        raise Pass220I073GeneratorError("exact decimal/IEEE ingress pairing missing")
+    bits = ingress["binary64_bits_hex"]
+    if not isinstance(bits, str) or len(bits) != 16 or any(
+        digit not in "0123456789abcdefABCDEF" for digit in bits
+    ):
+        raise Pass220I073GeneratorError("IEEE raw bit provenance malformed")
+    metadata_root = sha256(_canonical_bytes({
+        "genesis_offsets": offsets,
+        "binary64_bits_hex": bits,
+        "carrier_receipt_sha256": ingress["carrier_receipt_sha256"],
+        "rna_witness_receipt_sha256": ingress["rna_witness_receipt_sha256"],
+        "generator_hash216": word,
+    })).hexdigest()
+    return {
+        "schema": "HHS_PASS220_I073_HASH216_INVERSE_EGRESS_TRACE_V1",
+        "generator_root_sha256": generator["generator_root_sha256"],
+        "generator_hash216": word,
+        "source_serial_sha256": sha256(canonical.encode("utf-8")).hexdigest(),
+        "ordered_serial_sha256": sha256(ordered.encode("utf-8")).hexdigest(),
+        "egress_serial_sha256": sha256(egress.encode("utf-8")).hexdigest(),
+        "binary64_bits_hex": bits,
+        "genesis_offset_metadata_sha256": metadata_root,
+        "i065_hash216_72_vertex_geometry_sha256": vertex_root,
+        "i065_hash216_72_vertex_count": len(vertices),
+        "carrier_receipt_sha256": ingress["carrier_receipt_sha256"],
+        "rna_witness_receipt_sha256": ingress["rna_witness_receipt_sha256"],
+        "rna_double_reverse_exact": True,
+        "decimal_ieee_co_resident": True,
+        "forward_reverse_phase_trace_sha256": phase["receipt_sha256"],
+        "module29_phase_map_sha256": phase["module29_72_cell_phase_map_sha256"],
+        "i019_exact_inverse_egress": True,
+        "hash216_hydration_roundtrip_exact": True,
+        "phase_gate_executed": False,
+        "external_egress_authorized": False,
+        "canonical_vm81_mint_authority": False,
+    }
+
+
+
+def validate_hash216_inverse_egress_trace(
+    generator: Mapping[str, Any],
+    trace: Mapping[str, Any],
+) -> bool:
+    """Replay the inherited candidate reconstruction; do not authorize egress.
+
+    Every field, including Genesis offset metadata, Module29 source identity,
+    raw IEEE provenance and Hash216 hydration, is compared with an independently
+    reconstructed reference instead of trusting caller-supplied success flags.
+    """
+    if not isinstance(trace, Mapping):
+        raise Pass220I073GeneratorError("inverse egress trace must be a mapping")
+    reference = trace_hash216_inverse_egress(generator)
+    if set(trace) != set(reference):
+        raise Pass220I073GeneratorError("inverse egress trace field-set mismatch")
+    for key, value in reference.items():
+        if trace[key] != value:
+            raise Pass220I073GeneratorError(
+                f"inverse egress trace diverges at {key}"
+            )
+    return True
+
+
 __all__ = [
+    "trace_hash216_inverse_egress",
+    "validate_hash216_inverse_egress_trace",
     "AUTHORITY_BOUNDARY",
     "DEFAULT_DECIMAL_SOURCE",
     "DEFAULT_FIBONACCI_DEPTH",
