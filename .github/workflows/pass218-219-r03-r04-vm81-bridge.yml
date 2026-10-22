@@ -113,12 +113,14 @@ jobs:
       - name: Re-run inherited native Pass 219 ethical scope membrane
         run: make -C native_projects/hhs_pass219_ethical_scope_membrane clean test
 
-      - name: Strict-compile cumulative exact ABI
-        run: >-
-          gcc -O2 -std=c11 -Wall -Wextra -Werror
-          -Ihhs_runtime/include -Ihhs_runtime/c -fPIC -shared
-          hhs_runtime/c/hhs_runtime_exact_abi.c hhs_runtime/src/hhs_hash216.c
-          -o /tmp/libhhs_r03_r04_exact.so
+      - name: Strict-compile cumulative exact ABI with required C++ cell wall
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include -Ihhs_runtime/c -fPIC -c hhs_runtime/c/hhs_runtime_exact_abi.c -o /tmp/hhs_r03_abi.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include -Ihhs_runtime/c -fPIC -c hhs_runtime/src/hhs_hash216.c -o /tmp/hhs_r03_hash216.o
+          g++ -O2 -std=c++17 -Wall -Wextra -Werror -Ihhs_runtime/include -Ihhs_runtime/cpp -fPIC -c hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp -o /tmp/hhs_r03_cpp_wall.o
+          g++ -shared -Wl,-z,defs /tmp/hhs_r03_abi.o /tmp/hhs_r03_hash216.o /tmp/hhs_r03_cpp_wall.o -o /tmp/libhhs_r03_r04_exact.so
 
       - name: Verify historical standalone public C ABI link contract
         env:

@@ -88,6 +88,47 @@ def _validated_authorized_tick(execution: object) -> Dict[str, object]:
     return dict(execution)
 
 
+
+def _lane5_hydration_ethical_veto(evidence: Mapping[str, object]) -> dict[str, object]:
+    """Negative constraint on task harness proposals; never grants authority.
+
+    The inherited native I028/cell-wall and signed VM81 checks remain solely
+    responsible for positive constructor and canonical execution admission.
+    """
+    required_true = (
+        "typed_ingress_verified", "inherited_lanes_1_4_verified",
+        "constructor_provenance_verified", "ordered_tensor_gates_verified",
+        "external_interface_equivalent", "scope_and_consent_verified",
+        "verification_procedures_bound", "temporary_harness_release_planned",
+    )
+    required_false = (
+        "direct_canonical_mutation_authority", "direct_hash72_mint_authority",
+        "direct_hash216_mint_authority", "direct_persistence_authority",
+    )
+    roots = ("pipeline_root_hash72", "constructor_graph_root_hash72")
+    failures = [k for k in required_true if evidence.get(k) is not True]
+    failures += [k for k in required_false if evidence.get(k) is not False]
+    failures += [k for k in roots if not _is_hash72(evidence.get(k))]
+    # Candidate evidence must carry explicit external interface fidelity,
+    # not just an asserted compatible result.
+    if evidence.get("external_input_type_verified") is not True:
+        failures.append("external_input_type_verified")
+    if evidence.get("external_output_type_verified") is not True:
+        failures.append("external_output_type_verified")
+    if evidence.get("observable_behavior_verified") is not True:
+        failures.append("observable_behavior_verified")
+    if evidence.get("hydration_precedes_composition") is not True:
+        failures.append("hydration_precedes_composition")
+    if evidence.get("conway_candidate_only") is not True:
+        failures.append("conway_candidate_only")
+    return {
+        "schema": "HHS_PASS220_LANE5_ETHICAL_HYDRATION_VETO_V1",
+        "candidate_only": True, "vetoed": bool(failures),
+        "unresolved_constraints": failures,
+        "native_constructor_admitted": False,
+        "canonical_mint_authority": False,
+    }
+
 def admit_and_execute_local(
     action: ActionCandidate,
     declared_invariants: Sequence[EthicalInvariantResult],
@@ -96,6 +137,7 @@ def admit_and_execute_local(
     counterexamples: Sequence[StructuralCounterexampleRecord] = (),
     *,
     controller: Optional[Any] = None,
+    lane5_hydration_evidence: Optional[Mapping[str, object]] = None,
 ) -> Dict[str, object]:
     """Evaluate, then enter the inherited VM81 authority path if admitted."""
 
@@ -121,6 +163,14 @@ def admit_and_execute_local(
         "action_authority_minted": False,
         "vm81_execution": None,
     }
+    if lane5_hydration_evidence is not None:
+        if not isinstance(lane5_hydration_evidence, Mapping):
+            raise VM81AdmissionBridgeError("Lane5 evidence must be a typed mapping")
+        veto = _lane5_hydration_ethical_veto(lane5_hydration_evidence)
+        result["lane5_hydration_ethical_gate"] = veto
+        if veto["vetoed"]:
+            result["execution_allowed"] = False
+            return result
     if not allowed:
         return result
 
@@ -144,4 +194,5 @@ __all__ = [
     "HASH72_LENGTH",
     "VM81AdmissionBridgeError",
     "admit_and_execute_local",
+    "_lane5_hydration_ethical_veto",
 ]
