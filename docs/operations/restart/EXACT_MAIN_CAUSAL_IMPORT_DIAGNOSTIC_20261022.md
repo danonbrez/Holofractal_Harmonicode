@@ -23,3 +23,9 @@
 - `HHS Source Text Integrity` run 39765751060 SUCCESS.
 - `DigitalOcean Production Exact Main` run 39765751300 parent SUCCESS: `validate-production-backend-closure` SUCCESS, `validate-deployment-contract` SUCCESS, **`deploy-exact-main` SKIPPED**. No live service-identity import or production deployment occurred in this run.
 - Diagnostic-only PR #842 remains draft; maintain exact dependency/model pins and fail-closed acceptance. Root cause of original import failure is not yet evidenced by a live failing traceback. Next: controlled exact-main production run under authorized deployment path; inspect diagnostic traceback; repair-forward only demonstrated defect. No unverified production-ready claim.
+
+## CI acceptance receipt — 2026-10-22
+- PR #842 head `ea21bc13fcc6d00d217ec7959a67cdf23c3c7841`; targeted diagnostic workflow run `39765751273`, job `119780648659` SUCCESS: `3 passed, 1 warning in 0.25s`. Warning is unknown pytest config `asyncio_mode`, not a diagnostic failure. Compile step succeeded.
+- HHS Source Text Integrity `39765751060` SUCCESS.
+- DigitalOcean Production Exact Main run `39765751300` overall SUCCESS because `validate-production-backend-closure` and `validate-deployment-contract` succeeded; `deploy-exact-main` job `119786477893` SKIPPED. No production-host service-identity import evidence exists from this check.
+- The diagnostic PR is test-validated but the October 21 AutoTokenizer root cause is not established; keep draft and no merge/deploy claim. Next obtain actual exact-main deployment traceback or host evidence, then repair confirmed cause and validate against current main. No additional CI reruns necessary for already green dependency-scoped diagnostic tests.
