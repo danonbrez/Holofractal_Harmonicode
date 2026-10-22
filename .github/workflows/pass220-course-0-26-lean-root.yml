@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "formal/lean/HHS.lean"
+      - "formal/lean/HHS/Pass220/I087GlobalReconciliation.lean"
       - "formal/lean/HHS/Pass220/Module2324GenesisSerialization.lean"
       - "formal/lean/HHS/Pass220/Module25ProofInheritance.lean"
       - "formal/lean/HHS/Pass220/Module26TickSeedBoundary.lean"
