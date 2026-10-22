@@ -5,6 +5,8 @@ on:
       - "hhs_runtime/include/hhs_pass220_i087_ordered_reconciliation_v1.hpp"
       - "hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h"
       - "tests/pass220/test_pass220_i087_cpp_bridge_behavior_v1.cpp"
+      - "tests/pass220/test_pass220_i087_real_c_resolver_v1.cpp"
+      - "hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc"
       - ".github/workflows/pass220-i087-cpp-cell-wall.yml"
   workflow_dispatch:
 permissions:
@@ -25,3 +27,12 @@ jobs:
             tests/pass220/test_pass220_i087_cpp_bridge_behavior_v1.cpp \
             -o /tmp/hhs_pass220_i087_bridge_test
           /tmp/hhs_pass220_i087_bridge_test
+      - name: Execute against actual native C HNAN resolver
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            -x c -c hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc \
+            -o /tmp/hhs_i087_native_hnan.o
+          g++ -std=c++17 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            tests/pass220/test_pass220_i087_real_c_resolver_v1.cpp \
+            /tmp/hhs_i087_native_hnan.o -o /tmp/hhs_i087_native_resolver_test
+          /tmp/hhs_i087_native_resolver_test
