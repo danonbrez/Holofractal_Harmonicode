@@ -48,15 +48,15 @@ const fieldRecords=[
  {mesh:particleField,index:2,x:-2,y:0,z:0,radius:1.75,r:0,g:1,b:1}
 ];
 const fieldBuckets=new Map(),GRID=3.5;
-""" + BODY + r"""
+""" + body + r"""
 setOverlapRecords();
 assert.equal(particleField.geometry.attrs.partnerSphere.array[0],2,
  "equal-distance tie must retain lower record index");
-assert.equal(solidField.geometry.attrs.partnerSphere.array[0],0,
+assert.equal(solidField.geometry.attrs.partnerSphere.array[0],2,
  "large solid must see the distant overlapping particle");
 assert.equal(solidField.geometry.attrs.partnerSphere.array[3],1.75);
 assert.equal(particleField.geometry.attrs.partnerSphere.needsUpdate,true);
 """
-    result = subprocess.run(["node", "-e", js.replace("BODY", body)],
+    result = subprocess.run(["node", "-e", js],
                             capture_output=True, text=True, check=False)
     assert result.returncode == 0, result.stderr
