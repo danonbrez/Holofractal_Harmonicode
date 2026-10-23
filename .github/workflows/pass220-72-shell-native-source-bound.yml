@@ -1,0 +1,200 @@
+name: Pass 220 72-shell source-bound native C
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/include/hhs_pass220_72_shell_source_bound_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c"
+      - "tests/pass220/test_pass220_72_shell_source_bound_v1.c"
+      - ".github/workflows/pass220-72-shell-native-source-bound.yml"
+      - "hhs_runtime/include/hhs_pass220_72_shell_exact_residue_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c"
+      - "tests/pass220/test_pass220_72_shell_exact_residue_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_typed_boundary_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_typed_boundary_v1.c"
+      - "tests/pass220/test_pass220_72_shell_typed_boundary_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_gate_graph_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c"
+      - "tests/pass220/test_pass220_72_shell_gate_graph_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_proof_requirements_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c"
+      - "tests/pass220/test_pass220_72_shell_proof_requirements_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_proof_input_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_proof_input_v1.c"
+      - "tests/pass220/test_pass220_72_shell_proof_input_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_relation_dispatch_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_relation_dispatch_v1.c"
+      - "tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_outer_projection_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c"
+      - "tests/pass220/test_pass220_72_shell_outer_projection_v1.c"
+  push:
+    paths:
+      - "hhs_runtime/include/hhs_pass220_72_shell_source_bound_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c"
+      - "tests/pass220/test_pass220_72_shell_source_bound_v1.c"
+      - ".github/workflows/pass220-72-shell-native-source-bound.yml"
+      - "hhs_runtime/include/hhs_pass220_72_shell_exact_residue_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c"
+      - "tests/pass220/test_pass220_72_shell_exact_residue_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_typed_boundary_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_typed_boundary_v1.c"
+      - "tests/pass220/test_pass220_72_shell_typed_boundary_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_gate_graph_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c"
+      - "tests/pass220/test_pass220_72_shell_gate_graph_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_proof_requirements_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c"
+      - "tests/pass220/test_pass220_72_shell_proof_requirements_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_proof_input_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_proof_input_v1.c"
+      - "tests/pass220/test_pass220_72_shell_proof_input_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_relation_dispatch_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_relation_dispatch_v1.c"
+      - "tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c"
+      - "hhs_runtime/include/hhs_pass220_72_shell_outer_projection_v1.h"
+      - "hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c"
+      - "tests/pass220/test_pass220_72_shell_outer_projection_v1.c"
+jobs:
+  source-bound:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile native C validator
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c \
+            tests/pass220/test_pass220_72_shell_source_bound_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_72_shell_source_bound_v1
+      - name: Execute source-bound negative suite
+        run: /tmp/hhs_pass220_72_shell_source_bound_v1
+
+  exact-residue:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile exact rational residue test
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c \
+            tests/pass220/test_pass220_72_shell_exact_residue_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_exact_residue
+      - name: Verify exact rational result and bounds
+        run: /tmp/hhs_pass220_exact_residue
+
+  typed-boundary:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile source-bound native proof boundary
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_typed_boundary_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c \
+            tests/pass220/test_pass220_72_shell_typed_boundary_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_typed_boundary
+      - name: Verify unresolved and mutation fail-closed behavior
+        run: /tmp/hhs_pass220_typed_boundary
+
+  gate-graph:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile ordered gate graph
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c \
+            tests/pass220/test_pass220_72_shell_gate_graph_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_gate_graph
+      - name: Check graph and negative mutation
+        run: /tmp/hhs_pass220_gate_graph
+
+  proof-requirements:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile native proof requirements
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c \
+            tests/pass220/test_pass220_72_shell_proof_requirements_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_proof_requirements
+      - name: Verify required and proved masks remain distinct
+        run: /tmp/hhs_pass220_proof_requirements
+
+  proof-input:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile native source-bound proof input
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_proof_input_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c \
+            tests/pass220/test_pass220_72_shell_proof_input_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_proof_input
+      - name: Verify 121 mutation and admission denial cases
+        run: /tmp/hhs_pass220_proof_input
+
+  relation-dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile directed native relation dispatch
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_72_shell_source_bound_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_gate_graph_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_proof_requirements_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_proof_input_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_exact_residue_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c \
+            hhs_runtime/c/hhs_pass220_72_shell_relation_dispatch_v1.c \
+            tests/pass220/test_pass220_72_shell_relation_dispatch_v1.c \
+            -lcrypto -o /tmp/hhs_pass220_relation_dispatch
+      - name: Execute ordered candidate evaluations and admission denials
+        run: /tmp/hhs_pass220_relation_dispatch
+
+  canonical-outer-projection:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile exact outer projection
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic \
+          -Ihhs_runtime/include \
+          hhs_runtime/c/hhs_pass220_72_shell_outer_projection_v1.c \
+          tests/pass220/test_pass220_72_shell_outer_projection_v1.c \
+          -lcrypto -o /tmp/hhs_pass220_outer_projection
+      - name: Verify canonical scalar projection only
+        run: /tmp/hhs_pass220_outer_projection
