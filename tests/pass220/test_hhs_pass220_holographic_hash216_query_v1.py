@@ -266,3 +266,34 @@ def test_malformed_hash216_and_nonexact_scalars_fail_closed():
         coordinate_5184(1.0)
     with pytest.raises(Pass220HolographicQueryError):
         deterministic_path_sample(hash216(), -1)
+
+def test_foreign_fingerprint_metadata_cannot_invalidate_hash216_state():
+    """A separate ranking profile is not a native composition rejection."""
+    native_hash=hash216(17)
+    query={
+        "hash216":native_hash,
+        "prime_fingerprint":{"primes":(17,19),"residues":(0,0)},
+    }
+    candidates=[
+        {
+            "candidate_id":"different-profile",
+            "hash216":native_hash,
+            "prime_fingerprint":{"primes":(23,29),"residues":(0,0)},
+            "validated":False,
+        },
+        {
+            "candidate_id":"same-profile",
+            "hash216":native_hash,
+            "prime_fingerprint":{"primes":(17,19),"residues":(0,0)},
+            "validated":True,
+        },
+    ]
+    result=rank_and_sample_candidates(query,candidates,sample_ordinal=0)
+    assert {r["candidate_id"] for r in result["ranked"]} == {
+        "different-profile","same-profile"
+    }
+    foreign=next(r for r in result["ranked"]
+                 if r["candidate_id"]=="different-profile")
+    assert foreign["features"]["prime_matches"]==0
+    assert foreign["sampling_weight"]>0
+    assert result["probability_may_authorize_state"] is False

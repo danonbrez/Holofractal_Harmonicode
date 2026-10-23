@@ -148,9 +148,15 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
     return assistant?.metadata ?? "No assistant turn yet"
   }, [messages])
 
-  const refreshHealth = async (): Promise<void> => {
+  const refreshHealth = async (includeProviderDiagnostics = false): Promise<void> => {
     try {
-      setHealth(await requestJson("/api/assistant/deployment-health", undefined, 10000))
+      // The boot/poll route is bounded deployment liveness only.
+      // Full provider diagnostics are explicitly requested by the user.
+      const deployment = await requestJson("/api/assistant/deployment-health", undefined, 10000)
+      const provider = includeProviderDiagnostics
+        ? await requestJson("/api/assistant/health", undefined, 10000).catch(() => ({}))
+        : {}
+      setHealth({ ...provider, ...deployment })
       setError(null)
     } catch (reason) {
       setHealth({ online: false, status: "ASSISTANT_OFFLINE" })
@@ -324,7 +330,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
           <div className="mt-1 text-[10px] text-neutral-500">{modeLabel(assistantMode)}</div>
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={() => void refreshHealth()} className="rounded-full border border-neutral-800 bg-black/50 px-3 py-1.5 text-[10px] text-neutral-400">
+          <button type="button" onClick={() => void refreshHealth(true)} className="rounded-full border border-neutral-800 bg-black/50 px-3 py-1.5 text-[10px] text-neutral-400" title="Show provider diagnostics">
             <span className={`mr-1.5 inline-block h-2 w-2 rounded-full ${online ? "bg-emerald-400" : "bg-amber-400"}`} />
             {modelLabel}
           </button>
@@ -392,6 +398,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
                   ? "Describe the application, code, runtime, test, or deployment work you want to develop."
                   : "Chat naturally, or ask for governed application-development work when you need it."}
             </p>
+            <p className="mt-1 text-[11px] text-neutral-500">Ask naturally, and use explicit file attachment for additional context.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
               {[
                 "Summarize the current runtime state.",
@@ -467,7 +474,7 @@ export const ProductionAssistantChat: React.FC<ProductionAssistantChatProps> = (
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[9px] leading-4 text-neutral-600">
           <span>{clipboardNotice ? `${clipboardNotice} · ` : ""}Enter sends · Shift+Enter adds a line</span>
-          <span>File/vector ingress is user-controlled; only context you explicitly attach with Use in chat is sent to the assistant.</span>
+          <span>File/vector ingress is user-controlled; uploaded payloads are not automatically attached to assistant prompts. Only context you explicitly attach with Use in chat is sent to the assistant.</span>
         </div>
       </form>
 

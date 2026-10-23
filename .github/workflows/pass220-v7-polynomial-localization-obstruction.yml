@@ -1,0 +1,82 @@
+name: Pass 220 V7 Native Polynomial Localization Obstruction
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_v7_polynomial_localization_obstruction_v1.h'
+      - 'tools/pass220/pass220_v7_polynomial_localization_obstruction_v1.c'
+      - 'tests/pass220/pass220_v7_polynomial_localization_obstruction_test.c'
+      - '.github/workflows/pass220-v7-polynomial-localization-obstruction.yml'
+      - 'hhs_runtime/include/hhs_pass220_v7_quotient_gate_v1.h'
+      - 'tools/pass220/pass220_v7_quotient_gate_v1.c'
+      - 'contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v7-polynomial-localization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build real native HHS Runtime ABI
+        run: make c-abi
+      - name: Compile and run native C11 augmentation tests linked to native HNAN
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/v7-localization
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_v7_quotient_gate_v1.c \
+            tools/pass220/pass220_v7_polynomial_localization_obstruction_v1.c tests/pass220/pass220_v7_polynomial_localization_obstruction_test.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-v7-augmentation-test
+          /tmp/pass220-v7-augmentation-test \
+            | tee artifacts/pass220/v7-localization/abi_tests.txt
+          grep -Fx v7_native_auxiliary_augmentation_abi=PASS artifacts/pass220/v7-localization/abi_tests.txt
+          grep -Fx v7_auxiliary_left_right_polynomial_obstruction=PROVED artifacts/pass220/v7-localization/abi_tests.txt
+          grep -Fx v7_hhs_exact_rational_localization_authority=UNRESOLVED artifacts/pass220/v7-localization/abi_tests.txt
+      - name: Native exact source certificate and targeted mutation rejection
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -DHHS220_V7_AUGMENT_CLI \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_v7_quotient_gate_v1.c \
+            tools/pass220/pass220_v7_polynomial_localization_obstruction_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-v7-augmentation
+          source=contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode
+          /tmp/pass220-v7-augmentation "$source" \
+            | tee artifacts/pass220/v7-localization/source_certificate.txt
+          digest=$(sha256sum "$source" | cut -d' ' -f1)
+          grep -Fx "source_sha256=$digest" artifacts/pass220/v7-localization/source_certificate.txt
+          grep -Fx native_hnan_15_rules=0x7fff artifacts/pass220/v7-localization/source_certificate.txt
+          grep -Fx auxiliary_free_polynomial_right_inverse=OBSTRUCTED artifacts/pass220/v7-localization/source_certificate.txt
+          grep -Fx auxiliary_free_polynomial_left_inverse=OBSTRUCTED artifacts/pass220/v7-localization/source_certificate.txt
+          grep -Fx HHS_native_matrix_quotient=UNRESOLVED artifacts/pass220/v7-localization/source_certificate.txt
+          grep -Fx VM81_signed_commit=0 artifacts/pass220/v7-localization/source_certificate.txt
+          python - <<'PY'
+          from pathlib import Path
+          b=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
+          Path('/tmp/pass220-v7-obstruction-mutant.harmonicode').write_bytes(
+              b.replace(b'xy+yx',b'yx+xy',1))
+          PY
+          if /tmp/pass220-v7-augmentation /tmp/pass220-v7-obstruction-mutant.harmonicode; then
+            echo 'V7_UNTRUSTED_MUTANT_LOCALIZATION_PROOF' >&2
+            exit 1
+          fi
+          echo V7_SOURCE_ORDER_MUTANT_FAIL_CLOSED
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v7-polynomial-localization-${{ github.sha }}
+          path: artifacts/pass220/v7-localization/
+          if-no-files-found: warn
+          retention-days: 90

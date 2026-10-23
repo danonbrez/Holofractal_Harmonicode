@@ -1,0 +1,45 @@
+name: Pass 220 V7 No Arbitrary Valid Tensor State Block
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_tensor_constraint_admissibility_v1.py'
+      - 'tests/pass220/test_pass220_tensor_constraint_admissibility_v1.py'
+      - '.github/workflows/pass220-v7-tensor-constraint-admissibility.yml'
+      - 'hhs_runtime/hhs_pass220_v7_inherited_native_integration_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  valid-tensor-policy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Targeted positive and negative native-evidence policy regressions
+        run: python -m pytest -q tests/pass220/test_pass220_tensor_constraint_admissibility_v1.py
+      - name: Confirm no policy-driven VM81/Hash72/Hash216 fake admission
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_tensor_constraint_admissibility_v1 import TensorEligibility, classify_tensor_state
+          answer=classify_tensor_state(
+              required_constraints=("source","type","phase"),
+              constraint_results={"source":True,"type":True,"phase":True},
+              candidate_branches=("unique",),
+              branches_exhaustively_resolved=True)
+          assert answer.classification is TensorEligibility.FORWARD_SIGNED_VM81
+          assert answer.eligible_for_inherited_signed_vm81
+          assert not answer.canonical_vm81_committed
+          assert not answer.canonical_hash72_hash216_minted
+          print('VALID_UNAMBIGUOUS_TENSOR_PROGRESS=PASS')
+          print('NO_NEW_INDEPENDENT_MATHEMATICAL_PROOF_GATE=PASS')
+          print('CANONICAL_VM81_COMMIT_NOT_SIMULATED=PASS')
+          PY

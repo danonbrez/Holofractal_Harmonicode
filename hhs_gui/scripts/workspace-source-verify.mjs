@@ -103,12 +103,15 @@ for (const token of [
 
 for (const token of [
   "/api/assistant/deployment-health",
+  "/api/assistant/health",
   "/api/assistant/chat",
   "New chat",
   "Message HHS",
   "How can I help?",
+  "Ask naturally",
   "Enter sends",
   "vector_payload_auto_attached_to_prompt: false",
+  "uploaded payloads are not automatically attached to assistant prompts",
   "Settings",
   "System instructions",
   "custom_system_instruction",
