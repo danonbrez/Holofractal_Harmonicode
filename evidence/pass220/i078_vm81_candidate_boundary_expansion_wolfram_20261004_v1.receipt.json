@@ -1,0 +1,44 @@
+{
+  "schema": "HHS_PASS_220_I078_VM81_CANDIDATE_BOUNDARY_EXPANSION_WOLFRAM_RECEIPT_V1",
+  "date": "2026-10-04",
+  "status": "PASS",
+  "connected_wolfram_kernel": true,
+  "source_path": "formal/wolfram/pass220_i078_vm81_candidate_boundary_expansion_v1.wl",
+  "source_git_blob_sha": "69f2e5bc1097d6fa16fadbb474d9013e9eadb3a3",
+  "output_path": "evidence/pass220/i078_vm81_candidate_boundary_expansion_wolfram_20261004_v1.output.json",
+  "output_git_blob_sha": "1ba6cf6a25a3b8ee4c16f2b1c2d582c1f30d7743",
+  "check_count": 30,
+  "pass_count": 30,
+  "failed": [],
+  "exact_rational_witness": {
+    "root_seed": {
+      "numerator": 179971179971,
+      "denominator": 1000000,
+      "display": "179971.179971"
+    },
+    "scale": {
+      "numerator": 1001,
+      "denominator": 1000,
+      "display": "1.001"
+    },
+    "zero_fixed_point": true
+  },
+  "boundary_witness": {
+    "vm81_words": 81,
+    "i077_binding_required": true,
+    "uqcel_identity_required": true,
+    "byte_exact_candidate_required": true,
+    "delta_e_zero": true,
+    "psi_zero": true,
+    "omega_true": true,
+    "deterministic_replay_required": true,
+    "fail_closed_invalid_candidate": true
+  },
+  "authority": {
+    "host_matrixpower_authority": false,
+    "square_matrix_fallback_authority": false,
+    "floating_point_authority": false,
+    "numeric_exponent_evaluation_authority": false,
+    "canonical_persistence_authority": false
+  }
+}

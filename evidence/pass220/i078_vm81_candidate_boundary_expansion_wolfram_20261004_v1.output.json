@@ -1,0 +1,111 @@
+{
+  "schema": "HHS_PASS_220_I078_VM81_CANDIDATE_BOUNDARY_EXPANSION_WOLFRAM_V1",
+  "status": "PASS",
+  "check_count": 30,
+  "pass_count": 30,
+  "failed": [],
+  "root_seed": {
+    "numerator": 179971179971,
+    "denominator": 1000000,
+    "display": "179971.179971"
+  },
+  "scale1001": {
+    "numerator": 1001,
+    "denominator": 1000,
+    "display": "1.001"
+  },
+  "node_ids": [
+    0,
+    1
+  ],
+  "rectangular_shapes": [
+    [
+      4,
+      2
+    ],
+    [
+      4,
+      2
+    ]
+  ],
+  "source_nodes": [
+    "MatrixPower[M_wz,x^2]",
+    "MatrixPower[M_xy,x^4]"
+  ],
+  "exponent_tokens": [
+    "x^2",
+    "x^4"
+  ],
+  "cell_token_sequences": [
+    [
+      0,
+      1,
+      1,
+      2,
+      2,
+      0,
+      3,
+      1
+    ],
+    [
+      4,
+      3,
+      3,
+      5,
+      5,
+      4,
+      3,
+      1
+    ]
+  ],
+  "vm81_words": 81,
+  "hash216_width": 216,
+  "full_attached_components": 15552,
+  "boundary": {
+    "delta_e": 0,
+    "psi": 0,
+    "omega": true,
+    "i077_binding_required": true,
+    "uqcel_identity_required": true,
+    "byte_exact_candidate_required": true,
+    "deterministic_replay_required": true,
+    "fail_closed_invalid_candidate": true,
+    "host_matrixpower_authority": false,
+    "square_matrix_fallback_authority": false,
+    "floating_point_authority": false,
+    "numeric_exponent_evaluation_authority": false,
+    "canonical_persistence_authority": false
+  },
+  "checks": {
+    "01_root_seed_exact": true,
+    "02_scale_exact": true,
+    "03_scale_shell": true,
+    "04_scale_factors": true,
+    "05_zero_scale_fixed": true,
+    "06_delta_e_zero": true,
+    "07_psi_zero": true,
+    "08_omega_true": true,
+    "09_two_nodes": true,
+    "10_node_ids_exact": true,
+    "11_shapes_exact": true,
+    "12_sources_exact": true,
+    "13_exponents_exact": true,
+    "14_cell_sequences_exact": true,
+    "15_each_cell_sequence_8": true,
+    "16_cell_token_range": true,
+    "17_vm81_words_81": true,
+    "18_hash72_square_5184": true,
+    "19_hash216_width": true,
+    "20_hydration_15552": true,
+    "21_i077_binding_required": true,
+    "22_uqcel_identity_required": true,
+    "23_byte_exact_candidate_required": true,
+    "24_deterministic_replay_required": true,
+    "25_fail_closed_invalid_candidate": true,
+    "26_host_matrixpower_false": true,
+    "27_square_fallback_false": true,
+    "28_floating_point_false": true,
+    "29_numeric_exponent_false": true,
+    "30_canonical_persistence_false": true
+  }
+}
