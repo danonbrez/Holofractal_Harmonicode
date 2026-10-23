@@ -1,4 +1,4 @@
-#include "hhs_pass220_i087_ordered_reconciliation_v1.hpp"
+#include "hhs_pass220_i087_successor_preflight_v1.hpp"
 #include <cassert>
 #include <vector>
 
@@ -19,6 +19,12 @@ static hhs::pass220::i087::OrderedWitness registered(unsigned rule_id) {
     return witness;
 }
 
+static bool verify_proof(
+    hhs::pass220::i087::Obligation obligation, std::uint64_t reference, void* ctx) {
+    auto* rejected = static_cast<hhs::pass220::i087::Obligation*>(ctx);
+    if (rejected && *rejected == obligation) return false;
+    return reference >= 100U;
+}
 int main() {
     using hhs::pass220::i087::reconcile_ordered;
     auto global = reconcile_ordered({registered(1), registered(2), registered(3)});
@@ -40,6 +46,29 @@ int main() {
     bad.native_address = 0;
     assert(!reconcile_ordered({bad}).candidate_preflight_verified);
     assert(!reconcile_ordered({}).candidate_preflight_verified);
+    using namespace hhs::pass220::i087;
+    const SuccessorReferences refs{101, 102, 103, 104};
+    assert(!prepare_successor_candidate({registered(1)}, refs, nullptr, nullptr)
+                .global_successor_candidate);
+    for (Obligation rejected : {Obligation::predecessor, Obligation::dependencies,
+                                Obligation::successor, Obligation::closure}) {
+        const auto blocked = prepare_successor_candidate(
+            {registered(1)}, refs, verify_proof, &rejected);
+        assert(!blocked.proof_frontier_verified);
+        assert(!blocked.global_successor_candidate);
+        assert(!blocked.canonical_admission);
+        assert(blocked.first_unverified == rejected);
+    }
+    const auto accepted = prepare_successor_candidate(
+        {registered(1), registered(2)}, refs, verify_proof, nullptr);
+    assert(accepted.proof_frontier_verified);
+    assert(accepted.global_successor_candidate);
+    assert(!accepted.canonical_admission);
+    const auto missing = prepare_successor_candidate(
+        {registered(1)}, SuccessorReferences{101, 102, 0, 104},
+        verify_proof, nullptr);
+    assert(!missing.global_successor_candidate);
+    assert(missing.first_unverified == Obligation::successor);
     // Repeating normalization of an accepted claim set is stable at the
     // candidate receipt level; this does not prove global successor closure.
     auto repeat = reconcile_ordered({registered(1), registered(2), registered(3)});
