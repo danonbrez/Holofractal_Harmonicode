@@ -1,0 +1,40 @@
+{
+  "schema": "HHS_PASS219_MULTISOURCE_CONVERGENCE_I14",
+  "version": 14,
+  "inherits": {
+    "i13_checkpoint": "b8d908915cf91b70691746c3a46d01a14efdead8",
+    "i13_membrane": "hhs_exact_pass219_pqc_membrane_ingest_i13",
+    "canonical_mutation_abi": "hhs_exact_pass219_vm81_environment_admit_signed"
+  },
+  "convergence": {
+    "minimum_sources": 2,
+    "maximum_sources": 8,
+    "independent_source_hashes_required": true,
+    "architecture_diversity_required": false,
+    "model_agreement_is_sufficient": false,
+    "committed_vm81_frame_equality_required": true,
+    "canonical_frame_hash72_equality_required": true,
+    "admitted_child_hash216_equality_required": true,
+    "deduplication_before_vm81_hash216_equality": false
+  },
+  "provenance": {
+    "per_source_route_binding": "Hash216 evidence binding",
+    "source_identity_retained_after_convergence": true,
+    "projection_root_retained_after_convergence": true
+  },
+  "authority": {
+    "new_dynamic_mutation_symbol": false,
+    "new_canonical_mutation_authority": false,
+    "new_canonical_hash216_authority": false,
+    "new_persistence_authority": false,
+    "h5_canonical_authority": false,
+    "canonical_holo4_lane_count": 4
+  },
+  "validation": {
+    "fixture_logic_is_live_admission_evidence": false,
+    "live_i13_multisource_attempt_when_pqc_provider_available": true,
+    "provider_unavailable_means_live_convergence_not_claimed": true,
+    "inherited_i13_regression_required": true,
+    "generation_integrity_seal_required": true
+  }
+}
