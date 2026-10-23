@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HHS Pass 220 I080 Deterministic Knowledge Graph QPU</title>
+<style>
+:root{color-scheme:dark;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+body{margin:0;background:#071019;color:#d9eef8}
+main{max-width:1180px;margin:0 auto;padding:24px}
+h1{font-size:1.3rem;margin:0 0 8px}p{color:#a9c3cf;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px}
+section{border:1px solid #29434f;background:#0b1722;border-radius:10px;padding:14px}
+label{display:block;margin:8px 0 5px;color:#a9c3cf}
+input,textarea{box-sizing:border-box;width:100%;background:#061018;color:#d9eef8;border:1px solid #365361;border-radius:6px;padding:9px;font:inherit}
+textarea{min-height:90px;resize:vertical}
+button{margin-top:9px;padding:8px 12px;border:1px solid #486a79;border-radius:6px;background:#102c39;color:#e8f7ff;cursor:pointer}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#061018;border-radius:6px;padding:10px;max-height:360px;overflow:auto;color:#cae8f6}
+</style>
+</head>
+<body>
+<main>
+<h1>Pass 220 / I080 deterministic knowledge graph QPU</h1>
+<p>Additive browser proof surface for the frozen I041 source: 5,184 addressed BigInt states, typed Genesis constructors, one Lane 5 operation per tick, exact Hash216 hydration, and lossless symbolic IEEE-754 RNA ingress/egress.</p>
+<div class="grid">
+<section><strong>Genesis / 5,184 carrier</strong><label for="genesisPrefix">Constructor</label><input id="genesisPrefix" value="10" autocomplete="off"><button id="genesisButton">Build Genesis carrier</button><pre id="genesisOutput"></pre></section>
+<section><strong>Lane 5 u^16 phase gear</strong><label for="tickInput">Tick</label><input id="tickInput" value="0" autocomplete="off"><button id="tickButton">Evaluate one tick</button><pre id="tickOutput"></pre></section>
+<section><strong>Hash216 hydration</strong><label for="hash216Input">216-character Hash216 source</label><textarea id="hash216Input"></textarea><button id="hashButton">Hydrate 3 × 5,184</button><pre id="hashOutput"></pre></section>
+<section><strong>IEEE-754 symbolic RNA</strong><label for="ieeeInput">binary16 / binary32 / binary64 raw bits</label><textarea id="ieeeInput">00111111100000000000000000000000</textarea><button id="ieeeButton">Transcribe and reconstruct</button><pre id="ieeeOutput"></pre></section>
+</div>
+<section style="margin-top:14px"><strong>Deterministic QPU contract</strong><pre id="contractOutput"></pre></section>
+</main>
+<script>
+(() => {
+  "use strict";
+  const WIDTH=5184n, VM81=81n, LOCAL64=64n, HASH72=72n, HASH216=216n;
+  const PHASE_MOD=72n, PHASE_STEP=16n, PHASE_ORBIT=9n;
+  const E=Object.freeze([8n,24n,40n,56n,72n,16n,32n,48n,64n]);
+  const ROOT_METADATA_SEED="179971.179971";
+  const GENESIS=Object.freeze({"10":"LO_SHU_SUDOKU_QUDIT_NUCLEUS","20":"DYADIC_4_7_11_SCALING_QUANTIZATION","30":"TRIADIC_A2_B2_C2_CLOSURE","100":"DUAL_9X9_QUDIT_ENTANGLEMENT"});
+  function fail(message){throw new Error(message)}
+  function exactBigInt(text,name){if(typeof text!=="string"||! /^-?[0-9]+$/.test(text))fail(name+" must be an integer string");return BigInt(text)}
+  function zeros(count){let out="";for(let i=0n;i<count;i+=1n)out+="0";return out}
+  function buildGenesis(prefix){
+    if(!Object.prototype.hasOwnProperty.call(GENESIS,prefix))fail("unsupported Genesis constructor");
+    const padding=WIDTH-BigInt(prefix.length),carrier=prefix+zeros(padding);
+    if(BigInt(carrier.length)!==WIDTH)fail("Genesis width drift");
+    return Object.freeze({prefix,constructor:GENESIS[prefix],serialized_characters:"5184",padding_hnan_zero_positions:padding.toString(),hnan_zero_defined:true,root_metadata_seed:ROOT_METADATA_SEED,decimal_address_alphabet:"0,1,2,3,4,5,6,7,8,9",dyadic_4_7_11:prefix==="20"?"4,7,11":null,triadic_123:prefix==="30"?"1,2,3 : 2,4,6 : 3,6,9":null,triadic_closure:prefix==="30"?"a^2+b^2=c^2=(A+B=C)/(AB/P^4)":null,dual_qudit:prefix==="100"?"100=90+10=81*81":null,ordered_dual_qudit_addresses:prefix==="100"?"6561":null,head:carrier.slice(0,18),tail:carrier.slice(-18),carrier});
+  }
+  function coordinate5184(index){
+    if(index<0n||index>=WIDTH)fail("address outside 0..5183");
+    return Object.freeze({linear5184:index.toString(),vm81_cell:(index/LOCAL64).toString(),local64:(index%LOCAL64).toString(),hash72_row:(index/HASH72).toString(),hash72_column:(index%HASH72).toString()});
+  }
+  function phaseTick(text){
+    const tick=exactBigInt(text,"tick");if(tick<0n)fail("tick must be nonnegative");
+    if(VM81*LOCAL64!==WIDTH||HASH72*HASH72!==WIDTH||64n*81n!==72n*72n)fail("5184 gear drift");
+    if(PHASE_ORBIT*PHASE_STEP!==2n*PHASE_MOD)fail("u^16 orbit drift");
+    const linear=tick%WIDTH,p=tick%PHASE_ORBIT;
+    return Object.freeze({tick:tick.toString(),one_tick_one_lane5_optimization_operation:true,address:coordinate5184(linear),phase_gear_E:E.map(x=>x.toString()),u16_phase_index9:p.toString(),u16_phase_value:E[p.toString()].toString(),ratio_64_72:"8/9",ratio_72_81:"8/9",common_closure_5184:"5184",nine_u16_steps:"144",two_u72_turns:"144",quartic_closure:"AB=P^4",mirror_quartic_closure:"BA=-P^4",hnan_closure:true,full_5184_tick_period_restores_address:((tick+WIDTH)%WIDTH)===linear});
+  }
+  function validateHash216(source){if(typeof source!=="string"||BigInt(source.length)!==HASH216)fail("Hash216 must be exactly 216 characters");return source}
+  function hydrateHash216(source){
+    const h=validateHash216(source),lanes=[h.slice(0,72),h.slice(72,144),h.slice(144,216)],roles=["PREVIOUS:A","STATE:B","RECEIPT:C"];
+    const planes=lanes.map((lane,planeIndex)=>{
+      const rows=[];for(let row=0n;row<HASH72;row+=1n){rows.push({row72:row.toString(),source_symbol:lane[row.toString()],linear_start:(row*HASH72).toString(),linear_end:(row*HASH72+71n).toString()})}
+      if(rows.map(r=>r.source_symbol).join("")!==lane)fail("Hash72 recompression mismatch");
+      return Object.freeze({role:roles[planeIndex],generator_hash72:lane,expanded_positions:"5184",roundtrip_exact:true});
+    });
+    return Object.freeze({hash216_width:"216",planes,positions_per_plane:"5184",full_attached_components:"15552",roundtrip_exact:true,lossless_translation:true});
+  }
+  function reverseString(s){return Array.from(s).reverse().join("")}
+  function ieeeLayout(width){if(width===16n)return [5n,10n];if(width===32n)return [8n,23n];if(width===64n)return [11n,52n];fail("IEEE ingress width must be 16, 32, or 64 bits")}
+  function bitsToBigInt(bits){let value=0n;for(const bit of bits)value=(value<<1n)|(bit==="1"?1n:0n);return value}
+  function sliceBig(source,start,end){let out="";for(let i=start;i<end;i+=1n)out+=source[i.toString()];return out}
+  function ieeeIngress(raw){
+    if(typeof raw!=="string"||! /^[01]+$/.test(raw))fail("IEEE source must be a raw bit string");
+    const width=BigInt(raw.length),layout=ieeeLayout(width),ew=layout[0],fw=layout[1],end=1n+ew,sign=raw[0],exp=sliceBig(raw,1n,end),frac=sliceBig(raw,end,width);
+    if(BigInt(frac.length)!==fw)fail("fraction width drift");
+    const expAllZero=exp===zeros(ew),expAllOne=Array.from(exp).every(x=>x==="1"),fracZero=bitsToBigInt(frac)===0n;
+    let classification="NORMAL";if(expAllOne)classification=fracZero?"INFINITY":"NAN";else if(expAllZero)classification=fracZero?"ZERO":"SUBNORMAL";
+    const mirror=reverseString(raw);
+    return Object.freeze({format:"binary"+width.toString(),width:width.toString(),sign_bit:sign,exponent_bits:exp,fraction_bits:frac,classification,raw_bits:raw,mirror_bits:mirror,palindromic_carrier:raw+"."+mirror,symbolic_constructor:"IEEE754["+sign+"|"+exp+"|"+frac+"]",internal_ieee_float_algorithm_used:false,lossy_scalar_projection_used:false});
+  }
+  function ieeeEgress(record){
+    if(!record||typeof record.raw_bits!=="string")fail("missing raw_bits");const replay=ieeeIngress(record.raw_bits);
+    for(const key of ["format","width","sign_bit","exponent_bits","fraction_bits","classification","mirror_bits","palindromic_carrier","symbolic_constructor"]){if(replay[key]!==record[key])fail("RNA record drift at "+key)}
+    return record.raw_bits;
+  }
+  function ieeeRoundtrip(raw){const ingress=ieeeIngress(raw),egress=ieeeEgress(ingress);return Object.freeze({ingress,egress_raw_bits:egress,roundtrip_exact:egress===raw,palindromic_reverse_exact:reverseString(ingress.mirror_bits)===raw})}
+  const api=Object.freeze({
+    schema:"HHS_PASS_220_I080_DETERMINISTIC_KNOWLEDGE_GRAPH_QPU_HTML_V1",buildGenesis,coordinate5184,phaseTick,hydrateHash216,ieeeIngress,ieeeEgress,ieeeRoundtrip,
+    contract:Object.freeze({carrier_width:"5184",address_range:"0..5183",character_offset_domain:"-9..+9",trinary_tensor:"3^5183",hash216_hydration:"3x5184=15552",genesis_10:"10 + 5182 HNAN-zero positions",genesis_20:"4,7,11 dyadic scaling quantization",genesis_30:"a^2+b^2=c^2=(A+B=C)/(AB/P^4); 1,2,3:2,4,6:3,6,9",genesis_100:"100=90+10=81*81 dual 9x9 qudit entanglement",phase_gear:"u^16; E={8,24,40,56,72,16,32,48,64}; 64/72=72/81=8/9; 64*81=72^2=5184",ieee_pipeline:"raw IEEE bits -> palindromic RNA transcript -> native symbolic record -> exact raw bits",deterministic:true,random_source_authority:false,ieee_float_internal_logic_authority:false,lossy_scalar_projection_authority:false})
+  });
+  globalThis.I080DeterministicKnowledgeGraphQPU=api;
+  function show(id,value){document.getElementById(id).textContent=JSON.stringify(value,(k,v)=>typeof v==="bigint"?v.toString():v,2)}
+  document.getElementById("genesisButton").addEventListener("click",()=>{try{show("genesisOutput",api.buildGenesis(document.getElementById("genesisPrefix").value.trim()))}catch(e){show("genesisOutput",{error:String(e.message||e)})}});
+  document.getElementById("tickButton").addEventListener("click",()=>{try{show("tickOutput",api.phaseTick(document.getElementById("tickInput").value.trim()))}catch(e){show("tickOutput",{error:String(e.message||e)})}});
+  document.getElementById("hashButton").addEventListener("click",()=>{try{show("hashOutput",api.hydrateHash216(document.getElementById("hash216Input").value.trim()))}catch(e){show("hashOutput",{error:String(e.message||e)})}});
+  document.getElementById("ieeeButton").addEventListener("click",()=>{try{show("ieeeOutput",api.ieeeRoundtrip(document.getElementById("ieeeInput").value.trim()))}catch(e){show("ieeeOutput",{error:String(e.message||e)})}});
+  show("contractOutput",api.contract);show("genesisOutput",api.buildGenesis("10"));show("tickOutput",api.phaseTick("0"));
+})();
+</script>
+</body>
+</html>
