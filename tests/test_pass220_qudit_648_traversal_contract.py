@@ -8,6 +8,9 @@ import unittest
 from hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe import (
     raw_le_to_words,
     words_to_raw_le,
+    build_execution_cases,
+    unpack_vm81_binding_words,
+    VM81RNABigIntExecutionBindingProbeError,
 )
 
 NUCLEI = ((8, 3, 4), (1, 5, 9), (6, 7, 2))
@@ -65,6 +68,41 @@ class Pass220Qudit648TraversalTests(unittest.TestCase):
                     tuple(spatial[address] for address in path)
                 )
                 self.assertEqual(reconstructed, original)
+
+    def test_typed_pass219_frames_preserve_native_register_semantics(self):
+        """The spatial permutation is a view, not a rewrite of typed word offsets."""
+        path = spatial_path()
+        cases = build_execution_cases()
+        self.assertEqual(len(cases), 12)
+        for case in cases:
+            with self.subTest(opcode=case["opcode"]):
+                original = case["raw_bytes"]
+                words = raw_le_to_words(original)
+                spatial = dict(zip(path, words))
+                recovered = tuple(spatial[address] for address in path)
+                self.assertEqual(recovered, words)
+                self.assertEqual(words_to_raw_le(recovered), original)
+                decoded = unpack_vm81_binding_words(recovered)
+                self.assertEqual(decoded["bigint"], case["bigint"])
+                self.assertEqual(decoded["metadata"]["opcode"], case["opcode"])
+                self.assertEqual(decoded["metadata"]["lane"], case["lane"])
+                self.assertEqual(decoded["metadata"]["direction"], case["direction"])
+
+    def test_native_little_endian_register_order_is_authoritative(self):
+        words = (0x0102030405060708,) + (0,) * (WORD_COUNT - 1)
+        raw = words_to_raw_le(words)
+        self.assertEqual(raw[:8], bytes.fromhex("0807060504030201"))
+        self.assertEqual(raw_le_to_words(raw), words)
+
+    def test_spatial_path_does_not_bypass_typed_header_validation(self):
+        case = build_execution_cases()[0]
+        words = list(raw_le_to_words(case["raw_bytes"]))
+        words[7] ^= 1
+        path = spatial_path()
+        spatial = dict(zip(path, words))
+        recovered = tuple(spatial[address] for address in path)
+        with self.assertRaises(VM81RNABigIntExecutionBindingProbeError):
+            unpack_vm81_binding_words(recovered)
 
     def test_invalid_frame_length_rejected(self):
         for length in (0, BLOCK_BYTES - 1, BLOCK_BYTES + 1):
