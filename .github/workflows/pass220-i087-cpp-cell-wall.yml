@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "hhs_runtime/include/hhs_pass220_i087_ordered_reconciliation_v1.hpp"
+      - "hhs_runtime/include/hhs_pass220_i087_successor_preflight_v1.hpp"
       - "hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h"
       - "tests/pass220/test_pass220_i087_cpp_bridge_behavior_v1.cpp"
       - "tests/pass220/test_pass220_i087_real_c_resolver_v1.cpp"
