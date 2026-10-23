@@ -1,0 +1,140 @@
+name: Pass 220 I029 Genesis Law1 Global Substitution
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_genesis_law1_global_substitution_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_law1_global_substitution_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "evidence/pass220/i029_genesis_law1_global_substitution_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i029_genesis_law1_global_substitution_wolfram_20260922_v1.output.json"
+      - "docs/pass220/PASS_220_I029_GENESIS_LAW1_GLOBAL_SUBSTITUTION.md"
+      - "docs/operations/restart/PASS_220_I029_GENESIS_LAW1_GLOBAL_SUBSTITUTION_RESTART.md"
+      - ".github/workflows/pass220-i029-genesis-law1-global-substitution.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_genesis_law1_global_substitution_v1.py"
+      - "tests/pass220/test_hhs_pass220_genesis_law1_global_substitution_v1.py"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py"
+      - "hhs_runtime/hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "hhs_runtime/hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py"
+      - "tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py"
+      - "evidence/pass220/i029_genesis_law1_global_substitution_wolfram_20260922_v1.wl"
+      - "evidence/pass220/i029_genesis_law1_global_substitution_wolfram_20260922_v1.output.json"
+      - "docs/pass220/PASS_220_I029_GENESIS_LAW1_GLOBAL_SUBSTITUTION.md"
+      - "docs/operations/restart/PASS_220_I029_GENESIS_LAW1_GLOBAL_SUBSTITUTION_RESTART.md"
+      - ".github/workflows/pass220-i029-genesis-law1-global-substitution.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-head:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependency-scoped requirements
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Verify Wolfram 12 of 12 receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path(
+              "evidence/pass220/"
+              "i029_genesis_law1_global_substitution_wolfram_20260922_v1.wl"
+          ).read_text(encoding="utf-8")
+          data = json.loads(
+              Path(
+                  "evidence/pass220/"
+                  "i029_genesis_law1_global_substitution_wolfram_20260922_v1.output.json"
+              ).read_text(encoding="utf-8")
+          )
+          assert data["status"] == "PASS"
+          assert data["check_count"] == data["pass_count"] == 12
+          assert data["failed"] == []
+          assert data["schema"] in source
+          assert data["checks"]["one_active_epsilon_blocks_phase_lock"] is True
+          assert data["checks"]["no_commutation_or_cancellation_rule_present"] is True
+          PY
+
+      - name: Compile exact Python surfaces
+        run: |
+          python -m py_compile             hhs_runtime/hhs_pass220_genesis_law1_global_substitution_v1.py             hhs_runtime/hhs_service_registry_v1.py             tests/pass220/test_hhs_pass220_genesis_law1_global_substitution_v1.py
+
+      - name: Reject floating and host-division authority in I029 implementation
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+
+          path = Path("hhs_runtime/hhs_pass220_genesis_law1_global_substitution_v1.py")
+          tree = ast.parse(path.read_text(encoding="utf-8"))
+          bad = []
+          for node in ast.walk(tree):
+              if isinstance(node, ast.Constant) and isinstance(node.value, float):
+                  bad.append(("float_literal", node.lineno))
+              if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div):
+                  bad.append(("host_division", node.lineno))
+          assert not bad, bad
+          print("HHS_I029_EXACT_AUTHORITY_SCAN=PASS")
+          PY
+
+      - name: Run I029 exact and adversarial regressions
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_genesis_law1_global_substitution_v1.py
+
+      - name: Run inherited normalization and G41 regressions
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_lo_shu_normalization_v1.py
+          tests/pass220/test_hhs_pass220_g41_sudoku_fingerprint_algebra_v1.py
+
+      - name: Run inherited I028 Lane5 rooted registry regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_g3_ouroboros_opcode_registry_v1.py
+
+      - name: Verify callable self-test and zero-authority expansion
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_genesis_law1_global_substitution_v1 import (
+              genesis_law1_self_test,
+              law1_hydration_witness,
+          )
+          result = genesis_law1_self_test()
+          assert result["ok"] is True
+          assert result["authority_expansion"] is False
+          witness = law1_hydration_witness()
+          assert witness["canonical_vm81_mutation_authority"] is False
+          assert witness["canonical_hash72_authority"] is False
+          assert witness["canonical_hash216_authority"] is False
+          assert witness["canonical_persistence_authority"] is False
+          assert witness["floating_point_authority"] is False
+          PY
