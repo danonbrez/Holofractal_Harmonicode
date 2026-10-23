@@ -1,0 +1,23 @@
+name: Pass 220 Native Causal Host Repair Audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/production-native-causal-host-repair-579dbb58.sh'
+      - 'docs/operations/restart/PASS_220_NATIVE_CAUSAL_PRODUCTION_REPAIR_20261011.md'
+      - 'tests/pass220/test_hhs_pass220_native_causal_host_repair_audit_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i088_acceptance_evidence_v1.py'
+      - 'scripts/verify_production_native_causal_acceptance_579dbb58.py'
+      - 'scripts/collect_production_native_causal_acceptance_579dbb58.sh'
+      - '.github/workflows/pass220-native-causal-host-repair-audit.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/pass220/test_hhs_pass220_native_causal_host_repair_audit_v1.py tests/pass220/test_hhs_pass220_i088_acceptance_evidence_v1.py
