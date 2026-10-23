@@ -6,11 +6,13 @@ on:
     paths:
       - 'native_projects/hhs_storybook_reel/**'
       - 'hhs_backend/runtime/hhs_storybook_reel_*.py'
+      - 'hhs_backend/runtime/hhs_storyboard_*.py'
       - 'hhs_backend/api/storybook_reel_routes.py'
       - 'hhs_backend/visual_server.py'
       - 'applications/storybook_reel_studio/**'
       - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'tests/test_hhs_storybook_reel_*.py'
+      - 'tests/test_hhs_storyboard_*.py'
       - 'tools/run_storybook_reel_acceptance.py'
       - '.github/workflows/storybook-reel-studio.yml'
       - 'docs/storybook-reel/**'
@@ -21,11 +23,13 @@ on:
     paths:
       - 'native_projects/hhs_storybook_reel/**'
       - 'hhs_backend/runtime/hhs_storybook_reel_*.py'
+      - 'hhs_backend/runtime/hhs_storyboard_*.py'
       - 'hhs_backend/api/storybook_reel_routes.py'
       - 'hhs_backend/visual_server.py'
       - 'applications/storybook_reel_studio/**'
       - 'applications/holofractal_harmonizer/src/production-startup-coordinator.mjs'
       - 'tests/test_hhs_storybook_reel_*.py'
+      - 'tests/test_hhs_storyboard_*.py'
       - 'tools/run_storybook_reel_acceptance.py'
       - '.github/workflows/storybook-reel-studio.yml'
       - 'docs/storybook-reel/**'
@@ -111,10 +115,14 @@ jobs:
           timeout 90s python -m py_compile \
             hhs_backend/runtime/hhs_storybook_reel_timing_v1.py \
             hhs_backend/runtime/hhs_storybook_reel_v1.py \
+            hhs_backend/runtime/hhs_storyboard_voice_sync_v1.py \
+            hhs_backend/runtime/hhs_storybook_elevenlabs_v1.py \
             hhs_backend/api/storybook_reel_routes.py \
+            hhs_backend/server.py \
             hhs_backend/visual_server.py \
             tests/test_hhs_storybook_reel_timing_v1.py \
             tests/test_hhs_storybook_reel_studio_v1.py \
+            tests/test_hhs_storyboard_voice_sync_v1.py \
             tools/run_storybook_reel_acceptance.py
           node --check applications/storybook_reel_studio/app.js
           node --check applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
@@ -123,17 +131,18 @@ jobs:
         run: |
           timeout 900s pytest -q \
             tests/test_hhs_storybook_reel_timing_v1.py \
-            tests/test_hhs_storybook_reel_studio_v1.py
+            tests/test_hhs_storybook_reel_studio_v1.py \
+            tests/test_hhs_storyboard_voice_sync_v1.py
 
       - name: Verify static no-code studio contract
         run: |
           grep -q 'Upload narration audio' applications/storybook_reel_studio/index.html
-          grep -q 'Generate 90-second reel' applications/storybook_reel_studio/index.html
+          grep -q 'Generate 88-second reel' applications/storybook_reel_studio/index.html
           grep -q 'Automatic compatible x/y/z/w palette' applications/storybook_reel_studio/app.js
           grep -q 'no parallel workers' applications/storybook_reel_studio/index.html
           grep -q "href = '/storybook-reel/'" applications/holofractal_harmonizer/src/production-startup-coordinator.mjs
 
-  full-90-second-acceptance:
+  full-88-second-acceptance:
     needs: native-api-ui
     runs-on: ubuntu-24.04
     timeout-minutes: 60
@@ -169,18 +178,18 @@ jobs:
           timeout 600s make c-abi
           timeout 900s make -C native_projects/hhs_storybook_reel all
 
-      - name: Generate and inspect complete 90-second reel
+      - name: Generate and inspect complete 88-second reel
         run: |
           timeout 3000s python tools/run_storybook_reel_acceptance.py \
             --output evidence/storybook-reel-acceptance \
             | tee evidence/storybook-reel-acceptance.log
-          grep -q 'HHS_90_SECOND_STORYBOOK_REEL_NO_CODE_APPLICATION_VERIFIED' \
+          grep -q 'HHS_88_SECOND_22_FRAME_STORYBOARD_REEL_APPLICATION_VERIFIED' \
             evidence/storybook-reel-acceptance/acceptance.json
 
       - name: Upload reel package and acceptance evidence
         uses: actions/upload-artifact@v4
         with:
-          name: hhs-storybook-reel-90-second-acceptance
+          name: hhs-storybook-reel-88-second-acceptance
           if-no-files-found: error
           retention-days: 30
           path: |

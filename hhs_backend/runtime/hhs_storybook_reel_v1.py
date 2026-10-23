@@ -7,7 +7,9 @@ codec transport, narration normalization, scaling, muxing, and inspection.
 """
 from __future__ import annotations
 
+import csv
 import hashlib
+import io
 import json
 import os
 import re
@@ -153,6 +155,9 @@ class StorybookReelRuntime:
             "native_library_ready": self.native_library.is_file(),
             "max_audio_bytes": MAX_AUDIO_BYTES,
             "max_text_bytes": MAX_TEXT_BYTES,
+            "storyboard_frames": 22,
+            "storyboard_frame_seconds": 4,
+            "elevenlabs_configured": bool(os.environ.get("ELEVENLABS_API_KEY")),
             "templates": [
                 {"id": template_id, **template}
                 for template_id, template in STYLE_TEMPLATES.items()
@@ -297,6 +302,50 @@ class StorybookReelRuntime:
         duration = _decimal_fraction(str(record["duration_seconds"]))
         return record, source_path, duration
 
+    def save_voice_sync(self, audio_id: str, manifest: Mapping[str, Any]) -> Dict[str, str]:
+        record, _source_path, _duration = self._audio_record(audio_id)
+        token = audio_id.split(":", 1)[1]
+        json_path = self.upload_root / f"{token}.voice-sync.json"
+        csv_path = self.upload_root / f"{token}.voice-sync.csv"
+        payload = dict(manifest)
+        payload["audio_id"] = record["audio_id"]
+        json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["frame", "start_timecode", "end_timecode", "start_seconds", "end_seconds", "narration", "visual_label", "visual_prompt", "transition_anchor"])
+        for frame in payload.get("frames") or []:
+            writer.writerow([
+                frame.get("frame"),
+                frame.get("start_timecode"),
+                frame.get("end_timecode"),
+                frame.get("start_seconds"),
+                frame.get("end_seconds"),
+                frame.get("narration"),
+                frame.get("visual_label", ""),
+                frame.get("visual_prompt", ""),
+                frame.get("transition_anchor", ""),
+            ])
+        csv_path.write_text(output.getvalue(), encoding="utf-8")
+        return {
+            "voice_sync_json_url": f"/api/runtime/storybook-reel/audio/{audio_id}/voice-sync.json",
+            "voice_sync_csv_url": f"/api/runtime/storybook-reel/audio/{audio_id}/voice-sync.csv",
+            "voiceover_audio_url": f"/api/runtime/storybook-reel/audio/{audio_id}/source",
+        }
+
+    def audio_asset_path(self, audio_id: str, kind: str) -> Path:
+        _record, source_path, _duration = self._audio_record(audio_id)
+        token = audio_id.split(":", 1)[1]
+        if kind == "source":
+            return source_path
+        if kind == "voice_sync_json":
+            path = self.upload_root / f"{token}.voice-sync.json"
+        elif kind == "voice_sync_csv":
+            path = self.upload_root / f"{token}.voice-sync.csv"
+        else:
+            raise ValueError("unknown audio asset kind")
+        if not path.is_file():
+            raise FileNotFoundError("voice-sync artifact does not exist")
+        return path
     @staticmethod
     def _parse_color(value: Any, fallback: Mapping[str, int]) -> Dict[str, int]:
         if isinstance(value, str) and re.fullmatch(r"#[0-9a-fA-F]{6}", value):
@@ -382,6 +431,7 @@ class StorybookReelRuntime:
         return arguments
 
     def _normalize_audio(self, source: Path, output: Path, duration: Fraction) -> None:
+        """Preserve narration pace; only resample and close the 88-second container."""
         self._run(
             [
                 "ffmpeg",
@@ -392,7 +442,7 @@ class StorybookReelRuntime:
                 str(source),
                 "-vn",
                 "-af",
-                self._atempo_chain(duration),
+                f"aresample=48000,apad=pad_dur={DURATION_SECONDS},atrim=duration={DURATION_SECONDS}",
                 "-ar",
                 "48000",
                 "-ac",
@@ -405,7 +455,6 @@ class StorybookReelRuntime:
             ],
             timeout=900,
         )
-
     def _encode_mp4(self, styled_rgba: Path, narration_wav: Path, output: Path) -> None:
         filter_graph = (
             "[0:v]scale=1080:972:flags=neighbor,"
@@ -485,8 +534,8 @@ class StorybookReelRuntime:
         if not video or not audio:
             raise RuntimeError("generated MP4 is missing video or audio stream")
         duration = _decimal_fraction(str((payload.get("format") or {}).get("duration") or "0"))
-        if duration < Fraction(899, 10) or duration > Fraction(901, 10):
-            raise RuntimeError(f"generated MP4 duration is outside 90-second acceptance: {_fraction_decimal(duration)}")
+        if duration < Fraction(879, 10) or duration > Fraction(881, 10):
+            raise RuntimeError(f"generated MP4 duration is outside 88-second acceptance: {_fraction_decimal(duration)}")
         if video.get("codec_name") != "h264" or int(video.get("width") or 0) != 1080 or int(video.get("height") or 0) != 1920:
             raise RuntimeError("generated MP4 video stream failed codec or dimension acceptance")
         if str(video.get("r_frame_rate")) != f"{FPS}/1":
@@ -621,18 +670,18 @@ class StorybookReelRuntime:
         timing_sha256 = _sha256_file(timing_json_path)
         readme_path.write_text(
             "# HHS Storybook Reel Package\n\n"
-            "This package contains a 90-second vertical H.264/AAC MP4 generated from the included narration and matching text. "
+            "This package contains a 88-second vertical H.264/AAC MP4 generated from the included narration and matching text. "
             "Visual frames were produced by the native VM81 platformer, sprite-map, texture, storybook, Hash72, and Hash216 ABI surfaces. "
             "FFmpeg was used only for narration normalization, integer-scale presentation, codec encoding, and MP4 muxing.\n\n"
             f"- Template: {style['template_label']}\n"
             f"- Caption timing: {timing_source}\n"
             "- Parallel computation: disabled\n"
-            "- Canonical duration: 90 seconds\n",
+            "- Canonical duration: 88 seconds\n",
             encoding="utf-8",
         )
         receipt = {
             "schema": "HHS_STORYBOOK_REEL_RECEIPT_V1",
-            "classification": "HHS_90_SECOND_STORYBOOK_REEL_APPLICATION_VERIFIED",
+            "classification": "HHS_88_SECOND_22_FRAME_STORYBOARD_REEL_APPLICATION_VERIFIED",
             "artifact_id": artifact_id,
             "request_root_hash72": request_record["request_root_hash72"],
             "audio_root_hash72": audio_record["audio_root_hash72"],
@@ -662,6 +711,13 @@ class StorybookReelRuntime:
             (receipt_path, "evidence/receipt.json"),
             (readme_path, "README.md"),
         ]
+        token_value = audio_record["audio_id"].split(":", 1)[1]
+        voice_sync_json = self.upload_root / f"{token_value}.voice-sync.json"
+        voice_sync_csv = self.upload_root / f"{token_value}.voice-sync.csv"
+        if voice_sync_json.is_file():
+            package_files.append((voice_sync_json, "source/voice-sync.json"))
+        if voice_sync_csv.is_file():
+            package_files.append((voice_sync_csv, "source/voice-sync.csv"))
         _stable_zip(zip_path, package_files)
         zip_sha256 = _sha256_file(zip_path)
         record = {
