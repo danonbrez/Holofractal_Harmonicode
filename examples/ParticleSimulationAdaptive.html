@@ -1335,8 +1335,7 @@
         halo.glowStrength.needsUpdate=true;
       }
       if(mesh.instanceColor){
-        if(typeof mesh.instanceColor.setUsage==="function" &&
-           THREE.DynamicDrawUsage!==undefined) mesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
+        // GPU buffer usage is immutable after first upload. Never setUsage per frame.
         mesh.instanceColor.needsUpdate=true;
       }
     }
@@ -1377,14 +1376,14 @@
         const maxRatio=Math.max(1,window.devicePixelRatio||1);
         const state={mode:"adaptive",ratio:Math.min(maxRatio,2),maxRatio,
           renderMs:0,avgMs:0,samples:0,adjustments:0,lastChange:0,
-          minRatio:0.75,targetMs:12,history:[]};
+          minRatio:0.75,targetMs:12,history:[],drawErrors:0};
         const panel=document.createElement("div");
         panel.id="hhs-device-benchmark";
         panel.style.cssText="position:fixed;right:8px;bottom:8px;z-index:1000;background:#080d18e8;color:#f0f5ff;border:1px solid #42536b;border-radius:7px;padding:8px;font:12px monospace;max-width:280px;pointer-events:auto";
         panel.innerHTML='<label style="display:block">Rendering <select id="hhs-raster-mode" style="background:#17263a;color:white"><option value="adaptive">Adaptive resolution</option><option value="max">Native maximum</option></select></label><div id="hhs-raster-metrics" style="margin-top:5px"></div><button id="hhs-copy-benchmark" style="margin-top:5px">Copy device benchmark</button>';
         document.body.appendChild(panel);
         const metrics=panel.querySelector("#hhs-raster-metrics");
-        const apply=()=>{renderer.setPixelRatio(state.ratio);renderer.setSize(window.innerWidth,window.innerHeight);};
+        const apply=()=>{if(!renderer)return;renderer.setPixelRatio(state.ratio);renderer.setSize(window.innerWidth,window.innerHeight);};
         panel.querySelector("#hhs-raster-mode").addEventListener("change",e=>{
           state.mode=e.target.value;state.ratio=state.mode==="max"?maxRatio:Math.min(maxRatio,2);
           state.avgMs=0;state.samples=0;state.lastChange=performance.now();apply();
@@ -7525,15 +7524,16 @@ function observe(){
   if(frame<lastFrame){records.length=0;nodeIndex.clear();edgeIndex.clear();resets++;}
   lastFrame=frame;
   const tick=window.HHS&&window.HHS.engine?window.HHS.engine.tick:null;
-  const crossings=audio.currentCrossingEvents||[];
+  const crossings=Array.isArray(audio.currentCrossingEvents)?audio.currentCrossingEvents:[];
   const sources=carrierIds.map(probe).filter(Boolean);
   const event={kind:"AUDIO_MOMENTUM_OBSERVATION",frame,
-    canonicalSampleStart:frame*735,canonicalSampleEndExclusive:(frame+1)*735,
+    canonicalSampleStart:frame*audio.audioClock.samplesPerFrame,
+    canonicalSampleEndExclusive:(frame+1)*audio.audioClock.samplesPerFrame,
     crossingCount:crossings.length,
     // The first 16 crossing tuples are provenance samples, not all events.
     crossingPreview:crossings.slice(0,16).map(c=>c.slice()),
     priorPhysicsTick:lastTick,physicsTick:tick,
-    energyProbe:sources,frequencyLHz:d.harmonicFrequencyLHz,
+    velocityProbes:sources,frequencyLHz:d.harmonicFrequencyLHz,
     frequencyRHz:d.harmonicFrequencyRHz,
     rmsL:d.frameRmsL,rmsR:d.frameRmsR,
     renderOnly:true,nativeStateAdmitted:false,hash216Minted:false};
