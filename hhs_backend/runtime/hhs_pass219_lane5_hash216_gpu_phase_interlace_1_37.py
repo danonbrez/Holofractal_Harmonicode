@@ -225,6 +225,18 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
             )
         )
         bounded = max(0, min(int(top_k), len(ranked)))
+        # Structural hydration decisions are candidate-only: no modality payload,
+        # source semantics, learned float score, or canonical mutation required.
+        hydration_plan = []
+        for item in ranked[:bounded]:
+            distance = item["hash216_distance"]
+            hydration_plan.append({
+                "candidate_id": item["candidate_id"],
+                "candidate_hash216": item["candidate_hash216"],
+                "strategy": "HYDRATE_EXACT" if distance == 0 else "VERIFY_COMPOSITION",
+                "distance": distance,
+                "requires_exact_cpu_vm81_replay": True,
+            })
         return {
             "schema": SCHEMA,
             "query_hash216": query,
@@ -238,6 +250,7 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
             "prime_route": route,
             "hash216_segment_rankings": segment_rankings,
             "ranked": ranked[:bounded],
+            "hydration_plan": hydration_plan,
             "candidate_only": True,
             "validated_hash216_read_only": True,
             "gpu_may_commit_hash72": False,
