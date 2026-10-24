@@ -4697,24 +4697,20 @@
          tick, receipt, or change the inherited quartic render gate. */
       const audioVisualFrame=!!(window.HHSAudioViz &&
                                 window.HHSAudioViz.needsProjectionFrame());
-      if(renderGate){
+      /* Exactly one display projection per admitted frame. Full projected
+         color/overlap cost controls cadence; physics never depends on this. */
+      const gate=window.HHSProjectionBudget;
+      if((renderGate||audioVisualFrame)&&gate.admit(performance.now())){
+        const t0=performance.now();
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         const rasterT0=window.HHSDeviceRaster.begin();
-        renderer.render(scene, camera);
-        window.HHSDeviceRaster.end(rasterT0);
-        renderedFrames++;
-        /* state JSON is a presentation surface; get_state remains fresh on demand */
-        outputState();
-      }
-      if(!renderGate && audioVisualFrame){
-        syncParticleRenderBatches();
-        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
-        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
-        const rasterT1=window.HHSDeviceRaster.begin();
         renderer.render(scene,camera);
-        window.HHSDeviceRaster.end(rasterT1);
+        window.HHSDeviceRaster.end(rasterT0);
+        gate.finish(performance.now()-t0);
+        renderedFrames++;
+        if(renderGate)outputState();
       }
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
@@ -7576,6 +7572,18 @@ toggle.addEventListener("click",()=>{drawer.hidden=!drawer.hidden;toggle.setAttr
 document.body.append(toggle,drawer);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup,{once:true});else setup();
+})();
+</script>
+<script id="hhs-projection-budget">
+(function(){
+"use strict";
+let last=-Infinity,mean=0,count=0,skips=0,period=1000/60;
+window.HHSProjectionBudget=Object.freeze({
+  admit(t){if(t-last<period){skips++;return false;}last=t;return true;},
+  finish(ms){mean=count?mean*.8+ms*.2:ms;count++;
+    if(count%8===0)period=mean>24?50:mean>15?1000/30:1000/60;},
+  get diagnostics(){return {drawn:count,skipped:skips,meanFullProjectionMs:mean,desiredHz:Math.round(1000/period),physicsChanged:false};}
+});
 })();
 </script>
 </body>
