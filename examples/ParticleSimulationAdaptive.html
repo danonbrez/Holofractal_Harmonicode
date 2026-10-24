@@ -1156,12 +1156,12 @@
   <div id="densityCtl" style="position:absolute;top:158px;right:10px;z-index:104;background:rgba(0,0,20,.7);color:#9cf;padding:6px 10px;border-radius:4px;font-size:.8em;">
     <div>density test: mass <b>&times;<span id="massVal">1</span></b></div>
     <input id="massSlider" type="range" min="1" max="4" step="0.5" value="1" style="width:150px">
-    <div>collision <b>&times;<span id="collVal">1</span></b></div>
-    <input id="collSlider" type="range" min="1" max="1.5" step="0.05" value="1" style="width:150px">
+    <div>collision <b>&times;<span id="collVal">1.4</span></b></div>
+    <input id="collSlider" type="range" min="1" max="1.5" step="0.05" value="1.4" style="width:150px">
     <div>constructor <b>&times;<span id="ctorVal">1</span></b></div>
     <input id="ctorSlider" type="range" min="1" max="100000" step="1" value="1" style="width:150px">
-    <div>formation <b>&times;<span id="bondVal">1</span></b></div>
-    <input id="bondSlider" type="range" min="1" max="2.5" step="0.25" value="1" style="width:150px">
+    <div>formation <b>&times;<span id="bondVal">1.25</span></b></div>
+    <input id="bondSlider" type="range" min="1" max="2.5" step="0.25" value="1.25" style="width:150px">
     <div>recip topo <b><span id="topoVal">off</span></b></div>
     <button id="topoBtn" style="background:rgba(20,20,60,.9);color:#9cf;border:1px solid #345;padding:2px 8px;border-radius:3px;cursor:pointer;font-size:.9em">invert concave/convex (T)</button>
   </div>
@@ -1181,10 +1181,10 @@
       swarmReactivity: 1.0,         // HHS graft: flocking strength (graphics lane)
       freqScale: 1,                // GLOBAL FREQUENCY: physics substeps per frame
       massBoost: 1,                // DENSITY TEST: carrier mass multiplier (1–4)
-      collBoost: 1,                // DENSITY TEST: collision/exchange window multiplier (1–1.5)
+      collBoost: 1.4,                // DENSITY TEST: collision/exchange window multiplier (1–1.5)
       ctorBoost: 1,                // CONSTRUCTOR RATE: virtual-recycling accrual multiplier (1–100000), control only
       recipTopo: 0,                // RECIPROCAL TOPOLOGY INVERSION: antipodal phase groups (Δ≡4 mod 8) feel CONVEX geometry where the lattice is concave; 0 = frozen seed exactly
-      bondBoost: 1                 // FORMATION CHANNEL: bond capture window + capture speed scale (1–2.5), control only; 1 = frozen seed exactly
+      bondBoost: 1.25                 // FORMATION CHANNEL: bond capture window + capture speed scale (1–2.5), control only; 1 = frozen seed exactly
     };
     const DEBUG_MODE = true;
     let debugLog = [];
