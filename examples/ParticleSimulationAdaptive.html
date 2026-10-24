@@ -7558,60 +7558,6 @@ window.HHSAudioMomentumGraph=Object.freeze({
 });
 })();
 </script>
-<script id="hhs-standalone-color-controls">
-/* Repair: expose existing phase-membrane and liquid-light controls in one
-   mobile-safe panel. Move their live nodes: do not clone, duplicate handlers,
-   overwrite colors, or change physics/projection semantics. */
-(function(){
-"use strict";
-function mount(){
-  if(document.getElementById("hhsColorControls"))return;
-  const button=document.createElement("button");
-  button.id="hhsColorToggle";button.type="button";
-  button.textContent="Color Controls";
-  button.setAttribute("aria-controls","hhsColorControls");
-  button.setAttribute("aria-expanded","true");
-  button.style.cssText="position:fixed;top:8px;left:10px;z-index:2202;max-width:calc(100vw - 20px);padding:9px 13px;color:#eafaff;background:#132640;border:1px solid #69b5e8;border-radius:7px;font:600 13px monospace;cursor:pointer;touch-action:manipulation";
-  const panel=document.createElement("section");
-  panel.id="hhsColorControls";panel.setAttribute("role","region");
-  panel.setAttribute("aria-label","Color controls");
-  panel.style.cssText="position:fixed;top:49px;left:10px;z-index:2201;width:min(320px,calc(100vw - 20px));max-height:min(72vh,calc(100dvh - 64px));box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;padding:8px;background:rgba(4,10,26,.96);border:1px solid #69b5e8;border-radius:8px;color:#eafaff;box-shadow:0 6px 28px #000b;font:12px monospace";
-  const heading=document.createElement("div");
-  heading.textContent="Phase color / particle light";heading.style.cssText="font-weight:bold;padding:3px 4px 9px";
-  panel.appendChild(heading);
-  let available=0;
-  for(const id of ["phaseMembranePanel","liquidLightPanel"]){
-    const original=document.getElementById(id);
-    if(!original)continue;
-    // Reset only the legacy position/size layout; preserve contents and listeners.
-    original.style.cssText="position:static;display:block;box-sizing:border-box;width:100%;max-height:none;overflow:visible;margin:0 0 9px;padding:7px;border:1px solid #3a5377;border-radius:5px;background:transparent;color:inherit;box-shadow:none";
-    panel.appendChild(original);available++;
-  }
-  if(!available){
-    const message=document.createElement("p");
-    message.textContent="Color controls unavailable: phase and liquid-light modules did not initialize.";
-    panel.appendChild(message);
-  }
-  function visible(on){
-    panel.hidden=!on;
-    button.setAttribute("aria-expanded",String(on));
-    button.textContent=on?"Color Controls ▾":"Color Controls ▸";
-  }
-  button.addEventListener("click",()=>visible(panel.hidden));
-  document.body.appendChild(button);
-  document.body.appendChild(panel);
-  visible(true);
-  window.HHSColorControls=Object.freeze({
-    get availablePanels(){return available;},
-    get open(){return !panel.hidden;},
-    show(){visible(true);},
-    hide(){visible(false);}
-  });
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",mount,{once:true});
-else mount();
-})();
-</script>
 </body>
 
 </html>
