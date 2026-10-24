@@ -4697,21 +4697,24 @@
          tick, receipt, or change the inherited quartic render gate. */
       const audioVisualFrame=!!(window.HHSAudioViz &&
                                 window.HHSAudioViz.needsProjectionFrame());
-      /* Audio may demand a presentation frame but never force a second full
-         color and overlap pass outside the single paced display lane. */
-      const visualScheduler=window.HHSVisualScheduler;
-      const wantsPresentation=renderGate||audioVisualFrame;
-      if(wantsPresentation&&visualScheduler.admit(performance.now())){
-        const presentationStart=performance.now();
+      if(renderGate){
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         const rasterT0=window.HHSDeviceRaster.begin();
-        renderer.render(scene,camera);
+        renderer.render(scene, camera);
         window.HHSDeviceRaster.end(rasterT0);
-        visualScheduler.complete(performance.now()-presentationStart);
         renderedFrames++;
-        if(renderGate)outputState();
+        /* state JSON is a presentation surface; get_state remains fresh on demand */
+        outputState();
+      }
+      if(!renderGate && audioVisualFrame){
+        syncParticleRenderBatches();
+        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
+        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
+        const rasterT1=window.HHSDeviceRaster.begin();
+        renderer.render(scene,camera);
+        window.HHSDeviceRaster.end(rasterT1);
       }
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
@@ -7573,23 +7576,6 @@ toggle.addEventListener("click",()=>{drawer.hidden=!drawer.hidden;toggle.setAttr
 document.body.append(toggle,drawer);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup,{once:true});else setup();
-})();
-</script>
-<script id="hhs-visual-scheduler-repair">
-(function(){
-"use strict";
-let last=-Infinity,mean=0,frames=0,skipped=0,interval=1000/60;
-window.HHSVisualScheduler=Object.freeze({
-  admit(now){if(now-last<interval){skipped++;return false;}last=now;return true;},
-  complete(ms){
-    if(!Number.isFinite(ms)||ms<0)return;
-    mean=frames?mean*0.8+ms*0.2:ms;frames++;
-    // Full projection cost includes 10,368 mesh colors and overlap geometry.
-    if(frames%8===0)interval=mean>24?50:mean>15?1000/30:1000/60;
-  },
-  get diagnostics(){return {presented:frames,skipped,meanPresentationMs:mean,
-    targetPresentationHz:Math.round(1000/interval),physicsStepsSkipped:0,renderOnly:true};}
-});
 })();
 </script>
 </body>
