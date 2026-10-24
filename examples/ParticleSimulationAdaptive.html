@@ -7558,6 +7558,26 @@ window.HHSAudioMomentumGraph=Object.freeze({
 });
 })();
 </script>
+<script id="hhs-color-controls-repair">
+(function(){
+function setup(){
+if(document.getElementById("hhsColorToggle"))return;
+const toggle=document.createElement("button"),drawer=document.createElement("section");
+toggle.id="hhsColorToggle";toggle.type="button";toggle.textContent="Color Controls ▾";
+toggle.setAttribute("aria-controls","hhsColorDrawer");toggle.setAttribute("aria-expanded","true");
+toggle.style.cssText="position:fixed;left:10px;top:8px;z-index:2202;padding:9px 13px;background:#12304a;color:white;border:1px solid #76c4ff;border-radius:6px";
+drawer.id="hhsColorDrawer";drawer.setAttribute("aria-label","Color controls");
+drawer.style.cssText="position:fixed;left:10px;top:49px;z-index:2201;width:min(320px,calc(100vw - 20px));max-height:70vh;overflow:auto;box-sizing:border-box;background:#081527f2;color:white;padding:8px;border:1px solid #76c4ff;border-radius:6px";
+for(const id of ["phaseMembranePanel","liquidLightPanel"]){
+const p=document.getElementById(id);if(!p)continue;
+p.style.cssText="position:static;width:100%;max-height:none;box-sizing:border-box;margin:0 0 8px;padding:7px;background:transparent;color:inherit;border:1px solid #456";drawer.appendChild(p);
+}
+toggle.addEventListener("click",()=>{drawer.hidden=!drawer.hidden;toggle.setAttribute("aria-expanded",String(!drawer.hidden));toggle.textContent=drawer.hidden?"Color Controls ▸":"Color Controls ▾";});
+document.body.append(toggle,drawer);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",setup,{once:true});else setup();
+})();
+</script>
 </body>
 
 </html>
