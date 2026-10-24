@@ -54,3 +54,15 @@ def test_unvalidated_candidate_fails_before_hydration() -> None:
                 candidates=[Hash216CompositionCandidate("unverified", exact, False)],
                 tick=0, cycle_index=0,
             )
+
+
+def test_empty_candidate_search_has_stable_hydration_plan() -> None:
+    with Pass219Lane5Hash216GPUPhaseInterlaceOptimizer(backend="CPU_REFERENCE") as optimizer:
+        exact = optimizer.native_state_hash216(_state(3))
+        response = optimizer.search_hash216(
+            query_hash216=exact, candidates=[], tick=0, cycle_index=0,
+        )
+        assert response["candidate_count"] == 0
+        assert response["ranked"] == []
+        assert response["hydration_plan"] == []
+        assert response["candidate_only"] is True
