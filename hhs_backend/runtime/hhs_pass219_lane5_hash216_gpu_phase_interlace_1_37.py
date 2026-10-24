@@ -158,6 +158,7 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
                 "query_hash216": query,
                 "candidate_count": 0,
                 "ranked": [],
+                "hydration_plan": [],
                 "candidate_only": True,
             }
 
