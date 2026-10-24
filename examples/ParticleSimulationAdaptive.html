@@ -4722,6 +4722,7 @@
           try { fn(); } catch (e) { logDebug("Error in update function: " + e); }
         });
       }
+      if(window.HHSAudioMomentumGraph)window.HHSAudioMomentumGraph.observe();
       if(renderGate){
         let spd=0; for(let i=0;i<particles.length;i++) spd+=particles[i].userData.velocity.length();
         document.getElementById("hud").innerText =
@@ -7069,6 +7070,7 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
     paintGyroscopicLightBand,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
+    get currentCrossingEvents(){return state.frameCrossings;},
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
     sampleForFrame,outputClockFrame,crossingFrame,crossingLightingCells,
     advanceLightingGate,
@@ -7495,6 +7497,66 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
   });
 })(window);
 
+</script>
+<script>
+/* Pass 220 audio-event/physical-momentum KG inspection adapter.
+   Read-only, bounded visualization evidence; not VM81 admission or native Hash216.
+   Reuses the existing PCM crossing detector and actual logical particles.
+   No synthetic excitation, invented Larone traversal, or new physics engine. */
+(function(){
+"use strict";
+const CAP=256, records=[], nodeIndex=new Map(), edgeIndex=new Map();
+const carrierIds=[0,2592,5184,7776];
+let lastFrame=-1,lastTick=null,received=0, resets=0;
+function probe(id){
+  const p=(typeof particles!=="undefined")?particles[id]:null;
+  if(!p||!p.userData||!p.userData.velocity)return null;
+  const v=p.userData.velocity;
+  return {carrier:id,position:[p.position.x,p.position.y,p.position.z],
+    velocity:[v.x,v.y,v.z],phase:p.userData.phase,
+    // Presentation-only momentum proxy; never claim canonical mass or VM81 state.
+    velocitySquared:v.x*v.x+v.y*v.y+v.z*v.z};
+}
+function observe(){
+  const audio=window.HHSAudioViz;
+  if(!audio||!audio.active)return;
+  const d=audio.diagnostics,frame=d.audioFrame;
+  if(!Number.isSafeInteger(frame)||frame<0||!d.frameSignalReady||frame===lastFrame)return;
+  if(frame<lastFrame){records.length=0;nodeIndex.clear();edgeIndex.clear();resets++;}
+  lastFrame=frame;
+  const tick=window.HHS&&window.HHS.engine?window.HHS.engine.tick:null;
+  const crossings=audio.currentCrossingEvents||[];
+  const sources=carrierIds.map(probe).filter(Boolean);
+  const event={kind:"AUDIO_MOMENTUM_OBSERVATION",frame,
+    canonicalSampleStart:frame*735,canonicalSampleEndExclusive:(frame+1)*735,
+    crossingCount:crossings.length,
+    // The first 16 crossing tuples are provenance samples, not all events.
+    crossingPreview:crossings.slice(0,16).map(c=>c.slice()),
+    priorPhysicsTick:lastTick,physicsTick:tick,
+    energyProbe:sources,frequencyLHz:d.harmonicFrequencyLHz,
+    frequencyRHz:d.harmonicFrequencyRHz,
+    rmsL:d.frameRmsL,rmsR:d.frameRmsR,
+    renderOnly:true,nativeStateAdmitted:false,hash216Minted:false};
+  lastTick=tick;
+  records.push(event);if(records.length>CAP)records.shift();
+  received++;
+  // Indexed directed relationship, not fabricated Hash216 graph identity.
+  nodeIndex.set("audio:"+frame,{type:"PCM_FRAME",sample:event.canonicalSampleStart});
+  nodeIndex.set("physics:"+String(tick),{type:"OBSERVED_PHYSICS_TICK"});
+  edgeIndex.set("audio:"+frame+"->physics:"+String(tick),
+    {type:"EXCITATION_OBSERVATION",crossings:crossings.length});
+  if(nodeIndex.size>CAP*3){nodeIndex.clear();edgeIndex.clear();}
+}
+window.HHSAudioMomentumGraph=Object.freeze({
+  schema:"HHS_PASS220_AUDIO_MOMENTUM_PROJECTION_GRAPH_V1",observe,
+  get latest(){return records.length?records[records.length-1]:null;},
+  exportJSON(){return JSON.stringify({schema:this.schema,observations:records.slice(),
+    note:"Candidate browser observations only; no VM81 admission or native Hash216 minting"},null,2);},
+  get diagnostics(){return {samples:received,buffered:records.length,lastFrame,
+    crossingResets:resets,observedNodes:nodeIndex.size,
+    observedEdges:edgeIndex.size,nativeMutation:false};}
+});
+})();
 </script>
 </body>
 
