@@ -4671,6 +4671,15 @@
       camera.position.copy(chase.pos);
       camera.lookAt(chase.look);
     }
+    window.HHSColorPerformance=(function(){
+      let n=0,mean=0,max=0;
+      return Object.freeze({
+        record(ms){if(!Number.isFinite(ms))return;
+          n++;mean=n===1?ms:mean*0.9+ms*0.1;max=Math.max(max,ms);},
+        get diagnostics(){return {presentations:n,meanFullProjectionMs:mean,
+          worstFullProjectionMs:max,physicsGating:false,frameSkippingModified:false};}
+      });
+    })();
     function animate() {
       requestAnimationFrame(animate);
       if(!chase.on) controls.update();
@@ -4698,23 +4707,27 @@
       const audioVisualFrame=!!(window.HHSAudioViz &&
                                 window.HHSAudioViz.needsProjectionFrame());
       if(renderGate){
+        const fullProjectionStart=performance.now();
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         const rasterT0=window.HHSDeviceRaster.begin();
         renderer.render(scene, camera);
         window.HHSDeviceRaster.end(rasterT0);
+        window.HHSColorPerformance.record(performance.now()-fullProjectionStart);
         renderedFrames++;
         /* state JSON is a presentation surface; get_state remains fresh on demand */
         outputState();
       }
       if(!renderGate && audioVisualFrame){
+        const fullProjectionStart=performance.now();
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         const rasterT1=window.HHSDeviceRaster.begin();
         renderer.render(scene,camera);
         window.HHSDeviceRaster.end(rasterT1);
+        window.HHSColorPerformance.record(performance.now()-fullProjectionStart);
       }
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
@@ -5637,7 +5650,7 @@ window.HHSPhaseMembranes=Object.freeze({
 const SETTINGS={enabled:true,solids:true,particleRadius:1.75,solidRadius:2.4,
   intensity:0.78,falloff:2.6,opacity:0.62,overlap:true,mix:0.85};
 let particleField=null,solidField=null,initialized=false;
-const fieldRecords=[];const fieldBuckets=new Map();
+const fieldRecords=[],fieldRecordPool=[];const fieldBuckets=new Map();
 const GRID=3.5, MAX_PARTNERS=1;
 const matrix=new THREE.Matrix4(),tone=new THREE.Color();
 const groups=new Map();
@@ -5735,14 +5748,17 @@ function refreshMaterial(mesh){
   u.uOverlap.value=SETTINGS.overlap?1:0;
 }
 function setOverlapRecords(){
-  fieldBuckets.clear();
+  // Recycle spatial-index buckets instead of allocating a new array for
+  // every occupied cell on each color-only presentation frame.
+  for(const bucket of fieldBuckets.values())bucket.length=0;
   function key(x,y,z){return x+","+y+","+z;}
   for(let k=0;k<fieldRecords.length;k++){
     const r=fieldRecords[k];
     const x=Math.floor(r.x/GRID),y=Math.floor(r.y/GRID),z=Math.floor(r.z/GRID);
     const id=key(x,y,z);
-    if(!fieldBuckets.has(id))fieldBuckets.set(id,[]);
-    fieldBuckets.get(id).push(k);
+    let bucket=fieldBuckets.get(id);
+    if(!bucket){bucket=[];fieldBuckets.set(id,bucket);}
+    bucket.push(k);
   }
   for(let k=0;k<fieldRecords.length;k++){
     const r=fieldRecords[k];
@@ -5791,8 +5807,13 @@ function sync(){
     tone.copy(p.material.color);
     if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,tone);
     setInstance(particleField,i,q.x,q.y,q.z,SETTINGS.particleRadius,tone);
-    fieldRecords.push({mesh:particleField,index:i,x:q.x,y:q.y,z:q.z,
-      radius:SETTINGS.particleRadius,r:tone.r,g:tone.g,b:tone.b});
+    let record=fieldRecordPool[i];
+    if(!record){record={};fieldRecordPool[i]=record;}
+    record.mesh=particleField;record.index=i;
+    record.x=q.x;record.y=q.y;record.z=q.z;
+    record.radius=SETTINGS.particleRadius;
+    record.r=tone.r;record.g=tone.g;record.b=tone.b;
+    fieldRecords.push(record);
     const serial=p.userData&&p.userData.solidSerial;
     if(Number.isInteger(serial)&&serial>0){
       let g=groups.get(serial);
@@ -5817,8 +5838,13 @@ function sync(){
     tone.setRGB(g.r/n,g.g/n,g.b/n);
     const radius=Math.max(0.6,Math.sqrt(r2))*SETTINGS.solidRadius;
     setInstance(solidField,s,cx,cy,cz,radius,tone);
-    fieldRecords.push({mesh:solidField,index:s,x:cx,y:cy,z:cz,
-      radius,r:tone.r,g:tone.g,b:tone.b});s++;
+    const poolIndex=particles.length+s;
+    let record=fieldRecordPool[poolIndex];
+    if(!record){record={};fieldRecordPool[poolIndex]=record;}
+    record.mesh=solidField;record.index=s;
+    record.x=cx;record.y=cy;record.z=cz;record.radius=radius;
+    record.r=tone.r;record.g=tone.g;record.b=tone.b;
+    fieldRecords.push(record);s++;
   }
   solidField.count=s;
   solidField.instanceMatrix.needsUpdate=true;
