@@ -1,0 +1,19 @@
+name: Pass 220 Neighborhood Phase Exchange
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/pass220/lane5_neighborhood_phase_exchange.py'
+      - 'tests/pass220/test_lane5_neighborhood_phase_exchange.py'
+      - '.github/workflows/pass220-neighborhood-phase-exchange.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python -m pip install pytest
+          python -m pytest -q tests/pass220/test_lane5_nucleus_group_selection.py tests/pass220/test_lane5_neighborhood_phase_exchange.py
