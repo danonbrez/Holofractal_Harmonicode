@@ -57,3 +57,11 @@ GitHub connector source access; no checked-out repository build or native test e
 - Commits: `a88526ae5d015e64207e7c9ab17748ed86119f29` (source), `7756d3addb1d3cb57ffeb3f77926f86067a33f2d` (tests).
 - At inspection, latest prior PR-head focused/native workflows were queued; green status cannot be inferred for these new commits. No local shell command or native compile executed.
 - Next: inspect focused workflow on current head; repair forward if necessary; native C/Lean/ExactMatrixPower closure still pending. Do not merge before targeted validations.
+
+## Continuation — quartic/chiral exact coordinate witness
+
+- Confirmed prior head `c337427a0439ee5b1b9b886031ff3f51de4f387a`: exact HNAN workflow 40240778009 and recursive native HNAN preflight 40240777930 passed.
+- Added exact integer polynomial coordinate-derivative checks: D_x(x^4)=4*x^3, D_x(x-y+w-z)=1, and D_x(wxyz+x-y+w-z)=wyz+1. This is a coordinate projection, not a commutative rewrite of native ordered tensor operators.
+- Witness receipt explicitly denies certification of negative feedback, constant-phase norm, native inverse and Genesis closure until proven through the existing HNAN transition path.
+- Code commit `462715622ce22fe29b7dc204986c506bf3aaa7df`; test commit `c569817d91f6e464f1c129d133858614c2bbf5a1`.
+- No local shell, C++ compilation or production deployment completed. New head focused CI still requires fresh confirmation; merge/verified-main outstanding.
