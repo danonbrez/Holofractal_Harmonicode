@@ -4671,19 +4671,6 @@
       camera.position.copy(chase.pos);
       camera.lookAt(chase.look);
     }
-    window.HHSProjectionBudget=(function(){
-      let previous=-Infinity,mean=0,drawn=0,skipped=0,period=1000/60;
-      return Object.freeze({
-        admit(now){if(now-previous<period){skipped++;return false;}
-          previous=now;return true;},
-        finish(ms){if(!Number.isFinite(ms)||ms<0)return;
-          mean=drawn?mean*0.8+ms*0.2:ms;drawn++;
-          if(drawn%8===0)period=mean>24?50:mean>15?1000/30:1000/60;},
-        get diagnostics(){return {rendered:drawn,skipped,
-          fullProjectionMs:mean,targetHz:Math.round(1000/period),
-          physicsStepsSkipped:0,renderOnly:true};}
-      });
-    })();
     function animate() {
       requestAnimationFrame(animate);
       if(!chase.on) controls.update();
@@ -4698,8 +4685,6 @@
       collideBondMembranes();
       constructorScan();
       if(chase.on) updateChaseCamera();
-      /* Admission counts full particle/color/overlap/render cost. No effect
-         on audio PCM clock, physics iterations, or canonical receipts. */
       /* QUARTIC RENDER SKIP: physics advanced for ALL carriers above;
          the projection renders on every 4th frame (base-8 periodicity +
          quartic closure M⁴=M³+2M² — the HNAN semicomplement at projection
@@ -4712,21 +4697,24 @@
          tick, receipt, or change the inherited quartic render gate. */
       const audioVisualFrame=!!(window.HHSAudioViz &&
                                 window.HHSAudioViz.needsProjectionFrame());
-      /* Presentation-only budget: audio never bypasses quartic update cost.
-         A missed display frame is dropped, never replayed. */
-      const wantsFrame=renderGate||audioVisualFrame;
-      const projectionBudget=window.HHSProjectionBudget;
-      if(wantsFrame&&projectionBudget.admit(performance.now())){
-        const fullStart=performance.now();
+      if(renderGate){
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
-        const rasterStart=window.HHSDeviceRaster.begin();
-        renderer.render(scene,camera);
-        window.HHSDeviceRaster.end(rasterStart);
-        projectionBudget.finish(performance.now()-fullStart);
+        const rasterT0=window.HHSDeviceRaster.begin();
+        renderer.render(scene, camera);
+        window.HHSDeviceRaster.end(rasterT0);
         renderedFrames++;
-        if(renderGate)outputState();
+        /* state JSON is a presentation surface; get_state remains fresh on demand */
+        outputState();
+      }
+      if(!renderGate && audioVisualFrame){
+        syncParticleRenderBatches();
+        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
+        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
+        const rasterT1=window.HHSDeviceRaster.begin();
+        renderer.render(scene,camera);
+        window.HHSDeviceRaster.end(rasterT1);
       }
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
