@@ -1,0 +1,25 @@
+name: Pass 220 HNAN Lane 5 Exact Witness
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass220/hnan_lane5_exact_witness_v1.py'
+      - 'tests/pass220/test_hnan_lane5_exact_witness_v1.py'
+      - '.github/workflows/pass220-hnan-lane5-exact-witness.yml'
+  push:
+    paths:
+      - 'hhs_runtime/pass220/hnan_lane5_exact_witness_v1.py'
+      - 'tests/pass220/test_hnan_lane5_exact_witness_v1.py'
+      - '.github/workflows/pass220-hnan-lane5-exact-witness.yml'
+jobs:
+  exact-witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Focused exact witness test
+        run: python -m unittest discover -s tests/pass220 -p 'test_hnan_lane5_exact_witness_v1.py' -v
