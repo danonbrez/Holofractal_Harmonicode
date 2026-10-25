@@ -3,7 +3,8 @@ import unittest
 from hhs_runtime.pass220.hnan_lane5_exact_witness_v1 import (
     HNANExactWitnessError, EXPECTED_PI_B, OFFSETS,
     pi_b_from_phase_matrix, verify_matrix_factorization,
-    derive_gradient_offsets,
+    derive_gradient_offsets, verify_chiral_gradient_projection,
+    _differentiate_monomials,
     verify_gradient_offsets, reciprocal_hash72,
     serialization_address, verify_read_only_candidate,
 )
@@ -34,6 +35,17 @@ class TestHNANLane5ExactWitness(unittest.TestCase):
                    ((-3, -4),) + __import__('hhs_runtime.pass220.hnan_lane5_exact_witness_v1', fromlist=['EXPANDED_CONSTANTS']).EXPANDED_CONSTANTS[1:]):
             with self.assertRaisesRegex(HNANExactWitnessError, 'OFFSET_DRIFT'):
                 verify_gradient_offsets()
+
+    def test_exact_chiral_and_quartic_gradient(self):
+        self.assertTrue(verify_chiral_gradient_projection())
+        self.assertEqual(_differentiate_monomials({(4, 0, 0, 0): 1}),
+                         {(3, 0, 0, 0): 4})
+        self.assertEqual(_differentiate_monomials({(1, 1, 1, 1): 1}),
+                         {(0, 1, 1, 1): 1})
+        with self.assertRaisesRegex(HNANExactWitnessError, 'DERIVATIVE_AXIS'):
+            _differentiate_monomials({(4, 0, 0, 0): 1}, 'bad')
+        with self.assertRaisesRegex(HNANExactWitnessError, 'DERIVATIVE_INEXACT'):
+            _differentiate_monomials({(4, 0, 0, 0): 1.0})
 
     def test_reciprocal_phase(self):
         self.assertEqual([reciprocal_hash72(k) for k in range(9)],
