@@ -38,3 +38,13 @@ GitHub connector source access; no checked-out repository build or native test e
 - New file: `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to run focused unittest discovery on affected PR/push changes.
 - CI addition commit: `65e4ae06441390021999e8cf8d686d83666e470f`.
 - Remaining: inspect new workflow result; repair-forward if needed; native C++/HNAN `NcalcMatrixPower` certification, optimizer candidate-bound guard, and verified-main merge are not yet complete.
+
+## Continuation — 2026-10-25 native 1.63 preflight binding
+- Verified exact-witness PR-head workflow 40235318163 completed successfully at commit `960bc4ed6429fdaa1ef6bcb4ce3118505ae7703a`.
+- Read native `hhs_runtime/hhs_pass220_recursive_hnan_native_rule_preflight_v1.py` and Pass 220 I076 `ExactMatrixPower` HIR contract. Native preflight already validates authoritative C rule mask and remains candidate-only.
+- Added read-only exact-phase witness to the existing native preflight **after** native global verification; any exact-symbolic drift or authority flag drift fails closed.
+- Added targeted rejection regression and expanded focused CI path filters and command.
+- Changed: native preflight, its regression test, focused workflow, this checkpoint.
+- Commits: `e69b58771b6cf3b582fd8f9adb7c7c303b3ff2c7`, `8a4849d06133bb10b1b2c1107a7844112f392d80`, `913f5bc5a38165bc63f73d5d494114705e8a0b21`.
+- No new C++ ABI, no proof of NcalcMatrixPower native inverse or Genesis equivalence, no VM81 mutation or canonical Hash72/Hash216 minting. This is exact read-only candidate preflight enforcement, not a fully certified native closure.
+- Remaining: inspect fresh workflow results for latest head; dependency-scoped genuine native C++ compile and rule regression; branch review; merge and verify authoritative main. No local checkout executed.
