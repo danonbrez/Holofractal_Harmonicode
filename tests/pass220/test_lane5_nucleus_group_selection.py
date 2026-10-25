@@ -1,5 +1,5 @@
 import pytest
-from hhs_runtime.pass220.lane5_nucleus_group_selection import select_group
+from hhs_runtime.pass220.lane5_nucleus_group_selection import select_group, describe_relative_geometry
 
 def graph():
     return {i:(i,0,0) for i in range(10368)}
@@ -51,3 +51,31 @@ def test_incomplete_or_float_snapshot():
     p[3]=(1.5,0,0)
     with pytest.raises(ValueError):
         select_group(p,0,8,0)
+
+def test_relative_geometry_preserves_positions_and_ordered_phase():
+    xyz=graph()
+    phases={i:i*3 for i in range(10368)}
+    selected=select_group(xyz,0,2,18)
+    original=dict(xyz)
+    result=describe_relative_geometry(xyz,selected,phases)
+    assert result["particle_ids"]==[0,1,2]
+    assert result["relative_xyz"]==[(0,0,0),(1,0,0),(2,0,0)]
+    assert result["relative_oriented_phase"]==[0,3,6]
+    assert not result["copies_momentum"]
+    assert not result["copies_absolute_location"]
+    assert not result["canonical_vm81_mutation_authority"]
+    assert xyz==original
+
+def test_relative_geometry_rejects_bad_source_phase_and_selection():
+    xyz=graph()
+    selected=select_group(xyz,0,2,18)
+    phases={i:i for i in range(10368)}
+    with pytest.raises(ValueError):
+        describe_relative_geometry(xyz,selected,{0:0})
+    phases[1]=0.25
+    with pytest.raises(ValueError):
+        describe_relative_geometry(xyz,selected,phases)
+    phases[1]=1
+    selected=dict(selected,selected_ids=[0,0])
+    with pytest.raises(ValueError):
+        describe_relative_geometry(xyz,selected,phases)
