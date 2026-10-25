@@ -100,6 +100,55 @@ def verify_gradient_offsets(*, offsets=OFFSETS):
     return True
 
 
+# Formal polynomial differentiation over ordered variable names; exact
+# integer coefficients only. This checks the classical coordinate projection
+# and must not reorder the native noncommutative HNAN phase operators.
+VARIABLES = ("x", "y", "z", "w")
+
+
+def _differentiate_monomials(poly, variable="x"):
+    if variable not in VARIABLES:
+        raise HNANExactWitnessError("HNAN_DERIVATIVE_AXIS")
+    axis = VARIABLES.index(variable)
+    result = {}
+    for powers, coefficient in poly.items():
+        if (not isinstance(powers, tuple) or len(powers) != 4
+                or any(type(p) is not int or p < 0 for p in powers)
+                or type(coefficient) is not int):
+            raise HNANExactWitnessError("HNAN_DERIVATIVE_INEXACT")
+        if powers[axis]:
+            decreased = list(powers)
+            decreased[axis] -= 1
+            key = tuple(decreased)
+            result[key] = result.get(key, 0) + coefficient * powers[axis]
+    return {key: value for key, value in result.items() if value}
+
+
+def verify_chiral_gradient_projection():
+    """Exact coordinate identities underlying the native phase-duality model.
+
+    These do not assert sign-definite feedback or norm preservation; those
+    depend on native ordered HNAN transitions, not scalar calculus alone.
+    """
+    # K=w*x*y*z + x-y+w-z
+    K = {(1, 1, 1, 1): 1, (1, 0, 0, 0): 1,
+         (0, 1, 0, 0): -1, (0, 0, 1, 0): -1,
+         (0, 0, 0, 1): 1}
+    # chi=x-y+w-z; coordinate derivative is one.
+    chi = {(1, 0, 0, 0): 1, (0, 1, 0, 0): -1,
+           (0, 0, 1, 0): -1, (0, 0, 0, 1): 1}
+    quartic = {(4, 0, 0, 0): 1}
+    if _differentiate_monomials(K) != {
+        (0, 1, 1, 1): 1, (0, 0, 0, 0): 1
+    }:
+        raise HNANExactWitnessError("HNAN_K_CHAIN_RULE_DRIFT")
+    if _differentiate_monomials(chi) != {(0, 0, 0, 0): 1}:
+        raise HNANExactWitnessError("HNAN_CHIRAL_SHEAR_DRIFT")
+    if _differentiate_monomials(quartic) != {(3, 0, 0, 0): 4}:
+        raise HNANExactWitnessError("HNAN_QUARTIC_GRADIENT_DRIFT")
+    return True
+
+
 def reciprocal_hash72(position: int) -> int:
     if type(position) is not int or not 0 <= position < 72:
         raise HNANExactWitnessError("HASH72_POSITION_RANGE")
@@ -121,6 +170,7 @@ def verify_read_only_candidate():
     """Candidate-only evidence: not a native NcalcMatrixPower/Genesis proof."""
     verify_matrix_factorization()
     verify_gradient_offsets()
+    verify_chiral_gradient_projection()
     if len({serialization_address(l, b, s)
             for l in range(72) for b in range(8) for s in range(9)}) != 5184:
         raise HNANExactWitnessError("HNAN_5184_BIJECTION")
@@ -130,6 +180,9 @@ def verify_read_only_candidate():
         "schema": "HHS_PASS220_HNAN_LANE5_EXACT_WITNESS_V1",
         "matrix_factorization_exact": True,
         "gradient_offsets_constant": True,
+        "chiral_coordinate_gradient_exact": True,
+        "negative_feedback_certified": False,
+        "phase_norm_preservation_certified": False,
         "hash72_reciprocal_exact": True,
         "bigint_5184_addresses_bijective": True,
         "candidate_only": True,
