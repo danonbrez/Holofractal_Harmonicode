@@ -51,3 +51,41 @@ def test_real_compiled_native_global_rule_12(tmp_path):
     assert len(result["native_ordered_rule_leaves"])==1
     assert result["native_ordered_rule_leaves"][0]["native_ordered_xy_yx_rule_verified"]
     assert not result["typed_yx_over_xy_equals_u_minus_108_proved"]
+
+def test_native_exact_phase_witness_rejection_before_loading_library(tmp_path):
+    """The existing native preflight must fail closed on exact-phase drift."""
+    from hhs_runtime.pass220.hnan_lane5_exact_witness_v1 import HNANExactWitnessError
+    from hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1 import (
+        native_recursive_hnan_preflight,
+    )
+    candidate = tmp_path / "native.so"
+    candidate.write_bytes(b"placeholder")
+    tree = {"P": "2", "candidate_sha256": "a" * 64, "ordered_phase_leaves": []}
+    # Existing contract evaluates native rule first. Stub native verification
+    # only in this rejection-path test; no acceptance is asserted.
+    import ctypes
+    class DummyFunc:
+        def __init__(self, result=0):
+            self.result = result
+        def __call__(self, ptr):
+            from hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1 import (
+                GlobalReceipt, VERSION, MASK,
+            )
+            receipt = ctypes.cast(ptr, ctypes.POINTER(GlobalReceipt)).contents
+            receipt.version = VERSION
+            receipt.decision = 1
+            receipt.required_rule_mask = MASK
+            receipt.verified_rule_mask = MASK
+            for key in ("jordan_depth2_verified", "minimal_polynomial_degree4_verified",
+                        "degree4_recurrence_verified", "hnan_channel_order_preserved",
+                        "global_delta_denominator_preserved", "xy_yx_distinct", "zw_wz_distinct"):
+                setattr(receipt, key, 1)
+            return self.result
+    class DummyLib:
+        hhs_exact_pass219_hnan_global_system_verify = DummyFunc()
+        hhs_exact_pass219_hnan_resolve = DummyFunc()
+    with patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.inspect_recursive_ordered_phase_swap", return_value=tree), \
+         patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.C.CDLL", return_value=DummyLib()), \
+         patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.verify_read_only_candidate", side_effect=HNANExactWitnessError("drift")):
+        with pytest.raises(SymbolicTensorError, match="EXACT_PHASE_WITNESS_REJECTED"):
+            native_recursive_hnan_preflight("ADD", ref(1), ref(1), native_library=str(candidate))
