@@ -6,8 +6,6 @@ the native HNAN gate or NcalcMatrixPower inverse.
 """
 from __future__ import annotations
 
-from fractions import Fraction
-
 LO_SHU_CENTERED = ((-1, 4, -3), (-2, 0, 2), (3, -4, 1))
 PHASE_EIGHTHS = ((9, 11, 13), (15, 8, -9), (-11, -13, -15))
 # Entries encode pi*B(u), with the fractional exponent in eighths.
@@ -54,16 +52,51 @@ def verify_matrix_factorization(*, expected=EXPECTED_PI_B):
     return True
 
 
-def verify_gradient_offsets(*, offsets=OFFSETS):
-    """Constant F-G means D_x F = D_x G, without normalizing outer cells."""
-    if offsets != OFFSETS:
-        raise HNANExactWitnessError("HNAN_GRADIENT_OFFSET_DRIFT")
-    if len(offsets) != 9 or any(
-        not isinstance(v, int)
-        for item in offsets
-        for v in (item if isinstance(item, tuple) else (item,))
+# Each phase carrier is a formal ordered expression multiplied by S=sqrt(K).
+# The first expression is (LoShuSymbol*S*carrier - 5). The second
+# explicitly expanded expression retains the same S coefficient but has
+# address-specific integral offsets. Preserve ordered carrier strings.
+LO_SHU_ROWMAJOR = (4, 9, 2, 3, 5, 7, 8, 1, 6)
+PHASE_CARRIERS = (
+    ("x", "y"), ("y", "x"), ("z", "w"), ("w", "z"),
+    ("x+y-z-w",), ("x*y", "z*w"), ("y^2", "w^2"),
+    ("z^2", "x^2"), ("y^4", "w^4"),
+)
+EXPANDED_CONSTANTS = (
+    (-4, -4), (-19, -19), (-2, -2), (-13, -13),
+    (-10,), (-7, -7), (-8, -8), (-1, -1), (-6, -6),
+)
+
+
+def derive_gradient_offsets():
+    """Compute F-G from both exact ordered coefficient arrays.
+
+    Because every S*carrier coefficient agrees, the difference contains
+    only exact integer constants; its partial x derivative is identically
+    zero where S is differentiable. No float or symbolic evaluation.
+    """
+    if not (len(LO_SHU_ROWMAJOR) == len(PHASE_CARRIERS)
+            == len(EXPANDED_CONSTANTS) == 9):
+        raise HNANExactWitnessError("HNAN_NINE_CELL_WIDTH")
+    result = []
+    for symbol, carriers, constants in zip(
+        LO_SHU_ROWMAJOR, PHASE_CARRIERS, EXPANDED_CONSTANTS, strict=True
     ):
-        raise HNANExactWitnessError("HNAN_OFFSET_TYPE_OR_WIDTH")
+        if not (len(carriers) == len(constants) in (1, 2)):
+            raise HNANExactWitnessError("HNAN_PAIR_WIDTH")
+        if type(symbol) is not int or any(type(v) is not int for v in constants):
+            raise HNANExactWitnessError("HNAN_OFFSET_TYPE")
+        # In F: symbol*S*carrier - 5, in G: symbol*S*carrier + constant.
+        differences = tuple(-5 - constant for constant in constants)
+        result.append(differences[0] if len(differences) == 1 else differences)
+    return tuple(result)
+
+
+def verify_gradient_offsets(*, offsets=OFFSETS):
+    """Enforce exact F-G=D, implying D_x F == D_x G."""
+    actual = derive_gradient_offsets()
+    if actual != offsets or actual != OFFSETS:
+        raise HNANExactWitnessError("HNAN_GRADIENT_OFFSET_DRIFT")
     return True
 
 
