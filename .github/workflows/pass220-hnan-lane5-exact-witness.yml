@@ -4,6 +4,8 @@ on:
     paths:
       - 'hhs_runtime/pass220/hnan_lane5_exact_witness_v1.py'
       - 'tests/pass220/test_hnan_lane5_exact_witness_v1.py'
+      - 'hhs_runtime/hhs_pass220_recursive_hnan_native_rule_preflight_v1.py'
+      - 'tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py'
       - '.github/workflows/pass220-hnan-lane5-exact-witness.yml'
   push:
     paths:
@@ -23,3 +25,7 @@ jobs:
           python-version: '3.11'
       - name: Focused exact witness test
         run: python -m unittest discover -s tests/pass220 -p 'test_hnan_lane5_exact_witness_v1.py' -v
+      - name: Native preflight fail-closed regression
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py -k 'missing_native_library or native_exact_phase_witness_rejection'
