@@ -30,3 +30,11 @@ No shell tests or C++ build run: only GitHub connector access available. Exact t
 
 ## Environment/blockers
 GitHub connector source access; no checked-out repository build or native test execution. No performance measurement, production deployment, completed merge, or verified-main receipt is claimed.
+
+## Continuation — focused CI checkpoint
+
+- Existing Pass 220 I076 `ExactMatrixPower` HIR contract inspected: matrix power stays typed, unevaluated by the host, with VM81 admission required. This work does not substitute scalar/ordinary matrix inversion.
+- PR #853 remains draft and mergeable at inspection; unrelated PR-head workflow successes do not certify the focused HNAN tests.
+- New file: `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to run focused unittest discovery on affected PR/push changes.
+- CI addition commit: `65e4ae06441390021999e8cf8d686d83666e470f`.
+- Remaining: inspect new workflow result; repair-forward if needed; native C++/HNAN `NcalcMatrixPower` certification, optimizer candidate-bound guard, and verified-main merge are not yet complete.
