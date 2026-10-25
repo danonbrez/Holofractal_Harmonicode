@@ -260,6 +260,67 @@ class Pass219Lane5Hash216GPUPhaseInterlaceOptimizer:
             "requires_exact_cpu_vm81_replay": True,
         }
 
+    def select_by_observed_cost(
+        self,
+        *,
+        search_result: Mapping[str, Any],
+        observations: Sequence[Mapping[str, Any]],
+    ) -> dict[str, Any]:
+        """Rank previously admitted candidates using exact measured elapsed ns.
+
+        Observations are advisory and must be provenance-bound by the caller:
+        this function neither measures elapsed time nor certifies a receipt.
+        An unobserved candidate is never assigned a fabricated cost.
+        """
+        if search_result.get("schema") != SCHEMA or search_result.get("candidate_only") is not True:
+            raise ValueError("validated Lane 5 candidate search result required")
+        ranked = search_result.get("ranked")
+        if not isinstance(ranked, list):
+            raise ValueError("ranked candidate records required")
+        by_id = {item["candidate_id"]: item for item in ranked}
+        if len(by_id) != len(ranked):
+            raise ValueError("duplicate ranked candidate identities")
+        measured: dict[str, tuple[int, str]] = {}
+        for observation in observations:
+            candidate_id = observation.get("candidate_id")
+            elapsed = observation.get("elapsed_ns")
+            witness = observation.get("receipt_hash216")
+            if candidate_id not in by_id or candidate_id in measured:
+                raise ValueError("unknown or duplicate measured candidate")
+            if isinstance(elapsed, bool) or not isinstance(elapsed, int) or elapsed < 0:
+                raise ValueError("elapsed_ns requires nonnegative exact integer")
+            if not isinstance(witness, str):
+                raise ValueError("measured cost requires Hash216 receipt identity")
+            _validate_hash216(witness)
+            if witness != by_id[candidate_id]["candidate_hash216"]:
+                raise ValueError("measured cost receipt does not match candidate Hash216")
+            measured[candidate_id] = (elapsed, witness)
+        selection = sorted(
+            (
+                {
+                    "candidate_id": item["candidate_id"],
+                    "candidate_hash216": item["candidate_hash216"],
+                    "elapsed_ns": measured[item["candidate_id"]][0],
+                    "receipt_hash216": measured[item["candidate_id"]][1],
+                    "requires_exact_cpu_vm81_replay": True,
+                }
+                for item in ranked if item["candidate_id"] in measured
+            ),
+            key=lambda item: (item["elapsed_ns"], item["candidate_hash216"], item["candidate_id"]),
+        )
+        return {
+            "schema": "HHS_PASS_220_LANE5_OBSERVED_COST_CANDIDATE_SELECTION_V1",
+            "measured_candidates": len(selection),
+            "unmeasured_candidates": len(ranked) - len(selection),
+            "ranked_by_exact_elapsed_ns": selection,
+            "candidate_only": True,
+            "observation_receipts_verified": False,
+            "requires_exact_cpu_vm81_replay": True,
+            "canonical_vm81_mutation_authority": False,
+            "canonical_hash72_mint_authority": False,
+            "canonical_hash216_mint_authority": False,
+        }
+
     def search_native_states(
         self,
         *,
