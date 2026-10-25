@@ -12,3 +12,11 @@
 - Validations remaining: PR CI and main verification.
 - Next: connect this read-only nucleus selector to the authoritative native geometry projection and then separately implement group motion/relative-geometry transplant with replay witnesses.
 - Blocker: no repository-native verified per-particle xyz projection currently bound to this selection API; untrusted input is explicitly flagged.
+
+## Validation repair cycle (2026-10-25)
+- Initial focused run `40155033172`: 10 passed, 1 failed. Toroidal fixture had another particle at x=9, exactly coincident with x=0 under period 9; algorithm tie behavior was consistent.
+- Changed `tests/pass220/test_lane5_nucleus_group_selection.py` to put unrelated graph particles at nonzero y so the intended wrapped neighbor is uniquely closest.
+- Test repair commit: `452a841dfc26c37e4b226c5985b683882f63f043`.
+- Focused rerun `40182088011`: queued at inspection; do not assert green without checking result and job logs.
+- Changed files in this cycle: test fixture and this restart record. No source behavior changes.
+- Next: inspect rerun; on success mark PR ready, merge if gates permit, verify exact main. Then source-bind native xyz geometry and preserve all typed provenance.
