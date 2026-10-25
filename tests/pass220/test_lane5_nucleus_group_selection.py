@@ -22,7 +22,7 @@ def test_all_particles_and_empty_neighborhood():
     assert len(ids)==len(set(ids))==10368
 
 def test_toroidal_distance_is_spatial():
-    p=graph()
+    p={i:(i,100,0) for i in range(10368)}
     p[0]=(0,0,0)
     p[1]=(8,0,0)
     p[2]=(2,0,0)
