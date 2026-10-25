@@ -3,6 +3,7 @@ import unittest
 from hhs_runtime.pass220.hnan_lane5_exact_witness_v1 import (
     HNANExactWitnessError, EXPECTED_PI_B, OFFSETS,
     pi_b_from_phase_matrix, verify_matrix_factorization,
+    derive_gradient_offsets,
     verify_gradient_offsets, reciprocal_hash72,
     serialization_address, verify_read_only_candidate,
 )
@@ -20,11 +21,19 @@ class TestHNANLane5ExactWitness(unittest.TestCase):
             verify_matrix_factorization(expected=tuple(tuple(row) for row in changed))
 
     def test_gradient_offset_constant_and_mutation(self):
+        self.assertEqual(derive_gradient_offsets(), OFFSETS)
         self.assertTrue(verify_gradient_offsets())
         bad = list(OFFSETS)
         bad[4] = 6
         with self.assertRaisesRegex(HNANExactWitnessError, "OFFSET_DRIFT"):
             verify_gradient_offsets(offsets=tuple(bad))
+
+    def test_modified_expanded_constant_rejected(self):
+        from unittest.mock import patch
+        with patch('hhs_runtime.pass220.hnan_lane5_exact_witness_v1.EXPANDED_CONSTANTS',
+                   ((-3, -4),) + __import__('hhs_runtime.pass220.hnan_lane5_exact_witness_v1', fromlist=['EXPANDED_CONSTANTS']).EXPANDED_CONSTANTS[1:]):
+            with self.assertRaisesRegex(HNANExactWitnessError, 'OFFSET_DRIFT'):
+                verify_gradient_offsets()
 
     def test_reciprocal_phase(self):
         self.assertEqual([reciprocal_hash72(k) for k in range(9)],
