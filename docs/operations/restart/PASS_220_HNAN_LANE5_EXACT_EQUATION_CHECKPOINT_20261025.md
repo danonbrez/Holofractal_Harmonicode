@@ -48,3 +48,12 @@ GitHub connector source access; no checked-out repository build or native test e
 - Commits: `e69b58771b6cf3b582fd8f9adb7c7c303b3ff2c7`, `8a4849d06133bb10b1b2c1107a7844112f392d80`, `913f5bc5a38165bc63f73d5d494114705e8a0b21`.
 - No new C++ ABI, no proof of NcalcMatrixPower native inverse or Genesis equivalence, no VM81 mutation or canonical Hash72/Hash216 minting. This is exact read-only candidate preflight enforcement, not a fully certified native closure.
 - Remaining: inspect fresh workflow results for latest head; dependency-scoped genuine native C++ compile and rule regression; branch review; merge and verify authoritative main. No local checkout executed.
+
+## Continuation — exact gradient derivation repair
+
+- The prior witness held F-G constant as a literal and compared it to the same literal, insufficient as an independent computation.
+- Updated `derive_gradient_offsets()` to calculate each of the nine differences from the source `-5` constant and each explicitly expanded phase-carrier constant; exact shared S*carrier coefficients cancel without floating arithmetic or matrix normalization.
+- Added positive derivation assertion and negative altered-cell regression. Existing native preflight binding automatically inherits the stronger check.
+- Commits: `a88526ae5d015e64207e7c9ab17748ed86119f29` (source), `7756d3addb1d3cb57ffeb3f77926f86067a33f2d` (tests).
+- At inspection, latest prior PR-head focused/native workflows were queued; green status cannot be inferred for these new commits. No local shell command or native compile executed.
+- Next: inspect focused workflow on current head; repair forward if necessary; native C/Lean/ExactMatrixPower closure still pending. Do not merge before targeted validations.
