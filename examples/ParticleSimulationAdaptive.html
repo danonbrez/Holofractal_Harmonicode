@@ -5754,29 +5754,34 @@ function setOverlapRecords(){
   function key(x,y,z){return x+","+y+","+z;}
   for(let k=0;k<fieldRecords.length;k++){
     const r=fieldRecords[k];
-    const x=Math.floor(r.x/GRID),y=Math.floor(r.y/GRID),z=Math.floor(r.z/GRID);
+    const x=r.cellX=Math.floor(r.x/GRID),y=r.cellY=Math.floor(r.y/GRID),z=r.cellZ=Math.floor(r.z/GRID);
     const id=key(x,y,z);
     let bucket=fieldBuckets.get(id);
     if(!bucket){bucket=[];fieldBuckets.set(id,bucket);}
     bucket.push(k);
   }
+  const particlePartners=particleField.geometry.getAttribute("partnerSphere");
+  const particleTints=particleField.geometry.getAttribute("partnerTint");
+  const solidPartners=solidField.geometry.getAttribute("partnerSphere");
+  const solidTints=solidField.geometry.getAttribute("partnerTint");
   for(let k=0;k<fieldRecords.length;k++){
     const r=fieldRecords[k];
     let best=null,bestScore=Infinity;
-    const x=Math.floor(r.x/GRID),y=Math.floor(r.y/GRID),z=Math.floor(r.z/GRID);
+    const x=r.cellX,y=r.cellY,z=r.cellZ;
     for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)for(let dz=-1;dz<=1;dz++){
       const bucket=fieldBuckets.get(key(x+dx,y+dy,z+dz));
       if(!bucket)continue;
       for(const j of bucket){
         if(j===k)continue;
         const p=fieldRecords[j];
-        const d2=(r.x-p.x)**2+(r.y-p.y)**2+(r.z-p.z)**2;
+        const ddx=r.x-p.x,ddy=r.y-p.y,ddz=r.z-p.z;
+        const d2=ddx*ddx+ddy*ddy+ddz*ddz;
         if(d2>(r.radius+p.radius)**2||d2>=bestScore)continue;
         bestScore=d2;best=p;
       }
     }
-    const geo=r.mesh.geometry;
-    const spheres=geo.getAttribute("partnerSphere"),colors=geo.getAttribute("partnerTint");
+    const spheres=r.mesh===particleField?particlePartners:solidPartners;
+    const colors=r.mesh===particleField?particleTints:solidTints;
     const i=r.index*4,j=r.index*3;
     if(best){
       spheres.array[i]=best.x;spheres.array[i+1]=best.y;
@@ -5849,7 +5854,7 @@ function sync(){
   solidField.count=s;
   solidField.instanceMatrix.needsUpdate=true;
   if(solidField.instanceColor)solidField.instanceColor.needsUpdate=true;
-  setOverlapRecords();
+  if(SETTINGS.overlap&&SETTINGS.mix>0)setOverlapRecords();
 }
 function controls(){
   const panel=document.createElement("fieldset");
