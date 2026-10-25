@@ -10,6 +10,9 @@ import json
 from pathlib import Path
 from hhs_runtime.hhs_pass220_recursive_hnan_ordered_phase_swap_v1 import inspect_recursive_ordered_phase_swap
 from hhs_runtime.hhs_pass220_hash216_symbolic_tensor_metadata_v1 import SymbolicTensorError
+from hhs_runtime.pass220.hnan_lane5_exact_witness_v1 import (
+    verify_read_only_candidate, HNANExactWitnessError,
+)
 
 VERSION=0x0001003f
 MASK=0x7fff
@@ -49,6 +52,15 @@ def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,la
         or global_receipt.canonical_vm81_mutation_authority
         or global_receipt.canonical_hash216_authority):
         raise SymbolicTensorError("NATIVE_HNAN_GLOBAL_RECEIPT_REJECTED")
+    try:
+        exact_phase_witness = verify_read_only_candidate()
+    except HNANExactWitnessError as exc:
+        raise SymbolicTensorError("NATIVE_HNAN_EXACT_PHASE_WITNESS_REJECTED") from exc
+    if (exact_phase_witness.get("candidate_only") is not True
+        or exact_phase_witness.get("native_inverse_closure_certified") is not False
+        or exact_phase_witness.get("genesis_equivalence_certified") is not False
+        or exact_phase_witness.get("vm81_mutation_authority") is not False):
+        raise SymbolicTensorError("NATIVE_HNAN_EXACT_PHASE_AUTHORITY_DRIFT")
     leaves=[]
     for leaf in tree["ordered_phase_leaves"]:
         claim=Claim()
@@ -75,6 +87,7 @@ def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,la
             "native_hnan_global_signature64":str(global_receipt.system_signature64),
             "native_ordered_rule_leaves":leaves,
             "native_global_rule_mask_verified":True,
+            "exact_phase_witness":exact_phase_witness,
             "typed_yx_over_xy_equals_u_minus_108_proved":False,
             "global_composite_hnan_closure_proved":False,
             "canonical_vm81_admission":False,"canonical_hash216_minted":False}
