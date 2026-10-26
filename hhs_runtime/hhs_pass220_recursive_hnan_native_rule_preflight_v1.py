@@ -10,6 +10,9 @@ import json
 from pathlib import Path
 from hhs_runtime.hhs_pass220_recursive_hnan_ordered_phase_swap_v1 import inspect_recursive_ordered_phase_swap
 from hhs_runtime.hhs_pass220_hash216_symbolic_tensor_metadata_v1 import SymbolicTensorError
+from hhs_runtime.hhs_loshu_phase_embedding_v1 import (
+    PhaseEmbeddingState, exact_identity_token_witness,
+)
 from hhs_runtime.pass220.hnan_lane5_exact_witness_v1 import (
     verify_read_only_candidate, HNANExactWitnessError,
 )
@@ -27,7 +30,8 @@ class Claim(C.Structure):
 class Resolution(C.Structure):
     _fields_=[(k,C.c_uint32) for k in ("struct_size","version","decision","reason","rule_id","lhs_node","rhs_node","relation")]+[(k,C.c_uint8) for k in ("exact_rule_match","source_order_preserved","typed_identity_preserved","scalar_substitution_authority","delta_cancellation_authority","floating_infinity_authority","commutation_authority","emptyset_cancellation_authority","equality_reversal_authority")]+[("reserved0",C.c_uint8*7)]
 
-def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,lane_index:int=0,candidate=None):
+def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,lane_index:int=0,candidate=None,
+                                  token_state=None, token_identity=None):
     tree=inspect_recursive_ordered_phase_swap(operation,left,right,lane_index=lane_index,candidate=candidate)
     if not isinstance(native_library,str) or not native_library or not Path(native_library).is_file():
         raise SymbolicTensorError("NATIVE_EXACT_HNAN_LIBRARY_REQUIRED")
@@ -61,6 +65,22 @@ def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,la
         or exact_phase_witness.get("genesis_equivalence_certified") is not False
         or exact_phase_witness.get("vm81_mutation_authority") is not False):
         raise SymbolicTensorError("NATIVE_HNAN_EXACT_PHASE_AUTHORITY_DRIFT")
+    token_annotation = None
+    if token_state is not None or token_identity is not None:
+        if not isinstance(token_state, PhaseEmbeddingState) or not isinstance(token_identity, dict):
+            raise SymbolicTensorError("NATIVE_HNAN_TOKEN_IDENTITY_REQUIRED")
+        if set(token_identity) != {"ordered_operator", "left_source",
+                                   "right_source", "quartic_source"}:
+            raise SymbolicTensorError("NATIVE_HNAN_TOKEN_IDENTITY_SHAPE")
+        try:
+            token_annotation = exact_identity_token_witness(token_state, **token_identity)
+        except (ValueError, TypeError) as exc:
+            raise SymbolicTensorError("NATIVE_HNAN_TOKEN_IDENTITY_REJECTED") from exc
+        if (token_annotation["existing_receipt"] != token_state.receipt_hash72
+            or token_annotation["candidate_only"] is not True
+            or token_annotation["native_quartic_closure_certified"] is not False
+            or token_annotation["canonical_vm81_mutation_authority"] is not False):
+            raise SymbolicTensorError("NATIVE_HNAN_TOKEN_IDENTITY_AUTHORITY_DRIFT")
     leaves=[]
     for leaf in tree["ordered_phase_leaves"]:
         claim=Claim()
@@ -88,6 +108,7 @@ def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,la
             "native_ordered_rule_leaves":leaves,
             "native_global_rule_mask_verified":True,
             "exact_phase_witness":exact_phase_witness,
+            "existing_token_identity_annotation":token_annotation,
             "typed_yx_over_xy_equals_u_minus_108_proved":False,
             "global_composite_hnan_closure_proved":False,
             "canonical_vm81_admission":False,"canonical_hash216_minted":False}
