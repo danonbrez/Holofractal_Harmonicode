@@ -112,3 +112,11 @@ GitHub connector source access; no checked-out repository build or native test e
 - Updated `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to include a separate `lean-normalization-kernel` job using this same Lean action, triggered by modifications to the Lean ValueAlgebra theorem source and native I060 manifest. This binds the Lane 5 lookup regression to a current-commit Lean kernel build/audit, not just a prior checkpoint claim.
 - Commit `7f7c238f784194965f8deb45a6e884124f5ae827`. Existing runtime remains read-only, no rewrites or VM81 commits authorized.
 - Validation remaining: verify newly triggered workflow, then expand typed proof-application execution beyond metadata lookup. Full Lean theorem application and HNAN composite native closure are NOT claimed.
+
+## Continuation — actual Lean theorem application surface
+
+- Verified prior head `9343526759df66386fedbb95626d750ee1459cd7`: workflow `40314937030` succeeded; both `exact-witness` and `lean-normalization-kernel` jobs SUCCESS, with Lean kernel build + leanchecker + axiom audit. Native preflight workflow `40314936987` SUCCESS.
+- Added `formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean` explicitly invoking all eight existing I060 pair/value associativity and distributivity theorems with original exact types and conclusion shapes. No HNAN commutation theorem, new proof authority, VM81 mutation, or state commit.
+- Focused workflow now runs `lake env lean formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean` after established Lean build/leanchecker/audit. Adds the new Lean source path to PR triggers.
+- Commits `0c387f359e7e3772a1700dc005f4cf3e9dbea528`, `ffd8705b124d8c349249fd3bd6e1f58a020c18d8`.
+- New head CI remains pending. Next repair compiler failures if any; then integrate typed expression instantiation/result receipts into Lane 5 runtime (current Python lookup remains metadata/candidate only), native ABI proof binding, merge after focused validation.
