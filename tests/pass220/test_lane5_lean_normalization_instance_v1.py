@@ -16,6 +16,13 @@ class TestExactLeanInstantiation(unittest.TestCase):
             self.assertFalse(receipt["canonical_vm81_admission"])
             self.assertFalse(receipt["runtime_lean_kernel_invoked"])
 
+    def test_canonical_rational_results_and_source_operands(self):
+        operands=[q(-7,11),q(5,13),q(3,17)]
+        receipt=instantiate_existing_normalization("value_left_distrib",operands)
+        self.assertEqual(receipt["operands"],operands)
+        self.assertEqual(receipt["lhs_exact"],receipt["rhs_exact"])
+        self.assertEqual(receipt["theorem"]["application_declaration"],"value_left_distrib_application")
+
     def test_denominator_zero_rejected(self):
         with self.assertRaisesRegex(NormalizationInstantiationError,"COMPONENT_REJECTED"):
             instantiate_existing_normalization("value_mul_assoc",[q(1,0),q(2),q(3)])
