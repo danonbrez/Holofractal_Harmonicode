@@ -65,3 +65,12 @@ GitHub connector source access; no checked-out repository build or native test e
 - Witness receipt explicitly denies certification of negative feedback, constant-phase norm, native inverse and Genesis closure until proven through the existing HNAN transition path.
 - Code commit `462715622ce22fe29b7dc204986c506bf3aaa7df`; test commit `c569817d91f6e464f1c129d133858614c2bbf5a1`.
 - No local shell, C++ compilation or production deployment completed. New head focused CI still requires fresh confirmation; merge/verified-main outstanding.
+
+## Continuation — existing tokenizer HNAN identity annotation
+
+- Updated the **existing** `hhs_runtime/hhs_loshu_phase_embedding_v1.py` with `exact_identity_token_witness`: additive read-only typed annotation retaining the original token identity, source, phase position, reciprocal index, Lo Shu cell, receipt, and exact AB/BA/P^4 source fields.
+- This is not a replacement token namespace, tokenizer, canonical Hash72 receipt, or alternate native HNAN proof. Annotation uses the existing exact read-only witness and explicitly denies native quartic closure certification and VM81 mutation.
+- New tests `tests/pass220/test_existing_tokenizer_hnan_identity_annotation_v1.py`: preservation, AB/BA ordering, tamper rejection, missing-source rejection.
+- Updated targeted workflow `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to run tests on both source and test changes.
+- Commits `b50b41df3331b50d007c7f3c82a84276131c6814`, `54777ca7c00051832758e9f5e1bc39932325170b`, `40fdbf9f11b0ce4fcd9cbcd283f3cf9acae86cfe`.
+- GitHub connector only; no local shell, actual new-test execution, native ABI compilation, deployment, or main merge claimed. Focused CI and native proof binding remain next.
