@@ -23,6 +23,13 @@ NORMALIZATION_DECLARATIONS = {
 }
 
 
+LEAN_APPLICATION_MODULE = "HHS.Pass220.Lane5NormalizationApplications"
+LEAN_APPLICATION_SOURCE = "formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean"
+APPLICATION_DECLARATIONS = {
+    theorem: f"{theorem}_application" for theorem in NORMALIZATION_DECLARATIONS
+}
+
+
 class LeanNormalizationLookupError(ValueError):
     pass
 
@@ -50,6 +57,9 @@ def lookup_existing_normalization(theorem: str, *, carrier: str,
         "schema": SCHEMA,
         "module": LEAN_MODULE,
         "declaration": theorem,
+        "application_module": LEAN_APPLICATION_MODULE,
+        "application_declaration": APPLICATION_DECLARATIONS[theorem],
+        "application_source": LEAN_APPLICATION_SOURCE,
         "carrier": carrier,
         "relation": relation,
         "operator": operator,
