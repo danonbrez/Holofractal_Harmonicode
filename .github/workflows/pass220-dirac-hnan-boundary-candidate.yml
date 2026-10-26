@@ -6,6 +6,9 @@ on:
       - 'hhs_runtime/pass220/dirac_hnan_boundary_candidate_v1.py'
       - 'tests/pass220/test_dirac_hnan_native_candidate_v1.cpp'
       - 'tests/pass220/test_dirac_hnan_boundary_candidate_v1.py'
+      - 'hhs_runtime/cpp/hhs_pass220_dirac_hnan_lane5_bridge_v1.cpp'
+      - 'hhs_runtime/include/hhs_pass220_dirac_hnan_lane5_bridge_v1.h'
+      - 'GNUmakefile'
       - '.github/workflows/pass220-dirac-hnan-boundary-candidate.yml'
   pull_request:
     paths:
@@ -27,6 +30,9 @@ jobs:
         run: |
           c++ -std=c++17 -O2 -Wall -Wextra -Werror -I. tests/pass220/test_dirac_hnan_native_candidate_v1.cpp -o /tmp/hhs-pass220-dirac-hnan
           /tmp/hhs-pass220-dirac-hnan
+      - name: Compile integrated I028 Dirac candidate translation unit
+        run: |
+          c++ -std=c++17 -Wall -Wextra -Werror -Ihhs_runtime/include -Ihhs_runtime/cpp -fsyntax-only hhs_runtime/cpp/hhs_pass220_dirac_hnan_lane5_bridge_v1.cpp
       - name: Python exact rational boundary suite
         run: python -m unittest discover -s tests/pass220 -p test_dirac_hnan_boundary_candidate_v1.py -v
       - name: Verify no browser physics mutation in candidate files
