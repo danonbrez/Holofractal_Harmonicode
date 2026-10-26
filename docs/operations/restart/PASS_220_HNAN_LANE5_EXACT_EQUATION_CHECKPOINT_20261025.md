@@ -104,3 +104,11 @@ GitHub connector source access; no checked-out repository build or native test e
 - Commits: `9877d998d6564acd1d732af982e14df4c71b2417`, `e8f222b0476348e48c26d04f9d5c0ad534e0f08e`, `0e72fbfb1f2432410411c504379ab58cb3a80fa9`.
 - Latest CI not yet confirmed. No live Lean proof application, theorem hypothesis discharge, genuine C++ compiled validation in this session, merge, main verification, or production deployment is claimed.
 - Next: inspect latest focused CI; bind actual Lean kernel theorem/hypotheses for executable normalization, validate native ABI and exact proof trace, then merge after dependency checks.
+
+## Continuation — kernel-validation gate for existing Lean normalizations
+
+- Previous PR head `d47261736bb5c2840ae2eaf2da9e5bbd8f1a683f`: focused exact witness workflow `40285075685` and native HNAN preflight workflow `40285075781` both SUCCESS.
+- Verified the inherited I060 native Lean kernel CI recipe in `.github/workflows/pass220-i060-native-lean-exactrat-value-algebra.yml` (real Lean4 build, leanchecker HHS, axiom audit).
+- Updated `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to include a separate `lean-normalization-kernel` job using this same Lean action, triggered by modifications to the Lean ValueAlgebra theorem source and native I060 manifest. This binds the Lane 5 lookup regression to a current-commit Lean kernel build/audit, not just a prior checkpoint claim.
+- Commit `7f7c238f784194965f8deb45a6e884124f5ae827`. Existing runtime remains read-only, no rewrites or VM81 commits authorized.
+- Validation remaining: verify newly triggered workflow, then expand typed proof-application execution beyond metadata lookup. Full Lean theorem application and HNAN composite native closure are NOT claimed.
