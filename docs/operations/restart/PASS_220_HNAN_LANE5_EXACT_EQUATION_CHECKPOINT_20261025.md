@@ -74,3 +74,14 @@ GitHub connector source access; no checked-out repository build or native test e
 - Updated targeted workflow `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to run tests on both source and test changes.
 - Commits `b50b41df3331b50d007c7f3c82a84276131c6814`, `54777ca7c00051832758e9f5e1bc39932325170b`, `40fdbf9f11b0ce4fcd9cbcd283f3cf9acae86cfe`.
 - GitHub connector only; no local shell, actual new-test execution, native ABI compilation, deployment, or main merge claimed. Focused CI and native proof binding remain next.
+
+## Continuation — token annotation to native preflight handoff
+
+- PR #853 head at inspection `1fa561222ec633ab3833d0705673105bcc197432` remained draft/mergeable, with focused witness/native preflight workflows queued.
+- Added optional `token_state` + `token_identity` arguments to existing `native_recursive_hnan_preflight`. Existing calls remain compatible.
+- The native global rule runs first. Any supplied token handoff must provide an existing `PhaseEmbeddingState` and the complete exact `ordered_operator`, `left_source`, `right_source`, `quartic_source` mapping; rejected on missing keys/altered phase or unauthorized flags.
+- The annotation remains candidate-only; it cannot certify native AB/BA/P^4 closure or issue VM81/Hash72/Hash216 authority.
+- Added negative tests for incomplete handoff and included them in the focused CI test selection.
+- Changed files: `hhs_runtime/hhs_pass220_recursive_hnan_native_rule_preflight_v1.py`, `tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py`, `.github/workflows/pass220-hnan-lane5-exact-witness.yml`, this checkpoint.
+- Commits: `9ea3bb432d9d3d9f04efc10c8ceeb9acaae0cc17`, `bf24851496314ed95accc736fa63fc750194e2ab`, `674c601f9bffdf21c0af0bc93ca45a171cbadbd3`.
+- Validation pending on updated head: focused CI and genuine C++ compiled native preflight. GitHub connector access only; no local checkout, merge, deployment, or verified-main claim.
