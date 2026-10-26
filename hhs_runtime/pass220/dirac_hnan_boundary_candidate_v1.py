@@ -26,7 +26,6 @@ def add(a,b): return a[0]+b[0],a[1]+b[1]
 def sub(a,b): return a[0]-b[0],a[1]-b[1]
 def mul(a,b): return a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]
 def conj(a): return a[0],-a[1]
-def dot(a,b): return sum((mul(conj(x),y) for x,y in zip(a,b)),ZERO) if False else _dot(a,b)
 def _dot(a,b):
     out=ZERO
     for x,y in zip(a,b):out=add(out,mul(conj(x),y))
