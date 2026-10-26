@@ -7399,6 +7399,11 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
       position:[p.position.x,p.position.y,p.position.z],
       native_position_authority:false,
       physical_velocity:[p.userData.velocity.x,p.userData.velocity.y,p.userData.velocity.z],
+      // Actual construction provenance, not a claimed HNAN role assignment.
+      source_spiral:Number.isInteger(p.userData.spiral)?p.userData.spiral:null,
+      source_layer2:!!p.userData.layer2,
+      source_recip:!!p.userData.recip,
+      hnan_role_mapping_verified:false,
       projection_only:true
     });
   }
@@ -7498,15 +7503,31 @@ let samples=0;
 if(bridge&&typeof bridge.projectPhysicalState==="function"){
 // Deterministic, bounded sample of original carrier coordinates from existing layers.
 const count=10368,stride=72;
+const groupSamples=new Array(8).fill(0), groupCenters=Array.from({length:8},()=>[0,0,0]);
 for(let i=0;i<count;i+=stride){
 let rec;try{rec=bridge.projectPhysicalState(i)}catch(e){continue}
 if(!rec||!Array.isArray(rec.position)||rec.position.length!==3)continue;
 const [x,y,z]=rec.position;if(![x,y,z].every(Number.isFinite))continue;
 const scale=R/(1+Math.hypot(x,y,z));const px=cx+x*scale,py=cy+y*scale;
 ctx.fillStyle=i<5184?"#7ccff2":"#f1ac8b";ctx.fillRect(px,py,3,3);samples++;
+if(Number.isInteger(rec.source_spiral)&&rec.source_spiral>=0&&rec.source_spiral<8){
+ const g=rec.source_spiral;groupSamples[g]++;
+ groupCenters[g][0]+=px;groupCenters[g][1]+=py;groupCenters[g][2]+=Math.hypot(...rec.physical_velocity);
+}
 }
 el("pass220-atom-health").textContent=samples?"Original physical carrier positions sampled (read-only). Atomic bound-state admission pending.":"Particle bridge available; no valid sample positions.";
 }else{el("pass220-atom-health").textContent="Native presentation bridge unavailable; eight HNAN phase guides only."}
+// Eight measured source-spiral centroids. No invented HNAN-group equivalence.
+for(let g=0;g<8;g++){if(!groupSamples[g])continue;
+ const px=groupCenters[g][0]/groupSamples[g],py=groupCenters[g][1]/groupSamples[g];
+ ctx.beginPath();ctx.arc(px,py,g===phase?9:5,0,Math.PI*2);
+ ctx.fillStyle=g===phase?"#ffda82":"#b6f6df";ctx.fill();
+ ctx.fillStyle="#ffffff";ctx.font="11px system-ui";ctx.textAlign="center";
+ ctx.fillText("S"+g,px,py-12);
+}
+el("pass220-atom-health").textContent=samples?
+ "Observed 8 source spirals and live velocities. Dirac boundary state: candidate only; native mapping unresolved.":
+ "Original particle positions unavailable.";
 el("pass220-atom-count").textContent=String(samples);
 raf=requestAnimationFrame(draw);
 }
