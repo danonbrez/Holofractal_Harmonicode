@@ -145,3 +145,12 @@ GitHub connector source access; no checked-out repository build or native test e
 - Commits `8b9516eda381e70d3ad8d6acdf881e3a61d80285`, `35790f10e49e9d1d0a47541c3a2868029dfc58a5`, `2be53f395f2d6e5b9d9aae578379f31936c9b93d`.
 - Runtime instance evaluator is limited to exact-rational algebra; no HNAN commutation, generic symbolic expression tree execution, compiled native ABI proof closure, canonical VM81 admission, merge, or deployed main. New CI not yet verified.
 - Next: verify focused instance CI; then wire exact instance evidence to native candidate trace with source-bound operands and complete Lean proof dependencies.
+
+## Continuation — typed Lean normalization instance in native candidate trace
+
+- Previous head `71ad5df1ce2140d632da9964775a525a022ffc94`: focused exact witness run `40409855808` and recursive native preflight `40409855807` were queued at inspection. No success inferred.
+- Added optional `lean_normalization_operands` to the existing `native_recursive_hnan_preflight`, requiring the already registered `lean_normalization` theorem binding; instantiates exact rational LHS and RHS via `instantiate_existing_normalization` and checks bound theorem equality, exact result equality and candidate-only authority invariants; adds `existing_lean_normalization_instance` to candidate trace.
+- Added runtime-instance source/Lean application preservation test and native rejection test for operands without a registered theorem. Updated focused CI test selector.
+- Commits `207777f860507fc6c2623404401539e5e045e940`, `02724fbf4a4eb92eaf1d576b3b273aaca8947224`, `7b693d943ee515286d9e879dc40c378ff7f7d530`, `5da724a583f979cf848373aa7f9aee3117147ac8`.
+- New CI and genuine native ABI proof closure not verified. No runtime Lean kernel invocation, arbitrary tensor commutation, VM81 mutation, Hash72/Hash216 authority change, deployment, or main merge.
+- Next: inspect queued/focused workflow, repair forward if failure; test successful integrated native candidate branch against genuine compiled C ABI and proof trace, then merge following dependency-scoped validation.
