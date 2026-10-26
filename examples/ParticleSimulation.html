@@ -7444,6 +7444,69 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
 })(window);
 
 </script>
+<!-- PASS220 I086: inline read-only atomic boundary projection -->
+<style id="pass220-atomic-projection-style">
+#pass220-atom-panel{position:fixed;right:16px;bottom:18px;z-index:10010;width:min(350px,calc(100vw - 32px));background:rgba(8,17,31,.95);color:#e5eeff;border:1px solid #6384ae;border-radius:12px;padding:12px;box-shadow:0 12px 34px #0008;font:13px/1.45 system-ui,sans-serif}
+#pass220-atom-panel[hidden]{display:none}
+#pass220-atom-panel h2{font-size:15px;margin:0 0 6px}#pass220-atom-panel p{margin:5px 0}
+#pass220-atom-panel canvas{width:100%;height:auto;display:block;border-radius:6px;background:#050b17}
+#pass220-atom-panel button{background:#183554;color:#fff;border:1px solid #627fa2;border-radius:5px;padding:5px 9px;cursor:pointer}
+#pass220-atom-panel .row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:7px 0}
+#pass220-atom-panel output{color:#a6eacb}#pass220-atom-panel small{color:#b4c4e0}
+#pass220-atom-launch{position:fixed;right:16px;bottom:18px;z-index:10009;background:#16365b;color:#fff;border:1px solid #8aa9ca;border-radius:9px;padding:9px 12px;cursor:pointer}
+@media(max-width:520px){#pass220-atom-panel{right:8px;bottom:8px;width:calc(100vw - 16px);max-height:65vh;overflow:auto}}
+</style>
+<button id="pass220-atom-launch" type="button" aria-controls="pass220-atom-panel" aria-expanded="false">Atomic phase projection</button>
+<section id="pass220-atom-panel" hidden aria-label="Pass 220 atomic phase projection">
+ <div class="row"><h2>Native particle → atomic phase projection</h2><button id="pass220-atom-close" type="button" aria-label="Close atomic projection">×</button></div>
+ <canvas id="pass220-atom-canvas" width="640" height="370" role="img" aria-label="Live, read-only sample of original particle positions with eight geometric phase directions"></canvas>
+ <div class="row"><span>Physical carriers sampled</span><output id="pass220-atom-count">0</output></div>
+ <div class="row"><span>Two spinor phases</span><output>φ / χ · reference only</output></div>
+ <div class="row"><span>Selected HNAN role</span><output id="pass220-atom-role">xy</output></div>
+ <div class="row"><button id="pass220-atom-prev" type="button">◀ Phase</button><button id="pass220-atom-next" type="button">Phase ▶</button></div>
+ <p><small>Live spatial samples are read from the existing particle projection, not a second physics engine. The eight radial directions are visualization guides—not verified particle-group assignments. No forces, trajectories, or native hashes are changed.</small></p>
+ <p id="pass220-atom-health" role="status">Inspecting native presentation bridge…</p>
+</section>
+<script id="pass220-atomic-projection-script">
+/* Read-only Pass 220 presentation adjunct. Does not write to the simulation. */
+(function(){
+"use strict";
+const roles=["xy","x+y","yx","xy−zw","wz−yx","wz","z+w","zw"];
+let phase=0,open=false,raf=0,last=0;
+const el=id=>document.getElementById(id),panel=el("pass220-atom-panel"),launch=el("pass220-atom-launch"),canvas=el("pass220-atom-canvas"),ctx=canvas.getContext("2d");
+const show=v=>{open=v;panel.hidden=!v;launch.hidden=v;launch.setAttribute("aria-expanded",String(v));if(v){last=0;raf=requestAnimationFrame(draw)}else cancelAnimationFrame(raf)};
+launch.addEventListener("click",()=>show(true));el("pass220-atom-close").addEventListener("click",()=>show(false));
+function select(n){phase=(n+8)%8;el("pass220-atom-role").textContent=roles[phase]+" · "+(phase+1)+"/8"}
+el("pass220-atom-prev").addEventListener("click",()=>select(phase-1));
+el("pass220-atom-next").addEventListener("click",()=>select(phase+1));
+function draw(t){
+if(!open||!ctx)return;
+if(t-last<100){raf=requestAnimationFrame(draw);return}last=t;
+const w=canvas.width,h=canvas.height,cx=w/2,cy=h/2,R=130;
+ctx.clearRect(0,0,w,h);
+ctx.strokeStyle="#416082";ctx.lineWidth=1;
+for(let r=1;r<=3;r++){ctx.beginPath();ctx.arc(cx,cy,R*r/3,0,Math.PI*2);ctx.stroke()}
+for(let i=0;i<8;i++){const a=i*Math.PI/4-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle=i===phase?"#edc57d":"#345576";ctx.lineWidth=i===phase?3:1;ctx.stroke();ctx.fillStyle=i===phase?"#f8d994":"#a7bfdc";ctx.font="14px system-ui";ctx.textAlign="center";ctx.fillText(roles[i],cx+(R+40)*Math.cos(a),cy+(R+26)*Math.sin(a))}
+const bridge=window.HHSNeuralLayerMap;
+let samples=0;
+if(bridge&&typeof bridge.projectPhysicalState==="function"){
+// Deterministic, bounded sample of original carrier coordinates from existing layers.
+const count=10368,stride=72;
+for(let i=0;i<count;i+=stride){
+let rec;try{rec=bridge.projectPhysicalState(i)}catch(e){continue}
+if(!rec||!Array.isArray(rec.position)||rec.position.length!==3)continue;
+const [x,y,z]=rec.position;if(![x,y,z].every(Number.isFinite))continue;
+const scale=R/(1+Math.hypot(x,y,z));const px=cx+x*scale,py=cy+y*scale;
+ctx.fillStyle=i<5184?"#7ccff2":"#f1ac8b";ctx.fillRect(px,py,3,3);samples++;
+}
+el("pass220-atom-health").textContent=samples?"Original physical carrier positions sampled (read-only). Atomic bound-state admission pending.":"Particle bridge available; no valid sample positions.";
+}else{el("pass220-atom-health").textContent="Native presentation bridge unavailable; eight HNAN phase guides only."}
+el("pass220-atom-count").textContent=String(samples);
+raf=requestAnimationFrame(draw);
+}
+select(0);
+})();
+</script>
 </body>
 
 </html>
