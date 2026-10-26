@@ -51,6 +51,34 @@ def test_real_compiled_native_global_rule_12(tmp_path):
     assert len(result["native_ordered_rule_leaves"])==1
     assert result["native_ordered_rule_leaves"][0]["native_ordered_xy_yx_rule_verified"]
     assert not result["typed_yx_over_xy_equals_u_minus_108_proved"]
+    # Genuine C/C++ ABI proof gate, not a mocked shared library: carry one
+    # source-bound exact Lean instance through the existing native preflight.
+    theorem = {
+        "theorem": "value_left_distrib",
+        "carrier": "ExactRatValue",
+        "relation": "Eq",
+        "operator": "ExactRatValue.mul/ExactRatValue.add",
+    }
+    operands = [
+        {"numerator": 17, "denominator": 19},
+        {"numerator": -3, "denominator": 7},
+        {"numerator": 11, "denominator": 13},
+    ]
+    with patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.inspect_recursive_ordered_phase_swap", return_value=tree):
+        instance_result = native_recursive_hnan_preflight(
+            "ADD", ref(1), ref(1), native_library=str(library),
+            lean_normalization=theorem, lean_normalization_operands=operands,
+        )
+    instance = instance_result["existing_lean_normalization_instance"]
+    assert instance["operands"] == operands
+    assert instance["lhs_exact"] == instance["rhs_exact"]
+    assert instance["theorem"]["declaration"] == "value_left_distrib"
+    assert instance["theorem"]["application_declaration"] == "value_left_distrib_application"
+    assert instance_result["native_global_rule_mask_verified"]
+    assert len(instance_result["native_ordered_rule_leaves"]) == 1
+    assert not instance_result["canonical_vm81_admission"]
+    assert not instance_result["canonical_hash216_minted"]
+    assert not instance_result["global_composite_hnan_closure_proved"]
 
 def test_native_exact_phase_witness_rejection_before_loading_library(tmp_path):
     """The existing native preflight must fail closed on exact-phase drift."""
