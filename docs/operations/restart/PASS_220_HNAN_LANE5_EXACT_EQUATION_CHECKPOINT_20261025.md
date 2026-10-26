@@ -127,3 +127,12 @@ GitHub connector source access; no checked-out repository build or native test e
 - Retrieved failing job logs. Errors on pair-level theorem applications: `addExactRat` and `mulExactRat` unresolved in the new Lean namespace. Existing `ValueAlgebra.lean` opens `HHS.Mathlib.Rat.Congruence`, whereas the new module omitted it.
 - Repair in `formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean`: import the same constructor namespace via `open HHS.Mathlib.Rat.Congruence`. Commit `c9aafc584ba7060a2b37a0f32c85bfc4baad44ea`.
 - Next: inspect repair-head CI. No new theorem scope, HNAN commutation, runtime authority, or main merge.
+
+## Continuation — verified theorem applications and exact declaration reference
+
+- Prior head `18871d41049a391af2bf1758cd7cb81260c16f7a` confirmed PASS: exact witness and Lean application kernel workflow `40333314346` (both jobs succeeded); native preflight workflow `40333314197` succeeded.
+- Existing `hhs_runtime/pass220/lane5_lean_normalization_lookup_v1.py` now exposes for each of the eight registered I060 normalizations the corresponding `HHS.Pass220.Lane5NormalizationApplications` theorem name and Lean source file path. Native preflight already carries this candidate binding in the resulting candidate receipt.
+- Updated `tests/pass220/test_lane5_lean_normalization_lookup_v1.py` to require matching theorem application names and module.
+- Commits: `82eae3e3ed94f95b98b93d6eb63d7c03e5582144`, `a4dc19524765018e7612a0f7187fe2b503159298`.
+- Current-head CI pending. This is source/proof reference binding; no runtime Lean expression invocation, no canonical rewrite authorization, no main merge.
+- Next: confirm new CI, implement type-checked expression instantiation with its theorem hypotheses and dependency proof identity in existing Lane 5/VM81 chain; merge after scoped validation.
