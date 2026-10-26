@@ -154,3 +154,12 @@ GitHub connector source access; no checked-out repository build or native test e
 - Commits `207777f860507fc6c2623404401539e5e045e940`, `02724fbf4a4eb92eaf1d576b3b273aaca8947224`, `7b693d943ee515286d9e879dc40c378ff7f7d530`, `5da724a583f979cf848373aa7f9aee3117147ac8`.
 - New CI and genuine native ABI proof closure not verified. No runtime Lean kernel invocation, arbitrary tensor commutation, VM81 mutation, Hash72/Hash216 authority change, deployment, or main merge.
 - Next: inspect queued/focused workflow, repair forward if failure; test successful integrated native candidate branch against genuine compiled C ABI and proof trace, then merge following dependency-scoped validation.
+
+## Continuation — genuine compiled C/C++ ABI Lean instance integration test
+
+- At inspection previous head `dc1b72e4bbf3771550ac8c8a309c11600541fdfa` had focused workflows `40410625735` and `40410625924` QUEUED; success not inferred.
+- Existing native regression already compiles the authoritative repository C ABI `hhs_runtime/c/hhs_runtime_exact_abi.c`, C++ PQC cell wall, and Hash216 source and calls the genuine 1.63 native rule. Extended this **same test** to pass a registered I060 `value_left_distrib` Lean normalization and exact rational operands through the genuine compiled native shared library, verifying inherited theorem application name, operands, exact LHS/RHS, native rule leaves and candidate-only admission boundaries.
+- Change: `tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py`. Commit `526c23b6e148099038d02f9f8e9763606dd9b564`.
+- The existing `.github/workflows/pass220-recursive-hnan-native-rule-preflight.yml` already runs the entire changed test file, including `test_real_compiled_native_global_rule_12`; no alternate CI pathway needed.
+- No local C/C++ compilation performed in this session; current-head CI not yet observed. The Lean theorem is independently kernel-checked in separate CI; a concrete rational instance is verified in Python and passed as read-only candidate metadata after the genuine native global HNAN gate. This is not a claim of native C++ execution of the Lean theorem or VM81 canonical admission.
+- Next: verify exact head workflow, repair failures forward, then assess PR merge readiness and main.
