@@ -326,6 +326,64 @@ def embed_sequence(tokens: Sequence[str], d_model: int = 72, dimensions: int | N
     )
 
 
+
+def exact_identity_token_witness(
+    state: PhaseEmbeddingState,
+    *,
+    ordered_operator: str,
+    left_source: str,
+    right_source: str,
+    quartic_source: str,
+) -> Dict[str, object]:
+    """Read-only HNAN identity metadata for an already emitted token.
+
+    No new token, hash authority, identity rewrite or scalar cancellation.
+    This is a candidate proof dependency, not a certified AB/BA/P^4 closure.
+    """
+    from hhs_runtime.pass220.hnan_lane5_exact_witness_v1 import (
+        verify_read_only_candidate,
+    )
+
+    if not isinstance(state, PhaseEmbeddingState):
+        raise TypeError("existing PhaseEmbeddingState required")
+    if ordered_operator not in ("AB", "BA"):
+        raise ValueError("HNAN_ORDERED_OPERATOR_REQUIRED")
+    if any(not isinstance(value, str) or not value for value in (
+        left_source, right_source, quartic_source
+    )):
+        raise ValueError("HNAN_EXACT_SOURCE_REQUIRED")
+    if state.reciprocal_phase_index != (-state.phase_index) % TORUS_ORDER:
+        raise ValueError("HNAN_TOKEN_RECIPROCAL_PHASE_DRIFT")
+    if state.carrier != carrier_symbol(state.phase_index) or (
+        state.reciprocal_carrier != carrier_symbol(state.reciprocal_phase_index)
+    ):
+        raise ValueError("HNAN_TOKEN_CARRIER_DRIFT")
+    if not all(state.invariants.values()):
+        raise ValueError("HNAN_INHERITED_TOKEN_INVARIANT_REJECTED")
+
+    witness = verify_read_only_candidate()
+    if not witness["candidate_only"] or witness["vm81_mutation_authority"]:
+        raise ValueError("HNAN_TOKEN_WITNESS_AUTHORITY_DRIFT")
+    return {
+        "schema": "HHS_EXISTING_TOKEN_HNAN_IDENTITY_ANNOTATION_V1",
+        "existing_receipt": state.receipt_hash72,
+        "token": state.token,
+        "position": state.position,
+        "dimension": state.dimension,
+        "lo_shu_cell_index": state.lo_shu.cell_index,
+        "ordered_operator": ordered_operator,
+        "left_source": left_source,
+        "right_source": right_source,
+        "quartic_source": quartic_source,
+        "phase_index": state.phase_index,
+        "reciprocal_phase_index": state.reciprocal_phase_index,
+        "exact_witness_schema": witness["schema"],
+        "candidate_only": True,
+        "native_quartic_closure_certified": False,
+        "canonical_vm81_mutation_authority": False,
+    }
+
+
 def shadow_float_projection(state: PhaseEmbeddingState) -> Tuple[float, float]:
     """
     Optional transformer-compatible shadow projection.
