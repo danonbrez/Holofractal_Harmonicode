@@ -7,7 +7,7 @@ int main() {
   constexpr Gaussian zero{0,0};
   constexpr std::array<Gaussian,4> psi{zero,zero,zero,zero};
   static_assert(projector_involution(psi),"K squared is identity");
-  static_assert(on_projector_boundary(psi),"zero reference spinor closes");
+  static_assert(!on_projector_boundary(psi),"zero cannot certify a particle boundary");
   constexpr std::array<Gaussian,4> arbitrary{{{1,2},{2,-3},{4,5},{-2,7}}};
   static_assert(projector_involution(arbitrary),"K squared identity for nonzero spinor");
   static_assert(!on_projector_boundary(arbitrary),"non-admitted spinor rejected");
