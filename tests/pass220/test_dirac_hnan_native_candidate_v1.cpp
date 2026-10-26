@@ -5,9 +5,11 @@
 using namespace hhs::pass220::dirac;
 int main() {
   constexpr Gaussian zero{0,0};
-  constexpr std::array<Gaussian,4> psi{zero,zero,zero,zero};
+  constexpr std::array<Gaussian,4> psi{{{1,0},zero,{0,-1},zero}};
   static_assert(projector_involution(psi),"K squared is identity");
-  static_assert(!on_projector_boundary(psi),"zero cannot certify a particle boundary");
+  static_assert(on_projector_boundary(psi),"nonzero reference spinor closes");
+  constexpr std::array<Gaussian,4> trivial{zero,zero,zero,zero};
+  static_assert(!on_projector_boundary(trivial),"zero cannot certify a particle boundary");
   constexpr std::array<Gaussian,4> arbitrary{{{1,2},{2,-3},{4,5},{-2,7}}};
   static_assert(projector_involution(arbitrary),"K squared identity for nonzero spinor");
   static_assert(!on_projector_boundary(arbitrary),"non-admitted spinor rejected");
