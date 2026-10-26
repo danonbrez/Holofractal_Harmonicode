@@ -124,3 +124,36 @@ def test_native_token_identity_incomplete_handoff_rejected(tmp_path):
         with pytest.raises(SymbolicTensorError, match="TOKEN_IDENTITY_REQUIRED"):
             native_recursive_hnan_preflight("ADD", ref(1), ref(1), native_library=str(library_path),
                 token_state=state)
+
+def test_native_lean_normalization_invalid_shape_rejected(tmp_path):
+    import ctypes
+    from hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1 import (
+        native_recursive_hnan_preflight, GlobalReceipt, VERSION, MASK,
+    )
+    library_path = tmp_path / "native.so"
+    library_path.write_bytes(b"placeholder")
+    class Verify:
+        def __call__(self, pointer):
+            receipt = ctypes.cast(pointer, ctypes.POINTER(GlobalReceipt)).contents
+            receipt.version = VERSION
+            receipt.decision = 1
+            receipt.required_rule_mask = MASK
+            receipt.verified_rule_mask = MASK
+            for key in ("jordan_depth2_verified", "minimal_polynomial_degree4_verified",
+                        "degree4_recurrence_verified", "hnan_channel_order_preserved",
+                        "global_delta_denominator_preserved", "xy_yx_distinct", "zw_wz_distinct"):
+                setattr(receipt, key, 1)
+            return 0
+    class Library:
+        hhs_exact_pass219_hnan_global_system_verify = Verify()
+        hhs_exact_pass219_hnan_resolve = Verify()
+    tree = {"P": "2", "candidate_sha256": "a" * 64, "ordered_phase_leaves": []}
+    with patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.inspect_recursive_ordered_phase_swap", return_value=tree), \
+         patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.C.CDLL", return_value=Library()):
+        with pytest.raises(SymbolicTensorError, match="LEAN_NORMALIZATION_SHAPE"):
+            native_recursive_hnan_preflight("ADD", ref(1), ref(1), native_library=str(library_path),
+                lean_normalization={"theorem": "value_add_assoc"})
+        with pytest.raises(SymbolicTensorError, match="LEAN_NORMALIZATION_REJECTED"):
+            native_recursive_hnan_preflight("ADD", ref(1), ref(1), native_library=str(library_path),
+                lean_normalization={"theorem": "value_add_assoc", "carrier": "HNAN",
+                    "relation": "Eq", "operator": "AB"})
