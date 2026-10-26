@@ -2,6 +2,7 @@ name: Pass 220 HNAN Lane 5 Exact Witness
 on:
   pull_request:
     paths:
+      - 'formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean'
       - 'formal/lean/HHS/Mathlib/Rat/ValueAlgebra.lean'
       - 'hhs_runtime/hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py'
       - 'hhs_runtime/pass220/hnan_lane5_exact_witness_v1.py'
@@ -57,3 +58,5 @@ jobs:
           leanchecker-args: HHS
           axiom-audit: true
           axiom-audit-root: HHS
+      - name: Typecheck all eight existing Lean theorem applications
+        run: lake env lean formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean
