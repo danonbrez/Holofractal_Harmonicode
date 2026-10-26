@@ -1,0 +1,35 @@
+name: Pass220 Dirac HNAN native boundary candidate
+on:
+  push:
+    paths:
+      - 'hhs_runtime/cpp/hhs_pass220_dirac_hnan_eight_sector_candidate_v1.hpp'
+      - 'hhs_runtime/pass220/dirac_hnan_boundary_candidate_v1.py'
+      - 'tests/pass220/test_dirac_hnan_native_candidate_v1.cpp'
+      - 'tests/pass220/test_dirac_hnan_boundary_candidate_v1.py'
+      - '.github/workflows/pass220-dirac-hnan-boundary-candidate.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/cpp/hhs_pass220_dirac_hnan_eight_sector_candidate_v1.hpp'
+      - 'hhs_runtime/pass220/dirac_hnan_boundary_candidate_v1.py'
+      - 'tests/pass220/test_dirac_hnan_native_candidate_v1.cpp'
+      - 'tests/pass220/test_dirac_hnan_boundary_candidate_v1.py'
+      - '.github/workflows/pass220-dirac-hnan-boundary-candidate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-boundary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: C++17 compile with warnings as errors and execute
+        run: |
+          c++ -std=c++17 -O2 -Wall -Wextra -Werror -I. tests/pass220/test_dirac_hnan_native_candidate_v1.cpp -o /tmp/hhs-pass220-dirac-hnan
+          /tmp/hhs-pass220-dirac-hnan
+      - name: Python exact rational boundary suite
+        run: python -m unittest discover -s tests/pass220 -p test_dirac_hnan_boundary_candidate_v1.py -v
+      - name: Verify no browser physics mutation in candidate files
+        run: |
+          test ! -z "$(grep -F 'native_admission":False' hhs_runtime/pass220/dirac_hnan_boundary_candidate_v1.py)"
+          grep -Fq 'return {order,reference,mapped,false};' hhs_runtime/cpp/hhs_pass220_dirac_hnan_eight_sector_candidate_v1.hpp
