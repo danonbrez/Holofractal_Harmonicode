@@ -10,6 +10,9 @@ import json
 from pathlib import Path
 from hhs_runtime.hhs_pass220_recursive_hnan_ordered_phase_swap_v1 import inspect_recursive_ordered_phase_swap
 from hhs_runtime.hhs_pass220_hash216_symbolic_tensor_metadata_v1 import SymbolicTensorError
+from hhs_runtime.pass220.lane5_lean_normalization_lookup_v1 import (
+    lookup_existing_normalization, LeanNormalizationLookupError,
+)
 from hhs_runtime.hhs_loshu_phase_embedding_v1 import (
     PhaseEmbeddingState, exact_identity_token_witness,
 )
@@ -31,7 +34,7 @@ class Resolution(C.Structure):
     _fields_=[(k,C.c_uint32) for k in ("struct_size","version","decision","reason","rule_id","lhs_node","rhs_node","relation")]+[(k,C.c_uint8) for k in ("exact_rule_match","source_order_preserved","typed_identity_preserved","scalar_substitution_authority","delta_cancellation_authority","floating_infinity_authority","commutation_authority","emptyset_cancellation_authority","equality_reversal_authority")]+[("reserved0",C.c_uint8*7)]
 
 def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,lane_index:int=0,candidate=None,
-                                  token_state=None, token_identity=None):
+                                  token_state=None, token_identity=None, lean_normalization=None):
     tree=inspect_recursive_ordered_phase_swap(operation,left,right,lane_index=lane_index,candidate=candidate)
     if not isinstance(native_library,str) or not native_library or not Path(native_library).is_file():
         raise SymbolicTensorError("NATIVE_EXACT_HNAN_LIBRARY_REQUIRED")
@@ -81,6 +84,25 @@ def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,la
             or token_annotation["native_quartic_closure_certified"] is not False
             or token_annotation["canonical_vm81_mutation_authority"] is not False):
             raise SymbolicTensorError("NATIVE_HNAN_TOKEN_IDENTITY_AUTHORITY_DRIFT")
+    lean_normalization_binding = None
+    if lean_normalization is not None:
+        if not isinstance(lean_normalization, dict) or set(lean_normalization) != {
+            "theorem", "carrier", "relation", "operator"
+        }:
+            raise SymbolicTensorError("NATIVE_HNAN_LEAN_NORMALIZATION_SHAPE")
+        try:
+            lean_normalization_binding = lookup_existing_normalization(
+                lean_normalization["theorem"],
+                carrier=lean_normalization["carrier"],
+                relation=lean_normalization["relation"],
+                operator=lean_normalization["operator"],
+            )
+        except LeanNormalizationLookupError as exc:
+            raise SymbolicTensorError("NATIVE_HNAN_LEAN_NORMALIZATION_REJECTED") from exc
+        if (lean_normalization_binding.get("candidate_only") is not True
+            or lean_normalization_binding.get("ordered_hnan_rewrite_authorized") is not False
+            or lean_normalization_binding.get("canonical_vm81_admission") is not False):
+            raise SymbolicTensorError("NATIVE_HNAN_LEAN_NORMALIZATION_AUTHORITY_DRIFT")
     leaves=[]
     for leaf in tree["ordered_phase_leaves"]:
         claim=Claim()
@@ -109,6 +131,7 @@ def native_recursive_hnan_preflight(operation,left,right,*,native_library:str,la
             "native_global_rule_mask_verified":True,
             "exact_phase_witness":exact_phase_witness,
             "existing_token_identity_annotation":token_annotation,
+            "existing_lean_normalization_reference":lean_normalization_binding,
             "typed_yx_over_xy_equals_u_minus_108_proved":False,
             "global_composite_hnan_closure_proved":False,
             "canonical_vm81_admission":False,"canonical_hash216_minted":False}
