@@ -36,6 +36,10 @@ class TestDiracHNAN(unittest.TestCase):
         self.sectors[0]["spinor"]=((F(1),F(0)),ZERO,ZERO,ZERO)
         self.assertFalse(evaluate(self.sectors)["reference_pass"])
 
+    def test_zero_spinor_rejected(self):
+        self.sectors[0]["spinor"]=(ZERO,)*4
+        self.assertFalse(evaluate(self.sectors)["reference_pass"])
+
     def test_witness_flags_cannot_mint_native_state(self):
         out=evaluate(self.sectors,center_gate_witness=True,
                      conservation_witness=True,native_mapping_witness=True)
