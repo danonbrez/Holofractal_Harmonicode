@@ -136,3 +136,12 @@ GitHub connector source access; no checked-out repository build or native test e
 - Commits: `82eae3e3ed94f95b98b93d6eb63d7c03e5582144`, `a4dc19524765018e7612a0f7187fe2b503159298`.
 - Current-head CI pending. This is source/proof reference binding; no runtime Lean expression invocation, no canonical rewrite authorization, no main merge.
 - Next: confirm new CI, implement type-checked expression instantiation with its theorem hypotheses and dependency proof identity in existing Lane 5/VM81 chain; merge after scoped validation.
+
+## Continuation — concrete exact-rational normalization instances
+
+- Verified previous head `bdde99dcfdf4a0a685bedf4964707605b75152b7`: exact witness run `40340867368` SUCCESS, recursive native HNAN run `40340867645` SUCCESS.
+- Added `hhs_runtime/pass220/lane5_lean_normalization_instance_v1.py`: instantiate the eight existing I060 Lean normalization identities on exactly three rational operand records (BigInt numerator/denominator), exact Fraction arithmetic; preserve registered Lean theorem application and dependency identity. Reject floats, zero denominator, missing theorem. Return candidate-only evidence and distinct LHS/RHS values, without claiming Lean was invoked during runtime.
+- Added `tests/pass220/test_lane5_lean_normalization_instance_v1.py`: all eight cases and invalid inputs. Updated `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to execute.
+- Commits `8b9516eda381e70d3ad8d6acdf881e3a61d80285`, `35790f10e49e9d1d0a47541c3a2868029dfc58a5`, `2be53f395f2d6e5b9d9aae578379f31936c9b93d`.
+- Runtime instance evaluator is limited to exact-rational algebra; no HNAN commutation, generic symbolic expression tree execution, compiled native ABI proof closure, canonical VM81 admission, merge, or deployed main. New CI not yet verified.
+- Next: verify focused instance CI; then wire exact instance evidence to native candidate trace with source-bound operands and complete Lean proof dependencies.
