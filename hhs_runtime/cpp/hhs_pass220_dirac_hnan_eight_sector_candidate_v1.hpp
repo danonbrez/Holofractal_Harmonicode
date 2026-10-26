@@ -36,6 +36,10 @@ constexpr std::array<Gaussian,4> apply_k(const std::array<Gaussian,4>& s) noexce
   return {plus_i(s[2]),minus_i(s[3]),minus_i(s[0]),plus_i(s[1])};
 }
 constexpr bool on_projector_boundary(const std::array<Gaussian,4>& psi) noexcept {
+  // Exclude the trivial zero spinor from physical boundary candidacy.
+  bool nonzero=false;
+  for(const auto& z:psi)nonzero |= z.re!=0 || z.im!=0;
+  if(!nonzero)return false;
   // P+ψ=ψ <=> Kψ=ψ; no division, cancellation or approximations.
   const auto k=apply_k(psi);
   for(std::size_t j=0;j<4;++j) if(!equal(k[j],psi[j]))return false;
