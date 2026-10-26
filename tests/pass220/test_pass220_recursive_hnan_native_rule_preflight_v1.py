@@ -157,3 +157,34 @@ def test_native_lean_normalization_invalid_shape_rejected(tmp_path):
             native_recursive_hnan_preflight("ADD", ref(1), ref(1), native_library=str(library_path),
                 lean_normalization={"theorem": "value_add_assoc", "carrier": "HNAN",
                     "relation": "Eq", "operator": "AB"})
+
+def test_native_lean_instance_requires_theorem(tmp_path):
+    from hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1 import native_recursive_hnan_preflight
+    library_path = tmp_path / "native.so"
+    library_path.write_bytes(b"placeholder")
+    with patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.inspect_recursive_ordered_phase_swap",
+               return_value={"P":"2","candidate_sha256":"a"*64,"ordered_phase_leaves":[]}), \
+         patch("hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1.C.CDLL") as loader:
+        from hhs_runtime.hhs_pass220_recursive_hnan_native_rule_preflight_v1 import (
+            GlobalReceipt, VERSION, MASK,
+        )
+        import ctypes
+        def verify(pointer):
+            receipt=ctypes.cast(pointer,ctypes.POINTER(GlobalReceipt)).contents
+            receipt.version=VERSION
+            receipt.decision=1
+            receipt.required_rule_mask=MASK
+            receipt.verified_rule_mask=MASK
+            for key in ("jordan_depth2_verified","minimal_polynomial_degree4_verified",
+                        "degree4_recurrence_verified","hnan_channel_order_preserved",
+                        "global_delta_denominator_preserved","xy_yx_distinct","zw_wz_distinct"):
+                setattr(receipt,key,1)
+            return 0
+        loader.return_value.hhs_exact_pass219_hnan_global_system_verify.side_effect=verify
+        with pytest.raises(SymbolicTensorError, match="LEAN_INSTANCE_THEOREM_REQUIRED"):
+            native_recursive_hnan_preflight("ADD",ref(1),ref(1),native_library=str(library_path),
+                lean_normalization_operands=[
+                    {"numerator":1,"denominator":2},
+                    {"numerator":2,"denominator":3},
+                    {"numerator":3,"denominator":4},
+                ])
