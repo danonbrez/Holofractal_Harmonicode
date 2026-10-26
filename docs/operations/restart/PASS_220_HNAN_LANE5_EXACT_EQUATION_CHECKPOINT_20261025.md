@@ -85,3 +85,12 @@ GitHub connector source access; no checked-out repository build or native test e
 - Changed files: `hhs_runtime/hhs_pass220_recursive_hnan_native_rule_preflight_v1.py`, `tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py`, `.github/workflows/pass220-hnan-lane5-exact-witness.yml`, this checkpoint.
 - Commits: `9ea3bb432d9d3d9f04efc10c8ceeb9acaae0cc17`, `bf24851496314ed95accc736fa63fc750194e2ab`, `674c601f9bffdf21c0af0bc93ca45a171cbadbd3`.
 - Validation pending on updated head: focused CI and genuine C++ compiled native preflight. GitHub connector access only; no local checkout, merge, deployment, or verified-main claim.
+
+## Continuation — Lean theorem normalization lookup
+
+- Existing source read: `formal/lean/HHS/Mathlib/Rat/ValueAlgebra.lean`, `hhs_runtime/hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py`. The I060 receipt already supplies native theorem/dependency Hash72 identities; no new checker or proof authority added.
+- Added `hhs_runtime/pass220/lane5_lean_normalization_lookup_v1.py`: eight I060 exact rational associativity/distributivity declarations exposed with original carrier, relation, operator, theorem identity, and dependency identity. Explicitly rejects unregistered theorem names and typed HNAN substitutions.
+- Added `tests/pass220/test_lane5_lean_normalization_lookup_v1.py`, and updated `.github/workflows/pass220-hnan-lane5-exact-witness.yml` to run this focused test.
+- Commits: `2b205f8a249493f070e8281d5031b64a8e7900ad` source; `6bfb4bd1c6952db3dff2b657342779c15561529b` tests; `ea6a2ec1fd6d06c3bfbe0b9eab5e633763bcabe4` CI.
+- The candidate lookup is not a Lean checker execution, a dynamic general-purpose theorem matcher, a matrix inverse, or proof of AB/BA/P^4 HNAN closure. The theorem normalization metadata requires exact Lean type/hypothesis matching downstream.
+- No local shell, native compiler, production deploy, or main merge performed. Next check the fresh focused workflow, repair failures, and wire the existing Lean checker/typed proof execution for authorized normalization in Lane 5.
