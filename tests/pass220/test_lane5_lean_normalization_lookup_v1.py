@@ -9,6 +9,8 @@ class TestLane5ExistingLeanNormalization(unittest.TestCase):
         for name, (carrier, relation, operator) in NORMALIZATION_DECLARATIONS.items():
             item = lookup_existing_normalization(name, carrier=carrier,
                                                    relation=relation, operator=operator)
+            self.assertEqual(item["application_declaration"], name + "_application")
+            self.assertEqual(item["application_module"], "HHS.Pass220.Lane5NormalizationApplications")
             self.assertTrue(item["theorem_identity_hash72"])
             self.assertTrue(item["dependency_identity_hash72"])
             self.assertFalse(item["ordered_hnan_rewrite_authorized"])
