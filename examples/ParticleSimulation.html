@@ -5529,7 +5529,13 @@ function controls(){
     '<label><input id="membraneGroupVisible" type="checkbox" checked> Selected group visible</label>';
   field.style.cssText="border:1px solid #3a5377;border-radius:5px;margin:8px 0;padding:6px";
   for(const label of field.querySelectorAll("label"))label.style.cssText="display:block;margin:6px 0";
-  field.style.cssText+=";position:fixed;right:10px;bottom:70px;width:245px;max-height:45vh;overflow:auto;background:rgba(5,12,30,.88);color:#def;z-index:125;box-shadow:0 0 16px rgba(75,180,240,.35)";
+  field.style.cssText+=";position:fixed;right:10px;top:205px;bottom:auto;width:min(270px,calc(100vw - 20px));max-height:min(55vh,calc(100vh - 270px));overflow:auto;background:rgba(5,12,30,.96);color:#def;z-index:10030;box-shadow:0 0 16px rgba(75,180,240,.35)";
+  const colorToggle=document.createElement("button");
+  colorToggle.type="button";colorToggle.id="phaseMembraneToggle";
+  colorToggle.textContent="Hide color controls";colorToggle.setAttribute("aria-controls","phaseMembranePanel");colorToggle.setAttribute("aria-expanded","true");
+  colorToggle.style.cssText="position:fixed;right:10px;top:165px;z-index:10031;background:#183554;color:#fff;border:1px solid #91b2d2;padding:7px 10px;border-radius:6px;cursor:pointer";
+  colorToggle.addEventListener("click",()=>{const expanded=field.hidden;colorToggle.setAttribute("aria-expanded",String(expanded));field.hidden=!expanded;colorToggle.textContent=expanded?"Hide color controls":"Show color controls";});
+  document.body.appendChild(colorToggle);
   document.body.appendChild(field);
   const get=id=>document.getElementById(id);
   const sel=get("membraneGroup");
