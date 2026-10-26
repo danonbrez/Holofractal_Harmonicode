@@ -120,3 +120,10 @@ GitHub connector source access; no checked-out repository build or native test e
 - Focused workflow now runs `lake env lean formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean` after established Lean build/leanchecker/audit. Adds the new Lean source path to PR triggers.
 - Commits `0c387f359e7e3772a1700dc005f4cf3e9dbea528`, `ffd8705b124d8c349249fd3bd6e1f58a020c18d8`.
 - New head CI remains pending. Next repair compiler failures if any; then integrate typed expression instantiation/result receipts into Lane 5 runtime (current Python lookup remains metadata/candidate only), native ABI proof binding, merge after focused validation.
+
+## Continuation — focused Lean compiler repair
+
+- Previous head `4d14a0852e4d06e42854669b4d349c2fce0a7554`: native preflight run `40316986341` SUCCESS; exact witness run `40316986584` FAILURE limited to `lean-normalization-kernel` step `Typecheck all eight existing Lean theorem applications`; the exact-witness job succeeded.
+- Retrieved failing job logs. Errors on pair-level theorem applications: `addExactRat` and `mulExactRat` unresolved in the new Lean namespace. Existing `ValueAlgebra.lean` opens `HHS.Mathlib.Rat.Congruence`, whereas the new module omitted it.
+- Repair in `formal/lean/HHS/Pass220/Lane5NormalizationApplications.lean`: import the same constructor namespace via `open HHS.Mathlib.Rat.Congruence`. Commit `c9aafc584ba7060a2b37a0f32c85bfc4baad44ea`.
+- Next: inspect repair-head CI. No new theorem scope, HNAN commutation, runtime authority, or main merge.
