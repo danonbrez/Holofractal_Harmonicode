@@ -7,6 +7,8 @@ on:
       - 'hhs_runtime/hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py'
       - 'hhs_runtime/pass220/hnan_lane5_exact_witness_v1.py'
       - 'tests/pass220/test_hnan_lane5_exact_witness_v1.py'
+      - 'hhs_runtime/pass220/lane5_lean_normalization_instance_v1.py'
+      - 'tests/pass220/test_lane5_lean_normalization_instance_v1.py'
       - 'hhs_runtime/pass220/lane5_lean_normalization_lookup_v1.py'
       - 'tests/pass220/test_lane5_lean_normalization_lookup_v1.py'
       - 'hhs_runtime/hhs_loshu_phase_embedding_v1.py'
@@ -34,6 +36,8 @@ jobs:
         run: python -m unittest discover -s tests/pass220 -p 'test_hnan_lane5_exact_witness_v1.py' -v
       - name: Native Lean theorem normalization lookup
         run: python -m unittest discover -s tests/pass220 -p 'test_lane5_lean_normalization_lookup_v1.py' -v
+      - name: Typed exact rational normalization instances
+        run: python -m unittest discover -s tests/pass220 -p 'test_lane5_lean_normalization_instance_v1.py' -v
       - name: Existing tokenizer exact identity annotation
         run: python -m unittest discover -s tests/pass220 -p 'test_existing_tokenizer_hnan_identity_annotation_v1.py' -v
       - name: Native preflight fail-closed regression
