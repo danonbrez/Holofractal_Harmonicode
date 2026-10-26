@@ -94,3 +94,13 @@ GitHub connector source access; no checked-out repository build or native test e
 - Commits: `2b205f8a249493f070e8281d5031b64a8e7900ad` source; `6bfb4bd1c6952db3dff2b657342779c15561529b` tests; `ea6a2ec1fd6d06c3bfbe0b9eab5e633763bcabe4` CI.
 - The candidate lookup is not a Lean checker execution, a dynamic general-purpose theorem matcher, a matrix inverse, or proof of AB/BA/P^4 HNAN closure. The theorem normalization metadata requires exact Lean type/hypothesis matching downstream.
 - No local shell, native compiler, production deploy, or main merge performed. Next check the fresh focused workflow, repair failures, and wire the existing Lean checker/typed proof execution for authorized normalization in Lane 5.
+
+## Continuation — Lean I060 lookup bound into existing native preflight (2026-10-26)
+
+- Verified PR #853 prior head `28c551e594318674238a09792f2e79a859b56faf`: targeted exact witness workflow `40253875190` and recursive native HNAN preflight workflow `40253875295` both succeeded.
+- Extended existing `native_recursive_hnan_preflight` optional argument `lean_normalization`: an exact registered I060 Lean declaration/carrier/relation/operator quadruple is looked up from existing `lean_identity_receipt` after native 1.63 global gate verification. The returned metadata retains theorem and dependency identity Hash72 values and denies HNAN rewrite/mutation authority.
+- Added two fail-closed tests rejecting incomplete declarations and HNAN/ExactRat type mismatch. Included regression selection in focused workflow.
+- Changed: `hhs_runtime/hhs_pass220_recursive_hnan_native_rule_preflight_v1.py`, `tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py`, `.github/workflows/pass220-hnan-lane5-exact-witness.yml`, this checkpoint.
+- Commits: `9877d998d6564acd1d732af982e14df4c71b2417`, `e8f222b0476348e48c26d04f9d5c0ad534e0f08e`, `0e72fbfb1f2432410411c504379ab58cb3a80fa9`.
+- Latest CI not yet confirmed. No live Lean proof application, theorem hypothesis discharge, genuine C++ compiled validation in this session, merge, main verification, or production deployment is claimed.
+- Next: inspect latest focused CI; bind actual Lean kernel theorem/hypotheses for executable normalization, validate native ABI and exact proof trace, then merge after dependency checks.
