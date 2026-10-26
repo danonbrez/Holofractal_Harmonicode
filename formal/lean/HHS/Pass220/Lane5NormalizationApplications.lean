@@ -10,6 +10,7 @@ namespace HHS.Pass220.Lane5NormalizationApplications
 
 open HHS.Mathlib.OrderRat
 open HHS.Mathlib.Rat.Equivalence
+open HHS.Mathlib.Rat.Congruence
 open HHS.Mathlib.Rat.Value
 open HHS.Mathlib.Rat.ValueAlgebra
 
