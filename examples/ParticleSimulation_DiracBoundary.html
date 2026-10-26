@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HARMONICODE · Two-phase Dirac / HNAN Boundary Inspector</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#090e1b;color:#e7edf8}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 45% 15%,#18284a,#090e1b 64%)}
+header,main,footer{max-width:1180px;margin:auto;padding:20px}header{border-bottom:1px solid #34415b}
+small,.sub{color:#a6b8d7}h1{font-size:clamp(1.4rem,3vw,2rem);margin:.3rem 0}h2{font-size:1.1rem}
+a{color:#91d9ff}button,select{background:#192b48;border:1px solid #55729c;color:inherit;padding:9px 12px;border-radius:8px;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:3px solid #e0b874}
+.layout{display:grid;grid-template-columns:minmax(280px,1.3fr) minmax(280px,1fr);gap:18px}
+.panel{border:1px solid #364c6c;border-radius:12px;background:#0d1729e8;padding:18px;min-width:0}
+canvas{width:100%;height:auto;display:block;aspect-ratio:1;background:#070f20;border-radius:9px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}
+.cell{min-height:76px;padding:9px 6px;text-align:center;background:#14233b;border:1px solid #375271;border-radius:8px;font-size:12px}
+.cell b{display:block;font-size:16px;margin-bottom:4px;color:#a6e8ff}.cell.center{background:#2c2544;color:#d4c7f9}
+.cell.active{border:2px solid #f5ce7c;background:#28384a}
+.status{border-left:3px solid #dba95a;padding:9px 12px;background:#242236;margin:14px 0}
+.metric{display:flex;justify-content:space-between;border-bottom:1px solid #2a3a53;padding:9px 0;gap:12px}
+.metric output{text-align:right;color:#a8e9c7;overflow-wrap:anywhere}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.5;background:#091121;padding:14px;border-radius:8px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+@media(max-width:750px){.layout{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+<small>PASS 220 · READ-ONLY INSPECTION · CANDIDATE BOUNDARIES</small>
+<h1>Two-phase Dirac / eight-sector HNAN inspector</h1>
+<p class="sub">Inspection of ordered phase roles and reference spinor boundary algebra. The existing particle engine remains the authority for physical motion.</p>
+<a href="./ParticleSimulation.html">Open original particle visualization</a>
+</header>
+<main class="layout">
+<section class="panel">
+<h2>HNAN phase geometry</h2>
+<canvas id="phaseCanvas" width="720" height="720" aria-label="Eight ordered HNAN phase sectors around a central gate" role="img"></canvas>
+<div class="controls">
+<button id="prev" type="button">Previous role</button>
+<button id="next" type="button">Next role</button>
+<button id="auto" type="button" aria-pressed="false">Start inspection cycle</button>
+</div>
+<div id="matrix" class="grid" aria-label="Canonical row-major HNAN tensor"></div>
+</section>
+<section class="panel">
+<h2>Selected native phase role</h2>
+<div class="metric"><span>Role / order</span><output id="role"></output></div>
+<div class="metric"><span>Ordered expression</span><output id="expr"></output></div>
+<div class="metric"><span>Native particle-group mapping</span><output>UNRESOLVED</output></div>
+<div class="metric"><span>Native admission</span><output>NOT VERIFIED</output></div>
+<div class="metric"><span>Spinor blocks</span><output>φ (2), χ (2)</output></div>
+<div class="metric"><span>Reference boundary</span><output>P₊=(I₄+iβαₙ)/2</output></div>
+<p class="status">The displayed sector geometry is an inspection projection, not a solved hydrogen atom, a native quantum boundary witness, or a new source of particle forces.</p>
+<h2>Reference algebra checks</h2>
+<div id="checks" aria-live="polite"></div>
+<h2>Constraint gate</h2>
+<pre id="gate"></pre>
+<button id="copy" type="button">Copy inspection receipt</button>
+<p id="feedback" class="sub" aria-live="polite"></p>
+</section>
+</main>
+<footer><small>Reference normal n=(0,0,1). No native state writes, fake Hash72/Hash216 receipts, or particle trajectory updates. Browser floating-point rendering is display-only.</small></footer>
+<script>
+"use strict";
+(() => {
+const roles=Object.freeze([
+{address:"000",expr:"xy",lo:4},
+{address:"001",expr:"x+y",lo:9},
+{address:"010",expr:"yx",lo:2},
+{address:"011",expr:"xy−zw",lo:3},
+{address:"100",expr:"wz−yx",lo:7},
+{address:"101",expr:"wz",lo:8},
+{address:"110",expr:"z+w",lo:1},
+{address:"111",expr:"zw",lo:6}
+]);
+const matrixOrder=[0,1,2,3,-1,4,5,6,7];
+let selected=0,cycling=false,frame=0,lastTime=0;
+const $=id=>document.getElementById(id),canvas=$("phaseCanvas"),ctx=canvas.getContext("2d");
+if(!ctx){$("feedback").textContent="2D canvas unavailable";return}
+const mul=(a,b)=>a.map(row=>b[0].map((_,j)=>row.reduce((s,x,k)=>s+x*b[k][j],0)));
+const transpose=a=>a[0].map((_,i)=>a.map(row=>row[i]));
+const same=(a,b)=>a.every((row,i)=>row.every((x,j)=>Math.abs(x-b[i][j])<1e-12));
+const id4=Array.from({length:4},(_,i)=>Array.from({length:4},(_,j)=>+(i===j)));
+const sigma3=[[1,0],[0,-1]],zero=[[0,0],[0,0]];
+const block=(a,b,c,d)=>[...a.map((r,i)=>r.concat(b[i])),...c.map((r,i)=>r.concat(d[i]))];
+const alpha=block(zero,sigma3,sigma3,zero),beta=[1,1,-1,-1];
+const BA=alpha.map((row,i)=>row.map(x=>x*beta[i]));
+// K=i beta alpha is Hermitian; represent complex values as (re,im).
+const K=BA.map(row=>row.map(x=>[0,x]));
+const cmul=(a,b)=>a.map(row=>b[0].map((_,j)=>row.reduce((sum,x,k)=>{
+const y=b[k][j];return [sum[0]+x[0]*y[0]-x[1]*y[1],sum[1]+x[0]*y[1]+x[1]*y[0]];
+},[0,0])));
+const conjTranspose=a=>a[0].map((_,i)=>a.map(row=>[row[i][0],-row[i][1]]));
+const eqC=(a,b)=>a.every((row,i)=>row.every((v,j)=>v.every((x,k)=>Math.abs(x-b[i][j][k])<1e-12)));
+const eyeC=id4.map(r=>r.map(x=>[x,0]));
+const plus=K.map((row,i)=>row.map((z,j)=>[(+(i===j)+z[0])/2,z[1]/2]));
+const alphaC=alpha.map(r=>r.map(x=>[x,0]));
+const checks=Object.freeze({
+"K† = K":eqC(conjTranspose(K),K),
+"K² = I₄":eqC(cmul(K,K),eyeC),
+"P₊² = P₊":eqC(cmul(plus,plus),plus),
+"P₊† αₙ P₊ = 0":eqC(cmul(cmul(conjTranspose(plus),alphaC),plus),eyeC.map(r=>r.map(()=>[0,0]))),
+"Hermitian αₙ":same(transpose(alpha),alpha)
+});
+$("checks").innerHTML=Object.entries(checks).map(([n,ok])=>'<div class="metric"><span>'+n+'</span><output>'+(ok?'PASS':'FAIL')+'</output></div>').join("");
+if(Object.values(checks).some(v=>!v))$("feedback").textContent="Reference algebra self-check failed";
+const cells=matrixOrder.map((index,i)=>{
+const div=document.createElement("div");div.className="cell"+(index<0?" center":"");if(index<0){div.innerHTML="<b>HNAN</b>Native center gate";}else{
+const r=roles[index];div.innerHTML="<b>"+r.expr+"</b>Lo Shu "+r.lo+" · "+r.address;div.tabIndex=0;div.setAttribute("role","button");
+div.addEventListener("click",()=>setSelected(index));div.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();setSelected(index)}})
+} $("matrix").appendChild(div);return div;
+});
+function setSelected(i){selected=(i+8)%8;const r=roles[selected];$("role").textContent=(selected+1)+"/8 · "+r.address;$("expr").textContent=r.expr;
+cells.forEach((c,j)=>c.classList.toggle("active",matrixOrder[j]===selected));
+$("gate").textContent="B["+r.address+"](ψ, n, phase="+r.expr+", source=UNRESOLVED)\n"+
+"Cross-sector conservation: NOT VERIFIED\nHNAN center-gate admission: NOT VERIFIED\nNative group source witness: ABSENT\nVM81 / Hash72 / Hash216: UNMODIFIED\n"+
+"Result: CANDIDATE ONLY";draw();
+}
+function draw(){
+const w=canvas.width,h=canvas.height,cx=w/2,cy=h/2,R=w*.32;
+ctx.clearRect(0,0,w,h);ctx.save();ctx.translate(cx,cy);
+for(let ring=1;ring<=4;ring++){ctx.beginPath();ctx.arc(0,0,R*ring/4,0,Math.PI*2);ctx.strokeStyle="#365477";ctx.lineWidth=1.5;ctx.stroke()}
+for(let i=0;i<8;i++){
+const a=-Math.PI/2+i*Math.PI/4,x=R*Math.cos(a),y=R*Math.sin(a);
+ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(x,y);ctx.strokeStyle="#37506d";ctx.stroke();
+ctx.beginPath();ctx.arc(x,y,i===selected?29:22,0,Math.PI*2);
+ctx.fillStyle=i===selected?"#e8c57b":"#173653";ctx.fill();ctx.strokeStyle="#8bc9eb";ctx.stroke();
+ctx.font="bold 24px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=i===selected?"#091321":"#e5effb";ctx.fillText(String(i+1),x,y);
+ctx.font="18px system-ui";ctx.fillStyle="#c5d7ea";ctx.fillText(roles[i].expr,(R+61)*Math.cos(a),(R+61)*Math.sin(a));
+}
+ctx.beginPath();ctx.arc(0,0,51,0,Math.PI*2);ctx.fillStyle="#2b2347";ctx.fill();ctx.strokeStyle="#a394db";ctx.stroke();
+ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#eee5ff";ctx.font="bold 22px system-ui";ctx.fillText("HNAN",0,-8);
+ctx.font="13px system-ui";ctx.fillText("center gate",0,18);
+ctx.restore();
+}
+$("prev").onclick=()=>setSelected(selected-1);$("next").onclick=()=>setSelected(selected+1);
+$("auto").onclick=()=>{cycling=!cycling;$("auto").textContent=cycling?"Pause inspection cycle":"Start inspection cycle";$("auto").setAttribute("aria-pressed",String(cycling));if(cycling)requestAnimationFrame(tick)};
+function tick(t){if(!cycling)return;if(t-lastTime>=900){lastTime=t;setSelected(selected+1)}requestAnimationFrame(tick)}
+$("copy").onclick=()=>{const record={schema:"pass220-dirac-hnan-inspection-v1",selected_role:roles[selected],spinor_blocks:["phi","chi"],reference_checks:checks,native_group_binding:"UNRESOLVED",native_admission:false,physics_mutated:false,hash_receipt_minted:false};const s=JSON.stringify(record,null,2);if(navigator.clipboard?.writeText){navigator.clipboard.writeText(s).then(()=>$("feedback").textContent="Inspection receipt copied").catch(()=>$("feedback").textContent=s)}else $("feedback").textContent=s};
+setSelected(0);
+})();
+</script>
+</body>
+</html>
