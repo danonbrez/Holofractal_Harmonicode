@@ -55,7 +55,7 @@ def evaluate(sectors: list[dict], *, center_gate_witness: bool=False,
         if len(psi)!=4:raise ValueError("SPINOR4_REQUIRED")
         projected=reference_projector(psi)
         idempotent=reference_projector(projected)==projected
-        in_boundary=projected==psi
+        in_boundary=projected==psi and any(z!=ZERO for z in psi)
         flux=normal_flux(projected)
         result.append({"address":address,"role":role,
                        "reference_projector_idempotent":idempotent,
