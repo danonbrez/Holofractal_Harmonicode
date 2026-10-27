@@ -1317,16 +1317,12 @@
       selected:null,hovered:null,projected:[],overlay:null,canvas:null};
     const formationScratch=new THREE.Vector3();
     function deriveElectronicFormations(){
-      const N=particles.length,parents=new Int32Array(N);
-      for(let i=0;i<N;i++)parents[i]=i;
-      function root(i){while(parents[i]!==i){parents[i]=parents[parents[i]];i=parents[i];}return i;}
-      for(let k=0;k<bondN;k++){
-        const a=bondI[k],b=bondJ[k];
-        if(a>=0&&b>=0&&a<N&&b<N)parents[root(b)]=root(a);
-      }
+      /* Reuse native bond connectivity rebuilt on actual bond edits.
+         Do NOT allocate/union a second bond graph during presentation. */
+      const N=particles.length;
       const groups=new Map();
       for(let i=0;i<N;i++){
-        const r=root(i);let g=groups.get(r);
+        const r=ufFind(i);let g=groups.get(r);
         if(!g){g={members:[],root:r,x:0,y:0,z:0,re:0,im:0,weight:0,vx:0,vy:0,thermal:0};groups.set(r,g);}
         g.members.push(i);formationView.byParticle[i]=r;
         const p=particles[i],m=thMass?thMass[i]:1;
