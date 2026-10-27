@@ -5,8 +5,11 @@ ROOT=Path(__file__).resolve().parents[2]
 def test_coherent_formation_consumes_live_bonds_not_new_physics():
     s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
     assert 'function deriveElectronicFormations(){' in s
-    assert 'for(let k=0;k<bondN;k++)' in s
-    assert 'const a=bondI[k],b=bondJ[k];' in s
+    assert 'const r=ufFind(i);let g=groups.get(r);' in s
+    deriv=s[s.index('function deriveElectronicFormations(){'):s.index('function ensureFormationCanvas(){')]
+    assert 'new Int32Array(N)' not in deriv
+    assert 'for(let k=0;k<bondN;k++)' not in deriv
+    assert 'function rebuildBondIndex(){' in s
     assert 'g.re+=m*Math.cos(phi);g.im+=m*Math.sin(phi);' in s
     assert 'g.magnitude=Math.hypot(g.re,g.im);' in s
     assert 'g.phase=Math.atan2(g.im,g.re);' in s
