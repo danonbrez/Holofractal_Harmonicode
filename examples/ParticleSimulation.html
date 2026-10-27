@@ -1139,6 +1139,13 @@
       <input id="audioVizGain" type="range" min="0" max="0.05" step="0.001" value="0.020" style="width:100%;" />
       <div id="audioVizStatus" role="status" aria-live="polite">Select an audio file.</div>
       <div id="audioVizClock" role="status" style="margin-top:4px;font-size:.82em;color:#9cf;">44,100 PCM Hz / 735 samples = 60 audio frames/s | awaiting playback</div>
+      <details id="hhsQuantumEpsilonPanel" style="margin-top:8px;font-size:.82em;">
+        <summary>Reciprocal 17×17 quantum-epsilon spinor views (projection only)</summary>
+        <div id="hhsQuantumEpsilonStatus" aria-live="polite"></div>
+        <canvas id="hhsQuantumEpsilonCanvas" width="354" height="177"
+          style="display:block;width:100%;max-width:354px;height:auto;pointer-events:none"
+          aria-label="Two reciprocal ordered 17 by 17 phase relationship maps"></canvas>
+      </details>
     </fieldset>
     <div id="output"></div>
     <div id="stateOutput">
@@ -7477,6 +7484,98 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
   });
 })(window);
 
+</script>
+<!-- HHS Pass 220: orthogonal spinor relationship address view; no physics mutation. -->
+<script id="hhsQuantumEpsilonInline">
+(function(global){
+  "use strict";
+  const SCHEMA="HHS_PASS220_QEPSILON_17_RECIPROCAL_PROJECTION_V1";
+  const PARTICLES_PER_VIEW=5184, PARTICLE_TOTAL=10368;
+  const CELL_COUNT=81, COORDINATES_PER_CELL=64;
+  const SPIN_STATES=17, EPSILON_POSITIONS=SPIN_STATES*SPIN_STATES;
+  const SPIN_LAYERS=CELL_COUNT*SPIN_STATES;
+  const Q_CUBED=2*CELL_COUNT*(COORDINATES_PER_CELL+SPIN_STATES);
+  if(2*PARTICLES_PER_VIEW!==PARTICLE_TOTAL ||
+     2*SPIN_LAYERS!==Q_CUBED-PARTICLE_TOTAL ||
+     EPSILON_POSITIONS!==289) throw Error("HHS quantum-epsilon cardinality");
+  /* 17 particle identities; 289 ordered phase pairs, never 289 particles.
+     Reciprocal view swaps row and column but retains their typed identity. */
+  function spinAddress(view,row,column){
+    if(!Number.isInteger(view)||(view!==0&&view!==1) ||
+       !Number.isInteger(row)||row<0||row>=SPIN_STATES ||
+       !Number.isInteger(column)||column<0||column>=SPIN_STATES)return null;
+    return Object.freeze({view,row: view?column:row,
+      column:view?row:column,particleCount:SPIN_STATES,
+      address:(view?column:row)*SPIN_STATES+(view?row:column),
+      physicalParticle:false});
+  }
+  /* 81×64 = 72×72; eight constraint groups × nine size groups × 72 phases. */
+  function particleAddress(index){
+    if(!Number.isInteger(index)||index<0||index>=PARTICLE_TOTAL)return null;
+    const view=Math.floor(index/PARTICLES_PER_VIEW);
+    const local=index%PARTICLES_PER_VIEW;
+    const phase=local%72, group=Math.floor(local/72);
+    const cell=Math.floor(local/64), coordinate=local%64;
+    return Object.freeze({index,view,cell,coordinate,
+      constraint:Math.floor(group/9),fractalScale:group%9,phase,
+      spinor:view===0?"xyzw":"yxwz",physicalParticle:true});
+  }
+  function reciprocalIndex(index){
+    const address=particleAddress(index);
+    return address===null?null:
+      (1-address.view)*PARTICLES_PER_VIEW+
+      address.constraint*9*72+address.fractalScale*72+address.phase;
+  }
+  function diagnostics(){
+    return Object.freeze({schema:SCHEMA,views:2,particles:PARTICLE_TOTAL,
+      perView:PARTICLES_PER_VIEW,phasePositions:72,
+      constraintGroups:8,fractalScales:9,spinParticleIdentities:SPIN_STATES,
+      spinRelationPositions:EPSILON_POSITIONS,spinLayersPerView:SPIN_LAYERS,
+      differenceResidue:Q_CUBED-PARTICLE_TOTAL,
+      layeredCardinality:Q_CUBED,hnanCenter:"HNAN",
+      orientationRule:"ordered reciprocal row-column swap",
+      claimedOrthogonalityValidated:false,
+      nativePhysicsMutation:false});
+  }
+  function paint(ctx,phase){
+    if(!ctx)return false;
+    const step=Number.isInteger(phase)&&phase>=0?phase%4:0;
+    ctx.clearRect(0,0,354,177);
+    for(let view=0;view<2;view++){
+      for(let i=0;i<SPIN_STATES;i++)for(let j=0;j<SPIN_STATES;j++){
+        const address=spinAddress(view,i,j);
+        const hue=(2*(address.row*17+address.column)+step*18)%144;
+        const viz=global.HHSAudioViz;
+        ctx.fillStyle=viz&&typeof viz.q144Css==="function"?
+          viz.q144Css(hue,0.65):"rgba(140,180,220,0.65)";
+        ctx.fillRect(view*178+j*10,i*10,9,9);
+      }
+    }
+    return true;
+  }
+  const api=Object.freeze({schema:SCHEMA,spinAddress,particleAddress,
+    reciprocalIndex,diagnostics,paint});
+  global.HHSQuantumEpsilon=api;
+  function boot(){
+    const details=document.getElementById("hhsQuantumEpsilonPanel");
+    const canvas=document.getElementById("hhsQuantumEpsilonCanvas");
+    const status=document.getElementById("hhsQuantumEpsilonStatus");
+    if(!details||!canvas||!status)return;
+    details.addEventListener("toggle",()=>{
+      if(!details.open)return;
+      const viz=global.HHSAudioViz;
+      const frame=viz&&viz.diagnostics?viz.diagnostics.audioFrame:-1;
+      const phase=Number.isInteger(frame)&&frame>=0?frame%4:0;
+      paint(canvas.getContext("2d"),phase);
+      status.textContent="17 identities / 289 ordered relationships per view · "+
+        "2×(81×64 + 81×17) = 13,122 layered addresses · "+
+        "2×81×64 = 10,368 particle addresses · phase "+phase+
+        " · HNAN center · projection-only";
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
+  else boot();
+})(window);
 </script>
 </body>
 
