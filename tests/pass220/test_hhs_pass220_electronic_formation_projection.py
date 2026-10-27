@@ -14,25 +14,26 @@ def test_coherent_formation_consumes_live_bonds_not_new_physics():
     assert 'particleBatchMatrix.scale({x:0,y:0,z:0});' in s
     assert 'syncElectronicFormations();' in s
     assert 'renderer.domElement.addEventListener("click",e=>' in s
-    assert 'pointer-events:none;z-index:3' in s
+    assert 'formationView.canvas=true; /* pointer handlers only, no screen overlay */' in s
     assert 'physicsMutation:false' in s
     assert 'thChg[i]=1-2*(thPh4[i]&1)' in s
     assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in s
 
-def test_gravity_thermal_field_is_distinct_from_ionic_spherical_formation():
+def test_formation_backlight_is_local_3d_and_depth_tested():
     s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
-    assert 'g.thermal+=velocity.x*velocity.x+velocity.y*velocity.y+velocity.z*velocity.z;' in s
-    assert 'const heading=Math.atan2(vy,vx);' in s
-    assert '/* Existing velocity and orbital motion supply the diffuse field;' in s
-    assert 'if(g.members.length<2)continue; // original instances draw unbonded bodies' in s
-    assert s.index('const field=ctx.createRadialGradient') < s.index('const coherent=g.magnitude')
+    assert 'new THREE.SphereGeometry(1,16,12)' in s
+    assert 'side:THREE.BackSide,blending:THREE.NormalBlending' in s
+    assert 'transparent:true,depthTest:true,depthWrite:false' in s
+    assert 'light.shell.position.set(g.x,g.y,g.z);' in s
+    assert 'light.shell.scale.setScalar(r*1.8);' in s
+    assert 'const coherent=g.magnitude/Math.max(g.weight,1);' in s
+    assert 'ctx.createRadialGradient' not in s[s.index('function syncElectronicFormations()'):s.index('window.HHSElectronicFormations=')]
+    assert 'hhsCoherentFormationOverlay' not in s
     assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in s
 
-def test_light_projection_shares_quartic_particle_frame_gate():
+def test_light_projection_shares_particle_frame_gate():
     s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
-    assert 'if(renderGate){\n        deriveElectronicFormations();' in s
+    assert 'if(renderGate){\\n        deriveElectronicFormations();' in s
     assert 'if(!renderGate && audioVisualFrame)' not in s
-    assert 'const opacity=0.055+0.15*coherent;' in s
-    assert 'Math.min(0.28,opacity+0.06)' in s
-    assert '0.008+0.025*thermal' in s
-    assert 'ctx.globalCompositeOperation="source-over";' in s
+    assert 'light.shell.material.uniforms.uOpacity.value=0.035+0.09*coherent;' in s
+    assert 'syncElectronicFormations();\\n        renderer.render(scene, camera);' in s
