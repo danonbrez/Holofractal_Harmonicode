@@ -25,7 +25,7 @@ LANE5_REPOSITORY_KNOWLEDGE_OPERATIONS = (
     "lane5.repository_hydration_knowledge.neighbors",
 )
 FACTORY_PREFIXES = ("build_", "create_", "construct_", "hydrate_", "make_", "new_", "register_")
-TEXT_SUFFIXES = {".py",".pyi",".c",".h",".cc",".cpp",".cxx",".hpp",".hh",".js",".mjs",".cjs",".jsx",".ts",".tsx",".md",".rst",".adoc",".json",".yaml",".yml",".toml",".harmonicode"}
+TEXT_SUFFIXES = {".py",".pyi",".c",".h",".cc",".cpp",".cxx",".hpp",".hh",".js",".mjs",".cjs",".jsx",".ts",".tsx",".md",".rst",".adoc",".json",".yaml",".yml",".toml",".harmonicode",".lean"}
 FORMAL_SUFFIXES = {".md",".rst",".adoc",".json",".harmonicode"}
 C_FACTORY = re.compile(r"(?m)^[ \t]*(?:[A-Za-z_][A-Za-z0-9_ \t*]+[ \t]+)([A-Za-z_][A-Za-z0-9_]*(?:build|create|construct|hydrate|init|make|new|register)[A-Za-z0-9_]*)[ \t]*\(")
 JS_CLASS = re.compile(r"(?m)^\s*(?:export\s+)?class\s+([A-Za-z_$][A-Za-z0-9_$]*)")
@@ -154,6 +154,17 @@ def discover_repository_constructors(repo_root: str | Path, dependency_graph: Ma
                 found.append(_ctor(path, match.group(1), "JS_TS_CLASS", "js_ts", _line(text, match.start()), match.group(1), ("JS_TS_CLASS_DECLARATION",)))
             for match in JS_FACTORY.finditer(text):
                 found.append(_ctor(path, match.group(1), "JS_TS_FACTORY_FUNCTION", "js_ts", _line(text, match.start()), match.group(1), ("JS_TS_FACTORY_DECLARATION",)))
+        elif text is not None and suffix == ".lean":
+            # Native Lean source -> discoverable proof constructor candidates.
+            # Parsing is deliberately conservative: these nodes represent
+            # source declarations, not claims of successful kernel checking.
+            for match in re.finditer(r"(?m)^[ \\t]*(theorem|lemma|def|structure)\\s+([A-Za-z_][A-Za-z0-9_']*)", text):
+                kind, name = match.group(1), match.group(2)
+                if kind not in {"theorem", "lemma"}:
+                    continue
+                found.append(_ctor(path, name, "LEAN_THEOREM_SOURCE", "lean4",
+                    _line(text, match.start()), f"{path}#{name}",
+                    ("LEAN_SOURCE_DECLARATION", "KERNEL_STATUS_UNVERIFIED")))
         if "constructor" in path.lower() and suffix in FORMAL_SUFFIXES:
             found.append(_ctor(path, PurePosixPath(path).name, "FORMAL_CONSTRUCTOR_ARTIFACT", "formal_or_documentation", 1, path, ("CONSTRUCTOR_NAMED_REPOSITORY_ARTIFACT",)))
     unique = {}
