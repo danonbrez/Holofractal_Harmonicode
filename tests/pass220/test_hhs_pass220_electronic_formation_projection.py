@@ -51,3 +51,11 @@ def test_adaptive_projection_skips_light_not_particle_physics():
     assert 'updatePhaseGeometry();' in s[physics:gated]
     assert 'collideBondMembranes();' in s[physics:gated]
     assert 'constructorScan();' in s[physics:gated]
+
+def test_pointer_registration_waits_for_renderer_initialization():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    formation=s.index("const formationView=")
+    startup=s.index("const formationShellGeometry=",formation)
+    assert "ensureFormationCanvas();" not in s[formation:startup]
+    sync=s.index("function syncElectronicFormations()",startup)
+    assert "ensureFormationCanvas();" in s[sync:sync+100]
