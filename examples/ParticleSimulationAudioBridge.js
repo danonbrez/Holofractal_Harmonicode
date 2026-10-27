@@ -753,6 +753,37 @@
     const smooth=r*r*(3-2*r);
     return (1-smooth)*(1-smooth)*clamp(finite(peakAlpha),0,1);
   }
+  /* Read-only physical projection. Validated inherited particle metadata only.
+     Charge and mass are independent values; neither is inferred from index,
+     scale, phase, or the nine display bins. Kinetic energy is dimensionless
+     here ONLY if the source explicitly supplies a normalized value. */
+  function particlePhysicalProjection(p){
+    if(!p||!state.particleIndex.has(p))return null;
+    const index=state.particleIndex.get(p);
+    const data=p.userData||{};
+    const physical=data.hhsPhysicalState||data.physicalState||null;
+    const valid=physical&&typeof physical==="object";
+    const number=(key)=>valid&&Number.isFinite(physical[key])?
+      physical[key]:null;
+    const charge=number("charge");
+    const mass=number("mass");
+    const energy=number("normalizedKineticEnergy");
+    const position=p.position&&
+      Number.isFinite(p.position.x)&&Number.isFinite(p.position.y)&&
+      Number.isFinite(p.position.z)?
+      Object.freeze([p.position.x,p.position.y,p.position.z]):null;
+    return Object.freeze({
+      index, reciprocalIndex:(index+5184)%10368,
+      constraintAddress:Math.floor((index%5184)/648),
+      fractalAddress:Math.floor(((index%5184)%648)/72),
+      phaseAddress:(index%5184)%72,
+      charge, mass, kineticEnergy:energy===null?null:Math.max(0,energy),
+      position, hasMeasuredCharge:charge!==null,
+      hasMeasuredMass:mass!==null, hasParticlePosition:position!==null,
+      chargeFromAddress:false, physicsMutation:false,
+      source:valid?"inherited-particle-metadata":"unavailable"
+    });
+  }
   function projectColor(p,color){
     const base=p.material.color;
     if(!state.frameSignalReady || !state.geometryEnabled){
@@ -772,8 +803,13 @@
        Typed per-particle Q144 offset and right-bus +72 remain distinct. */
     const q=q144Index(2*state.gyroPhase72+phase,sample,rms,0,bus);
     const c=q*3;
-    const brightness=clamp(0.12+Math.sqrt(rms)*1.15+
-      Math.abs(sample)*0.65,0.12,1);
+    // Physical state can modify the presentation only when supplied by the
+    // inherited particle simulation. Never synthesize charge from scale/index.
+    const physical=particlePhysicalProjection(p);
+    const physicalFactor=physical&&physical.kineticEnergy!==null?
+      1/(1+physical.kineticEnergy):1;
+    const brightness=clamp((0.12+Math.sqrt(rms)*1.15+
+      Math.abs(sample)*0.65)*physicalFactor,0.12,1);
     color.setRGB(Q144_RGB[c]*brightness,
                  Q144_RGB[c+1]*brightness,
                  Q144_RGB[c+2]*brightness);
@@ -1224,7 +1260,7 @@
     advanceBrownianVisual,resetBrownianVisual,
     brownianProbabilityAt,brownianProbabilitySlot,brownianOffsetAt,
     particleLayer5184,lightAttenuation,
-    q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
+    q144Index,q144Css,bindParticles,particlePhysicalProjection,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
     gyroscopicGradientAxes72,spectralFallbackHz,
