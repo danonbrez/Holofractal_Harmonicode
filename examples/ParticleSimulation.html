@@ -1139,14 +1139,14 @@
       <input id="audioVizGain" type="range" min="0" max="0.05" step="0.001" value="0.020" style="width:100%;" />
       <div id="audioVizStatus" role="status" aria-live="polite">Select an audio file.</div>
       <div id="audioVizClock" role="status" style="margin-top:4px;font-size:.82em;color:#9cf;">44,100 PCM Hz / 735 samples = 60 audio frames/s | awaiting playback</div>
-      <details id="hhsCoupledTensorPanel" style="margin-top:8px;font-size:.82em;">
+      <details id="hhsCoupledTensorPanel" hidden style="margin-top:8px;font-size:.82em;">
         <summary>Coupled reciprocal phase / fractal / ionic / curvature mapping</summary>
         <div id="hhsCoupledTensorStatus" role="status"></div>
         <canvas id="hhsCoupledTensorCanvas" width="576" height="256"
           style="width:100%;max-width:576px;height:auto;display:block;pointer-events:none"
           aria-label="Reciprocal particle groups and HNAN-centered ionic phase projection"></canvas>
       </details>
-      <details id="hhsQuantumEpsilonPanel" style="margin-top:8px;font-size:.82em;">
+      <details id="hhsQuantumEpsilonPanel" hidden style="margin-top:8px;font-size:.82em;">
         <summary>Reciprocal 17×17 quantum-epsilon spinor views (projection only)</summary>
         <div id="hhsQuantumEpsilonStatus" aria-live="polite"></div>
         <canvas id="hhsQuantumEpsilonCanvas" width="354" height="177"
@@ -2085,22 +2085,10 @@
            inertial/gravitational mass, not merely the GPU projection.
            Preserve reciprocal mass orientation and original [0.7,1.3] bounds. */
         const hhsScaleGroup=Math.floor((i%5184)/72)%9;
-        /* Nine visibly larger, monotonically ordered radius/mass levels.
-           Population reciprocity belongs to phase/spin orientation, not
-           reversing which fractal group is physically larger. */
-        thMass[i]=1.5+hhsScaleGroup*0.25;
+        thMass[i]= p.userData.recip ? 1.3-0.6*((p.userData.q144%9)/8)
+                                    : 0.7+0.6*((p.userData.q144%9)/8);
         thPhase[i]=p.userData.q144%72;
-        /* Nine independent ionic phase states per (constraint, scale) group.
-           72 phase addresses = 9 charge phases × 8 local repetitions.
-           The reciprocal population reverses signed ionic phase; HNAN
-           remains the typed center address, represented electrically as 0.
-           Existing charge physics continues to read thChg unchanged. */
-        thPh4[i]=p.userData.q144%4;
-        const hhsChargeLayer=i%72%9;
-        const hhsChargeValue=hhsChargeLayer-4;
-        thChg[i]=p.userData.recip?-hhsChargeValue:hhsChargeValue;
-        p.userData.hhsChargePhaseLayer=hhsChargeLayer;
-        p.userData.hhsHnanGateAddress=hhsChargeLayer===4;
+        thPh4[i]=p.userData.q144%4; thChg[i]=1-2*(thPh4[i]&1);   // x,z:+1  y,w:−1
         thVel[i*3]=0; thVel[i*3+1]=0; thVel[i*3+2]=0;
         p.userData.velocity.set(0,0,0);
         p.position.set(px,py,pz);                         // group offset 0 at init
@@ -2185,10 +2173,8 @@
         /* softened mutual gravitation toward the barycenter, gradient
            deepening with local density (set during the neighbor pass) */
         const r2=x*x+y*y+z*z, s32=Math.pow(r2+sf2,1.5);
-        /* Native per-particle gravity coupling follows its nine-level
-           reciprocal fractal mass. Existing softened density-gradient law
-           and the HNAN-safe nonzero distance divisor remain intact. */
-        const muLocal=mu*thMass[i]*(1+FLD.gradG*(nbCount[i]/20));
+        /* Softened gravity remains sourced from the existing solver. */
+        const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));
         let ax=-muLocal*x/s32, ay=-muLocal*y/s32, az=-muLocal*z/s32;
         /* HYPERCUBIC PERIODICITY at c relative to the undisturbed original
            momentum: f_i = c·|p0_i|/2π with |p0_i| = m_i·s0. In units of
