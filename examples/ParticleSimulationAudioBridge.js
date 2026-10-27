@@ -192,7 +192,7 @@
     active:false, geometryEnabled:false, gain:GEOMETRY_GAIN.defaultValue,
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
     crossingEvents:[], sampleRate:0, buffer:null, context:null, source:null,
-    processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
+    processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(), particles:null,
     waveCanvas:null,backLightCanvas:null,backLightTexture:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
     processorReady:null, renderedLightingFrames:0, skippedLightingFrames:0,
     outputClockSource:"inactive", lightingLatencyMs:0, lastClockStatusTime:-1,
@@ -784,6 +784,31 @@
       source:valid?"inherited-particle-metadata":"unavailable"
     });
   }
+  /* One inherited population; eight constraint lanes, nine scale/ionic
+     addresses, 72 phase positions and two reciprocal orientations.
+     Offsets remain zero until supplied through a future parameter contract. */
+  function coupledParticleFrame(index,frame=state.lastFrame){
+    if(!Number.isInteger(index)||index<0||index>=10368)return null;
+    const particle=state.particles&&state.particles[index];
+    const physical=particle?particlePhysicalProjection(particle):null;
+    const side=Math.floor(index/5184),local=index%5184;
+    const group=Math.floor(local/72);
+    const constraint=Math.floor(group/9),scale=group%9;
+    const phase=local%72;
+    const quarter=Number.isSafeInteger(frame)&&frame>=0?frame%4:0;
+    return Object.freeze({
+      index,side,reciprocalIndex:(1-side)*5184+local,
+      constraint,fractalScale:scale,ionicLayer:scale-4,
+      hnanCenter:scale===4,spinor:side===0?"xyzw":"yxwz",
+      phase72:(phase+18*quarter)%72,quarter,
+      position:physical?physical.position:null,
+      charge:physical?physical.charge:null,
+      mass:physical?physical.mass:null,
+      normalizedKineticEnergy:physical?physical.kineticEnergy:null,
+      source:physical?physical.source:"unavailable",
+      projectionOnly:true,physicsMutation:false
+    });
+  }
   function projectColor(p,color){
     const base=p.material.color;
     if(!state.frameSignalReady || !state.geometryEnabled){
@@ -821,6 +846,7 @@
   function bindParticles(particles){
     if(!particles)return;
     state.particleIndex=new WeakMap();
+    state.particles=particles;
     for(let i=0;i<particles.length;i++)state.particleIndex.set(particles[i],i);
   }
   /* Graphics-only matrix offset. The logical Mesh position remains untouched,
@@ -1260,7 +1286,7 @@
     advanceBrownianVisual,resetBrownianVisual,
     brownianProbabilityAt,brownianProbabilitySlot,brownianOffsetAt,
     particleLayer5184,lightAttenuation,
-    q144Index,q144Css,bindParticles,particlePhysicalProjection,peakEnvelope,crossingsFromBlock,
+    q144Index,q144Css,bindParticles,particlePhysicalProjection,coupledParticleFrame,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
     gyroscopicGradientAxes72,spectralFallbackHz,
