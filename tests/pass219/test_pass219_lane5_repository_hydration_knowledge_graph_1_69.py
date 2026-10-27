@@ -147,3 +147,17 @@ def test_lean_theorem_hydrates_into_hash216_database(tmp_path: Path):
     assert all(x["constructor_kind"] == "LEAN_THEOREM_SOURCE" for x in items)
     assert all(len(x["hash216"]) == 216 for x in items)
     assert all(x["execution_authority"] is False for x in items)
+
+def test_quartic_phase_candidate_exact():
+    from hhs_runtime.hhs_pass220_lane5_quartic_phase_carrier_v1 import (
+        build_lane5_quartic_phase_candidate,
+    )
+    result = build_lane5_quartic_phase_candidate()
+    assert result["position_count"] == 5184
+    assert len(result["position_map"]) == 5184
+    assert len(result["phase_views"]) == 4
+    assert all(view["ordered_determinant"] == [[1, "xw"], [-1, "yz"]]
+               for view in result["phase_views"])
+    assert len(result["candidate_hash216"]) == 216
+    assert result["canonical_vm81_mutation_authority"] is False
+
