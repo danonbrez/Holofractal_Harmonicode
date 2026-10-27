@@ -31,10 +31,17 @@ constexpr bool equal(Matrix a, Matrix b) noexcept {
 }
 // D = a*d - b*c. Ordered word identity, NOT quaternion determinant.
 constexpr Polynomial ordered_minor(Matrix a) noexcept {
-  return {{{a[0].carrier,a[3].carrier,
+  Polynomial out{{{a[0].carrier,a[3].carrier,
               static_cast<std::int8_t>(a[0].sign*a[3].sign)},
            {a[1].carrier,a[2].carrier,
               static_cast<std::int8_t>(-a[1].sign*a[2].sign)}}};
+  // Additive normalization only. Never swap noncommutative word factors.
+  if(static_cast<unsigned>(out[1].first)<static_cast<unsigned>(out[0].first) ||
+     (out[1].first==out[0].first &&
+      static_cast<unsigned>(out[1].second)<static_cast<unsigned>(out[0].second))) {
+    const auto temp=out[0]; out[0]=out[1]; out[1]=temp;
+  }
+  return out;
 }
 constexpr bool equal(Polynomial a,Polynomial b) noexcept {
   for(std::size_t i=0;i<2;++i)
