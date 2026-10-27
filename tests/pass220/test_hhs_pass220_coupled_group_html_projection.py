@@ -7,6 +7,13 @@ def test_coupled_group_address_projection():
     html=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
     assert 'id="hhsCoupledTensorPanel"' in html
     assert re.search(r'<script id="hhsCoupledTensorInline">([\s\S]*?)</script>',html)
+    # The coupling must reach the real GPU batch, not just a diagnostics panel.
+    assert 'particle.userData.hhsGroupIndex=particles.length-1' in html
+    assert 'window.HHSCoupledTensorProjection.projectParticle(' in html
+    assert 'mesh.setColorAt(i,particleAudioColor);' in html
+    assert 'mesh.setMatrixAt(i,particleBatchMatrix);' in html
+    assert 'matrix.scale(displayScale);' in html
+    assert 'color.r=color.r*(1-blend)+colorTarget.r*blend' in html
     assert shutil.which("node")
     script=r"""
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
@@ -23,6 +30,16 @@ assert.equal(d.hnanMappedPositions,1152);
 assert.equal(d.spinRelationshipResidue,2754);
 assert.equal(d.quantumEpsilon,289);
 assert.equal(d.nativePhysicsMutation,false);
+const point={userData:{hhsGroupIndex:0},velocity:{x:1,y:0}};
+const matrix={elements:new Array(16).fill(0),scale(v){this.scaleX=v.x;this.scaleY=v.y;this.scaleZ=v.z;}};
+const color={r:0,g:0,b:0};
+assert.equal(m.projectParticle(point,matrix,color),true);
+assert.ok(matrix.scaleX>0&&matrix.scaleX<1);
+assert.ok(color.r+color.g+color.b>0);
+const edge=m.address(71*72+71);
+assert.ok(edge);
+assert.equal(m.projectParticle({userData:{hhsGroupIndex:10368}},matrix,color),false);
+
 assert.equal(d.orthogonalityProofClaimed,false);
 assert.equal(d.massQuantizationProofClaimed,false);
 for(let i=0;i<10368;i++){
