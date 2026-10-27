@@ -41,13 +41,14 @@ def test_light_projection_shares_particle_frame_gate():
 def test_adaptive_projection_skips_light_not_particle_physics():
     s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
     assert 'const PROJECTION_BUDGET_MS=6,PROJECTION_MAX_SKIP=8;' in s
-    assert 'const projectionDue=renderGate &&' in s
-    assert 'if(projectionDue){\n        const projectionStart=performance.now();' in s
+    assert 'const PHYSICS_TICK_MS=1000/60,MAX_PHYSICS_CATCHUP=4;' in s
+    assert 'while(physicsDebtMs>=PHYSICS_TICK_MS&&advanced<MAX_PHYSICS_CATCHUP)' in s
+    assert 'const physicsBehind=physicsDebtMs>=PHYSICS_TICK_MS;' in s
+    assert 'const projectionDue=!physicsBehind && renderGate &&' in s
     assert 'projectionLastCostMs=performance.now()-projectionStart;' in s
-    a=s.index('function animate()')
-    physics=s.index('for(let s=0;s<steps;s++){ updateSpiralParticles();',a)
-    gated=s.index('if(projectionDue){',a)
-    assert physics<gated
+    physics=s.index('function advanceExistingPhysicsTick(){')
+    gated=s.index('const projectionDue=',physics)
+    assert 'updateSpiralParticles();' in s[physics:gated]
     assert 'updatePhaseGeometry();' in s[physics:gated]
     assert 'collideBondMembranes();' in s[physics:gated]
     assert 'constructorScan();' in s[physics:gated]
