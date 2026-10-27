@@ -13,6 +13,12 @@ def test_coupled_group_address_projection():
     assert 'mesh.setColorAt(i,particleAudioColor);' in html
     assert 'mesh.setMatrixAt(i,particleBatchMatrix);' in html
     assert 'matrix.scale(displayScale);' in html
+    assert 'const hhsScaleGroup=Math.floor((i%5184)/72)%9;' in html
+    assert 'const muLocal=mu*thMass[i]*(1+FLD.gradG*(nbCount[i]/20));' in html
+    assert 'const weight=a.population' in html
+    assert '1.3-0.6*(a.scale/8)' in html
+    assert '0.7+0.6*(a.scale/8)' in html
+
     assert 'color.r=color.r*(1-blend)+colorTarget.r*blend' in html
     assert shutil.which("node")
     script=r"""
