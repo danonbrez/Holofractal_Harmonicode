@@ -51,7 +51,7 @@ def test_coupled_particle_frame_uses_one_population_and_pcm_phase():
     source = SOURCE.read_text(encoding="utf-8")
     assert "function coupledParticleFrame(index,frame=state.lastFrame)" in source
     assert "coupledParticleFrame,peakEnvelope" in source
-    fn = re.search(r"(  function coupledParticleFrame\\(index,frame=state.lastFrame\\)\\{[\\s\\S]*?\\n  \\})\\n  function projectColor",source)
+    fn = re.search(r"(  function coupledParticleFrame[(]index,frame=state[.]lastFrame[)][{][\\s\\S]*?\\n  [}])\\n  function projectColor", source)
     assert fn
     program = """
 const assert=require('node:assert/strict');
