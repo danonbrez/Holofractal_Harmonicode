@@ -1,0 +1,35 @@
+name: Pass 220 Lane 5 Lean I056 Value Laws
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass220/lane5_lean_value_laws_normalization_v1.py'
+      - 'formal/lean/HHS/Pass220/Lane5ValueLawApplications.lean'
+      - 'tests/pass220/test_lane5_lean_value_laws_normalization_v1.py'
+      - '.github/workflows/pass220-lane5-lean-i056-value-laws.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-value-laws:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests/pass220 -p 'test_lane5_lean_value_laws_normalization_v1.py' -v
+  lean-value-laws:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
+      - run: lake env lean formal/lean/HHS/Pass220/Lane5ValueLawApplications.lean
