@@ -6156,24 +6156,56 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
     const right=[cx+half*s,cy-half*c,cx-half*s,cy+half*c];
     return {phase72:p,left,right,dot:c*(-s)+s*c};
   }
+  /* Four-tick interlace: derive presentation state from the PCM frame,
+     never from rAF or a new canonical VM81 clock. Geometry and light are
+     render-only; source particle positions and receipts are not touched. */
+  const INTERLACE=Object.freeze({
+    schema:"HHS_PASS220_FOUR_PHASE_LIQUID_LIGHT_V1",
+    period:4,quarterTurn72:18,projectionOnly:true,
+    canonicalMutationAuthority:false
+  });
+  function fourPhasePresentationPacket(frame){
+    if(!Number.isSafeInteger(frame)||frame<0)return null;
+    const phase=frame%INTERLACE.period;
+    const inverted=(phase&1)===1;
+    return Object.freeze({
+      frame,phase,rotationPhase72:phase*INTERLACE.quarterTurn72,
+      rotationQuarterTurns:phase,
+      colorPolarity:inverted?-1:1,
+      topology:inverted?"convex":"concave",
+      depthSign:inverted?1:-1,
+      horizontalInversion:phase===1||phase===3,
+      verticalInversion:phase===2||phase===3,
+      backlightReveal:inverted?0.6:1,
+      source:"PCM_44100_FRAME_735",
+      projectionOnly:true
+    });
+  }
   function paintGyroscopicVerticalPair(ctx,width,height,leftSample,rightSample,
                                         leftRms,rightRms,phase,leftHz=432,rightHz=432){
     const pair=verticalReciprocalGradientPair(
       phase,leftSample,rightSample,leftRms,rightRms,leftHz,rightHz);
     if(pair.alphaL<0.004 && pair.alphaR<0.004)return pair;
-    const axes=gyroscopicGradientAxes72(phase,width,height);
+    const packet=fourPhasePresentationPacket(state.lastFrame);
+    const axes=gyroscopicGradientAxes72(
+      phase+(packet?packet.rotationPhase72:0),width,height);
     ctx.globalCompositeOperation="lighter";
     for(let bus=0;bus<2;bus++){
       const axis=bus?axes.right:axes.left;
       const shader=ctx.createLinearGradient(axis[0],axis[1],axis[2],axis[3]);
       const hues=bus?pair.rightHues:pair.leftHues;
-      const strength=bus?pair.alphaR:pair.alphaL;
-      shader.addColorStop(0,q144Css(hues[0],0));
+      const strength=(bus?pair.alphaR:pair.alphaL)*
+        (packet?packet.backlightReveal:1);
+      const shift=packet&&packet.colorPolarity<0?72:0;
+      shader.addColorStop(0,q144Css((hues[0]+shift)%144,0));
       for(let k=0;k<4;k++){
         const d=Math.abs((k+1)/5-.5);
-        shader.addColorStop((k+1)/5,q144Css(hues[k],strength/(1+10*d*d)));
+        const curvature=packet&&packet.depthSign>0?
+          (0.35+2.6*d):(1/(1+10*d*d));
+        shader.addColorStop((k+1)/5,
+          q144Css((hues[k]+shift)%144,clamp(strength*curvature,0,BACK_LIGHT.alphaCap)));
       }
-      shader.addColorStop(1,q144Css(hues[3],0));
+      shader.addColorStop(1,q144Css((hues[3]+shift)%144,0));
       ctx.fillStyle=shader;
       ctx.fillRect(0,0,width,height);
     }
@@ -7014,7 +7046,7 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
     gyroscopicGradientAxes72,spectralFallbackHz,
     verticalReciprocalGradientPair,paintGyroscopicVerticalPair,
-    paintGyroscopicLightBand,
+    paintGyroscopicLightBand,fourPhasePresentationPacket,interlaceContract:INTERLACE,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
@@ -7026,6 +7058,8 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
       frameSignalReady:state.frameSignalReady,
       visualSource:state.renderSource,
       palette:"Q144-full-spectrum-audio-phase",donut:false,
+       fourPhaseInterlacing:true,
+       fourPhasePacket:fourPhasePresentationPacket(state.lastFrame),
        geometryNormalizationGain:state.gain,
        geometryNormalizationGainMax:GEOMETRY_GAIN.max,
        haloEmissionGain:HALO_EMISSION_GAIN,
