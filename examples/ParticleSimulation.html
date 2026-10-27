@@ -1316,36 +1316,48 @@
     const formationView={byParticle:new Int32Array(10368),groups:[],groupSizes:new Uint16Array(10368),
       selected:null,hovered:null,projected:[],overlay:null,canvas:null};
     const formationScratch=new THREE.Vector3();
-    function deriveElectronicFormations(){
-      /* Reuse native bond connectivity rebuilt on actual bond edits.
-         Do NOT allocate/union a second bond graph during presentation. */
-      const N=particles.length;
-      const groups=new Map();
-      for(let i=0;i<N;i++){
-        const r=ufFind(i);let g=groups.get(r);
-        if(!g){g={members:[],root:r,x:0,y:0,z:0,re:0,im:0,weight:0,vx:0,vy:0,thermal:0};groups.set(r,g);}
-        g.members.push(i);formationView.byParticle[i]=r;
-        const p=particles[i],m=thMass?thMass[i]:1;
-        const phi=p.userData.phase||0;
-        g.re+=m*Math.cos(phi);g.im+=m*Math.sin(phi);
-        g.weight+=m;g.x+=p.position.x;g.y+=p.position.y;g.z+=p.position.z;
-        const velocity=p.userData.velocity;
-        if(velocity){
-          g.vx+=velocity.x;g.vy+=velocity.y;
-          g.thermal+=velocity.x*velocity.x+velocity.y*velocity.y+velocity.z*velocity.z;
-        }
+    /* Bond identity comes from the inherited union-find; render values are
+       accumulated from the SAME particle reads used for GPU instances. */
+    const formationByRoot=new Map();
+    function beginElectronicFormationProjection(){
+      formationByRoot.clear();
+      formationView.groups.length=0;
+      formationView.groupSizes.fill(0);
+      const n=particles.length;
+      for(let i=0;i<n;i++){
+        const root=ufFind(i);
+        formationView.byParticle[i]=root;
+        formationView.groupSizes[root]++;
       }
-      formationView.groups=[];
-      for(const g of groups.values()){
-        const count=g.members.length;
-        for(const member of g.members)formationView.groupSizes[member]=count;
-        g.x/=count;g.y/=count;g.z/=count;
-        g.vx/=count;g.vy/=count;g.thermal/=count;
-        g.magnitude=Math.hypot(g.re,g.im);
-        g.phase=Math.atan2(g.im,g.re);
+      for(let i=0;i<n;i++)
+        formationView.groupSizes[i]=formationView.groupSizes[formationView.byParticle[i]];
+    }
+    function accumulateElectronicFormation(p){
+      const index=p.userData.hhsGroupIndex;
+      if(!Number.isInteger(index)||index<0||index>=particles.length)return;
+      if(formationView.groupSizes[index]<2)return;
+      const root=formationView.byParticle[index];
+      let g=formationByRoot.get(root);
+      if(!g){
+        g={members:[],root,x:0,y:0,z:0,re:0,im:0,weight:0,vx:0,vy:0,thermal:0};
+        formationByRoot.set(root,g);
         formationView.groups.push(g);
       }
-      return formationView.groups;
+      const m=thMass?thMass[index]:1,phi=p.userData.phase||0;
+      const q=p.position,v=p.userData.velocity;
+      g.members.push(index);
+      g.re+=m*Math.cos(phi);g.im+=m*Math.sin(phi);
+      g.weight+=m;g.x+=q.x;g.y+=q.y;g.z+=q.z;
+      if(v){g.vx+=v.x;g.vy+=v.y;
+        g.thermal+=v.x*v.x+v.y*v.y+v.z*v.z;}
+    }
+    function finalizeElectronicFormations(){
+      for(const g of formationView.groups){
+        const n=g.members.length;
+        g.x/=n;g.y/=n;g.z/=n;g.vx/=n;g.vy/=n;g.thermal/=n;
+        g.magnitude=Math.hypot(g.re,g.im);
+        g.phase=Math.atan2(g.im,g.re);
+      }
     }
     function ensureFormationCanvas(){
       if(formationView.canvas)return;
@@ -1464,6 +1476,7 @@
       if(halo)halo.mesh.visible=glowEnabled;
       for(let i=0;i<points.length;i++){
         const p=points[i], q=p.position;
+        accumulateElectronicFormation(p);
         particleBatchMatrix.makeTranslation(q.x,q.y,q.z);
         /* Audio brightness, per-instance scale and displacement are render
            projections only. The logical mesh, velocity and provenance remain
@@ -4844,8 +4857,9 @@
       if(renderGate&&!projectionDue)projectionSkipped++;
       if(projectionDue){
         const projectionStart=performance.now();
-        deriveElectronicFormations();
+        beginElectronicFormationProjection();
         syncParticleRenderBatches();
+        finalizeElectronicFormations();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         syncElectronicFormations();
