@@ -1476,7 +1476,6 @@
       if(halo)halo.mesh.visible=glowEnabled;
       for(let i=0;i<points.length;i++){
         const p=points[i], q=p.position;
-        accumulateElectronicFormation(p);
         particleBatchMatrix.makeTranslation(q.x,q.y,q.z);
         /* Audio brightness, per-instance scale and displacement are render
            projections only. The logical mesh, velocity and provenance remain
@@ -4857,8 +4856,14 @@
         /* Display the existing particles directly; no formation aggregation,
            mesh cloning, or extra spherical light pass in the hot path. */
         syncParticleRenderBatches();
-        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
-        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
+        /* Light is a probabilistic/reflective sample of existing phase and
+           location. It never drives the particle frame. Stable modulo sampling
+           bounds lighting work without another clock or random state. */
+        const lightSampleDue=(Math.floor(renderTick/4)%8)===0;
+        if(lightSampleDue){
+          if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
+          if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
+        }
         renderer.render(scene, camera);
         projectionLastCostMs=performance.now()-projectionStart;
         if(projectionLastCostMs>PROJECTION_BUDGET_MS)
