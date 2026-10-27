@@ -158,7 +158,7 @@ def discover_repository_constructors(repo_root: str | Path, dependency_graph: Ma
             # Native Lean source -> discoverable proof constructor candidates.
             # Parsing is deliberately conservative: these nodes represent
             # source declarations, not claims of successful kernel checking.
-            for match in re.finditer(r"(?m)^[ \\t]*(theorem|lemma|def|structure)\\s+([A-Za-z_][A-Za-z0-9_']*)", text):
+            for match in re.finditer(r"(?m)^[ \t]*(theorem|lemma|def|structure)\s+([A-Za-z_][A-Za-z0-9_']*)", text):
                 kind, name = match.group(1), match.group(2)
                 if kind not in {"theorem", "lemma"}:
                     continue
