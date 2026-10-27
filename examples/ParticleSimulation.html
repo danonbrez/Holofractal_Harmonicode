@@ -4816,8 +4816,7 @@
       /* Additional AUDIO-ONLY visual projections follow each new 735-sample
          output-clock frame. This does not advance a physics substep, native
          tick, receipt, or change the inherited quartic render gate. */
-      const audioVisualFrame=!!(window.HHSAudioViz &&
-                                window.HHSAudioViz.needsProjectionFrame());
+      /* Audio samples remain available to the next particle-owned render. */
       if(renderGate){
         deriveElectronicFormations();
         syncParticleRenderBatches();
@@ -4829,16 +4828,8 @@
         /* state JSON is a presentation surface; get_state remains fresh on demand */
         outputState();
       }
-      /* Audio remains sampled by its original clock; light presentation
-         is committed only on the existing quartic particle render gate. */
-      if(false && !renderGate && audioVisualFrame){
-        deriveElectronicFormations();
-        syncParticleRenderBatches();
-        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
-        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
-        renderer.render(scene,camera);
-        syncElectronicFormations();
-      }
+      /* No audio-only light pass: the existing quartic particle render
+         gate owns all presentation redraws; audio synthesis continues. */
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
           try { fn(); } catch (e) { logDebug("Error in update function: " + e); }
