@@ -19,8 +19,10 @@ def _source():
 
 def _det(matrix):
     (a, b), (c, d) = matrix
-    return ((a[1] * d[1], a[0] + d[0]),
-            (-b[1] * c[1], b[0] + c[0]))
+    terms = ((a[1] * d[1], a[0] + d[0]),
+             (-b[1] * c[1], b[0] + c[0]))
+    # Sort additive monomials; never reorder factors inside a word.
+    return tuple(sorted(terms, key=lambda item: item[1]))
 
 def _coordinates(index):
     return {
