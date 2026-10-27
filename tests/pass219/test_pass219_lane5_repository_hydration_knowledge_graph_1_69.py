@@ -125,3 +125,25 @@ def test_tamper_fails_closed(case, tmp_path: Path):
     with Lane5RepositoryHydrationKnowledgeDatabase(tmp_path / "bad.sqlite3") as db:
         with pytest.raises(ValueError, match="Hash216 mismatch"):
             db.hydrate(dependency_graph=graph, knowledge_projection=tampered)
+
+
+def test_lean_theorem_hydrates_into_hash216_database(tmp_path: Path):
+    from hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69 import (
+        discover_repository_constructors,
+    )
+    lean = tmp_path / "formal" / "lean"
+    lean.mkdir(parents=True)
+    (lean / "ChainAlpha.lean").write_text(
+        "namespace ChainAlpha\\n"
+        "def objectWorld : Nat := 4\\n"
+        "theorem main : objectWorld = 4 := by rfl\\n"
+        "lemma witness : objectWorld = 4 := by rfl\\n"
+        "end ChainAlpha\\n", encoding="utf-8",
+    )
+    file_row = _file("formal/lean/ChainAlpha.lean", "lean")
+    graph = {"files": [file_row]}
+    items = discover_repository_constructors(tmp_path, graph)
+    assert {x["name"] for x in items} == {"main", "witness"}
+    assert all(x["constructor_kind"] == "LEAN_THEOREM_SOURCE" for x in items)
+    assert all(len(x["hash216"]) == 216 for x in items)
+    assert all(x["execution_authority"] is False for x in items)
