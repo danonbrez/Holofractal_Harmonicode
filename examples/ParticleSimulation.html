@@ -1492,15 +1492,12 @@
           particleAudioColor.copy(p.material.color);
           if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,particleAudioColor);
         }
-        /* Actual visible instanced GPU transform and color, never particle state. */
-        if(window.HHSCoupledTensorProjection)
-          window.HHSCoupledTensorProjection.projectParticle(
-            p,particleBatchMatrix,particleAudioColor);
+        /* PERFORMANCE ROLLBACK: restore existing instance projection.
+           Experimental group light and scale are dormant, never per-particle. */
         mesh.setColorAt(i,particleAudioColor);
         /* Coupled physical constituents remain simulated but are rendered
            through their shared sphere in the 2D formation pass. */
-        if(formationView.groupSizes[p.userData.hhsGroupIndex]>1)
-          particleBatchMatrix.scale({x:0,y:0,z:0});
+        /* Preserve original particle visibility: no formation suppression. */
         mesh.setMatrixAt(i,particleBatchMatrix);
         if(halo)halo.glowStrength.array[i]=glowEnabled?
           audioVisual.projectParticleGlow(p):0;
@@ -4857,12 +4854,11 @@
       if(renderGate&&!projectionDue)projectionSkipped++;
       if(projectionDue){
         const projectionStart=performance.now();
-        beginElectronicFormationProjection();
+        /* Display the existing particles directly; no formation aggregation,
+           mesh cloning, or extra spherical light pass in the hot path. */
         syncParticleRenderBatches();
-        finalizeElectronicFormations();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
-        syncElectronicFormations();
         renderer.render(scene, camera);
         projectionLastCostMs=performance.now()-projectionStart;
         if(projectionLastCostMs>PROJECTION_BUDGET_MS)
