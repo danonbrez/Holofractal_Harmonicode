@@ -21,8 +21,8 @@ def test_coupled_group_address_projection():
     assert 'const F=CHARGE_K*octBoost*om*thChg[i]*thChg[c]/(d2+ION_SOFT2);' in html
 
     assert 'const weight=a.population' in html
-    assert '1.3-0.6*(a.scale/8)' in html
-    assert '0.7+0.6*(a.scale/8)' in html
+    assert 'thMass[i]=1.5+hhsScaleGroup*0.25;' in html
+    assert 'const weight=1.5+a.scale*0.25;' in html
 
     assert 'color.r=color.r*(1-blend)+colorTarget.r*blend' in html
     assert shutil.which("node")
@@ -45,7 +45,7 @@ const point={userData:{hhsGroupIndex:0},velocity:{x:1,y:0}};
 const matrix={elements:new Array(16).fill(0),scale(v){this.scaleX=v.x;this.scaleY=v.y;this.scaleZ=v.z;}};
 const color={r:0,g:0,b:0};
 assert.equal(m.projectParticle(point,matrix,color),true);
-assert.ok(matrix.scaleX>0&&matrix.scaleX<1);
+assert.ok(matrix.scaleX>=1.5&&matrix.scaleX<=3.5);
 assert.ok(color.r+color.g+color.b>0);
 const edge=m.address(71*72+71);
 assert.ok(edge);
