@@ -1612,6 +1612,35 @@
           group.add(particle);
           particles.push(particle);
           particle.userData.hhsGroupIndex=particles.length-1;
+          /* Distinct native-carrier group properties, assigned once before
+             the existing interaction solver initializes. No new force law. */
+          const carrierIndex=particle.userData.hhsGroupIndex;
+          const carrierLocal=carrierIndex%5184;
+          const carrierPopulation=Math.floor(carrierIndex/5184);
+          const carrierConstraint=Math.floor(carrierLocal/648);
+          const carrierScale=Math.floor(carrierLocal/72)%9;
+          const carrierPhase=carrierLocal%72;
+          const carrierQuarter=(carrierConstraint%4);
+          const carrierChargeLayer=carrierPhase%9;
+          const carrierSpinRow=(carrierConstraint*9+carrierScale)%17;
+          const carrierSpinColumn=carrierPhase%17;
+          particle.userData.hhsCarrier=Object.freeze({
+            population:carrierPopulation,constraint:carrierConstraint,
+            scale:carrierScale,phaseAddress:carrierPhase,
+            quarterTurn:carrierQuarter,ionicLayer:carrierChargeLayer,
+            ionicCharge:carrierPopulation?4-carrierChargeLayer:carrierChargeLayer-4,
+            hnanGateAddress:carrierChargeLayer===4,
+            spinorRow:carrierPopulation?carrierSpinColumn:carrierSpinRow,
+            spinorColumn:carrierPopulation?carrierSpinRow:carrierSpinColumn,
+            reciprocalIndex:(1-carrierPopulation)*5184+carrierLocal,
+            orderedCarrier:carrierPopulation?"yxwz":"xyzw"
+          });
+          /* Rotated phase gear becomes an ordinary inherited phase property;
+             physics consumes userData.phase through its existing pathways. */
+          particle.userData.phase+=carrierQuarter*Math.PI/2+
+            carrierPopulation*Math.PI;
+          particle.userData.q144=(2*carrierPhase+18*carrierQuarter+
+            72*carrierPopulation)%144;
           points.push(particle);
         }
         spiralData.push({ group, points, index: (layer2 ? 8 : 0) + i, layer2: !!layer2 });
