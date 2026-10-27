@@ -9,6 +9,7 @@ on:
       - 'examples/ParticleSimulationAudioBridge.js'
       - 'tests/pass220/test_hhs_pass220_four_phase_liquid_light.py'
       - 'tests/pass220/test_hhs_pass220_qepsilon_17_html_projection.py'
+      - 'tests/pass220/test_hhs_pass220_coupled_group_html_projection.py'
       - 'tests/pass220/test_hhs_pass220_audio_amplitude_harmonic_projection_v1.py'
       - 'tests/pass220/test_hhs_pass220_vertical_gyroscopic_shader_v1.py'
       - 'tests/pass220/test_hhs_pass220_orthogonal_rotating_shader_v2.py'
@@ -33,6 +34,7 @@ jobs:
           python -m pytest -q --tb=short \
             tests/pass220/test_hhs_pass220_four_phase_liquid_light.py \
             tests/pass220/test_hhs_pass220_qepsilon_17_html_projection.py \
+            tests/pass220/test_hhs_pass220_coupled_group_html_projection.py \
             tests/pass220/test_hhs_pass220_audio_amplitude_harmonic_projection_v1.py \
             tests/pass220/test_hhs_pass220_vertical_gyroscopic_shader_v1.py \
             tests/pass220/test_hhs_pass220_orthogonal_rotating_shader_v2.py \
