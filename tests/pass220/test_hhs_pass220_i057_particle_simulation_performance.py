@@ -54,14 +54,17 @@ def test_i057_instanced_projection_keeps_logical_particle_meshes():
         "registerParticleRenderBatch(group,points,particleGeometry);",
         "for(let i=0;i<points.length;i++) points[i].visible=false;",
         "mesh.setMatrixAt(i,particleBatchMatrix);",
-        "mesh.setColorAt(i,p.material.color);",
+        "particleAudioColor.copy(p.material.color);",
+        "mesh.setColorAt(i,particleAudioColor);",
+        "audioVisual.projectColor(p,particleAudioColor);",
+        "window.HHSPhaseMembranes.tint(p,particleAudioColor);",
         "mesh.instanceMatrix.needsUpdate=true;",
         "mesh.instanceColor.needsUpdate=true;",
         'powerPreference:"high-performance"',
     ):
         assert token in source, token
 
-    # Simulation and receipts still address the original logical particle array.
+    # Both quiet and PCM-driven projections set the GPU instance color without\n    # mutating the logical mesh material; membrane tint remains in the display path.\n    assert source.count("mesh.setColorAt(i,particleAudioColor);") >= 2\n\n    # Simulation and receipts still address the original logical particle array.
     assert "particles.push(particle);" in source
     assert "const P=particles[i];" in source
     assert "particles[i].getWorldPosition(w);" in source
