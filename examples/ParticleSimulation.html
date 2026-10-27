@@ -1139,6 +1139,13 @@
       <input id="audioVizGain" type="range" min="0" max="0.05" step="0.001" value="0.020" style="width:100%;" />
       <div id="audioVizStatus" role="status" aria-live="polite">Select an audio file.</div>
       <div id="audioVizClock" role="status" style="margin-top:4px;font-size:.82em;color:#9cf;">44,100 PCM Hz / 735 samples = 60 audio frames/s | awaiting playback</div>
+      <details id="hhsCoupledTensorPanel" style="margin-top:8px;font-size:.82em;">
+        <summary>Coupled reciprocal phase / fractal / ionic / curvature mapping</summary>
+        <div id="hhsCoupledTensorStatus" role="status"></div>
+        <canvas id="hhsCoupledTensorCanvas" width="576" height="256"
+          style="width:100%;max-width:576px;height:auto;display:block;pointer-events:none"
+          aria-label="Reciprocal particle groups and HNAN-centered ionic phase projection"></canvas>
+      </details>
       <details id="hhsQuantumEpsilonPanel" style="margin-top:8px;font-size:.82em;">
         <summary>Reciprocal 17×17 quantum-epsilon spinor views (projection only)</summary>
         <div id="hhsQuantumEpsilonStatus" aria-live="polite"></div>
@@ -7575,6 +7582,96 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
   else boot();
+})(window);
+</script>
+<!-- Pass 220 shared audio/geometry group address compositor: display-only. -->
+<script id="hhsCoupledTensorInline">
+(function(global){
+"use strict";
+const SCHEMA="HHS_PASS220_RECIPROCAL_8X9_CHARGE_CURVATURE_GROUP_PROJECTION_V1";
+const POPULATION=5184,TOTAL=10368,CHARGE=Object.freeze([-4,-3,-2,-1,"HNAN",1,2,3,4]);
+const SPINOR=Object.freeze(["xyzw","yxwz"]);
+function address(index){
+  if(!Number.isInteger(index)||index<0||index>=TOTAL)return null;
+  const population=Math.floor(index/POPULATION),n=index%POPULATION;
+  const group=Math.floor(n/72),phase=n%72;
+  const constraint=Math.floor(group/9),scale=group%9;
+  const cell=Math.floor(n/64),cellCoordinate=n%64;
+  return Object.freeze({index,population,spinor:SPINOR[population],
+    constraint,scale,phase,cell,cellCoordinate,
+    ionicLayer:scale,ionicCharge:CHARGE[scale],
+    reciprocalIndex:(1-population)*POPULATION+n});
+}
+function reciprocal(index){
+  const a=address(index);return a?a.reciprocalIndex:null;
+}
+/* A non-authoritative graded display projection, not a new force,
+   electrochemical reaction, atomic mass, or gravitational law. */
+function bias(index,audioPhase=0){
+  const a=address(index);if(!a)return null;
+  const signedCharge=typeof a.ionicCharge==="number"?a.ionicCharge:0;
+  const phase=((a.phase+Math.trunc(Number.isFinite(audioPhase)?audioPhase:0))%72+72)%72;
+  const q144=(2*phase+(a.population?72:0))%144;
+  return Object.freeze({...a,phase72:phase,hue144:q144,
+    chargeSign:Math.sign(signedCharge),hnanCenter:a.ionicCharge==="HNAN",
+    normalizedScaleAddress:a.scale+1,projectionOnly:true});
+}
+function audit(){
+  let count=0,neutral=0;
+  for(let i=0;i<TOTAL;i++){
+    const a=address(i);
+    if(!a||a.constraint>7||a.scale>8||a.phase>71||
+       a.cell>80||a.cellCoordinate>63||
+       reciprocal(reciprocal(i))!==i)throw Error("Coupled tensor address mismatch");
+    count++;if(a.ionicCharge==="HNAN")neutral++;
+  }
+  return Object.freeze({schema:SCHEMA,count,perPopulation:POPULATION,
+    constraintGroups:8,fractalScales:9,phasePositions:72,
+    chargeLayers:CHARGE.length,hnanAddress:4,hnanMappedPositions:neutral,
+    quantumEpsilon:289,spinParticleIdentities:17,
+    layeredCardinality:13122,spinRelationshipResidue:2754,
+    nativePhysicsMutation:false,canonicalAdmission:false,
+    orthogonalityProofClaimed:false,massQuantizationProofClaimed:false});
+}
+const diagnostics=audit();
+function paint(ctx,phase){
+  if(!ctx)return false;
+  ctx.clearRect(0,0,576,256);
+  const audio=global.HHSAudioViz;
+  for(let p=0;p<2;p++)for(let r=0;r<8;r++)for(let g=0;g<9;g++){
+    const a=bias(p*POPULATION+72*(9*r+g),phase);
+    const x=p*288+g*31,y=r*31;
+    ctx.fillStyle=audio&&typeof audio.q144Css==="function"?
+      audio.q144Css(a.hue144,a.hnanCenter?0.9:0.45+0.045*g):
+      (a.hnanCenter?"#eeeeee":"#639bd0");
+    ctx.fillRect(x,y,29,29);
+  }
+  return true;
+}
+function boot(){
+  const details=document.getElementById("hhsCoupledTensorPanel");
+  const canvas=document.getElementById("hhsCoupledTensorCanvas");
+  const status=document.getElementById("hhsCoupledTensorStatus");
+  if(!details||!canvas||!status)return;
+  function draw(){
+    if(!details.open)return;
+    const audio=global.HHSAudioViz;
+    const frame=audio&&audio.diagnostics?audio.diagnostics.audioFrame:-1;
+    const phase=Number.isInteger(frame)&&frame>=0?frame%72:0;
+    paint(canvas.getContext("2d"),phase);
+    status.textContent="2 × 8 constraints × 9 scales × 72 positions = 10,368; "+
+      "ionic −4…HNAN…+4; 17² reciprocal relationship positions; "+
+      "PCM phase "+phase+"; projection only";
+    global.requestAnimationFrame(draw);
+  }
+  details.addEventListener("toggle",()=>{if(details.open)draw();});
+}
+global.HHSCoupledTensorProjection=Object.freeze({
+  schema:SCHEMA,address,reciprocal,bias,audit,paint,diagnostics,
+  chargeLayers:CHARGE,spinorOrientations:SPINOR
+});
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
+else boot();
 })(window);
 </script>
 </body>
