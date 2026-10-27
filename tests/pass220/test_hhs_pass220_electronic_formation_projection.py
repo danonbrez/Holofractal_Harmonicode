@@ -4,9 +4,9 @@ ROOT=Path(__file__).resolve().parents[2]
 
 def test_coherent_formation_consumes_live_bonds_not_new_physics():
     s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
-    assert 'function deriveElectronicFormations(){' in s
-    assert 'const r=ufFind(i);let g=groups.get(r);' in s
-    deriv=s[s.index('function deriveElectronicFormations(){'):s.index('function ensureFormationCanvas(){')]
+    assert 'function beginElectronicFormationProjection(){' in s
+    assert 'const root=ufFind(i);' in s
+    deriv=s[s.index('function beginElectronicFormationProjection(){'):s.index('function ensureFormationCanvas(){')]
     assert 'new Int32Array(N)' not in deriv
     assert 'for(let k=0;k<bondN;k++)' not in deriv
     assert 'function rebuildBondIndex(){' in s
@@ -36,7 +36,7 @@ def test_formation_backlight_is_local_3d_and_depth_tested():
 
 def test_light_projection_shares_particle_frame_gate():
     s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
-    assert 'if(renderGate){\\n        deriveElectronicFormations();' in s
+    assert 'beginElectronicFormationProjection();\\n        syncParticleRenderBatches();\\n        finalizeElectronicFormations();' in s
     assert 'if(!renderGate && audioVisualFrame)' not in s
     assert 'light.shell.material.uniforms.uOpacity.value=0.035+0.09*coherent;' in s
     assert 'syncElectronicFormations();\\n        renderer.render(scene, camera);' in s
@@ -63,3 +63,14 @@ def test_pointer_registration_waits_for_renderer_initialization():
     assert "ensureFormationCanvas();" not in s[formation:startup]
     sync=s.index("function syncElectronicFormations()",startup)
     assert "ensureFormationCanvas();" in s[sync:sync+100]
+
+def test_light_reuses_same_particle_position_and_phase_read_as_gpu_projection():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    render=s[s.index("function syncParticleRenderBatch(batch){"):s.index("function syncParticleRenderBatches(){")]
+    assert 'const p=points[i], q=p.position;' in render
+    assert 'accumulateElectronicFormation(p);' in render
+    assert 'particleBatchMatrix.makeTranslation(q.x,q.y,q.z);' in render
+    assert render.index('accumulateElectronicFormation(p);') < render.index('particleBatchMatrix.makeTranslation')
+    assert 'const q=p.position,v=p.userData.velocity;' in s
+    assert 'const m=thMass?thMass[index]:1,phi=p.userData.phase||0;' in s
+    assert 'function deriveElectronicFormations(){' not in s
