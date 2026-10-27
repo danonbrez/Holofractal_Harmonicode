@@ -4804,32 +4804,47 @@
        The canonical physics loop executes on every animation callback. */
     let projectionSkipFactor=1,projectionLastCostMs=0,projectionSkipped=0;
     const PROJECTION_BUDGET_MS=6,PROJECTION_MAX_SKIP=8;
-    function animate() {
-      requestAnimationFrame(animate);
-      if(!chase.on) controls.update();
-      /* GLOBAL FREQUENCY CONTROL: freqScale physics substeps per frame.
-         Each substep runs the FULL stack (phase precession + swarm coupling
-         field) at the canonical dt — symplectic structure and every receipt
-         invariant hold per substep; the interaction rate scales linearly.
-         CONTROL ONLY: no physics change at any setting. */
+    let physicsClockLast=null,physicsDebtMs=0,physicsTicks=0;
+    const PHYSICS_TICK_MS=1000/60,MAX_PHYSICS_CATCHUP=4;
+    function advanceExistingPhysicsTick(){
       const steps=Math.max(1,Math.min(10,simParams.freqScale|0));
-      for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
+      for(let s=0;s<steps;s++){
+        updateSpiralParticles();
+        time += simParams.evolutionSpeed * simParams.timeDilationFactor;
+      }
       updatePhaseGeometry();
       collideBondMembranes();
       constructorScan();
-      if(chase.on) updateChaseCamera();
-      /* QUARTIC RENDER SKIP: physics advanced for ALL carriers above;
-         the projection renders on every 4th frame (base-8 periodicity +
-         quartic closure M⁴=M³+2M² — the HNAN semicomplement at projection
-         granularity: skipped renders write nothing, the clock never
-         stops). */
+      if(chase.on)updateChaseCamera();
+      physicsTicks++;
       renderTick++;
       renderGate=((renderTick%4)===0);
+      return steps;
+    }
+    function animate(timestamp) {
+      requestAnimationFrame(animate);
+      if(!chase.on)controls.update();
+      const now=Number.isFinite(timestamp)?timestamp:performance.now();
+      if(physicsClockLast===null)physicsClockLast=now-PHYSICS_TICK_MS;
+      const elapsed=Math.max(0,now-physicsClockLast);
+      physicsClockLast=now;
+      physicsDebtMs+=elapsed;
+      let advanced=0,steps=0;
+      while(physicsDebtMs>=PHYSICS_TICK_MS&&advanced<MAX_PHYSICS_CATCHUP){
+        steps=advanceExistingPhysicsTick();
+        physicsDebtMs-=PHYSICS_TICK_MS;
+        advanced++;
+      }
+      /* When behind, sacrifice light frames and preserve physics debt.
+         Never fabricate missed simulation ticks or scale physical dt. */
+      const physicsBehind=physicsDebtMs>=PHYSICS_TICK_MS;
+      if(advanced===0)return;
       /* Additional AUDIO-ONLY visual projections follow each new 735-sample
          output-clock frame. This does not advance a physics substep, native
          tick, receipt, or change the inherited quartic render gate. */
       /* Audio samples remain available to the next particle-owned render. */
-      const projectionDue=renderGate && ((Math.floor(renderTick/4)%projectionSkipFactor)===0);
+      const projectionDue=!physicsBehind && renderGate &&
+        ((Math.floor(renderTick/4)%projectionSkipFactor)===0);
       if(renderGate&&!projectionDue)projectionSkipped++;
       if(projectionDue){
         const projectionStart=performance.now();
