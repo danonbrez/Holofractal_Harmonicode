@@ -1353,11 +1353,7 @@
     }
     function ensureFormationCanvas(){
       if(formationView.canvas)return;
-      const c=document.createElement("canvas");
-      c.id="hhsCoherentFormationOverlay";
-      c.style.cssText="position:fixed;pointer-events:none;z-index:3;background:transparent";
-      c.setAttribute("aria-label","Live coupled spherical electronic formations");
-      document.body.appendChild(c);formationView.canvas=c;
+      formationView.canvas=true; /* pointer handlers only, no screen overlay */
       renderer.domElement.addEventListener("pointermove",e=>{
         let nearest=null,d=Infinity;
         for(const g of formationView.projected){
@@ -1379,6 +1375,7 @@
     }
     /* Local three-dimensional shell lighting, depth-tested and distributed
        radially around the actual coupled barycenter. No screen overlay. */
+    ensureFormationCanvas();
     const formationShellGeometry=new THREE.SphereGeometry(1,16,12);
     const formationShellMaterial=new THREE.ShaderMaterial({
       uniforms:{uColor:{value:new THREE.Color(0x8cbbff)},
