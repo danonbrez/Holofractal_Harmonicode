@@ -37,3 +37,17 @@ def test_light_projection_shares_particle_frame_gate():
     assert 'if(!renderGate && audioVisualFrame)' not in s
     assert 'light.shell.material.uniforms.uOpacity.value=0.035+0.09*coherent;' in s
     assert 'syncElectronicFormations();\\n        renderer.render(scene, camera);' in s
+
+def test_adaptive_projection_skips_light_not_particle_physics():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    assert 'const PROJECTION_BUDGET_MS=6,PROJECTION_MAX_SKIP=8;' in s
+    assert 'const projectionDue=renderGate &&' in s
+    assert 'if(projectionDue){\n        const projectionStart=performance.now();' in s
+    assert 'projectionLastCostMs=performance.now()-projectionStart;' in s
+    a=s.index('function animate()')
+    physics=s.index('for(let s=0;s<steps;s++){ updateSpiralParticles();',a)
+    gated=s.index('if(projectionDue){',a)
+    assert physics<gated
+    assert 'updatePhaseGeometry();' in s[physics:gated]
+    assert 'collideBondMembranes();' in s[physics:gated]
+    assert 'constructorScan();' in s[physics:gated]
