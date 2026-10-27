@@ -2174,7 +2174,10 @@
         /* softened mutual gravitation toward the barycenter, gradient
            deepening with local density (set during the neighbor pass) */
         const r2=x*x+y*y+z*z, s32=Math.pow(r2+sf2,1.5);
-        const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));
+        /* Native per-particle gravity coupling follows its nine-level
+           reciprocal fractal mass. Existing softened density-gradient law
+           and the HNAN-safe nonzero distance divisor remain intact. */
+        const muLocal=mu*thMass[i]*(1+FLD.gradG*(nbCount[i]/20));
         let ax=-muLocal*x/s32, ay=-muLocal*y/s32, az=-muLocal*z/s32;
         /* HYPERCUBIC PERIODICITY at c relative to the undisturbed original
            momentum: f_i = c·|p0_i|/2π with |p0_i| = m_i·s0. In units of
