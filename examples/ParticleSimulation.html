@@ -1375,7 +1375,6 @@
     }
     /* Local three-dimensional shell lighting, depth-tested and distributed
        radially around the actual coupled barycenter. No screen overlay. */
-    ensureFormationCanvas();
     const formationShellGeometry=new THREE.SphereGeometry(1,16,12);
     const formationShellMaterial=new THREE.ShaderMaterial({
       uniforms:{uColor:{value:new THREE.Color(0x8cbbff)},
@@ -1417,6 +1416,7 @@
       return formationShells[i]={shell,core};
     }
     function syncElectronicFormations(){
+      ensureFormationCanvas();
       formationView.projected=[];
       const frame=window.HHSAudioViz&&window.HHSAudioViz.diagnostics?
         window.HHSAudioViz.diagnostics.audioFrame:0;
