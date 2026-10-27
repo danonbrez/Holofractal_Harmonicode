@@ -1311,6 +1311,119 @@
       syncParticleRenderBatch(batch);
       return batch;
     }
+    /* Coupled electronic formations: READ-ONLY connected components of the
+       existing live bond graph. No alternative distance/time bond heuristic. */
+    const formationView={byParticle:new Int32Array(10368),groups:[],
+      selected:null,hovered:null,projected:[],overlay:null,canvas:null};
+    const formationScratch=new THREE.Vector3();
+    function deriveElectronicFormations(){
+      const N=particles.length,parents=new Int32Array(N);
+      for(let i=0;i<N;i++)parents[i]=i;
+      function root(i){while(parents[i]!==i){parents[i]=parents[parents[i]];i=parents[i];}return i;}
+      for(let k=0;k<bondN;k++){
+        const a=bondI[k],b=bondJ[k];
+        if(a>=0&&b>=0&&a<N&&b<N)parents[root(b)]=root(a);
+      }
+      const groups=new Map();
+      for(let i=0;i<N;i++){
+        const r=root(i);let g=groups.get(r);
+        if(!g){g={members:[],root:r,x:0,y:0,z:0,re:0,im:0,weight:0};groups.set(r,g);}
+        g.members.push(i);formationView.byParticle[i]=r;
+        const p=particles[i],m=thMass?thMass[i]:1;
+        const phi=p.userData.phase||0;
+        g.re+=m*Math.cos(phi);g.im+=m*Math.sin(phi);
+        g.weight+=m;g.x+=p.position.x;g.y+=p.position.y;g.z+=p.position.z;
+      }
+      formationView.groups=[];
+      for(const g of groups.values()){
+        const count=g.members.length;
+        g.x/=count;g.y/=count;g.z/=count;
+        g.magnitude=Math.hypot(g.re,g.im);
+        g.phase=Math.atan2(g.im,g.re);
+        formationView.groups.push(g);
+      }
+      return formationView.groups;
+    }
+    function ensureFormationCanvas(){
+      if(formationView.canvas)return;
+      const c=document.createElement("canvas");
+      c.id="hhsCoherentFormationOverlay";
+      c.style.cssText="position:fixed;pointer-events:auto;z-index:3;background:transparent";
+      c.setAttribute("aria-label","Live coupled spherical electronic formations");
+      document.body.appendChild(c);formationView.canvas=c;
+      c.addEventListener("pointermove",e=>{
+        let nearest=null,d=Infinity;
+        for(const g of formationView.projected){
+          const v=Math.hypot(e.offsetX-g.sx,e.offsetY-g.sy);
+          if(v<g.radius+9&&v<d){nearest=g;d=v;}
+        }
+        formationView.hovered=nearest?nearest.root:null;
+        c.style.cursor=nearest?"pointer":"default";
+      });
+      c.addEventListener("pointerleave",()=>formationView.hovered=null);
+      c.addEventListener("click",e=>{
+        let nearest=null,d=Infinity;
+        for(const g of formationView.projected){
+          const v=Math.hypot(e.offsetX-g.sx,e.offsetY-g.sy);
+          if(v<g.radius+9&&v<d){nearest=g;d=v;}
+        }
+        formationView.selected=nearest?nearest.members[0]:null;
+      });
+    }
+    function paintElectronicFormations(){
+      ensureFormationCanvas();
+      const c=formationView.canvas,rect=renderer.domElement.getBoundingClientRect();
+      const pixelRatio=Math.min(2,window.devicePixelRatio||1);
+      c.style.left=rect.left+"px";c.style.top=rect.top+"px";
+      c.style.width=rect.width+"px";c.style.height=rect.height+"px";
+      const W=Math.round(rect.width*pixelRatio),H=Math.round(rect.height*pixelRatio);
+      if(c.width!==W||c.height!==H){c.width=W;c.height=H;}
+      const ctx=c.getContext("2d");ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+      ctx.clearRect(0,0,rect.width,rect.height);
+      formationView.projected=[];
+      const frame=window.HHSAudioViz&&window.HHSAudioViz.diagnostics?
+        window.HHSAudioViz.diagnostics.audioFrame:0;
+      const phaseFrame=Number.isInteger(frame)?frame:0;
+      for(const g of formationView.groups){
+        if(g.members.length<2)continue; // original instances draw unbonded bodies
+        formationScratch.set(g.x,g.y,g.z).project(camera);
+        if(formationScratch.z< -1||formationScratch.z>1)continue;
+        const sx=(formationScratch.x+1)*rect.width/2;
+        const sy=(1-formationScratch.y)*rect.height/2;
+        const coherent=g.magnitude/Math.max(g.weight,1);
+        const radius=9+Math.min(34,Math.sqrt(g.members.length)*3);
+        const q144=((Math.round(g.phase*72/Math.PI)+phaseFrame)%144+144)%144;
+        const hue=q144*360/144;
+        const picked=formationView.selected!==null&&g.members.includes(formationView.selected);
+        const hovered=g.root===formationView.hovered;
+        const opacity=0.18+0.52*coherent;
+        const glow=ctx.createRadialGradient(sx,sy,0,sx,sy,radius*2.5);
+        glow.addColorStop(0,"hsla("+hue+",90%,92%,"+Math.min(1,opacity+0.25)+")");
+        glow.addColorStop(0.25,"hsla("+hue+",90%,64%,"+opacity+")");
+        glow.addColorStop(1,"hsla("+hue+",90%,30%,0)");
+        ctx.globalCompositeOperation="lighter";
+        ctx.fillStyle=glow;ctx.beginPath();ctx.arc(sx,sy,radius*2.5,0,Math.PI*2);ctx.fill();
+        if(picked||hovered){
+          ctx.strokeStyle="rgba(230,244,255,0.9)";ctx.lineWidth=picked?2:1;
+          ctx.beginPath();ctx.arc(sx,sy,radius,0,Math.PI*2);ctx.stroke();
+        }
+        formationView.projected.push({...g,sx,sy,radius});
+      }
+      ctx.globalCompositeOperation="source-over";
+    }
+    function syncElectronicFormations(){
+      deriveElectronicFormations();
+      paintElectronicFormations();
+    }
+    window.HHSElectronicFormations=Object.freeze({
+      inspect:()=>({groupCount:formationView.groups.length,
+        coupledCount:formationView.groups.filter(g=>g.members.length>1).length,
+        selected:formationView.selected,hovered:formationView.hovered,
+        selectedMembers:formationView.selected===null?[]:
+          (formationView.groups.find(g=>g.members.includes(formationView.selected))||{members:[]}).members.slice(),
+        schema:"HHS_PASS220_BOND_DERIVED_PHASOR_FORMATION_V1",
+        physicalPopulation:particles.length,physicsMutation:false})
+    });
     function syncParticleRenderBatch(batch){
       const mesh=batch.mesh, points=batch.points, halo=batch.halo;
       const audioVisual=window.HHSAudioViz;
@@ -1339,6 +1452,12 @@
           window.HHSCoupledTensorProjection.projectParticle(
             p,particleBatchMatrix,particleAudioColor);
         mesh.setColorAt(i,particleAudioColor);
+        /* Coupled physical constituents remain simulated but are rendered
+           through their shared sphere in the 2D formation pass. */
+        const root=formationView.byParticle[p.userData.hhsGroupIndex];
+        const formation=formationView.groups.find(g=>g.root===root);
+        if(formation&&formation.members.length>1)
+          particleBatchMatrix.scale({x:0,y:0,z:0});
         mesh.setMatrixAt(i,particleBatchMatrix);
         if(halo)halo.glowStrength.array[i]=glowEnabled?
           audioVisual.projectParticleGlow(p):0;
@@ -4678,6 +4797,7 @@
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         renderer.render(scene, camera);
+        syncElectronicFormations();
         renderedFrames++;
         /* state JSON is a presentation surface; get_state remains fresh on demand */
         outputState();
@@ -4687,6 +4807,7 @@
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         renderer.render(scene,camera);
+        syncElectronicFormations();
       }
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
