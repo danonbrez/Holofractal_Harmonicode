@@ -1393,7 +1393,7 @@
       const phaseFrame=Number.isInteger(frame)?frame:0;
       /* Existing velocity and orbital motion supply the diffuse field; it
          continues independently of ionic bond topology. No new forces. */
-      ctx.globalCompositeOperation="lighter";
+      ctx.globalCompositeOperation="source-over";
       for(const g of formationView.groups){
         formationScratch.set(g.x,g.y,g.z).project(camera);
         if(formationScratch.z< -1||formationScratch.z>1)continue;
@@ -1402,13 +1402,13 @@
         const thermal=Math.min(1,Math.sqrt(Math.max(0,g.thermal))*5);
         const spread=22+Math.min(90,Math.sqrt(g.members.length)*8)+thermal*18;
         const field=ctx.createRadialGradient(fx,fy,0,fx,fy,spread);
-        field.addColorStop(0,"rgba(143,173,226,"+(0.035+0.08*thermal)+")");
+        field.addColorStop(0,"rgba(143,173,226,"+(0.008+0.025*thermal)+")");
         field.addColorStop(1,"rgba(90,121,196,0)");
         ctx.fillStyle=field;ctx.beginPath();ctx.arc(fx,fy,spread,0,Math.PI*2);ctx.fill();
         const vx=g.vx,vy=g.vy,speed=Math.hypot(vx,vy);
         if(speed>0.00001){
           const heading=Math.atan2(vy,vx);
-          ctx.strokeStyle="rgba(163,198,255,"+(0.05+0.14*thermal)+")";
+          ctx.strokeStyle="rgba(163,198,255,"+(0.015+0.045*thermal)+")";
           ctx.lineWidth=0.6+thermal;
           ctx.beginPath();ctx.arc(fx,fy,spread*0.62,heading-0.7,heading+0.7);ctx.stroke();
         }
@@ -1425,12 +1425,12 @@
         const hue=q144*360/144;
         const picked=formationView.selected!==null&&g.members.includes(formationView.selected);
         const hovered=g.root===formationView.hovered;
-        const opacity=0.18+0.52*coherent;
+        const opacity=0.055+0.15*coherent;
         const glow=ctx.createRadialGradient(sx,sy,0,sx,sy,radius*2.5);
-        glow.addColorStop(0,"hsla("+hue+",90%,92%,"+Math.min(1,opacity+0.25)+")");
+        glow.addColorStop(0,"hsla("+hue+",90%,92%,"+Math.min(0.28,opacity+0.06)+")");
         glow.addColorStop(0.25,"hsla("+hue+",90%,64%,"+opacity+")");
         glow.addColorStop(1,"hsla("+hue+",90%,30%,0)");
-        ctx.globalCompositeOperation="lighter";
+        ctx.globalCompositeOperation="source-over";
         ctx.fillStyle=glow;ctx.beginPath();ctx.arc(sx,sy,radius*2.5,0,Math.PI*2);ctx.fill();
         if(picked||hovered){
           ctx.strokeStyle="rgba(230,244,255,0.9)";ctx.lineWidth=picked?2:1;
@@ -4829,7 +4829,9 @@
         /* state JSON is a presentation surface; get_state remains fresh on demand */
         outputState();
       }
-      if(!renderGate && audioVisualFrame){
+      /* Audio remains sampled by its original clock; light presentation
+         is committed only on the existing quartic particle render gate. */
+      if(false && !renderGate && audioVisualFrame){
         deriveElectronicFormations();
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
@@ -6361,7 +6363,7 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
     const packet=fourPhasePresentationPacket(state.lastFrame);
     const axes=gyroscopicGradientAxes72(
       phase+(packet?packet.rotationPhase72:0),width,height);
-    ctx.globalCompositeOperation="lighter";
+    ctx.globalCompositeOperation="source-over";
     for(let bus=0;bus<2;bus++){
       const axis=bus?axes.right:axes.left;
       const shader=ctx.createLinearGradient(axis[0],axis[1],axis[2],axis[3]);
