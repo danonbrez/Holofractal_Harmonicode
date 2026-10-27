@@ -13,15 +13,14 @@ def test_coupled_group_address_projection():
     assert 'mesh.setColorAt(i,particleAudioColor);' in html
     assert 'mesh.setMatrixAt(i,particleBatchMatrix);' in html
     assert 'matrix.scale(displayScale);' in html
-    assert 'const hhsScaleGroup=Math.floor((i%5184)/72)%9;' in html
-    assert 'const muLocal=mu*thMass[i]*(1+FLD.gradG*(nbCount[i]/20));' in html
-    assert 'const hhsChargeLayer=i%72%9;' in html
-    assert 'thChg[i]=p.userData.recip?-hhsChargeValue:hhsChargeValue;' in html
+    assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in html
+    assert 'thPh4[i]=p.userData.q144%4; thChg[i]=1-2*(thPh4[i]&1);' in html
+    assert 'thMass[i]= p.userData.recip ? 1.3-0.6*((p.userData.q144%9)/8)' in html
+
     assert 'ionicLayer:phase%9,ionicCharge:population' in html
     assert 'const F=CHARGE_K*octBoost*om*thChg[i]*thChg[c]/(d2+ION_SOFT2);' in html
 
     assert 'const weight=a.population' in html
-    assert 'thMass[i]=1.5+hhsScaleGroup*0.25;' in html
     assert 'const weight=1.5+a.scale*0.25;' in html
 
     assert 'color.r=color.r*(1-blend)+colorTarget.r*blend' in html
