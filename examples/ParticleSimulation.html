@@ -1327,18 +1327,24 @@
       const groups=new Map();
       for(let i=0;i<N;i++){
         const r=root(i);let g=groups.get(r);
-        if(!g){g={members:[],root:r,x:0,y:0,z:0,re:0,im:0,weight:0};groups.set(r,g);}
+        if(!g){g={members:[],root:r,x:0,y:0,z:0,re:0,im:0,weight:0,vx:0,vy:0,thermal:0};groups.set(r,g);}
         g.members.push(i);formationView.byParticle[i]=r;
         const p=particles[i],m=thMass?thMass[i]:1;
         const phi=p.userData.phase||0;
         g.re+=m*Math.cos(phi);g.im+=m*Math.sin(phi);
         g.weight+=m;g.x+=p.position.x;g.y+=p.position.y;g.z+=p.position.z;
+        const velocity=p.userData.velocity;
+        if(velocity){
+          g.vx+=velocity.x;g.vy+=velocity.y;
+          g.thermal+=velocity.x*velocity.x+velocity.y*velocity.y+velocity.z*velocity.z;
+        }
       }
       formationView.groups=[];
       for(const g of groups.values()){
         const count=g.members.length;
         for(const member of g.members)formationView.groupSizes[member]=count;
         g.x/=count;g.y/=count;g.z/=count;
+        g.vx/=count;g.vy/=count;g.thermal/=count;
         g.magnitude=Math.hypot(g.re,g.im);
         g.phase=Math.atan2(g.im,g.re);
         formationView.groups.push(g);
@@ -1385,6 +1391,28 @@
       const frame=window.HHSAudioViz&&window.HHSAudioViz.diagnostics?
         window.HHSAudioViz.diagnostics.audioFrame:0;
       const phaseFrame=Number.isInteger(frame)?frame:0;
+      /* Existing velocity and orbital motion supply the diffuse field; it
+         continues independently of ionic bond topology. No new forces. */
+      ctx.globalCompositeOperation="lighter";
+      for(const g of formationView.groups){
+        formationScratch.set(g.x,g.y,g.z).project(camera);
+        if(formationScratch.z< -1||formationScratch.z>1)continue;
+        const fx=(formationScratch.x+1)*rect.width/2;
+        const fy=(1-formationScratch.y)*rect.height/2;
+        const thermal=Math.min(1,Math.sqrt(Math.max(0,g.thermal))*5);
+        const spread=22+Math.min(90,Math.sqrt(g.members.length)*8)+thermal*18;
+        const field=ctx.createRadialGradient(fx,fy,0,fx,fy,spread);
+        field.addColorStop(0,"rgba(143,173,226,"+(0.035+0.08*thermal)+")");
+        field.addColorStop(1,"rgba(90,121,196,0)");
+        ctx.fillStyle=field;ctx.beginPath();ctx.arc(fx,fy,spread,0,Math.PI*2);ctx.fill();
+        const vx=g.vx,vy=g.vy,speed=Math.hypot(vx,vy);
+        if(speed>0.00001){
+          const heading=Math.atan2(vy,vx);
+          ctx.strokeStyle="rgba(163,198,255,"+(0.05+0.14*thermal)+")";
+          ctx.lineWidth=0.6+thermal;
+          ctx.beginPath();ctx.arc(fx,fy,spread*0.62,heading-0.7,heading+0.7);ctx.stroke();
+        }
+      }
       for(const g of formationView.groups){
         if(g.members.length<2)continue; // original instances draw unbonded bodies
         formationScratch.set(g.x,g.y,g.z).project(camera);
