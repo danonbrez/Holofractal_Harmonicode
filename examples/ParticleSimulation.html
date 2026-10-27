@@ -1330,12 +1330,15 @@
           audioVisual.projectBrownianAntiParticle(p,particleBatchMatrix);
           audioVisual.projectColor(p,particleAudioColor);
           if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,particleAudioColor);
-          mesh.setColorAt(i,particleAudioColor);
         }else{
           particleAudioColor.copy(p.material.color);
           if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,particleAudioColor);
-          mesh.setColorAt(i,particleAudioColor);
         }
+        /* Actual visible instanced GPU transform and color, never particle state. */
+        if(window.HHSCoupledTensorProjection)
+          window.HHSCoupledTensorProjection.projectParticle(
+            p,particleBatchMatrix,particleAudioColor);
+        mesh.setColorAt(i,particleAudioColor);
         mesh.setMatrixAt(i,particleBatchMatrix);
         if(halo)halo.glowStrength.array[i]=glowEnabled?
           audioVisual.projectParticleGlow(p):0;
@@ -1450,6 +1453,7 @@
             velocity: new THREE.Vector3(0,0,0), q144: (i*250+j) % 144, spiral: i, j, layer2: !!layer2 };
           group.add(particle);
           particles.push(particle);
+          particle.userData.hhsGroupIndex=particles.length-1;
           points.push(particle);
         }
         spiralData.push({ group, points, index: (layer2 ? 8 : 0) + i, layer2: !!layer2 });
@@ -7616,6 +7620,44 @@ function bias(index,audioPhase=0){
     chargeSign:Math.sign(signedCharge),hnanCenter:a.ionicCharge==="HNAN",
     normalizedScaleAddress:a.scale+1,projectionOnly:true});
 }
+/* Observable per-instance presentation: size, hue, phase-curvature shimmer.
+   Inputs use existing position/velocity and particle identity; no simulation feedback. */
+const displayScale={x:1,y:1,z:1};
+function projectParticle(p,matrix,color){
+  const idx=p&&p.userData?p.userData.hhsGroupIndex:undefined;
+  const a=bias(idx,0);
+  if(!a||!matrix||!color)return false;
+  const weight=0.38+1.40*(a.scale/8);
+  const turn=a.phase*2*Math.PI/72;
+  const handed=a.population?-1:1;
+  const vx=p.velocity&&Number.isFinite(p.velocity.x)?p.velocity.x:0;
+  const vy=p.velocity&&Number.isFinite(p.velocity.y)?p.velocity.y:0;
+  const speed=Math.min(2,Math.sqrt(vx*vx+vy*vy));
+  const curvature=1+Math.min(0.24,speed*0.10);
+  displayScale.x=weight*curvature;
+  displayScale.y=weight/curvature;
+  displayScale.z=weight;
+  matrix.scale(displayScale);
+  matrix.elements[12]+=handed*0.10*Math.cos(turn)*speed;
+  matrix.elements[13]+=handed*0.10*Math.sin(turn)*speed;
+  const hue=((a.hue144+144)%144)/144;
+  /* Strong distinct group color is intentional; keep existing illumination. */
+  const colorTarget={r:0,g:0,b:0};
+  const h=hue*6,part=h-Math.floor(h),q=1-part;
+  switch(Math.floor(h)%6){
+    case 0:colorTarget.r=1;colorTarget.g=part;break;
+    case 1:colorTarget.r=q;colorTarget.g=1;break;
+    case 2:colorTarget.g=1;colorTarget.b=part;break;
+    case 3:colorTarget.g=q;colorTarget.b=1;break;
+    case 4:colorTarget.r=part;colorTarget.b=1;break;
+    default:colorTarget.r=1;colorTarget.b=q;
+  }
+  const blend=0.78;
+  color.r=color.r*(1-blend)+colorTarget.r*blend;
+  color.g=color.g*(1-blend)+colorTarget.g*blend;
+  color.b=color.b*(1-blend)+colorTarget.b*blend;
+  return true;
+}
 function audit(){
   let count=0,neutral=0;
   for(let i=0;i<TOTAL;i++){
@@ -7667,7 +7709,7 @@ function boot(){
   details.addEventListener("toggle",()=>{if(details.open)draw();});
 }
 global.HHSCoupledTensorProjection=Object.freeze({
-  schema:SCHEMA,address,reciprocal,bias,audit,paint,diagnostics,
+  schema:SCHEMA,address,reciprocal,bias,projectParticle,audit,paint,diagnostics,
   chargeLayers:CHARGE,spinorOrientations:SPINOR
 });
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
