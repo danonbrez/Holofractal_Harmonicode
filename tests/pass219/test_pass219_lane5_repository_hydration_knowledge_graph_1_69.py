@@ -134,11 +134,11 @@ def test_lean_theorem_hydrates_into_hash216_database(tmp_path: Path):
     lean = tmp_path / "formal" / "lean"
     lean.mkdir(parents=True)
     (lean / "ChainAlpha.lean").write_text(
-        "namespace ChainAlpha\\n"
-        "def objectWorld : Nat := 4\\n"
-        "theorem main : objectWorld = 4 := by rfl\\n"
-        "lemma witness : objectWorld = 4 := by rfl\\n"
-        "end ChainAlpha\\n", encoding="utf-8",
+        "namespace ChainAlpha\n"
+        "def objectWorld : Nat := 4\n"
+        "theorem main : objectWorld = 4 := by rfl\n"
+        "lemma witness : objectWorld = 4 := by rfl\n"
+        "end ChainAlpha\n", encoding="utf-8",
     )
     file_row = _file("formal/lean/ChainAlpha.lean", "lean")
     graph = {"files": [file_row]}
