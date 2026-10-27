@@ -1377,71 +1377,82 @@
         formationView.selected=nearest?nearest.members[0]:null;
       });
     }
-    function paintElectronicFormations(){
-      ensureFormationCanvas();
-      const c=formationView.canvas,rect=renderer.domElement.getBoundingClientRect();
-      const pixelRatio=Math.min(2,window.devicePixelRatio||1);
-      c.style.left=rect.left+"px";c.style.top=rect.top+"px";
-      c.style.width=rect.width+"px";c.style.height=rect.height+"px";
-      const W=Math.round(rect.width*pixelRatio),H=Math.round(rect.height*pixelRatio);
-      if(c.width!==W||c.height!==H){c.width=W;c.height=H;}
-      const ctx=c.getContext("2d");ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
-      ctx.clearRect(0,0,rect.width,rect.height);
+    /* Local three-dimensional shell lighting, depth-tested and distributed
+       radially around the actual coupled barycenter. No screen overlay. */
+    const formationShellGeometry=new THREE.SphereGeometry(1,16,12);
+    const formationShellMaterial=new THREE.ShaderMaterial({
+      uniforms:{uColor:{value:new THREE.Color(0x8cbbff)},
+        uOpacity:{value:0.10}},
+      vertexShader:[
+        "varying vec3 vNormalShell;",
+        "varying vec3 vViewShell;",
+        "void main(){",
+        "vec4 v=modelViewMatrix*vec4(position,1.0);",
+        "vNormalShell=normalize(normalMatrix*normal);",
+        "vViewShell=normalize(-v.xyz);",
+        "gl_Position=projectionMatrix*v;",
+        "}"
+      ].join("\n"),
+      fragmentShader:[
+        "uniform vec3 uColor;",
+        "uniform float uOpacity;",
+        "varying vec3 vNormalShell;",
+        "varying vec3 vViewShell;",
+        "void main(){",
+        "float rim=pow(1.0-abs(dot(normalize(vNormalShell),normalize(vViewShell))),2.0);",
+        "gl_FragColor=vec4(uColor,uOpacity*(0.14+0.86*rim));",
+        "}"
+      ].join("\n"),
+      transparent:true,depthTest:true,depthWrite:false,
+      side:THREE.BackSide,blending:THREE.NormalBlending
+    });
+    const formationShells=[];
+    const formationCoreGeometry=new THREE.SphereGeometry(1,12,8);
+    function obtainFormationShell(i){
+      if(formationShells[i])return formationShells[i];
+      const shell=new THREE.Mesh(formationShellGeometry,formationShellMaterial.clone());
+      const core=new THREE.Mesh(formationCoreGeometry,
+        new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.35,
+          depthTest:true,depthWrite:true}));
+      shell.renderOrder=-2;core.renderOrder=-1;
+      shell.frustumCulled=false;core.frustumCulled=false;
+      scene.add(shell);scene.add(core);
+      return formationShells[i]={shell,core};
+    }
+    function syncElectronicFormations(){
       formationView.projected=[];
       const frame=window.HHSAudioViz&&window.HHSAudioViz.diagnostics?
         window.HHSAudioViz.diagnostics.audioFrame:0;
       const phaseFrame=Number.isInteger(frame)?frame:0;
-      /* Existing velocity and orbital motion supply the diffuse field; it
-         continues independently of ionic bond topology. No new forces. */
-      ctx.globalCompositeOperation="source-over";
+      let used=0;
       for(const g of formationView.groups){
-        formationScratch.set(g.x,g.y,g.z).project(camera);
-        if(formationScratch.z< -1||formationScratch.z>1)continue;
-        const fx=(formationScratch.x+1)*rect.width/2;
-        const fy=(1-formationScratch.y)*rect.height/2;
-        const thermal=Math.min(1,Math.sqrt(Math.max(0,g.thermal))*5);
-        const spread=22+Math.min(90,Math.sqrt(g.members.length)*8)+thermal*18;
-        const field=ctx.createRadialGradient(fx,fy,0,fx,fy,spread);
-        field.addColorStop(0,"rgba(143,173,226,"+(0.008+0.025*thermal)+")");
-        field.addColorStop(1,"rgba(90,121,196,0)");
-        ctx.fillStyle=field;ctx.beginPath();ctx.arc(fx,fy,spread,0,Math.PI*2);ctx.fill();
-        const vx=g.vx,vy=g.vy,speed=Math.hypot(vx,vy);
-        if(speed>0.00001){
-          const heading=Math.atan2(vy,vx);
-          ctx.strokeStyle="rgba(163,198,255,"+(0.015+0.045*thermal)+")";
-          ctx.lineWidth=0.6+thermal;
-          ctx.beginPath();ctx.arc(fx,fy,spread*0.62,heading-0.7,heading+0.7);ctx.stroke();
-        }
-      }
-      for(const g of formationView.groups){
-        if(g.members.length<2)continue; // original instances draw unbonded bodies
-        formationScratch.set(g.x,g.y,g.z).project(camera);
-        if(formationScratch.z< -1||formationScratch.z>1)continue;
-        const sx=(formationScratch.x+1)*rect.width/2;
-        const sy=(1-formationScratch.y)*rect.height/2;
+        if(g.members.length<2)continue;
+        const light=obtainFormationShell(used++);
         const coherent=g.magnitude/Math.max(g.weight,1);
-        const radius=9+Math.min(34,Math.sqrt(g.members.length)*3);
-        const q144=((Math.round(g.phase*72/Math.PI)+phaseFrame)%144+144)%144;
-        const hue=q144*360/144;
-        const picked=formationView.selected!==null&&g.members.includes(formationView.selected);
-        const hovered=g.root===formationView.hovered;
-        const opacity=0.055+0.15*coherent;
-        const glow=ctx.createRadialGradient(sx,sy,0,sx,sy,radius*2.5);
-        glow.addColorStop(0,"hsla("+hue+",90%,92%,"+Math.min(0.28,opacity+0.06)+")");
-        glow.addColorStop(0.25,"hsla("+hue+",90%,64%,"+opacity+")");
-        glow.addColorStop(1,"hsla("+hue+",90%,30%,0)");
-        ctx.globalCompositeOperation="source-over";
-        ctx.fillStyle=glow;ctx.beginPath();ctx.arc(sx,sy,radius*2.5,0,Math.PI*2);ctx.fill();
-        if(picked||hovered){
-          ctx.strokeStyle="rgba(230,244,255,0.9)";ctx.lineWidth=picked?2:1;
-          ctx.beginPath();ctx.arc(sx,sy,radius,0,Math.PI*2);ctx.stroke();
+        const r=0.9+Math.min(3.2,Math.sqrt(g.members.length)*0.36);
+        const phase=((Math.round(g.phase*72/Math.PI)+phaseFrame)%144+144)%144;
+        light.shell.position.set(g.x,g.y,g.z);
+        light.core.position.copy(light.shell.position);
+        light.shell.scale.setScalar(r*1.8);
+        light.core.scale.setScalar(r*0.46);
+        light.shell.material.uniforms.uColor.value.setHSL(phase/144,0.62,0.54);
+        light.shell.material.uniforms.uOpacity.value=0.035+0.09*coherent;
+        light.core.material.color.setHSL(phase/144,0.68,0.68);
+        light.core.material.opacity=0.17+0.17*coherent;
+        light.shell.visible=true;light.core.visible=true;
+        formationScratch.set(g.x,g.y,g.z).project(camera);
+        if(formationScratch.z>=-1&&formationScratch.z<=1){
+          const rect=renderer.domElement.getBoundingClientRect();
+          formationView.projected.push({...g,
+            sx:(formationScratch.x+1)*rect.width/2,
+            sy:(1-formationScratch.y)*rect.height/2,
+            radius:Math.max(5,r*7)});
         }
-        formationView.projected.push({...g,sx,sy,radius});
       }
-      ctx.globalCompositeOperation="source-over";
-    }
-    function syncElectronicFormations(){
-      paintElectronicFormations();
+      for(let i=used;i<formationShells.length;i++){
+        formationShells[i].shell.visible=false;
+        formationShells[i].core.visible=false;
+      }
     }
     window.HHSElectronicFormations=Object.freeze({
       inspect:()=>({groupCount:formationView.groups.length,
@@ -4822,8 +4833,8 @@
         syncParticleRenderBatches();
         if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
-        renderer.render(scene, camera);
         syncElectronicFormations();
+        renderer.render(scene, camera);
         renderedFrames++;
         /* state JSON is a presentation surface; get_state remains fresh on demand */
         outputState();
