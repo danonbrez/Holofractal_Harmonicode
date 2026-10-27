@@ -18,3 +18,12 @@ def test_coherent_formation_consumes_live_bonds_not_new_physics():
     assert 'physicsMutation:false' in s
     assert 'thChg[i]=1-2*(thPh4[i]&1)' in s
     assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in s
+
+def test_gravity_thermal_field_is_distinct_from_ionic_spherical_formation():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    assert 'g.thermal+=velocity.x*velocity.x+velocity.y*velocity.y+velocity.z*velocity.z;' in s
+    assert 'const heading=Math.atan2(vy,vx);' in s
+    assert '/* Existing velocity and orbital motion supply the diffuse field;' in s
+    assert 'if(g.members.length<2)continue; // original instances draw unbonded bodies' in s
+    assert s.index('const field=ctx.createRadialGradient') < s.index('const coherent=g.magnitude')
+    assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in s
