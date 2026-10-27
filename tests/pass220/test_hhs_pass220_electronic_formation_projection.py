@@ -27,3 +27,12 @@ def test_gravity_thermal_field_is_distinct_from_ionic_spherical_formation():
     assert 'if(g.members.length<2)continue; // original instances draw unbonded bodies' in s
     assert s.index('const field=ctx.createRadialGradient') < s.index('const coherent=g.magnitude')
     assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in s
+
+def test_light_projection_shares_quartic_particle_frame_gate():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    assert 'if(renderGate){\n        deriveElectronicFormations();' in s
+    assert 'if(!renderGate && audioVisualFrame)' not in s
+    assert 'const opacity=0.055+0.15*coherent;' in s
+    assert 'Math.min(0.28,opacity+0.06)' in s
+    assert '0.008+0.025*thermal' in s
+    assert 'ctx.globalCompositeOperation="source-over";' in s
