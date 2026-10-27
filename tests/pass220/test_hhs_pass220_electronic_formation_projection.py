@@ -74,3 +74,11 @@ def test_light_reuses_same_particle_position_and_phase_read_as_gpu_projection():
     assert 'const q=p.position,v=p.userData.velocity;' in s
     assert 'const m=thMass?thMass[index]:1,phi=p.userData.phase||0;' in s
     assert 'function deriveElectronicFormations(){' not in s
+
+def test_sampled_light_does_not_scan_particles_or_advance_clock():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    batch=s[s.index('function syncParticleRenderBatch(batch){'):s.index('function syncParticleRenderBatches()',s.index('function syncParticleRenderBatch(batch){'))]
+    assert 'accumulateElectronicFormation(p);' not in batch
+    assert 'const lightSampleDue=(Math.floor(renderTick/4)%8)===0;' in s
+    assert 'if(lightSampleDue){' in s
+    assert 'if(window.HHSLiquidLight)window.HHSLiquidLight.sync();' in s
