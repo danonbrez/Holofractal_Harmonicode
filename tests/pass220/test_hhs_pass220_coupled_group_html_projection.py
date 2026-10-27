@@ -15,6 +15,11 @@ def test_coupled_group_address_projection():
     assert 'matrix.scale(displayScale);' in html
     assert 'const hhsScaleGroup=Math.floor((i%5184)/72)%9;' in html
     assert 'const muLocal=mu*thMass[i]*(1+FLD.gradG*(nbCount[i]/20));' in html
+    assert 'const hhsChargeLayer=i%72%9;' in html
+    assert 'thChg[i]=p.userData.recip?-hhsChargeValue:hhsChargeValue;' in html
+    assert 'ionicLayer:phase%9,ionicCharge:population' in html
+    assert 'const F=CHARGE_K*octBoost*om*thChg[i]*thChg[c]/(d2+ION_SOFT2);' in html
+
     assert 'const weight=a.population' in html
     assert '1.3-0.6*(a.scale/8)' in html
     assert '0.7+0.6*(a.scale/8)' in html
@@ -47,6 +52,21 @@ assert.ok(edge);
 assert.equal(m.projectParticle({userData:{hhsGroupIndex:10368}},matrix,color),false);
 
 assert.equal(d.orthogonalityProofClaimed,false);
+const charges=new Set();
+for(let phase=0;phase<72;phase++) {
+ const a=m.address(phase);
+ const b=m.address(5184+phase);
+ charges.add(a.ionicCharge);
+ if(a.ionicCharge==="HNAN")assert.equal(b.ionicCharge,"HNAN");
+ else assert.equal(b.ionicCharge,-a.ionicCharge);
+ assert.equal(a.ionicLayer,b.ionicLayer);
+}
+assert.equal(charges.size,9);
+assert.equal(m.address(4).ionicCharge,"HNAN");
+assert.equal(m.address(9).ionicCharge,-4);
+assert.equal(m.address(72).scale,1);
+assert.equal(m.address(72).ionicCharge,-4);
+
 assert.equal(d.massQuantizationProofClaimed,false);
 for(let i=0;i<10368;i++){
  const a=m.address(i),b=m.address(m.reciprocal(i));
