@@ -1,0 +1,30 @@
+name: HHS frozen-layer source guard
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-layer-source-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR source with base history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify initial frozen path scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ -z "$BASE_SHA" ] || [ -z "$HEAD_SHA" ]; then
+            echo "FROZEN_LAYER_GATE_ERROR: pull-request base and head commits required"
+            exit 2
+          fi
+          python3 scripts/check_frozen_layer_preservation.py --base "$BASE_SHA" --head "$HEAD_SHA"
+      - name: Run guard unit tests
+        run: python3 -m unittest discover -s tests -p 'test_frozen_layer_preservation_guard.py' -v
