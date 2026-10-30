@@ -18,7 +18,7 @@ def changed_paths(base: str, head: str) -> set[str]:
     if not base or not head:
         raise ValueError("both base and head commits are required")
     output = subprocess.check_output(
-        ["git", "diff", "--name-only", "-z", "--diff-filter=ACDMRTUXB",
+        ["git", "diff", "--no-renames", "--name-only", "-z", "--diff-filter=ACDMRTUXB",
          f"{base}...{head}"]
     )
     return {p.decode("utf-8", "surrogateescape") for p in output.split(b"\0") if p}
