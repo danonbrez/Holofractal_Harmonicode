@@ -42,7 +42,7 @@ def main(args):
     try:
         protected = load_paths()
         changed = subprocess.check_output(
-            ["git", "diff", "--name-only", "-z", "--diff-filter=ACDMRTUXB",
+            ["git", "diff", "--no-renames", "--name-only", "-z", "--diff-filter=ACDMRTUXB",
              args[0] + "..." + args[1]]
         )
         paths = [p.decode("utf-8", "surrogateescape") for p in changed.split(b"\0") if p]
