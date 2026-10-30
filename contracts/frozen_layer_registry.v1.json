@@ -1,0 +1,31 @@
+{
+  "schema": "hhs.frozen-layer-registry.v1",
+  "status": "proposed-scoped-source-protection",
+  "governing_contract": "docs/architecture/HHS_FROZEN_LAYER_PRESERVATION_CONTRACT.md",
+  "reference_prs": [
+    864,
+    866
+  ],
+  "policy": "source-diff-deny",
+  "coverage": "selected-exact-paths-only",
+  "protected": [
+    {
+      "path": "hhs_runtime/core_sandbox/hhs_general_runtime_layer_v1.py",
+      "role": "canonical general runtime",
+      "evidence": "AGENTS.md canonical runtime path; file inspected",
+      "closure_verification": "not-attested-by-this-manifest"
+    },
+    {
+      "path": "hhs_runtime/hhs_hash72_signing_layer_v1.py",
+      "role": "Hash72 receipt signing layer",
+      "evidence": "repository file inspected",
+      "closure_verification": "not-attested-by-this-manifest"
+    }
+  ],
+  "limitations": [
+    "registry entry does not itself establish mathematical closure",
+    "no exception bypass for repairs: separate authorization and reviewed policy change required",
+    "no Lane 5/VM81/Hash72/Hash216 end-to-end enforcement",
+    "CI policy is not tamper-resistant without repository rules and trusted workflow"
+  ]
+}
