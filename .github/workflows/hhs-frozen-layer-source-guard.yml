@@ -1,7 +1,7 @@
 name: HHS frozen-layer source guard
 on:
   pull_request:
-    branches: [main]
+    branches: [main, ci/frozen-layer-guard-20261029, ci/frozen-layer-manifest-20261029]
 
 permissions:
   contents: read
