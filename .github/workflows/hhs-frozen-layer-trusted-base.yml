@@ -31,7 +31,7 @@ jobs:
         run: |
           set -o pipefail
           # The policy and workflow themselves must not be edited by candidate PRs.
-          git diff --name-only -z "$BASE_SHA...$HEAD_SHA" | python3 -c '
+          git diff --no-renames --name-only -z "$BASE_SHA...$HEAD_SHA" | python3 -c '
           import sys
           changed = set(p.decode() for p in sys.stdin.buffer.read().split(bytes([0])) if p)
           policy = {
