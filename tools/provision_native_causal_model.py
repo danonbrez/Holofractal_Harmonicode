@@ -134,13 +134,33 @@ def _torch_cpu_runtime() -> dict[str, Any]:
     }
 
 
+def _transformers_exports_ready() -> bool:
+    """Check actual pinned interpreter exports, not only package metadata.
+
+    Run in a fresh interpreter so an already-imported namespace or a broken
+    install cannot be concealed by the provisioner's own module cache.
+    """
+    probe = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "from transformers import AutoConfig, AutoTokenizer, AutoModelForCausalLM",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    return probe.returncode == 0
+
+
 def _runtime_ready() -> bool:
     versions = _installed_versions()
     if versions.get("transformers") != EXPECTED_RUNTIME_VERSIONS["transformers"]:
         return False
     if versions.get("torch") != EXPECTED_RUNTIME_VERSIONS["torch"]:
         return False
-    return bool(_torch_cpu_runtime().get("ready"))
+    return bool(_torch_cpu_runtime().get("ready")) and _transformers_exports_ready()
 
 
 def _install_runtime() -> dict[str, Any]:
@@ -158,8 +178,9 @@ def _install_runtime() -> dict[str, Any]:
         ])
 
     current = _installed_versions()
-    if current.get("transformers") != EXPECTED_RUNTIME_VERSIONS["transformers"]:
-        _run_pip(["--requirement", str(REQUIREMENTS_PATH)])
+    if (current.get("transformers") != EXPECTED_RUNTIME_VERSIONS["transformers"]
+            or not _transformers_exports_ready()):
+        _run_pip(["--force-reinstall", "--requirement", str(REQUIREMENTS_PATH)])
 
     after = _installed_versions()
     torch_cpu = _torch_cpu_runtime()
@@ -171,7 +192,7 @@ def _install_runtime() -> dict[str, Any]:
         for package, expected in EXPECTED_RUNTIME_VERSIONS.items()
         if after.get(package) != expected
     }
-    if mismatches or not torch_cpu.get("ready"):
+    if mismatches or not torch_cpu.get("ready") or not _transformers_exports_ready():
         raise RuntimeError(
             f"native causal runtime verification failed: versions={mismatches} "
             f"torch_cpu={torch_cpu}"
