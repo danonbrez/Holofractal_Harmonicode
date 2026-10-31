@@ -28,7 +28,7 @@ public:
         if (b.qudit->cell81 >= 81U || b.qudit->operation64 >= 64U ||
             b.qudit->hash72_major >= 72U || b.qudit->hash72_minor >= 72U)
             return HHS_EXACT_STATUS_RANGE_ERROR;
-        const auto slot = static_cast<std::uint32_t>(b.qudit->cell81) * 64U
+        // RNA 1.12 and Q81 1.45 share cell81/operation64, but their\n        // slot5184 fields represent different typed coordinate views.\n        const auto& rna = b.candidate->lineage.coordinate;\n        if (rna.cell81 != b.qudit->cell81 ||\n            rna.operation64 != b.qudit->operation64 ||\n            rna.g243 >= 243U || rna.trit >= 3U ||\n            rna.slot5184 >= 5184U)\n            return HHS_EXACT_STATUS_INVARIANT_FAILURE;\n        const auto transcription = static_cast<std::uint32_t>(rna.operation64) * 243U\n                                   + static_cast<std::uint32_t>(rna.g243);\n        if (rna.trit != transcription / 5184U ||\n            rna.slot5184 != transcription % 5184U)\n            return HHS_EXACT_STATUS_INVARIANT_FAILURE;\n        const auto slot = static_cast<std::uint32_t>(b.qudit->cell81) * 64U
                         + static_cast<std::uint32_t>(b.qudit->operation64);
         if (b.qudit->local5184 != slot ||
             b.qudit->hash72_major != slot / 72U ||
