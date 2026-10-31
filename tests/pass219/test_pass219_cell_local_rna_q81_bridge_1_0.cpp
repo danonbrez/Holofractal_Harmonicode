@@ -22,7 +22,7 @@ int main() {
             assert((slot / 72U) * 72U + slot % 72U == slot);
         }
     }
-    // The new bridge is deliberately only a candidate validator and
+    // Exhaustively check the distinct RNA transcription view as well.\n    for (std::uint32_t op = 0; op < 64U; ++op) {\n        for (std::uint32_t g = 0; g < 243U; ++g) {\n            const auto v = 243U * op + g;\n            const auto trit = v / 5184U;\n            const auto rna_slot = v % 5184U;\n            assert(trit < 3U);\n            assert(5184U * trit + rna_slot == v);\n            assert((5184U * trit + rna_slot) / 243U == op);\n            assert((5184U * trit + rna_slot) % 243U == g);\n        }\n    }\n    // The new bridge is deliberately only a candidate validator and
     // reversible reconstruction adapter. It never calls VM81 admission.
     return 0;
 }
