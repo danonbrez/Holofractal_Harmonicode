@@ -701,6 +701,9 @@ jobs:
           HHS_PRODUCTION_BROWSER_IGNORE_HTTPS_ERRORS=1 \
           HHS_PRODUCTION_BROWSER_EVIDENCE_DIR="${RUNNER_TEMP}/production-browser" \
             timeout 300s node scripts/production-live-browser-verify.mjs
+          test -s "${RUNNER_TEMP}/production-browser/production-live-browser.json"
+          test -s "${RUNNER_TEMP}/production-browser/production-live-browser.png"
+          echo "HHS_PRODUCTION_BROWSER_CAPABILITY_FILES_VERIFIED=1"
           cat "${RUNNER_TEMP}/production-browser/production-live-browser.json"
 
       - name: Upload production frontend capability evidence
@@ -711,7 +714,7 @@ jobs:
           path: |
             ${{ runner.temp }}/production-browser/production-live-browser.json
             ${{ runner.temp }}/production-browser/production-live-browser.png
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 30
 
       - name: Queue Hash216 repository index after verified promotion
