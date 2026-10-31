@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: C++17 strict compile of new adapter and exhaustive-coordinate test
         run: |
-          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -fsyntax-only tests/pass219/test_pass219_cell_local_rna_q81_bridge_1_0.cpp
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_cell_local_rna_q81_bridge_1_0.cpp -o /tmp/pass219-cell-local-test\n          /tmp/pass219-cell-local-test
       - name: Check no alternate mutation authority in bridge
         run: |
           python - <<'PY'
