@@ -274,3 +274,62 @@ This section records the user-supplied Modules 27–72 as a system-internal **in
 - Test each implementation claim against the active contract and actual native operation ordering; record **PASS / FAIL / OPEN**, input locus, type, domain guards, exact residual, proof identity, predecessor/receipt linkage, and replay outcome. A local identity or per-cell pass never automatically certifies composed behavior. For guarded Lean 4 proof integration, maintain pinned native toolchain/dependency and theorem identities where the applicable service contract requires them.
 
 This section is additive guidance for implementation review. The established VM81 commit and Hash72-before-Hash216 authority order, frozen-layer preservation, and repository-wide source-integrity controls remain unchanged.
+
+## 13. Universal cumulative integration, capability completion, and beta-freeze contract (2026-10-31)
+
+**Universal destination:** Every design, equation, algorithm, visualization, proof, prototype, optimization, dataset, test, and artifact developed for HHS/HARMONICODE, in any language or environment, belongs to **one integrated HARMONICODE system**. Its current implementation location does not change its architectural destination. Every repository component is part of this unified architecture, even when integration is indirect, incomplete, or not yet indexed. The knowledge-graph HTML is an integrated inspection/prototype surface, not a separate project.
+
+### Repository-wide discovery and implementation
+
+1. Before asserting that a capability is absent, inspect the repository index, source files, constructors, service registry, tests, proofs, dependency graph, historical implementations, native interfaces, and Hash216/Lane 5 hydration graph. `AGENTS.md`, indices, names, descriptions, pass labels, and registries are **navigation aids**, not exhaustive capability boundaries.
+2. An incomplete service, missing interface, obscure name, or disconnected component establishes investigation or integration work, **not permission to abandon the task** or claim the architecture lacks the capability. Reconstruct dependencies and implement the requested missing capability or connection.
+3. Reuse native VM81, Hash72/Hash216, Lane 5, and relevant C/C++ services and constructors wherever they actually satisfy the specification; extend through composition, inheritance, and compatible interfaces. Do not create competing mutation, proof, receipt, or execution authority.
+4. All standalone HTML, JS, Python, C++, and other artifacts are portable implementations or inspection surfaces participating in the same lifecycle. Where applicable, preserve standalone execution with embedded portable VM81 and relevant Lane 5 native optimization semantics rather than presenting a remote service as the only runtime. Verify typed input/output and observable compatibility at ingress and egress.
+5. Carry development toward production integration. A functioning standalone prototype is **not** sufficient evidence of full integration: verify relevant native execution, interface parity, exact-algebra constraints, Hash72/Hash216 receipts, replay, deployment identity, and production acceptance.
+
+### Specification fidelity and non-reduction
+
+- A narrow test or existing proof proves only its tested or demonstrated claim; it does **not** bound the broader requested specification. Existing service behavior and shared mathematical properties do not imply full implementation or equivalence.
+- Evaluate each newly supplied design and number-theoretic construction on its exact terms, preserving operator order, Lo Shu addresses, types, provenance, phase relationships, guards, constraints, and observable outputs. An unconventional, simpler, or more complex iteration remains an implementation requirement when specified.
+- A proposed simplification, optimization, or substitute requires an explicit equivalence witness under all applicable native and interface constraints. Reuse satisfied capabilities, extend partial ones, and construct what remains missing without rewriting frozen lower layers.
+- Distinguish verified implementation, proof scope, contractual intent, and open work; do not present partial or isolated success as full system closure.
+
+### Pre-beta preservation and authorized consolidation
+
+Until **the fully functioning integrated beta has been verified and explicitly frozen**, the repository remains cumulative. Do not prune, delete, archive, or fork branches, files, services, proofs, experiments, historical implementations, or transition artifacts **merely because they appear redundant, unused, old, or disconnected**. Preserve developmental lineage, source integrity, provenance, reproducibility, and inherited frozen mathematics/runtime/service contracts. Incomplete connectivity calls for investigation and integration, not disposal.
+
+Required lifecycle:
+
+```text
+CUMULATIVE DEVELOPMENT
+→ REPOSITORY-WIDE DISCOVERY AND INTEGRATION
+→ END-TO-END BETA EXECUTION / PROOF / INTERFACE / DEPLOYMENT / REPLAY VALIDATION
+→ EXPLICITLY AUTHORIZED BETA FREEZE
+→ CONTROLLED FORK
+→ EVIDENCE-BASED PRUNING AND ARCHIVAL WITH FULL LINEAGE
+```
+
+Only after beta verification and authorized freeze may consolidation decisions rely on complete dependency evidence. Routine feature/work branches and commits needed for cumulative implementation are not the post-freeze repository fork/pruning authorization; preserve their history and do not destructively consolidate them prematurely.
+
+### Rejection integrity, bypass detection, and diagnostic evidence
+
+1. **Never bypass native rejection.** Preserve VM81 admission, tensor/HNAN guards, Hash72/Hash216 integrity, replay, receipt lineage, frozen-layer protection, source-integrity checks, and production validation. Rejection is diagnostic evidence, not an obstacle to circumvent.
+2. Trace failure from native error code, invariant and exact witness through affected constructor/service, interface/ABI, dependency and Lane 5 hydration edges. Repair the defective implementation rather than weakening the validator unless the validator defect itself is independently demonstrated.
+3. Test **the validation bypasses themselves**: renamed protected paths (including real Git rename cases), changed paths, alternate entry points, missing or malformed receipts, invalid transitions, omitted checks, diff-scope failures, and deployment identity drift. A green CI result does not prove an unexercised contract.
+4. Preserve an end-to-end evidence chain from source/base SHA, changed paths, guard selection and execution, tests, commit/merge SHA, build artifact, deployed SHA, native runtime identity, rejection/admission witness, and replay.
+5. Classify and retain diagnostic evidence for **source defect** (invariant/service/constructor/operation), **integration defect** (dependency/ABI/hydration), **validation bypass** (expected/executed guard and uncovered route), **workflow defect** (diff/test selection/skipped checks), **deployment drift** (source/build/deployed/runtime identities), and **runtime rejection** (error code/constraint witness/transition provenance).
+6. If a bypass has already reached `main`, repair **both** the underlying defect and the missing guard/coverage. Passing CI or deployment alone is insufficient evidence of native contract closure.
+
+### Required task procedure and honest blocker handling
+
+```text
+REQUESTED CAPABILITY
+→ REPOSITORY-WIDE DISCOVERY
+→ SPECIFICATION / IMPLEMENTATION / CONTRACT ANALYSIS
+→ DEPENDENCY AND INHERITED-STATE RECONSTRUCTION
+→ IMPLEMENT MISSING CAPABILITY AND INTEGRATION
+→ NEGATIVE-GUARD AND END-TO-END VALIDATION
+→ PRODUCTION INTEGRATION AND REPLAY EVIDENCE
+```
+
+If a genuine external blocker prevents full completion, preserve the completed changes, identify the exact blocker, missing tests and evidence, and reproducible next action. Do not abandon the work merely because the first located implementation is incomplete, and never misstate partial work as complete. All requirements in this section are additive to the frozen-layer preservation contract and existing authoritative runtime semantics.
