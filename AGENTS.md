@@ -333,3 +333,25 @@ REQUESTED CAPABILITY
 ```
 
 If a genuine external blocker prevents full completion, preserve the completed changes, identify the exact blocker, missing tests and evidence, and reproducible next action. Do not abandon the work merely because the first located implementation is incomplete, and never misstate partial work as complete. All requirements in this section are additive to the frozen-layer preservation contract and existing authoritative runtime semantics.
+
+## 14. Validation-history recovery and evidence-first integration (2026-11-01)
+
+**Governing contract:** Historical validation is part of the cumulative HHS/HARMONICODE implementation foundation. Before rederiving, simplifying, replacing, or independently reimplementing specified mathematics or algorithms, recover and trace existing mathematical, executable, and integration evidence. Do not require the user to repeatedly reproduce recoverable historical verification.
+
+### Distinct evidence states
+
+1. **Established mathematical results:** Recover exact ordered typed expressions, assumptions, domain guards, formal proof identities and checker outputs. Investigate prior scientific-calculator artifacts, independent LLM agent reviews, Wolfram formalizations, native Lean 4 proofs, and other recorded evidence. A file's existence alone does not certify its assertions; identify the actually proven scope.
+2. **Verified native implementations:** Trace these results to existing C/C++ constructors, VM81 operations, source SHAs, tests, GitHub Copilot/code reviews, CI workflow execution IDs, native error and admission witnesses, Hash72/Hash216 receipts, replay, and Lane 5 hydration graph edges. A passing workflow proves only its exercised contract scope.
+3. **Outstanding integration:** Record separately which verified behaviors still lack portable HTML, audiovisual, compressed rendering, typed ingress/egress, interface-parity, native runtime, or production integration. Missing HTML connectivity does not negate independently verified mathematics; a Lean proof or VM81 success does not certify untested interfaces.
+
+### Required agent procedure
+
+1. Search repository-wide and available connected histories for the relevant calculator calculations, independent-agent verifications, Wolfram scripts, Lean theorems, Copilot review results, VM81 workflow records, Hash72/Hash216 receipts, and Lane 5 hydration records. Preserve provenance, version, scope, failure evidence, and toolchain/checker identity; never invent missing historical records.
+2. Trace evidence across existing source, constructors, dependencies, service contracts, proof identities, native validation, CI, deployment receipts, and replay. AGENTS.md, service indexes, and registries facilitate discovery; they are not exhaustive limits.
+3. Inspect relevant concrete anchors where applicable: hhs_runtime/cpp/hhs_pass220_i086_lane5_conway_cell_wall_v1.cpp; docs/pass220/PASS_220_I051_NATIVE_LEAN_ALIGNMENT.md; formal/wolfram/pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.wl; contracts/pass219/PASS_219_LANE5_REPOSITORY_HYDRATION_KNOWLEDGE_GRAPH_1_69.md. Their presence identifies investigation paths, not proof of all claims.
+4. Maintain an evidence ledger recording construction/claim, exact expression and assumptions, source SHA, checker/proof identity and result, verification scope, executable constructor/runtime and receipts, PASS/FAIL/OPEN status, and unresolved integration paths. Distinguish absent evidence, an unexecuted test, and an actual failure.
+5. Reuse already proven results within their recorded scope. Do not replace the specified mathematics with simplified equations, approximate surrogates, or invented visualization algorithms absent an exact typed, ordered, address/phase/provenance-preserving equivalence witness.
+6. Integrate verified behavior into portable HTML, audiovisual, compressed rendering, and production surfaces through inherited native constructors and compatible interfaces. Test input/output parity, negative guards, replay, source-to-deployment identity, and native acceptance. A working standalone visualization is not full integration.
+7. When evidence is inaccessible, document precisely which sources were examined, what remains unverified, and a reproducible next recovery step. Do not downgrade verified scoped results or overstate evidence from filenames and green workflows.
+
+**Decision rule:** Recover and scope validation evidence first; inherit established mathematics and implementations; diagnose and complete only genuinely missing connections; verify full integration without weakening VM81, Hash72/Hash216, Lane 5, or frozen-layer authority. Additive to Sections 1–13.
