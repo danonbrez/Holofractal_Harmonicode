@@ -50,6 +50,24 @@ class ResearchDriverPreservation(unittest.TestCase):
         self.assertEqual(positions, sorted(positions))
         self.assertIn("const steps=Math.max(1,Math.min(10,simParams.freqScale|0))", animation)
 
+    def test_media_controls_and_source_frame_accounting(self):
+        self.assertIn('id="hhs-repository-media-membrane"', self.source)
+        for control in ('record', 'stop', 'play', 'live', 'save'):
+            self.assertIn('hhs-i088-" + control', self.source)
+        self.assertIn('C.track.requestFrame();C.frames++;', self.source)
+        self.assertIn('C.sourceFPS', self.source)
+        self.assertIn('canonicalMutation:false', self.source)
+        self.assertIn('C.video.style.cssText=', self.source)
+        self.assertIn('z-index:10050', self.source)
+        self.assertIn('z-index:9000', self.source)
+
+    def test_diagnostics_not_serialized_each_frame(self):
+        self.assertIn('if(performance.now()-hhsLastDiagnosticStateMs>=2000)', self.source)
+
+    def test_research_hiding_does_not_skip_phase_driver(self):
+        self.assertIn('updatePhaseGeometry();', self.source)
+        self.assertIn('phaseBins.fill(0)', self.source)
+
     def test_canonical_physics_not_replaced_by_media(self):
         self.assertIn("initSpiralParticles(false)", self.source)
         self.assertIn("initExchangeNuclei(true)", self.source)
