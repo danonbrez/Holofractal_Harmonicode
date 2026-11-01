@@ -35,3 +35,4 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_frozen_layer_preservation_guard.py' -v
           python3 -m unittest discover -s tests -p 'test_frozen_layer_real_git_renames.py' -v
           python3 -m unittest discover -s tests -p 'test_frozen_layer_registry.py' -v
+          python3 -m unittest discover -s tests -p 'test_frozen_layer_trusted_policy_integrity.py' -v
