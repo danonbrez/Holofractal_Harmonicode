@@ -1474,7 +1474,9 @@
           colArr[e*6+k*3]=c.r; colArr[e*6+k*3+1]=c.g; colArr[e*6+k*3+2]=c.b; } }
       tessGeo.lines.geometry.attributes.color.needsUpdate=true;
       tessGeo.lines.position.set(0,0,0);
-      scene.add(tessGeo.lines);
+      // Research-only tesseract lines are not mounted: 4D projections still execute.
+      tessGeo.lines.visible=false;
+      tessGeo.lines.userData.hhsResearchOnly=true;
     }
     function updateTesseract(){
       if(!tessGeo) return;
@@ -1757,8 +1759,9 @@
       /* static instruments hidden by default — the live layers (tesseract,
          4D rotation) carry the geometry now; set simParams.phaseGeometry=true
          to bring the Poincaré/Penrose wireframes back */
-      phaseGeomGroup.visible = simParams.phaseGeometry===true;
-      if(!phaseGeomGroup.visible) return;
+      // Keep the Poincaré–Penrose state driver active on every physics update.
+      // The research instrument is never a visible scene surface.
+      phaseGeomGroup.visible=false;
       /* conformal compactification of the swarm's phase space:
          radius = tanh(|v|/vmax) (boundary unreachable at finite speed),
          angle  = spatial heading θ; brightness accumulates density */
