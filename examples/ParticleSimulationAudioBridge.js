@@ -192,7 +192,7 @@
     active:false, geometryEnabled:false, gain:GEOMETRY_GAIN.defaultValue,
     pair:PAIR, peaksL:new Float32Array(N), peaksR:new Float32Array(N),
     crossingEvents:[], sampleRate:0, buffer:null, context:null, source:null,
-    processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(),
+    processor:null, objectURL:null, audio:null, particleIndex:new WeakMap(), particles:null,
     waveCanvas:null,backLightCanvas:null,backLightTexture:null, started:false, lastFrame:-1, lastSample:[0,0], status:null,
     processorReady:null, renderedLightingFrames:0, skippedLightingFrames:0,
     outputClockSource:"inactive", lightingLatencyMs:0, lastClockStatusTime:-1,
@@ -339,24 +339,56 @@
     const right=[cx+half*s,cy-half*c,cx-half*s,cy+half*c];
     return {phase72:p,left,right,dot:c*(-s)+s*c};
   }
+  /* Four-tick interlace: derive presentation state from the PCM frame,
+     never from rAF or a new canonical VM81 clock. Geometry and light are
+     render-only; source particle positions and receipts are not touched. */
+  const INTERLACE=Object.freeze({
+    schema:"HHS_PASS220_FOUR_PHASE_LIQUID_LIGHT_V1",
+    period:4,quarterTurn72:18,projectionOnly:true,
+    canonicalMutationAuthority:false
+  });
+  function fourPhasePresentationPacket(frame){
+    if(!Number.isSafeInteger(frame)||frame<0)return null;
+    const phase=frame%INTERLACE.period;
+    const inverted=(phase&1)===1;
+    return Object.freeze({
+      frame,phase,rotationPhase72:phase*INTERLACE.quarterTurn72,
+      rotationQuarterTurns:phase,
+      colorPolarity:inverted?-1:1,
+      topology:inverted?"convex":"concave",
+      depthSign:inverted?1:-1,
+      horizontalInversion:phase===1||phase===3,
+      verticalInversion:phase===2||phase===3,
+      backlightReveal:inverted?0.6:1,
+      source:"PCM_44100_FRAME_735",
+      projectionOnly:true
+    });
+  }
   function paintGyroscopicVerticalPair(ctx,width,height,leftSample,rightSample,
                                         leftRms,rightRms,phase,leftHz=432,rightHz=432){
     const pair=verticalReciprocalGradientPair(
       phase,leftSample,rightSample,leftRms,rightRms,leftHz,rightHz);
     if(pair.alphaL<0.004 && pair.alphaR<0.004)return pair;
-    const axes=gyroscopicGradientAxes72(phase,width,height);
+    const packet=fourPhasePresentationPacket(state.lastFrame);
+    const axes=gyroscopicGradientAxes72(
+      phase+(packet?packet.rotationPhase72:0),width,height);
     ctx.globalCompositeOperation="lighter";
     for(let bus=0;bus<2;bus++){
       const axis=bus?axes.right:axes.left;
       const shader=ctx.createLinearGradient(axis[0],axis[1],axis[2],axis[3]);
       const hues=bus?pair.rightHues:pair.leftHues;
-      const strength=bus?pair.alphaR:pair.alphaL;
-      shader.addColorStop(0,q144Css(hues[0],0));
+      const strength=(bus?pair.alphaR:pair.alphaL)*
+        (packet?packet.backlightReveal:1);
+      const shift=packet&&packet.colorPolarity<0?72:0;
+      shader.addColorStop(0,q144Css((hues[0]+shift)%144,0));
       for(let k=0;k<4;k++){
         const d=Math.abs((k+1)/5-.5);
-        shader.addColorStop((k+1)/5,q144Css(hues[k],strength/(1+10*d*d)));
+        const curvature=packet&&packet.depthSign>0?
+          (0.35+2.6*d):(1/(1+10*d*d));
+        shader.addColorStop((k+1)/5,
+          q144Css((hues[k]+shift)%144,clamp(strength*curvature,0,BACK_LIGHT.alphaCap)));
       }
-      shader.addColorStop(1,q144Css(hues[3],0));
+      shader.addColorStop(1,q144Css((hues[3]+shift)%144,0));
       ctx.fillStyle=shader;
       ctx.fillRect(0,0,width,height);
     }
@@ -721,6 +753,62 @@
     const smooth=r*r*(3-2*r);
     return (1-smooth)*(1-smooth)*clamp(finite(peakAlpha),0,1);
   }
+  /* Read-only physical projection. Validated inherited particle metadata only.
+     Charge and mass are independent values; neither is inferred from index,
+     scale, phase, or the nine display bins. Kinetic energy is dimensionless
+     here ONLY if the source explicitly supplies a normalized value. */
+  function particlePhysicalProjection(p){
+    if(!p||!state.particleIndex.has(p))return null;
+    const index=state.particleIndex.get(p);
+    const data=p.userData||{};
+    const physical=data.hhsPhysicalState||data.physicalState||null;
+    const valid=physical&&typeof physical==="object";
+    const number=(key)=>valid&&Number.isFinite(physical[key])?
+      physical[key]:null;
+    const charge=number("charge");
+    const mass=number("mass");
+    const energy=number("normalizedKineticEnergy");
+    const position=p.position&&
+      Number.isFinite(p.position.x)&&Number.isFinite(p.position.y)&&
+      Number.isFinite(p.position.z)?
+      Object.freeze([p.position.x,p.position.y,p.position.z]):null;
+    return Object.freeze({
+      index, reciprocalIndex:(index+5184)%10368,
+      constraintAddress:Math.floor((index%5184)/648),
+      fractalAddress:Math.floor(((index%5184)%648)/72),
+      phaseAddress:(index%5184)%72,
+      charge, mass, kineticEnergy:energy===null?null:Math.max(0,energy),
+      position, hasMeasuredCharge:charge!==null,
+      hasMeasuredMass:mass!==null, hasParticlePosition:position!==null,
+      chargeFromAddress:false, physicsMutation:false,
+      source:valid?"inherited-particle-metadata":"unavailable"
+    });
+  }
+  /* One inherited population; eight constraint lanes, nine scale/ionic
+     addresses, 72 phase positions and two reciprocal orientations.
+     Offsets remain zero until supplied through a future parameter contract. */
+  function coupledParticleFrame(index,frame=state.lastFrame){
+    if(!Number.isInteger(index)||index<0||index>=10368)return null;
+    const particle=state.particles&&state.particles[index];
+    const physical=particle?particlePhysicalProjection(particle):null;
+    const side=Math.floor(index/5184),local=index%5184;
+    const group=Math.floor(local/72);
+    const constraint=Math.floor(group/9),scale=group%9;
+    const phase=local%72;
+    const quarter=Number.isSafeInteger(frame)&&frame>=0?frame%4:0;
+    return Object.freeze({
+      index,side,reciprocalIndex:(1-side)*5184+local,
+      constraint,fractalScale:scale,ionicLayer:scale-4,
+      hnanCenter:scale===4,spinor:side===0?"xyzw":"yxwz",
+      phase72:(phase+18*quarter)%72,quarter,
+      position:physical?physical.position:null,
+      charge:physical?physical.charge:null,
+      mass:physical?physical.mass:null,
+      normalizedKineticEnergy:physical?physical.kineticEnergy:null,
+      source:physical?physical.source:"unavailable",
+      projectionOnly:true,physicsMutation:false
+    });
+  }
   function projectColor(p,color){
     const base=p.material.color;
     if(!state.frameSignalReady || !state.geometryEnabled){
@@ -740,8 +828,13 @@
        Typed per-particle Q144 offset and right-bus +72 remain distinct. */
     const q=q144Index(2*state.gyroPhase72+phase,sample,rms,0,bus);
     const c=q*3;
-    const brightness=clamp(0.12+Math.sqrt(rms)*1.15+
-      Math.abs(sample)*0.65,0.12,1);
+    // Physical state can modify the presentation only when supplied by the
+    // inherited particle simulation. Never synthesize charge from scale/index.
+    const physical=particlePhysicalProjection(p);
+    const physicalFactor=physical&&physical.kineticEnergy!==null?
+      1/(1+physical.kineticEnergy):1;
+    const brightness=clamp((0.12+Math.sqrt(rms)*1.15+
+      Math.abs(sample)*0.65)*physicalFactor,0.12,1);
     color.setRGB(Q144_RGB[c]*brightness,
                  Q144_RGB[c+1]*brightness,
                  Q144_RGB[c+2]*brightness);
@@ -753,6 +846,7 @@
   function bindParticles(particles){
     if(!particles)return;
     state.particleIndex=new WeakMap();
+    state.particles=particles;
     for(let i=0;i<particles.length;i++)state.particleIndex.set(particles[i],i);
   }
   /* Graphics-only matrix offset. The logical Mesh position remains untouched,
@@ -1192,12 +1286,12 @@
     advanceBrownianVisual,resetBrownianVisual,
     brownianProbabilityAt,brownianProbabilitySlot,brownianOffsetAt,
     particleLayer5184,lightAttenuation,
-    q144Index,q144Css,bindParticles,peakEnvelope,crossingsFromBlock,
+    q144Index,q144Css,bindParticles,particlePhysicalProjection,coupledParticleFrame,peakEnvelope,crossingsFromBlock,
     amplitudeGeometry,harmonicProfile,harmonicStep,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
     gyroscopicGradientAxes72,spectralFallbackHz,
     verticalReciprocalGradientPair,paintGyroscopicVerticalPair,
-    paintGyroscopicLightBand,
+    paintGyroscopicLightBand,fourPhasePresentationPacket,interlaceContract:INTERLACE,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
@@ -1209,6 +1303,8 @@
       frameSignalReady:state.frameSignalReady,
       visualSource:state.renderSource,
       palette:"Q144-full-spectrum-audio-phase",donut:false,
+       fourPhaseInterlacing:true,
+       fourPhasePacket:fourPhasePresentationPacket(state.lastFrame),
        geometryNormalizationGain:state.gain,
        geometryNormalizationGainMax:GEOMETRY_GAIN.max,
        haloEmissionGain:HALO_EMISSION_GAIN,
