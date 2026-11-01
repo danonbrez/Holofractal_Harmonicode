@@ -108,12 +108,12 @@ class TrustedPolicyIntegrity(unittest.TestCase):
             for path in NATIVE:
                 dest = root / path
                 dest.parent.mkdir(parents=True, exist_ok=True)
-                dest.write_text("native preserved\\n", encoding="utf-8")
+                dest.write_text("native preserved\n", encoding="utf-8")
             git(root, "add", ".")
             git(root, "commit", "-qm", "trusted base")
             base = git(root, "rev-parse", "HEAD")
-            name = "unrelated\\nfilename.txt"
-            (root / name).write_text("allowed\\n", encoding="utf-8")
+            name = "unrelated\nfilename.txt"
+            (root / name).write_text("allowed\n", encoding="utf-8")
             git(root, "add", "-A")
             git(root, "commit", "-qm", "unrelated newline path")
             head = git(root, "rev-parse", "HEAD")
