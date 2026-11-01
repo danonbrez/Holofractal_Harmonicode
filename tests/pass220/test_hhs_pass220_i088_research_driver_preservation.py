@@ -53,7 +53,7 @@ class ResearchDriverPreservation(unittest.TestCase):
     def test_media_controls_and_source_frame_accounting(self):
         self.assertIn('id="hhs-repository-media-membrane"', self.source)
         for control in ('record', 'stop', 'play', 'live', 'save'):
-            self.assertIn('hhs-i088-" + control', self.source)
+            self.assertIn('hhs-i088-' + control, self.source)
         self.assertIn('C.track.requestFrame();C.frames++;', self.source)
         self.assertIn('C.sourceFPS', self.source)
         self.assertIn('canonicalMutation:false', self.source)
