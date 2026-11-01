@@ -44,7 +44,7 @@ def policy_shell():
 
 
 class TrustedPolicyIntegrity(unittest.TestCase):
-    def test_every_policy_modification_and_rename_is_denied(self):
+    def test_every_policy_mutation_is_denied(self):
         shell = policy_shell()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -64,7 +64,7 @@ class TrustedPolicyIntegrity(unittest.TestCase):
             base = git(root, "rev-parse", "HEAD")
             env = {**os.environ, "BASE_SHA": base}
             for path in POLICY:
-                for change in ("modify", "rename"):
+                for change in ("modify", "rename", "delete"):
                     with self.subTest(path=path, change=change):
                         git(root, "reset", "--hard", base)
                         git(root, "clean", "-fd")
@@ -75,6 +75,8 @@ class TrustedPolicyIntegrity(unittest.TestCase):
                             dest = root / (path + ".renamed")
                             dest.parent.mkdir(parents=True, exist_ok=True)
                             git(root, "mv", path, str(dest.relative_to(root)))
+                        if change == "delete":
+                            git(root, "rm", "-q", "--", path)
                         git(root, "add", "-A")
                         git(root, "commit", "-qm", "untrusted candidate")
                         head = git(root, "rev-parse", "HEAD")
@@ -90,6 +92,38 @@ class TrustedPolicyIntegrity(unittest.TestCase):
                         )
                         self.assertIn("FROZEN_POLICY_MODIFICATION:", result.stdout)
                         self.assertIn(path, result.stdout)
+
+
+    def test_unrelated_newline_filename_is_allowed(self):
+        shell = policy_shell()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            git(root, "init", "-q")
+            git(root, "config", "user.name", "HHS CI")
+            git(root, "config", "user.email", "ci@example.invalid")
+            for path in POLICY:
+                dest = root / path
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / path, dest)
+            for path in NATIVE:
+                dest = root / path
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_text("native preserved\\n", encoding="utf-8")
+            git(root, "add", ".")
+            git(root, "commit", "-qm", "trusted base")
+            base = git(root, "rev-parse", "HEAD")
+            name = "unrelated\\nfilename.txt"
+            (root / name).write_text("allowed\\n", encoding="utf-8")
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "unrelated newline path")
+            head = git(root, "rev-parse", "HEAD")
+            git(root, "reset", "--hard", base)
+            result = subprocess.run(
+                ["bash", "-e", "-o", "pipefail", "-c", shell],
+                cwd=root, env={**os.environ, "BASE_SHA": base, "HEAD_SHA": head},
+                capture_output=True, text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":
