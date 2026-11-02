@@ -1,0 +1,25 @@
+name: Pass 219 Integrated Reversible Proofs
+
+on:
+  pull_request:
+    paths:
+      - 'formal/lean/HHS.lean'
+      - 'formal/lean/HHS/Pass219/ReversibleCircuit.lean'
+      - 'formal/lean/HHS/Pass219/IntegratedConstraint.lean'
+      - 'lean-toolchain'
+      - '.github/workflows/pass219-reversible-proof-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lean-roundtrip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          test: false
+          lint: false
