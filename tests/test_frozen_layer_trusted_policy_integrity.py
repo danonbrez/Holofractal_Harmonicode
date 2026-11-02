@@ -71,11 +71,11 @@ class TrustedPolicyIntegrity(unittest.TestCase):
                         if change == "modify":
                             with (root / path).open("a", encoding="utf-8") as stream:
                                 stream.write("\n# untrusted change\n")
-                        else:
+                        elif change == "rename":
                             dest = root / (path + ".renamed")
                             dest.parent.mkdir(parents=True, exist_ok=True)
                             git(root, "mv", path, str(dest.relative_to(root)))
-                        if change == "delete":
+                        elif change == "delete":
                             git(root, "rm", "-q", "--", path)
                         git(root, "add", "-A")
                         git(root, "commit", "-qm", "untrusted candidate")
