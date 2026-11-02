@@ -70,4 +70,31 @@ theorem integrated_round_trip
       ((first.circuit.compose second.circuit).ingressEgress input) = input :=
   (first.circuit.compose second.circuit).roundTrip input
 
+
+/-- Admission also requires the reverse path to land in the source constraint
+frame. This is a theorem about a supplied lossless circuit and an admitted
+source; it does not construct or certify a native VM81 ingress by itself. -/
+theorem integrated_reversible_admission
+    {Input Middle Output : Type}
+    (first : ConstrainedCircuit Input Middle)
+    (second : ConstrainedCircuit Middle Output)
+    (compatible : ∀ intermediate,
+      first.frame.outputValid intermediate →
+      second.frame.inputValid intermediate)
+    (input : Input)
+    (admitted : first.frame.inputValid input) :
+    second.frame.outputValid
+        ((first.circuit.compose second.circuit).ingressEgress input) ∧
+    (first.circuit.compose second.circuit).egressIngress
+        ((first.circuit.compose second.circuit).ingressEgress input) = input ∧
+    first.frame.inputValid
+        ((first.circuit.compose second.circuit).egressIngress
+          ((first.circuit.compose second.circuit).ingressEgress input)) := by
+  constructor
+  · exact integrated_forward_preserves_constraints first second compatible input admitted
+  constructor
+  · exact integrated_round_trip first second input
+  · rw [integrated_round_trip first second input]
+    exact admitted
+
 end HHS.Pass219
