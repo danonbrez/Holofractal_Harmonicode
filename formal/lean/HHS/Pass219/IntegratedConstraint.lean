@@ -2,6 +2,7 @@ import HHS.Pass219.ReversibleCircuit
 import HHS.Pass220.Base64BalancedTrit5184
 import HHS.Pass220.FullTensorHNANClosureHydration
 import HHS.Pass220.AgentScopeBoundary
+import HHS.Pass220.VM81ExactMatrixPowerExecution
 
 /-!
 Pass 219 — development-time proof of inherited constraint composition.
@@ -241,5 +242,45 @@ theorem inheritedAgentScopePreservation
   constructor
   · exact HHS.Pass220.AgentScopeBoundary.agent_preserves_capabilities scope request
   · exact HHS.Pass220.AgentScopeBoundary.agent_preserves_interfaces scope request
+
+
+/-!
+Pass 220 I076 / I077 proof inheritance: exact symbolic MatrixPower source
+and exponent identities across HIR hydration and native execution. These
+4x2 symbolic nodes are not coerced into conventional host matrix-power
+semantics, and their differing candidate/execution verification states
+remain scoped to their original modules.
+-/
+
+/-- Each distinct source node and exponent token is preserved across the
+existing HIR-to-execution boundary; no generic object substitution occurs. -/
+theorem inheritedMatrixPowerSourceContinuity :
+    HHS.Pass220.I076.mwzHIR.sourceNode =
+      HHS.Pass220.I077.mwzExecution.sourceNode ∧
+    HHS.Pass220.I076.mxyHIR.sourceNode =
+      HHS.Pass220.I077.mxyExecution.sourceNode ∧
+    HHS.Pass220.I076.mwzHIR.exponentToken =
+      HHS.Pass220.I077.mwzExecution.exponentToken ∧
+    HHS.Pass220.I076.mxyHIR.exponentToken =
+      HHS.Pass220.I077.mxyExecution.exponentToken := by
+  have hirSources := HHS.Pass220.I076.sourceNodesExact
+  have execSources := HHS.Pass220.I077.sourceNodesExact
+  have hirExponents := HHS.Pass220.I076.exponentTokensExact
+  have execExponents := HHS.Pass220.I077.exponentTokensExact
+  constructor
+  · exact hirSources.1.trans execSources.1.symm
+  constructor
+  · exact hirSources.2.trans execSources.2.symm
+  constructor
+  · exact hirExponents.1.trans execExponents.1.symm
+  · exact hirExponents.2.trans execExponents.2.1.symm
+
+/-- The corresponding native execution nodes retain the existing
+no-host-matrix-power witness. -/
+theorem inheritedMatrixPowerNoHostSubstitution :
+    HHS.Pass220.I077.mwzExecution.hostMatrixPowerUsed = false ∧
+    HHS.Pass220.I077.mxyExecution.hostMatrixPowerUsed = false := by
+  exact ⟨HHS.Pass220.I077.noHostOrPrematureValueSemantics.1,
+    HHS.Pass220.I077.noHostOrPrematureValueSemantics.2.1⟩
 
 end HHS.Pass219
