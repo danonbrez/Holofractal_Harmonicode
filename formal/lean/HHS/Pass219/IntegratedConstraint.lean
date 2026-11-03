@@ -1,13 +1,16 @@
 import HHS.Pass219.ReversibleCircuit
 
 /-!
-Pass 219 — integrated constraint inheritance.
+Pass 219 — development-time proof of inherited constraint composition.
 
-A proof module is admitted only if its complete native input and resulting
-output satisfy the applicable globally integrated tensor constraint packet.
-The applicability/translation functions are explicit native obligations.
-This file proves composition of supplied witnesses, not the truth of any
-unimplemented native gate or the completeness of the repository census.
+Lean constrains coding-agent changes: a claimed typed circuit composition must
+supply the applicable input/output predicates, a compatibility witness, and
+exact round-trip proofs. These theorems verify supplied proof objects; they do
+not execute VM81, impose a new runtime gate, mint canonical state, or replace
+existing native enforcement paths. Discover concrete witnesses through the
+repository service/dependency index before proposing an implementation change.
+This module does not establish corpus-wide completeness or validate unbound
+native constructors.
 -/
 
 namespace HHS.Pass219
@@ -19,8 +22,10 @@ structure ConstraintFrame (Input Output : Type) where
   inputValid : Input → Prop
   outputValid : Output → Prop
 
-/-- A native circuit plus a proof that it transports globally admitted
-inputs to globally admitted outputs. No independent admission authority. -/
+/-- A representation of a supplied native circuit with development-time
+proof evidence that it transports inputs satisfying the scoped source predicate
+to outputs satisfying the scoped destination predicate. This structure is not
+a runtime validator or an independent admission authority. -/
 structure ConstrainedCircuit (Input Output : Type) where
   circuit : ReversibleCircuit Input Output
   frame : ConstraintFrame Input Output
@@ -71,9 +76,11 @@ theorem integrated_round_trip
   (first.circuit.compose second.circuit).roundTrip input
 
 
-/-- Admission also requires the reverse path to land in the source constraint
-frame. This is a theorem about a supplied lossless circuit and an admitted
-source; it does not construct or certify a native VM81 ingress by itself. -/
+/-- Backward-compatible theorem name: given a supplied circuit, a source
+predicate witness, and compatible intermediate predicates, prove output
+predicate preservation, exact reconstruction, and source predicate preservation.
+"Admission" in this name is logical terminology only: Lean does not authorize
+VM81 ingress, state mutation, or historical reuse. -/
 theorem integrated_reversible_admission
     {Input Middle Output : Type}
     (first : ConstrainedCircuit Input Middle)
