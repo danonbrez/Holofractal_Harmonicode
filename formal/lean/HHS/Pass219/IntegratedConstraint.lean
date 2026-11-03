@@ -1,5 +1,6 @@
 import HHS.Pass219.ReversibleCircuit
 import HHS.Pass220.Base64BalancedTrit5184
+import HHS.Pass220.FullTensorHNANClosureHydration
 
 /-!
 Pass 219 — development-time proof of inherited constraint composition.
@@ -138,5 +139,47 @@ theorem inheritedHNANCenterNotBinary :
     HHS.Pass220.Base64BalancedTrit5184.decodePair
       (.neutral, .neutral) = none :=
   HHS.Pass220.Base64BalancedTrit5184.hnanCenterIsNotBinary
+
+
+/-!
+Cross-pass existing-proof integration: inherited Pass 219 QGU transport and
+Pass 220 I074 full-tensor closure policy. These are separate scoped proof
+obligations, not a new common scalar gate or a claim of universal substitution.
+Each conjunct is discharged by the original module's already checked theorem.
+-/
+
+/-- Existing QGU terminal retains epsilon and the full tensor explicitly
+forbids host Boolean coercion or projection substitution. -/
+theorem inheritedHNANScopedBoundary
+    (q c d : Nat) :
+    (HHS.Pass219.QGUHNANTransport.transportHNAN q c d).base =
+      .xyPlusEpsilon ∧
+    HHS.Pass220.I074.interpretationLocked = true ∧
+    HHS.Pass220.I074.hnanNativeGate = true ∧
+    HHS.Pass220.I074.hostBooleanCoercionUsed = false ∧
+    HHS.Pass220.I074.hostModuloOneUsed = false ∧
+    HHS.Pass220.I074.hostDivisionByZeroUsed = false ∧
+    HHS.Pass220.I074.hostRectangularMatrixPowerUsed = false ∧
+    HHS.Pass220.I074.projectionSubstitutionUsed = false := by
+  constructor
+  · exact HHS.Pass219.QGUHNANTransport.qgu_hnan_preserves_epsilon_terminal q c d
+  · exact HHS.Pass220.I074.nativeClosurePolicy
+
+/-- Existing ordered-product distinctions survive QGU transport alongside
+HNAN's exact binary-carrier reconstruction; no native product is rewritten. -/
+theorem inheritedHNANOrderedTransportRoundTrip
+    (q c d : Nat)
+    (raw : HHS.Pass220.Base64BalancedTrit5184.Binary5184) :
+    (HHS.Pass219.QGUHNANTransport.transportProduct .xy q c d).base ≠
+      (HHS.Pass219.QGUHNANTransport.transportProduct .yx q c d).base ∧
+    (HHS.Pass219.QGUHNANTransport.transportProduct .zw q c d).base ≠
+      (HHS.Pass219.QGUHNANTransport.transportProduct .wz q c d).base ∧
+    inheritedHNANBinaryFrameCircuit.egressIngress
+      (inheritedHNANBinaryFrameCircuit.ingressEgress raw) = raw := by
+  constructor
+  · exact HHS.Pass219.QGUHNANTransport.qgu_transport_preserves_xy_yx_distinction q c d
+  constructor
+  · exact HHS.Pass219.QGUHNANTransport.qgu_transport_preserves_zw_wz_distinction q c d
+  · exact inheritedHNANBinaryFrameRoundTrip raw
 
 end HHS.Pass219
