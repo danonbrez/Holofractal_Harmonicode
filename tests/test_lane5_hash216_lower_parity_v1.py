@@ -66,7 +66,7 @@ class TestNativeHash216Parity(unittest.TestCase):
                 self.assertEqual(output.index_root_sha256.decode(),
                                  reference.index_root_sha256)
                 self.assertEqual(
-                    tuple(bytes(row).split(b"\\0")[0].decode()
+                    tuple(bytes(row).split(bytes([0]),1)[0].decode()
                           for row in output.character_indexes_sha256),
                     reference.character_indexes_sha256,
                 )
