@@ -47,14 +47,30 @@ HHSExactStatus NativeOpcodeBIOSController::bind_indexed_candidate(
     if (hhs_hash216_lower_pass174(&lowering,&lowered) != 0 ||
         std::memcmp(expected_index_root,lowered.index_root_sha256,65) != 0)
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
-    auto status = bind_verified_candidate(
-        proof,expected_hash216,
-        reinterpret_cast<const std::uint8_t*>(lowered.combined),
-        frame,generation);
-    if(status != HHS_EXACT_STATUS_OK) return status;
+    if (!generation) return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    NineLoopKnowledgeHydrationReceipt witness{};
+    const auto status = NineLoopKnowledgeHydrationCellWall{}.evaluate(
+        proof, expected_hash216, witness);
+    if (status != HHS_EXACT_STATUS_OK || witness.accepted != 1U ||
+        witness.candidate_only != 1U || witness.execution_authority != 0U ||
+        witness.canonical_vm81_mutation_authority != 0U ||
+        witness.canonical_hash72_mint_authority != 0U ||
+        witness.canonical_hash216_authority != 0U ||
+        witness.canonical_persistence_authority != 0U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    /* Publish the frame, SHA256 positional blocks and cache generation
+       together. Dispatch cannot race an incompletely hydrated index. */
     std::lock_guard<std::mutex> lock(mutex_);
+    hhs_bios_invalidate(&cache_);
+    indexed_ = false;
+    for(auto& block : index_blocks_) block.fill(0);
+    std::memcpy(hash216_.data(),lowered.combined,hash216_.size());
+    std::memcpy(frame_.data(),frame,frame_.size());
     for(std::size_t i=0;i<index_blocks_.size();++i)
         std::memcpy(index_blocks_[i].data(),lowered.character_indexes_sha256[i],65);
+    const hhs_bios_view view{hash216_.data(),frame_.data(),generation};
+    if(hhs_bios_bind(&cache_,&view) != HHS_BIOS_OK)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
     indexed_=true;
     return HHS_EXACT_STATUS_OK;
 }
