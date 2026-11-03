@@ -38,7 +38,7 @@ jobs:
             -o /tmp/hhs_bios_controller.o
       - name: Python versus native SHA256 parity
         run: |
-          PYTHONPATH=. python -m unittest tests.test_lane5_hash216_lower_parity_v1
+          PYTHONPATH=. python -m unittest discover -s tests -p 'test_lane5_hash216_lower_parity_v1.py' -v
       - name: SQL AES-GCM restart and native read
         run: |
-          PYTHONPATH=. python -m unittest tests.test_lane5_sql_native_bios_v1
+          PYTHONPATH=. python -m unittest discover -s tests -p 'test_lane5_sql_native_bios_v1.py' -v
