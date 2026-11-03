@@ -1,6 +1,7 @@
 import HHS.Pass219.ReversibleCircuit
 import HHS.Pass220.Base64BalancedTrit5184
 import HHS.Pass220.FullTensorHNANClosureHydration
+import HHS.Pass220.AgentScopeBoundary
 
 /-!
 Pass 219 — development-time proof of inherited constraint composition.
@@ -181,5 +182,64 @@ theorem inheritedHNANOrderedTransportRoundTrip
   constructor
   · exact HHS.Pass219.QGUHNANTransport.qgu_transport_preserves_zw_wz_distinction q c d
   · exact inheritedHNANBinaryFrameRoundTrip raw
+
+
+/-!
+Existing-proof integration for distinct scoped domains:
+
+* I072/I073/I074 retain the inherited fixed-width Hash216 hydration geometry.
+  Agreement of these dimensions never equates their distinct native objects.
+* AgentScopeBoundary retains coding-agent authorization and the semantic root
+  during local execution. This is a development-agent constraint; it does not
+  participate in VM81 runtime admission.
+
+All obligations below are discharged by existing pass-specific theorems.
+-/
+
+/-- Existing I072 and I073 provide a transitive, already-proved
+cross-pass dimension correspondence, without substituting the underlying
+constructors or serializations. -/
+theorem inheritedTheoryAndSerializationGeometry :
+    HHS.Pass220.I072.theorySlots *
+        HHS.Pass220.I072.theorySlots =
+      HHS.Pass220.I073.serializedCharacters ∧
+    HHS.Pass220.I073.hash216Planes *
+        HHS.Pass220.I073.serializedCharacters =
+      HHS.Pass220.I074.fullAttachedComponents := by
+  constructor
+  · calc
+      HHS.Pass220.I072.theorySlots *
+          HHS.Pass220.I072.theorySlots =
+        HHS.Pass220.I072.expandedPerLane :=
+          HHS.Pass220.I072.theoryLaneHydrationFactor
+      _ = HHS.Pass220.I072.phaseLockPeriod :=
+          HHS.Pass220.I072.phaseLockEqualsExpandedLane.symm
+      _ = HHS.Pass220.I073.serializedCharacters :=
+          HHS.Pass220.I073.inheritsI072PhaseLock
+  · calc
+      HHS.Pass220.I073.hash216Planes *
+          HHS.Pass220.I073.serializedCharacters =
+        HHS.Pass220.I073.fullAttachedComponents :=
+          HHS.Pass220.I073.fullAttachedFactor
+      _ = HHS.Pass220.I074.fullAttachedComponents :=
+          HHS.Pass220.I074.inheritsI073FullAttachedComponents.symm
+
+/-- An agent-local transition cannot rewrite the authorized semantic root,
+capabilities, or interface list. These are inherited development-time agent
+proofs, not additional runtime validation or mutation authority. -/
+theorem inheritedAgentScopePreservation
+    (scope : HHS.Pass220.AgentScopeBoundary.Scope)
+    (request : HHS.Pass220.AgentScopeBoundary.Admission) :
+    (HHS.Pass220.AgentScopeBoundary.agentNext scope request).semanticRoot =
+      scope.semanticRoot ∧
+    (HHS.Pass220.AgentScopeBoundary.agentNext scope request).capabilities =
+      scope.capabilities ∧
+    (HHS.Pass220.AgentScopeBoundary.agentNext scope request).interfaces =
+      scope.interfaces := by
+  constructor
+  · exact HHS.Pass220.AgentScopeBoundary.agent_preserves_semantic_root scope request
+  constructor
+  · exact HHS.Pass220.AgentScopeBoundary.agent_preserves_capabilities scope request
+  · exact HHS.Pass220.AgentScopeBoundary.agent_preserves_interfaces scope request
 
 end HHS.Pass219
