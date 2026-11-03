@@ -1,4 +1,5 @@
 import HHS.Pass219.ReversibleCircuit
+import HHS.Pass220.Base64BalancedTrit5184
 
 /-!
 Pass 219 — development-time proof of inherited constraint composition.
@@ -103,5 +104,39 @@ theorem integrated_reversible_admission
   · exact integrated_round_trip first second input
   · rw [integrated_round_trip first second input]
     exact admitted
+
+
+/-!
+Concrete inherited proof correspondence (Pass 220 HNAN / Pass 219 composition).
+The existing Base64BalancedTrit5184 theorem already establishes that every
+admitted full binary frame recovers exactly after its ordered three-bit to
+two-trit encoding. Bind that theorem to the *development-time* circuit proof
+interface rather than inventing a parallel codec, HNAN gate, or admission test.
+The central (neutral, neutral) address remains the pre-existing typed HNAN
+gate and is not a ninth binary ingress code.
+-/
+
+/-- Adapter to an already proved, full-frame exact ingress/egress pair.
+No runtime entrypoint or canonical authority is created. -/
+def inheritedHNANBinaryFrameCircuit :
+    ReversibleCircuit
+      HHS.Pass220.Base64BalancedTrit5184.Binary5184
+      HHS.Pass220.Base64BalancedTrit5184.BalancedTrit3456 where
+  ingressEgress := HHS.Pass220.Base64BalancedTrit5184.encodeFrame
+  egressIngress := HHS.Pass220.Base64BalancedTrit5184.decodeFrame
+  roundTrip := HHS.Pass220.Base64BalancedTrit5184.full5184RadixRoundTrip
+
+/-- Exact reconstruction is inherited from the established Pass 220 proof. -/
+theorem inheritedHNANBinaryFrameRoundTrip
+    (raw : HHS.Pass220.Base64BalancedTrit5184.Binary5184) :
+    inheritedHNANBinaryFrameCircuit.egressIngress
+      (inheritedHNANBinaryFrameCircuit.ingressEgress raw) = raw :=
+  inheritedHNANBinaryFrameCircuit.roundTrip raw
+
+/-- The center stays a typed gate coordinate, never a ninth binary word. -/
+theorem inheritedHNANCenterNotBinary :
+    HHS.Pass220.Base64BalancedTrit5184.decodePair
+      (.neutral, .neutral) = none :=
+  HHS.Pass220.Base64BalancedTrit5184.hnanCenterIsNotBinary
 
 end HHS.Pass219
