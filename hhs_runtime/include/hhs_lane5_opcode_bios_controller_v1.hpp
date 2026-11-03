@@ -5,6 +5,7 @@
  * external input's assertions. The BIOS cannot mutate VM81 or mint hashes. */
 #include "hhs_pass219_lane5_nine_loop_knowledge_hydration_cell_wall_1_75.hpp"
 #include "../acceleration/hhs_lane5_opcode_bios_v1.h"
+#include "../acceleration/hhs_lane5_hash216_lower_v1.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -28,7 +29,7 @@ public:
         std::uint64_t generation
     ) noexcept;
 
-    int dispatch(std::uint64_t generation,
+    /* Bind only when the Python Pass174 SHA-256 index root agrees with the\n     * exact native lowering. All 216 position blocks remain resident. */\n    HHSExactStatus bind_indexed_candidate(\n        const NineLoopKnowledgeHydrationInput& proof,\n        const char expected_hash216[HHS_HASH216_LEN + 1],\n        const hhs_hash216_lower_input& lowering,\n        const char expected_index_root[65],\n        const std::uint8_t frame[HHS_BIOS_FRAME_BYTES],\n        std::uint64_t generation\n    ) noexcept;\n    int read_index(std::uint64_t generation, std::uint16_t position,\n                   char digest_hex[65]) noexcept;\n\n    int dispatch(std::uint64_t generation,
                  const hhs_bios_instruction* operations,
                  std::size_t count, hhs_bios_result* results) noexcept;
     int read216(std::uint64_t generation, std::uint16_t offset,
@@ -38,7 +39,7 @@ private:
     std::mutex mutex_;
     std::array<std::uint8_t,HHS_BIOS_HASH216_BYTES> hash216_{};
     std::array<std::uint8_t,HHS_BIOS_FRAME_BYTES> frame_{};
-    hhs_bios_cache cache_{};
+    hhs_bios_cache cache_{};\n    std::array<std::array<char,65>,216> index_blocks_{};\n    bool indexed_{};
 };
 } // namespace hhs::lane5
 #endif
