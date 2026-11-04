@@ -4,6 +4,7 @@
  */
 #include "hhs_pass159_api.h"
 #include "hhs159_internal.h"
+#include <openssl/sha.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +37,18 @@ static int read_hash216(const void *artifact, char value[HHS159_HASH216_LENGTH +
     };
     return hhs159_get_hash216(artifact, &span) == HHS159_STATUS_OK &&
            span.size_written == HHS159_HASH216_LENGTH;
+}
+
+static int diagnostic_sha256(const HHS159ArtifactBase *artifact, char out[65]) {
+    uint8_t digest[SHA256_DIGEST_LENGTH];
+    size_t i;
+    if (artifact == NULL || artifact->bytes == NULL ||
+        artifact->size == 0U || SHA256(artifact->bytes, artifact->size, digest) == NULL)
+        return 0;
+    for (i = 0U; i < SHA256_DIGEST_LENGTH; ++i)
+        (void)sprintf(out + 2U * i, "%02x", (unsigned)digest[i]);
+    out[64] = '\0';
+    return 1;
 }
 
 static int hash216(const void *artifact) {
@@ -72,6 +85,10 @@ int main(int argc, char **argv) {
     char observed_semantic_root[HHS159_HASH216_LENGTH + 1U] = {0};
     uint32_t observed_commit = 0U;
     uint32_t observed_fallback = 0U;
+    char vmir_payload_sha256[65] = {0};
+    size_t vmir_payload_bytes = 0U;
+    uint64_t compiled_steps = 0U;
+    char compiled_semantic_root[HHS159_HASH216_LENGTH + 1U] = {0};
     char object_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char executable_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char compiled_receipt_id[HHS159_HASH216_LENGTH + 1U] = {0};
@@ -132,6 +149,8 @@ int main(int argc, char **argv) {
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(vmir) != HHS159_ARTIFACT_VMIR ||
         !read_hash216(vmir, vmir_id)) goto cleanup;
+    vmir_payload_bytes = vmir->base.size;
+    if (!diagnostic_sha256(&vmir->base, vmir_payload_sha256)) goto cleanup;
     /* Invoke the existing Pass159 interpreter without canonical commit.
      * Current VMIR execution may use a fixed EXACT_PROGRAM: these receipts
      * demonstrate ABI/path and replay health, not tensor semantic closure.
@@ -192,6 +211,9 @@ int main(int argc, char **argv) {
     if (compiled_receipt->status != HHS159_STATUS_OK ||
         compiled_receipt->committed != 0U ||
         compiled_receipt->fallback_used != 0U) goto cleanup;
+    compiled_steps = compiled_receipt->vm81_steps;
+    memcpy(compiled_semantic_root, compiled_receipt->semantic_root,
+           sizeof(compiled_semantic_root));
     ok = 1;
 cleanup:
     if (compiled_receipt != NULL) hhs159_receipt_release(compiled_receipt);
@@ -221,6 +243,8 @@ cleanup:
     printf("AST_HASH216=%s\n", ast_id);
     printf("CONSTRAINT_HASH216=%s\n", graph_id);
     printf("VMIR_HASH216=%s\n", vmir_id);
+    printf("VMIR_PAYLOAD_SHA256=%s\n", vmir_payload_sha256);
+    printf("VMIR_PAYLOAD_BYTES=%zu\n", vmir_payload_bytes);
     printf("HELD_RECEIPT_HASH216=%s\n", receipt_id);
     printf("HELD_SEMANTIC_ROOT_HASH216=%s\n", observed_semantic_root);
     printf("HELD_VM81_STEPS=%llu\n", (unsigned long long)observed_steps);
@@ -229,6 +253,8 @@ cleanup:
     printf("OBJECT_HASH216=%s\n", object_id);
     printf("EXECUTABLE_HASH216=%s\n", executable_id);
     printf("COMPILED_RECEIPT_HASH216=%s\n", compiled_receipt_id);
+    printf("COMPILED_VM81_STEPS=%llu\n", (unsigned long long)compiled_steps);
+    printf("COMPILED_SEMANTIC_ROOT_HASH216=%s\n", compiled_semantic_root);
     puts("NUCLEUS5_PASS159_FRONTEND_HELD_INTERPRET_REPLAY_PASS (NO_CANONICAL_TENSOR_CLOSURE)");
     return 0;
 }
