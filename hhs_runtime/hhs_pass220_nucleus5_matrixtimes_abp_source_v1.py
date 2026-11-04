@@ -84,6 +84,8 @@ def structural_source_checks() -> dict[str, bool]:
 class Nucleus5HNANIngress:
     """Typed source handoff; no separate VM81 or Hash216 authority."""
     source_bytes: bytes
+    compilation_source_bytes: bytes
+    compilation_source_sha256: str
     parameter_edge_bytes: tuple[bytes, ...]
     configuration: str
     nucleus_cell: int
@@ -128,6 +130,8 @@ def bind_inherited_hnan_ingress(configuration: str) -> Nucleus5HNANIngress:
 
     return Nucleus5HNANIngress(
         source_bytes=source.native_source_bytes(),
+        compilation_source_bytes=source.native_compilation_source_bytes(configuration),
+        compilation_source_sha256=sha256(source.native_compilation_source_bytes(configuration)).hexdigest(),
         parameter_edge_bytes=tuple(edge.encode("utf-8") for edge in edges),
         configuration=configuration,
         nucleus_cell=source.nucleus_cell,
