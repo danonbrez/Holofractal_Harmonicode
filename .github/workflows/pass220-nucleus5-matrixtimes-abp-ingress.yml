@@ -1,0 +1,25 @@
+name: Pass 220 Nucleus 5 MatrixTimes ABP Ingress
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_nucleus5_matrixtimes_abp_source_v1.py"
+      - "tests/test_pass220_nucleus5_matrixtimes_abp_source_v1.py"
+      - ".github/workflows/pass220-nucleus5-matrixtimes-abp-ingress.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nucleus5-source-and-inherited-hnan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run exact source, ordered A/B/P and inherited HNAN gate checks
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m unittest -v tests.test_pass220_nucleus5_matrixtimes_abp_source_v1
+          python -m compileall -q hhs_runtime/hhs_pass220_nucleus5_matrixtimes_abp_source_v1.py
