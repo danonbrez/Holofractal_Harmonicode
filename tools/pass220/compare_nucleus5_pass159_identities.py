@@ -16,6 +16,9 @@ FIELDS = (
     "VMIR_HASH216",
     "HELD_RECEIPT_HASH216",
     "HELD_SEMANTIC_ROOT_HASH216",
+    "OBJECT_HASH216",
+    "EXECUTABLE_HASH216",
+    "COMPILED_RECEIPT_HASH216",
 )
 ALPHABET = re.compile(r"^[!-~]{216}$")
 DIAGNOSTICS = ("HELD_VM81_STEPS", "HELD_COMMITTED", "HELD_FALLBACK")
@@ -73,6 +76,9 @@ def main() -> int:
         print("HELD_SEMANTIC_ROOT_IDENTICAL: not an input-specific semantic witness")
     else:
         print("HELD_SEMANTIC_ROOT_DISTINCT: source-derived root alone cannot attest executed tensor gates")
+    print("COMPILED_OBJECT_DISTINCT=" + str(int(result["OBJECT_HASH216"])))
+    print("COMPILED_EXECUTABLE_DISTINCT=" + str(int(result["EXECUTABLE_HASH216"])))
+    print("COMPILED_RECEIPT_DISTINCT=" + str(int(result["COMPILED_RECEIPT_HASH216"])))
     if not result["HELD_RECEIPT_HASH216"]:
         print("HELD_RECEIPT_NOT_SOURCE_DISCRIMINATING: no source-dependent execution proof")
     else:
