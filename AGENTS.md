@@ -35,6 +35,10 @@ docs/pass191/HHS_PASS_191_GENESIS_TO_RUNTIME_FULL_REPOSITORY_HYDRATION_UNIVERSAL
 docs/pass191/HHS_DYADIC_QUARTIC_PHASE_LATTICE_AND_HARMONICODE_EXPLANATORY_ESSAYS.md
 ```
 
+## 1A. Unified specification and completion contract
+
+Read [HHS unified specification completion and non-reduction contract](contracts/system/HHS_UNIFIED_SPECIFICATION_COMPLETION_AND_NONREDUCTION_V1.md) before narrowing a requested implementation to an existing service, proof, test, or named pass. Treat all repository artifacts as cumulative system components; incomplete discovery or implementation is not a reason to stop. Preserve all pre-beta-freeze lineage. Never bypass validation; investigate both the underlying defect and missed workflow coverage.
+
 ## 2. Current status boundary
 
 - Pass 159 Harmonicode interpreter/C11 toolchain authoritative-main closure evidence is present.
