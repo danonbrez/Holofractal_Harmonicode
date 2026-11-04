@@ -47,6 +47,20 @@ class Nucleus5Source:
                 return ABP_ORDERED_EDGES + tuple(edges)
         raise ValueError("UNKNOWN_ABP_CONFIGURATION")
 
+
+    def native_compilation_source_bytes(self, configuration: str) -> bytes:
+        """One ordered circuit for the existing Pass159 source/constraint pipeline.
+
+        The original MatrixTimes source remains a verbatim, contiguous operand.
+        Each ABP relation is retained as its own ordered equality occurrence;
+        the mutually exclusive configuration's condition is not imposed on
+        the other configuration. The result must still pass native admission.
+        """
+        edges = self.parameter_edges(configuration)
+        # List is the existing HARMONICODE ordered circuit container.
+        # No Python math, Boolean equality, or scalar substitution occurs.
+        return ("List(" + self.source + "," + ",".join(edges) + ")").encode("utf-8")
+
     def native_source_bytes(self) -> bytes:
         """Ingress bytes for hhs159_source_open_bytes (no host coercion)."""
         return self.source.encode("utf-8")
