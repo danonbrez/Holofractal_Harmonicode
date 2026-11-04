@@ -56,6 +56,10 @@ int main(int argc, char **argv) {
     HHS159TypeEnvironment *types = NULL;
     HHS159ConstraintGraph *graph = NULL;
     HHS159Interpreter *interpreter = NULL;
+    HHS159Compiler *compiler = NULL;
+    HHS159Object *object = NULL;
+    HHS159Executable *executable = NULL;
+    HHS159Receipt *compile_receipt = NULL, *compiled_receipt = NULL;
     HHS159Receipt *receipt = NULL, *replay_receipt = NULL;
     HHS159ExecutionOptions execution = {0};
     HHS159CompareResult compare = {0};
@@ -68,6 +72,9 @@ int main(int argc, char **argv) {
     char observed_semantic_root[HHS159_HASH216_LENGTH + 1U] = {0};
     uint32_t observed_commit = 0U;
     uint32_t observed_fallback = 0U;
+    char object_id[HHS159_HASH216_LENGTH + 1U] = {0};
+    char executable_id[HHS159_HASH216_LENGTH + 1U] = {0};
+    char compiled_receipt_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char source_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char ast_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char graph_id[HHS159_HASH216_LENGTH + 1U] = {0};
@@ -160,8 +167,38 @@ int main(int argc, char **argv) {
         compare.status != HHS159_STATUS_OK ||
         compare.matched != 1U || compare.fallback_used != 0U)
         goto cleanup;
+    /* Exercise Pass159's native compiler→object→link→executable path.
+     * This is a held diagnostic: its existing exact-program lowering still
+     * requires an independent source-effect witness before admission.
+     */
+    status = hhs159_compiler_create(ctx, &compiler);
+    if (status != HHS159_STATUS_OK) goto cleanup;
+    status = hhs159_compile_object(compiler, src, &object, &compile_receipt);
+    if (status != HHS159_STATUS_OK || object == NULL ||
+        hhs159_artifact_kind(object) != HHS159_ARTIFACT_OBJECT ||
+        !read_hash216(object, object_id)) goto cleanup;
+    status = hhs159_link(ctx, &object, 1U, &executable, &compiled_receipt);
+    if (status != HHS159_STATUS_OK || executable == NULL ||
+        hhs159_artifact_kind(executable) != HHS159_ARTIFACT_EXECUTABLE ||
+        !read_hash216(executable, executable_id)) goto cleanup;
+    if (compiled_receipt != NULL) {
+        hhs159_receipt_release(compiled_receipt);
+        compiled_receipt = NULL;
+    }
+    status = hhs159_execute(ctx, executable, &execution, &compiled_receipt);
+    if (status != HHS159_STATUS_OK || compiled_receipt == NULL ||
+        hhs159_artifact_kind(compiled_receipt) != HHS159_ARTIFACT_RECEIPT ||
+        !read_hash216(compiled_receipt, compiled_receipt_id)) goto cleanup;
+    if (compiled_receipt->status != HHS159_STATUS_OK ||
+        compiled_receipt->committed != 0U ||
+        compiled_receipt->fallback_used != 0U) goto cleanup;
     ok = 1;
 cleanup:
+    if (compiled_receipt != NULL) hhs159_receipt_release(compiled_receipt);
+    if (compile_receipt != NULL) hhs159_receipt_release(compile_receipt);
+    if (executable != NULL) hhs159_artifact_release(executable);
+    if (object != NULL) hhs159_artifact_release(object);
+    if (compiler != NULL) hhs159_compiler_release(compiler);
     if (replay_receipt != NULL) hhs159_receipt_release(replay_receipt);
     if (receipt != NULL) hhs159_receipt_release(receipt);
     if (interpreter != NULL) hhs159_interpreter_release(interpreter);
@@ -188,7 +225,10 @@ cleanup:
     printf("HELD_SEMANTIC_ROOT_HASH216=%s\n", observed_semantic_root);
     printf("HELD_VM81_STEPS=%llu\n", (unsigned long long)observed_steps);
     printf("HELD_COMMITTED=%u\n", observed_commit);
-    printf("HELD_FALLBACK=%u\n", observed_fallback);
+    printf("HELD_FALLBACK=%u\\n", observed_fallback);
+    printf("OBJECT_HASH216=%s\\n", object_id);
+    printf("EXECUTABLE_HASH216=%s\\n", executable_id);
+    printf("COMPILED_RECEIPT_HASH216=%s\\n", compiled_receipt_id);
     puts("NUCLEUS5_PASS159_FRONTEND_HELD_INTERPRET_REPLAY_PASS (NO_CANONICAL_TENSOR_CLOSURE)");
     return 0;
 }
