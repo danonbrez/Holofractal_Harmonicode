@@ -23,7 +23,7 @@ FIELDS = (
     "COMPILED_RECEIPT_HASH216",
 )
 ALPHABET = re.compile(r"^[!-~]{216}$")
-DIAGNOSTICS = ("HELD_VM81_STEPS", "HELD_COMMITTED", "HELD_FALLBACK", "VMIR_PAYLOAD_BYTES", "COMPILED_VM81_STEPS")
+DIAGNOSTICS = ("HELD_VM81_STEPS", "HELD_COMMITTED", "HELD_FALLBACK", "VMIR_PAYLOAD_BYTES", "COMPILED_VM81_STEPS", "VMIR_EXACT_PROGRAM_MARKER", "VMIR_MATRIXTIMES_MARKER")
 
 
 def parse(log: str) -> dict[str, str]:
@@ -78,6 +78,8 @@ def main() -> int:
         print("HELD_SEMANTIC_ROOT_IDENTICAL: not an input-specific semantic witness")
     else:
         print("HELD_SEMANTIC_ROOT_DISTINCT: source-derived root alone cannot attest executed tensor gates")
+    print("VMIR_FIXED_PROGRAM_MARKER_DISTINCT=" + str(int(result["VMIR_EXACT_PROGRAM_MARKER"])))
+    print("VMIR_MATRIXTIMES_MARKER_DISTINCT=" + str(int(result["VMIR_MATRIXTIMES_MARKER"])))
     print("VMIR_PAYLOAD_DISTINCT=" + str(int(result["VMIR_PAYLOAD_SHA256"])))
     print("VMIR_PAYLOAD_LENGTH_DISTINCT=" + str(int(result["VMIR_PAYLOAD_BYTES"])))
     print("COMPILED_STEP_COUNT_DISTINCT=" + str(int(result["COMPILED_VM81_STEPS"])))
