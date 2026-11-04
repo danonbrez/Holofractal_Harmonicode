@@ -20,13 +20,20 @@ ABP_ORDERED_EDGES = (
     "p==P-1",
     "q==P+1",
     "pq==P^2-1",
+    "P^2-pq==1",
+    "A==P^2",
+    "B==P^2",
+    "A==B",
     "AB==P^4",
     "BA==-P^4",
 )
-# Distinct input configurations; never impose both variants simultaneously.
+# The two circuits are *not* contradictory A/B/P branch theories:
+# the second includes one additional ordered successor constructor.
+# P remains a typed native input, never a Python-derived free scalar.
 PARAMETER_CONFIGURATIONS = (
-    ("ONE_INPUT", "A==P^2", "A!=B"),
-    ("EQUATION_INPUT", "A==B", "A!=P^2"),
+    ("ONE_INPUT",),
+    ("SUCCESSOR_INPUT", "P_next==P+3", "p_next==P_next-1",
+     "q_next==P_next+1", "A_next==P_next^2", "B_next==P_next^2"),
 )
 
 @dataclass(frozen=True)
@@ -76,7 +83,8 @@ def structural_source_checks() -> dict[str, bool]:
         "four_by_four_target_start": "=={{1377*(370512+17*x)/(x*y)" in VERBATIM_SOURCE,
         "variable_four_distinct": all(v in VERBATIM_SOURCE for v in ("x", "y", "z", "w")),
         "ordered_ab_ba_distinct": ("AB==P^4" in ABP_ORDERED_EDGES and "BA==-P^4" in ABP_ORDERED_EDGES),
-        "configs_not_conjoined": len(PARAMETER_CONFIGURATIONS) == 2,
+        "canonical_one_input_roles": all(edge in ABP_ORDERED_EDGES for edge in ("A==P^2", "B==P^2", "A==B")),
+        "successor_is_extension": PARAMETER_CONFIGURATIONS[1][1] == "P_next==P+3",
     }
 
 
