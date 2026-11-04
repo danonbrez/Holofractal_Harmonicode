@@ -44,12 +44,28 @@ class Nucleus5SourceTests(unittest.TestCase):
             ingress = bind_inherited_hnan_ingress(mode)
             self.assertEqual(ingress.nucleus_cell, 5)
             self.assertEqual(ingress.source_bytes, VERBATIM_SOURCE.encode("utf-8"))
+            self.assertEqual(ingress.compilation_source_bytes, Nucleus5Source().native_compilation_source_bytes(mode))
+            self.assertEqual(ingress.compilation_source_sha256, sha256(ingress.compilation_source_bytes).hexdigest())
+            self.assertTrue(ingress.compilation_source_bytes.startswith(b"List(" + ingress.source_bytes + b","))
+            self.assertEqual(ingress.compilation_source_bytes.count(b"=="), 3 + sum(e.count(b"==") for e in ingress.parameter_edge_bytes))
+            self.assertEqual(ingress.compilation_source_bytes.count(b"MatrixTimes("), 2)
             self.assertEqual(ingress.source_sha256, sha256(ingress.source_bytes).hexdigest())
             self.assertEqual(ingress.parameter_edge_bytes,
                              tuple(e.encode("utf-8") for e in Nucleus5Source().parameter_edges(mode)))
             self.assertEqual(ingress.inherited_hnan_terminal_source, "xy+epsilon")
             self.assertEqual(len(ingress.inherited_hnan_receipt_sha256), 64)
             self.assertEqual(len(ingress.inherited_qgu_receipt_sha256), 64)
+
+    def test_ordered_circuit_does_not_cross_mix_configurations(self):
+        a = Nucleus5Source().native_compilation_source_bytes("ONE_INPUT")
+        b = Nucleus5Source().native_compilation_source_bytes("EQUATION_INPUT")
+        self.assertNotEqual(a, b)
+        self.assertIn(b"A==P^2,A!=B", a)
+        self.assertNotIn(b"A==B,A!=P^2", a)
+        self.assertIn(b"A==B,A!=P^2", b)
+        self.assertNotIn(b"A==P^2,A!=B", b)
+        self.assertIn(VERBATIM_SOURCE.encode("utf-8"), a)
+        self.assertIn(VERBATIM_SOURCE.encode("utf-8"), b)
 
     def test_reject_unadmitted_hnan_gate(self):
         with patch("hhs_runtime.pass219.hnan_4x4_recursive_gate_v1.hnan_loshu_resolution_receipt",
