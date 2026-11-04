@@ -3,6 +3,7 @@
  * Input is supplied as a byte-exact HARMONICODE circuit source file.
  */
 #include "hhs_pass159_api.h"
+#include "hhs159_internal.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,6 +64,10 @@ int main(int argc, char **argv) {
     uint8_t *bytes = NULL;
     size_t size = 0U;
     int ok = 0;
+    uint64_t observed_steps = 0U;
+    char observed_semantic_root[HHS159_HASH216_LENGTH + 1U] = {0};
+    uint32_t observed_commit = 0U;
+    uint32_t observed_fallback = 0U;
     char source_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char ast_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char graph_id[HHS159_HASH216_LENGTH + 1U] = {0};
@@ -137,6 +142,13 @@ int main(int argc, char **argv) {
     if (status != HHS159_STATUS_OK || receipt == NULL ||
         hhs159_artifact_kind(receipt) != HHS159_ARTIFACT_RECEIPT ||
         !read_hash216(receipt, receipt_id)) goto cleanup;
+    observed_steps = receipt->vm81_steps;
+    observed_commit = receipt->committed;
+    observed_fallback = receipt->fallback_used;
+    memcpy(observed_semantic_root, receipt->semantic_root,
+           sizeof(observed_semantic_root));
+    if (receipt->committed != 0U || receipt->fallback_used != 0U ||
+        receipt->status != HHS159_STATUS_OK) goto cleanup;
     status = hhs159_interpreter_replay(interpreter, receipt, &replay_receipt);
     if (status != HHS159_STATUS_OK || replay_receipt == NULL ||
         hhs159_artifact_kind(replay_receipt) != HHS159_ARTIFACT_RECEIPT ||
@@ -173,6 +185,10 @@ cleanup:
     printf("CONSTRAINT_HASH216=%s\n", graph_id);
     printf("VMIR_HASH216=%s\n", vmir_id);
     printf("HELD_RECEIPT_HASH216=%s\n", receipt_id);
+    printf("HELD_SEMANTIC_ROOT_HASH216=%s\n", observed_semantic_root);
+    printf("HELD_VM81_STEPS=%llu\n", (unsigned long long)observed_steps);
+    printf("HELD_COMMITTED=%u\n", observed_commit);
+    printf("HELD_FALLBACK=%u\n", observed_fallback);
     puts("NUCLEUS5_PASS159_FRONTEND_HELD_INTERPRET_REPLAY_PASS (NO_CANONICAL_TENSOR_CLOSURE)");
     return 0;
 }
