@@ -39,6 +39,7 @@ jobs:
         run: |
           cc -std=c11 -Wall -Wextra -Werror \
             -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
             tools/pass220/nucleus5_pass159_frontend_probe.c \
             -Lhhs_runtime/builds -lhhs_runtime -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/nucleus5_pass159_probe
