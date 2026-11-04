@@ -51,6 +51,18 @@ static int diagnostic_sha256(const HHS159ArtifactBase *artifact, char out[65]) {
     return 1;
 }
 
+static int payload_contains(const HHS159ArtifactBase *artifact, const char *needle) {
+    size_t len, i;
+    if (artifact == NULL || needle == NULL ||
+        artifact->bytes == NULL || (len = strlen(needle)) == 0U ||
+        len > artifact->size)
+        return 0;
+    for (i = 0U; i <= artifact->size - len; ++i)
+        if (memcmp(artifact->bytes + i, needle, len) == 0)
+            return 1;
+    return 0;
+}
+
 static int hash216(const void *artifact) {
     char digest[HHS159_HASH216_LENGTH + 1U];
     return read_hash216(artifact, digest);
@@ -87,6 +99,8 @@ int main(int argc, char **argv) {
     uint32_t observed_fallback = 0U;
     char vmir_payload_sha256[65] = {0};
     size_t vmir_payload_bytes = 0U;
+    int vmir_fixed_program_marker = 0;
+    int vmir_matrix_times_marker = 0;
     uint64_t compiled_steps = 0U;
     char compiled_semantic_root[HHS159_HASH216_LENGTH + 1U] = {0};
     char object_id[HHS159_HASH216_LENGTH + 1U] = {0};
@@ -150,6 +164,8 @@ int main(int argc, char **argv) {
         hhs159_artifact_kind(vmir) != HHS159_ARTIFACT_VMIR ||
         !read_hash216(vmir, vmir_id)) goto cleanup;
     vmir_payload_bytes = vmir->base.size;
+    vmir_fixed_program_marker = payload_contains(&vmir->base, "EXACT_PROGRAM");
+    vmir_matrix_times_marker = payload_contains(&vmir->base, "MatrixTimes");
     if (!diagnostic_sha256(&vmir->base, vmir_payload_sha256)) goto cleanup;
     /* Invoke the existing Pass159 interpreter without canonical commit.
      * Current VMIR execution may use a fixed EXACT_PROGRAM: these receipts
@@ -245,6 +261,8 @@ cleanup:
     printf("VMIR_HASH216=%s\n", vmir_id);
     printf("VMIR_PAYLOAD_SHA256=%s\n", vmir_payload_sha256);
     printf("VMIR_PAYLOAD_BYTES=%zu\n", vmir_payload_bytes);
+    printf("VMIR_EXACT_PROGRAM_MARKER=%d\n", vmir_fixed_program_marker);
+    printf("VMIR_MATRIXTIMES_MARKER=%d\n", vmir_matrix_times_marker);
     printf("HELD_RECEIPT_HASH216=%s\n", receipt_id);
     printf("HELD_SEMANTIC_ROOT_HASH216=%s\n", observed_semantic_root);
     printf("HELD_VM81_STEPS=%llu\n", (unsigned long long)observed_steps);
