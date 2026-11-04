@@ -1,5 +1,5 @@
-/* Pass 220 nucleus-5 source -> inherited Pass159 exact frontend.
- * No interpreter/VM81 commit: validates the actual native parser and graph.
+/* Pass 220 nucleus-5 source -> inherited Pass159 frontend and diagnostic interpreter.
+ * No canonical VM81 commit: verifies native parser, graph, held receipt and replay.
  * Input is supplied as a byte-exact HARMONICODE circuit source file.
  */
 #include "hhs_pass159_api.h"
@@ -49,6 +49,10 @@ int main(int argc, char **argv) {
     HHS159AST *ast = NULL;
     HHS159TypeEnvironment *types = NULL;
     HHS159ConstraintGraph *graph = NULL;
+    HHS159Interpreter *interpreter = NULL;
+    HHS159Receipt *receipt = NULL, *replay_receipt = NULL;
+    HHS159ExecutionOptions execution = {0};
+    HHS159CompareResult compare = {0};
     HHS159ByteSpan span;
     HHS159Status status = HHS159_STATUS_INVALID_STATE;
     uint8_t *bytes = NULL;
@@ -106,8 +110,39 @@ int main(int argc, char **argv) {
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(vmir) != HHS159_ARTIFACT_VMIR ||
         !hash216(vmir)) goto cleanup;
+    /* Invoke the existing Pass159 interpreter without canonical commit.
+     * Current VMIR execution may use a fixed EXACT_PROGRAM: these receipts
+     * demonstrate ABI/path and replay health, not tensor semantic closure.
+     */
+    status = hhs159_interpreter_create(ctx, &interpreter);
+    if (status != HHS159_STATUS_OK) goto cleanup;
+    execution.header.struct_size = (uint32_t)sizeof(execution);
+    execution.header.struct_version = HHS159_STRUCT_VERSION_1;
+    execution.mode = HHS159_MODE_EXECUTE_AND_HOLD;
+    execution.commit_policy = 0U;
+    execution.max_vm81_steps = UINT64_C(1000000);
+    execution.max_recursion = UINT64_C(4096);
+    execution.max_output_bytes = UINT64_C(4194304);
+    status = hhs159_interpret(interpreter, src, &execution, &receipt);
+    if (status != HHS159_STATUS_OK || receipt == NULL ||
+        hhs159_artifact_kind(receipt) != HHS159_ARTIFACT_RECEIPT ||
+        !hash216(receipt)) goto cleanup;
+    status = hhs159_interpreter_replay(interpreter, receipt, &replay_receipt);
+    if (status != HHS159_STATUS_OK || replay_receipt == NULL ||
+        hhs159_artifact_kind(replay_receipt) != HHS159_ARTIFACT_RECEIPT ||
+        !hash216(replay_receipt)) goto cleanup;
+    compare.header.struct_size = (uint32_t)sizeof(compare);
+    compare.header.struct_version = HHS159_STRUCT_VERSION_1;
+    status = hhs159_compare_interpreter_compiler(ctx, src, &execution, &compare);
+    if (status != HHS159_STATUS_OK ||
+        compare.status != HHS159_STATUS_OK ||
+        compare.matched != 1U || compare.fallback_used != 0U)
+        goto cleanup;
     ok = 1;
 cleanup:
+    if (replay_receipt != NULL) hhs159_receipt_release(replay_receipt);
+    if (receipt != NULL) hhs159_receipt_release(receipt);
+    if (interpreter != NULL) hhs159_interpreter_release(interpreter);
     if (vmir != NULL) hhs159_artifact_release(vmir);
     if (hir != NULL) hhs159_artifact_release(hir);
     if (graph != NULL) hhs159_artifact_release(graph);
@@ -123,6 +158,6 @@ cleanup:
                 (int)status, hhs159_status_string(status));
         return 1;
     }
-    puts("NUCLEUS5_PASS159_SOURCE_GRAPH_VMIR_PASS");
+    puts("NUCLEUS5_PASS159_FRONTEND_HELD_INTERPRET_REPLAY_PASS (NO_CANONICAL_TENSOR_CLOSURE)");
     return 0;
 }
