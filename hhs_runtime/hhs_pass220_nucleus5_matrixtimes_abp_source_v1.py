@@ -20,8 +20,6 @@ ABP_ORDERED_EDGES = (
     "p==P-1",
     "q==P+1",
     "pq==P^2-1",
-    "A==P^2",
-    "B==P^2",
     "AB==P^4",
     "BA==-P^4",
 )
