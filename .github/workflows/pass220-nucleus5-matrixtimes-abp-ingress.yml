@@ -5,6 +5,7 @@ on:
       - "hhs_runtime/hhs_pass220_nucleus5_matrixtimes_abp_source_v1.py"
       - "tests/test_pass220_nucleus5_matrixtimes_abp_source_v1.py"
       - "tools/pass220/nucleus5_pass159_frontend_probe.c"
+      - "tools/pass220/compare_nucleus5_pass159_identities.py"
       - ".github/workflows/pass220-nucleus5-matrixtimes-abp-ingress.yml"
   workflow_dispatch:
 permissions:
@@ -53,5 +54,7 @@ jobs:
               Path("/tmp/nucleus5_" + mode + ".hhs").write_bytes(
                   Nucleus5Source().native_compilation_source_bytes(mode))
           PY
-          /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs
-          /tmp/nucleus5_pass159_probe /tmp/nucleus5_EQUATION_INPUT.hhs
+          set -o pipefail
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs | tee /tmp/nucleus5_ONE_INPUT.log
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_EQUATION_INPUT.hhs | tee /tmp/nucleus5_EQUATION_INPUT.log
+          python tools/pass220/compare_nucleus5_pass159_identities.py /tmp/nucleus5_ONE_INPUT.log /tmp/nucleus5_EQUATION_INPUT.log
