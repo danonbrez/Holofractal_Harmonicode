@@ -1,0 +1,68 @@
+"""Pass 220 nucleus-5 MatrixTimes source and A/B/P parameter circuit.
+
+The verbatim HARMONICODE source is a single ordered, typed source expression.
+This module is a source-preserving ingress descriptor, NOT a replacement
+solver, alternative mutation authority, or host scalar interpreter.
+Native Pass 159 -> VM81 -> Lane 5 -> Hash72/Hash216 must perform execution.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from hashlib import sha256
+
+SCHEMA = "HHS_PASS220_NUCLEUS5_MATRIXTIMES_ABP_SOURCE_V1"
+NUCLEUS_CELL = 5
+VERBATIM_SOURCE = "MatrixTimes(153*x^2,({{3334608*x^6*y^4*z^4+-153*z^4*(-x+z)/(x*y),-153*z^4*(x+z)/(x*y),-153*z^4*(x+z)/(x*y),-2892672*x^6*y^4*z^4+-153*z^4*(-x+z)/(x*y)},{-153*(w+y)*z^4/(x*y),-153*(w-y)*z^4/(x*y)+3334608*x^6*y^4*z^4,(-153)*(w-y)*z^4/(x*y)-2892672*x^6*y^4*z^4,-153*(w+y)*z^4/(x*y)},{-153*z^3*(x+z)/w,(-153)*(x-z)*z^3/w-2892672*x^6*y^4*z^4,-153*(x-z)*z^3/w+3334608*x^6*y^4*z^4,-153*z^3*(x+z)/w},{(-153)*((-w)+y)*z^3/w-2892672*x^6*y^4*z^4,-153*(w+y)*z^3/w,-153*(w+y)*z^3/w,-153*(-w+y)*z^3/w+3334608*x^6*y^4*z^4}}=={{1377*(370512+17*x)/(x*y),-23409/y,-23409/y,1377*(-321408+17*x)/(x*y)},{-23409/x,1377*(370512+17*y)/(x*y),1377*(-321408+17*y)/(x*y),-23409/x},{-23409*z/(x*y),1377*(-321408+17*z)/(x*y),1377*(370512+17*z)/(x*y),-23409*z/(x*y)},{1377*(-321408+17*w)/(x*y),-23409*w/(x*y),-23409*w/(x*y),1377*(370512+17*w)/(x*y)}}==(w^4+x^4+y^4+z^4)/(w^2+x^2+y^2+z^2)==x^2))/(MatrixTimes(360/({{1,4,9,-1},{3,1,-1,2},{8,-1,1,7},{-1,1,6,1}}+2)/72,3/20))"
+RECIPROCAL_SOURCE = "MatrixTimes(360/({{1,4,9,-1},{3,1,-1,2},{8,-1,1,7},{-1,1,6,1}}+2)/72,3/20)"
+SOURCE_VARIABLES = ("x", "y", "z", "w", "A", "B", "P", "p", "q")
+# These are native ordered proof edges, not Python equations to evaluate.
+ABP_ORDERED_EDGES = (
+    "p==P-1",
+    "q==P+1",
+    "pq==P^2-1",
+    "A==P^2",
+    "B==P^2",
+    "AB==P^4",
+    "BA==-P^4",
+)
+# Distinct input configurations; never impose both variants simultaneously.
+PARAMETER_CONFIGURATIONS = (
+    ("ONE_INPUT", "A==P^2", "A!=B"),
+    ("EQUATION_INPUT", "A==B", "A!=P^2"),
+)
+
+@dataclass(frozen=True)
+class Nucleus5Source:
+    """Immutable ingress payload for the existing native source pipeline."""
+    source: str = VERBATIM_SOURCE
+    nucleus_cell: int = NUCLEUS_CELL
+    schema: str = SCHEMA
+
+    @property
+    def exact_source_sha256(self) -> str:
+        return sha256(self.source.encode("utf-8")).hexdigest()
+
+    def parameter_edges(self, configuration: str) -> tuple[str, ...]:
+        """Return ordered source relationships; do not evaluate or simplify."""
+        for name, *edges in PARAMETER_CONFIGURATIONS:
+            if configuration == name:
+                return ABP_ORDERED_EDGES + tuple(edges)
+        raise ValueError("UNKNOWN_ABP_CONFIGURATION")
+
+    def native_source_bytes(self) -> bytes:
+        """Ingress bytes for hhs159_source_open_bytes (no host coercion)."""
+        return self.source.encode("utf-8")
+
+
+def structural_source_checks() -> dict[str, bool]:
+    """Source-integrity checks only; do not claim VM81 admission."""
+    return {
+        "one_outer_numerator": VERBATIM_SOURCE.startswith("MatrixTimes(153*x^2,("),
+        "one_reciprocal_denominator": VERBATIM_SOURCE.endswith("/(" + RECIPROCAL_SOURCE + ")"),
+        "full_chained_equalities": VERBATIM_SOURCE.count("==") == 3,
+        "quartic_ratio_retained": "(w^4+x^4+y^4+z^4)/(w^2+x^2+y^2+z^2)==x^2" in VERBATIM_SOURCE,
+        "four_by_four_target_start": "=={{1377*(370512+17*x)/(x*y)" in VERBATIM_SOURCE,
+        "variable_four_distinct": all(v in VERBATIM_SOURCE for v in ("x", "y", "z", "w")),
+        "ordered_ab_ba_distinct": ("AB==P^4" in ABP_ORDERED_EDGES and "BA==-P^4" in ABP_ORDERED_EDGES),
+        "configs_not_conjoined": len(PARAMETER_CONFIGURATIONS) == 2,
+    }
