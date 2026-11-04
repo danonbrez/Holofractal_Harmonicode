@@ -28,13 +28,18 @@ static int read_source(const char *path, uint8_t **out, size_t *len) {
     return 1;
 }
 
-static int hash216(const void *artifact) {
-    char value[HHS159_HASH216_LENGTH + 1U] = {0};
+static int read_hash216(const void *artifact, char value[HHS159_HASH216_LENGTH + 1U]) {
+    memset(value, 0, HHS159_HASH216_LENGTH + 1U);
     HHS159MutableByteSpan span = {
         (uint8_t *)value, HHS159_HASH216_LENGTH, 0U
     };
     return hhs159_get_hash216(artifact, &span) == HHS159_STATUS_OK &&
            span.size_written == HHS159_HASH216_LENGTH;
+}
+
+static int hash216(const void *artifact) {
+    char digest[HHS159_HASH216_LENGTH + 1U];
+    return read_hash216(artifact, digest);
 }
 
 int main(int argc, char **argv) {
@@ -58,6 +63,11 @@ int main(int argc, char **argv) {
     uint8_t *bytes = NULL;
     size_t size = 0U;
     int ok = 0;
+    char source_id[HHS159_HASH216_LENGTH + 1U] = {0};
+    char ast_id[HHS159_HASH216_LENGTH + 1U] = {0};
+    char graph_id[HHS159_HASH216_LENGTH + 1U] = {0};
+    char vmir_id[HHS159_HASH216_LENGTH + 1U] = {0};
+    char receipt_id[HHS159_HASH216_LENGTH + 1U] = {0};
     if (argc != 2 || !read_source(argv[1], &bytes, &size))
         goto cleanup;
 
@@ -81,7 +91,7 @@ int main(int argc, char **argv) {
     opts.preserve_bom = 1U;
     span.data = bytes; span.size = size;
     status = hhs159_source_open_bytes(ctx, span, &opts, &src);
-    if (status != HHS159_STATUS_OK || !hash216(src)) goto cleanup;
+    if (status != HHS159_STATUS_OK || !read_hash216(src, source_id)) goto cleanup;
     status = hhs159_lex(ctx, src, &tokens);
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(tokens) != HHS159_ARTIFACT_TOKEN_STREAM)
@@ -93,7 +103,7 @@ int main(int argc, char **argv) {
     status = hhs159_build_ast(ctx, cst, &ast);
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(ast) != HHS159_ARTIFACT_AST ||
-        !hash216(ast)) goto cleanup;
+        !read_hash216(ast, ast_id)) goto cleanup;
     status = hhs159_typecheck(ctx, ast, &types);
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(types) != HHS159_ARTIFACT_TYPE_ENV)
@@ -101,7 +111,7 @@ int main(int argc, char **argv) {
     status = hhs159_build_constraint_graph(ctx, ast, types, &graph);
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(graph) != HHS159_ARTIFACT_CONSTRAINT_GRAPH ||
-        !hash216(graph)) goto cleanup;
+        !read_hash216(graph, graph_id)) goto cleanup;
     status = hhs159_lower_hir(ctx, ast, types, graph, &hir);
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(hir) != HHS159_ARTIFACT_HIR)
@@ -109,7 +119,7 @@ int main(int argc, char **argv) {
     status = hhs159_lower_vmir(ctx, hir, &vmir);
     if (status != HHS159_STATUS_OK ||
         hhs159_artifact_kind(vmir) != HHS159_ARTIFACT_VMIR ||
-        !hash216(vmir)) goto cleanup;
+        !read_hash216(vmir, vmir_id)) goto cleanup;
     /* Invoke the existing Pass159 interpreter without canonical commit.
      * Current VMIR execution may use a fixed EXACT_PROGRAM: these receipts
      * demonstrate ABI/path and replay health, not tensor semantic closure.
@@ -126,7 +136,7 @@ int main(int argc, char **argv) {
     status = hhs159_interpret(interpreter, src, &execution, &receipt);
     if (status != HHS159_STATUS_OK || receipt == NULL ||
         hhs159_artifact_kind(receipt) != HHS159_ARTIFACT_RECEIPT ||
-        !hash216(receipt)) goto cleanup;
+        !read_hash216(receipt, receipt_id)) goto cleanup;
     status = hhs159_interpreter_replay(interpreter, receipt, &replay_receipt);
     if (status != HHS159_STATUS_OK || replay_receipt == NULL ||
         hhs159_artifact_kind(replay_receipt) != HHS159_ARTIFACT_RECEIPT ||
@@ -158,6 +168,11 @@ cleanup:
                 (int)status, hhs159_status_string(status));
         return 1;
     }
+    printf("SOURCE_HASH216=%s\n", source_id);
+    printf("AST_HASH216=%s\n", ast_id);
+    printf("CONSTRAINT_HASH216=%s\n", graph_id);
+    printf("VMIR_HASH216=%s\n", vmir_id);
+    printf("HELD_RECEIPT_HASH216=%s\n", receipt_id);
     puts("NUCLEUS5_PASS159_FRONTEND_HELD_INTERPRET_REPLAY_PASS (NO_CANONICAL_TENSOR_CLOSURE)");
     return 0;
 }
