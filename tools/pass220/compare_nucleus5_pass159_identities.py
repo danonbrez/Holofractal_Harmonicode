@@ -14,6 +14,8 @@ FIELDS = (
     "AST_HASH216",
     "CONSTRAINT_HASH216",
     "VMIR_HASH216",
+    "VMIR_PAYLOAD_SHA256",
+    "COMPILED_SEMANTIC_ROOT_HASH216",
     "HELD_RECEIPT_HASH216",
     "HELD_SEMANTIC_ROOT_HASH216",
     "OBJECT_HASH216",
@@ -21,7 +23,7 @@ FIELDS = (
     "COMPILED_RECEIPT_HASH216",
 )
 ALPHABET = re.compile(r"^[!-~]{216}$")
-DIAGNOSTICS = ("HELD_VM81_STEPS", "HELD_COMMITTED", "HELD_FALLBACK")
+DIAGNOSTICS = ("HELD_VM81_STEPS", "HELD_COMMITTED", "HELD_FALLBACK", "VMIR_PAYLOAD_BYTES", "COMPILED_VM81_STEPS")
 
 
 def parse(log: str) -> dict[str, str]:
@@ -38,7 +40,7 @@ def parse(log: str) -> dict[str, str]:
             continue
         if field not in FIELDS:
             continue
-        if field in rows or not ALPHABET.fullmatch(value):
+        if field in rows or not (re.fullmatch(r"[a-f0-9]{64}", value) if field == "VMIR_PAYLOAD_SHA256" else ALPHABET.fullmatch(value)):
             raise ValueError("PASS159_IDENTITY_MALFORMED:" + field)
         rows[field] = value
     if tuple(sorted(rows)) != tuple(sorted(FIELDS)):
@@ -76,6 +78,10 @@ def main() -> int:
         print("HELD_SEMANTIC_ROOT_IDENTICAL: not an input-specific semantic witness")
     else:
         print("HELD_SEMANTIC_ROOT_DISTINCT: source-derived root alone cannot attest executed tensor gates")
+    print("VMIR_PAYLOAD_DISTINCT=" + str(int(result["VMIR_PAYLOAD_SHA256"])))
+    print("VMIR_PAYLOAD_LENGTH_DISTINCT=" + str(int(result["VMIR_PAYLOAD_BYTES"])))
+    print("COMPILED_STEP_COUNT_DISTINCT=" + str(int(result["COMPILED_VM81_STEPS"])))
+    print("COMPILED_SEMANTIC_ROOT_DISTINCT=" + str(int(result["COMPILED_SEMANTIC_ROOT_HASH216"])))
     print("COMPILED_OBJECT_DISTINCT=" + str(int(result["OBJECT_HASH216"])))
     print("COMPILED_EXECUTABLE_DISTINCT=" + str(int(result["EXECUTABLE_HASH216"])))
     print("COMPILED_RECEIPT_DISTINCT=" + str(int(result["COMPILED_RECEIPT_HASH216"])))
