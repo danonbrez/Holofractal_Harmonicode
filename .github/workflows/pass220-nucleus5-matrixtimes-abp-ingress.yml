@@ -38,6 +38,7 @@ jobs:
       - name: Compile native Pass159 source probe
         run: |
           cc -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
             -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
             -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
             tools/pass220/nucleus5_pass159_frontend_probe.c \
