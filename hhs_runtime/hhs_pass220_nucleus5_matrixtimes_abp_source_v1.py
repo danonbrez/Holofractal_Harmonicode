@@ -64,3 +64,61 @@ def structural_source_checks() -> dict[str, bool]:
         "ordered_ab_ba_distinct": ("AB==P^4" in ABP_ORDERED_EDGES and "BA==-P^4" in ABP_ORDERED_EDGES),
         "configs_not_conjoined": len(PARAMETER_CONFIGURATIONS) == 2,
     }
+
+
+@dataclass(frozen=True)
+class Nucleus5HNANIngress:
+    """Typed source handoff; no separate VM81 or Hash216 authority."""
+    source_bytes: bytes
+    parameter_edge_bytes: tuple[bytes, ...]
+    configuration: str
+    nucleus_cell: int
+    source_sha256: str
+    inherited_hnan_receipt_sha256: str
+    inherited_hnan_terminal_source: str
+    inherited_qgu_receipt_sha256: str
+
+
+def bind_inherited_hnan_ingress(configuration: str) -> Nucleus5HNANIngress:
+    """Prepare the exact source for native admission using the existing HNAN gate.
+
+    No evaluation of MatrixTimes or input/output variables occurs here.
+    This binding is fail-closed on a rejected inherited HNAN/QGU receipt.
+    The resulting bytes must be passed to native Pass159/VM81 admission
+    before any canonical Hash72 or Hash216 state can be committed.
+    """
+    from hhs_runtime.pass219.hnan_4x4_recursive_gate_v1 import (
+        HNAN_CENTER_EXPRESSION,
+        HNAN_TERMINAL_SOURCE,
+        hnan_loshu_resolution_receipt,
+    )
+
+    source = Nucleus5Source()
+    edges = source.parameter_edges(configuration)
+    checks = structural_source_checks()
+    if not all(checks.values()):
+        raise ValueError("NUCLEUS5_SOURCE_INTEGRITY_REJECTED")
+
+    receipt = hnan_loshu_resolution_receipt()
+    transport = receipt.get("qgu_transport")
+    if (
+        receipt.get("status") != "PASS"
+        or receipt.get("center_expression") != HNAN_CENTER_EXPRESSION
+        or receipt.get("terminal_source") != HNAN_TERMINAL_SOURCE
+        or not isinstance(transport, dict)
+        or transport.get("status") != "PASS"
+        or not isinstance(receipt.get("receipt_sha256"), str)
+        or not isinstance(transport.get("receipt_sha256"), str)
+    ):
+        raise ValueError("INHERITED_HNAN_QGU_GATE_REJECTED")
+
+    return Nucleus5HNANIngress(
+        source_bytes=source.native_source_bytes(),
+        parameter_edge_bytes=tuple(edge.encode("utf-8") for edge in edges),
+        configuration=configuration,
+        nucleus_cell=source.nucleus_cell,
+        source_sha256=source.exact_source_sha256,
+        inherited_hnan_receipt_sha256=receipt["receipt_sha256"],
+        inherited_hnan_terminal_source=receipt["terminal_source"],
+        inherited_qgu_receipt_sha256=transport["receipt_sha256"],
+    )
