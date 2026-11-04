@@ -225,10 +225,10 @@ cleanup:
     printf("HELD_SEMANTIC_ROOT_HASH216=%s\n", observed_semantic_root);
     printf("HELD_VM81_STEPS=%llu\n", (unsigned long long)observed_steps);
     printf("HELD_COMMITTED=%u\n", observed_commit);
-    printf("HELD_FALLBACK=%u\\n", observed_fallback);
-    printf("OBJECT_HASH216=%s\\n", object_id);
-    printf("EXECUTABLE_HASH216=%s\\n", executable_id);
-    printf("COMPILED_RECEIPT_HASH216=%s\\n", compiled_receipt_id);
+    printf("HELD_FALLBACK=%u\n", observed_fallback);
+    printf("OBJECT_HASH216=%s\n", object_id);
+    printf("EXECUTABLE_HASH216=%s\n", executable_id);
+    printf("COMPILED_RECEIPT_HASH216=%s\n", compiled_receipt_id);
     puts("NUCLEUS5_PASS159_FRONTEND_HELD_INTERPRET_REPLAY_PASS (NO_CANONICAL_TENSOR_CLOSURE)");
     return 0;
 }
