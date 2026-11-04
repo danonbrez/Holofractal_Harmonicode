@@ -61,7 +61,9 @@ def compare(left: str, right: str) -> dict[str, bool]:
 
 def main() -> int:
     if len(sys.argv) != 3:
-        raise SystemExit("usage: compare_nucleus5_pass159_identities.py ONE_INPUT.log EQUATION_INPUT.log")
+        raise SystemExit("usage: compare_nucleus5_pass159_identities.py ONE_INPUT.log SUCCESSOR_INPUT.log")
+    first = parse(Path(sys.argv[1]).read_text())
+    successor = parse(Path(sys.argv[2]).read_text())
     result = compare(Path(sys.argv[1]).read_text(), Path(sys.argv[2]).read_text())
     for field, different in result.items():
         print(f"{field}_DIFFERS={int(different)}")
@@ -87,6 +89,18 @@ def main() -> int:
     print("COMPILED_OBJECT_DISTINCT=" + str(int(result["OBJECT_HASH216"])))
     print("COMPILED_EXECUTABLE_DISTINCT=" + str(int(result["EXECUTABLE_HASH216"])))
     print("COMPILED_RECEIPT_DISTINCT=" + str(int(result["COMPILED_RECEIPT_HASH216"])))
+    # A source-derived Hash216 identity does not certify executed matrix cells.
+    # The inherited EXACT_PROGRAM and equal three-step traces are a concrete
+    # non-admission observation, not a reason to change the frozen kernel.
+    if (first["VMIR_EXACT_PROGRAM_MARKER"] == "1"
+            and successor["VMIR_EXACT_PROGRAM_MARKER"] == "1"
+            and first["COMPILED_VM81_STEPS"] == "3"
+            and successor["COMPILED_VM81_STEPS"] == "3"):
+        print("NUCLEUS5_TENSOR_ADMISSION=BLOCKED_FIXED_EXACT_PROGRAM")
+    else:
+        print("NUCLEUS5_TENSOR_ADMISSION=UNVERIFIED_SOURCE_EFFECT")
+    print("NUCLEUS5_CANONICAL_VM81_ADMITTED=0")
+    print("NUCLEUS5_HASH216_PERSISTED=0")
     if not result["HELD_RECEIPT_HASH216"]:
         print("HELD_RECEIPT_NOT_SOURCE_DISCRIMINATING: no source-dependent execution proof")
     else:
