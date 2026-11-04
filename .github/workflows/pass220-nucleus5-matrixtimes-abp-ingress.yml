@@ -44,7 +44,7 @@ jobs:
             tools/pass220/nucleus5_pass159_frontend_probe.c \
             -Lhhs_runtime/builds -lhhs_runtime -Wl,-rpath,"$PWD/hhs_runtime/builds" \
             -o /tmp/nucleus5_pass159_probe
-      - name: Run both ordered A/B/P configurations through native lexer, AST, graph, and VMIR
+      - name: Run base and successor A/B/P circuits through native lexer, AST, graph, and VMIR
         env:
           PYTHONPATH: .
           LD_LIBRARY_PATH: hhs_runtime/builds
@@ -52,11 +52,11 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from hhs_runtime.hhs_pass220_nucleus5_matrixtimes_abp_source_v1 import Nucleus5Source
-          for mode in ("ONE_INPUT", "EQUATION_INPUT"):
+          for mode in ("ONE_INPUT", "SUCCESSOR_INPUT"):
               Path("/tmp/nucleus5_" + mode + ".hhs").write_bytes(
                   Nucleus5Source().native_compilation_source_bytes(mode))
           PY
           set -o pipefail
           /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs | tee /tmp/nucleus5_ONE_INPUT.log
-          /tmp/nucleus5_pass159_probe /tmp/nucleus5_EQUATION_INPUT.hhs | tee /tmp/nucleus5_EQUATION_INPUT.log
-          python tools/pass220/compare_nucleus5_pass159_identities.py /tmp/nucleus5_ONE_INPUT.log /tmp/nucleus5_EQUATION_INPUT.log
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs | tee /tmp/nucleus5_SUCCESSOR_INPUT.log
+          python tools/pass220/compare_nucleus5_pass159_identities.py /tmp/nucleus5_ONE_INPUT.log /tmp/nucleus5_SUCCESSOR_INPUT.log
