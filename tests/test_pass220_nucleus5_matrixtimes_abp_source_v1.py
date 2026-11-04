@@ -27,20 +27,23 @@ class Nucleus5SourceTests(unittest.TestCase):
         self.assertEqual(Nucleus5Source().nucleus_cell, 5)
         self.assertTrue(VERBATIM_SOURCE.endswith("/(" + RECIPROCAL_SOURCE + ")"))
 
-    def test_input_orientations_not_conjoined(self):
+    def test_canonical_abp_and_successor(self):
         witness = Nucleus5Source()
         first = witness.parameter_edges("ONE_INPUT")
-        second = witness.parameter_edges("EQUATION_INPUT")
+        successor = witness.parameter_edges("SUCCESSOR_INPUT")
+        self.assertEqual(first, ABP_ORDERED_EDGES)
+        self.assertEqual(successor[:len(first)], first)
         self.assertIn("A==P^2", first)
-        self.assertIn("A!=B", first)
-        self.assertNotIn("A==B", first)
-        self.assertIn("A==B", second)
-        self.assertIn("A!=P^2", second)
-        self.assertNotIn("A==P^2", second)
-        self.assertNotIn("A==B", ABP_ORDERED_EDGES)
+        self.assertIn("B==P^2", first)
+        self.assertIn("A==B", first)
+        self.assertIn("P^2-pq==1", first)
+        self.assertIn("P_next==P+3", successor)
+        self.assertIn("A_next==P_next^2", successor)
+        self.assertIn("B_next==P_next^2", successor)
+        self.assertFalse(any("!=" in edge for edge in successor))
 
     def test_native_hnan_qgu_ingress_binding(self):
-        for mode in ("ONE_INPUT", "EQUATION_INPUT"):
+        for mode in ("ONE_INPUT", "SUCCESSOR_INPUT"):
             ingress = bind_inherited_hnan_ingress(mode)
             self.assertEqual(ingress.nucleus_cell, 5)
             self.assertEqual(ingress.source_bytes, VERBATIM_SOURCE.encode("utf-8"))
@@ -56,14 +59,15 @@ class Nucleus5SourceTests(unittest.TestCase):
             self.assertEqual(len(ingress.inherited_hnan_receipt_sha256), 64)
             self.assertEqual(len(ingress.inherited_qgu_receipt_sha256), 64)
 
-    def test_ordered_circuit_does_not_cross_mix_configurations(self):
-        a = Nucleus5Source().native_compilation_source_bytes("ONE_INPUT")
-        b = Nucleus5Source().native_compilation_source_bytes("EQUATION_INPUT")
+    def test_ordered_circuit_preserves_canonical_base(self):
+        source = Nucleus5Source()
+        a = source.native_compilation_source_bytes("ONE_INPUT")
+        b = source.native_compilation_source_bytes("SUCCESSOR_INPUT")
         self.assertNotEqual(a, b)
-        self.assertIn(b"A==P^2,A!=B", a)
-        self.assertNotIn(b"A==B,A!=P^2", a)
-        self.assertIn(b"A==B,A!=P^2", b)
-        self.assertNotIn(b"A==P^2,A!=B", b)
+        self.assertTrue(b.startswith(a[:-1] + b","))
+        self.assertIn(b"A==P^2,B==P^2,A==B", a)
+        self.assertIn(b"P_next==P+3", b)
+        self.assertNotIn(b"P_next==P+3", a)
         self.assertIn(VERBATIM_SOURCE.encode("utf-8"), a)
         self.assertIn(VERBATIM_SOURCE.encode("utf-8"), b)
 
