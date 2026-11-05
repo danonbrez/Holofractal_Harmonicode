@@ -1,0 +1,25 @@
+name: Pass 220 HNAN All-Branch Native Trace
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/pass220/hnan_all_branch_native_trace_v1.py"
+      - "tests/pass220/test_pass220_hnan_all_branch_native_trace_v1.py"
+      - ".github/workflows/pass220-hnan-all-branch-native-trace.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compiled-hnan-branch-trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run branch provenance, rejection, and compiled native ABI tests
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q --tb=short tests/pass220/test_pass220_hnan_all_branch_native_trace_v1.py
