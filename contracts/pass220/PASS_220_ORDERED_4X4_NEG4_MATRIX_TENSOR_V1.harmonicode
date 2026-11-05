@@ -1,0 +1,1 @@
+NcalcMatrixPower((MatrixTimes(-List(List(1,1,1,1),List((-1),1,1,1),List((-1),(-1),1,1),List((-1),(-1),(-1),1)),-List(List((-1),(-1),(-1),(-1)),List(1,(-1),(-1),(-1)),List(1,1,(-1),(-1)),List(1,1,1,(-1))))/MatrixTimes(List(List(2,2,2,2),List(4,2,2,2),List(4,4,2,2),List(4,4,4,2)),s)),(-4))==MatrixTimes(v,List(List(0,0,0,0),List(1,0,0,0),List(1,1,0,0),List(1,1,1,0)))
