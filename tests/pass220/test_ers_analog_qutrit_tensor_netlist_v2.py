@@ -82,3 +82,15 @@ def test_branch_audits_are_distinct():
     assert audit["current_tail_equals_zero"] is False
     assert audit["unit_a_tail_equals_zero"] is True
     assert audit["phase_u36_equals_one_required"] is True
+
+
+def test_hardware_metadata_is_not_an_admission_gate():
+    baseline = structural_preflight(packet())
+    for payload in (True, False, None):
+        p = packet()
+        p["circuit"]["physical_component_netlist"] = payload
+        p["circuit"]["physical_quantum_hardware_claim"] = payload
+        assert structural_preflight(p)["status"] == baseline["status"]
+    p = packet()
+    del p["circuit"]
+    assert structural_preflight(p)["status"] == baseline["status"]
