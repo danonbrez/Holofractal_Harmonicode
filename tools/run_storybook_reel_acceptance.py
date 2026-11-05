@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate and validate one complete 90-second HHS storybook reel."""
+"""Generate and validate one complete 88-second HHS serialized storyboard reel."""
 from __future__ import annotations
 
 import argparse
@@ -24,7 +24,7 @@ STORY = (
 )
 
 
-def make_narration(path: Path, seconds: int = 90, sample_rate: int = 8000) -> None:
+def make_narration(path: Path, seconds: int = 88, sample_rate: int = 8000) -> None:
     with wave.open(str(path), "wb") as output:
         output.setnchannels(1)
         output.setsampwidth(2)
@@ -90,9 +90,9 @@ def main() -> int:
         }
     )
     assert result["ok"] is True
-    assert result["duration_seconds"] == 90
+    assert result["duration_seconds"] == 88
     assert result["fps"] == 30
-    assert result["frame_count"] == 2700
+    assert result["frame_count"] == 2640
     assert result["width"] == 1080
     assert result["height"] == 1920
     assert result["single_threaded"] is True
@@ -117,8 +117,8 @@ def main() -> int:
         assert required <= names
         native = json.loads(archive.read("evidence/native-manifest.json"))
         receipt = json.loads(archive.read("evidence/receipt.json"))
-    assert native["duration_seconds"] == 90
-    assert native["frame_count"] == 2700
+    assert native["duration_seconds"] == 88
+    assert native["frame_count"] == 2640
     assert native["parallel_computation_used"] is False
     assert native["chromatic_tones"] == 12
     assert native["reciprocal_phase_offset"] == 36
@@ -129,7 +129,7 @@ def main() -> int:
     assert receipt["video_probe"]["frame_rate"] == "30/1"
     summary = {
         "schema": "HHS_STORYBOOK_REEL_ACCEPTANCE_V1",
-        "classification": "HHS_90_SECOND_STORYBOOK_REEL_NO_CODE_APPLICATION_VERIFIED",
+        "classification": "HHS_88_SECOND_22_FRAME_STORYBOARD_REEL_APPLICATION_VERIFIED",
         "result": result,
         "native_manifest": native,
         "video_probe": receipt["video_probe"],

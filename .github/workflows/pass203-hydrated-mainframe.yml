@@ -57,7 +57,8 @@ jobs:
             tests/test_hhs_pass203_high_fidelity_render_v1.py \
             scripts/pass203_hydrated_mainframe_validation.py \
             scripts/pass203_high_fidelity_render_validation.py \
-            hhs_backend/application_ide_server.py
+            hhs_backend/application_ide_server.py \
+            hhs_backend/server.py
 
       - name: Run Pass 203 mainframe unit tests
         env:

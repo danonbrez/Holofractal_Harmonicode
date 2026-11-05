@@ -41,7 +41,7 @@ function installStorybookReelLauncher() {
   anchor.href = '/storybook-reel/';
   anchor.dataset.hhsStorybookReelLauncher = 'true';
   anchor.textContent = 'Storybook Reel';
-  anchor.title = 'Open the no-code 90-second storybook reel studio';
+  anchor.title = 'Open the no-code 88-second / 22-frame storybook reel studio';
   anchor.setAttribute('aria-label', 'Open Storybook Reel Studio');
   anchor.style.cssText = [
     'display:inline-flex', 'align-items:center', 'justify-content:center',

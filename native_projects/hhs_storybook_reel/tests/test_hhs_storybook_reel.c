@@ -24,9 +24,9 @@ static void test_default_geometry_and_scene_plan(void) {
     uint32_t i;
     assert(hhs_storybook_reel_default_config(&config) == HHS_STORYBOOK_REEL_OK);
     assert(config.fps == 30U);
-    assert(config.frame_count == 2700U);
-    assert(config.frame_count / config.fps == 90U);
-    assert(config.scene_count == 15U);
+    assert(config.frame_count == 2640U);
+    assert(config.frame_count / config.fps == 88U);
+    assert(config.scene_count == 22U);
     assert(hhs_storybook_reel_plan_scenes(story, strlen(story), &config, scenes, HHS_STORYBOOK_REEL_SCENES) == HHS_STORYBOOK_REEL_OK);
     for (i = 0U; i < config.scene_count; ++i) {
         assert(scenes[i].frame_count > 0U);

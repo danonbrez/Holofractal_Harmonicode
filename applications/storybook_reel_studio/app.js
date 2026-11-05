@@ -55,6 +55,7 @@ const state = {
   audioId: null,
   audioUrl: null,
   alignment: null,
+  voiceSync: null,
   defaults: null,
   templates: [],
   templateId: null,
@@ -232,7 +233,7 @@ function applyTemplate(templateId, {lock = true} = {}) {
   }
   $('#automatic-palette').checked = Number(template.palette_mode ?? 0) !== 2;
   updatePaletteControls();
-  if ($('#automatic-palette').checked) applyPalette(automaticPalette(Math.floor(state.previewSecond / 6)));
+  if ($('#automatic-palette').checked) applyPalette(automaticPalette(Math.floor(state.previewSecond / 4)));
   document.querySelectorAll('.template-card').forEach((card) => card.classList.toggle('active',card.dataset.template === templateId));
   readStyle();
   renderPreview();
@@ -373,7 +374,7 @@ function drawTextEffect(text,x,y,palette,settings,second,{title=false}={}) {
 function renderPreview() {
   const settings = readStyle();
   const second = state.previewSecond;
-  const scene = Math.floor(second / 6) % 15;
+  const scene = Math.floor(second / 4) % 22;
   const palette = currentPalette(scene);
   renderPlanes(palette);
   drawPixelWorld(palette,second);
@@ -391,24 +392,24 @@ function renderPreview() {
   const title = $('#title').value.toUpperCase().slice(0,Number(settings.title_max_chars || 20));
   drawTextEffect(title,titleX,titleY,palette,settings,second,{title:true});
   const segments = storySegments();
-  const caption = segments[Math.floor(second / 90 * segments.length) % segments.length];
+  const caption = segments[Math.floor(second / 88 * segments.length) % segments.length];
   const lines = wrapText(caption.toUpperCase(),Number(settings.caption_chars_per_line || 22)).slice(0,Number(settings.caption_lines || 2));
   lines.forEach((line,index) => drawTextEffect(line,captionX,captionY+index*(42+Number(settings.effect_depth||0)),palette,settings,second));
   context.fillStyle = 'rgba(5,3,4,.75)';context.fillRect(45,910,450,8);
-  context.fillStyle = palette.colors.w;context.fillRect(45,910,450*(second/90),8);
+  context.fillStyle = palette.colors.w;context.fillRect(45,910,450*(second/88),8);
   context.font='700 16px ui-monospace,monospace';context.fillStyle=palette.colors.x;context.fillText(`PAGE ${String(scene+1).padStart(2,'0')} · VM81`,42,682);
-  $('#time').textContent = `${formatTime(second)} / 01:30`;
-  $('#scrub').value = Math.min(89,Math.floor(second));
+  $('#time').textContent = `${formatTime(second)} / 01:28`;
+  $('#scrub').value = Math.min(88,Math.floor(second));
 }
 
 function formatTime(value) {
-  const seconds = Math.max(0,Math.min(90,Math.floor(value)));
+  const seconds = Math.max(0,Math.min(88,Math.floor(value)));
   return `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
 }
 
 function animationLoop(now) {
   if (state.playing && $('#audio-preview').paused) {
-    state.previewSecond = ((now - state.motionStarted) / 1000) % 90;
+    state.previewSecond = ((now - state.motionStarted) / 1000) % 88;
     renderPreview();
   }
   requestAnimationFrame(animationLoop);
@@ -417,6 +418,53 @@ function animationLoop(now) {
 function updateReadiness() {
   $('#count').textContent = $('#story').value.length;
   $('#generate').disabled = !(state.audioId && $('#story').value.trim());
+}
+
+async function generateVoiceover() {
+  hideError();
+  const voiceId = $('#voice-id').value.trim();
+  if (!voiceId) { showError('Enter an ElevenLabs voice ID.'); return; }
+  const text = $('#story').value;
+  if (!text.trim()) { showError('Narrative caption is required.'); return; }
+  $('#generate-voice').disabled = true;
+  $('#voice-sync-state').textContent = 'Synthesizing, measuring, and fitting narration to the 88-second master…';
+  try {
+    const response = await fetch(`${API}/voiceover/sync`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        text,
+        voice_id: voiceId,
+        model_id: $('#voice-model').value.trim() || 'eleven_multilingual_v2',
+        initial_speed: 1.0,
+        max_attempts: 3,
+        storyboard_markdown: $('#storyboard-markdown').value.trim() || null,
+      }),
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.detail?.reason || payload.detail || 'Voiceover generation failed');
+    state.audioId = payload.audio_id;
+    state.alignment = payload.alignment;
+    state.voiceSync = payload.voice_sync;
+    if (state.audioUrl?.startsWith('blob:')) URL.revokeObjectURL(state.audioUrl);
+    state.audioUrl = payload.voiceover_audio_url;
+    $('#audio-preview').src = payload.voiceover_audio_url;
+    $('#audio-card').hidden = false;
+    $('#audio-name').textContent = 'ElevenLabs fitted voiceover';
+    $('#audio-meta').textContent = `${payload.voice_sync.measured_narration_seconds}s speech · ${payload.voice_sync.tail_silence_seconds}s tail · exact provider timing`;
+    $('#alignment-state').textContent = 'Exact ElevenLabs character alignment loaded automatically';
+    $('#voice-download').href = payload.voiceover_audio_url;
+    $('#voice-sync-json').href = payload.voice_sync_json_url;
+    $('#voice-sync-csv').href = payload.voice_sync_csv_url;
+    $('#voice-sync-links').hidden = false;
+    $('#voice-sync-state').textContent = `Ready · speed ${payload.voice_sync.voice_speed} · 22 frame cues`;
+  } catch (error) {
+    showError(error.message);
+    $('#voice-sync-state').textContent = 'Voice sync failed';
+  } finally {
+    $('#generate-voice').disabled = false;
+    updateReadiness();
+  }
 }
 
 async function uploadAudio(file) {
@@ -460,7 +508,7 @@ async function loadRuntime() {
 }
 
 function generationStages() {
-  const stages = ['Validating narration and timing…','Rendering native platformer and sprite frames…','Applying reciprocal color planes and 3D captions…','Normalizing narration to 90 seconds…','Encoding H.264/AAC vertical MP4…','Packaging source, media, receipts, and evidence…'];
+  const stages = ['Validating narration and timing…','Rendering native platformer and sprite frames…','Applying reciprocal color planes and 3D captions…','Preserving narration timing on the 88-second master…','Encoding H.264/AAC vertical MP4…','Packaging source, media, receipts, and evidence…'];
   let index=0;
   $('#stage').textContent=stages[0];
   clearInterval(state.generationTimer);
@@ -508,6 +556,7 @@ function bindEvents() {
   });
   $('#title').addEventListener('input',renderPreview);
   $('#defaults').onclick=()=>{state.templateLocked=false;requestDefaults({forceTemplate:true});};
+  $('#generate-voice').onclick=generateVoiceover;
   $('#choose-audio').onclick=(event)=>{event.stopPropagation();$('#audio-input').click();};
   $('#audio-drop').onclick=()=>$('#audio-input').click();
   $('#audio-input').onchange=()=>uploadAudio($('#audio-input').files[0]);
@@ -528,10 +577,10 @@ function bindEvents() {
   };
   $('#scrub').oninput=()=>{
     state.previewSecond=Number($('#scrub').value);state.motionStarted=performance.now()-state.previewSecond*1000;
-    const audio=$('#audio-preview');if(audio.duration)audio.currentTime=state.previewSecond/90*audio.duration;renderPreview();
+    const audio=$('#audio-preview');if(audio.duration)audio.currentTime=Math.min(state.previewSecond,audio.duration);renderPreview();
   };
   $('#audio-preview').ontimeupdate=()=>{
-    const audio=$('#audio-preview');if(audio.duration){state.previewSecond=Math.min(90,audio.currentTime/audio.duration*90);renderPreview();}
+    const audio=$('#audio-preview');if(audio.duration){state.previewSecond=Math.min(88,audio.currentTime);renderPreview();}
   };
   $('#audio-preview').onpause=()=>{if(!state.playing)return;};
   $('#audio-preview').onended=()=>{state.playing=false;$('#play').textContent='▶ Motion';};

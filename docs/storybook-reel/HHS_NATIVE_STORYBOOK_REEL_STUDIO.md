@@ -7,7 +7,7 @@
 | Identifier | `HHS-NATIVE-VM81-STORYBOOK-REEL-STUDIO-V1` |
 | Primary application | `/storybook-reel/` |
 | Runtime API | `/api/runtime/storybook-reel` |
-| Canonical duration | 90 seconds |
+| Canonical duration | 88 seconds |
 | Canonical video | 1080×1920, 30 fps, H.264, yuv420p |
 | Canonical audio | narration-normalized 48 kHz mono, AAC transport |
 | Mutation authority | singleton VM81/HHS Runtime authority |
@@ -23,7 +23,7 @@ The complete product workflow requires no backend, programming, command-line, ga
 4. Optionally upload ElevenLabs alignment JSON.
 5. Review the contextual template and x/y/z/w color defaults.
 6. Adjust typography, 3D effect, motion, colors, phase origin, placement, caption density, and panel opacity while the vertical preview updates in real time.
-7. Select **Generate 90-second reel**.
+7. Select **Generate 88-second reel**.
 8. Review the generated video.
 9. Select **Download MP4 + source ZIP**.
 
@@ -53,7 +53,7 @@ The application verifies:
 - deterministic game replay;
 - non-mutating sprite and texture projections;
 - Hash72 and Hash216 story, state, frame, palette, timing, and receipt identities;
-- exactly 2,700 ordered frames for the canonical output;
+- exactly 2,640 ordered frames for the canonical output;
 - `parallel_computation_used: false`.
 
 ## Twelve-tone reciprocal color logic
@@ -96,6 +96,24 @@ Native effects support:
 
 Font scale, letter spacing, extrusion depth, motion speed, motion amplitude, title placement, caption placement, line length, line count, and panel opacity are adjustable.
 
+## Automated cinematic voiceover workflow
+
+The studio can generate the narration directly through ElevenLabs without exposing the provider key to the browser.
+
+1. Paste the exact narrative caption.
+2. Optionally paste the complete 22-frame storyboard Markdown.
+3. Enter an ElevenLabs voice ID and model.
+4. Select **Generate + sync 88-second voiceover**.
+5. The server synthesizes speech through the timestamped TTS endpoint and measures the returned character alignment.
+6. If the narration overruns the master, the runtime iteratively regenerates with a bounded native ElevenLabs speed adjustment. It never accepts spoken audio that crosses 88.000 seconds.
+7. If narration ends early, the remaining master time is preserved as silence rather than time-stretching the voice.
+8. Download the original voice stem, JSON timing manifest, or DAW/NLE cue CSV.
+9. The cue manifest binds every 4-second visual window to overlapping narration, word timestamps, pauses, storyboard label, full image prompt, and transition anchor when storyboard Markdown was supplied.
+
+The backend reads `ELEVENLABS_API_KEY` from server environment state. The secret is never embedded in frontend JavaScript or returned in API responses.
+
+The generated voice stem is preserved at provider timing. FFmpeg may resample to 48 kHz and pad or trim the master container boundary, but it does not use `atempo` to stretch a fitted narration.
+
 ## Narration synchronization
 
 Synchronization uses the exact matching text and uploaded audio.
@@ -106,7 +124,7 @@ Priority order:
 2. uploaded word or segment start/end alignment;
 3. deterministic punctuation-weighted duration fitting.
 
-External decimal timestamps are parsed into rational values and converted to exact integer frame indices. The uploaded narration is time-normalized to the canonical 90-second duration. The fallback is explicitly classified as duration-fitted rather than exact transcription alignment.
+External decimal timestamps are parsed into rational values and converted to exact integer frame indices. The uploaded narration preserves measured provider timing and is padded or trimmed only at the 88-second master boundary. The fallback is explicitly classified as duration-fitted rather than exact transcription alignment.
 
 ## External dependency boundary
 
@@ -148,7 +166,7 @@ The dedicated hosted workflow must pass:
 - visual-server route precedence;
 - no-code studio reachability;
 - raw audio upload and inspection;
-- full 90-second generation;
+- full 88-second generation;
 - ffprobe codec, dimensions, frame rate, audio, and duration checks;
 - ZIP content and receipt checks;
 - evidence artifact upload.

@@ -163,7 +163,7 @@ static int hhs_write_manifest(
         "  \"ffmpeg_required_only_for_mp4_and_audio_codec_transport\": true\n"
         "}\n",
         config->fps == HHS_STORYBOOK_REEL_FPS && config->frame_count == HHS_STORYBOOK_REEL_FRAME_COUNT
-            ? "HHS_90_SECOND_STORYBOOK_REEL_NATIVE_ABI_VERIFIED"
+            ? "HHS_88_SECOND_22_FRAME_STORYBOARD_REEL_NATIVE_ABI_VERIFIED"
             : "HHS_STORYBOOK_REEL_DIAGNOSTIC_NATIVE_ABI_VERIFIED",
         hhs_storybook_reel_status_name((HHSStorybookReelStatus)render->status),
         render->status,
