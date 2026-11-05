@@ -1,50 +1,38 @@
-# Pass 220 V84 — Reciprocal projection and mobile particle navigation checkpoint
+# Pass 220 — Reciprocal 2D GUI view correction (2026-11-05)
 
-**Status:** candidate implementation on checkpoint branch; syntax checks of standalone v84 passed; browser WebGL, exact-native interface, and production checks are not claimed.
+**Status:** design/checkpoint only. No new 2D GUI implementation has been validated in this PR.
 
-## Source lineage
+## Correction of previous checkpoint
 
-- Repository-authoritative seed: `examples/ParticleSimulation.html` (GitHub main before this PR).
-- Cumulative local inspection surface: `ParticleSimulation_v83_triangle_membrane_directional_signals.html`, extended into `ParticleSimulation_v84_mobile_particle_navigation.html`.
-- **Important lineage gap:** the standalone v83 additions (address-indexed GPU registry, directional membrane light communication, replay/export/console changes) have not been reconciled into the earlier repository example. This PR adds a compatible observation-only mobile navigation checkpoint to the existing example. Do **not** treat this PR as a full v83/v84 replacement or proof of whole-feature parity. Preserve both lineages pending additive integration and regression tests.
+The 3D particle scene is already the working interaction/control surface. Do not alter its camera controls, mobile gestures, OrbitControls event handling, chase camera, physics, constructor, Conway, or tesseract. The previous V84 touch-navigation injection was incorrect and has been reverted byte-for-byte from `examples/ParticleSimulation.html`.
 
-## Design contract
+The requested feature is the **user-facing 2D GUI interface view**: one conventional screen-print display area that reads the existing phase-addressed nucleus/outer-membrane relationship and draws a continuous wraparound image with full color, holographic depth, fluidic color gradients and topologically inverted hyperbolic light/shadow. The 3D particle scene remains the established navigation/selection source; it must not acquire another gesture controller.
 
-The 3D particle field is the observation/navigation control surface. The user-facing reciprocal boundary can serve as one wraparound 2D screen-print frame, with depth/color/hyperbolic inverse shadow-light passes operating only as display projections. Neither viewpoint manipulation nor display reparameterization is permitted to modify VM81/Hash72/Hash216 authority, the physics state machine, the Conway/tesseract reference clocks, the Poincaré–Penrose coupling, particle momentum or constructor state.
+## Projection design
 
-A planar half-turn relationship may be expressed as `R(θ + π) = -R(θ)` for the two visual phase frames. This does not replace the full typed, ordered native reciprocal constraints. Camera roll, orbit, pan and zoom are observation transforms and must not be written back as physics phase.
+- The 2D display consumes existing authoritative/cached state and the existing camera/selection state. It cannot write to physics, Conway, tesseract, VM81, Hash72/Hash216 authority, or particle momentum.
+- Nucleus/boundary reciprocal XY phase orientation is inherited from native addressed transforms. The planar half-turn identity `R(θ+π)=-R(θ)` is a display relationship only and does not independently certify all typed native reciprocal constraints.
+- The wraparound seam must be continuous in UV, phase, depth and color. Display scaling or rotation changes only the observation projection.
+- GUI frame / text / symbol legibility is the foreground surface; 3D function-graph depth, transparent lemma shells, chromatic RGBY/liquid-light fields and inverted hyperbolic shading appear as subpasses of that **same** display target.
+- Per-object sublayers share native object IDs/addresses rather than spawning surrogate particles or new motion systems.
+- Liquid-light directional membrane communication stays bound to existing triangular collision boundaries; no synthetic release stream.
+- One 2D output target is sufficient for live display and offline export; expensive graphics work must not alter physics tick pacing or omit authoritative physics states.
+- No unsupported assertion that apparently observed proof documents/lemmas are address-verified: visible patterns need reproducible address/receipt correlation.
 
-## Implemented navigation checkpoint
+## Existing surfaces to inspect before implementation
 
-- Existing OrbitControls: one-finger orbit, two-finger dolly/pan.
-- Added two-finger twist: camera-only roll; no native phase update.
-- Added mobile double tap: nearest existing addressed particle focus; existing carrier data rather than a new particle system.
-- Added long press: read-only particle identity, layer, cell, phase and position inspection via `hhs:mobile-inspect` event.
-- Added `window.HHSMobileNavigation` read-only state and view reset.
-- Maintained chase-camera interoperability and existing controls.
-- No new render object, emitter, independent timeline or physics update is created.
+- `apps/unified_gui/` — connected 2D GUI projection surface.
+- `examples/ParticleSimulation.html` — canonical WebGL particle scene, controls remain unchanged.
+- `contracts/pass220/PASS_220_I041_CANONICAL_HTML_SEED_HOLOGRAPHIC_PIXEL_SPRITE_V1.md`.
+- `HHS_PASS_179_NATIVE_EXACT_GRAPHICS_ANIMATION_SHADER_MULTIMODAL_RENDERING_LIBRARY.md`.
+- The cumulative local v83 standalone HTML is distinct from canonical main and is not incorporated into this PR.
 
-## Forward display architecture (specification only, not yet integrated)
+## Required implementation and acceptance (not yet met)
 
-1. Native address-to-boundary reciprocity mapping.
-2. Single wraparound 2D boundary surface/frame.
-3. Holographic function-graph depth projection.
-4. Nested lemma-shell transparency with address provenance.
-5. Phase-addressed RGBY/liquid-light graphics.
-6. Hyperbolically inverted light/shadow rendering.
-7. Object-local animated graphics sublayers.
-8. Nucleus GUI projection; preserve unique physical particle identities.
-9. Directional membrane communication tied to triangular boundary light responses, not synthetic particle release.
+1. Identify existing GUI/surface contracts, view composition APIs, and present controls before adding code.
+2. Build/bind a single 2D frame to existing phase-addressed rendering products; do not inject touch handlers into the 3D scene.
+3. Demonstrate seam continuity, reciprocal alignment, depth/color/inversion passes and view-only interaction.
+4. Verify no change in physics trace, Conway/tesseract transition histories, particle count, constructors, existing controls, 60 Hz rendering behavior, and offline export coverage.
+5. Test in an actual browser/WebGL runtime and record receipts before declaring feature complete.
 
-Only the navigation enhancement is implemented in the repository HTML in this checkpoint. Do not claim the nine-pass UI is already completed.
-
-## Validation and acceptance gates
-
-- Standalone v84 was locally parsed: all 19 executable inline JavaScript blocks passed `node --check`; the 88 original HTML element IDs are retained.
-- Native repository example has not been browser-rendered or fully benchmarked by this checkpoint.
-- Pending: mobile touch gesture real-device tests; WebGL runtime initialization; confirmation that OrbitControls event listeners and custom gestures coexist; visual reciprocity and parallax checks; end-to-end screenshot/video comparison with v83; comprehensive phase-state invariants and physics trace parity; full CI/production evidence.
-- Do not merge or deploy as authoritative closed behavior without the necessary review and validation.
-
-## Follow-on
-
-Merge the cumulative v83 graphical paths into the repository artifact only by verified additive integration, preserving frozen layers and all prior controls. Then implement and test the shared address-indexed reciprocal 2D display surface and depth/shadow/color passes, with export/live rendering isolated from physics.
+This checkpoint documents the corrected design intent; it does not claim feature delivery or production validation.
