@@ -1,0 +1,1063 @@
+{
+  "schema": "HHS_HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1",
+  "version": 1,
+  "source": {
+    "path": "docs/course/HARMONICODE_Algebra_Course.md",
+    "git_blob_sha": "83c3f2ae9e90f0481841c707c3951c160821dcc6",
+    "range": "0..123",
+    "module_count": 124,
+    "numbering": "inclusive"
+  },
+  "authority": {
+    "course_source_is_native_execution": false,
+    "openai_cross_reference_is_equivalence_proof": false,
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_minted": false,
+    "canonical_hash216_hydration": false
+  },
+  "corpora": {
+    "hhs_lemma": "formal/lemmas/pass_144/LEMMA_CORPUS.json",
+    "hhs_axiom": "docs/HARMONICODE_AXIOM_AND_PROJECTION_REGISTRY.md",
+    "whitepaper_source_freeze": "contracts/pass220/PASS_220_WHITEPAPER_CORPUS_SOURCE_FREEZE_V1.json",
+    "openai_i078": "contracts/pass220/PASS_220_I078_OPENAI_MATH_CORPUS_HYDRATION_V1.json",
+    "openai_i079": "data/pass220/openai_math_formalized_novelty_constructors_v1.json",
+    "openai_i080": "data/pass220/openai_math_hold_claim_constructors_v1.json",
+    "openai_i081": "data/pass220/openai_math_constructor_promotion_audit_i081_v1.json",
+    "openai_revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
+  },
+  "crosswalk": [
+    {
+      "course_module": 11,
+      "openai_anchor": "OPENAI_MATH_EUCLIDEAN_RAMSEY_3X3_9X9_SYMBOLIC_TENSOR",
+      "relation": "STRUCTURAL_OVERLAP_CANDIDATE",
+      "proof_equivalence": false
+    },
+    {
+      "course_module": 3,
+      "openai_anchor": "OPENAI_MATH_DIRICHLETL_72_CONDUCTOR",
+      "relation": "STRUCTURAL_OVERLAP_CANDIDATE",
+      "proof_equivalence": false
+    },
+    {
+      "course_module": 123,
+      "openai_anchor": "OPENAI_MATH_MATRIX_MULTIPLICATION_TENSOR_POWER",
+      "relation": "METHOD_OVERLAP_CANDIDATE",
+      "proof_equivalence": false
+    }
+  ],
+  "module123": {
+    "source_identity": "Lambda_123",
+    "constraint": "b²*OrderedQuadrupleFourth(x,y,z,w) == a⁴*u¹⁴⁴",
+    "commutative_collapse_allowed": false,
+    "phase_constraints": [
+      "u⁷²==1",
+      "u¹⁰⁸==-1",
+      "u¹⁴⁴==1"
+    ],
+    "witnesses": {
+      "rooted_chromatic_states": 2048,
+      "whole_tone_stabilizer_size": 6,
+      "whole_tone_distinct_transpositions": 2,
+      "q144_address_return": "144/144",
+      "h36_address_return": "5184/5184"
+    },
+    "inherited_projection_wolfram_receipt": "15/15 (recorded; inherited bridge only)",
+    "native_q4_semantics": "OPEN",
+    "new_lane5_execution": "NOT_EXECUTED",
+    "proof_promotion": false
+  },
+  "modules": [
+    {
+      "id": "HHC-M000",
+      "number": 0,
+      "title": "The Master Chain",
+      "source_heading": "# Module 0 — The Master Chain",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M001",
+      "number": 1,
+      "title": "The Gate: P^2 = pq + (q-p)P/(p+q)",
+      "source_heading": "# Module 1 — The Gate: P^2 = pq + (q-p)P/(p+q)",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M002",
+      "number": 2,
+      "title": "The Modulus Witness: t^3-t = m^2-m",
+      "source_heading": "# Module 2 — The Modulus Witness: t^3-t = m^2-m",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M003",
+      "number": 3,
+      "title": "The u-Shell Ladder and \\Delta",
+      "source_heading": "# Module 3 — The u-Shell Ladder and \\Delta",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M004",
+      "number": 4,
+      "title": "The Phase Quadruple (x, y, z, w) and q-1 Fermionic Quaternions",
+      "source_heading": "# Module 4 — The Phase Quadruple (x, y, z, w) and q-1 Fermionic Quaternions",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M005",
+      "number": 5,
+      "title": "The Reciprocal-Unit Quadrature (AB/-P^4) & The 3×3 ERS Phase Gear",
+      "source_heading": "# Module 5 — The Reciprocal-Unit Quadrature (AB/-P^4) & The 3×3 ERS Phase Gear",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M006",
+      "number": 6,
+      "title": "The Boxed Identity: Curvature = Surface = Payload",
+      "source_heading": "# Module 6 — The Boxed Identity: Curvature = Surface = Payload",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M007",
+      "number": 7,
+      "title": "The Witness Channels and \\lambda^2 = 1",
+      "source_heading": "# Module 7 — The Witness Channels and \\lambda^2 = 1",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M008",
+      "number": 8,
+      "title": "Shell Gates as Exponents: The Annihilation",
+      "source_heading": "# Module 8 — Shell Gates as Exponents: The Annihilation",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M009",
+      "number": 9,
+      "title": "Reductionism Fails Here (The 0/0 Theorem & Non-Boolean Passthrough)",
+      "source_heading": "# Module 9 — Reductionism Fails Here (The 0/0 Theorem & Non-Boolean Passthrough)",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M010",
+      "number": 10,
+      "title": "Prime-Seeded Counting Dynamics",
+      "source_heading": "# Module 10 — Prime-Seeded Counting Dynamics",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M011",
+      "number": 11,
+      "title": "The Rank-1 Foundation of the Rationals, the Lo Shu Crossbar & VM81 Prime-ISA",
+      "source_heading": "# Module 11 — The Rank-1 Foundation of the Rationals, the Lo Shu Crossbar & VM81 Prime-ISA",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M012",
+      "number": 12,
+      "title": "The 11D/1D Cosmological Transfer Law & Topological Folding Geometries",
+      "source_heading": "# Module 12 — The 11D/1D Cosmological Transfer Law & Topological Folding Geometries",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M013",
+      "number": 13,
+      "title": "Ephemeral Memory TTL Decay, Dark Matter Hash Exhaust & Deterministic Unification",
+      "source_heading": "# Module 13 — Ephemeral Memory TTL Decay, Dark Matter Hash Exhaust & Deterministic Unification",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M014",
+      "number": 14,
+      "title": "Receipt Discipline (Course Examination)",
+      "source_heading": "# Module 14 — Receipt Discipline (Course Examination)",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M015",
+      "number": 15,
+      "title": "Receipt boundary: an asserted closure is not an executed closure",
+      "source_heading": "# Module 15 — Receipt boundary: an asserted closure is not an executed closure",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M016",
+      "number": 16,
+      "title": "The 11-cell Pisot ladder and the release valve",
+      "source_heading": "# Module 16 — The 11-cell Pisot ladder and the release valve",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M017",
+      "number": 17,
+      "title": "Release-valve conservation and radial return",
+      "source_heading": "# Module 17 — Release-valve conservation and radial return",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M018",
+      "number": 18,
+      "title": "The balanced-trinary register",
+      "source_heading": "# Module 18 — The balanced-trinary register",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M019",
+      "number": 19,
+      "title": "The Dirac-spinor phase register and the complex-shell discipline",
+      "source_heading": "# Module 19 — The Dirac-spinor phase register and the complex-shell discipline",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M020",
+      "number": 20,
+      "title": "The spin register and the centered Lo Shu nucleus",
+      "source_heading": "# Module 20 — The spin register and the centered Lo Shu nucleus",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M021",
+      "number": 21,
+      "title": "The master witness chain: curvature, chirality, and tetrahedral count",
+      "source_heading": "# Module 21 — The master witness chain: curvature, chirality, and tetrahedral count",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M022",
+      "number": 22,
+      "title": "The circulant magic register",
+      "source_heading": "# Module 22 — The circulant magic register",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M023",
+      "number": 23,
+      "title": "Genesis admission and the Hash216 ladder",
+      "source_heading": "# Module 23 — Genesis admission and the Hash216 ladder",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M024",
+      "number": 24,
+      "title": "The Genesis chiral condition",
+      "source_heading": "# Module 24 — The Genesis chiral condition",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M025",
+      "number": 25,
+      "title": "The magic-constant ladder: 15, 34, 65, 111",
+      "source_heading": "# Module 25 — The magic-constant ladder: 15, 34, 65, 111",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M026",
+      "number": 26,
+      "title": "The nested matrix-power packet",
+      "source_heading": "# Module 26 — The nested matrix-power packet",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M027",
+      "number": 27,
+      "title": "The Matrix Power at the Antipode: the Nested HNAN Gate Event",
+      "source_heading": "# Module 27 — The Matrix Power at the Antipode: the Nested HNAN Gate Event",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M028",
+      "number": 28,
+      "title": "The 72-root Genesis chain: P⁴ = u⁷² at the signed tower",
+      "source_heading": "# Module 28 — The 72-root Genesis chain: P⁴ = u⁷² at the signed tower",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M029",
+      "number": 29,
+      "title": "The inverted quadruple gate: x⁴/(zw) == (−(yzw)²/y³)⁻²",
+      "source_heading": "# Module 29 — The inverted quadruple gate: x⁴/(zw) == (−(yzw)²/y³)⁻²",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M030",
+      "number": 30,
+      "title": "The macroscopic thesis: higher dimensions as phase curvature",
+      "source_heading": "# Module 30 — The macroscopic thesis: higher dimensions as phase curvature",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M031",
+      "number": 31,
+      "title": "The master curvature chain: mirror roots, the u¹⁸⁰ shell, and the boxed payload",
+      "source_heading": "# Module 31 — The master curvature chain: mirror roots, the u¹⁸⁰ shell, and the boxed payload",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M032",
+      "number": 32,
+      "title": "The self-consistency audit: the chain enforces the algebra it describes",
+      "source_heading": "# Module 32 — The self-consistency audit: the chain enforces the algebra it describes",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M033",
+      "number": 33,
+      "title": "The exponent-gate register and the 111/10 mirror ratio",
+      "source_heading": "# Module 33 — The exponent-gate register and the 111/10 mirror ratio",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M034",
+      "number": 34,
+      "title": "The register as a base-10 multiplicative-phase qubit entanglement equation",
+      "source_heading": "# Module 34 — The register as a base-10 multiplicative-phase qubit entanglement equation",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M035",
+      "number": 35,
+      "title": "Unit-circle closure: the four coordinates as polygon vertices",
+      "source_heading": "# Module 35 — Unit-circle closure: the four coordinates as polygon vertices",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M036",
+      "number": 36,
+      "title": "The Pisot spiral t³−t = P and the twin-offset unit P²−pq = 1",
+      "source_heading": "# Module 36 — The Pisot spiral t³−t = P and the twin-offset unit P²−pq = 1",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M037",
+      "number": 37,
+      "title": "Number theory forces topology: dimensions as stacked slices",
+      "source_heading": "# Module 37 — Number theory forces topology: dimensions as stacked slices",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M038",
+      "number": 38,
+      "title": "The squared-inverse tensor, the Fibonacci Hankel register, and the 34/33 exhaust gate",
+      "source_heading": "# Module 38 — The squared-inverse tensor, the Fibonacci Hankel register, and the 34/33 exhaust gate",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M039",
+      "number": 39,
+      "title": "The conservation law: expansion, folding collapse, quantization, mean phase closure, normalization",
+      "source_heading": "# Module 39 — The conservation law: expansion, folding collapse, quantization, mean phase closure, normalization",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M040",
+      "number": 40,
+      "title": "The mean-epsilon 36th-root equation and the contracted u⁷² ring",
+      "source_heading": "# Module 40 — The mean-epsilon 36th-root equation and the contracted u⁷² ring",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M041",
+      "number": 41,
+      "title": "Alignment as closure: the PASS_219 ethical invariants in the course's algebra",
+      "source_heading": "# Module 41 — Alignment as closure: the PASS_219 ethical invariants in the course's algebra",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M042",
+      "number": 42,
+      "title": "The cosmological reading: quantum mechanics as relativity's boundary condition",
+      "source_heading": "# Module 42 — The cosmological reading: quantum mechanics as relativity's boundary condition",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M043",
+      "number": 43,
+      "title": "Normalization to known constants: exact anchors and the α candidate with its residual budget",
+      "source_heading": "# Module 43 — Normalization to known constants: exact anchors and the α candidate with its residual budget",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M044",
+      "number": 44,
+      "title": "The normalization table: exact cells where the qudit equations must agree with experiment",
+      "source_heading": "# Module 44 — The normalization table: exact cells where the qudit equations must agree with experiment",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M045",
+      "number": 45,
+      "title": "The 5184/spinor basis as the correction substrate: the μ residual snaps to a native cell",
+      "source_heading": "# Module 45 — The 5184/spinor basis as the correction substrate: the μ residual snaps to a native cell",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M046",
+      "number": 46,
+      "title": "The Euclidean-mod ring closure: the 3-bit payload register evaluates exactly",
+      "source_heading": "# Module 46 — The Euclidean-mod ring closure: the 3-bit payload register evaluates exactly",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M047",
+      "number": 47,
+      "title": "The mod-72 Lo Shu payload matrix: exact spectrum, exact inverse, casus irreducibilis",
+      "source_heading": "# Module 47 — The mod-72 Lo Shu payload matrix: exact spectrum, exact inverse, casus irreducibilis",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M048",
+      "number": 48,
+      "title": "Spectral metadata: every scalar multiplier has a unique, recoverable fingerprint",
+      "source_heading": "# Module 48 — Spectral metadata: every scalar multiplier has a unique, recoverable fingerprint",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M049",
+      "number": 49,
+      "title": "Dyadic cell mapping: reciprocal binary-float offsets between integers",
+      "source_heading": "# Module 49 — Dyadic cell mapping: reciprocal binary-float offsets between integers",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M050",
+      "number": 50,
+      "title": "The Cartan gate matrix and the E8/Lo Shu metadata denominator",
+      "source_heading": "# Module 50 — The Cartan gate matrix and the E8/Lo Shu metadata denominator",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M051",
+      "number": 51,
+      "title": "The fiber gate matrix, the HNAN ratio site, and the exact rational mirror K",
+      "source_heading": "# Module 51 — The fiber gate matrix, the HNAN ratio site, and the exact rational mirror K",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M052",
+      "number": 52,
+      "title": "The energy-scaled phase matrix: exact shell factorization and integer mirror",
+      "source_heading": "# Module 52 — The energy-scaled phase matrix: exact shell factorization and integer mirror",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M053",
+      "number": 53,
+      "title": "The 248-weighted Euclidean-mod register: exact wrap payloads on the 72-shell",
+      "source_heading": "# Module 53 — The 248-weighted Euclidean-mod register: exact wrap payloads on the 72-shell",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M054",
+      "number": 54,
+      "title": "The cross-register reciprocal chain: exact evaluation, gates declared open",
+      "source_heading": "# Module 54 — The cross-register reciprocal chain: exact evaluation, gates declared open",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M055",
+      "number": 55,
+      "title": "The E8 ↔ a,b,c Lo Shu tensor dictionary: exact normalization correspondence",
+      "source_heading": "# Module 55 — The E8 ↔ a,b,c Lo Shu tensor dictionary: exact normalization correspondence",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M056",
+      "number": 56,
+      "title": "The grand chained register: exact layer evaluations and interface audit",
+      "source_heading": "# Module 56 — The grand chained register: exact layer evaluations and interface audit",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M057",
+      "number": 57,
+      "title": "The nonzero epsilon matrix is the E8↔HARMONICODE relational metadata tensor",
+      "source_heading": "# Module 57 — The nonzero epsilon matrix is the E8↔HARMONICODE relational metadata tensor",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M058",
+      "number": 58,
+      "title": "The 240-root extension: exact normalization spine, polynomial register, and open links",
+      "source_heading": "# Module 58 — The 240-root extension: exact normalization spine, polynomial register, and open links",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M059",
+      "number": 59,
+      "title": "Continuous phase transport ↔ discrete VM81 manifold: the orbital normalization contract",
+      "source_heading": "# Module 59 — Continuous phase transport ↔ discrete VM81 manifold: the orbital normalization contract",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M060",
+      "number": 60,
+      "title": "The one-input self-proving tensor: all number-theory metadata is constructed from P",
+      "source_heading": "# Module 60 — The one-input self-proving tensor: all number-theory metadata is constructed from P",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M061",
+      "number": 61,
+      "title": "Gatewise A=LHS/B=RHS execution: the expression network reaches P-consensus",
+      "source_heading": "# Module 61 — Gatewise A=LHS/B=RHS execution: the expression network reaches P-consensus",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M062",
+      "number": 62,
+      "title": "The successor orbit: every P-cell constructs the next P+3 cell",
+      "source_heading": "# Module 62 — The successor orbit: every P-cell constructs the next P+3 cell",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M063",
+      "number": 63,
+      "title": "Computational algebra as transcription of properties and limitations",
+      "source_heading": "# Module 63 — Computational algebra as transcription of properties and limitations",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M064",
+      "number": 64,
+      "title": "Symbolic algebraic logic: solutions are dynamic ratio relationships",
+      "source_heading": "# Module 64 — Symbolic algebraic logic: solutions are dynamic ratio relationships",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M065",
+      "number": 65,
+      "title": "Proof by constitutive relationships rather than scalar reduction",
+      "source_heading": "# Module 65 — Proof by constitutive relationships rather than scalar reduction",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M066",
+      "number": 66,
+      "title": "Hash216: the knowledge graph emitted by relational proof construction",
+      "source_heading": "# Module 66 — Hash216: the knowledge graph emitted by relational proof construction",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M067",
+      "number": 67,
+      "title": "Reversible self-validating feedback: outputs constrain the free inputs",
+      "source_heading": "# Module 67 — Reversible self-validating feedback: outputs constrain the free inputs",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M068",
+      "number": 68,
+      "title": "Two input presentations: singular identities or ordered reciprocal polarized products",
+      "source_heading": "# Module 68 — Two input presentations: singular identities or ordered reciprocal polarized products",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M069",
+      "number": 69,
+      "title": "The prime-numerator reciprocal tensor on the chiral plane",
+      "source_heading": "# Module 69 — The prime-numerator reciprocal tensor on the chiral plane",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M070",
+      "number": 70,
+      "title": "The E8 lattice identity: Lo Shu products generate the reciprocal tensor exactly",
+      "source_heading": "# Module 70 — The E8 lattice identity: Lo Shu products generate the reciprocal tensor exactly",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M071",
+      "number": 71,
+      "title": "Native constraint correction: Δ = 1, local AB = P⁴ = c⁴, and the balanced Fibonacci tensor",
+      "source_heading": "# Module 71 — Native constraint correction: Δ = 1, local AB = P⁴ = c⁴, and the balanced Fibonacci tensor",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M072",
+      "number": 72,
+      "title": "VM81 terminal synthesis: full native manifold closure",
+      "source_heading": "# Module 72 — VM81 terminal synthesis: full native manifold closure",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M073",
+      "number": 73,
+      "title": "Spectral addendum: the 74-cell complex register and its u⁷² quantization gate",
+      "source_heading": "# Module 73 — Spectral addendum: the 74-cell complex register and its u⁷² quantization gate",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M074",
+      "number": 74,
+      "title": "Unified radial-phase bridge: waves, octonions, Lo Shu, and Euclidean operators",
+      "source_heading": "# Module 74 — Unified radial-phase bridge: waves, octonions, Lo Shu, and Euclidean operators",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M075",
+      "number": 75,
+      "title": "Cell-resident matrix-generating equations and global proof-trace branch trees",
+      "source_heading": "# Module 75 — Cell-resident matrix-generating equations and global proof-trace branch trees",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M076",
+      "number": 76,
+      "title": "Irrational-constant matrix genesis through Euclidean-mod normalization",
+      "source_heading": "# Module 76 — Irrational-constant matrix genesis through Euclidean-mod normalization",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M077",
+      "number": 77,
+      "title": "Extended symmetry analysis of the irrational-constant generator",
+      "source_heading": "# Module 77 — Extended symmetry analysis of the irrational-constant generator",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M078",
+      "number": 78,
+      "title": "External scalar-projection audit: invariants and mode decomposition",
+      "source_heading": "# Module 78 — External scalar-projection audit: invariants and mode decomposition",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M079",
+      "number": 79,
+      "title": "External floating-point audit only: not the native tensor interpretation",
+      "source_heading": "# Module 79 — External floating-point audit only: not the native tensor interpretation",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M080",
+      "number": 80,
+      "title": "Canonical correction: a π-function generator in Lo Shu/HNAN tensor algebra",
+      "source_heading": "# Module 80 — Canonical correction: a π-function generator in Lo Shu/HNAN tensor algebra",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M081",
+      "number": 81,
+      "title": "Parallel cell constraints through the HNAN/Lo Shu/Sudoku qudit nucleus",
+      "source_heading": "# Module 81 — Parallel cell constraints through the HNAN/Lo Shu/Sudoku qudit nucleus",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M082",
+      "number": 82,
+      "title": "Universal reversible egress: every output reconstructs its input",
+      "source_heading": "# Module 82 — Universal reversible egress: every output reconstructs its input",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M083",
+      "number": 83,
+      "title": "Generic-constant universality: π as the irrational witness",
+      "source_heading": "# Module 83 — Generic-constant universality: π as the irrational witness",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M084",
+      "number": 84,
+      "title": "Local-step view only: information preservation before native origin-centered tree correction",
+      "source_heading": "# Module 84 — Local-step view only: information preservation before native origin-centered tree correction",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M085",
+      "number": 85,
+      "title": "Canonical HNAN: origin-centered split branching with coordinated cell transformations",
+      "source_heading": "# Module 85 — Canonical HNAN: origin-centered split branching with coordinated cell transformations",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M086",
+      "number": 86,
+      "title": "HNAN = Harmonic NAN: a reversible quantum-logic qudit gate",
+      "source_heading": "# Module 86 — HNAN = Harmonic NAN: a reversible quantum-logic qudit gate",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M087",
+      "number": 87,
+      "title": "Native 3×3 data type and the HNAN-padded E8 carrier",
+      "source_heading": "# Module 87 — Native 3×3 data type and the HNAN-padded E8 carrier",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M088",
+      "number": 88,
+      "title": "The operational Lo Shu permutation: HNAN diagonal, E8 anti-diagonal, and −1 cross",
+      "source_heading": "# Module 88 — The operational Lo Shu permutation: HNAN diagonal, E8 anti-diagonal, and −1 cross",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M089",
+      "number": 89,
+      "title": "Dual Lo Shu action: entrywise input normalization and ordered π-function egress",
+      "source_heading": "# Module 89 — Dual Lo Shu action: entrywise input normalization and ordered π-function egress",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M090",
+      "number": 90,
+      "title": "Clean Lo Shu-center normalization of the π-function egress",
+      "source_heading": "# Module 90 — Clean Lo Shu-center normalization of the π-function egress",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M091",
+      "number": 91,
+      "title": "External fiber audit of the Lo Shu normalization and 27/phase gates",
+      "source_heading": "# Module 91 — External fiber audit of the Lo Shu normalization and 27/phase gates",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M092",
+      "number": 92,
+      "title": "Nonzero quartic denominator constraint",
+      "source_heading": "# Module 92 — Nonzero quartic denominator constraint",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M093",
+      "number": 93,
+      "title": "Canonical input correction: enter through the c⁴/P⁴/AB/−BA constitutive gate",
+      "source_heading": "# Module 93 — Canonical input correction: enter through the c⁴/P⁴/AB/−BA constitutive gate",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M094",
+      "number": 94,
+      "title": "Qudit parameter ingress/egress: A output matrix, B input matrix",
+      "source_heading": "# Module 94 — Qudit parameter ingress/egress: A output matrix, B input matrix",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M095",
+      "number": 95,
+      "title": "Pre-ingress symbols are uninterpreted: the A/B/AB/BA closed-loop tensor identity",
+      "source_heading": "# Module 95 — Pre-ingress symbols are uninterpreted: the A/B/AB/BA closed-loop tensor identity",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M096",
+      "number": 96,
+      "title": "Whole-course simultaneous evaluator",
+      "source_heading": "# Module 96 — Whole-course simultaneous evaluator",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M097",
+      "number": 97,
+      "title": "Recursive demarcated cells: every “=” is a nested A,B,P identity modulus",
+      "source_heading": "# Module 97 — Recursive demarcated cells: every “=” is a nested A,B,P identity modulus",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M098",
+      "number": 98,
+      "title": "VM synthesis: a self-solving parameterized quantum-qudit tensor algebraic virtual machine",
+      "source_heading": "# Module 98 — VM synthesis: a self-solving parameterized quantum-qudit tensor algebraic virtual machine",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M099",
+      "number": 99,
+      "title": "Self-solving from output-matrix invariance and reversible input recovery",
+      "source_heading": "# Module 99 — Self-solving from output-matrix invariance and reversible input recovery",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M100",
+      "number": 100,
+      "title": "Complexity-class-invariant solution proof-trace matrix algebra",
+      "source_heading": "# Module 100 — Complexity-class-invariant solution proof-trace matrix algebra",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M101",
+      "number": 101,
+      "title": "Lane 5 exclusive ingress authority and the unified VM81 OS matrix",
+      "source_heading": "# Module 101 — Lane 5 exclusive ingress authority and the unified VM81 OS matrix",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M102",
+      "number": 102,
+      "title": "Integrated reversible admission and the Knowledge Graph deployment gate",
+      "source_heading": "# Module 102 — Integrated reversible admission and the Knowledge Graph deployment gate",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M103",
+      "number": 103,
+      "title": "Corrected VM81 C11 core: executed runtime and witness transport",
+      "source_heading": "# Module 103 — Corrected VM81 C11 core: executed runtime and witness transport",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M104",
+      "number": 104,
+      "title": "Authoritative-source preservation and verified forward merge",
+      "source_heading": "# Module 104 — Authoritative-source preservation and verified forward merge",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M105",
+      "number": 105,
+      "title": "VM81-supervised mathematical/GPU coprocessor boundary",
+      "source_heading": "# Module 105 — VM81-supervised mathematical/GPU coprocessor boundary",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M106",
+      "number": 106,
+      "title": "Ordered 4×4 MatrixTimes gate and quartic/quadratic antipodal modulus",
+      "source_heading": "# Module 106 — Ordered 4×4 MatrixTimes gate and quartic/quadratic antipodal modulus",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M107",
+      "number": 107,
+      "title": "MatrixTimes constraint variant with terminal `x²` modulus",
+      "source_heading": "# Module 107 — MatrixTimes constraint variant with terminal `x²` modulus",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M108",
+      "number": 108,
+      "title": "Exact replacement-form counting packet and claim boundary",
+      "source_heading": "# Module 108 — Exact replacement-form counting packet and claim boundary",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M109",
+      "number": 109,
+      "title": "Bilateral genesis, spectral, reciprocal, and semantic-bridge packet",
+      "source_heading": "# Module 109 — Bilateral genesis, spectral, reciprocal, and semantic-bridge packet",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M110",
+      "number": 110,
+      "title": "Ordered quotient packet with Lo Shu divisor contraction",
+      "source_heading": "# Module 110 — Ordered quotient packet with Lo Shu divisor contraction",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M111",
+      "number": 111,
+      "title": "Universal `A,B,P⁴` constraint tensor for rectangular operations",
+      "source_heading": "# Module 111 — Universal `A,B,P⁴` constraint tensor for rectangular operations",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M112",
+      "number": 112,
+      "title": "Exact `37!` scalar envelope of the universal quotient packet",
+      "source_heading": "# Module 112 — Exact `37!` scalar envelope of the universal quotient packet",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M113",
+      "number": 113,
+      "title": "Twelve-coordinate rational interpolation gate",
+      "source_heading": "# Module 113 — Twelve-coordinate rational interpolation gate",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M114",
+      "number": 114,
+      "title": "Strict Kronecker gate-state correction",
+      "source_heading": "# Module 114 — Strict Kronecker gate-state correction",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M115",
+      "number": 115,
+      "title": "E₈ theta closure, SL₂(Z) reciprocity, and native phase routing",
+      "source_heading": "## Module 115 — E₈ theta closure, SL₂(Z) reciprocity, and native phase routing",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M116",
+      "number": 116,
+      "title": "Nested exponent-gate chain with Pythagorean denominator closure",
+      "source_heading": "## Module 116 — Nested exponent-gate chain with Pythagorean denominator closure",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M117",
+      "number": 117,
+      "title": "Bilateral sector audit and Euler-fixed-point branch correction",
+      "source_heading": "## Module 117 — Bilateral sector audit and Euler-fixed-point branch correction",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M118",
+      "number": 118,
+      "title": "Polynomial-sum closure, 72-root gate matrix, and terminal zero-mode receipt",
+      "source_heading": "## Module 118 — Polynomial-sum closure, 72-root gate matrix, and terminal zero-mode receipt",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M119",
+      "number": 119,
+      "title": "Musical constraint cells as higher-level u⁷² harmonic-resonance number theory",
+      "source_heading": "## Module 119 — Musical constraint cells as higher-level u⁷² harmonic-resonance number theory",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M120",
+      "number": 120,
+      "title": "Phase-controlled HSV/RGB resonance projection",
+      "source_heading": "## Module 120 — Phase-controlled HSV/RGB resonance projection",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M121",
+      "number": 121,
+      "title": "Formal JSON analog-tensor circuit transcription",
+      "source_heading": "## Module 121 — Formal JSON analog-tensor circuit transcription",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M122",
+      "number": 122,
+      "title": "Expanded analog–qutrit netlist and exact branch audit",
+      "source_heading": "## Module 122 — Expanded analog–qutrit netlist and exact branch audit",
+      "status": "SOURCE_PRESERVED_VERIFICATION_NOT_REASSESSED",
+      "proof_admitted": false
+    },
+    {
+      "id": "HHC-M123",
+      "number": 123,
+      "title": "Ordered Q₄ correction and the generative H36/Q144 constraint lattice",
+      "source_heading": "## Module 123 — Ordered Q₄ correction and the generative H36/Q144 constraint lattice",
+      "status": "MIXED_LOCAL_WITNESSES_NATIVE_Q4_OPEN",
+      "proof_admitted": false
+    }
+  ]
+}
