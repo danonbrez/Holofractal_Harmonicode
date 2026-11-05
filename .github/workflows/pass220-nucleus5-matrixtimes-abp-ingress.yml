@@ -96,3 +96,20 @@ jobs:
           if /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_BADSPAN.spans; then
             echo "MISLOCATED_MATRIX_CELL_ACCEPTED"; exit 1
           fi
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          raw=Path("/tmp/nucleus5_TAMPERED.hhs").read_bytes()
+          lines=Path("/tmp/nucleus5_ONE_INPUT.spans").read_text().splitlines()
+          hdr=lines[0].split()
+          hdr[2]=sha256(raw).hexdigest()
+          lines[0]=" ".join(hdr)
+          first=lines[1].split()
+          start,end=int(first[4]),int(first[5])
+          first[6]=sha256(raw[start:end]).hexdigest()
+          lines[1]=" ".join(first)
+          Path("/tmp/nucleus5_FORGED.spans").write_text("\\n".join(lines)+"\\n")
+          PY
+          if /tmp/nucleus5_pass159_probe /tmp/nucleus5_TAMPERED.hhs /tmp/nucleus5_FORGED.spans; then
+            echo "REGENERATED_TAMPERED_MANIFEST_ACCEPTED"; exit 1
+          fi
