@@ -7,6 +7,7 @@ on:
       - "tests/test_pass220_nucleus5_source_topology_v1.py"
       - "hhs_runtime/hhs_pass220_nucleus5_source_topology_v1.py"
       - "tools/pass220/nucleus5_pass159_frontend_probe.c"
+      - "tools/pass220/nucleus5_native_span_manifest.py"
       - "tools/pass220/compare_nucleus5_pass159_identities.py"
       - ".github/workflows/pass220-nucleus5-matrixtimes-abp-ingress.yml"
   workflow_dispatch:
@@ -59,7 +60,31 @@ jobs:
               Path("/tmp/nucleus5_" + mode + ".hhs").write_bytes(
                   Nucleus5Source().native_compilation_source_bytes(mode))
           PY
+          python tools/pass220/nucleus5_native_span_manifest.py ONE_INPUT /tmp/nucleus5_ONE_INPUT.spans
+          python tools/pass220/nucleus5_native_span_manifest.py SUCCESSOR_INPUT /tmp/nucleus5_SUCCESSOR_INPUT.spans
           set -o pipefail
-          /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs | tee /tmp/nucleus5_ONE_INPUT.log
-          /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs | tee /tmp/nucleus5_SUCCESSOR_INPUT.log
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_ONE_INPUT.spans | tee /tmp/nucleus5_ONE_INPUT.log
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs /tmp/nucleus5_SUCCESSOR_INPUT.spans | tee /tmp/nucleus5_SUCCESSOR_INPUT.log
           python tools/pass220/compare_nucleus5_pass159_identities.py /tmp/nucleus5_ONE_INPUT.log /tmp/nucleus5_SUCCESSOR_INPUT.log
+      - name: Negative test — reject modified source and mislocated cell span
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: hhs_runtime/builds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source=Path('/tmp/nucleus5_ONE_INPUT.hhs').read_bytes()
+          assert source.count(b'3334608') >= 1
+          Path('/tmp/nucleus5_TAMPERED.hhs').write_bytes(source.replace(b'3334608', b'3334609', 1))
+          rows=Path('/tmp/nucleus5_ONE_INPUT.spans').read_text().splitlines()
+          row=rows[1].split()
+          row[4]=str(int(row[4])+1)
+          rows[1]=' '.join(row)
+          Path('/tmp/nucleus5_BADSPAN.spans').write_text('\n'.join(rows)+'\n')
+          PY
+          if /tmp/nucleus5_pass159_probe /tmp/nucleus5_TAMPERED.hhs /tmp/nucleus5_ONE_INPUT.spans; then
+            echo "TAMPERED_SOURCE_ACCEPTED"; exit 1
+          fi
+          if /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_BADSPAN.spans; then
+            echo "MISLOCATED_MATRIX_CELL_ACCEPTED"; exit 1
+          fi
