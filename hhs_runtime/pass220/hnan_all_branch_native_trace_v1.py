@@ -121,6 +121,7 @@ def inspect_all_native_hnan_branches(
             "native_lhs_node": claim.lhs_node,
             "native_rhs_node": claim.rhs_node,
             "native_relation": claim.relation,
+            "claim_flags": {key: int(getattr(claim, key)) for key in FLAGS},
             "decision": DECISIONS[output.decision],
             "native_reason_code": output.reason,
             "exact_rule_match": bool(output.exact_rule_match),
