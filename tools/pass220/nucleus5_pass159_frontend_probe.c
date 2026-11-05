@@ -48,7 +48,7 @@ static int verify_span_manifest(const char *path, const uint8_t *source, size_t 
         source_len != size || SHA256(source, size, digest) == NULL) goto done;
     for (i = 0; i < SHA256_DIGEST_LENGTH; ++i)
         (void)sprintf(digest_hex + 2U * i, "%02x", (unsigned)digest[i]);
-    digest_hex[64] = '\\0';
+    digest_hex[64] = '\0';
     if (strcmp(digest_hex, expected) != 0) goto done;
     while (fgets(line, sizeof(line), fp) != NULL) {
         if (line[0] == 'C' && line[1] == ' ') {
@@ -61,7 +61,7 @@ static int verify_span_manifest(const char *path, const uint8_t *source, size_t 
                 SHA256(source + start, end - start, digest) == NULL) goto done;
             for (i = 0; i < SHA256_DIGEST_LENGTH; ++i)
                 (void)sprintf(digest_hex + 2U * i, "%02x", (unsigned)digest[i]);
-            digest_hex[64] = '\\0';
+            digest_hex[64] = '\0';
             if (strcmp(digest_hex, expected) != 0) goto done;
             ++cell_count;
         } else if (line[0] == 'E' && line[1] == ' ') {
