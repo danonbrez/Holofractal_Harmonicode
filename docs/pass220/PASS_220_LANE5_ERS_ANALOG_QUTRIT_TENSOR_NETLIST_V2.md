@@ -44,3 +44,13 @@ The additive read-only witness module `hhs_runtime/pass220/ers_qutrit_exact_phas
 Focused validation: `python -m pytest -q tests/pass220/test_ers_analog_qutrit_tensor_netlist_v2.py tests/pass220/test_ers_qutrit_exact_phase_witness_v2.py`.
 
 Current scope: exact candidate witnesses only. The existing Pass 220 I076 ExactMatrixPower HIR hydration and I077 VM81 ExactMatrixPower execution are distinct inherited services to inspect for integration; neither is claimed as invoked by the new witness. Actual source-to-native C++/Lane 5 execution and replay remain outstanding.
+
+## I076/I077 typed binding extension — 2026-11-05
+
+New additive source binder: `hhs_runtime/pass220/ers_i076_i077_exact_power_binding_v2.py`. It imports the existing I076 `exact_matrix_power_hir_nodes()` and verifies the two inherited I077 source identities `MatrixPower[M_wz,x^2]`, `MatrixPower[M_xy,x^4]`, canonical Pass169 type, exact 4×2 shape, and row-major ordered source cells. Its output retains V2 CC7's **4×1 branch column as a distinct source node** and denies I077 dispatch on this shape absent a separately proved typed correspondence. It can validate existing I077 VM81 execution receipts, but never promotes them to CC7 admissions or mints receipts. No frozen implementation is modified.
+
+The existing I077 binding is source-bound to precisely two 4×2 nodes. CC7's four root branches must therefore be passed through an existing compatible `U_R` constructor identified by provenance or through a separately validated additive constructor; resizing/padding a column is prohibited.
+
+Tests: `python -m pytest -q tests/pass220/test_ers_analog_qutrit_tensor_netlist_v2.py tests/pass220/test_ers_qutrit_exact_phase_witness_v2.py tests/pass220/test_ers_i076_i077_exact_power_binding_v2.py`.
+
+This extension is a source-typed integration guard, **not** end-to-end CC7 native VM81 execution. Work remaining: identify the exact native `U_R` constructor path for 4×1 V2 input, bind the full equality-gate graph and guarded quotient chains, execute native admission, replay, and production verification.
