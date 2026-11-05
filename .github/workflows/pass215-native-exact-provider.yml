@@ -1,0 +1,124 @@
+name: Pass 215 Native Exact Generation Provider
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_backend/runtime/hhs_pass215_native_exact_generator_v1.py'
+      - 'hhs_backend/runtime/hhs_lane5_ethical_response_cycle_v1.py'
+      - 'tests/pass219/test_hhs_lane5_ethical_response_cycle_v1.py'
+      - 'hhs_backend/runtime/hhs_lane5_native_candidate_mediation_v1.py'
+      - 'hhs_backend/runtime/hhs_lane5_exact_offset_vm81_codec_v1.py'
+      - 'tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py'
+      - 'hhs_runtime/include/hhs_pass219_lane5_global_holographic_nucleus_1_34.h'
+      - 'hhs_runtime/c/hhs_pass219_lane5_global_holographic_nucleus_1_34.inc'
+      - 'tests/pass219/test_pass219_lane5_rna_vm5184_coupled_mediation_v1.c'
+      - 'tests/pass219/test_hhs_lane5_python_coupled_native_vm5184_v1.py'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py'
+      - 'tests/test_hhs_pass215_native_exact_generator_v1.py'
+      - 'tests/test_hhs_lane5_native_candidate_mediation_v1.py'
+      - 'docs/operations/restart/PASS_215_NATIVE_LANGUAGE_CONTRACT_REPAIR_20261009.md'
+      - 'tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py'
+      - '.github/workflows/pass215-native-exact-provider.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-provider-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test runtime
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Compile modified service and tests
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass215_native_exact_generator_v1.py \
+            hhs_backend/runtime/hhs_lane5_ethical_response_cycle_v1.py \
+            tests/pass219/test_hhs_lane5_ethical_response_cycle_v1.py \
+            hhs_backend/runtime/hhs_lane5_native_candidate_mediation_v1.py \
+            hhs_backend/runtime/hhs_lane5_exact_offset_vm81_codec_v1.py \
+            hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
+            hhs_backend/runtime/hhs_unified_language_model_fabric_v1.py \
+            tests/test_hhs_pass215_native_exact_generator_v1.py \
+            tests/test_hhs_lane5_native_candidate_mediation_v1.py \
+            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py
+      - name: Execute Pass 215 exact provider scoped regressions
+        run: python -m pytest -q tests/test_hhs_pass215_native_exact_generator_v1.py
+      - name: Execute Lane 5 native ABI scope regressions
+        run: python -m pytest -q tests/test_hhs_lane5_native_candidate_mediation_v1.py
+      - name: Verify native Lean and original Pass 219 ethical response cycle
+        run: python -m pytest -q tests/pass219/test_hhs_lane5_ethical_response_cycle_v1.py
+      - name: Execute causal contract repair scoped regressions
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i009_native_causal_rag_generation.py \
+            -k 'optional_retrieval or required_causal_generation'
+      - name: Verify inherited Pass 148 semantic membrane is importable
+        run: |
+          python - <<'PY'
+          from hhs_runtime.pass148.semantics import analyze_expression
+          print("HHS_PASS148_SEMANTIC_IMPORT_OK")
+          PY
+      - name: Preserve real-model acceptance as pending when no pinned model exists
+        run: |
+          printf '%s\n' 'PASS215_REPLAY_NOT_CLAIMED: the 6151b... pinned GGUF model is not installed in this CI workflow.'
+          printf '%s\n' 'Operational acceptance requires a real pinned GGUF exact executor run on the model host.'
+
+  native-rna-lane5-continuity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+      - name: Compile existing exact C/C++ RNA and Lane 5 runtime
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+      - name: Run original RNA-VM5184 ABI regressions
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_vm5184_abi_1_33.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/rna-original
+          /tmp/rna-original
+      - name: Run coupled native RNA and Lane 5 mediation regressions
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_lane5_rna_vm5184_coupled_mediation_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/rna-lane5
+          /tmp/rna-lane5
+      - name: Exercise typed Python -> compiled RNA/Lane 5 mediation
+        env:
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python3 -m pip install --disable-pip-version-check --break-system-packages pytest
+          python3 -m pytest -q tests/pass219/test_hhs_lane5_python_coupled_native_vm5184_v1.py
+      - name: Validate canonical I001 5184-char to native VM81 lossless offset profile
+        env:
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python3 -m pytest -q tests/pass220/test_hhs_lane5_exact_offset_vm81_codec_v1.py
+      - name: Verify native coupled symbol and singleton signed VM81 boundary
+        run: |
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so > /tmp/hhs-lane5-symbols
+          grep -q ' hhs_exact_pass219_lane5_mediate_rna_vm5184$' /tmp/hhs-lane5-symbols
+          grep -q ' hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt$' /tmp/hhs-lane5-symbols
+          grep -q ' hhs_exact_pass219_vm81_environment_admit_signed$' /tmp/hhs-lane5-symbols
+          ! grep -q ' hhs_exact_pass219_admit_composed$' /tmp/hhs-lane5-symbols

@@ -1,0 +1,64 @@
+name: Pass 220 I086 Ordered VM5184 Hash72 Matrix Quotient
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py'
+      - 'formal/wolfram/pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.wl'
+      - 'docs/pass220/PASS_220_I086_ORDERED_VM5184_HASH72_MATRIX_QUOTIENT.md'
+      - '.github/workflows/pass220-i086-ordered-matrix-hash72.yml'
+      - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
+      - 'hhs_runtime/hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py'
+      - 'hhs_runtime/hhs_pass220_i071_shared_root_phase_gear_loop_closure_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typed-matrix-vm5184-hash72:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact inherited runtime dependencies
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Syntax-check new typed matrix and inherited proof lineage
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py \
+            tests/pass220/test_hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py \
+            hhs_runtime/hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py
+      - name: Original source-bound HNAN and I070/I071 geometry regression
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i082_chiral_bilateral_loshu_bifurcation_v1.py \
+            tests/pass220/test_hhs_pass220_i083_ordered_cubic_law_one_i082_bridge_v1.py \
+            tests/pass220/test_hhs_pass220_i084_x4_ordered_unit_quotient_v1.py \
+            tests/pass220/test_hhs_pass220_i085_x_over_u_rational_vm81_hash72_crosswalk_v1.py \
+            tests/pass220/test_hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py
+      - name: Original Pass186 native x86_64 ABI full 5184 source crosswalk
+        run: |
+          cc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass186_x64_vm81_q144/include \
+            native_projects/hhs_pass186_x64_vm81_q144/src/hhs_pass186_x64_vm81_q144_abi.c \
+            tests/pass220/test_pass220_i085_x_over_u_native_pass186_crosswalk.c \
+            -o /tmp/hhs_i086_pass186
+          /tmp/hhs_i086_pass186
+      - name: Preserve symbolic source and honest native division boundary
+        run: |
+          test -s formal/wolfram/pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.wl
+          grep -q 'native_division_by_noncommutative_matrix_proven"->False' \
+            formal/wolfram/pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.wl
+          grep -q 'wx_native_extension_admitted"->False' \
+            formal/wolfram/pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.wl
+          echo 'I086 Wolfram kernel was executed separately; original native matrix quotient remains held.'

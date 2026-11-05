@@ -1,0 +1,77 @@
+name: Pass 220 V6 Ordered XYZW Lo Shu exact projection
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/pass220/PASS_220_V6_XYZW_LOSHU_20261009.harmonicode'
+      - 'hhs_runtime/hhs_pass220_v6_loshu_projection_v1.py'
+      - 'tests/pass220/test_pass220_v6_loshu_projection_v1.py'
+      - '.github/workflows/pass220-v6-xyzw-loshu.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-v6-projection:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest fastapi httpx websockets
+      - name: Test exact polynomial 3x3, original ordered source, and negative mutations
+        run: python -m pytest -q tests/pass220/test_pass220_v6_loshu_projection_v1.py -k 'not test_projection_artifact_replay'
+      - name: Materialize source-bound exact Lo Shu coordinate projection
+        run: |
+          python -m hhs_runtime.hhs_pass220_v6_loshu_projection_v1 \
+            --source contracts/pass220/PASS_220_V6_XYZW_LOSHU_20261009.harmonicode --output artifacts/pass220/v6-loshu/projection.json
+      - name: Replay exact nine-address projection
+        run: python -m pytest -q tests/pass220/test_pass220_v6_loshu_projection_v1.py
+      - name: Compile inherited C runtime and mediate full UTF8 source through Lane5
+        run: |
+          make c-abi
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import json
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          source=Path('contracts/pass220/PASS_220_V6_XYZW_LOSHU_20261009.harmonicode').read_bytes()
+          receipt=Lane5IngressMediator().mediate(source,provenance="pass220:V6-verbatim-xyzw-loshu")
+          assert receipt['workload_sha256']==sha256(source).hexdigest()
+          assert receipt['candidate_only'] is True
+          assert receipt['canonical_vm81_mutation_authority'] is False
+          assert receipt['canonical_hash216_authority'] is False
+          assert receipt['requires_signed_environmental_vm81_admission'] is True
+          record={'source_sha256':sha256(source).hexdigest(),
+                  'source_bytes':len(source),'lane5_candidate':receipt,
+                  'signed_vm81_commit':False,'all_40_gate_truths':False}
+          Path('artifacts/pass220/v6-loshu/lane5_candidate.json').write_text(
+              json.dumps(record,sort_keys=True,indent=2)+'\n')
+          print('V6_FULL_UTF8_SOURCE_LANE5_CANDIDATE_ACCEPTED')
+          PY
+      - name: Ensure no false escalation from Lo Shu projection
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          o=json.loads(Path('artifacts/pass220/v6-loshu/projection.json').read_text())
+          assert o['matrix']==[[4,9,2],[3,5,7],[8,1,6]]
+          assert o['zero_centered_matrix']==[[-1,4,-3],[-2,0,2],[3,-4,1]]
+          assert not o['all_40_native_boolean_gates_proven']
+          assert not o['native_negative_List_mask_proven']
+          assert not o['signed_vm81_admission_verified']
+          print('V6_CONDITIONAL_LOSHU_PROJECTION_GREEN_VM81_PROOF_PENDING')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v6-xyzw-loshu-${{ github.sha }}
+          path: artifacts/pass220/v6-loshu/
+          if-no-files-found: warn
+          retention-days: 90

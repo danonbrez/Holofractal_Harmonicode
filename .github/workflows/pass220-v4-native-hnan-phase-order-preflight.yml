@@ -1,0 +1,73 @@
+name: Pass 220 V4 Native HNAN Phase Order Preflight
+
+on:
+  pull_request:
+    paths:
+      - 'tools/pass220/pass220_v4_native_hnan_phase_order_preflight.c'
+      - 'tests/pass220/test_pass220_v4_native_hnan_phase_order_preflight.py'
+      - '.github/workflows/pass220-v4-native-hnan-phase-order-preflight.yml'
+      - 'contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-hnan-v4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Exact source and native ABI authority-negative preflight
+        run: python -m pytest -q tests/pass220/test_pass220_v4_native_hnan_phase_order_preflight.py -k 'not test_native_hnan_inherited_rules_and_negative_checks'
+      - name: Build existing shared Runtime ABI, no source mutation
+        run: make c-abi
+      - name: Compile native inherited HNAN/Jordan proof preflight
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include tools/pass220/pass220_v4_native_hnan_phase_order_preflight.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-v4-hnan-native
+      - name: Invoke inherited real 15-rule graph, ordered distinctions and negative gates
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/v4-hnan-phase
+          /tmp/pass220-v4-hnan-native contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode \
+            | tee artifacts/pass220/v4-hnan-phase/hnan_preflight.txt
+          grep -Fx 'hnan_15_rule_mask=0x7FFF' artifacts/pass220/v4-hnan-phase/hnan_preflight.txt
+          grep -Fx '40_boolean_truth_witnesses=UNRESOLVED' artifacts/pass220/v4-hnan-phase/hnan_preflight.txt
+      - name: Verify source-specific native receipt and countertests
+        run: python -m pytest -q tests/pass220/test_pass220_v4_native_hnan_phase_order_preflight.py
+      - name: Fail-closed if ordered product is mutated
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          src=Path("contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode").read_bytes()
+          assert b"y*x*w*z" in src
+          Path("/tmp/pass220-v4-hnan-mutant.harmonicode").write_bytes(
+              src.replace(b"y*x*w*z", b"x*y*w*z", 1))
+          PY
+          if /tmp/pass220-v4-hnan-native /tmp/pass220-v4-hnan-mutant.harmonicode > /tmp/pass220-v4-hnan-mutant.out; then
+            echo MUTATED_SOURCE_MUST_FAIL_CLOSED
+            exit 1
+          fi
+          grep -Fx V4_HNAN_SOURCE_IDENTITY_REJECTED /tmp/pass220-v4-hnan-mutant.out
+          echo HNAN_MUTATED_PHASE_ORDER_REJECTED
+      - name: Upload bounded native source-bound HNAN proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-v4-native-hnan-phase-${{ github.sha }}
+          path: artifacts/pass220/v4-hnan-phase/
+          if-no-files-found: warn
+          retention-days: 90

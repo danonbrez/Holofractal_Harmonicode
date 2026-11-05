@@ -1,0 +1,54 @@
+name: Pass 220 V5 Typed WHERE Proof Obligations
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_20261009.harmonicode'
+      - 'contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_OUTER_COMPONENT_20261009.harmonicode'
+      - 'hhs_runtime/hhs_pass220_v5_where_proof_obligations_v1.py'
+      - 'tests/pass220/test_pass220_v5_where_proof_obligations_v1.py'
+      - '.github/workflows/pass220-v5-where-proof-obligations-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-bound-where:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - run: python -m pytest -q tests/pass220/test_pass220_v5_where_proof_obligations_v1.py -k 'not test_replay_written_obligation_evidence'
+      - name: Materialize full-source UTF8 where and carrier relation obligations
+        run: |
+          python -m hhs_runtime.hhs_pass220_v5_where_proof_obligations_v1 \
+            --full contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_20261009.harmonicode --outer contracts/pass220/PASS_220_ORDERED_TENSOR_AB_PHASE_V5_OUTER_COMPONENT_20261009.harmonicode \
+            --out artifacts/pass220/v5-where/obligations.json
+      - run: python -m pytest -q tests/pass220/test_pass220_v5_where_proof_obligations_v1.py
+      - name: Prevent candidate-obligation promotion to signed VM81 proof
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          r=json.loads(Path('artifacts/pass220/v5-where/obligations.json').read_text())
+          assert len(r['where_obligations'])==5
+          assert r['outer_boolean_gate_count']==40
+          assert not r['where_native_semantics_proven']
+          assert not r['all_40_gate_truths_proven']
+          assert not r['signed_vm81_admission_verified']
+          print('V5_SOURCE_PROVENANCE_WITHOUT_FALSE_TRUTH_PROMOTION')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v5-where-obligations-${{ github.sha }}
+          path: artifacts/pass220/v5-where/
+          if-no-files-found: warn
+          retention-days: 90

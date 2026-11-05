@@ -117,6 +117,44 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediate_candidate(
     const HHSExactPass219Lane5MediationRequestV1 *request,
     HHSExactPass219Lane5MediationReceiptV1 *out_receipt
 );
+/*
+ * Coupled RNA/VM5184 -> Lane 5 native candidate boundary.
+ *
+ * Dispatches the existing C++ CoreHolographicRNACellWall through the public
+ * RNA 1.33 ABI, then binds the same computed prepared tensor and decision
+ * signatures to the caller's typed Lane 5 mediation request. Refuses any
+ * substitution, disabled preflight, or failure. Candidate-only, zero mutation.
+ *
+ * Caller remains responsible for authenticating other supplied signature
+ * lineages (Hash216 parent, BigInt, hydration, capability, learning stage).
+ * This additive boundary must not be mistaken for signed VM81 admission.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *transition,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    HHSExactPass219Holo4PreparedV1 *out_prepared,
+    HHSExactPass219Holo4DecisionV1 *out_decision,
+    HHSExactPass219Lane5MediationReceiptV1 *out_receipt
+);
+
+/*
+ * Python/foreign ABI compact receipt projection. Same native RNA → Lane 5
+ * verification; prepared/decision are held within trusted native stack,
+ * never copied into an untrusted model or response payload.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_lane5_mediate_rna_vm5184_receipt(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *transition,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    const HHSExactPass219Lane5MediationRequestV1 *request,
+    HHSExactPass219Lane5MediationReceiptV1 *out_receipt
+);
 
 #ifdef __cplusplus
 }

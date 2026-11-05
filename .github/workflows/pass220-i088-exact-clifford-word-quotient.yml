@@ -1,0 +1,63 @@
+name: Pass 220 I088 Exact Clifford Word Matrix Quotient
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i088_exact_clifford_word_inverse_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i088_exact_clifford_word_inverse_v1.py'
+      - 'formal/wolfram/pass220_i088_exact_clifford_word_inverse_v1.wl'
+      - 'docs/pass220/PASS_220_I088_EXACT_CLIFFORD_WORD_INVERSE.md'
+      - '.github/workflows/pass220-i088-exact-clifford-word-quotient.yml'
+      - 'hhs_runtime/pass219/real_clifford_morita_witness.py'
+      - 'hhs_runtime/pass219/phase_clifford_intertwiner.py'
+      - 'hhs_runtime/hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py'
+      - 'hhs_runtime/hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original-rml10-clifford-word-inverse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped exact native runtime
+        run: python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Syntax-check actual I086/I087/I088 and inherited RML10/RML11 sources
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass219/real_clifford_morita_witness.py \
+            hhs_runtime/pass219/phase_clifford_intertwiner.py \
+            hhs_runtime/hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py \
+            hhs_runtime/hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py \
+            hhs_runtime/hhs_pass220_i088_exact_clifford_word_inverse_v1.py \
+            tests/pass220/test_hhs_pass220_i088_exact_clifford_word_inverse_v1.py
+      - name: Reuse original Pass219 RML10/RML11 suite and strict operator ordering
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass219/test_pass219_real_clifford_morita_witness.py \
+            tests/pass219/test_pass219_phase_clifford_intertwiner.py
+      - name: Compute two-sided original 256-word Clifford quotient proof
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i086_ordered_3x3_vm5184_hash72_matrix_v1.py \
+            tests/pass220/test_hhs_pass220_i087_exact_rml11_clifford_matrix_inverse_v1.py \
+            tests/pass220/test_hhs_pass220_i088_exact_clifford_word_inverse_v1.py
+      - name: Verify independent Wolfe proof source without false CI claim
+        run: |
+          test -s formal/wolfram/pass220_i088_exact_clifford_word_inverse_v1.wl
+          grep -q 'original_VM81_matrix_division_proven"->False' \
+            formal/wolfram/pass220_i088_exact_clifford_word_inverse_v1.wl
+          grep -q 'canonical_Hash72_minted"->False' \
+            formal/wolfram/pass220_i088_exact_clifford_word_inverse_v1.wl
+          echo 'I088 Wolfram 20/20 proof executed separately; GitHub tests real original RML10 code.'
