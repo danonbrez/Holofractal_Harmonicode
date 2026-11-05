@@ -1,0 +1,73 @@
+{
+  "schema": "HHS_HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1",
+  "version": 1,
+  "course_crosswalk": "contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json",
+  "binding_semantics": "EXACT_NATIVE_EVIDENCE_PATH_WITH_SCOPE_AND_SOURCE_IDENTITY; NO AUTOMATIC_THEOREM_EQUIVALENCE",
+  "native_surfaces": [
+    {
+      "key": "PASS220_COURSE_MODULE_SOURCE_GATE_PROVENANCE",
+      "path": "hhs_runtime/hhs_pass220_course_module_gate_provenance_v1.py",
+      "kind": "legacy_course_provenance",
+      "scope": "Frozen legacy course MODULE 0–12; not equivalent to newly supplied course Modules 0–123 without a verified source mapping",
+      "proves_new_course": false
+    },
+    {
+      "key": "PASS220_COURSE_PASSTHROUGH_NATIVE_WITNESS",
+      "path": "hhs_runtime/hhs_pass220_course_passthrough_native_witness_binding_v1.py",
+      "kind": "executable_native_witness",
+      "scope": "Exact inherited zero-divisor passthrough for legacy course Module 9; source-bound",
+      "proves_new_course": false
+    },
+    {
+      "key": "PASS220_EXECUTED_HNAN_WHITEPAPER_NATIVE_PROOF",
+      "path": "hhs_runtime/hhs_pass220_executed_whitepaper_native_proof_binding_v1.py",
+      "kind": "native_proof_checker",
+      "scope": "Frozen HNAN whitepaper and NATIVE_HNAN_1_63 verification; proof-specific",
+      "proves_new_course": false
+    },
+    {
+      "key": "PASS220_I072_THEORY_HASH216_HYDRATION",
+      "path": "hhs_runtime/hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py",
+      "kind": "native_theory_constructor_hydration",
+      "scope": "Inherited 72/216/5184/144x36 factorization and candidate theory Hash216; not new ordered-Q4 execution",
+      "proves_new_course": false
+    },
+    {
+      "key": "PASS220_I081_OPENAI_SOURCE_SCOPE_PROMOTION",
+      "path": "hhs_runtime/hhs_pass220_i081_openai_math_constructor_promotion_v1.py",
+      "kind": "validated_source_scope_audit",
+      "scope": "Reconciled OpenAI theorem/HOLD source-level proof surfaces, independent of provider-specific native constructor execution status",
+      "proves_new_course": false
+    }
+  ],
+  "course_bindings": [
+    {
+      "course_module": 9,
+      "native_key": "PASS220_COURSE_PASSTHROUGH_NATIVE_WITNESS",
+      "relation": "LEGACY_MODULE_HISTORICAL_OVERLAP",
+      "new_course_equivalence": "NOT_VERIFIED",
+      "proof_receipt_status": "SOURCE_PATH_ONLY"
+    },
+    {
+      "course_module": 123,
+      "native_key": "PASS220_I072_THEORY_HASH216_HYDRATION",
+      "relation": "INHERITED_ADDRESS_FACTOR_WITNESS",
+      "new_ordered_q4_status": "OPEN",
+      "proof_receipt_status": "INHERITED_SCOPE_ONLY"
+    },
+    {
+      "course_module": 11,
+      "native_key": "PASS220_EXECUTED_HNAN_WHITEPAPER_NATIVE_PROOF",
+      "relation": "HNAN_CONTEXT_ONLY",
+      "new_course_equivalence": "NOT_VERIFIED",
+      "proof_receipt_status": "SOURCE_PATH_ONLY"
+    }
+  ],
+  "policy": {
+    "original_source_does_not_limit_validated_native_constructor": true,
+    "exact_source_and_statement_binding_required_for_specific_receipt": true,
+    "proof_validity_distinct_from_canonical_mutation": true,
+    "automatically_admit_new_ordered_q4": false,
+    "all_124_course_modules_native_validated_by_this_registry": false
+  }
+}
