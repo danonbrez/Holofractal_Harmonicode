@@ -62,6 +62,14 @@ jobs:
           PY
           python tools/pass220/nucleus5_native_span_manifest.py ONE_INPUT /tmp/nucleus5_ONE_INPUT.spans
           python tools/pass220/nucleus5_native_span_manifest.py SUCCESSOR_INPUT /tmp/nucleus5_SUCCESSOR_INPUT.spans
+          python - <<'PY'
+          from hashlib import sha256
+          from hhs_runtime.hhs_pass220_nucleus5_matrixtimes_abp_source_v1 import Nucleus5Source
+          w=Nucleus5Source()
+          print("FROZEN_TENSOR_SHA256=" + w.exact_source_sha256)
+          for mode in ("ONE_INPUT","SUCCESSOR_INPUT"):
+              print(mode + "_CIRCUIT_SHA256=" + sha256(w.native_compilation_source_bytes(mode)).hexdigest())
+          PY
           set -o pipefail
           /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_ONE_INPUT.spans | tee /tmp/nucleus5_ONE_INPUT.log
           /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs /tmp/nucleus5_SUCCESSOR_INPUT.spans | tee /tmp/nucleus5_SUCCESSOR_INPUT.log
