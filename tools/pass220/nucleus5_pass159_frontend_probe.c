@@ -156,6 +156,8 @@ int main(int argc, char **argv) {
     uint8_t *bytes = NULL;
     size_t size = 0U;
     int ok = 0;
+    int require_source_effect = 0;
+    int source_effect_rejected = 0;
     uint64_t observed_steps = 0U;
     char observed_semantic_root[HHS159_HASH216_LENGTH + 1U] = {0};
     uint32_t observed_commit = 0U;
@@ -174,7 +176,10 @@ int main(int argc, char **argv) {
     char graph_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char vmir_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char receipt_id[HHS159_HASH216_LENGTH + 1U] = {0};
-    if (argc != 3 || !read_source(argv[1], &bytes, &size) ||
+    if (argc == 4 && strcmp(argv[3], "--require-source-effect") == 0)
+        require_source_effect = 1;
+    if ((argc != 3 && !require_source_effect) ||
+        !read_source(argv[1], &bytes, &size) ||
         !verify_span_manifest(argv[2], bytes, size))
         goto cleanup;
 
@@ -294,6 +299,21 @@ int main(int argc, char **argv) {
     compiled_steps = compiled_receipt->vm81_steps;
     memcpy(compiled_semantic_root, compiled_receipt->semantic_root,
            sizeof(compiled_semantic_root));
+    /* A successful diagnostic interpreter call does not authorize source
+       effect. Admission must reject the inherited fixed-program trace. */
+    if (require_source_effect) {
+        if (vmir_fixed_program_marker != 0 ||
+            observed_steps == 3U || compiled_steps == 3U ||
+            vmir_matrix_times_marker == 0) {
+            source_effect_rejected = 1;
+            goto cleanup;
+        }
+        /* Even a future nonfixed trace requires a typed, exact cell-effect
+         * and HNAN gate witness from the singleton VM81. Until that
+         * adapter exists this probe never approves canonical admission. */
+        source_effect_rejected = 1;
+        goto cleanup;
+    }
     ok = 1;
 cleanup:
     if (compiled_receipt != NULL) hhs159_receipt_release(compiled_receipt);
@@ -314,6 +334,10 @@ cleanup:
     if (src != NULL) hhs159_source_release(src);
     if (ctx != NULL) hhs159_context_release(ctx);
     free(bytes);
+    if (!ok && source_effect_rejected) {
+        fprintf(stderr, "NUCLEUS5_SOURCE_EFFECT_NOT_PROVED: canonical admission denied\n");
+        return 2;
+    }
     if (!ok) {
         fprintf(stderr, "NUCLEUS5_PASS159_FRONTEND_REJECTED status=%d %s\n",
                 (int)status, hhs159_status_string(status));
