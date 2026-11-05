@@ -12,6 +12,13 @@ import hashlib
 import os
 from typing import Any, Mapping, Sequence
 
+from hhs_backend.runtime.hhs_optimization_calibration_v1 import (
+    PASS205_RETRIEVAL_TOP_K,
+    PASS207_CACHE_BYTES,
+    PASS207_CACHE_ENTRIES,
+    calibrated_profile,
+    positive_int_env,
+)
 from hhs_backend.runtime.hhs_pass205_accelerator_translation_v1 import (
     AcceleratorBatch,
     Pass205AcceleratorTranslation,
@@ -102,17 +109,31 @@ class Pass207VM81GPURuntime:
         *,
         backend: str | None = None,
         device_index: int = 0,
-        cache_capacity_bytes: int = 256 * 1024 * 1024,
-        cache_capacity_entries: int = 256,
+        cache_capacity_bytes: int | None = None,
+        cache_capacity_entries: int | None = None,
         require_physical_gpu: bool = False,
     ) -> None:
         selected_backend = backend or os.environ.get("HHS_PASS207_GPU_BACKEND", "AUTO")
+        resolved_cache_bytes = (
+            positive_int_env("HHS_PASS207_CACHE_BYTES", PASS207_CACHE_BYTES)
+            if cache_capacity_bytes is None
+            else int(cache_capacity_bytes)
+        )
+        resolved_cache_entries = (
+            positive_int_env("HHS_PASS207_CACHE_ENTRIES", PASS207_CACHE_ENTRIES)
+            if cache_capacity_entries is None
+            else int(cache_capacity_entries)
+        )
+        if resolved_cache_bytes <= 0:
+            raise ValueError("cache_capacity_bytes must be positive")
+        if resolved_cache_entries <= 0:
+            raise ValueError("cache_capacity_entries must be positive")
         self.translation = Pass205AcceleratorTranslation()
         self.driver = Pass207GPUDriver(
             backend=selected_backend,
             device_index=device_index,
-            cache_capacity_bytes=cache_capacity_bytes,
-            cache_capacity_entries=cache_capacity_entries,
+            cache_capacity_bytes=resolved_cache_bytes,
+            cache_capacity_entries=resolved_cache_entries,
             verify_against_cpu=True,
             require_physical_gpu=require_physical_gpu,
         )
@@ -145,6 +166,7 @@ class Pass207VM81GPURuntime:
             "gpu_may_commit_hash72": False,
             "vm81_single_admission_authority": True,
             "vector_store_buffer_cache": True,
+            "calibrated_optimization_profile": calibrated_profile(),
         }
 
     def execute_batch(self, batch: AcceleratorBatch) -> dict[str, Any]:
@@ -212,7 +234,7 @@ class Pass207VM81GPURuntime:
         query_hash72: str,
         candidate_hash72: Sequence[str],
         candidate_ids: Sequence[str] | None = None,
-        top_k: int = 32,
+        top_k: int = PASS205_RETRIEVAL_TOP_K,
     ) -> dict[str, Any]:
         if not candidate_hash72:
             return {
