@@ -70,6 +70,25 @@ def validate() -> dict:
         assert binding["native_key"] in keys, "UNKNOWN_NATIVE_EVIDENCE_LINK"
         assert binding["course_module"] in range(124)
         assert binding["proof_receipt_status"] in {"SOURCE_PATH_ONLY", "INHERITED_SCOPE_ONLY"}
+    # Execute the existing I081 canonical registry checker and domain-separated replay
+    # receipt. This validates the source-bound OpenAI registry, not every imported
+    # theorem's native VM81 admission.
+    from hhs_runtime.hhs_pass220_i081_openai_math_constructor_promotion_v1 import (
+        load_registry, effective_frontier, build_registry_receipt,
+    )
+    openai_registry = load_registry()
+    frontier = effective_frontier(openai_registry)
+    native_source_receipt = build_registry_receipt(openai_registry)
+    assert native_source_receipt["candidate_hash72"] == native_source_receipt["replay_hash72"]
+    assert native_source_receipt["candidate_only"] is True
+    assert native_source_receipt["canonical_hash72_minted"] is False
+    assert native_source_receipt["canonical_hash216_minted"] is False
+    assert openai_registry["result"]["effective_theorem_sources"] == 80
+    assert openai_registry["result"]["effective_hold_sources"] == 242
+    assert openai_registry["result"]["novelty_frontier_sources"] == 322
+    assert openai_registry["result"]["source_level_coverage_gap"] == 0
+    assert openai_registry["result"]["duplicate_assignment"] == 0
+    assert native_source_receipt["frontier"] == frontier
     return {"status":"PASS", "module_coverage":"124/124", "source_blob":actual_blob,
             "openai_relation":"CANDIDATE_ONLY", "native_q4":"OPEN"}
 
