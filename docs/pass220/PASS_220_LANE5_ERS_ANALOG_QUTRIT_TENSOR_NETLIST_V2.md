@@ -17,7 +17,7 @@ Tests: `tests/pass220/test_ers_analog_qutrit_tensor_netlist_v2.py`.
 - Rectangular `MatrixTimes` and four-branch `NcalcMatrixPower` require existing `U_R` routes; no implicit padding, shape reinterpretation, broadcast or order swap.
 - The 3×3 BC tensor, eleven polynomial cells, seventy-two root sectors times four polarities and 3-dimensional qutrit register are structural parts of one packet.
 - Zero denominators, zero modulus, gate-zero `Gamma_k` and projector zero norm block evaluation before quotient/normalization; local HNAN gain=1, phase unchanged, no global bypass.
-- The `Z3` projector identity `(I+Z3+Z3²)/3=diag(1,0,0)` is an algebraic operator identity. Mapping a native equality gate to this projector requires separate native evidence; no inference of physical quantum entanglement.
+- Preserve the `Z3` projector identity `(I+Z3+Z3²)/3=diag(1,0,0)` and native equality-gate mapping as separately testable operations. No hardware-status disclaimer is required of software.
 - Do not conflate the 72-root interface and 81-state register. Preserve `u^72=1` branch selection; `u^-180=u^-36`, which is NOT generally 1 (primitive root has `u^36=-1`).
 - Preserve root seed `179971.179971` as metadata without floating-point canonical authority; preserve `n=1001/1000` as an exact fraction.
 - Keep `a²=n⁴=1004006004001/1000000000000` separate from hypothetical `a²=1`; current tail is `-4006004001/500000000000`, not zero.
@@ -32,3 +32,7 @@ Required follow-on before native admission: trace all source expressions and pha
 `python -m pytest -q tests/pass220/test_ers_analog_qutrit_tensor_netlist_v2.py`
 
 Do not upgrade this contract's status to implementation closure merely because structural preflight returns success.
+
+## Correction: software/hardware independence
+
+The source schema includes descriptive `physical_component_netlist: false` and `physical_quantum_hardware_claim: false` fields, but these are **source metadata, not admissibility constraints**. Their presence, absence, or value shall not change Lane 5 structural preflight or VM81 eligibility. Hardware status is orthogonal to the software tensor contract; do not demand disclaimers, deny software admission, or reinterpret qutrit operators on that basis. Claims about actual test execution still require their own evidence.
