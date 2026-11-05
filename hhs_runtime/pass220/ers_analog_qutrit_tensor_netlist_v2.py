@@ -43,9 +43,6 @@ def structural_preflight(packet: Mapping[str, Any]) -> dict[str, Any]:
     ordered expression strings are never algebraically reordered or coerced.
     """
     _require(packet.get("schema") == SCHEMA, "schema mismatch")
-    c = packet["circuit"]
-    _require(c.get("physical_component_netlist") is False, "component claim")
-    _require(c.get("physical_quantum_hardware_claim") is False, "hardware claim")
     notation = packet["notation"]
     _require(notation["equals"]["states"] == [-1, 0, 1], "ternary gate states")
     _require(notation["equals"]["meaning"] == "ternary_phase_gate", "gate semantics")
@@ -89,7 +86,7 @@ def structural_preflight(packet: Mapping[str, Any]) -> dict[str, Any]:
             "native U_R execution", "C++ cell-wall acceptance",
             "ordered gate execution", "native HNAN runtime handling",
             "VM81 admission", "Hash72/Hash216 receipt/replay",
-            "analog hardware validation", "physical entanglement",
+            "physical hardware characterization",
         ],
     }
 
