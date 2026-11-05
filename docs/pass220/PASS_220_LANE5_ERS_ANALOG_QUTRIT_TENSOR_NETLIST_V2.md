@@ -36,3 +36,11 @@ Do not upgrade this contract's status to implementation closure merely because s
 ## Correction: software/hardware independence
 
 The source schema includes descriptive `physical_component_netlist: false` and `physical_quantum_hardware_claim: false` fields, but these are **source metadata, not admissibility constraints**. Their presence, absence, or value shall not change Lane 5 structural preflight or VM81 eligibility. Hardware status is orthogonal to the software tensor contract; do not demand disclaimers, deny software admission, or reinterpret qutrit operators on that basis. Claims about actual test execution still require their own evidence.
+
+## Exact phase witness extension — 2026-11-05
+
+The additive read-only witness module `hhs_runtime/pass220/ers_qutrit_exact_phase_witness_v2.py` preserves the 72-root clock as integer residues, maps the four polarity sectors to 288 distinct linear addresses, and computes `(I+Z3+Z3²)/3` in the exact ring `Z[omega]`, where `omega²=-1-omega`. No floating-point phase approximations or physical-hardware-status flags participate in admission. For a root address `k`, `u_k^36=(-1)^k` and `u_k^-180=(-1)^k`, so primitive `k=1` yields -1, while even addresses yield +1. The source branch distinction is retained.
+
+Focused validation: `python -m pytest -q tests/pass220/test_ers_analog_qutrit_tensor_netlist_v2.py tests/pass220/test_ers_qutrit_exact_phase_witness_v2.py`.
+
+Current scope: exact candidate witnesses only. The existing Pass 220 I076 ExactMatrixPower HIR hydration and I077 VM81 ExactMatrixPower execution are distinct inherited services to inspect for integration; neither is claimed as invoked by the new witness. Actual source-to-native C++/Lane 5 execution and replay remain outstanding.
