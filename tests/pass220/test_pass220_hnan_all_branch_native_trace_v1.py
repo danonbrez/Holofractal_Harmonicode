@@ -154,3 +154,78 @@ def test_malformed_later_branch_rejected_before_any_native_call(tmp_path):
     with pytest.raises(NativeBranchTraceRejected, match="CLAIM_SHAPE"):
         _run(tmp_path, [valid, invalid], native)
     assert native.hhs_exact_pass219_hnan_resolve.calls == []
+
+
+def test_guard_flags_are_retained_even_when_native_reason_is_unchanged(tmp_path):
+    native = _Native()
+    base = _branch("same", 12, 18, 19, 9, commutation_requested=1)
+    distinct = _branch(
+        "same", 12, 18, 19, 9, commutation_requested=1,
+        emptyset_cancellation_requested=1,
+    )
+    first = _run(tmp_path, [base], native)
+    second = _run(tmp_path, [distinct], native)
+    assert first["branches"][0]["decision"] == "REJECTED"
+    assert second["branches"][0]["decision"] == "REJECTED"
+    assert first["branches"][0]["native_reason_code"] == second["branches"][0]["native_reason_code"]
+    assert first["branches"][0]["claim_flags"]["emptyset_cancellation_requested"] == 0
+    assert second["branches"][0]["claim_flags"]["emptyset_cancellation_requested"] == 1
+    assert first["trace_sha256"] != second["trace_sha256"]
+
+
+def test_real_compiled_native_hnan_all_branches(tmp_path):
+    """Compile inherited runtime and invoke real C ABI on all branch verdicts.
+
+    This exercises the same build boundary as the existing recursive HNAN
+    native preflight test; no replacement native implementation is introduced.
+    """
+    import subprocess
+    from pathlib import Path
+
+    source = Path("hhs_runtime/c/hhs_runtime_exact_abi.c")
+    assert source.is_file()
+    c_object = tmp_path / "hhs_exact.o"
+    cpp_object = tmp_path / "hhs_pqc.o"
+    hash_object = tmp_path / "hhs_hash216.o"
+    library = tmp_path / "libhhs_branch_trace.so"
+    subprocess.run([
+        "cc", "-std=c11", "-O0", "-fPIC", "-Ihhs_runtime/include",
+        "-c", str(source), "-o", str(c_object),
+    ], check=True, timeout=180)
+    subprocess.run([
+        "c++", "-std=c++17", "-O0", "-fPIC",
+        "-Ihhs_runtime/include",
+        "-Inative_projects/hhs_pass188_bott_runtime/include",
+        "-Inative_projects/hhs_pass189_hqlh_runtime/include",
+        "-c", "hhs_runtime/cpp/hhs_pass219_vm81_pqc_cell_wall_1_30.cpp",
+        "-o", str(cpp_object),
+    ], check=True, timeout=180)
+    subprocess.run([
+        "cc", "-std=c11", "-O0", "-fPIC", "-Ihhs_runtime/include",
+        "-c", "hhs_runtime/src/hhs_hash216.c", "-o", str(hash_object),
+    ], check=True, timeout=180)
+    subprocess.run([
+        "c++", "-shared", str(c_object), str(cpp_object), str(hash_object),
+        "-o", str(library), "-lm", "-lcrypto",
+    ], check=True, timeout=180)
+    branches = [
+        _branch("good-12", 12, 18, 19, 9),
+        _branch("bad-commute", 12, 18, 19, 9, commutation_requested=1),
+        _branch("unknown", 77, 18, 19, 9),
+        _branch("good-13", 13, 20, 21, 9),
+    ]
+    result = inspect_all_native_hnan_branches(
+        branches, native_library=str(library),
+        parent_receipt_hash72="a" * 72,
+        parent_root216="b" * 216,
+    )
+    assert [row["decision"] for row in result["branches"]] == [
+        "VERIFIED", "REJECTED", "UNRESOLVED", "VERIFIED"
+    ]
+    assert result["branches"][1]["native_reason_code"] == 10
+    assert result["branches"][2]["native_reason_code"] == 2
+    assert result["branches"][1]["claim_flags"]["commutation_requested"] == 1
+    assert result["branches"][3]["exact_rule_match"]
+    assert result["has_rejected"] and result["has_unresolved"]
+    assert not result["canonical_vm81_admission"]
+    assert not result["hash72_minted"] and not result["hash216_minted"]
