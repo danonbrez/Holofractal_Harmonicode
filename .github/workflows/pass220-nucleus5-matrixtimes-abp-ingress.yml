@@ -74,6 +74,21 @@ jobs:
           /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_ONE_INPUT.spans | tee /tmp/nucleus5_ONE_INPUT.log
           /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs /tmp/nucleus5_SUCCESSOR_INPUT.spans | tee /tmp/nucleus5_SUCCESSOR_INPUT.log
           python tools/pass220/compare_nucleus5_pass159_identities.py /tmp/nucleus5_ONE_INPUT.log /tmp/nucleus5_SUCCESSOR_INPUT.log
+      - name: Mandatory source-effect admission must reject three-step fixed VMIR
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: hhs_runtime/builds
+        run: |
+          set +e
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_ONE_INPUT.spans --require-source-effect > /tmp/nucleus5_base_admission.log 2>&1
+          base_status=$?
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs /tmp/nucleus5_SUCCESSOR_INPUT.spans --require-source-effect > /tmp/nucleus5_successor_admission.log 2>&1
+          successor_status=$?
+          set -e
+          test "$base_status" -eq 2
+          test "$successor_status" -eq 2
+          grep -q 'NUCLEUS5_SOURCE_EFFECT_NOT_PROVED' /tmp/nucleus5_base_admission.log
+          grep -q 'NUCLEUS5_SOURCE_EFFECT_NOT_PROVED' /tmp/nucleus5_successor_admission.log
       - name: Negative test — reject modified source and mislocated cell span
         env:
           PYTHONPATH: .
