@@ -1,0 +1,56 @@
+{
+  "schema": "HHS_PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_VERIFICATION_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_CANDIDATE",
+  "base_main": "87c5283730d27f94ddca694ab6fc01f982c7e165",
+  "authoritative_i068_merge": "87c5283730d27f94ddca694ab6fc01f982c7e165",
+  "branch": "pass220/i069-dwave-dual-rail-postmerge-verification-main-sync-20261003",
+  "merge_target": "main",
+  "inherits": [
+    "HHS_PASS_220_I068_DWAVE_DUAL_RAIL_CANDIDATE_BRIDGE_V1",
+    "HHS_PASS_220_I027_QUANTUM_COLLAPSE_ADMISSION_BRIDGE_V1",
+    "HHS_PASS219_EXACT_VM81_CANDIDATE_ADAPTER_1_21_3"
+  ],
+  "purpose": "Post-merge exhaustive verification of the I068 D-Wave dual-rail candidate membrane and proof updates binding the ordered nine-state surface to all 81 inherited VM81 collapse addresses without expanding external simulator authority.",
+  "coverage": {
+    "ordered_dual_rail_pairs": 9,
+    "erasure_bearing_ordered_pairs": 5,
+    "clean_ordered_pairs": 4,
+    "vm81_nuclei": 9,
+    "vm81_outcomes_per_nucleus": 9,
+    "vm81_cells_covered": 81,
+    "small_exact_histograms_exhaustively_checked": 714,
+    "small_histogram_shot_range": [1, 4]
+  },
+  "invariants": {
+    "nine_state_bijection": true,
+    "ordered_reversal_preserved": true,
+    "erasure_partition_exact": true,
+    "vm81_81_cell_bijection": true,
+    "histogram_mass_preserved": true,
+    "exact_replay_receipt_deterministic": true,
+    "post_selection_for_provenance_forbidden": true,
+    "mced_events_receipt_bound": true,
+    "malformed_inputs_fail_closed": true,
+    "floating_point_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_persistence_authority": false
+  },
+  "formal_verification": {
+    "wolfram_schema": "HHS_PASS_220_I069_DWAVE_DUAL_RAIL_POSTMERGE_WOLFRAM_V1",
+    "wolfram_checks": 9,
+    "wolfram_passed": 9,
+    "wolfram_failed": []
+  },
+  "whitepaper_updates": [
+    "docs/whitepapers/HHS_QUANTUM_INFORMATION_THROUGHPUT_NORMALIZATION_V1.md",
+    "docs/whitepapers/HARMONICODE_QUANTUM_GEOMETRIC_SHARED_ROOT_CLOSURE_THEOREM.md"
+  ],
+  "runtime_acceptance": {
+    "dependency_scoped_tests": "PENDING_BRANCH_CI",
+    "source_integrity": "PENDING_BRANCH_CI",
+    "formal_evidence_replay": "PENDING_BRANCH_CI"
+  }
+}
