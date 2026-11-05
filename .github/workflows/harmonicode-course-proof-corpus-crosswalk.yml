@@ -1,0 +1,36 @@
+name: HARMONICODE Course Native Proof Corpus Crosswalk
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/course/**'
+      - 'contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json'
+      - 'tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py'
+      - '.github/workflows/harmonicode-course-proof-corpus-crosswalk.yml'
+  push:
+    paths:
+      - 'docs/course/**'
+      - 'contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json'
+      - 'tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py'
+      - '.github/workflows/harmonicode-course-proof-corpus-crosswalk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-course-corpus:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile fail-closed crosswalk checker
+        run: python -m py_compile tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py
+      - name: Validate complete course indexing, immutable blob, and source-independent native hydration policy
+        run: python tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py
