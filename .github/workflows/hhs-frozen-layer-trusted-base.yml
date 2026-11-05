@@ -1,0 +1,57 @@
+name: HHS frozen-layer trusted-base guard
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-layer-trusted-base:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trusted base policy only
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch untrusted candidate as git data only
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags origin "$HEAD_SHA"
+          git cat-file -e "$HEAD_SHA^{commit}"
+      - name: Enforce base-owned frozen policy
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -o pipefail
+          # The policy and workflow themselves must not be edited by candidate PRs.
+          git diff --no-renames --name-only -z "$BASE_SHA...$HEAD_SHA" | python3 -c '
+          import sys
+          changed = set(p.decode() for p in sys.stdin.buffer.read().split(bytes([0])) if p)
+          policy = {
+            "contracts/frozen_layer_registry.v1.json",
+            "scripts/check_frozen_layer_preservation.py",
+            "scripts/check_frozen_layer_registry.py",
+            ".github/workflows/hhs-frozen-layer-source-guard.yml",
+            ".github/workflows/hhs-frozen-layer-trusted-base.yml",
+            "tests/test_frozen_layer_trusted_policy_integrity.py",
+          }
+          found = sorted(changed & policy)
+          for path in found:
+              print("FROZEN_POLICY_MODIFICATION:", path)
+          sys.exit(1 if found else 0)
+          '
+          python3 scripts/check_frozen_layer_preservation.py --base "$BASE_SHA" --head "$HEAD_SHA"
+          python3 scripts/check_frozen_layer_registry.py "$BASE_SHA" "$HEAD_SHA"
+      - name: Test trusted base guard
+        run: |
+          python3 -m unittest discover -s tests -p 'test_frozen_layer_preservation_guard.py' -v
+          python3 -m unittest discover -s tests -p 'test_frozen_layer_real_git_renames.py' -v
+          python3 -m unittest discover -s tests -p 'test_frozen_layer_registry.py' -v
+          python3 -m unittest discover -s tests -p 'test_frozen_layer_trusted_policy_integrity.py' -v
