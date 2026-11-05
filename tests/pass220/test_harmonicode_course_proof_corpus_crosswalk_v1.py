@@ -53,6 +53,23 @@ def validate() -> dict:
     for key in ("hhs_lemma", "hhs_axiom", "whitepaper_source_freeze",
                 "openai_i078", "openai_i079", "openai_i080", "openai_i081"):
         assert (ROOT / corpus["corpora"][key]).is_file(), ("CORPUS_REFERENCE_MISSING", key)
+    evidence_path = ROOT / "contracts/pass220/HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1.json"
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    assert evidence["schema"] == "HHS_HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1"
+    assert evidence["course_crosswalk"] == str(REGISTRY.relative_to(ROOT))
+    assert evidence["policy"]["original_source_does_not_limit_validated_native_constructor"] is True
+    assert evidence["policy"]["exact_source_and_statement_binding_required_for_specific_receipt"] is True
+    assert evidence["policy"]["automatically_admit_new_ordered_q4"] is False
+    assert evidence["policy"]["all_124_course_modules_native_validated_by_this_registry"] is False
+    keys = {row["key"] for row in evidence["native_surfaces"]}
+    assert len(keys) == len(evidence["native_surfaces"])
+    for row in evidence["native_surfaces"]:
+        assert (ROOT / row["path"]).is_file(), ("NATIVE_EVIDENCE_PATH_MISSING", row["key"])
+        assert row["proves_new_course"] is False, "UNVERIFIED_COURSE_PROOF_PROMOTION"
+    for binding in evidence["course_bindings"]:
+        assert binding["native_key"] in keys, "UNKNOWN_NATIVE_EVIDENCE_LINK"
+        assert binding["course_module"] in range(124)
+        assert binding["proof_receipt_status"] in {"SOURCE_PATH_ONLY", "INHERITED_SCOPE_ONLY"}
     return {"status":"PASS", "module_coverage":"124/124", "source_blob":actual_blob,
             "openai_relation":"CANDIDATE_ONLY", "native_q4":"OPEN"}
 
