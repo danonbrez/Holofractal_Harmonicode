@@ -1377,95 +1377,6 @@
       controls.enableDamping = true;
       controls.dampingFactor = 0.1;
       controls.rotateSpeed = 0.5;
-
-      /* Pass 220 V84 mobile observation checkpoint: these controls only
-         affect camera and selection; particle dynamics and native clocks stay unchanged. */
-      controls.touches.ONE = THREE.TOUCH.ROTATE;
-      controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
-      renderer.domElement.style.touchAction = 'none';
-      const hhsV84Nav = {roll:0, gesture:null, timer:null, lastTap:0,
-        selectedAddress:null, lastInspection:null};
-      const hhsV84Canvas = renderer.domElement;
-      const hhsV84Coord = touch => {
-        const b=hhsV84Canvas.getBoundingClientRect();
-        return {x:touch.clientX-b.left,y:touch.clientY-b.top};
-      };
-      function hhsV84Nearest(x,y) {
-        /* Selection via existing authoritative carrier positions, view projection only. */
-        const ndc=new THREE.Vector3(), xyz=new THREE.Vector3();
-        let nearest=-1, distance=22*22;
-        for(let i=0;i<particles.length;i++){
-          const j=i*3;
-          xyz.set(thPos[j],thPos[j+1],thPos[j+2]);
-          ndc.copy(xyz).project(camera);
-          if(ndc.z<-1||ndc.z>1)continue;
-          const sx=(ndc.x+1)*0.5*hhsV84Canvas.clientWidth;
-          const sy=(1-ndc.y)*0.5*hhsV84Canvas.clientHeight;
-          const d=(sx-x)**2+(sy-y)**2;
-          if(d<distance){distance=d;nearest=i;}
-        }
-        return nearest;
-      }
-      function hhsV84Inspect(x,y,focus) {
-        const id=hhsV84Nearest(x,y);
-        if(id<0)return null;
-        const j=id*3;
-        const record={particle:id,cell:id%81,layer:Math.floor(id/5184),
-          phase:particles[id].userData.phase,position:[thPos[j],thPos[j+1],thPos[j+2]]};
-        hhsV84Nav.selectedAddress=id;hhsV84Nav.lastInspection=record;
-        if(focus){
-          if(chase.on)toggleChase(false);
-          controls.target.set(...record.position);controls.update();
-        }
-        hhsV84Canvas.dispatchEvent(new CustomEvent('hhs:mobile-inspect',{detail:record}));
-        return record;
-      }
-      hhsV84Canvas.addEventListener('touchstart',e=>{
-        clearTimeout(hhsV84Nav.timer);
-        if(e.touches.length===2){
-          const a=hhsV84Coord(e.touches[0]),b=hhsV84Coord(e.touches[1]);
-          hhsV84Nav.gesture={kind:'twist',theta:Math.atan2(b.y-a.y,b.x-a.x),roll:hhsV84Nav.roll};
-        }else if(e.touches.length===1){
-          const p=hhsV84Coord(e.touches[0]);hhsV84Nav.gesture={kind:'tap',...p,moved:false};
-          hhsV84Nav.timer=setTimeout(()=>{
-            if(hhsV84Nav.gesture?.kind==='tap'&&!hhsV84Nav.gesture.moved)
-              hhsV84Inspect(p.x,p.y,false);
-            hhsV84Nav.gesture=null;
-          },550);
-        }
-      },{passive:true});
-      hhsV84Canvas.addEventListener('touchmove',e=>{
-        const g=hhsV84Nav.gesture;if(!g)return;
-        if(e.touches.length===2&&g.kind==='twist'){
-          const a=hhsV84Coord(e.touches[0]),b=hhsV84Coord(e.touches[1]);
-          const d=Math.atan2(b.y-a.y,b.x-a.x)-g.theta;
-          hhsV84Nav.roll=g.roll+Math.atan2(Math.sin(d),Math.cos(d));
-        }else if(e.touches.length===1&&g.kind==='tap'){
-          const p=hhsV84Coord(e.touches[0]);
-          if(Math.hypot(p.x-g.x,p.y-g.y)>9){g.moved=true;clearTimeout(hhsV84Nav.timer);}
-        }
-      },{passive:true});
-      hhsV84Canvas.addEventListener('touchend',e=>{
-        clearTimeout(hhsV84Nav.timer);
-        const g=hhsV84Nav.gesture;
-        if(e.touches.length===0&&g?.kind==='tap'&&!g.moved){
-          const now=performance.now();
-          if(now-hhsV84Nav.lastTap<360){hhsV84Inspect(g.x,g.y,true);hhsV84Nav.lastTap=0;}
-          else hhsV84Nav.lastTap=now;
-        }
-        if(e.touches.length===0)hhsV84Nav.gesture=null;
-        else if(e.touches.length===1)hhsV84Nav.gesture=null;
-      },{passive:true});
-      hhsV84Canvas.addEventListener('touchcancel',()=>{
-        clearTimeout(hhsV84Nav.timer);hhsV84Nav.gesture=null;
-      },{passive:true});
-      window.HHSMobileNavigation=Object.freeze({
-        inspect:()=>hhsV84Nav.lastInspection,
-        state:()=>({selectedAddress:hhsV84Nav.selectedAddress,roll:hhsV84Nav.roll,
-          physicsModified:false,version:'HHS_V84_OBSERVATION_ONLY_NAV_V1'}),
-        resetView:()=>{hhsV84Nav.roll=0;controls.target.set(0,0,0);controls.update();}
-      });
-
       addLighting();
       // Initialize particle groups from neural swarm
       initSpiralParticles(false);   /* L1 spirals: carriers 0..2591 */
@@ -4716,7 +4627,6 @@
     function animate() {
       requestAnimationFrame(animate);
       if(!chase.on) controls.update();
-      if(!chase.on&&hhsV84Nav.roll!==0){camera.rotateZ(hhsV84Nav.roll);camera.updateMatrixWorld();}
       /* GLOBAL FREQUENCY CONTROL: freqScale physics substeps per frame.
          Each substep runs the FULL stack (phase precession + swarm coupling
          field) at the canonical dt — symplectic structure and every receipt
