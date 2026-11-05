@@ -52,3 +52,17 @@ Source → stable course module ID → exact typed claim + assumptions
 Absent proof obligations do not authorize identity, runtime execution, or status escalation. The source-frozen whitepaper index and external OpenAI I078–I081 registries are **not rewritten**. New typed bridges may be layered on later without disturbing frozen authority.
 
 Run from repository root: `python tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py`. The test checks exact module numbering/order, immutable course blob identity, existing corpus targets, whole-tone/Q144/H36 fields, and fail-closed proof-authority boundaries.
+
+## Source-independent native constructor rule (corrected)
+
+The original publisher, manuscript family, or proof corpus is **provenance**, not a permanent limitation on the authority of a validated native constructor. An OpenAI-, Lean-, Wolfram-, or HARMONICODE-origin proof that has passed **typed proof hydration and trusted native constructor validation** becomes a validated native HHS constructor under the existing admission contract. Its original source continues to identify the theorem statement, assumptions, dependencies, and derivation history.
+
+Do **not** conflate the following stages:
+
+1. **Discovery/index hydration:** source and candidate knowledge-graph objects are enumerated; this alone grants neither native proof validity nor runtime authority.
+2. **Validated proof-constructor hydration:** exact typed proof, dependencies, source correspondence, and trusted native checker/receipt establish the native constructor regardless of original provider.
+3. **Canonical runtime admission:** VM81/cell-wall and the inherited Hash72/Hash216 authority path control canonical execution and mutation; a proof constructor does not bypass those gates.
+
+The I081 theorem/HOLD partition is a recorded status of the **external source-bound frontier at its pinned revision**, not a declaration that every such theorem is permanently HOLD within HHS, nor a negative finding against existing native constructors. An independently validated native constructor may provide the upgrade witness without changing the original source provenance. This crosswalk does not re-audit all existing hydration receipts or assert which individual imported proofs have already achieved native verification.
+
+The new ordered Q₄ packet is still explicitly OPEN for **its newly specified native semantics** until its own trusted execution evidence is recorded. That open status cannot downgrade previously admitted native constructors elsewhere in the system.
