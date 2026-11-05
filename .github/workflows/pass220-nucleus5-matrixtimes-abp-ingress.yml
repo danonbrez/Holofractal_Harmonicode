@@ -108,7 +108,7 @@ jobs:
           start,end=int(first[4]),int(first[5])
           first[6]=sha256(raw[start:end]).hexdigest()
           lines[1]=" ".join(first)
-          Path("/tmp/nucleus5_FORGED.spans").write_text("\\n".join(lines)+"\\n")
+          Path("/tmp/nucleus5_FORGED.spans").write_text("\n".join(lines)+"\n")
           PY
           if /tmp/nucleus5_pass159_probe /tmp/nucleus5_TAMPERED.hhs /tmp/nucleus5_FORGED.spans; then
             echo "REGENERATED_TAMPERED_MANIFEST_ACCEPTED"; exit 1
