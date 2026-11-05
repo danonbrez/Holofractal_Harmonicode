@@ -1,0 +1,313 @@
+{
+  "schema": "HHS_PASS_220_I080_BIGINT_MEMRISTOR_HASH216_PROBABILITY_SYNTHESIS_V1",
+  "version": 1,
+  "profile": "PASS220-I080-BIGINT-MEMRISTOR-QPU-PROBABILITY-v1",
+  "base_main": "7b71ec336c67a268c739537a805e4fa9b191fe7f",
+  "source_stack": {
+    "canonical_browser_seed": {
+      "path": "examples/ParticleSimulation.html",
+      "git_blob_sha": "218d89d67803b5b10ab86b1cdb97434438e25082",
+      "role": "I041 probability/event-topology and constructor-knowledge-graph semantic seed"
+    },
+    "knowledge_graph_contract": {
+      "path": "docs/pass220/PASS_220_I041_HOLOFRACTAL_RELATIVISTIC_GAME_ENGINE.md",
+      "git_blob_sha": "5dd0a44953ff6c8afa4558627caa584b55ff3366"
+    },
+    "memristor_qpu": {
+      "path": "hhs_runtime/pass163/vmrc.py",
+      "git_blob_sha": "9bdcab13739e98ad4189c5d2a6e5ee001fce17a2",
+      "semantics": [
+        "81x64=5184 VMRC snapshot",
+        "exact rational path-dependent memristor conductance",
+        "Hash72 state identity",
+        "inherited Hash216 operation identity",
+        "deterministic replay"
+      ]
+    },
+    "hash216_hydration": {
+      "path": "hhs_runtime/hhs_pass220_i065_lossless_emergent_compression_hydration_v1.py",
+      "git_blob_sha": "fc998ef613c9d22c6f105016a649d4d96bc5e766"
+    },
+    "bigint_serializer": {
+      "path": "hhs_runtime/hhs_pass220_lo_shu_normalization_v1.py",
+      "git_blob_sha": "cb18ec3f1d35017cb6c7b2b40848b398930270bc"
+    },
+    "deterministic_qpu_runtime": {
+      "path": "hhs_runtime/hhs_pass220_i080_deterministic_knowledge_graph_qpu_v1.py",
+      "git_blob_sha": "5f7af7c57f78f5be17659f715d639b9614557f34",
+      "role": "complete 5184-address Genesis/phase-gear/Hash216/IEEE symbolic boundary witness"
+    },
+    "deterministic_qpu_html": {
+      "path": "examples/ParticleSimulation.I080DeterministicKnowledgeGraphQPU.html",
+      "git_blob_sha": "2d51aa27dd8881d0f841966a9c9ee610f56dec05",
+      "role": "additive deterministic browser QPU surface; frozen I041 seed remains unchanged"
+    }
+  },
+  "bigint_knowledge_graph": {
+    "vm81_cells": 81,
+    "operations_per_cell": 64,
+    "serialized_characters": 5184,
+    "coordinate_law": "linear5184=64*cell81+operation64=72*hash72_row+hash72_column",
+    "offset_alphabet": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "fixed_width_rational_scientific_serialization": true,
+    "one_final_memristor_edge_per_vm81_cell": true,
+    "path_dependent_reuse_updates_per_edge": 1,
+    "inherited_vm81_offset_alphabet": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "character_address_offset_alphabet": [
+      -9,
+      -8,
+      -7,
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "every_character_addressed": true,
+    "character_address_range": [
+      0,
+      5183
+    ]
+  },
+  "deterministic_probability_synthesis": {
+    "browser_probability_semantics_source": "examples/ParticleSimulation.html",
+    "browser_math_random_is_authority": false,
+    "authority_sampler": "domain-separated SHA-256 stream + exact rejection sampling",
+    "floating_point_probability_authority": false,
+    "same_hash216_and_graph_state_replays_identically": true,
+    "different_hash216_or_graph_state_changes_schedule": true,
+    "i041_virtual_decay_particles": 10368,
+    "i041_virtual_decay_probability_per_particle_per_turn": "1/10368",
+    "deterministic_scheduled_victims_per_turn": 1,
+    "q144_phase_domain": 144,
+    "ring72_events": 72,
+    "fractal_seed_bookkeeping_rule": "every 72nd event seals one (x,y):(z,w) seed",
+    "tick_semantics": "each synthesized event is the exact receipt for one Lane 5 optimization tick",
+    "tick_state_space": "each event/tick carries the same 3x5184 PREVIOUS:A / STATE:B / RECEIPT:C offset topology"
+  },
+  "hash216_output": {
+    "lane0": "Hash72(BigInt/VM81 serialized state witness)",
+    "lane1": "Hash72(memristor knowledge-graph witness)",
+    "lane2": "Hash72(deterministic probability + per-tick reciprocal/HNAN optimization schedule witness)",
+    "width": 216,
+    "hydrated_components": 15552,
+    "roundtrip_required": true
+  },
+  "authority": {
+    "candidate_only": true,
+    "isolated_vmrc_execution_allowed": true,
+    "shared_vmrc_mutation_authority": false,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_commit_authority": false,
+    "canonical_hash216_commit_authority": false,
+    "canonical_hash216_persistence_authority": false,
+    "browser_math_random_authority": false,
+    "host_float_probability_authority": false,
+    "gpu_float_authority": false,
+    "external_egress_authority": false,
+    "ieee_float_internal_logic_authority": false,
+    "lossy_scalar_projection_authority": false
+  },
+  "lane5_tick_optimization": {
+    "rule": "every simulation tick executes exactly one Lane 5 optimization operation",
+    "directed_ratio_pair": [
+      "A/B",
+      "B/A"
+    ],
+    "typed_pair_inversions": [
+      [
+        "a",
+        "b"
+      ],
+      [
+        "x",
+        "y"
+      ],
+      [
+        "z",
+        "w"
+      ],
+      [
+        "p",
+        "q"
+      ]
+    ],
+    "topology_phase_inversion": [
+      "CONCAVE",
+      "CONVEX"
+    ],
+    "closure": "AB=P^4",
+    "closure_semantics": "preserved typed/directional source; no native commutation or reciprocal cancellation",
+    "phase_modulus": 72,
+    "reciprocal_half_turn": "u^36",
+    "half_turn_self_inverse": true,
+    "full_turn": "u^72=u^0",
+    "hnan_periodicity_source": "u^(5184=81*64=72²/72⁷²MOD72)=HNAN periodicity",
+    "periodicity_witness": {
+      "5184": 5184,
+      "81x64": 5184,
+      "72_squared": 5184,
+      "5184_mod_72": 0,
+      "72_pow_72_mod_72": 0
+    }
+  },
+  "hash216_bigint_state_offset": {
+    "interpretation": "Hash216 PREVIOUS/STATE/RECEIPT hydrates as three ordered 5184-position BigInt state-offset planes",
+    "lane_order": [
+      "PREVIOUS:A",
+      "STATE:B",
+      "RECEIPT:C"
+    ],
+    "constructor_relations": {
+      "A": "A=C-B=((a^2+b^2)^6/c^2)/(BA=-P^4)=HNAN+(5184)MOD(5184)=(c^2-a^2)A",
+      "B": "B=C-A=((a^2+b^2)^6/c^2)/(AB=P^4)=HNAN-(5184)MOD(5184)=(c^2-a^2)B",
+      "C": "RECEIPT_C_SHARED_CLOSURE_CARRIER",
+      "direct_closure": "AB=P^4",
+      "mirror_closure": "BA=-P^4"
+    },
+    "canonical_square_projection": {
+      "a^2": 1,
+      "b^2": 2,
+      "c^2": 3,
+      "c^2-a^2": 2
+    },
+    "hnan_5184_offsets": {
+      "A_direction": "+5184",
+      "B_direction": "-5184",
+      "modulus": 5184,
+      "A_residue": 0,
+      "B_residue": 0,
+      "directional_provenance_preserved": true
+    },
+    "state_space_per_tick": {
+      "source_identity": "5184*3=3^(5184)/72^72",
+      "materialized_planes": 3,
+      "positions_per_plane": 5184,
+      "materialized_components": 15552,
+      "ternary_base": 3,
+      "ternary_exponent": 5184,
+      "hash72_normalizer_base": 72,
+      "hash72_normalizer_exponent": 72,
+      "typed_manifold_identity": true,
+      "ordinary_scalar_equality_evaluated": false
+    },
+    "authority": {
+      "commutative_rewrite": false,
+      "reciprocal_cancellation": false,
+      "constructor_scalarization": false
+    }
+  },
+  "deterministic_knowledge_graph_qpu": {
+    "genesis": {
+      "10": "10 + 5182 HNAN-zero positions = Lo Shu 9x9 Sudoku qudit nucleus / decimal address alphabet",
+      "20": "4,7,11 dyadic scaling quantization",
+      "30": "a^2+b^2=c^2=(A+B=C)/(AB/P^4), with 1,2,3:2,4,6:3,6,9",
+      "100": "100=90+10=81*81 dual 9x9 qudit entanglement constructor",
+      "zero": "5184 addressed HNAN-zero positions"
+    },
+    "trinary_phase_tensor": {
+      "carrier_positions": 5184,
+      "nucleus_anchor_positions": 1,
+      "free_positions": 5183,
+      "state_space_source": "3^5183"
+    },
+    "phase_gear": {
+      "one_tick_one_lane5_optimization_operation": true,
+      "phase_step": "u^16",
+      "E": [
+        8,
+        24,
+        40,
+        56,
+        72,
+        16,
+        32,
+        48,
+        64
+      ],
+      "ratio_64_72": "8/9",
+      "ratio_72_81": "8/9",
+      "common_closure": "64*81=72^2=5184",
+      "nine_steps": "9*16=144=2*72"
+    },
+    "hash216_hydration": {
+      "width": 216,
+      "planes": 3,
+      "positions_per_plane": 5184,
+      "attached_components": 15552,
+      "exact_recompression_required": true
+    },
+    "ieee754_ingress_egress": {
+      "formats": {
+        "binary16": [
+          1,
+          5,
+          10
+        ],
+        "binary32": [
+          1,
+          8,
+          23
+        ],
+        "binary64": [
+          1,
+          11,
+          52
+        ]
+      },
+      "pipeline": "raw IEEE bit string -> symbolic palindromic RNA record -> native Lane 5 state -> exact raw IEEE bit string",
+      "preserves": [
+        "raw bits",
+        "sign bit",
+        "exponent bits",
+        "fraction bits",
+        "zero sign",
+        "subnormal class",
+        "infinity class",
+        "NaN payload bits"
+      ],
+      "internal_ieee_float_algorithm_used": false,
+      "lossy_scalar_projection_used": false
+    },
+    "proof_constraints": {
+      "wolfram_source": "formal/wolfram/pass220_i080_deterministic_knowledge_graph_qpu_v1.wl",
+      "wolfram_evidence": "evidence/pass220/i080_deterministic_knowledge_graph_qpu_wolfram_20261005_v1.output.json",
+      "wolfram_checks": "31/31 PASS",
+      "lean_source": "formal/lean/HHS/Pass220/I080DeterministicKnowledgeGraphQPU.lean",
+      "lean_root": "formal/lean/HHS.lean",
+      "lean_kernel_check_required": true,
+      "lean_axiom_audit_required": true
+    }
+  }
+}
