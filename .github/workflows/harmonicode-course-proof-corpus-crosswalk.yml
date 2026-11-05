@@ -6,12 +6,14 @@ on:
     paths:
       - 'docs/course/**'
       - 'contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json'
+      - 'contracts/pass220/HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1.json'
       - 'tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py'
       - '.github/workflows/harmonicode-course-proof-corpus-crosswalk.yml'
   push:
     paths:
       - 'docs/course/**'
       - 'contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json'
+      - 'contracts/pass220/HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1.json'
       - 'tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py'
       - '.github/workflows/harmonicode-course-proof-corpus-crosswalk.yml'
   workflow_dispatch:
