@@ -4,6 +4,8 @@ on:
     paths:
       - "hhs_runtime/hhs_pass220_nucleus5_matrixtimes_abp_source_v1.py"
       - "tests/test_pass220_nucleus5_matrixtimes_abp_source_v1.py"
+      - "tests/test_pass220_nucleus5_source_topology_v1.py"
+      - "hhs_runtime/hhs_pass220_nucleus5_source_topology_v1.py"
       - "tools/pass220/nucleus5_pass159_frontend_probe.c"
       - "tools/pass220/compare_nucleus5_pass159_identities.py"
       - ".github/workflows/pass220-nucleus5-matrixtimes-abp-ingress.yml"
@@ -24,6 +26,7 @@ jobs:
           PYTHONPATH: .
         run: |
           python -m unittest discover -s tests -p 'test_pass220_nucleus5_matrixtimes_abp_source_v1.py' -v
+          python -m unittest discover -s tests -p 'test_pass220_nucleus5_source_topology_v1.py' -v
           python -m compileall -q hhs_runtime/hhs_pass220_nucleus5_matrixtimes_abp_source_v1.py
   nucleus5-native-pass159-frontend:
     runs-on: ubuntu-latest
