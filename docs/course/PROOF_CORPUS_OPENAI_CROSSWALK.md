@@ -66,3 +66,9 @@ Do **not** conflate the following stages:
 The I081 theorem/HOLD partition is a recorded status of the **external source-bound frontier at its pinned revision**, not a declaration that every such theorem is permanently HOLD within HHS, nor a negative finding against existing native constructors. An independently validated native constructor may provide the upgrade witness without changing the original source provenance. This crosswalk does not re-audit all existing hydration receipts or assert which individual imported proofs have already achieved native verification.
 
 The new ordered Q₄ packet is still explicitly OPEN for **its newly specified native semantics** until its own trusted execution evidence is recorded. That open status cannot downgrade previously admitted native constructors elsewhere in the system.
+
+## Native receipt locator bridge
+
+The source-scoped [native proof evidence bridge](../../contracts/pass220/HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1.json) points to the existing HNAN native checker, legacy course passthrough native witness, course module provenance inventory, I072 theory-constructor hydration, and I081 external source-scope promotion audit. Every link records the precise subject of the source receipt. **A legacy course Module 9 receipt is not re-labeled as a receipt for the new Module 9 source without an exact verified source mapping.** Similarly, inherited I072 144×36 addressing does not prove the new ordered Q₄ operator.
+
+Validated constructors retain their native authority regardless of origin; no constructor is downgraded because its source was external. This bridge records already-discoverable validation surfaces without fabricating exact per-module identities. The CI crosswalk checker verifies that these paths exist and the status boundaries remain intact.
