@@ -42,6 +42,13 @@ def validate() -> dict:
         assert 0 <= relation["course_module"] <= 123
         assert relation["proof_equivalence"] is False
         assert relation["relation"] in {"STRUCTURAL_OVERLAP_CANDIDATE", "METHOD_OVERLAP_CANDIDATE"}
+    hydration = corpus["hydration_contract"]
+    assert hydration["principle"] == "PROVENANCE_INDEPENDENT_NATIVE_CONSTRUCTOR_AUTHORITY"
+    assert hydration["discovery_hydration"]["native_constructor_validated"] is False
+    assert hydration["validated_proof_hydration"]["source_provider_independent"] is True
+    assert hydration["validated_proof_hydration"]["candidate_label_not_inherited_after_validation"] is True
+    assert hydration["per_instance_status_required"] is True
+    assert hydration["bulk_proof_validation_not_inferred_from_source_catalogue"] is True
     assert corpus["corpora"]["openai_revision"] == "adc7f1241b42e322a6451854ab7e4b4c146bf78a"
     for key in ("hhs_lemma", "hhs_axiom", "whitepaper_source_freeze",
                 "openai_i078", "openai_i079", "openai_i080", "openai_i081"):
