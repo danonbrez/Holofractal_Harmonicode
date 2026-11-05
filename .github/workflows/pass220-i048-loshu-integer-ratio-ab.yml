@@ -1,0 +1,44 @@
+name: Pass 220 I048 Lo Shu Integer-Ratio A/B
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "hhs_runtime/hhs_pass220_i048_loshu_integer_ratio_ab_v1.py"
+      - "tests/pass220/test_hhs_pass220_i048_loshu_integer_ratio_ab_v1.py"
+      - "contracts/pass220/PASS_220_I048_LOSHU_INTEGER_RATIO_AB_V1.json"
+      - "evidence/pass220/pass220_i048_loshu_integer_ratio_ab_wolfram_v1.wl"
+      - "evidence/pass220/pass220_i048_loshu_integer_ratio_ab_wolfram_v1.output.json"
+      - "docs/pass220/PASS_220_I048_LOSHU_INTEGER_RATIO_AB_V1.md"
+      - "docs/operations/restart/PASS_220_I048_LOSHU_INTEGER_RATIO_AB_RESTART_20260928.md"
+      - ".github/workflows/pass220-i048-loshu-integer-ratio-ab.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-loshu-integer-ratio-ab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install bounded test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile I048 surfaces
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i048_loshu_integer_ratio_ab_v1.py \
+            tests/pass220/test_hhs_pass220_i048_loshu_integer_ratio_ab_v1.py
+      - name: Run I048 dependency-scoped tests
+        run: PYTHONPATH=. python -m pytest -q tests/pass220/test_hhs_pass220_i048_loshu_integer_ratio_ab_v1.py
+      - name: Enforce candidate-only authority membrane
+        run: |
+          set -euo pipefail
+          grep -Fq '"canonical_vm81_mutation_authority": False' hhs_runtime/hhs_pass220_i048_loshu_integer_ratio_ab_v1.py
+          grep -Fq '"canonical_hash72_authority": False' hhs_runtime/hhs_pass220_i048_loshu_integer_ratio_ab_v1.py
+          grep -Fq '"canonical_hash216_authority": False' hhs_runtime/hhs_pass220_i048_loshu_integer_ratio_ab_v1.py
+          grep -Fq '"floating_point_canonical_authority": False' hhs_runtime/hhs_pass220_i048_loshu_integer_ratio_ab_v1.py
