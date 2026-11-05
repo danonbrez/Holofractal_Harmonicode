@@ -1,7 +1,6 @@
 """Pass 220 Lane 5 ERS analog-qutrit V2 candidate-only structural admission.
 
-This is a provenance-preserving preflight, NOT a VM81 admission or a physical
-quantum-hardware implementation. No canonical state or ledger is mutated.
+This is a provenance-preserving software preflight, not a VM81 admission.\nNo canonical state or ledger is mutated.
 """
 from __future__ import annotations
 
@@ -86,7 +85,6 @@ def structural_preflight(packet: Mapping[str, Any]) -> dict[str, Any]:
             "native U_R execution", "C++ cell-wall acceptance",
             "ordered gate execution", "native HNAN runtime handling",
             "VM81 admission", "Hash72/Hash216 receipt/replay",
-            "physical hardware characterization",
         ],
     }
 
