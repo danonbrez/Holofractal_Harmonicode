@@ -50,6 +50,14 @@ static int verify_span_manifest(const char *path, const uint8_t *source, size_t 
         (void)sprintf(digest_hex + 2U * i, "%02x", (unsigned)digest[i]);
     digest_hex[64] = '\0';
     if (strcmp(digest_hex, expected) != 0) goto done;
+    /* Pin the inherited canonical base/successor sources independently of
+       the supplied span manifest. A rewritten source plus regenerated
+       manifest cannot authorize an alternate tensor. */
+    if (!((size == 1015U &&
+           strcmp(digest_hex, "1655ebcb15ca331d187f73064cf0bf60acc4d1bbc50f7b71e882744bcc12af2b") == 0) ||
+          (size == 1095U &&
+           strcmp(digest_hex, "caf4f13214825cefa1905ae1cba34fd0bc702f735acc74c684cef4492dc79565") == 0)))
+        goto done;
     while (fgets(line, sizeof(line), fp) != NULL) {
         if (line[0] == 'C' && line[1] == ' ') {
             if (sscanf(line, "C %u %u %u %u %u %64s",
