@@ -30,19 +30,25 @@
       "course_module": 11,
       "openai_anchor": "OPENAI_MATH_EUCLIDEAN_RAMSEY_3X3_9X9_SYMBOLIC_TENSOR",
       "relation": "STRUCTURAL_OVERLAP_CANDIDATE",
-      "proof_equivalence": false
+      "proof_equivalence": false,
+      "hydration_status": "STRUCTURAL_DISCOVERY_ONLY",
+      "native_constructor_status": "NOT_ASSESSED_BY_THIS_CROSSWALK"
     },
     {
       "course_module": 3,
       "openai_anchor": "OPENAI_MATH_DIRICHLETL_72_CONDUCTOR",
       "relation": "STRUCTURAL_OVERLAP_CANDIDATE",
-      "proof_equivalence": false
+      "proof_equivalence": false,
+      "hydration_status": "STRUCTURAL_DISCOVERY_ONLY",
+      "native_constructor_status": "NOT_ASSESSED_BY_THIS_CROSSWALK"
     },
     {
       "course_module": 123,
       "openai_anchor": "OPENAI_MATH_MATRIX_MULTIPLICATION_TENSOR_POWER",
       "relation": "METHOD_OVERLAP_CANDIDATE",
-      "proof_equivalence": false
+      "proof_equivalence": false,
+      "hydration_status": "STRUCTURAL_DISCOVERY_ONLY",
+      "native_constructor_status": "NOT_ASSESSED_BY_THIS_CROSSWALK"
     }
   ],
   "module123": {
@@ -1059,5 +1065,27 @@
       "status": "MIXED_LOCAL_WITNESSES_NATIVE_Q4_OPEN",
       "proof_admitted": false
     }
-  ]
+  ],
+  "hydration_contract": {
+    "principle": "PROVENANCE_INDEPENDENT_NATIVE_CONSTRUCTOR_AUTHORITY",
+    "source_identity_role": "RETAIN_FOR_LINEAGE_NOT_PERMANENT_EXECUTION_RESTRICTION",
+    "discovery_hydration": {
+      "status": "CANDIDATE_ONLY",
+      "native_constructor_validated": false,
+      "canonical_admission": false
+    },
+    "validated_proof_hydration": {
+      "status": "NATIVE_CONSTRUCTOR_VALIDATED_WHEN_TRUSTED_RECEIPT_CONFIRMS",
+      "source_provider_independent": true,
+      "requires": [
+        "exact_typed_statement_and_domain_guards",
+        "source_and_dependency_lineage",
+        "trusted_native_validation_receipt",
+        "existing_cell_wall_and_vm81_admission_for_canonical_execution"
+      ],
+      "candidate_label_not_inherited_after_validation": true
+    },
+    "per_instance_status_required": true,
+    "bulk_proof_validation_not_inferred_from_source_catalogue": true
+  }
 }
