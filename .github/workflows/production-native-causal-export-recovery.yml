@@ -1,0 +1,26 @@
+name: Production native causal export recovery
+on:
+  pull_request:
+    paths:
+      - 'tools/provision_native_causal_model.py'
+      - 'tests/test_native_causal_export_recovery.py'
+      - '.github/workflows/production-native-causal-export-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-causal-export-recovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify native causal export recovery decision contract
+        run: python -m unittest discover -s tests -p 'test_native_causal_export_recovery.py' -v
+      - name: Syntax-check bounded production provisioner
+        run: python -m py_compile tools/provision_native_causal_model.py
