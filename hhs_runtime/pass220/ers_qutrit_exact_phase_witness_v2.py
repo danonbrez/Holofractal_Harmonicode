@@ -36,9 +36,7 @@ def phase_root_witness(k: int) -> dict[str, Any]:
         "u_minus180_sign": u36_sign,
         "u_minus180_equals_one": u36_sign == 1,
         "u36_equals_one": u36_sign == 1,
-        "primitive_root": k == 1 or k in tuple(
-            j for j in range(1, ROOT_COUNT) if _coprime(j, ROOT_COUNT)
-        ),
+        "primitive_root": _coprime(k, ROOT_COUNT),
         "vm81_admission": False,
     }
 
