@@ -30,6 +30,61 @@ static int read_source(const char *path, uint8_t **out, size_t *len) {
     return 1;
 }
 
+/* Verify the source-topology manifest against the bytes passed to Pass159.
+ * This does not establish effectful instruction lowering or VM81 admission.
+ */
+static int verify_span_manifest(const char *path, const uint8_t *source, size_t size) {
+    FILE *fp = fopen(path, "r");
+    char line[256];
+    char expected[65], digest_hex[65];
+    uint8_t digest[SHA256_DIGEST_LENGTH];
+    unsigned long source_len;
+    unsigned m, r, c, start, end, gate, cell_count = 0U, gate_count = 0U;
+    size_t i;
+    int result = 0;
+    if (fp == NULL || source == NULL) return 0;
+    if (fgets(line, sizeof(line), fp) == NULL ||
+        sscanf(line, "NUCLEUS5_V1 %lu %64s", &source_len, expected) != 2 ||
+        source_len != size || SHA256(source, size, digest) == NULL) goto done;
+    for (i = 0; i < SHA256_DIGEST_LENGTH; ++i)
+        (void)sprintf(digest_hex + 2U * i, "%02x", (unsigned)digest[i]);
+    digest_hex[64] = '\\0';
+    if (strcmp(digest_hex, expected) != 0) goto done;
+    while (fgets(line, sizeof(line), fp) != NULL) {
+        if (line[0] == 'C' && line[1] == ' ') {
+            if (sscanf(line, "C %u %u %u %u %u %64s",
+                       &m, &r, &c, &start, &end, expected) != 6 ||
+                cell_count >= 48U || m != cell_count / 16U ||
+                r != (cell_count % 16U) / 4U ||
+                c != cell_count % 4U ||
+                start >= end || end > size ||
+                SHA256(source + start, end - start, digest) == NULL) goto done;
+            for (i = 0; i < SHA256_DIGEST_LENGTH; ++i)
+                (void)sprintf(digest_hex + 2U * i, "%02x", (unsigned)digest[i]);
+            digest_hex[64] = '\\0';
+            if (strcmp(digest_hex, expected) != 0) goto done;
+            ++cell_count;
+        } else if (line[0] == 'E' && line[1] == ' ') {
+            if (cell_count != 48U ||
+                sscanf(line, "E %u %u %u", &gate, &start, &end) != 3 ||
+                gate != gate_count || start + 2U != end || end > size ||
+                memcmp(source + start, "==", 2U) != 0) goto done;
+            ++gate_count;
+        } else if (strncmp(line, "END ", 4U) == 0) {
+            unsigned declared_cells, declared_gates;
+            if (sscanf(line, "END %u %u", &declared_cells, &declared_gates) != 2 ||
+                declared_cells != 48U || declared_cells != cell_count ||
+                declared_gates != gate_count || gate_count < 3U ||
+                fgets(line, sizeof(line), fp) != NULL) goto done;
+            result = 1;
+            break;
+        } else goto done;
+    }
+done:
+    fclose(fp);
+    return result;
+}
+
 static int read_hash216(const void *artifact, char value[HHS159_HASH216_LENGTH + 1U]) {
     memset(value, 0, HHS159_HASH216_LENGTH + 1U);
     HHS159MutableByteSpan span = {
@@ -111,7 +166,8 @@ int main(int argc, char **argv) {
     char graph_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char vmir_id[HHS159_HASH216_LENGTH + 1U] = {0};
     char receipt_id[HHS159_HASH216_LENGTH + 1U] = {0};
-    if (argc != 2 || !read_source(argv[1], &bytes, &size))
+    if (argc != 3 || !read_source(argv[1], &bytes, &size) ||
+        !verify_span_manifest(argv[2], bytes, size))
         goto cleanup;
 
     cfg.header.struct_size = (uint32_t)sizeof(cfg);
