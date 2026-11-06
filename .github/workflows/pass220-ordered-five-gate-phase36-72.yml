@@ -1,0 +1,89 @@
+name: Pass 220 Ordered Five Gate Phase36 Phase72 Native Frontend
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/pass220/PASS_220_ORDERED_FIVE_GATE_PHASE36_72_SOURCE_V1.harmonicode'
+      - 'tests/pass220/test_pass220_ordered_five_gate_phase36_72_source_v1.py'
+      - 'tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c'
+      - '.github/workflows/pass220-ordered-five-gate-phase36-72.yml'
+      - 'hhs_runtime/include/hhs_pass220_five_gate_cell_wall_v1.hpp'
+      - 'tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp'
+      - 'hhs_runtime/include/hhs_pass220_rank1_hnan_v1.hpp'
+      - 'tests/pass220/test_pass220_rank1_hnan_v1.cpp'
+      - 'tests/pass220/test_pass220_five_gate_layout_digest_oracle_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_foreign_proof_guard_v1.hpp'
+      - 'tests/pass220/test_pass220_foreign_proof_guard_v1.cpp'
+      - 'formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ordered-five-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify verbatim source integrity
+        run: |
+          printf '%s  %s\n' 'ceec282499ddaf48eba1d25b6313c407d9466d379e321b47f9a6b3f752c2a499' 'contracts/pass220/PASS_220_ORDERED_FIVE_GATE_PHASE36_72_SOURCE_V1.harmonicode' | sha256sum -c -
+          python -m unittest discover -s tests/pass220 -p test_pass220_ordered_five_gate_phase36_72_source_v1.py -v
+      - name: Independent five-gate SHA256 layout oracle and tamper controls
+        run: python -m unittest discover -s tests/pass220 -p test_pass220_five_gate_layout_digest_oracle_v1.py -v
+      - name: Build inherited Pass159 C ABI frontend
+        run: |
+          cmake -S native_projects/hhs_pass159_harmonicode_toolchain -B /tmp/pass159-five-gate -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/pass159-five-gate --target hhs_pass159 --parallel 2
+      - name: Parse, typecheck and lower five native equality gates
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            tests/pass220/test_pass220_ordered_five_gate_pass159_frontend_v1.c \
+            -L/tmp/pass159-five-gate -lhhs_pass159 -lcrypto \
+            -Wl,-rpath,/tmp/pass159-five-gate \
+            -o /tmp/pass220-five-gate
+          /tmp/pass220-five-gate
+      - name: Native C++ cell-wall source and negative admission conformance
+        run: |
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include tests/pass220/test_pass220_five_gate_cell_wall_v1.cpp \
+            -lcrypto -o /tmp/pass220-cell-wall
+          /tmp/pass220-cell-wall
+      - name: Reject foreign Pass219 source-bound proof import
+        run: |
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include tests/pass220/test_pass220_foreign_proof_guard_v1.cpp \
+            -o /tmp/pass220-foreign-proof
+          /tmp/pass220-foreign-proof
+      - name: Native rank-1 HNAN gain-one no-write tests
+        run: |
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include tests/pass220/test_pass220_rank1_hnan_v1.cpp \
+            -o /tmp/pass220-rank1-hnan
+          /tmp/pass220-rank1-hnan
+      - name: Check inherited Lean HNAN boundary theorem
+        run: |
+          curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o /tmp/elan-init.sh
+          sh /tmp/elan-init.sh -y --default-toolchain none
+          export PATH="$HOME/.elan/bin:$PATH"
+          lake build HHS.Pass220.FiveGateHNANBoundary
+      - name: Capture checked Lean proof dependency identities
+        run: |
+          mkdir -p /tmp/pass220-proof-evidence
+          sha256sum \
+            contracts/pass220/PASS_220_ORDERED_FIVE_GATE_PHASE36_72_SOURCE_V1.harmonicode \
+            formal/lean/HHS/Pass220/FiveGateHNANBoundary.lean \
+            formal/lean/HHS/Pass220/HNANPhase5184.lean \
+            formal/lean/HHS/Pass219/QGUHNANTransport.lean \
+            formal/lean/HHS/Alignment/ReciprocalTensor.lean \
+            lean-toolchain lakefile.lean \
+            > /tmp/pass220-proof-evidence/source-dependencies.sha256
+          git rev-parse HEAD > /tmp/pass220-proof-evidence/checked-commit.txt
+          printf '%s\n' 'candidate-only: does not authorize VM81 or Hash72/Hash216 mint' \
+            > /tmp/pass220-proof-evidence/authority.txt
+      - name: Publish noncanonical proof dependency evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-five-gate-lean-dependency-evidence
+          path: /tmp/pass220-proof-evidence/
+          if-no-files-found: error
