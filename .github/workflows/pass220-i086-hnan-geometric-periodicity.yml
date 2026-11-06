@@ -1,0 +1,66 @@
+name: Pass 220 I086 HNAN Geometric Periodicity
+
+on:
+  push:
+    branches:
+      - pass220/i086-hnan-geometric-periodicity
+    paths:
+      - "hhs_runtime/pass220/hnan_perimeter_topology_v1.py"
+      - "tests/pass220/test_pass220_i086_hnan_perimeter_topology.py"
+      - ".github/workflows/pass220-i086-hnan-geometric-periodicity.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "hhs_runtime/pass220/hnan_perimeter_topology_v1.py"
+      - "tests/pass220/test_pass220_i086_hnan_perimeter_topology.py"
+      - ".github/workflows/pass220-i086-hnan-geometric-periodicity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-scoped-hnan-topology:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile touched module and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass220/hnan_perimeter_topology_v1.py \
+            tests/pass220/test_pass220_i086_hnan_perimeter_topology.py
+      - name: Execute I086 and inherited HNAN transport tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_pass220_i086_hnan_perimeter_topology.py \
+            tests/pass219/test_pass219_hnan_qgu_transport_v1.py
+      - name: Verify fail-closed projection receipt and source boundary
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from hhs_runtime.pass220.hnan_perimeter_topology_v1 import topology_receipt
+          from hhs_runtime.pass219.hnan_4x4_recursive_gate_v1 import (
+              hnan_loshu_resolution_receipt, qgu_hnan_transport_receipt
+          )
+          r = topology_receipt()
+          assert r["status"] == "PASS" and all(r["checks"].values()), r
+          for field in (
+              "phase_period_verified", "vm81_state_period_verified",
+              "native_admission_verified", "canonical_vm81_mutation_authority",
+              "hash72_mint_authority", "hash216_persistence_authority"
+          ):
+              assert r[field] is False, (field, r[field])
+          assert hnan_loshu_resolution_receipt()["status"] == "PASS"
+          assert qgu_hnan_transport_receipt()["status"] == "PASS"
+          print(r["schema"], r["receipt_sha256"])
+          PY
