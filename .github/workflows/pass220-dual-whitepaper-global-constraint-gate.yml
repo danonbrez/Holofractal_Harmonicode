@@ -1,0 +1,92 @@
+name: Pass 220 Dual Whitepaper Global Constraint Gate
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py"
+      - "hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py"
+      - "hhs_runtime/pass220/atomic_sprite_calorimetry_v1.py"
+      - "examples/hhs_agentic_electron_sprite_v1.js"
+      - "examples/ParticleSimulationAtomicNeural.html"
+      - "examples/ParticleSimulation.html"
+      - "tests/pass220/test_agentic_electron_sprite_v1.cjs"
+      - "tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
+      - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
+      - "tests/pass220/test_atomic_sprite_calorimetry_v1.py"
+      - "docs/pass220/PASS_220_DUAL_WHITEPAPER_ATOMIC_SPRITE_GLOBAL_CONSTRAINTS_V1.md"
+      - "whitepapers/**"
+      - "docs/whitepapers/**"
+      - ".github/workflows/pass220-dual-whitepaper-global-constraint-gate.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py"
+      - "hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py"
+      - "hhs_runtime/pass220/atomic_sprite_calorimetry_v1.py"
+      - "examples/hhs_agentic_electron_sprite_v1.js"
+      - "examples/ParticleSimulationAtomicNeural.html"
+      - "examples/ParticleSimulation.html"
+      - "tests/pass220/test_agentic_electron_sprite_v1.cjs"
+      - "tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py"
+      - "tests/pass220/test_atomic_sprite_global_ingress_v1.py"
+      - "tests/pass220/test_atomic_sprite_calorimetry_v1.py"
+      - "docs/pass220/PASS_220_DUAL_WHITEPAPER_ATOMIC_SPRITE_GLOBAL_CONSTRAINTS_V1.md"
+      - "whitepapers/**"
+      - "docs/whitepapers/**"
+      - ".github/workflows/pass220-dual-whitepaper-global-constraint-gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  corpus-binding:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install focused test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile new gate
+        run: |
+          python -m py_compile hhs_runtime/pass220/atomic_sprite_whitepaper_gate_v1.py
+          python -m py_compile hhs_runtime/pass220/atomic_sprite_global_ingress_v1.py
+          python -m py_compile hhs_runtime/pass220/atomic_sprite_calorimetry_v1.py
+          python -m py_compile hhs_runtime/hhs_service_registry_v1.py
+          python -m py_compile tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py
+          python -m py_compile tests/pass220/test_atomic_sprite_global_ingress_v1.py
+          python -m py_compile tests/pass220/test_atomic_sprite_calorimetry_v1.py
+      - name: Validate complete repository corpora
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.pass220.atomic_sprite_whitepaper_gate_v1 import corpus_snapshot
+          s = corpus_snapshot(Path("."))
+          assert set(s["roots"]) == {"whitepapers", "docs/whitepapers"}
+          assert all(v["file_count"] >= 1 for v in s["roots"].values())
+          assert len(s["bundle_sha256"]) == 64
+          print("CORPUS_BOUND_CANDIDATE_ONLY", s["roots"], s["bundle_sha256"])
+          PY
+      - name: Validate browser-derived neural candidate surface (Node)
+        run: |
+          node --version
+          node --check examples/hhs_agentic_electron_sprite_v1.js
+          node --check tests/pass220/test_agentic_electron_sprite_v1.cjs
+          node --check tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs
+          node tests/pass220/test_agentic_electron_sprite_v1.cjs
+          node tests/pass220/test_agentic_electron_sprite_browser_smoke_v1.cjs
+      - name: Dual corpus dependency-scoped regression
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q tests/pass220/test_atomic_sprite_whitepaper_gate_v1.py
+          python -m pytest -q tests/pass220/test_atomic_sprite_global_ingress_v1.py
+          python -m pytest -q tests/pass220/test_atomic_sprite_calorimetry_v1.py
