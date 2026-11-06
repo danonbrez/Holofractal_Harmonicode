@@ -25,6 +25,7 @@ on:
       - ".github/workflows/repository-hash216-dependency-index.yml"
       - "deployment/digitalocean/guarded_auto_update/**"
       - "deployment/digitalocean/warm_boot_manifest.py"
+      - "tools/diagnose_native_causal_interpreter.py"
       - "deploy/digitalocean/hhs-pass196-integrated-environment.service"
       - "deploy/digitalocean/hhs-warm-boot-identity.conf"
       - "tests/test_hhs_guarded_auto_update_contract_v1.py"
@@ -593,6 +594,12 @@ jobs:
               echo "Pinned causal model provisioning failed; no fallback counts as acceptance" >&2
               exit 27
             fi
+          fi
+          echo "=== INSPECT NATIVE CAUSAL SERVICE-IDENTITY PACKAGE RESOLUTION ==="
+          if ! runuser -u hhs -- env PYTHONPATH="$APP_ROOT" \
+            /opt/hhs/venv/bin/python "$APP_ROOT/tools/diagnose_native_causal_interpreter.py"; then
+            echo "Service-interpreter dependency probe failed; preserving exit 27 acceptance block" >&2
+            exit 27
           fi
           if ! runuser -u hhs -- env PYTHONPATH="$APP_ROOT" \
             /opt/hhs/venv/bin/python -c 'from transformers import AutoTokenizer, AutoModelForCausalLM; import torch; print("HHS_NATIVE_CAUSAL_IMPORT_READY=1")'; then
