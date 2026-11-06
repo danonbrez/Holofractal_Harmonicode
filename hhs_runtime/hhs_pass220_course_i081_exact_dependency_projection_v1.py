@@ -116,6 +116,71 @@ def validate_projection(result: dict) -> None:
         raise ValueError("UNAUTHORIZED_MINT")
 
 
+
+def build_lane5_snapshot_binding(projection: dict | None = None) -> dict:
+    """Bind the existing Lane 5 Hash216 receipt as a historical source snapshot.
+
+    This uses the inherited Hash216 constructor; it does not claim that the
+    snapshot's source commit equals the current PR commit or admit VM81 state.
+    """
+    from hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69 import (
+        _h216,
+    )
+    projection = build_dependency_projection() if projection is None else projection
+    validate_projection(projection)
+    receipt_path = ROOT / "artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if receipt["schema"] != "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_DATABASE_RECEIPT_1_69":
+        raise ValueError("LANE5_RECEIPT_SCHEMA_DRIFT")
+    database = receipt["database_status"]
+    if database["schema"] != "HHS_PASS_219_LANE5_REPOSITORY_HYDRATION_HASH216_DATABASE_1_69":
+        raise ValueError("LANE5_DATABASE_SCHEMA_DRIFT")
+    if database["candidate_only"] is not True:
+        raise ValueError("LANE5_DISCOVERY_AUTHORITY_ESCALATION")
+    for key in ("execution_authority", "canonical_hash216_authority",
+                "canonical_hash72_authority", "canonical_vm81_mutation_authority",
+                "canonical_persistence_authority"):
+        if database[key] is not False:
+            raise ValueError(f"LANE5_FORBIDDEN_AUTHORITY:{key}")
+    if database["restart_rehydratable"] is not True or receipt["restart_rehydratable_from_repository_artifacts"] is not True:
+        raise ValueError("LANE5_SNAPSHOT_NOT_REHYDRATABLE")
+    for key in ("projection_root_hash216", "source_dependency_graph_root_hash216"):
+        if not isinstance(receipt.get(key), str) or len(receipt[key]) != 216:
+            raise ValueError("LANE5_SNAPSHOT_ROOT_INVALID")
+    if not isinstance(receipt["source_commit"], str) or len(receipt["source_commit"]) != 40:
+        raise ValueError("LANE5_SNAPSHOT_SOURCE_COMMIT_INVALID")
+    frame = {"course_i081_projection_sha256": projection["projection_sha256"],
+             "course_source_git_blob": projection["course_git_blob"],
+             "openai_source_revision": projection["source_revision"],
+             "lane5_snapshot_source_commit": receipt["source_commit"],
+             "lane5_snapshot_projection_root_hash216": receipt["projection_root_hash216"],
+             "lane5_snapshot_dependency_root_hash216": receipt["source_dependency_graph_root_hash216"],
+             "relationship": "HISTORICAL_SOURCE_SNAPSHOT_BINDING",
+             "current_main_rehydration": "NOT_ESTABLISHED",
+             "native_admission": False}
+    binding = _h216("HHS-P220-COURSE-I081-LANE5-SNAPSHOT-BINDING-V1", frame)
+    return {"schema": "HHS_PASS220_COURSE_I081_LANE5_SNAPSHOT_BINDING_V1",
+            **frame, "candidate_binding_hash216": binding,
+            "canonical_hash216_minted": False,
+            "canonical_vm81_admission": False}
+
+
+def validate_lane5_snapshot_binding(binding: dict, projection: dict) -> None:
+    from hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69 import _h216
+    validate_projection(projection)
+    if binding.get("schema") != "HHS_PASS220_COURSE_I081_LANE5_SNAPSHOT_BINDING_V1":
+        raise ValueError("LANE5_BINDING_SCHEMA_DRIFT")
+    if binding.get("course_i081_projection_sha256") != projection["projection_sha256"]:
+        raise ValueError("LANE5_COURSE_PROJECTION_MISMATCH")
+    if binding.get("canonical_hash216_minted") is not False or binding.get("canonical_vm81_admission") is not False:
+        raise ValueError("LANE5_BINDING_AUTHORITY_ESCALATION")
+    frame = {key: value for key, value in binding.items()
+             if key not in ("schema", "candidate_binding_hash216",
+                            "canonical_hash216_minted", "canonical_vm81_admission")}
+    if binding.get("candidate_binding_hash216") != _h216("HHS-P220-COURSE-I081-LANE5-SNAPSHOT-BINDING-V1", frame):
+        raise ValueError("LANE5_BINDING_HASH216_TAMPERED")
+
+
 def self_test() -> dict:
     result = build_dependency_projection()
     validate_projection(result)
