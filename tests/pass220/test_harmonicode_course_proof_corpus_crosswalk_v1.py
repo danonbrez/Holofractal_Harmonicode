@@ -144,6 +144,32 @@ def validate() -> dict:
     assert sum(n["kind"] == "OPENAI_I081_PARTIAL" for n in graph["nodes"]) == 13
     assert all(e["proof_equivalence_claimed"] is False for e in graph["edges"])
     assert graph["canonical_authority_minted"] is False
+    from hhs_runtime.hhs_pass220_course_i081_exact_dependency_projection_v1 import (
+        build_lane5_snapshot_binding, validate_lane5_snapshot_binding,
+    )
+    binding = build_lane5_snapshot_binding(graph)
+    validate_lane5_snapshot_binding(binding, graph)
+    assert binding == build_lane5_snapshot_binding(graph)
+    assert len(binding["candidate_binding_hash216"]) == 216
+    assert binding["relationship"] == "HISTORICAL_SOURCE_SNAPSHOT_BINDING"
+    assert binding["current_main_rehydration"] == "NOT_ESTABLISHED"
+    assert binding["canonical_hash216_minted"] is False
+    assert binding["canonical_vm81_admission"] is False
+    corrupted = dict(binding, course_i081_projection_sha256="0" * 64)
+    try:
+        validate_lane5_snapshot_binding(corrupted, graph)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("LANE5_GRAPH_TAMPER_NOT_REJECTED")
+    corrupted = dict(binding, canonical_vm81_admission=True)
+    try:
+        validate_lane5_snapshot_binding(corrupted, graph)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("LANE5_AUTHORITY_BYPASS_NOT_REJECTED")
+
     return {"status":"PASS", "module_coverage":"124/124", "source_blob":actual_blob,
             "openai_relation":"CANDIDATE_ONLY", "native_q4":"OPEN"}
 
