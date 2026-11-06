@@ -1,0 +1,52 @@
+name: Pass219 Global Branch and Green PR Inventory
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/pass219_global_integration_inventory.py'
+      - 'scripts/pass219_unfinished_threads_dependency_graph.py'
+      - 'tests/pass219/test_pass219_unfinished_threads_dependency_graph.py'
+      - 'tests/pass219/test_pass219_global_integration_inventory.py'
+      - 'contracts/pass219/PASS_219_UNIFIED_CPP_LEAN_BRANCH_DEPENDENCY_ENFORCEMENT_V1.md'
+      - 'contracts/pass219/pass219_mainline_repair_obligations.json'
+      - '.github/workflows/pass219-global-integration-inventory.yml'
+permissions:
+  contents: read
+  pull-requests: read
+  checks: read
+  statuses: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build full read-only branch and open PR inventory
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 -m py_compile scripts/pass219_global_integration_inventory.py scripts/pass219_unfinished_threads_dependency_graph.py
+          PYTHONPATH=. python3 -m unittest tests/pass219/test_pass219_unfinished_threads_dependency_graph.py tests/pass219/test_pass219_global_integration_inventory.py
+          python3 scripts/pass219_global_integration_inventory.py pass219-global-integration-inventory.json
+          python3 scripts/pass219_unfinished_threads_dependency_graph.py pass219-global-integration-inventory.json pass219-unfinished-threads-graph.json contracts/pass219/pass219_mainline_repair_obligations.json
+          python3 - <<'PY'
+          import json
+          r = json.load(open("pass219-global-integration-inventory.json", encoding="utf8"))
+          g = json.load(open("pass219-unfinished-threads-graph.json", encoding="utf8"))
+          manifest = json.load(open("contracts/pass219/pass219_mainline_repair_obligations.json"))
+          assert len(g["nodes"]) == r["open_pr_count"] + len(r["orphan_branches_without_open_pr"]) + 1 + len(manifest["records"])
+          assert all("repair:"+str(x["source_pr"]) in g["nodes"] for x in manifest["records"])
+          assert len(r["open_prs"]) == r["open_pr_count"]
+          assert len({p["number"] for p in r["open_prs"]}) == r["open_pr_count"]
+          for p in r["open_prs"]:
+              if p["integration_candidate"]:
+                  assert p["observed_green"] and not p["draft"]
+                  assert p["base"] == "main"
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass219-global-integration-inventory
+          path: |
+            pass219-global-integration-inventory.json
+            pass219-unfinished-threads-graph.json
+          retention-days: 30
