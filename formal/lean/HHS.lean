@@ -10,6 +10,8 @@ import HHS.Mathlib.Rat.ValueAlgebra
 import HHS.Alignment.ReciprocalTensor
 import HHS.Provenance.OriginMarker
 import HHS.Pass219.QGUHNANTransport
+import HHS.Pass219.ReversibleCircuit
+import HHS.Pass219.IntegratedConstraint
 import HHS.Pass220.LosslessEmergentCompressionHydration
 import HHS.Pass220.HNANPhase5184
 import HHS.Pass220.Base64BalancedTrit5184
