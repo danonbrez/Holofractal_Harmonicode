@@ -142,6 +142,13 @@ def validate() -> dict:
     assert sum(n["kind"] == "COURSE_MODULE" for n in graph["nodes"]) == 124
     assert sum(n["kind"] == "OPENAI_I081_PROMOTED" for n in graph["nodes"]) == 26
     assert sum(n["kind"] == "OPENAI_I081_PARTIAL" for n in graph["nodes"]) == 13
+    assert sum(n["kind"] == "OPENAI_I078_NOVELTY_SOURCE" for n in graph["nodes"]) == 322
+    assert sum(e["relation"] == "EXACT_SOURCE_IDENTITY" for e in graph["edges"]) == 39
+    source_nodes = {n["id"] for n in graph["nodes"] if n["kind"] == "OPENAI_I078_NOVELTY_SOURCE"}
+    assert len(source_nodes) == 322
+    assert all(e["to"] in source_nodes for e in graph["edges"]
+               if e["relation"] == "EXACT_SOURCE_IDENTITY")
+
     assert all(e["proof_equivalence_claimed"] is False for e in graph["edges"])
     assert graph["canonical_authority_minted"] is False
     from hhs_runtime.hhs_pass220_course_i081_exact_dependency_projection_v1 import (
