@@ -25,7 +25,7 @@ LANE5_REPOSITORY_KNOWLEDGE_OPERATIONS = (
     "lane5.repository_hydration_knowledge.neighbors",
 )
 FACTORY_PREFIXES = ("build_", "create_", "construct_", "hydrate_", "make_", "new_", "register_")
-TEXT_SUFFIXES = {".py",".pyi",".c",".h",".cc",".cpp",".cxx",".hpp",".hh",".js",".mjs",".cjs",".jsx",".ts",".tsx",".md",".rst",".adoc",".json",".yaml",".yml",".toml",".harmonicode"}
+TEXT_SUFFIXES = {".py",".pyi",".c",".h",".cc",".cpp",".cxx",".hpp",".hh",".js",".mjs",".cjs",".jsx",".ts",".tsx",".md",".rst",".adoc",".json",".yaml",".yml",".toml",".harmonicode",".lean"}
 FORMAL_SUFFIXES = {".md",".rst",".adoc",".json",".harmonicode"}
 C_FACTORY = re.compile(r"(?m)^[ \t]*(?:[A-Za-z_][A-Za-z0-9_ \t*]+[ \t]+)([A-Za-z_][A-Za-z0-9_]*(?:build|create|construct|hydrate|init|make|new|register)[A-Za-z0-9_]*)[ \t]*\(")
 JS_CLASS = re.compile(r"(?m)^\s*(?:export\s+)?class\s+([A-Za-z_$][A-Za-z0-9_$]*)")
@@ -154,6 +154,17 @@ def discover_repository_constructors(repo_root: str | Path, dependency_graph: Ma
                 found.append(_ctor(path, match.group(1), "JS_TS_CLASS", "js_ts", _line(text, match.start()), match.group(1), ("JS_TS_CLASS_DECLARATION",)))
             for match in JS_FACTORY.finditer(text):
                 found.append(_ctor(path, match.group(1), "JS_TS_FACTORY_FUNCTION", "js_ts", _line(text, match.start()), match.group(1), ("JS_TS_FACTORY_DECLARATION",)))
+        elif text is not None and suffix == ".lean":
+            # Native Lean source -> discoverable proof constructor candidates.
+            # Parsing is deliberately conservative: these nodes represent
+            # source declarations, not claims of successful kernel checking.
+            for match in re.finditer(r"(?m)^[ \t]*(theorem|lemma|def|structure)\s+([A-Za-z_][A-Za-z0-9_']*)", text):
+                kind, name = match.group(1), match.group(2)
+                if kind not in {"theorem", "lemma"}:
+                    continue
+                found.append(_ctor(path, name, "LEAN_THEOREM_SOURCE", "lean4",
+                    _line(text, match.start()), f"{path}#{name}",
+                    ("LEAN_SOURCE_DECLARATION", "KERNEL_STATUS_UNVERIFIED")))
         if "constructor" in path.lower() and suffix in FORMAL_SUFFIXES:
             found.append(_ctor(path, PurePosixPath(path).name, "FORMAL_CONSTRUCTOR_ARTIFACT", "formal_or_documentation", 1, path, ("CONSTRUCTOR_NAMED_REPOSITORY_ARTIFACT",)))
     unique = {}
@@ -238,6 +249,31 @@ def build_repository_hydration_knowledge_graph(repo_root: str | Path, dependency
 
     capabilities = sorted((_capability(row) for row in raw_nodes if isinstance(row, Mapping)), key=lambda x: str(x["node_id"]))
     constructors = discover_repository_constructors(repo_root, dependency_graph)
+    # Evaluate the registered quarter-phase candidate during the existing
+    # repository knowledge hydration build, rather than indexing only its file.
+    # Its Hash216 is an inherited candidate identity, not a canonical state mint.
+    phase_path = "hhs_runtime/hhs_pass220_lane5_quartic_phase_carrier_v1.py"
+    if phase_path in files:
+        from hhs_runtime.hhs_pass220_lane5_quartic_phase_carrier_v1 import (
+            build_lane5_quartic_phase_candidate,
+        )
+        phase_payload = build_lane5_quartic_phase_candidate()
+        if phase_payload["quarter_cycle_closed"] is not True or phase_payload["determinant_order_preserved"] is not True:
+            raise ValueError("quartic phase hydration invariant failure")
+        phase_node = _ctor(
+            phase_path, "quartic_phase_5184", "NATIVE_QUARTIC_PHASE_HYDRATION",
+            "harmonicode_exact", 1, "build_lane5_quartic_phase_candidate",
+            ("EXACT_DETERMINANT_PHASE_CYCLE", "DUAL_ADDRESS_5184_ROUNDTRIP"),
+        )
+        phase_node["phase_candidate_hash216"] = phase_payload["candidate_hash216"]
+        phase_node["phase_count"] = len(phase_payload["phase_views"])
+        phase_node["position_count"] = phase_payload["position_count"]
+        phase_node["hash216"] = _h216(
+            "HHS-P219-LANE5-REPOSITORY-KNOWLEDGE-CONSTRUCTOR-1.69",
+            {k: v for k, v in phase_node.items() if k != "hash216"},
+        )
+        constructors.append(phase_node)
+        constructors.sort(key=lambda x: str(x["node_id"]))
     nodes = capabilities + constructors
     if len({str(x["node_id"]) for x in nodes}) != len(nodes) or len({str(x["hash216"]) for x in nodes}) != len(nodes):
         raise ValueError("knowledge node identity collision")
