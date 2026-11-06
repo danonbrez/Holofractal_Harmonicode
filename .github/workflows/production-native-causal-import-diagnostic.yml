@@ -1,0 +1,31 @@
+name: Production Native Causal Import Diagnostic
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "tools/diagnose_native_causal_import.py"
+      - "tests/production/test_native_causal_import_diagnostics.py"
+      - ".github/workflows/digitalocean-production-main.yml"
+      - ".github/workflows/production-native-causal-import-diagnostic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic-unit-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install scoped test runner
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile diagnostic and regression
+        run: python -m py_compile tools/diagnose_native_causal_import.py tests/production/test_native_causal_import_diagnostics.py
+      - name: Verify failure-path diagnostics and production boundaries
+        run: PYTHONPATH=. python -m pytest -q tests/production/test_native_causal_import_diagnostics.py

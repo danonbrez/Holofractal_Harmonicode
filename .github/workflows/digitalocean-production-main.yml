@@ -595,7 +595,7 @@ jobs:
             fi
           fi
           if ! runuser -u hhs -- env PYTHONPATH="$APP_ROOT" \
-            /opt/hhs/venv/bin/python -c 'from transformers import AutoTokenizer, AutoModelForCausalLM; import torch; print("HHS_NATIVE_CAUSAL_IMPORT_READY=1")'; then
+            /opt/hhs/venv/bin/python "$APP_ROOT/tools/diagnose_native_causal_import.py"; then
             echo "Native causal dependencies not importable by hhs service identity" >&2
             exit 27
           fi
