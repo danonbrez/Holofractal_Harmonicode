@@ -95,3 +95,23 @@ For a *commutative scalar projection only* and positive squares, `a² = λ c², 
 **Typed consistency warning:** ordinary unital associative scalar/matrix arithmetic with invertible `P` cannot generally satisfy `AB=P⁴` and `BA=-P⁴` merely by scalarizing `A` and `B` into the same field. Preserve the distinct native cell/phase/ordered-product semantics rather than declaring closure from a conventional numeric substitute.
 
 Implementation obligation: Lane 5 must retain a **family of candidate scaling witnesses**, parameter/context identity, exact sum receipt, both ordered product receipts, all three quotient equality receipts and unchanged replay; unresolved branches remain OPEN or HNAN0, without a write. The existing C++ cell wall and singleton VM81 alone can authorize canonical admission.
+
+## Correction: c² is globally derived, not independently fixed (2026-11-06)
+
+The authoritative global constraint chain (preserve native typed branches and operation order) is:
+```text
+P⁴ = c⁴ / Δ
+P² - pq = Δ
+c⁴ = P⁴ Δ = P⁴(P² - pq)
+a² + b² = c²
+AB = +P⁴
+BA = -P⁴
+Aa²/Ba² = Bb²/Ab² = ABc²/BAc²
+```
+The previous free/fixed-`c²` parameterization is **illustrative only, not canonical**; do not introduce `c²` as an independent seed or freeze it at Genesis. In a commutative projection where square roots and the inverse of `Δ` are defined, `c²=±P² sqrt(P²-pq)` is a *branch relation*, not a substitute for the native ordered/phase gate. It follows that `(a²+b²)²=P⁴(P²-pq)` in that projection. Native derivation must remain gate-by-gate with exact typed `P,p,q,Δ`, denominator guards and phase branch metadata; no scalarization replaces native authority.
+
+Implementation:
+1. Resolve the inherited `P²-pq=Δ` gate and `P⁴=c⁴/Δ` constraint **before** admitting any scaling family.
+2. Derive admissible `c²` branches from existing `c⁴` and phase constraints; never create a new free `c²` parameter.
+3. Filter candidate `a²,b²` against their sum, `AB/BA` ordered products, all three quotient equalities, pairwise distinctness/nonzero guards, and the remaining global gates.
+4. Retain branch/cell provenance and reject a branch without deleting or replacing the original tensor. No candidate construction grants VM81 mutation.
