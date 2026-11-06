@@ -89,6 +89,49 @@ def validate() -> dict:
     assert openai_registry["result"]["source_level_coverage_gap"] == 0
     assert openai_registry["result"]["duplicate_assignment"] == 0
     assert native_source_receipt["frontier"] == frontier
+
+    # Exercise every source-scoped promoted and partial native constructor
+    # through the already registered I081 invocation interface. A replay
+    # receipt is an invocation witness, not a fresh Lean proof or VM81 mint.
+    from hhs_runtime.hhs_pass220_i081_openai_math_constructor_promotion_v1 import (
+        invoke_promoted_constructor, invoke_partial_subconstructor,
+    )
+    assert len(openai_registry["full_promotions"]) == 26
+    assert len(openai_registry["partial_subconstructors"]) == 13
+    promoted_ids = set()
+    for row in openai_registry["full_promotions"]:
+        identifier = row["promotion_id"]
+        assert identifier not in promoted_ids, "I081_DUPLICATE_PROMOTION_ID"
+        promoted_ids.add(identifier)
+        first = invoke_promoted_constructor(identifier, registry=openai_registry)
+        replay = invoke_promoted_constructor(identifier, registry=openai_registry)
+        assert first == replay, ("PROMOTED_REPLAY_DRIFT", identifier)
+        assert first["source_slug"] == row["source_slug"]
+        assert first["source_revision"] == openai_registry["source_revision"]
+        assert first["proof_surface_bound"] is True
+        assert first["candidate_hash72"] == first["replay_hash72"]
+        assert first["manuscript_status"] == "FORMAL_THEOREM_CONSTRUCTOR"
+        assert first["truth_promotion"] is False
+        assert first["vm81_mutation_invoked"] is False
+        assert first["canonical_hash72_minted"] is False
+        assert first["canonical_hash216_minted"] is False
+        assert first["canonical_persistence_invoked"] is False
+    partial_ids = set()
+    for row in openai_registry["partial_subconstructors"]:
+        identifier = row["subconstructor_id"]
+        assert identifier not in partial_ids, "I081_DUPLICATE_PARTIAL_ID"
+        partial_ids.add(identifier)
+        first = invoke_partial_subconstructor(identifier, registry=openai_registry)
+        replay = invoke_partial_subconstructor(identifier, registry=openai_registry)
+        assert first == replay, ("PARTIAL_REPLAY_DRIFT", identifier)
+        assert first["source_slug"] == row["source_slug"]
+        assert first["source_revision"] == openai_registry["source_revision"]
+        assert first["candidate_hash72"] == first["replay_hash72"]
+        assert first["formal_subtheorem_available"] is True
+        assert first["full_source_promotion"] is False
+        assert first["manuscript_status"] == "HOLD"
+        assert first["truth_promotion"] is False
+
     return {"status":"PASS", "module_coverage":"124/124", "source_blob":actual_blob,
             "openai_relation":"CANDIDATE_ONLY", "native_q4":"OPEN"}
 
