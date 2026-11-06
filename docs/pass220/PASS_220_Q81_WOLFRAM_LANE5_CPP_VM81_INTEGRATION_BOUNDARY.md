@@ -77,3 +77,21 @@ Here `DistinctNonzero` means pairwise distinct, with each of `a,b,c` nonzero. Th
 - Positive fixture: valid ordered packet with two exact native quotient equality witnesses; emit candidate-only closure proof and replay identical result.
 - Negative fixtures: each denominator invalid; a=b, b=c, a=c; one of a,b,c=0; one equality only; AB↔BA swap; altered address/phase lineage; scalar-only equality when typed ordered witness fails.
 - Lane 5 must compose this gate with the previously specified Q81 full-equation constraints; the additional gate does not supersede the earlier 23-cell and per-cell reinjection obligations.
+
+## Scaling freedom under joint residue closure (2026-11-06)
+
+Canonical constraints carried together:
+```text
+a² + b² = c²
+AB = +P⁴
+BA = -P⁴
+Aa²/Ba² = Bb²/Ab² = ABc²/BAc²
+a ≠ b, a ≠ c, b ≠ c, a ≠ 0, b ≠ 0, c ≠ 0
+```
+`a²` and `b²` are **variable under conserved sum** `c²`, and `A` and `B` are **variable under opposite ordered product constraints**; do not freeze them to Genesis values or independently reduce the three quotient relations.
+
+For a *commutative scalar projection only* and positive squares, `a² = λ c², b²=(1-λ)c²` with `0<λ<1` describes a family, not an authorization to commute native operands. For admissible associative central invertible scale `s`, `A'=s A, B'=s⁻¹ B` preserves the oriented products; this is a conditional example and **not** a proof that all such scales preserve the three quotient equalities. The native admissible scaling set is the intersection of the sum, both ordered products, residue equalities, nonzero/denominator guards and all higher tensor constraints.
+
+**Typed consistency warning:** ordinary unital associative scalar/matrix arithmetic with invertible `P` cannot generally satisfy `AB=P⁴` and `BA=-P⁴` merely by scalarizing `A` and `B` into the same field. Preserve the distinct native cell/phase/ordered-product semantics rather than declaring closure from a conventional numeric substitute.
+
+Implementation obligation: Lane 5 must retain a **family of candidate scaling witnesses**, parameter/context identity, exact sum receipt, both ordered product receipts, all three quotient equality receipts and unchanged replay; unresolved branches remain OPEN or HNAN0, without a write. The existing C++ cell wall and singleton VM81 alone can authorize canonical admission.
