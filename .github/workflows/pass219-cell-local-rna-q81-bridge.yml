@@ -1,0 +1,25 @@
+name: Pass 219 Cell Local RNA Q81 Bridge
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass219_cell_local_rna_q81_bridge_1_0.hpp'
+      - 'tests/pass219/test_pass219_cell_local_rna_q81_bridge_1_0.cpp'
+      - '.github/workflows/pass219-cell-local-rna-q81-bridge.yml'
+  workflow_dispatch:
+jobs:
+  native-header:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: C++17 strict compile of new adapter and exhaustive-coordinate test
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass219/test_pass219_cell_local_rna_q81_bridge_1_0.cpp -o /tmp/pass219-cell-local-test\n          /tmp/pass219-cell-local-test
+      - name: Check no alternate mutation authority in bridge
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('hhs_runtime/include/hhs_pass219_cell_local_rna_q81_bridge_1_0.hpp').read_text()
+          for token in ('hhs_exact_pass219_rna_lower_to_vm81(', 'hhs_exact_pass219_vm81_environment_admit_signed(', 'hhs_exact_pass219_hash216_fractal_qudit_hydrate_proof('):
+              assert token not in s, token
+          print('candidate-only bridge: PASS')
+          PY
