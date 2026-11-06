@@ -48,3 +48,32 @@ Only after executable native ABI tests, register the *existing* coprocessor-comp
 6. Native source→CI→merge→production→replay receipts demonstrate integration and absence of alternate authority.
 
 **Unclosed:** This change contains no executable Lane 5 or C++/VM81 wiring and must not be promoted as implementation closure.
+
+## Additional exact residue-closure equality gate (2026-11-06)
+
+Canonical user-supplied expression (verbatim, ordered):
+
+```text
+Aa²/Ba²=Bb²/Ab²=ABc²/BAc² when a≠b≠c≠0
+```
+
+This is a **joint equality gate** across three typed, ordered quotient packets, not three independently normalized scalar estimates. Preserve capitalization, operand identities, original lexical grouping, cell addresses, phase orientation, and provenance for all six operands: `Aa²`, `Ba²`, `Bb²`, `Ab²`, `ABc²`, `BAc²`.
+
+The native closure predicate is:
+```text
+DistinctNonzero(a,b,c)
+ AND DefinedNativeQuotient(Aa²,Ba²)
+ AND DefinedNativeQuotient(Bb²,Ab²)
+ AND DefinedNativeQuotient(ABc²,BAc²)
+ AND NativeEqual(Quotient(Aa²,Ba²), Quotient(Bb²,Ab²))
+ AND NativeEqual(Quotient(Bb²,Ab²), Quotient(ABc²,BAc²))
+```
+Here `DistinctNonzero` means pairwise distinct, with each of `a,b,c` nonzero. The quotient-defined guards additionally require admissible typed denominator/inverse routes; they do not follow from scalar nonzeroness alone if `A`, `B`, or ordered phase products can be noninvertible.
+
+**Important:** The expression does not authorize swapping `AB` with `BA`, canceling shared letters across ordered products, cross-multiplication under commutative assumptions, or replacing failed division with numeric zero. The native quotient and equality operations must be sourced from existing HARMONICODE operators. On a vanishing or inadmissible denominator, preserve the existing HNAN non-writing bypass and unresolved residue lineage. A joint TRUE_CLOSED receipt requires *both* ordered equality witnesses in the same admissible typed context and unchanged replay; otherwise leave HNAN0 or OPEN according to the inherited gate semantics.
+
+### Verification additions
+- Wolfram may check a declared commutative **projection** as an external mathematical witness, but it must not claim that projection proves native noncommutative equality.
+- Positive fixture: valid ordered packet with two exact native quotient equality witnesses; emit candidate-only closure proof and replay identical result.
+- Negative fixtures: each denominator invalid; a=b, b=c, a=c; one of a,b,c=0; one equality only; AB↔BA swap; altered address/phase lineage; scalar-only equality when typed ordered witness fails.
+- Lane 5 must compose this gate with the previously specified Q81 full-equation constraints; the additional gate does not supersede the earlier 23-cell and per-cell reinjection obligations.
