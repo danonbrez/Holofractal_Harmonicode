@@ -150,6 +150,39 @@ def validate() -> dict:
                if e["relation"] == "EXACT_SOURCE_IDENTITY")
 
     assert all(e["proof_equivalence_claimed"] is False for e in graph["edges"])
+    # Negative tests: even a resealed graph must reject a constructor
+    # re-pointed to a different but otherwise legitimate I078 source.
+    from copy import deepcopy
+    from hhs_runtime.hhs_pass220_course_i081_exact_dependency_projection_v1 import _digest
+    tampered = deepcopy(graph)
+    source_edges = [edge for edge in tampered["edges"]
+                    if edge["relation"] == "EXACT_SOURCE_IDENTITY"]
+    assert len(source_edges) == 39
+    source_edges[0]["to"] = source_edges[1]["to"]
+    tampered["projection_sha256"] = _digest({
+        k: v for k, v in tampered.items() if k != "projection_sha256"
+    })
+    try:
+        validate_projection(tampered)
+    except ValueError as exc:
+        assert "I081_SOURCE_EDGE_IDENTITY_MISMATCH" in str(exc)
+    else:
+        raise AssertionError("RESEALED_SOURCE_REWIRING_ACCEPTED")
+    tampered = deepcopy(graph)
+    formal_edges = [edge for edge in tampered["edges"]
+                    if edge["relation"] == "PINNED_FORMAL_DEPENDENCY"]
+    assert formal_edges
+    formal_edges[0]["to"] = formal_edges[-1]["to"]
+    tampered["projection_sha256"] = _digest({
+        k: v for k, v in tampered.items() if k != "projection_sha256"
+    })
+    try:
+        validate_projection(tampered)
+    except ValueError as exc:
+        assert "I081_FORMAL_DEPENDENCY_PARENT_MISMATCH" in str(exc)
+    else:
+        raise AssertionError("RESEALED_FORMAL_REWIRING_ACCEPTED")
+
     assert graph["canonical_authority_minted"] is False
     from hhs_runtime.hhs_pass220_course_i081_exact_dependency_projection_v1 import (
         build_lane5_snapshot_binding, validate_lane5_snapshot_binding,
