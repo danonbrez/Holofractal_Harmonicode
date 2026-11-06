@@ -12,6 +12,8 @@ import re
 import subprocess
 
 FREEZE = Path("contracts/pass220/PASS_220_WHITEPAPER_CORPUS_SOURCE_FREEZE_V1.json")
+EDITION_PIN = Path("contracts/pass220/COURSE_EDITION_IDENTITY_V1.json")
+COURSE = "whitepapers/Harmonicode Algebra - Course"
 DIRECTORIES = ("whitepapers/", "docs/whitepapers/")
 SCHEMA = "HHS_PASS220_WHITEPAPER_CORPUS_INDEX_V1"
 REFERENCE = re.compile(r"(?:hhs_runtime/[A-Za-z0-9_./-]+|formal/lean/[A-Za-z0-9_./-]+|contracts/[A-Za-z0-9_./-]+)")
@@ -35,6 +37,13 @@ def build_corpus_index(root: Path = Path(".")) -> dict:
         raise ProofCorpusError("SOURCE_FREEZE_COUNT_OR_DUPLICATE")
     if actual != sorted(expected):
         raise ProofCorpusError("SOURCE_COVERAGE_DRIFT")
+    editions = json.loads((root / EDITION_PIN).read_text("utf-8"))
+    if (editions.get("schema") != "HHS_PASS220_COURSE_EDITION_IDENTITY_V1"
+        or editions.get("source") != COURSE
+        or editions.get("automatic_proof_inheritance_between_editions") is not False
+        or editions.get("source_edition_identity_is_proof_authority") is not False
+        or editions.get("vm81_admission") is not False):
+        raise ProofCorpusError("COURSE_EDITION_CONTRACT_INVALID")
     records = []
     for entry in entries:
         path = entry["path"]
@@ -45,14 +54,21 @@ def build_corpus_index(root: Path = Path(".")) -> dict:
         git_sha = subprocess.run(["git", "hash-object", "--", path],
                                  cwd=root, check=True, capture_output=True,
                                  text=True).stdout.strip()
+        edition = "HISTORICAL_FROZEN"
         if git_sha != entry["git_blob_sha"]:
-            raise ProofCorpusError("SOURCE_BLOB_CHANGED:" + path)
+            if (path != COURSE
+                or entry["git_blob_sha"] != editions["historical"]["git_blob_sha"]
+                or git_sha != editions["expanded"]["git_blob_sha"]):
+                raise ProofCorpusError("SOURCE_BLOB_CHANGED:" + path)
+            edition = "EXPANDED_PINNED"
         text = data.decode("utf-8")
         headings = [line.strip() for line in text.splitlines() if line.lstrip().startswith("#")]
         references = sorted(set(REFERENCE.findall(text)))
         records.append({
             "path": path,
             "git_blob_sha": git_sha,
+            "edition": edition,
+            "historical_git_blob_sha": entry["git_blob_sha"],
             "content_sha256": sha256(data).hexdigest(),
             "byte_count": len(data),
             "heading_count": len(headings),
