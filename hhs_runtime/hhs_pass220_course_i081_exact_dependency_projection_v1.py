@@ -43,6 +43,24 @@ def build_dependency_projection() -> dict:
         nodes.append({"id": module["id"], "kind": "COURSE_MODULE",
                       "source_git_blob": course["source"]["git_blob_sha"],
                       "source_heading": module["source_heading"]})
+    # Enumerate the complete I078 novelty frontier using the inherited
+    # source inventory, then bind exact I081 promotion/partial source slugs.
+    # HOLD remains source-scope status, never an assertion of native invalidity.
+    i078 = json.loads((ROOT / "data/pass220/openai_math_corpus_hydration_20261006_v1.json").read_text(encoding="utf-8"))
+    frontier_rows = [row for row in i078["manuscripts"]
+                     if row.get("classification") == "NOVELTY_CANDIDATE"]
+    slugs = [row["slug"] for row in frontier_rows]
+    if len(slugs) != 322 or len(set(slugs)) != 322:
+        raise ValueError("I078_FRONTIER_SOURCE_CENSUS_DRIFT")
+    if i078["source"]["immutable_revision"] != registry["source_revision"]:
+        raise ValueError("I078_REVISION_IDENTITY_DRIFT")
+    for slug in sorted(slugs):
+        nodes.append({"id": "OPENAI-SOURCE:" + slug,
+                      "kind": "OPENAI_I078_NOVELTY_SOURCE",
+                      "source_slug": slug,
+                      "source_revision": registry["source_revision"],
+                      "manuscript_source_scope": "I078_NOVELTY_FRONTIER",
+                      "native_constructor_validity": "NOT_REASSESSED_BY_GRAPH"})
     for row in registry["full_promotions"] + registry["partial_subconstructors"]:
         full = "promotion_id" in row
         key = "promotion_id" if full else "subconstructor_id"
@@ -55,6 +73,10 @@ def build_dependency_projection() -> dict:
             raise ValueError("SOURCE_IDENTITY_DRIFT")
         if receipt["candidate_hash72"] != receipt["replay_hash72"] or not receipt["candidate_only"]:
             raise ValueError("INVALID_CANDIDATE_RECEIPT")
+        if row["source_slug"] not in slugs:
+            raise ValueError("I081_SOURCE_NOT_IN_I078_FRONTIER")
+        edges.append({"from": identifier, "to": "OPENAI-SOURCE:" + row["source_slug"],
+                      "relation": "EXACT_SOURCE_IDENTITY", "proof_equivalence_claimed": False})
         nodes.append({"id": identifier, "kind": "OPENAI_I081_PROMOTED" if full else "OPENAI_I081_PARTIAL",
                       "source_slug": row["source_slug"], "source_tree_sha": row["source_tree_sha"],
                       "source_revision": row["source_revision"],
@@ -100,6 +122,10 @@ def validate_projection(result: dict) -> None:
         raise ValueError("PROJECTION_SEAL_DRIFT")
     if result["course_module_count"] != 124 or result["full_constructor_count"] != 26 or result["partial_constructor_count"] != 13:
         raise ValueError("CENSUS_DRIFT")
+    if sum(node["kind"] == "OPENAI_I078_NOVELTY_SOURCE" for node in result["nodes"]) != 322:
+        raise ValueError("OPENAI_SOURCE_CENSUS_DRIFT")
+    if sum(edge["relation"] == "EXACT_SOURCE_IDENTITY" for edge in result["edges"]) != 39:
+        raise ValueError("I081_SOURCE_EDGE_COVERAGE_DRIFT")
     ids = [node["id"] for node in result["nodes"]]
     if len(ids) != len(set(ids)):
         raise ValueError("DUPLICATE_PROOF_NODE")
