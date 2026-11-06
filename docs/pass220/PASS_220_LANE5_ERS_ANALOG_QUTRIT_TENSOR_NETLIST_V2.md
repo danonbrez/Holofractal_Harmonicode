@@ -54,3 +54,20 @@ The existing I077 binding is source-bound to precisely two 4×2 nodes. CC7's fou
 Tests: `python -m pytest -q tests/pass220/test_ers_analog_qutrit_tensor_netlist_v2.py tests/pass220/test_ers_qutrit_exact_phase_witness_v2.py tests/pass220/test_ers_i076_i077_exact_power_binding_v2.py`.
 
 This extension is a source-typed integration guard, **not** end-to-end CC7 native VM81 execution. Work remaining: identify the exact native `U_R` constructor path for 4×1 V2 input, bind the full equality-gate graph and guarded quotient chains, execute native admission, replay, and production verification.
+
+## Module 111 universal rectangular constraint packet — 2026-11-05
+
+The source Module 111 in `docs/pass220/HARMONICODE_ALGEBRA_COURSE_MODULES_101_114.md` defines `U_R(𝒜,ℬ)` as a two-lane simultaneous ordered constraint tensor, not a broadcast or conventional shape coercion:
+
+```text
+R1 == X == -R2*x == A*B == P^4
+R2 == -X == R1*y == B*A == -P^4
+AB+BA == 0
+AB-BA == 2P^4
+```
+
+The additive implementation `hhs_runtime/pass220/ers_cc7_universal_rectangular_route_v2.py` constructs a source-bound `CC7_FOUR_BRANCH_ROOT_POWER` proposal containing the exact four original branch expressions, 4×1 source shape, ordered row/column addresses, both reciprocal gate routes, cross-gate constraints, sha256 source binding, and a reversible `U_R^-1` return packet. It rejects branch-order changes, route alterations, arbitrary padding, implicit broadcasting, or unauthorized mutation claims. Tests are in `tests/pass220/test_ers_cc7_universal_rectangular_route_v2.py`.
+
+This provides an exact structural route **proposal**, not a new native evaluator. No confirmed C++ `U_R` ABI for this particular CC7 packet has yet been identified. In particular the two I077 4×2 source-bound nodes remain separate and are not used as a substitute for the 4×1 CC7 route.
+
+Execution remaining: locate and verify the native C++ cell-wall constructor for the Module 111 `U_R` constraint frame, bind all CC7 equality cells and denominator guards through that constructor, execute singleton VM81 admission, then verify Hash72/Hash216 lineage and production replay. No shell-run tests or native execution are claimed by this documentation.
