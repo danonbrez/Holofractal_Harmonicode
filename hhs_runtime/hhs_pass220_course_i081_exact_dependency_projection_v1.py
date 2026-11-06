@@ -138,6 +138,42 @@ def validate_projection(result: dict) -> None:
             raise ValueError("DANGLING_PROOF_DEPENDENCY")
         if edge["proof_equivalence_claimed"] is not False:
             raise ValueError("UNVERIFIED_COURSE_EQUIVALENCE")
+    # A graph whose checksum was recomputed must still fail if any I081
+    # constructor has been re-pointed to a different valid source node.
+    nodes_by_id = {node["id"]: node for node in result["nodes"]}
+    i081_kinds = {"OPENAI_I081_PROMOTED", "OPENAI_I081_PARTIAL"}
+    i081_nodes = {node["id"]: node for node in result["nodes"]
+                  if node["kind"] in i081_kinds}
+    source_links = {}
+    for edge in result["edges"]:
+        if edge["relation"] != "EXACT_SOURCE_IDENTITY":
+            continue
+        identifier = edge["from"]
+        if identifier not in i081_nodes or identifier in source_links:
+            raise ValueError("I081_DUPLICATE_OR_UNKNOWN_SOURCE_EDGE")
+        node = i081_nodes[identifier]
+        expected = "OPENAI-SOURCE:" + node["source_slug"]
+        if edge["to"] != expected or nodes_by_id[edge["to"]]["source_slug"] != node["source_slug"]:
+            raise ValueError("I081_SOURCE_EDGE_IDENTITY_MISMATCH")
+        if nodes_by_id[edge["to"]]["source_revision"] != node["source_revision"]:
+            raise ValueError("I081_SOURCE_EDGE_REVISION_MISMATCH")
+        source_links[identifier] = edge["to"]
+    if set(source_links) != set(i081_nodes):
+        raise ValueError("I081_MISSING_EXACT_SOURCE_LINK")
+    formal_links = {}
+    for edge in result["edges"]:
+        if edge["relation"] != "PINNED_FORMAL_DEPENDENCY":
+            continue
+        identifier = edge["from"]
+        if identifier not in i081_nodes or not edge["to"].startswith(identifier + ":formal:"):
+            raise ValueError("I081_FORMAL_DEPENDENCY_PARENT_MISMATCH")
+        if nodes_by_id[edge["to"]]["kind"] != "PINNED_OPENAI_FORMAL_SURFACE":
+            raise ValueError("I081_FORMAL_DEPENDENCY_KIND_MISMATCH")
+        if nodes_by_id[edge["to"]]["source_revision"] != i081_nodes[identifier]["source_revision"]:
+            raise ValueError("I081_FORMAL_DEPENDENCY_REVISION_MISMATCH")
+        formal_links[identifier] = formal_links.get(identifier, 0) + 1
+    if set(formal_links) != set(i081_nodes):
+        raise ValueError("I081_MISSING_PINNED_FORMAL_DEPENDENCY")
     if result["canonical_authority_minted"] is not False:
         raise ValueError("UNAUTHORIZED_MINT")
 
