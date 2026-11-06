@@ -132,6 +132,18 @@ def validate() -> dict:
         assert first["manuscript_status"] == "HOLD"
         assert first["truth_promotion"] is False
 
+    from hhs_runtime.hhs_pass220_course_i081_exact_dependency_projection_v1 import (
+        build_dependency_projection, validate_projection, self_test as dependency_self_test,
+    )
+    graph = build_dependency_projection()
+    validate_projection(graph)
+    assert graph["projection_sha256"] == build_dependency_projection()["projection_sha256"]
+    assert dependency_self_test()["status"] == "PASS"
+    assert sum(n["kind"] == "COURSE_MODULE" for n in graph["nodes"]) == 124
+    assert sum(n["kind"] == "OPENAI_I081_PROMOTED" for n in graph["nodes"]) == 26
+    assert sum(n["kind"] == "OPENAI_I081_PARTIAL" for n in graph["nodes"]) == 13
+    assert all(e["proof_equivalence_claimed"] is False for e in graph["edges"])
+    assert graph["canonical_authority_minted"] is False
     return {"status":"PASS", "module_coverage":"124/124", "source_blob":actual_blob,
             "openai_relation":"CANDIDATE_ONLY", "native_q4":"OPEN"}
 
