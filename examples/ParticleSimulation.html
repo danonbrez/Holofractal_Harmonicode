@@ -1474,7 +1474,9 @@
           colArr[e*6+k*3]=c.r; colArr[e*6+k*3+1]=c.g; colArr[e*6+k*3+2]=c.b; } }
       tessGeo.lines.geometry.attributes.color.needsUpdate=true;
       tessGeo.lines.position.set(0,0,0);
-      scene.add(tessGeo.lines);
+      // Research-only tesseract lines are not mounted: 4D projections still execute.
+      tessGeo.lines.visible=false;
+      tessGeo.lines.userData.hhsResearchOnly=true;
     }
     function updateTesseract(){
       if(!tessGeo) return;
@@ -1757,8 +1759,9 @@
       /* static instruments hidden by default — the live layers (tesseract,
          4D rotation) carry the geometry now; set simParams.phaseGeometry=true
          to bring the Poincaré/Penrose wireframes back */
-      phaseGeomGroup.visible = simParams.phaseGeometry===true;
-      if(!phaseGeomGroup.visible) return;
+      // Keep the Poincaré–Penrose state driver active on every physics update.
+      // The research instrument is never a visible scene surface.
+      phaseGeomGroup.visible=false;
       /* conformal compactification of the swarm's phase space:
          radius = tanh(|v|/vmax) (boundary unreachable at finite speed),
          angle  = spatial heading θ; brightness accumulates density */
@@ -4624,6 +4627,7 @@
       camera.position.copy(chase.pos);
       camera.lookAt(chase.look);
     }
+    let hhsLastDiagnosticStateMs=0;
     function animate() {
       requestAnimationFrame(animate);
       if(!chase.on) controls.update();
@@ -4656,8 +4660,10 @@
         if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
         renderer.render(scene, camera);
         renderedFrames++;
-        /* state JSON is a presentation surface; get_state remains fresh on demand */
-        outputState();
+        /* Diagnostic serialization is not physics; keep it off the frame hot path. */
+        if(performance.now()-hhsLastDiagnosticStateMs>=2000){
+          outputState(); hhsLastDiagnosticStateMs=performance.now();
+        }
       }
       if(!renderGate && audioVisualFrame){
         syncParticleRenderBatches();
@@ -7443,6 +7449,141 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
   });
 })(window);
 
+</script>
+
+<script id="hhs-repository-media-membrane">
+/* Pass220 I088: self-contained, projection-only video transport.
+   Retains the original HTML's singular physics/VM81/Hash216 ownership.
+   No intermediate light/physics pass is deleted or bypassed. */
+(function(){
+ "use strict";
+ const C={recording:false,paused:false,segments:[],url:null,mime:null,recorder:null,
+    stream:null,track:null,frames:0,lastSourceAt:0,sourceFrames:0,
+    sourceFPS:0,targetFPS:60,seconds:8,width:0,height:0,
+    video:null,panel:null,latestTick:null,errors:[],playback:false,
+    status:null,activeStarted:0,recordStartTick:null};
+ function elements(){return {canvas:document.querySelector("canvas"),status:document.getElementById("hhs-i088-status")};}
+ function status(m){C.status=m;const e=elements().status;if(e)e.textContent=m;}
+ function chooseMime(){
+  if(!window.MediaRecorder)return "";
+  for(const mime of ['video/mp4;codecs="avc1.42E01E"','video/mp4',
+      'video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'])
+    if(MediaRecorder.isTypeSupported(mime))return mime;
+  return "";
+ }
+ function stop(){
+  if(!C.recording)return false;
+  C.recording=false;
+  if(C.recorder&&C.recorder.state!=="inactive")C.recorder.stop();
+  return true;
+ }
+ function returnLive(){
+  C.playback=false;
+  if(C.video){C.video.pause();C.video.style.display="none";}
+  const c=elements().canvas;if(c)c.style.visibility="visible";
+  status("Live source · "+C.sourceFPS.toFixed(1)+" produced frames/s");
+ }
+ function play(){
+  if(!C.url||!C.video){status("Record a segment first");return false;}
+  C.playback=true;
+  C.video.src=C.url;
+  C.video.style.display="block";
+  const c=elements().canvas;if(c)c.style.visibility="hidden";
+  C.video.play().catch(()=>status("Press the video play control"));
+  status("Playing completed "+(C.mime.includes("mp4")?"MP4":"WebM")+" segment");
+  return true;
+ }
+ function download(){
+  if(!C.url)return false;
+  const a=document.createElement("a");a.href=C.url;
+  a.download=C.mime.includes("mp4")?"HHS_completed_segment.mp4":"HHS_completed_segment.webm";
+  a.click();return true;
+ }
+ function record(){
+  const c=elements().canvas;
+  if(!c||!c.captureStream||!window.MediaRecorder){status("Canvas/MediaRecorder unavailable");return false;}
+  if(C.recording){status("Already capturing");return false;}
+  const mime=chooseMime();if(!mime){status("MP4/WebM recording unsupported");return false;}
+  returnLive();
+  if(C.url){URL.revokeObjectURL(C.url);C.url=null;}
+  const fps=document.getElementById("hhs-i088-fps");
+  const sec=document.getElementById("hhs-i088-seconds");
+  C.targetFPS=Number(fps.value);C.seconds=Number(sec.value);
+  C.mime=mime;C.segments=[];C.frames=0;
+  C.recordStartTick=window.HHSPhysicsVisualClock?.tick??null;
+  C.stream=c.captureStream(0);
+  C.track=C.stream.getVideoTracks()[0]||null;
+  C.recorder=new MediaRecorder(C.stream,{mimeType:mime,videoBitsPerSecond:8000000});
+  C.recorder.ondataavailable=e=>{if(e.data.size)C.segments.push(e.data);};
+  C.recorder.onerror=e=>{C.errors.push(String(e.error||e));status("Recorder error");};
+  C.recorder.onstop=()=>{
+    const blob=new Blob(C.segments,{type:mime});
+    if(C.track)C.track.stop();
+    C.stream=null;C.track=null;
+    if(!blob.size){status("No video frames captured");return;}
+    C.url=URL.createObjectURL(blob);
+    status("Captured "+C.frames+" completed source frames; ready to play/save");
+  };
+  C.recorder.start(1000);C.recording=true;C.activeStarted=performance.now();
+  status("Recording actual rendered source frames · "+mime);
+  return true;
+ }
+ function init(){
+  if(document.getElementById("hhs-i088-media"))return;
+  const panel=document.createElement("details");panel.open=false;
+  panel.id="hhs-i088-media";
+  panel.style.cssText="position:fixed;top:12px;left:12px;z-index:10050;background:rgba(5,12,25,.94);border:1px solid #568;color:#e6f3ff;padding:8px;max-width:min(330px,85vw);font:12px monospace;max-height:52vh;overflow:auto";
+  panel.innerHTML='<summary>MP4 buffer / source FPS / return controls</summary>'+
+   '<label>Capture FPS target <input id="hhs-i088-fps" type="number" min="1" max="120" value="60" style="width:65px"></label> '+
+   '<label>Duration s <input id="hhs-i088-seconds" type="number" min="1" max="600" value="8" style="width:65px"></label>'+
+   '<div style="display:flex;flex-wrap:wrap;gap:5px;margin:8px 0">'+
+   '<button id="hhs-i088-record">Record</button><button id="hhs-i088-stop">Stop</button>'+
+   '<button id="hhs-i088-play">Play buffer</button><button id="hhs-i088-live">Return live</button>'+
+   '<button id="hhs-i088-save">Save</button></div>'+
+   '<small id="hhs-i088-status">Source ready</small>'+
+   '<p style="opacity:.8">Recorder timestamps follow actual frame production. This control does not invent missing physics or raise source FPS.</p>';
+  document.body.appendChild(panel);C.panel=panel;
+  C.video=document.createElement("video");C.video.id="hhs-i088-video";C.video.controls=true;
+  C.video.playsInline=true;C.video.loop=true;
+  C.video.style.cssText="position:fixed;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:none;z-index:9000";
+  document.body.appendChild(C.video);
+  for(const [id,fn] of [["record",record],["stop",stop],["play",play],["live",returnLive],["save",download]])
+    document.getElementById("hhs-i088-"+id).addEventListener("click",fn);
+  C.video.addEventListener("ended",returnLive);
+ }
+ function captureAfterRender(){
+   const now=performance.now();
+   if(C.lastSourceAt>0){const instantaneous=1000/Math.max(1,now-C.lastSourceAt);
+     C.sourceFPS=C.sourceFPS?C.sourceFPS*0.88+instantaneous*0.12:instantaneous;}
+   C.lastSourceAt=now;C.sourceFrames++;
+   if(C.recording&&C.track&&typeof C.track.requestFrame==="function"){
+     C.track.requestFrame();C.frames++;
+     if(now-C.activeStarted>=C.seconds*1000)stop();
+   }
+ }
+ function attach(){
+  if(window.HHSRepositoryMedia)return;
+  const c=elements().canvas;
+  if(!c||!window.THREE){setTimeout(attach,250);return;}
+  init();
+  /* Attach to the sole visible source renderer without changing its ordering.
+     Deliberately observe the source draw, not produce a second physics clock. */
+  const orig=THREE.WebGLRenderer.prototype.render;
+  THREE.WebGLRenderer.prototype.render=function(){
+    const out=orig.apply(this,arguments);
+    if(this.domElement===c)captureAfterRender();
+    return out;
+  };
+  window.HHSRepositoryMedia=Object.freeze({
+   record,stop,play,returnLive,download,
+   diagnostics:()=>({sourceFPS:C.sourceFPS,sourceFrames:C.sourceFrames,
+      encodedSourceFrames:C.frames,targetFPS:C.targetFPS,recording:C.recording,
+      playback:C.playback,mime:C.mime,hasBuffer:!!C.url,
+      canonicalMutation:false,codecFallback:C.mime&&!C.mime.includes("mp4")})
+  });
+ }
+ attach();
+})();
 </script>
 </body>
 

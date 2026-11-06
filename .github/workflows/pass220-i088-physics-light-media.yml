@@ -1,0 +1,50 @@
+name: Pass 220 I088 physics light media preservation
+on:
+  pull_request:
+    paths:
+      - 'examples/ParticleSimulation.html'
+      - 'tests/pass220/test_hhs_pass220_i088_research_driver_preservation.py'
+      - '.github/workflows/pass220-i088-physics-light-media.yml'
+  push:
+    branches:
+      - 'agent/pass220-i088-physics-light-media-regression-20261101'
+    paths:
+      - 'examples/ParticleSimulation.html'
+      - 'tests/pass220/test_hhs_pass220_i088_research_driver_preservation.py'
+      - '.github/workflows/pass220-i088-physics-light-media.yml'
+  workflow_dispatch:
+jobs:
+  source-preservation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source and phase dependency invariants
+        run: python -m unittest discover -s tests/pass220 -p 'test_hhs_pass220_i088_research_driver_preservation.py' -v
+      - name: Verify inline JavaScript parses
+        run: |
+          python - <<'PY'
+          import html.parser
+          from pathlib import Path
+          class Extract(html.parser.HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.current=None; self.scripts=[]
+              def handle_starttag(self, tag, attrs):
+                  if tag=='script':
+                      a=dict(attrs)
+                      self.current=[] if 'src' not in a and a.get('type','text/javascript') in ('','text/javascript','application/javascript','module') else None
+              def handle_data(self, data):
+                  if self.current is not None:self.current.append(data)
+              def handle_endtag(self, tag):
+                  if tag=='script' and self.current is not None:
+                      self.scripts.append(''.join(self.current));self.current=None
+          e=Extract();e.feed(Path('examples/ParticleSimulation.html').read_text())
+          d=Path('/tmp/hhs_i088_js');d.mkdir(exist_ok=True)
+          for i,s in enumerate(e.scripts):
+              (d/f'{i:03}.js').write_text(s)
+          print('Scripts:',len(e.scripts))
+          PY
+          for file in /tmp/hhs_i088_js/*.js; do node --check "$file"; done
