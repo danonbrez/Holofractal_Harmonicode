@@ -594,9 +594,20 @@ jobs:
               exit 27
             fi
           fi
+          # Diagnose the exact production interpreter and identity on failure.
+          # Do not accept package metadata alone or bypass the import gate.
           if ! runuser -u hhs -- env PYTHONPATH="$APP_ROOT" \
             /opt/hhs/venv/bin/python -c 'from transformers import AutoTokenizer, AutoModelForCausalLM; import torch; print("HHS_NATIVE_CAUSAL_IMPORT_READY=1")'; then
             echo "Native causal dependencies not importable by hhs service identity" >&2
+            echo "=== NATIVE CAUSAL IMPORT PROVENANCE (ROOT AND SERVICE) ===" >&2
+            for identity in root hhs; do
+              echo "identity=$identity" >&2
+              runuser -u "$identity" -- env PYTHONPATH="$APP_ROOT" \
+                /opt/hhs/venv/bin/python -c 'import importlib.util,importlib.metadata,os,sys; print("uid",os.geteuid(),"python",sys.executable,"path",sys.path); [(print("module",n,"spec",str(importlib.util.find_spec(n)),"version",importlib.metadata.version(n))) for n in ("transformers","torch")]' >&2 || true
+            done
+            echo "=== PRODUCTION VENV PACKAGE PATH PERMISSIONS ===" >&2
+            /opt/hhs/venv/bin/python -m pip show -f transformers 2>&1 | head -n 35 >&2 || true
+            echo "Native causal service import remains a hard deployment failure" >&2
             exit 27
           fi
           echo "HHS_PRODUCTION_PINNED_CAUSAL_MODEL_READY=1"
