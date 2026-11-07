@@ -6,6 +6,9 @@ on:
       - 'tests/pass220/test_binary_trinary_egress_memory_lift.py'
       - 'tests/pass220/emit_binary_trinary_native_frame_fixture.py'
       - 'tests/pass220/test_binary_trinary_native_frame_bridge.c'
+      - 'tests/pass220/test_binary_trinary_hnan_codec_crossview.py'
+      - 'hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py'
+      - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
       - '.github/workflows/pass220-binary-trinary-egress-memory-lift.yml'
       - 'hhs_backend/runtime/hhs_universal_binary_trinary_translation_v1.py'
       - 'hhs_runtime/hhs_loshu_phase_embedding_v1.py'
@@ -71,4 +74,6 @@ jobs:
       - name: Verify full 648-byte egress trinary lift
         env:
           PYTHONPATH: .
-        run: python -m pytest -q tests/pass220/test_binary_trinary_egress_memory_lift.py
+        run: python -m pytest -q \
+          tests/pass220/test_binary_trinary_egress_memory_lift.py \
+          tests/pass220/test_binary_trinary_hnan_codec_crossview.py
