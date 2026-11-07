@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import subprocess
+from hhs_canonical_changed_paths import changed_paths, ChangedPathEvidenceError
 import sys
 
 REGISTRY = "contracts/frozen_layer_registry.v1.json"
@@ -41,13 +42,9 @@ def main(args):
         return 2
     try:
         protected = load_paths()
-        changed = subprocess.check_output(
-            ["git", "diff", "--no-renames", "--name-only", "-z", "--diff-filter=ACDMRTUXB",
-             args[0] + "..." + args[1]]
-        )
-        paths = [p.decode("utf-8", "surrogateescape") for p in changed.split(b"\0") if p]
+        paths = changed_paths(args[0], args[1])
         blocked = evaluate(paths, protected)
-    except (ValueError, TypeError, OSError, KeyError, subprocess.CalledProcessError) as error:
+    except (ValueError, TypeError, OSError, KeyError, subprocess.CalledProcessError, ChangedPathEvidenceError) as error:
         print("REGISTRY_GATE_ERROR:", error, file=sys.stderr)
         return 2
     if blocked:
