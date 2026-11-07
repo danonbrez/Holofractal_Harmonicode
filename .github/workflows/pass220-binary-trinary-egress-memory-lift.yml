@@ -24,6 +24,23 @@ jobs:
           python-version: '3.11'
       - name: Install test runner
         run: python -m pip install pytest pytest-asyncio cryptography
+
+      - name: Compile inherited exact VM81 ABI
+        run: |
+          mkdir -p /tmp/pass220-egress-memory
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass220-egress-memory/exact-abi.o
+      - name: Verify inherited RNA candidate reconstruction, rollback, and admission
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
+            /tmp/pass220-egress-memory/exact-abi.o \
+            -o /tmp/pass220-egress-memory/rna-admission-test
+          /tmp/pass220-egress-memory/rna-admission-test
+
       - name: Verify full 648-byte egress trinary lift
         env:
           PYTHONPATH: .
