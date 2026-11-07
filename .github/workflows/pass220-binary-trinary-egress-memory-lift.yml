@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'tests/pass220/test_binary_trinary_egress_memory_lift.py'
+      - 'tests/pass220/emit_binary_trinary_native_frame_fixture.py'
+      - 'tests/pass220/test_binary_trinary_native_frame_bridge.c'
       - '.github/workflows/pass220-binary-trinary-egress-memory-lift.yml'
       - 'hhs_backend/runtime/hhs_universal_binary_trinary_translation_v1.py'
       - 'hhs_runtime/hhs_loshu_phase_embedding_v1.py'
@@ -47,6 +49,25 @@ jobs:
             -o /tmp/pass220-egress-memory/rna-admission-test
           /tmp/pass220-egress-memory/rna-admission-test
 
+      - name: Generate recovered egress frame and provenance record
+        env:
+          PYTHONPATH: .
+        run: |
+          python tests/pass220/emit_binary_trinary_native_frame_fixture.py \
+            /tmp/pass220-egress-memory/recovered-egress.bin \
+            | tee /tmp/pass220-egress-memory/roundtrip.json
+      - name: Verify lifted egress in native VM81 candidate admission
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_binary_trinary_native_frame_bridge.c \
+            /tmp/pass220-egress-memory/exact-abi.o \
+            /tmp/pass220-egress-memory/link-support/hhs_hash216.o \
+            /tmp/pass220-egress-memory/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass220-egress-memory/native-lift-bridge
+          /tmp/pass220-egress-memory/native-lift-bridge \
+            /tmp/pass220-egress-memory/recovered-egress.bin
       - name: Verify full 648-byte egress trinary lift
         env:
           PYTHONPATH: .
