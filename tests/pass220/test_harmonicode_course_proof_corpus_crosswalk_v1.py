@@ -183,6 +183,21 @@ def validate() -> dict:
     else:
         raise AssertionError("RESEALED_FORMAL_REWIRING_ACCEPTED")
 
+    # A resealed formal node with altered Lean solution identity is invalid.
+    forged = deepcopy(graph)
+    formal = next(node for node in forged["nodes"]
+                  if node["kind"] == "PINNED_OPENAI_FORMAL_SURFACE")
+    formal["solution"]["sha"] = "0" * 40
+    formal["theorem_names"] = ["invented.theorem"]
+    forged["projection_sha256"] = _digest({
+        k: v for k, v in forged.items() if k != "projection_sha256"
+    })
+    try:
+        validate_projection(forged)
+    except ValueError as exc:
+        assert "I081_CANONICAL_FORMAL_PAYLOAD_MISMATCH" in str(exc)
+    else:
+        raise AssertionError("RESEALED_FORMAL_PAYLOAD_FORGERY_ACCEPTED")
     assert graph["canonical_authority_minted"] is False
     from hhs_runtime.hhs_pass220_course_i081_exact_dependency_projection_v1 import (
         build_lane5_snapshot_binding, validate_lane5_snapshot_binding,
@@ -202,6 +217,27 @@ def validate() -> dict:
         pass
     else:
         raise AssertionError("LANE5_GRAPH_TAMPER_NOT_REJECTED")
+    # Recomputed historical receipt bindings must not certify invented provenance.
+    from hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69 import _h216
+    for changes in (
+        {"lane5_snapshot_source_commit": "0" * 40},
+        {"lane5_snapshot_projection_root_hash216": "0" * 216},
+        {"current_main_rehydration": "ESTABLISHED", "native_admission": True},
+    ):
+        corrupted = dict(binding, **changes)
+        frame = {key: value for key, value in corrupted.items() if key not in (
+            "schema", "candidate_binding_hash216", "canonical_hash216_minted",
+            "canonical_vm81_admission",
+        )}
+        corrupted["candidate_binding_hash216"] = _h216(
+            "HHS-P220-COURSE-I081-LANE5-SNAPSHOT-BINDING-V1", frame,
+        )
+        try:
+            validate_lane5_snapshot_binding(corrupted, graph)
+        except ValueError as exc:
+            assert "LANE5_HISTORICAL_PROVENANCE_MISMATCH" in str(exc)
+        else:
+            raise AssertionError("RESEALED_SNAPSHOT_PROVENANCE_FORGERY_ACCEPTED")
     corrupted = dict(binding, canonical_vm81_admission=True)
     try:
         validate_lane5_snapshot_binding(corrupted, graph)
@@ -212,6 +248,10 @@ def validate() -> dict:
 
     return {"status":"PASS", "module_coverage":"124/124", "source_blob":actual_blob,
             "openai_relation":"CANDIDATE_ONLY", "native_q4":"OPEN"}
+
+def test_crosswalk_validation():
+    assert validate()["status"] == "PASS"
+
 
 if __name__ == "__main__":
     print(json.dumps(validate(), sort_keys=True))
