@@ -56,7 +56,7 @@ class TestQ81RealInheritedPath(unittest.TestCase):
     def test_corrupt_native_i074_candidate_rejected(self):
         damaged = deepcopy(self.i074)
         damaged["candidate_hash216"] = "0" * 216
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
             bind_candidate(
                 RAW,
                 PAIRS,
