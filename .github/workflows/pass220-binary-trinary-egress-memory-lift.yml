@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install test runner
-        run: python -m pip install pytest
+        run: python -m pip install pytest pytest-asyncio cryptography
       - name: Verify full 648-byte egress trinary lift
         env:
           PYTHONPATH: .
