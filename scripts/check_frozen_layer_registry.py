@@ -3,10 +3,10 @@
 import json
 from pathlib import Path
 import subprocess
-from pathlib import Path
+import sys
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from hhs_canonical_changed_paths import changed_paths, ChangedPathEvidenceError
-import sys
 
 REGISTRY = "contracts/frozen_layer_registry.v1.json"
 BASELINE = frozenset({
