@@ -32,12 +32,18 @@ jobs:
             -Ihhs_runtime/include \
             -c hhs_runtime/c/hhs_runtime_exact_abi.c \
             -o /tmp/pass220-egress-memory/exact-abi.o
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass220-egress-memory/link-support full
+
       - name: Verify inherited RNA candidate reconstruction, rollback, and admission
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
             /tmp/pass220-egress-memory/exact-abi.o \
+            /tmp/pass220-egress-memory/link-support/hhs_hash216.o \
+            /tmp/pass220-egress-memory/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass220-egress-memory/rna-admission-test
           /tmp/pass220-egress-memory/rna-admission-test
 
