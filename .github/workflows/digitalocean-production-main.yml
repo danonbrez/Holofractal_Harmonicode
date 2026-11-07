@@ -64,6 +64,8 @@ jobs:
             deployment/digitalocean/guarded_auto_update/preserve-host-drift.sh \
             deployment/digitalocean/guarded_auto_update/validate-candidate.sh \
             deployment/digitalocean/guarded_auto_update/install.sh
+          python3 -m py_compile tools/provision_native_causal_model.py tools/diagnose_native_causal_service_import.py
+          python3 -m unittest discover -s tests -p 'test_native_causal*' -v
           node --check hhs_gui/scripts/production-live-browser-verify.mjs
           python3 -m py_compile \
             deployment/digitalocean/guarded_auto_update/runtime-os-bundle.py \
