@@ -1,0 +1,42 @@
+name: Pass 220 Q81 Reversible HNAN Phase Projection
+
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - "tests/test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - ".github/workflows/pass220-q81-reversible-hnan-phase-projection.yml"
+  push:
+    branches: [main]
+    paths:
+      - "hhs_runtime/hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - "tests/test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - ".github/workflows/pass220-q81-reversible-hnan-phase-projection.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-read-only-phase-projection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Exact phase projection regression
+        run: python -m unittest discover -s tests -p 'test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py' -v
+      - name: No native-authority mutation assertions
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_q81_binary_phase_hnan_projection_v1 import decode_candidate, encode_candidate
+          bits = tuple(tuple((r+c)%2 for c in range(9)) for r in range(9))
+          direction = tuple(tuple((r//3+c)%2 for c in range(9)) for r in range(9))
+          context = {"orientation": direction, "source_identity": "CI-fixture", "provenance": {"scope": "candidate-only"}}
+          receipt = encode_candidate(decode_candidate(bits, context=context))
+          assert receipt["candidate_only"] is True
+          assert receipt["canonical_vm81_mutation_authority"] is False
+          assert receipt["canonical_hash72_commit_authority"] is False
+          assert receipt["canonical_hash216_persistence_authority"] is False
+          PY
