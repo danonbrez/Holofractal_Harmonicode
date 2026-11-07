@@ -3,7 +3,9 @@ on:
   pull_request:
     paths:
       - 'tools/provision_native_causal_model.py'
+      - 'tools/diagnose_native_causal_service_import.py'
       - 'tests/test_native_causal_export_recovery.py'
+      - 'tests/test_native_causal_service_import_repair.py'
       - '.github/workflows/production-native-causal-export-recovery.yml'
   workflow_dispatch:
 
@@ -21,6 +23,6 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify native causal export recovery decision contract
-        run: python -m unittest discover -s tests -p 'test_native_causal_export_recovery.py' -v
+        run: python -m unittest discover -s tests -p 'test_native_causal*' -v
       - name: Syntax-check bounded production provisioner
-        run: python -m py_compile tools/provision_native_causal_model.py
+        run: python -m py_compile tools/provision_native_causal_model.py tools/diagnose_native_causal_service_import.py
