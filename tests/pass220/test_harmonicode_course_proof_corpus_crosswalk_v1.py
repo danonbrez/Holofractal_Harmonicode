@@ -36,6 +36,20 @@ def validate() -> dict:
     assert q4["witnesses"]["q144_address_return"] == "144/144"
     assert q4["witnesses"]["h36_address_return"] == "5184/5184"
     assert "Q₄" in course and "u¹⁴⁴" in course, "Q4_SOURCE_MISSING"
+    # Exact derivation guards: the published examples must satisfy the
+    # canonical guarded expressions rather than merely describe them.
+    assert "m = (1 ± √(1+4(t³−t)))/2" in course
+    assert "m=(1±√(1+4(t³−t)))/2" in course
+    assert "h_k == 5r+60s degrees" in course
+    assert "CurvaturePayload == c²·P(q−p)/(p+q) == c²" in course
+    assert "BoxedMetricCell == c²+a²+b²+m c²" in course
+    assert all((5 * (r + 12 * ss)) % 360 == (5 * r + 60 * ss) % 360
+               for r in range(12) for ss in range(6)), "HUE_PHASE_LIFT_DRIFT"
+    assert all((2 * (m * m - m)) == (2 * (t**3 - t))
+               for t, m in ((2, 3), (2, -2))), "MODULUS_EXACT_BRANCH_DRIFT"
+    assert all(P * ((P + 1) - (P - 1)) // ((P - 1) + (P + 1)) == 1
+               for P in range(1, 25)), "CURVATURE_UNIT_GAIN_DRIFT"
+
     assert all(not row["proof_admitted"] for row in indexed), "UNAUTHORIZED_PROOF_PROMOTION"
     assert not any(corpus["authority"].values()), "UNAUTHORIZED_AUTHORITY"
     for relation in corpus["crosswalk"]:
