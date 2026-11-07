@@ -74,6 +74,7 @@ jobs:
       - name: Verify full 648-byte egress trinary lift
         env:
           PYTHONPATH: .
-        run: python -m pytest -q \
-          tests/pass220/test_binary_trinary_egress_memory_lift.py \
-          tests/pass220/test_binary_trinary_hnan_codec_crossview.py
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_binary_trinary_egress_memory_lift.py \
+            tests/pass220/test_binary_trinary_hnan_codec_crossview.py
