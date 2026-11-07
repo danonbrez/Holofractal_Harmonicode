@@ -6,6 +6,7 @@ on:
       - 'tests/pass220/test_binary_trinary_egress_memory_lift.py'
       - 'tests/pass220/emit_binary_trinary_native_frame_fixture.py'
       - 'tests/pass220/test_binary_trinary_native_frame_bridge.c'
+      - 'tests/pass220/test_binary_trinary_native_candidate_feedback.c'
       - 'tests/pass220/test_binary_trinary_hnan_codec_crossview.py'
       - 'hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py'
       - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
@@ -70,6 +71,18 @@ jobs:
             -lcrypto -lstdc++ -pthread -lm \
             -o /tmp/pass220-egress-memory/native-lift-bridge
           /tmp/pass220-egress-memory/native-lift-bridge \
+            /tmp/pass220-egress-memory/recovered-egress.bin
+      - name: Execute and replay two inherited VM81 candidate cycles
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_binary_trinary_native_candidate_feedback.c \
+            /tmp/pass220-egress-memory/exact-abi.o \
+            /tmp/pass220-egress-memory/link-support/hhs_hash216.o \
+            /tmp/pass220-egress-memory/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass220-egress-memory/native-candidate-feedback
+          /tmp/pass220-egress-memory/native-candidate-feedback \
             /tmp/pass220-egress-memory/recovered-egress.bin
       - name: Verify full 648-byte egress trinary lift
         env:
