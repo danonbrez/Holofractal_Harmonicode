@@ -188,7 +188,7 @@ P → (p,q) → t → m → (a,b,c) → (x,y,z,w) → ∆ → 0
 │     ├──► [ t ]       Cubic Root: t³ - t = P³ - P/(P² - pq)                 │
 │     │      │                                                               │
 │     │      ▼                                                               │
-│     ├──► [ m ]       Modulus Branch: m² - m = t³ - t (m = t or 1 - t)      │
+│     ├──► [ m ]       Modulus Branch: m² - m = t³ - t (m = (1 ± √(1+4(t³−t)))/2)      │
 │     │      │                                                               │
 │     │      ▼                                                               │
 │     ├──► (a, b, c)   Pythagorean Shear Fiber: c²(P² - pq) = a² + b², b=a²  │
@@ -200,7 +200,7 @@ P → (p,q) → t → m → (a,b,c) → (x,y,z,w) → ∆ → 0
 
  * (p,q): with r = q/p, the gate fixes P² = p²r + (r−1)P/(r+1)·p — one constrained curve, not two degrees of freedom. The ordered phase (q−p)/(p+q) is then determined.
  * t: root of the cubic t³−t = P³−P/(P²−pq), coefficients in P,p,q only.
- * m: t³−t = m²−m — two algebraic branches (m=t or m=1−t, by the symmetry of m²−m).
+ * m: t³−t = m²−m — two algebraic branches (m=(1±√(1+4(t³−t)))/2, by the symmetry of m²−m).
  * (a,b,c): the boxed identity forces c²(P²−pq) = a²+b² — a sum-of-two-squares fiber over each P, locked by the dynamic shear invariant b = a^2.
  * (x,y,z,w): pinned by the noncommutative q-1 fermionic gates (Module 4).
  * u: unit of phase, never a free scalar.
@@ -6307,10 +6307,10 @@ The zero exponential term is exact on the three balanced roots, but the original
   (q−p)P/(p+q) == 1,
   AB/P² == P² == Sqrt(AB),
   AB/(pq+∆)−P² == 0,
-  CurvaturePayload == c²·P(q−p)/(p+q) == c²P,
+  CurvaturePayload == c²·P(q−p)/(p+q) == c²,
   ClosureSurface == a²+b²,
   BoundedPayload == (P²−pq)m c²/∆ == m c²,
-  BoxedMetricCell == c²P+a²+b²+m c²,
+  BoxedMetricCell == c²+a²+b²+m c²,
   MetricQuotient == (c²−b²−a²)/BoxedMetricCell,
   ∆/P == (Sqrt(pq+u⁷²))^(x²),
   NativeEqualityCells == ConstitutiveConditionalGates,
@@ -6619,7 +6619,7 @@ This explicit bijection makes `72/12==6` a native sector-cardinality statement. 
   k == r+12s,
   r == k mod 12,
   s == Floor(k/12) ∈ {0,…,5},
-  h_k == 30r+60s degrees,
+  h_k == 5r+60s degrees,
   ChromaticStep == 30 degrees,
   NativeHueStep == 5 degrees,
   RGBSectorWidth == 60 degrees,
