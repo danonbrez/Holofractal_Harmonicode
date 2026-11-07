@@ -5,6 +5,8 @@ on:
     paths:
       - "hhs_runtime/hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
       - "tests/test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - "hhs_runtime/hhs_pass220_q81_lane5_phase_candidate_binding_v1.py"
+      - "tests/test_hhs_pass220_q81_lane5_phase_candidate_binding_v1.py"
       - ".github/workflows/pass220-q81-reversible-hnan-phase-projection.yml"
   push:
     branches: [main]
@@ -26,7 +28,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: Exact phase projection regression
-        run: python -m unittest discover -s tests -p 'test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py' -v
+        run: |
+          python -m unittest discover -s tests -p 'test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py' -v
+          python -m unittest discover -s tests -p 'test_hhs_pass220_q81_lane5_phase_candidate_binding_v1.py' -v
       - name: No native-authority mutation assertions
         run: |
           python - <<'PY'
