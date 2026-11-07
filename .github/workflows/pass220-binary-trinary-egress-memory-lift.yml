@@ -1,0 +1,30 @@
+name: Pass 220 Binary-Trinary Egress Memory Lift
+
+on:
+  pull_request:
+    paths:
+      - 'tests/pass220/test_binary_trinary_egress_memory_lift.py'
+      - '.github/workflows/pass220-binary-trinary-egress-memory-lift.yml'
+      - 'hhs_backend/runtime/hhs_universal_binary_trinary_translation_v1.py'
+      - 'hhs_runtime/hhs_loshu_phase_embedding_v1.py'
+      - 'hhs_runtime/pass175/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  memory-lift-roundtrip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Verify full 648-byte egress trinary lift
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q tests/pass220/test_binary_trinary_egress_memory_lift.py
