@@ -90,3 +90,13 @@ The checked-in Lane 5 receipt is a **historical snapshot** (`source_commit=a581c
 The course-I081 dependency projection now enumerates **all 322** I078 `NOVELTY_CANDIDATE` source slugs as distinct source nodes, using the immutable `openai/math` revision already pinned by I078/I081. It creates **39 exact-source identity edges** connecting each I081 promoted or partial constructor to the matching I078 source. CI checks the count, unique source identity, exact revision, and complete edge coverage.
 
 These source identity edges do not prove course-module theorem equivalence, and the external I081 source-level HOLD designation does not invalidate independent native constructors already validated or admitted elsewhere. The inherited Lane 5 Hash216 receipt remains a historical source snapshot until exact-current-main regeneration and native admission are independently witnessed.
+
+## Review reconciliation — exact source and receipt invariants
+
+PR #888's review exposed three course-local arithmetic inconsistencies, now corrected in the pinned course source, without removing any module or changing the ordered native tensor definitions:
+
+- Module 0 modulus gate `m²−m=t³−t`: branch solutions are `m=(1±√(1+4(t³−t)))/2`; e.g., at `t=2`, `m=3` or `m=−2`.
+- Module 120 hue lift `k=r+12s`, `h_k=5k`: the exact lift is `h_k=5r+60s` degrees.
+- Module 118 guarded curvature reduction `P(q−p)/(p+q)=1`: `CurvaturePayload=c²`, and the related boxed metric includes `c²` rather than `c²P`.
+
+The repository crosswalk's source Git blob is re-pinned to the corrected course. CI contains explicit example/census checks. The new validator also checks each resealed I081 proof node against the canonical registry's comparator/Lean solution/theorem identities, verifies historical Lane 5 snapshot fields against the inherited receipt, and exposes the complete validator as a discoverable pytest test. These are repairs to validation and local arithmetic statements, not proof-promotions or new runtime authority.
