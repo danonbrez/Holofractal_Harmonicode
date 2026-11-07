@@ -8,6 +8,9 @@ on:
       - "hhs_runtime/hhs_pass220_q81_lane5_phase_candidate_binding_v1.py"
       - "tests/test_hhs_pass220_q81_lane5_phase_candidate_binding_v1.py"
       - "tests/test_hhs_pass220_q81_real_inherited_lane5_path_v1.py"
+      - "hhs_runtime/include/hhs_pass220_q81_hnan_native_phase_candidate_v1.h"
+      - "hhs_runtime/cpp/hhs_pass220_q81_hnan_native_phase_candidate_v1.cpp"
+      - "tests/native/test_hhs_pass220_q81_hnan_phase_code_v1.cpp"
       - ".github/workflows/pass220-q81-reversible-hnan-phase-projection.yml"
   push:
     branches: [main]
@@ -33,6 +36,11 @@ jobs:
           python -m unittest discover -s tests -p 'test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py' -v
           python -m unittest discover -s tests -p 'test_hhs_pass220_q81_lane5_phase_candidate_binding_v1.py' -v
           python -m unittest discover -s tests -p 'test_hhs_pass220_q81_real_inherited_lane5_path_v1.py' -v
+      - name: Native C++ ABI syntax and phase-code inversion
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -fsyntax-only -Ihhs_runtime/include hhs_runtime/cpp/hhs_pass220_q81_hnan_native_phase_candidate_v1.cpp
+          g++ -std=c++17 -O0 -ffunction-sections -fdata-sections -Ihhs_runtime/include hhs_runtime/cpp/hhs_pass220_q81_hnan_native_phase_candidate_v1.cpp tests/native/test_hhs_pass220_q81_hnan_phase_code_v1.cpp -Wl,--gc-sections -o /tmp/q81-hnan-phase-test
+          /tmp/q81-hnan-phase-test
       - name: No native-authority mutation assertions
         run: |
           python - <<'PY'
