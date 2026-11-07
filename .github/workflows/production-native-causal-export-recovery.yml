@@ -5,6 +5,7 @@ on:
       - 'tools/provision_native_causal_model.py'
       - 'tests/test_native_causal_export_recovery.py'
       - '.github/workflows/production-native-causal-export-recovery.yml'
+      - '.github/workflows/digitalocean-production-main.yml'
   workflow_dispatch:
 
 permissions:

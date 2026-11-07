@@ -444,6 +444,27 @@ jobs:
             exit 21
           fi
 
+          echo "=== PRE-PROMOTION PINNED NATIVE CAUSAL INTERPRETER GATE ==="
+          # Gate the exact deployed interpreter before any promotion receipt can
+          # be recorded. A pinned-version match alone is insufficient: a broken
+          # or shadowed transformers payload resolves as a namespace package
+          # and fails exports with "unknown location" after promotion. The
+          # candidate provisioner repairs that state; if repair fails, refuse
+          # promotion instead of recording a false PROMOTED receipt.
+          if ! /opt/hhs/venv/bin/python "$bootstrap_root/tools/provision_native_causal_model.py" >/tmp/hhs-native-causal-prepromotion-preflight.json; then
+            echo "Pinned native causal runtime/model incomplete; repairing before promotion"
+            if ! /opt/hhs/venv/bin/python "$bootstrap_root/tools/provision_native_causal_model.py" --install >/tmp/hhs-native-causal-prepromotion-provision.json; then
+              echo "Pinned causal model provisioning failed before promotion; refusing to promote" >&2
+              exit 27
+            fi
+          fi
+          if ! runuser -u hhs -- env PYTHONPATH="$APP_ROOT" \
+            /opt/hhs/venv/bin/python -c 'from transformers import AutoTokenizer, AutoModelForCausalLM; import torch; print("HHS_NATIVE_CAUSAL_PREPROMOTION_IMPORT_READY=1")'; then
+            echo "Native causal dependencies not importable by hhs service identity; refusing to promote" >&2
+            exit 27
+          fi
+          echo "HHS_PRODUCTION_PINNED_CAUSAL_PREPROMOTION_GATE=1"
+
           PROMOTION_HANDOFF=1
           if ! REPO_ROOT="$APP_ROOT" \
             SOURCE_ROOT="$bootstrap_root" \

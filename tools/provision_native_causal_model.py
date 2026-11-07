@@ -14,9 +14,11 @@ import json
 import os
 from pathlib import Path
 import grp
+import shutil
 import stat
 import subprocess
 import sys
+import sysconfig
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -134,6 +136,23 @@ def _torch_cpu_runtime() -> dict[str, Any]:
     }
 
 
+_TRANSFORMERS_EXPORT_PROBE = (
+    "from transformers import AutoConfig, AutoTokenizer, AutoModelForCausalLM"
+)
+
+_TRANSFORMERS_RESOLUTION_DIAGNOSTIC = (
+    "import importlib.util, json; "
+    "spec = importlib.util.find_spec('transformers'); "
+    "print(json.dumps({"
+    "'origin': getattr(spec, 'origin', None), "
+    "'submodule_search_locations': "
+    "list(spec.submodule_search_locations) "
+    "if spec is not None and spec.submodule_search_locations is not None "
+    "else None"
+    "}))"
+)
+
+
 def _transformers_exports_ready() -> bool:
     """Check actual pinned interpreter exports, not only package metadata.
 
@@ -144,7 +163,7 @@ def _transformers_exports_ready() -> bool:
         [
             sys.executable,
             "-c",
-            "from transformers import AutoConfig, AutoTokenizer, AutoModelForCausalLM",
+            _TRANSFORMERS_EXPORT_PROBE,
         ],
         check=False,
         capture_output=True,
@@ -152,6 +171,69 @@ def _transformers_exports_ready() -> bool:
         timeout=60,
     )
     return probe.returncode == 0
+
+
+def _transformers_resolution_diagnostic() -> dict[str, Any]:
+    """Report where the pinned interpreter actually resolves transformers.
+
+    A distribution can keep intact metadata while its package payload is
+    deleted or shadowed; Python then resolves ``transformers`` as a namespace
+    package (``origin=None``) and exports fail with "unknown location".
+    """
+    probe = subprocess.run(
+        [sys.executable, "-c", _TRANSFORMERS_RESOLUTION_DIAGNOSTIC],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    try:
+        payload = json.loads(probe.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        payload = {"unparsed_stdout": probe.stdout.strip()[-2000:]}
+    payload["returncode"] = probe.returncode
+    if probe.stderr.strip():
+        payload["stderr"] = probe.stderr.strip()[-2000:]
+    return payload
+
+
+def _site_package_paths() -> list[Path]:
+    paths = {
+        sysconfig.get_path("purelib"),
+        sysconfig.get_path("platlib"),
+    }
+    return [Path(raw) for raw in sorted(paths) if raw]
+
+
+def _broken_transformers_installations() -> list[Path]:
+    """Locate transformers package directories that cannot provide exports.
+
+    A directory without ``__init__.py`` resolves as a namespace package with
+    no AutoTokenizer/AutoModelForCausalLM exports ("unknown location").  Pip
+    cannot uninstall such a directory when its dist-info RECORD no longer
+    references it, so a plain --force-reinstall can leave the breakage in
+    place; it must be purged explicitly before reinstalling.
+    """
+    broken: list[Path] = []
+    for site in _site_package_paths():
+        package = site / "transformers"
+        if package.is_dir() and not package.is_symlink() and not (package / "__init__.py").is_file():
+            broken.append(package)
+    return broken
+
+
+def _purge_broken_transformers_installations() -> list[str]:
+    purged: list[str] = []
+    for package in _broken_transformers_installations():
+        shutil.rmtree(package)
+        purged.append(str(package))
+    for site in _site_package_paths():
+        for dist_info in sorted(site.glob("transformers-*.dist-info")):
+            record = dist_info / "RECORD"
+            if dist_info.is_dir() and not record.is_file():
+                shutil.rmtree(dist_info)
+                purged.append(str(dist_info))
+    return purged
 
 
 def _runtime_ready() -> bool:
@@ -177,9 +259,11 @@ def _install_runtime() -> dict[str, Any]:
             TORCH_CPU_INDEX_URL,
         ])
 
+    purged_broken_transformers: list[str] = []
     current = _installed_versions()
     if (current.get("transformers") != EXPECTED_RUNTIME_VERSIONS["transformers"]
             or not _transformers_exports_ready()):
+        purged_broken_transformers = _purge_broken_transformers_installations()
         _run_pip(["--force-reinstall", "--requirement", str(REQUIREMENTS_PATH)])
 
     after = _installed_versions()
@@ -195,7 +279,9 @@ def _install_runtime() -> dict[str, Any]:
     if mismatches or not torch_cpu.get("ready") or not _transformers_exports_ready():
         raise RuntimeError(
             f"native causal runtime verification failed: versions={mismatches} "
-            f"torch_cpu={torch_cpu}"
+            f"torch_cpu={torch_cpu} "
+            f"purged_broken_transformers={purged_broken_transformers} "
+            f"transformers_resolution={_transformers_resolution_diagnostic()}"
         )
     return {
         "before": before,
@@ -203,6 +289,7 @@ def _install_runtime() -> dict[str, Any]:
         "requirements_path": str(REQUIREMENTS_PATH),
         "torch_cpu_index_url": TORCH_CPU_INDEX_URL,
         "torch_cpu": torch_cpu,
+        "purged_broken_transformers": purged_broken_transformers,
         "exact_versions_verified": True,
     }
 
