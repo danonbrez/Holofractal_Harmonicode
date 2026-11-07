@@ -6,10 +6,11 @@ NOT imply a service is mutable or that the broader contract is enforced.
 """
 import argparse
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hhs_canonical_changed_paths import changed_paths, ChangedPathEvidenceError
 import sys
 import subprocess
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from hhs_canonical_changed_paths import changed_paths, ChangedPathEvidenceError
 
 # Existing, repository-inspected native paths. Expand only with closure evidence.
 PROTECTED_EXACT_PATHS = frozenset({
