@@ -14,6 +14,8 @@ on:
       - 'hhs_backend/runtime/hhs_universal_binary_trinary_translation_v1.py'
       - 'hhs_runtime/hhs_loshu_phase_embedding_v1.py'
       - 'hhs_runtime/pass175/**'
+      - 'hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c'
+      - 'hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h'
   workflow_dispatch:
 
 permissions:
@@ -72,11 +74,18 @@ jobs:
             -o /tmp/pass220-egress-memory/native-lift-bridge
           /tmp/pass220-egress-memory/native-lift-bridge \
             /tmp/pass220-egress-memory/recovered-egress.bin
+      - name: Compile inherited exact VM81 source-bound candidate adapter
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            -o /tmp/pass220-egress-memory/candidate-adapter.o
       - name: Execute and replay two inherited VM81 candidate cycles
         run: |
           gcc -std=c11 -Wall -Wextra -Werror -pedantic \
             -Ihhs_runtime/include \
             tests/pass220/test_binary_trinary_native_candidate_feedback.c \
+            /tmp/pass220-egress-memory/candidate-adapter.o \
             /tmp/pass220-egress-memory/exact-abi.o \
             /tmp/pass220-egress-memory/link-support/hhs_hash216.o \
             /tmp/pass220-egress-memory/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
