@@ -174,6 +174,34 @@ def validate_projection(result: dict) -> None:
         formal_links[identifier] = formal_links.get(identifier, 0) + 1
     if set(formal_links) != set(i081_nodes):
         raise ValueError("I081_MISSING_PINNED_FORMAL_DEPENDENCY")
+    # Verify proof payloads against immutable I081 registry rows, not only
+    # their graph-local identifiers. This prevents re-sealing forged SHA data.
+    canonical = load_registry()
+    expected_rows = {
+        row["promotion_id"] if "promotion_id" in row else row["subconstructor_id"]: row
+        for row in canonical["full_promotions"] + canonical["partial_subconstructors"]
+    }
+    if set(i081_nodes) != set(expected_rows):
+        raise ValueError("I081_CANONICAL_CONSTRUCTOR_SET_MISMATCH")
+    for identifier, row in expected_rows.items():
+        node = i081_nodes[identifier]
+        if any(node.get(key) != row[key] for key in (
+            "source_slug", "source_tree_sha", "source_revision",
+        )):
+            raise ValueError("I081_CANONICAL_CONSTRUCTOR_IDENTITY_DRIFT")
+        if node.get("family_doc_path") != row["family_doc"]["path"] or node.get("family_doc_sha") != row["family_doc"]["sha"]:
+            raise ValueError("I081_CANONICAL_DOC_IDENTITY_DRIFT")
+        expected_formal_ids = {f"{identifier}:formal:{i}" for i in range(len(row["formal_surfaces"]))}
+        actual_formal_ids = {e["to"] for e in result["edges"]
+                             if e["relation"] == "PINNED_FORMAL_DEPENDENCY" and e["from"] == identifier}
+        if actual_formal_ids != expected_formal_ids:
+            raise ValueError("I081_CANONICAL_FORMAL_SET_MISMATCH")
+        for i, surface in enumerate(row["formal_surfaces"]):
+            proof = nodes_by_id[f"{identifier}:formal:{i}"]
+            if any(proof.get(key) != surface[key] for key in (
+                "comparator", "solution", "theorem_names", "source_revision",
+            )):
+                raise ValueError("I081_CANONICAL_FORMAL_PAYLOAD_MISMATCH")
     if result["canonical_authority_minted"] is not False:
         raise ValueError("UNAUTHORIZED_MINT")
 
@@ -236,6 +264,23 @@ def validate_lane5_snapshot_binding(binding: dict, projection: dict) -> None:
         raise ValueError("LANE5_COURSE_PROJECTION_MISMATCH")
     if binding.get("canonical_hash216_minted") is not False or binding.get("canonical_vm81_admission") is not False:
         raise ValueError("LANE5_BINDING_AUTHORITY_ESCALATION")
+    # Historical snapshot provenance is verified against the inherited source
+    # receipt, not accepted merely because the caller recomputed a Hash216.
+    receipt_path = ROOT / "artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    required = {
+        "course_source_git_blob": projection["course_git_blob"],
+        "openai_source_revision": projection["source_revision"],
+        "lane5_snapshot_source_commit": receipt["source_commit"],
+        "lane5_snapshot_projection_root_hash216": receipt["projection_root_hash216"],
+        "lane5_snapshot_dependency_root_hash216": receipt["source_dependency_graph_root_hash216"],
+        "relationship": "HISTORICAL_SOURCE_SNAPSHOT_BINDING",
+        "current_main_rehydration": "NOT_ESTABLISHED",
+        "native_admission": False,
+    }
+    for key, expected in required.items():
+        if binding.get(key) != expected:
+            raise ValueError("LANE5_HISTORICAL_PROVENANCE_MISMATCH:" + key)
     frame = {key: value for key, value in binding.items()
              if key not in ("schema", "candidate_binding_hash216",
                             "canonical_hash216_minted", "canonical_vm81_admission")}
