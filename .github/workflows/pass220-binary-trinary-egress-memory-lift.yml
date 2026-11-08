@@ -8,6 +8,9 @@ on:
       - 'tests/pass220/test_binary_trinary_native_frame_bridge.c'
       - 'tests/pass220/test_binary_trinary_native_candidate_feedback.c'
       - 'tests/pass220/test_binary_trinary_hnan_codec_crossview.py'
+      - 'tests/pass220/test_binary_trinary_projection_family_constraints.py'
+      - 'hhs_runtime/hhs_recursive_global_constraint_bundle_v1.py'
+      - 'hhs_runtime/hhs_pass220_multidimensional_constraint_manifold_v1.py'
       - 'hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py'
       - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
       - '.github/workflows/pass220-binary-trinary-egress-memory-lift.yml'
@@ -99,4 +102,5 @@ jobs:
         run: |
           python -m pytest -q \
             tests/pass220/test_binary_trinary_egress_memory_lift.py \
-            tests/pass220/test_binary_trinary_hnan_codec_crossview.py
+            tests/pass220/test_binary_trinary_hnan_codec_crossview.py \
+            tests/pass220/test_binary_trinary_projection_family_constraints.py
