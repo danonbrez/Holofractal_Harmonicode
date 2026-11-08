@@ -80,6 +80,42 @@ int main(int argc, char **argv) {
     if (memcmp(initial.source_sha256, feedback.source_sha256,
                HHS_EXACT_PASS219_MONOLITHIC_SHA256_BYTES) != 0) return 12;
 
+    {
+        HHSExactPass219VM81ExecutionV1 forged_feedback = feedback;
+        HHSExactPass219VM81ReplayV1 negative;
+        forged_feedback.after_frame.words[40] ^= UINT64_C(1);
+        memset(&negative, 0, sizeof(negative));
+        if (hhs_exact_pass219_vm81_replay_candidate(
+            &program, second_input, &forged_feedback, &negative) !=
+            HHS_EXACT_STATUS_INVARIANT_FAILURE ||
+            negative.replay_verified != 0U ||
+            negative.frame_equal != 0U) return 13;
+    }
+    {
+        HHSExactPass219VM81ProgramV1 forged_delta_address = program;
+        forged_delta_address.symbol_cell81[HHS_EXACT_PASS219_VM81_SYMBOL_DELTA] =
+            forged_delta_address.symbol_cell81[HHS_EXACT_PASS219_VM81_SYMBOL_Q];
+        HHSExactPass219VM81ExecutionV1 discarded;
+        memset(&discarded, 0, sizeof(discarded));
+        if (hhs_exact_pass219_vm81_execute_candidate(
+            &forged_delta_address, second_input, &discarded) !=
+            HHS_EXACT_STATUS_INVARIANT_FAILURE) return 14;
+    }
+    {
+        HHSExactPass219VM81ProgramV1 forged_semantics = program;
+        HHSExactPass219VM81ExecutionV1 discarded;
+        forged_semantics.source_semantics_complete = 1U;
+        memset(&discarded, 0, sizeof(discarded));
+        if (hhs_exact_pass219_vm81_execute_candidate(
+            &forged_semantics, second_input, &discarded) !=
+            HHS_EXACT_STATUS_INVARIANT_FAILURE) return 15;
+    }
+    /* The canonical adapter's Delta cell is one 64-bit native register;
+     * a complete 648-byte egress is NOT silently scalarized into that cell. */
+    if (sizeof(recovered) != 648U ||
+        sizeof(recovered.words[HHS_EXACT_PASS219_VM81_SYMBOL_DELTA]) != 8U)
+        return 16;
+
     puts("PASS220_SOURCE_BOUND_VM81_CANDIDATE_FRAME_FEEDBACK_REPLAY_PASS");
     puts("SYMBOL_DELTA_TYPED_REINJECTION_NOT_CLAIMED");
     return 0;
