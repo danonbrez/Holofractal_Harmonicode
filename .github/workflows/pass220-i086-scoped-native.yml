@@ -1,0 +1,44 @@
+name: Pass 220 I086 scoped native regression
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_i086_*.hpp'
+      - 'tests/test_pass220_i086_*.cpp'
+      - '.github/workflows/pass220-i086-scoped-native.yml'
+  push:
+    branches: ['pass220-i086-reciprocal-nesting-address-v1']
+    paths:
+      - 'hhs_runtime/include/hhs_pass220_i086_*.hpp'
+      - 'tests/test_pass220_i086_*.cpp'
+      - '.github/workflows/pass220-i086-scoped-native.yml'
+  workflow_dispatch:
+jobs:
+  exact-circuit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and execute I086 exact and boundary tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/i086
+          for f in \
+            test_pass220_i086_reciprocal_nesting_address_v1 \
+            test_pass220_i086_exact_tensor_cell_geometry_v1 \
+            test_pass220_i086_pisot_modular_factorial_v1 \
+            test_pass220_i086_tensor_cell_binding_v1 \
+            test_pass220_i086_universal_constraint_source_v1 \
+            test_pass220_i086_ordered_boundary_tree_v1 \
+            test_pass220_i086_ordered_gate_segments_v1 \
+            test_pass220_i086_gate_provenance_v1; do
+            g++ -std=c++17 -O2 -Wall -Wextra -Werror -Ihhs_runtime/include "tests/${f}.cpp" -o "/tmp/i086/${f}"
+            "/tmp/i086/${f}"
+          done
+      - name: Compile-only inherited witness integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -Ihhs_runtime/include -c \
+            tests/test_pass220_i086_inherited_fractal_preflight_v1.cpp \
+            -o /tmp/i086/fractal_preflight.o
