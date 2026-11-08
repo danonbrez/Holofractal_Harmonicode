@@ -8,6 +8,7 @@ The caller's phase pairs remain candidate-only until a native gate proves them.
 from __future__ import annotations
 
 from typing import Any, Mapping, Sequence
+from hashlib import sha256
 
 from hhs_runtime.hhs_pass220_hash216_symbolic_tensor_metadata_v1 import (
     TensorRef, compose_metadata,
@@ -63,7 +64,7 @@ def bind_symbolic_candidate(
     )
     if (
         inherited_frame["inherited_vm81_raw_sha256"]
-        != __import__("hashlib").sha256(raw_bytes).hexdigest()
+        != sha256(raw_bytes).hexdigest()
         or inherited_frame["metadata_constructor_root"]
         != metadata["constructor_witness_sha256"]
         or inherited_frame["raw_frame_generated_from_symbolic_P"] is not True
