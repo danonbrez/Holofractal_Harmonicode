@@ -163,7 +163,7 @@ def _runtime_ready() -> bool:
     return bool(_torch_cpu_runtime().get("ready")) and _transformers_exports_ready()
 
 
-def _install_runtime() -> dict[str, Any]:
+def _install_runtime(*, force_transformers_reinstall: bool = False) -> dict[str, Any]:
     before = _installed_versions()
     if not REQUIREMENTS_PATH.is_file():
         raise RuntimeError(
@@ -179,7 +179,7 @@ def _install_runtime() -> dict[str, Any]:
 
     current = _installed_versions()
     if (current.get("transformers") != EXPECTED_RUNTIME_VERSIONS["transformers"]
-            or not _transformers_exports_ready()):
+            or not _transformers_exports_ready() or force_transformers_reinstall):
         _run_pip(["--force-reinstall", "--requirement", str(REQUIREMENTS_PATH)])
 
     after = _installed_versions()
@@ -332,8 +332,8 @@ def _verify_transformers_load() -> dict[str, Any]:
     }
 
 
-def provision(*, install: bool) -> dict[str, Any]:
-    runtime = _install_runtime() if install else {
+def provision(*, install: bool, force_transformers_reinstall: bool = False) -> dict[str, Any]:
+    runtime = _install_runtime(force_transformers_reinstall=force_transformers_reinstall) if install else {
         "before": _installed_versions(),
         "after": _installed_versions(),
         "requirements_path": str(REQUIREMENTS_PATH),
@@ -418,15 +418,19 @@ def _verify_existing_model() -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--install", action="store_true")
+    parser.add_argument("--force-transformers-reinstall", action="store_true")
     parser.add_argument("--print-model-path", action="store_true")
     args = parser.parse_args()
+
+    if args.force_transformers_reinstall and not args.install:
+        parser.error("--force-transformers-reinstall requires --install")
 
     if args.print_model_path:
         print(model_path())
         return 0
 
     try:
-        report = provision(install=args.install)
+        report = provision(install=args.install, force_transformers_reinstall=args.force_transformers_reinstall)
     except Exception as exc:
         print(
             json.dumps(
