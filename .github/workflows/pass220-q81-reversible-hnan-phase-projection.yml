@@ -1,0 +1,88 @@
+name: Pass 220 Q81 Reversible HNAN Phase Projection
+
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - "tests/test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - "hhs_runtime/hhs_pass220_q81_lane5_phase_candidate_binding_v1.py"
+      - "tests/test_hhs_pass220_q81_lane5_phase_candidate_binding_v1.py"
+      - "tests/test_hhs_pass220_q81_real_inherited_lane5_path_v1.py"
+      - "hhs_runtime/hhs_pass220_q81_symbolic_p_phase_source_binding_v1.py"
+      - "tests/test_hhs_pass220_q81_symbolic_p_phase_source_binding_v1.py"
+      - "hhs_runtime/include/hhs_pass220_q81_hnan_native_phase_candidate_v1.h"
+      - "hhs_runtime/cpp/hhs_pass220_q81_hnan_native_phase_candidate_v1.cpp"
+      - "tests/native/test_hhs_pass220_q81_hnan_phase_code_v1.cpp"
+      - "tests/pass220/test_q81_hnan_native_i028_wall_v1.cpp"
+      - "GNUmakefile"
+      - ".github/workflows/pass220-q81-reversible-hnan-phase-projection.yml"
+  push:
+    branches: [main]
+    paths:
+      - "hhs_runtime/hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - "tests/test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py"
+      - ".github/workflows/pass220-q81-reversible-hnan-phase-projection.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-read-only-phase-projection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Exact phase projection regression
+        run: |
+          python -m unittest discover -s tests -p 'test_hhs_pass220_q81_binary_phase_hnan_projection_v1.py' -v
+          python -m unittest discover -s tests -p 'test_hhs_pass220_q81_lane5_phase_candidate_binding_v1.py' -v
+          python -m unittest discover -s tests -p 'test_hhs_pass220_q81_real_inherited_lane5_path_v1.py' -v
+          python -m unittest discover -s tests -p 'test_hhs_pass220_q81_symbolic_p_phase_source_binding_v1.py' -v
+      - name: Native C++ ABI syntax and phase-code inversion
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -fsyntax-only -Ihhs_runtime/include hhs_runtime/cpp/hhs_pass220_q81_hnan_native_phase_candidate_v1.cpp
+          g++ -std=c++17 -O0 -ffunction-sections -fdata-sections -Ihhs_runtime/include hhs_runtime/cpp/hhs_pass220_q81_hnan_native_phase_candidate_v1.cpp tests/native/test_hhs_pass220_q81_hnan_phase_code_v1.cpp -Wl,--gc-sections -o /tmp/q81-hnan-phase-test
+          /tmp/q81-hnan-phase-test
+      - name: Verify frozen Pass219 generation integrity
+        run: python tools/pass219/verify_generation_integrity_v1.py --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json --print-seal
+      - name: Build exact production ABI and Q81 native export
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -F ' hhs_pass220_q81_hnan_phase_candidate'
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -F ' hhs_exact_pass220_i028_lane5_rna_g3_route'
+      - name: Build inherited Bott/HQLH dependencies
+        run: |
+          mkdir -p /tmp/q81-native
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/q81-native/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/q81-native/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/q81-native/pass189.o
+      - name: Execute real Q81 I028 C++ wall and negative-path regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_q81_hnan_native_i028_wall_v1.cpp \
+            /tmp/q81-native/pass188.o /tmp/q81-native/pass188-x86.o /tmp/q81-native/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/q81-native/test-q81-i028
+          /tmp/q81-native/test-q81-i028
+      - name: No native-authority mutation assertions
+        run: |
+          python - <<'PY'
+          from hhs_runtime.hhs_pass220_q81_binary_phase_hnan_projection_v1 import decode_candidate, encode_candidate
+          bits = tuple(tuple((r+c)%2 for c in range(9)) for r in range(9))
+          direction = tuple(tuple((r//3+c)%2 for c in range(9)) for r in range(9))
+          context = {"orientation": direction, "source_identity": "CI-fixture", "provenance": {"scope": "candidate-only"}}
+          receipt = encode_candidate(decode_candidate(bits, context=context))
+          assert receipt["candidate_only"] is True
+          assert receipt["canonical_vm81_mutation_authority"] is False
+          assert receipt["canonical_hash72_commit_authority"] is False
+          assert receipt["canonical_hash216_persistence_authority"] is False
+          PY
