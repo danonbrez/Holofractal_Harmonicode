@@ -38,7 +38,8 @@ jobs:
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
           mkdir -p /tmp/i086-link
-          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_pass220_i086_lane5_conway81_cell_wall
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -F ' hhs_pass220_i086_lane5_conway81_cell_wall'
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -F ' hhs_pass220_rna_conway_two_sweep_candidate'
           nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_i028_lane5_rna_g3_route$'
       - name: Build inherited membrane dependencies
         run: |
