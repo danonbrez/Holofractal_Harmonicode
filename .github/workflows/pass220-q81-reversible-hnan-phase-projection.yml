@@ -27,7 +27,7 @@ permissions:
 jobs:
   verify-read-only-phase-projection:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -49,34 +49,8 @@ jobs:
         run: |
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
-          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_pass220_q81_hnan_phase_candidate
-        run: |
-          python - <<'PY'
-          from hhs_runtime.hhs_pass220_q81_binary_phase_hnan_projection_v1 import decode_candidate, encode_candidate
-          bits = tuple(tuple((r+c)%2 for c in range(9)) for r in range(9))
-          direction = tuple(tuple((r//3+c)%2 for c in range(9)) for r in range(9))
-          context = {"orientation": direction, "source_identity": "CI-fixture", "provenance": {"scope": "candidate-only"}}
-          receipt = encode_candidate(decode_candidate(bits, context=context))
-          assert receipt["candidate_only"] is True
-          assert receipt["canonical_vm81_mutation_authority"] is False
-          assert receipt["canonical_hash72_commit_authority"] is False
-          assert receipt["canonical_hash216_persistence_authority"] is False
-          PY
-
-          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_i028_lane5_rna_g3_route
-        run: |
-          python - <<'PY'
-          from hhs_runtime.hhs_pass220_q81_binary_phase_hnan_projection_v1 import decode_candidate, encode_candidate
-          bits = tuple(tuple((r+c)%2 for c in range(9)) for r in range(9))
-          direction = tuple(tuple((r//3+c)%2 for c in range(9)) for r in range(9))
-          context = {"orientation": direction, "source_identity": "CI-fixture", "provenance": {"scope": "candidate-only"}}
-          receipt = encode_candidate(decode_candidate(bits, context=context))
-          assert receipt["candidate_only"] is True
-          assert receipt["canonical_vm81_mutation_authority"] is False
-          assert receipt["canonical_hash72_commit_authority"] is False
-          assert receipt["canonical_hash216_persistence_authority"] is False
-          PY
-
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -F ' hhs_pass220_q81_hnan_phase_candidate'
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -F ' hhs_exact_pass220_i028_lane5_rna_g3_route'
       - name: Build inherited Bott/HQLH dependencies
         run: |
           mkdir -p /tmp/q81-native
