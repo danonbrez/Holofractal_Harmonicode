@@ -24,12 +24,13 @@ class NativeCausalServiceImportProbeTests(unittest.TestCase):
 
     def test_resolution_evidence_is_read_only_and_contains_namespace_paths(self):
         incomplete = types.ModuleType("transformers")
-        with patch.dict(sys.modules, {"transformers": incomplete}):
+        fake_spec = types.SimpleNamespace(origin=None, submodule_search_locations=["/tmp/namespace"])
+        with patch.dict(sys.modules, {"transformers": incomplete}), patch.object(module.importlib.util, "find_spec", return_value=fake_spec):
             result = module.probe()
         self.assertIn("resolution_paths", result)
         self.assertTrue(result["resolution_paths"])
         self.assertIn("site_package_paths", result)
-        self.assertIn("search_locations", result["module_specs"]["transformers"])
+        self.assertEqual(result["module_specs"]["transformers"]["search_locations"], ["/tmp/namespace"])
         self.assertFalse(result["ok"])
 
     def test_workflow_retries_under_service_identity_not_root_only(self):
