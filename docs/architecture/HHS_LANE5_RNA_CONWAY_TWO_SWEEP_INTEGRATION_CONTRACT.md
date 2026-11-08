@@ -66,3 +66,14 @@ Suggested candidate witness fields (derive types from actual inherited headers b
 This file **documents the executable dependency composition to implement**. It is not itself a native integration, verified neural graph-wide execution, signed VM81 admission, current-main verification, or production deployment receipt. Each implemented edge must be promoted only after compiled native tests, proof/receipt reconciliation, green CI, reviewed merge and exact-main/production verification. Preserve all distinct prior proof paths and benchmark artifacts, including negative results, in the Lane 5 repository hydration graph instead of collapsing them into a new pseudo-proof.
 
 Initial integration target: native Conway successor + real authenticated Lane 5 edge + I085 two-sweep array + I073 reversible ingress/egress, with source and receipt ownership checked at every boundary. Then compose inherited compression/recovery/ledger subroutines without changing their algorithms.
+
+## 2026-11-08 executable seam checkpoint
+
+- Existing I086 C++ source, Pass219 RNA cell wall and Pass219 PQC translation unit remain unchanged.
+- Added `hhs_runtime/include/hhs_pass220_rna_conway_two_sweep_composition_v1.h` and `hhs_runtime/cpp/hhs_pass220_rna_conway_two_sweep_composition_v1.cpp`.
+- Exported `hhs_pass220_rna_conway_two_sweep_candidate` through the inherited native shared ABI. The candidate uses inherited `hhs_exact_vm81_frame_export_le` and `hhs_exact_vm81_frame_import_le`, verifies identical full frames, then delegates to the native I086 RNA/Conway cell wall. Exact position `k` produces layers `k` and `5184+k`, `vm81_cell=k/64`, `local64=k%64`, and `mirror=5183-k`. The raw IEEE cell word is retained exactly.
+- Updated `GNUmakefile` and `tests/pass220/test_i086_pass219_cpp_cell_wall_conway.cpp` with paired-address boundary tests, bit preservation, negative ingress, forged predecessor and no-output-mutation checks.
+- Original exact-head workflow `42452224546` successfully built C++ and linked native ABI, but failed due to a malformed workflow symbol-check shell quote before native test execution.
+- Follow-up `42495012044` passed C++ ABI compilation, exported symbol checks and the native Conway regression; it failed only in an inadvertently duplicated malformed shell verification block.
+- Repair commit `51be2e851015a956141fd5d83530fbf41ed11d2c` removes the duplicate blocks, preserves the single native test and proof/source-integrity steps. New run `42495350439` was queued at inspection; final success is **not yet claimed**.
+- This executable seam provides **exact VM5184 byte ingress/egress plus I086 Conway and two-sweep address projection**, not the separately required scientific BigInt/RNA I073 native witness, I085 authenticated single-Hash216-array lineage, native 1.38/1.39/1.40 authenticated Conway transition, or canonical VM81 admission.
