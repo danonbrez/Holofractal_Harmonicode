@@ -96,8 +96,8 @@ def test_many_distinct_projection_values_do_not_collapse_to_one_matrix() -> None
 
 
 @pytest.mark.parametrize("field,replacement,broken", [
-    ("p", 8, "ORDERED_SUCCESSOR_P_Q"),
-    ("q", 10, "ORDERED_SUCCESSOR_P_Q"),
+    ("p", 7, "ORDERED_SUCCESSOR_P_Q"),
+    ("q", 11, "ORDERED_SUCCESSOR_P_Q"),
     ("Delta", 2, "UNIT_DELTA"),
     ("A", 80, "A_EQ_P2"),
     ("B", 82, "B_EQ_P2"),
