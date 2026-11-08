@@ -28,7 +28,29 @@ def probe() -> dict:
         "site_package_paths": [],
         "ok": False,
     }
-    # Read-only, service-UID-visible path diagnostics. No environment mutation.\n    for entry in sys.path:\n        if not entry:\n            entry = os.getcwd()\n        path = os.path.abspath(entry)\n        record = {"path": path, "exists": os.path.exists(path),\n                  "readable": os.access(path, os.R_OK),\n                  "searchable": os.access(path, os.X_OK)}\n        s = path\n        while not os.path.exists(s) and s != os.path.dirname(s):\n            s = os.path.dirname(s)\n        record["nearest_existing_ancestor"] = s\n        record["ancestor_searchable"] = os.access(s, os.X_OK)\n        result["resolution_paths"].append(record)\n    try:\n        candidate_sites = site.getsitepackages()\n    except (AttributeError, OSError):\n        candidate_sites = []\n    for path in candidate_sites:\n        result["site_package_paths"].append({"path": path, "exists": os.path.isdir(path),\n                                             "readable": os.access(path, os.R_OK),\n                                             "searchable": os.access(path, os.X_OK)})\n    for package in ("transformers", "torch", "tokenizers", "huggingface-hub"):
+    # Read-only, service-UID-visible path diagnostics. No environment mutation.
+    for entry in sys.path:
+        if not entry:
+            entry = os.getcwd()
+        path = os.path.abspath(entry)
+        record = {"path": path, "exists": os.path.exists(path),
+                  "readable": os.access(path, os.R_OK),
+                  "searchable": os.access(path, os.X_OK)}
+        s = path
+        while not os.path.exists(s) and s != os.path.dirname(s):
+            s = os.path.dirname(s)
+        record["nearest_existing_ancestor"] = s
+        record["ancestor_searchable"] = os.access(s, os.X_OK)
+        result["resolution_paths"].append(record)
+    try:
+        candidate_sites = site.getsitepackages()
+    except (AttributeError, OSError):
+        candidate_sites = []
+    for path in candidate_sites:
+        result["site_package_paths"].append({"path": path, "exists": os.path.isdir(path),
+                                             "readable": os.access(path, os.R_OK),
+                                             "searchable": os.access(path, os.X_OK)})
+    for package in ("transformers", "torch", "tokenizers", "huggingface-hub"):
         try:
             result["distributions"][package] = importlib.metadata.version(package)
         except importlib.metadata.PackageNotFoundError:
@@ -38,7 +60,8 @@ def probe() -> dict:
             spec = importlib.util.find_spec(module)
             result["module_specs"][module] = {
                 "found": spec is not None,
-                "origin": str(spec.origin) if spec else None,\n                "search_locations": list(spec.submodule_search_locations or ()) if spec else [],
+                "origin": str(spec.origin) if spec else None,
+                "search_locations": list(spec.submodule_search_locations or ()) if spec else [],
             }
         except Exception as exc:
             result["module_specs"][module] = {"found": False, "error": repr(exc)}
