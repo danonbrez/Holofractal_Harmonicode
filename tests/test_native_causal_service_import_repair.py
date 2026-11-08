@@ -22,6 +22,17 @@ class NativeCausalServiceImportProbeTests(unittest.TestCase):
         self.assertEqual(result["error_type"], "ImportError")
         self.assertIn("AutoConfig", result["error"])
 
+    def test_resolution_evidence_is_read_only_and_contains_namespace_paths(self):
+        incomplete = types.ModuleType("transformers")
+        fake_spec = types.SimpleNamespace(origin=None, submodule_search_locations=["/tmp/namespace"])
+        with patch.dict(sys.modules, {"transformers": incomplete}), patch.object(module.importlib.util, "find_spec", return_value=fake_spec):
+            result = module.probe()
+        self.assertIn("resolution_paths", result)
+        self.assertTrue(result["resolution_paths"])
+        self.assertIn("site_package_paths", result)
+        self.assertEqual(result["module_specs"]["transformers"]["search_locations"], ["/tmp/namespace"])
+        self.assertFalse(result["ok"])
+
     def test_workflow_retries_under_service_identity_not_root_only(self):
         workflow = (PATH.parents[1] / ".github/workflows/digitalocean-production-main.yml").read_text(encoding="utf-8")
         self.assertIn('runuser -u hhs -- env PYTHONPATH="$APP_ROOT"', workflow)
