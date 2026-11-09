@@ -8,6 +8,9 @@ on:
       - 'tests/pass220/test_binary_trinary_native_frame_bridge.c'
       - 'tests/pass220/test_binary_trinary_native_candidate_feedback.c'
       - 'tests/pass220/inspect_native_candidate_egress_geometry.py'
+      - 'tests/pass220/test_binary_trinary_u72_gyroscope_recurrence.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
       - 'tests/pass220/test_binary_trinary_hnan_codec_crossview.py'
       - 'tests/pass220/test_binary_trinary_projection_family_constraints.py'
       - 'tests/pass220/test_binary_trinary_matrix_lemma_dag.py'
@@ -115,4 +118,5 @@ jobs:
             tests/pass220/test_binary_trinary_egress_memory_lift.py \
             tests/pass220/test_binary_trinary_hnan_codec_crossview.py \
             tests/pass220/test_binary_trinary_projection_family_constraints.py \
-            tests/pass220/test_binary_trinary_matrix_lemma_dag.py
+            tests/pass220/test_binary_trinary_matrix_lemma_dag.py \
+            tests/pass220/test_binary_trinary_u72_gyroscope_recurrence.py
