@@ -13,6 +13,16 @@
 #include <stdio.h>
 #include <string.h>
 
+static int write_frame(const char *path, const HHSExactVM81Frame *frame) {
+    FILE *target = fopen(path, "wb");
+    if (target == NULL) return 0;
+    if (fwrite(frame, 1U, sizeof(*frame), target) != sizeof(*frame)) {
+        fclose(target);
+        return 0;
+    }
+    return fclose(target) == 0;
+}
+
 static int load_frame(const char *path, HHSExactVM81Frame *frame) {
     FILE *source = fopen(path, "rb");
     if (source == NULL) return 0;
@@ -34,7 +44,7 @@ int main(int argc, char **argv) {
     HHSExactPass219VM81ReplayV1 replay_feedback;
     const HHSExactVM81Frame *second_input;
 
-    if (argc != 2 || !load_frame(argv[1], &recovered)) return 2;
+    if ((argc != 2 && argc != 4) || !load_frame(argv[1], &recovered)) return 2;
     memset(&program, 0, sizeof(program));
     if (hhs_exact_pass219_vm81_lower_monolithic_structure(&program) !=
         HHS_EXACT_STATUS_OK) return 3;
@@ -115,6 +125,10 @@ int main(int argc, char **argv) {
     if (sizeof(recovered) != 648U ||
         sizeof(recovered.words[HHS_EXACT_PASS219_VM81_SYMBOL_DELTA]) != 8U)
         return 16;
+
+    if (argc == 4 &&
+        (!write_frame(argv[2], &initial.after_frame) ||
+         !write_frame(argv[3], &feedback.after_frame))) return 17;
 
     puts("PASS220_SOURCE_BOUND_VM81_CANDIDATE_FRAME_FEEDBACK_REPLAY_PASS");
     puts("SYMBOL_DELTA_TYPED_REINJECTION_NOT_CLAIMED");
