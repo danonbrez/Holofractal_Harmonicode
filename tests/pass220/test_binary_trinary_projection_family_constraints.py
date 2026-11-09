@@ -124,3 +124,41 @@ def test_projection_has_no_undeclared_binary_ingress_or_scalar_coercion() -> Non
         projection(-4)
     with pytest.raises(ValueError, match="P_GT_ONE"):
         projection(True)  # bool is not an integer projection constructor
+
+
+def test_global_constraint_bundle_retains_full_lemma_provenance() -> None:
+    """Read inherited global constraints without promoting registration to proof."""
+    from hhs_runtime.hhs_recursive_global_constraint_bundle_v1 import (
+        HHSRecursiveGlobalConstraintBundle,
+    )
+    bundle = HHSRecursiveGlobalConstraintBundle().build_all()
+    report = bundle.report()
+    assert report["constraint_count"] == len(report["constraints"])
+    assert report["constraint_count"] > len(BRANCHES)
+    assert len({row["name"] for row in report["constraints"]}) == report["constraint_count"]
+    assert report["global_invariants"]["projection_rule"] == (
+        "scalar projection only after bundle assembly"
+    )
+    assert report["ordered_words"]["xy"] != report["ordered_words"]["yx"]
+    assert report["ordered_words"]["zw"] != report["ordered_words"]["wz"]
+    # Registered symbolic shells are obligations, not independently
+    # evaluated source-level equality proofs.
+    shell = next(row for row in report["constraints"]
+                 if row["name"] == "qgu_transport_shell")
+    assert "registered" in shell["rhs"]
+    assert "symbolic equation registered" in shell["note"]
+
+
+def test_projection_ledger_never_replaces_global_constraint_bundle() -> None:
+    """A local projection pass is evidence for only its declared branches."""
+    from hhs_runtime.hhs_recursive_global_constraint_bundle_v1 import (
+        HHSRecursiveGlobalConstraintBundle,
+    )
+    report = HHSRecursiveGlobalConstraintBundle().build_all().report()
+    global_names = tuple(row["name"] for row in report["constraints"])
+    assert all(validate(projection(P)).values() for P in (2, 9, 30))
+    assert "qgu_transport_shell" in global_names
+    assert "terminal_exponential_closure" in global_names
+    assert not set(global_names).issubset(BRANCHES)
+    # This test proves no native Delta reinjection or full lemma tree closure;
+    # the local source-bound integer projection is a strict subdomain.
