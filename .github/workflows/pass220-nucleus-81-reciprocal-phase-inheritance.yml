@@ -32,6 +32,12 @@ jobs:
         env:
           PYTHONPATH: .
         run: python -m pytest -q tests/pass220/test_pass220_nucleus_81_reciprocal_phase_inheritance_v1.py
+      - name: Verify inherited native HNAN rule through real compiled C ABI
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py::test_real_compiled_native_global_rule_12
       - name: Check Wolfram script and inherited authority references
         run: |
           python - <<'PY'
