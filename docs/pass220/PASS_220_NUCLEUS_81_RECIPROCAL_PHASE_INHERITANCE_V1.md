@@ -8,6 +8,12 @@ A valid 9x9 Sudoku instance witnesses 27 row/column/bank permutations of 1..9. E
 
 The unchanged Lo Shu nucleus is `{{4,9,2},{3,5,7},{8,1,6}}`; its center is 5. The read-only phase projection checks `81*64 == 72^2 == 5184` and all `72*72` modular inverse relations. Reverse-of-reverse restores source ordering.
 
+## Recursive coordinate and control witnesses
+
+The 81x81 geometry requires **eight** ternary indices, four for each axis (81=3^4). A six-index ternary parameterization covers only 27x27, so it is not the 6561-address geometry. The exact 81x81 source address bijection is `(Quotient[k,81],Mod[k,81])` for `k=0..6560`.
+
+A four-depth lower-triangular control matrix records prior-layer rule inheritance while the nucleus row prohibits descendant-to-nucleus governing edges. A separately accumulating parameter history leaves the Lo Shu generator unchanged. These are formal control-policy and exact geometry witnesses, not native runtime execution of an evolving parameter accumulator.
+
 ## Governing distinction
 
 Outer nucleus cells may inherit later-layer *parameter metadata*, but later-layer cells have **no reverse governing authority** over the frozen nucleus. This is a normative dependency rule, not a claim that an unconstrained evolving phase state has been implemented by the Wolfram tests.
