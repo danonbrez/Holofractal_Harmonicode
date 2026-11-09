@@ -11,6 +11,8 @@ from hashlib import sha256
 from pathlib import Path
 import sys
 
+from hhs_runtime.pass219.production_phase_geometry_binding import build_raw5184_phase_source
+from hhs_runtime.pass219.dynamic_octonion_gyroscope import CHANNELS, PRODUCT_RELATIONS, PHASE_MODULUS
 from hhs_runtime.hhs_pass220_base64_balanced_trit_v1 import (
     BALANCED_TRITS, BASE64_SEXTETS, FRAME_BITS,
     encode_frame, decode_frame,
@@ -39,7 +41,39 @@ def inspect(path: Path) -> dict:
         raise AssertionError("HNAN_REPLAY")
     if _pack(tuple(int(bit) for bit in decoded), "MSB0") != frame:
         raise AssertionError("CROSS_VIEW_EGRESS")
+    native_phase = build_raw5184_phase_source(frame)
+    if native_phase["raw5184_sha256"] != sha256(frame).hexdigest():
+        raise AssertionError("RML3_NATIVE_PHASE_SOURCE_IDENTITY")
+    if native_phase["raw_bytes"] != 648 or native_phase["phase_quad_count"] != 20:
+        raise AssertionError("RML3_NATIVE_PHASE_TOPOLOGY")
+    if tuple(native_phase["phase_channel_order"]) != CHANNELS:
+        raise AssertionError("RML3_NATIVE_ORDERED_CHANNELS")
+    if native_phase["phase_ring"] != PHASE_MODULUS:
+        raise AssertionError("RML3_NATIVE_PHASE_MODULUS")
+    if native_phase["scalar_projection_runtime_authority"] is not False:
+        raise AssertionError("RML3_SCALAR_AUTHORITY")
+    if native_phase["canonical_vm81_mutation_authority"] is not False:
+        raise AssertionError("RML3_VM81_AUTHORITY")
+    if len(native_phase["channel_ledger"]) != 20:
+        raise AssertionError("RML3_QUAD_LEDGER")
+    for quad in native_phase["channel_ledger"]:
+        phases = quad["ordered_channel_phase72"]
+        if tuple(phases) != CHANNELS:
+            raise AssertionError("RML3_QUAD_CHANNEL_ORDER")
+        if any(type(v) is not int or not 0 <= v < PHASE_MODULUS
+               for v in phases.values()):
+            raise AssertionError("RML3_QUAD_PHASE_RANGE")
+        for product, relation in PRODUCT_RELATIONS.items():
+            generator = relation["generator"]
+            reciprocal = relation["reciprocal"]
+            expected = (phases[generator] + phases[reciprocal]
+                        + (36 if product in ("yx", "wz") else 0)) % PHASE_MODULUS
+            if phases[product] != expected:
+                raise AssertionError("RML3_QUAD_RECIPROCAL_IDENTITY")
     return {"bytes": len(frame), "sha256": sha256(frame).hexdigest(),
+            "rml3_phase_quads": len(native_phase["channel_ledger"]),
+            "rml3_phase_root_sha256": native_phase["phase_circuit_root_sha256"],
+            "rml3_source_receipt_sha256": native_phase["source_receipt_sha256"],
             "lo_shu_trit_positions": len(trit_blocks) * 9,
             "hnan_trits": len(carrier.trits),
             "base64_sextets": len(carrier.alphabet64),
