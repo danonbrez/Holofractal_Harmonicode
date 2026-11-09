@@ -16,7 +16,10 @@
     "3x3 Lo Shu fixed-center and row/column constraints",
     "81*64=72^2=5184",
     "all 72x72 modular phase inverse equations",
-    "forward/reverse double traversal"
+    "forward/reverse double traversal",
+    "81x81 unique hierarchical addresses (6561 total)",
+    "read-only four-depth triangular control witness: descendants cannot mutate root rules",
+    "metadata accumulation without nucleus identity changes"
   ],
   "native_constraints": [
     "fixed nucleus rules; incoming parameter metadata does not grant reverse control",
@@ -29,7 +32,8 @@
     "18 other-cell parameter mapping",
     "complete expression HNAN closure",
     "nucleus readout sufficient for arbitrary output",
-    "production end-to-end ingress to Lane5 receipt"
+    "production end-to-end ingress to Lane5 receipt",
+    "actual native parameter accumulator and runtime phase-control enforcement"
   ],
   "authority": {
     "canonical_vm81_mutation": false,
