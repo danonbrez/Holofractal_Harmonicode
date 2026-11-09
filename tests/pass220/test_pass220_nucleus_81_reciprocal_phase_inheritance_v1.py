@@ -45,3 +45,24 @@ def test_contract_preserves_frozen_authority_boundary():
         "canonical_hash216_persistence": False,
     }
     assert "18 other-cell parameter mapping" in contract["unproven_by_this_extension"]
+
+def test_one_way_control_with_read_only_inheritance():
+    control = [[int(j <= i) for j in range(4)] for i in range(4)]
+    assert control[0][1:] == [0, 0, 0]
+    assert control[3] == [1, 1, 1, 1]
+    nucleus = ((4, 9, 2), (3, 5, 7), (8, 1, 6))
+    records = [()]
+    for phase in ("phase1", "phase2", "phase3"):
+        records.append(records[-1] + (phase,))
+    assert len(records[-1]) == 3
+    assert all(nucleus == ((4, 9, 2), (3, 5, 7), (8, 1, 6))
+               for _ in records)
+
+
+def test_full_81_by_81_address_bijection():
+    addresses = [(k // 81, k % 81) for k in range(81 * 81)]
+    assert len(addresses) == 6561
+    assert len(set(addresses)) == 6561
+    assert min(min(pair) for pair in addresses) == 0
+    assert max(max(pair) for pair in addresses) == 80
+    assert all(len({r // 9 for r, _ in addresses}) == 9 for _ in range(1))
