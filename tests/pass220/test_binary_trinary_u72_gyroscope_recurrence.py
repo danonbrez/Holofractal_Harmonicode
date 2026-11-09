@@ -7,7 +7,7 @@ introduced here. A toroidal-looking projection does not itself prove closure.
 """
 from __future__ import annotations
 
-from math import lcm
+from math import gcd, lcm
 
 import pytest
 
@@ -51,7 +51,7 @@ def test_coupled_reciprocal_gyroscope_exact_period_and_inverse(rates) -> None:
     steps = coupled_steps(*rates)
     assert current["admissible_product_geometry"]
     assert build_chirality_polarity_witness(current)["all_chiral_pairs_opposed"]
-    period = lcm(*(PHASE_MODULUS // __import__("math").gcd(PHASE_MODULUS, abs(rate))
+    period = lcm(*(PHASE_MODULUS // gcd(PHASE_MODULUS, abs(rate))
                    for rate in rates))
     assert 1 <= period <= PHASE_MODULUS
     seen = {tuple(current["phases"].values())}
