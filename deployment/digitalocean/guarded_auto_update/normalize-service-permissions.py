@@ -205,6 +205,55 @@ def normalize_checkout(
     }
 
 
+def normalize_python_typing_extensions_access(
+    venv_root: Path,
+    *,
+    service_user: str,
+    service_group: str,
+    require_root: bool = True,
+) -> dict[str, Any]:
+    """Repair the exact production startup import boundary, never the whole venv."""
+    if require_root and os.geteuid() != 0:
+        raise PermissionError("production venv permission repair requires root")
+    venv_root = Path(venv_root)
+    if not venv_root.is_absolute():
+        raise ValueError("venv root must be absolute")
+    target = venv_root / "lib" / "python3.12" / "site-packages" / "typing_extensions.py"
+    dirs = (venv_root, venv_root / "lib", venv_root / "lib" / "python3.12",
+            venv_root / "lib" / "python3.12" / "site-packages")
+    paths = (*dirs, target)
+    # Preflight the entire exact boundary before mutating anything.
+    for path in paths:
+        if path.is_symlink():
+            raise RuntimeError(f"refusing symlink in Python import boundary: {path}")
+        if not (path.is_dir() if path != target else path.is_file()):
+            raise FileNotFoundError(f"missing production Python import boundary: {path}")
+    group = grp.getgrnam(service_group)
+    changed = []
+    for path in paths:
+        before = path.stat()
+        _set_group_mode(path, group.gr_gid, directory=path != target,
+                        allow_chown=os.geteuid() == 0)
+        after = path.stat()
+        if (before.st_gid, stat.S_IMODE(before.st_mode)) != (
+                after.st_gid, stat.S_IMODE(after.st_mode)):
+            changed.append(str(path))
+    for path in dirs:
+        if not _service_access(service_user, path, "-x"):
+            raise PermissionError(f"service cannot traverse Python import path: {path}")
+    if not _service_access(service_user, target, "-r"):
+        raise PermissionError(f"service cannot read Python import target: {target}")
+    return {
+        "schema": "HHS_PRODUCTION_PYTHON_IMPORT_PERMISSION_RECEIPT_V1",
+        "service_user": service_user,
+        "service_group": service_group,
+        "target": str(target),
+        "changed_paths": changed,
+        "service_readable": True,
+        "result": "PASS",
+    }
+
+
 def normalize_unified_ledger_permissions(
     runtime_output_dir: Path,
     *,
@@ -426,6 +475,14 @@ def main() -> int:
     )
     print(json.dumps(receipt, sort_keys=True))
     print("HHS_PRODUCTION_CHECKOUT_PERMISSIONS_VERIFIED=1")
+
+    python_access = normalize_python_typing_extensions_access(
+        Path("/opt/hhs/venv"),
+        service_user=args.service_user,
+        service_group=args.service_group,
+    )
+    print(json.dumps(python_access, sort_keys=True))
+    print("HHS_PRODUCTION_PYTHON_IMPORT_PERMISSIONS_VERIFIED=1")
 
     ledger_permissions_before = normalize_unified_ledger_permissions(
         runtime_output_dir,
