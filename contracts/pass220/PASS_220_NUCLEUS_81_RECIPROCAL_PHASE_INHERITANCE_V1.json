@@ -1,0 +1,39 @@
+{
+  "schema": "HHS_PASS220_NUCLEUS_81_RECIPROCAL_PHASE_INHERITANCE_V1",
+  "version": 1,
+  "status": "FORMAL_ARITHMETIC_WITNESS",
+  "scope": "read-only inherited geometry; not a new VM81/Hash72/Hash216 authority",
+  "frozen_dependencies": [
+    "formal/wolfram/pass220_hnan_phase5184_lossless_bridge_v1.wl",
+    "hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc",
+    "hhs_runtime/hhs_pass220_rna_hash72_dna_qudit_phase_lock_v1.py"
+  ],
+  "formal_source": "formal/wolfram/pass220_nucleus_81_reciprocal_phase_inheritance_v1.wl",
+  "python_tests": "tests/pass220/test_pass220_nucleus_81_reciprocal_phase_inheritance_v1.py",
+  "proved_arithmetic": [
+    "27 valid Sudoku vectors with sums=45 and products=362880",
+    "40 disjoint antipodal address pairs plus center",
+    "3x3 Lo Shu fixed-center and row/column constraints",
+    "81*64=72^2=5184",
+    "all 72x72 modular phase inverse equations",
+    "forward/reverse double traversal"
+  ],
+  "native_constraints": [
+    "fixed nucleus rules; incoming parameter metadata does not grant reverse control",
+    "preserve ordered xy/yx and zw/wz",
+    "retain exact rational and quotient provenance; no scalarization",
+    "global Delta denominator cannot be cancelled",
+    "HNAN center delegated to existing native gate"
+  ],
+  "unproven_by_this_extension": [
+    "18 other-cell parameter mapping",
+    "complete expression HNAN closure",
+    "nucleus readout sufficient for arbitrary output",
+    "production end-to-end ingress to Lane5 receipt"
+  ],
+  "authority": {
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_mint": false,
+    "canonical_hash216_persistence": false
+  }
+}
