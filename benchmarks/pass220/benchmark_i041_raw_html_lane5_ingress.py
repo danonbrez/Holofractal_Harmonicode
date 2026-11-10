@@ -319,12 +319,17 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 audio_capture["overlay"] = overlay
                 audio_capture["capture_surface"] = "ORIGINAL_HTML_WEBGL_PLUS_WAVEFORM_VIEWPORT"
             else:
-                audio_capture["capture_surface"] = "ORIGINAL_HTML_WEBGL_CANVAS_ONLY"
+                audio_capture["capture_surface"] = (
+                    "ORIGINAL_HTML_BROWSER_VIEWPORT" if args.capture_surface == "viewport"
+                    else "ORIGINAL_HTML_WEBGL_CANVAS_ONLY"
+                )
             for index in range(args.frames):
                 _wait_raf(page, args.raf_step)
                 frame = frames / f"frame_{index:06d}.png"
-                if audio_capture["enabled"]:
-                    page.screenshot(path=str(frame), animations="allow")
+                if audio_capture["enabled"] or args.capture_surface == "viewport":
+                    # Viewport transport does not wait for animated canvas element stability.
+                    # It remains observation-only and never modifies the physics source.
+                    page.screenshot(path=str(frame), animations="allow", timeout=args.timeout_ms)
                 else:
                     canvas.screenshot(path=str(frame))
                 if args.neural_layer_check and index in (0, args.frames//2, args.frames-1):
@@ -475,6 +480,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--neural-layer-check", action="store_true",
         help="Require original particle to I085 exact 10368 neural-layer bridge"
+    )
+    parser.add_argument(
+        "--capture-surface", choices=("canvas", "viewport"), default="canvas",
+        help="Viewport bypasses Playwright animated-element stability and captures browser composition",
     )
     parser.add_argument("--raf-step", type=int, default=4)
     parser.add_argument("--warmup-raf", type=int, default=16)
