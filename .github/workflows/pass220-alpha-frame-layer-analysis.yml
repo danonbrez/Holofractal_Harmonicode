@@ -1,0 +1,112 @@
+name: Pass 220 Alpha Frame-by-Frame Layer Analysis
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pass220-alpha-frame-layer-analysis.yml'
+      - 'benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py'
+      - 'examples/ParticleSimulation.html'
+  workflow_dispatch:
+    inputs:
+      html_path:
+        description: 'Repository-relative standalone HTML to capture'
+        required: false
+        default: 'examples/ParticleSimulation.html'
+permissions:
+  contents: read
+jobs:
+  capture-analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      PYTHONPATH: .
+      HHS_HTML_PATH: ${{ github.event.inputs.html_path || 'examples/ParticleSimulation.html' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install established browser and media tools
+        run: |
+          python -m pip install --disable-pip-version-check pillow playwright pytest
+          python -m playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Check source and inherited raw-HTML ingress tests
+        run: |
+          test -f "$HHS_HTML_PATH"
+          python -m py_compile benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
+          python -m pytest -q tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
+      - name: Render exact HTML scene without source mutation
+        run: |
+          python benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py \
+            --html "$HHS_HTML_PATH" \
+            --output artifacts/pass220/alpha-frame-analysis \
+            --width 1920 --height 1080 --fps 60 --frames 600 \
+            --raf-step 4 --warmup-raf 16 --timeout-ms 180000
+      - name: Produce per-frame temporal diagnostics and full-res phase samples
+        run: |
+          python - <<'PY'
+          import hashlib,json,math
+          from pathlib import Path
+          from PIL import Image,ImageChops,ImageStat,ImageDraw
+          root=Path('artifacts/pass220/alpha-frame-analysis')
+          receipt=json.loads((root/'lane5-raw-html-ingress-receipt.json').read_text())
+          assert receipt['status']=='PASS',receipt
+          assert receipt['mode']=='OPAQUE_UNALTERED_HTML'
+          assert receipt['source_unchanged'] is True
+          assert receipt['browser_health']['webgl'] is True
+          assert not receipt['browser_health']['page_runtime_errors']
+          assert not receipt['browser_health']['console_error_messages']
+          files=sorted((root/'frames').glob('frame_*.png'))
+          assert len(files)==600,len(files)
+          previous=None
+          records=[]
+          selected=[]
+          for index,path in enumerate(files):
+              with Image.open(path) as img:
+                  frame=img.convert('RGB')
+                  assert frame.size==(1920,1080),frame.size
+                  # Temporal change computed from small diagnostic projection, never substituted for source frames.
+                  reduced=frame.resize((240,135),Image.Resampling.BOX)
+                  delta=None if previous is None else sum(ImageStat.Stat(ImageChops.difference(reduced,previous)).mean)/3
+                  previous=reduced
+                  records.append({'index':index,'mean_rgb':[round(x,3) for x in ImageStat.Stat(reduced).mean],
+                    'temporal_delta_rgb':None if delta is None else round(delta,4)})
+                  if index%10==0:
+                      dest=root/'phase_samples'
+                      dest.mkdir(exist_ok=True)
+                      frame.save(dest/f'frame_{index:04d}.png')
+                      thumb=frame.resize((480,270),Image.Resampling.LANCZOS)
+                      selected.append((index,thumb))
+          for page in range(math.ceil(len(selected)/12)):
+              grid=Image.new('RGB',(1920,3*306),(12,16,26))
+              draw=ImageDraw.Draw(grid)
+              for slot,(index,thumb) in enumerate(selected[page*12:(page+1)*12]):
+                  x=(slot%4)*480;y=(slot//4)*306
+                  grid.paste(thumb,(x,y+30))
+                  draw.text((x+10,y+7),f'Frame {index} | t={index/60:.2f}s',fill=(240,240,240))
+              grid.save(root/f'contact-sheet-{page:02d}.png')
+          digest=hashlib.sha256(Path('examples/ParticleSimulation.html').read_bytes()).hexdigest() if receipt['html_source']=='examples/ParticleSimulation.html' else receipt['source_sha256_before']
+          manifest={'schema':'HHS_PASS220_ALPHA_FRAME_LAYER_ANALYSIS_V1','git_sha':'${{ github.sha }}',
+            'html_source':receipt['html_source'],'html_sha256':receipt['source_sha256_before'],
+            'source_unmodified':True,'resolution':[1920,1080],'nominal_fps':60,
+            'frame_count':len(files),'sample_step':10,'samples':len(selected),
+            'render_mode':'ORIGINAL_DEFAULT_VIEW_NO_CAMERA_OR_CHANNEL_SWITCH',
+            'classification':'OBSERVATIONAL_TEMPORAL_DIAGNOSTICS_NOT_NATIVE_CONSTRAINT_PROOF',
+            'frames':records}
+          assert digest==receipt['source_sha256_before']
+          (root/'frame-analysis-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          print('Validated frames:',len(files),'samples:',len(selected))
+          PY
+      - name: Upload traceable frame analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-alpha-frame-layer-analysis
+          if-no-files-found: warn
+          path: |
+            artifacts/pass220/alpha-frame-analysis/lane5-raw-html-1920x1080.mp4
+            artifacts/pass220/alpha-frame-analysis/lane5-raw-html-ingress-receipt.json
+            artifacts/pass220/alpha-frame-analysis/frame-analysis-manifest.json
+            artifacts/pass220/alpha-frame-analysis/contact-sheet-*.png
+            artifacts/pass220/alpha-frame-analysis/phase_samples/*.png
