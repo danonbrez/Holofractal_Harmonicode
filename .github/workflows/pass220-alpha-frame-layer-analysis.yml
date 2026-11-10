@@ -11,15 +11,20 @@ on:
         description: 'Repository-relative standalone HTML to capture'
         required: false
         default: 'examples/ParticleSimulation.html'
+      frame_count:
+        description: 'Frames to capture; default is bounded pilot rather than multi-hour render'
+        required: false
+        default: '24'
 permissions:
   contents: read
 jobs:
   capture-analyze:
     runs-on: ubuntu-latest
-    timeout-minutes: 100
+    timeout-minutes: 55
     env:
       PYTHONPATH: .
       HHS_HTML_PATH: ${{ github.event.inputs.html_path || 'examples/ParticleSimulation.html' }}
+      HHS_FRAME_COUNT: ${{ github.event.inputs.frame_count || '24' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -34,6 +39,7 @@ jobs:
       - name: Check source and inherited raw-HTML ingress tests
         run: |
           test -f "$HHS_HTML_PATH"
+          [[ "$HHS_FRAME_COUNT" =~ ^[0-9]+$ ]] && test "$HHS_FRAME_COUNT" -ge 2 && test "$HHS_FRAME_COUNT" -le 600
           python -m py_compile benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py
           python -m pytest -q tests/pass220/test_hhs_pass220_i084_updated_html_pcm_l2_capture.py
       - name: Render exact HTML scene without source mutation
@@ -41,7 +47,7 @@ jobs:
           python benchmarks/pass220/benchmark_i041_raw_html_lane5_ingress.py \
             --html "$HHS_HTML_PATH" \
             --output artifacts/pass220/alpha-frame-analysis \
-            --width 1920 --height 1080 --fps 60 --frames 600 \
+            --width 1920 --height 1080 --fps 60 --frames "$HHS_FRAME_COUNT" \
             --raf-step 4 --warmup-raf 16 --timeout-ms 180000
       - name: Produce per-frame temporal diagnostics and full-res phase samples
         run: |
@@ -58,7 +64,7 @@ jobs:
           assert not receipt['browser_health']['page_runtime_errors']
           assert not receipt['browser_health']['console_error_messages']
           files=sorted((root/'frames').glob('frame_*.png'))
-          assert len(files)==600,len(files)
+          assert len(files)==int(__import__('os').environ['HHS_FRAME_COUNT']),len(files)
           previous=None
           records=[]
           selected=[]
@@ -72,7 +78,7 @@ jobs:
                   previous=reduced
                   records.append({'index':index,'mean_rgb':[round(x,3) for x in ImageStat.Stat(reduced).mean],
                     'temporal_delta_rgb':None if delta is None else round(delta,4)})
-                  if index%10==0:
+                  if index % max(1, len(files)//12)==0:
                       dest=root/'phase_samples'
                       dest.mkdir(exist_ok=True)
                       frame.save(dest/f'frame_{index:04d}.png')
@@ -90,7 +96,7 @@ jobs:
           manifest={'schema':'HHS_PASS220_ALPHA_FRAME_LAYER_ANALYSIS_V1','git_sha':'${{ github.sha }}',
             'html_source':receipt['html_source'],'html_sha256':receipt['source_sha256_before'],
             'source_unmodified':True,'resolution':[1920,1080],'nominal_fps':60,
-            'frame_count':len(files),'sample_step':10,'samples':len(selected),
+            'frame_count':len(files),'sample_step':max(1,len(files)//12),'samples':len(selected),
             'render_mode':'ORIGINAL_DEFAULT_VIEW_NO_CAMERA_OR_CHANNEL_SWITCH',
             'classification':'OBSERVATIONAL_TEMPORAL_DIAGNOSTICS_NOT_NATIVE_CONSTRAINT_PROOF',
             'frames':records}
