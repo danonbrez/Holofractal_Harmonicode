@@ -326,10 +326,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             for index in range(args.frames):
                 _wait_raf(page, args.raf_step)
                 frame = frames / f"frame_{index:06d}.png"
-                if audio_capture["enabled"] or args.capture_surface == "viewport":
-                    # Viewport transport does not wait for animated canvas element stability.
-                    # It remains observation-only and never modifies the physics source.
-                    page.screenshot(path=str(frame), animations="allow", timeout=args.timeout_ms)
+                if audio_capture["enabled"]:
+                    page.screenshot(path=str(frame), animations="allow")
+                elif args.capture_surface == "viewport":
+                    # Screenshot page compositing without animated canvas element stability.
+                    # This is observation only and does not mutate simulation state.
+                    page.screenshot(path=str(frame), animations="allow")
                 else:
                     canvas.screenshot(path=str(frame))
                 if args.neural_layer_check and index in (0, args.frames//2, args.frames-1):
