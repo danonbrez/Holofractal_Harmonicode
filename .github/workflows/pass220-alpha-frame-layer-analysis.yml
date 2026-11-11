@@ -30,12 +30,35 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Guard working V139 liquid-light shader before browser setup
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source=Path('examples/ParticleSimulation.html').read_text()
+          material=source[source.index('function material(){',source.index('Omnidirectional 3D inverse-square liquid-light projection.')):]
+          material=material[:material.index('function setup(){')]
+          assert '"#ifdef USE_INSTANCING_COLOR",' in material
+          assert '"vTint=instanceColor;",' in material
+          assert '"#else",' in material
+          assert '"vTint=vec3(1.0);",' in material
+          assert '"#endif",' in material
+          assert 'defines:{USE_INSTANCING_COLOR:1}' not in material
+          print('V139 guarded liquid-light instancing verified')
+          PY
       - name: Install established browser and media tools
         run: |
           python -m pip install --disable-pip-version-check pillow playwright pytest
-          python -m playwright install --with-deps chromium
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          # Runner network resolution is transient; bounded retry preserves real failures.
+          for attempt in 1 2 3; do
+            if python -m playwright install --with-deps chromium && sudo apt-get install -y ffmpeg; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "Browser/media dependency installation failed after 3 attempts" >&2
+              exit 1
+            fi
+            sleep 12
+          done
       - name: Check source and inherited raw-HTML ingress tests
         run: |
           test -f "$HHS_HTML_PATH"
