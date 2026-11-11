@@ -101,13 +101,23 @@ PR #888's review exposed three course-local arithmetic inconsistencies, now corr
 
 The repository crosswalk's source Git blob is re-pinned to the corrected course. CI contains explicit example/census checks. The new validator also checks each resealed I081 proof node against the canonical registry's comparator/Lean solution/theorem identities, verifies historical Lane 5 snapshot fields against the inherited receipt, and exposes the complete validator as a discoverable pytest test. These are repairs to validation and local arithmetic statements, not proof-promotions or new runtime authority.
 
-## Expanded mathematical course source through Module 189 (additive, 2026-11-11)
+## Expanded mathematical course source through Module 190 (additive, 2026-11-11)
 
-- [Expanded course source](HARMONICODE_Algebra_Course_Expanded_0_189.md) preserves the user-supplied longer manuscript alongside the existing **0–123 frozen/crosswalk-pinned course**. The original V1 crosswalk still has exactly 124 entries; its source blob and historical source-specific receipts are **not** silently repinned.
-- [Expansion registry](../../contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json) indexes **188 present module headings**, with stable `HHC-M000`–`HHC-M189` numbers and explicit absent slots **M139 and M140**. The index does not invent missing module bodies.
+- [Expanded course source](HARMONICODE_Algebra_Course_Expanded_0_190.md) preserves the user-supplied longer manuscript alongside the existing **0–123 frozen/crosswalk-pinned course**. The original V1 crosswalk still has exactly 124 entries; its source blob and historical source-specific receipts are **not** silently repinned.
+- [Expansion registry](../../contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json) indexes **191 present module headings**, with stable `HHC-M000`–`HHC-M189` numbers and restored Modules **M139 and M140**, with no gaps. The index preserves the supplied restored bodies and their exact proof-scope limits.
 - Modules **15–26** are marked `RECONSTRUCTED_NOT_VERBATIM` by the supplied manuscript. All other present headings use `UPLOADED_SOURCE` provenance. Index status is source ingestion, not an executed theorem or runtime receipt.
 - [Expansion validator](../../tests/pass220/test_harmonicode_course_expansion_index_v1.py) checks the new Git source blob, heading order, gaps, provenance classification, existence of inherited records, and no unauthorized canonical admission.
 - Open composites, nonzero residuals, unadmitted semantics, and external-physics claims retain their module-local status. Mathematical equations and ordered tensor statements remain source statements until their exact domain-specific proof, native execution, and replay evidence is independently verified.
 - Follow the **existing** VM81, Hash72, Hash216, C/C++ cell-wall, and Lane 5 evidence chain for further validation; no new proof engine or alternate canonical mutation path is introduced.
 
 Run `python tests/pass220/test_harmonicode_course_expansion_index_v1.py` in addition to the inherited 0–123 crosswalk validator.
+
+## Course restoration: M139–M140 and new M190 (2026-11-11)
+
+The restored expanded course contains exactly **191 unique module headings, M000–M190 in order**. Modules 139 and 140 occur between M138 and M141 with their original typed expressions and HNAN0 guards. The previous 0–189 edition remains as a historical additive source. The expansion index is repinned to the 0–190 edition; the frozen 0–123 course and its V1 source identity remain unchanged.
+
+- **M139:** `u⁷² = 1` is the declared exact base-clock wrap. The ordered `L₁R₁` and guarded denominator `det(XY)+1` are preserved, but no numerical trace, cross-shell coupling, or scale-invariance proof is inferred without the necessary operands and witness.
+- **M140:** `R_boundaryᵀR_boundary = I₂` applies on the certified orthogonal branch. Nonzero residual norm is preserved by the rotor; sink routing requires its own address, alignment, route, and return-lineage certificate. HNAN0 quarantine is not itself a verified annihilation.
+- **M190:** the supplied exact scalar polynomial consensus, Bézout certificate, resultant, and shared reciprocal branches are recorded with their claimed executed scope; this does **not** certify complete native ordered equivalence or canonical runtime admission.
+
+The read-only corpus CI validator checks these three module-presence and boundary markers, the complete numbering, pinned source blob, and absence of unauthorized proof promotion.

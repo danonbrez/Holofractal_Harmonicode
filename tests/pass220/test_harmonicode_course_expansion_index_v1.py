@@ -20,10 +20,16 @@ def validate() -> dict:
     headings = [(int(match.group(1)), match.group(0),match.start()) for match in PATTERN.finditer(body)]
     numbers = [n for n,_,_ in headings]
     assert numbers == sorted(set(numbers)), "DUPLICATED_OR_UNORDERED_MODULES"
-    assert len(numbers) == packet["present_module_count"] == 188
-    assert numbers == [i for i in range(190) if i not in (139, 140)], "INVENTED_OR_MISSING_MODULE"
-    assert packet["missing_modules"] == [139, 140]
+    assert len(numbers) == packet["present_module_count"] == 191
+    assert numbers == list(range(191)), "MODULE_SEQUENCE_INCOMPLETE"
+    assert packet["missing_modules"] == []
     assert len(packet["modules"]) == len(headings)
+    for n in (139, 140, 190):
+        assert any(r["number"] == n for r in packet["modules"]), ("RESTORED_MODULE_MISSING", n)
+    assert "ExactNumericalTrace == not executable from the supplied packet" in body
+    assert "RotationAloneAnnihilatesNonzeroResidual == false" in body
+    assert "PolynomialGCD(F,G) = x² + 1" in body
+    assert "GlobalNativeEndToEndAdmission == not established" in body
     for record, (number, heading, offset) in zip(packet["modules"], headings):
         assert record["number"] == number
         assert record["id"] == f"HHC-M{number:03d}"
@@ -40,7 +46,7 @@ def validate() -> dict:
     assert flags["existing_source_freeze_unchanged"] is True
     for key in ("automatic_proof_promotion", "canonical_vm81_mutation", "canonical_hash72_mint", "canonical_hash216_mint"):
         assert flags[key] is False
-    return {"present_modules":len(headings),"missing_modules":[139,140],"source_blob":digest}
+    return {"present_modules":len(headings),"missing_modules":[],"source_blob":digest}
 
 def test_expanded_harmonicode_course_index() -> None:
     validate()

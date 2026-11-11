@@ -206,9 +206,19 @@ For current system state and startup instructions, return to [`README.md`](READM
 
 ## Expanded HARMONICODE course and mathematical-corpus source
 
-- [Uploaded expanded course, Modules 0–189 with absent M139/M140](docs/course/HARMONICODE_Algebra_Course_Expanded_0_189.md) — additive user-supplied mathematical text, retaining original ordered equations and module-specific proof-status boundaries.
-- [Expanded module/provenance index](contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json) — 188 indexed module headings, source blob, reconstructed M15–M26, missing M139/M140.
+- [Uploaded expanded course, Modules 0–190 with restored M139/M140](docs/course/HARMONICODE_Algebra_Course_Expanded_0_190.md) — additive user-supplied mathematical text, retaining original ordered equations and module-specific proof-status boundaries.
+- [Expanded module/provenance index](contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json) — 191 indexed module headings, source blob, reconstructed M15–M26, no missing slots.
 - [Expansion fail-closed validator](tests/pass220/test_harmonicode_course_expansion_index_v1.py) — source and numbering integrity without VM81/Hash72/Hash216 mutation.
 - [Course/proof-corpus crosswalk](docs/course/PROOF_CORPUS_OPENAI_CROSSWALK.md) — inherited 0–123 registry and additive new-source boundary.
 
 The older 0–123 course file and existing crosswalk remain preserved as a previously pinned source. New content does not constitute an automatic proof promotion or native runtime receipt.
+
+## Course restoration: M139–M140 and new M190 (2026-11-11)
+
+The restored expanded course contains exactly **191 unique module headings, M000–M190 in order**. Modules 139 and 140 occur between M138 and M141 with their original typed expressions and HNAN0 guards. The previous 0–189 edition remains as a historical additive source. The expansion index is repinned to the 0–190 edition; the frozen 0–123 course and its V1 source identity remain unchanged.
+
+- **M139:** `u⁷² = 1` is the declared exact base-clock wrap. The ordered `L₁R₁` and guarded denominator `det(XY)+1` are preserved, but no numerical trace, cross-shell coupling, or scale-invariance proof is inferred without the necessary operands and witness.
+- **M140:** `R_boundaryᵀR_boundary = I₂` applies on the certified orthogonal branch. Nonzero residual norm is preserved by the rotor; sink routing requires its own address, alignment, route, and return-lineage certificate. HNAN0 quarantine is not itself a verified annihilation.
+- **M190:** the supplied exact scalar polynomial consensus, Bézout certificate, resultant, and shared reciprocal branches are recorded with their claimed executed scope; this does **not** certify complete native ordered equivalence or canonical runtime admission.
+
+The read-only corpus CI validator checks these three module-presence and boundary markers, the complete numbering, pinned source blob, and absence of unauthorized proof promotion.

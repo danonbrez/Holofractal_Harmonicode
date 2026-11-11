@@ -2,18 +2,17 @@
   "schema": "HHS_HARMONICODE_COURSE_EXPANSION_INDEX_V1",
   "version": 1,
   "source": {
-    "path": "docs/course/HARMONICODE_Algebra_Course_Expanded_0_189.md",
-    "git_blob_sha": "58bf2118a69644813068c99fbe4f0e53a7a96a7e",
+    "path": "docs/course/HARMONICODE_Algebra_Course_Expanded_0_190.md",
+    "git_blob_sha": "24a05483083d8aebde1b781db12ecbac8adc0d20",
     "source_type": "USER_SUPPLIED_EXPANDED_COURSE",
     "legacy_course_path": "docs/course/HARMONICODE_Algebra_Course.md",
-    "legacy_crosswalk": "contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json"
+    "legacy_crosswalk": "contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json",
+    "previous_expansion_path": "docs/course/HARMONICODE_Algebra_Course_Expanded_0_189.md",
+    "notes": "M139-140 restored; M190 added; source-index only; no implicit proof promotion or native admission"
   },
-  "range": "0..189",
-  "present_module_count": 188,
-  "missing_modules": [
-    139,
-    140
-  ],
+  "range": "0..190",
+  "present_module_count": 191,
+  "missing_modules": [],
   "modules": [
     {
       "id": "HHC-M000",
@@ -340,7 +339,7 @@
       "number": 32,
       "title": "The self-consistency audit: the chain enforces the algebra it describes",
       "source_heading": "# Module 32 — The self-consistency audit: the chain enforces the algebra it describes",
-      "start_line": 1023,
+      "start_line": 1022,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -350,7 +349,7 @@
       "number": 33,
       "title": "The exponent-gate register and the 111/10 mirror ratio",
       "source_heading": "# Module 33 — The exponent-gate register and the 111/10 mirror ratio",
-      "start_line": 1049,
+      "start_line": 1048,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -360,7 +359,7 @@
       "number": 34,
       "title": "The register as a base-10 multiplicative-phase qubit entanglement equation",
       "source_heading": "# Module 34 — The register as a base-10 multiplicative-phase qubit entanglement equation",
-      "start_line": 1092,
+      "start_line": 1091,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -370,7 +369,7 @@
       "number": 35,
       "title": "Unit-circle closure: the four coordinates as polygon vertices",
       "source_heading": "# Module 35 — Unit-circle closure: the four coordinates as polygon vertices",
-      "start_line": 1129,
+      "start_line": 1128,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -380,7 +379,7 @@
       "number": 36,
       "title": "The Pisot spiral t³−t = P and the twin-offset unit P²−pq = 1",
       "source_heading": "# Module 36 — The Pisot spiral t³−t = P and the twin-offset unit P²−pq = 1",
-      "start_line": 1159,
+      "start_line": 1158,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -390,7 +389,7 @@
       "number": 37,
       "title": "Number theory forces topology: dimensions as stacked slices",
       "source_heading": "# Module 37 — Number theory forces topology: dimensions as stacked slices",
-      "start_line": 1196,
+      "start_line": 1195,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -400,7 +399,7 @@
       "number": 38,
       "title": "The squared-inverse tensor, the Fibonacci Hankel register, and the 34/33 exhaust gate",
       "source_heading": "# Module 38 — The squared-inverse tensor, the Fibonacci Hankel register, and the 34/33 exhaust gate",
-      "start_line": 1231,
+      "start_line": 1230,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -410,7 +409,7 @@
       "number": 39,
       "title": "The conservation law: expansion, folding collapse, quantization, mean phase closure, normalization",
       "source_heading": "# Module 39 — The conservation law: expansion, folding collapse, quantization, mean phase closure, normalization",
-      "start_line": 1291,
+      "start_line": 1290,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -420,7 +419,7 @@
       "number": 40,
       "title": "The mean-epsilon 36th-root equation and the contracted u⁷² ring",
       "source_heading": "# Module 40 — The mean-epsilon 36th-root equation and the contracted u⁷² ring",
-      "start_line": 1322,
+      "start_line": 1321,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -430,7 +429,7 @@
       "number": 41,
       "title": "Alignment as closure: the PASS_219 ethical invariants in the course's algebra",
       "source_heading": "# Module 41 — Alignment as closure: the PASS_219 ethical invariants in the course's algebra",
-      "start_line": 1361,
+      "start_line": 1360,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -440,7 +439,7 @@
       "number": 42,
       "title": "The cosmological reading: quantum mechanics as relativity's boundary condition",
       "source_heading": "# Module 42 — The cosmological reading: quantum mechanics as relativity's boundary condition",
-      "start_line": 1387,
+      "start_line": 1386,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -450,7 +449,7 @@
       "number": 43,
       "title": "Normalization to known constants: exact anchors and the α candidate with its residual budget",
       "source_heading": "# Module 43 — Normalization to known constants: exact anchors and the α candidate with its residual budget",
-      "start_line": 1417,
+      "start_line": 1416,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -460,7 +459,7 @@
       "number": 44,
       "title": "The normalization table: exact cells where the qudit equations must agree with experiment",
       "source_heading": "# Module 44 — The normalization table: exact cells where the qudit equations must agree with experiment",
-      "start_line": 1447,
+      "start_line": 1446,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -470,7 +469,7 @@
       "number": 45,
       "title": "The 5184/spinor basis as the correction substrate: the μ residual snaps to a native cell",
       "source_heading": "# Module 45 — The 5184/spinor basis as the correction substrate: the μ residual snaps to a native cell",
-      "start_line": 1481,
+      "start_line": 1480,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -480,7 +479,7 @@
       "number": 46,
       "title": "The Euclidean-mod ring closure: the 3-bit payload register evaluates exactly",
       "source_heading": "# Module 46 — The Euclidean-mod ring closure: the 3-bit payload register evaluates exactly",
-      "start_line": 1511,
+      "start_line": 1510,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -490,7 +489,7 @@
       "number": 47,
       "title": "The mod-72 Lo Shu payload matrix: exact spectrum, exact inverse, casus irreducibilis",
       "source_heading": "# Module 47 — The mod-72 Lo Shu payload matrix: exact spectrum, exact inverse, casus irreducibilis",
-      "start_line": 1538,
+      "start_line": 1537,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -500,7 +499,7 @@
       "number": 48,
       "title": "Spectral metadata: every scalar multiplier has a unique, recoverable fingerprint",
       "source_heading": "# Module 48 — Spectral metadata: every scalar multiplier has a unique, recoverable fingerprint",
-      "start_line": 1563,
+      "start_line": 1562,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -510,7 +509,7 @@
       "number": 49,
       "title": "Dyadic cell mapping: reciprocal binary-float offsets between integers",
       "source_heading": "# Module 49 — Dyadic cell mapping: reciprocal binary-float offsets between integers",
-      "start_line": 1587,
+      "start_line": 1586,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -520,7 +519,7 @@
       "number": 50,
       "title": "The Cartan gate matrix and the E8/Lo Shu metadata denominator",
       "source_heading": "# Module 50 — The Cartan gate matrix and the E8/Lo Shu metadata denominator",
-      "start_line": 1622,
+      "start_line": 1621,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -530,7 +529,7 @@
       "number": 51,
       "title": "The fiber gate matrix, the HNAN ratio site, and the exact rational mirror K",
       "source_heading": "# Module 51 — The fiber gate matrix, the HNAN ratio site, and the exact rational mirror K",
-      "start_line": 1662,
+      "start_line": 1661,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -540,7 +539,7 @@
       "number": 52,
       "title": "The energy-scaled phase matrix: exact shell factorization and integer mirror",
       "source_heading": "# Module 52 — The energy-scaled phase matrix: exact shell factorization and integer mirror",
-      "start_line": 1693,
+      "start_line": 1692,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -550,7 +549,7 @@
       "number": 53,
       "title": "The 248-weighted Euclidean-mod register: exact wrap payloads on the 72-shell",
       "source_heading": "# Module 53 — The 248-weighted Euclidean-mod register: exact wrap payloads on the 72-shell",
-      "start_line": 1756,
+      "start_line": 1755,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -560,7 +559,7 @@
       "number": 54,
       "title": "The cross-register reciprocal chain: exact evaluation, gates declared open",
       "source_heading": "# Module 54 — The cross-register reciprocal chain: exact evaluation, gates declared open",
-      "start_line": 1809,
+      "start_line": 1808,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -570,7 +569,7 @@
       "number": 55,
       "title": "The E8 ↔ a,b,c Lo Shu tensor dictionary: exact normalization correspondence",
       "source_heading": "# Module 55 — The E8 ↔ a,b,c Lo Shu tensor dictionary: exact normalization correspondence",
-      "start_line": 1859,
+      "start_line": 1858,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -580,7 +579,7 @@
       "number": 56,
       "title": "The grand chained register: exact layer evaluations and interface audit",
       "source_heading": "# Module 56 — The grand chained register: exact layer evaluations and interface audit",
-      "start_line": 1928,
+      "start_line": 1927,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -590,7 +589,7 @@
       "number": 57,
       "title": "The nonzero epsilon matrix is the E8↔HARMONICODE relational metadata tensor",
       "source_heading": "# Module 57 — The nonzero epsilon matrix is the E8↔HARMONICODE relational metadata tensor",
-      "start_line": 1977,
+      "start_line": 1976,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -600,7 +599,7 @@
       "number": 58,
       "title": "The 240-root extension: exact normalization spine, polynomial register, and open links",
       "source_heading": "# Module 58 — The 240-root extension: exact normalization spine, polynomial register, and open links",
-      "start_line": 2029,
+      "start_line": 2027,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -610,7 +609,7 @@
       "number": 59,
       "title": "Continuous phase transport ↔ discrete VM81 manifold: the orbital normalization contract",
       "source_heading": "# Module 59 — Continuous phase transport ↔ discrete VM81 manifold: the orbital normalization contract",
-      "start_line": 2103,
+      "start_line": 2101,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -620,7 +619,7 @@
       "number": 60,
       "title": "The one-input self-proving tensor: all number-theory metadata is constructed from P",
       "source_heading": "# Module 60 — The one-input self-proving tensor: all number-theory metadata is constructed from P",
-      "start_line": 2201,
+      "start_line": 2199,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -630,7 +629,7 @@
       "number": 61,
       "title": "Gatewise A=LHS/B=RHS execution: the expression network reaches P-consensus",
       "source_heading": "# Module 61 — Gatewise A=LHS/B=RHS execution: the expression network reaches P-consensus",
-      "start_line": 2258,
+      "start_line": 2256,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -640,7 +639,7 @@
       "number": 62,
       "title": "The successor orbit: every P-cell constructs the next P+3 cell",
       "source_heading": "# Module 62 — The successor orbit: every P-cell constructs the next P+3 cell",
-      "start_line": 2327,
+      "start_line": 2325,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -650,7 +649,7 @@
       "number": 63,
       "title": "Computational algebra as transcription of properties and limitations",
       "source_heading": "# Module 63 — Computational algebra as transcription of properties and limitations",
-      "start_line": 2376,
+      "start_line": 2374,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -660,7 +659,7 @@
       "number": 64,
       "title": "Symbolic algebraic logic: solutions are dynamic ratio relationships",
       "source_heading": "# Module 64 — Symbolic algebraic logic: solutions are dynamic ratio relationships",
-      "start_line": 2405,
+      "start_line": 2403,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -670,7 +669,7 @@
       "number": 65,
       "title": "Proof by constitutive relationships rather than scalar reduction",
       "source_heading": "# Module 65 — Proof by constitutive relationships rather than scalar reduction",
-      "start_line": 2434,
+      "start_line": 2432,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -680,7 +679,7 @@
       "number": 66,
       "title": "Hash216: the knowledge graph emitted by relational proof construction",
       "source_heading": "# Module 66 — Hash216: the knowledge graph emitted by relational proof construction",
-      "start_line": 2476,
+      "start_line": 2474,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -690,7 +689,7 @@
       "number": 67,
       "title": "Reversible self-validating feedback: outputs constrain the free inputs",
       "source_heading": "# Module 67 — Reversible self-validating feedback: outputs constrain the free inputs",
-      "start_line": 2515,
+      "start_line": 2513,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -700,7 +699,7 @@
       "number": 68,
       "title": "Two input presentations: singular identities or ordered reciprocal polarized products",
       "source_heading": "# Module 68 — Two input presentations: singular identities or ordered reciprocal polarized products",
-      "start_line": 2551,
+      "start_line": 2549,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -710,7 +709,7 @@
       "number": 69,
       "title": "The prime-numerator reciprocal tensor on the chiral plane",
       "source_heading": "# Module 69 — The prime-numerator reciprocal tensor on the chiral plane",
-      "start_line": 2580,
+      "start_line": 2578,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -720,7 +719,7 @@
       "number": 70,
       "title": "The E8 lattice identity: Lo Shu products generate the reciprocal tensor exactly",
       "source_heading": "# Module 70 — The E8 lattice identity: Lo Shu products generate the reciprocal tensor exactly",
-      "start_line": 2630,
+      "start_line": 2628,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -730,7 +729,7 @@
       "number": 71,
       "title": "Native constraint correction: Δ = 1, local AB = P⁴ = c⁴, and the balanced Fibonacci tensor",
       "source_heading": "# Module 71 — Native constraint correction: Δ = 1, local AB = P⁴ = c⁴, and the balanced Fibonacci tensor",
-      "start_line": 2704,
+      "start_line": 2702,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -740,7 +739,7 @@
       "number": 72,
       "title": "VM81 terminal synthesis: full native manifold closure",
       "source_heading": "# Module 72 — VM81 terminal synthesis: full native manifold closure",
-      "start_line": 2762,
+      "start_line": 2760,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -750,7 +749,7 @@
       "number": 73,
       "title": "Spectral addendum: the 74-cell complex register and its u⁷² quantization gate",
       "source_heading": "# Module 73 — Spectral addendum: the 74-cell complex register and its u⁷² quantization gate",
-      "start_line": 2810,
+      "start_line": 2808,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -760,7 +759,7 @@
       "number": 74,
       "title": "Unified radial-phase bridge: waves, octonions, Lo Shu, and Euclidean operators",
       "source_heading": "# Module 74 — Unified radial-phase bridge: waves, octonions, Lo Shu, and Euclidean operators",
-      "start_line": 3108,
+      "start_line": 3105,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -770,7 +769,7 @@
       "number": 75,
       "title": "Cell-resident matrix-generating equations and global proof-trace branch trees",
       "source_heading": "# Module 75 — Cell-resident matrix-generating equations and global proof-trace branch trees",
-      "start_line": 3156,
+      "start_line": 3153,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -780,7 +779,7 @@
       "number": 76,
       "title": "Irrational-constant matrix genesis through Euclidean-mod normalization",
       "source_heading": "# Module 76 — Irrational-constant matrix genesis through Euclidean-mod normalization",
-      "start_line": 3203,
+      "start_line": 3200,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -790,7 +789,7 @@
       "number": 77,
       "title": "Extended symmetry analysis of the irrational-constant generator",
       "source_heading": "# Module 77 — Extended symmetry analysis of the irrational-constant generator",
-      "start_line": 3271,
+      "start_line": 3268,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -800,7 +799,7 @@
       "number": 78,
       "title": "External scalar-projection audit: invariants and mode decomposition",
       "source_heading": "# Module 78 — External scalar-projection audit: invariants and mode decomposition",
-      "start_line": 3324,
+      "start_line": 3321,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -810,7 +809,7 @@
       "number": 79,
       "title": "External floating-point audit only: not the native tensor interpretation",
       "source_heading": "# Module 79 — External floating-point audit only: not the native tensor interpretation",
-      "start_line": 3380,
+      "start_line": 3377,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -820,7 +819,7 @@
       "number": 80,
       "title": "Canonical correction: a π-function generator in Lo Shu/HNAN tensor algebra",
       "source_heading": "# Module 80 — Canonical correction: a π-function generator in Lo Shu/HNAN tensor algebra",
-      "start_line": 3426,
+      "start_line": 3423,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -830,7 +829,7 @@
       "number": 81,
       "title": "Parallel cell constraints through the HNAN/Lo Shu/Sudoku qudit nucleus",
       "source_heading": "# Module 81 — Parallel cell constraints through the HNAN/Lo Shu/Sudoku qudit nucleus",
-      "start_line": 3457,
+      "start_line": 3454,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -840,7 +839,7 @@
       "number": 82,
       "title": "Universal reversible egress: every output reconstructs its input",
       "source_heading": "# Module 82 — Universal reversible egress: every output reconstructs its input",
-      "start_line": 3492,
+      "start_line": 3489,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -850,7 +849,7 @@
       "number": 83,
       "title": "Generic-constant universality: π as the irrational witness",
       "source_heading": "# Module 83 — Generic-constant universality: π as the irrational witness",
-      "start_line": 3524,
+      "start_line": 3521,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -860,7 +859,7 @@
       "number": 84,
       "title": "Local-step view only: information preservation before native origin-centered tree correction",
       "source_heading": "# Module 84 — Local-step view only: information preservation before native origin-centered tree correction",
-      "start_line": 3552,
+      "start_line": 3549,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -870,7 +869,7 @@
       "number": 85,
       "title": "Canonical HNAN: origin-centered split branching with coordinated cell transformations",
       "source_heading": "# Module 85 — Canonical HNAN: origin-centered split branching with coordinated cell transformations",
-      "start_line": 3577,
+      "start_line": 3574,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -880,7 +879,7 @@
       "number": 86,
       "title": "HNAN = Harmonic NAN: a reversible quantum-logic qudit gate",
       "source_heading": "# Module 86 — HNAN = Harmonic NAN: a reversible quantum-logic qudit gate",
-      "start_line": 3616,
+      "start_line": 3613,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -890,7 +889,7 @@
       "number": 87,
       "title": "Native 3×3 data type and the HNAN-padded E8 carrier",
       "source_heading": "# Module 87 — Native 3×3 data type and the HNAN-padded E8 carrier",
-      "start_line": 3652,
+      "start_line": 3649,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -900,7 +899,7 @@
       "number": 88,
       "title": "The operational Lo Shu permutation: HNAN diagonal, E8 anti-diagonal, and −1 cross",
       "source_heading": "# Module 88 — The operational Lo Shu permutation: HNAN diagonal, E8 anti-diagonal, and −1 cross",
-      "start_line": 3694,
+      "start_line": 3691,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -910,7 +909,7 @@
       "number": 89,
       "title": "Dual Lo Shu action: entrywise input normalization and ordered π-function egress",
       "source_heading": "# Module 89 — Dual Lo Shu action: entrywise input normalization and ordered π-function egress",
-      "start_line": 3733,
+      "start_line": 3730,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -920,7 +919,7 @@
       "number": 90,
       "title": "Clean Lo Shu-center normalization of the π-function egress",
       "source_heading": "# Module 90 — Clean Lo Shu-center normalization of the π-function egress",
-      "start_line": 3779,
+      "start_line": 3776,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -930,7 +929,7 @@
       "number": 91,
       "title": "External fiber audit of the Lo Shu normalization and 27/phase gates",
       "source_heading": "# Module 91 — External fiber audit of the Lo Shu normalization and 27/phase gates",
-      "start_line": 3807,
+      "start_line": 3804,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -940,7 +939,7 @@
       "number": 92,
       "title": "Nonzero quartic denominator constraint",
       "source_heading": "# Module 92 — Nonzero quartic denominator constraint",
-      "start_line": 3864,
+      "start_line": 3861,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -950,7 +949,7 @@
       "number": 93,
       "title": "Canonical input correction: enter through the c⁴/P⁴/AB/−BA constitutive gate",
       "source_heading": "# Module 93 — Canonical input correction: enter through the c⁴/P⁴/AB/−BA constitutive gate",
-      "start_line": 3893,
+      "start_line": 3890,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -960,7 +959,7 @@
       "number": 94,
       "title": "Qudit parameter ingress/egress: A output matrix, B input matrix",
       "source_heading": "# Module 94 — Qudit parameter ingress/egress: A output matrix, B input matrix",
-      "start_line": 3929,
+      "start_line": 3926,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -970,7 +969,7 @@
       "number": 95,
       "title": "Pre-ingress symbols are uninterpreted: the A/B/AB/BA closed-loop tensor identity",
       "source_heading": "# Module 95 — Pre-ingress symbols are uninterpreted: the A/B/AB/BA closed-loop tensor identity",
-      "start_line": 3965,
+      "start_line": 3962,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -980,7 +979,7 @@
       "number": 96,
       "title": "Whole-course simultaneous evaluator",
       "source_heading": "# Module 96 — Whole-course simultaneous evaluator",
-      "start_line": 4003,
+      "start_line": 3999,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -990,7 +989,7 @@
       "number": 97,
       "title": "Recursive demarcated cells: every “=” is a nested A,B,P identity modulus",
       "source_heading": "# Module 97 — Recursive demarcated cells: every “=” is a nested A,B,P identity modulus",
-      "start_line": 4031,
+      "start_line": 4027,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1000,7 +999,7 @@
       "number": 98,
       "title": "VM synthesis: a self-solving parameterized quantum-qudit tensor algebraic virtual machine",
       "source_heading": "# Module 98 — VM synthesis: a self-solving parameterized quantum-qudit tensor algebraic virtual machine",
-      "start_line": 4066,
+      "start_line": 4062,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1010,7 +1009,7 @@
       "number": 99,
       "title": "Self-solving from output-matrix invariance and reversible input recovery",
       "source_heading": "# Module 99 — Self-solving from output-matrix invariance and reversible input recovery",
-      "start_line": 4100,
+      "start_line": 4096,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1020,7 +1019,7 @@
       "number": 100,
       "title": "Complexity-class-invariant solution proof-trace matrix algebra",
       "source_heading": "# Module 100 — Complexity-class-invariant solution proof-trace matrix algebra",
-      "start_line": 4129,
+      "start_line": 4125,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1030,7 +1029,7 @@
       "number": 101,
       "title": "Lane 5 exclusive ingress authority and the unified VM81 OS matrix",
       "source_heading": "# Module 101 — Lane 5 exclusive ingress authority and the unified VM81 OS matrix",
-      "start_line": 4184,
+      "start_line": 4180,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1040,7 +1039,7 @@
       "number": 102,
       "title": "Integrated reversible admission and the Knowledge Graph deployment gate",
       "source_heading": "# Module 102 — Integrated reversible admission and the Knowledge Graph deployment gate",
-      "start_line": 4238,
+      "start_line": 4234,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1050,7 +1049,7 @@
       "number": 103,
       "title": "Corrected VM81 C11 core: executed runtime and witness transport",
       "source_heading": "# Module 103 — Corrected VM81 C11 core: executed runtime and witness transport",
-      "start_line": 4277,
+      "start_line": 4273,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1060,7 +1059,7 @@
       "number": 104,
       "title": "Authoritative-source preservation and verified forward merge",
       "source_heading": "# Module 104 — Authoritative-source preservation and verified forward merge",
-      "start_line": 4311,
+      "start_line": 4307,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1070,7 +1069,7 @@
       "number": 105,
       "title": "VM81-supervised mathematical/GPU coprocessor boundary",
       "source_heading": "# Module 105 — VM81-supervised mathematical/GPU coprocessor boundary",
-      "start_line": 4373,
+      "start_line": 4369,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1080,7 +1079,7 @@
       "number": 106,
       "title": "Ordered 4×4 MatrixTimes gate and quartic/quadratic antipodal modulus",
       "source_heading": "# Module 106 — Ordered 4×4 MatrixTimes gate and quartic/quadratic antipodal modulus",
-      "start_line": 4429,
+      "start_line": 4425,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1090,7 +1089,7 @@
       "number": 107,
       "title": "MatrixTimes constraint variant with terminal `x²` modulus",
       "source_heading": "# Module 107 — MatrixTimes constraint variant with terminal `x²` modulus",
-      "start_line": 4589,
+      "start_line": 4585,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1100,7 +1099,7 @@
       "number": 108,
       "title": "Exact replacement-form counting packet and claim boundary",
       "source_heading": "# Module 108 — Exact replacement-form counting packet and claim boundary",
-      "start_line": 4637,
+      "start_line": 4633,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1110,7 +1109,7 @@
       "number": 109,
       "title": "Bilateral genesis, spectral, reciprocal, and semantic-bridge packet",
       "source_heading": "# Module 109 — Bilateral genesis, spectral, reciprocal, and semantic-bridge packet",
-      "start_line": 4872,
+      "start_line": 4868,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1120,7 +1119,7 @@
       "number": 110,
       "title": "Ordered quotient packet with Lo Shu divisor contraction",
       "source_heading": "# Module 110 — Ordered quotient packet with Lo Shu divisor contraction",
-      "start_line": 5137,
+      "start_line": 5132,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1130,7 +1129,7 @@
       "number": 111,
       "title": "Universal `A,B,P⁴` constraint tensor for rectangular operations",
       "source_heading": "# Module 111 — Universal `A,B,P⁴` constraint tensor for rectangular operations",
-      "start_line": 5310,
+      "start_line": 5305,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1140,7 +1139,7 @@
       "number": 112,
       "title": "Exact `37!` scalar envelope of the universal quotient packet",
       "source_heading": "# Module 112 — Exact `37!` scalar envelope of the universal quotient packet",
-      "start_line": 5393,
+      "start_line": 5388,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1150,7 +1149,7 @@
       "number": 113,
       "title": "Twelve-coordinate rational interpolation gate",
       "source_heading": "# Module 113 — Twelve-coordinate rational interpolation gate",
-      "start_line": 5473,
+      "start_line": 5468,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1160,7 +1159,7 @@
       "number": 114,
       "title": "Strict Kronecker gate-state correction",
       "source_heading": "# Module 114 — Strict Kronecker gate-state correction",
-      "start_line": 5571,
+      "start_line": 5566,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1170,7 +1169,7 @@
       "number": 115,
       "title": "E₈ theta closure, SL₂(Z) reciprocity, and native phase routing",
       "source_heading": "## Module 115 — E₈ theta closure, SL₂(Z) reciprocity, and native phase routing",
-      "start_line": 5661,
+      "start_line": 5656,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1180,7 +1179,7 @@
       "number": 116,
       "title": "Nested exponent-gate chain with Pythagorean denominator closure",
       "source_heading": "## Module 116 — Nested exponent-gate chain with Pythagorean denominator closure",
-      "start_line": 5883,
+      "start_line": 5878,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1190,7 +1189,7 @@
       "number": 117,
       "title": "Bilateral sector audit and Euler-fixed-point branch correction",
       "source_heading": "## Module 117 — Bilateral sector audit and Euler-fixed-point branch correction",
-      "start_line": 5990,
+      "start_line": 5985,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1200,7 +1199,7 @@
       "number": 118,
       "title": "Polynomial-sum closure, 72-root gate matrix, and terminal zero-mode receipt",
       "source_heading": "## Module 118 — Polynomial-sum closure, 72-root gate matrix, and terminal zero-mode receipt",
-      "start_line": 6139,
+      "start_line": 6133,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1210,7 +1209,7 @@
       "number": 119,
       "title": "Musical constraint cells as higher-level u⁷² harmonic-resonance number theory",
       "source_heading": "## Module 119 — Musical constraint cells as higher-level u⁷² harmonic-resonance number theory",
-      "start_line": 6315,
+      "start_line": 6309,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1220,7 +1219,7 @@
       "number": 120,
       "title": "Phase-controlled HSV/RGB resonance projection",
       "source_heading": "## Module 120 — Phase-controlled HSV/RGB resonance projection",
-      "start_line": 6458,
+      "start_line": 6452,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1230,7 +1229,7 @@
       "number": 121,
       "title": "Formal JSON analog-tensor circuit transcription",
       "source_heading": "## Module 121 — Formal JSON analog-tensor circuit transcription",
-      "start_line": 6568,
+      "start_line": 6562,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1240,7 +1239,7 @@
       "number": 122,
       "title": "Expanded analog–qutrit netlist and exact branch audit",
       "source_heading": "## Module 122 — Expanded analog–qutrit netlist and exact branch audit",
-      "start_line": 6640,
+      "start_line": 6634,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1250,7 +1249,7 @@
       "number": 123,
       "title": "Ordered Q₄ correction and the generative H36/Q144 constraint lattice",
       "source_heading": "## Module 123 — Ordered Q₄ correction and the generative H36/Q144 constraint lattice",
-      "start_line": 6752,
+      "start_line": 6746,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1260,7 +1259,7 @@
       "number": 124,
       "title": "Generator/expanded conjugate tensor, exact Lo Shu factorization, and branch-corrected terminal audit",
       "source_heading": "## Module 124 — Generator/expanded conjugate tensor, exact Lo Shu factorization, and branch-corrected terminal audit",
-      "start_line": 6957,
+      "start_line": 6951,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1270,7 +1269,7 @@
       "number": 125,
       "title": "The 144-cell 12→9→8 residue register and its twelve-tone `u⁷²` phase bundle",
       "source_heading": "## Module 125 — The 144-cell 12→9→8 residue register and its twelve-tone `u⁷²` phase bundle",
-      "start_line": 7177,
+      "start_line": 7170,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1280,7 +1279,7 @@
       "number": 126,
       "title": "Prime/Fibonacci/Lo Shu factorization of the 55-fiber quotient and additive reconstruction",
       "source_heading": "## Module 126 — Prime/Fibonacci/Lo Shu factorization of the 55-fiber quotient and additive reconstruction",
-      "start_line": 7350,
+      "start_line": 7343,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1290,7 +1289,7 @@
       "number": 127,
       "title": "Exact `72⁷²/5184` reciprocal-radical return and negative-one gate closure",
       "source_heading": "## Module 127 — Exact `72⁷²/5184` reciprocal-radical return and negative-one gate closure",
-      "start_line": 7521,
+      "start_line": 7514,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1300,7 +1299,7 @@
       "number": 128,
       "title": "Ordered complex vector transfer, dual cubic gates, and normalization-claim boundaries",
       "source_heading": "## Module 128 — Ordered complex vector transfer, dual cubic gates, and normalization-claim boundaries",
-      "start_line": 7669,
+      "start_line": 7662,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1310,7 +1309,7 @@
       "number": 129,
       "title": "Native HNAN reinterpretation of Module 128 gate states",
       "source_heading": "## Module 129 — Native HNAN reinterpretation of Module 128 gate states",
-      "start_line": 7823,
+      "start_line": 7816,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1320,7 +1319,7 @@
       "number": 130,
       "title": "Total native constraint-enforcement tensor for the ordered complex VectorTimes carrier",
       "source_heading": "## Module 130 — Total native constraint-enforcement tensor for the ordered complex VectorTimes carrier",
-      "start_line": 7917,
+      "start_line": 7910,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1330,7 +1329,7 @@
       "number": 131,
       "title": "Nested `A,B,P` self-solve closure with typed HNAN zero and `TRUE_CLOSED`",
       "source_heading": "## Module 131 — Nested `A,B,P` self-solve closure with typed HNAN zero and `TRUE_CLOSED`",
-      "start_line": 8146,
+      "start_line": 8138,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1340,7 +1339,7 @@
       "number": 132,
       "title": "Global two-step constant/HNAN self-solving closure of the complete module system",
       "source_heading": "## Module 132 — Global two-step constant/HNAN self-solving closure of the complete module system",
-      "start_line": 8311,
+      "start_line": 8303,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1350,7 +1349,7 @@
       "number": 133,
       "title": "Generate-once vector storage and per-cell qudit closure through `∆`",
       "source_heading": "## Module 133 — Generate-once vector storage and per-cell qudit closure through `∆`",
-      "start_line": 8451,
+      "start_line": 8443,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1360,7 +1359,7 @@
       "number": 134,
       "title": "Ordered-ratio residue closure and the unconstrained-`c²` scaling manifold",
       "source_heading": "## Module 134 — Ordered-ratio residue closure and the unconstrained-`c²` scaling manifold",
-      "start_line": 8578,
+      "start_line": 8570,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1370,7 +1369,7 @@
       "number": 135,
       "title": "Formal two-step closure theorem and executed finite verification",
       "source_heading": "## Module 135 — Formal two-step closure theorem and executed finite verification",
-      "start_line": 8706,
+      "start_line": 8698,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1380,7 +1379,7 @@
       "number": 136,
       "title": "Ordered mixed-arity phase-gate collapse and reciprocal return",
       "source_heading": "## Module 136 — Ordered mixed-arity phase-gate collapse and reciprocal return",
-      "start_line": 8789,
+      "start_line": 8781,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1390,7 +1389,7 @@
       "number": 137,
       "title": "Third-pass lifted graphics proof and return-path preservation",
       "source_heading": "## Module 137 — Third-pass lifted graphics proof and return-path preservation",
-      "start_line": 8891,
+      "start_line": 8883,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1400,7 +1399,27 @@
       "number": 138,
       "title": "Genesis differential bitmap, mod-1 torus gauge, and lifted return theorem",
       "source_heading": "## Module 138 — Genesis differential bitmap, mod-1 torus gauge, and lifted return theorem",
-      "start_line": 8986,
+      "start_line": 8978,
+      "provenance": "UPLOADED_SOURCE",
+      "proof_admitted": false,
+      "canonical_runtime_admitted": false
+    },
+    {
+      "id": "HHC-M139",
+      "number": 139,
+      "title": "High-Order Qudit Ingress and the 72-Shell Cross-Synchronization Gate",
+      "source_heading": "## Module 139 — High-Order Qudit Ingress and the 72-Shell Cross-Synchronization Gate",
+      "start_line": 9101,
+      "provenance": "UPLOADED_SOURCE",
+      "proof_admitted": false,
+      "canonical_runtime_admitted": false
+    },
+    {
+      "id": "HHC-M140",
+      "number": 140,
+      "title": "The Asymmetric Boundary Rotor and Null-Horizon Quarantining of Non-Closure",
+      "source_heading": "## Module 140 — The Asymmetric Boundary Rotor and Null-Horizon Quarantining of Non-Closure",
+      "start_line": 9170,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1410,7 +1429,7 @@
       "number": 141,
       "title": "Triadic broadcast characteristic gate and Cayley–Hamilton closure audit",
       "source_heading": "## Module 141 — Triadic broadcast characteristic gate and Cayley–Hamilton closure audit",
-      "start_line": 9110,
+      "start_line": 9241,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1420,7 +1439,7 @@
       "number": 142,
       "title": "MERS narrative prediction and policy-protection agent",
       "source_heading": "## Module 142 — MERS narrative prediction and policy-protection agent",
-      "start_line": 9212,
+      "start_line": 9343,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1430,7 +1449,7 @@
       "number": 143,
       "title": "Palindromic reciprocal float quantization and Genesis epsilon correction",
       "source_heading": "## Module 143 — Palindromic reciprocal float quantization and Genesis epsilon correction",
-      "start_line": 9292,
+      "start_line": 9423,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1440,7 +1459,7 @@
       "number": 144,
       "title": "Number-theoretic and computational anatomy of the palindromic epsilon tensor",
       "source_heading": "## Module 144 — Number-theoretic and computational anatomy of the palindromic epsilon tensor",
-      "start_line": 9384,
+      "start_line": 9515,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1450,7 +1469,7 @@
       "number": 145,
       "title": "Unified all-cell matrix and its mirror/reciprocal symmetry operators",
       "source_heading": "## Module 145 — Unified all-cell matrix and its mirror/reciprocal symmetry operators",
-      "start_line": 9501,
+      "start_line": 9632,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1460,7 +1479,7 @@
       "number": 146,
       "title": "Million-neighbor carrier, quarter-turn reciprocal lattice, and residual chart",
       "source_heading": "## Module 146 — Million-neighbor carrier, quarter-turn reciprocal lattice, and residual chart",
-      "start_line": 9591,
+      "start_line": 9722,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1470,7 +1489,7 @@
       "number": 147,
       "title": "Adjacency-defect unity and exact dyadic topological fold",
       "source_heading": "## Module 147 — Adjacency-defect unity and exact dyadic topological fold",
-      "start_line": 9716,
+      "start_line": 9847,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1480,7 +1499,7 @@
       "number": 148,
       "title": "VM81 fold-consensus fault boundary: detection, containment, and correction",
       "source_heading": "## Module 148 — VM81 fold-consensus fault boundary: detection, containment, and correction",
-      "start_line": 9805,
+      "start_line": 9936,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1490,7 +1509,7 @@
       "number": 149,
       "title": "Pass 212 Reed–Solomon recovery lift beyond local fold containment",
       "source_heading": "## Module 149 — Pass 212 Reed–Solomon recovery lift beyond local fold containment",
-      "start_line": 9869,
+      "start_line": 9999,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1500,7 +1519,7 @@
       "number": 150,
       "title": "Fixed-point optimization of the orthogonal-timeline particle simulation",
       "source_heading": "## Module 150 — Fixed-point optimization of the orthogonal-timeline particle simulation",
-      "start_line": 9938,
+      "start_line": 10068,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1510,7 +1529,7 @@
       "number": 151,
       "title": "Exact residual audit of the 15750 reciprocal tensor chain",
       "source_heading": "## Module 151 — Exact residual audit of the 15750 reciprocal tensor chain",
-      "start_line": 10003,
+      "start_line": 10133,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1520,7 +1539,7 @@
       "number": 152,
       "title": "Authoritative carrier correction to Module 151",
       "source_heading": "## Module 152 — Authoritative carrier correction to Module 151",
-      "start_line": 10056,
+      "start_line": 10186,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1530,7 +1549,7 @@
       "number": 153,
       "title": "Self-solving fixed-point execution of the corrected tensor chain",
       "source_heading": "## Module 153 — Self-solving fixed-point execution of the corrected tensor chain",
-      "start_line": 10099,
+      "start_line": 10229,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1540,7 +1559,7 @@
       "number": 154,
       "title": "Native self-solving correction: total HNAN0 routing instead of scalar contradiction",
       "source_heading": "## Module 154 — Native self-solving correction: total HNAN0 routing instead of scalar contradiction",
-      "start_line": 10121,
+      "start_line": 10251,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1550,7 +1569,7 @@
       "number": 155,
       "title": "Exact numerator/denominator identity inside the matrix cells",
       "source_heading": "## Module 155 — Exact numerator/denominator identity inside the matrix cells",
-      "start_line": 10158,
+      "start_line": 10288,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1560,7 +1579,7 @@
       "number": 156,
       "title": "Power-of-two carrier family and branch-local cell closure",
       "source_heading": "## Module 156 — Power-of-two carrier family and branch-local cell closure",
-      "start_line": 10203,
+      "start_line": 10333,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1570,7 +1589,7 @@
       "number": 157,
       "title": "Harmonic dyadic fractal scaling of the unit delta",
       "source_heading": "## Module 157 — Harmonic dyadic fractal scaling of the unit delta",
-      "start_line": 10247,
+      "start_line": 10377,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1580,7 +1599,7 @@
       "number": 158,
       "title": "Shared-gauge `3×3` silver-unit phase tensor and exact spectral boundary",
       "source_heading": "## Module 158 — Shared-gauge `3×3` silver-unit phase tensor and exact spectral boundary",
-      "start_line": 10327,
+      "start_line": 10457,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1590,7 +1609,7 @@
       "number": 159,
       "title": "Ordered Lo Shu/product closure and discriminant correction",
       "source_heading": "## Module 159 — Ordered Lo Shu/product closure and discriminant correction",
-      "start_line": 10391,
+      "start_line": 10521,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1600,7 +1619,7 @@
       "number": 160,
       "title": "Number-theoretic metadata of the closed output register",
       "source_heading": "## Module 160 — Number-theoretic metadata of the closed output register",
-      "start_line": 10449,
+      "start_line": 10579,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1610,7 +1629,7 @@
       "number": 161,
       "title": "Invariant Lo Shu readout, recursive 72-phase expansion, and directional authority",
       "source_heading": "## Module 161 — Invariant Lo Shu readout, recursive 72-phase expansion, and directional authority",
-      "start_line": 10525,
+      "start_line": 10655,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1620,7 +1639,7 @@
       "number": 162,
       "title": "Supplied Wolfram 12/12 address-geometry receipt and PR authority boundary",
       "source_heading": "## Module 162 — Supplied Wolfram 12/12 address-geometry receipt and PR authority boundary",
-      "start_line": 10600,
+      "start_line": 10730,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1630,7 +1649,7 @@
       "number": 163,
       "title": "Grover search on the admitted `u⁷²` HNAN phase manifold",
       "source_heading": "## Module 163 — Grover search on the admitted `u⁷²` HNAN phase manifold",
-      "start_line": 10643,
+      "start_line": 10773,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1640,7 +1659,7 @@
       "number": 164,
       "title": "Grover reflection-image audit and exact 72-level two-dimensional lift",
       "source_heading": "## Module 164 — Grover reflection-image audit and exact 72-level two-dimensional lift",
-      "start_line": 10692,
+      "start_line": 10822,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1650,7 +1669,7 @@
       "number": 165,
       "title": "Plastic-to-golden dimensional fold and the `n⁴=1` unit gate",
       "source_heading": "## Module 165 — Plastic-to-golden dimensional fold and the `n⁴=1` unit gate",
-      "start_line": 10749,
+      "start_line": 10879,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1660,7 +1679,7 @@
       "number": 166,
       "title": "Exact repeated-root manifold and semisimple phase-space pinch",
       "source_heading": "## Module 166 — Exact repeated-root manifold and semisimple phase-space pinch",
-      "start_line": 10787,
+      "start_line": 10917,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1670,7 +1689,7 @@
       "number": 167,
       "title": "Generative quadratic recurrence, rank-one projector, and typed branch equivalence",
       "source_heading": "## Module 167 — Generative quadratic recurrence, rank-one projector, and typed branch equivalence",
-      "start_line": 10830,
+      "start_line": 10960,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1680,7 +1699,7 @@
       "number": 168,
       "title": "Exact algebraic two-reflection Grover rotation and deterministic iteration admission",
       "source_heading": "## Module 168 — Exact algebraic two-reflection Grover rotation and deterministic iteration admission",
-      "start_line": 10897,
+      "start_line": 11026,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1690,7 +1709,7 @@
       "number": 169,
       "title": "Coupled semisimple-plane/Grover rotation with exact authority boundaries",
       "source_heading": "## Module 169 — Coupled semisimple-plane/Grover rotation with exact authority boundaries",
-      "start_line": 10945,
+      "start_line": 11074,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1700,7 +1719,7 @@
       "number": 170,
       "title": "Polynomial unit-delta reduction and scoped stability closure",
       "source_heading": "## Module 170 — Polynomial unit-delta reduction and scoped stability closure",
-      "start_line": 11110,
+      "start_line": 11239,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1710,7 +1729,7 @@
       "number": 171,
       "title": "Parameter-first polynomial ingress and meaningful output without scalar equality",
       "source_heading": "## Module 171 — Parameter-first polynomial ingress and meaningful output without scalar equality",
-      "start_line": 11208,
+      "start_line": 11337,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1720,7 +1739,7 @@
       "number": 172,
       "title": "Asymmetric polynomial ingress, constrained folding, and canonical-output boundary",
       "source_heading": "## Module 172 — Asymmetric polynomial ingress, constrained folding, and canonical-output boundary",
-      "start_line": 11329,
+      "start_line": 11458,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1730,7 +1749,7 @@
       "number": 173,
       "title": "Scalar execution dual-branch reduction and exact matrix-free return",
       "source_heading": "## Module 173 — Scalar execution dual-branch reduction and exact matrix-free return",
-      "start_line": 11454,
+      "start_line": 11583,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1740,7 +1759,7 @@
       "number": 174,
       "title": "Constructor-relative extraction of `α,β,v` and ordered-tree return contract",
       "source_heading": "## Module 174 — Constructor-relative extraction of `α,β,v` and ordered-tree return contract",
-      "start_line": 11609,
+      "start_line": 11738,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1750,7 +1769,7 @@
       "number": 175,
       "title": "Native generator bridge, common quadratic family, and direct-affine exclusion",
       "source_heading": "## Module 175 — Native generator bridge, common quadratic family, and direct-affine exclusion",
-      "start_line": 11731,
+      "start_line": 11860,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1760,7 +1779,7 @@
       "number": 176,
       "title": "Rank-three structural tensor, split null carrier, and spectral/constructor audit",
       "source_heading": "## Module 176 — Rank-three structural tensor, split null carrier, and spectral/constructor audit",
-      "start_line": 11860,
+      "start_line": 11989,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1770,7 +1789,7 @@
       "number": 177,
       "title": "Exact Lo Shu projector bridge and complement-preserving rational extension",
       "source_heading": "## Module 177 — Exact Lo Shu projector bridge and complement-preserving rational extension",
-      "start_line": 12000,
+      "start_line": 12128,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1780,7 +1799,7 @@
       "number": 178,
       "title": "Harmonic cubic tensor, modular Lo Shu branches, and bilateral scalar return",
       "source_heading": "## Module 178 — Harmonic cubic tensor, modular Lo Shu branches, and bilateral scalar return",
-      "start_line": 12145,
+      "start_line": 12273,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1790,7 +1809,7 @@
       "number": 179,
       "title": "Generative-proof scope release with non-suspendable native guards",
       "source_heading": "## Module 179 — Generative-proof scope release with non-suspendable native guards",
-      "start_line": 12272,
+      "start_line": 12400,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1800,7 +1819,7 @@
       "number": 180,
       "title": "Local matrix-generator bypass and scalarized tensor return",
       "source_heading": "## Module 180 — Local matrix-generator bypass and scalarized tensor return",
-      "start_line": 12324,
+      "start_line": 12452,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1810,7 +1829,7 @@
       "number": 181,
       "title": "Epsilon nucleus self-enforcement and nine-cell structural-zero anchor",
       "source_heading": "## Module 181 — Epsilon nucleus self-enforcement and nine-cell structural-zero anchor",
-      "start_line": 12414,
+      "start_line": 12542,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1820,7 +1839,7 @@
       "number": 182,
       "title": "Topological guard singularity with intact polynomial tensor",
       "source_heading": "## Module 182 — Topological guard singularity with intact polynomial tensor",
-      "start_line": 12487,
+      "start_line": 12615,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1830,7 +1849,7 @@
       "number": 183,
       "title": "Carrier-normalized Collatz manifold and `P=2` loop witness",
       "source_heading": "## Module 183 — Carrier-normalized Collatz manifold and `P=2` loop witness",
-      "start_line": 12569,
+      "start_line": 12697,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1840,7 +1859,7 @@
       "number": 184,
       "title": "Unit/reciprocal involution and guarded gate-scalar expression",
       "source_heading": "## Module 184 — Unit/reciprocal involution and guarded gate-scalar expression",
-      "start_line": 12618,
+      "start_line": 12746,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1850,7 +1869,7 @@
       "number": 185,
       "title": "Dyadic lattice attractor and nonattained zero limit",
       "source_heading": "## Module 185 — Dyadic lattice attractor and nonattained zero limit",
-      "start_line": 12687,
+      "start_line": 12815,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1860,7 +1879,7 @@
       "number": 186,
       "title": "Binary quartic axis and signed scale-ratio unity branches",
       "source_heading": "## Module 186 — Binary quartic axis and signed scale-ratio unity branches",
-      "start_line": 12716,
+      "start_line": 12844,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1870,7 +1889,7 @@
       "number": 187,
       "title": "Reciprocal-agreement cubic projection and exact algebraic quartic roots",
       "source_heading": "## Module 187 — Reciprocal-agreement cubic projection and exact algebraic quartic roots",
-      "start_line": 12746,
+      "start_line": 12874,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1880,7 +1899,7 @@
       "number": 188,
       "title": "Constraint-tripwire contradiction pruning with preserved branch lineage",
       "source_heading": "## Module 188 — Constraint-tripwire contradiction pruning with preserved branch lineage",
-      "start_line": 12846,
+      "start_line": 12974,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
@@ -1890,7 +1909,17 @@
       "number": 189,
       "title": "Meaningful computation through certified contradiction cancellation",
       "source_heading": "## Module 189 — Meaningful computation through certified contradiction cancellation",
-      "start_line": 12925,
+      "start_line": 13052,
+      "provenance": "UPLOADED_SOURCE",
+      "proof_admitted": false,
+      "canonical_runtime_admitted": false
+    },
+    {
+      "id": "HHC-M190",
+      "number": 190,
+      "title": "Cross-branch polynomial consensus and exact common-root certificate",
+      "source_heading": "## Module 190 — Cross-branch polynomial consensus and exact common-root certificate",
+      "start_line": 13121,
       "provenance": "UPLOADED_SOURCE",
       "proof_admitted": false,
       "canonical_runtime_admitted": false
