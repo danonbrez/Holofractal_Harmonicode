@@ -21,6 +21,9 @@ KNOWLEDGE = ROOT / "artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE
 RECEIPT = ROOT / "artifacts/repository_index/LANE5_HASH216_HYDRATION_DATABASE_RECEIPT.json"
 SOURCES = (
     "docs/course/HARMONICODE_Algebra_Course.md",
+    "docs/course/HARMONICODE_Algebra_Course_Expanded_0_190.md",
+    "contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json",
+    "tests/pass220/test_harmonicode_course_expansion_index_v1.py",
     "contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json",
     "contracts/pass220/HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1.json",
     "hhs_runtime/hhs_pass220_course_i081_exact_dependency_projection_v1.py",
@@ -65,6 +68,15 @@ def verify_exact_source_graph() -> dict:
         "canonical_persistence_authority")):
         raise ValueError("LANE5_CANONICAL_AUTHORITY_BYPASS")
 
+    # Bind the complete additive course to the regenerated Hash216 file graph.
+    # The historical I081 124-module projection remains immutable and separate.
+    from tests.pass220.test_harmonicode_course_expansion_index_v1 import validate as validate_expansion
+    expansion = validate_expansion()
+    if expansion["present_modules"] != 191 or expansion["missing_modules"]:
+        raise ValueError("LANE5_COURSE_EXPANSION_CENSUS_DRIFT")
+    expanded_source = "docs/course/HARMONICODE_Algebra_Course_Expanded_0_190.md"
+    if source_files[expanded_source]["git_blob"] != expansion["source_blob"]:
+        raise ValueError("LANE5_EXPANDED_SOURCE_REGISTRY_BLOB_MISMATCH")
     proof = build_dependency_projection()
     validate_projection(proof)
     # Existing snapshot binding must remain historical until this exact
@@ -76,6 +88,10 @@ def verify_exact_source_graph() -> dict:
         "status": "PASS",
         "exact_source_commit": commit,
         "source_paths_verified": len(SOURCES),
+        "expanded_course_module_count": expansion["present_modules"],
+        "expanded_course_source_git_blob": expansion["source_blob"],
+        "expanded_course_hash216": source_files[expanded_source]["hash216"],
+        "historical_i081_module_count": proof["course_module_count"],
         "repository_graph_root_hash216": graph["roots"]["graph_root_hash216"],
         "knowledge_projection_root_hash216": knowledge["roots"]["projection_root_hash216"],
         "course_i081_projection_sha256": proof["projection_sha256"],
