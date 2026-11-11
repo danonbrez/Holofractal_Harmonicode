@@ -70,8 +70,9 @@ def verify_exact_source_graph() -> dict:
 
     # Bind the complete additive course to the regenerated Hash216 file graph.
     # The historical I081 124-module projection remains immutable and separate.
-    from tests.pass220.test_harmonicode_course_expansion_index_v1 import validate as validate_expansion
-    expansion = validate_expansion()
+    import runpy
+    expansion_checker = runpy.run_path(str(ROOT / "tests/pass220/test_harmonicode_course_expansion_index_v1.py"))
+    expansion = expansion_checker["validate"]()
     if expansion["present_modules"] != 191 or expansion["missing_modules"]:
         raise ValueError("LANE5_COURSE_EXPANSION_CENSUS_DRIFT")
     expanded_source = "docs/course/HARMONICODE_Algebra_Course_Expanded_0_190.md"
