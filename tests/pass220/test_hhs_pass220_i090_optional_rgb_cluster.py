@@ -8,14 +8,15 @@ def test_rgb_cluster_opt_in_and_original_path():
     s=SRC.read_text()
     for x in (
         'rgbClusterOn: false', 'rgbClusterStrength: 0.05',
-        'rgbClusterColors: true', 'id="rgbClusterEnable"',
+        'rgbClusterColors: false', 'id="rgbClusterEnable"',
         'id="rgbClusterStrength"', 'id="rgbClusterColors"',
         'rgbActive=simParams.rgbClusterOn && simParams.rgbClusterStrength>0',
         'if(rgbActive){', 'if(renderGate){',
         'updateSwarmCoupling();', 'const shrD=1+shared;',
         'const gD=hnanGate(1,shrD);',
         'MODULES["RGBParticlePartitionTest"]',
-        'hash72_append_performed:false','canonical_mutation_authority:false'
+        'hash72_append_performed:false','canonical_mutation_authority:false',
+        '"#ifdef USE_INSTANCING_COLOR",', '"vTint=vec3(1.0);",'
     ):
         assert x in s, x
 
