@@ -1167,7 +1167,7 @@
       <label><input type="checkbox" id="rgbClusterEnable"> Matrix force</label>
       <div><label>Strength <output id="rgbClusterAmount">0.050</output></label></div>
       <input type="range" id="rgbClusterStrength" min="0" max="0.25" step="0.005" value="0.05" style="width:150px">
-      <label><input type="checkbox" id="rgbClusterColors" checked> RGB signatures</label>
+      <label><input type="checkbox" id="rgbClusterColors"> RGB signatures</label>
       <small id="rgbClusterStatus" style="display:block;">OFF — original physics</small>
     </fieldset>
     <div>recip topo <b><span id="topoVal">off</span></b></div>
@@ -1194,7 +1194,7 @@
       recipTopo: 0,                // RECIPROCAL TOPOLOGY INVERSION: antipodal phase groups (Δ≡4 mod 8) feel CONVEX geometry where the lattice is concave; 0 = frozen seed exactly
       rgbClusterOn: false,
       rgbClusterStrength: 0.05,
-      rgbClusterColors: true,
+      rgbClusterColors: false,
       bondBoost: 1                 // FORMATION CHANNEL: bond capture window + capture speed scale (1–2.5), control only; 1 = frozen seed exactly
     };
     const DEBUG_MODE = true;
@@ -5704,7 +5704,11 @@ function material(){
       "varying vec4 vPartner;",
       "varying vec3 vPartnerTint;",
       "void main(){",
+      "#ifdef USE_INSTANCING_COLOR",
       "vTint=instanceColor;",
+      "#else",
+      "vTint=vec3(1.0);",
+      "#endif",
       "vPartner=partnerSphere;",
       "vPartnerTint=partnerTint;",
       "vWorldPoint=(modelMatrix*instanceMatrix*vec4(position,1.0)).xyz;",
