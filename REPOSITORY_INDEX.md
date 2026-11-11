@@ -203,3 +203,12 @@ find docs -maxdepth 1 -type d -name 'pass*' | sort
 ```
 
 For current system state and startup instructions, return to [`README.md`](README.md).
+
+## Expanded HARMONICODE course and mathematical-corpus source
+
+- [Uploaded expanded course, Modules 0–189 with absent M139/M140](docs/course/HARMONICODE_Algebra_Course_Expanded_0_189.md) — additive user-supplied mathematical text, retaining original ordered equations and module-specific proof-status boundaries.
+- [Expanded module/provenance index](contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json) — 188 indexed module headings, source blob, reconstructed M15–M26, missing M139/M140.
+- [Expansion fail-closed validator](tests/pass220/test_harmonicode_course_expansion_index_v1.py) — source and numbering integrity without VM81/Hash72/Hash216 mutation.
+- [Course/proof-corpus crosswalk](docs/course/PROOF_CORPUS_OPENAI_CROSSWALK.md) — inherited 0–123 registry and additive new-source boundary.
+
+The older 0–123 course file and existing crosswalk remain preserved as a previously pinned source. New content does not constitute an automatic proof promotion or native runtime receipt.
