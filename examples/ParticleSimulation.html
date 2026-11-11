@@ -5593,6 +5593,9 @@ function material(){
   return new THREE.ShaderMaterial({
     transparent:true,depthWrite:false,depthTest:true,side:THREE.FrontSide,
     blending:THREE.NormalBlending,
+    // InstancedMesh.setColorAt supplies the color buffer; explicit define
+    // exposes Three r128 instanceColor attribute in this custom ShaderMaterial.
+    defines:{USE_INSTANCING_COLOR:1},
     uniforms:{uIntensity:{value:SETTINGS.intensity},
       uFalloff:{value:SETTINGS.falloff},uOpacity:{value:SETTINGS.opacity},
       uBlend:{value:SETTINGS.mix},uOverlap:{value:1}},
