@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 INDEX = ROOT / "contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json"
-PATTERN = re.compile(r"^#{1,4}\\s+(?:Module|MODULE)\\s+(\\d+)\\s*[—–-]\\s*(.*)$", re.MULTILINE)
+PATTERN = re.compile(r"^#{1,4}\s+(?:Module|MODULE)\s+(\d+)\s*[—–-]\s*(.*)$", re.MULTILINE)
 
 def validate() -> dict:
     packet = json.loads(INDEX.read_text(encoding="utf-8"))
@@ -28,7 +28,7 @@ def validate() -> dict:
         assert record["number"] == number
         assert record["id"] == f"HHC-M{number:03d}"
         assert record["source_heading"] == heading
-        assert record["start_line"] == body.count("\\n", 0, offset) + 1
+        assert record["start_line"] == body.count("\n", 0, offset) + 1
         assert record["provenance"] == ("RECONSTRUCTED_NOT_VERBATIM" if 15 <= number <= 26 else "UPLOADED_SOURCE")
         assert record["proof_admitted"] is False
         assert record["canonical_runtime_admitted"] is False
