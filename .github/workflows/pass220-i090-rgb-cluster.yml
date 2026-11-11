@@ -4,6 +4,7 @@ on:
     paths:
       - 'examples/ParticleSimulation.html'
       - 'tests/pass220/test_hhs_pass220_i090_optional_rgb_cluster.py'
+      - 'tests/pass220/i090_rgb_cluster_kernel_witness.cjs'
       - '.github/workflows/pass220-i090-rgb-cluster.yml'
   workflow_dispatch:
 permissions:
@@ -22,6 +23,8 @@ jobs:
           python -m pip install --disable-pip-version-check pytest
           python -m pytest -q tests/pass220/test_hhs_pass220_i090_optional_rgb_cluster.py
           python -m pytest -q tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+      - name: Execute the actual embedded RGB clustering kernel
+        run: node tests/pass220/i090_rgb_cluster_kernel_witness.cjs
       - name: Check standalone inline JavaScript syntax without rewriting source
         run: |
           python - <<'PY'
