@@ -38,6 +38,6 @@ assert.ok(Object.isFrozen(first));
 assert.ok(Object.isFrozen(first.recentRespawns));
 assert.ok(Object.isFrozen(first.fractalSeeds));
 assert.ok(Object.isFrozen(first.fractalSeeds[0]));
-assert.throws(()=>first.recentRespawns.push(8),TypeError);
+assert.throws(()=>first.recentRespawns.push(8),/extensible|read only|Cannot add property/i);
 assert.equal(api.read().respawnTotal,6);
 console.log("PASS: V150 existing decay ring read-only provenance and chronological ordering");
