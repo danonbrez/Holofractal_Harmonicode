@@ -71,5 +71,16 @@ Validation classification: committed files and isolated JavaScript cache/binding
 
 **Next implementation requirement:** Trace and expose the existing physical decay-pool producer as a typed native ordered-matrix observation, distinct from the VMRC snapshot; bind actual scene geometry/resource packets to the native WebGL projection path. Do not re-label raw VMRC snapshots as the physical decay-pool matrix or claim that a packet containing only BEGIN_FRAME/END_FRAME displays native geometry. Preserve all V147 visual/physics features until actual native equivalence, on-device profiling, and full production validation are demonstrated.
 
+## V150 cumulative physical decay-pool observation interface
+
+- Committed successor: `applications/runtime_os/HHS_Alpha_V150_Decay_Pool_Observation.html`. The original V147 source is unchanged except for one additive observation accessor within the existing decay-pool closure; original simulation equations, `virtualDecay()`, `updateSpiralParticles()`, control wiring, and graphical layers remain unchanged. Six portable bridge modules are embedded, preserving the V149 `captureNativeSnapshot()` functionality.
+- The actual V147 local producer is `virtualDecay()` coupled to the 72-entry `respawnRing`, `respawnRingIdx`, `respawnTotal`, `decayCount`, `couplingCount`, `fractalSeeds`, `activeCohort`, and `cohortCount`. `window.HHSV150DecayPoolObservation.read()` snapshots those variables without advancing physics or altering storage. The 72-ring is copied in chronological order and frozen along with the returned event metadata.
+- `window.HHSRuntimeOSNativeObservationV1.readLocalDecayPool()` is an additive front-end inspection method, explicitly rejecting a missing or wrongly typed physical producer.
+- The local V147 decay observation is *browser-local physical simulation state*, not a native VMRC snapshot, not a newly invented mathematical decay matrix, and not a signed native admission receipt. Distinguishing those sources is mandatory until the native physics serialization and proof path have been verified.
+- V148/V149 historical embedded modules remain frozen snapshots. Their earlier tests must not require those embedded versions to equal later module revisions; V150's current-source parity test applies only to V150.
+- Regressions cover exact V147 source preservation after subtracting the one additive observation block, 72-ring ordering and read-only outputs, current module embed parity, and cumulative service/transport source boundaries.
+
+**Development continuation:** Define the typed native decay-pool observation ingestor against the existing physics producer/cell-wall authority, prove its ordered serial form and trace lineage, and emit geometry-bearing native C11 draw packets for WebGL rendering. An API packet containing only BEGIN_FRAME/END_FRAME remains an admission/transport exercise, not an executed drawing pipeline. Do not substitute VMRC epoch for native physics tick semantics.
+
 ## Non-claims
 The HTML source, bounded cache, native GFX4 receipt/matrix binding, and their test sources are committed to this development branch. This does **not** claim V147 live renderer wiring, full native Hash216 compression/Lane 5 one-step execution, Fold7 hardware benchmark, production deployment, or completed end-to-end admission.
