@@ -44,6 +44,9 @@ jobs:
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
 
+      - name: Verify linked course module C VM81-to-C++ membrane port selectors
+        run: python tests/pass220/test_pass220_course_module_native_port_v1.py
+
       - name: Validate Lane 5 repository hydration knowledge graph 1.69
         run: |
           PYTHONPATH=. pytest -q tests/pass219/test_pass219_lane5_repository_hydration_knowledge_graph_1_69.py
