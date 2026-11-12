@@ -99,6 +99,8 @@ def test_guarded_native_export_admits_decayed_observation_and_emits_sealed_c11_p
     assert result["native_receipt_verified"] is True
     assert result["native_decay_binding_verified"] is True
     assert result["packet_identity_verified"] is True
+    assert result["command_manifest_bound_before_vm81_admission"] is True
+    assert len(result["command_manifest_hash216"]) == 216
     packet = base64.b64decode(result["observation"]["packet_base64"], validate=True)
     assert packet[:8] == b"HHS179C1"
     assert packet[296:512].decode("ascii") == result["observation"]["frameHash216"]
@@ -172,5 +174,54 @@ def test_native_snapshot_rejects_untrusted_display_time():
         native_observation_export({
             "source_mode": "VMRC_RAW5184_SNAPSHOT",
             "frame_index": 999,
+        })
+    assert VMRC.epoch == before
+
+
+def test_native_render_command_order_changes_admitted_gfx4_frame_identity():
+    from hhs_runtime.hhs_pass220_native_observation_export_v1 import native_observation_export
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    args = dict(
+        source_mode="CLIENT_MATRIX_DIAGNOSTIC",
+        matrix_hex="01020304",
+        matrix_byte_length=4,
+        scene_snapshot={"scene": "native-ordered-command-proof"},
+        frame_state={"tick": 3},
+        resource_manifest={"type": "points"},
+        camera_state={"kind": "perspective"},
+        exact_time_den=120,
+        target_width=64,
+        target_height=64,
+    )
+    before = VMRC.epoch
+    one = native_observation_export({
+        **args, "matrix_version":before+1, "frame_index":1,
+        "exact_time_num":1,
+        "commands":[{"opcode":1}, {"opcode":2,"arg0":32,"arg1":64},{"opcode":24}],
+    })
+    two = native_observation_export({
+        **args, "matrix_version":before+2, "frame_index":2,
+        "exact_time_num":2,
+        "commands":[{"opcode":1}, {"opcode":2,"arg0":64,"arg1":32},{"opcode":24}],
+    })
+    assert one["command_manifest_hash216"] != two["command_manifest_hash216"]
+    assert one["observation"]["frameHash216"] != two["observation"]["frameHash216"]
+    assert one["command_manifest_bound_before_vm81_admission"] is True
+
+
+def test_reserved_frame_command_manifest_cannot_be_overridden_before_mutation():
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    before = VMRC.epoch
+    with pytest.raises(NativeObservationExportError, match="FRAME_STATE_MANIFEST_COLLISION"):
+        native_observation_export({
+            "source_mode":"CLIENT_MATRIX_DIAGNOSTIC",
+            "matrix_hex":"01020304", "matrix_byte_length":4,
+            "matrix_version":before + 1,
+            "scene_snapshot":{},
+            "frame_state":{"native_render_commands":{"forged":True}},
+            "resource_manifest":{}, "camera_state":{},
+            "frame_index":1, "exact_time_num":1, "exact_time_den":120,
+            "target_width":64, "target_height":64,
+            "commands":[{"opcode":1},{"opcode":24}],
         })
     assert VMRC.epoch == before
