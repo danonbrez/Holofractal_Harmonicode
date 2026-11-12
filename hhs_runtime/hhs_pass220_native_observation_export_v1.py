@@ -199,13 +199,20 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
             raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_SIZE_MISMATCH")
         version = _exact_int(payload.get("matrix_version"), "VERSION")
         native_source_hash72 = None
-    index = _exact_int(payload.get("frame_index"), "FRAME_INDEX")
-    num = payload.get("exact_time_num")
-    if type(num) is not int or num < -(1 << 63) or num > (1 << 63) - 1:
-        raise NativeObservationExportError("P220_NATIVE_EGRESS_TIME_NUM")
-    den = _exact_int(payload.get("exact_time_den"), "TIME_DEN")
-    if den == 0:
-        raise NativeObservationExportError("P220_NATIVE_EGRESS_ZERO_DEN")
+    if source_mode == "VMRC_RAW5184_SNAPSHOT":
+        if any(k in payload for k in ("frame_index", "exact_time_num", "exact_time_den")):
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_CLIENT_TIMESTAMP_OVERRIDE")
+        # VMRC epoch is an exact ordered state index, not display wall time or
+        # a claim that the physical decay pool completed at 120 Hz.
+        index, num, den = version, version, 1
+    else:
+        index = _exact_int(payload.get("frame_index"), "FRAME_INDEX")
+        num = payload.get("exact_time_num")
+        if type(num) is not int or num < -(1 << 63) or num > (1 << 63) - 1:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_TIME_NUM")
+        den = _exact_int(payload.get("exact_time_den"), "TIME_DEN")
+        if den == 0:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_ZERO_DEN")
     width = _exact_int(payload.get("target_width"), "WIDTH", upper=16384)
     height = _exact_int(payload.get("target_height"), "HEIGHT", upper=16384)
     if width == 0 or height == 0:
@@ -257,6 +264,10 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
         "packet_identity_verified": True,
         "native_source_verified": source_mode == "VMRC_RAW5184_SNAPSHOT",
         "observation_source": source_mode,
+        "observation_time_domain": (
+            "VMRC_EPOCH" if source_mode == "VMRC_RAW5184_SNAPSHOT"
+            else "CLIENT_DIAGNOSTIC_RATIONAL"
+        ),
         "physical_decay_pool_provenance": False,
         "observation": {
             "frameHash216": record["frameHash216"],
