@@ -36,4 +36,4 @@ assert.equal(s.stats().accepted,2);
 assert.equal(s.stats().selected,2);
 assert.equal(s.stats().missed,1);
 assert.equal(s.stats().cache.count,2);
-console.log("PASS: Pass220 WebGL observation sampler - 16 assertions");
+console.log("PASS: Pass220 WebGL observation sampler - 15 assertions");
