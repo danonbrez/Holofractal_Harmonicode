@@ -23,6 +23,8 @@ on:
       - 'hhs_gui/rendering/hhs_native_webgl_frame_presenter_v1.js'
       - 'hhs_gui/rendering/hhs_guarded_observation_transport_v1.js'
       - 'hhs_runtime/hhs_pass220_native_observation_export_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_v152_ordered_geometry_projection_cell_v1.hpp'
+      - 'tests/pass220/test_hhs_v152_ordered_geometry_projection_cell_v1.cpp'
       - 'hhs_gui/rendering/hhs_runtime_os_native_observation_bootstrap_v1.js'
       - 'applications/runtime_os/HHS_Alpha_V148_Native_Observation_Bridge.html'
       - 'applications/runtime_os/HHS_Alpha_V149_Server_Owned_VMRC_Observation.html'
@@ -70,6 +72,14 @@ jobs:
             native_projects/hhs_pass220_gfx1_native_render_commands/src/hhs_pass179_render_command_v1.c \
             -o native_projects/hhs_pass220_gfx1_native_render_commands/build/libhhs_pass179_render_command_v1.so
           make -C native_projects/hhs_pass220_gfx1_native_render_commands test
+      - name: Validate inherited I059 C++ geometry and render cell walls
+        run: |
+          mkdir -p build/pass220-v152
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_v152_ordered_geometry_projection_cell_v1.cpp \
+            -o build/pass220-v152/test_v152_ordered_geometry
+          build/pass220-v152/test_v152_ordered_geometry
       - name: Compile native observation modules
         run: |
           python -m py_compile \
