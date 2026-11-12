@@ -229,8 +229,13 @@ int main(int argc, char **argv) {
             firewall.child_hash216_identity,
             admission.transition.transition_identity216,
             HHS_EXACT_UQCEL_HASH216_STRLEN) == 0;
+    /*
+     * Ownership is an immutable authority declaration, initialized even for
+     * rejected candidates. Actual canonical receipt commitment is reported
+     * by the inherited UQCEL admission witness.
+     */
     canonical_receipt_minted =
-        firewall.canonical_receipt_owned_by_inherited_authority == 1U;
+        admission.composed.uqcel.frame_committed == 1U;
     signature_verified =
         signature.provider_available == 1U &&
         signature.key_derived_from_kernel_root == 1U &&
@@ -267,8 +272,17 @@ int main(int argc, char **argv) {
             return fail("CANONICAL_COMMIT_ASSERTION_FAILED");
     } else {
         if (status == HHS_EXACT_STATUS_OK || !frame_is_zero(&committed) ||
-            canonical_receipt_minted || firewall.decision == HHS_EXACT_PASS219_VM81_PQC_DECISION_COMMITTED)
+            canonical_receipt_minted || firewall.decision == HHS_EXACT_PASS219_VM81_PQC_DECISION_COMMITTED) {
+            fprintf(stderr,
+                "NEGATIVE_CASE_FAIL_CLOSED_DIAGNOSTIC mode=%u status=%u ok=%u committed_zero=%u canonical_receipt_minted=%u firewall_decision=%u committed_decision=%u firewall_halted=%u env_state=%u env_decision=%u env_reason=%u\\n",
+                (unsigned)probe_case, (unsigned)status,
+                (unsigned)HHS_EXACT_STATUS_OK, (unsigned)frame_is_zero(&committed),
+                (unsigned)canonical_receipt_minted, (unsigned)firewall.decision,
+                (unsigned)HHS_EXACT_PASS219_VM81_PQC_DECISION_COMMITTED,
+                (unsigned)firewall.halted, (unsigned)environment.state,
+                (unsigned)environment.decision, (unsigned)environment.reason);
             return fail("NEGATIVE_CASE_FAIL_CLOSED_ASSERTION_FAILED");
+        }
         if (probe_case == HHS_PROBE_CASE_CONSTRAINT &&
             (status != HHS_EXACT_STATUS_CONSTRAINT_REJECTED ||
              firewall.decision != HHS_EXACT_PASS219_VM81_PQC_DECISION_CANONICAL_REJECTED ||
