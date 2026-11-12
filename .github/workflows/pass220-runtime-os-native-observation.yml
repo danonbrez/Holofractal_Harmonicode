@@ -63,7 +63,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install focused test dependency
-        run: python -m pip install --disable-pip-version-check pytest
+        run: python -m pip install --disable-pip-version-check pytest fastapi
       - name: Compile existing Pass 179 C11 packet library (development only)
         run: |
           mkdir -p native_projects/hhs_pass220_gfx1_native_render_commands/build
