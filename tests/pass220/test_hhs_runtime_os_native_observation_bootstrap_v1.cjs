@@ -10,6 +10,7 @@ const sources=[
   "hhs_gui/rendering/hhs_native_observation_binding_v1.js",
   "hhs_gui/rendering/hhs_webgl_observation_sampler_v1.js",
   "hhs_gui/rendering/hhs_guarded_observation_transport_v1.js",
+  "hhs_gui/rendering/hhs_native_webgl_frame_presenter_v1.js",
   "hhs_gui/rendering/hhs_runtime_os_native_observation_bootstrap_v1.js"
 ];
 let called=0;
