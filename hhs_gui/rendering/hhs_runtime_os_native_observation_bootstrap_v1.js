@@ -79,6 +79,18 @@
       return transport.ingestNativeObservation({...graphics,
         source_mode:"VMRC_RAW5184_SNAPSHOT"});
     },
+    readLocalGeometry(){
+      const source=root.HHSV152GeometryObservation;
+      if(!source||typeof source.read!=="function")
+        throw Error("HHS_LOCAL_GEOMETRY_PRODUCER_UNAVAILABLE");
+      const record=source.read();
+      if(record?.schema!=="HHS_V152_LOCAL_GEOMETRY_OBSERVATION_V1"||
+         record.nativeVM81Admission!==false||
+         record.physicsMutationAuthority!==false||
+         typeof record.copyPositionBytes!=="function")
+        throw Error("HHS_LOCAL_GEOMETRY_RECORD_INVALID");
+      return record;
+    },
     readLocalDecayPool(){
       const source=root.HHSV150DecayPoolObservation;
       if(!source||typeof source.read!=="function")
