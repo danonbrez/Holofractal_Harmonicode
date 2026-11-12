@@ -11,10 +11,11 @@
     root.HHSObservationGraphCacheV1,
     root.HHSNativeObservationBindingV1,
     root.HHSWebGLObservationSamplerV1,
-    root.HHSGuardedObservationTransportV1
+    root.HHSGuardedObservationTransportV1,
+    root.HHSNativeWebGLFramePresenterV1
   ];
   if(required.some(x=>!x))throw Error("HHS_NATIVE_OBSERVATION_EMBEDDED_MODULE_MISSING");
-  const [packetAPI,cacheAPI,bindingAPI,samplerAPI,transportAPI]=required;
+  const [packetAPI,cacheAPI,bindingAPI,samplerAPI,transportAPI,presenterAPI]=required;
   let active=null,availability="UNAVAILABLE",reason="";
   function integer(v){
     if(typeof v==="bigint")return v;
@@ -47,6 +48,9 @@
   });
   const sampler=new samplerAPI.WebGLObservationSampler({
     nativeObservationCache:cache,displayHz:120,minLatencyMs:17,maxLatencyMs:250
+  });
+  const presenter=new presenterAPI.NativeWebGLFramePresenter({
+    sampler,packetAPI
   });
   const transport=new transportAPI.GuardedObservationTransport({
     fetchImpl:(...args)=>root.fetch(...args),
@@ -86,10 +90,14 @@
       return sample;
     },
     select(timeNum,timeDen){return sampler.select(timeNum,timeDen);},
+    presentNativeFrame({renderer,scene,camera,resources,timeNum,timeDen}={}){
+      return presenter.present({renderer,scene,camera,resources,timeNum,timeDen});
+    },
     configure(options){return sampler.configure(options);},
     inspect(){return Object.freeze({
       availability,reason,
       transport:transport.stats(),sampler:sampler.stats(),
+      presenter:presenter.stats(),
       nativeAdmissionAuthority:false,physicsSchedulingAuthority:false
     });}
   });
