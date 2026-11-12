@@ -83,6 +83,8 @@
          payload.native_receipt_verified!==true||
          payload.native_decay_binding_verified!==true||
          payload.packet_identity_verified!==true||
+         payload.native_source_verified!==true||
+         payload.observation_source!=="VMRC_RAW5184_SNAPSHOT"||
          !FRAME.test(bundle.frameHash216||"")||!FRAME.test(bundle.decayHash216||"")||
          bundle.identity?.frame_hash216!==bundle.frameHash216||
          bundle.verification?.frame_hash216!==bundle.frameHash216||
