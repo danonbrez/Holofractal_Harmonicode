@@ -15,6 +15,7 @@ on:
       - 'hhs_gui/rendering/hhs_runtime_os_native_observation_bootstrap_v1.js'
       - 'applications/runtime_os/HHS_Alpha_V148_Native_Observation_Bridge.html'
       - 'tests/pass220/test_hhs_v148_embedded_native_observation_v1.py'
+      - 'tests/pass220/test_hhs_runtime_os_native_observation_bootstrap_v1.cjs'
       - 'hhs_runtime/hhs_service_registry_v1.py'
       - 'tests/pass220/test_hhs_guarded_observation_transport_v1.cjs'
       - 'tests/pass220/test_hhs_pass220_native_observation_export_v1.py'
@@ -67,3 +68,4 @@ jobs:
           node tests/pass220/test_hhs_native_observation_binding_v1.cjs
           node tests/pass220/test_hhs_webgl_observation_sampler_v1.cjs
           node tests/pass220/test_hhs_guarded_observation_transport_v1.cjs
+          node tests/pass220/test_hhs_runtime_os_native_observation_bootstrap_v1.cjs
