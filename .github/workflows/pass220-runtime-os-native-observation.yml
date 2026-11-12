@@ -39,23 +39,23 @@ jobs:
       - name: Compile existing Pass 179 C11 packet library (development only)
         run: |
           mkdir -p native_projects/hhs_pass220_gfx1_native_render_commands/build
-          cc -std=c11 -O2 -fPIC -shared -Wall -Wextra -Werror -pedantic \\
-            -I native_projects/hhs_pass220_gfx1_native_render_commands/include \\
-            native_projects/hhs_pass220_gfx1_native_render_commands/src/hhs_pass179_render_command_v1.c \\
+          cc -std=c11 -O2 -fPIC -shared -Wall -Wextra -Werror -pedantic \
+            -I native_projects/hhs_pass220_gfx1_native_render_commands/include \
+            native_projects/hhs_pass220_gfx1_native_render_commands/src/hhs_pass179_render_command_v1.c \
             -o native_projects/hhs_pass220_gfx1_native_render_commands/build/libhhs_pass179_render_command_v1.so
           make -C native_projects/hhs_pass220_gfx1_native_render_commands test
       - name: Compile native observation modules
         run: |
           python -m py_compile \
             hhs_runtime/hhs_pass220_gfx4_observation_witness_v1.py \
-            hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py \\
+            hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py \
             hhs_runtime/hhs_pass220_native_observation_export_v1.py
       - name: Verify inherited GFX4 and new decay-binding contracts
         run: |
           python -m pytest -q \
             tests/pass220/test_hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py \
             tests/pass220/test_hhs_pass220_gfx4_observation_witness_v1.py \
-            tests/pass220/test_hhs_pass220_gfx4_decay_matrix_observation_v1.py \\
+            tests/pass220/test_hhs_pass220_gfx4_decay_matrix_observation_v1.py \
             tests/pass220/test_hhs_pass220_native_observation_export_v1.py
       - name: Verify presentation-only cache and packet lane binding
         run: |
