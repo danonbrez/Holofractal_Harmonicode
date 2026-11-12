@@ -11,6 +11,8 @@ from base64 import b64encode
 import ctypes as C
 from pathlib import Path
 from typing import Any, Mapping
+from hhs_installer.canonical import hash216, stable
+
 
 from hhs_runtime.hhs_pass220_gfx4_decay_matrix_observation_v1 import (
     admit_decay_matrix_observation,
@@ -227,7 +229,30 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
         raise NativeObservationExportError("P220_NATIVE_EGRESS_C11_LIBRARY_UNAVAILABLE")
     if source_mode == "VMRC_RAW5184_SNAPSHOT" and (VMRC.epoch != version or VMRC.state_hash72 != native_source_hash72):
         raise NativeObservationExportError("P220_NATIVE_EGRESS_VMRC_SNAPSHOT_STALE")
+    # The exact ordered C11 command list is a *native admission dependency*.
+    # This is the bridge between the canonical frame identity and the bytes
+    # that its later rendering executor will consume; no postreceipt swap.
+    command_manifest = {
+        "schema": "HHS_PASS_220_NATIVE_RENDER_COMMAND_MANIFEST_V1",
+        "ordered": [
+            {
+                "opcode": cmd["opcode"],
+                "flags": cmd.get("flags", 0),
+                "resource_id": cmd.get("resource_id", 0),
+                "arg0": cmd.get("arg0", 0),
+                "arg1": cmd.get("arg1", 0),
+            } for cmd in commands
+        ],
+    }
+    command_root_hash216 = hash216(stable(command_manifest), domain="HHS-P220-NATIVE-RENDER-COMMANDS-V1")
     frame_state = payload.get("frame_state")
+    if not isinstance(frame_state, Mapping) or "native_render_commands" in frame_state:
+        raise NativeObservationExportError("P220_NATIVE_EGRESS_FRAME_STATE_MANIFEST_COLLISION")
+    frame_state = {**frame_state, "native_render_commands": {
+        "command_count": len(commands),
+        "ordered_command_root_hash216": command_root_hash216,
+        "schema": command_manifest["schema"],
+    }}
     if source_mode == "VMRC_RAW5184_SNAPSHOT":
         if not isinstance(frame_state, Mapping):
             raise NativeObservationExportError("P220_NATIVE_EGRESS_FRAME_STATE_REQUIRED")
@@ -262,6 +287,8 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
         "native_receipt_verified": record["witness"]["verified_live_vm81_commit"],
         "native_decay_binding_verified": record["verification"]["verified_decay_matrix_binding"],
         "packet_identity_verified": True,
+        "command_manifest_hash216": command_root_hash216,
+        "command_manifest_bound_before_vm81_admission": True,
         "native_source_verified": source_mode == "VMRC_RAW5184_SNAPSHOT",
         "observation_source": source_mode,
         "observation_time_domain": (
