@@ -113,3 +113,71 @@ def prime_center_witness(prime: int) -> dict[str, int]:
     assert p * p - left * right == 1
     return {"P": p, "p": left, "q": right, "modulus": left * right,
             "square": p * p, "defect": 1}
+
+
+def symbolic_reciprocal_pair(exponent: int) -> dict[str, object]:
+    """Typed exact two-radical candidate; never numerically collapses branches.
+
+    For delta=2**n choose P=sqrt(1+delta), d=sqrt(delta).
+    The conjugate product is one by polynomial identity, with distinct
+    ordered operands. This is a symbolic projection, not OP_11 admission.
+    """
+    n = _integer(exponent, "exponent")
+    delta = dyadic(n)
+    center_squared = Fraction(1) + delta
+    return {
+        "schema": "HHS_LANE5_DYADIC_RECIPROCAL_PAIR_CANDIDATE_V1",
+        "exponent": n,
+        "delta": delta,
+        "P": ("POSITIVE_SQRT", center_squared),
+        "d": ("POSITIVE_SQRT", delta),
+        "p": ("ORDERED_SUBTRACT", "P", "d"),
+        "q": ("ORDERED_ADD", "P", "d"),
+        "p_plus_q": ("TWICE", "P"),
+        "p_times_q": Fraction(1),
+        "difference_of_squares": center_squared - delta,
+        "identities": ("P2_MINUS_PQ_EQUALS_DELTA", "P_PLUS_PQ_SYMMETRY", "PQ_EQUALS_ONE"),
+        "operator_semantics": "TYPED_CONSTITUTIVE_UNRESOLVED",
+        "admission": "CANDIDATE_ONLY",
+    }
+
+
+def prepare_lane5_hydration_candidate(
+    register: VirtualRegister, *, witness: dict[str, object] | None = None
+) -> dict[str, object]:
+    """Build a read-only Lane 5 proposal, without side effects or receipts.
+
+    Gate operator semantics are inherited from Pass148; they are not
+    implemented here. The resulting proposal must be submitted through
+    the existing VM81 admission and Hash72-before-Hash216 authority path.
+    """
+    if not isinstance(register, VirtualRegister):
+        raise TypeError("exact VirtualRegister required")
+    from hhs_runtime.pass148.registry import OPERATORS
+    gate = OPERATORS["HHS_GATE_EQ"]
+    if gate["commutative"] or gate["operator_id"] != "HHS_GATE_EQ":
+        raise RuntimeError("inherited gate definition drift")
+    if witness is None:
+        witness = symbolic_reciprocal_pair(register.exponent)
+    if not isinstance(witness, dict) or witness.get("exponent") != register.exponent:
+        raise ValueError("symbolic witness exponent/address mismatch")
+    if witness.get("admission") != "CANDIDATE_ONLY":
+        raise ValueError("unverified witness cannot claim admission")
+    return {
+        "schema": "HHS_LANE5_DYADIC_VIRTUAL_HYDRATION_PROPOSAL_V1",
+        "virtual_address": register.index,
+        "radix72_address": register.address,
+        "signed_exponent": register.exponent,
+        "quantization": register.quantization,
+        "phase": register.phase,
+        "cell_type": register.cell_type,
+        "constructor": register.constructor,
+        "provenance": register.provenance,
+        "inherited_gate_id": gate["operator_id"],
+        "inherited_gate_semantics": gate["semantics"],
+        "witness": dict(witness),
+        "candidate_only": True,
+        "requires": ("NATIVE_CPLUSPLUS_CELL_WALL", "SINGLETON_VM81_ADMISSION",
+                     "HASH72_RECEIPT", "HASH216_LINEAGE", "REPLAY"),
+        "canonical_hash_mutation": None,
+    }
