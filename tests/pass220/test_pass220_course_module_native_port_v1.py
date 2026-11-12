@@ -15,7 +15,8 @@ def test_all_native_course_module_ports() -> None:
     lib = ctypes.CDLL(str(LIBRARY))
     fn = lib.hhs_exact_pass220_course_module_execute_route
     fn.argtypes = [ctypes.c_uint32, ctypes.c_void_p, ctypes.c_void_p,
-                   ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint8,\n                   ctypes.c_int8, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
+                   ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint8,
+                   ctypes.c_int8, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
     fn.restype = ctypes.c_int
     # Each valid module selector exists and enters the inherited argument
     # validation when the caller omits the already-lowered program/frame.
