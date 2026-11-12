@@ -61,7 +61,7 @@ assert.throws(()=>B.bindNativeObservation({...options,decayHash216:"wrong"}),/OB
 assert.throws(()=>B.bindNativeObservation({...options,identity:{...identity,frame_hash216:h("q")}}),/OBS_NATIVE_FRAME_LANE_MISMATCH/);
 assert.throws(()=>B.bindNativeObservation({...options,identity:{...identity,packet_identity_vm81_admitted:false}}),/OBS_NATIVE_GFX4_ADMISSION_RECORD_INVALID/);
 const corrupt=new Uint8Array(options.packet);corrupt[B.OFFSETS.frame]^=1;
-assert.throws(()=>B.bindNativeObservation({...options,packet:corrupt}),/HHS179_PACKET_FINGERPRINT/);
+assert.throws(()=>B.bindNativeObservation({...options,packet:corrupt}),/projection fingerprint mismatch/);
 const compatibility=P.buildCompatibilityPacket({commands:[{opcode:P.OPCODE.BEGIN_FRAME},{opcode:P.OPCODE.END_FRAME}]});
 assert.throws(()=>B.bindNativeObservation({...options,packet:compatibility}),/OBS_NATIVE_PACKET_NOT_ADMITTED/);
 assert.throws(()=>cache.append(options),/OBS_REPLAY_OR_OUT_OF_ORDER/);
