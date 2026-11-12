@@ -74,3 +74,35 @@ def test_browser_may_not_supply_native_receipt():
 def test_noncanonical_matrix_egress_fails_closed():
     with pytest.raises(NativeObservationExportError, match="MATRIX_NONCANONICAL"):
         native_observation_export({"matrix_hex": "ABCD"})
+
+
+def test_guarded_native_export_admits_decayed_observation_and_emits_sealed_c11_packet():
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    before = VMRC.epoch
+    result = native_observation_export({
+        "matrix_hex": "010200ff",
+        "matrix_byte_length": 4,
+        "matrix_version": before + 1,
+        "scene_snapshot": {"scene_id": "p220-native-egress-test"},
+        "frame_state": {"physics_tick": before + 1},
+        "resource_manifest": {"type": "rgba8"},
+        "camera_state": {"kind": "perspective", "z": 128},
+        "frame_index": before + 1,
+        "exact_time_num": before + 1,
+        "exact_time_den": 120,
+        "target_width": 64,
+        "target_height": 64,
+        "commands": [{"opcode": 1}, {"opcode": 24}],
+    })
+    assert VMRC.epoch == before + 1
+    assert result["schema"] == "HHS_PASS_220_NATIVE_OBSERVATION_EGRESS_V1"
+    assert result["native_receipt_verified"] is True
+    assert result["native_decay_binding_verified"] is True
+    assert result["packet_identity_verified"] is True
+    packet = base64.b64decode(result["observation"]["packet_base64"], validate=True)
+    assert packet[:8] == b"HHS179C1"
+    assert packet[296:512].decode("ascii") == result["observation"]["frameHash216"]
+    assert int.from_bytes(packet[56:64], "little") == result["observation"]["frameIndex"]
+    assert int.from_bytes(packet[64:72], "little") == result["observation"]["timeNum"]
+    assert int.from_bytes(packet[72:80], "little") == result["observation"]["timeDen"]
+    assert int.from_bytes(packet[32:36], "little") & 4 == 0
