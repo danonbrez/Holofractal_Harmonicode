@@ -1,0 +1,46 @@
+name: Pass 220 Runtime OS Native Observation Integration
+
+on:
+  push:
+    branches:
+      - dev/pass220-runtime-os-webgl-v147-native-integration
+    paths:
+      - 'hhs_runtime/hhs_pass220_gfx4_observation_witness_v1.py'
+      - 'hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py'
+      - 'hhs_gui/rendering/hhs_observation_graph_cache_v1.js'
+      - 'hhs_gui/rendering/hhs_native_observation_binding_v1.js'
+      - 'tests/pass220/test_hhs_observation_graph_cache_v1.cjs'
+      - 'tests/pass220/test_hhs_native_observation_binding_v1.cjs'
+      - 'tests/pass220/test_hhs_pass220_gfx4_observation_witness_v1.py'
+      - 'tests/pass220/test_hhs_pass220_gfx4_decay_matrix_observation_v1.py'
+      - '.github/workflows/pass220-runtime-os-native-observation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-observation-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile native observation modules
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_gfx4_observation_witness_v1.py \
+            hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py
+      - name: Verify inherited GFX4 and new decay-binding contracts
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py \
+            tests/pass220/test_hhs_pass220_gfx4_observation_witness_v1.py \
+            tests/pass220/test_hhs_pass220_gfx4_decay_matrix_observation_v1.py
+      - name: Verify presentation-only cache and packet lane binding
+        run: |
+          node tests/pass220/test_hhs_observation_graph_cache_v1.cjs
+          node tests/pass220/test_hhs_native_observation_binding_v1.cjs
