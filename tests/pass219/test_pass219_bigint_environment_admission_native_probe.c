@@ -229,8 +229,13 @@ int main(int argc, char **argv) {
             firewall.child_hash216_identity,
             admission.transition.transition_identity216,
             HHS_EXACT_UQCEL_HASH216_STRLEN) == 0;
+    /*
+     * Ownership is an immutable authority declaration, initialized even for
+     * rejected candidates. Actual canonical receipt commitment is reported
+     * by the inherited UQCEL admission witness.
+     */
     canonical_receipt_minted =
-        firewall.canonical_receipt_owned_by_inherited_authority == 1U;
+        admission.composed.uqcel.frame_committed == 1U;
     signature_verified =
         signature.provider_available == 1U &&
         signature.key_derived_from_kernel_root == 1U &&
