@@ -95,8 +95,8 @@ class DyadicVirtualRegisterTests(unittest.TestCase):
         module = "hhs_runtime.pass219.typed_full_symbolic_candidate_values"
         metadata = {"provenance_binding_sha256": "binding:1",
                     "schema": "HHS_PASS219_I157_PASS159_PROVENANCE_BINDING_V1"}
-        with patch(module + ".verify_frozen_source_identity", return_value={"native": {"exact": True}}) as verify, \\
-             patch(module + ".normalize_pass159_provenance", return_value=metadata) as normalize:
+        with (patch(module + ".verify_frozen_source_identity", return_value={"native": {"exact": True}}) as verify,
+              patch(module + ".normalize_pass159_provenance", return_value=metadata) as normalize):
             result = bind_existing_pass159_provenance(reg, {"provided": "metadata"})
             verify.assert_called_once()
             normalize.assert_called_once()
