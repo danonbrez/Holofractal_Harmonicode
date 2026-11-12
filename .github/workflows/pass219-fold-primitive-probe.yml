@@ -166,6 +166,10 @@ jobs:
             -Wl,-rpath,/tmp/openssl35/lib \
             -o /tmp/test_pass219_bigint_environment_admission_native_probe
           test -x /tmp/test_pass219_bigint_environment_admission_native_probe
+      - name: Verify fail-closed diagnostic evidence extraction
+        run: |
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_pass219_signed_admission_diagnostic.py
       - name: Prove BigInt signed environmental commit and negative closure
         env:
           LD_LIBRARY_PATH: /tmp/openssl35/lib:${{ github.workspace }}/hhs_runtime/builds
@@ -173,6 +177,13 @@ jobs:
         run: |
           PYTHONPATH="$PWD" python -m pytest -q -s \
             tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py
+      - name: Report exact native rejection diagnostics on failed signed admission
+        if: failure()
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib:${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          PYTHONPATH="$PWD" python scripts/diagnostics/pass219_signed_admission_diagnostic.py \
+            /tmp/test_pass219_bigint_environment_admission_native_probe --mode constraint
       - name: Emit exact signed environmental admission report
         env:
           LD_LIBRARY_PATH: /tmp/openssl35/lib:${{ github.workspace }}/hhs_runtime/builds
