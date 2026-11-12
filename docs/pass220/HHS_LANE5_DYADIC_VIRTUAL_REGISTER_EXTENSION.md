@@ -51,3 +51,29 @@ and fail-closed candidate-only boundaries.
 Lean/Wolfram proof identity linkage, HNAN denominator guards, Hash72/Hash216
 receipt continuity, source-integrity checks, and exact-main production replay.
 Do not interpret these read-only proposal objects as native admitted proof.
+
+## Pass159 typed candidate/source lineage handoff
+
+`bind_existing_pass159_provenance` consumes an exact `VirtualRegister` and an
+already-produced Pass159 source-to-VMIR provenance packet. It invokes the
+inherited Pass219 I157 `verify_frozen_source_identity` against repository bytes
+and `normalize_pass159_provenance` for schema, provenance stage identifiers,
+source SHA and authority-boundary flags. It requires the register's provenance
+reference to equal the normalized `provenance_binding_sha256` value.
+
+The resulting proposal is read-only and **not** a verified VM81 admission,
+Hash72 receipt or Hash216 knowledge commit. The producer deliberately does not
+construct, fabricate, or guess a source/VMIR provenance packet. Neither source
+metadata validation nor symmetric candidate identities substitute for full
+master-equation execution.
+
+Symbolic reciprocal witnesses now receive complete field, type and value
+comparison against the deterministic exact candidate before they enter the
+proposal. Unknown fields, altered `pq`, altered difference-of-squares, float
+payloads, changed operator semantics and forged authority labels fail closed.
+The tests exercise these negative cases and the source-lineage mismatch boundary.
+
+Pending native work remains Pass159 compiler ingress, typed P219 I157 graph
+composition, actual C++ cell-wall forwarding, signed VM81 admission and
+receipt/replay verification. Frozen source files and runtime registrations
+have not been changed.
