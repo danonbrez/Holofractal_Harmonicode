@@ -29,9 +29,9 @@
     if(v.verified_live_vm81_commit!==true||v.verified_decay_matrix_binding!==true||
        v.frame_hash216!==b.frameHash216||v.decay_hash216!==b.decayHash216||
        v.vm81_receipt_hash72!==b.identity.vm81_admission?.receipt_hash72)return false;
-    return context.frameIndex===integer(b.identity.frame_index??context.frameIndex)&&
-      context.timeNum===integer(b.identity.exact_time_num??context.timeNum)&&
-      context.timeDen===integer(b.identity.exact_time_den??context.timeDen);
+    return context.frameIndex===integer(b.frameIndex)&&
+      context.timeNum===integer(b.timeNum)&&
+      context.timeDen===integer(b.timeDen);
   }
   const cache=bindingAPI.createNativeObservationCache({
     capacity:64,ObservationCache:cacheAPI.ObservationCache,
