@@ -40,12 +40,14 @@
     return record.result;
   }
   class GuardedObservationTransport{
-    constructor({fetchImpl,baseUrl="",sampler,serviceName=SERVICE}={}){
+    constructor({fetchImpl,baseUrl="",sampler,serviceName=SERVICE,onVerifiedEgress}={}){
       if(typeof fetchImpl!=="function")fail("FETCH_REQUIRED");
       if(!sampler||typeof sampler.ingest!=="function")fail("SAMPLER_REQUIRED");
       if(serviceName!==SERVICE)fail("SERVICE_CONTRACT_INVALID");
       if(typeof baseUrl!=="string"||baseUrl.includes("?")||baseUrl.includes("#")||/^https?:\/\//.test(baseUrl)||baseUrl.includes(".."))fail("BASE_URL_INVALID");
+      if(onVerifiedEgress!==undefined&&typeof onVerifiedEgress!=="function")fail("VERIFICATION_HANDLER_INVALID");
       this._fetch=fetchImpl;this._base=baseUrl.replace(/\/$/,"");this._sampler=sampler;
+      this._onVerifiedEgress=onVerifiedEgress||null;
       this._discovered=false;this._count=0;
     }
     async _json(path,options){
@@ -97,9 +99,17 @@
       };
       // The sampler's native observation cache independently checks sealed
       // packet lanes, times, VM81 receipt, and the associated decay root.
-      const result=this._sampler.ingest(record);
-      this._count++;
-      return result;
+      // Attestation is scoped to this one egress and cleared even if the
+      // native presentation validator rejects the packet. No persistent
+      // browser-local proof or admission authority is created.
+      if(this._onVerifiedEgress)this._onVerifiedEgress(Object.freeze({payload,bundle}));
+      try {
+        const result=this._sampler.ingest(record);
+        this._count++;
+        return result;
+      } finally {
+        if(this._onVerifiedEgress)this._onVerifiedEgress(null);
+      }
     }
     stats(){return Object.freeze({schema:SCHEMA,accepted:this._count,discovered:this._discovered,authority:false,physicsClock:false});}
   }
