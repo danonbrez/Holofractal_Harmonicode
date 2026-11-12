@@ -18,10 +18,13 @@ on:
       - 'applications/runtime_os/HHS_Alpha_V149_Server_Owned_VMRC_Observation.html'
       - 'applications/runtime_os/HHS_Alpha_V150_Decay_Pool_Observation.html'
       - 'applications/runtime_os/HHS_Alpha_V151_Admitted_Geometry_WebGL.html'
+      - 'applications/runtime_os/HHS_Alpha_V152_Ordered_Physical_Geometry_Observation.html'
       - 'tests/pass220/test_hhs_v148_embedded_native_observation_v1.py'
       - 'tests/pass220/test_hhs_v149_embedded_native_observation_v1.py'
       - 'tests/pass220/test_hhs_v150_decay_pool_preservation_v1.py'
       - 'tests/pass220/test_hhs_v151_admitted_geometry_preservation_v1.py'
+      - 'tests/pass220/test_hhs_v152_geometry_preservation_v1.py'
+      - 'tests/pass220/test_hhs_v152_local_geometry_observation_v1.cjs'
       - 'tests/pass220/test_hhs_native_webgl_frame_presenter_v1.cjs'
       - 'tests/pass220/test_hhs_v150_decay_pool_observer_v1.cjs'
       - 'tests/pass220/test_hhs_runtime_os_native_observation_bootstrap_v1.cjs'
@@ -73,7 +76,8 @@ jobs:
             tests/pass220/test_hhs_v148_embedded_native_observation_v1.py \
             tests/pass220/test_hhs_v149_embedded_native_observation_v1.py \
             tests/pass220/test_hhs_v150_decay_pool_preservation_v1.py \
-            tests/pass220/test_hhs_v151_admitted_geometry_preservation_v1.py
+            tests/pass220/test_hhs_v151_admitted_geometry_preservation_v1.py \
+            tests/pass220/test_hhs_v152_geometry_preservation_v1.py
       - name: Verify presentation-only cache and packet lane binding
         run: |
           node tests/pass220/test_hhs_observation_graph_cache_v1.cjs
@@ -83,3 +87,4 @@ jobs:
           node tests/pass220/test_hhs_runtime_os_native_observation_bootstrap_v1.cjs
           node tests/pass220/test_hhs_v150_decay_pool_observer_v1.cjs
           node tests/pass220/test_hhs_native_webgl_frame_presenter_v1.cjs
+          node tests/pass220/test_hhs_v152_local_geometry_observation_v1.cjs
