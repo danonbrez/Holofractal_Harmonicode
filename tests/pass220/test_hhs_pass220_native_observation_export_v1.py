@@ -117,9 +117,6 @@ def test_native_snapshot_source_is_server_owned_and_bound_to_existing_vmrc():
         "frame_state": {"camera_phase": 1},
         "resource_manifest": {"format": "rgba8"},
         "camera_state": {"kind": "perspective"},
-        "frame_index": before,
-        "exact_time_num": before,
-        "exact_time_den": 1,
         "target_width": 64,
         "target_height": 64,
         "commands": [{"opcode": 1}, {"opcode": 24}],
@@ -166,3 +163,14 @@ def test_client_matrix_is_diagnostic_not_verified_producer():
     assert result["native_source_verified"] is False
     assert result["observation_source"] == "CLIENT_MATRIX_DIAGNOSTIC"
     assert result["physical_decay_pool_provenance"] is False
+
+
+def test_native_snapshot_rejects_untrusted_display_time():
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    before = VMRC.epoch
+    with pytest.raises(NativeObservationExportError, match="CLIENT_TIMESTAMP_OVERRIDE"):
+        native_observation_export({
+            "source_mode": "VMRC_RAW5184_SNAPSHOT",
+            "frame_index": 999,
+        })
+    assert VMRC.epoch == before
