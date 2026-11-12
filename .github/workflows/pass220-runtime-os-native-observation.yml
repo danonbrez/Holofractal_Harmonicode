@@ -9,8 +9,10 @@ on:
       - 'hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py'
       - 'hhs_gui/rendering/hhs_observation_graph_cache_v1.js'
       - 'hhs_gui/rendering/hhs_native_observation_binding_v1.js'
+      - 'hhs_gui/rendering/hhs_webgl_observation_sampler_v1.js'
       - 'tests/pass220/test_hhs_observation_graph_cache_v1.cjs'
       - 'tests/pass220/test_hhs_native_observation_binding_v1.cjs'
+      - 'tests/pass220/test_hhs_webgl_observation_sampler_v1.cjs'
       - 'tests/pass220/test_hhs_pass220_gfx4_observation_witness_v1.py'
       - 'tests/pass220/test_hhs_pass220_gfx4_decay_matrix_observation_v1.py'
       - '.github/workflows/pass220-runtime-os-native-observation.yml'
@@ -44,3 +46,4 @@ jobs:
         run: |
           node tests/pass220/test_hhs_observation_graph_cache_v1.cjs
           node tests/pass220/test_hhs_native_observation_binding_v1.cjs
+          node tests/pass220/test_hhs_webgl_observation_sampler_v1.cjs
