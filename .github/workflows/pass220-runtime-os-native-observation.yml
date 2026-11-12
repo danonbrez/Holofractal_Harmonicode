@@ -1,6 +1,16 @@
 name: Pass 220 Runtime OS Native Observation Integration
 
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/**'
+      - 'hhs_gui/rendering/hhs_*observation*.js'
+      - 'hhs_gui/rendering/hhs_native_webgl_frame_presenter_v1.js'
+      - 'tests/pass220/**'
+      - 'applications/runtime_os/HHS_Alpha_V15*.html'
+      - '.github/workflows/pass220-runtime-os-native-observation.yml'
   push:
     branches:
       - dev/pass220-runtime-os-webgl-v147-native-integration
