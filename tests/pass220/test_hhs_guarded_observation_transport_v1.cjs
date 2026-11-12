@@ -15,7 +15,8 @@ let serviceResponse={schema:"HHS_SERVICE_DISPATCH_RECORD_V1",
   unified_ledger:{tip_hash72:"c".repeat(72)},
   result:{schema:"HHS_PASS_220_NATIVE_OBSERVATION_EGRESS_V1",
     native_receipt_verified:true,native_decay_binding_verified:true,
-    packet_identity_verified:true,native_source_verified:true,
+    packet_identity_verified:true,command_manifest_hash216:"m".repeat(216),
+    command_manifest_bound_before_vm81_admission:true,native_source_verified:true,
     observation_source:"VMRC_RAW5184_SNAPSHOT",observation:nativeObservation}};
 let enabled=true;
 const fetchImpl=async(path,init)=>{
@@ -43,6 +44,9 @@ const t=new GuardedObservationTransport({fetchImpl,sampler});
   const original=serviceResponse;
   serviceResponse={...original,unified_ledger:{}};
   await assert.rejects(()=>t.ingestNativeObservation({matrixVersion:2}),/GUARDED_DISPATCH_UNVERIFIED/);
+  serviceResponse={...original,result:{...original.result,
+    command_manifest_bound_before_vm81_admission:false}};
+  await assert.rejects(()=>t.ingestNativeObservation({matrixVersion:2}),/NATIVE_OBSERVATION_UNVERIFIED/);
   serviceResponse={...original,result:{...original.result,native_source_verified:false,
     observation_source:"CLIENT_MATRIX_DIAGNOSTIC"}};
   await assert.rejects(()=>t.ingestNativeObservation({matrixVersion:2}),/NATIVE_OBSERVATION_UNVERIFIED/);
