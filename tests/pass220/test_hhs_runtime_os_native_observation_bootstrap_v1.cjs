@@ -33,6 +33,7 @@ assert.ok(api);
   assert.equal(info.sampler.physicsSchedulingAuthority,false);
   assert.equal(api.select(1,120),null);
   await assert.rejects(()=>api.ingest({}),/SERVICE_UNAVAILABLE/);
+  await assert.rejects(()=>api.captureNativeSnapshot({}),/SERVICE_UNAVAILABLE/);
   assert.equal(called,0);
   console.log("PASS: standalone V148 native observation bootstrap preserves offline execution");
 })().catch(err=>{console.error(err);process.exitCode=1;});
