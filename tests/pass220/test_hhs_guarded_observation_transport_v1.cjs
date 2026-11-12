@@ -43,6 +43,9 @@ const t=new GuardedObservationTransport({fetchImpl,sampler});
   const original=serviceResponse;
   serviceResponse={...original,unified_ledger:{}};
   await assert.rejects(()=>t.ingestNativeObservation({matrixVersion:2}),/GUARDED_DISPATCH_UNVERIFIED/);
+  serviceResponse={...original,result:{...original.result,native_source_verified:false,
+    observation_source:"CLIENT_MATRIX_DIAGNOSTIC"}};
+  await assert.rejects(()=>t.ingestNativeObservation({matrixVersion:2}),/NATIVE_OBSERVATION_UNVERIFIED/);
   serviceResponse={...original,result:{...original.result,native_decay_binding_verified:false}};
   await assert.rejects(()=>t.ingestNativeObservation({matrixVersion:2}),/NATIVE_OBSERVATION_UNVERIFIED/);
   serviceResponse={...original,result:{...original.result,observation:{...nativeObservation,packet_base64:"!!!!"}}};
