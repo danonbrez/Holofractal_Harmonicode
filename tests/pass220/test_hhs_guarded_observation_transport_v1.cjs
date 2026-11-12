@@ -15,7 +15,8 @@ let serviceResponse={schema:"HHS_SERVICE_DISPATCH_RECORD_V1",
   unified_ledger:{tip_hash72:"c".repeat(72)},
   result:{schema:"HHS_PASS_220_NATIVE_OBSERVATION_EGRESS_V1",
     native_receipt_verified:true,native_decay_binding_verified:true,
-    packet_identity_verified:true,observation:nativeObservation}};
+    packet_identity_verified:true,native_source_verified:true,
+    observation_source:"VMRC_RAW5184_SNAPSHOT",observation:nativeObservation}};
 let enabled=true;
 const fetchImpl=async(path,init)=>{
   calls.push({path,init});
