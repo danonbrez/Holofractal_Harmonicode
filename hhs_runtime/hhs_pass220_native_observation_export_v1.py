@@ -168,19 +168,37 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
     # Dispatch strips its interposition token before passing the payload.
     if any(name in payload for name in forbidden):
         raise NativeObservationExportError("P220_NATIVE_EGRESS_CLIENT_AUTHORITY_CLAIM")
-    encoded = payload.get("matrix_hex")
-    if not isinstance(encoded, str) or len(encoded) == 0 or len(encoded) % 2 or len(encoded) > MAX_MATRIX_BYTES * 2:
-        raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_ENCODING")
-    try:
-        matrix = bytes.fromhex(encoded)
-    except ValueError as exc:
-        raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_ENCODING") from exc
-    if matrix.hex() != encoded:
-        raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_NONCANONICAL")
-    size = _exact_int(payload.get("matrix_byte_length"), "MATRIX_LENGTH", upper=MAX_MATRIX_BYTES)
-    if len(matrix) != size:
-        raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_SIZE_MISMATCH")
-    version = _exact_int(payload.get("matrix_version"), "VERSION")
+    # Matrix provenance is a distinct admission obligation: native GFX4
+    # admission of arbitrary bytes does NOT prove their physics origin.
+    # The trusted source reads the existing API-owned VMRC snapshot directly.
+    source_mode = payload.get("source_mode", "CLIENT_MATRIX_DIAGNOSTIC")
+    if source_mode not in ("CLIENT_MATRIX_DIAGNOSTIC", "VMRC_RAW5184_SNAPSHOT"):
+        raise NativeObservationExportError("P220_NATIVE_EGRESS_SOURCE_MODE_INVALID")
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    if source_mode == "VMRC_RAW5184_SNAPSHOT":
+        if any(key in payload for key in ("matrix_hex", "matrix_byte_length", "matrix_version")):
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_CLIENT_MATRIX_OVERRIDE")
+        version = VMRC.epoch
+        native_source_hash72 = VMRC.state_hash72
+        matrix = VMRC.snapshot().to_bytes()
+        size = len(matrix)
+        if size != 648 or VMRC.epoch != version or VMRC.state_hash72 != native_source_hash72:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_VMRC_SNAPSHOT_DRIFT")
+    else:
+        encoded = payload.get("matrix_hex")
+        if not isinstance(encoded, str) or len(encoded) == 0 or len(encoded) % 2 or len(encoded) > MAX_MATRIX_BYTES * 2:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_ENCODING")
+        try:
+            matrix = bytes.fromhex(encoded)
+        except ValueError as exc:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_ENCODING") from exc
+        if matrix.hex() != encoded:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_NONCANONICAL")
+        size = _exact_int(payload.get("matrix_byte_length"), "MATRIX_LENGTH", upper=MAX_MATRIX_BYTES)
+        if len(matrix) != size:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_MATRIX_SIZE_MISMATCH")
+        version = _exact_int(payload.get("matrix_version"), "VERSION")
+        native_source_hash72 = None
     index = _exact_int(payload.get("frame_index"), "FRAME_INDEX")
     num = payload.get("exact_time_num")
     if type(num) is not int or num < -(1 << 63) or num > (1 << 63) - 1:
@@ -200,14 +218,27 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
     _preflight_commands(commands)
     if not C11_LIBRARY.is_file():
         raise NativeObservationExportError("P220_NATIVE_EGRESS_C11_LIBRARY_UNAVAILABLE")
-    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    if source_mode == "VMRC_RAW5184_SNAPSHOT" and (VMRC.epoch != version or VMRC.state_hash72 != native_source_hash72):
+        raise NativeObservationExportError("P220_NATIVE_EGRESS_VMRC_SNAPSHOT_STALE")
+    frame_state = payload.get("frame_state")
+    if source_mode == "VMRC_RAW5184_SNAPSHOT":
+        if not isinstance(frame_state, Mapping):
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_FRAME_STATE_REQUIRED")
+        if "native_source" in frame_state:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_NATIVE_SOURCE_OVERRIDE")
+        frame_state = {**frame_state, "native_source": {
+            "type": "VMRC_RAW5184_SNAPSHOT",
+            "pre_admission_epoch": version,
+            "pre_admission_state_hash72": native_source_hash72,
+            "ordered_bytes": size,
+        }}
     record = admit_decay_matrix_observation(
         vm81=VMRC,
         matrix_bytes=matrix,
         matrix_byte_length=size,
         matrix_version=version,
         scene_snapshot=payload.get("scene_snapshot"),
-        frame_state=payload.get("frame_state"),
+        frame_state=frame_state,
         resource_manifest=payload.get("resource_manifest"),
         camera_state=payload.get("camera_state"),
         frame_index=index,
@@ -224,6 +255,9 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
         "native_receipt_verified": record["witness"]["verified_live_vm81_commit"],
         "native_decay_binding_verified": record["verification"]["verified_decay_matrix_binding"],
         "packet_identity_verified": True,
+        "native_source_verified": source_mode == "VMRC_RAW5184_SNAPSHOT",
+        "observation_source": source_mode,
+        "physical_decay_pool_provenance": False,
         "observation": {
             "frameHash216": record["frameHash216"],
             "decayHash216": record["decayHash216"],
