@@ -65,10 +65,10 @@ def compile_native(repo: Path) -> dict[str, Any]:
     cli_binary = dist / "hhs-gfcc"
     test_binary = dist / "test_hhs_gfcc"
     _run([ar, "rcs", str(static_library), str(core_object), str(hash_object)], cwd=repo)
-    _run([cc, "-shared", str(core_object), str(hash_object), "-o", str(shared_library)], cwd=repo)
+    _run([cc, "-shared", str(core_object), str(hash_object), "-lcrypto", "-o", str(shared_library)], cwd=repo)
     link_flags = ["-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", f"-I{include}", f"-I{inherited_include}"]
-    _run([cc, *link_flags, str(cli_source), str(core_object), str(hash_object), "-o", str(cli_binary)], cwd=repo)
-    _run([cc, *link_flags, str(test_source), str(core_object), str(hash_object), "-o", str(test_binary)], cwd=repo)
+    _run([cc, *link_flags, str(cli_source), str(core_object), str(hash_object), "-lcrypto", "-o", str(cli_binary)], cwd=repo)
+    _run([cc, *link_flags, str(test_source), str(core_object), str(hash_object), "-lcrypto", "-o", str(test_binary)], cwd=repo)
     test_run = _run([str(test_binary)], cwd=repo)
     cli_run = _run([str(cli_binary)], cwd=repo)
     target = _run([cc, "-dumpmachine"], cwd=repo).stdout.strip()
@@ -86,7 +86,7 @@ def compile_native(repo: Path) -> dict[str, Any]:
         "include_paths": [include.relative_to(repo).as_posix(), inherited_include.relative_to(repo).as_posix()],
         "macro_definitions": [],
         "source_files": [path.relative_to(repo).as_posix() for path in (core_source, hash_source, cli_source, test_source)],
-        "linked_libraries": [],
+        "linked_libraries": ["crypto"],
         "artifacts": artifacts,
         "native_test_stdout": test_run.stdout.strip(),
         "native_cli_stdout": cli_run.stdout.strip(),
