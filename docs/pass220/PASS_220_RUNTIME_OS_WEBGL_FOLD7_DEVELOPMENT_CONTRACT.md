@@ -51,5 +51,15 @@ Next executable integration stage: connect the native `verify_decay_matrix_obser
 
 Validation classification: committed files and isolated JavaScript cache/binding tests executed; Python/GFX4 CI workflow committed and pending independent workflow run evidence. Physical SM-F966U browser validation and exact-main production admission are not yet claimed.
 
+## V148 native service-to-WebGL development increment
+
+- V148 is committed separately at `applications/runtime_os/HHS_Alpha_V148_Native_Observation_Bridge.html`. Its original V147 content is preserved byte-exact; six repository-native observation modules are embedded inline, with no additional external runtime dependency for standalone HTML.
+- `pass220.gfx4_decay_matrix_observation.export` is registered in the existing guarded HHS service registry and reached through its existing `/api/runtime/services/dispatch` API, not a separate authority route.
+- Native egress imports the existing Pass163 API-owned VMRC instance and uses the existing Pass179 C11 render packet builder/validator via ctypes. Native C11 shared-library build is explicitly included in the branch validation workflow. Library absence rejects the request before VM81 admission.
+- An ordered fixed-size decay matrix content/version is bound into the native admitted GFX4 frame; the live VM81 journal/index is used for witness verification and native dependency-root recomputation. The C11 packet returns sealed and projection-only with exact native scene/frame/resource/camera identity lanes.
+- `hhs_gui/rendering/hhs_guarded_observation_transport_v1.js` discovers the guarded service and carries its admitted observation egress to the already-present native packet/cache verifier and independent 120Hz-capable presentation sampler. The V148 inline bootstrap never contacts a server in `file:` standalone mode, never schedules physics, and does not introduce a second cache authority.
+- Tests include C11 ABI compilation, native egress round-trip, browser transport negative cases, original V147 byte preservation and exact embedded module parity, and standalone boot with no network/physics scheduling. These are committed CI targets; do not claim passing GitHub Actions or Fold7 hardware execution until receipts are inspected.
+- Native matrix input in this development service must eventually be sourced from the authoritative serialized decay-pool observation producer, not accepted as physical truth merely because user-supplied bytes pass native admission. The next required integration is linking that producer and renderer's observation selection to the native egress, with zero duplicate physics-clock authority and measured GPU upload latency.
+
 ## Non-claims
 The HTML source, bounded cache, native GFX4 receipt/matrix binding, and their test sources are committed to this development branch. This does **not** claim V147 live renderer wiring, full native Hash216 compression/Lane 5 one-step execution, Fold7 hardware benchmark, production deployment, or completed end-to-end admission.
