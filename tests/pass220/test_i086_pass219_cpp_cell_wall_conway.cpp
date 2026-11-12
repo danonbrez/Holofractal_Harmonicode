@@ -1,5 +1,6 @@
 #include "hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp"
 #include "hhs_pass220_i086_lane5_conway_cell_wall_v1.h"
+#include "hhs_pass220_rna_conway_two_sweep_composition_v1.h"
 #include <array>
 #include <cstdint>
 #include <cstdio>
@@ -93,6 +94,52 @@ int main() {
         CHECK(candidate.occupancy_before[i]==expected_before[i]);
         CHECK(candidate.occupancy_after[i]==expected_after[i]);
     }
+    // Additive native exact codec + RNA Conway + paired 5184-clock proof.
+    // This is NOT an I085 authenticated Hash216 array or signed VM81 commit.
+    HHSExactPass220RNAConwayTwoSweepCandidateV1 composed{};
+    for (const std::uint32_t k : {0U, 63U, 64U, 2592U, 5183U}) {
+        CHECK(hhs_pass220_rna_conway_two_sweep_candidate(
+            &ingress,&frame,&predecessor,&constructor,0U,1U,2U,7U,k,&composed)
+            == HHS_EXACT_STATUS_OK);
+        CHECK(composed.struct_size==sizeof(composed));
+        CHECK(composed.version==HHS_PASS220_RNA_CONWAY_TWO_SWEEP_VERSION);
+        CHECK(composed.local_position5184==k);
+        CHECK(composed.layer0==k);
+        CHECK(composed.layer1==k+5184U);
+        CHECK(composed.vm81_cell==k/64U);
+        CHECK(composed.vm81_local64==k%64U);
+        CHECK(composed.mirror5184==5183U-k);
+        CHECK(composed.logical_frame_id==7U);
+        CHECK(composed.ieee_input_bits==frame.words[0]);
+        CHECK(composed.ieee_return_bits==frame.words[0]);
+        CHECK(composed.exact_raw648_roundtrip==1U);
+        CHECK(composed.paired_sweeps_verified==1U);
+        CHECK(composed.source_frame_unchanged==1U);
+        CHECK(composed.candidate_only==1U);
+        CHECK(composed.native_hash216_array_authenticated==0U);
+        CHECK(composed.native_persistent_graph_authenticated==0U);
+        CHECK(composed.signed_vm81_admission_invoked==0U);
+        CHECK(composed.canonical_mutation_authority==0U);
+        CHECK(std::memcmp(&composed.conway.occupancy_after,
+                          &candidate.occupancy_after, 81U)==0);
+        CHECK(std::memcmp(&frame,&initial,sizeof(frame))==0);
+    }
+    const auto composed_saved = composed;
+    CHECK(hhs_pass220_rna_conway_two_sweep_candidate(
+        &ingress,&frame,&predecessor,&constructor,0U,1U,2U,7U,5184U,&composed)
+        == HHS_EXACT_STATUS_INVALID_ARGUMENT);
+    CHECK(std::memcmp(&composed,&composed_saved,sizeof(composed))==0);
+    CHECK(hhs_pass220_rna_conway_two_sweep_candidate(
+        nullptr,&frame,&predecessor,&constructor,0U,1U,2U,7U,0U,&composed)
+        == HHS_EXACT_STATUS_INVALID_ARGUMENT);
+    CHECK(std::memcmp(&composed,&composed_saved,sizeof(composed))==0);
+    auto bad_source=predecessor;
+    bad_source.transition_identity216[0] =
+        bad_source.transition_identity216[0]=='0'?'1':'0';
+    CHECK(hhs_pass220_rna_conway_two_sweep_candidate(
+        &ingress,&frame,&bad_source,&constructor,0U,1U,2U,7U,0U,&composed)
+        != HHS_EXACT_STATUS_OK);
+    CHECK(std::memcmp(&composed,&composed_saved,sizeof(composed))==0);
     const auto saved=candidate;
     auto forged=predecessor;
     forged.transition_identity216[0]=
