@@ -5651,6 +5651,49 @@ def make_default_service_registry(controller: Optional[HHSRuntimeController] = N
     )
 
     registry.register_function(
+        name="pass220.gfx4_decay_matrix_observation.export",
+        module="hhs_runtime.hhs_pass220_native_observation_export_v1",
+        function="native_observation_export",
+        service_type="pass220_native_graphics_observation_egress",
+        description=(
+            "Guarded native C11 GFX4 render-packet egress of an exact ordered "
+            "decay-matrix observation through the existing Pass163 API VMRC "
+            "instance. Native packet construction and validation, VM81 "
+            "receipt lineage, matrix Hash216 dependency verification and "
+            "projection-only WebGL output are mandatory."
+        ),
+        invariant_ids=["HHS-I008","HHS-I010","HHS-I011","HHS-I012","HHS-I014","HHS-I015"],
+        contract_schemas=[
+            "HHS_PASS_220_GFX4_DECAY_MATRIX_OBSERVATION_V1",
+            "HHS_PASS_179_RENDER_COMMAND_PACKET_V1",
+        ],
+        witness_schemas=[
+            "HHS_PASS_220_GFX4_VM81_OBSERVATION_WITNESS_V1",
+            "HHS_PASS_220_NATIVE_OBSERVATION_EGRESS_V1",
+        ],
+        validators=[
+            "verify_gfx4_vm81_observation_witness",
+            "verify_decay_matrix_observation",
+            "hhs179_render_packet_validate",
+        ],
+        guards=[
+            "existing_pass163_api_vmrc_required",
+            "native_c11_library_required_before_admission",
+            "ordered_matrix_exact_byte_content_and_version_required",
+            "native_gfx4_vm81_admission_and_replay_required",
+            "native_render_packet_sealed_and_validated",
+            "browser_cannot_supply_identity_or_receipt",
+            "zero_bypass_runtime_interposer",
+        ],
+        rejection_codes=[
+            "P220_NATIVE_EGRESS_CLIENT_AUTHORITY_CLAIM",
+            "P220_NATIVE_EGRESS_C11_LIBRARY_UNAVAILABLE",
+            "P220_DECAY_VM81_DEPENDENCY_MISMATCH",
+            "P220_NATIVE_EGRESS_C11_SEAL_REJECTED",
+        ],
+    )
+
+    registry.register_function(
         name="pass220.gfx4_vm81_graphics_packet_identity.self_test",
         module=(
             "hhs_runtime."
