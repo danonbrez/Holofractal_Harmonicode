@@ -198,7 +198,7 @@ def admit_decay_matrix_observation(
         prior_frame_hash216=prior_frame_hash216,
     )
     witness = verify_gfx4_vm81_observation_witness(vm81=vm81, identity=identity)
-    return {
+    bundle = {
         "schema": SCHEMA,
         "classification": identity["classification"],
         "identity": identity,
@@ -214,3 +214,12 @@ def admit_decay_matrix_observation(
         "timeDen": exact_time_den,
         "canonical_mutation_authority": False,
     }
+    bundle["verification"] = verify_decay_matrix_observation(
+        vm81=vm81,
+        bundle=bundle,
+        matrix_bytes=matrix_bytes,
+        scene_snapshot=scene_snapshot,
+        resource_manifest=resource_manifest,
+        camera_state=camera_state,
+    )
+    return bundle
