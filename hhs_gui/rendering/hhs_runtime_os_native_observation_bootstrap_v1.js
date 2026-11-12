@@ -75,6 +75,16 @@
       return transport.ingestNativeObservation({...graphics,
         source_mode:"VMRC_RAW5184_SNAPSHOT"});
     },
+    readLocalDecayPool(){
+      const source=root.HHSV150DecayPoolObservation;
+      if(!source||typeof source.read!=="function")
+        throw Error("HHS_LOCAL_DECAY_POOL_PRODUCER_UNAVAILABLE");
+      const sample=source.read();
+      if(sample?.schema!=="HHS_V150_LOCAL_DECAY_POOL_OBSERVATION_V1"||
+         sample.nativeVM81Admission!==false||sample.physicsMutationAuthority!==false)
+        throw Error("HHS_LOCAL_DECAY_POOL_OBSERVATION_INVALID");
+      return sample;
+    },
     select(timeNum,timeDen){return sampler.select(timeNum,timeDen);},
     configure(options){return sampler.configure(options);},
     inspect(){return Object.freeze({
