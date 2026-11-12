@@ -14,14 +14,15 @@ def test_all_native_course_module_ports() -> None:
         raise AssertionError(f"Native runtime ABI has not been built: {LIBRARY}")
     lib = ctypes.CDLL(str(LIBRARY))
     fn = lib.hhs_exact_pass220_course_module_execute_route
-    fn.argtypes = [ctypes.c_uint32] + [ctypes.c_void_p] * 9
+    fn.argtypes = [ctypes.c_uint32, ctypes.c_void_p, ctypes.c_void_p,
+                   ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint8,\n                   ctypes.c_int8, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
     fn.restype = ctypes.c_int
     # Each valid module selector exists and enters the inherited argument
     # validation when the caller omits the already-lowered program/frame.
     for module in range(191):
-        assert fn(module, *([None] * 9)) == 1, module
-    assert fn(191, *([None] * 9)) == 2
-    assert fn(0xFFFFFFFF, *([None] * 9)) == 2
+        assert fn(module, None, None, None, None, 0, 0, None, None, None) == 1, module
+    assert fn(191, None, None, None, None, 0, 0, None, None, None) == 2
+    assert fn(0xFFFFFFFF, None, None, None, None, 0, 0, None, None, None) == 2
 
 
 if __name__ == "__main__":
