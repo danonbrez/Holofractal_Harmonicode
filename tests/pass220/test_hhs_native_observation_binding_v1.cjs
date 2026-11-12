@@ -60,7 +60,7 @@ assert.throws(()=>B.bindNativeObservation({...options,verifyDecayMatrixBinding:(
 assert.throws(()=>B.bindNativeObservation({...options,decayHash216:"wrong"}),/OBS_NATIVE_DECAY_HASH216_INVALID/);
 assert.throws(()=>B.bindNativeObservation({...options,identity:{...identity,frame_hash216:h("q")}}),/OBS_NATIVE_FRAME_LANE_MISMATCH/);
 assert.throws(()=>B.bindNativeObservation({...options,identity:{...identity,packet_identity_vm81_admitted:false}}),/OBS_NATIVE_GFX4_ADMISSION_RECORD_INVALID/);
-const corrupt=new Uint8Array(options.packet);corrupt[B.OFFSETS.frame]^=1;
+const corrupt=new Uint8Array(options.packet.slice(0));corrupt[B.OFFSETS.frame]^=1;
 assert.throws(()=>B.bindNativeObservation({...options,packet:corrupt}),/projection fingerprint mismatch/);
 const compatibility=P.buildCompatibilityPacket({commands:[{opcode:P.OPCODE.BEGIN_FRAME},{opcode:P.OPCODE.END_FRAME}]});
 assert.throws(()=>B.bindNativeObservation({...options,packet:compatibility}),/OBS_NATIVE_PACKET_NOT_ADMITTED/);
