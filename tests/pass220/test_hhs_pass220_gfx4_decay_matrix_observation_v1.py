@@ -12,7 +12,7 @@ from hhs_runtime.hhs_pass220_gfx4_decay_matrix_observation_v1 import (
 from hhs_runtime.pass163.vmrc import VMRCRuntime
 
 
-def _admit(vm81, matrix=b"\\x01\\x02\\x00\\xff", *, version=3):
+def _admit(vm81, matrix=bytes((1, 2, 0, 255)), *, version=3):
     return admit_decay_matrix_observation(
         vm81=vm81,
         matrix_bytes=matrix,
