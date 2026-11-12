@@ -5,7 +5,7 @@ Branch: `dev/pass220-runtime-os-webgl-v147-native-integration`
 Source candidate: `HHS_Alpha_V147_WebGL_120Hz_Independent_Observation.html`
 Local candidate SHA-256: `61d8d6b39b5730f95868bb1aad9f8b5fae3643fe913a1f48c68c77a9a3c6959c`
 Candidate size: 1,498,496 bytes.
-**Import status:** local conversation artifact exists, but is not yet committed to GitHub; verify byte-identical import against SHA-256 before any claim of integrated behavior.
+**Import status:** V147 HTML committed unchanged at `applications/runtime_os/HHS_Alpha_V147_WebGL_120Hz_Independent_Observation.html` on this development branch; original content byte count 1,498,496.
 
 ## Required repository navigation
 Before implementing, read `AGENTS.md`, `README.md`, `REPOSITORY_INDEX.md`, `ARCHITECTURE.md`, `RUNTIME_FLOW.md`, `GLOSSARY.md`, the Hash216 dependency tree and Lane 5 hydration index, the frozen-layer preservation contract, applicable native service contracts, and validation/restart receipts. Treat merged main as authoritative. Extend closed layers through existing interfaces/composition, not rewrites.
@@ -38,5 +38,18 @@ Optimization target:
 5. Run dependency-scoped tests, existing native CI/source-integrity, exact-main equivalence, production ingress/bypass checks, and native admission/receipt/replay gates; repair any failures, never bypass.
 6. Only after full integration and validated production-safe artifact, open an authorized PR, merge and deploy against exact main with rollback evidence. Until then this branch is development-only.
 
+## Implemented development increments (2026-11-11)
+
+- Standalone V147 HTML imported on branch, preserving its source bytes; production `main` unchanged.
+- `hhs_gui/rendering/hhs_observation_graph_cache_v1.js`: bounded presentation-only observation lookup, immutable copies, rational-time bracketing and replay rejection.
+- `hhs_gui/rendering/hhs_native_observation_binding_v1.js`: exact GFX4 packet-lane validation with mandatory external native receipt and decay verification callbacks; rejects compatibility/unadmitted packets.
+- `hhs_runtime/hhs_pass220_gfx4_observation_witness_v1.py`: read-only verification of committed GFX4 receipts against inherited VMRC journal, index and replay; no second VM81 authority.
+- `hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py`: native ordered-byte Hash216 decay matrix content/version construction, preadmission frame-state binding, and postadmission dependency-root/frame/packet identity recomposition against the live VM81 index. No JS-authored receipt.
+- Regression tests under `tests/pass220/` and a branch-scoped GitHub Actions workflow `.github/workflows/pass220-runtime-os-native-observation.yml`.
+
+Next executable integration stage: connect the native `verify_decay_matrix_observation` response and GFX4 packet producer to the browser adapter's trusted verifier callbacks through the *existing* registered service route (discover and reuse, not invent a competing VM81 gateway). Then update the V147 render path to consume coherent admitted observations without pacing native physics to WebGL. This is implementation scope with tests and receipts, not justification to omit the feature. For all new service routes and graphics boundaries, preserve source integrity and replay admission.
+
+Validation classification: committed files and isolated JavaScript cache/binding tests executed; Python/GFX4 CI workflow committed and pending independent workflow run evidence. Physical SM-F966U browser validation and exact-main production admission are not yet claimed.
+
 ## Non-claims
-This contract does not mean the V147 source was committed, that the graphics cache/compression/Lane 5 one-step pipeline is integrated, that a physical Fold7 browser benchmark has passed, or that the production interface was replaced.
+The HTML source, bounded cache, native GFX4 receipt/matrix binding, and their test sources are committed to this development branch. This does **not** claim V147 live renderer wiring, full native Hash216 compression/Lane 5 one-step execution, Fold7 hardware benchmark, production deployment, or completed end-to-end admission.
