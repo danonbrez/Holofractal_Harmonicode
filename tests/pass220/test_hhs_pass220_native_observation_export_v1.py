@@ -106,3 +106,63 @@ def test_guarded_native_export_admits_decayed_observation_and_emits_sealed_c11_p
     assert int.from_bytes(packet[64:72], "little") == result["observation"]["timeNum"]
     assert int.from_bytes(packet[72:80], "little") == result["observation"]["timeDen"]
     assert int.from_bytes(packet[32:36], "little") & 4 == 0
+
+
+def test_native_snapshot_source_is_server_owned_and_bound_to_existing_vmrc():
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    before = VMRC.epoch
+    result = native_observation_export({
+        "source_mode": "VMRC_RAW5184_SNAPSHOT",
+        "scene_snapshot": {"scene_id": "p220-server-owned-observation"},
+        "frame_state": {"camera_phase": 1},
+        "resource_manifest": {"format": "rgba8"},
+        "camera_state": {"kind": "perspective"},
+        "frame_index": before,
+        "exact_time_num": before,
+        "exact_time_den": 1,
+        "target_width": 64,
+        "target_height": 64,
+        "commands": [{"opcode": 1}, {"opcode": 24}],
+    })
+    assert result["native_source_verified"] is True
+    assert result["observation_source"] == "VMRC_RAW5184_SNAPSHOT"
+    assert result["physical_decay_pool_provenance"] is False
+    assert result["native_receipt_verified"] is True
+    assert result["native_decay_binding_verified"] is True
+    assert VMRC.epoch == before + 1
+    assert result["observation"]["matrixVersion"] == before
+
+
+def test_native_snapshot_rejects_client_supplied_matrix_bytes_before_commit():
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    before = VMRC.epoch
+    with pytest.raises(NativeObservationExportError, match="CLIENT_MATRIX_OVERRIDE"):
+        native_observation_export({
+            "source_mode": "VMRC_RAW5184_SNAPSHOT",
+            "matrix_hex": "aabb",
+        })
+    assert VMRC.epoch == before
+
+
+def test_client_matrix_is_diagnostic_not_verified_producer():
+    from hhs_backend.api.pass163_vmrc_routes import VMRC
+    before = VMRC.epoch
+    result = native_observation_export({
+        "source_mode": "CLIENT_MATRIX_DIAGNOSTIC",
+        "matrix_hex": "010200ff",
+        "matrix_byte_length": 4,
+        "matrix_version": before + 1,
+        "scene_snapshot": {"scene_id": "p220-client-diagnostic"},
+        "frame_state": {"physics_tick": before + 1},
+        "resource_manifest": {"format": "rgba8"},
+        "camera_state": {"kind": "perspective"},
+        "frame_index": before + 1,
+        "exact_time_num": before + 1,
+        "exact_time_den": 120,
+        "target_width": 64,
+        "target_height": 64,
+        "commands": [{"opcode": 1}, {"opcode": 24}],
+    })
+    assert result["native_source_verified"] is False
+    assert result["observation_source"] == "CLIENT_MATRIX_DIAGNOSTIC"
+    assert result["physical_decay_pool_provenance"] is False
