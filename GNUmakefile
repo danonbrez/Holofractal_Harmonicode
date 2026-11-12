@@ -15,6 +15,9 @@ PASS219_RNA_VM5184_ABI_SRC := hhs_runtime/cpp/hhs_pass219_rna_vm5184_abi_1_33.cp
 PASS219_RNA_VM5184_ABI_OBJ := $(RUNTIME_BUILD_DIR)/pass219/hhs_pass219_rna_vm5184_abi_1_33.o
 PASS220_COURSE_MODULE_ROUTE_SRC := hhs_runtime/cpp/hhs_pass220_course_module_vm81_route_v1.cpp
 PASS220_COURSE_MODULE_ROUTE_OBJ := $(RUNTIME_BUILD_DIR)/pass220/hhs_pass220_course_module_vm81_route_v1.o
+# Explicitly wire this additive native object as an ABI build prerequisite.
+# The inherited Makefile was parsed before GNUmakefile assigns this variable.
+$(ABI_LIB): $(PASS220_COURSE_MODULE_ROUTE_OBJ)
 PASS219_NINE_LOOP_CELL_WALL_SRC := hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_cell_wall_1_67.cpp
 PASS219_NINE_LOOP_CELL_WALL_OBJ := $(RUNTIME_BUILD_DIR)/pass219/hhs_pass219_lane5_nine_loop_cell_wall_1_67.o
 PASS219_NINE_LOOP_SOURCE_CELL_WALL_SRC := hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_source_cell_wall_1_68.cpp
