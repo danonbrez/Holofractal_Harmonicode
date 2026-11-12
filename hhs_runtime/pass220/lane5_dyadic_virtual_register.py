@@ -163,6 +163,14 @@ def prepare_lane5_hydration_candidate(
         raise ValueError("symbolic witness exponent/address mismatch")
     if witness.get("admission") != "CANDIDATE_ONLY":
         raise ValueError("unverified witness cannot claim admission")
+    # Reject edited, substituted, or incomplete proof terms. A candidate's
+    # own assertion of exactness never supplies a native receipt.
+    expected = symbolic_reciprocal_pair(register.exponent)
+    if set(witness) != set(expected) or any(
+        type(witness[key]) is not type(value) or witness[key] != value
+        for key, value in expected.items()
+    ):
+        raise ValueError("symbolic reciprocal witness drift")
     return {
         "schema": "HHS_LANE5_DYADIC_VIRTUAL_HYDRATION_PROPOSAL_V1",
         "virtual_address": register.index,
@@ -179,5 +187,46 @@ def prepare_lane5_hydration_candidate(
         "candidate_only": True,
         "requires": ("NATIVE_CPLUSPLUS_CELL_WALL", "SINGLETON_VM81_ADMISSION",
                      "HASH72_RECEIPT", "HASH216_LINEAGE", "REPLAY"),
+        "canonical_hash_mutation": None,
+    }
+
+
+def bind_existing_pass159_provenance(
+    register: VirtualRegister,
+    provenance: dict[str, object],
+    *,
+    root: str | None = None,
+) -> dict[str, object]:
+    """Read-only handoff to the inherited Pass219 I157 source/VMIR contract.
+
+    The returned fields describe independently supplied provenance metadata.
+    They never claim that this module executed a frontend or VM81 admission.
+    """
+    if not isinstance(register, VirtualRegister):
+        raise TypeError("exact VirtualRegister required")
+    if not isinstance(provenance, dict):
+        raise TypeError("Pass159 provenance mapping required")
+    from hhs_runtime.pass219.typed_full_symbolic_candidate_values import (
+        normalize_pass159_provenance,
+        verify_frozen_source_identity,
+    )
+    # Verify the actual frozen source bytes in the checked-out repository.
+    source_receipt = verify_frozen_source_identity(root)
+    normalized = normalize_pass159_provenance(provenance)
+    binding = normalized["provenance_binding_sha256"]
+    if register.provenance != binding:
+        raise ValueError("register provenance differs from Pass159 source/VMIR binding")
+    proposal = prepare_lane5_hydration_candidate(register)
+    return {
+        "schema": "HHS_LANE5_DYADIC_PASS159_CANDIDATE_BINDING_V1",
+        "proposal": proposal,
+        "pass159_source_identity": source_receipt,
+        "pass159_provenance": normalized,
+        "provenance_binding_sha256": binding,
+        "pass159_metadata_validated": True,
+        "frontend_executed_here": False,
+        "vm81_admitted": False,
+        "hash72_minted": False,
+        "hash216_persisted": False,
         "canonical_hash_mutation": None,
     }
