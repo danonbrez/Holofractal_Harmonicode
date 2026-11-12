@@ -186,3 +186,28 @@ extern "C" HHSExactStatus hhs_exact_pass219_rna_raw5184_route(
         out_prepared,
         out_decision);
 }
+
+/*
+ * A course module selects a stable native service port through the existing
+ * Pass219 C++ cell wall. The supplied VM5184 frame is not silently rewritten:
+ * opcode lowering remains in the inherited C coprocessor and VM81 toolchain.
+ * This entrypoint is transport for the already lowered circuit, not a
+ * replacement for module-specific operator evaluation.
+ */
+extern "C" HHSExactStatus hhs_exact_pass219_course_module_vm5184_route(
+    uint32_t module_number,
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *transition,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    HHSExactPass219Holo4PreparedV1 *out_prepared,
+    HHSExactPass219Holo4DecisionV1 *out_decision
+) {
+    zero_route_outputs(out_prepared, out_decision);
+    if (module_number >= HHS_EXACT_PASS219_COURSE_MODULE_COUNT)
+        return HHS_EXACT_STATUS_RANGE_ERROR;
+    return hhs_exact_pass219_rna_vm5184_route(
+        input, candidate_frame, transition, feedback_lane,
+        feedback_trinary, out_prepared, out_decision);
+}
