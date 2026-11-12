@@ -10,8 +10,8 @@ const nativeCache={
     let p=null;
     for(const r of records){
       const cmp=r.timeNum*den-t*r.timeDen;
-      if(cmp===0)return {prior:r,next:r,exact:true};
-      if(cmp>0)return p?{prior:p,next:r,exact:false}:null;
+      if(cmp===0n)return {prior:r,next:r,exact:true};
+      if(cmp>0n)return p?{prior:p,next:r,exact:false}:null;
       p=r;
     }
     return null;
