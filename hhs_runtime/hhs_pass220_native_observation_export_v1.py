@@ -126,6 +126,39 @@ def _native_packet(identity: Mapping[str, Any], *, frame_index: int, time_num: i
     return bytes(buffer)
 
 
+
+def _preflight_commands(commands: list[Mapping[str, Any]]) -> None:
+    """Reject malformed native command sequences before any VM81 commit."""
+    if len(commands) < 2 or len(commands) > MAX_COMMANDS:
+        raise NativeObservationExportError("P220_NATIVE_EGRESS_COMMAND_COUNT")
+    if commands[0].get("opcode") != 1 or commands[-1].get("opcode") != 24:
+        raise NativeObservationExportError("P220_NATIVE_EGRESS_COMMAND_SEQUENCE")
+    composite = False
+    for i, command in enumerate(commands):
+        opcode = _exact_int(command.get("opcode"), "OPCODE", upper=24)
+        if opcode < 1:
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_OPCODE")
+        _exact_int(command.get("flags", 0), "FLAGS", upper=65535)
+        rid = _exact_int(command.get("resource_id", 0), "RESOURCE")
+        _exact_int(command.get("arg0", 0), "ARG0")
+        _exact_int(command.get("arg1", 0), "ARG1")
+        if (opcode == 1 and i != 0) or (opcode == 24 and i != len(commands) - 1):
+            raise NativeObservationExportError("P220_NATIVE_EGRESS_COMMAND_SEQUENCE")
+        if opcode == 19:
+            if composite:
+                raise NativeObservationExportError("P220_NATIVE_EGRESS_COMMAND_SEQUENCE")
+            composite = True
+        elif opcode == 21:
+            if not composite:
+                raise NativeObservationExportError("P220_NATIVE_EGRESS_COMMAND_SEQUENCE")
+            composite = False
+        if opcode in (3, 6, 7, 8, 17, 20) or 11 <= opcode <= 16:
+            if rid == 0:
+                raise NativeObservationExportError("P220_NATIVE_EGRESS_RESOURCE_REQUIRED")
+    if composite:
+        raise NativeObservationExportError("P220_NATIVE_EGRESS_COMMAND_SEQUENCE")
+
+
 def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Guarded registry service; uses the existing Pass 163 API VMRC singleton."""
     if not isinstance(payload, Mapping):
@@ -164,6 +197,7 @@ def native_observation_export(payload: Mapping[str, Any]) -> dict[str, Any]:
         raise NativeObservationExportError("P220_NATIVE_EGRESS_COMMANDS_REQUIRED")
     # Fail before canonical mutation if the runtime-native packet builder is
     # absent, rather than minting an admitted identity with no packet egress.
+    _preflight_commands(commands)
     if not C11_LIBRARY.is_file():
         raise NativeObservationExportError("P220_NATIVE_EGRESS_C11_LIBRARY_UNAVAILABLE")
     from hhs_backend.api.pass163_vmrc_routes import VMRC
