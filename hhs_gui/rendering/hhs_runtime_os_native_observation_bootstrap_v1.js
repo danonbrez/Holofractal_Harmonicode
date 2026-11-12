@@ -64,6 +64,17 @@
       if(!(await ready))throw Error("HHS_NATIVE_OBSERVATION_SERVICE_UNAVAILABLE");
       return transport.ingestNativeObservation(request);
     },
+    async captureNativeSnapshot(graphics={}){
+      if(!(await ready))throw Error("HHS_NATIVE_OBSERVATION_SERVICE_UNAVAILABLE");
+      if(!graphics||typeof graphics!=="object"||Array.isArray(graphics))
+        throw Error("HHS_NATIVE_OBSERVATION_GRAPHICS_REQUIRED");
+      const forbidden=["matrix_hex","matrix_byte_length","matrix_version",
+        "frame_index","exact_time_num","exact_time_den","identity","verification","packet"];
+      if(forbidden.some(key=>Object.prototype.hasOwnProperty.call(graphics,key)))
+        throw Error("HHS_NATIVE_OBSERVATION_CLIENT_SOURCE_OVERRIDE");
+      return transport.ingestNativeObservation({...graphics,
+        source_mode:"VMRC_RAW5184_SNAPSHOT"});
+    },
     select(timeNum,timeDen){return sampler.select(timeNum,timeDen);},
     configure(options){return sampler.configure(options);},
     inspect(){return Object.freeze({
