@@ -11,6 +11,7 @@ extern "C" {
 #endif
 
 #define HHS_EXACT_PASS219_RNA_VM5184_ABI_VERSION UINT32_C(0x00010021)
+#define HHS_EXACT_PASS219_COURSE_MODULE_COUNT 191U
 
 typedef struct HHSExactPass219RNAVM5184ABIDescriptorV1 {
     uint32_t struct_size;
@@ -49,6 +50,24 @@ HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rna_vm5184_abi_descriptor(
  * exclusively beneath the signed/environmental VM81 authority boundary.
  */
 HHS_EXACT_API HHSExactStatus hhs_exact_pass219_rna_vm5184_route(
+    const HHSExactUQCELInputV1 *input,
+    const HHSExactVM81Frame *candidate_frame,
+    const HHSExactPass219Hash216TransitionViewV1 *transition,
+    uint8_t feedback_lane,
+    int8_t feedback_trinary,
+    HHSExactPass219Holo4PreparedV1 *out_prepared,
+    HHSExactPass219Holo4DecisionV1 *out_decision
+);
+
+/*
+ * Stable per-course-module port selection on the existing C++ membrane route.
+ * Module numbers 0..190 are the circuit identities in the course source.
+ * This route preserves the caller-supplied exact VM5184 frame; native module
+ * opcode lowering remains the responsibility of the inherited C toolchain.
+ * Selecting a module must not be mistaken for executing its operators.
+ */
+HHS_EXACT_API HHSExactStatus hhs_exact_pass219_course_module_vm5184_route(
+    uint32_t module_number,
     const HHSExactUQCELInputV1 *input,
     const HHSExactVM81Frame *candidate_frame,
     const HHSExactPass219Hash216TransitionViewV1 *transition,
