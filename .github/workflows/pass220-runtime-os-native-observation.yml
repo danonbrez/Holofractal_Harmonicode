@@ -24,7 +24,9 @@ on:
       - 'hhs_gui/rendering/hhs_guarded_observation_transport_v1.js'
       - 'hhs_runtime/hhs_pass220_native_observation_export_v1.py'
       - 'hhs_runtime/hhs_pass220_v154_ordered_geometry_identity_v1.py'
+      - 'hhs_runtime/hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py'
       - 'tests/pass220/test_hhs_pass220_v154_ordered_geometry_identity_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py'
       - 'hhs_runtime/include/hhs_pass220_v152_ordered_geometry_projection_cell_v1.hpp'
       - 'hhs_runtime/include/hhs_pass220_v153_geometry_resource_binding_cell_v1.hpp'
       - 'tests/pass220/test_hhs_v152_ordered_geometry_projection_cell_v1.cpp'
@@ -95,7 +97,8 @@ jobs:
             hhs_runtime/hhs_pass220_gfx4_observation_witness_v1.py \
             hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py \
             hhs_runtime/hhs_pass220_native_observation_export_v1.py \
-            hhs_runtime/hhs_pass220_v154_ordered_geometry_identity_v1.py
+            hhs_runtime/hhs_pass220_v154_ordered_geometry_identity_v1.py \
+            hhs_runtime/hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py
       - name: Verify inherited GFX4 and new decay-binding contracts
         run: |
           python -m pytest -q \
@@ -108,7 +111,8 @@ jobs:
             tests/pass220/test_hhs_v150_decay_pool_preservation_v1.py \
             tests/pass220/test_hhs_v151_admitted_geometry_preservation_v1.py \
             tests/pass220/test_hhs_v152_geometry_preservation_v1.py \
-            tests/pass220/test_hhs_pass220_v154_ordered_geometry_identity_v1.py
+            tests/pass220/test_hhs_pass220_v154_ordered_geometry_identity_v1.py \
+            tests/pass220/test_hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py
       - name: Verify presentation-only cache and packet lane binding
         run: |
           node tests/pass220/test_hhs_observation_graph_cache_v1.cjs
