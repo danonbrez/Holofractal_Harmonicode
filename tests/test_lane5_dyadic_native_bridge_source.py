@@ -30,6 +30,7 @@ class NativeDyadicBridgeSourceTests(unittest.TestCase):
         make = (ROOT / "GNUmakefile").read_text(encoding="utf-8")
         self.assertIn("PASS220_LANE5_DYADIC_BRIDGE_SRC := ", make)
         self.assertIn("PASS169_RUNTIME_BINDING_SRCS += $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)", make)
+        self.assertIn("$(ABI_LIB): $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)", make)
         self.assertIn("$(PASS220_LANE5_DYADIC_BRIDGE_OBJ): $(PASS220_LANE5_DYADIC_BRIDGE_SRC)", make)
         self.assertIn("$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_LANE5_DYADIC_BRIDGE_SRC)", make)
 
