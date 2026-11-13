@@ -29,6 +29,8 @@ on:
       - 'tests/pass220/test_hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py'
       - 'hhs_runtime/include/hhs_pass220_v152_ordered_geometry_projection_cell_v1.hpp'
       - 'hhs_runtime/include/hhs_pass220_v153_geometry_resource_binding_cell_v1.hpp'
+      - 'hhs_runtime/include/hhs_pass220_v156_ordered_geometry_resource_transfer_v1.hpp'
+      - 'tests/pass220/test_hhs_v156_ordered_geometry_resource_transfer_v1.cpp'
       - 'tests/pass220/test_hhs_v152_ordered_geometry_projection_cell_v1.cpp'
       - 'tests/pass220/test_hhs_v153_geometry_resource_binding_cell_v1.cpp'
       - 'hhs_gui/rendering/hhs_runtime_os_native_observation_bootstrap_v1.js'
@@ -91,6 +93,11 @@ jobs:
             tests/pass220/test_hhs_v153_geometry_resource_binding_cell_v1.cpp \
             -o build/pass220-v152/test_v153_geometry_resource
           build/pass220-v152/test_v153_geometry_resource
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_v156_ordered_geometry_resource_transfer_v1.cpp \
+            -o build/pass220-v152/test_v156_geometry_resource_transfer
+          build/pass220-v152/test_v156_geometry_resource_transfer
       - name: Compile native observation modules
         run: |
           python -m py_compile \
