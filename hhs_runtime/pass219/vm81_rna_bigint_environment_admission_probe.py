@@ -102,12 +102,19 @@ def run_native_admission(raw: bytes, native_probe: str, mode: str) -> dict[str, 
         source = Path(directory) / "candidate.bin"
         committed = Path(directory) / "committed.bin"
         source.write_bytes(bytes(raw))
+        command = [str(probe), mode, str(source), str(committed)]
         completed = subprocess.run(
-            [str(probe), mode, str(source), str(committed)],
-            check=True,
+            command,
+            check=False,
             capture_output=True,
             text=True,
         )
+        if completed.returncode != 0:
+            raise VM81RNABigIntEnvironmentAdmissionProbeError(
+                "NATIVE_ADMISSION_PROBE_EXIT:"
+                f"mode={mode}:exit={completed.returncode}:"
+                f"stdout={completed.stdout!r}:stderr={completed.stderr!r}"
+            )
         if not committed.is_file():
             raise VM81RNABigIntEnvironmentAdmissionProbeError("NATIVE_ADMISSION_COMMITTED_FRAME_MISSING")
         committed_raw = committed.read_bytes()

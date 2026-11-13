@@ -222,3 +222,9 @@ The restored expanded course contains exactly **191 unique module headings, M000
 - **M190:** the supplied exact scalar polynomial consensus, Bézout certificate, resultant, and shared reciprocal branches are recorded with their claimed executed scope; this does **not** certify complete native ordered equivalence or canonical runtime admission.
 
 The read-only corpus CI validator checks these three module-presence and boundary markers, the complete numbering, pinned source blob, and absence of unauthorized proof promotion.
+
+### HARMONICODE course module native service ports
+
+The M000–M190 module selector is exposed by `hhs_exact_pass220_course_module_execute_route` in [the additive native C ABI](hhs_runtime/include/hhs_pass220_course_module_vm81_route_v1.h). Its implementation executes a caller-supplied VM81 opcode program through the existing C VM81 candidate executor, then forwards the resulting exact 81×64-bit frame through `hhs_exact_pass219_rna_vm5184_route` to the existing Pass 219 C++ cell wall. [GNUmakefile](GNUmakefile) links the exported entrypoint into the native runtime. The [native smoke test](tests/pass220/test_pass220_course_module_native_port_v1.py) checks all 191 selectors in the linked ABI.
+
+Module selection and prelowered opcode execution are not the same as generating each module's opcode program. Source-equation lowering for M000–M190 remains to be implemented through the existing C/Pass159 ingress pipeline, preserving the course's ordered expressions and existing VM81 egress.

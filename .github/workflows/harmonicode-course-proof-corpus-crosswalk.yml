@@ -10,6 +10,8 @@ on:
       - 'contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json'
       - 'tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py'
       - 'tests/pass220/test_harmonicode_course_expansion_index_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_course_module_vm81_route_v1.h'
+      - 'hhs_runtime/cpp/hhs_pass220_course_module_vm81_route_v1.cpp'
       - 'hhs_runtime/hhs_pass220_course_i081_exact_dependency_projection_v1.py'
       - '.github/workflows/harmonicode-course-proof-corpus-crosswalk.yml'
   push:
@@ -20,6 +22,8 @@ on:
       - 'contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json'
       - 'tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py'
       - 'tests/pass220/test_harmonicode_course_expansion_index_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_course_module_vm81_route_v1.h'
+      - 'hhs_runtime/cpp/hhs_pass220_course_module_vm81_route_v1.cpp'
       - 'hhs_runtime/hhs_pass220_course_i081_exact_dependency_projection_v1.py'
       - '.github/workflows/harmonicode-course-proof-corpus-crosswalk.yml'
   workflow_dispatch:
@@ -51,3 +55,15 @@ jobs:
         env:
           PYTHONPATH: .
         run: python tests/pass220/test_harmonicode_course_proof_corpus_crosswalk_v1.py
+
+      - name: Compile additive Pass 219 course VM81-to-membrane native route
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -fPIC \
+            -Ihhs_runtime/include -Ihhs_runtime/c \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            -c hhs_runtime/cpp/hhs_pass220_course_module_vm81_route_v1.cpp \
+            -o /tmp/hhs-course-module-vm81-route.o
+          nm /tmp/hhs-course-module-vm81-route.o | grep -Fq hhs_exact_pass220_course_module_execute_route
