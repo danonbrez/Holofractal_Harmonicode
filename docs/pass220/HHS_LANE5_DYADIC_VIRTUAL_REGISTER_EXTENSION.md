@@ -77,3 +77,23 @@ Pending native work remains Pass159 compiler ingress, typed P219 I157 graph
 composition, actual C++ cell-wall forwarding, signed VM81 admission and
 receipt/replay verification. Frozen source files and runtime registrations
 have not been changed.
+
+## Continuation: inherited Pass219 I157 typed graph attachment
+
+`attach_existing_i157_typed_graph` accepts a previously validated dyadic
+Pass159 binding and an existing I157 typed graph. It checks the graph schema,
+recomputes the inherited exact diagnostic root using I157's own serializer,
+requires identical source identity and Pass159 source-to-VMIR lineage,
+retains the 5184 hydration scope, and rejects any graph carrying claimed
+VM81 execution, Hash72 mint, Hash216 persistence or replay verification.
+
+**Critical type boundary:** I157 snapshot `P` is an integer-local hydration
+parameter, while the new dyadic pair's `P=sqrt(1+2^n)` may be irrational.
+The attachment explicitly retains both fields with their separate identities
+and does not coerce the irrational center into I157's integer snapshot,
+overwrite its fifteen frozen source terms, or assert that the attached graph
+has executed the dyadic full master equation.
+
+This is a read-only, lineage-checked composition object, not a canonical
+receipt. Native cell-wall forwarding, Pass159 compiler execution for the new
+source, and singleton VM81 signed admission remain separate obligations.
