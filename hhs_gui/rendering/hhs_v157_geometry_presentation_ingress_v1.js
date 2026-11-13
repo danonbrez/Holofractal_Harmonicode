@@ -14,6 +14,7 @@
   const SCHEMA="HHS_PASS_220_V157_GEOMETRY_PRESENTATION_INGRESS_V1";
   const PARTICLES=10368,COUNT=PARTICLES*3,BYTES=COUNT*4;
   const fail=code=>{throw Error("V157_GEOMETRY_"+code);};
+  const consumed=new WeakSet();
   const uint=v=>typeof v==="bigint"?v>=0n?v:null:
     typeof v==="number"&&Number.isSafeInteger(v)&&v>=0?BigInt(v):null;
   function equalBytes(a,b){
@@ -69,7 +70,7 @@
       target,positionAttribute,resource,committed:false});
   }
   function publish(staged){
-    if(!staged||staged.schema!==SCHEMA||staged.committed!==false)
+    if(!staged||staged.schema!==SCHEMA||staged.committed!==false||consumed.has(staged))
       fail("STAGE_REQUIRED");
     const current=new Uint8Array(staged.sourceReference.buffer,
       staged.sourceReference.byteOffset,BYTES);
@@ -78,6 +79,7 @@
     if(staged.positionAttribute.array!==staged.target||
        staged.resource.geometry.attributes?.position!==staged.positionAttribute)
       fail("DRAW_RESOURCE_REPLACED");
+    consumed.add(staged);
     staged.target.set(staged.values);
     staged.positionAttribute.needsUpdate=true;
     // This schedules only a renderer-owned GPU upload on the next existing
