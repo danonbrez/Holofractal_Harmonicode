@@ -1,0 +1,106 @@
+# Pass 220 — Module 194 HNAN local symmetry: inherited course-gate integration boundary
+
+**Status:** additive integration contract, not an executed HNAN proof, a new
+native gate, a VM81 receipt, or a change to production physics.
+
+**Source artifact inspected:** uploaded
+`HHS_Alpha_V150_Module194_HNAN_Local_Symmetry.html` (not asserted to be
+present on this development branch). This record does not silently substitute
+the existing V150/V152 repository artifacts for that upload.
+
+## 1. Inherited proof sources and required order
+
+The authoritative course is `whitepapers/Harmonicode Algebra - Course`.
+Modules 0, 3, 4, 5, 9, 11, and 14 respectively preserve the master
+constraint shell, reciprocal phase shells, distinct carriers with equal
+squares, ordered ERS forward/reverse traversal, HNAN gain-one/no-phase-write
+passthrough, Lo Shu center routing, and executed receipt discipline.
+
+Additional inherited authorities:
+`contracts/pass219/PASS_219_LANE5_HNAN_GLOBAL_CONSTRAINT_1_63.md`,
+`contracts/pass220/PASS_220_I051_NATIVE_LEAN_ALIGNMENT_V1.json`,
+`hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py`, and the existing
+Lane 5/VM81/Hash72/Hash216 source/receipt/replay chain.
+
+Do **not** replace any of these with a new browser-side HNAN evaluator.
+
+## 2. Typed tensor object to preserve
+
+Let `L=[[4,9,2],[3,5,7],[8,1,6]]` and the ordered inner tensor
+`F(a,b)` be defined by the three seed columns `(a²,a⁴,a⁴+b²)`,
+their squares, and `s²+s⁴`. The supplied source expression is the
+nested 81-address tensor `T[i,j,k,l]=L[i,j]*F[k,l]`, **with the
+original typed cell provenance and operation order retained**. This notation
+indexes the source; it is not an independent commuting operator rewrite.
+
+The user's HNAN closure assignments are:
+
+- `A=LHS`, `B=RHS` (different typed tensor objects).
+- `A=P²`, `B=P²`, `A≠B`.
+- `A=eM/∆=P²`, `AB=P⁴`, `BA=-P⁴`.
+- `e=(0,1)` is the primitive, not the complete trinary phase.
+- `∆eA=(-1,0,+1)B/∆=P²/∆` and `∆e=√AB` are typed interior
+  constraints; the outer `t³-t-1=∆e=0` is the closure boundary.
+
+These constraints must not be converted to ordinary scalar equalities,
+Boolean `And`, globally zeroed tensor entries, or generic matrix products.
+Proof obligations include separate typed interior/boundary evaluation and
+the existing HNAN center-gate lineage.
+
+## 3. Observed browser implementation (upload only)
+
+The uploaded Module 194 source defines:
+- 81 groups × (64 + 64) reciprocal particle addresses = 10,368;
+  `m194Group[i]=floor((i%5184)/64)`, `m194Cluster[i]=(i>=5184)`.
+- Lo Shu weights `[4,9,2,3,5,7,8,1,6]`, with HNAN slot
+  `h=g%9`, and numerical center `h===4 ? 0 : sin(...)`.
+- bounded `m194Phi`, `m194Drift`, and centered `m194Prob` registers.
+- one existing RGB coefficient pathway:
+  `baseDeviation + 0.035*localBias + 0.018*rgbBias`
+  before the inherited `rgbEffectiveMatrix` force projection.
+
+**Scope distinction:** these are browser projection weights, not executed
+native `AB`/`BA` gate witnesses or a native HNAN center receipt.
+The `h===4` zero-valued numerical projection does not prove native
+HNAN gain-one/no-phase-write closure. Current `rgbAdvanceBrownianWeights`
+calculates the matrix before `m194Advance(tick)`; this is an observed
+one-tick lag to preserve or deliberately resolve with a tested transition.
+
+The current standalone source also exposes a floating-quantized spawn
+checksum; it is diagnostic, not a native Hash72/Hash216 receipt.
+
+## 4. Mandatory admission and replay tests before native promotion
+
+1. Source isolation: byte-preserve existing V147–V158 physics, native
+   authority, prior HTML versions and Module 193; do not inject a second
+   clock, reinitialize particles or break reciprocal partner bijection.
+2. Source/index witness: retain all 81 typed Lo Shu×HNAN addresses, 64+64
+   reciprocal slots, spawn origin, signed phase, completed producer tick.
+3. Typed algebra witness: reject `A=B` substitution despite equal
+   `P²` magnitude; reject `AB↔BA` reorder, mirror-sign cancellation,
+   cell/address loss, and independent commutative evaluation.
+4. Boundary witness: preserve primitive `e=(0,1)`, trinary orientation,
+   typed interior `∆e≠0`, outer `∆e=0` and the inherited HNAN gate.
+   Zero-divisor sites require gain 1, no phase write and original
+   numerator/branch lineage.
+5. Native proof gate: locate and execute the inherited Lean/C++/Lane 5
+   typed checker with authentic source/receipt lineage; do not allow a
+   frontend flag or source substring match to self-certify.
+6. Geometry/force witness: the exact resulting producer state must bind
+   the existing V152–V158 ordered particle geometry, GFX4 draw resource,
+   VM81 frame, Hash216 dependency root and Hash72 replay. Render-only
+   projection cannot mint physics mutation authority.
+7. Performance: test time-domain continuity and full 10,368 particle
+   motion with negative Brownian samples, Module 193 enabled/disabled
+   cases, physics ticks independent of WebGL frames, and Fold7 profiling.
+8. Closure: preserve the exact course source and all inherited gates.
+   Mark native proof or deployment closed only from executed verification
+   and exact-main production evidence.
+
+## 5. Explicit current boundary
+
+The upload is **not yet a trusted native HNAN / Lane 5 producer**. Existing
+browser `HHSModule194.inspect().nativeAdmissionVerified` correctly reports
+`false`. This contract identifies the missing verified bridge; it does not
+replace the frozen course, claim mathematical proof of external physics, or
+authorize promotion of an unverified browser force into canonical VM81 state.
