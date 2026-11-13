@@ -1,0 +1,23 @@
+name: Pass 220 Course Module 195 Exact Spectral Witness
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass220_course_m195_spectral_tensor_witness_v1.py'
+      - 'tests/pass220/test_hhs_pass220_course_m195_spectral_tensor_witness_v1.py'
+      - 'docs/pass220/HARMONICODE_ALGEBRA_COURSE_MODULE_195_SPECTRAL_TENSOR.md'
+      - '.github/workflows/pass220-course-module195-spectral.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-spectral-witness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute Module 195 exact witness
+        run: python hhs_runtime/hhs_pass220_course_m195_spectral_tensor_witness_v1.py
+      - name: Run fail-closed Module 195 regression tests
+        run: python -m unittest discover -s tests/pass220 -p 'test_hhs_pass220_course_m195_spectral_tensor_witness_v1.py' -v
