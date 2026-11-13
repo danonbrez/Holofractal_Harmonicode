@@ -5,23 +5,18 @@ Policy scope is deliberately explicit: absence from the protected registry does
 NOT imply a service is mutable or that the broader contract is enforced.
 """
 import argparse
-import subprocess
+from pathlib import Path
 import sys
+import subprocess
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from hhs_canonical_changed_paths import changed_paths, ChangedPathEvidenceError
 
 # Existing, repository-inspected native paths. Expand only with closure evidence.
 PROTECTED_EXACT_PATHS = frozenset({
     "hhs_runtime/core_sandbox/hhs_general_runtime_layer_v1.py",
     "hhs_runtime/hhs_hash72_signing_layer_v1.py",
 })
-
-def changed_paths(base: str, head: str) -> set[str]:
-    if not base or not head:
-        raise ValueError("both base and head commits are required")
-    output = subprocess.check_output(
-        ["git", "diff", "--no-renames", "--name-only", "-z", "--diff-filter=ACDMRTUXB",
-         f"{base}...{head}"]
-    )
-    return {p.decode("utf-8", "surrogateescape") for p in output.split(b"\0") if p}
 
 def violations(paths: set[str]) -> list[str]:
     return sorted(paths & PROTECTED_EXACT_PATHS)
@@ -33,7 +28,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         paths = changed_paths(args.base, args.head)
-    except (ValueError, subprocess.CalledProcessError) as exc:
+    except (ChangedPathEvidenceError, subprocess.CalledProcessError) as exc:
         print(f"FROZEN_LAYER_GATE_ERROR: {exc}", file=sys.stderr)
         return 2
     blocked = violations(paths)
