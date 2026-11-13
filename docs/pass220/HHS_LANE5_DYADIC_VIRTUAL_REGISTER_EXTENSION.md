@@ -151,3 +151,24 @@ Regression coverage includes source-level non-bypass checks, C++17 syntax
 checking when a compiler is available, and a Makefile object-registration
 assertion. Complete native linkage, runtime invocation, admission,
 receipt/replay, and exact-main production evidence remain outstanding.
+
+## Build dependency repair — 2026-11-13
+
+The GitHub run for head `728f74e555bc942d03734a90a903019ee145777d`
+reported link failures across native-dependent workflows:
+`ld: cannot find .../hhs_pass220_lane5_dyadic_virtual_bridge_v1.o`.
+The Makefile included from the root GNUmakefile defines the shared library
+target before the overlay appends the new bridge object to
+`PASS169_RUNTIME_BINDING_SRCS`. As make expands prerequisite lists when a
+rule is parsed, the later object addition affected the link recipe but not
+the actual target dependency graph.
+
+Repair: `GNUmakefile` now declares
+`$(ABI_LIB): $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)` explicitly after the
+overlay's object definition. This schedules native compilation ahead of
+linking without altering the inherited Makefile, protected cell wall,
+compiler flags, ABI exports, or any VM81 acceptance rule.
+
+`tests/test_lane5_dyadic_native_bridge_source.py` now asserts the explicit
+ABI prerequisite is present. Follow-up native workflow results are required
+to verify the repair; committed source alone is not a passing build receipt.
