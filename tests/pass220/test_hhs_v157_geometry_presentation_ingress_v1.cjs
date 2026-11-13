@@ -22,6 +22,7 @@ assert.equal(result.presentationOnly,true);
 assert.equal(result.nativeProducerProvenanceVerified,false);
 assert.equal(result.copiedBytes,124416);
 assert.equal(position.needsUpdate,true);
+assert.throws(()=>api.publish(staging),/STAGE_REQUIRED/);
 assert.equal(Object.is(position.array[0],-0),true);
 assert.equal(position.array[1],1.5);
 assert.equal(position.array[2],-0.25);
