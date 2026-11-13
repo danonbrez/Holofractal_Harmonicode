@@ -172,3 +172,25 @@ compiler flags, ABI exports, or any VM81 acceptance rule.
 `tests/test_lane5_dyadic_native_bridge_source.py` now asserts the explicit
 ABI prerequisite is present. Follow-up native workflow results are required
 to verify the repair; committed source alone is not a passing build receipt.
+
+## Executable native candidate regression
+
+New `tests/pass220/test_lane5_dyadic_native_bridge.cpp` uses the inherited
+Pass220 I028 constructor witness fixture, Pass219 Hash216 genesis reference,
+exact VM81 input frame, and native shared-library binding. A dedicated
+`.github/workflows/pass220-lane5-dyadic-native-candidate.yml` performs
+frozen-source verification, production ABI build and exported-symbol check,
+native Pass188/189 dependency compilation, test linkage and execution,
+and the candidate-only static no-bypass regression.
+
+The positive path verifies ordered 72-digit coordinates, a signed negative
+dyadic exponent, phase, provided source-binding bytes, candidate-only flags,
+and an unchanged VM81 input. Negative tests cover invalid digits, out-of-range
+phase, unrepresentable exponent sentinel, invalid SHA formatting, tampered
+predecessor identity and missing constructor receipt, all requiring
+fail-closed nonmutation of the output.
+
+The header's SHA256 field is a **format-checked reference** only; it is not
+cryptographically authenticated in this C++ candidate wrapper. The upstream
+Pass159 binding and inherited signed PQC/VM81 admission remain mandatory.
+A passing candidate regression is not a full master-equation closure proof.
