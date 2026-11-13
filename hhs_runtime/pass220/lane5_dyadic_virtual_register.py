@@ -230,3 +230,72 @@ def bind_existing_pass159_provenance(
         "hash216_persisted": False,
         "canonical_hash_mutation": None,
     }
+
+
+def attach_existing_i157_typed_graph(
+    bound_candidate: dict[str, object],
+    graph: dict[str, object],
+) -> dict[str, object]:
+    """Attach *existing* I157 graph lineage without asserting dyadic proof.
+
+    Pass219 I157's snapshot P is an exact positive integer. The dyadic
+    proposal's symbolic irrational P is an independent typed field, never
+    coerced into that integer snapshot or the fifteen source terms.
+    """
+    if not isinstance(bound_candidate, dict) or not isinstance(graph, dict):
+        raise TypeError("typed candidate and Pass219 I157 graph mappings required")
+    from hhs_runtime.pass219.typed_full_symbolic_candidate_values import (
+        SCHEMA as I157_SCHEMA,
+        _sha256 as inherited_diagnostic_sha256,
+    )
+    if bound_candidate.get("schema") != "HHS_LANE5_DYADIC_PASS159_CANDIDATE_BINDING_V1":
+        raise ValueError("candidate binding schema mismatch")
+    if bound_candidate.get("vm81_admitted") is not False or bound_candidate.get("canonical_hash_mutation") is not None:
+        raise ValueError("candidate authority escalation")
+    proposal = bound_candidate.get("proposal")
+    if not isinstance(proposal, dict) or proposal.get("candidate_only") is not True:
+        raise ValueError("unadmitted dyadic proposal required")
+    if graph.get("schema") != I157_SCHEMA:
+        raise ValueError("Pass219 typed graph schema mismatch")
+    actual_root = graph.get("typed_value_graph_sha256")
+    core = {key: value for key, value in graph.items() if key != "typed_value_graph_sha256"}
+    if actual_root != inherited_diagnostic_sha256(core):
+        raise ValueError("Pass219 typed graph diagnostic root mismatch")
+    provenance = graph.get("pass159_provenance")
+    if not isinstance(provenance, dict) or provenance != bound_candidate.get("pass159_provenance"):
+        raise ValueError("Pass159 source-to-VMIR graph lineage mismatch")
+    if provenance.get("provenance_binding_sha256") != bound_candidate.get("provenance_binding_sha256"):
+        raise ValueError("candidate provenance binding mismatch")
+    if graph.get("source_identity") != bound_candidate.get("pass159_source_identity"):
+        raise ValueError("frozen source identity mismatch")
+    snapshot = graph.get("snapshot")
+    if not isinstance(snapshot, dict) or type(snapshot.get("P")) is not int or snapshot["P"] < 1:
+        raise ValueError("I157 integer-snapshot P required")
+    if snapshot.get("hydration_bits") != 5184:
+        raise ValueError("I157 5184 hydration scope drift")
+    authority = graph.get("authority")
+    if not isinstance(authority, dict) or any(
+        authority.get(k) is not False for k in (
+            "canonical_monolithic_proof", "vm81_execution_verified",
+            "vm81_mutation_authority", "hash72_execution_receipt_verified",
+            "hash72_mint_authority", "hash216_persistence_authority",
+            "deterministic_replay_verified", "floating_point_authority",
+        )
+    ):
+        raise ValueError("I157 graph authority escalation")
+    return {
+        "schema": "HHS_LANE5_DYADIC_I157_TYPED_GRAPH_ATTACHMENT_V1",
+        "candidate": bound_candidate,
+        "inherited_graph_root_sha256": actual_root,
+        "inherited_graph_snapshot_binding_sha256": snapshot.get("snapshot_binding_sha256"),
+        "inherited_graph_candidate_binding_sha256": graph.get("candidate_binding_sha256"),
+        "typed_graph_term_count": graph.get("counts", {}).get("term_count") if isinstance(graph.get("counts"), dict) else None,
+        "i157_integer_snapshot_P": snapshot["P"],
+        "dyadic_symbolic_P": proposal.get("witness", {}).get("P"),
+        "separate_P_type_domains": True,
+        "native_full_master_equation_executed": False,
+        "vm81_admitted": False,
+        "hash72_minted": False,
+        "hash216_persisted": False,
+        "canonical_hash_mutation": None,
+    }
