@@ -1162,6 +1162,14 @@
     <input id="ctorSlider" type="range" min="1" max="100000" step="1" value="1" style="width:150px">
     <div>formation <b>&times;<span id="bondVal">1</span></b></div>
     <input id="bondSlider" type="range" min="1" max="2.5" step="0.25" value="1" style="width:150px">
+    <fieldset id="rgbClusterPanel" style="border:1px solid #456;max-width:180px;margin-top:6px;">
+      <legend>RGB clustering (experimental)</legend>
+      <label><input type="checkbox" id="rgbClusterEnable"> Matrix force</label>
+      <div><label>Strength <output id="rgbClusterAmount">0.050</output></label></div>
+      <input type="range" id="rgbClusterStrength" min="0" max="0.25" step="0.005" value="0.05" style="width:150px">
+      <label><input type="checkbox" id="rgbClusterColors"> RGB signatures</label>
+      <small id="rgbClusterStatus" style="display:block;">OFF — original physics</small>
+    </fieldset>
     <div>recip topo <b><span id="topoVal">off</span></b></div>
     <button id="topoBtn" style="background:rgba(20,20,60,.9);color:#9cf;border:1px solid #345;padding:2px 8px;border-radius:3px;cursor:pointer;font-size:.9em">invert concave/convex (T)</button>
   </div>
@@ -1184,6 +1192,9 @@
       collBoost: 1,                // DENSITY TEST: collision/exchange window multiplier (1–1.5)
       ctorBoost: 1,                // CONSTRUCTOR RATE: virtual-recycling accrual multiplier (1–100000), control only
       recipTopo: 0,                // RECIPROCAL TOPOLOGY INVERSION: antipodal phase groups (Δ≡4 mod 8) feel CONVEX geometry where the lattice is concave; 0 = frozen seed exactly
+      rgbClusterOn: false,
+      rgbClusterStrength: 0.05,
+      rgbClusterColors: false,
       bondBoost: 1                 // FORMATION CHANNEL: bond capture window + capture speed scale (1–2.5), control only; 1 = frozen seed exactly
     };
     const DEBUG_MODE = true;
@@ -2072,10 +2083,84 @@
         p.position.set(px,py,pz);                         // group offset 0 at init
       }
     }
+    /* I090: standalone optional four-quadrant RGB clustering experiment.
+       Matrix rows address 2592-carrier quadrants. This mapping is
+       experimental, not a canonical VM81 / Hash72 admission. */
+    const RGB_PARTITION = Object.freeze({
+      schema:"HHS_PASS220_I090_RGB_PARTICLE_PARTITION_CANDIDATE_V1",
+      metadata_seed:"179971.179971", unity_lock:"P^2 - pq = 1",
+      matrix:[[8,4,4,0],[4,14,9,19],[4,9,13,18],[4,15,14,25]],
+      null_vector:[1,-1,-1,1],
+      particles:10368,quadrant:2592,grover72:144,vm81:128,
+      positive:5184,negative:5184,gcd_6561:81,ratio_6561:"128/81",
+      hash72_instruction:"RECORD_PARTICLE_PARTITION_AND_APPEND",
+      hash72_append_performed:false,canonical_mutation_authority:false
+    });
+    const rgbColors=RGB_PARTITION.matrix.map(row=>
+      new THREE.Color(row[0]/25,row[1]/25,row[2]/25));
+    const rgbMeans=new Float64Array(12),rgbMass=new Float64Array(4);
+    const rgbTargets=new Float64Array(12),rgbCorrection=new Float64Array(3);
+    function rgbPrepare(pos,mass,N){
+      if(N!==RGB_PARTITION.particles)return false;
+      rgbMeans.fill(0);rgbMass.fill(0);rgbCorrection.fill(0);
+      for(let i=0;i<N;i++){
+        const q=(i/2592)|0,j=i*3,k=q*3,m=mass[i];
+        rgbMass[q]+=m;
+        for(let a=0;a<3;a++)rgbMeans[k+a]+=m*pos[j+a];
+      }
+      for(let q=0;q<4;q++){
+        if(!(rgbMass[q]>0))return false;
+        for(let a=0;a<3;a++)rgbMeans[q*3+a]/=rgbMass[q];
+      }
+      let total=0;
+      for(let q=0;q<4;q++){
+        const row=RGB_PARTITION.matrix[q],sum=row.reduce((a,b)=>a+b,0);
+        for(let a=0;a<3;a++){
+          let target=0;
+          for(let p=0;p<4;p++)target+=row[p]*rgbMeans[p*3+a];
+          target/=sum;rgbTargets[q*3+a]=target;
+          rgbCorrection[a]+=rgbMass[q]*(target-rgbMeans[q*3+a]);
+        }
+        total+=rgbMass[q];
+      }
+      for(let a=0;a<3;a++)rgbCorrection[a]/=total;
+      return true;
+    }
+    function rgbPartitionReceipt(){
+      const M=RGB_PARTITION.matrix,v=RGB_PARTITION.null_vector;
+      const residual=M.map(row=>row.reduce((acc,x,j)=>acc+x*v[j],0));
+      return {schema:RGB_PARTITION.schema,ok:particles.length===10368&&
+          residual.every(x=>x===0),
+        matrix:M,null_vector:v,residual:residual,partitions:{
+          total:10368,quadrants:[2592,2592,2592,2592],grover72:144,
+          vm81:128,positive:5184,negative:5184,delta_e:0},
+        enabled:simParams.rgbClusterOn,strength:simParams.rgbClusterStrength,
+        rgb_view:simParams.rgbClusterColors,metadata_seed:RGB_PARTITION.metadata_seed,
+        unity_lock:RGB_PARTITION.unity_lock,
+        hash72_append_performed:false,canonical_mutation_authority:false,
+        mapping:"matrix row to quadrant; RGB first three columns / 25; fourth column participates in force"};
+    }
+    window.HHSRGBPartition={spec:RGB_PARTITION,receipt:rgbPartitionReceipt};
+    function syncRGBPanel(){
+      document.getElementById("rgbClusterAmount").textContent=simParams.rgbClusterStrength.toFixed(3);
+      document.getElementById("rgbClusterStatus").textContent=
+        simParams.rgbClusterOn?"ON — experimental bounded matrix force":"OFF — original physics";
+    }
+    document.getElementById("rgbClusterEnable").addEventListener("change",e=>{
+      simParams.rgbClusterOn=e.target.checked;syncRGBPanel();
+    });
+    document.getElementById("rgbClusterStrength").addEventListener("input",e=>{
+      simParams.rgbClusterStrength=Math.min(0.25,Math.max(0,Number(e.target.value)||0));syncRGBPanel();
+    });
+    document.getElementById("rgbClusterColors").addEventListener("change",e=>{
+      simParams.rgbClusterColors=e.target.checked;syncRGBPanel();
+    });
     function updateSwarmCoupling(){
       if(!thPos) initThermoState();
       const N=particles.length, dt=FLD.dt*simParams.swarmReactivity;
       const pos=thPos, vel=thVel, mass=thMass, ph=thPhase;
+      const rgbActive=simParams.rgbClusterOn && simParams.rgbClusterStrength>0 &&
+        rgbPrepare(pos,mass,N);
       for(let s=0;s<spiralData.length;s++){ const gp=spiralData[s].group.position;
         tOff[s*3]=gp.x; tOff[s*3+1]=gp.y; tOff[s*3+2]=gp.z; }       /* spirals: slots 0..15 */
       for(let s=0;s<exchangeData.length;s++){ const d=exchangeData[s];
@@ -2397,6 +2482,14 @@
            exactly 1 — the carrier's original swarming curvature AND phase
            untouched for that step. Structurally 1+shared>=1; the gate is
            the executable form of the rule. */
+        if(rgbActive){
+          const k=((i/2592)|0)*3,g=simParams.rgbClusterStrength;
+          ax+=g*(rgbTargets[k]-pos[ix]-rgbCorrection[0]);
+          ay+=g*(rgbTargets[k+1]-pos[ix+1]-rgbCorrection[1]);
+          az+=g*(rgbTargets[k+2]-pos[ix+2]-rgbCorrection[2]);
+          const ca=Math.hypot(ax,ay,az);
+          if(ca>aMax){const sc=aMax/ca;ax*=sc;ay*=sc;az*=sc;}
+        }
         const shrD=1+shared;
         const gD=hnanGate(1,shrD);
         ax*=gD; ay*=gD; az*=gD;
@@ -2423,8 +2516,12 @@
         const tempFreq=mi*(1+3*heat);
         /* hue/brightness is PROJECTION: written only on render frames
            (quartic render skip). Physics state is untouched. */
-        if(renderGate) P.material.color.setHSL((base + 0.08*tempFreq + oct*0.02 + P.userData.j/CORE_N*0.05 + time*0.01)%1, 1,
-          (bonded?0.30:0.18) + 0.10*heat + 0.45*(0.5+0.5*Math.sin(P.userData.phase)));
+        if(renderGate){
+          if(simParams.rgbClusterOn && simParams.rgbClusterColors && N===10368)
+            P.material.color.copy(rgbColors[(i/2592)|0]);
+          else P.material.color.setHSL((base + 0.08*tempFreq + oct*0.02 + P.userData.j/CORE_N*0.05 + time*0.01)%1, 1,
+            (bonded?0.30:0.18) + 0.10*heat + 0.45*(0.5+0.5*Math.sin(P.userData.phase)));
+        }
       }
       /* CROSS-LAYER COUPLING → SHARED DECAY POOL: both carriers of each
          coupled pair decay (bonds cleared, fresh phase, proto-cloud
@@ -4857,6 +4954,7 @@
       return H.receipt({ module:"BlockComposer648", ok:b.frame_bits===5184 && b.block_bytes===648,
         block_bytes:b.block_bytes, frame_bits:b.frame_bits,
         words64:b.words64_hex.length, hash72_receipt:b.hash72_receipt }); };
+    MODULES["RGBParticlePartitionTest"] = function(){return rgbPartitionReceipt();};
     MODULES["PixelPhysicsStep"] = function(){
       const H=window.HHS; const cyc=H.stepCycle();
       return H.receipt({ module:"PixelPhysicsStep", ok:cyc.ok, cycle:cyc,
@@ -5606,7 +5704,11 @@ function material(){
       "varying vec4 vPartner;",
       "varying vec3 vPartnerTint;",
       "void main(){",
+      "#ifdef USE_INSTANCING_COLOR",
       "vTint=instanceColor;",
+      "#else",
+      "vTint=vec3(1.0);",
+      "#endif",
       "vPartner=partnerSphere;",
       "vPartnerTint=partnerTint;",
       "vWorldPoint=(modelMatrix*instanceMatrix*vec4(position,1.0)).xyz;",
