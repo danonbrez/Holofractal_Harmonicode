@@ -104,3 +104,11 @@ browser `HHSModule194.inspect().nativeAdmissionVerified` correctly reports
 `false`. This contract identifies the missing verified bridge; it does not
 replace the frozen course, claim mathematical proof of external physics, or
 authorize promotion of an unverified browser force into canonical VM81 state.
+
+## V160 executable source-address preflight (development branch)
+
+- `hhs_runtime/hhs_pass220_v160_module194_source_address_preflight_v1.py` adds a fail-closed static audit for the *actual uploaded* Module 194 HTML. The exact uploaded 1,550,904-byte source identity is pinned to SHA-256 `09532443888f645819687c7b562e6f7ce4441f2bc3c04ea54b684ac49e3edfcc`. This hash is an input identity, **not** a native VM81/Hash216 admission receipt.
+- The checker verifies the source's explicit Lo Shu order, 81-group reciprocal address construction, HNAN numeric center projection, negative Brownian gating, zero-mean local probability, matrix gain coefficients, native-nonadmission declaration, and original update cadence (matrix first, then M193, then M194).
+- Executable address tests exhaust all 10,368 positions, show each has one reciprocal partner in the opposite 5,184 population, preserve original 64-cell slot and all 81 groups, and reject incorrect source fragments, gain substitution, center substitution, and changed partner arithmetic.
+- The uploaded standalone HTML was inspected locally; it was **not** copied into repository assets or represented as an authoritative native physical producer. CI runs with its own source-shape fixture; exact upload identity verification requires the actual uploaded bytes. The static source preflight does not execute the course's HNAN operator, prove typed AB/BA closure, or authorize any native phase write.
+- **Next:** bind the audited upload's source-origin identity and exact tensor/phase trace into the existing inherited Lane 5 HNAN validator. Retain all course proofs and reject any promotion to canonical VM81/Hash72/Hash216 state until the inherited checker and replay verify those exact terms end-to-end.
