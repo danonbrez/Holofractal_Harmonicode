@@ -1,8 +1,9 @@
 "use strict";
 const assert=require("node:assert/strict");
-const P=require("../../hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js");
-const B=require("../../hhs_gui/rendering/hhs_native_observation_binding_v1.js");
-const {ObservationCache}=require("../../hhs_gui/rendering/hhs_observation_graph_cache_v1.js");
+const {loadRenderingUMD}=require("./load_rendering_umd_v1.cjs");
+const P=loadRenderingUMD("hhs_harmonicode_render_packet_v1.js");
+const B=loadRenderingUMD("hhs_native_observation_binding_v1.js");
+const {ObservationCache}=loadRenderingUMD("hhs_observation_graph_cache_v1.js");
 const h=(char,n=216)=>char.repeat(n);
 const identity={
   classification:B.CLASSIFICATION,
