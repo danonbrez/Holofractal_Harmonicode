@@ -1,6 +1,7 @@
 "use strict";
 const assert=require("node:assert/strict");
-const {WebGLObservationSampler}=require("../../hhs_gui/rendering/hhs_webgl_observation_sampler_v1.js");
+const {loadRenderingUMD}=require("./load_rendering_umd_v1.cjs");
+const {WebGLObservationSampler}=loadRenderingUMD("hhs_webgl_observation_sampler_v1.js");
 const h=c=>c.repeat(216);
 const records=[];
 const nativeCache={
