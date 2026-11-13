@@ -9,6 +9,7 @@ on:
       - 'hhs_gui/rendering/hhs_*observation*.js'
       - 'hhs_gui/rendering/hhs_native_webgl_frame_presenter_v1.js'
       - 'hhs_gui/rendering/hhs_v157_geometry_presentation_ingress_v1.js'
+      - 'hhs_gui/rendering/hhs_v159_receipt_bound_geometry_ingress_v1.js'
       - 'tests/pass220/test_hhs_v157_geometry_presentation_ingress_v1.cjs'
       - 'tests/pass220/**'
       - 'applications/runtime_os/HHS_Alpha_V15*.html'
@@ -137,3 +138,4 @@ jobs:
           node tests/pass220/test_hhs_native_webgl_frame_presenter_v1.cjs
           node tests/pass220/test_hhs_v152_local_geometry_observation_v1.cjs
           node tests/pass220/test_hhs_v157_geometry_presentation_ingress_v1.cjs
+          node tests/pass220/test_hhs_v159_receipt_bound_geometry_ingress_v1.cjs
