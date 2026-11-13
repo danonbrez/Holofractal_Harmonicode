@@ -1,7 +1,8 @@
 "use strict";
 const assert=require("node:assert/strict");
-const {NativeWebGLFramePresenter}=require("../../hhs_gui/rendering/hhs_native_webgl_frame_presenter_v1.js");
-const packetAPI=require("../../hhs_gui/rendering/hhs_harmonicode_render_packet_v1.js");
+const {loadRenderingUMD}=require("./load_rendering_umd_v1.cjs");
+const {NativeWebGLFramePresenter}=loadRenderingUMD("hhs_native_webgl_frame_presenter_v1.js");
+const packetAPI=loadRenderingUMD("hhs_harmonicode_render_packet_v1.js");
 const op=packetAPI.OPCODE;
 const scene={parent:null},camera={};
 const particle={parent:scene},foreign={parent:null};
