@@ -97,3 +97,43 @@ has executed the dyadic full master equation.
 This is a read-only, lineage-checked composition object, not a canonical
 receipt. Native cell-wall forwarding, Pass159 compiler execution for the new
 source, and singleton VM81 signed admission remain separate obligations.
+
+## Native C++ cell-wall candidate route (additive)
+
+The source `hhs_runtime/cpp/hhs_pass220_lane5_dyadic_virtual_bridge_v1.cpp`
+and companion header add a strictly candidate-only dyadic register envelope.
+The function `hhs_pass220_lane5_dyadic_virtual_candidate_route` invokes
+the **existing** `hhs_exact_pass220_i028_lane5_rna_g3_route`, which performs
+the established Pass219 RNA C++ cell-wall and Lane5 constructor mediation.
+
+The envelope retains 72 ordered radix-72 digits, a signed 64-bit dyadic
+exponent, one phase coordinate in 0..71, and an exact 64-hex-character
+source-to-VMIR provenance binding reference. It does **not** claim that the
+64-hex-character string has been independently verified merely because its
+format is valid: the inherited Pass159 lineage verification remains mandatory.
+
+On successful inherited I028 candidate return, the dyadic wrapper demands
+RNA cell-wall mediation, the zero-bypass interposer, equivalent Holo4 evidence,
+an unchanged VM81 frame, absent direct ABI/environmental/opcode execution
+authority, and both the PQC firewall and signed environmental admission
+requirements. Any error leaves the caller's output unchanged.
+
+The wrapper uses ordinary x86_64-compatible memory representation and exact
+signed exponent metadata, not an IEEE floating-point dyadic magnitude.
+It cannot enumerate all signed exponent values in arbitrary precision:
+Python/BigInt virtual exponent support remains available beyond int64, and
+native caller lowering must reject unsupported exponent widths rather than
+truncate them. The 72-digit address is kept as an array and is not packed
+into a lossy 64-bit scalar.
+
+The C++ wrapper **does not execute the full master equation** or call the
+PQC firewall / signed VM81 canonical dispatcher. It supplies a native,
+read-only candidate routed through the existing protected cell wall, not
+a replacement security membrane, admission receipt, or hash-minting path.
+
+Targeted validation file:
+`tests/test_lane5_dyadic_native_bridge_source.py`, including the inherited
+header syntax check with `g++ -fsyntax-only` when the compiler is available.
+No canonical runtime build registration or deployment is asserted until
+the repository's build rules and required CI prove this object is linked
+and exercised in the authorized native service image.
