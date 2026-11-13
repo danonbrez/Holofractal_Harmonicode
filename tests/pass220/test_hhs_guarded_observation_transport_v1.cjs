@@ -1,6 +1,7 @@
 "use strict";
 const assert=require("node:assert/strict");
-const {GuardedObservationTransport,SERVICE}=require("../../hhs_gui/rendering/hhs_guarded_observation_transport_v1.js");
+const {loadRenderingUMD}=require("./load_rendering_umd_v1.cjs");
+const {GuardedObservationTransport,SERVICE}=loadRenderingUMD("hhs_guarded_observation_transport_v1.js");
 const h=x=>x.repeat(216),frame=h("a"),decay=h("b"),packet=Buffer.from([1,2,3,4]).toString("base64");
 let calls=[];
 const nativeObservation={
