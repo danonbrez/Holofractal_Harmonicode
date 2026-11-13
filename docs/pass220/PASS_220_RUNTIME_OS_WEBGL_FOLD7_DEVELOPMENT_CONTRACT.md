@@ -119,3 +119,11 @@ The HTML source, bounded cache, native GFX4 receipt/matrix binding, and their te
 - Focused Python regressions are registered in the branch-scoped native observation workflow. CI results remain separate from the presence of source and test files.
 
 **Next required interface:** recover the actual native particle-producer/Lane 5 proof witness, validate source byte lineage at the C++ cell wall, bind the resulting attested geometry resource to the inherited GFX4 command manifest and VM81 committed frame, verify replay and feed that admitted geometry to the existing WebGL presentation cadence. Do not promote a matching byte digest or a browser callback into a producer-origin proof. Fold7 hardware benchmarking and production exact-main admission remain open.
+
+## V155 inherited VM81 geometry/draw receipt verification (development only)
+
+- `hhs_runtime/hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py` checks V154's exact ordered Float32LE content identity, tick, and draw resource against the GFX4 frame's preadmission `ordered_physical_geometry_observation` field.
+- It requires actual Pass179 `DRAW_POINTS=14` or `DRAW_MESHES=16` command referencing that resource and recomputes the existing ordered GFX4 command-manifest Hash216 root (including command order/arguments). The bound manifest must match the committed frame state exactly.
+- It invokes the inherited `verify_decay_matrix_observation` implementation with the existing `VMRCRuntime`, journal, dependency-root and frame/packet identity checks. It does not call a second `submit_candidate`, mint a receipt, mutate physics, or interpret V154/browser geometry as native producer provenance.
+- Negative regressions cover a signed-zero byte change, tick/resource substitution, missing draw, edited preadmission command root, tampered frame dependency, and forged admission metadata. Included in the draft branch CI.
+- **Open:** actual trusted native physics producer and source-to-cell-wall lineage, geometry resource payload transfer into the native draw executor, authenticated C11 command bytes and live WebGL draw consumption, device performance and main-production evidence. This verification proves committed frame binding only, not the provenance or consumption of the positions.
