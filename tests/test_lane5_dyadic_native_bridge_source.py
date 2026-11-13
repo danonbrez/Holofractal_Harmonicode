@@ -26,6 +26,13 @@ class NativeDyadicBridgeSourceTests(unittest.TestCase):
         self.assertNotIn("hhs_hash216_compute(", source)
         self.assertNotIn("hhs_hash72_mint(", source)
 
+    def test_native_runtime_build_object_registration(self):
+        make = (ROOT / "GNUmakefile").read_text(encoding="utf-8")
+        self.assertIn("PASS220_LANE5_DYADIC_BRIDGE_SRC := ", make)
+        self.assertIn("PASS169_RUNTIME_BINDING_SRCS += $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)", make)
+        self.assertIn("$(PASS220_LANE5_DYADIC_BRIDGE_OBJ): $(PASS220_LANE5_DYADIC_BRIDGE_SRC)", make)
+        self.assertIn("$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_LANE5_DYADIC_BRIDGE_SRC)", make)
+
     @unittest.skipUnless(shutil.which("g++"), "g++ not available")
     def test_native_cpp_syntax_against_existing_headers(self):
         subprocess.run(
