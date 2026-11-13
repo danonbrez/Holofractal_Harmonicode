@@ -6,7 +6,7 @@ from hhs_runtime.pass220.lane5_dyadic_virtual_register import (
     VirtualRegister, decode_address, dyadic, encode_address,
     hydration_address, prime_center_witness, reciprocal_witness,
     shell, symmetric_witness, symbolic_reciprocal_pair, prepare_lane5_hydration_candidate,
-    bind_existing_pass159_provenance,
+    bind_existing_pass159_provenance, attach_existing_i157_typed_graph,
 )
 
 class DyadicVirtualRegisterTests(unittest.TestCase):
@@ -108,6 +108,67 @@ class DyadicVirtualRegisterTests(unittest.TestCase):
                 bind_existing_pass159_provenance(
                     VirtualRegister(reg.address, -2, reg.phase, reg.cell_type,
                                     reg.constructor, "wrong"), {"provided": "metadata"})
+
+    def test_i157_graph_attachment_preserves_separate_centers(self):
+        from hhs_runtime.pass219.typed_full_symbolic_candidate_values import (
+            SCHEMA, _sha256,
+        )
+        reg = VirtualRegister(decode_address(9), 1, "u72", "ordered-cell", "P_pq", "lineage")
+        proposal = prepare_lane5_hydration_candidate(reg)
+        provenance = {"provenance_binding_sha256": "lineage"}
+        sources = {"native": {"exact": True}}
+        binding = {
+            "schema": "HHS_LANE5_DYADIC_PASS159_CANDIDATE_BINDING_V1",
+            "proposal": proposal,
+            "pass159_source_identity": sources,
+            "pass159_provenance": provenance,
+            "provenance_binding_sha256": "lineage",
+            "vm81_admitted": False,
+            "canonical_hash_mutation": None,
+        }
+        forbidden = {
+            "canonical_monolithic_proof": False,
+            "vm81_execution_verified": False,
+            "vm81_mutation_authority": False,
+            "hash72_execution_receipt_verified": False,
+            "hash72_mint_authority": False,
+            "hash216_persistence_authority": False,
+            "deterministic_replay_verified": False,
+            "floating_point_authority": False,
+        }
+        graph = {
+            "schema": SCHEMA,
+            "source_identity": sources,
+            "pass159_provenance": provenance,
+            "snapshot": {"P": 3, "hydration_bits": 5184,
+                         "snapshot_binding_sha256": "snapshot"},
+            "candidate_binding_sha256": "candidate-root",
+            "counts": {"term_count": 15},
+            "authority": forbidden,
+        }
+        graph["typed_value_graph_sha256"] = _sha256(graph)
+        attached = attach_existing_i157_typed_graph(binding, graph)
+        self.assertEqual(attached["i157_integer_snapshot_P"], 3)
+        self.assertEqual(attached["dyadic_symbolic_P"], ("POSITIVE_SQRT", Fraction(3)))
+        self.assertTrue(attached["separate_P_type_domains"])
+        self.assertFalse(attached["vm81_admitted"])
+        tampered = dict(graph)
+        tampered["authority"] = dict(forbidden, vm81_execution_verified=True)
+        with self.assertRaises(ValueError):
+            attach_existing_i157_typed_graph(binding, tampered)
+        tampered = dict(graph)
+        tampered["snapshot"] = dict(graph["snapshot"], P=Fraction(3, 1))
+        tampered["typed_value_graph_sha256"] = _sha256(
+            {k: v for k, v in tampered.items() if k != "typed_value_graph_sha256"}
+        )
+        with self.assertRaises(ValueError):
+            attach_existing_i157_typed_graph(binding, tampered)
+        tampered = dict(graph, pass159_provenance={"provenance_binding_sha256": "wrong"})
+        tampered["typed_value_graph_sha256"] = _sha256(
+            {k: v for k, v in tampered.items() if k != "typed_value_graph_sha256"}
+        )
+        with self.assertRaises(ValueError):
+            attach_existing_i157_typed_graph(binding, tampered)
 
 if __name__ == "__main__":
     unittest.main()
