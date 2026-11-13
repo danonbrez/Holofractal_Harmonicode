@@ -1,6 +1,7 @@
 "use strict";
 const assert=require("node:assert/strict");
-const {ObservationCache}=require("../../hhs_gui/rendering/hhs_observation_graph_cache_v1.js");
+const {loadRenderingUMD}=require("./load_rendering_umd_v1.cjs");
+const {ObservationCache}=loadRenderingUMD("hhs_observation_graph_cache_v1.js");
 const A="a".repeat(216),B="b".repeat(216),C="c".repeat(216),D="d".repeat(216);
 const validation=bytes=>({compatibilityUnadmitted:false,vm81AdmissionAuthority:false,frameIndex:BigInt(bytes[0]),exactTimeNum:BigInt(bytes[0]),exactTimeDen:120n});
 const record=(n,hash)=>({nativeAdmission:true,matrixVersion:n,decayHash216:A,frameHash216:hash,packet:new Uint8Array([n])});
