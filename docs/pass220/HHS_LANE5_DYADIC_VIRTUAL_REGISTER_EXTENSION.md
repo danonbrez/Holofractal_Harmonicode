@@ -137,3 +137,17 @@ header syntax check with `g++ -fsyntax-only` when the compiler is available.
 No canonical runtime build registration or deployment is asserted until
 the repository's build rules and required CI prove this object is linked
 and exercised in the authorized native service image.
+
+## Runtime build inclusion
+
+The new C++ object is registered additively through `GNUmakefile` in
+`PASS169_RUNTIME_BINDING_SRCS`, reusing the existing Pass220 I028 native
+bridge dependency. The registration does not modify or broaden the protected
+Pass219 PQC cell-wall translation unit or the VM81 export map. Its native
+public symbol remains subject to the existing authority/export restrictions;
+object inclusion alone is not proof that an external ABI client can call it.
+
+Regression coverage includes source-level non-bypass checks, C++17 syntax
+checking when a compiler is available, and a Makefile object-registration
+assertion. Complete native linkage, runtime invocation, admission,
+receipt/replay, and exact-main production evidence remain outstanding.
