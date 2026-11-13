@@ -4,6 +4,8 @@ on:
     paths:
       - 'hhs_runtime/hhs_pass220_course_m195_spectral_tensor_witness_v1.py'
       - 'tests/pass220/test_hhs_pass220_course_m195_spectral_tensor_witness_v1.py'
+      - 'hhs_runtime/hhs_pass220_course_m195_hnan_bridge_v1.py'
+      - 'tests/pass220/test_hhs_pass220_course_m195_hnan_bridge_v1.py'
       - 'docs/pass220/HARMONICODE_ALGEBRA_COURSE_MODULE_195_SPECTRAL_TENSOR.md'
       - '.github/workflows/pass220-course-module195-spectral.yml'
   workflow_dispatch:
@@ -21,3 +23,5 @@ jobs:
         run: python hhs_runtime/hhs_pass220_course_m195_spectral_tensor_witness_v1.py
       - name: Run fail-closed Module 195 regression tests
         run: python -m unittest discover -s tests/pass220 -p 'test_hhs_pass220_course_m195_spectral_tensor_witness_v1.py' -v
+      - name: Test inherited HNAN adapter fail-closed behavior
+        run: python -m unittest discover -s tests/pass220 -p 'test_hhs_pass220_course_m195_hnan_bridge_v1.py' -v
