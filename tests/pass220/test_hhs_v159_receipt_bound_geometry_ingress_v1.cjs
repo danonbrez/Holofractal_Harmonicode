@@ -54,7 +54,8 @@ const args={egress,verifyGuardedEgress,packetAPI,presentationIngress:ingress,
  await assert.rejects(bridge.stageVerified({...args,verifyGuardedEgress:undefined}),/TRUSTED_VERIFIER_REQUIRED/);
  await assert.rejects(bridge.stageVerified({...args,verifyGuardedEgress:async()=>false}),/GUARDED_EGRESS_UNVERIFIED/);
  await assert.rejects(bridge.stageVerified({...args,egress:{...egress,position_sha256:"0".repeat(64)}}),/GEOMETRY_DIGEST_MISMATCH/);
- await assert.rejects(bridge.stageVerified({...args,egress:{...egress,position_base64:"AB=="}}),/GEOMETRY_LENGTH/);
+ await assert.rejects(bridge.stageVerified({...args,egress:{...egress,position_base64:"AA=="}}),/GEOMETRY_LENGTH/);
+ await assert.rejects(bridge.stageVerified({...args,egress:{...egress,position_base64:"AB=="}}),/BASE64_NONCANONICAL/);
  await assert.rejects(bridge.stageVerified({...args,egress:{...egress,physical_source_provenance_verified:true}}),/EGRESS_SHAPE_INVALID/);
  await assert.rejects(bridge.stageVerified({...args,proof:{...proof,geometry_hash216:h("x")}}),/GEOMETRY_PROOF_MISMATCH/);
  await assert.rejects(bridge.stageVerified({...args,packetAPI:{validate:()=>({compatibilityUnadmitted:true,commands:[]})}}),/NATIVE_PACKET_REQUIRED/);
