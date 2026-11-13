@@ -109,3 +109,13 @@ Validation classification: committed files and isolated JavaScript cache/binding
 
 ## Non-claims
 The HTML source, bounded cache, native GFX4 receipt/matrix binding, and their test sources are committed to this development branch. This does **not** claim V147 live renderer wiring, full native Hash216 compression/Lane 5 one-step execution, Fold7 hardware benchmark, production deployment, or completed end-to-end admission.
+
+## V154 ordered geometry identity preadmission (development only)
+
+- Additive module `hhs_runtime/hhs_pass220_v154_ordered_geometry_identity_v1.py` accepts exactly 10,368 ordered XYZ Float32LE particle positions (124,416 immutable bytes), equal producer/geometry/render ticks and a common positive GFX4 draw/scene/source geometry resource ID.
+- IEEE-754 exponent checks reject NaN/infinity while preserving distinct +0/-0 bits. Existing `hash216` supplies a domain-separated root over the source byte SHA-256, exact tick, count, length, and resource identity; no replacement hashing or authority is introduced.
+- `bind_geometry_frame_state` inserts the validated typed identity under the reserved `ordered_physical_geometry_observation` field **before** the existing GFX4 frame-state admission path. It rejects collisions, mutated roots, added fields, or caller claims of source provenance/VM81 authority.
+- The module does not submit VM81 candidates, mint receipts, claim browser physical bytes are trusted server-native state, or wire WebGL to an unverified source. It is a preadmission composition building block, **not** end-to-end source authority or rendering closure.
+- Focused Python regressions are registered in the branch-scoped native observation workflow. CI results remain separate from the presence of source and test files.
+
+**Next required interface:** recover the actual native particle-producer/Lane 5 proof witness, validate source byte lineage at the C++ cell wall, bind the resulting attested geometry resource to the inherited GFX4 command manifest and VM81 committed frame, verify replay and feed that admitted geometry to the existing WebGL presentation cadence. Do not promote a matching byte digest or a browser callback into a producer-origin proof. Fold7 hardware benchmarking and production exact-main admission remain open.
