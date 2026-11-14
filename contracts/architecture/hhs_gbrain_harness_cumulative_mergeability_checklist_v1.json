@@ -4,7 +4,7 @@
   "repository": "danonbrez/Holofractal_Harmonicode",
   "scope": "Priority 0 is this thread's existing GBrain-inspired agent harness, conventional IDE and unified Lane5 ingress/egress commitments. Remaining phases are assigned post-local-completion integration and repair obligations, not a license to merge incomplete candidates.",
   "priority_rule": "No consolidation work may displace Priority 0 until its existing local thread contracts are implemented and evidence-complete; review/inventory work may proceed without diverting implementation.",
-  "mergeability_rule": "All applicable checklist items require explicit evidence and PASS at the exact relevant SHA. OPEN is not PASS. A PR cannot be declared mergeable merely because a subset of scoped CI is green; preserve frozen layers and cumulative capabilities.",
+  "mergeability_rule": "All applicable checklist items require explicit evidence and PASS at the exact relevant SHA. OPEN is not PASS. A PR cannot be declared mergeable merely because a subset of scoped CI is green; preserve frozen layers and cumulative capabilities. A mandatory P8 forensic clearance gate additionally blocks P6.4 main merge and P7 production promotion, but does not displace P0 or earlier implementation work.",
   "evidence_fields": [
     "main_sha",
     "branch_head_sha",
@@ -353,6 +353,221 @@
           "scope": "required"
         }
       ]
+    },
+    {
+      "id": "P8",
+      "title": "END-APPENDED mandatory WFX supply-chain forensic gate before main merge and production",
+      "priority": 8,
+      "depends_on": [
+        "P0"
+      ],
+      "execution_order": "AFTER assigned thread tasks; must pass BEFORE P6.4 merge-to-main and any P7 production promotion",
+      "not_priority_override": true,
+      "mandatory_before": [
+        "P6.4",
+        "P7.2",
+        "production_deployment"
+      ],
+      "status": "OPEN",
+      "classification": "unverified threat indicators requiring investigation; no compromise, deleted-run, or credential-harvest finding asserted",
+      "reported_campaign_window": "2026-11-10 through 2026-11-14",
+      "metadata": {
+        "metadata_seed_exact": "179971.179971",
+        "unity_lock": "P^2 - pq = 1",
+        "module_type": "WFX_LOOT_SUPPLY_CHAIN_AUDIT_AND_CONSOLIDATION_HARDENING",
+        "repository_target": "danonbrez/Holofractal_Harmonicode",
+        "hash72_instruction": "PREPEND_ZERO_TRUST_WFX_LOOT_FORENSIC_GATE_BEFORE_MAIN_CONSOLIDATION"
+      },
+      "interpretation": "'PREPEND' denotes gate precedence at merger and production authorization, not immediate task scheduling; absence of search hits or workflow run-number gaps is not clearance; run gaps are investigative signals, not proof of compromise.",
+      "sections": [
+        {
+          "id": "L0.1",
+          "title": "Repository provenance",
+          "items": [
+            {
+              "id": "L0.1.1",
+              "requirement": "Inspect open and closed PRs, branches and titles for wfx-docs and dependency audit notes, preserving source and search coverage",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.1.2",
+              "requirement": "Search complete relevant commit history for injection, restore, cleanup and temporary CI helper changes; establish an independent known-good baseline",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.1.3",
+              "requirement": "Compare GitHub workflows, package and lockfile lifecycle hooks and executable scripts against the trusted baseline",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.1.4",
+              "requirement": "Inspect available GitHub audit, push, delete and force-push events; record unavailable historical retention windows",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.2",
+          "title": "Workflow execution",
+          "items": [
+            {
+              "id": "L0.2.1",
+              "requirement": "Enumerate run_number sequences separately by workflow_id with explicit page and campaign-window coverage",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.2.2",
+              "requirement": "Correlate any unexplained run-number gaps with commits, logs, audit events and legitimate deletion/retention; gaps are not independent proof of intrusion",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.2.3",
+              "requirement": "Inspect retained Actions logs for lifecycle hooks, unexpected shell execution, network egress and changed runners",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.2.4",
+              "requirement": "Prove production credentials are withheld from pull_request and untrusted ref contexts; review environment protections and OIDC trust",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.3",
+          "title": "Git object forensics",
+          "items": [
+            {
+              "id": "L0.3.1",
+              "requirement": "Preserve read-only forensic copies of reachable refs, local Git repository and available audit logs",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.3.2",
+              "requirement": "Run git fsck --full and inspect unreachable commits, trees and blobs based on payload content/behavior, not line count alone",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.3.3",
+              "requirement": "Compare local observations against available server-side history, remote refs and relevant event records",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.3.4",
+              "requirement": "Document that local object absence cannot establish absence of remote ephemeral or deleted objects",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.4",
+          "title": "Credential exposure and containment",
+          "items": [
+            {
+              "id": "L0.4.1",
+              "requirement": "Inventory GitHub PATs, Actions/environment secrets and OIDC permissions without exposing secret values",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.4.2",
+              "requirement": "Review DigitalOcean deployment tokens, SSH identities, production audit logs and affected service accounts",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.4.3",
+              "requirement": "Review OpenAI/Codex, Anthropic, Replit, Copilot and other integrated AI provider usage and credential provenance across November 10–14",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.4.4",
+              "requirement": "Contain and rotate credentials with established or credible exposure through authorized provider controls; record scope and completion without displaying secrets",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.5",
+          "title": "Gate clearance",
+          "items": [
+            {
+              "id": "L0.5.1",
+              "requirement": "Resolve high-confidence indicators or document containment and remaining uncertainty",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.5.2",
+              "requirement": "Validate an independently trusted clean build and required exact-SHA CI checks after forensic review",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.5.3",
+              "requirement": "Validate deployment environment protections and artifact provenance before any production promotion",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.5.4",
+              "requirement": "Attach forensic scope, coverage, limitations, findings and explicit security clearance decision to consolidation/production evidence",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        }
+      ],
+      "items": [
+        {
+          "id": "P8.1",
+          "requirement": "All twenty L0 forensic subchecks supported by inspectable and independently reviewed evidence before main merge or production promotion",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P8.2",
+          "requirement": "Explicit scope-bounded forensic clearance or formally approved containment with residual-risk decision; neither missing artifacts nor no search matches prove secrets were safe",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
     }
-  ]
+  ],
+  "gate_logic": "G_main_merge = G_P0_to_P6_and_applicable_checks AND G_P8_security; G_production = G_main_merge AND G_P7_deployment_checks AND G_P8_security"
 }
