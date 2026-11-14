@@ -58,3 +58,36 @@ def bind_m195_hnan_boundary(native_library: str, carrier: bytes, phase: bytes,
         "canonical_vm81_admission": False,
         "hash72_minted": False, "hash216_minted": False,
     }
+
+
+def exact_denominator_gaussian(real: int, imaginary: int) -> tuple[int, int]:
+    """D(a+bi) in exact Gaussian integers; no floating-point root test."""
+    if type(real) is not int or type(imaginary) is not int:
+        raise ProofCorpusError("COURSE_M195_EXACT_GAUSSIAN_INTEGER_REQUIRED")
+    # x^2 = (a^2-b^2) + 2abi
+    sqr, sqi = real * real - imaginary * imaginary, 2 * real * imaginary
+    # x^3 = (a+bi)(sqr+sqi*i)
+    cuber = real * sqr - imaginary * sqi
+    cubei = real * sqi + imaginary * sqr
+    return (cuber + 6 * sqr + 25 * real,
+            cubei + 6 * sqi + 25 * imaginary)
+
+
+def bind_m195_source_derived_singular_route(
+    native_library: str, real: int, imaginary: int,
+    carrier: bytes, phase: bytes, root: Path = Path(".")
+) -> dict:
+    """Decide the singular branch from exact D(x), then invoke inherited C.
+
+    This is an adapter-level arithmetic guard, NOT a Lane 5 native producer
+    or proof of original typed m-equality. Nonzero D routes are not bypasses.
+    """
+    dr, di = exact_denominator_gaussian(real, imaginary)
+    if (dr, di) != (0, 0):
+        raise ProofCorpusError("COURSE_M195_DENOMINATOR_NONZERO_NO_HNAN_BYPASS")
+    receipt = bind_m195_hnan_boundary(native_library, carrier, phase, root)
+    receipt["denominator_exact_gaussian"] = [dr, di]
+    receipt["x_exact_gaussian"] = [real, imaginary]
+    receipt["singularity_decision"] = "EXACT_D_ZERO"
+    receipt["singularity_decision_location"] = "M195_PYTHON_ADAPTER_NOT_LANE5"
+    return receipt
