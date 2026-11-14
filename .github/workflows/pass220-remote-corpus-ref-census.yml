@@ -44,7 +44,7 @@ jobs:
         run: |
           python -m hhs_runtime.hhs_pass220_remote_ref_tree_reconciliation_v1 \
             --census artifacts/pass220/REMOTE_REF_CENSUS.json \
-            --output artifacts/pass220/REMOTE_SOURCE_TREE_RECONCILIATION.json \\
+            --output artifacts/pass220/REMOTE_SOURCE_TREE_RECONCILIATION.json \
             --index-root .
           python - <<'PY'
           import json
