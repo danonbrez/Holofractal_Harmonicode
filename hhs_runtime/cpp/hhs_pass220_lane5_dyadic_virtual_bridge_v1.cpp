@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstring>
 #include <limits>
+#include <array>
+#include <openssl/evp.h>
 
 namespace {
 bool sha256_hex64(const char *bytes) noexcept {
@@ -77,5 +79,74 @@ extern "C" HHSExactStatus hhs_pass220_lane5_dyadic_virtual_candidate_route(
     candidate.source_frame_unchanged = 1U;
     /* All canonical authority fields intentionally remain zero. */
     *out = candidate;
+    return HHS_EXACT_STATUS_OK;
+}
+
+/* Pure byte-level Pass220 candidate transcript. This is not Pass219 1.32's
+ * cryptographic signed instruction, and never calls a canonical mutator. */
+extern "C" HHSExactStatus hhs_pass220_lane5_dyadic_binding_material_sha256(
+    const HHSExactVM81Frame *frame,
+    const std::uint8_t radix72_address[72],
+    std::int64_t exponent,
+    std::uint8_t phase,
+    const char pass159_binding_sha256[65],
+    std::uint8_t out_sha256[32]
+) noexcept {
+    if (!frame || !out_sha256 || !address_valid(radix72_address) ||
+        phase >= 72U || !sha256_hex64(pass159_binding_sha256) ||
+        exponent == std::numeric_limits<std::int64_t>::min())
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+
+    constexpr char kDomain[] =
+        "HHS/PASS220/LANE5/DYADIC/SIGNED-BINDING-MATERIAL/V1";
+    constexpr std::size_t kDomainBytes = sizeof(kDomain); // includes NUL
+    constexpr std::size_t kFrameBytes = 81U * 8U;
+    constexpr std::size_t kMaterialBytes = kDomainBytes + 72U + 8U + 1U + 32U + 32U;
+    std::array<std::uint8_t, kFrameBytes> frame_le{};
+    for (std::size_t i = 0U; i < 81U; ++i) {
+        const std::uint64_t word = frame->words[i];
+        for (std::size_t j = 0U; j < 8U; ++j)
+            frame_le[i * 8U + j] =
+                static_cast<std::uint8_t>((word >> (j * 8U)) & UINT64_C(255));
+    }
+    std::array<std::uint8_t, 32U> frame_digest{};
+    unsigned int digest_size = 0U;
+    if (EVP_Digest(frame_le.data(), frame_le.size(), frame_digest.data(),
+                   &digest_size, EVP_sha256(), nullptr) != 1 ||
+        digest_size != 32U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    std::array<std::uint8_t, kMaterialBytes> material{};
+    std::size_t cursor = 0U;
+    std::memcpy(material.data() + cursor, kDomain, kDomainBytes);
+    cursor += kDomainBytes;
+    std::memcpy(material.data() + cursor, radix72_address, 72U);
+    cursor += 72U;
+    const std::uint64_t bits = static_cast<std::uint64_t>(exponent);
+    for (std::size_t i = 0U; i < 8U; ++i)
+        material[cursor++] = static_cast<std::uint8_t>(
+            (bits >> (i * 8U)) & UINT64_C(255));
+    material[cursor++] = phase;
+    for (std::size_t i = 0U; i < 64U; i += 2U) {
+        auto hex = [](char c) noexcept -> std::uint8_t {
+            if (c >= '0' && c <= '9') return static_cast<std::uint8_t>(c - '0');
+            if (c >= 'a' && c <= 'f') return static_cast<std::uint8_t>(c - 'a' + 10);
+            return static_cast<std::uint8_t>(c - 'A' + 10);
+        };
+        material[cursor++] = static_cast<std::uint8_t>(
+            (hex(pass159_binding_sha256[i]) << 4U) |
+            hex(pass159_binding_sha256[i + 1U]));
+    }
+    std::memcpy(material.data() + cursor, frame_digest.data(), frame_digest.size());
+    cursor += frame_digest.size();
+    if (cursor != material.size()) return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+
+    std::array<std::uint8_t, 32U> digest{};
+    digest_size = 0U;
+    if (EVP_Digest(material.data(), material.size(), digest.data(),
+                   &digest_size, EVP_sha256(), nullptr) != 1 ||
+        digest_size != 32U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    std::memcpy(out_sha256, digest.data(), digest.size());
     return HHS_EXACT_STATUS_OK;
 }
