@@ -146,3 +146,26 @@ Its candidate diagnostic cannot elevate source provenance to native admission.
 The original source-bound graph must continue to reject the changed working
 course until authorized reconciliation is implemented and independently
 validated.
+
+## 195.8 Native C11 exact singularity candidate
+
+Module 195 now has a **bounded candidate ingress adapter** in
+`hhs_runtime/c/hhs_pass220_course_m195_gaussian_hnan_ingress_v1.c`.
+Its exact Gaussian integer computation evaluates
+`D(a+bi)=(a+bi)^3+6(a+bi)^2+25(a+bi)` with signed 64-bit arithmetic
+for `|a|,|b| <= 100000`; inputs outside that proof range fail closed.
+No float, host inverse, or caller-supplied `divisor_zero` flag decides
+the C-side singularity. Only exact zero invokes the inherited
+`hhs220_course_passthrough_execute` ABI, which retains its
+gain-one/no-phase-write scope.
+
+The adapter is **not** registered as a new VM81 authority, new HNAN
+checker, native Lane 5 producer, native course typed-equality constructor,
+or a trusted Hash72/Hash216 source. Its C11 test exercises the three
+spectral roots, nonroot `D(1)=32`, safe-range boundaries,
+out-of-range fail-closed behavior, and untouched output buffers on
+nonroot and invalid-input rejection. Exact arithmetic/route evidence
+is a scoped candidate only.
+
+The existing frozen-course graph identity mismatch remains a separate
+source-bound blocker. The adapter does not waive or amend it.
