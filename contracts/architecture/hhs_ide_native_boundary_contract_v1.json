@@ -108,5 +108,17 @@
       "deployment",
       "runtime"
     ]
-  }
+  },
+  "mergeability_checklist": "contracts/architecture/hhs_gbrain_harness_cumulative_mergeability_checklist_v1.json",
+  "mergeability_phase_order": [
+    "P0",
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7"
+  ],
+  "priority_0_requirement": "Complete GBrain-inspired external-agent harness, conventional developer IDE, and native Lane5 ingress/egress integration before the assigned branch-consolidation follow-ons. Checklist states OPEN until evidenced; no inferred permission to merge."
 }
