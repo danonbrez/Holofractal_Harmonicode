@@ -54,6 +54,31 @@ class TestIDENativeBoundaryContract(unittest.TestCase):
         self.assertIn("authenticated SSH + PTY transport", guest)
         self.assertIn("not a general", guest)
 
+    def test_cumulative_mergeability_contract_is_prioritized_and_evidential(self):
+        checklist_path = ROOT / self.spec["mergeability_checklist"]
+        self.assertTrue(checklist_path.exists())
+        checklist = json.loads(checklist_path.read_text(encoding="utf-8"))
+        self.assertEqual(checklist["schema"], "HHS_GBRAIN_HARNESS_CUMULATIVE_MERGEABILITY_CHECKLIST_V1")
+        self.assertEqual([phase["id"] for phase in checklist["phases"]], self.spec["mergeability_phase_order"])
+        self.assertEqual([phase["priority"] for phase in checklist["phases"]], list(range(8)))
+        self.assertEqual(checklist["phases"][0]["id"], "P0")
+        self.assertEqual(checklist["phases"][1]["depends_on"], ["P0"])
+        self.assertIn("GBrain", checklist["phases"][0]["title"])
+        self.assertIn("OPEN", checklist["completion_states"])
+        self.assertIn("signed_vm81_receipts", checklist["evidence_fields"])
+        self.assertIn("deployment_sha_and_runtime_receipts", checklist["evidence_fields"])
+        all_ids = [item["id"] for phase in checklist["phases"] for item in phase["items"]]
+        self.assertEqual(len(all_ids), len(set(all_ids)))
+        self.assertGreaterEqual(len(all_ids), 25)
+        for phase in checklist["phases"]:
+            for item in phase["items"]:
+                self.assertEqual(item["state"], "OPEN")
+                self.assertEqual(item["evidence"], [])
+                self.assertTrue(item["requirement"])
+        text = checklist_path.read_text(encoding="utf-8")
+        for pr in ("#691", "#803", "#909", "#911", "#912", "#916", "#908", "#913", "#914", "#915", "#917", "#918"):
+            self.assertIn(pr, text)
+
     def test_contract_is_explicit_in_agent_instructions(self):
         agents = (ROOT / "AGENTS.md").read_text()
         self.assertIn("hhs_ide_native_boundary_contract_v1.json", agents)
