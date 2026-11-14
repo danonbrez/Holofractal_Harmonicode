@@ -26,3 +26,9 @@ The prior native workflow exercised an isolated route object and mocks. The `GNU
 ## Real linked native execution test
 
 `tests/pass220/test_hhs_module196_real_linked_candidate_v1.cpp` builds the inherited Pass 219 monolithic candidate program using `hhs_exact_pass219_vm81_lower_monolithic_structure`, initializes a real `hhs_exact_pass219_vm81_pqc_hash216_genesis_reference` predecessor and integer-symmetric UQCEL input, invokes the linked Module 196 route, and checks the actual C VM81 candidate execution and C++ RNA/VM5184 cell-wall preparation. It then invokes the inherited VM81 replay verifier and tests source-SHA tampering and predecessor-identity tampering as fail-closed negatives. This is an inherited **candidate** path: source-semantic completeness, signed canonical VM81 admission, full 59,049-cell state execution, real content-addressed Hash216 commitment, and proof theorem/dependency identity binding remain separate acceptance gates.
+
+## Source-bound Lean theorem identity (candidate-only)
+
+`hhs_runtime/hhs_pass220_module196_lean_source_identity_v1.py` derives separate theorem and dependency Hash72 identities from the SHA-256 digest of the actual `formal/lean/HHS/Module196.lean` bytes, the declared theorem names, and inspected dependency metadata. The dedicated kernel CI typechecks the Lean file and runs source-identity replay, tampered-source, missing-declaration, and incomplete-proof rejection tests.
+
+This proof-identity object explicitly states that the Lean kernel check is a CI prerequisite, not a runtime kernel invocation. The generated hashes are **identity witnesses**, not VM81 admission receipts or a canonical three-Hash72 commitment. Binding the checked theorem/dependency identities to the native Module 196 candidate and the signed VM81 transaction is still an open integration stage; no unsupported kernel-executed-at-runtime claim is made.
