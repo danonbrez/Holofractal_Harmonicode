@@ -13,6 +13,7 @@ from contextlib import asynccontextmanager
 from hashlib import sha256
 import inspect
 import os
+import tempfile
 from typing import Iterable, Sequence
 
 from fastapi import FastAPI, HTTPException, Request, WebSocket
@@ -172,6 +173,13 @@ class Lane5IngressMediator:
             exact_ingress,
             provenance=provenance,
         )
+        return self.mediate_workload(workload)
+
+    def mediate_workload(self, workload: Lane5WorkloadEnvelope) -> dict[str, object]:
+        """Route an incrementally hashed exact workload using existing native authority."""
+        bridge = self._native()
+        authority = bridge.authority()
+        self._verify_authority(authority)
         digest = workload.workload_sha256
         receipt = bridge.optimize(
             workload=workload,
@@ -282,6 +290,50 @@ async def _mediate_async(app_obj: FastAPI, exact: bytes, provenance: str):
         return await asyncio.to_thread(_mediator.mediate, exact, provenance=provenance)
 
 
+async def _mediate_file_async(
+    app_obj: FastAPI,
+    *,
+    spool,
+    body_bytes: int,
+    transport: bytes,
+    method: bytes,
+    raw_path: bytes,
+    query_string: bytes,
+    headers: Sequence[tuple[bytes, bytes]],
+    provenance: str,
+):
+    """Mediate exact HTTP framing through Pass 219 native unbounded-workload API.
+
+    Request bytes stay on private transient disk until the candidate is admitted.
+    648 bytes is the native VM81 read granularity, not a whole-file ceiling.
+    """
+    prefix = serialize_environmental_ingress(
+        transport=transport,
+        method_or_opcode=method,
+        raw_path=raw_path,
+        query_string=query_string,
+        headers=headers,
+        payload=b"",
+    )[:-8] + body_bytes.to_bytes(8, "big")
+
+    def _run():
+        def _chunks():
+            yield prefix
+            spool.seek(0)
+            while True:
+                block = spool.read(648)
+                if not block:
+                    break
+                yield block
+        envelope = Lane5WorkloadEnvelope.from_chunks(_chunks(), provenance=provenance)
+        if envelope.byte_count != len(prefix) + body_bytes:
+            raise Lane5IngressRejected("HHS_LANE5_STREAM_BYTE_COUNT_DRIFT")
+        return _mediator.mediate_workload(envelope)
+
+    async with app_obj.state.lane5_lock:
+        return await asyncio.to_thread(_run)
+
+
 @app.get(HEALTH_PATH)
 async def ingress_health(request: Request):
     if request.url.hostname not in {"127.0.0.1", "localhost"}:
@@ -299,67 +351,93 @@ async def _http_proxy(request: Request, path: str = "") -> Response:
         (bytes(name), bytes(value))
         for name, value in request.scope.get("headers", ())
     ]
-    body = await request.body()
-    exact = serialize_environmental_ingress(
-        transport=b"http",
-        method_or_opcode=request.method.encode("ascii"),
-        raw_path=raw_path,
-        query_string=query,
-        headers=raw_headers,
-        payload=body,
-    )
-    try:
-        receipt = await _mediate_async(
-            request.app,
-            exact,
-            f"network:http:{request.method}:{raw_path.decode('latin-1')}",
-        )
-    except Exception:
-        return Response(
-            content=b"HHS Lane 5 ingress rejected environmental request\n",
-            status_code=503,
-            media_type="text/plain",
-            headers={"X-HHS-Lane5-Ingress": "rejected"},
-        )
+    provenance = f"network:http:{request.method}:{raw_path.decode('latin-1')}"
 
-    headers = _filtered_headers(raw_headers) + _receipt_headers(receipt)
-    target = _target(raw_path=raw_path, query_string=query, websocket=False)
-    try:
-        upstream = await request.app.state.http_client.request(
-            request.method,
-            target,
-            headers=headers,
-            content=body,
-        )
-    except httpx.HTTPError:
-        return Response(
-            content=b"HHS backend unavailable behind Lane 5 ingress\n",
-            status_code=503,
-            media_type="text/plain",
-            headers={
-                "X-HHS-Lane5-Ingress": "mediated",
-                "X-HHS-Upstream": "unavailable",
-            },
-        )
-    response_headers: dict[str, str] = {}
-    set_cookies: list[str] = []
-    for name, value in upstream.headers.multi_items():
-        lowered = name.lower().encode("ascii", "ignore")
-        if lowered in _HOP_BY_HOP or lowered in {b"content-length", b"content-encoding"}:
-            continue
-        if name.lower() == "set-cookie":
-            set_cookies.append(value)
-            continue
-        response_headers[name] = value
-    response_headers["X-HHS-Lane5-Ingress"] = "mediated"
-    response = Response(
-        content=upstream.content,
-        status_code=upstream.status_code,
-        headers=response_headers,
-    )
-    for value in set_cookies:
-        response.headers.append("set-cookie", value)
-    return response
+    # The private spool is not a second ingestion service or VM81 authority.
+    # It replaces whole-body RAM buffering. Complete native candidate mediation
+    # occurs BEFORE the request is forwarded to the existing private backend.
+    with tempfile.TemporaryFile(mode="w+b") as spool:
+        body_bytes = 0
+        async for block in request.stream():
+            if not block:
+                continue
+            body_bytes += len(block)
+            spool.write(block)
+        spool.flush()
+        spool.seek(0)
+
+        try:
+            receipt = await _mediate_file_async(
+                request.app,
+                spool=spool,
+                body_bytes=body_bytes,
+                transport=b"http",
+                method=request.method.encode("ascii"),
+                raw_path=raw_path,
+                query_string=query,
+                headers=raw_headers,
+                provenance=provenance,
+            )
+        except Exception:
+            return Response(
+                content=b"HHS Lane 5 ingress rejected environmental request\n",
+                status_code=503,
+                media_type="text/plain",
+                headers={"X-HHS-Lane5-Ingress": "rejected"},
+            )
+
+        headers = [
+            (name, value) for name, value in _filtered_headers(raw_headers)
+            if name.lower() not in {b"content-length", b"host"}
+        ] + _receipt_headers(receipt)
+        target = _target(raw_path=raw_path, query_string=query, websocket=False)
+
+        async def _source():
+            spool.seek(0)
+            while True:
+                chunk = await asyncio.to_thread(spool.read, 64 * 1024)
+                if not chunk:
+                    return
+                yield chunk
+
+        try:
+            outgoing = request.app.state.http_client.build_request(
+                request.method, target, headers=headers, content=_source(),
+            )
+            upstream = await request.app.state.http_client.send(outgoing, stream=True)
+            try:
+                body = await upstream.aread()
+                response_headers: dict[str, str] = {}
+                set_cookies: list[str] = []
+                for name, value in upstream.headers.multi_items():
+                    lowered = name.lower().encode("ascii", "ignore")
+                    if lowered in _HOP_BY_HOP or lowered in {b"content-length", b"content-encoding"}:
+                        continue
+                    if name.lower() == "set-cookie":
+                        set_cookies.append(value)
+                        continue
+                    response_headers[name] = value
+                response_headers["X-HHS-Lane5-Ingress"] = "mediated"
+                response = Response(
+                    content=body,
+                    status_code=upstream.status_code,
+                    headers=response_headers,
+                )
+                for value in set_cookies:
+                    response.headers.append("set-cookie", value)
+                return response
+            finally:
+                await upstream.aclose()
+        except httpx.HTTPError:
+            return Response(
+                content=b"HHS backend unavailable behind Lane 5 ingress\n",
+                status_code=503,
+                media_type="text/plain",
+                headers={
+                    "X-HHS-Lane5-Ingress": "mediated",
+                    "X-HHS-Upstream": "unavailable",
+                },
+            )
 
 
 app.add_api_route(
