@@ -15,3 +15,6 @@ The helper is candidate-only and is NOT wired into the authoritative Lane 5 C++ 
 
 ## Next integration gate
 Discover the registered Lane 5 native candidate interface and existing C++ cell-wall entry before wiring this helper; attach the pinned Lean theorem/dependency identity and high-resolution ingress/egress fields to the existing receipt pathway, test rejection and replay, then use the source-integrity and deployment workflow on exact main. No frozen-layer edits or alternate admission authority.
+
+## Course linkage
+The integrated mathematical and computational specification is published as [HARMONICODE Algebra Course — Module 196](../course/HARMONICODE_Algebra_Course_Module_196.md), indexed from [the course navigation](../course/README.md). This is an additive course module; the frozen expanded 0–190 text remains untouched.
