@@ -256,13 +256,19 @@ function readableBuildSummary(manifest, archiveBytes) {
   ].join('\n');
 }
 
+export function validateProjectBuildInputs(files, targets) {
+  // Validate the requested operation, never assume an arbitrary file-count or
+  // whole-project byte ceiling from VM81 native frame geometry.
+  if (!files.length) throw new Error('PROJECT_HAS_NO_FILES');
+  if (!targets.length) throw new Error('PROJECT_HAS_NO_COMPILER_TARGETS');
+}
+
 export async function buildProjectArchive() {
   if (state.projectBuildBusy) return state.projectBuild || null;
   syncActiveEditor();
   const files = state.files.map((file) => ({ ...file, path: safePath(file.path) }));
   const targets = targetSelection();
-  if (!files.length) throw new Error('PROJECT_HAS_NO_FILES');
-  if (!targets.length) throw new Error('PROJECT_HAS_NO_COMPILER_TARGETS');
+  validateProjectBuildInputs(files, targets);
   const totalBytes = files.reduce((total, file) => total + fileBytes(file).length, 0);
 
   state.projectBuildBusy = true;
