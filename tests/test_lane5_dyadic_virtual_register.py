@@ -7,6 +7,7 @@ from hhs_runtime.pass220.lane5_dyadic_virtual_register import (
     hydration_address, prime_center_witness, reciprocal_witness,
     shell, symmetric_witness, symbolic_reciprocal_pair, prepare_lane5_hydration_candidate,
     bind_existing_pass159_provenance, attach_existing_i157_typed_graph,
+    lower_attached_candidate_to_native_abi,
 )
 
 class DyadicVirtualRegisterTests(unittest.TestCase):
@@ -169,6 +170,53 @@ class DyadicVirtualRegisterTests(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             attach_existing_i157_typed_graph(binding, tampered)
+
+    def test_native_lowering_exact_fields_and_fail_closed(self):
+        from copy import deepcopy
+        reg = VirtualRegister(decode_address(5183), -5, 36,
+                              "ordered-cell", "P_pq", "a" * 64)
+        proposal = prepare_lane5_hydration_candidate(reg)
+        binding = {
+            "schema": "HHS_LANE5_DYADIC_PASS159_CANDIDATE_BINDING_V1",
+            "vm81_admitted": False,
+            "canonical_hash_mutation": None,
+            "provenance_binding_sha256": "a" * 64,
+            "pass159_provenance": {"provenance_binding_sha256": "a" * 64},
+            "proposal": proposal,
+        }
+        attachment = {
+            "schema": "HHS_LANE5_DYADIC_I157_TYPED_GRAPH_ATTACHMENT_V1",
+            "candidate": binding,
+            "separate_P_type_domains": True,
+            "native_full_master_equation_executed": False,
+            "vm81_admitted": False,
+            "hash72_minted": False,
+            "hash216_persisted": False,
+            "canonical_hash_mutation": None,
+            "dyadic_symbolic_P": proposal["witness"]["P"],
+        }
+        lowered = lower_attached_candidate_to_native_abi(attachment)
+        self.assertEqual(lowered["radix72_address"], decode_address(5183))
+        self.assertEqual(lowered["signed_dyadic_exponent_int64"], -5)
+        self.assertEqual(lowered["phase_coordinate72"], 36)
+        self.assertFalse(lowered["vm81_admitted"])
+        for field, value in (("signed_exponent", -(1 << 63)),
+                             ("phase", "36"),
+                             ("virtual_address", 5184),
+                             ("quantization", Fraction(1, 4)),
+                             ("provenance", "0" * 64)):
+            tampered = deepcopy(attachment)
+            tampered["candidate"]["proposal"][field] = value
+            with self.assertRaises(ValueError):
+                lower_attached_candidate_to_native_abi(tampered)
+        tampered = deepcopy(attachment)
+        tampered["candidate"]["provenance_binding_sha256"] = "z" * 64
+        with self.assertRaises(ValueError):
+            lower_attached_candidate_to_native_abi(tampered)
+        tampered = deepcopy(attachment)
+        tampered["hash216_persisted"] = True
+        with self.assertRaises(ValueError):
+            lower_attached_candidate_to_native_abi(tampered)
 
 if __name__ == "__main__":
     unittest.main()
