@@ -395,3 +395,15 @@ If a genuine external blocker prevents full completion, preserve the completed c
 - Keep verified implementation claims separate from user-supplied architectural specifications and unexecuted proof obligations. Resolve integration gaps cumulatively without reopening prior mathematics unless new concrete conflicting evidence is found.
 
 **Agent decision rule:** Failed integration requires root-cause diagnosis and full contract repair, not agent-authored capability suppression. Preserve frozen-layer guards and protected VM81 authority while restoring all compatible native capabilities through Pass 219/220.
+
+## Conventional IDE / native boundary contract (normative)
+
+Read [the machine-readable IDE/native boundary contract](contracts/architecture/hhs_ide_native_boundary_contract_v1.json) for changes affecting frontends, developer workflows, external LLM agent harnesses, ingress, egress, and native Lane 5 integrations. HARMONICODE is a general programming environment and agent harness, not a constrained dashboard or a tensor-themed UI demo.
+
+- Preserve standard browser engineering for the human IDE: source editor, files, projects, terminals, Git, debugging, builds, tests, deployment, and agent tooling. Continue existing working functionality, implementing gaps through existing services.
+- Keep OS/Ubuntu interfaces available while Lane 5 composes and extends the capabilities of the four inherited virtual CPU architectures; do not invent UI, source size, language, or modality restrictions from native internal representation.
+- VM81 81 × 64-bit = 648-byte native granularity does not impose a whole-file cap. Use existing unbounded ingress and optimized streaming paths where applicable.
+- Preserve external input/output types, byte identities, requested output encodings, ABI and schema compatibility through the encoder/decoder membrane.
+- Never propagate a native restriction to an external interface unless the exact contract and dependency require it. Conversely never bypass signed VM81 admission, Hash72 receipt, Hash216 lineage, or access permissions from an application boundary.
+- For changes to these boundaries, report contract, source, test, CI, main merge, and runtime/deployment evidence separately. The boundary contract is not itself evidence of a completed production IDE or canonical hydration.
+
