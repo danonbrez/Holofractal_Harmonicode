@@ -79,6 +79,21 @@ class SignedEvidenceCrosscheckTests(unittest.TestCase):
             {k: v for k, v in self.report.items() if k != "report_sha256"}
         )
 
+    def test_cross_language_native_golden_vector(self):
+        frame = bytearray(648)
+        for index, word in enumerate((0x3ff0000000000000, 9, 9)):
+            frame[index*8:(index+1)*8] = word.to_bytes(8, "little")
+        fields = dict(self.fields,
+                      radix72_address=tuple([71,70] + [0]*70),
+                      signed_dyadic_exponent_int64=-5,
+                      phase_coordinate72=36)
+        material = canonical_dyadic_signed_binding_material(fields, bytes(frame))
+        self.assertEqual(len(material["material"]), 197)
+        self.assertEqual(material["candidate_frame_sha256"],
+                         "309e1fea34ed8dc272a54356500b5c9629bbfe9c8bb0cda2b6b1a870fb6eccfe")
+        self.assertEqual(material["material_sha256"],
+                         "07a1c469e409e1c911cf5ddae73a3419e98d2df44356a8a05ecb72be53ae1788")
+
     def test_exact_dyadic_binding_material_no_unsigned_promotion(self):
         original = canonical_dyadic_signed_binding_material(self.fields, self.frame)
         expected_length = len(
