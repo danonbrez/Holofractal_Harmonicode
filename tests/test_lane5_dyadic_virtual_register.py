@@ -173,7 +173,7 @@ class DyadicVirtualRegisterTests(unittest.TestCase):
 
     def test_native_lowering_exact_fields_and_fail_closed(self):
         from copy import deepcopy
-        reg = VirtualRegister(decode_address(5183), -5, 36,
+        reg = VirtualRegister(decode_address(5183), -5, "36",
                               "ordered-cell", "P_pq", "a" * 64)
         proposal = prepare_lane5_hydration_candidate(reg)
         binding = {
@@ -201,7 +201,7 @@ class DyadicVirtualRegisterTests(unittest.TestCase):
         self.assertEqual(lowered["phase_coordinate72"], 36)
         self.assertFalse(lowered["vm81_admitted"])
         for field, value in (("signed_exponent", -(1 << 63)),
-                             ("phase", "36"),
+                             ("phase", "u72"),
                              ("virtual_address", 5184),
                              ("quantization", Fraction(1, 4)),
                              ("provenance", "0" * 64)):
