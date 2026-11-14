@@ -1,0 +1,49 @@
+name: Module 196 Native C and Lean Gate
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_module196_lane5_coprocessor.h'
+      - 'tests/pass220/test_hhs_module196_lane5_coprocessor.cpp'
+      - 'formal/lean/HHS/Module196.lean'
+      - 'docs/pass220/MODULE_196_FRACTAL_VALIDATION_LANE5_INTEGRATION.md'
+      - '.github/workflows/module196-lane5-coprocessor.yml'
+  push:
+    paths:
+      - 'hhs_runtime/include/hhs_module196_lane5_coprocessor.h'
+      - 'tests/pass220/test_hhs_module196_lane5_coprocessor.cpp'
+      - 'formal/lean/HHS/Module196.lean'
+      - '.github/workflows/module196-lane5-coprocessor.yml'
+permissions:
+  contents: read
+jobs:
+  native-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile exact C++ negative-control test
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -Ihhs_runtime/include tests/pass220/test_hhs_module196_lane5_coprocessor.cpp -o /tmp/hhs-module196-test
+          /tmp/hhs-module196-test
+      - name: Compile C-only ingress ABI
+        run: |
+          printf '#include "hhs_module196_lane5_coprocessor.h"\nint main(void){HHSModule196Candidate c;return !hhs_m196_evaluate(1,2,&c);}\n' >/tmp/hhs-module196-abi.c
+          cc -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include /tmp/hhs-module196-abi.c -o /tmp/hhs-module196-abi
+          /tmp/hhs-module196-abi
+  lean-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reuse inherited Lean kernel and axiom audit
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: true
+          test: false
+          leanchecker: true
+          leanchecker-args: HHS
+          axiom-audit: true
+          axiom-audit-root: HHS
+      - name: Typecheck Module196
+        run: lake env lean formal/lean/HHS/Module196.lean
