@@ -1,0 +1,112 @@
+{
+  "schema": "HHS_IDE_NATIVE_BOUNDARY_CONTRACT_V1",
+  "purpose": "HARMONICODE full developer IDE and external-LLM-agent harness; native optimization must preserve conventional interfaces and must not export internal frame or admission restrictions as artificial application restrictions.",
+  "reference_repository": "https://github.com/garrytan/gbrain",
+  "ownership": {
+    "frontend": [
+      "applications/holofractal_harmonizer/src/visual-ide-runtime.mjs",
+      "hhs_gui/",
+      "applications/"
+    ],
+    "transport": [
+      "hhs_backend/lane5_ingress_gateway.py",
+      "hhs_backend/api/"
+    ],
+    "native": [
+      "hhs_runtime/",
+      "hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py"
+    ],
+    "services": [
+      "hhs_backend/",
+      "hhs_backend/runtime/"
+    ],
+    "guest": [
+      "docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md"
+    ]
+  },
+  "boundaries": [
+    {
+      "name": "frontend_ide",
+      "preserve": [
+        "conventional browser components and editing",
+        "project and filesystem workflows",
+        "debugger terminal Git build test deploy integration",
+        "external agent sessions and tool invocation"
+      ],
+      "native_scope": "native proof and computational capabilities are invoked via services, never a requirement for UI rendering",
+      "prohibit": [
+        "frame width used as UI source length ceiling",
+        "native token layout imposed as conventional editor schema",
+        "dashboard-only substitution for existing IDE"
+      ]
+    },
+    {
+      "name": "ingress",
+      "preserve": [
+        "byte-exact external payload contract",
+        "streamed arbitrary-length payload processing",
+        "owner scope and source provenance"
+      ],
+      "native_scope": "native frames and candidate verification are internal ingress implementation",
+      "prohibit": [
+        "whole-file size cap derived from 648-byte frame",
+        "modality rejection without an actual underlying capability or contract",
+        "public bypass of existing mediation"
+      ]
+    },
+    {
+      "name": "egress",
+      "preserve": [
+        "requested source-compatible output encoding",
+        "observable data type and ABI/schema",
+        "byte-for-byte artifact reconstruction when required"
+      ],
+      "native_scope": "native result projection through existing encoder/decoder",
+      "prohibit": [
+        "forcing raw Hash216 or VM81 encoding as sole output type",
+        "dropping order, provenance or leading zeros"
+      ]
+    },
+    {
+      "name": "native_vm81",
+      "preserve": [
+        "single signed canonical admission and replay",
+        "exact ordered tensor operations",
+        "Hash72/Hash216 authoritative lineage"
+      ],
+      "native_scope": "only canonical runtime can mutate native authoritative state",
+      "prohibit": [
+        "frontend or API self-certifying admission",
+        "alternative Hash216 authority"
+      ]
+    },
+    {
+      "name": "lane5",
+      "preserve": [
+        "all inherited Lane 1–4 virtual CPU architectures",
+        "native optimization and integrated Ubuntu capabilities"
+      ],
+      "native_scope": "candidate-only native optimization until signed VM81 admission",
+      "prohibit": [
+        "replacing inherited hardware with a narrow surrogate",
+        "assuming guest operating-system limits define native capability ceiling"
+      ]
+    }
+  ],
+  "native_frame_bytes": 648,
+  "frame_size_is_whole_file_limit": false,
+  "frontend_requires_native_tensor_algorithm_for_layout": false,
+  "canonical_admission_required_for_native_mutation": true,
+  "validation": {
+    "rule": "check source index presence and rule markers, plus inspect any proposed new restrictions separately before merging",
+    "evidence_levels": [
+      "contract",
+      "source",
+      "test",
+      "CI",
+      "merge",
+      "deployment",
+      "runtime"
+    ]
+  }
+}
