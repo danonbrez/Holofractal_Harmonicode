@@ -42,6 +42,7 @@ on:
       - 'tests/pass220/test_hhs_pass220_v166_module194_exact_polynomial_projection_v1.py'
       - 'hhs_runtime/hhs_pass220_corpus_negative_claim_gate_v1.py'
       - 'hhs_runtime/hhs_pass220_index_first_discovery_v1.py'
+      - 'hhs_runtime/hhs_pass220_ref_federated_corpus_discovery_v1.py'
       - 'hhs_backend/runtime/hhs_capability_resolution_v1.py'
       - 'AGENTS.md'
       - 'tests/pass220/test_hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py'
@@ -160,6 +161,7 @@ jobs:
             tests/pass220/test_hhs_pass220_v162_course_source_divergence_v1.py \
             tests/pass220/test_hhs_pass220_corpus_negative_claim_gate_v1.py \
             tests/pass220/test_hhs_pass220_index_first_discovery_v1.py \
+            tests/pass220/test_hhs_pass220_ref_federated_corpus_discovery_v1.py \
             tests/pass220/test_hhs_capability_index_first_resolution_v1.py \
             tests/pass220/test_hhs_pass220_v163_course_module_crosswalk_v1.py \
             tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py \
