@@ -51,6 +51,22 @@ noexcept
 #endif
 ;
 
+/* Pure Pass220 proposal digest (not a VM81 signature or admission receipt).
+ * Re-encodes 81 frame words as little-endian bytes; no raw struct hashing.
+ * On invalid input, out_sha256 is unchanged. */
+HHS_EXACT_API HHSExactStatus hhs_pass220_lane5_dyadic_binding_material_sha256(
+    const HHSExactVM81Frame *frame,
+    const uint8_t radix72_address[72],
+    int64_t signed_dyadic_exponent,
+    uint8_t phase_coordinate72,
+    const char pass159_binding_sha256[65],
+    uint8_t out_sha256[32]
+)
+#ifdef __cplusplus
+noexcept
+#endif
+;
+
 #ifdef __cplusplus
 }
 #endif
