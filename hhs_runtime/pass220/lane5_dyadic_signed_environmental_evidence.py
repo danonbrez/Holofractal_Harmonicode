@@ -128,3 +128,63 @@ def cross_check_inherited_signed_environmental_evidence(
         "new_canonical_mutation_authority": False,
         "candidate_only": True,
     }
+
+
+def canonical_dyadic_signed_binding_material(
+    native_fields: Mapping[str, Any],
+    candidate_frame: bytes,
+) -> dict[str, Any]:
+    """Deterministic proposed transcript to bind by inherited signed ingress.
+
+    This emits bytes and SHA256 only. No signature, admission, receipt or
+    canonical mutation is performed. A byte-for-byte change to any covered
+    dyadic field changes the constructed input to the hash.
+    """
+    from hhs_runtime.pass220.lane5_dyadic_virtual_register import (
+        encode_address, _integer,
+    )
+    if not isinstance(native_fields, Mapping) or native_fields.get("schema") != (
+        "HHS_LANE5_DYADIC_NATIVE_CANDIDATE_ABI_FIELDS_V1"
+    ):
+        raise ValueError("native dyadic candidate schema required")
+    if native_fields.get("candidate_only") is not True or native_fields.get("vm81_admitted") is not False:
+        raise ValueError("unadmitted dyadic candidate required")
+    if native_fields.get("canonical_hash_mutation", object()) is not None:
+        raise ValueError("canonical mutation authority forbidden")
+    digits = native_fields.get("radix72_address")
+    if type(digits) is not tuple:
+        raise ValueError("72 ordered radix-72 digits required")
+    encode_address(digits)
+    exponent = _integer(native_fields.get("signed_dyadic_exponent_int64"), "exponent")
+    if not -(1 << 63) < exponent < (1 << 63):
+        raise ValueError("native int64 exponent representation invalid")
+    phase = native_fields.get("phase_coordinate72")
+    if type(phase) is not int or not 0 <= phase < 72:
+        raise ValueError("native phase outside 0..71")
+    binding = native_fields.get("pass159_binding_sha256")
+    if (type(binding) is not str or len(binding) != 64 or
+        not all(c in "0123456789abcdef" for c in binding)):
+        raise ValueError("normalized Pass159 SHA256 reference required")
+    if type(candidate_frame) is not bytes or len(candidate_frame) != VM81_FRAME_BYTES:
+        raise ValueError("exact canonical 648-byte candidate frame required")
+    prefix = b"HHS/PASS220/LANE5/DYADIC/SIGNED-BINDING-MATERIAL/V1\\x00"
+    material = (
+        prefix
+        + bytes(digits)
+        + exponent.to_bytes(8, byteorder="little", signed=True)
+        + bytes((phase,))
+        + bytes.fromhex(binding)
+        + sha256(candidate_frame).digest()
+    )
+    return {
+        "schema": "HHS_LANE5_DYADIC_SIGNED_BINDING_MATERIAL_V1",
+        "domain": "HHS/PASS220/LANE5/DYADIC/SIGNED-BINDING-MATERIAL/V1",
+        "material": material,
+        "material_sha256": sha256(material).hexdigest(),
+        "candidate_frame_sha256": sha256(candidate_frame).hexdigest(),
+        "pass159_binding_reference": binding,
+        "signed_by_inherited_environmental_authority": False,
+        "included_in_inherited_signed_instruction": False,
+        "canonical_vm81_admission": False,
+        "candidate_only": True,
+    }
