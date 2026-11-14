@@ -32,6 +32,7 @@ on:
       - 'hhs_runtime/hhs_pass220_v158_geometry_native_egress_v1.py'
       - 'hhs_runtime/hhs_pass220_v160_module194_source_address_preflight_v1.py'
       - 'hhs_runtime/hhs_pass220_v161_module194_inherited_hnan_witness_v1.py'
+      - 'hhs_runtime/hhs_pass220_v162_course_source_divergence_v1.py'
       - 'hhs_runtime/hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py'
       - 'tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py'
       - 'tests/pass220/test_hhs_pass220_v161_module194_inherited_hnan_witness_v1.py'
@@ -139,6 +140,7 @@ jobs:
             tests/pass220/test_hhs_pass220_v158_geometry_native_egress_v1.py \
             tests/pass220/test_hhs_pass220_v160_module194_source_address_preflight_v1.py \
             tests/pass220/test_hhs_pass220_v161_module194_inherited_hnan_witness_v1.py \
+            tests/pass220/test_hhs_pass220_v162_course_source_divergence_v1.py \
             tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py
       - name: Verify presentation-only cache and packet lane binding
         run: |
