@@ -125,3 +125,24 @@ To enable a fully source-bound M195 witness, recover the authoritative
 frozen-course source and reconcile the recorded identity through the
 existing authorized source-integrity process. Do not silently repin
 the manifest or declare the original typed-equality gate admitted.
+
+## 195.7 Immutable source-lineage recovery without bypass
+
+The source-freeze manifest originally captured `whitepapers/Harmonicode
+Algebra - Course` as blob `2744e9ecf1f260ff9a5a02870320698ee2d7dcaf`,
+which is recoverable through the Git object store. The current file is blob
+`968735b21bb0fda42f9c944ae6987099e624e7a7`, an expanded/different
+course. Comparing the source at the earlier #807 freeze and after #888
+identifies distinct historical objects; this does **not** authorize treating
+them as identical or replacing either course text.
+
+The read-only diagnostic
+`hhs_runtime/hhs_pass220_course_m195_source_lineage_diagnostic_v1.py`
+reads both exact byte objects, independently computes their Git blob identities
+and SHA-256 evidence, and emits
+`source_graph_binding_eligible=false` while these identities differ.
+It never rewrites the freeze manifest, course, or dependency-graph validator.
+Its candidate diagnostic cannot elevate source provenance to native admission.
+The original source-bound graph must continue to reject the changed working
+course until authorized reconciliation is implemented and independently
+validated.
