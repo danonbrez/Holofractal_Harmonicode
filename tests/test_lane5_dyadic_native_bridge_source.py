@@ -1,4 +1,4 @@
-"""Pass220 Lane5 native dyadic bridge syntax and non-bypass source contract."""
+"""Pass220 Lane5 dyadic native ABI source and export-boundary regression."""
 from pathlib import Path
 import shutil
 import subprocess
@@ -7,6 +7,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 HEADER = ROOT / "hhs_runtime/include/hhs_pass220_lane5_dyadic_virtual_bridge_v1.h"
 SOURCE = ROOT / "hhs_runtime/cpp/hhs_pass220_lane5_dyadic_virtual_bridge_v1.cpp"
+WORKFLOW = ROOT / ".github/workflows/pass220-lane5-dyadic-native-candidate.yml"
 
 
 class NativeDyadicBridgeSourceTests(unittest.TestCase):
@@ -28,7 +29,7 @@ class NativeDyadicBridgeSourceTests(unittest.TestCase):
 
     def test_native_runtime_build_object_registration(self):
         make = (ROOT / "GNUmakefile").read_text(encoding="utf-8")
-        self.assertIn("PASS220_LANE5_DYADIC_BRIDGE_SRC := ", make)
+        self.assertIn("PASS220_LANE5_DYADIC_BRIDGE_SRC :=", make)
         self.assertIn("PASS169_RUNTIME_BINDING_SRCS += $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)", make)
         self.assertIn("$(ABI_LIB): $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)", make)
         self.assertIn("$(PASS220_LANE5_DYADIC_BRIDGE_OBJ): $(PASS220_LANE5_DYADIC_BRIDGE_SRC)", make)
@@ -38,28 +39,21 @@ class NativeDyadicBridgeSourceTests(unittest.TestCase):
         signature = (ROOT / "hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h").read_text(encoding="utf-8")
         environment = (ROOT / "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h").read_text(encoding="utf-8")
         exports = (ROOT / "hhs_runtime/c/hhs_pass219_vm81_authority_exports.map").read_text(encoding="utf-8")
-        workflow = (ROOT / ".github/workflows/pass220-lane5-dyadic-native-candidate.yml").read_text(encoding="utf-8")
+        workflow = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("hhs_exact_pass219_vm81_environment_admit_signed(", environment)
         self.assertIn("hhs_exact_pass219_vm81_pqc_admit_signed(", signature)
-        self.assertIn("visibility(\\\"hidden\\\")", signature)
-        for hidden in ("hhs_exact_vm81_admit_uqcel",
-                       "hhs_exact_pass219_rna_admit_composed",
-                       "hhs_exact_pass219_vm81_pqc_admit",
-                       "hhs_exact_pass219_vm81_pqc_admit_signed"):
+        self.assertIn('visibility("hidden")', signature)
+        for hidden in (
+            "hhs_exact_vm81_admit_uqcel",
+            "hhs_exact_pass219_rna_admit_composed",
+            "hhs_exact_pass219_vm81_pqc_admit",
+            "hhs_exact_pass219_vm81_pqc_admit_signed",
+        ):
             self.assertIn(hidden + ";", exports)
-            self.assertIn("grep -q ' " + hidden + "
-    def test_native_cpp_syntax_against_existing_headers(self):
-        subprocess.run(
-            ["g++", "-std=c++17", "-fsyntax-only", "-Wall", "-Wextra",
-             "-I", str(ROOT / "hhs_runtime/include"), str(SOURCE)],
-            cwd=ROOT, check=True, capture_output=True, text=True,
-        )
-
-
-if __name__ == "__main__":
-    unittest.main()
-", workflow)
+            self.assertIn("grep -q ' " + hidden + "$'", workflow)
         self.assertIn("hhs_exact_pass219_vm81_environment_admit_signed$", workflow)
+        self.assertEqual(workflow.count("      - name: Build inherited membrane dependencies"), 1)
+        self.assertEqual(workflow.count("      - name: Run native dyadic candidate positive and negative tests"), 1)
 
     @unittest.skipUnless(shutil.which("g++"), "g++ not available")
     def test_native_cpp_syntax_against_existing_headers(self):
