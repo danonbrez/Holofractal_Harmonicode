@@ -44,6 +44,6 @@ def test_untrusted_fake_native_verifier_does_not_admit():
     class InvalidNative:
         def __getattr__(self, name):
             raise AttributeError(name)
-    with pytest.raises(V164NativeHNANError, match="NATIVE_ABI_UNAVAILABLE"):
+    with pytest.raises(V164NativeHNANError, match="NATIVE_CDLL_REQUIRED"):
         execute_module194_native_hnan_scope(
             source_fixture(), InvalidNative(), require_upload_identity=False)
