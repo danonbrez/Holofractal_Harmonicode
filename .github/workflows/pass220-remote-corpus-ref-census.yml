@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate remote census contracts
-        run: python -m pip install pytest && python -m pytest -q tests/pass220/test_hhs_pass220_remote_ref_census_v1.py
+        run: python -m pip install pytest && python -m pytest -q tests/pass220/test_hhs_pass220_remote_ref_census_v1.py tests/pass220/test_hhs_pass220_remote_ref_tree_reconciliation_v1.py
       - name: Observe paginated branch and open PR heads
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -38,10 +38,27 @@ jobs:
           print("Open PR heads:",r["open_pr_count"])
           print("Candidate-only; no negative existence authority")
           PY
+      - name: Inspect exact Git trees and reconcile candidate source blob identities
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python -m hhs_runtime.hhs_pass220_remote_ref_tree_reconciliation_v1 \
+            --census artifacts/pass220/REMOTE_REF_CENSUS.json \
+            --output artifacts/pass220/REMOTE_SOURCE_TREE_RECONCILIATION.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("artifacts/pass220/REMOTE_SOURCE_TREE_RECONCILIATION.json").read_text())
+          assert not r["negative_existence_claim_authorized"]
+          assert not r["distributed_discovery_complete"]
+          assert not r["candidate_results_truncated"], "TREE_CANDIDATE_REPORT_TRUNCATED"
+          assert r["all_census_trees_enumerated"], "TREE_REF_COVERAGE_INCOMPLETE"
+          print("Source tree candidates:",r["candidate_count"])
+          PY
       - name: Upload read-only ref census evidence
         uses: actions/upload-artifact@v4
         with:
           name: pass220-remote-ref-census
-          path: artifacts/pass220/REMOTE_REF_CENSUS.json
+          path: |\n            artifacts/pass220/REMOTE_REF_CENSUS.json\n            artifacts/pass220/REMOTE_SOURCE_TREE_RECONCILIATION.json
           if-no-files-found: error
           retention-days: 30
