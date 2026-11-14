@@ -396,3 +396,26 @@ Every agent-generated negative existence claim must pass this report gate;
 documentation alone is not evidence the entire agent stack invokes it.
 Where a report-generation integration is not yet wired, mark enforcement
 coverage OPEN rather than asserting production-wide protection.
+
+
+### Mandatory index-first mathematical capability discovery
+
+The indexed navigation chain described in Section 1 is supplied
+**specifically because GitHub code search is truncated and may return zero
+matches for indexed repository files**. A zero-result GitHub search, code
+search excerpt, or one-path listing is *never* proof of nonexistence.
+
+For any mathematical/proof/service lookup, first inspect
+`REPOSITORY_INDEX.md`, `REPOSITORY_HASH216_DEPENDENCY_TREE.md`,
+`artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json`,
+`artifacts/repository_index/LANE5_HASH216_HYDRATION_KNOWLEDGE_GRAPH.json`,
+the Lane 5 database receipt, and applicable service/proof registries.
+Use `hhs_runtime/hhs_pass220_index_first_discovery_v1.py` for the
+exact-checkout file-path census, then follow matched source files, typed
+constructors, proofs and dependencies. Also inspect parallel branch/PR
+heads as needed; the current-checkout index does not enumerate every
+unmerged branch. If an index is stale/unavailable, return
+`INDEX_CHECKOUT_REVISION_MISMATCH` or `INDEX_ARTIFACTS_UNAVAILABLE`,
+not a claim that the indexed object does not exist. Search may supplement
+the index for context, **never replace it as the existence gate**.
+The existing negative-claim gate remains mandatory at the report boundary.
