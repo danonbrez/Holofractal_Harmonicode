@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from hhs_runtime.hhs_pass220_course_m195_hnan_bridge_v1 import (
-    bind_m195_hnan_boundary, SINGULAR_ROOTS,
+    bind_m195_hnan_boundary, bind_m195_source_derived_singular_route,\n    exact_denominator_gaussian, SINGULAR_ROOTS,
 )
 from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
 
@@ -30,13 +30,12 @@ class TestM195HNANBridge(unittest.TestCase):
                 "-o", library,
             ], check=True, timeout=60)
             for real, imaginary in roots:
-                x = complex(real, imaginary)
-                self.assertEqual(x**3 + 6*x**2 + 25*x, 0)
+                self.assertEqual(exact_denominator_gaussian(real, imaginary), (0, 0))
                 carrier = (f"M195|x={real},{imaginary}|".encode("ascii")
                            * 64)[:648].ljust(648, bytes([0]))
                 phase = bytes(range(72))
-                evidence = bind_m195_hnan_boundary(library, carrier, phase)
-                self.assertEqual(evidence["module"], 195)
+                evidence = bind_m195_source_derived_singular_route(\n                    library, real, imaginary, carrier, phase)
+                self.assertEqual(evidence["module"], 195)\n                self.assertEqual(evidence["singularity_decision"], "EXACT_D_ZERO")\n                self.assertEqual(evidence["singularity_decision_location"],\n                                 "M195_PYTHON_ADAPTER_NOT_LANE5")
                 self.assertTrue(evidence["native_zero_divisor_passthrough_executed"])
                 self.assertEqual(evidence["gain"], "1/1")
                 self.assertEqual(evidence["phase_writes"], 0)
@@ -45,6 +44,23 @@ class TestM195HNANBridge(unittest.TestCase):
                 self.assertFalse(evidence["canonical_vm81_admission"])
                 self.assertFalse(evidence["hash72_minted"])
                 self.assertFalse(evidence["hash216_minted"])
+
+    def test_nonroot_cannot_trigger_native_bypass(self):
+        self.assertEqual(exact_denominator_gaussian(1, 0), (32, 0))
+        with patch(
+            "hhs_runtime.hhs_pass220_course_m195_hnan_bridge_v1."
+            "bind_m195_hnan_boundary"
+        ) as inherited:
+            with self.assertRaisesRegex(
+                ProofCorpusError, "COURSE_M195_DENOMINATOR_NONZERO_NO_HNAN_BYPASS"
+            ):
+                bind_m195_source_derived_singular_route(
+                    "irrelevant", 1, 0, b"carrier", b"phase")
+            inherited.assert_not_called()
+
+    def test_exact_guard_rejects_float_coercion(self):
+        with self.assertRaisesRegex(ProofCorpusError, "EXACT_GAUSSIAN_INTEGER"):
+            exact_denominator_gaussian(-3.0, 4)
 
     def test_missing_native_library_rejected(self):
         with self.assertRaises(ProofCorpusError):
