@@ -26,7 +26,156 @@ jobs:
         run: |
           make c-abi
           test -s hhs_runtime/builds/libhhs_runtime.so
-          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_pass220_lane5_dyadic_virtual_candidate_route$'
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_pass220_lane5_dyadic_virtual_candidate_route
+      - name: Build inherited membrane dependencies
+        run: |
+          mkdir -p /tmp/dyadic-native
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/dyadic-native/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/dyadic-native/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/dyadic-native/pass189.o
+      - name: Run native dyadic candidate positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_lane5_dyadic_native_bridge.cpp \
+            /tmp/dyadic-native/pass188.o /tmp/dyadic-native/pass188-x86.o /tmp/dyadic-native/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/dyadic-native/test-dyadic
+          /tmp/dyadic-native/test-dyadic
+      - name: Verify unchanged native authority
+        run: |
+          test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_native_bridge_source.py'
+
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_environment_admit_signed
+      - name: Build inherited membrane dependencies
+        run: |
+          mkdir -p /tmp/dyadic-native
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/dyadic-native/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/dyadic-native/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/dyadic-native/pass189.o
+      - name: Run native dyadic candidate positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_lane5_dyadic_native_bridge.cpp \
+            /tmp/dyadic-native/pass188.o /tmp/dyadic-native/pass188-x86.o /tmp/dyadic-native/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/dyadic-native/test-dyadic
+          /tmp/dyadic-native/test-dyadic
+      - name: Verify unchanged native authority
+        run: |
+          test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_native_bridge_source.py'
+
+          ! nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed
+      - name: Build inherited membrane dependencies
+        run: |
+          mkdir -p /tmp/dyadic-native
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/dyadic-native/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/dyadic-native/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/dyadic-native/pass189.o
+      - name: Run native dyadic candidate positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_lane5_dyadic_native_bridge.cpp \
+            /tmp/dyadic-native/pass188.o /tmp/dyadic-native/pass188-x86.o /tmp/dyadic-native/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/dyadic-native/test-dyadic
+          /tmp/dyadic-native/test-dyadic
+      - name: Verify unchanged native authority
+        run: |
+          test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_native_bridge_source.py'
+
+          ! nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit
+      - name: Build inherited membrane dependencies
+        run: |
+          mkdir -p /tmp/dyadic-native
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/dyadic-native/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/dyadic-native/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/dyadic-native/pass189.o
+      - name: Run native dyadic candidate positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_lane5_dyadic_native_bridge.cpp \
+            /tmp/dyadic-native/pass188.o /tmp/dyadic-native/pass188-x86.o /tmp/dyadic-native/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/dyadic-native/test-dyadic
+          /tmp/dyadic-native/test-dyadic
+      - name: Verify unchanged native authority
+        run: |
+          test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_native_bridge_source.py'
+
+          ! nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_rna_admit_composed
+      - name: Build inherited membrane dependencies
+        run: |
+          mkdir -p /tmp/dyadic-native
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/dyadic-native/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/dyadic-native/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/dyadic-native/pass189.o
+      - name: Run native dyadic candidate positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_lane5_dyadic_native_bridge.cpp \
+            /tmp/dyadic-native/pass188.o /tmp/dyadic-native/pass188-x86.o /tmp/dyadic-native/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/dyadic-native/test-dyadic
+          /tmp/dyadic-native/test-dyadic
+      - name: Verify unchanged native authority
+        run: |
+          test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_native_bridge_source.py'
+
+          ! nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_vm81_admit_uqcel
+      - name: Build inherited membrane dependencies
+        run: |
+          mkdir -p /tmp/dyadic-native
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/dyadic-native/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/dyadic-native/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/dyadic-native/pass189.o
+      - name: Run native dyadic candidate positive and negative tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_lane5_dyadic_native_bridge.cpp \
+            /tmp/dyadic-native/pass188.o /tmp/dyadic-native/pass188-x86.o /tmp/dyadic-native/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/dyadic-native/test-dyadic
+          /tmp/dyadic-native/test-dyadic
+      - name: Verify unchanged native authority
+        run: |
+          test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_native_bridge_source.py'
+
       - name: Build inherited membrane dependencies
         run: |
           mkdir -p /tmp/dyadic-native
