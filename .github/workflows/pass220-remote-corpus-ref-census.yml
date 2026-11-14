@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate remote census contracts
-        run: python -m pip install pytest && python -m pytest -q tests/pass220/test_hhs_pass220_remote_ref_census_v1.py tests/pass220/test_hhs_pass220_remote_ref_tree_reconciliation_v1.py
+        run: python -m pip install pytest && python -m pytest -q tests/pass220/test_hhs_pass220_remote_ref_census_v1.py tests/pass220/test_hhs_pass220_remote_ref_tree_reconciliation_v1.py tests/pass220/test_hhs_pass220_source_bound_proof_extraction_v1.py
       - name: Observe paginated branch and open PR heads
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -56,6 +56,23 @@ jobs:
           assert r["all_census_trees_enumerated"], "TREE_REF_COVERAGE_INCOMPLETE"
           print("Source tree candidates:",r["candidate_count"])
           PY
+      - name: Extract candidate module and lemma declarations from exact source blobs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python -m hhs_runtime.hhs_pass220_source_bound_proof_extraction_v1 \
+            --tree artifacts/pass220/REMOTE_SOURCE_TREE_RECONCILIATION.json \
+            --output artifacts/pass220/REMOTE_PROOF_SOURCE_EXTRACTION.json \
+            --max-files 250
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("artifacts/pass220/REMOTE_PROOF_SOURCE_EXTRACTION.json").read_text())
+          assert not r["negative_existence_claim_authorized"]
+          assert not r["native_proof_executed"]
+          print("Extracted source witnesses:",r["extracted_source_count"])
+          print("Skipped blob identities:",len(r["skipped_blobs"]))
+          PY
       - name: Upload read-only ref census evidence
         uses: actions/upload-artifact@v4
         with:
@@ -63,5 +80,6 @@ jobs:
           path: |
             artifacts/pass220/REMOTE_REF_CENSUS.json
             artifacts/pass220/REMOTE_SOURCE_TREE_RECONCILIATION.json
+            artifacts/pass220/REMOTE_PROOF_SOURCE_EXTRACTION.json
           if-no-files-found: error
           retention-days: 30
