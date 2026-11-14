@@ -19,7 +19,7 @@ THEOREMS = (
     "fractal_square",
     "ordered_return_requires_witness",
 )
-DEPENDENCIES = ("LEAN4_KERNEL", "HHS.Module196", "HHS.Mathlib.Native")
+DEPENDENCIES = ("LEAN4_KERNEL", "HHS.Module196")
 EXPECTED_MARKERS = tuple(("theorem " + t) for t in THEOREMS)
 
 
