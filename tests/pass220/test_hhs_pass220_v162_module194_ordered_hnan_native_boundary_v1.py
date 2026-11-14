@@ -54,6 +54,6 @@ def test_fail_closed_if_inherited_jordan_check_is_corrupt(monkeypatch):
 
 def test_fail_closed_if_inherited_hnan_source_check_fails(monkeypatch):
     import hhs_runtime.hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1 as v
-    monkeypatch.setattr(v, "HNAN_LO_SHU_TENSOR", ((("wrong",), ("Sum", "x", "y"), v.YX),\n                                                       v.HNAN_LO_SHU_TENSOR[1],\n                                                       v.HNAN_LO_SHU_TENSOR[2]))
+    monkeypatch.setattr(v, "HNAN_LO_SHU_TENSOR", (\n        (("wrong",), ("Sum", "x", "y"), v.YX),\n        v.HNAN_LO_SHU_TENSOR[1],\n        v.HNAN_LO_SHU_TENSOR[2],\n    ))
     with pytest.raises(V162HNANError, match="ORDERED_HNAN_AST_REJECTED"):
         v.verify_inherited_ordered_boundary(source_fixture(), require_upload_identity=False)
