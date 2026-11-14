@@ -6,6 +6,7 @@ on:
       - 'hhs_runtime/include/hhs_pass220_module196_rna_cell_wall_route_v1.h'
       - 'hhs_runtime/cpp/hhs_pass220_module196_rna_cell_wall_route_v1.cpp'
       - 'tests/pass220/test_hhs_module196_rna_route_mock.cpp'
+      - 'tests/pass220/test_hhs_module196_linked_abi_v1.py'
       - 'GNUmakefile'
       - 'tests/pass220/test_hhs_module196_lane5_coprocessor.cpp'
       - 'formal/lean/HHS/Module196.lean'
@@ -59,3 +60,14 @@ jobs:
           axiom-audit-root: HHS
       - name: Typecheck Module196
         run: lake env lean formal/lean/HHS/Module196.lean
+  linked-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build inherited C/C++ runtime ABI with Module 196
+        run: make c-abi
+      - name: Confirm actual shared export and legacy selectors
+        run: |
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F hhs_exact_pass220_module196_rna_route_v1
+          python tests/pass220/test_hhs_module196_linked_abi_v1.py
