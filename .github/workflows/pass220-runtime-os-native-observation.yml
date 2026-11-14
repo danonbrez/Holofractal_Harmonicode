@@ -36,6 +36,8 @@ on:
       - 'hhs_runtime/hhs_pass220_v163_course_module_crosswalk_v1.py'
       - 'hhs_runtime/hhs_pass220_v164_module194_inherited_native_hnan_163_v1.py'
       - 'hhs_runtime/hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py'
+      - 'hhs_runtime/hhs_pass220_v166_module194_exact_polynomial_projection_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v166_module194_exact_polynomial_projection_v1.py'
       - 'hhs_runtime/hhs_pass220_corpus_negative_claim_gate_v1.py'
       - 'AGENTS.md'
       - 'tests/pass220/test_hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py'
@@ -131,7 +133,8 @@ jobs:
             hhs_runtime/hhs_pass220_v161_module194_inherited_hnan_witness_v1.py \
             hhs_runtime/hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py \
             hhs_runtime/hhs_pass220_v164_module194_inherited_native_hnan_163_v1.py \
-            hhs_runtime/hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py
+            hhs_runtime/hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py \
+            hhs_runtime/hhs_pass220_v166_module194_exact_polynomial_projection_v1.py
       - name: Verify inherited GFX4 and new decay-binding contracts
         run: |
           python -m pytest -q \
@@ -154,7 +157,8 @@ jobs:
             tests/pass220/test_hhs_pass220_v163_course_module_crosswalk_v1.py \
             tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py \
             tests/pass220/test_hhs_pass220_v164_module194_inherited_native_hnan_163_v1.py \
-            tests/pass220/test_hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py
+            tests/pass220/test_hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py \
+            tests/pass220/test_hhs_pass220_v166_module194_exact_polynomial_projection_v1.py
       - name: Verify presentation-only cache and packet lane binding
         run: |
           node tests/pass220/test_hhs_observation_graph_cache_v1.cjs
