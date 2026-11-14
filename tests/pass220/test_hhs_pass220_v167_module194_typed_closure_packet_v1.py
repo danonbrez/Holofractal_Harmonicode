@@ -31,6 +31,12 @@ def test_original_order_and_typed_identity_are_distinct():
     assert len(p["A"][2]) == 81
     assert p["A"][1] == "A_LHS"
     assert p["B"][1] == "B_RHS"
+    rhs = p["B"][2][1]
+    assert rhs[0] == "OrderedEquality" and rhs[1] == "0"
+    assert rhs[2] == ("List",
+        ("OrderedQuotient", "t^11", "a^2"),
+        ("OrderedQuotient", "t^8", ("OrderedProduct", "2", "a^2")),
+        ("OrderedQuotient", "t^9", "a^2"))
     assert ("OrderedProduct", ("A","B"), "+P^4") in p["relations"]
     assert ("OrderedProduct", ("B","A"), "-P^4") in p["relations"]
     assert ("Primitive", "e", (0,1)) in p["relations"]
