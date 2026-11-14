@@ -292,3 +292,27 @@ source-envelope binding through actual Pass159 lowering into the inherited
 signed Pass219 environmental instruction, verify its existing signature
 and positional Hash216 transcript, and replay canonical VM81 acceptance.
 No new admission/mutation/hash authority is introduced.
+
+## Exact dyadic metadata transcript for inherited signed ingress
+
+`canonical_dyadic_signed_binding_material` deterministically serializes a
+domain-separated, NUL-terminated byte header, 72 ordered radix-72 digits,
+a little-endian signed 64-bit dyadic exponent, one phase byte, the 32
+decoded bytes of the normalized Pass159 source-binding SHA256 reference,
+and the SHA256 digest of the exact 648-byte candidate VM81 frame.
+The digest and exact material bytes are returned to the caller.
+
+Regression tests demonstrate that changing **any** of the ordered address,
+exponent, phase, provenance reference or source frame changes the transcript,
+and that invalid coordinates, unrepresentable exponent, malformed provenance,
+and premature admission claims fail closed. None of these fields are treated
+as floats or truncated to a 64-bit manifold index.
+
+The transcript is an **unsigned candidate-domain binding material**, not
+an actual signed admission message. The existing 1.32 environmental
+signer has not been changed to ingest it, and independently hashing these
+bytes does not establish their inclusion in its canonical signature.
+Production closure requires extending through inherited source lowering
+and validated signed envelope interfaces without altering frozen
+security semantics, then verifying actual signed VM81/Hash72/Hash216
+receipt and replay evidence.
