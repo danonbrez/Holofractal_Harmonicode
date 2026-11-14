@@ -33,7 +33,7 @@ class TestM195HNANBridge(unittest.TestCase):
                 x = complex(real, imaginary)
                 self.assertEqual(x**3 + 6*x**2 + 25*x, 0)
                 carrier = (f"M195|x={real},{imaginary}|".encode("ascii")
-                           * 64)[:648].ljust(648, b"\\x00")
+                           * 64)[:648].ljust(648, bytes([0]))
                 phase = bytes(range(72))
                 evidence = bind_m195_hnan_boundary(library, carrier, phase)
                 self.assertEqual(evidence["module"], 195)
