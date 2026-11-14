@@ -475,3 +475,23 @@ VM81/Hash72/Hash216 state. The on-demand workflow
 `.github/workflows/pass220-remote-corpus-ref-census.yml` exports the
 bounded discovery receipts and fails closed if remote tree coverage is
 incomplete.
+
+
+### Content-level source-bound mathematical proof discovery
+
+Following exact Git-tree enumeration, extract candidate course sections,
+registered lemma statements and formal declaration headers using
+`hhs_runtime/hhs_pass220_source_bound_proof_extraction_v1.py`. The
+extractor verifies returned source bytes against their immutable Git blob
+identity and retains exact mathematical expression text, source location,
+branch/PR provenance, declared assumptions, and declared status. A
+declaration, receipt label, or `EXECUTED_EXACT` string is evidence of a
+source's recorded claim, **not** evidence that this extractor executed a
+Lean/C/Wolfram/VM81 proof or established typed equation equivalence.
+Empty candidate sets, skipped blobs, size limits, inaccessible sources,
+and incomplete tree enumeration are unresolved discovery conditions,
+never mathematical nonexistence. Source variants must remain distinct
+until an independently verified typed ordered equivalence witness
+reconciles them. The on-demand remote corpus workflow now exports this
+candidate-only extraction alongside the branch/PR and source-tree
+evidence; native authority and frozen layers remain unchanged.
