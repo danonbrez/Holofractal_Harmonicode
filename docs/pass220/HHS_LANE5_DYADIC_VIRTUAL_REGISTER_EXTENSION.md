@@ -194,3 +194,24 @@ The header's SHA256 field is a **format-checked reference** only; it is not
 cryptographically authenticated in this C++ candidate wrapper. The upstream
 Pass159 binding and inherited signed PQC/VM81 admission remain mandatory.
 A passing candidate regression is not a full master-equation closure proof.
+
+## Canonical environmental signed-admission export boundary
+
+The dedicated dyadic native CI now verifies that the exact shared library
+exports `hhs_exact_pass219_vm81_environment_admit_signed` and does **not**
+export the hidden predecessor mutators `hhs_exact_vm81_admit_uqcel`,
+`hhs_exact_pass219_rna_admit_composed`,
+`hhs_exact_pass219_vm81_pqc_admit`, or
+`hhs_exact_pass219_vm81_pqc_admit_signed`. The existing protected export
+map and the frozen Pass219 signature/environment C sources are unchanged.
+
+The new regression asserts this against the repository's actual 1.31/1.32
+headers, hidden export map, and CI invocation. The dyadic bridge continues
+to return a candidate only: the exact signed environmental mutation function
+is an inherited downstream authority, not called or replicated by this module.
+
+A passing export test certifies the ABI isolation of the new bridge; it
+does not establish that any dyadic candidate has been signed, admitted,
+committed or persisted. That requires end-to-end invocation of the inherited
+environmental signing operation with actual source-bound candidate frame,
+Hash216 lineage, anti-replay witness and accepted canonical receipts.
