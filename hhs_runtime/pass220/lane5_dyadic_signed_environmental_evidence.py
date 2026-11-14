@@ -167,7 +167,7 @@ def canonical_dyadic_signed_binding_material(
         raise ValueError("normalized Pass159 SHA256 reference required")
     if type(candidate_frame) is not bytes or len(candidate_frame) != VM81_FRAME_BYTES:
         raise ValueError("exact canonical 648-byte candidate frame required")
-    prefix = b"HHS/PASS220/LANE5/DYADIC/SIGNED-BINDING-MATERIAL/V1\\x00"
+    prefix = b"HHS/PASS220/LANE5/DYADIC/SIGNED-BINDING-MATERIAL/V1" + bytes((0,))
     material = (
         prefix
         + bytes(digits)
