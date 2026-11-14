@@ -17,8 +17,6 @@ import { renderFiles, activateFile, openBottomTab } from './visual-ide-ui.mjs';
 import { createStoredZip } from './project-zip.mjs';
 
 const encoder = new TextEncoder();
-const MAX_PROJECT_FILES = 64;
-const MAX_PROJECT_BYTES = 24 * 1024 * 1024;
 const SUPPORTED_TARGETS = [
   'HHS_IR',
   'C_KERNEL_PLAN',
@@ -265,9 +263,7 @@ export async function buildProjectArchive() {
   const targets = targetSelection();
   if (!files.length) throw new Error('PROJECT_HAS_NO_FILES');
   if (!targets.length) throw new Error('PROJECT_HAS_NO_COMPILER_TARGETS');
-  if (files.length > MAX_PROJECT_FILES) throw new Error(`PROJECT_FILE_LIMIT_EXCEEDED:${MAX_PROJECT_FILES}`);
   const totalBytes = files.reduce((total, file) => total + fileBytes(file).length, 0);
-  if (totalBytes > MAX_PROJECT_BYTES) throw new Error(`PROJECT_BYTE_LIMIT_EXCEEDED:${MAX_PROJECT_BYTES}`);
 
   state.projectBuildBusy = true;
   setBuildButtons(true, false);
