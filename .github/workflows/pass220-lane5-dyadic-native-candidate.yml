@@ -7,6 +7,10 @@ on:
       - 'hhs_runtime/cpp/hhs_pass220_lane5_dyadic_virtual_bridge_v1.cpp'
       - 'tests/pass220/test_lane5_dyadic_native_bridge.cpp'
       - 'tests/test_lane5_dyadic_native_bridge_source.py'
+      - 'hhs_runtime/pass220/lane5_dyadic_signed_environmental_evidence.py'
+      - 'tests/test_lane5_dyadic_signed_environmental_evidence.py'
+      - 'hhs_runtime/pass220/lane5_dyadic_virtual_register.py'
+      - 'tests/test_lane5_dyadic_virtual_register.py'
       - '.github/workflows/pass220-lane5-dyadic-native-candidate.yml'
   workflow_dispatch:
 permissions:
@@ -56,3 +60,5 @@ jobs:
         run: |
           test -f hhs_runtime/HARMONICODE_VM_RUNTIME.c
           python -m unittest discover -s tests -p 'test_lane5_dyadic_native_bridge_source.py'
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_signed_environmental_evidence.py'
+          python -m unittest discover -s tests -p 'test_lane5_dyadic_virtual_register.py'
