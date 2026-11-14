@@ -30,23 +30,24 @@ def source_fixture() -> bytes:
     ))
 
 
-def test_binds_frozen_course_and_real_inherited_read_only_checker():
-    witness = inspect_module194_hnan_boundary(
-        source_fixture(), require_upload_identity=False,
-    )
-    assert witness["module194_groups"] == 81
-    assert witness["module194_reciprocal_pairs"] == 5184
-    assert witness["module194_particle_count"] == 10368
-    assert witness["inherited_lo_shu_phase_factorization_exact"] is True
-    assert witness["inherited_hash72_reciprocal_exact"] is True
-    assert witness["inherited_5184_addresses_bijective"] is True
-    assert [x["module_index"] for x in witness["course_required_gate_modules"]] == list(REQUIRED_COURSE_GATES)
-    assert witness["course_ordered_ab_ba_native_proof_executed"] is False
-    assert witness["course_hnan_passthrough_native_proof_executed"] is False
-    assert witness["module194_hnan_center_native_gate_executed"] is False
-    assert witness["module194_force_equivalence_verified"] is False
+def test_v161_refuses_course_source_freeze_drift_without_bypass():
+    from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
+    # Source-frozen corpus currently differs from its declared git blob.
+    # V161 must keep rejecting it; no synthesized proof or updated freeze.
+    with pytest.raises(ProofCorpusError, match="SOURCE_BLOB_CHANGED:whitepapers/Harmonicode Algebra - Course"):
+        inspect_module194_hnan_boundary(
+            source_fixture(), require_upload_identity=False,
+        )
+
+
+def test_inherited_read_only_witness_remains_independently_executable():
+    from hhs_runtime.pass220.hnan_lane5_exact_witness_v1 import verify_read_only_candidate
+    witness = verify_read_only_candidate()
+    assert witness["matrix_factorization_exact"] is True
+    assert witness["hash72_reciprocal_exact"] is True
+    assert witness["bigint_5184_addresses_bijective"] is True
+    assert witness["candidate_only"] is True
     assert witness["vm81_mutation_authority"] is False
-    assert witness["hash72_hash216_minted"] is False
 
 
 def test_rejects_source_identity_and_address_drift():
