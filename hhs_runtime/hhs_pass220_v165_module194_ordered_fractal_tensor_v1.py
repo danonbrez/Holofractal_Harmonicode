@@ -25,11 +25,11 @@ def power(base: tuple | str, n: int) -> tuple:
     return ("Power", base, n)
 
 
-A = ("CellSymbol", "a")
-B = ("CellSymbol", "b")
-A2 = power(A, 2)
-A4 = power(A, 4)
-B2 = power(B, 2)
+a_symbol = ("CellSymbol", "a")
+b_symbol = ("CellSymbol", "b")
+A2 = power(a_symbol, 2)
+A4 = power(a_symbol, 4)
+B2 = power(b_symbol, 2)
 SEEDS = (A2, A4, ("Sum", A4, B2))
 ROW_OPS = ("Seed", "Square", "SquarePlusFourth")
 LO_SHU_ROWS = ((4, 9, 2), (3, 5, 7), (8, 1, 6))
