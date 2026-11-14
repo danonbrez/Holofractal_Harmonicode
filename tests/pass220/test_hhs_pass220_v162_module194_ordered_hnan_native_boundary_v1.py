@@ -6,7 +6,7 @@ import pytest
 from hhs_runtime.hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1 import (
     V162HNANError, verify_inherited_ordered_boundary,
 )
-from tests.pass220.test_hhs_pass220_v161_module194_inherited_hnan_witness_v1 import source_fixture
+from test_hhs_pass220_v161_module194_inherited_hnan_witness_v1 import source_fixture
 
 
 def test_existing_hnan_jordan_loshu_qgu_receipts_are_executed():
@@ -54,6 +54,6 @@ def test_fail_closed_if_inherited_jordan_check_is_corrupt(monkeypatch):
 
 def test_fail_closed_if_inherited_hnan_source_check_fails(monkeypatch):
     import hhs_runtime.hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1 as v
-    monkeypatch.setattr(v, "HNAN_LO_SHU_TENSOR", ((), (), ()))
+    monkeypatch.setattr(v, "HNAN_LO_SHU_TENSOR", ((("wrong",), ("Sum", "x", "y"), v.YX),\n                                                       v.HNAN_LO_SHU_TENSOR[1],\n                                                       v.HNAN_LO_SHU_TENSOR[2]))
     with pytest.raises(V162HNANError, match="ORDERED_HNAN_AST_REJECTED"):
         v.verify_inherited_ordered_boundary(source_fixture(), require_upload_identity=False)
