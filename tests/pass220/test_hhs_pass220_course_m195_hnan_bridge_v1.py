@@ -1,5 +1,8 @@
 """Fail-closed native HNAN binding tests; no fabricated native execution."""
 import unittest
+import subprocess
+import tempfile
+from pathlib import Path
 from unittest.mock import patch
 
 from hhs_runtime.hhs_pass220_course_m195_hnan_bridge_v1 import (
@@ -11,6 +14,37 @@ from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusErro
 class TestM195HNANBridge(unittest.TestCase):
     def test_singular_spectrum_retained(self):
         self.assertEqual(SINGULAR_ROOTS, ("0", "-3+4I", "-3-4I"))
+
+    def test_actual_compiled_native_zero_divisor_passthrough(self):
+        # Execute the inherited C code, not a mocked success receipt.
+        # Exact Gaussian integer arithmetic proves that each labelled root
+        # zeroes D; the inherited native ABI receives an explicit zero flag.
+        roots = ((0, 0), (-3, 4), (-3, -4))
+        with tempfile.TemporaryDirectory() as folder:
+            library = str(Path(folder) / "libcourse_passthrough.so")
+            subprocess.run([
+                "cc", "-std=c11", "-O2", "-fPIC", "-shared",
+                "-Wall", "-Wextra", "-Werror", "-pedantic",
+                "-Ihhs_runtime/include",
+                "hhs_runtime/c/hhs_pass220_course_passthrough_witness.c",
+                "-o", library,
+            ], check=True, timeout=60)
+            for real, imaginary in roots:
+                x = complex(real, imaginary)
+                self.assertEqual(x**3 + 6*x**2 + 25*x, 0)
+                carrier = (f"M195|x={real},{imaginary}|".encode("ascii")
+                           * 64)[:648].ljust(648, b"\\x00")
+                phase = bytes(range(72))
+                evidence = bind_m195_hnan_boundary(library, carrier, phase)
+                self.assertEqual(evidence["module"], 195)
+                self.assertTrue(evidence["native_zero_divisor_passthrough_executed"])
+                self.assertEqual(evidence["gain"], "1/1")
+                self.assertEqual(evidence["phase_writes"], 0)
+                self.assertFalse(evidence["original_typed_equality_admitted"])
+                self.assertFalse(evidence["lane5_5184_hydration_verified"])
+                self.assertFalse(evidence["canonical_vm81_admission"])
+                self.assertFalse(evidence["hash72_minted"])
+                self.assertFalse(evidence["hash216_minted"])
 
     def test_missing_native_library_rejected(self):
         with self.assertRaises(ProofCorpusError):
