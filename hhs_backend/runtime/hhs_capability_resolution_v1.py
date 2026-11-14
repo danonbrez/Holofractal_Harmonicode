@@ -117,6 +117,37 @@ def resolve_capability(
         "status": "ADMIT_CAPABILITY_RESOLUTION" if ok else "REJECT_CAPABILITY_RESOLUTION",
         "authority": AUTHORITY,
     }
+    # A provider-registry miss is not evidence that a mathematical
+    # constructor/proof/service is absent from the repository. On the
+    # rejection path, consult the supplied Hash216/Lane 5 source index.
+    # Source discovery is read-only and carries no provider or VM81 authority.
+    if not candidates:
+        from pathlib import Path
+        from hhs_runtime.hhs_pass220_index_first_discovery_v1 import (
+            IndexDiscoveryError, search_index,
+        )
+        from hhs_runtime.hhs_pass220_corpus_negative_claim_gate_v1 import unresolved
+        root = Path(__file__).resolve().parents[2]
+        try:
+            observed = search_index(root, cap)
+            resolution["repository_discovery"] = {
+                "status": observed["report"]["status"],
+                "index_matches": observed["matches"],
+                "index_match_count": observed["matched_count"],
+                "index_truncated": observed["truncated"],
+                "index_source_commit": observed["source_commit"],
+                "coverage_complete": False,
+                "negative_existence_claim_authorized": False,
+            }
+        except (IndexDiscoveryError, OSError) as exc:
+            resolution["repository_discovery"] = {
+                "status": unresolved(cap)["status"],
+                "index_error": str(exc),
+                "coverage_complete": False,
+                "negative_existence_claim_authorized": False,
+            }
+        resolution["registry_rejection_is_corpus_absence"] = False
+
     resolution["resolution_root_hash72"] = hash72(RESOLUTION_SCHEMA, resolution)
     return resolution
 
