@@ -1,0 +1,30 @@
+name: Pass 220 V169 Module194 Concrete Lean Typed Closure
+on:
+  pull_request:
+    paths:
+      - 'formal/lean/HHS/Pass220/Module194TypedClosure.lean'
+      - '.github/workflows/pass220-v169-module194-lean-typed-closure.yml'
+      - 'hhs_runtime/hhs_pass220_v169_module194_concrete_lean_instance_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v169_module194_concrete_lean_instance_v1.py'
+  push:
+    branches:
+      - dev/pass220-runtime-os-webgl-v147-native-integration
+    paths:
+      - 'formal/lean/HHS/Pass220/Module194TypedClosure.lean'
+      - '.github/workflows/pass220-v169-module194-lean-typed-closure.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  module194-typed-structure-lean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: false
+          test: false
+      - name: Kernel check concrete 81-address structural obligations
+        run: lake env lean formal/lean/HHS/Pass220/Module194TypedClosure.lean
