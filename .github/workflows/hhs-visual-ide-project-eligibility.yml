@@ -1,0 +1,20 @@
+name: HHS Visual IDE Project Eligibility
+on:
+  pull_request:
+    paths:
+      - 'applications/holofractal_harmonizer/src/project-lifecycle.mjs'
+      - 'applications/holofractal_harmonizer/tests/project-eligibility.test.mjs'
+      - '.github/workflows/hhs-visual-ide-project-eligibility.yml'
+  workflow_dispatch:
+jobs:
+  project-eligibility:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify conventional IDE source eligibility and preserved lifecycle
+        run: node --test applications/holofractal_harmonizer/tests/project-eligibility.test.mjs
