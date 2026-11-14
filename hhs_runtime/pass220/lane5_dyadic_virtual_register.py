@@ -299,3 +299,83 @@ def attach_existing_i157_typed_graph(
         "hash216_persisted": False,
         "canonical_hash_mutation": None,
     }
+
+
+def lower_attached_candidate_to_native_abi(
+    attachment: dict[str, object],
+) -> dict[str, object]:
+    """Fail-closed data lowering for the existing native candidate-only route.
+
+    This is not an admission request: the caller still must provide genuine
+    Pass219 I028 frame/predecessor/constructor witnesses to the native C ABI.
+    Python's unlimited exponents are never silently truncated to int64.
+    """
+    if not isinstance(attachment, dict) or attachment.get("schema") != (
+        "HHS_LANE5_DYADIC_I157_TYPED_GRAPH_ATTACHMENT_V1"
+    ):
+        raise ValueError("typed I157 attachment required")
+    if attachment.get("separate_P_type_domains") is not True:
+        raise ValueError("separate typed centers required")
+    for field in ("native_full_master_equation_executed", "vm81_admitted",
+                  "hash72_minted", "hash216_persisted"):
+        if attachment.get(field) is not False:
+            raise ValueError("unadmitted authority flags required")
+    if attachment.get("canonical_hash_mutation") is not None:
+        raise ValueError("canonical mutation forbidden")
+    bound = attachment.get("candidate")
+    if not isinstance(bound, dict) or bound.get("schema") != (
+        "HHS_LANE5_DYADIC_PASS159_CANDIDATE_BINDING_V1"
+    ):
+        raise ValueError("Pass159 candidate binding required")
+    if bound.get("vm81_admitted") is not False or bound.get(
+        "canonical_hash_mutation", object()
+    ) is not None:
+        raise ValueError("unadmitted source binding required")
+    proposal = bound.get("proposal")
+    if not isinstance(proposal, dict) or proposal.get("schema") != (
+        "HHS_LANE5_DYADIC_VIRTUAL_HYDRATION_PROPOSAL_V1"
+    ) or proposal.get("candidate_only") is not True:
+        raise ValueError("native candidate proposal required")
+    exponent = _integer(proposal.get("signed_exponent"), "signed_exponent")
+    if not -(1 << 63) < exponent < (1 << 63):
+        raise ValueError("signed exponent unrepresentable in native int64 ABI")
+    digits = proposal.get("radix72_address")
+    if type(digits) is not tuple:
+        raise ValueError("ordered radix-72 tuple required")
+    if proposal.get("virtual_address") != encode_address(digits):
+        raise ValueError("radix-72 address/index mismatch")
+    if proposal.get("quantization") != dyadic(exponent):
+        raise ValueError("exact dyadic quantization drift")
+    if proposal.get("witness") != symbolic_reciprocal_pair(exponent):
+        raise ValueError("symbolic dyadic witness drift")
+    phase = proposal.get("phase")
+    if type(phase) is not int or not 0 <= phase < 72:
+        raise ValueError("native phase coordinate 0..71 required")
+    binding = bound.get("provenance_binding_sha256")
+    if (type(binding) is not str or len(binding) != 64 or
+        not all(ch in "0123456789abcdef" for ch in binding)):
+        raise ValueError("normalized lowercase Pass159 SHA256 required")
+    if proposal.get("provenance") != binding:
+        raise ValueError("Pass159 source binding mismatch")
+    provenance = bound.get("pass159_provenance")
+    if not isinstance(provenance, dict) or provenance.get(
+        "provenance_binding_sha256"
+    ) != binding:
+        raise ValueError("normalized Pass159 provenance mismatch")
+    if attachment.get("dyadic_symbolic_P") != proposal["witness"]["P"]:
+        raise ValueError("dyadic center identity mismatch")
+    return {
+        "schema": "HHS_LANE5_DYADIC_NATIVE_CANDIDATE_ABI_FIELDS_V1",
+        "radix72_address": tuple(digits),
+        "signed_dyadic_exponent_int64": exponent,
+        "phase_coordinate72": phase,
+        "pass159_binding_sha256": binding,
+        "requires_inherited_i028_input": True,
+        "requires_inherited_i028_vm81_frame": True,
+        "requires_inherited_i028_predecessor": True,
+        "requires_inherited_i028_constructor_witness": True,
+        "requires_signed_environmental_vm81": True,
+        "candidate_only": True,
+        "vm81_admitted": False,
+        "canonical_hash_mutation": None,
+    }
