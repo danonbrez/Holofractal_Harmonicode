@@ -39,6 +39,10 @@ docs/pass191/HHS_DYADIC_QUARTIC_PHASE_LATTICE_AND_HARMONICODE_EXPLANATORY_ESSAYS
 
 Read [HHS Frozen-Layer Preservation Contract](docs/architecture/HHS_FROZEN_LAYER_PRESERVATION_CONTRACT.md) before developing higher-order features. A closed and admitted foundation is a frozen dependency: extend through existing constructors, interfaces, and Lane 5 hydration, not a foundational rewrite. Missing higher-level capabilities do not establish lower-layer defects. Preserve exact ordered semantics, proofs, addresses, provenance, signed VM81 admission, Hash72 receipts, and Hash216 history. Independently validate new compositions; route any independently verified lower-layer defect to an explicitly authorized, regression-evidenced repair, separate from the extension.
 
+## Cognitive agency and recursive development (constitutional design objective)
+
+Read [HHS Cognitive Agency and Recursive Development Constitution](docs/architecture/HHS_COGNITIVE_AGENCY_PRESERVATION_CONSTITUTION.md) when interpreting relational equality, HNAN/ERS closure, self-correcting agents, distributed cognition, agency, or learning extensions. Preserve object and cell identity independently of evaluated equality; preserve typed values, phases, addresses, and provenance through Δ projection. Multiple candidate processes may compete, but they do not acquire independent canonical mutation authority. Extend verified capabilities cumulatively. This constitution is an additive specification, **not** an implementation/proof/production attestation.
+
 ## 2. Current status boundary
 
 - Pass 159 Harmonicode interpreter/C11 toolchain authoritative-main closure evidence is present.
