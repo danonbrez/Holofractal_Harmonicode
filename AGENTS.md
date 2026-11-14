@@ -359,3 +359,40 @@ If a genuine external blocker prevents full completion, preserve the completed c
 7. When evidence is inaccessible, document precisely which sources were examined, what remains unverified, and a reproducible next recovery step. Do not downgrade verified scoped results or overstate evidence from filenames and green workflows.
 
 **Decision rule:** Recover and scope validation evidence first; inherit established mathematics and implementations; diagnose and complete only genuinely missing connections; verify full integration without weakening VM81, Hash72/Hash216, Lane 5, or frozen-layer authority. Additive to Sections 1–13.
+
+
+## Corpus discovery completeness gate (normative; fail closed)
+
+Before an agent declares a mathematical equation, proof, lemma, constructor,
+service, or capability **absent, unimplemented, or missing**, it MUST first
+establish a machine-checkable independent discovery-completeness receipt
+covering the cumulative evidence graph: `main`, applicable open branches
+and PRs, source-index/Hash216 and Lane 5 graph, course Modules 0–195
+distributed across workstreams, proof corpora, native service registry,
+C/C++/Lean implementations, tests, and historical proof/receipt records.
+Narrow name/path searches, a single legacy frozen source, or failure to find
+an entry in one index are **not** complete discovery.
+
+This rule is enforced at the mathematical discovery-report boundary by
+`hhs_runtime/hhs_pass220_corpus_negative_claim_gate_v1.py`; its regression
+is `tests/pass220/test_hhs_pass220_corpus_negative_claim_gate_v1.py`.
+The current gate intentionally does **not** recognize any exhaustive
+cross-branch discovery witness. Until a separately verified complete
+enumerator is implemented and bound, categorical negative claims fail
+closed, regardless of caller-supplied coverage flags. Report
+`NOT_YET_LOCATED` with concrete checked paths/revisions instead.
+A specific `INTEGRATION_GAP_VERIFIED` is permitted with actual inspected
+sources, named interface and failure evidence, but is **not** a claim of
+nonexistence. Do not infer native admission from discovery.
+
+The full 196-module course is the canonical mathematical specification,
+distributed across parallel branches/PRs; the old 13-module freeze is only
+a historical source witness, not an authority to declare canonical
+mathematics absent. The existing 191-module index on `main` is a
+confirmed partial snapshot; the rest must be discovered from distributed
+work, not synthesized or discarded. Preserve overlap and provenance.
+
+Every agent-generated negative existence claim must pass this report gate;
+documentation alone is not evidence the entire agent stack invokes it.
+Where a report-generation integration is not yet wired, mark enforcement
+coverage OPEN rather than asserting production-wide protection.
