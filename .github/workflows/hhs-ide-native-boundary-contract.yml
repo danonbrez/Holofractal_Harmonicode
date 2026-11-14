@@ -1,0 +1,24 @@
+name: HHS IDE Native Boundary Contract
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'contracts/architecture/hhs_ide_native_boundary_contract_v1.json'
+      - 'tests/test_hhs_ide_native_boundary_contract_v1.py'
+      - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
+      - 'hhs_python/runtime/hhs_pass219_lane5_unbounded_workload_scaling_bridge.py'
+      - 'docs/pass220/PASS_220_I043_UBUNTU_GUEST_RUNTIME_PTY_V1.md'
+      - '.github/workflows/hhs-ide-native-boundary-contract.yml'
+  workflow_dispatch:
+jobs:
+  preserve-boundaries:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check conventional IDE and native authority boundaries
+        run: python -m unittest discover -s tests -p test_hhs_ide_native_boundary_contract_v1.py -v
