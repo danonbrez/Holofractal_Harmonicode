@@ -233,3 +233,30 @@ hidden standalone VM81, RNA and prior PQC mutators.
 The replacement preserves frozen kernel sources, native admission
 contracts and all existing runtime objects. CI proof must be collected
 from the updated commit before reporting closure.
+
+## Native ABI lowering from typed I157 attachment
+
+The Python entrypoint `lower_attached_candidate_to_native_abi` now
+converts an existing *candidate-only* typed I157 attachment to the exact
+field layout expected by the native Pass220 dyadic candidate bridge.
+It preserves all 72 radix-72 digits, the signed integer exponent,
+canonical phase coordinate and normalized lowercase Pass159 SHA256 binding,
+and explicitly requests the inherited I028 input/frame/predecessor/
+constructor-witness inputs. It does not call a native mutator or invent
+one of these missing inputs.
+
+A canonical ASCII decimal phase string (for example `"36"`) is accepted
+as the native phase coordinate 36; free-form labels like `"u72"` and
+noncanonical decimal formats fail closed. Python arbitrary precision
+exponents outside the native signed-int64 envelope fail closed rather
+than being truncated. The native bridge itself retains its already
+documented exclusion of the minimum int64 sentinel.
+
+The lowering routine rechecks address round trip, quantization identity,
+symbolic reciprocal witness, source-binding consistency, candidate-only
+flags and distinct integer/symbolic-center identity. These are
+candidate-local checks: they **do not authenticate caller-created graph
+objects**. Authentic provenance still requires the existing Pass159
+source-byte validation and I157 graph-root checks before calling lowering.
+The native I028 / PQC / signed VM81 receipt path remains separately
+authoritative.
