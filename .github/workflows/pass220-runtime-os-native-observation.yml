@@ -1,0 +1,167 @@
+name: Pass 220 Runtime OS Native Observation Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/**'
+      - 'hhs_gui/rendering/hhs_*observation*.js'
+      - 'hhs_gui/rendering/hhs_native_webgl_frame_presenter_v1.js'
+      - 'hhs_gui/rendering/hhs_v157_geometry_presentation_ingress_v1.js'
+      - 'hhs_gui/rendering/hhs_v159_receipt_bound_geometry_ingress_v1.js'
+      - 'hhs_gui/rendering/hhs_v161_receipt_bound_geometry_presenter_v1.js'
+      - 'tests/pass220/test_hhs_v157_geometry_presentation_ingress_v1.cjs'
+      - 'tests/pass220/**'
+      - 'applications/runtime_os/HHS_Alpha_V15*.html'
+      - '.github/workflows/pass220-runtime-os-native-observation.yml'
+  push:
+    branches:
+      - dev/pass220-runtime-os-webgl-v147-native-integration
+    paths:
+      - 'hhs_runtime/hhs_pass220_gfx4_observation_witness_v1.py'
+      - 'hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py'
+      - 'hhs_gui/rendering/hhs_observation_graph_cache_v1.js'
+      - 'hhs_gui/rendering/hhs_native_observation_binding_v1.js'
+      - 'hhs_gui/rendering/hhs_webgl_observation_sampler_v1.js'
+      - 'hhs_gui/rendering/hhs_native_webgl_frame_presenter_v1.js'
+      - 'hhs_gui/rendering/hhs_guarded_observation_transport_v1.js'
+      - 'hhs_runtime/hhs_pass220_native_observation_export_v1.py'
+      - 'hhs_runtime/hhs_pass220_v154_ordered_geometry_identity_v1.py'
+      - 'hhs_runtime/hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py'
+      - 'hhs_runtime/hhs_pass220_v158_geometry_native_egress_v1.py'
+      - 'hhs_runtime/hhs_pass220_v160_module194_source_address_preflight_v1.py'
+      - 'hhs_runtime/hhs_pass220_v161_module194_inherited_hnan_witness_v1.py'
+      - 'hhs_runtime/hhs_pass220_v162_course_source_divergence_v1.py'
+      - 'hhs_runtime/hhs_pass220_v163_course_module_crosswalk_v1.py'
+      - 'hhs_runtime/hhs_pass220_v164_module194_inherited_native_hnan_163_v1.py'
+      - 'hhs_runtime/hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v164_module194_inherited_native_hnan_163_v1.py'
+      - 'hhs_runtime/hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v161_module194_inherited_hnan_witness_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v160_module194_source_address_preflight_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v154_ordered_geometry_identity_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v158_geometry_native_egress_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_v152_ordered_geometry_projection_cell_v1.hpp'
+      - 'hhs_runtime/include/hhs_pass220_v153_geometry_resource_binding_cell_v1.hpp'
+      - 'hhs_runtime/include/hhs_pass220_v156_ordered_geometry_resource_transfer_v1.hpp'
+      - 'tests/pass220/test_hhs_v156_ordered_geometry_resource_transfer_v1.cpp'
+      - 'tests/pass220/test_hhs_v152_ordered_geometry_projection_cell_v1.cpp'
+      - 'tests/pass220/test_hhs_v153_geometry_resource_binding_cell_v1.cpp'
+      - 'hhs_gui/rendering/hhs_runtime_os_native_observation_bootstrap_v1.js'
+      - 'applications/runtime_os/HHS_Alpha_V148_Native_Observation_Bridge.html'
+      - 'applications/runtime_os/HHS_Alpha_V149_Server_Owned_VMRC_Observation.html'
+      - 'applications/runtime_os/HHS_Alpha_V150_Decay_Pool_Observation.html'
+      - 'applications/runtime_os/HHS_Alpha_V151_Admitted_Geometry_WebGL.html'
+      - 'applications/runtime_os/HHS_Alpha_V152_Ordered_Physical_Geometry_Observation.html'
+      - 'tests/pass220/test_hhs_v148_embedded_native_observation_v1.py'
+      - 'tests/pass220/test_hhs_v149_embedded_native_observation_v1.py'
+      - 'tests/pass220/test_hhs_v150_decay_pool_preservation_v1.py'
+      - 'tests/pass220/test_hhs_v151_admitted_geometry_preservation_v1.py'
+      - 'tests/pass220/test_hhs_v152_geometry_preservation_v1.py'
+      - 'tests/pass220/test_hhs_v152_local_geometry_observation_v1.cjs'
+      - 'tests/pass220/test_hhs_native_webgl_frame_presenter_v1.cjs'
+      - 'tests/pass220/test_hhs_v150_decay_pool_observer_v1.cjs'
+      - 'tests/pass220/test_hhs_runtime_os_native_observation_bootstrap_v1.cjs'
+      - 'hhs_runtime/hhs_service_registry_v1.py'
+      - 'tests/pass220/test_hhs_guarded_observation_transport_v1.cjs'
+      - 'tests/pass220/test_hhs_pass220_native_observation_export_v1.py'
+      - 'tests/pass220/test_hhs_observation_graph_cache_v1.cjs'
+      - 'tests/pass220/test_hhs_native_observation_binding_v1.cjs'
+      - 'tests/pass220/test_hhs_webgl_observation_sampler_v1.cjs'
+      - 'tests/pass220/test_hhs_pass220_gfx4_observation_witness_v1.py'
+      - 'tests/pass220/test_hhs_pass220_gfx4_decay_matrix_observation_v1.py'
+      - '.github/workflows/pass220-runtime-os-native-observation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-observation-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install focused test dependency
+        run: python -m pip install --disable-pip-version-check pytest fastapi
+      - name: Compile existing Pass 179 C11 packet library (development only)
+        run: |
+          mkdir -p native_projects/hhs_pass220_gfx1_native_render_commands/build
+          cc -std=c11 -O2 -fPIC -shared -Wall -Wextra -Werror -pedantic \
+            -I native_projects/hhs_pass220_gfx1_native_render_commands/include \
+            native_projects/hhs_pass220_gfx1_native_render_commands/src/hhs_pass179_render_command_v1.c \
+            -o native_projects/hhs_pass220_gfx1_native_render_commands/build/libhhs_pass179_render_command_v1.so
+          make -C native_projects/hhs_pass220_gfx1_native_render_commands test
+      - name: Validate inherited I059 C++ geometry and render cell walls
+        run: |
+          mkdir -p build/pass220-v152
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_v152_ordered_geometry_projection_cell_v1.cpp \
+            -o build/pass220-v152/test_v152_ordered_geometry
+          build/pass220-v152/test_v152_ordered_geometry
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_v153_geometry_resource_binding_cell_v1.cpp \
+            -o build/pass220-v152/test_v153_geometry_resource
+          build/pass220-v152/test_v153_geometry_resource
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_hhs_v156_ordered_geometry_resource_transfer_v1.cpp \
+            -o build/pass220-v152/test_v156_geometry_resource_transfer
+          build/pass220-v152/test_v156_geometry_resource_transfer
+      - name: Compile native observation modules
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_gfx4_observation_witness_v1.py \
+            hhs_runtime/hhs_pass220_gfx4_decay_matrix_observation_v1.py \
+            hhs_runtime/hhs_pass220_native_observation_export_v1.py \
+            hhs_runtime/hhs_pass220_v154_ordered_geometry_identity_v1.py \
+            hhs_runtime/hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py \
+            hhs_runtime/hhs_pass220_v158_geometry_native_egress_v1.py \
+            hhs_runtime/hhs_pass220_v160_module194_source_address_preflight_v1.py \
+            hhs_runtime/hhs_pass220_v161_module194_inherited_hnan_witness_v1.py \
+            hhs_runtime/hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py \
+            hhs_runtime/hhs_pass220_v164_module194_inherited_native_hnan_163_v1.py \
+            hhs_runtime/hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py
+      - name: Verify inherited GFX4 and new decay-binding contracts
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_hhs_pass220_gfx4_vm81_graphics_packet_identity_v1.py \
+            tests/pass220/test_hhs_pass220_gfx4_observation_witness_v1.py \
+            tests/pass220/test_hhs_pass220_gfx4_decay_matrix_observation_v1.py \
+            tests/pass220/test_hhs_pass220_native_observation_export_v1.py \
+            tests/pass220/test_hhs_v148_embedded_native_observation_v1.py \
+            tests/pass220/test_hhs_v149_embedded_native_observation_v1.py \
+            tests/pass220/test_hhs_v150_decay_pool_preservation_v1.py \
+            tests/pass220/test_hhs_v151_admitted_geometry_preservation_v1.py \
+            tests/pass220/test_hhs_v152_geometry_preservation_v1.py \
+            tests/pass220/test_hhs_pass220_v154_ordered_geometry_identity_v1.py \
+            tests/pass220/test_hhs_pass220_v155_geometry_gfx4_receipt_binding_v1.py \
+            tests/pass220/test_hhs_pass220_v158_geometry_native_egress_v1.py \
+            tests/pass220/test_hhs_pass220_v160_module194_source_address_preflight_v1.py \
+            tests/pass220/test_hhs_pass220_v161_module194_inherited_hnan_witness_v1.py \
+            tests/pass220/test_hhs_pass220_v162_course_source_divergence_v1.py \
+            tests/pass220/test_hhs_pass220_v163_course_module_crosswalk_v1.py \
+            tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py \
+            tests/pass220/test_hhs_pass220_v164_module194_inherited_native_hnan_163_v1.py \
+            tests/pass220/test_hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py
+      - name: Verify presentation-only cache and packet lane binding
+        run: |
+          node tests/pass220/test_hhs_observation_graph_cache_v1.cjs
+          node tests/pass220/test_hhs_native_observation_binding_v1.cjs
+          node tests/pass220/test_hhs_webgl_observation_sampler_v1.cjs
+          node tests/pass220/test_hhs_guarded_observation_transport_v1.cjs
+          node tests/pass220/test_hhs_runtime_os_native_observation_bootstrap_v1.cjs
+          node tests/pass220/test_hhs_v150_decay_pool_observer_v1.cjs
+          node tests/pass220/test_hhs_native_webgl_frame_presenter_v1.cjs
+          node tests/pass220/test_hhs_v152_local_geometry_observation_v1.cjs
+          node tests/pass220/test_hhs_v157_geometry_presentation_ingress_v1.cjs
+          node tests/pass220/test_hhs_v159_receipt_bound_geometry_ingress_v1.cjs
+          node tests/pass220/test_hhs_v161_receipt_bound_geometry_presenter_v1.cjs
