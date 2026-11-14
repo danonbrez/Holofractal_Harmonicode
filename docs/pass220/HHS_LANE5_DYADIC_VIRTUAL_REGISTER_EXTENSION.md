@@ -215,3 +215,21 @@ does not establish that any dyadic candidate has been signed, admitted,
 committed or persisted. That requires end-to-end invocation of the inherited
 environmental signing operation with actual source-bound candidate frame,
 Hash216 lineage, anti-replay witness and accepted canonical receipts.
+
+## ABI CI shell-script repair
+
+Commit `0cb6e2a66b949912e0315c4850feedc0c1dd18dc` failed its
+dedicated dyadic native workflow at the build-step shell boundary.
+The runner log reports an unmatched single quotation mark, not a native
+compiler, linker, VM81, or mathematical invariant failure.
+
+Inspection identified malformed duplicated CI steps and a similarly
+corrupted Python export-boundary regression introduced by the previous
+edit. Both files were replaced with a single, complete workflow and
+four source/ABI test methods. Required export predicates remain:
+public dyadic candidate and 1.32 environmental signed admission;
+hidden standalone VM81, RNA and prior PQC mutators.
+
+The replacement preserves frozen kernel sources, native admission
+contracts and all existing runtime objects. CI proof must be collected
+from the updated commit before reporting closure.
