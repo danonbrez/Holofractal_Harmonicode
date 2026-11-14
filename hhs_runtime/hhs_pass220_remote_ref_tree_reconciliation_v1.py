@@ -165,15 +165,47 @@ def reconcile_remote_trees(census: Mapping[str, Any], *,
     }
 
 
+def load_exact_checkout_baseline(root: Path) -> tuple[dict[str, str], str | None]:
+    """Use existing Hash216 index only if its three records bind to HEAD.
+
+    A stale index cannot silently become the reference against which remote
+    branches are judged. The missing/error status is carried into the output.
+    """
+    import subprocess
+    from hhs_runtime.hhs_pass220_index_first_discovery_v1 import GRAPH, LANE5, RECEIPT
+    root=Path(root).resolve()
+    try:
+        head=subprocess.run(["git","rev-parse","HEAD"],cwd=root,check=True,
+                            capture_output=True,text=True).stdout.strip()
+        records=[json.loads((root/path).read_text("utf-8"))
+                 for path in (GRAPH,LANE5,RECEIPT)]
+    except (OSError,ValueError,subprocess.CalledProcessError):
+        return {}, "INDEX_ARTIFACTS_UNAVAILABLE"
+    if any(record.get("source_commit")!=head for record in records):
+        return {}, "INDEX_CHECKOUT_REVISION_MISMATCH"
+    rows=records[0].get("files")
+    if not isinstance(rows,list):
+        return {}, "INDEX_FILE_CENSUS_INVALID"
+    result={}
+    for row in rows:
+        if not isinstance(row,Mapping):
+            return {}, "INDEX_FILE_CENSUS_INVALID"
+        path,blob,hash216=row.get("path"),row.get("git_blob"),row.get("hash216")
+        if not isinstance(path,str) or not isinstance(blob,str) or not SHA.fullmatch(blob) or not isinstance(hash216,str) or len(hash216)!=216 or path in result:
+            return {}, "INDEX_FILE_IDENTITY_INVALID"
+        result[path]=blob
+    return result, None
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--census", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--query", default=None)
+    parser.add_argument("--query", default=None)\n    parser.add_argument("--index-root", default=None)
     args = parser.parse_args()
     packet = json.loads(Path(args.census).read_text("utf-8"))
-    result = reconcile_remote_trees(packet,query=args.query)
+    baseline, index_error = ({}, "INDEX_ROOT_NOT_SUPPLIED") if args.index_root is None else load_exact_checkout_baseline(Path(args.index_root))\n    result = reconcile_remote_trees(packet,query=args.query,baseline=baseline)\n    result["checkout_index_error"] = index_error\n    result["checkout_index_bound"] = index_error is None
     Path(args.output).write_text(json.dumps(result,sort_keys=True,indent=2)+"\n","utf-8")
     print("Remote tree candidates:",result["candidate_count"])
     print("Uninspected or truncated trees:",len(result["remote_tree_errors"]))
