@@ -1,0 +1,34 @@
+name: Pass 220 V170 Module194 Ordered Product Certificate Lean
+on:
+  pull_request:
+    paths:
+      - 'formal/lean/HHS/Pass220/Module194TypedClosure.lean'
+      - 'formal/lean/HHS/Pass220/Module194OrderedProduct.lean'
+      - '.github/workflows/pass220-v170-module194-ordered-product-lean.yml'
+      - 'hhs_runtime/hhs_pass220_v170_module194_ordered_product_proof_dependency_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v170_module194_ordered_product_proof_dependency_v1.py'
+  push:
+    branches:
+      - dev/pass220-runtime-os-webgl-v147-native-integration
+    paths:
+      - 'formal/lean/HHS/Pass220/Module194OrderedProduct.lean'
+      - '.github/workflows/pass220-v170-module194-ordered-product-lean.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ordered-product-certificate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: false
+          build: false
+          test: false
+      - name: Kernel-check concrete structural dependency and conditional product certificate
+        run: |
+          mkdir -p .lake/build/lib/lean/HHS/Pass220
+          lake env lean -o .lake/build/lib/lean/HHS/Pass220/Module194TypedClosure.olean formal/lean/HHS/Pass220/Module194TypedClosure.lean
+          lake env lean formal/lean/HHS/Pass220/Module194OrderedProduct.lean
