@@ -1,0 +1,33 @@
+# Administrator Resumable SQL Staging v1 — additive native integration record
+
+## Scope
+
+This change adds an **untrusted, administrator-private SQL intake library**, not a replacement for Pass 194, Hash216, or VM81. It permits arbitrary byte lengths and formats through incremental `append(upload_id, authenticated_owner, offset, bytes)` calls, writes exact source bytes to a private spool, and persists SQL offset/state metadata. Once finalized, source files become content-addressed blobs with SHA-256 identity. Hash216 admission is always **false** at this layer.
+
+The caller, **not** a payload field, must supply a host-verified administrator identity. This library is not directly HTTP-exposed. The HTTP host must implement authentication, session scope, CSRF/origin requirements, chunk admission, and bounded concurrency without introducing a whole-file size or modality cap.
+
+## Native composition
+
+`existing nginx :443 -> Lane 5 gateway :8715 -> private authenticated upload entry -> SQL stage -> Pass 174/194 and Lane 5 BIOS/C coprocessor hydration -> signed environmental VM81 admission -> Hash216`
+
+The repository's current `hhs_backend/lane5_ingress_gateway.py` uses `body = await request.body()` and materializes the full HTTP envelope before mediation. Therefore this new SQL staging library is **not yet end-to-end arbitrary-size production transport**. Before deploying the HTTP interface, add an independently validated, memory-bounded ingress streaming composition that preserves byte-exact Lane 5 candidate mediation across all chunks and their verified full-source manifest. Do **not** circumvent the gateway with a direct public staging endpoint. The current `hhs_backend/api/pass194_storage_training_routes.py` retains an inherited 16 MiB JSON/base64 endpoint; do not silently rewrite its frozen historical contract. Add an explicit streaming successor and maintain old compatibility until governed migration.
+
+## Recovery and lifecycle
+
+- SQLite WAL and FULL sync persist committed offsets.
+- After a crash between spool fsync and SQL commit, the next append truncates uncommitted tails before resuming.
+- Duplicate committed chunks are replay-idempotent only when their exact bytes match.
+- Finalization streams through SHA-256 verification and creates a content-addressed source file.
+- Novel and unknown formats remain staged. They are never marked as canonical Hash216 knowledge merely because source SHA-256 exists.
+- Private SQL source metadata is not authorization, native tokenization, or a signed VM81 receipt.
+- This is **single-process** serialized staging. A production multi-worker implementation must introduce a verified shared file lock, lease, and object-store consistency/retention policy; it must not assume threading locks coordinate multiple processes.
+
+## Validation to complete
+
+1. Run focused PR CI tests and review main-branch source-integrity checks.
+2. Independently validate limits of OS filesystem, nginx, upstream timeouts and backpressure without converting physical limits to arbitrary input eligibility policy.
+3. Integrate a trusted private admin host identity, CSRF/origin checks and Lane 5 streaming admission (not bypass).
+4. Connect the existing Pass 174/194 native hydration and signed VM81/PQC admission, using authentic receipts.
+5. Prove exact source upload -> SQL recovery -> native hydration -> Hash216 graph and RAG readback on the DigitalOcean exact-main deployment.
+
+No stage in this PR claims production admission, native egress, or deployed reachability.
