@@ -1,5 +1,6 @@
 """Fail-closed native HNAN binding tests; no fabricated native execution."""
 import unittest
+import ctypes
 import subprocess
 import tempfile
 from pathlib import Path
@@ -10,6 +11,7 @@ from hhs_runtime.hhs_pass220_course_m195_hnan_bridge_v1 import (
     exact_denominator_gaussian, SINGULAR_ROOTS,
 )
 from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
+from hhs_runtime.hhs_pass220_course_passthrough_native_witness_binding_v1 import Witness
 
 
 class TestM195HNANBridge(unittest.TestCase):
@@ -35,20 +37,35 @@ class TestM195HNANBridge(unittest.TestCase):
                 carrier = (f"M195|x={real},{imaginary}|".encode("ascii")
                            * 64)[:648].ljust(648, bytes([0]))
                 phase = bytes(range(72))
-                evidence = bind_m195_source_derived_singular_route(
-                    library, real, imaginary, carrier, phase)
-                self.assertEqual(evidence["module"], 195)
-                self.assertEqual(evidence["singularity_decision"], "EXACT_D_ZERO")
-                self.assertEqual(evidence["singularity_decision_location"],
-                                 "M195_PYTHON_ADAPTER_NOT_LANE5")
-                self.assertTrue(evidence["native_zero_divisor_passthrough_executed"])
-                self.assertEqual(evidence["gain"], "1/1")
-                self.assertEqual(evidence["phase_writes"], 0)
-                self.assertFalse(evidence["original_typed_equality_admitted"])
-                self.assertFalse(evidence["lane5_5184_hydration_verified"])
-                self.assertFalse(evidence["canonical_vm81_admission"])
-                self.assertFalse(evidence["hash72_minted"])
-                self.assertFalse(evidence["hash216_minted"])
+                # The inherited C ABI is callable independently of the
+                # frozen course graph. A raw C result is never a proof receipt.
+                native = ctypes.CDLL(library)
+                fn = native.hhs220_course_passthrough_execute
+                fn.argtypes = [ctypes.c_void_p, ctypes.c_size_t,
+                               ctypes.c_void_p, ctypes.c_size_t,
+                               ctypes.c_uint32, ctypes.c_void_p,
+                               ctypes.c_void_p, ctypes.POINTER(Witness)]
+                fn.restype = ctypes.c_int
+                ci = ctypes.create_string_buffer(carrier, len(carrier))
+                pi = ctypes.create_string_buffer(phase, len(phase))
+                co = ctypes.create_string_buffer(len(carrier))
+                po = ctypes.create_string_buffer(len(phase))
+                witness = Witness()
+                self.assertEqual(fn(ci, len(carrier), pi, len(phase),
+                                    1, co, po, ctypes.byref(witness)), 1)
+                self.assertEqual(co.raw, carrier)
+                self.assertEqual(po.raw, phase)
+                self.assertEqual((witness.gain_numerator,
+                                  witness.gain_denominator), (1, 1))
+                self.assertEqual(witness.phase_writes, 0)
+                self.assertEqual(witness.canonical_admission, 0)
+                # The course graph must still reject mismatched frozen source.
+                with self.assertRaisesRegex(
+                    ProofCorpusError,
+                    "SOURCE_BLOB_CHANGED:whitepapers/Harmonicode Algebra - Course"
+                ):
+                    bind_m195_source_derived_singular_route(
+                        library, real, imaginary, carrier, phase)
 
     def test_nonroot_cannot_trigger_native_bypass(self):
         self.assertEqual(exact_denominator_gaussian(1, 0), (32, 0))
