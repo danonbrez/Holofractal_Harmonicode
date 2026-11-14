@@ -6,7 +6,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from hhs_runtime.hhs_pass220_course_m195_hnan_bridge_v1 import (
-    bind_m195_hnan_boundary, bind_m195_source_derived_singular_route,\n    exact_denominator_gaussian, SINGULAR_ROOTS,
+    bind_m195_hnan_boundary, bind_m195_source_derived_singular_route,
+    exact_denominator_gaussian, SINGULAR_ROOTS,
 )
 from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
 
@@ -34,8 +35,12 @@ class TestM195HNANBridge(unittest.TestCase):
                 carrier = (f"M195|x={real},{imaginary}|".encode("ascii")
                            * 64)[:648].ljust(648, bytes([0]))
                 phase = bytes(range(72))
-                evidence = bind_m195_source_derived_singular_route(\n                    library, real, imaginary, carrier, phase)
-                self.assertEqual(evidence["module"], 195)\n                self.assertEqual(evidence["singularity_decision"], "EXACT_D_ZERO")\n                self.assertEqual(evidence["singularity_decision_location"],\n                                 "M195_PYTHON_ADAPTER_NOT_LANE5")
+                evidence = bind_m195_source_derived_singular_route(
+                    library, real, imaginary, carrier, phase)
+                self.assertEqual(evidence["module"], 195)
+                self.assertEqual(evidence["singularity_decision"], "EXACT_D_ZERO")
+                self.assertEqual(evidence["singularity_decision_location"],
+                                 "M195_PYTHON_ADAPTER_NOT_LANE5")
                 self.assertTrue(evidence["native_zero_divisor_passthrough_executed"])
                 self.assertEqual(evidence["gain"], "1/1")
                 self.assertEqual(evidence["phase_writes"], 0)
