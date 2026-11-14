@@ -83,3 +83,22 @@ existing Lane 5 typed equality producer; ordered A/B provenance and
 5184-cell serialization/hydration; native C++/VM81 gate; Hash72 and
 Hash216 receipt/replay; exact-main production evidence. Each requires
 its own executed witness, not a declared success flag.
+
+## 195.5 Exact Gaussian singularity selector (adapter-level)
+
+The Module 195 HNAN bridge now exposes
+`exact_denominator_gaussian(real, imaginary)`, computing both integer
+components of `D(real+imaginary*I)` without float approximation.
+`bind_m195_source_derived_singular_route` requires both components to equal
+zero before calling the **inherited** Module 9 native C passthrough and its
+source-bound dependency-graph binding. It rejects a non-root without invoking
+the bypass. This addresses test-supplied hardcoded zero flags **at the Module
+195 Python adapter**, not the Lane 5 native producer, which remains open.
+The compiled native checker continues to receive its existing zero-divisor
+flag through its unchanged wrapper; the adapter does not constitute a new
+canonical input or equality operator.
+
+Exact roots tested: `(0,0)`, `(-3,4)`, `(-3,-4)`. Non-root `(1,0)`
+gives `D(1)=32` and must not invoke the inherited checker. Typed `m`
+equality, A/B phase closure, 5184 hydration, VM81 and canonical receipts
+remain outstanding independently.
