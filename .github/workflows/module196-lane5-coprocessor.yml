@@ -7,6 +7,7 @@ on:
       - 'hhs_runtime/cpp/hhs_pass220_module196_rna_cell_wall_route_v1.cpp'
       - 'tests/pass220/test_hhs_module196_rna_route_mock.cpp'
       - 'tests/pass220/test_hhs_module196_linked_abi_v1.py'
+      - 'tests/pass220/test_hhs_module196_real_linked_candidate_v1.cpp'
       - 'GNUmakefile'
       - 'tests/pass220/test_hhs_module196_lane5_coprocessor.cpp'
       - 'formal/lean/HHS/Module196.lean'
@@ -71,3 +72,7 @@ jobs:
         run: |
           nm -D hhs_runtime/builds/libhhs_runtime.so | grep -F hhs_exact_pass220_module196_rna_route_v1
           python tests/pass220/test_hhs_module196_linked_abi_v1.py
+      - name: Exercise real linked VM81 candidate and RNA cell-wall replay
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include tests/pass220/test_hhs_module196_real_linked_candidate_v1.cpp -Lhhs_runtime/builds -Wl,-rpath,$PWD/hhs_runtime/builds -lhhs_runtime -o /tmp/hhs-module196-real-test
+          /tmp/hhs-module196-real-test
