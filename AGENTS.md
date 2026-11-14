@@ -495,3 +495,20 @@ until an independently verified typed ordered equivalence witness
 reconciles them. The on-demand remote corpus workflow now exports this
 candidate-only extraction alongside the branch/PR and source-tree
 evidence; native authority and frozen layers remain unchanged.
+
+
+### Registered proof and Lane 5 declaration crosswalk
+
+When source-bound declarations are available, reconcile them against the
+**existing** registered lemma source and candidate-only Lane 5 constructor
+graph with `hhs_runtime/hhs_pass220_extracted_proof_crosswalk_v1.py`.
+Preserve exact recorded lemma IDs, source text, assumptions, dependencies,
+declared status, Git blob and branch/PR provenance. Record same-ID
+divergences and competing course equation candidates as separate versions;
+do not silently normalize `AB` into `BA` or promote an equal name or
+source path to typed mathematical equivalence. An `EXECUTED_EXACT`
+source status is a recorded assertion whose proof receipt must be
+recovered independently. Missing extracted records are `NOT_YET_LOCATED`
+until discovery completeness has been independently verified. This
+crosswalk does not modify the inherited Lane 5 graph or mint proof,
+VM81, Hash72, or Hash216 authority.
