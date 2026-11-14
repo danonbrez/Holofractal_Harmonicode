@@ -1,0 +1,22 @@
+name: HHS Visual IDE ZIP64 Interoperability
+on:
+  pull_request:
+    paths:
+      - 'applications/holofractal_harmonizer/src/project-zip.mjs'
+      - 'applications/holofractal_harmonizer/tests/project.zip64.test.mjs'
+      - '.github/workflows/hhs-visual-ide-zip64.yml'
+  workflow_dispatch:
+jobs:
+  verify-zip64:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test existing project archive and ZIP64 standard-reader compatibility
+        run: |
+          node --test applications/holofractal_harmonizer/tests/project.lifecycle.test.mjs
+          node --test applications/holofractal_harmonizer/tests/project.zip64.test.mjs
