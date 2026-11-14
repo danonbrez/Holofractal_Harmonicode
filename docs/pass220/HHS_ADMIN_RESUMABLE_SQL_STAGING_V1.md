@@ -40,3 +40,11 @@ The 648-byte read granularity is 81 × 64 bits, not a maximum object or upload s
 
 The existing HTTP gateway full-body buffering remains an unresolved transport integration defect; never route uploads around the existing Lane 5 membrane to bypass it.
 
+
+## Gateway exact-byte streaming integration
+
+The PR now contains an additive repair to `hhs_backend/lane5_ingress_gateway.py`: HTTP bodies are spooled through `request.stream()` into a private temporary file, then hashed incrementally in **648-byte native reads** by `Lane5WorkloadEnvelope.from_chunks()`. The exact original request framing is reproduced using the request metadata prefix and the source byte length; the existing Pass219 1.48 native candidate optimizer is invoked before any HTTP bytes are forwarded upstream. A denied native candidate aborts forwarding. After acceptance, `httpx` streams the original staged bytes to the existing private upstream. The temporary spool is not the persistent administrator SQL staging database.
+
+The regression test compares the new streaming envelope hash and byte count against the historical `serialize_environmental_ingress(...,payload=...)` representation for empty, short, cross-frame, and larger binary bodies.
+
+This is an HTTP ingress **memory-buffering repair**, not the completed administrator uploader. The existing Pass194 JSON/base64 API still imposes its own 16 MiB limit, and no signed VM81/Hash216 promotion or RAG readback is claimed. Production must also verify reverse-proxy buffering, timeout and filesystem behavior, and multi-worker resource pressure.
