@@ -42,6 +42,8 @@ on:
       - 'hhs_runtime/hhs_pass220_v169_module194_concrete_lean_instance_v1.py'
       - 'hhs_runtime/hhs_pass220_v170_module194_ordered_product_proof_dependency_v1.py'
       - 'hhs_runtime/hhs_pass220_v171_module194_native_ordered_phase_product_v1.py'
+      - 'hhs_runtime/hhs_pass220_v172_module194_vm81_octonion_projection_v1.py'
+      - 'tests/pass220/test_hhs_pass220_v172_module194_vm81_octonion_projection_v1.py'
       - 'tests/pass220/test_hhs_pass220_v171_module194_native_ordered_phase_product_v1.py'
       - 'tests/pass220/test_hhs_pass220_v170_module194_ordered_product_proof_dependency_v1.py'
       - 'tests/pass220/test_hhs_pass220_v169_module194_concrete_lean_instance_v1.py'
@@ -156,7 +158,8 @@ jobs:
             hhs_runtime/hhs_pass220_v168_module194_i051_lean_closure_dependency_v1.py \
             hhs_runtime/hhs_pass220_v169_module194_concrete_lean_instance_v1.py \
             hhs_runtime/hhs_pass220_v170_module194_ordered_product_proof_dependency_v1.py \
-            hhs_runtime/hhs_pass220_v171_module194_native_ordered_phase_product_v1.py
+            hhs_runtime/hhs_pass220_v171_module194_native_ordered_phase_product_v1.py \
+            hhs_runtime/hhs_pass220_v172_module194_vm81_octonion_projection_v1.py
       - name: Verify inherited GFX4 and new decay-binding contracts
         run: |
           python -m pytest -q \
@@ -192,7 +195,8 @@ jobs:
             tests/pass220/test_hhs_pass220_v168_module194_i051_lean_closure_dependency_v1.py \
             tests/pass220/test_hhs_pass220_v169_module194_concrete_lean_instance_v1.py \
             tests/pass220/test_hhs_pass220_v170_module194_ordered_product_proof_dependency_v1.py \
-            tests/pass220/test_hhs_pass220_v171_module194_native_ordered_phase_product_v1.py
+            tests/pass220/test_hhs_pass220_v171_module194_native_ordered_phase_product_v1.py \
+            tests/pass220/test_hhs_pass220_v172_module194_vm81_octonion_projection_v1.py
       - name: Verify presentation-only cache and packet lane binding
         run: |
           node tests/pass220/test_hhs_observation_graph_cache_v1.cjs
