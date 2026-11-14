@@ -54,6 +54,7 @@ on:
       - 'hhs_runtime/hhs_pass220_remote_ref_census_v1.py'
       - 'hhs_runtime/hhs_pass220_remote_ref_tree_reconciliation_v1.py'
       - 'hhs_runtime/hhs_pass220_source_bound_proof_extraction_v1.py'
+      - 'hhs_runtime/hhs_pass220_extracted_proof_crosswalk_v1.py'
       - 'hhs_backend/runtime/hhs_capability_resolution_v1.py'
       - 'AGENTS.md'
       - 'tests/pass220/test_hhs_pass220_v165_module194_ordered_fractal_tensor_v1.py'
@@ -180,6 +181,7 @@ jobs:
             tests/pass220/test_hhs_pass220_remote_ref_census_v1.py \
             tests/pass220/test_hhs_pass220_remote_ref_tree_reconciliation_v1.py \
             tests/pass220/test_hhs_pass220_source_bound_proof_extraction_v1.py \
+            tests/pass220/test_hhs_pass220_extracted_proof_crosswalk_v1.py \
             tests/pass220/test_hhs_capability_index_first_resolution_v1.py \
             tests/pass220/test_hhs_pass220_v163_course_module_crosswalk_v1.py \
             tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py \
