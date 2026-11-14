@@ -5,6 +5,7 @@ on:
       - 'hhs_runtime/include/hhs_module196_lane5_coprocessor.h'
       - 'hhs_runtime/include/hhs_pass220_module196_rna_cell_wall_route_v1.h'
       - 'hhs_runtime/cpp/hhs_pass220_module196_rna_cell_wall_route_v1.cpp'
+      - 'tests/pass220/test_hhs_module196_rna_route_mock.cpp'
       - 'GNUmakefile'
       - 'tests/pass220/test_hhs_module196_lane5_coprocessor.cpp'
       - 'formal/lean/HHS/Module196.lean'
@@ -32,6 +33,10 @@ jobs:
         run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -fPIC -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -c hhs_runtime/cpp/hhs_pass220_module196_rna_cell_wall_route_v1.cpp -o /tmp/hhs-module196-rna-bridge.o
           nm /tmp/hhs-module196-rna-bridge.o | grep -F hhs_exact_pass220_module196_rna_route_v1
+      - name: Exercise route fail-closed and inherited delegation with native mocks
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include tests/pass220/test_hhs_module196_rna_route_mock.cpp hhs_runtime/cpp/hhs_pass220_module196_rna_cell_wall_route_v1.cpp -o /tmp/hhs-module196-route-test
+          /tmp/hhs-module196-route-test
       - name: Compile C-only ingress ABI
         run: |
           printf '#include "hhs_module196_lane5_coprocessor.h"\nint main(void){HHSModule196Candidate c;return !hhs_m196_evaluate(1,2,&c);}\n' >/tmp/hhs-module196-abi.c
