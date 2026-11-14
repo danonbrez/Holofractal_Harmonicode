@@ -67,6 +67,49 @@ int main() {
     CHECK(out.canonical_hash216_mint_authority==0U);
     CHECK(out.canonical_persistence_authority==0U);
     CHECK(std::memcmp(&frame,&initial,sizeof(frame))==0);
+    // Independent Python byte-serialization vector for the identical frame,
+    // address, exponent, phase and Pass159 digest reference. Not a PQ signature.
+    constexpr std::uint8_t expected_digest[32] = {
+        0x07,0xa1,0xc4,0x69,0xe4,0x09,0xe1,0xc9,
+        0x11,0xcf,0x5d,0xda,0xe7,0x3a,0x34,0x19,
+        0xe9,0x8d,0x2d,0xf4,0x43,0x56,0xa8,0xa0,
+        0x5e,0xcb,0x72,0xbe,0x53,0xae,0x17,0x88
+    };
+    std::array<std::uint8_t,32> digest{};
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &frame,digits.data(),-5,36U,binding,digest.data()) == HHS_EXACT_STATUS_OK);
+    CHECK(std::memcmp(digest.data(),expected_digest,32)==0);
+    const auto digest_original = digest;
+    auto changed_digits = digits;
+    changed_digits[0] = 70U;
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &frame,changed_digits.data(),-5,36U,binding,digest.data()) == HHS_EXACT_STATUS_OK);
+    CHECK(digest != digest_original);
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &frame,digits.data(),-4,36U,binding,digest.data()) == HHS_EXACT_STATUS_OK);
+    CHECK(digest != digest_original);
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &frame,digits.data(),-5,37U,binding,digest.data()) == HHS_EXACT_STATUS_OK);
+    CHECK(digest != digest_original);
+    char another_binding[65]{};
+    std::memcpy(another_binding,binding,65);
+    another_binding[0] = 'b';
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &frame,digits.data(),-5,36U,another_binding,digest.data()) == HHS_EXACT_STATUS_OK);
+    CHECK(digest != digest_original);
+    auto another_frame = frame;
+    another_frame.words[80] = 1U;
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &another_frame,digits.data(),-5,36U,binding,digest.data()) == HHS_EXACT_STATUS_OK);
+    CHECK(digest != digest_original);
+    digest.fill(0xA5);
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &frame,digits.data(),-5,72U,binding,digest.data()) == HHS_EXACT_STATUS_INVALID_ARGUMENT);
+    for(const auto value : digest) CHECK(value == 0xA5U);
+    CHECK(hhs_pass220_lane5_dyadic_binding_material_sha256(
+        &frame,digits.data(),std::numeric_limits<std::int64_t>::min(),
+        36U,binding,digest.data()) == HHS_EXACT_STATUS_INVALID_ARGUMENT);
+    for(const auto value : digest) CHECK(value == 0xA5U);
     const auto saved=out;
     auto digits_bad=digits;digits_bad[71]=72U;
     CHECK(hhs_pass220_lane5_dyadic_virtual_candidate_route(
