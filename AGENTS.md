@@ -419,3 +419,19 @@ unmerged branch. If an index is stale/unavailable, return
 not a claim that the indexed object does not exist. Search may supplement
 the index for context, **never replace it as the existence gate**.
 The existing negative-claim gate remains mandatory at the report boundary.
+
+
+### Parallel Git-ref discovery (bounded supplement)
+
+After exact-checkout Hash216/Lane 5 index discovery, inspect locally fetched
+branch and PR Git-tree sources with
+`hhs_runtime/hhs_pass220_ref_federated_corpus_discovery_v1.py`.
+This is an **additive** branch/PR source witness, not a replacement for the
+indexed knowledge graph. Record ref names, commit SHAs, file paths, Git blob
+SHAs, result truncation, and whether index artifacts were stale/unavailable.
+An unfetched remote ref or PR head cannot be inferred absent from local
+`git for-each-ref`; do not claim exhaustive remote enumeration. The
+federated helper cannot authorize negative existence claims, mint Hash216,
+or replace native proof checkers. Its use is now integrated into the backend
+provider-registry rejection diagnostic; provider resolution is not corpus
+proof admission.
