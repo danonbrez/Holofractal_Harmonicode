@@ -30,6 +30,8 @@ def execute_module194_native_hnan_scope(
     audited = audit_source(source, require_upload_identity=require_upload_identity)
     if native_library is None:
         raise V164NativeHNANError("V164_NATIVE_LIBRARY_REQUIRED")
+    if not isinstance(native_library, C.CDLL):
+        raise V164NativeHNANError("V164_NATIVE_CDLL_REQUIRED")
     try:
         version = native_library.hhs_exact_pass219_hnan_global_version
         version.argtypes = []
