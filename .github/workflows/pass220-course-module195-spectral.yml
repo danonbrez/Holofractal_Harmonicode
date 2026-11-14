@@ -5,6 +5,8 @@ on:
       - 'hhs_runtime/hhs_pass220_course_m195_spectral_tensor_witness_v1.py'
       - 'tests/pass220/test_hhs_pass220_course_m195_spectral_tensor_witness_v1.py'
       - 'hhs_runtime/hhs_pass220_course_m195_hnan_bridge_v1.py'
+      - 'hhs_runtime/hhs_pass220_course_m195_raw5184_source_candidate_v1.py'
+      - 'tests/pass220/test_hhs_pass220_course_m195_raw5184_source_candidate_v1.py'
       - 'hhs_runtime/c/hhs_pass220_course_m195_gaussian_hnan_ingress_v1.c'
       - 'hhs_runtime/include/hhs_pass220_course_m195_gaussian_hnan_ingress_v1.h'
       - 'tests/pass220/test_hhs_pass220_course_m195_native_gaussian_ingress_v1.py'
@@ -36,3 +38,5 @@ jobs:
         run: python -m unittest discover -s tests/pass220 -p 'test_hhs_pass220_course_m195_source_lineage_diagnostic_v1.py' -v
       - name: Execute exact C11 source-derived denominator and inherited passthrough
         run: python -m unittest discover -s tests/pass220 -p 'test_hhs_pass220_course_m195_native_gaussian_ingress_v1.py' -v
+      - name: Execute source-pinned raw5184 Module 195 native candidate tests
+        run: python -m unittest discover -s tests/pass220 -p 'test_hhs_pass220_course_m195_raw5184_source_candidate_v1.py' -v
