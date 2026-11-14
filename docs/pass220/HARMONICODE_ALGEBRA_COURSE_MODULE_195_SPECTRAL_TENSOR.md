@@ -102,3 +102,26 @@ Exact roots tested: `(0,0)`, `(-3,4)`, `(-3,-4)`. Non-root `(1,0)`
 gives `D(1)=32` and must not invoke the inherited checker. Typed `m`
 equality, A/B phase closure, 5184 hydration, VM81 and canonical receipts
 remain outstanding independently.
+
+## 195.6 Frozen source integrity blocker (observed in CI)
+
+The existing course proof dependency-graph binder rejects before native binding:
+`SOURCE_BLOB_CHANGED:whitepapers/Harmonicode Algebra - Course`.
+At the investigated PR head, the freeze manifest pins Git blob
+`2744e9ecf1f260ff9a5a02870320698ee2d7dcaf`, while the actual
+repository course blob is
+`968735b21bb0fda42f9c944ae6987099e624e7a7`.
+
+The M195 regression deliberately separates two checks:
+1. A **raw** inherited C11 passthrough is compiled and executed against
+   each exact Gaussian singular-root witness. Byte preservation, gain 1,
+   and zero phase write are checked directly; this is **not** a source-bound
+   course proof receipt or VM81 admission.
+2. The existing frozen-course graph binding must still reject the
+   mismatched source. Its result is **not** bypassed or replaced with the
+   raw C check.
+
+To enable a fully source-bound M195 witness, recover the authoritative
+frozen-course source and reconcile the recorded identity through the
+existing authorized source-integrity process. Do not silently repin
+the manifest or declare the original typed-equality gate admitted.
