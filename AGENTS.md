@@ -435,3 +435,20 @@ federated helper cannot authorize negative existence claims, mint Hash216,
 or replace native proof checkers. Its use is now integrated into the backend
 provider-registry rejection diagnostic; provider resolution is not corpus
 proof admission.
+
+
+### Remote-ref census before asserting branch/PR coverage
+
+For distributed course, proof, and constructor inventories, enumerate remote
+branches and open PR heads using
+`hhs_runtime/hhs_pass220_remote_ref_census_v1.py`, which traverses
+GitHub REST pagination rather than GitHub code search. Bind each observed
+ref to its SHA, compare with locally available refs, and explicitly record
+unfetched or diverged heads. Fail closed on incomplete pagination, malformed
+or duplicated API records, missing permissions, or untrusted redirect links.
+The census is not a single atomic repository snapshot; a ref can advance
+while enumeration runs. Its complete paginated *names* do not prove source
+tree coverage, lemma equivalence, native admission, or content absence.
+Inspect exact remote Git trees and candidate source/proof text separately,
+preserving source provenance and branch overlap. No negative-existence
+authority follows from this census alone.
