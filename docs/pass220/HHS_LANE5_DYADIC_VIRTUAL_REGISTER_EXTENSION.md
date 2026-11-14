@@ -345,3 +345,22 @@ expression is lowered and evaluated under its native constraints.
 No integer-symmetric compatibility projection may be counted as
 full-symbolic admission, and no byte digest alone establishes inclusion
 in the inherited Pass219 environmental PQ signature.
+
+## Native/Python CI regression repair — November 14, 2026
+
+Head `80683970cc565ddb8ad223039a481695a6f45406` recorded
+44 successful workflows and one focused dyadic failure. Its dedicated
+workflow successfully compiled/linked and executed the native dyadic
+positive and negative cases; all four native source/ABI tests and all
+five signed-environment evidence tests also passed.
+
+The sole exception was
+`test_i157_graph_attachment_preserves_separate_centers`: the test
+injected Python `Fraction(3,1)` into a JSON-native inherited I157 graph
+and then attempted to compute `_sha256(graph)`. The inherited canonical
+JSON serializer rejects this unencoded Python value before the intended
+snapshot-P type check. The negative test was repaired to use a
+JSON-serializable string `"3"`, recompute a structurally valid I157
+diagnostic digest, and confirm that the typed attachment rejects a
+noninteger snapshot P. No inherited graph serialization, native
+symbolic semantics, or source-integrity guard was relaxed.
