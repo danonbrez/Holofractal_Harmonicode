@@ -67,7 +67,7 @@ def typed_packet() -> dict:
         raise V167TypedClosureError("V167_DUPLICATE_SOURCE_ADDRESS")
     return {
         "A": ("TypedTensor", "A_LHS", tuple(leaves)),
-        "B": ("TypedBoundary", "B_RHS", ("HNAN_Modulus", "t^3-t-1=Deltae=0")),
+        "B": ("TypedBoundary", "B_RHS",\n              ("HNAN_Modulus",\n               ("OrderedEquality", "0",\n                ("List",\n                 ("OrderedQuotient", "t^11", "a^2"),\n                 ("OrderedQuotient", "t^8", ("OrderedProduct", "2", "a^2")),\n                 ("OrderedQuotient", "t^9", "a^2"))))),
         "relations": EXPECTED_RELATIONS,
     }
 
