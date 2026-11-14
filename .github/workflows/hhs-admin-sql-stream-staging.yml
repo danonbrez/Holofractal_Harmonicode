@@ -20,6 +20,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Compile additive staging library
-        run: python -m py_compile hhs_backend/runtime/hhs_admin_sql_stream_staging_v1.py
-      - name: Verify streaming and restart boundaries
-        run: python -m unittest discover -s tests -p test_hhs_admin_sql_stream_staging_v1.py -v
+        run: python -m py_compile hhs_backend/runtime/hhs_admin_sql_stream_staging_v1.py hhs_backend/runtime/hhs_admin_sql_lane5_continuation_v1.py
+      - name: Verify staging and native Lane 5 candidate-only continuation
+        run: |
+          python -m unittest discover -s tests -p test_hhs_admin_sql_stream_staging_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_sql_lane5_continuation_v1.py -v
