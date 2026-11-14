@@ -158,7 +158,9 @@ class DyadicVirtualRegisterTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             attach_existing_i157_typed_graph(binding, tampered)
         tampered = dict(graph)
-        tampered["snapshot"] = dict(graph["snapshot"], P=Fraction(3, 1))
+        # A JSON-serializable noninteger tests the typed-P boundary after
+        # the inherited I157 diagnostic root is recomputed.
+        tampered["snapshot"] = dict(graph["snapshot"], P="3")
         tampered["typed_value_graph_sha256"] = _sha256(
             {k: v for k, v in tampered.items() if k != "typed_value_graph_sha256"}
         )
