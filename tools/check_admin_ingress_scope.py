@@ -10,10 +10,10 @@ from dataclasses import dataclass
 SOURCE_SUFFIXES = (".py", ".ts", ".tsx", ".js", ".jsx", ".c", ".cc", ".cpp", ".h", ".hpp")
 SCOPE_TERMS = ("admin", "knowledge", "hydration", "pass174", "pass194", "vector", "upload", "ingress")
 RULES = (
-    ("WHOLE_OBJECT_SIZE_CEILING", re.compile(r"\\b(?:MAX_(?:UPLOAD|FILE|PAYLOAD|DOCUMENT|SOURCE)_?(?:SIZE|BYTES)|(?:UPLOAD|FILE|PAYLOAD|DOCUMENT|SOURCE)_MAX_(?:SIZE|BYTES)|MAX_CONTENT_LENGTH)\\b", re.I)),
-    ("SIZE_REJECTION", re.compile(r"(?:HTTP_?413|status_code\\s*=\\s*413|RequestEntityTooLarge|PayloadTooLarge|(?:raise|reject|deny|throw).{0,100}(?:file.?size|upload.?size|payload.?size|too.?large))", re.I)),
+    ("WHOLE_OBJECT_SIZE_CEILING", re.compile(r"\b(?:MAX_(?:UPLOAD|FILE|PAYLOAD|DOCUMENT|SOURCE)_?(?:SIZE|BYTES)|(?:UPLOAD|FILE|PAYLOAD|DOCUMENT|SOURCE)_MAX_(?:SIZE|BYTES)|MAX_CONTENT_LENGTH)\b", re.I)),
+    ("SIZE_REJECTION", re.compile(r"(?:HTTP_?413|status_code\s*=\s*413|RequestEntityTooLarge|PayloadTooLarge|(?:raise|reject|deny|throw).{0,100}(?:file.?size|upload.?size|payload.?size|too.?large))", re.I)),
     ("MODALITY_DENIAL", re.compile(r"(?:(?:unsupported|invalid|unknown|disallowed|forbidden)_(?:modality|file_?type|mime_?type)|(?:raise|reject|deny|throw).{0,100}(?:unsupported modality|file type not allowed|modality not allowed))", re.I)),
-    ("MODALITY_ALLOWLIST", re.compile(r"\\b(?:ALLOWED|SUPPORTED|ACCEPTED)_(?:MODALITIES|MIME_TYPES|FILE_TYPES|EXTENSIONS)\\b", re.I)),
+    ("MODALITY_ALLOWLIST", re.compile(r"\b(?:ALLOWED|SUPPORTED|ACCEPTED)_(?:MODALITIES|MIME_TYPES|FILE_TYPES|EXTENSIONS)\b", re.I)),
 )
 
 @dataclass(frozen=True)
@@ -31,7 +31,7 @@ def inspect_diff(diff: str) -> list[Finding]:
     findings = []
     path = ""
     new_line = 0
-    hunk = re.compile(r"^@@ -\\d+(?:,\\d+)? \\+(\\d+)(?:,\\d+)? @@")
+    hunk = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
     for line in diff.splitlines():
         if line.startswith("+++ b/"):
             path = line[6:]
