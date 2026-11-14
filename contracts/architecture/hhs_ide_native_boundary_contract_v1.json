@@ -118,7 +118,16 @@
     "P4",
     "P5",
     "P6",
-    "P7"
+    "P7",
+    "P8"
   ],
-  "priority_0_requirement": "Complete GBrain-inspired external-agent harness, conventional developer IDE, and native Lane5 ingress/egress integration before the assigned branch-consolidation follow-ons. Checklist states OPEN until evidenced; no inferred permission to merge."
+  "priority_0_requirement": "Complete GBrain-inspired external-agent harness, conventional developer IDE, and native Lane5 ingress/egress integration before the assigned branch-consolidation follow-ons. Checklist states OPEN until evidenced; no inferred permission to merge.",
+  "supply_chain_merge_gate": {
+    "checklist_phase": "P8",
+    "placement": "at end of checklist",
+    "priority_override": false,
+    "required_before_main_merge": true,
+    "required_before_production_deployment": true,
+    "clearance_status": "OPEN"
+  }
 }
