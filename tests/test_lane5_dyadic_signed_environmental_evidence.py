@@ -8,6 +8,7 @@ from hhs_runtime.pass219.vm81_rna_bigint_environment_admission_probe import (
 )
 from hhs_runtime.pass220.lane5_dyadic_signed_environmental_evidence import (
     cross_check_inherited_signed_environmental_evidence,
+    canonical_dyadic_signed_binding_material,
 )
 from hhs_runtime.pass220.lane5_dyadic_virtual_register import decode_address
 
@@ -77,6 +78,38 @@ class SignedEvidenceCrosscheckTests(unittest.TestCase):
         self.report["report_sha256"] = _digest(
             {k: v for k, v in self.report.items() if k != "report_sha256"}
         )
+
+    def test_exact_dyadic_binding_material_no_unsigned_promotion(self):
+        original = canonical_dyadic_signed_binding_material(self.fields, self.frame)
+        expected_length = len(
+            b"HHS/PASS220/LANE5/DYADIC/SIGNED-BINDING-MATERIAL/V1"
+        ) + 1 + 72 + 8 + 1 + 32 + 32
+        self.assertEqual(len(original["material"]), expected_length)
+        self.assertEqual(original["material_sha256"], sha256(original["material"]).hexdigest())
+        self.assertFalse(original["signed_by_inherited_environmental_authority"])
+        self.assertFalse(original["included_in_inherited_signed_instruction"])
+        self.assertFalse(original["canonical_vm81_admission"])
+        variants = [
+            (dict(self.fields, radix72_address=decode_address(5184)), self.frame),
+            (dict(self.fields, signed_dyadic_exponent_int64=-4), self.frame),
+            (dict(self.fields, phase_coordinate72=37), self.frame),
+            (dict(self.fields, pass159_binding_sha256="b"*64), self.frame),
+            (self.fields, b"Z" + self.frame[1:]),
+        ]
+        for fields, frame in variants:
+            derived = canonical_dyadic_signed_binding_material(fields, frame)
+            self.assertNotEqual(derived["material"], original["material"])
+            self.assertNotEqual(derived["material_sha256"], original["material_sha256"])
+        invalid = [
+            dict(self.fields, signed_dyadic_exponent_int64=-(1 << 63)),
+            dict(self.fields, phase_coordinate72=72),
+            dict(self.fields, radix72_address=tuple([72] + [0]*71)),
+            dict(self.fields, pass159_binding_sha256="z"*64),
+            dict(self.fields, vm81_admitted=True),
+        ]
+        for fields in invalid:
+            with self.assertRaises((ValueError, TypeError)):
+                canonical_dyadic_signed_binding_material(fields, self.frame)
 
     def test_frame_match_not_dyadic_signed_proof(self):
         evidence = cross_check_inherited_signed_environmental_evidence(
