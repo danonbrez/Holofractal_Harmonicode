@@ -1,0 +1,47 @@
+name: Pass 220 Remote Mathematical Corpus Ref Census
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  remote-ref-census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate remote census contracts
+        run: python -m pip install pytest && python -m pytest -q tests/pass220/test_hhs_pass220_remote_ref_census_v1.py
+      - name: Observe paginated branch and open PR heads
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p artifacts/pass220
+          python -m hhs_runtime.hhs_pass220_remote_ref_census_v1 \
+            --repo "${{ github.repository }}" > artifacts/pass220/REMOTE_REF_CENSUS.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/pass220/REMOTE_REF_CENSUS.json")
+          r=json.loads(p.read_text())
+          assert r["branch_pages_exhausted"] and r["open_pr_pages_exhausted"]
+          assert not r["negative_existence_claim_authorized"]
+          assert not r["distributed_discovery_complete"]
+          print("Remote branch refs:",r["branch_count"])
+          print("Open PR heads:",r["open_pr_count"])
+          print("Candidate-only; no negative existence authority")
+          PY
+      - name: Upload read-only ref census evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-remote-ref-census
+          path: artifacts/pass220/REMOTE_REF_CENSUS.json
+          if-no-files-found: error
+          retention-days: 30
