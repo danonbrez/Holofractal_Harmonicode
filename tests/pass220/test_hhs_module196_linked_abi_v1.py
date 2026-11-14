@@ -10,11 +10,11 @@ def test_module196_linked_abi() -> None:
     assert LIBRARY.is_file(), f"missing native runtime: {LIBRARY}"
     lib = ctypes.CDLL(str(LIBRARY))
     route = lib.hhs_exact_pass220_module196_rna_route_v1
-    route.argtypes = [ctypes.c_uint64, ctypes.c_uint64] + [ctypes.c_void_p]*5 + [ctypes.c_uint8, ctypes.c_int8] + [ctypes.c_void_p]*4
+    route.argtypes = [ctypes.c_uint64, ctypes.c_uint64] + [ctypes.c_void_p]*4 + [ctypes.c_uint8, ctypes.c_int8] + [ctypes.c_void_p]*4
     route.restype = ctypes.c_int
     # Missing candidate/program/frame/transition must be rejected without
     # crossing the VM81 or RNA cell-wall boundary.
-    assert route(100, 101, None, None, None, None, None, 0, 0,
+    assert route(100, 101, None, None, None, None, 0, 0,
                  None, None, None, None) == 1
     # The pre-existing 0..190 selector must remain callable.
     legacy = lib.hhs_exact_pass220_course_module_execute_route
