@@ -123,26 +123,32 @@ def resolve_capability(
     # Source discovery is read-only and carries no provider or VM81 authority.
     if not candidates:
         from pathlib import Path
-        from hhs_runtime.hhs_pass220_index_first_discovery_v1 import (
-            IndexDiscoveryError, search_index,
+        from hhs_runtime.hhs_pass220_ref_federated_corpus_discovery_v1 import (
+            FederatedDiscoveryError, search_federated_refs,
         )
         from hhs_runtime.hhs_pass220_corpus_negative_claim_gate_v1 import unresolved
         root = Path(__file__).resolve().parents[2]
         try:
-            observed = search_index(root, cap)
+            observed = search_federated_refs(root, cap)
             resolution["repository_discovery"] = {
                 "status": observed["report"]["status"],
-                "index_matches": observed["matches"],
-                "index_match_count": observed["matched_count"],
-                "index_truncated": observed["truncated"],
-                "index_source_commit": observed["source_commit"],
+                "index_matches": observed["indexed_matches"],
+                "index_match_count": observed["indexed_match_count"],
+                "index_truncated": observed["indexed_truncated"],
+                "index_error": observed["index_error"],
+                "local_ref_count": observed["local_ref_count"],
+                "ref_match_count": observed["ref_match_count"],
+                "ref_matches": observed["ref_matches"],
+                "ref_matches_truncated": observed["ref_matches_truncated"],
+                "all_remote_refs_fetched": False,
+                "all_open_prs_verified": False,
                 "coverage_complete": False,
                 "negative_existence_claim_authorized": False,
             }
-        except (IndexDiscoveryError, OSError) as exc:
+        except (FederatedDiscoveryError, OSError) as exc:
             resolution["repository_discovery"] = {
                 "status": unresolved(cap)["status"],
-                "index_error": str(exc),
+                "discovery_error": str(exc),
                 "coverage_complete": False,
                 "negative_existence_claim_authorized": False,
             }
