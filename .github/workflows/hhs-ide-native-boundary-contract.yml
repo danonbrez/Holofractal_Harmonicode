@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'AGENTS.md'
+      - 'contracts/architecture/hhs_gbrain_harness_cumulative_mergeability_checklist_v1.json'
       - 'contracts/architecture/hhs_ide_native_boundary_contract_v1.json'
       - 'tests/test_hhs_ide_native_boundary_contract_v1.py'
       - 'applications/holofractal_harmonizer/src/visual-ide-runtime.mjs'
