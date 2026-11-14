@@ -18,6 +18,10 @@ PASS220_COURSE_MODULE_ROUTE_OBJ := $(RUNTIME_BUILD_DIR)/pass220/hhs_pass220_cour
 # Explicitly wire this additive native object as an ABI build prerequisite.
 # The inherited Makefile was parsed before GNUmakefile assigns this variable.
 $(ABI_LIB): $(PASS220_COURSE_MODULE_ROUTE_OBJ)
+# Module 196 additive candidate route; preserves inherited ABI and M000–M190 selector.
+PASS220_MODULE196_ROUTE_SRC := hhs_runtime/cpp/hhs_pass220_module196_rna_cell_wall_route_v1.cpp
+PASS220_MODULE196_ROUTE_OBJ := $(RUNTIME_BUILD_DIR)/pass220/hhs_pass220_module196_rna_cell_wall_route_v1.o
+$(ABI_LIB): $(PASS220_MODULE196_ROUTE_OBJ)
 PASS219_NINE_LOOP_CELL_WALL_SRC := hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_cell_wall_1_67.cpp
 PASS219_NINE_LOOP_CELL_WALL_OBJ := $(RUNTIME_BUILD_DIR)/pass219/hhs_pass219_lane5_nine_loop_cell_wall_1_67.o
 PASS219_NINE_LOOP_SOURCE_CELL_WALL_SRC := hhs_runtime/cpp/hhs_pass219_lane5_nine_loop_source_cell_wall_1_68.cpp
