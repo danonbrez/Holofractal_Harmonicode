@@ -67,6 +67,10 @@ $(PASS219_PQC_CELL_WALL_OBJ): $(PASS219_PQC_CELL_WALL_SRC) \
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS219_PQC_CELL_WALL_SRC) -o $@
 
+$(PASS220_MODULE196_ROUTE_OBJ): $(PASS220_MODULE196_ROUTE_SRC) hhs_runtime/include/hhs_pass220_module196_rna_cell_wall_route_v1.h hhs_runtime/include/hhs_module196_lane5_coprocessor.h | $(RUNTIME_BUILD_DIR)
+	mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_MODULE196_ROUTE_SRC) -o $@
+
 $(PASS220_COURSE_MODULE_ROUTE_OBJ): $(PASS220_COURSE_MODULE_ROUTE_SRC) hhs_runtime/include/hhs_pass220_course_module_vm81_route_v1.h | $(RUNTIME_BUILD_DIR)
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_COURSE_MODULE_ROUTE_SRC) -o $@
