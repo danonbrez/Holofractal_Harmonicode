@@ -53,3 +53,45 @@ the exact complete 196-module artifact and establish a canonical source
 manifest, retaining the historical stub separately; then bind the ordered
 module requirements to inherited native checkers and their actual receipts.
 No merge, deployment, or authority fork follows solely from this document.
+
+
+## Distributed canonical corpus across parallel development (authoritative scope)
+
+The full 196-module course is a **distributed, cumulative specification** being
+developed concurrently across open repository branches and pull requests.
+It is **not** required to exist as a single file, nor to be merged into
+`main` or PR #908, before its module definitions count as specification
+inputs. One branch's partial heading count (including the 100 headings
+observed in the present main course file) must never be interpreted as the
+full-course count or proof that other module sources are absent.
+
+A cross-branch module inventory MUST discover and identify applicable open
+branches and PR heads, including documentation, equations, source blobs,
+native ports, proof objects, and pending integrations. Each recorded module
+needs its exact source repository path, Git blob SHA, branch or PR head SHA,
+module index/range, dependency edges, and admission/proof status. Preserve
+multiple versions, ordered formulas, provenance, and potential conflicting
+edits instead of overwriting sources or selecting a single branch as
+universal truth. An explicit reconciliation witness is required when two
+branches claim the same module but differ in content. Source completeness,
+exact mathematical proof, successful native implementation, and merge/
+deployment state are **distinct** evidence dimensions.
+
+Initial discovered development surfaces, to inspect rather than assume
+complete: `docs/harmonicode-algebra-course-0-123-20261105`,
+`docs/course-modules-101-114-20261104`,
+`course/expand-mathematical-corpus-m189-20261111`,
+`course/lane5-exact-main-m190-source-binding-20261111`,
+`course/m191-native-port-lowering-coverage-20261111`,
+`course/pass219-module-native-ports-20261111`, and open PRs #833
+and #911. These are discovery seeds only, **not** a fixed allowlist;
+inventory must include all relevant open workstreams, including branches
+not named `course`.
+
+The historical 13-module stub remains separately provenance-frozen. Its
+legacy checker must not block recognition of a newer module's canonical
+specification simply because the newer definition lives on another branch;
+however, no incomplete cross-branch inventory or unverified source claim
+may manufacture VM81 admission receipts or bypass existing native gates.
+No branches or source modules are pruned, rebased, merged, or archived by
+inventory work alone.
