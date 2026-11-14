@@ -30,6 +30,7 @@ SCHEMA = "HHS_PASS220_V167_MODULE194_TYPED_CLOSURE_PACKET_V1"
 EXPECTED_RELATIONS = (
     ("TypedMagnitude", "A", "P^2"),
     ("TypedMagnitude", "B", "P^2"),
+    ("OrderedNormalization", "A", "eM/Delta=P^2"),
     ("DistinctIdentity", "A", "B"),
     ("OrderedProduct", ("A", "B"), "+P^4"),
     ("OrderedProduct", ("B", "A"), "-P^4"),
