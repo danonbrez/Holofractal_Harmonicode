@@ -1,0 +1,25 @@
+name: HHS Admin Resumable SQL Staging
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admin-sql-stream:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile additive staging library
+        run: python -m py_compile hhs_backend/runtime/hhs_admin_sql_stream_staging_v1.py
+      - name: Verify streaming and restart boundaries
+        run: python -m unittest discover -s tests -p test_hhs_admin_sql_stream_staging_v1.py -v
