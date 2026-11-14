@@ -60,9 +60,19 @@ class TestIDENativeBoundaryContract(unittest.TestCase):
         checklist = json.loads(checklist_path.read_text(encoding="utf-8"))
         self.assertEqual(checklist["schema"], "HHS_GBRAIN_HARNESS_CUMULATIVE_MERGEABILITY_CHECKLIST_V1")
         self.assertEqual([phase["id"] for phase in checklist["phases"]], self.spec["mergeability_phase_order"])
-        self.assertEqual([phase["priority"] for phase in checklist["phases"]], list(range(8)))
+        self.assertEqual([phase["priority"] for phase in checklist["phases"]], list(range(9)))
         self.assertEqual(checklist["phases"][0]["id"], "P0")
         self.assertEqual(checklist["phases"][1]["depends_on"], ["P0"])
+        security = checklist["phases"][-1]
+        self.assertEqual(security["id"], "P8")
+        self.assertIs(security["not_priority_override"], True)
+        self.assertEqual(self.spec["supply_chain_merge_gate"]["clearance_status"], "OPEN")
+        self.assertIn("P6.4", security["mandatory_before"])
+        self.assertIn("production_deployment", security["mandatory_before"])
+        forensic_items = [item for section in security["sections"] for item in section["items"]]
+        self.assertEqual(len(forensic_items), 20)
+        self.assertTrue(all(item["state"] == "OPEN" and item["evidence"] == [] for item in forensic_items))
+
         self.assertIn("GBrain", checklist["phases"][0]["title"])
         self.assertIn("OPEN", checklist["completion_states"])
         self.assertIn("signed_vm81_receipts", checklist["evidence_fields"])
