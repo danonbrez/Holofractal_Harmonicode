@@ -34,6 +34,33 @@ class NativeDyadicBridgeSourceTests(unittest.TestCase):
         self.assertIn("$(PASS220_LANE5_DYADIC_BRIDGE_OBJ): $(PASS220_LANE5_DYADIC_BRIDGE_SRC)", make)
         self.assertIn("$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_LANE5_DYADIC_BRIDGE_SRC)", make)
 
+    def test_singleton_environmental_signed_mutation_boundary(self):
+        signature = (ROOT / "hhs_runtime/include/hhs_pass219_vm81_pqc_signature_1_31.h").read_text(encoding="utf-8")
+        environment = (ROOT / "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h").read_text(encoding="utf-8")
+        exports = (ROOT / "hhs_runtime/c/hhs_pass219_vm81_authority_exports.map").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github/workflows/pass220-lane5-dyadic-native-candidate.yml").read_text(encoding="utf-8")
+        self.assertIn("hhs_exact_pass219_vm81_environment_admit_signed(", environment)
+        self.assertIn("hhs_exact_pass219_vm81_pqc_admit_signed(", signature)
+        self.assertIn("visibility(\\\"hidden\\\")", signature)
+        for hidden in ("hhs_exact_vm81_admit_uqcel",
+                       "hhs_exact_pass219_rna_admit_composed",
+                       "hhs_exact_pass219_vm81_pqc_admit",
+                       "hhs_exact_pass219_vm81_pqc_admit_signed"):
+            self.assertIn(hidden + ";", exports)
+            self.assertIn("grep -q ' " + hidden + "
+    def test_native_cpp_syntax_against_existing_headers(self):
+        subprocess.run(
+            ["g++", "-std=c++17", "-fsyntax-only", "-Wall", "-Wextra",
+             "-I", str(ROOT / "hhs_runtime/include"), str(SOURCE)],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
+", workflow)
+        self.assertIn("hhs_exact_pass219_vm81_environment_admit_signed$", workflow)
+
     @unittest.skipUnless(shutil.which("g++"), "g++ not available")
     def test_native_cpp_syntax_against_existing_headers(self):
         subprocess.run(
