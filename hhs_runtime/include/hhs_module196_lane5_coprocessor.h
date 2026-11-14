@@ -5,6 +5,7 @@
  * Caller supplies integer nanoseconds from its authoritative clock. */
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -47,7 +48,8 @@ static inline int hhs_m196_evaluate(uint64_t ingress_ns,uint64_t egress_ns,
     static const uint8_t prime[9]={5,13,17,3,7,11,19,23,2};
     static const uint8_t seed_value[10]={0,1,2,3,4,5,6,3,8,9};
     if(!out || egress_ns<ingress_ns) return 0;
-    HHSModule196Candidate tmp={0};
+    HHSModule196Candidate tmp;
+    memset(&tmp, 0, sizeof(tmp));
     tmp.ingress_ns=ingress_ns; tmp.egress_ns=egress_ns;
     tmp.addresses=81;
     for(size_t k=0;k<81;k++) {
