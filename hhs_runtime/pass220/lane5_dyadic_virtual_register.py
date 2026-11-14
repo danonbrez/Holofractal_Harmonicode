@@ -348,8 +348,13 @@ def lower_attached_candidate_to_native_abi(
         raise ValueError("exact dyadic quantization drift")
     if proposal.get("witness") != symbolic_reciprocal_pair(exponent):
         raise ValueError("symbolic dyadic witness drift")
-    phase = proposal.get("phase")
-    if type(phase) is not int or not 0 <= phase < 72:
+    phase_text = proposal.get("phase")
+    if (type(phase_text) is not str or not phase_text.isascii() or
+        not phase_text.isdecimal() or
+        (len(phase_text) > 1 and phase_text.startswith("0"))):
+        raise ValueError("native phase requires canonical ASCII decimal 0..71")
+    phase = int(phase_text)
+    if not 0 <= phase < 72:
         raise ValueError("native phase coordinate 0..71 required")
     binding = bound.get("provenance_binding_sha256")
     if (type(binding) is not str or len(binding) != 64 or
