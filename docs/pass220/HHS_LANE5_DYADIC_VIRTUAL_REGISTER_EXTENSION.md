@@ -260,3 +260,35 @@ objects**. Authentic provenance still requires the existing Pass159
 source-byte validation and I157 graph-root checks before calling lowering.
 The native I028 / PQC / signed VM81 receipt path remains separately
 authoritative.
+
+## Inherited signed environmental receipt cross-check
+
+The read-only `hhs_runtime/pass220/lane5_dyadic_signed_environmental_evidence.py`
+now consumes a lowered dyadic ABI field packet, an **actual 648-byte VM81
+frame**, and an independently obtained Pass219 signed environmental admission
+probe report. It rederives that report's existing diagnostic SHA256 format,
+checks all 12 positive signed cases (inherited kernel signatures, Hash216
+parents/children, exact committed frames, no independent wrapper authority),
+and requires all four negative modes to fail closed with no canonical receipt.
+
+Exactly one inherited committed-frame SHA256 must match the byte-for-byte
+input frame supplied to the cross-check. This is an **observational match**:
+a locally rehashed report is not a cryptographic authentication of the
+report's author, and even a real inherited frame receipt does not prove the
+dyadic exponent, phase, 72-digit virtual address or Pass159 source identity
+were included in the canonical signed instruction. The output therefore
+explicitly sets
+`dyadic_metadata_cryptographically_bound_to_signed_instruction=False`,
+`dyadic_full_master_equation_admitted=False`, and the dyadic canonical
+Hash72/Hash216 receipt flags to false.
+
+`tests/test_lane5_dyadic_signed_environmental_evidence.py` uses **synthetic
+reports for validation of the fail-closed audit logic only**; they are not
+native receipt evidence. The dedicated dyadic CI runs the new regression
+along with the native bridge and typed virtual register suites.
+
+Remaining production gap: carry the complete dyadic typed metadata and
+source-envelope binding through actual Pass159 lowering into the inherited
+signed Pass219 environmental instruction, verify its existing signature
+and positional Hash216 transcript, and replay canonical VM81 acceptance.
+No new admission/mutation/hash authority is introduced.
