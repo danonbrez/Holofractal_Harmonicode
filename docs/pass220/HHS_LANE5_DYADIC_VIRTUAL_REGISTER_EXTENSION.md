@@ -316,3 +316,32 @@ Production closure requires extending through inherited source lowering
 and validated signed envelope interfaces without altering frozen
 security semantics, then verifying actual signed VM81/Hash72/Hash216
 receipt and replay evidence.
+
+## Native/Python exact transcript parity (no authority escalation)
+
+The Pass220 native dyadic bridge now exposes an additional **pure** function,
+`hhs_pass220_lane5_dyadic_binding_material_sha256`. It serializes the
+existing 81-word VM81 candidate frame as exactly 648 little-endian bytes,
+then derives the same domain-separated proposed transcript SHA256 as
+`canonical_dyadic_signed_binding_material` in Python. The operation
+does not sign or admit instructions, does not mutate VM81, and cannot
+mint Hash72/Hash216 receipts. On invalid parameters its output digest
+buffer remains unchanged.
+
+Cross-language native/Python golden tests pin the concrete vector:
+72-digit address beginning [71,70], signed exponent -5, phase 36,
+Pass159 binding `a` repeated 64 hexadecimal digits, and VM81 frame
+whose first three words are `0x3ff0000000000000`, 9, 9.
+The 197-byte transcript SHA256 must equal
+`07a1c469e409e1c911cf5ddae73a3419e98d2df44356a8a05ecb72be53ae1788`.
+The tests also change each of the five input components independently
+to detect any omitted, reordered, truncated or platform-endian field.
+
+**Remaining constitutive gap:** exact agreement of these candidate
+hashes proves only deterministic proposed transcript encoding. The
+inherited full-symbolic UQCEL profile still returns
+`HHS_EXACT_STATUS_UNSUPPORTED_DOMAIN` until the complete monolithic
+expression is lowered and evaluated under its native constraints.
+No integer-symmetric compatibility projection may be counted as
+full-symbolic admission, and no byte digest alone establishes inclusion
+in the inherited Pass219 environmental PQ signature.
