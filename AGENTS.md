@@ -452,3 +452,26 @@ tree coverage, lemma equivalence, native admission, or content absence.
 Inspect exact remote Git trees and candidate source/proof text separately,
 preserving source provenance and branch overlap. No negative-existence
 authority follows from this census alone.
+
+
+### Exact remote source-tree identity reconciliation
+
+After the paginated remote-ref census, inspect the recorded immutable
+branch/PR commit trees using
+`hhs_runtime/hhs_pass220_remote_ref_tree_reconciliation_v1.py`.
+Retain every potentially relevant mathematical, proof, course, and native
+constructor path together with its exact Git blob, branch/PR ref and commit.
+Identical paths with distinct blobs across workstreams are unresolved
+source versions, **not** grounds to discard either one or overwrite the
+frozen foundation. Match remote blobs against the existing Hash216
+checkout-index file census only when its source commit is independently
+verified; stale index coverage must remain an explicit open boundary.
+The Git Trees API may return `truncated=true`, in which case enumeration
+is incomplete and must not be promoted into absence evidence. Fork
+inaccessibility and report result caps likewise remain explicit unresolved
+conditions. This inventory does not examine every theorem's semantics,
+prove typed equivalence, authorize negative existence claims or mint
+VM81/Hash72/Hash216 state. The on-demand workflow
+`.github/workflows/pass220-remote-corpus-ref-census.yml` exports the
+bounded discovery receipts and fails closed if remote tree coverage is
+incomplete.
