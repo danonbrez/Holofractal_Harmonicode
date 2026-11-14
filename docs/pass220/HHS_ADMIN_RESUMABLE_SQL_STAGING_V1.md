@@ -31,3 +31,12 @@ The repository's current `hhs_backend/lane5_ingress_gateway.py` uses `body = awa
 5. Prove exact source upload -> SQL recovery -> native hydration -> Hash216 graph and RAG readback on the DigitalOcean exact-main deployment.
 
 No stage in this PR claims production admission, native egress, or deployed reachability.
+
+## Existing native Lane 5 continuation (additive)
+
+`hhs_backend/runtime/hhs_admin_sql_lane5_continuation_v1.py` composes the existing Pass 219 1.48 unbounded workload bridge with finalized private SQL source files. It uses `Lane5WorkloadEnvelope.from_file(..., chunk_bytes=648)` and submits the resulting exact byte-count/digest/provenance envelope to `Pass219Lane5UnboundedWorkloadBridge.optimize`. This preserves the existing candidate-only semantics and verifies the bridge receipt before exposing a noncanonical candidate outcome.
+
+The 648-byte read granularity is 81 × 64 bits, not a maximum object or upload size. Hash216 canonical ingestion still requires independent signed environmental VM81 authorization and Pass 174/194 authoritative persistence. This continuation does **not** call that canonical admission or claim a full hydration/RAG result.
+
+The existing HTTP gateway full-body buffering remains an unresolved transport integration defect; never route uploads around the existing Lane 5 membrane to bypass it.
+
