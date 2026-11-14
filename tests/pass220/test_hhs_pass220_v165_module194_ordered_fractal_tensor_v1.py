@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from hhs_runtime.hhs_pass220_v165_module194_ordered_fractal_tensor_v1 import (
-    A, B, A2, A4, B2, SEEDS, LO_SHU_ROWS, V165TensorError,
+    A2, A4, B2, SEEDS, LO_SHU_ROWS, V165TensorError,
     flattened_source_tensor, fractal_term, inspect_ordered_tensor,
     source_tensor,
 )
