@@ -448,9 +448,16 @@ function mountControls() {
     const button = $('#ide-admin-stage-source');
     if (button) button.disabled = true;
     try {
+      // Reuse the existing Pass190 signed capability credential. It is kept
+      // only in this event handler, never stored with the project or logged.
+      const capabilityToken = window.prompt('HHS administrator upload capability token (Pass190; not saved)');
+      if (!capabilityToken) {
+        buildStatus('STAGING NOT AUTHORIZED · signed capability required', 'failed');
+        return;
+      }
       for (const file of chosen) {
         buildStatus(`SQL staging ${file.name}…`, 'running');
-        const receipt = await stageBrowserFile(file);
+        const receipt = await stageBrowserFile(file, { capabilityToken: capabilityToken.trim() });
         log(`Staged exact source ${file.name}; candidate only, signed VM81 admission pending.`, receipt);
         buildStatus(`STAGED · ${file.name} · native admission pending`, 'complete');
       }
