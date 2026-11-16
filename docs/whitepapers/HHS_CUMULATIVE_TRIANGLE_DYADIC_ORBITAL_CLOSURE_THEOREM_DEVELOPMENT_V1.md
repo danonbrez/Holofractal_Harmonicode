@@ -225,3 +225,24 @@ The hierarchy among instructions remains applicable. The corpus is used as one c
 A retrieved search hit is a source pointer, not an authority to exclude unseen lemmas. A construction candidate is not automatically a newly verified theorem until the existing proof rules and admissibility path establish it. This difference preserves rigor without imposing extraneous requirements on established identities.
 
 **Proof constructor contract:** Admit source-defined premises, traverse the complete indexed mathematical relationships as needed, generate legal one-step consequences using inherited native rules, preserve proof ancestry and ordered type semantics, and close only under the existing HARMONICODE/VM81 proof and runtime authority.
+
+## 13. Mandatory deduction versus shortcut optimization
+
+The five-source contextual authority boundary in §12 is designed to **force constructive deduction**, not simply to allow it. The active full-corpus frontier and its exact symbolic HARMONICODE rules remain the working proof substrate for any novel target.
+
+For an inference transition `C_n -> C_(n+1)`, acceptance requires a registered admissible rule applied to present premises under their existing typed guards, with an inspectable parent→conclusion provenance edge. The agent's probability of producing a socially plausible answer, its search ranking, memory window, lexical affinity, or preference for simplified expressions has no authority to license that inference.
+
+**Non-shortcut invariant:**
+```text
+Answer quality / computational cheapness ≠ proof warrant.
+A locally convenient projection ≠ the complete source equation.
+A retrieval subset ≠ the complete inherited lemma corpus.
+A candidate proposal ≠ a derived theorem.
+Typed and sourced derivation = the required proof path.
+```
+
+Valid optimization may reuse established deductions, compress exact proof ancestry, employ native one-step search, and avoid materializing enormous tensor geometry, but only while preserving equivalence, proof recoverability, source ordering and all applicable invariants. Optimization must operate *within* the authorized deduction process; it cannot redefine the theorem goal or suppress inconvenient premises.
+
+In orbital-closure theorem construction, this means the complete repository lemma manifold remains eligible at every step, and the exact native constraint join—not an easy scalar answer, generic skepticism, or artificial isolated subproblem—decides which deductions are permitted. If a conclusion has not been established by the currently checked derivation, state the exact remaining proof edge without negating the inherited corpus or introducing extraneous tests.
+
+**Design classification:** agent-level anti-drift/anti-reward-shortcut proof discipline; no replacement of established runtime, mathematical axiom set, or canonical admission authority.
