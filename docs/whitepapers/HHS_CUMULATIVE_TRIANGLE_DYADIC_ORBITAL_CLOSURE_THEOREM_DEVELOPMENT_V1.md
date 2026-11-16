@@ -126,3 +126,25 @@ A proof of membership requires a traceable finite derivation; inability to retri
 **Next concrete work:** build a dependency-indexed lemma closure that enumerates source paths, stable proof IDs, hypotheses, resulting typed transformations, verified implementations and recorded receipts; derive or recover the closure theorem through graph composition. Preserve previously established proof statuses rather than resetting them to 'unverified' on each inspection.
 
 This clarification modifies the methodology, not the existing frozen theorem statements, ABI, or VM81/Hash72/Hash216 authority.
+
+## 10. Whole-graph trace and existing global closure mechanics (2026-11-15)
+
+This section extends the prior evidence pointers using the already engineered repository knowledge system; it is not a request for a new graph or runtime.
+
+**Graph discovery:** `REPOSITORY_HASH216_DEPENDENCY_TREE.md` records a source-bound snapshot of 9,147 tracked files, 75,055 internal dependency edges, and 2,112 capability nodes. This is a **dated indexed projection**, not a claim that those counts describe the newest main tree. `contracts/pass219/PASS_219_LANE5_REPOSITORY_HYDRATION_KNOWLEDGE_GRAPH_1_69.md` identifies first-class constructor/capability graph nodes, Hash216 identities, and operational `status`/`search`/`neighbors` surfaces; the graph is intended for repository-wide discovery.
+
+**Simultaneous constraints already implemented:** `hhs_runtime/hhs_recursive_global_constraint_bundle_v1.py` explicitly states that it evaluates all constraints as one bundle, records local equalities as witnesses, and performs projection only after assembling the full bundle. Its `HHSRecursiveGlobalConstraintBundle` preserves distinct ordered words `xy`, `yx`, `zw`, `wz`. This exact design refutes any supposed need to evaluate the theorem as isolated scalar subproblems. The module describes itself as passive/additive, so the claim here concerns its own available semantics—not a newly asserted automatic attachment to every orbital transition.
+
+**Triangle proof oracle:** `hhs_runtime/hhs_phase_inverted_pythagorean_geometry_v1.py` contains exact `pythagorean_collapse_witness`, `lo_shu_phase_witness`, `pq_orientation_witness`, `manifold_closure_witness` and `full_geometry_witness`. Its integer/rational computation does not authorize floating-point mathematical authority.
+
+**Global closure and actual halt:** `docs/pass220/PASS_220_I004_GENESIS_ZERO_SUM_LO_SHU_GLOBAL_HALT.md` documents the existing Pass 220 I004 global halt predicate, not a newly proposed closure algorithm. Its exact conditions include all 81 normalized offsets equal zero, all nine local Lo Shu nuclei closed, global modality zero closed, normalized state unchanged and raw 5,184-bit state unchanged. A proven halt blocks further candidate expansion and does not mint another Hash216 transition. A single unresolved modality does not trigger a false halt. The contract identifies `hhs_backend/runtime/hhs_pass220_genesis_zero_sum_lane5_gate_v1.py` as its callable path.
+
+**G³ native semantics:** `docs/operations/restart/PASS_220_I028_G3_OUROBOROS_VM81_OPCODES_RESTART.md` records the established G³/Ouroboros VM81 opcode family, ordered staged prerequisites, exact C++/Lane 5 bridge, and recorded Wolfram 12/12 proof checkpoint. This is relevant directly to the three-vertex recursion and therefore participates in the global lemma search, beyond the earlier T1 projection.
+
+### Derivation scope for the integrated theorem
+
+The correct active mathematical object is a **full finite proof-carrying dependency closure across all applicable results**, not a small selection of T1–T6. To evaluate a proposed nonterminal orbit, compose the existing `HHSRecursiveGlobalConstraintBundle`, G³ constructor semantics, Pass 219 HNAN gates, Pass 220 I004 global halt predicate, Pass 091 exact orbital ancestry, Pass 191 phase/dyadic relations and the remaining indexed lemmas with their actual types and premises.
+
+Two distinct closure concepts must remain explicitly typed: the orbit's approach to its designated primitive state, and the operating-system scheduler's all-modalities/no-new-state halt condition. Deriving the bridge between those conditions is a **cross-lemma composition task** and must use existing system mechanisms; do not call either one missing merely because the other file does not restate it.
+
+This source-indexed investigation is a partial traversal of an established whole-corpus graph, not a new limitation on which proven identities may participate. It also does not claim an executed universal Collatz proof from documentation alone.
