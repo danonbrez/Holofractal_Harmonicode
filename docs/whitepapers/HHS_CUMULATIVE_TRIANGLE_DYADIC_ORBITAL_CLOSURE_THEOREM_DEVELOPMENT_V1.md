@@ -106,3 +106,23 @@ If every successive proof-carrying receipt includes a different step index or pa
 Represent a putative r-cycle by typed nodes `(u_i, T_i, Φ_i, Q_i, H_i, address_i, ancestry_i)` with each transition carrying both the exact scalar compatibility `2^k_i u_(i+1)=3u_i+1` on its permitted integer projection and the full native `ConstraintJoin` outcome. Recover the *existing* triangle/phase/HNAN bridge used by the source course or Lane 5; do not invent an automatic relationship between scalar v₂ and phase address. For each edge demand registered directed-rule witnesses, exact source ordering and identity-preserving reconstruction. Only a demonstrably inconsistent conjunct yields a native cycle rejection. To derive universal closure, separately analyze the potential nonrepeating, nonclosing case.
 
 **Scope note:** This iteration inspected actual relevant source files and previously recorded validation receipts. It did not execute a native C library or exhaustive course proof checker; those remain separate verification actions, not evidence of absent proofs.
+
+## 9. Corpus-wide proven-lemma inheritance — correction to the development method
+
+**Authoritative principle:** Every proven identity and transformation anywhere in the HHS/HARMONICODE mathematical corpus is a valid inherited lemma of the single cumulative formal system, under its actual recorded type/domain/assumption constraints. The theorem development must not select a few documented identities as the whole available proof basis. Its source corpus includes the HARMONICODE Algebra Course, formal lemma and axiom registries, white papers, historical pass proofs, exact source equations, Wolfram/Lean results, native C/C++ constructors and receipt-backed validations, discovered through the indexed Hash216 knowledge graph.
+
+The T1–T6 inventory in this document is an initial set of *retrieved pointers*, not the theorem's global permitted axiom/lemma set. Any earlier phrasing suggesting that unlisted established identities are excluded, locally irrelevant by default, or must be re-proven before use is superseded by this section. The same holds for L1–L8: these are newly written deductions/inspections, not replacement proofs or upper bounds on the much larger existing corpus.
+
+The intended proof process is the closure of the **whole inherited lemma set** under its registered typed inference and constructor rules:
+
+    L_repo = { all established, proved source identities and transformations }
+    Closure_S(L_repo) = all licensed finite compositions and deductions in S
+    Target: PrimitiveOrbitalClosure ∈ Closure_S(L_repo)
+
+A proof of membership requires a traceable finite derivation; inability to retrieve a derivation in a particular inspection does not imply non-membership or falsity. No arbitrary extra conditions may be imposed on a proved identity; preserve only its *actual* premises and ordered typed semantics.
+
+**Cycle analysis:** A candidate nonterminal orbit must satisfy the whole jointly applicable Closure_S(L_repo). Its feasibility cannot be inferred by testing the scalar Collatz recurrence alone, a single phase cycle, or a few source files. Equally, cycle exclusion cannot be claimed merely from unique ancestry hashes. Resolve any apparent conflict by recovering the already implemented system-internal constraint-resolution and gate rules, not by creating a new external proof taxonomy.
+
+**Next concrete work:** build a dependency-indexed lemma closure that enumerates source paths, stable proof IDs, hypotheses, resulting typed transformations, verified implementations and recorded receipts; derive or recover the closure theorem through graph composition. Preserve previously established proof statuses rather than resetting them to 'unverified' on each inspection.
+
+This clarification modifies the methodology, not the existing frozen theorem statements, ABI, or VM81/Hash72/Hash216 authority.
