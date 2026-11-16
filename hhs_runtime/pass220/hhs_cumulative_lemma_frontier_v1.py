@@ -34,6 +34,7 @@ def construct_frontier(
     *,
     lemma_corpora: Iterable[Mapping[str, Any]] = (),
     course_indexes: Iterable[Mapping[str, Any]] = (),
+    repository_dependency_graph: Mapping[str, Any] | None = None,
     targets: Iterable[str] = (),
 ) -> dict[str, Any]:
     """Traverse all supplied records, irrespective of selected attention targets.
@@ -43,6 +44,8 @@ def construct_frontier(
     """
     nodes: dict[str, dict[str, Any]] = {}
     parents: dict[str, tuple[str, ...]] = {}
+    source_edges: list[dict[str, Any]] = []
+    source_graph_root: str | None = None
 
     for corpus in lemma_corpora:
         corpus = _record(corpus, "LEMMA_CORPUS")
@@ -91,6 +94,55 @@ def construct_frontier(
             # Source positions are not equivalent to formal inference edges.
             parents[key] = ()
 
+    if repository_dependency_graph is not None:
+        graph = _record(repository_dependency_graph, "DEPENDENCY_GRAPH")
+        roots = _record(graph.get("roots"), "DEPENDENCY_GRAPH_ROOTS")
+        source_graph_root = roots.get("graph_root_hash216")
+        if not isinstance(source_graph_root, str) or len(source_graph_root) != 216:
+            raise CorpusFrontierError("INVALID_SOURCE_GRAPH_ROOT")
+        files = graph.get("files")
+        edges = graph.get("dependency_edges")
+        if not isinstance(files, list) or not isinstance(edges, list):
+            raise CorpusFrontierError("INVALID_SOURCE_GRAPH_ARRAYS")
+        paths: set[str] = set()
+        for file in files:
+            file = _record(file, "INDEXED_FILE")
+            source_path = file.get("path")
+            identity = file.get("hash216")
+            if (not isinstance(source_path, str) or not source_path
+                    or source_path in paths or not isinstance(identity, str)
+                    or len(identity) != 216):
+                raise CorpusFrontierError("INVALID_OR_DUPLICATE_SOURCE_FILE")
+            paths.add(source_path)
+            key = "repo-file:" + source_path
+            if key in nodes:
+                raise CorpusFrontierError("DUPLICATE_GRAPH_NODE")
+            nodes[key] = {
+                "id": key, "kind": "INDEXED_REPOSITORY_FILE",
+                "source_path": source_path, "source_hash216": identity,
+                "source_git_blob": file.get("git_blob"),
+                "source_record_sha256": _digest(file),
+            }
+            parents[key] = ()  # files have dependencies, NOT mathematical proof premises
+        for edge in edges:
+            edge = _record(edge, "SOURCE_DEPENDENCY_EDGE")
+            origin, dest = edge.get("from"), edge.get("to")
+            if origin not in paths or dest not in paths:
+                raise CorpusFrontierError("MISSING_SOURCE_DEPENDENCY_ENDPOINT")
+            source_edges.append({
+                "from": origin, "to": dest, "type": edge.get("type"),
+                "line": edge.get("line"), "hash216": edge.get("hash216"),
+            })
+        source_edges.sort(key=lambda e: (
+            e["from"], e["to"], str(e["type"]),
+            str(e["line"]), str(e["hash216"]),
+        ))
+        counts = graph.get("counts", {})
+        if isinstance(counts, Mapping):
+            expected_files = counts.get("content_bound_files")
+            if expected_files is not None and expected_files != len(files):
+                raise CorpusFrontierError("SOURCE_FILE_COUNT_MISMATCH")
+
     for key, deps in parents.items():
         missing = [dep for dep in deps if dep not in nodes]
         if missing:
@@ -134,6 +186,9 @@ def construct_frontier(
         "selected_targets": list(targets),
         "node_count": len(nodes),
         "edge_count": len(edges),
+        "source_dependency_edge_count": len(source_edges),
+        "source_graph_root_hash216": source_graph_root,
+        "source_dependency_edges": source_edges,
         "nodes": [nodes[key] for key in sorted(nodes)],
         "dependency_edges": [
             {"premise": a, "conclusion": b} for a, b in edges
@@ -148,10 +203,16 @@ def construct_frontier(
 
 
 def construct_from_repository(repo: Path) -> dict[str, Any]:
-    """Run on two registered indexes; does not claim whole-repository coverage."""
+    """Bind existing complete indexed file graph and two mathematical indexes.
+
+    An index is not automatically a proof census: other formal/corpus sources
+    must still be bound through their existing registered paths.
+    """
     lemma_path = repo / "formal/lemmas/pass_144/LEMMA_CORPUS.json"
     course_path = repo / "contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json"
+    dependency_path = repo / "artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json"
     return construct_frontier(
         lemma_corpora=(json.loads(lemma_path.read_text()),),
         course_indexes=(json.loads(course_path.read_text()),),
+        repository_dependency_graph=json.loads(dependency_path.read_text()),
     )
