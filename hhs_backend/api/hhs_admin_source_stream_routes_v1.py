@@ -1,8 +1,8 @@
 """Fail-closed HTTP transport for private SQL staging; no new auth authority.
 
-Requires a trusted server-side authentication middleware to populate
-scope['hhs_authenticated_principal']; HTTP-provided owner headers and form
-fields are never used for authorization. Lane 5 canonical admission is separate.
+Uses the inherited Pass190/Ubuntu-ApplicationVM signed capability verifier,
+or a verified in-process request principal. No public owner headers or JSON
+fields grant authorization; admission and source staging remain distinct. Lane 5 canonical admission is separate.
 """
 from __future__ import annotations
 
@@ -26,15 +26,45 @@ class FinalizeBody(BaseModel):
     expected_sha256: str | None = Field(default=None, min_length=64, max_length=64)
 
 
+ADMIN_UPLOAD_SCOPE = "admin.source.upload"
+
+
+def _signed_authority():
+    """Reuse the inherited Pass190/Ubuntu ApplicationVM signed capability authority."""
+    from hhs_runtime.pass220.application_vm_control_plane import ApplicationVMControlPlane
+    return ApplicationVMControlPlane.from_environment()
+
+
 def _principal(request: Request) -> str:
-    # A trusted in-process middleware must bind identity. Never accept an
-    # externally supplied header, query parameter, cookie string or JSON owner.
+    # Only an in-process trusted middleware or a cryptographically verified
+    # inherited HHS-Capability header can provide source-upload authority.
     principal = request.scope.get("hhs_authenticated_principal")
-    if not isinstance(principal, dict) or principal.get("admin_source_upload") is not True:
-        raise HTTPException(status_code=403, detail="HHS_ADMIN_STREAM_TRUSTED_PRINCIPAL_REQUIRED")
-    owner = principal.get("subject")
-    if not isinstance(owner, str) or not owner.strip():
+    if isinstance(principal, dict) and principal.get("admin_source_upload") is True:
+        owner = principal.get("subject")
+        if isinstance(owner, str) and owner.strip():
+            return owner
         raise HTTPException(status_code=403, detail="HHS_ADMIN_STREAM_TRUSTED_OWNER_REQUIRED")
+
+    authorization = request.headers.get("authorization")
+    if authorization is None:
+        raise HTTPException(status_code=403, detail="HHS_ADMIN_STREAM_TRUSTED_PRINCIPAL_REQUIRED")
+    try:
+        identity = _signed_authority().authenticate_header(authorization)
+    except Exception as exc:
+        # The existing control plane owns signature, time and schema verification.
+        # Fail closed on a missing native security configuration or malformed token.
+        from hhs_runtime.pass220.application_vm_control_plane import ApplicationVMError
+        if isinstance(exc, ApplicationVMError):
+            code = str(exc)
+            status = 503 if "SECURITY_NOT_CONFIGURED" in code else 401
+            raise HTTPException(status_code=status, detail="HHS_ADMIN_STREAM_CAPABILITY_REJECTED") from exc
+        raise HTTPException(status_code=503, detail="HHS_ADMIN_STREAM_AUTHORITY_UNAVAILABLE") from exc
+    scopes = identity.get("scopes")
+    owner = identity.get("principal")
+    if not isinstance(scopes, list) or ADMIN_UPLOAD_SCOPE not in scopes:
+        raise HTTPException(status_code=403, detail="HHS_ADMIN_STREAM_CAPABILITY_SCOPE_REQUIRED")
+    if not isinstance(owner, str) or not owner.strip():
+        raise HTTPException(status_code=403, detail="HHS_ADMIN_STREAM_CAPABILITY_PRINCIPAL_INVALID")
     return owner
 
 
