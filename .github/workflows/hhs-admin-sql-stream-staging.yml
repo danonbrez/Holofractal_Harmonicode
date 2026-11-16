@@ -33,6 +33,8 @@ jobs:
           python -m unittest discover -s tests -p test_hhs_lane5_http_stream_v1.py -v
           python -m unittest discover -s tests -p test_hhs_admin_source_stream_routes_v1.py -v
           python -m unittest discover -s tests -p test_hhs_admin_signed_vm81_handoff_contract_v1.py -v
+      - name: Verify frozen Pass160 source capsule and additive OpenSSL link repair
+        run: python -m unittest discover -s tests -p test_hhs_pass160_crypto_link_repair_v1.py -v
       - name: Build existing native Pass219 shared runtime
         run: make c-abi
       - name: Verify exact SQL source via compiled native Lane 5 candidate bridge
