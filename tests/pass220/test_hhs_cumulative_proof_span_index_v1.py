@@ -45,6 +45,7 @@ class TestProofSpanIndex(unittest.TestCase):
         self.assertIn("P²-pq=1", equations[3]["source_text"])
         self.assertTrue(r["candidate_only"])
         self.assertFalse(r["exhaustive_proof_claim"])
+        self.assertEqual(r["full_source_coverage"]["end_char"], len(SOURCE))
 
     def test_deterministic_replay(self):
         a = extract_source_spans(path="a.lean", source_text=SOURCE)
@@ -70,6 +71,7 @@ class TestProofSpanIndex(unittest.TestCase):
             r = build_repository_proof_span_index(root, graph)
             self.assertEqual(r["examined_text_files"], 2)
             self.assertEqual(r["files_with_discoverable_spans"], 2)
+            self.assertEqual(r["source_files_with_full_coverage_locators"], 2)
             self.assertEqual(r["named_proof_span_count"], 3)
             self.assertEqual(r["unavailable_sources"], [
                 {"path": "missing.md", "reason": "SOURCE_NOT_AVAILABLE"},
