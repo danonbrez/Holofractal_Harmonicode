@@ -290,3 +290,24 @@ The candidate adapter also reads the repository-wide `REPOSITORY_HASH216_DEPENDE
 
 **Critical remaining boundary:** This expanded adapter is still not an exhaustive inventory of all proof statements embedded in every newer native service, whitepaper, and unmerged branch. The actual theorem must use the full repository mathematical library, and the adapter must never be invoked as a completed corpus proof census. Native proof receipts and typed mathematical dependencies must continue to be recovered and composed from the already-engineered exact runtime and proof graphs.
 
+## 16. Proof statements inside files, not merely indexed source files
+
+The user identified another critical deficiency: even the expanded inventory in §15 largely enumerated *files and registries*, not the hundreds of explicit mathematical derivations, lemmas, and transformations encoded inside the source texts. Intra-file content is part of the cumulative lemma manifold and cannot be ignored because it has no separate named JSON corpus entry.
+
+**Direct source inspection:** `docs/course/HARMONICODE_Algebra_Course_Expanded_0_190.md` contains 683,930 characters and 13,231 source lines on the inspected repository revision. Its embedded mathematical material includes explicit `Lemma ConstantCoverage`, `Lemma GateCoverage`, `Lemma ReturnCoverage`, `Lemma NoOpenResidue`, `Lemma Idempotence`, `Lemma Invariance`, `Lemma Termination`, and six separately enumerated static/cubic/HNAN/carrier/totality/authority safety lemmas. These are located within the course body rather than the small Pass 144 lemma registry. This list illustrates retrieval, not the limit of available proof statements.
+
+**New executable additive source-span discovery:** `hhs_runtime/pass220/hhs_cumulative_proof_span_index_v1.py` traverses the *existing complete indexed repository file graph* and locates mathematical source lines and explicitly named proof/lemma/theorem/derivation text spans within eligible textual files, including Lean, Coq, Wolfram, Markdown, Python, C/C++, HTML and data source formats. It records verbatim statement text, source file identity, line and character offsets, SHA-256 proof-span and source identity; it also emits a whole-file coverage locator **even if no search pattern matches**, so retrieval of the rest of that source is not prohibited by the extractor's labels. Unavailable source files remain in an explicit missing-source list; there is no arbitrary maximum file-size filter or negative proof inference from a missed regex match.
+
+Invocation in a working repository checkout:
+
+```sh
+python -m hhs_runtime.pass220.hhs_cumulative_proof_span_index_v1 \
+  --root . \
+  --output artifacts/pass220/cumulative_proof_source_spans_candidate_v1.json
+python -m unittest tests.pass220.test_hhs_cumulative_proof_span_index_v1
+```
+
+This scanner does **not** parse every symbolic inference automatically or certify theorems. Its additional function is **source-preserving, non-filtering discovery and exact recovery**, which must feed the inherited HARMONICODE symbolic/proof-graph inference instead of replacing that existing mathematical authority. Neither a missing regex match nor a heading/title is an admissible proof-status override.
+
+The complete proof request remains unchanged: compose *all relevant established mathematical derivations*, across newer and older modules, code, proof files, whitepapers, receipts and open proof branches, through the system's existing executable native constraints to the original theorem closure.
+
