@@ -216,3 +216,12 @@ The specific reasoning operation is to compose the **orbital successor and its a
 
 **Proof-status discipline:** M1–M4 are formal construction lemmas with explicit assumptions; the new theorem's universal closure status changes only upon recovery of an existing conclusive proof receipt or a completed licensed derivation. This is neither a negative judgment on the full repository's mathematics nor a reset of established proof authority.
 
+## 12. Proof-development contextual authority
+
+The proof-constructor frontier, candidate ordering, and admissibility of new deductions are governed solely by the authorized HARMONICODE context: (1) the user's prompts, equations, and explicit constraints; (2) applicable upstream system instructions; (3) the entire repository code, constraints, contracts, documents, indexed formal mathematical corpus and recorded proof receipts; (4) the authoritative VM81 runtime with inherited Hash72/Hash216 semantics; and (5) native HARMONICODE symbolic algebra and logical transformation rules.
+
+The hierarchy among instructions remains applicable. The corpus is used as one cumulative lemma system: a newly developed proof may compose any already-proven identity under its actual formal premises; no externally invented assumption, proof convention, scalar rewriting, compartmentalizing heuristic, or retrieval cutoff becomes a mathematical constraint.
+
+A retrieved search hit is a source pointer, not an authority to exclude unseen lemmas. A construction candidate is not automatically a newly verified theorem until the existing proof rules and admissibility path establish it. This difference preserves rigor without imposing extraneous requirements on established identities.
+
+**Proof constructor contract:** Admit source-defined premises, traverse the complete indexed mathematical relationships as needed, generate legal one-step consequences using inherited native rules, preserve proof ancestry and ordered type semantics, and close only under the existing HARMONICODE/VM81 proof and runtime authority.
