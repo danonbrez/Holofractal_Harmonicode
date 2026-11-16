@@ -35,6 +35,7 @@ def construct_frontier(
     lemma_corpora: Iterable[Mapping[str, Any]] = (),
     course_indexes: Iterable[Mapping[str, Any]] = (),
     repository_dependency_graph: Mapping[str, Any] | None = None,
+    source_inventories: Iterable[Mapping[str, Any]] = (),
     targets: Iterable[str] = (),
 ) -> dict[str, Any]:
     """Traverse all supplied records, irrespective of selected attention targets.
@@ -92,6 +93,32 @@ def construct_frontier(
                 "source_record_sha256": _digest(item),
             }
             # Source positions are not equivalent to formal inference edges.
+            parents[key] = ()
+
+    for inventory in source_inventories:
+        inventory = _record(inventory, "SOURCE_INVENTORY")
+        origin = inventory.get("source_path")
+        rows = inventory.get("records")
+        if not isinstance(origin, str) or not origin or not isinstance(rows, list):
+            raise CorpusFrontierError("INVALID_SOURCE_INVENTORY")
+        for i, row in enumerate(rows):
+            row = _record(row, "SOURCE_INVENTORY_RECORD")
+            logical_id = row.get("record_id")
+            if not isinstance(logical_id, str) or not logical_id:
+                raise CorpusFrontierError("MISSING_SOURCE_RECORD_ID")
+            key = "catalog:" + origin + "#" + logical_id
+            if key in nodes:
+                raise CorpusFrontierError("DUPLICATE_SOURCE_INVENTORY_RECORD")
+            nodes[key] = {
+                "id": key, "kind": "INDEXED_CORPUS_SOURCE",
+                "inventory_path": origin, "inventory_schema": inventory.get("schema"),
+                "source_role": inventory.get("source_role"),
+                "source_record_id": logical_id,
+                "source_record": dict(row),
+                "source_record_sha256": _digest(row),
+                "proof_admission_inferred": False,
+            }
+            # Catalog adjacency must not invent a mathematical implication.
             parents[key] = ()
 
     if repository_dependency_graph is not None:
@@ -203,16 +230,57 @@ def construct_frontier(
 
 
 def construct_from_repository(repo: Path) -> dict[str, Any]:
-    """Bind existing complete indexed file graph and two mathematical indexes.
+    """Bind full indexed file graph and additive historical/newer inventories.
 
-    An index is not automatically a proof census: other formal/corpus sources
-    must still be bound through their existing registered paths.
+    This is still an *index-discovery* frontier, not the repository-wide proof
+    admission census or an independently authorized theorem compiler.
     """
     lemma_path = repo / "formal/lemmas/pass_144/LEMMA_CORPUS.json"
     course_path = repo / "contracts/pass220/HARMONICODE_COURSE_EXPANSION_INDEX_V1.json"
     dependency_path = repo / "artifacts/repository_index/REPOSITORY_HASH216_DEPENDENCY_GRAPH.json"
+    # Additive inventories only: preserve native proof status and source provenance.
+    # These cover newer independent proof/constructor source surfaces that are not
+    # represented by the historic Pass 144 lemma registry.
+    catalogs = (
+        ("contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json",
+         "LEGACY_HARMONICODE_COURSE_SOURCE", "modules", "id"),
+        ("contracts/pass220/PASS_220_WHITEPAPER_CORPUS_SOURCE_FREEZE_V1.json",
+         "FROZEN_MATHEMATICAL_WHITEPAPER_SOURCE", "files", "path"),
+        ("artifacts/pass206/ACCUMULATED_CONSTRAINT_INDEX.json",
+         "ACCUMULATED_CONSTRAINT_SOURCE", "indexed_sources", "repository_path"),
+        ("contracts/pass220/HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1.json",
+         "NATIVE_PROOF_EVIDENCE_SURFACE", "native_surfaces", "key"),
+        ("data/pass220/openai_math_formalized_novelty_constructors_v1.json",
+         "EXTERNAL_FORMALIZED_CONSTRUCTOR_SOURCE", "constructors", None),
+        ("data/pass220/openai_math_constructor_promotion_audit_i081_v1.json",
+         "EXTERNAL_FORMALIZED_PROMOTION_SOURCE", "full_promotions", "promotion_id"),
+        ("data/pass220/openai_math_constructor_promotion_audit_i081_v1.json",
+         "EXTERNAL_FORMALIZED_PARTIAL_SOURCE", "partial_subconstructors", None),
+    )
+    inventories = []
+    for source_path, role, field, id_field in catalogs:
+        data = json.loads((repo / source_path).read_text(encoding="utf-8"))
+        rows = data.get(field)
+        if not isinstance(rows, list):
+            raise CorpusFrontierError("MISSING_REGISTERED_SOURCE_RECORDS:" + source_path)
+        records = []
+        for index, raw in enumerate(rows):
+            if not isinstance(raw, dict):
+                raise CorpusFrontierError("INVALID_REGISTERED_SOURCE_RECORD")
+            rid = raw.get(id_field) if id_field else None
+            if not isinstance(rid, str) or not rid:
+                rid = str(index)
+            records.append({"record_id": field + ":" + rid, "source": raw})
+        inventories.append({
+            "source_path": source_path,
+            "source_role": role,
+            "schema": data.get("schema"),
+            "records": records,
+        })
     return construct_frontier(
-        lemma_corpora=(json.loads(lemma_path.read_text()),),
-        course_indexes=(json.loads(course_path.read_text()),),
-        repository_dependency_graph=json.loads(dependency_path.read_text()),
+        lemma_corpora=(json.loads(lemma_path.read_text(encoding="utf-8")),),
+        course_indexes=(json.loads(course_path.read_text(encoding="utf-8")),),
+        repository_dependency_graph=json.loads(
+            dependency_path.read_text(encoding="utf-8")),
+        source_inventories=inventories,
     )
