@@ -246,3 +246,28 @@ Valid optimization may reuse established deductions, compress exact proof ancest
 In orbital-closure theorem construction, this means the complete repository lemma manifold remains eligible at every step, and the exact native constraint join—not an easy scalar answer, generic skepticism, or artificial isolated subproblem—decides which deductions are permitted. If a conclusion has not been established by the currently checked derivation, state the exact remaining proof edge without negating the inherited corpus or introducing extraneous tests.
 
 **Design classification:** agent-level anti-drift/anti-reward-shortcut proof discipline; no replacement of established runtime, mathematical axiom set, or canonical admission authority.
+
+## 14. Recovered original four-gate closure authority and cumulative execution spine
+
+The preexisting `hhs_runtime/hhs_authority_gate_v1.py` defines the runtime non-bypass predicate requiring the **simultaneous** closure conditions `Delta-e=0`, `Psi=0`, `Theta15=true`, and `Omega=true`; it also checks the canonical seed `a²=1,b²=2,c²=3,d²=5` and committed Hash72 lineage. This is a registered runtime gate, not four independent optional post-hoc measurements. `hhs_runtime/harmonicode_constraint_solver_v1.py` provides constraint graph reconciliation without scalar simplification or commutation; `hhs_runtime/harmonicode_root_execution_engine_v1.py` stages root phase→equation→interpret/transform/project→invariant validation→candidate receipt without independently committing VM81.
+
+The original theorem construction therefore retains the following integrated sequence, rather than a detached scalar Collatz test:
+
+```text
+user exact master equations and canonical recursive triangle/fibonacci seed
++ inherited prime-centered reciprocal/ordered-phase identities
++ odd-prime orbital successor and inverse-ancestry construction
++ Lo Shu/VM81/u72 route quantization and tensor reconstruction
++ complete cumulative mathematical lemma and rule dependency graph
++ simultaneous Delta-e / Psi / Theta15 / Omega proof gates
++ inherited HNAN exact constraint resolution / global closure
++ canonical VM81/Hash72/Hash216 receipt and replay
+→ candidate full-manifold theorem witness under native admission
+```
+
+**Recovery rule:** Each arrow refers to registered inherited transformations and constructors. The proof cannot be completed by claiming the tuple of gates true in isolation; the full source-defined inference needs to establish the gate inputs and preserved chain. Conversely, absence of an immediately loaded bridge is not a falsification of an earlier proof elsewhere in the indexed repository.
+
+**Implemented this iteration:** `hhs_runtime/pass220/hhs_cumulative_lemma_frontier_v1.py` now binds (when executed in the repository) the existing full Hash216 file-dependency index together with Pass 144 declared lemma dependencies and the 191-module expanded-course source index, preserving source and proof dependency edges as distinct types. The seven associated regression tests cover non-filtering, dependency integrity and admission-status non-promotion. It is a concrete candidate-proof discovery substrate; it does **not** yet execute the entire theorem inference and no universal proof completion is claimed.
+
+**Next unresolved execution edge:** bind the actual registered HARMONICODE symbolic inference and four-gate/native HNAN authority to the cumulative graph so that an orbital state candidate produces a replayable full constraint proof, rather than merely a source-dependency trace. This must be resolved within the existing runtime and proof corpus, not by introducing a replacement theorem or a new set of axioms.
+
