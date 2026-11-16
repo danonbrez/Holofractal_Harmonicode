@@ -64,7 +64,7 @@ test('rejects fabricated canonical receipt and offset drift', async () => {
 test('existing IDE retains conventional controls and offers separate administrator staging', () => {
   const code = readFileSync(new URL('../src/project-lifecycle.mjs', import.meta.url), 'utf8');
   assert.match(code, /Stage Source \(Admin\)/);
-  assert.match(code, /stageBrowserFile\(file\)/);
+  assert.match(code, /stageBrowserFile\(file,\s*\{\s*capabilityToken:\s*capabilityToken\.trim\(\)\s*\}\)/);
   for (const preserved of ['ide-import-folder', 'ide-build-project', 'ide-export-project', 'ide-create-path']) {
     assert.ok(code.includes(preserved), preserved);
   }
