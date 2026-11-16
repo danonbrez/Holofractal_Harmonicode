@@ -64,3 +64,30 @@ export async function stageBrowserFile(
     canonical_hash216_admitted: false,
   });
 }
+
+/** Explicit separate candidate continuation after successful SQL staging.
+ * Does not mint VM81/Hash72/Hash216 authority or create a RAG knowledge record.
+ */
+export async function continueStagedLane5Candidate(
+  uploadId,
+  { fetchImpl = fetch, baseUrl = '/api/runtime/admin-source-stream', signal, capabilityToken } = {},
+) {
+  if (typeof uploadId !== 'string' || !/^[0-9a-f-]{36}$/.test(uploadId)) {
+    throw new Error('HHS_ADMIN_STREAM_UPLOAD_ID_INVALID');
+  }
+  const headers = { Accept: 'application/json' };
+  if (capabilityToken) headers.Authorization = 'HHS-Capability ' + capabilityToken;
+  const response = await fetchImpl(baseUrl + '/uploads/' + encodeURIComponent(uploadId) + '/candidate', {
+    method: 'POST', credentials: 'same-origin', signal, headers,
+  });
+  let payload;
+  try { payload = await response.json(); }
+  catch { throw new Error('HHS_LANE5_CANDIDATE_RESPONSE_INVALID'); }
+  if (!response.ok) throw new Error(String(payload.detail || 'HHS_LANE5_CANDIDATE_REJECTED'));
+  if (payload.upload_id !== uploadId || payload.canonical_hash216_admitted !== false ||
+      payload.signed_vm81_admission_required !== true ||
+      payload.native_candidate_receipt?.candidate_only !== true) {
+    throw new Error('HHS_LANE5_CANDIDATE_AUTHORITY_INVALID');
+  }
+  return payload;
+}
