@@ -35,7 +35,7 @@ FORMAL = re.compile(
 )
 MODULE = re.compile(r"^\s*#\s+Module\s+\d+\b", re.IGNORECASE)
 MATH_MARKER = re.compile(
-    r"(?<![=])(?:==|:=|≡|⇒|⟹|↔|≤|≥|∈|∉|⊢|∴|"
+    r"(?<![=])(?:==|:=|(?<![=!<>])=(?!=)|≡|⇒|⟹|↔|≤|≥|∈|∉|⊢|∴|"
     r"\\(?:frac|sqrt|equiv|Rightarrow|implies|vdash|forall|exists)\b)"
 )
 HEADING = re.compile(r"^#{1,6}\s+")
@@ -193,3 +193,41 @@ def build_repository_proof_span_index(
     }
     result["index_sha256"] = _seal(result)
     return result
+
+def build_from_repository(root: Path) -> dict[str, Any]:
+    """Resolve the existing Hash216 graph and extract source-span discovery."""
+    graph_path = (
+        root / "artifacts/repository_index/"
+        "REPOSITORY_HASH216_DEPENDENCY_GRAPH.json"
+    )
+    graph = json.loads(graph_path.read_text(encoding="utf-8"))
+    return build_repository_proof_span_index(root, graph)
+
+
+def main() -> None:
+    """Produce a complete non-authoritative span census without console truncation."""
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", type=Path, default=Path("."))
+    parser.add_argument("--output", required=True, type=Path)
+    args = parser.parse_args()
+    result = build_from_repository(args.root.resolve())
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(result, ensure_ascii=False, sort_keys=True) + "\\n",
+        encoding="utf-8",
+    )
+    print(json.dumps({
+        "index_sha256": result["index_sha256"],
+        "examined_text_files": result["examined_text_files"],
+        "files_with_discoverable_spans": result["files_with_discoverable_spans"],
+        "named_proof_span_count": result["named_proof_span_count"],
+        "mathematical_source_line_count": result["mathematical_source_line_count"],
+        "unavailable_sources": len(result["unavailable_sources"]),
+        "output": str(args.output),
+    }, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()
