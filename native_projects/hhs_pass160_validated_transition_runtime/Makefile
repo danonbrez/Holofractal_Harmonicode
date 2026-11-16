@@ -41,6 +41,7 @@ $(MATERIALIZED): $(NATIVE_PARTS) $(REFERENCE_SUMS) | verify-transport
 	@mv '$(NATIVE_ARCHIVE).tmp' '$(NATIVE_ARCHIVE)'
 	@tar -xzf '$(NATIVE_ARCHIVE)' -C .
 	@cp assets/source_capsule/Makefile.materialized.repair-forward Makefile.materialized
+	@python3 assets/source_capsule/apply_crypto_link_overlay.py Makefile.materialized
 	@printf '%s\n%s\n' '$(NATIVE_SHA256)' '$(REFERENCE_SUMS_SHA256)' > '$@'
 
 all native-test cli-test python-test differential fuzz fault concurrency performance api-test inherited sanitizer verify evidence package: materialize
