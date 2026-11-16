@@ -71,3 +71,32 @@ test('existing IDE retains conventional controls and offers separate administrat
   assert.match(code, /STAGED ·/);
   assert.match(code, /native admission pending/);
 });
+
+test('signed Pass190 credential is forwarded to every transport request, never in URL or body', async () => {
+  const source = new Blob(['exact source bytes']);
+  source.name = 'signed-source.bin';
+  const credential = 'fake-fixture-capability-not-a-real-secret';
+  const destinations = [];
+  let offset = 0;
+  const mock = async (url, options) => {
+    destinations.push(url);
+    assert.equal(options.headers?.Authorization, 'HHS-Capability ' + credential);
+    assert.ok(!url.includes(credential));
+    assert.ok(!String(options.body).includes(credential));
+    if (options.method === 'POST' && url.endsWith('/uploads')) {
+      return {ok:true,json:async()=>({upload_id:'stream-id',received_bytes:0})};
+    }
+    if (options.method === 'PATCH') {
+      offset += options.body.size;
+      return {ok:true,json:async()=>({received_bytes:offset})};
+    }
+    return {ok:true,json:async()=>({
+      state:'STAGED',received_bytes:source.size,source_sha256:'b'.repeat(64),
+      canonical_hash216_admitted:false,
+    })};
+  };
+  const status = await stageBrowserFile(source,{fetchImpl:mock,capabilityToken:credential,chunkBytes:6});
+  assert.equal(status.status,'STAGED_NONCANONICAL');
+  assert.equal(status.received_bytes,source.size);
+  assert.ok(destinations.length > 3);
+});
