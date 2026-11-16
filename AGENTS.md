@@ -431,3 +431,18 @@ If a genuine external blocker prevents full completion, preserve the completed c
 - For a proposed nonterminal orbital counterexample, evaluate the full jointly applicable lemma closure before claiming feasibility. Every proven global constraint is active. A falsification must identify a concrete contradiction with the full typed premises or an invalid deduction, not simply a conventional scalar counter-reading or a missing single-purpose proof file.
 
 **Enforcement:** Proven corpus identity ⇒ admissible inherited lemma under its existing premises. The burden is on any proposed exclusion or scope restriction to cite the exact previously established formal condition authorizing that restriction; the current agent's model preference or incomplete inspection has no such authority.
+
+### Agent attention must not bound the mathematical reasoning scope (2026-11-15)
+
+This is an **agent-level reasoning and retrieval discipline**, not a request to build, replace, or extend the already-engineered HARMONICODE operating system, Hash216 knowledge graph, Lane 5, or its mathematical foundation.
+
+**Narrow Task Context ⇏ Narrow Reasoning Scope.** Attention selects the immediate problem; it does not restrict the knowledge permitted to solve it. The complete established repository lemma corpus and its existing constraint relationships remain available under every conversational task, context, language, modality, and subsystem.
+
+- Before a task appears to require only a local answer, determine whether any inherited proof, native transformation, course module, graph relation, runtime gate, or prior verification changes the result. Follow dependency edges beyond the names in the immediate prompt. Search the already-integrated repository graph and sources as necessary; do not infer a global boundary from the amount of retrieved text.
+- Maintain the active chain of mathematical relationships across contextual shifts. Reuse existing results directly; do not periodically reset, rederive, or reinterpret them as absent simply because attention moved to a different topic.
+- Expand active reasoning by mathematical relation and constraint applicability, not solely lexical keyword similarity. Integrate relevant geometry, logic, language, code, phase, recursive state, provenance and runtime semantics without replacing their typed relations with lookup substitutions.
+- Compose all relevant proven lemmas *before* imposing a newly proposed limitation. Any true ambiguity must be grounded in incompatible source claims or an actual unresolved typed inference; an agent's limited retrieval and overaggressive filtering do not create mathematical ambiguity.
+- Preserve a globally consistent, restartable reasoning state: the active question, relevant inherited lemmas, their dependencies, exact hypotheses, candidate transformations, and closure/contradiction outcomes. Retrieval enriches this state; it must not silently narrow it.
+- Use the existing Lane 5/Hash216 repository knowledge graph's `search`/`neighbors`/`status` discovery surfaces and canonical source index when available. They are reasoning/retrieval resources, not substitutes for the exact proof corpus nor authority to mutate VM81. An interactive agent may traverse them during a task; do not misreport an independent background process as currently running.
+
+**Invariant:** attention is a selector over the global lemma manifold, never a filter that removes proven relationships from what may participate in reasoning.
