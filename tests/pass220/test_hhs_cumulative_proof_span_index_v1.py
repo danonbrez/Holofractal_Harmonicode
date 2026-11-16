@@ -40,8 +40,8 @@ class TestProofSpanIndex(unittest.TestCase):
         r = extract_source_spans(path="docs/course/sample.md", source_text=SOURCE)
         equations = [e for e in r["entries"]
                      if e["kind"] == "MATHEMATICAL_SOURCE_LINE"]
-        self.assertEqual(len(equations), 3)
-        self.assertIn("Lemma Termination", equations[2]["source_text"])
+        self.assertEqual(len(equations), 4)
+        self.assertIn("Lemma Termination", equations[2]["source_text"])\n        self.assertIn("P²-pq=1", equations[3]["source_text"])
         self.assertTrue(r["candidate_only"])
         self.assertFalse(r["exhaustive_proof_claim"])
 
