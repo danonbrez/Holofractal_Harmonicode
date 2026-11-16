@@ -5,14 +5,16 @@
  */
 export async function stageBrowserFile(
   file,
-  { fetchImpl = fetch, baseUrl = '/api/runtime/admin-source-stream', signal, chunkBytes = 256 * 1024 } = {},
+  { fetchImpl = fetch, baseUrl = '/api/runtime/admin-source-stream', signal, capabilityToken, chunkBytes = 256 * 1024 } = {},
 ) {
   if (!Number.isSafeInteger(chunkBytes) || chunkBytes <= 0) throw new Error('INVALID_TRANSPORT_CHUNK_SIZE');
   const request = async (suffix, options = {}) => {
     const response = await fetchImpl(baseUrl + suffix, {
       credentials: 'same-origin',
       signal,
+      ...(capabilityToken ? { headers: { Authorization: 'HHS-Capability ' + capabilityToken, ...(options.headers || {}) } } : {}),
       ...options,
+      ...(capabilityToken ? { headers: { ...(options.headers || {}), Authorization: 'HHS-Capability ' + capabilityToken } } : {}),
     });
     let result;
     try { result = await response.json(); }
