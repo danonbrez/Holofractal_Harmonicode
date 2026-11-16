@@ -12,7 +12,6 @@ export async function stageBrowserFile(
     const response = await fetchImpl(baseUrl + suffix, {
       credentials: 'same-origin',
       signal,
-      ...(capabilityToken ? { headers: { Authorization: 'HHS-Capability ' + capabilityToken, ...(options.headers || {}) } } : {}),
       ...options,
       ...(capabilityToken ? { headers: { ...(options.headers || {}), Authorization: 'HHS-Capability ' + capabilityToken } } : {}),
     });
