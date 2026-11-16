@@ -73,3 +73,36 @@ Epistemic rule: ¬Verified(X) does not imply ¬X; NotFound(X, inspected scope) d
 6. Run dependency-scoped source, theorem, replay and native admission tests. Report scope and receipts; preserve all prior validated positives.
 
 Documentation-only addition; frozen sources and singleton VM81 authority unchanged.
+
+## 7. Native source trace — transition value, orbital ancestry and typed phase are separate
+
+Inspection on 2026-11-15 of `native_projects/hhs_bifurcation_calibration/hhs_pass091_collatz_prime_tensor_decay_entanglement_v1.py` confirms executable, exact `_next_state`: even n→n//2, odd n→3*n+1; `_execute_lane` maintains ordered integer states and operation word, `first_descent_step`, `cycle_entry_depth`, and explicit stop on `[4,2,1,4]`. It emits node `parent_state_root_hash72`, ordered-history and independent-prefix roots and distinct tensor/Lo Shu/u72 lane address. The implementation additionally reports STEP_BOUNDED/MAGNITUDE_BOUNDED/RESOURCE_BOUNDED outcomes; these are bounded execution statuses, not global negations. Note: this bounded Pass 091 lane does **not** itself evaluate the new full recursive triangle-constraint join.
+
+### Native witness routes already present
+
+| Witness | Exact native/document path | Evidence boundary |
+|---|---|---|
+| Collatz deterministic successor and lineage | `native_projects/hhs_bifurcation_calibration/hhs_pass091_collatz_prime_tensor_decay_entanglement_v1.py` | Actual implementation of bounded prime lanes, node parent roots and cycle marker |
+| Native HNAN verifier binding | `hhs_runtime/hhs_pass220_course_m4_inherited_hnan_phase_binding_v1.py` | Calls `hhs_exact_pass219_hnan_global_system_verify`; proof limited to admitted Module 4 inherited ordered phase |
+| Native all-branch trace | `hhs_runtime/pass220/hnan_all_branch_native_trace_v1.py` | Executes native per-claim resolver, records VERIFIED/REJECTED/UNRESOLVED; declared candidate-only, not consensus or admission |
+| Self-enforcement computational proof | `docs/operations/restart/PASS_219_LANE5_SELF_ENFORCEMENT_PROOF_20260918.md` | Records merged PR #494 and SUCCESS run 35354180440 for triangle/phase/Hash216/prime fingerprint composition; not universal orbital-closure validation |
+| Integrated phase-lattice proof search | `HHS_PASS_191_DYADIC_QUARTIC_PHASE_LATTICE_PROOF.md` | Records exact involution R(σ,t)=(1−σ,t), R²=id, with fixed and off-axis two-cycles; a proof about that phase map, not a Collatz nonterminal cycle |
+| Course proof inventory | `contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json` | Explicitly distinguishes preserved course source from independently reassessed proofs; points to frozen source, lemma corpus and formalization candidates |
+
+### L6 — ordered replay preservation under an orbital merge
+
+Given deterministic scalar successor C and two admitted paths that reach the same integer q, the subsequent *scalar* sequences agree by induction: C^(i+t)(P)=C^(j+t)(Q) for all t≥0 when C^i(P)=C^j(Q)=q. The native Pass 091 ancestry roots need **not** become equal, since parent-root and seed provenance remain distinct. Thus subsequent value equality implies inherited scalar suffix, not identity of the complete proof-carrying state.
+
+### L7 — phase-cycle non-equivalence
+
+The exact Pass 191 involution witness has R²=id both for R fixed points and off-axis two-cycles. Consequently a phase return cannot be treated as a discriminator for a distinct target property unless the other applicable constraints are joined. This is an exact *same-map* observation for R only; no conclusion about existence or absence of a nonterminal Collatz orbit follows from it.
+
+### L8 — no false contradiction from history non-repetition
+
+If every successive proof-carrying receipt includes a different step index or parent hash, complete serialized records can remain unequal even while the underlying scalar state repeats. Therefore 'X_r≠X_0' due solely to receipt lineage is not a contradiction to a projected periodic orbit. The cycle-exclusion proof must explicitly identify the **state equivalence used by the orbital dynamics** and establish that its admissibility constraints forbid a nonterminal return. Proof provenance verifies execution; it does not automatically supply descent or termination.
+
+## 8. Exact integrated proof step to develop
+
+Represent a putative r-cycle by typed nodes `(u_i, T_i, Φ_i, Q_i, H_i, address_i, ancestry_i)` with each transition carrying both the exact scalar compatibility `2^k_i u_(i+1)=3u_i+1` on its permitted integer projection and the full native `ConstraintJoin` outcome. Recover the *existing* triangle/phase/HNAN bridge used by the source course or Lane 5; do not invent an automatic relationship between scalar v₂ and phase address. For each edge demand registered directed-rule witnesses, exact source ordering and identity-preserving reconstruction. Only a demonstrably inconsistent conjunct yields a native cycle rejection. To derive universal closure, separately analyze the potential nonrepeating, nonclosing case.
+
+**Scope note:** This iteration inspected actual relevant source files and previously recorded validation receipts. It did not execute a native C library or exhaustive course proof checker; those remain separate verification actions, not evidence of absent proofs.
