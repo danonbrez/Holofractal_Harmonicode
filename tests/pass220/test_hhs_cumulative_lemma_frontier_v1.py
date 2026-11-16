@@ -55,6 +55,41 @@ class TestCumulativeLemmaFrontier(unittest.TestCase):
         with self.assertRaisesRegex(CorpusFrontierError, "DUPLICATE"):
             construct_frontier(lemma_corpora=[broken])
 
+    def test_full_source_graph_is_distinct_from_proof_edges(self):
+        graph = {
+            "roots": {"graph_root_hash216": "x" * 216},
+            "files": [
+                {"path": "a.py", "hash216": "a" * 216},
+                {"path": "b.py", "hash216": "b" * 216},
+            ],
+            "dependency_edges": [
+                {"from": "a.py", "to": "b.py", "type": "PYTHON_IMPORT",
+                 "hash216": "e" * 216, "line": 1},
+            ],
+        }
+        result = construct_frontier(
+            lemma_corpora=[LEMMA], course_indexes=[COURSE],
+            repository_dependency_graph=graph, targets=["b"],
+        )
+        self.assertEqual(result["node_count"], 6)
+        self.assertEqual(result["edge_count"], 1)
+        self.assertEqual(result["source_dependency_edge_count"], 1)
+        self.assertEqual(result["source_graph_root_hash216"], "x" * 216)
+        self.assertIn("repo-file:a.py", result["complete_input_frontier_order"])
+        self.assertTrue(result["candidate_only"])
+
+    def test_source_graph_missing_endpoint_fails_closed(self):
+        graph = {
+            "roots": {"graph_root_hash216": "x" * 216},
+            "files": [{"path": "a.py", "hash216": "a" * 216}],
+            "dependency_edges": [{"from": "a.py", "to": "missing.py"}],
+        }
+        with self.assertRaisesRegex(
+            CorpusFrontierError, "MISSING_SOURCE_DEPENDENCY_ENDPOINT"
+        ):
+            construct_frontier(repository_dependency_graph=graph)
+
+
 
 if __name__ == "__main__":
     unittest.main()
