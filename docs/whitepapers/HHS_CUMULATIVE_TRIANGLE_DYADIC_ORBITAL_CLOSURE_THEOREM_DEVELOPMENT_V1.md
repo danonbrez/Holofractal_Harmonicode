@@ -148,3 +148,71 @@ The correct active mathematical object is a **full finite proof-carrying depende
 Two distinct closure concepts must remain explicitly typed: the orbit's approach to its designated primitive state, and the operating-system scheduler's all-modalities/no-new-state halt condition. Deriving the bridge between those conditions is a **cross-lemma composition task** and must use existing system mechanisms; do not call either one missing merely because the other file does not restate it.
 
 This source-indexed investigation is a partial traversal of an established whole-corpus graph, not a new limitation on which proven identities may participate. It also does not claim an executed universal Collatz proof from documentation alone.
+
+## 11. Full-corpus one-step lemma composition through inherited Lane 5 constructors
+
+**Principle:** The Pass 220 Lane 5/Hash216 one-step candidate construction already supplies a computational pattern for generating proof routes without materializing the whole search state space. Apply that pattern to the **complete known lemma corpus**, not a keyword-limited shortlist.
+
+### Recovered operational precedent
+
+- `hhs_runtime/hhs_pass220_i072_theory_constructor_hash216_hydration_v1.py` defines `build_theory_constructor`, `hydrate_theory_constructor`, and `validate_theory_constructor`. It composes white-paper identities, inherited Lean theorem/dependency Hash72 identities, Wolfram proof identity, I039 shared-root, I071 phase-gear loop and I065 exact Hash216 hydration into a content-addressed candidate theory object. It stores compact constructor/root identities, rather than permanently materializing all 3×5184 expanded positions.
+- `hhs_backend/runtime/hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69.py` provides `Lane5RepositoryHydrationKnowledgeDatabase.search`, `.neighbors`, `.status` and Hash216-bound constructor/capability identities, plus source dependency relationships. Search results initiate graph traversal; keyword similarity is not the logical proof premise.
+- `docs/whitepapers/HHS_UNIFIED_TECHNICAL_WHITE_PAPER_LANE5_1_48_V1.md` records the exact BigInt represented-span, candidate ranking and streaming proof-carrying route architecture. A candidate does not become theorem authority without the registered exact proof/validation path.
+- `docs/pass220/PASS_220_I082_NEURAL_TENSOR_GRAPH.md` identifies the inherited I065 generative connectome and I069/I070 tensor/hydration path rather than introducing a separate topology.
+
+### Proof-constructor transition
+
+Define the inherited proven lemma corpus `L_repo` as already established, indexed exact proof objects with their source/proof identities and native type declarations. Let a proof state be the *jointly available* premises and derived constraint relationships; no lemma is discarded because it is outside the initial retrieval terms.
+
+```text
+Input:
+    theorem target Q
+    complete inherited indexed lemma corpus L_repo
+    existing admissible typed inference and constructor rules R_repo
+    previous proof-state closure C
+
+STEP(C):
+    discover graph neighbors and registered transformations over L_repo
+    generate every applicable one-step composition candidate
+    reject only on an actual violated type/domain/order/guard,
+        invalid derivation, or independently recorded proof failure
+    preserve existing lemmas, witnesses, source and projection provenance
+    validate derivation against inherited proof checker/native constraints
+    record new consequences and candidate proof routes in C'
+    return C' as a compact, reproducible proof-frontier witness
+```
+
+The full corpus `L_repo` remains globally available for each step; bounded `search` or `neighbors` queries are *retrieval mechanisms* and must not be represented as exhaustive proof-candidate sets. The one-step constructor should traverse relations recursively when necessary while preserving the active proof context. Existing I072 content roots and phase-gear/geometric closure relationships are inheritance assets, not permission to fabricate an additional proof authority.
+
+### Formal one-step closure lemma
+
+Given a formal system `S` with an explicitly registered family of sound typed inference rules `R_repo`, define:
+
+```text
+C_0 := L_repo
+C_(n+1) := C_n union
+            { conclusion(r, premises) |
+              r in R_repo,
+              premises contained in C_n,
+              all recorded guards are satisfied }
+C_* := union over n>=0 of C_n.
+```
+
+**M1 (monotonic preservation):** `C_n subseteq C_(n+1)` by set union.
+
+**M2 (one-step soundness):** If every participating established lemma is valid under its recorded assumptions and each applied `r` is sound under its recorded typed guards, every added consequence is valid under those assumptions. Proof: induction on n, with the rule's soundness supplying the induction step.
+
+**M3 (finite derivability):** Any theorem reached by a finite sequence of registered applications belongs to some `C_n`; a candidate proof may record the finite parent lemma IDs and ordered rule IDs as a reproducible witness.
+
+**M4 (context-independent eligibility):** Whether a proof step is formally admissible depends on actual premises, guards and rule identity, **not** on the current user's prompt wording, the first search result count, or the agent's attention preference. This is an operational non-drift law.
+
+These deductions specify how to use an already existing global proof manifold. They do not assert that a particular target `Q` is already in a searched finite frontier, nor restrict what other corpus theorems may yield. No new rewrite/substitution table, axiom or specialized scalar proof restriction is introduced.
+
+### Application to orbital closure
+
+Set `Q=all admitted odd-prime full orbital tensors satisfy designated closure`. The initial proof frontier is the **whole established corpus**. Activate, among other currently known graph relationships, the G³ self-reconstructing triangle, recursive global constraint bundle, prime-centered reciprocal geometry, phase-ring metric and ordered orientation, HNAN global admission, Pass 091 ancestry and suffix theorems, I004 all-modality/no-new-state halt, I028 G³ VM81 constructor, I072 theory composition, and all other dependency-reachable verified lemmas.
+
+The specific reasoning operation is to compose the **orbital successor and its admissible phase/recursive state** with the existing global constraint and closure predicates, then derive an exact proof trace to closure or a typed contradictory witness for a proposed nonclosing branch. Do not repeatedly ask each known identity to independently prove Q. The full inherited proof corpus remains present at every step.
+
+**Proof-status discipline:** M1–M4 are formal construction lemmas with explicit assumptions; the new theorem's universal closure status changes only upon recovery of an existing conclusive proof receipt or a completed licensed derivation. This is neither a negative judgment on the full repository's mathematics nor a reset of established proof authority.
+
