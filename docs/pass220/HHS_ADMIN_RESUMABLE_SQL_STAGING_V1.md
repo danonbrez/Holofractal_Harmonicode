@@ -68,3 +68,11 @@ The existing visual IDE stage-source button requests this specific existing capa
 The Pass201 public API federation discovers the additive `hhs_backend.api.hhs_admin_source_stream_routes_v1` router alongside existing routers. A discovery presence check is not production execution evidence. Confirm the route is present and protected in the production registration report, that auth succeeds with a valid locally issued scoped token and fails without it, and that the source bytes complete a staged round trip through Lane5 before moving to signed canonical admission.
 
 No source has been promoted to canonical Hash216 knowledge by this adapter.
+
+## P0 signed-capability → SQL source → native candidate continuation
+
+The private additive FastAPI router now exposes `POST /api/runtime/admin-source-stream/uploads/{upload_id}/candidate`, an authenticated, owner-scoped continuation of a finalized SQL-staged source. It uses the existing `continue_staged_to_lane5` composition, which reads exact bytes through the Pass219 unbounded bridge and requires the candidate-only authority envelope. Only sources finalized under the verified upload owner may be considered. The source SHA-256 is checked against SQL-staged metadata; no alternative integrity or native capability is introduced.
+
+The conventional visual IDE `Stage + Lane 5 (Admin)` action first stages through `File.slice()`, then explicitly requests the native candidate receipt. A candidate failure is displayed separately and does not erase already-staged exact source bytes or pretend admission succeeded. The browser client requires `candidate_only=true`, `canonical_hash216_admitted=false`, and `signed_vm81_admission_required=true`, rejecting any response advertising authoritative promotion.
+
+This continues the existing authenticated ingress path but **does not perform signed VM81 admission or Hash216 knowledge promotion**. Native source egress, canonical receipt/replay, and RAG require an inherited approved admission workflow; never fabricate such a receipt from SQL digests or candidate optimization. A separate Pass161 native C link error (OpenSSL EVP functions unresolved in the Pass160 executable) was also observed in the broad PR workflow and must be repaired in its existing native build ownership boundary without weakening this checkpoint.
