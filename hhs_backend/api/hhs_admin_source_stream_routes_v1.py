@@ -13,6 +13,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from hhs_backend.runtime.hhs_admin_sql_stream_staging_v1 import AdminStreamStaging, StagingError
+from hhs_backend.runtime.hhs_admin_sql_lane5_continuation_v1 import continue_staged_to_lane5, NativeContinuationError
 
 router = APIRouter(prefix="/api/runtime/admin-source-stream", tags=["admin-source-stream"])
 _STAGING: AdminStreamStaging | None = None
@@ -117,3 +118,18 @@ async def append_upload(upload_id: str, request: Request, offset: int):
 def finish_upload(upload_id: str, body: FinalizeBody, request: Request):
     owner = _principal(request)
     return _call(_staging().finalize, upload_id, owner, body.expected_sha256)
+
+
+@router.post("/uploads/{upload_id}/candidate")
+def native_lane5_candidate(upload_id: str, request: Request):
+    """Produce an owner-scoped native candidate, never a canonical admission.
+
+    Requires the same signed administrator capability as SQL staging. The
+    existing Pass219 Lane5 bridge performs source digest and workload checks.
+    A candidate is not promoted into authoritative Hash216/RAG by this route.
+    """
+    owner = _principal(request)
+    try:
+        return continue_staged_to_lane5(_staging(), upload_id, owner)
+    except (StagingError, NativeContinuationError) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
