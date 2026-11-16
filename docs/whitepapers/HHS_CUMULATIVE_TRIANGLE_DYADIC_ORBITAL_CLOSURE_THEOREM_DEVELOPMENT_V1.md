@@ -271,3 +271,22 @@ user exact master equations and canonical recursive triangle/fibonacci seed
 
 **Next unresolved execution edge:** bind the actual registered HARMONICODE symbolic inference and four-gate/native HNAN authority to the cumulative graph so that an orbital state candidate produces a replayable full constraint proof, rather than merely a source-dependency trace. This must be resolved within the existing runtime and proof corpus, not by introducing a replacement theorem or a new set of axioms.
 
+## 15. Correction: Pass 144 is a minimum historical subset, not the full mathematical library
+
+The executable Pass 144 registry and the expanded Modules 0–190 index were originally used as initial, **non-exhaustive entry points**. Their scope does not cover the entire repository proof library or newer mathematical work. Treating them as complete would incorrectly exclude already-established lemmas distributed through later passes, whitepapers, native C/C++ circuits, formal verification artifacts, integrated Lane 5 services, and unmerged proof branches.
+
+### Additional independently registered sources now ingested by the candidate frontier
+
+- `contracts/pass220/HARMONICODE_COURSE_PROOF_CORPUS_CROSSWALK_V1.json`: legacy Modules 0–123, distinct source identity from the expanded course.
+- `contracts/pass220/PASS_220_WHITEPAPER_CORPUS_SOURCE_FREEZE_V1.json`: 70 frozen whitepaper source identities; *not* all the whitepapers in the current repository.
+- `artifacts/pass206/ACCUMULATED_CONSTRAINT_INDEX.json`: 306 indexed source records from Pass 206's accumulated constraint corpus.
+- `contracts/pass220/HARMONICODE_COURSE_NATIVE_PROOF_EVIDENCE_BRIDGE_V1.json`: exact paths for existing native HNAN, source-gate, theory hydration and later proof-evidence services.
+- `data/pass220/openai_math_formalized_novelty_constructors_v1.json`: Pass 220 I079 source-bound mathematical constructors, retained with their separate source authority.
+- `data/pass220/openai_math_constructor_promotion_audit_i081_v1.json`: Pass 220 I081 reconciled full and partial constructor promotion records, preserving their own source statuses and external provenance.
+
+The Pass 220 I078–I081 OpenAI mathematical-source materials are separate from the HHS internal proven-lemma set. They provide source-indexed mathematical constructors under the **repository's recorded admission semantics** and may not be silently promoted into HARMONICODE proof authority.
+
+The candidate adapter also reads the repository-wide `REPOSITORY_HASH216_DEPENDENCY_GRAPH.json` file graph, retaining its complete indexed file nodes and import/reference edges, **without** treating those edges as mathematical deduction rules. Corpus data across these inventories may overlap; record counts are not additive proof counts.
+
+**Critical remaining boundary:** This expanded adapter is still not an exhaustive inventory of all proof statements embedded in every newer native service, whitepaper, and unmerged branch. The actual theorem must use the full repository mathematical library, and the adapter must never be invoked as a completed corpus proof census. Native proof receipts and typed mathematical dependencies must continue to be recovered and composed from the already-engineered exact runtime and proof graphs.
+
