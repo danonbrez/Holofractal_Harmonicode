@@ -91,5 +91,46 @@ class TestCumulativeLemmaFrontier(unittest.TestCase):
 
 
 
+    def test_newer_inventories_do_not_collapse_into_historic_lemma_set(self):
+        newer = [
+            {"source_path": "contracts/pass220/newer.json",
+             "schema": "NEWER_PROOF_SOURCE",
+             "source_role": "LATER_NATIVE_MATHEMATICAL_SURFACE",
+             "records": [
+                 {"record_id": "gate_1", "source": {
+                     "proof_status": "EXECUTED_EXACT", "pass": 220,
+                     "typed_relation": "P^2-pq=1"}},
+                 {"record_id": "gate_2", "source": {
+                     "proof_status": "SOURCE_REGISTERED", "pass": 220}}
+             ]},
+        ]
+        result = construct_frontier(
+            lemma_corpora=[LEMMA], course_indexes=[COURSE],
+            source_inventories=newer, targets=["b"],
+        )
+        self.assertEqual(result["node_count"], 6)
+        records = [n for n in result["nodes"]
+                   if n["kind"] == "INDEXED_CORPUS_SOURCE"]
+        self.assertEqual(len(records), 2)
+        self.assertEqual(
+            records[0]["source_record"]["source"]["proof_status"],
+            "EXECUTED_EXACT",
+        )
+        self.assertFalse(records[0]["proof_admission_inferred"])
+        self.assertIn(
+            "catalog:contracts/pass220/newer.json#gate_2",
+            result["complete_input_frontier_order"],
+        )
+
+    def test_duplicate_newer_catalog_record_fails_closed(self):
+        inv = {"source_path": "a.json", "records": [
+            {"record_id": "a"}, {"record_id": "a"},
+        ]}
+        with self.assertRaisesRegex(
+            CorpusFrontierError, "DUPLICATE_SOURCE_INVENTORY_RECORD"
+        ):
+            construct_frontier(source_inventories=[inv])
+
+
 if __name__ == "__main__":
     unittest.main()
