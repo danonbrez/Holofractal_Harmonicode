@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Blob } from 'node:buffer';
 import { readFileSync } from 'node:fs';
-import { stageBrowserFile } from '../src/admin-source-stream.mjs';
+import { stageBrowserFile, continueStagedLane5Candidate } from '../src/admin-source-stream.mjs';
 
 test('file streaming uses slices and never entire-file arrayBuffer', async () => {
   const source = new Blob([Uint8Array.from({length: 1459}, (_, i) => i % 256)]);
@@ -63,13 +63,14 @@ test('rejects fabricated canonical receipt and offset drift', async () => {
 
 test('existing IDE retains conventional controls and offers separate administrator staging', () => {
   const code = readFileSync(new URL('../src/project-lifecycle.mjs', import.meta.url), 'utf8');
-  assert.match(code, /Stage Source \(Admin\)/);
+  assert.match(code, /Stage \+ Lane 5 \(Admin\)/);
   assert.match(code, /stageBrowserFile\(file,\s*\{\s*capabilityToken:\s*capabilityToken\.trim\(\)\s*\}\)/);
   for (const preserved of ['ide-import-folder', 'ide-build-project', 'ide-export-project', 'ide-create-path']) {
     assert.ok(code.includes(preserved), preserved);
   }
   assert.match(code, /STAGED ·/);
-  assert.match(code, /native admission pending/);
+  assert.match(code, /VM81 admission pending/);
+  assert.match(code, /continueStagedLane5Candidate\(receipt\.upload_id/);
 });
 
 test('signed Pass190 credential is forwarded to every transport request, never in URL or body', async () => {
@@ -99,4 +100,32 @@ test('signed Pass190 credential is forwarded to every transport request, never i
   assert.equal(status.status,'STAGED_NONCANONICAL');
   assert.equal(status.received_bytes,source.size);
   assert.ok(destinations.length > 3);
+});
+
+test('native continuation checks signed credential and rejects fabricated authority', async () => {
+  const uploadId = '11111111-2222-4333-8444-555555555555';
+  let calls = 0;
+  const candidateFetch = async (url, opts) => {
+    calls++;
+    assert.equal(opts.method, 'POST');
+    assert.equal(opts.headers.Authorization, 'HHS-Capability verified-fixture');
+    assert.equal(url, '/api/runtime/admin-source-stream/uploads/' + uploadId + '/candidate');
+    return {ok:true,json:async()=>({
+      upload_id:uploadId, canonical_hash216_admitted:false,
+      signed_vm81_admission_required:true,
+      native_candidate_receipt:{candidate_only:true,workload_byte_count:1234},
+    })};
+  };
+  const receipt = await continueStagedLane5Candidate(uploadId, {
+    capabilityToken:'verified-fixture',fetchImpl:candidateFetch,
+  });
+  assert.equal(receipt.native_candidate_receipt.workload_byte_count,1234);
+  assert.equal(calls,1);
+  await assert.rejects(continueStagedLane5Candidate(uploadId, {
+    fetchImpl:async()=>({ok:true,json:async()=>({
+      upload_id:uploadId,canonical_hash216_admitted:true,
+      signed_vm81_admission_required:false,
+      native_candidate_receipt:{candidate_only:false},
+    })}),
+  }),/CANDIDATE_AUTHORITY_INVALID/);
 });
