@@ -122,7 +122,9 @@ def compose_inherited_orbital_proof(
     global_constraints = enforce_recursive_global_constraint_bundle()
     theory = build_theory_constructor()
     hydrate = hydrate_theory_constructor(theory)
-    validation = validate_theory_constructor(theory, hydrate)
+    validation = validate_theory_constructor(theory)
+    if hydrate.get("roundtrip_exact") is not True:
+        raise CumulativeOrbitalProofError("INHERITED_THEORY_HYDRATION_REPLAY_FAILED")
     if validation is False:
         raise CumulativeOrbitalProofError("INHERITED_THEORY_CONSTRUCTOR_REPLAY_FAILED")
 
