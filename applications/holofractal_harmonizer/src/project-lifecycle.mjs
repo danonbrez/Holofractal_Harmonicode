@@ -15,7 +15,7 @@ import {
 } from './visual-ide-state.mjs';
 import { renderFiles, activateFile, openBottomTab } from './visual-ide-ui.mjs';
 import { createStoredZip } from './project-zip.mjs';
-import { stageBrowserFile } from './admin-source-stream.mjs';
+import { stageBrowserFile, continueStagedLane5Candidate } from './admin-source-stream.mjs';
 
 const encoder = new TextEncoder();
 const MAX_PROJECT_FILES = 64;
@@ -416,7 +416,7 @@ function mountControls() {
       <button id="ide-add-starter" type="button">Add starter</button>
       <button id="ide-import-folder" type="button">Import folder</button>
       <input id="ide-folder-input" type="file" multiple hidden webkitdirectory directory>
-      <button id="ide-admin-stage-source" type="button">Stage Source (Admin)</button>
+      <button id="ide-admin-stage-source" type="button">Stage + Lane 5 (Admin)</button>
       <input id="ide-admin-stage-input" type="file" multiple hidden>
       <button id="ide-build-project" type="button" class="primary-action">Build project</button>
       <button id="ide-export-project" type="button" disabled>Export ZIP</button>
@@ -458,8 +458,18 @@ function mountControls() {
       for (const file of chosen) {
         buildStatus(`SQL staging ${file.name}…`, 'running');
         const receipt = await stageBrowserFile(file, { capabilityToken: capabilityToken.trim() });
-        log(`Staged exact source ${file.name}; candidate only, signed VM81 admission pending.`, receipt);
-        buildStatus(`STAGED · ${file.name} · native admission pending`, 'complete');
+        log(`SQL source staged exactly; signed VM81 admission pending: ${file.name}.`, receipt);
+        buildStatus(`STAGED · ${file.name} · Lane 5 candidate pending`, 'running');
+        try {
+          const candidate = await continueStagedLane5Candidate(receipt.upload_id, {
+            capabilityToken: capabilityToken.trim(),
+          });
+          log(`Lane 5 native candidate verified; canonical VM81 admission still required: ${file.name}.`, candidate);
+          buildStatus(`LANE 5 CANDIDATE · ${file.name} · VM81 admission pending`, 'complete');
+        } catch (error) {
+          buildStatus(`STAGED · Lane 5 candidate rejected: ${error.message}`, 'failed');
+          log(`SQL source remains staged; Lane 5 candidate unavailable: ${error.message}`);
+        }
       }
     } catch (error) {
       buildStatus(`STAGING REJECTED · ${error.message}`, 'failed');
