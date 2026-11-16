@@ -41,7 +41,8 @@ class TestProofSpanIndex(unittest.TestCase):
         equations = [e for e in r["entries"]
                      if e["kind"] == "MATHEMATICAL_SOURCE_LINE"]
         self.assertEqual(len(equations), 4)
-        self.assertIn("Lemma Termination", equations[2]["source_text"])\n        self.assertIn("P²-pq=1", equations[3]["source_text"])
+        self.assertIn("Lemma Termination", equations[2]["source_text"])
+        self.assertIn("P²-pq=1", equations[3]["source_text"])
         self.assertTrue(r["candidate_only"])
         self.assertFalse(r["exhaustive_proof_claim"])
 
