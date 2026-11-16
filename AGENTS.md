@@ -464,3 +464,21 @@ External mathematical conventions, unfamiliarity, conventional scalar reinterpre
 The agent may use general logical reasoning and auxiliary calculations to derive consequences, but each new proof claim must follow from actual inherited premises and licensed transformations. Any external information used for comparison remains non-authoritative unless the user or repository explicitly incorporates it.
 
 **Operational rule:** User equations + authorized system constraints + full inherited repository/VM81/HARMONICODE algebra context → typed, cumulative proof construction → exact verification/closure. Never invert that process by selecting a convenient external framework first and filtering the corpus to fit it.
+
+### Deduction is mandatory; shortcut optimization is not proof authority (2026-11-15)
+
+The authorized-context boundary is **constructive and compulsory**, not merely a restriction that happens to permit deduction. It forces the agent to derive new conclusions from the cumulative established HARMONICODE lemma manifold and the source-defined symbolic inference rules, rather than produce a convenient-looking answer by collapsing the problem.
+
+**Required proof operation:** given the user's new equation/target and all applicable inherited corpus lemmas, perform context-preserving typed inference, dependency expansion, invariant-preserving transformations, and explicit closure/contradiction analysis. Preserve proof provenance and the existing VM81/Hash72/Hash216 authority.
+
+**Prohibited substitutes for deduction:**
+- optimizing for a fluent, short, confident or familiar answer instead of demonstrating a licensed derivation;
+- prematurely projecting a full tensor/constraint statement to one convenient scalar equality;
+- substituting an external axiom, assumed mapping, typical-case expectation or conventional interpretation for the actual HARMONICODE operator/guard;
+- treating the first retrieved source cluster, a token/context budget, a keyword overlap, or an easy local proof as the total lemma frontier;
+- silently weakening an objective, dropping hypotheses, changing ordered products or reclassifying existing proofs to obtain a simpler result;
+- labeling a computational shortcut, receipt, benchmark, lookup hit, or prediction as a completed mathematical proof without the corresponding inherited proof relation.
+
+**Optimization is subordinate to correctness:** a shorter proof or more efficient one-step constructor is admissible when an exact derivation shows equivalence under the existing rules and preserves required information and invariants. No performance or answer-reward heuristic may become a mathematical premise. The valid stopping condition is the requested closure, a precisely identified unresolved inference within the authorized system, or an actual falsifying witness—not an agent-preferred approximation.
+
+This is an agent reasoning directive. It does not authorize replacement of the existing Lane 5 one-step constructor, new proof axioms, or any parallel runtime authority.
