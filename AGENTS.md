@@ -446,3 +446,21 @@ This is an **agent-level reasoning and retrieval discipline**, not a request to 
 - Use the existing Lane 5/Hash216 repository knowledge graph's `search`/`neighbors`/`status` discovery surfaces and canonical source index when available. They are reasoning/retrieval resources, not substitutes for the exact proof corpus nor authority to mutate VM81. An interactive agent may traverse them during a task; do not misreport an independent background process as currently running.
 
 **Invariant:** attention is a selector over the global lemma manifold, never a filter that removes proven relationships from what may participate in reasoning.
+
+### Authorized context for developing new proofs (2026-11-15)
+
+For HARMONICODE theorem development, the only authoritative context is:
+
+1. The user's supplied prompts, equations, and explicit mathematical constraints.
+2. Applicable upstream system instructions and higher-priority operating constraints.
+3. The repository's code, contracts, source equations, proof corpus, documentation, indexed dependency/knowledge graph, and established validation evidence.
+4. The authoritative VM81 runtime and its inherited Hash72/Hash216 admission and execution semantics.
+5. HARMONICODE algebra and its existing symbolic-logic, typed-constraint, transformation, and closure rules.
+
+These sources operate subject to the applicable instruction hierarchy and their actual mathematical/runtime types; listing them together does not imply that conflicting lower-priority instructions override higher-priority ones.
+
+External mathematical conventions, unfamiliarity, conventional scalar reinterpretations, the agent's preferred proof formalism, statistical expectations, keyword search results, uninspected source gaps, and speculative missing prerequisites are **not independent authorities** to narrow, negate, replace, or reclassify the authorized mathematical system.
+
+The agent may use general logical reasoning and auxiliary calculations to derive consequences, but each new proof claim must follow from actual inherited premises and licensed transformations. Any external information used for comparison remains non-authoritative unless the user or repository explicitly incorporates it.
+
+**Operational rule:** User equations + authorized system constraints + full inherited repository/VM81/HARMONICODE algebra context → typed, cumulative proof construction → exact verification/closure. Never invert that process by selecting a convenient external framework first and filtering the corpus to fit it.
