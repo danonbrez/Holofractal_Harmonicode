@@ -1,6 +1,7 @@
 CC ?= cc
 AR ?= ar
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra -Werror -pedantic
+CRYPTO_LIBS ?= -lcrypto
 ROOT := ../..
 INCLUDES := -Iinclude -Isrc -I$(ROOT)/hhs_runtime/include
 HASH_SRC := $(ROOT)/hhs_runtime/src/hhs_hash216.c
@@ -19,11 +20,11 @@ $(DIST)/hhs160_runtime.o: src/hhs160_runtime.c src/hhs160_internal.h include/hhs
 $(DIST)/hhs_hash216.o: $(HASH_SRC) $(ROOT)/hhs_runtime/include/hhs_hash216.h | $(DIST)
 	$(CC) $(CFLAGS) -fPIC $(INCLUDES) -c $< -o $@
 $(DIST)/libhhs_pass160.so: $(DIST)/hhs160_crypto.o $(DIST)/hhs160_runtime.o $(DIST)/hhs_hash216.o
-	$(CC) -shared $^ -o $@
+	$(CC) -shared $^ -o $@ $(CRYPTO_LIBS)
 $(DIST)/libhhs_pass160.a: $(DIST)/hhs160_crypto.o $(DIST)/hhs160_runtime.o $(DIST)/hhs_hash216.o
 	$(AR) rcs $@ $^
 $(DIST)/hhs-pass160: src/hhs160_cli.c $(DIST)/libhhs_pass160.a
-	$(CC) $(CFLAGS) $(INCLUDES) $< $(DIST)/libhhs_pass160.a -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $< $(DIST)/libhhs_pass160.a -o $@ $(CRYPTO_LIBS)
 $(DIST)/hhs-pass160-verify: tests/test_pass160.c $(DIST)/libhhs_pass160.a
 	$(CC) $(CFLAGS) $(INCLUDES) $< $(DIST)/libhhs_pass160.a -o $@
 $(DIST)/hhs-pass160-performance: tests/performance_pass160.c $(DIST)/libhhs_pass160.a
@@ -52,7 +53,7 @@ api-test: | $(DIST)
 inherited: | $(DIST)
 	$(SUITE) inherited
 sanitizer: | $(DIST)
-	$(CC) -std=c11 -O1 -g -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -fno-omit-frame-pointer $(INCLUDES) $(SRC) $(HASH_SRC) tests/test_pass160_sanitizer.c -o $(DIST)/hhs-pass160-sanitize
+	$(CC) -std=c11 -O1 -g -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined -fno-omit-frame-pointer $(INCLUDES) $(SRC) $(HASH_SRC) tests/test_pass160_sanitizer.c -o $(DIST)/hhs-pass160-sanitize $(CRYPTO_LIBS)
 	ASAN_OPTIONS=detect_leaks=1 $(DIST)/hhs-pass160-sanitize > $(DIST)/P160_SANITIZER_REPORT.json
 verify: native-test cli-test python-test differential fuzz fault concurrency performance api-test inherited sanitizer
 	$(SUITE) materialize-static
