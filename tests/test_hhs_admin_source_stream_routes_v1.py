@@ -95,6 +95,42 @@ class TestAdminSourceStreamRoutes(unittest.TestCase):
             route.create_upload(route.BeginBody(source_name="denied"), signed)
         self.assertEqual(rejected.exception.status_code, 503)
 
+    def test_owner_scoped_lane5_candidate_without_canonical_promotion(self):
+        created = route.create_upload(route.BeginBody(source_name="candidate.bin"), request(principal=self.owner))
+        upload_id = created["upload_id"]
+        payload = bytes(range(256)) * 4 + b"tail"
+        asyncio.run(route.append_upload(upload_id, request([payload], principal=self.owner), 0))
+        route.finish_upload(upload_id, route.FinalizeBody(), request(principal=self.owner))
+
+        seen = []
+        old_continue = route.continue_staged_to_lane5
+        self.addCleanup(lambda: setattr(route, "continue_staged_to_lane5", old_continue))
+
+        def native_stub(staging, id_, owner):
+            seen.append((id_, owner, staging.read_staged(id_, owner).read_bytes()))
+            return {
+                "upload_id": id_, "canonical_hash216_admitted": False,
+                "signed_vm81_admission_required": True,
+            }
+
+        route.continue_staged_to_lane5 = native_stub
+        result = route.native_lane5_candidate(upload_id, request(principal=self.owner))
+        self.assertEqual(seen, [(upload_id, "root", payload)])
+        self.assertFalse(result["canonical_hash216_admitted"])
+        self.assertTrue(result["signed_vm81_admission_required"])
+        with self.assertRaises(HTTPException) as denied:
+            route.native_lane5_candidate(
+                upload_id, request(principal={"subject": "another", "admin_source_upload": True})
+            )
+        self.assertEqual(denied.exception.status_code, 409)
+        self.assertEqual(len(seen), 1)
+
+    def test_unfinalized_candidate_rejected(self):
+        created = route.create_upload(route.BeginBody(source_name="unfinished"), request(principal=self.owner))
+        with self.assertRaises(HTTPException) as denied:
+            route.native_lane5_candidate(created["upload_id"], request(principal=self.owner))
+        self.assertEqual(denied.exception.status_code, 409)
+
     def test_conflicting_offset_rejected(self):
         created = route.create_upload(route.BeginBody(source_name="source"), request(principal=self.owner))
         with self.assertRaises(HTTPException) as raised:
