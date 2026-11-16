@@ -15,6 +15,7 @@ import {
 } from './visual-ide-state.mjs';
 import { renderFiles, activateFile, openBottomTab } from './visual-ide-ui.mjs';
 import { createStoredZip } from './project-zip.mjs';
+import { stageBrowserFile } from './admin-source-stream.mjs';
 
 const encoder = new TextEncoder();
 const MAX_PROJECT_FILES = 64;
@@ -415,6 +416,8 @@ function mountControls() {
       <button id="ide-add-starter" type="button">Add starter</button>
       <button id="ide-import-folder" type="button">Import folder</button>
       <input id="ide-folder-input" type="file" multiple hidden webkitdirectory directory>
+      <button id="ide-admin-stage-source" type="button">Stage Source (Admin)</button>
+      <input id="ide-admin-stage-input" type="file" multiple hidden>
       <button id="ide-build-project" type="button" class="primary-action">Build project</button>
       <button id="ide-export-project" type="button" disabled>Export ZIP</button>
     </div>`;
@@ -438,6 +441,26 @@ function mountControls() {
   $('#ide-create-path').onclick = createPathFile;
   $('#ide-add-starter').onclick = addStarter;
   $('#ide-import-folder').onclick = () => $('#ide-folder-input').click();
+  $('#ide-admin-stage-source').onclick = () => $('#ide-admin-stage-input').click();
+  $('#ide-admin-stage-input').onchange = async (event) => {
+    const chosen = [...(event.target.files || [])];
+    event.target.value = '';
+    const button = $('#ide-admin-stage-source');
+    if (button) button.disabled = true;
+    try {
+      for (const file of chosen) {
+        buildStatus(`SQL staging ${file.name}…`, 'running');
+        const receipt = await stageBrowserFile(file);
+        log(`Staged exact source ${file.name}; candidate only, signed VM81 admission pending.`, receipt);
+        buildStatus(`STAGED · ${file.name} · native admission pending`, 'complete');
+      }
+    } catch (error) {
+      buildStatus(`STAGING REJECTED · ${error.message}`, 'failed');
+      log(`Administrator staging unavailable or rejected: ${error.message}`);
+    } finally {
+      if (button) button.disabled = false;
+    }
+  };
   $('#ide-folder-input').onchange = async (event) => {
     await importFolder([...event.target.files]);
     event.target.value = '';
