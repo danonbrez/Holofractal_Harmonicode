@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 
 from hhs_backend.runtime.hhs_admin_sql_stream_staging_v1 import AdminStreamStaging, StagingError
 from hhs_backend.runtime.hhs_admin_sql_lane5_continuation_v1 import continue_staged_to_lane5, NativeContinuationError
+from hhs_backend.runtime.hhs_admin_sql_vm81_admission_preflight_v1 import inspect_staged_admission_prerequisites
 
 router = APIRouter(prefix="/api/runtime/admin-source-stream", tags=["admin-source-stream"])
 _STAGING: AdminStreamStaging | None = None
@@ -133,3 +134,15 @@ def native_lane5_candidate(upload_id: str, request: Request):
         return continue_staged_to_lane5(_staging(), upload_id, owner)
     except (StagingError, NativeContinuationError) as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+
+@router.get("/uploads/{upload_id}/admission-preflight")
+def signed_vm81_admission_preflight(upload_id: str, request: Request):
+    """Read-only native admission prerequisites; never create a signed receipt."""
+    owner = _principal(request)
+    try:
+        return inspect_staged_admission_prerequisites(_staging(), upload_id, owner)
+    except (StagingError, ValueError) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except (RuntimeError, OSError) as exc:
+        raise HTTPException(status_code=503, detail="SIGNED_VM81_PREFLIGHT_NATIVE_UNAVAILABLE") from exc
