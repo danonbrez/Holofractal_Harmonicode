@@ -20,7 +20,9 @@ SCHEMA = "HHS_PASS220_CUMULATIVE_PROOF_SOURCE_SPAN_INDEX_V1"
 TEXT_SUFFIXES = frozenset({
     ".md", ".txt", ".rst", ".adoc", ".tex", ".lean", ".v", ".wl",
     ".py", ".c", ".h", ".cc", ".cpp", ".cxx", ".hpp", ".json",
-    ".harmonicode", ".yaml", ".yml",
+    ".harmonicode", ".yaml", ".yml", ".html", ".htm", ".xhtml",
+    ".js", ".mjs", ".jsx", ".ts", ".tsx", ".ipynb", ".xml",
+    ".mathml", ".jsonl", ".sql", ".sh", ".m", ".jl", ".rs",
 })
 NAMED = re.compile(
     r"^\s*(?:(?:#{1,6})\s+)?"
@@ -39,8 +41,6 @@ MATH_MARKER = re.compile(
     r"\\(?:frac|sqrt|equiv|Rightarrow|implies|vdash|forall|exists)\b)"
 )
 HEADING = re.compile(r"^#{1,6}\s+")
-FENCE = re.compile(r"^\s*(?:```|~~~)")
-MAX_SOURCE_BYTES = 8_000_000
 
 
 class ProofSpanIndexError(ValueError):
@@ -141,7 +141,7 @@ def build_repository_proof_span_index(
 ) -> dict[str, Any]:
     """Scan every eligible text file in the existing indexed graph.
 
-    Never silently drop inaccessible/oversized or unreadable sources.
+    Never silently drop inaccessible or unreadable sources.
     """
     files = dependency_graph.get("files")
     if not isinstance(files, list):
@@ -158,9 +158,6 @@ def build_repository_proof_span_index(
         file_path = root / path
         if not file_path.is_file():
             unavailable.append({"path": path, "reason": "SOURCE_NOT_AVAILABLE"})
-            continue
-        if file_path.stat().st_size > MAX_SOURCE_BYTES:
-            unavailable.append({"path": path, "reason": "SOURCE_EXCEEDS_SCAN_LIMIT"})
             continue
         try:
             source = file_path.read_text(encoding="utf-8")
