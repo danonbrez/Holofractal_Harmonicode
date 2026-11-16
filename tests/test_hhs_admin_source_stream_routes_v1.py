@@ -29,6 +29,8 @@ class TestAdminSourceStreamRoutes(unittest.TestCase):
         self.addCleanup(self.root.cleanup)
         self.stage = AdminStreamStaging(self.root.name)
         self.addCleanup(self.stage.close)
+        self.old_authority = route._signed_authority
+        self.addCleanup(lambda: setattr(route, "_signed_authority", self.old_authority))
         self.old = route._STAGING
         route._STAGING = self.stage
         self.addCleanup(lambda: setattr(route, "_STAGING", self.old))
@@ -59,6 +61,39 @@ class TestAdminSourceStreamRoutes(unittest.TestCase):
         self.assertEqual(self.stage.read_staged(id_, "root").read_bytes(), data)
         with self.assertRaises(HTTPException):
             route.read_upload(id_, request(principal={"subject": "another", "admin_source_upload": True}))
+
+    def test_verified_pass190_capability_scope_is_required(self):
+        class VerifiedControl:
+            def authenticate_header(self, value):
+                if value != "HHS-Capability signed":
+                    raise ValueError("invalid")
+                return {"principal": "signed-admin", "scopes": ["admin.source.upload"]}
+
+        route._signed_authority = lambda: VerifiedControl()
+        signed = request(headers=[(b"authorization", b"HHS-Capability signed")])
+        created = route.create_upload(route.BeginBody(source_name="signed.bin"), signed)
+        self.assertEqual(created["state"], "UPLOADING")
+        self.assertEqual(self.stage._get(created["upload_id"], "signed-admin")["owner"], "signed-admin")
+        with self.assertRaises(HTTPException):
+            route.read_upload(created["upload_id"], request(principal={"subject": "anonymous"}))
+
+        class OtherScope:
+            def authenticate_header(self, value):
+                return {"principal": "signed-admin", "scopes": ["vm.inspect"]}
+        route._signed_authority = lambda: OtherScope()
+        with self.assertRaises(HTTPException) as rejected:
+            route.create_upload(route.BeginBody(source_name="denied"), signed)
+        self.assertEqual(rejected.exception.status_code, 403)
+
+    def test_invalid_signed_capability_fails_closed(self):
+        class BadControl:
+            def authenticate_header(self, value):
+                raise ValueError("rejected")
+        route._signed_authority = lambda: BadControl()
+        signed = request(headers=[(b"authorization", b"HHS-Capability forged")])
+        with self.assertRaises(HTTPException) as rejected:
+            route.create_upload(route.BeginBody(source_name="denied"), signed)
+        self.assertEqual(rejected.exception.status_code, 503)
 
     def test_conflicting_offset_rejected(self):
         created = route.create_upload(route.BeginBody(source_name="source"), request(principal=self.owner))
