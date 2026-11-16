@@ -32,6 +32,7 @@ jobs:
           python -m unittest discover -s tests -p test_hhs_admin_sql_lane5_continuation_v1.py -v
           python -m unittest discover -s tests -p test_hhs_lane5_http_stream_v1.py -v
           python -m unittest discover -s tests -p test_hhs_admin_source_stream_routes_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_signed_vm81_handoff_contract_v1.py -v
       - name: Build existing native Pass219 shared runtime
         run: make c-abi
       - name: Verify exact SQL source via compiled native Lane 5 candidate bridge
