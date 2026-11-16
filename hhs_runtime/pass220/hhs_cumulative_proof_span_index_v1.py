@@ -124,6 +124,16 @@ def extract_source_spans(
         "path": path, "source_git_blob": source_git_blob,
         "source_sha256": sha256(source_text.encode("utf-8")).hexdigest(),
         "source_line_count": len(lines),
+        # A complete file-span locator retains discoverability even where no
+        # lexical theorem/lemma/equality marker occurs inside the source.
+        "full_source_coverage": {
+            "start_char": 0,
+            "end_char": len(source_text),
+            "start_line": 1 if lines else 0,
+            "end_line": len(lines),
+            "source_sha256": sha256(source_text.encode("utf-8")).hexdigest(),
+            "source_retrieval_required": True,
+        },
         "named_proof_span_count": sum(
             e["kind"] == "NAMED_PROOF_SPAN" for e in entries),
         "mathematical_source_line_count": sum(
@@ -169,15 +179,16 @@ def build_repository_proof_span_index(
             path=path, source_text=source,
             source_git_blob=record.get("git_blob"),
         )
-        if projection["entries"]:
-            out.append(projection)
+        # Full-file coverage must not depend on lexical proof-label matches.
+        out.append(projection)
     result = {
         "schema": SCHEMA + "_REPOSITORY",
         "source_dependency_graph_root_hash216": dependency_graph.get(
             "roots", {}).get("graph_root_hash216"),
         "indexed_file_count": len(files),
         "examined_text_files": examined,
-        "files_with_discoverable_spans": len(out),
+        "files_with_discoverable_spans": sum(bool(p["entries"]) for p in out),
+        "source_files_with_full_coverage_locators": len(out),
         "named_proof_span_count": sum(
             p["named_proof_span_count"] for p in out),
         "mathematical_source_line_count": sum(
