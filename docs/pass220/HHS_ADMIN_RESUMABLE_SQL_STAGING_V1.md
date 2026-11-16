@@ -58,3 +58,13 @@ The backend API `hhs_backend/api/hhs_admin_source_stream_routes_v1.py` composes 
 This feature is **staging only**: no canonical VM81/Hash72/Hash216 admission or RAG promotion occurs, no source is silently represented as a locally editable complete copy, and existing editing/build/ingress buttons remain available. A completed source staging status or SHA-256 digest is not a canonical knowledge receipt.
 
 Focused Python and Node tests cover spoofed identity rejection, verified owner scope, exact byte reconstruction, offset conflicts, browser slice transport, and denial/no-byte-upload behavior. End-to-end production checks must establish actual authenticated host middleware, route federation, Nginx/Lane5 hop identity and signed admission, then browser replay after service deployment.
+
+## Reuse Pass190 signed administrator credentials
+
+The inherited production Ubuntu Application VM control plane exposes `ApplicationVMControlPlane.authenticate_header()`, which verifies the canonical Pass190 signed `Authorization: HHS-Capability <token>` authorization format, token signature, issue/expiry time, and principal/scopes. The administrator source streaming adapter now delegates to this existing verifier and additionally requires the exact `admin.source.upload` scope. A signed credential with only general VM or read scopes cannot stage source; missing credentials and unauthenticated HTTP owner claims are rejected. The capability is **not** a replacement for VM81 admission and must be issued through the existing authorized, local Pass190 token issuer. Do not expose a token-issuing endpoint in the browser or accept user-authored unsigned scopes.
+
+The existing visual IDE stage-source button requests this specific existing capability for the user-initiated operation. The token is used for same-origin request headers only, not serialized in the project, URL or audit response. Future integration with the established authenticated browser session may replace the temporary credential prompt, but must retain equivalent server-verified signed authorization and scope.
+
+The Pass201 public API federation discovers the additive `hhs_backend.api.hhs_admin_source_stream_routes_v1` router alongside existing routers. A discovery presence check is not production execution evidence. Confirm the route is present and protected in the production registration report, that auth succeeds with a valid locally issued scoped token and fails without it, and that the source bytes complete a staged round trip through Lane5 before moving to signed canonical admission.
+
+No source has been promoted to canonical Hash216 knowledge by this adapter.
