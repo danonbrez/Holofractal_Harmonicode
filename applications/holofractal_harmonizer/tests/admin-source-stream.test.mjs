@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Blob } from 'node:buffer';
+import { readFileSync } from 'node:fs';
 import { stageBrowserFile } from '../src/admin-source-stream.mjs';
 
 test('file streaming uses slices and never entire-file arrayBuffer', async () => {
@@ -58,4 +59,15 @@ test('rejects fabricated canonical receipt and offset drift', async () => {
     n++;
     return {ok:true,json:async()=>n===1?{upload_id:'x',received_bytes:0}:{received_bytes:20}};
   }}), /OFFSET_CORRUPT/);
+});
+
+test('existing IDE retains conventional controls and offers separate administrator staging', () => {
+  const code = readFileSync(new URL('../src/project-lifecycle.mjs', import.meta.url), 'utf8');
+  assert.match(code, /Stage Source \(Admin\)/);
+  assert.match(code, /stageBrowserFile\(file\)/);
+  for (const preserved of ['ide-import-folder', 'ide-build-project', 'ide-export-project', 'ide-create-path']) {
+    assert.ok(code.includes(preserved), preserved);
+  }
+  assert.match(code, /STAGED ·/);
+  assert.match(code, /native admission pending/);
 });
