@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import asyncio
 import os
+from hashlib import sha256
+from fastapi.responses import StreamingResponse
 from pathlib import Path
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
@@ -146,3 +148,60 @@ def signed_vm81_admission_preflight(upload_id: str, request: Request):
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     except (RuntimeError, OSError) as exc:
         raise HTTPException(status_code=503, detail="SIGNED_VM81_PREFLIGHT_NATIVE_UNAVAILABLE") from exc
+
+
+@router.get("/uploads/{upload_id}/source")
+def read_exact_staged_source(upload_id: str, request: Request):
+    """Return verified original bytes, with no canonical knowledge promotion.
+
+    Uses one open no-follow file descriptor for both verification and streaming
+    to avoid a path swap between digest verification and response construction.
+    This is owner-scoped source egress, NOT admitted RAG retrieval.
+    """
+    owner = _principal(request)
+    stage = _staging()
+    record = _call(stage.status, upload_id, owner)
+    if record["state"] != "STAGED":
+        raise HTTPException(status_code=409, detail="SOURCE_NOT_STAGED")
+    source = _call(stage.read_staged, upload_id, owner)
+    descriptor = None
+    try:
+        descriptor = os.open(source, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        stream = os.fdopen(descriptor, "rb")
+        descriptor = None
+        info = os.fstat(stream.fileno())
+        if not os.path.isfile(source) or info.st_size != record["received_bytes"]:
+            raise ValueError("SOURCE_LENGTH_DRIFT")
+        digest = sha256()
+        while True:
+            chunk = stream.read(1024 * 1024)
+            if not chunk:
+                break
+            digest.update(chunk)
+        if digest.hexdigest() != record["source_sha256"]:
+            raise ValueError("SOURCE_DIGEST_DRIFT")
+        stream.seek(0)
+    except (OSError, ValueError) as exc:
+        if descriptor is not None:
+            os.close(descriptor)
+        if "stream" in locals():
+            stream.close()
+        raise HTTPException(status_code=409, detail="STAGED_SOURCE_VERIFICATION_FAILED") from exc
+
+    def content():
+        try:
+            while True:
+                chunk = stream.read(1024 * 1024)
+                if not chunk:
+                    break
+                yield chunk
+        finally:
+            stream.close()
+
+    return StreamingResponse(content(), media_type="application/octet-stream", headers={
+        "X-HHS-Source-SHA256": record["source_sha256"],
+        "X-HHS-Canonical-Hash216-Admitted": "false",
+        "Content-Length": str(record["received_bytes"]),
+        "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff",
+    })
