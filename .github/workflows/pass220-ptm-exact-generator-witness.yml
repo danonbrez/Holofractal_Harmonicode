@@ -9,6 +9,8 @@ on:
       - 'tests/test_pass220_ptm_dyadic_shell_v1.py'
       - 'hhs_runtime/pass220/pass220_ptm_exact_euclidean_mod_v1.py'
       - 'tests/test_pass220_ptm_exact_euclidean_mod_v1.py'
+      - 'hhs_runtime/pass220/pass220_ptm_native_sweep_adapter_v1.py'
+      - 'tests/test_pass220_ptm_native_sweep_adapter_v1.py'
       - '.github/workflows/pass220-ptm-exact-generator-witness.yml'
   workflow_dispatch:
 
@@ -35,6 +37,9 @@ jobs:
       - name: Check exact Euclidean floor wrapping
         run: |
           python -m unittest discover -s tests -p 'test_pass220_ptm_exact_euclidean_mod_v1.py' -v
+      - name: Verify native executor handoff adapter using synthetic test-only fixture
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_native_sweep_adapter_v1.py' -v
       - name: Emit source/reference witness
         run: |
           python hhs_runtime/pass220/pass220_ptm_exact_generator_witness_v1.py
