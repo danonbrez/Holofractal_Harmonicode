@@ -98,6 +98,12 @@ def build_corpus_index(root: Path = Path(".")) -> dict:
         text = data.decode("utf-8")
         headings = [line.strip() for line in text.splitlines() if line.lstrip().startswith("#")]
         references = sorted(set(REFERENCE.findall(text)))
+        # The legacy course proof graph must inherit the historical course's
+        # references; successor references remain separately source-bound.
+        historical_references = references
+        if revision is not None:
+            historical_text = (root / revision["historical_copy_path"]).read_text("utf-8")
+            historical_references = sorted(set(REFERENCE.findall(historical_text)))
         records.append({
             "path": path,
             "git_blob_sha": git_sha,
@@ -106,7 +112,8 @@ def build_corpus_index(root: Path = Path(".")) -> dict:
             "heading_count": len(headings),
             "headings": headings,
             "proof_term_mentions": len(PROOF_LANGUAGE.findall(text)),
-            "referenced_native_or_formal_paths": references,
+            "referenced_native_or_formal_paths": historical_references,
+            "registered_successor_references": references if revision is not None else None,
             "native_proof_binding_status": "UNRESOLVED",
             "native_admission_authority": False,
             "registered_source_revision": revision,
