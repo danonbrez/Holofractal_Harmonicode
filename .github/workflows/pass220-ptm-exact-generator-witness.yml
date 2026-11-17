@@ -5,6 +5,8 @@ on:
     paths:
       - 'hhs_runtime/pass220/pass220_ptm_exact_generator_witness_v1.py'
       - 'tests/test_pass220_ptm_exact_generator_v1.py'
+      - 'hhs_runtime/pass220/pass220_ptm_dyadic_shell_v1.py'
+      - 'tests/test_pass220_ptm_dyadic_shell_v1.py'
       - '.github/workflows/pass220-ptm-exact-generator-witness.yml'
   workflow_dispatch:
 
@@ -25,6 +27,10 @@ jobs:
       - name: Check exact source and rational reference
         run: |
           python -m unittest discover -s tests -p 'test_pass220_ptm_exact_generator_v1.py' -v
+      - name: Check dyadic shell witness
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_dyadic_shell_v1.py' -v
       - name: Emit source/reference witness
         run: |
           python hhs_runtime/pass220/pass220_ptm_exact_generator_witness_v1.py
+          python hhs_runtime/pass220/pass220_ptm_dyadic_shell_v1.py
