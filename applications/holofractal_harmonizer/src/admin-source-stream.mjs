@@ -91,3 +91,58 @@ export async function continueStagedLane5Candidate(
   }
   return payload;
 }
+
+/** Stream privately staged original bytes into a caller-supplied WritableStream.
+ * It never buffers an entire file or claims canonical Hash216 admission.
+ */
+export async function readStagedSource(
+  uploadId,
+  destination,
+  { fetchImpl = fetch, baseUrl = '/api/runtime/admin-source-stream', signal, capabilityToken } = {},
+) {
+  if (typeof uploadId !== 'string' || !/^[0-9a-f-]{36}$/.test(uploadId))
+    throw new Error('HHS_ADMIN_STREAM_UPLOAD_ID_INVALID');
+  if (!destination || typeof destination.getWriter !== 'function')
+    throw new Error('HHS_ADMIN_STREAM_WRITABLE_DESTINATION_REQUIRED');
+  const headers = { Accept: 'application/octet-stream' };
+  if (capabilityToken) headers.Authorization = 'HHS-Capability ' + capabilityToken;
+  const response = await fetchImpl(baseUrl + '/uploads/' + encodeURIComponent(uploadId) + '/source', {
+    method: 'GET', credentials: 'same-origin', signal, headers, cache: 'no-store',
+  });
+  if (!response.ok) throw new Error('HHS_ADMIN_SOURCE_EGRESS_REJECTED:' + response.status);
+  const digest = response.headers?.get('X-HHS-Source-SHA256');
+  const canonical = response.headers?.get('X-HHS-Canonical-Hash216-Admitted');
+  const declaredSize = response.headers?.get('Content-Length');
+  if (!/^[a-f0-9]{64}$/.test(digest || '') || canonical !== 'false' ||
+      !/^(0|[1-9][0-9]*)$/.test(declaredSize || '') ||
+      !Number.isSafeInteger(Number(declaredSize)) ||
+      !response.body || typeof response.body.getReader !== 'function') {
+    throw new Error('HHS_ADMIN_SOURCE_EGRESS_RECEIPT_INVALID');
+  }
+  const expected = Number(declaredSize);
+  let received = 0;
+  const reader = response.body.getReader();
+  const writer = destination.getWriter();
+  try {
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      if (!(value instanceof Uint8Array)) throw new Error('HHS_ADMIN_SOURCE_EGRESS_BINARY_REQUIRED');
+      received += value.byteLength;
+      if (received > expected) throw new Error('HHS_ADMIN_SOURCE_EGRESS_LENGTH_OVERFLOW');
+      await writer.write(value);
+    }
+    if (received !== expected) throw new Error('HHS_ADMIN_SOURCE_EGRESS_LENGTH_MISMATCH');
+    await writer.close();
+    return Object.freeze({
+      upload_id: uploadId, received_bytes: received, source_sha256: digest,
+      canonical_hash216_admitted: false, status: 'STAGED_NONCANONICAL',
+    });
+  } catch (error) {
+    await writer.abort(error).catch(() => {});
+    throw error;
+  } finally {
+    reader.releaseLock();
+    writer.releaseLock();
+  }
+}
