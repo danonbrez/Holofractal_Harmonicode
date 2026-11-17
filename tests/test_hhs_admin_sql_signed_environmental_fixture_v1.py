@@ -13,6 +13,9 @@ import unittest
 
 from hhs_backend.runtime.hhs_admin_sql_stream_staging_v1 import AdminStreamStaging
 from hhs_backend.runtime.hhs_admin_sql_typed_vm81_source_v1 import inspect_exact_typed_vm81_source
+from hhs_backend.runtime.hhs_admin_sql_signed_environment_fixture_handoff_v1 import (
+    verify_staged_signed_fixture, StagedSignedFixtureError,
+)
 from hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe import (
     build_execution_cases, raw_le_to_words, unpack_vm81_binding_words,
 )
@@ -46,6 +49,17 @@ class TestSQLStagedSignedFixture(unittest.TestCase):
                     self.assertFalse(staged["canonical_hash216_admitted"])
                     from_sql = stage.read_staged(upload_id, "fixture-owner").read_bytes()
                     self.assertEqual(from_sql, source)
+                    bound = verify_staged_signed_fixture(
+                        stage, upload_id, "fixture-owner", native_probe=native_probe
+                    )
+                    self.assertTrue(bound["fixture_native_signed_commit_verified"])
+                    self.assertTrue(bound["fixture_parent_hash216_verified"])
+                    self.assertTrue(bound["fixture_child_hash216_verified"])
+                    self.assertTrue(bound["test_root_only"])
+                    self.assertFalse(bound["production_parent_hash216_authorized"])
+                    self.assertFalse(bound["production_uqcel_witness_bound"])
+                    self.assertFalse(bound["signed_vm81_admission_performed"])
+                    self.assertFalse(bound["canonical_hash216_admitted"])
                     result = run_native_admission(from_sql, native_probe, "commit")
                     native = result["native"]
                     self.assertEqual(native["status"], 0)
@@ -64,6 +78,20 @@ class TestSQLStagedSignedFixture(unittest.TestCase):
                     # No canonical knowledge authority is passed back to SQL.
                     self.assertFalse(stage.status(upload_id, "fixture-owner")["canonical_hash216_admitted"])
 
+                other_owner = stage.create("fixture-owner", "permission-check")
+                stage.append(other_owner, "fixture-owner", 0, cases[0]["raw_bytes"])
+                stage.finalize(other_owner, "fixture-owner")
+                with self.assertRaises(Exception):
+                    verify_staged_signed_fixture(
+                        stage, other_owner, "wrong-owner", native_probe=native_probe,
+                    )
+                opaque_id = stage.create("fixture-owner", "not-a-frame")
+                stage.append(opaque_id, "fixture-owner", 0, b"opaque source bytes")
+                stage.finalize(opaque_id, "fixture-owner")
+                with self.assertRaisesRegex(StagedSignedFixtureError, "TYPED_VM81_SOURCE_REQUIRED"):
+                    verify_staged_signed_fixture(
+                        stage, opaque_id, "fixture-owner", native_probe=native_probe,
+                    )
                 reference = cases[0]["raw_bytes"]
                 for mode in NEGATIVE_MODES:
                     negative = run_native_admission(reference, native_probe, mode)
