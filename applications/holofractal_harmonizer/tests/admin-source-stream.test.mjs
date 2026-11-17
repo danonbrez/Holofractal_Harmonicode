@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Blob } from 'node:buffer';
 import { readFileSync } from 'node:fs';
-import { stageBrowserFile, continueStagedLane5Candidate } from '../src/admin-source-stream.mjs';
+import { stageBrowserFile, continueStagedLane5Candidate, readStagedSource } from '../src/admin-source-stream.mjs';
 
 test('file streaming uses slices and never entire-file arrayBuffer', async () => {
   const source = new Blob([Uint8Array.from({length: 1459}, (_, i) => i % 256)]);
@@ -128,4 +128,56 @@ test('native continuation checks signed credential and rejects fabricated author
       native_candidate_receipt:{candidate_only:false},
     })}),
   }),/CANDIDATE_AUTHORITY_INVALID/);
+});
+
+test('authenticated streaming source egress retains binary bytes without whole-file buffers', async () => {
+  const uploadId = '11111111-2222-4333-8444-555555555555';
+  const bytes = Uint8Array.from({length: 1709}, (_, i) => i % 256);
+  const parts = [bytes.subarray(0, 7), bytes.subarray(7, 1390), bytes.subarray(1390)];
+  const observed = [];
+  const writable = new WritableStream({
+    write(chunk) { observed.push(Uint8Array.from(chunk)); },
+  });
+  let index = 0;
+  const body = new ReadableStream({
+    pull(controller) {
+      if (index === parts.length) return controller.close();
+      controller.enqueue(parts[index++]);
+    },
+  });
+  const fetchImpl = async (url, options) => {
+    assert.equal(url, '/api/runtime/admin-source-stream/uploads/' + uploadId + '/source');
+    assert.equal(options.headers.Authorization, 'HHS-Capability fixture');
+    assert.equal(options.cache, 'no-store');
+    return {
+      ok: true,
+      headers: new Headers({
+        'X-HHS-Source-SHA256': 'a'.repeat(64),
+        'X-HHS-Canonical-Hash216-Admitted': 'false',
+        'Content-Length': String(bytes.length),
+      }),
+      body,
+    };
+  };
+  const receipt = await readStagedSource(uploadId, writable, {fetchImpl, capabilityToken:'fixture'});
+  assert.equal(receipt.received_bytes, bytes.length);
+  assert.equal(receipt.canonical_hash216_admitted, false);
+  assert.deepEqual(Buffer.concat(observed), Buffer.from(bytes));
+});
+
+test('staged egress rejects canonical claims before writing any bytes', async () => {
+  let writes = 0;
+  const destination = new WritableStream({write() {writes++;}});
+  const response = {
+    ok: true,
+    headers: new Headers({
+      'X-HHS-Source-SHA256': 'b'.repeat(64),
+      'X-HHS-Canonical-Hash216-Admitted': 'true',
+      'Content-Length': '2',
+    }),
+    body: new ReadableStream({start(controller) {controller.enqueue(Uint8Array.of(1,2));controller.close();}}),
+  };
+  await assert.rejects(readStagedSource('11111111-2222-4333-8444-555555555555', destination,
+    {fetchImpl:async()=>response}), /EGRESS_RECEIPT_INVALID/);
+  assert.equal(writes, 0);
 });
