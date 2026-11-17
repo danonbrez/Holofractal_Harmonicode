@@ -131,6 +131,43 @@ class TestAdminSourceStreamRoutes(unittest.TestCase):
             route.native_lane5_candidate(created["upload_id"], request(principal=self.owner))
         self.assertEqual(denied.exception.status_code, 409)
 
+    def test_exact_owner_scoped_streamed_source_egress(self):
+        from hashlib import sha256
+        payload = bytes(range(256)) * 11 + b"\\0egress"
+        created = route.create_upload(route.BeginBody(source_name="egress.unknown"), request(principal=self.owner))
+        upload_id = created["upload_id"]
+        asyncio.run(route.append_upload(upload_id, request([payload[:23], payload[23:]], principal=self.owner), 0))
+        route.finish_upload(upload_id, route.FinalizeBody(), request(principal=self.owner))
+        streamed = route.read_exact_staged_source(upload_id, request(principal=self.owner))
+        assert streamed.headers["x-hhs-source-sha256"] == sha256(payload).hexdigest()
+        assert streamed.headers["x-hhs-canonical-hash216-admitted"] == "false"
+        assert streamed.headers["content-length"] == str(len(payload))
+        async def collect():
+            return b"".join([piece async for piece in streamed.body_iterator])
+        assert asyncio.run(collect()) == payload
+        with self.assertRaises(HTTPException) as denied:
+            route.read_exact_staged_source(
+                upload_id, request(principal={"subject": "foreign", "admin_source_upload": True})
+            )
+        self.assertEqual(denied.exception.status_code, 409)
+
+    def test_staged_readback_rejects_corrupted_blob_and_unfinished_source(self):
+        created = route.create_upload(route.BeginBody(source_name="pending"), request(principal=self.owner))
+        upload_id = created["upload_id"]
+        with self.assertRaises(HTTPException):
+            route.read_exact_staged_source(upload_id, request(principal=self.owner))
+        asyncio.run(route.append_upload(upload_id, request([b"immutable"], principal=self.owner), 0))
+        route.finish_upload(upload_id, route.FinalizeBody(), request(principal=self.owner))
+        source_path = self.stage.read_staged(upload_id, "root")
+        source_path.chmod(0o600)
+        try:
+            source_path.write_bytes(b"altered!!")
+            with self.assertRaises(HTTPException) as denied:
+                route.read_exact_staged_source(upload_id, request(principal=self.owner))
+            self.assertEqual(denied.exception.status_code, 409)
+        finally:
+            source_path.chmod(0o400)
+
     def test_conflicting_offset_rejected(self):
         created = route.create_upload(route.BeginBody(source_name="source"), request(principal=self.owner))
         with self.assertRaises(HTTPException) as raised:
