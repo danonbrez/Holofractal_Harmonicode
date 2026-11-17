@@ -24,10 +24,11 @@ static int reject_state(const HHSPtmOrbitStateV1 *state,void *ctx) {(void)state;
 static int accept_state(const HHSPtmOrbitStateV1 *state,void *ctx) {(void)state;(void)ctx;return 0;}
 int main(void) {
     const uint64_t starts[3]={9041,9042,9043};
+    const uint64_t expected_factors[3]={829,828,831};
     uint64_t i, visited,addr;
     for(i=0;i<3;i++) {
         Counters c={0};int rc=hhs_ptm_orbit_visit_v1(starts[i],1000,on_state,&c,&visited);
-        if(rc || visited!=185 || c.length!=185 || c.final!=1) {fprintf(stderr,"orbit failure %" PRIu64 " rc=%d count=%" PRIu64 "\n",starts[i],rc,visited);return 1;}
+        if(rc || visited!=185 || c.length!=185 || c.final!=1 || c.factor_occurrences!=expected_factors[i]) {fprintf(stderr,"orbit failure %" PRIu64 " rc=%d count=%" PRIu64 "\n",starts[i],rc,visited);return 1;}
         printf("start=%" PRIu64 " length=%" PRIu64 " prime_occurrences=%" PRIu64 "\n", starts[i],visited,c.factor_occurrences);
     }
     if(hhs_ptm_cell_address_v1(185,184,184,8,&addr) || addr!=308024) return 2;
