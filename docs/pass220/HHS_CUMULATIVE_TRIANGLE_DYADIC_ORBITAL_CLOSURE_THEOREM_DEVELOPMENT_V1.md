@@ -317,48 +317,48 @@ The exact nested prime-modulus question is part of the mathematical objective: w
 
 ### Lemma 17.1 — Exact universal finite carrier by divisibility
 
-Let (S\subset \mathbb N_{>0}) be a nonempty finite set of required moduli and let
+Let \(S\subset\mathbb N_{>0}\) be a nonempty finite set of required moduli and let
 
-[
+\[
 L(S)=\operatorname{lcm}\{m:m\in S\}.
-]
+\]
 
-For any (N\in\mathbb N_{>0}), all canonical projections
+For any \(N\in\mathbb N_{>0}\), all canonical projections
 
-[
+\[
 \pi_{N,m}:\mathbb Z/N\mathbb Z\longrightarrow\mathbb Z/m\mathbb Z,
 \qquad [x]_N\mapsto[x]_m,\quad m\in S
-]
+\]
 
-exist as **well-defined ring maps simultaneously** if and only if (L(S)\mid N).
+exist as **well-defined ring maps simultaneously** if and only if \(L(S)\mid N\).
 
-*Proof (both directions).* If the map to modulus (m) is well defined, then ([0]_N=[N]_N) must imply ([0]_m=[N]_m), hence (m\mid N). Requiring this for every (m\in S) gives (L(S)\mid N) by the defining least-common-multiple property. Conversely if (L(S)\mid N), each (m\mid N). Thus (x\equiv y\pmod N\Rightarrow x\equiv y\pmod m), so each \(\pi_{N,m}\) is well defined, additive, multiplicative and surjective. The least positive such carrier is exactly (L(S)). QED.
+*Proof (both directions).* If the map to modulus \(m\) is well defined, then \([0]_N=[N]_N\) must imply \([0]_m=[N]_m\), hence \(m\mid N\). Requiring this for every \(m\in S\) gives \(L(S)\mid N\) by the defining least-common-multiple property. Conversely if \(L(S)\mid N\), each \(m\mid N\). Thus \(x\equiv y\pmod N\Rightarrow x\equiv y\pmod m\), so each \(\pi_{N,m}\) is well defined, additive, multiplicative and surjective. The least positive such carrier is exactly \(L(S)\). QED.
 
-**Consequence:** There is one canonical *least carrier* for each finite selected family, but infinitely many permissible carriers (kL(S)). The existence of multiple carrier integers does not obstruct a least one.
+**Consequence:** There is one canonical *least carrier* for each finite selected family, but infinitely many permissible carriers \(kL(S)\) for positive integers \(k\). The existence of multiple carrier integers does not obstruct a least one.
 
 ### Lemma 17.2 — To include composites and prime-power orbits, primorials alone are insufficient
 
-For the complete integer family (S_B=\{1,2,\ldots,B\}),
+For the complete integer family \(S_B=\{1,2,\ldots,B\}\),
 
-[
+\[
 L_B=\operatorname{lcm}(1,\ldots,B)
-=\prod_{p\le B\atop p\,\mathrm{prime}}p^{e_p(B)},
+=\prod_{\substack{p\le B\\p\,\mathrm{prime}}}p^{e_p(B)},
 \qquad e_p(B)=\max\{k\in\mathbb N:p^k\le B\}.
-]
+\]
 
-*Proof.* The maximal exponent of any prime (p) in an integer (m\le B) is the largest (e) with (p^e\le B). A common multiple of all (m\le B) must contain every such prime power, and the product of those maximal prime powers is itself divisible by every (m\le B). Thus it is their least common multiple. QED.
+*Proof.* The maximal exponent of any prime \(p\) in an integer \(m\le B\) is the largest \(e\) with \(p^e\le B\). A common multiple of all \(m\le B\) must contain every such prime power, and the product of those maximal prime powers is itself divisible by every \(m\le B\). Thus it is their least common multiple. QED.
 
-The prime-only carrier (\prod_{p\le B}p) preserves individual prime moduli but **not** the full composite/power family: for example, a squarefree primorial has only one factor 2 and therefore cannot project onto modulus 4 in the required canonical manner. The chain (4\rightarrow2\rightarrow1) is preserved by (L_B) for (B\ge4), because (4\mid L_B), (2\mid4) and (1\mid2).
+The prime-only carrier \(\prod_{p\le B}p\) preserves individual prime moduli but **not** the full composite/power family: for example, a squarefree primorial has only one factor 2 and therefore cannot project onto modulus 4 in the required canonical manner. The chain \(4\rightarrow2\rightarrow1\) is preserved by \(L_B\) for \(B\ge4\), because \(4\mid L_B\), \(2\mid4\) and \(1\mid2\).
 
 ### Lemma 17.3 — Infinite order and distinct compatible coordinates
 
-The sequence (L_B) is a divisibility chain: (L_B\mid L_{B+1}), giving consistent projection maps (\mathbb Z/L_{B+1}\mathbb Z\to\mathbb Z/L_B\mathbb Z). There is no finite positive integer divisible by every positive integer, since (N+1\nmid N). However the complete inverse system of these finite quotient rings has a well-defined inverse limit, the profinite integers:
+The sequence \(L_B\) is a divisibility chain: \(L_B\mid L_{B+1}\), giving consistent projection maps \(\mathbb Z/L_{B+1}\mathbb Z\to\mathbb Z/L_B\mathbb Z\). There is no finite positive integer divisible by every positive integer, since \(N+1\nmid N\). However the complete inverse system of these finite quotient rings has a well-defined inverse limit, the profinite integers:
 
-[
+\[
 \varprojlim_B\mathbb Z/L_B\mathbb Z
 \cong \widehat{\mathbb Z}
-\cong \prod_{p\ \mathrm{prime}}\mathbb Z_p.
-]
+\cong \prod_{\substack{p\\p\text{ prime}}}\mathbb Z_p.
+\]
 
 The prime-power coordinates are distinct components, connected through coherent reductions at every finite stage. This provides a **single directed modular containment order** and **multiple independent compatible prime-adic coordinates**; it does not force every prime to have the same orbit string or imply a unique infinite residue sequence.
 
@@ -366,11 +366,10 @@ The prime-power coordinates are distinct components, connected through coherent 
 
 These lemmas establish finite *canonical quotient-map containment*, not the stronger claim that a HARMONICODE generator's entire position-indexed orbital word is contained, in preserved order and phase, inside a larger generator's word. The full theorem's proof still must exhibit a typed, source-preserving map
 
-[
+\[
 \iota_{N,m}:\operatorname{Orbit}_S(m)\to\operatorname{Orbit}_S(N)
-]
+\]
 
-that preserves the exact position-indexed orbit outputs and the applicable HNAN/Lo Shu/VM81/tensor invariants, as well as demonstrating its compatibility with the canonical quotient projection when that projection is defined. Neither (m\mid N) nor the existence of \(\pi_{N,m}\) alone supplies such an orbit embedding. This boundary **does not exclude** any established repository proof of that stronger embedding; it identifies the precise additional conclusion needed from the full inherited derivations.
+that preserves the exact position-indexed orbit outputs and the applicable HNAN/Lo Shu/VM81/tensor invariants, as well as demonstrating its compatibility with the canonical quotient projection when that projection is defined. Neither \(m\mid N\) nor the existence of \(\pi_{N,m}\) alone supplies such an orbit embedding. This boundary **does not exclude** any established repository proof of that stronger embedding; it identifies the precise additional conclusion needed from the full inherited derivations.
 
 **CI baseline before this mathematical addition:** at PR head `bedfa8c152d7640405b32ef6023e74f037188df3`, 38 workflows completed successfully and one was skipped. No universal HARMONICODE orbital theorem admission is claimed by these quotient-level lemmas.
-
