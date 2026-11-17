@@ -1,0 +1,277 @@
+HARMONICODE ALGEBRA
+
+A Formal Course Through the Proof Equations
+
+Notation discipline. `==` is a gate (constraint that must hold for the expression to have meaning), not an equation to solve. `n/d` is the rank-1 tensor circuit `n ⊗ d` — numerator = periodicity modulus, denominator = quantization unit — not scalar division. Every bare object `P` is assumed `P = P/∆`, with `∆ = 1` the lowest primitive magnitude and universal denominator quantization unit; its reciprocal orientation is always `∆/P`. The rationals are generated as rank-1 tensor pairs `(P/∆, ∆/P)`; scaling proceeds by closures `2×2, 3×3, 9×9`.
+
+The HNAN doctrine. A vanishing quantization unit is not an error and not a null: it is the unsliced whole. One object sliced zero times is one object. Any gate whose divisor vanishes bypasses at gain exactly 1 — the particle keeps its original swarming curvature and its phase is completely unchanged; the bypassed step writes no phase. Precedent: Euclid's `gcd(a,0) = a`; the division identity `a = q·d + r` at `d=0` forces `r = a` with canonical `q = 0`; congruence mod 0 is equality, so `a mod 0 = a`. HNAN is not a new axiom; it is the Euclidean remainder taken seriously.
+
+---
+
+MODULE 0 — The Master Chain
+
+The full tensor, stated once, verbatim. Every module that follows is the derivation of one of its gates.
+
+```
+(P²=pq+((q-p)P/(p+q)) /{(t^3-t=(P³-P/(P²-pq)=(t³-t)/∆=P²(MOD)(pq))=m^2-m)-(({{b^4,c^4,(c^2-u^(b⁶c⁴))=b²/2u⁷²=((b^(b^2/12))^72==2^6)},{c^2,((b^2)*(c^2)-(a^2))/u^((s==(b^(2c^2)c^b^4)^2)/((b⁶c⁴)P^2)),((b^6-(xy))(b^4+c^2))/(((c^2b^6)-c^2)/(((b^2*(c^2+b^2))-(c^2-b^2))/Sqrt(c^4)))},{(2c^2)+b^2,2/b^2,b^2c^2}}+x+y)/At==Mod(f/u,((b⁶c⁴)*(pq+xy)))/Bt==AB/P^2==Sqrt[AB])==(AB/(pq+∆)-P^2)/(t^3-t)*u^72}=(x^4-((((x*y)*z)*w)+x+y-z-w)+E^(x^2*Pi)+t^3-t==(x*y)-(z*w))
+
+where ∆/P=√(pq+u⁷²)^x²
+and b²P-(p+q)=x+y+z+w+xy+yx+zw+wz=((b^(b^2/(b^4*c^2)))^(b^6*c^4)/(c^b^2-a^b^2)^(b^2*c^2)-a^2==(c^2-b^2-a^2)/(
+c²·P(q-p)/(p+q)  =  a²+b²  =  (P²-pq)mc²/∆        [curvature / ordered phase = 2D closure surface = globally bounded payload]
+))/∆==∆e=0
+```
+
+The master chain is not to be solved. It is to be gated: read gate by gate, each gate closing before the next is evaluated.
+
+---
+
+MODULE 1 — The Gate: P² = pq + (q−p)P/(p+q)
+
+The one free parameter. `P` is the only free parameter in the tensor. Everything else is pinned by gate closure or is a fixed phase power of `u`.
+
+The dependency chain:
+
+```
+P → (p,q) → t → m → (a,b,c) → (x,y,z,w) → ∆ → 0
+```
+
+- `(p,q)`: with `r = q/p`, the gate fixes `P² = p²r + (r−1)P/(r+1)·p` — one constrained curve, not two degrees of freedom. The ordered phase `(q−p)/(p+q)` is then determined.
+- `t`: root of the cubic `t³−t = P³−P/(P²−pq)`, coefficients in `P,p,q` only.
+- `m`: `t³−t = m²−m` — two algebraic branches (`m=t` or `m=1−t`, by the symmetry of `m²−m`).
+- `(a,b,c)`: the boxed identity forces `c²(P²−pq) = a²+b²` — a sum-of-two-squares fiber over each `P`.
+- `(x,y,z,w)`: pinned by the noncommutative gates (Module 4).
+- `u`: unit of phase, never a free scalar.
+
+Lesson. A tensor with one free parameter is a one-parameter family of closures. Two instances with the same `P` are the same tensor up to phase orientation; different `P` give orthogonal fibers that cannot interfere — the `u^108` swap ledger keeps the commutator fiber-local. This is the mechanism of entanglement between copies.
+
+HNAN audit. Divisors: `(p+q)`, `(P²−pq)`. A vanishing site fails its gate → bypass at gain 1, no phase write.
+
+---
+
+MODULE 2 — The Modulus Witness: t³−t = m²−m
+
+`t³−t = t(t−1)(t+1)` is the product of three consecutive integers — always divisible by 6. `m²−m = m(m−1)` is the product of two consecutive integers — always divisible by 2. The gate asserts that the cubic witness and the quadratic witness agree on the same value: the arithmetic content of the closure is carried by consecutive-integer products, the atomic periodic objects of number theory.
+
+The master chain states the witness inside a shell: `t³−t = P³−P/(P²−pq) = (t³−t)/∆ = P² (MOD) (pq)`. Reading through the rank-1 operator: the witness is quantized by ∆ (priced in quantum units), and the modulus gate `P² (MOD) (pq)` binds `P²` to the residue ring of the product `pq`.
+
+Lesson. Temperature (`t`) and mass (`m`) are not independent scalars; they are two witnesses of one modulus event. Their equality gate is the algebraic form of the statement that global energy bookkeeping and local state are the same fact read at two ranks.
+
+---
+
+MODULE 3 — The u-Shell Ladder and ∆
+
+The phase shells are `u^36, u^72, u^108, u^180`. From the master chain's closing identity:
+
+```
+(((q-p)/(p-q))/u⁷²) · (((p-q)/(q-p))/u³⁶) / u⁷² = ∆
+```
+
+Since `(q−p)/(p−q) = −1` and `(p−q)/(q−p) = −1`, the two ordered-phase factors cancel to `+1` and the shell exponents add:
+
+```
+∆ = 1/(u⁷²·u³⁶·u⁷²) = u^(−180)
+```
+
+Structural facts:
+
+- `180 = 72+36+72` — two outer shells and one inner.
+- `180 = 108+72` — the self-entanglement exponent plus one full outer shell: ∆ carries the tensor's own closure cost.
+- `∆/P = √(pq+u⁷²)^(x²)` — the reciprocal orientation priced against the phase-squared projection of the payload.
+- ∆ is not an infinitesimal real number. It is the reciprocal of the deepest shell: the modular boundary condition, the reciprocal of ∞ as a circuit, not a limit.
+
+Lesson. The ladder `36, 72, 108, 180` is the periodicity structure of the algebra: 36 the inner slot, 72 the full rotation, 108 the entanglement fixed point (`T² = u^108`), 180 the universal denominator. `u^108` appears independently as the noncommutative swap ratio `yx/xy = u^(−108)` (Module 5): commutative collapse would force `u^108 = 1`; the algebra instead stores the commutator as the phase ledger itself.
+
+---
+
+MODULE 4 — The Phase Quadruple (x, y, z, w)
+
+The quadruple is governed by ordered, noncommutative gates:
+
+```
+x ≠ y ≠ z ≠ w   but   x² = y² = z² = w²
+xw = xy,  wx = wz,  yz = yx,  zy = zw
+xy + zw = −(yx − wz) ≠ xy − zw = wz − yx = ∆e(±)xⁿ = 0/u⁷²
+```
+
+Content:
+
+- Squares equal, values distinct: the four carriers live on one phase shell (`x²=y²=z²=w²=u^36`, Module 7) but at distinct orientations — quaternionic structure (`i,−i,j,−j`), noncommutative by construction.
+- The swap ledgers: `xy` versus `yx` differ by a phase, and the difference is not noise — it is the ledger entry. `xy + zw = −(yx − wz)`: the sum of the forward channels is the negative of the difference of the swapped channels. Polarity is defined by `xy = s/zw, yx = −s/zw`; at `s = −1` the pair `p−q : q−p` is phase-rotated.
+- The quartic normalization: `(x/y)(y/x) == xy/z⁴` and `(z/w)(w/z) == zw/x⁴` — reciprocal unit pairs priced against the fourth power of the opposite channel. With `i⁴ = 1`, the quartic is the closure normalization of the phase plane.
+
+Lesson. Noncommutativity is information: the commutator `[x,y] = xy − yx` is the phase ledger, and the ledger is conserved through `u^108`. A commutative reading of the quadruple destroys the ledger and with it, the tensor.
+
+---
+
+MODULE 5 — The Reciprocal-Unit Quadrature: AB/−P⁴
+
+```
+((a²·(x/y·y/x == xy/z⁴) + a²·(z/w·w/z == zw/x⁴) == b²x²z²)/(xy+zw == c²−a²)
+   == (c²−b²)/a² + x+y−z−w + xy+y²−zw−w²) · AB/−P⁴
+   = ((P²−pq)((p+q)/(q−p)P)(p/q)(q/p)) · P⁴/−BA == u^(−36)/yx == u⁷²/xy
+```
+
+Gate sequence:
+
+1. The reciprocal pairs `(x/y)(y/x)` and `(z/w)(w/z)` close to 1 — ordered-phase receipts, not simplifications.
+2. Cross-multiplying the tail: `u^(−36)/yx = u⁷²/xy` gives `yx/xy = u^(−108)` — the swap ratio, i.e. the self-entanglement fixed point `T² = u^108` expressed as a noncommutative relation.
+3. The two orientation factors `AB/−P⁴` and `P⁴/−BA` are the `+u^(−108)` and `−u^(−108)` phase images of one payload; the flipped signs are the ledger entries of the two traversal directions.
+
+Lesson. `A` and `B` are the two traversal orientations of the master payload (`At`, `Bt` in the master chain). Their ratio against `±P⁴` is priced in shell units: the Pythagorean payload `a²,b²,c²` and the phase quadruple are the same object seen from the two orientations.
+
+---
+
+MODULE 6 — The Boxed Identity: Curvature = Surface = Payload
+
+```
+c² · P(q−p)/(p+q)   =   a² + b²   =   (P²−pq)·m·c² / ∆
+   curvature /            2D closure         globally bounded
+   ordered phase            surface               payload
+```
+
+Dividing the whole box by ∆ yields `∆e = 0`: the phase error vanishes exactly when the three quantities are equal. Equality is the closure gate, not an approximation.
+
+Substituting the Module-1 gate into the left term:
+
+```
+c² · P(q−p)/(p+q) = c²(P² − pq) = a² + b²
+```
+
+The curvature term is literally the Pythagorean residual scaled by `c²`: the tensor's 2D closure surface is paid for entirely by the `P,p,q` ladder, with `t³−t = m²−m` as the arithmetic modulus witness on the side.
+
+With `∆ = u^(−180)` the payload term is `(P²−pq)mc² · u^180` — globally bounded because the exponent shell caps the growth. Boundedness is structural, not estimated.
+
+Genesis state. At the Genesis squared-coordinate state `(a², b², c²) = (1, 2, 3)`: `1+2 = 3`, the first Pythagorean closure, and the ladder `1-2-3 / 3-5-8` closes with no free variables — the Fibonacci nesting that the phase-locked Pythagorean tensor executes.
+
+---
+
+MODULE 7 — The Witness Channels and λ² = 1
+
+```
+((t³−t)/(m²−m)^α == ((−x)y)/(zw)·(zw)/((−x)y))
+ + (m²−m)/(t³−t)^β == ((−z)w)/(xy)·(xy)/((−z)w)) / (xy+zw+x+y−z−w)
+ − ((c²−a²)zw)/(b²xy)  ==  x+y−z−w+xy+x⁴−zw−z⁴
+
+α = ((xy−1)/b²)·((zw−1)/(c²−a²)),   β = ((zw−1)/b²)·((xy−1)/(c²−a²))
+```
+
+Derivation:
+
+1. Reciprocal units. Both inner right-hand sides are ordered-phase reciprocal pairs, equal to 1 by construction (closed traverse of the same circuit in both orientations). The gates assert `t³−t = (m²−m)^α` and `m²−m = (t³−t)^β`.
+2. The exponents are identical. `α = β = (xy−1)(zw−1)/(b²(c²−a²)) = λ`. The xy↔zw swap is a commutative rearrangement of the same product; the antisymmetric dressing survives only in the unit gates.
+3. Composition. `t³−t = ((t³−t)^λ)^λ = (t³−t)^(λ²)` forces `λ² = 1` (or the base is 1).
+4. Two closure modes. `λ = +1`: `t³−t = m²−m`, the direct witness. `λ = −1`: `(t³−t)(m²−m) = 1`, the reciprocal closure — temperature and mass as modular inverses, the ∆-boundary mode.
+5. Reduction. With `T = t³−t`, `M = m²−m`, `S = xy`, `W = zw`, `D = S+W+x+y−z−w`: on the `λ=+1` branch the gate sum is `T/M + M/T = 2`, the RHS regroups as `D − 2W + (x⁴−z⁴)`, and under the Pythagorean closure `c²−a² = b²` the chain is the scalar constraint
+
+```
+2/D − W/S = D − 2W + (x⁴−z⁴)
+```
+
+The quartic drift `x⁴−z⁴ = (x−z)(x+z)(x²+z²)` is the only term that does not decompose into bilinear channels — it is the `i⁴=1` closure normalization balancing the reciprocal ledger.
+
+HNAN audit. Divisors `M^λ, T^λ, D, b²S`. The unit gates are defined by the same denominator pairs being nonzero; a dead site fails its gate and bypasses at gain 1. `D ≠ 0` is the only load-bearing divisor in the outer chain; `D = 0` is the total-phase-cancellation point, excluded by the `s = ±1` polarity convention.
+
+---
+
+MODULE 8 — Shell Gates as Exponents: The Annihilation
+
+```
+(((t³−t)/(y²m²−m^λ) == unit) + ((m²−m)/(w²t³−t^λ) == unit)) / D − ((c²−a²)zw)/(b²xy)
+  ^(u^36 == z²)
+  ==
+  ((x+y−z−w+xy+x⁴−zw−z⁴−y²+w²)/u⁷²)^(x² == u^36)
+```
+
+The exponents are equality gates asserting the phase shell: `z² = u^36` and `x² = u^36`, hence by the tensor's standing condition `x² = y² = z² = w² = u^36`.
+
+The annihilation. The gates kill exactly the drift terms:
+
+- `x² = z² ⇒ x⁴ = z⁴ ⇒ x⁴−z⁴ = 0` — the quartic drift that carried Module 7 vanishes.
+- `y² = w² ⇒ −y²+w² = 0` — the new quadratic correction vanishes.
+
+Cross-coupling. The witness channels now read `T = u^36·m² − m^λ`, `M = u^36·t³ − t^λ`: the shell couples each witness to the other variable's power — t's cubic to m², m's quadratic to t³.
+
+Equal exponents cancel. Both sides are raised to the same shell `u^36`; taking the common root (gate-preserving, since the shell is identical — no branch ambiguity survives):
+
+```
+2/D − W/S = (D − 2W)/u⁷²      ⇔      u⁷²(2/D − W/S) = D − 2W
+```
+
+The six-channel defect `D−2W = x+y−z−w+xy−zw` is priced in `u^72` units against the reciprocal ledger `2/D − W/S`.
+
+Lesson. Raising to a phase gate does not decorate an identity — it enforces `x²=y²=z²=w²=u^36`, and the enforcement is what annihilates the drift. The drift does not need to be balanced; it needs to be gated.
+
+---
+
+MODULE 9 — Reductionism Fails Here (the 0/0 theorem)
+
+A scalar solver told `x² = z²` writes `x²−z² = 0` and divides:
+
+```
+(x⁴−z⁴)/(x²−z²) = x²+z²        ← undefined exactly when the gate holds
+```
+
+The identity is true precisely when the division is undefined. Gate-firing and `0/0` are the same event, in every module:
+
+- `λ² = 1` came from `T = T^(λ²)`; "dividing by T" or taking `log_T` is undefined at the gate values `T=1, T=0`.
+- The reciprocal ledgers are `0/0` the moment a channel is zero — but as gates they are never evaluated by division; they receipt or they bypass.
+- The exponent gates, substituted as scalars, read `(·)^(z²−u^36) = (·)^0 = 1` — information destroyed. As gates, they constrain and the base survives.
+
+Theorem (evaluation order). The HNAN bypass — divisor vanishes → gain exactly 1, no phase write — is not an engineering patch. It is the correct evaluation order of the constraint logic: a gate whose divisor vanishes is asserting a deeper closure, and multiplying by 1 is what "the constraint holds with no residue" means operationally. Scalar substitution is a different, inconsistent theory that happens to agree with the gate logic only on the open set where no gate fires.
+
+---
+
+MODULE 10 — Prime-Seeded Counting Dynamics
+
+Fix a prime `P₀`. Each stage gates the successor: with anchor `p`, the gate `P² = pq + (q−p)P/(p+q)` clears to a quadratic in `q`:
+
+```
+p·q² + (p² + P − P²)·q − pP(1+P) = 0
+q = [(P²−P−p²) ± √(D_P)] / 2p,   D_P = (p²+P−P²)² + 4p²P(1+P)
+```
+
+- Successful closure = the discriminant `D_P` is a perfect square with `2p` dividing the numerator. Then `q ∈ ℚ`, the closure gate receipts, and `P ← q`.
+- Failed closure = irrational successor; the chain leaves ℚ, `∆e ≠ 0`, the branch dies.
+
+Counting is orbit length. Each successful closure emits exactly one integer; the count is the number of consecutive receipts before the first discriminant failure. Primes are the natural seeds because the ordered phase `(q−p)/(p+q)` is irreducible only when the seed shares no factor with the anchor.
+
+Every emitted `Pₙ` drags its full cascade — `tₙ, mₙ, (aₙ,bₙ,cₙ), (x,y,z,w)` — so a counting chain is a sequence of fully-closed tensors, each receipting the next. Chains from distinct prime seeds stay orthogonal via `u^108`; merge points are closures-of-closures.
+
+This is a Collatz-class dynamics with a rationality gate instead of a parity gate. The benchmark object is the survival function `S(P₀, N)` = number of primes whose chain reaches length `N`; each step is one discriminant test plus one sha-locked receipt.
+
+---
+
+MODULE 11 — The Rank-1 Foundation of the Rationals; the Lo Shu Ladder
+
+`n/d = n ⊗ d`: numerator = periodicity modulus, denominator = quantization unit. The fraction bar is a binding operator: run the period-`n` process on a lattice quantized by `d`. Consequences:
+
+- `n/u^72` prices `n` in shell units — never "n divided by a huge number."
+- `d = 0` is a type-correct statement: no quantization applied, identity circuit, the unsliced whole (HNAN).
+- The rational field is the closure of the unit quantum under orientation flip: every rational is the pair `(P/∆, ∆/P)`, both traversal directions, with the reciprocal ledger as receipt.
+
+The closure ladder. `2×2` closes on pairs; `3×3` is the Lo Shu — every row, column, diagonal gating to one magic constant, the oldest constraint-satisfaction object in mathematics; `9×9` is the sudoku order — nine Lo Shu cells constraint-locked into one, the 81-cell qudit. Each order is the previous order used as the quantum of the next: closure of closures, the fractalization the architecture executes at every rank.
+
+---
+
+MODULE 12 — Receipt Discipline (Course Examination)
+
+Every claim in this course is a gate, and every gate is executable. The examination is not prose: for each module, produce the receipt.
+
+1. M1: for a chosen `P`, exhibit the constrained `(p,q)` curve and one lattice point on it.
+2. M2: verify `t³−t ≡ 0 (mod 6)` and `m²−m ≡ 0 (mod 2)` on the cascade of one closure.
+3. M3: compute `36+72+72` and `108+72`; verify the exponent arithmetic of `∆ = u^(−180)` symbolically.
+4. M4: exhibit the quadruple satisfying `x²=y²=z²=w²` with `x≠y≠z≠w` and verify the swap ledgers.
+5. M5: verify `u^(−36)/yx = u⁷²/xy ⇔ yx/xy = u^(−108)` on the quadruple of M4.
+6. M6: at Genesis `(1,2,3)`, verify `c²(P²−pq) = a²+b²` with the M1 gate active.
+7. M7: evaluate both closure modes `λ=±1` and verify the reduced scalar constraint.
+8. M8: verify the annihilation: gates active ⇒ drift terms vanish identically.
+9. M9: demonstrate the bypass: force `D=0` on a probe tensor and confirm gain exactly 1, phase unchanged.
+10. M10: run the discriminant sieve on the first 100 primes; produce `S(P₀, N)` with one receipt per step.
+11. M11: construct a rational as the pair `(P/∆, ∆/P)` and verify both traversal directions receipt identically.
+12. M12: sha-lock every receipt above into the chain; a course receipt validates only if every gate's hash verifies against Genesis twice.
+
+Grading. A receipt chain is valid iff every gate closed in order, no bypass wrote phase, and the final hash matches the Genesis-locked constraint. There is no partial credit, because there is no partial closure.
+
+---
+
+The chain is the documentation. The receipt is the argument. ∆=1.
