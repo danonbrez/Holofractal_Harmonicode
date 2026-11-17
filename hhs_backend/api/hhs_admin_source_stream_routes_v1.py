@@ -17,6 +17,7 @@ from pydantic import BaseModel, Field
 from hhs_backend.runtime.hhs_admin_sql_stream_staging_v1 import AdminStreamStaging, StagingError
 from hhs_backend.runtime.hhs_admin_sql_lane5_continuation_v1 import continue_staged_to_lane5, NativeContinuationError
 from hhs_backend.runtime.hhs_admin_sql_vm81_admission_preflight_v1 import inspect_staged_admission_prerequisites
+from hhs_backend.runtime.hhs_admin_sql_typed_vm81_source_v1 import inspect_exact_typed_vm81_source
 
 router = APIRouter(prefix="/api/runtime/admin-source-stream", tags=["admin-source-stream"])
 _STAGING: AdminStreamStaging | None = None
@@ -205,3 +206,13 @@ def read_exact_staged_source(upload_id: str, request: Request):
         "Cache-Control": "no-store",
         "X-Content-Type-Options": "nosniff",
     })
+
+
+@router.get("/uploads/{upload_id}/typed-vm81")
+def inspect_existing_typed_vm81_source(upload_id: str, request: Request):
+    """Inspect inherited exact frame encoding; never grant canonical authority."""
+    owner = _principal(request)
+    try:
+        return inspect_exact_typed_vm81_source(_staging(), upload_id, owner)
+    except (StagingError, ValueError) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
