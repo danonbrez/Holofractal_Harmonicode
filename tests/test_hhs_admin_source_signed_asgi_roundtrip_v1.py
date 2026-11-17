@@ -92,7 +92,7 @@ class TestSignedAdminASGIRoundtrip(unittest.TestCase):
                 missing = await client.get(base + "/" + upload_id + "/source")
                 self.assertEqual(missing.status_code, 403)
                 forged = await client.get(base + "/" + upload_id + "/source", headers={
-                    "Authorization": "HHS-Capability " + token[:-1] + ("A" if token[-1] != "A" else "B"),
+                    "Authorization": "HHS-Capability " + token.split(".")[0] + "." + ("A" if token.split(".")[1][0] != "A" else "B") + token.split(".")[1][1:],
                 })
                 self.assertEqual(forged.status_code, 401)
                 self.assertEqual(self.staging.read_staged(upload_id, "authoritative-owner").read_bytes(), content)
