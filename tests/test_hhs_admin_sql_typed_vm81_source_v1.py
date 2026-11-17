@@ -5,6 +5,7 @@ import unittest
 
 from hhs_backend.runtime.hhs_admin_sql_stream_staging_v1 import AdminStreamStaging
 from hhs_backend.runtime.hhs_admin_sql_typed_vm81_source_v1 import inspect_exact_typed_vm81_source
+from hhs_backend.runtime.hhs_admin_sql_signed_environment_fixture_handoff_v1 import verify_staged_signed_fixture, StagedSignedFixtureError
 from hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe import build_execution_cases
 
 
@@ -46,6 +47,22 @@ class TestStagedTypedVM81Recognition(unittest.TestCase):
             self.assertFalse(result["typed_frame_recognized"])
             self.assertFalse(result["canonical_hash216_admitted"])
             self.assertEqual(self.stage.read_staged(upload_id, "owner").read_bytes(), payload)
+
+    def test_fixture_handoff_rejects_opaque_and_wrong_owner_without_native_execution(self):
+        opaque_id = self.staged(b"unrecognized native format")
+        with self.assertRaisesRegex(StagedSignedFixtureError, "TYPED_VM81_SOURCE_REQUIRED"):
+            verify_staged_signed_fixture(
+                self.stage, opaque_id, "owner", native_probe=__file__,
+            )
+        exact = self.staged(build_execution_cases()[0]["raw_bytes"])
+        with self.assertRaises(Exception):
+            verify_staged_signed_fixture(
+                self.stage, exact, "other", native_probe=__file__,
+            )
+        with self.assertRaisesRegex(StagedSignedFixtureError, "FIXTURE_POSITIVE_MODE_ONLY"):
+            verify_staged_signed_fixture(
+                self.stage, exact, "owner", native_probe=__file__, mode="bad-parent",
+            )
 
     def test_identity_and_state_guards(self):
         upload_id = self.stage.create("owner", "incomplete")["upload_id"]
