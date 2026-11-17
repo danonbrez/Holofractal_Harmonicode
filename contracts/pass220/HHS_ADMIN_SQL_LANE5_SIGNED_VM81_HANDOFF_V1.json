@@ -59,12 +59,25 @@
   "verification": {
     "native_real_library_test": "tests/test_hhs_admin_sql_lane5_native_integration_v1.py",
     "pending": [
-      "typed source-to-VM81 constructor provenance",
+      "authorized exact UQCEL witness and ordered parent Hash216 reference for recognized typed frame",
       "signed environmental admission with actual authorization",
       "Hash72 Hash216 canonical receipts and replay",
       "agent and IDE RAG readback",
       "exact-main production deployment"
     ],
     "state": "OPEN"
+  },
+  "typed_staged_source_inspection": {
+    "module": "hhs_backend.runtime.hhs_admin_sql_typed_vm81_source_v1",
+    "endpoint": "GET /api/runtime/admin-source-stream/uploads/{upload_id}/typed-vm81",
+    "source_constructor": "hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe",
+    "read_only": true,
+    "only_recognizes_preexisting_exact_vm81_frame": true,
+    "normal_arbitrary_file_staging_preserved": true,
+    "authorized_parent_hash216_bound": false,
+    "uqcel_math_witness_bound": false,
+    "canonical_hash216_admitted": false,
+    "tests": "tests/test_hhs_admin_sql_typed_vm81_source_v1.py",
+    "state": "INTEGRATION_COMMITTED_CI_PENDING"
   }
 }
