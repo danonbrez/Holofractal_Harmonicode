@@ -1,0 +1,19 @@
+{
+  "schema": "HHS_PASS220_WHITEPAPER_COURSE_REVISION_LINEAGE_V1",
+  "revision_count": 1,
+  "revisions": [
+    {
+      "source_path": "whitepapers/Harmonicode Algebra - Course",
+      "historic_blob_sha": "2744e9ecf1f260ff9a5a02870320698ee2d7dcaf",
+      "historic_source_commit": "48aa9b704f43e4ede87b25b9391cf4349537b123",
+      "historic_copy_path": "docs/pass220/frozen_sources/Harmonicode_Algebra_Course_20261015.txt",
+      "current_blob_sha": "968735b21bb0fda42f9c944ae6987099e624e7a7",
+      "current_source_present_at": "8088d0386ef75630ffab37705b2008c7b7e89d1d",
+      "relation": "INHERITED_EXTENDED_SOURCE_REVISION",
+      "source_integrity_gate": "VERIFY_HISTORICAL_AND_CURRENT_BLOBS_INDEPENDENTLY",
+      "proof_admission_inferred": false
+    }
+  ],
+  "immutable_source_freeze": "contracts/pass220/PASS_220_WHITEPAPER_CORPUS_SOURCE_FREEZE_V1.json",
+  "native_proof_authority_minted": false
+}
