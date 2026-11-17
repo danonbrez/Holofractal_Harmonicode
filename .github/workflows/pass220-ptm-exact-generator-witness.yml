@@ -1,0 +1,30 @@
+name: Pass 220 P-t-m Exact Generator Witness
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass220/pass220_ptm_exact_generator_witness_v1.py'
+      - 'tests/test_pass220_ptm_exact_generator_v1.py'
+      - '.github/workflows/pass220-ptm-exact-generator-witness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-reference-witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check exact source and rational reference
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_exact_generator_v1.py' -v
+      - name: Emit source/reference witness
+        run: |
+          python hhs_runtime/pass220/pass220_ptm_exact_generator_witness_v1.py
