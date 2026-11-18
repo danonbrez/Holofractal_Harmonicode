@@ -20,6 +20,7 @@ import json
 from native_projects.hhs_bifurcation_calibration.hhs_pass091_collatz_prime_tensor_decay_entanglement_v1 import (
     verify_replay,
     _next_state,
+    load_pass089_prime_sources,
 )
 from hhs_runtime.hhs_phase_inverted_pythagorean_geometry_v1 import (
     full_geometry_witness,
@@ -135,11 +136,7 @@ def compose_pass092_prime_product_orbits(
     original = replay["initial"]
     seeds = workload["seeds"]
     source_primes = {
-        item["prime"]: item
-        for item in __import__(
-            "native_projects.hhs_bifurcation_calibration.hhs_pass091_collatz_prime_tensor_decay_entanglement_v1",
-            fromlist=["load_pass089_prime_sources"],
-        ).load_pass089_prime_sources(root)
+        item["prime"]: item for item in load_pass089_prime_sources(root)
     }
     for seed in seeds:
         basis = seed["prime_basis"]
