@@ -57,6 +57,68 @@ def _typed_json(value: Any) -> str:
                       separators=(",", ":"))
 
 
+def ordered_shared_suffix_witnesses(
+    lanes: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Recover all lane-pair intersections and exactly equal observed suffixes.
+
+    The universal deterministic-successor continuation follows by induction
+    from equal scalar states; it does NOT identify distinct native ancestry,
+    ordered-phase/tensor states, or prove termination of either trajectory.
+    """
+    if any(
+        not isinstance(lane.get("ordered_states"), list)
+        or not isinstance(lane.get("state_nodes"), list)
+        or len(lane["ordered_states"]) != len(lane["state_nodes"])
+        for lane in lanes
+    ):
+        raise CumulativeOrbitalProofError("SHARED_SUFFIX_SOURCE_STRUCTURE_INVALID")
+    result: list[dict[str, Any]] = []
+    for left_index, left in enumerate(lanes):
+        la = left["ordered_states"]
+        for right in lanes[left_index + 1:]:
+            rb = right["ordered_states"]
+            locations: dict[int, list[int]] = {}
+            for j, value in enumerate(rb):
+                locations.setdefault(value, []).append(j)
+            candidates = [
+                (i, j) for i, value in enumerate(la)
+                for j in locations.get(value, ())
+            ]
+            if not candidates:
+                continue
+            i, j = min(candidates)
+            matched_steps = min(len(la) - i, len(rb) - j)
+            for depth in range(matched_steps):
+                a, b = la[i + depth], rb[j + depth]
+                if type(a) is not int or type(b) is not int or a != b:
+                    raise CumulativeOrbitalProofError("ORDERED_SHARED_SUFFIX_MISMATCH")
+                if depth + 1 < matched_steps:
+                    op_a, next_a = _next_state(a)
+                    op_b, next_b = _next_state(b)
+                    if next_a != la[i + depth + 1] or next_b != rb[j + depth + 1] or op_a != op_b:
+                        raise CumulativeOrbitalProofError("SHARED_SUFFIX_NATIVE_SUCCESSOR_MISMATCH")
+            an = left["state_nodes"][i]
+            bn = right["state_nodes"][j]
+            result.append({
+                "left_lane_id": left["lane_id"],
+                "right_lane_id": right["lane_id"],
+                "left_depth": i,
+                "right_depth": j,
+                "intersection_value": la[i],
+                "exact_observed_successor_count": matched_steps - 1,
+                "same_deterministic_successor_rule": True,
+                "equal_future_scalar_successors_by_induction": True,
+                "full_native_state_equivalence_proved": False,
+                "left_intersection_root_hash72": an["state_root_hash72"],
+                "right_intersection_root_hash72": bn["state_root_hash72"],
+                "left_independent_prefix_root_hash72": left["independent_prefix_root_hash72"],
+                "right_independent_prefix_root_hash72": right["independent_prefix_root_hash72"],
+                "distinct_ancestry_preserved": True,
+            })
+    return result
+
+
 def compose_inherited_orbital_proof(
     root: Path,
     workload: Mapping[str, Any],
@@ -118,6 +180,7 @@ def compose_inherited_orbital_proof(
             "outcome": lane["outcome"],
         })
 
+    shared_suffixes = ordered_shared_suffix_witnesses(lanes)
     geometry = full_geometry_witness()
     global_constraints = enforce_recursive_global_constraint_bundle()
     theory = build_theory_constructor()
@@ -154,6 +217,8 @@ def compose_inherited_orbital_proof(
         "native_deterministic_replay": True,
         "all_provided_odd_prime_lanes": checked_lanes,
         "lane_count": len(checked_lanes),
+        "ordered_shared_suffix_witnesses": shared_suffixes,
+        "shared_suffix_pair_count": len(shared_suffixes),
         "original_prime_entanglement_graph": original["entanglement_graph"],
         "full_geometry_witness": geometry,
         "full_recursive_constraint_bundle": global_constraints,
