@@ -85,7 +85,7 @@ class TestSQLStagedSignedFixture(unittest.TestCase):
                     verify_staged_signed_fixture(
                         stage, other_owner, "wrong-owner", native_probe=native_probe,
                     )
-                opaque_id = stage.create("fixture-owner", "not-a-frame")
+                opaque_id = stage.create("fixture-owner", "not-a-frame")["upload_id"]
                 stage.append(opaque_id, "fixture-owner", 0, b"opaque source bytes")
                 stage.finalize(opaque_id, "fixture-owner")
                 with self.assertRaisesRegex(StagedSignedFixtureError, "TYPED_VM81_SOURCE_REQUIRED"):
