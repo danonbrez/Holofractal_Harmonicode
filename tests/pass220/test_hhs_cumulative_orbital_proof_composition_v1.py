@@ -15,6 +15,7 @@ from native_projects.hhs_bifurcation_calibration.hhs_pass091_collatz_prime_tenso
 from hhs_runtime.pass220.hhs_cumulative_orbital_proof_composition_v1 import (
     CumulativeOrbitalProofError,
     compose_inherited_orbital_proof,
+    ordered_shared_suffix_witnesses,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -58,10 +59,58 @@ class TestCumulativeNativeOrbitalComposition(unittest.TestCase):
         self.assertFalse(report["global_theorem_completed"])
         self.assertFalse(report["canonical_vm81_admission"])
         self.assertTrue(report["candidate_only"])
+        pairs = report["ordered_shared_suffix_witnesses"]
+        self.assertEqual(report["shared_suffix_pair_count"], len(pairs))
+        self.assertGreater(len(pairs), 0)
+        for pair in pairs:
+            self.assertTrue(pair["equal_future_scalar_successors_by_induction"])
+            self.assertFalse(pair["full_native_state_equivalence_proved"])
+            self.assertTrue(pair["distinct_ancestry_preserved"])
+            self.assertEqual(len(pair["left_intersection_root_hash72"]), 72)
+            self.assertEqual(len(pair["right_intersection_root_hash72"]), 72)
+
         self.assertEqual(
             [lane["prime_seed"] for lane in report["all_provided_odd_prime_lanes"]],
             [src["prime"] for src in self.workload["prime_sources"]],
         )
+
+    def test_shared_suffix_does_not_alias_distinct_ancestry(self):
+        a = {
+            "lane_id": "left", "ordered_states": [3, 10, 5, 16, 8, 4, 2, 1],
+            "independent_prefix_root_hash72": "l" * 72,
+            "state_nodes": [{"state_root_hash72": f"a{i}"} for i in range(8)],
+        }
+        b = {
+            "lane_id": "right", "ordered_states": [5, 16, 8, 4, 2, 1],
+            "independent_prefix_root_hash72": "r" * 72,
+            "state_nodes": [{"state_root_hash72": f"b{i}"} for i in range(6)],
+        }
+        receipts = ordered_shared_suffix_witnesses([a, b])
+        self.assertEqual(len(receipts), 1)
+        self.assertEqual(receipts[0]["intersection_value"], 5)
+        self.assertEqual(receipts[0]["left_depth"], 2)
+        self.assertEqual(receipts[0]["right_depth"], 0)
+        self.assertEqual(receipts[0]["exact_observed_successor_count"], 5)
+        self.assertNotEqual(
+            receipts[0]["left_intersection_root_hash72"],
+            receipts[0]["right_intersection_root_hash72"],
+        )
+
+    def test_shared_suffix_rejects_counterfeit_successor(self):
+        a = {
+            "lane_id": "left", "ordered_states": [5, 999],
+            "independent_prefix_root_hash72": "a" * 72,
+            "state_nodes": [{"state_root_hash72": "a"}] * 2,
+        }
+        b = {
+            "lane_id": "right", "ordered_states": [5, 999],
+            "independent_prefix_root_hash72": "b" * 72,
+            "state_nodes": [{"state_root_hash72": "b"}] * 2,
+        }
+        with self.assertRaisesRegex(
+            CumulativeOrbitalProofError, "SHARED_SUFFIX_NATIVE_SUCCESSOR_MISMATCH"
+        ):
+            ordered_shared_suffix_witnesses([a, b])
 
     def test_reject_unproven_universal_claim(self):
         workload = copy.deepcopy(self.workload)
