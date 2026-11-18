@@ -385,3 +385,41 @@ The existing exact Pass 091 prime-trajectory executor uses one deterministic int
 **Executable connection.** `ordered_shared_suffix_witnesses` is called from `compose_inherited_orbital_proof` on the original fully replayed Pass 091 lane receipts. The binding to full Pythagorean/Lo Shu/global-constraint and I072 theory hydration witnesses remains unchanged. A negative regression supplies identical counterfeit integer strings that do not follow `_next_state`; this must reject, rather than classifying mere textual equality as proof.
 
 **Remaining full-system bridge.** A same-\(C\) common scalar suffix, an integer quotient-map carrier, and an authenticated native I086 Hash216 orbit are three distinguishable inherited conclusions. To infer the requested full HARMONICODE prime-orbital embedding, an existing source theorem or newly derived typed proof must relate their ordered state spaces and preserve each required tensor/phase/HNAN invariant under the embedding. No complete orbital embedding is inferred simply from shared integer values or the scalar induction lemma.
+
+## 19. Ordered affine operation-word composition across Pass 091 and Pass 092
+
+The inherited Pass 091 native scalar projection applies the **ordered** operators \(E(n)=n/2\) on even integers and \(O(n)=3n+1\) on odd integers. Pass 092 defines the generalized odd operator \(O_p(n)=pn+1\), retaining the exact operator-prime provenance. These operations can be composed *without sorting, commutation or scalar replacement of the complete HARMONICODE tensor*.
+
+### Lemma 19.1 — Exact integer-coefficient representation of every valid prefix
+
+For a positive integer seed \(n_0\), every finite parity-admissible operation word \(w=w_1\cdots w_k\), applied in its original order with multiplier \(p\), admits an exact triple \((A_w,B_w,D_w)\in\mathbb Z^2\times\mathbb Z_{>0}\) satisfying
+
+\[
+n_k=\frac{A_w n_0+B_w}{D_w}.
+\]
+
+Initialize \((A_\epsilon,B_\epsilon,D_\epsilon)=(1,0,1)\). Right-append one operation by the *ordered* update rules
+
+\[
+(A,B,D)\xrightarrow{E}(A,B,2D),\qquad
+(A,B,D)\xrightarrow{O_p}(pA,pB+D,D).
+\]
+
+*Proof.* For the empty word \(n_0=(n_0+0)/1\). Assuming \(n_i=(A_i n_0+B_i)/D_i\), the even step produces \(n_{i+1}=n_i/2=(A_i n_0+B_i)/(2D_i)\). The odd step produces \(n_{i+1}=pn_i+1=(pA_i n_0+pB_i+D_i)/D_i\). Each update preserves the identity exactly. Induction on the source-ordered word proves the claim, including prefixes of arbitrary finite length. No rational normalization, divisor cancellation, or reordering is required for the identity.
+
+### Lemma 19.2 — Exact continuation composition
+
+For two valid consecutive ordered words \(u,v\), let the prefix triple be \((A_u,B_u,D_u)\), and suppose the suffix operator composition is represented, for its own input \(z\), by \((A_v z+B_v)/D_v\). The exact concatenated composition obeys
+
+\[
+(A_{uv},B_{uv},D_{uv})=
+(A_v A_u,\ A_v B_u+B_v D_u,\ D_v D_u).
+\]
+
+*Proof.* Substitute the expression for the output of \(u\) into the input of \(v\), maintaining the recorded application order. The formula follows by a single common-denominator construction, with no rearrangement of noncommutative tensor objects; this is a typed *integer affine projection* lemma only.
+
+### Connection to actual inherited execution
+
+`ordered_affine_orbit_witness` now checks every stored source operation against the original Pass 091/092 parity and successor rules, updates \((A,B,D)\) using exact integers, and checks the identity against **every stored state prefix**. It is integrated into each replayed Pass 091 lane in `compose_inherited_orbital_proof`; a forged word, incorrect parity or altered intermediate state fails the exact check. Regression tests exercise the complete Pass 091 \(3\to10\to5\to16\to8\to4\to2\to1\to4\) path, a distinct Pass 092 \(p=5\) operator path, and hostile operation-order/transition changes.
+
+These lemmas add an exact *word-composition witness* to the previously established shared-suffix and universal quotient carrier results. They do **not** identify integer affine matrices with the native octonion/HNAN \((AB,BA,xy,yx)\) terms, or promote a scalar result to a full VM81/Hash216 proof. The outstanding HARMONICODE embedding proof must preserve those inherited typed structures when transporting a word into a higher orbit.
