@@ -112,6 +112,133 @@ def ordered_affine_orbit_witness(
     }
 
 
+def compose_pass092_prime_product_orbits(
+    root: Path, workload: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Join actual Pass 092 seed factorization and ordered prime operator lanes.
+
+    Source receipts, factor vectors, operator roots, and deterministic
+    replay are preserved. Scheduled prime choices are verified per edge.
+    Unverified cross-operator suffixes NEVER acquire shared-future authority.
+    """
+    from native_projects.hhs_bifurcation_calibration.hhs_pass092_prime_product_harmonic_manifolds_v1 import (
+        verify_replay as verify_pass092_replay,
+        _step as native_generalized_step,
+        make_seed,
+        operator_contract,
+    )
+    if workload.get("claims_asymptotic_result") or workload.get("cache_as_proof"):
+        raise CumulativeOrbitalProofError("PASS092_ASYMPTOTIC_OR_CACHE_PROOF_NOT_AUTHORIZED")
+    replay = verify_pass092_replay(root, workload)
+    if replay.get("deterministic_replay_verified") is not True:
+        raise CumulativeOrbitalProofError("PASS092_ORIGINAL_REPLAY_REQUIRED")
+    original = replay["initial"]
+    seeds = workload["seeds"]
+    source_primes = {
+        item["prime"]: item
+        for item in __import__(
+            "native_projects.hhs_bifurcation_calibration.hhs_pass091_collatz_prime_tensor_decay_entanglement_v1",
+            fromlist=["load_pass089_prime_sources"],
+        ).load_pass089_prime_sources(root)
+    }
+    for seed in seeds:
+        basis = seed["prime_basis"]
+        roots = [source_primes.get(p) for p in basis]
+        if any(x is None for x in roots):
+            raise CumulativeOrbitalProofError("PASS092_UNWITNESSED_PRIME_BASIS")
+        if make_seed(roots, seed["factor_vector"]) != seed:
+            raise CumulativeOrbitalProofError("PASS092_COMPOSITE_SEED_PROVENANCE_MISMATCH")
+    for op in workload["operators"]:
+        source = source_primes.get(op["operator_prime"])
+        if source is None or operator_contract(source) != op:
+            raise CumulativeOrbitalProofError("PASS092_OPERATOR_PROVENANCE_MISMATCH")
+    seed_by_root = {s["seed_root_hash72"]: s for s in seeds}
+    op_by_root = {o["operator_root_hash72"]: o for o in workload["operators"]}
+    checked = []
+    for lane in original["lane_receipts"]:
+        seed = seed_by_root.get(lane["seed_root_hash72"])
+        operator = op_by_root.get(lane["operator_root_hash72"])
+        if seed is None or operator is None:
+            raise CumulativeOrbitalProofError("PASS092_LANE_PARENT_UNKNOWN")
+        states = lane["ordered_states"]
+        operations = lane["ordered_operations"]
+        if not states or states[0] != seed["exact_value"] or len(states) != len(operations) + 1:
+            raise CumulativeOrbitalProofError("PASS092_LANE_ORDERED_STATE_MISMATCH")
+        schedule = workload["operator_schedule"]
+        if workload["mode"] == "PRIME_SCHEDULED_MANIFOLD" and not schedule:
+            raise CumulativeOrbitalProofError("PASS092_EMPTY_OPERATOR_SCHEDULE")
+        a, b, d = 1, 0, 1
+        prefixes = []
+        for i, word in enumerate(operations):
+            p = (schedule[i % len(schedule)]
+                 if workload["mode"] == "PRIME_SCHEDULED_MANIFOLD"
+                 else lane["operator_prime"])
+            if p not in source_primes or p not in {o["operator_prime"] for o in workload["operators"]}:
+                raise CumulativeOrbitalProofError("PASS092_UNWITNESSED_SCHEDULE_OPERATOR")
+            native_word, next_value = native_generalized_step(states[i], p)
+            if word != native_word or next_value != states[i + 1]:
+                raise CumulativeOrbitalProofError("PASS092_ORDERED_NATIVE_TRANSITION_MISMATCH")
+            if a * seed["exact_value"] + b != d * states[i]:
+                raise CumulativeOrbitalProofError("PASS092_ORDERED_PREFIX_IDENTITY_MISMATCH")
+            if word == "E":
+                d *= 2
+            else:
+                a, b = p * a, p * b + d
+            if a * seed["exact_value"] + b != d * next_value:
+                raise CumulativeOrbitalProofError("PASS092_ORDERED_PREFIX_IDENTITY_MISMATCH")
+            prefixes.append({"depth": i + 1, "ordered_operator": word,
+                             "source_operator_prime": p,
+                             "A": str(a), "B": str(b), "D": str(d),
+                             "integer_state": str(next_value)})
+        checked.append({
+            "lane_id": lane["lane_id"],
+            "lane_root_hash72": lane["lane_root_hash72"],
+            "history_root_hash72": lane["history_root_hash72"],
+            "seed_root_hash72": seed["seed_root_hash72"],
+            "factor_vector": seed["factor_vector"],
+            "prime_basis": seed["prime_basis"],
+            "operator_root_hash72": lane["operator_root_hash72"],
+            "mode": workload["mode"],
+            "operator_order_preserved": True,
+            "exact_affine_prefixes": prefixes,
+            "all_prefixes_verified": True,
+            "cycle_status": lane["cycle_status"],
+            "asymptotic_result_proved": False,
+        })
+    if len(checked) != len(original["lane_receipts"]):
+        raise CumulativeOrbitalProofError("PASS092_LANES_DROPPED")
+    intersections = []
+    by_id = {x["lane_id"]: x for x in original["lane_receipts"]}
+    for edge in original["state_intersections"]:
+        left, right = by_id[edge["lane_a"]], by_id[edge["lane_b"]]
+        if (left["ordered_states"][edge["lane_a_depth"]] != edge["state"]
+            or right["ordered_states"][edge["lane_b_depth"]] != edge["state"]):
+            raise CumulativeOrbitalProofError("PASS092_INTERSECTION_SOURCE_MISMATCH")
+        # The inherited Pass 092 same-operator boolean is preserved verbatim;
+        # scheduled state-dependent transitions need more than this boolean.
+        intersections.append({**edge,
+            "phase_scheduled_shared_future_not_inferred":
+                workload["mode"] == "PRIME_SCHEDULED_MANIFOLD",
+            "full_tensor_equivalence_proved": False,
+        })
+    result = {
+        "schema": "HHS_PASS220_CUMULATIVE_PASS092_PRIME_PRODUCT_ORBIT_COMPOSITION_V1",
+        "parent_pass092_tensor_root_hash72": original["tensor_root_hash72"],
+        "parent_pass091_release_root_hash72": original["parent_pass091_release_root_hash72"],
+        "deterministic_pass092_replay_verified": True,
+        "prime_product_seed_count": len(seeds),
+        "lane_count": len(checked),
+        "ordered_composite_and_prime_lanes": checked,
+        "original_state_intersections": intersections,
+        "operator_schedule": workload["operator_schedule"],
+        "cache_as_trajectory_proof": False,
+        "universal_orbit_embedding_proved": False,
+        "canonical_vm81_admission": False,
+    }
+    result["composition_sha256"] = sha256(_typed_json(result).encode()).hexdigest()
+    return result
+
+
 def ordered_shared_suffix_witnesses(
     lanes: Sequence[Mapping[str, Any]],
 ) -> list[dict[str, Any]]:
