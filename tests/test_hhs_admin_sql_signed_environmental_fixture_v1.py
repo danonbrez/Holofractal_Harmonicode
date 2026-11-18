@@ -78,7 +78,7 @@ class TestSQLStagedSignedFixture(unittest.TestCase):
                     # No canonical knowledge authority is passed back to SQL.
                     self.assertFalse(stage.status(upload_id, "fixture-owner")["canonical_hash216_admitted"])
 
-                other_owner = stage.create("fixture-owner", "permission-check")
+                other_owner = stage.create("fixture-owner", "permission-check")["upload_id"]
                 stage.append(other_owner, "fixture-owner", 0, cases[0]["raw_bytes"])
                 stage.finalize(other_owner, "fixture-owner")
                 with self.assertRaises(Exception):
