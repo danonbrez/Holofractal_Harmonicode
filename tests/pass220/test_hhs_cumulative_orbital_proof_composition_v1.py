@@ -16,6 +16,7 @@ from hhs_runtime.pass220.hhs_cumulative_orbital_proof_composition_v1 import (
     CumulativeOrbitalProofError,
     compose_inherited_orbital_proof,
     ordered_shared_suffix_witnesses,
+    ordered_affine_orbit_witness,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -59,6 +60,14 @@ class TestCumulativeNativeOrbitalComposition(unittest.TestCase):
         self.assertFalse(report["global_theorem_completed"])
         self.assertFalse(report["canonical_vm81_admission"])
         self.assertTrue(report["candidate_only"])
+        for lane in report["all_provided_odd_prime_lanes"]:
+            affine = lane["exact_ordered_affine_orbit"]
+            self.assertTrue(affine["exact_ordered_endpoint_identity"])
+            self.assertEqual(affine["operator_prime"], "3")
+            self.assertEqual(
+                len(affine["prefixes"]), len(affine["ordered_operation_word"]),
+            )
+            self.assertFalse(affine["native_vm81_admission"])
         pairs = report["ordered_shared_suffix_witnesses"]
         self.assertEqual(report["shared_suffix_pair_count"], len(pairs))
         self.assertGreater(len(pairs), 0)
@@ -73,6 +82,47 @@ class TestCumulativeNativeOrbitalComposition(unittest.TestCase):
             [lane["prime_seed"] for lane in report["all_provided_odd_prime_lanes"]],
             [src["prime"] for src in self.workload["prime_sources"]],
         )
+
+    def test_exact_ordered_affine_construction_for_full_native_word(self):
+        # 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1 -> 4.
+        states = [3, 10, 5, 16, 8, 4, 2, 1, 4]
+        result = ordered_affine_orbit_witness(
+            seed=3, ordered_states=states, operation_word="OEOEEEEO",
+        )
+        self.assertEqual(result["terminal_integer_state"], "4")
+        self.assertEqual(len(result["prefixes"]), 8)
+        self.assertEqual(
+            int(result["A"]) * 3 + int(result["B"]),
+            int(result["D"]) * 4,
+        )
+        self.assertTrue(result["exact_ordered_endpoint_identity"])
+
+    def test_exact_affine_generalized_prime_operator_not_scalar_reordered(self):
+        # Pass 092 p=5 generalized Collatz operator; odd 3 -> 16 -> 8.
+        witness = ordered_affine_orbit_witness(
+            seed=3, ordered_states=[3, 16, 8],
+            operation_word="OE", odd_multiplier=5,
+        )
+        self.assertEqual(witness["A"], "5")
+        self.assertEqual(witness["B"], "1")
+        self.assertEqual(witness["D"], "2")
+        self.assertEqual(witness["terminal_integer_state"], "8")
+
+    def test_affine_rejects_reordered_or_counterfeit_integer_history(self):
+        with self.assertRaisesRegex(
+            CumulativeOrbitalProofError,
+            "ORDERED_AFFINE_PARITY_OR_SUCCESSOR_MISMATCH",
+        ):
+            ordered_affine_orbit_witness(
+                seed=3, ordered_states=[3, 10, 5], operation_word="EO",
+            )
+        with self.assertRaisesRegex(
+            CumulativeOrbitalProofError,
+            "ORDERED_AFFINE_PARITY_OR_SUCCESSOR_MISMATCH",
+        ):
+            ordered_affine_orbit_witness(
+                seed=3, ordered_states=[3, 10, 6], operation_word="OE",
+            )
 
     def test_shared_suffix_does_not_alias_distinct_ancestry(self):
         a = {
