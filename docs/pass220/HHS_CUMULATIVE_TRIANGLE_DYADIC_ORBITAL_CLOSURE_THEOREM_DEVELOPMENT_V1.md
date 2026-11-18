@@ -423,3 +423,42 @@ For two valid consecutive ordered words \(u,v\), let the prefix triple be \((A_u
 `ordered_affine_orbit_witness` now checks every stored source operation against the original Pass 091/092 parity and successor rules, updates \((A,B,D)\) using exact integers, and checks the identity against **every stored state prefix**. It is integrated into each replayed Pass 091 lane in `compose_inherited_orbital_proof`; a forged word, incorrect parity or altered intermediate state fails the exact check. Regression tests exercise the complete Pass 091 \(3\to10\to5\to16\to8\to4\to2\to1\to4\) path, a distinct Pass 092 \(p=5\) operator path, and hostile operation-order/transition changes.
 
 These lemmas add an exact *word-composition witness* to the previously established shared-suffix and universal quotient carrier results. They do **not** identify integer affine matrices with the native octonion/HNAN \((AB,BA,xy,yx)\) terms, or promote a scalar result to a full VM81/Hash216 proof. The outstanding HARMONICODE embedding proof must preserve those inherited typed structures when transporting a word into a higher orbit.
+
+## 20. Exact prime-product and noncommuting scheduled-word inheritance (Pass 092)
+
+The native Pass 092 construction extends Pass 091's source-witnessed prime seeds to exact **prime products**, retaining the ordered factor vector and each prime's original Hash72 source receipt. It also permits a fixed prime operator or the actual source-ordered `PRIME_SCHEDULED_MANIFOLD` operator sequence. Both belong to the already inherited corpus, and must be included rather than selecting only prime-seeded Pass 091 trajectories.
+
+### Lemma 20.1 — Prime-product source identity
+
+Given recorded witnessed primes \(p_1,\ldots,p_r\) and nonnegative integer exponent vector \((e_1,\ldots,e_r)\), the source-bound constructed seed is
+
+\[
+n_0=\prod_{j=1}^r p_j^{e_j}.
+\]
+
+The factorized seed includes the original prime-source Hash72 lineage and its own product-seed root. The exact equality is checked against the native Pass 092 `make_seed` constructor for **every** submitted seed. A changed prime basis, exponent vector, prime-source root, or resultant seed identity cannot be silently accepted as the same construction. In particular this preserves composite-product closure as a first-class inherited source of trajectories, not merely a composite search category.
+
+### Lemma 20.2 — Scheduled ordered prime operations are a noncommuting word
+
+Under Pass 092, a selected prime \(p_i\) determines \(O_{p_i}(n)=p_i n+1\) on an odd input, with \(E(n)=n/2\) on an even input. The ordered affine coefficient propagation already proved in Lemma 19.1 extends to a variable multiplier \(p_i\) on each step:
+
+\[
+(A,B,D)\xrightarrow{O_{p_i}}(p_iA,p_iB+D,D).
+\]
+
+The source-ordered operator sequence must be retained. Indeed, for formal affine compositions on an unrestricted symbolic variable \(n\),
+
+\[
+O_p(O_q(n))=pqn+p+1,\qquad
+O_q(O_p(n))=pqn+q+1,
+\]
+
+so their difference is \(p-q\). This is an **ordered algebraic identity for the formal affine functions**. It does not claim that consecutive odd operators \(O_p,O_q\) are both parity-admissible in an actual Pass 092 trajectory: for odd \(p,n\), \(pn+1\) is even, so the next inherited native parity step is \(E\). The formal commutator and the parity-admitted execution are therefore recorded under their proper typed domains rather than conflated.
+
+### Executable Pass 092 join
+
+The additive `compose_pass092_prime_product_orbits` invokes the original Pass 092 `verify_replay`, reconstitutes every composite seed using its Pass 089 prime source, checks each operator with the native `operator_contract`, and consumes every source lane. Each step is validated with Pass 092's actual `_step`, including the position-selected multiplier in `PRIME_SCHEDULED_MANIFOLD`; an exact unreduced affine prefix is checked against every intermediate integer state.
+
+The native intersection receipts are retained with their distinct ancestry and source identities. A same-source scalar intersection does **not** authorize cross-operator shared future, particularly when prime-multiplier schedules vary. This bridge yields a deterministic replayable source-bound composition **without** claiming an unbounded theorem, a complete phase/tensor embedding, or canonical VM81 admission.
+
+The remaining proof must jointly compose these source-bound ordered operator words with the full HARMONICODE phase, tensor, HNAN and Hash216 state-equivalence constraints. The finite replay receipts are part of that cumulative proof evidence, not the completed universal proof.
