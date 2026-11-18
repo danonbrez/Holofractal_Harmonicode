@@ -17,6 +17,11 @@ from hhs_runtime.pass220.hhs_cumulative_orbital_proof_composition_v1 import (
     compose_inherited_orbital_proof,
     ordered_shared_suffix_witnesses,
     ordered_affine_orbit_witness,
+    compose_pass092_prime_product_orbits,
+)
+
+from native_projects.hhs_bifurcation_calibration.hhs_pass092_prime_product_harmonic_manifolds_v1 import (
+    default_workload as pass092_default_workload,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -161,6 +166,65 @@ class TestCumulativeNativeOrbitalComposition(unittest.TestCase):
             CumulativeOrbitalProofError, "SHARED_SUFFIX_NATIVE_SUCCESSOR_MISMATCH"
         ):
             ordered_shared_suffix_witnesses([a, b])
+
+    def test_pass092_composite_prime_operator_and_factor_ancestry(self):
+        workload = pass092_default_workload(
+            ROOT, workload_id="PASS220_ORBIT_COMPOSITE_INTEGRATION",
+            basis_size=3, operator_count=2,
+            max_exponent=1, max_steps=12, max_seed_count=8,
+        )
+        result = compose_pass092_prime_product_orbits(ROOT, workload)
+        self.assertTrue(result["deterministic_pass092_replay_verified"])
+        self.assertEqual(result["prime_product_seed_count"], 8)
+        self.assertEqual(result["lane_count"], 16)
+        self.assertFalse(result["universal_orbit_embedding_proved"])
+        self.assertFalse(result["canonical_vm81_admission"])
+        for lane in result["ordered_composite_and_prime_lanes"]:
+            self.assertTrue(lane["all_prefixes_verified"])
+            self.assertTrue(lane["operator_order_preserved"])
+            self.assertEqual(len(lane["factor_vector"]), 3)
+            self.assertEqual(len(lane["lane_root_hash72"]), 72)
+            self.assertEqual(len(lane["history_root_hash72"]), 72)
+
+    def test_pass092_prime_scheduled_operator_word_preserves_actual_order(self):
+        workload = pass092_default_workload(
+            ROOT, workload_id="PASS220_ORBIT_PRIME_SCHEDULED",
+            basis_size=2, operator_count=2,
+            max_exponent=1, max_steps=9, max_seed_count=4,
+            mode="PRIME_SCHEDULED_MANIFOLD",
+        )
+        result = compose_pass092_prime_product_orbits(ROOT, workload)
+        self.assertEqual(result["lane_count"], 8)
+        for lane in result["ordered_composite_and_prime_lanes"]:
+            prefixes = lane["exact_affine_prefixes"]
+            for i, row in enumerate(prefixes):
+                self.assertEqual(
+                    row["source_operator_prime"],
+                    workload["operator_schedule"][i % len(workload["operator_schedule"])],
+                )
+        self.assertTrue(all(
+            edge["phase_scheduled_shared_future_not_inferred"]
+            for edge in result["original_state_intersections"]
+        ))
+
+    def test_pass092_rejects_unwitnessed_seed_and_operator_lineage(self):
+        workload = pass092_default_workload(
+            ROOT, workload_id="PASS220_ORBIT_NEGATIVE",
+            basis_size=2, operator_count=1,
+            max_steps=4, max_seed_count=3,
+        )
+        tampered_seed = copy.deepcopy(workload)
+        tampered_seed["seeds"][0]["prime_basis"][0] = 997
+        with self.assertRaisesRegex(
+            CumulativeOrbitalProofError, "PASS092_UNWITNESSED_PRIME_BASIS",
+        ):
+            compose_pass092_prime_product_orbits(ROOT, tampered_seed)
+        tampered_op = copy.deepcopy(workload)
+        tampered_op["operators"][0]["operator_prime_source_root_hash72"] = "0" * 72
+        with self.assertRaisesRegex(
+            CumulativeOrbitalProofError, "PASS092_OPERATOR_PROVENANCE_MISMATCH",
+        ):
+            compose_pass092_prime_product_orbits(ROOT, tampered_op)
 
     def test_reject_unproven_universal_claim(self):
         workload = copy.deepcopy(self.workload)
