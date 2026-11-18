@@ -57,6 +57,61 @@ def _typed_json(value: Any) -> str:
                       separators=(",", ":"))
 
 
+def ordered_affine_orbit_witness(
+    *, seed: int, ordered_states: Sequence[int], operation_word: str,
+    odd_multiplier: int = 3,
+) -> dict[str, Any]:
+    """Compose EVERY ordered inherited parity operation as exact integer data.
+
+    For an observed prefix, its affine representation is (A*seed+B)/D,
+    with A, B, D integers and D>0. E doubles D; O sends
+    (A,B,D) to (p*A,p*B+D,D). No reassociation, orbit sorting, float
+    arithmetic, or change to the underlying parent-root proof records.
+    """
+    if (type(seed) is not int or seed <= 0
+        or type(odd_multiplier) is not int or odd_multiplier < 1
+        or not isinstance(operation_word, str)
+        or not isinstance(ordered_states, (list, tuple))
+        or not ordered_states or ordered_states[0] != seed
+        or len(ordered_states) != len(operation_word) + 1):
+        raise CumulativeOrbitalProofError("ORDERED_AFFINE_INPUT_INVALID")
+    a, b, d = 1, 0, 1
+    prefixes = []
+    for i, operation in enumerate(operation_word):
+        state = ordered_states[i]
+        target = ordered_states[i + 1]
+        if type(state) is not int or type(target) is not int or state <= 0 or target <= 0:
+            raise CumulativeOrbitalProofError("ORDERED_AFFINE_NONINTEGER_STATE")
+        if a * seed + b != d * state:
+            raise CumulativeOrbitalProofError("ORDERED_AFFINE_PREFIX_MISMATCH")
+        if operation == "E":
+            if state % 2 or target != state // 2:
+                raise CumulativeOrbitalProofError("ORDERED_AFFINE_PARITY_OR_SUCCESSOR_MISMATCH")
+            d *= 2
+        elif operation == "O":
+            if state % 2 == 0 or target != odd_multiplier * state + 1:
+                raise CumulativeOrbitalProofError("ORDERED_AFFINE_PARITY_OR_SUCCESSOR_MISMATCH")
+            a, b = odd_multiplier * a, odd_multiplier * b + d
+        else:
+            raise CumulativeOrbitalProofError("ORDERED_AFFINE_UNKNOWN_OPERATOR")
+        if a * seed + b != d * target:
+            raise CumulativeOrbitalProofError("ORDERED_AFFINE_PREFIX_MISMATCH")
+        prefixes.append({"depth": i + 1, "operation": operation,
+                         "A": str(a), "B": str(b), "D": str(d),
+                         "integer_state": str(target)})
+    return {
+        "seed": str(seed), "operator_prime": str(odd_multiplier),
+        "ordered_operation_word": operation_word,
+        "A": str(a), "B": str(b), "D": str(d),
+        "terminal_integer_state": str(ordered_states[-1]),
+        "exact_ordered_endpoint_identity": True,
+        "prefixes": prefixes,
+        "projection_only": True,
+        "source_equations_preserved": True,
+        "native_vm81_admission": False,
+    }
+
+
 def ordered_shared_suffix_witnesses(
     lanes: Sequence[Mapping[str, Any]],
 ) -> list[dict[str, Any]]:
@@ -160,6 +215,9 @@ def compose_inherited_orbital_proof(
                 raise CumulativeOrbitalProofError("ORBITAL_NODE_LINK_MISMATCH")
             if nodes[i+1]["parent_state_root_hash72"] != nodes[i]["state_root_hash72"]:
                 raise CumulativeOrbitalProofError("ORBITAL_ANCESTRY_LINK_MISMATCH")
+        affine = ordered_affine_orbit_witness(
+            seed=seed, ordered_states=states, operation_word=word,
+        )
         pq = pq_orientation_witness(p=seed-1, q=seed+1, P=seed)
         if not pq["orientation_quotient_closed"]:
             raise CumulativeOrbitalProofError("EXACT_PQ_BRIDGE_NOT_CLOSED")
@@ -176,6 +234,7 @@ def compose_inherited_orbital_proof(
                 "u72_offset": lane["u72_offset"],
             },
             "exact_prime_centered_orientation": pq,
+            "exact_ordered_affine_orbit": affine,
             "terminal_cycle_reached": lane["terminal_cycle_reached"],
             "outcome": lane["outcome"],
         })
