@@ -35,6 +35,16 @@ int main(void) {
     if(hhs_ptm_cell_address_v1(185,185,0,0,&addr)!=1) return 3;
     if(hhs_ptm_orbit_visit_v1(3,1,reject_state,NULL,&visited)!=4) return 4;
     if(hhs_ptm_orbit_visit_v1((UINT64_MAX-1)/3+1,2,accept_state,NULL,&visited)!=2) return 5;
-    puts("PASS: exact orbit/product/factor callback and 3x3 address checks");
+    for (uint64_t k=0;k<UINT64_C(308025);++k) {
+        uint64_t row,col,cell,reconstructed;
+        if (hhs_ptm_decode_cell_address_v1(185,k,&row,&col,&cell)!=0) return 6;
+        if (hhs_ptm_cell_address_v1(185,row,col,cell,&reconstructed)!=0 || reconstructed!=k) return 7;
+    }
+    {
+        uint64_t row,col,cell;
+        if (hhs_ptm_decode_cell_address_v1(185,308025,&row,&col,&cell)!=1) return 8;
+        if (hhs_ptm_decode_cell_address_v1(UINT64_C(1)<<63,0,&row,&col,&cell)!=2) return 9;
+    }
+    puts("PASS: exact orbit/product/factor callbacks and 308025 reversible cell addresses");
     return 0;
 }
