@@ -216,9 +216,15 @@ class TestCumulativeNativeOrbitalComposition(unittest.TestCase):
         tampered_seed = copy.deepcopy(workload)
         tampered_seed["seeds"][0]["prime_basis"][0] = 997
         with self.assertRaisesRegex(
-            CumulativeOrbitalProofError, "PASS092_UNWITNESSED_PRIME_BASIS",
+            CumulativeOrbitalProofError, "PASS092_COMPOSITE_SEED_PROVENANCE_MISMATCH",
         ):
             compose_pass092_prime_product_orbits(ROOT, tampered_seed)
+        unknown_prime = copy.deepcopy(workload)
+        unknown_prime["seeds"][0]["prime_basis"][0] = 100000000000000000000000000000000000000000000000003
+        with self.assertRaisesRegex(
+            CumulativeOrbitalProofError, "PASS092_UNWITNESSED_PRIME_BASIS",
+        ):
+            compose_pass092_prime_product_orbits(ROOT, unknown_prime)
         tampered_op = copy.deepcopy(workload)
         tampered_op["operators"][0]["operator_prime_source_root_hash72"] = "0" * 72
         with self.assertRaisesRegex(
