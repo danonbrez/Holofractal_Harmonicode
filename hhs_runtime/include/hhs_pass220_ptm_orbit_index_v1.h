@@ -20,6 +20,8 @@ typedef int (*HHSPtmFactorCallbackV1)(const HHSPtmOrbitStateV1 *, int side, uint
 int hhs_ptm_orbit_visit_v1(uint64_t start, uint64_t max_states, HHSPtmOrbitCallbackV1 callback, void *ctx, uint64_t *visited);
 int hhs_ptm_factor_visit_v1(const HHSPtmOrbitStateV1 *state, HHSPtmFactorCallbackV1 callback, void *ctx);
 int hhs_ptm_cell_address_v1(uint64_t length, uint64_t row, uint64_t col, uint64_t local_cell, uint64_t *address);
+/* Invert flattened block/cell address without materializing a 3x3 block. */
+int hhs_ptm_decode_cell_address_v1(uint64_t length, uint64_t address, uint64_t *row, uint64_t *col, uint64_t *local_cell);
 #ifdef __cplusplus
 }
 #endif
