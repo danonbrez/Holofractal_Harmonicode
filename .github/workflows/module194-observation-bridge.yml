@@ -1,0 +1,37 @@
+name: Module194 read-only bridge verification
+
+on:
+  push:
+    branches:
+      - dev/pass220-module194-observation-bridge-20261118
+  pull_request:
+    branches:
+      - dev/pass220-runtime-os-webgl-v147-native-integration
+    paths:
+      - "examples/harmonicode_module194_*.mjs"
+      - "tests/test_module194_*.mjs"
+      - ".github/workflows/module194-observation-bridge.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  exact-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pinned immutable revision
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Run all Module194 bridge tests with the runner Node runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          node tests/test_module194_carrier_adapter.mjs
+          node tests/test_module194_live_sampler.mjs
+          node tests/test_module194_graph_reader.mjs
+          node tests/test_module194_qpv_checkpoint.mjs
+          node tests/test_module194_native_vm81_receipt.mjs
+          node tests/test_module194_qpv_native_integration.mjs
