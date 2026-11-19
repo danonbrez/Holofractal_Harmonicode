@@ -59,10 +59,11 @@
   "verification": {
     "native_real_library_test": "tests/test_hhs_admin_sql_lane5_native_integration_v1.py",
     "pending": [
-      "authorized exact UQCEL witness and ordered parent Hash216 reference for recognized typed frame",
-      "signed environmental admission with actual authorization",
-      "Hash72 Hash216 canonical receipts and replay",
-      "agent and IDE RAG readback",
+      "source-bound provenance verification for UQCEL mathematical witness",
+      "current authorized parent Hash216 reference and ordered index verification",
+      "signed environmental admission with production key authority",
+      "canonical Hash72 Hash216 receipts and replay",
+      "agent and IDE knowledge readback",
       "exact-main production deployment"
     ],
     "state": "OPEN"
@@ -79,5 +80,17 @@
     "canonical_hash216_admitted": false,
     "tests": "tests/test_hhs_admin_sql_typed_vm81_source_v1.py",
     "state": "INTEGRATION_COMMITTED_CI_PENDING"
+  },
+  "uqcel_witness_prevalidation": {
+    "module": "hhs_backend.runtime.hhs_admin_sql_uqcel_witness_prevalidation_v1",
+    "native_validator": "hhs_python.runtime.hhs_uqcel_ctypes_bridge.HHSUQCELRuntimeBridge.validate",
+    "requires": "owner-bound staged exact typed VM81 source and explicitly supplied exact integer UQCEL fields",
+    "read_only": true,
+    "source_to_witness_provenance_bound": false,
+    "authorized_parent_hash216_bound": false,
+    "can_commit_vm81": false,
+    "can_mint_hash216": false,
+    "test": "tests/test_hhs_admin_sql_uqcel_witness_prevalidation_v1.py",
+    "state": "COMMITTED_CI_PENDING"
   }
 }
