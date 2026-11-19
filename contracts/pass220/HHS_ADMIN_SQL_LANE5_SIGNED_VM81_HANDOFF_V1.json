@@ -92,5 +92,25 @@
     "can_mint_hash216": false,
     "test": "tests/test_hhs_admin_sql_uqcel_witness_prevalidation_v1.py",
     "state": "COMMITTED_CI_PENDING"
+  },
+  "source_witness_candidate_association": {
+    "module": "hhs_backend.runtime.hhs_admin_sql_uqcel_source_association_v1",
+    "functions": [
+      "build_candidate_source_witness_association",
+      "replay_candidate_source_witness_association"
+    ],
+    "requires": [
+      "verified owner and finalized exact typed staged frame",
+      "successful inherited native UQCEL mathematical validation",
+      "replay of source SHA256, exact integer witness and candidate association SHA256"
+    ],
+    "source_identity_bytes": 648,
+    "arbitrary_source_staging_maximum_file_size_added": false,
+    "candidate_only": true,
+    "authorized_source_to_witness_provenance": false,
+    "authorized_parent_hash216_bound": false,
+    "canonical_hash216_admitted": false,
+    "tests": "tests/test_hhs_admin_sql_uqcel_source_association_v1.py",
+    "state": "COMMITTED_CI_PENDING"
   }
 }
