@@ -51,3 +51,15 @@ int hhs_ptm_cell_address_v1(uint64_t length, uint64_t row, uint64_t col, uint64_
     *address=9*block+local_cell;
     return 0;
 }
+
+int hhs_ptm_decode_cell_address_v1(uint64_t length, uint64_t address, uint64_t *row, uint64_t *col, uint64_t *local_cell) {
+    uint64_t blocks,total,block;
+    if (!row || !col || !local_cell || !length) return 1;
+    if (!safe_mul(length,length,&blocks) || !safe_mul(blocks,UINT64_C(9),&total)) return 2;
+    if (address>=total) return 1;
+    block=address/UINT64_C(9);
+    *row=block/length;
+    *col=block%length;
+    *local_cell=address%UINT64_C(9);
+    return 0;
+}
