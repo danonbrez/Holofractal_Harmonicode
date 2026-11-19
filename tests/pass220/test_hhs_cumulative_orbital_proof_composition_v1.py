@@ -204,6 +204,8 @@ class TestCumulativeNativeOrbitalComposition(unittest.TestCase):
                 )
         self.assertTrue(all(
             edge["phase_scheduled_shared_future_not_inferred"]
+            and not edge["effective_shared_future_authorized"]
+            and not edge["full_tensor_equivalence_proved"]
             for edge in result["original_state_intersections"]
         ))
 
