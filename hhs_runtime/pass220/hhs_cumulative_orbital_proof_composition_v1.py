@@ -216,6 +216,10 @@ def compose_pass092_prime_product_orbits(
         intersections.append({**edge,
             "phase_scheduled_shared_future_not_inferred":
                 workload["mode"] == "PRIME_SCHEDULED_MANIFOLD",
+            "effective_shared_future_authorized": (
+                bool(edge["shared_future_authorized"])
+                and workload["mode"] != "PRIME_SCHEDULED_MANIFOLD"
+            ),
             "full_tensor_equivalence_proved": False,
         })
     result = {
