@@ -32,9 +32,9 @@ await assert.rejects(verify(record,8n),/TICK_MISMATCH/);
 await assert.rejects(verify(enc.encode("wrong"),7n),/CHECKPOINT_MISMATCH/);
 candidate={...candidate,hash216ProofSha256:"c".repeat(64)};
 await assert.rejects(verify(record,7n),/SIGNATURE_INVALID/);
-candidate=await signed({...base,omega:false});
+candidate={...await signed(),omega:false};
 await assert.rejects(verify(record,7n),/CLOSURE_FAILED/);
-candidate=await signed({...base,lane5BiosMediated:false});
+candidate={...await signed(),lane5BiosMediated:false};
 await assert.rejects(verify(record,7n),/PROOF_INCOMPLETE/);
 candidate=await signed();
 await assert.rejects(createSignedVm81Verifier({
