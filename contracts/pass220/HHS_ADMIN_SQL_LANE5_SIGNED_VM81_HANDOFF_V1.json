@@ -62,7 +62,7 @@
       "source-bound provenance verification for UQCEL mathematical witness",
       "current authorized parent Hash216 reference and ordered index verification",
       "signed environmental admission with production key authority",
-      "canonical Hash72 Hash216 receipts and replay",
+      "Hash72 Hash216 canonical receipts and replay",
       "agent and IDE knowledge readback",
       "exact-main production deployment"
     ],
