@@ -57,6 +57,12 @@ class NativeOrbitIndex:
             ctypes.c_uint64, ctypes.POINTER(ctypes.c_uint64),
         ]
         self._lib.hhs_ptm_cell_address_v1.restype = ctypes.c_int
+        self._lib.hhs_ptm_decode_cell_address_v1.argtypes = [
+            ctypes.c_uint64, ctypes.c_uint64,
+            ctypes.POINTER(ctypes.c_uint64), ctypes.POINTER(ctypes.c_uint64),
+            ctypes.POINTER(ctypes.c_uint64),
+        ]
+        self._lib.hhs_ptm_decode_cell_address_v1.restype = ctypes.c_int
 
     def visit(self, start: int, *, max_states: int = 10000, include_factors: bool = True):
         start = _uint(start, positive=True)
@@ -124,3 +130,17 @@ class NativeOrbitIndex:
         if status:
             raise NativeOrbitError(f"PTM_NATIVE_ADDRESS_STATUS:{status}")
         return int(out.value)
+
+    def decode_address(self, length: int, address: int) -> tuple[int, int, int]:
+        length = _uint(length, positive=True)
+        address = _uint(address)
+        row = ctypes.c_uint64()
+        column = ctypes.c_uint64()
+        local_cell = ctypes.c_uint64()
+        status = self._lib.hhs_ptm_decode_cell_address_v1(
+            length, address, ctypes.byref(row), ctypes.byref(column),
+            ctypes.byref(local_cell)
+        )
+        if status:
+            raise NativeOrbitError(f"PTM_NATIVE_DECODE_STATUS:{status}")
+        return (int(row.value), int(column.value), int(local_cell.value))
