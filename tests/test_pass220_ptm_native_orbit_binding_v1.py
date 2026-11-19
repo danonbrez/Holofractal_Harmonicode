@@ -50,11 +50,24 @@ class TestNativeOrbitParity(unittest.TestCase):
             self.assertEqual(self.native.address(185,row,col,cell),
                              9*(row*185+col)+cell)
 
+    def test_full_9042_ordered_cell_roundtrip(self):
+        for address in range(185 * 185 * 9):
+            row, column, cell = self.native.decode_address(185, address)
+            self.assertEqual((row, column, cell),
+                             ((address // 9) // 185, (address // 9) % 185, address % 9))
+            self.assertEqual(self.native.address(185, row, column, cell), address)
+
     def test_native_guards(self):
         for args in ((185,185,0,0),(185,0,185,0),(185,0,0,9)):
             with self.subTest(args=args):
                 with self.assertRaises(NativeOrbitError):
                     self.native.address(*args)
+        with self.assertRaises(NativeOrbitError):
+            self.native.decode_address(185, 308025)
+        with self.assertRaises(NativeOrbitError):
+            self.native.decode_address(0, 0)
+        with self.assertRaises(NativeOrbitError):
+            self.native.decode_address(2**63, 0)
         with self.assertRaises(NativeOrbitError):
             self.native.visit(9042,max_states=1)
         for start in (0,-1,True,1.0,2**64):
