@@ -202,10 +202,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--census", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--query", default=None)\n    parser.add_argument("--index-root", default=None)
+    parser.add_argument("--query", default=None)
+    parser.add_argument("--index-root", default=None)
     args = parser.parse_args()
     packet = json.loads(Path(args.census).read_text("utf-8"))
-    baseline, index_error = ({}, "INDEX_ROOT_NOT_SUPPLIED") if args.index_root is None else load_exact_checkout_baseline(Path(args.index_root))\n    result = reconcile_remote_trees(packet,query=args.query,baseline=baseline)\n    result["checkout_index_error"] = index_error\n    result["checkout_index_bound"] = index_error is None
+    baseline, index_error = ({}, "INDEX_ROOT_NOT_SUPPLIED") if args.index_root is None else load_exact_checkout_baseline(Path(args.index_root))
+    result = reconcile_remote_trees(packet,query=args.query,baseline=baseline)
+    result["checkout_index_error"] = index_error
+    result["checkout_index_bound"] = index_error is None
     Path(args.output).write_text(json.dumps(result,sort_keys=True,indent=2)+"\n","utf-8")
     print("Remote tree candidates:",result["candidate_count"])
     print("Uninspected or truncated trees:",len(result["remote_tree_errors"]))
