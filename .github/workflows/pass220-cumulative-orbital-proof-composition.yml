@@ -1,0 +1,49 @@
+name: Pass 220 Cumulative Orbital Proof Composition
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'hhs_runtime/pass220/hhs_cumulative_lemma_frontier_v1.py'
+      - 'hhs_runtime/pass220/hhs_cumulative_proof_span_index_v1.py'
+      - 'hhs_runtime/pass220/hhs_cumulative_orbital_proof_composition_v1.py'
+      - 'tests/pass220/test_hhs_cumulative_lemma_frontier_v1.py'
+      - 'tests/pass220/test_hhs_cumulative_proof_span_index_v1.py'
+      - 'tests/pass220/test_hhs_cumulative_orbital_proof_composition_v1.py'
+      - 'docs/pass220/HHS_CUMULATIVE_TRIANGLE_DYADIC_ORBITAL_CLOSURE_THEOREM_DEVELOPMENT_V1.md'
+      - '.github/workflows/pass220-cumulative-orbital-proof-composition.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cumulative-proof-composition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency-scoped test requirements
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile all cumulative mathematical proof composition modules and tests
+        run: |
+          python -m py_compile \
+            hhs_runtime/pass220/hhs_cumulative_lemma_frontier_v1.py \
+            hhs_runtime/pass220/hhs_cumulative_proof_span_index_v1.py \
+            hhs_runtime/pass220/hhs_cumulative_orbital_proof_composition_v1.py \
+            tests/pass220/test_hhs_cumulative_lemma_frontier_v1.py \
+            tests/pass220/test_hhs_cumulative_proof_span_index_v1.py \
+            tests/pass220/test_hhs_cumulative_orbital_proof_composition_v1.py
+      - name: Execute mathematical index and real inherited native service integration tests
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_hhs_cumulative_lemma_frontier_v1.py \
+            tests/pass220/test_hhs_cumulative_proof_span_index_v1.py \
+            tests/pass220/test_hhs_cumulative_orbital_proof_composition_v1.py
+      - name: Check immutable whitepaper source boundary independently
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q --tb=short tests/pass220/test_pass220_whitepaper_corpus_ingress_v1.py

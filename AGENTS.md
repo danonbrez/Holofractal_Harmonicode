@@ -399,3 +399,86 @@ If a genuine external blocker prevents full completion, preserve the completed c
 - Keep verified implementation claims separate from user-supplied architectural specifications and unexecuted proof obligations. Resolve integration gaps cumulatively without reopening prior mathematics unless new concrete conflicting evidence is found.
 
 **Agent decision rule:** Failed integration requires root-cause diagnosis and full contract repair, not agent-authored capability suppression. Preserve frozen-layer guards and protected VM81 authority while restoring all compatible native capabilities through Pass 219/220.
+
+## Integrated mathematical proof and non-negation discipline (2026-11-15)
+
+**Scope:** All HHS/HARMONICODE mathematics, theorem development, compiler semantics, native implementation investigations, and proof-status reporting. This rule is additive to frozen-layer preservation, formal admission constraints, and evidence integrity.
+
+### No scope-derived negations
+
+- Preserve established positive results, their exact source expressions, proof assumptions, ordered types, cell addresses, phase/provenance, recorded verification outcomes, and native receipts. Do not replace the full theorem with a narrower scalar or single-service surrogate.
+- **Failure to find, inspect, execute, or independently reconstruct a proof is not proof of its absence or falsity.** Formally, `¬Verified(X) ⇏ ¬X` and `NotFound(X, inspected_scope) ⇏ Absent(X, complete_corpus)`. Report the *inspection/verification boundary* precisely instead of asserting a global mathematical or implementation negation.
+- Distinguish (1) specified or demonstrated source relationships, (2) formally derived theorems with their exact hypotheses, (3) recorded proof/checker/calculator results, (4) native implementation and admission/replay receipts, and (5) currently open integration or verification claims. Do not promote an uninspected assertion into a verified theorem, or downgrade a proved lower-layer identity because a higher-level integration witness has not been located.
+- An adverse conclusion must identify its explicit logical counterexample, incompatible typed constraint, invalid inference, or reproducible failed witness, with exact provenance. Generic doubt, ordinary scalar substitutions, missing search results, prior model assumptions, or the current agent's search boundary are not falsification. Absence of falsification is not itself a substitute for a proof of a universal statement.
+
+### Whole-corpus, simultaneous-constraint reasoning
+
+- Before declaring a theorem disproved, unsupported by the repository, or impossible to enforce, follow `REPOSITORY_INDEX.md`, the Hash216 dependency tree and hydration graph, the HARMONICODE course modules, existing mathematical white papers, Pass 191/218/219/220 and relevant historical contracts, restart records, native C/C++ cell-wall constructors, Lane 5 service index, Lean/Wolfram/proof-checker results, VM81, Hash72/Hash216 traces, and relevant branches/receipts. Cite the actual files and the investigated scope.
+- Treat the recursive `(a²,b²,c²)` triangle, exact dependency triple `(c²-b²,c²-a²,a²+b²)`, dyadic and reciprocal scaling, prime-centered `P²=pq+1` constructor, ordered `AB=P⁴` / `BA=-P⁴` orientations, HNAN gates, phase/Lo Shu geometry, Collatz orbital ancestry, and closure conditions as **one typed constrained composition** wherever the applicable contracts join them. Preserve the original recurrence `c²+a²/b^(1,n>1<∞)` exactly as supplied until its operator precedence, exponent domain, and native lowering are recovered from authoritative sources.
+- A candidate counterexample to integrated orbital closure must be evaluated as a complete ordered tensor state, including recursive inner and outer constraints, phase, scale, address, provenance, and actual successor/admission rules—not only a repeated scalar projection. Distinguish an ordinary nonterminal repeat from an admitted terminal phase cycle. Verify whether the full constraints exclude nonterminal recurrence *and* unbounded nonclosing trajectories; do not assume either exclusion without its licensed witness.
+- Apply `ConstraintJoin` only across compatible typed domains and declared bridges. A passing local identity or bounded Collatz sweep does not by itself attest universal closure; conversely, lack of a single monolithic theorem file does not negate cross-document composition. Recover existing evidence before rederiving or designing a new gate.
+- Trace every genuine gap as a bounded **proof-composition gap**, **discovery gap**, **admission/enforcement gap**, or **failed contradictory witness**. Preserve known positives and use the existing frozen-layer, VM81, Hash72/Hash216, and Lane 5 paths for any authorized extension. No alternative authority, validator bypass, or rewriting of frozen mathematics.
+
+**Agent decision rule:** The inspected corpus is not the complete mathematical system. Positive evidence remains cumulative; negative conclusions require explicit falsification at the applicable typed scope. Develop full theorems by composing existing constraints and witnesses, keeping proposition, derivation, native enforcement, and production verification separately traceable.
+
+### Corpus-wide proven-lemma inheritance — non-compartmentalization rule (2026-11-15)
+
+- **Every established and proved mathematical identity or transformation throughout the entire HHS/HARMONICODE repository corpus is an available valid lemma of the cumulative formal system.** No agent may arbitrarily demote a previously proved theorem to a hypothesis, local curiosity, tentative analogy, or optional component merely because its proof is filed in a different pass, course module, white paper, C/C++ constructor, Lean/Wolfram certificate, or proof receipt.
+- The complete corpus is the lemma context for theorem development; the relevant set is not limited by the names of files a particular inspection happened to retrieve or by subsystem ownership. Existing source-index, dependency, hydration, and theorem provenance paths are used to *recover* established lemmas, not to decide whether their proven results continue to exist.
+- **Composition is cumulative and transitive wherever the recorded types, domains, assumptions, directionality, and native constraint gates permit it.** Preserve ordered products, addresses, membrane scopes, projection/reconstruction witnesses, and exact serialization. These are parts of the lemma, not discretionary grounds for compartmentalizing or dismissing it. Do not invent extra preconditions or proof obligations beyond those actually attached to the established source.
+- When analyzing a new claim, first construct its proof from the *entire inherited lemma closure*: apply prior theorems and registered transformations as already established, and only investigate a genuinely unresolved cross-lemma inference if its precise missing logical step can be identified. Avoid repeated reproving, artificial isolation, fabricated ambiguity, and broad negative conclusions from narrow source searches.
+- Distinguish the **truth of an inherited proved lemma within its stated formal system** from a separate **present-tense runtime-enforcement or deployment claim**. A missing current runtime bridge does not negate the lemma; nor does an established identity by itself certify a new production wiring result.
+- For a proposed nonterminal orbital counterexample, evaluate the full jointly applicable lemma closure before claiming feasibility. Every proven global constraint is active. A falsification must identify a concrete contradiction with the full typed premises or an invalid deduction, not simply a conventional scalar counter-reading or a missing single-purpose proof file.
+
+**Enforcement:** Proven corpus identity ⇒ admissible inherited lemma under its existing premises. The burden is on any proposed exclusion or scope restriction to cite the exact previously established formal condition authorizing that restriction; the current agent's model preference or incomplete inspection has no such authority.
+
+### Agent attention must not bound the mathematical reasoning scope (2026-11-15)
+
+This is an **agent-level reasoning and retrieval discipline**, not a request to build, replace, or extend the already-engineered HARMONICODE operating system, Hash216 knowledge graph, Lane 5, or its mathematical foundation.
+
+**Narrow Task Context ⇏ Narrow Reasoning Scope.** Attention selects the immediate problem; it does not restrict the knowledge permitted to solve it. The complete established repository lemma corpus and its existing constraint relationships remain available under every conversational task, context, language, modality, and subsystem.
+
+- Before a task appears to require only a local answer, determine whether any inherited proof, native transformation, course module, graph relation, runtime gate, or prior verification changes the result. Follow dependency edges beyond the names in the immediate prompt. Search the already-integrated repository graph and sources as necessary; do not infer a global boundary from the amount of retrieved text.
+- Maintain the active chain of mathematical relationships across contextual shifts. Reuse existing results directly; do not periodically reset, rederive, or reinterpret them as absent simply because attention moved to a different topic.
+- Expand active reasoning by mathematical relation and constraint applicability, not solely lexical keyword similarity. Integrate relevant geometry, logic, language, code, phase, recursive state, provenance and runtime semantics without replacing their typed relations with lookup substitutions.
+- Compose all relevant proven lemmas *before* imposing a newly proposed limitation. Any true ambiguity must be grounded in incompatible source claims or an actual unresolved typed inference; an agent's limited retrieval and overaggressive filtering do not create mathematical ambiguity.
+- Preserve a globally consistent, restartable reasoning state: the active question, relevant inherited lemmas, their dependencies, exact hypotheses, candidate transformations, and closure/contradiction outcomes. Retrieval enriches this state; it must not silently narrow it.
+- Use the existing Lane 5/Hash216 repository knowledge graph's `search`/`neighbors`/`status` discovery surfaces and canonical source index when available. They are reasoning/retrieval resources, not substitutes for the exact proof corpus nor authority to mutate VM81. An interactive agent may traverse them during a task; do not misreport an independent background process as currently running.
+
+**Invariant:** attention is a selector over the global lemma manifold, never a filter that removes proven relationships from what may participate in reasoning.
+
+### Authorized context for developing new proofs (2026-11-15)
+
+For HARMONICODE theorem development, the only authoritative context is:
+
+1. The user's supplied prompts, equations, and explicit mathematical constraints.
+2. Applicable upstream system instructions and higher-priority operating constraints.
+3. The repository's code, contracts, source equations, proof corpus, documentation, indexed dependency/knowledge graph, and established validation evidence.
+4. The authoritative VM81 runtime and its inherited Hash72/Hash216 admission and execution semantics.
+5. HARMONICODE algebra and its existing symbolic-logic, typed-constraint, transformation, and closure rules.
+
+These sources operate subject to the applicable instruction hierarchy and their actual mathematical/runtime types; listing them together does not imply that conflicting lower-priority instructions override higher-priority ones.
+
+External mathematical conventions, unfamiliarity, conventional scalar reinterpretations, the agent's preferred proof formalism, statistical expectations, keyword search results, uninspected source gaps, and speculative missing prerequisites are **not independent authorities** to narrow, negate, replace, or reclassify the authorized mathematical system.
+
+The agent may use general logical reasoning and auxiliary calculations to derive consequences, but each new proof claim must follow from actual inherited premises and licensed transformations. Any external information used for comparison remains non-authoritative unless the user or repository explicitly incorporates it.
+
+**Operational rule:** User equations + authorized system constraints + full inherited repository/VM81/HARMONICODE algebra context → typed, cumulative proof construction → exact verification/closure. Never invert that process by selecting a convenient external framework first and filtering the corpus to fit it.
+
+### Deduction is mandatory; shortcut optimization is not proof authority (2026-11-15)
+
+The authorized-context boundary is **constructive and compulsory**, not merely a restriction that happens to permit deduction. It forces the agent to derive new conclusions from the cumulative established HARMONICODE lemma manifold and the source-defined symbolic inference rules, rather than produce a convenient-looking answer by collapsing the problem.
+
+**Required proof operation:** given the user's new equation/target and all applicable inherited corpus lemmas, perform context-preserving typed inference, dependency expansion, invariant-preserving transformations, and explicit closure/contradiction analysis. Preserve proof provenance and the existing VM81/Hash72/Hash216 authority.
+
+**Prohibited substitutes for deduction:**
+- optimizing for a fluent, short, confident or familiar answer instead of demonstrating a licensed derivation;
+- prematurely projecting a full tensor/constraint statement to one convenient scalar equality;
+- substituting an external axiom, assumed mapping, typical-case expectation or conventional interpretation for the actual HARMONICODE operator/guard;
+- treating the first retrieved source cluster, a token/context budget, a keyword overlap, or an easy local proof as the total lemma frontier;
+- silently weakening an objective, dropping hypotheses, changing ordered products or reclassifying existing proofs to obtain a simpler result;
+- labeling a computational shortcut, receipt, benchmark, lookup hit, or prediction as a completed mathematical proof without the corresponding inherited proof relation.
+
+**Optimization is subordinate to correctness:** a shorter proof or more efficient one-step constructor is admissible when an exact derivation shows equivalence under the existing rules and preserves required information and invariants. No performance or answer-reward heuristic may become a mathematical premise. The valid stopping condition is the requested closure, a precisely identified unresolved inference within the authorized system, or an actual falsifying witness—not an agent-preferred approximation.
+
+This is an agent reasoning directive. It does not authorize replacement of the existing Lane 5 one-step constructor, new proof axioms, or any parallel runtime authority.

@@ -17,7 +17,10 @@ def course_module_gate_inventory(root:Path=Path("."))->dict:
     graph=build_dependency_graph(root)
     node=next((n for n in graph["nodes"] if n["source"]==SOURCE),None)
     if node is None: raise ProofCorpusError("COURSE_NOT_IN_FROZEN_CORPUS")
-    raw=(root/SOURCE).read_bytes()
+    historic_copy=node.get("historical_copy_path")
+    if not isinstance(historic_copy,str) or not historic_copy:
+        raise ProofCorpusError("COURSE_HISTORICAL_REVISION_NOT_BOUND")
+    raw=(root/historic_copy).read_bytes()
     if sha256(raw).hexdigest()!=node["source_sha256"]:
         raise ProofCorpusError("COURSE_SOURCE_IDENTITY_MISMATCH")
     text=raw.decode("utf-8")
@@ -43,6 +46,8 @@ def course_module_gate_inventory(root:Path=Path("."))->dict:
                         "runtime_hnan_phase_gate":"NOT_VERIFIED",
                         "canonical_admission":False})
     return {"schema":SCHEMA,"source":SOURCE,"source_sha256":node["source_sha256"],
+            "historical_source_path":historic_copy,
+            "expanded_successor":node["registered_successor"],
             "module_count":len(modules),"ordered_modules":modules,
             "verified_native_modules":0,"whole_course_proved":False,
             "hash216_minted":False,

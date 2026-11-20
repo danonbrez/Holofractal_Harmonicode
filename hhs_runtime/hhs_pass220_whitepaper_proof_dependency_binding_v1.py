@@ -36,8 +36,28 @@ def build_dependency_graph(root: Path=Path(".")) -> dict:
                 references.append({"path":target,"status":"PRESENT_UNVERIFIED"})
             edges.append({"source":item["path"],"target":target,
                           "status":references[-1]["status"]})
-        nodes.append({"source":item["path"],"source_sha256":item["content_sha256"],
-                      "git_blob_sha":item["git_blob_sha"],
+        # Legacy Module 0–12 proofs were bound to the ORIGINAL frozen course.
+        # Preserve that historical source as a distinct, byte-verified parent;
+        # do not silently reinterpret the modules using the expanded successor.
+        revision = item.get("registered_source_revision")
+        if revision is not None:
+            source_bytes = (root / revision["historical_copy_path"]).read_bytes()
+            source_sha256 = sha256(source_bytes).hexdigest()
+            source_blob = revision["historical_git_blob_sha"]
+        else:
+            source_sha256 = item["content_sha256"]
+            source_blob = item["git_blob_sha"]
+        nodes.append({"source":item["path"],"source_sha256":source_sha256,
+                      "git_blob_sha":source_blob,
+                      "registered_successor": (
+                          {"source_sha256":item["content_sha256"],
+                           "git_blob_sha":item["git_blob_sha"],
+                           "source_path":item["path"]}
+                          if revision is not None else None
+                      ),
+                      "historical_copy_path": (
+                          revision["historical_copy_path"] if revision else None
+                      ),
                       "references":references,
                       "applicable_proof_constraints_verified":False})
     graph={"schema":SCHEMA,"source_index_sha256":index["index_sha256"],
