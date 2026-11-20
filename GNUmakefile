@@ -44,6 +44,8 @@ PASS219_VM81_AUTHORITY_EXPORT_MAP := hhs_runtime/c/hhs_pass219_vm81_authority_ex
 # translation unit; reuse the existing I028 RNA/Holo4/BIOS mediation code.
 PASS220_I086_CONWAY_SRC := hhs_runtime/cpp/hhs_pass220_i086_lane5_conway_cell_wall_v1.cpp
 PASS220_I086_CONWAY_OBJ := $(RUNTIME_BUILD_DIR)/pass220/hhs_pass220_i086_lane5_conway_cell_wall_v1.o
+PASS220_LANE5_DYADIC_BRIDGE_SRC := hhs_runtime/cpp/hhs_pass220_lane5_dyadic_virtual_bridge_v1.cpp
+PASS220_LANE5_DYADIC_BRIDGE_OBJ := $(RUNTIME_BUILD_DIR)/pass220/hhs_pass220_lane5_dyadic_virtual_bridge_v1.o
 PASS220_I028_RNA_G3_BRIDGE_SRC := hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp
 PASS220_I028_RNA_G3_BRIDGE_OBJ := $(RUNTIME_BUILD_DIR)/pass220/hhs_pass220_i028_lane5_rna_g3_bridge_v1.o
 PASS219_VM81_ADAPTER_I028_SRC := hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c
@@ -52,6 +54,12 @@ PASS219_VM81_ADAPTER_I028_OBJ := $(RUNTIME_BUILD_DIR)/pass219/hhs_pass219_exact_
 
 PASS169_RUNTIME_BINDING_SRCS += $(PASS219_PQC_CELL_WALL_OBJ) $(PASS219_RNA_VM5184_ABI_OBJ) $(PASS220_COURSE_MODULE_ROUTE_OBJ) $(PASS219_NINE_LOOP_CELL_WALL_OBJ) $(PASS219_NINE_LOOP_SOURCE_CELL_WALL_OBJ) $(PASS219_NINE_LOOP_LARGE_CELL_WALL_OBJ) $(PASS219_NINE_LOOP_FEEDBACK_CELL_WALL_OBJ) $(PASS219_NINE_LOOP_TRAINING_SPECIMEN_CELL_WALL_OBJ) $(PASS219_NINE_LOOP_RELATION_DATASET_CELL_WALL_OBJ) $(PASS219_NINE_LOOP_GENERALIZATION_CELL_WALL_OBJ) $(PASS219_NINE_LOOP_KNOWLEDGE_HYDRATION_CELL_WALL_OBJ) $(PASS220_PHASE_LOCK_OBJ) $(PASS220_G72_GEAR_OBJ)
 PASS169_RUNTIME_BINDING_SRCS += $(PASS220_I086_CONWAY_OBJ) $(PASS220_I028_RNA_G3_BRIDGE_OBJ) $(PASS219_VM81_ADAPTER_I028_OBJ)
+PASS169_RUNTIME_BINDING_SRCS += $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)
+
+# GNU make expands ordinary prerequisites when parsing the inherited Makefile.
+# The ABI target was defined before this overlay appended the new object.
+# Declare the object as an explicit prerequisite so it is built before link.
+$(ABI_LIB): $(PASS220_LANE5_DYADIC_BRIDGE_OBJ)
 LDFLAGS += -lstdc++ -pthread -Wl,--version-script=$(PASS219_VM81_AUTHORITY_EXPORT_MAP)
 
 $(PASS219_PQC_CELL_WALL_OBJ): $(PASS219_PQC_CELL_WALL_SRC) \
@@ -152,6 +160,12 @@ $(PASS220_I086_CONWAY_OBJ): $(PASS220_I086_CONWAY_SRC) \
 		hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp | $(RUNTIME_BUILD_DIR)
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_I086_CONWAY_SRC) -o $@
+
+$(PASS220_LANE5_DYADIC_BRIDGE_OBJ): $(PASS220_LANE5_DYADIC_BRIDGE_SRC) \
+		hhs_runtime/include/hhs_pass220_lane5_dyadic_virtual_bridge_v1.h \
+		hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h | $(RUNTIME_BUILD_DIR)
+	mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -fPIC -c $(PASS220_LANE5_DYADIC_BRIDGE_SRC) -o $@
 
 $(PASS220_I028_RNA_G3_BRIDGE_OBJ): $(PASS220_I028_RNA_G3_BRIDGE_SRC) \
 		hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h | $(RUNTIME_BUILD_DIR)
