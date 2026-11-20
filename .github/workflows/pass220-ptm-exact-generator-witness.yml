@@ -1,0 +1,74 @@
+name: Pass 220 P-t-m Exact Generator Witness
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/pass220/pass220_ptm_exact_generator_witness_v1.py'
+      - 'tests/test_pass220_ptm_exact_generator_v1.py'
+      - 'hhs_runtime/pass220/pass220_ptm_dyadic_shell_v1.py'
+      - 'tests/test_pass220_ptm_dyadic_shell_v1.py'
+      - 'hhs_runtime/pass220/pass220_ptm_exact_euclidean_mod_v1.py'
+      - 'tests/test_pass220_ptm_exact_euclidean_mod_v1.py'
+      - 'hhs_runtime/pass220/pass220_ptm_native_sweep_adapter_v1.py'
+      - 'tests/test_pass220_ptm_native_sweep_adapter_v1.py'
+      - 'hhs_runtime/pass220/pass220_ptm_orbit_factor_index_v1.py'
+      - 'tests/test_pass220_ptm_orbit_factor_index_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_ptm_orbit_index_v1.h'
+      - 'hhs_runtime/c/hhs_pass220_ptm_orbit_index_v1.c'
+      - 'tools/pass220/pass220_ptm_orbit_index_probe_v1.c'
+      - 'hhs_runtime/pass220/pass220_ptm_native_orbit_binding_v1.py'
+      - 'tests/test_pass220_ptm_native_orbit_binding_v1.py'
+      - 'hhs_runtime/pass220/pass220_ptm_ordered_expression_lowering_v1.py'
+      - 'tests/test_pass220_ptm_ordered_expression_lowering_v1.py'
+      - '.github/workflows/pass220-ptm-exact-generator-witness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-reference-witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check exact source and rational reference
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_exact_generator_v1.py' -v
+      - name: Check dyadic shell witness
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_dyadic_shell_v1.py' -v
+      - name: Check exact Euclidean floor wrapping
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_exact_euclidean_mod_v1.py' -v
+      - name: Verify native executor handoff adapter using synthetic test-only fixture
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_native_sweep_adapter_v1.py' -v
+      - name: Reconstruct nested orbit and prime support evidence
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_orbit_factor_index_v1.py' -v
+      - name: Compile and execute native C orbit indexing probe
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -O2 -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_ptm_orbit_index_v1.c \
+            tools/pass220/pass220_ptm_orbit_index_probe_v1.c -o /tmp/pass220_ptm_orbit_probe
+          /tmp/pass220_ptm_orbit_probe
+      - name: Compile native shared ABI and validate full Python-to-C parity
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -O2 -fPIC -shared -Ihhs_runtime/include \
+            hhs_runtime/c/hhs_pass220_ptm_orbit_index_v1.c -o /tmp/libhhs_ptm_orbit.so
+          HHS_PTM_ORBIT_NATIVE_LIB=/tmp/libhhs_ptm_orbit.so python -m unittest discover -s tests -p 'test_pass220_ptm_native_orbit_binding_v1.py' -v
+      - name: Verify complete ordered P/t/m expression lowering
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_ptm_ordered_expression_lowering_v1.py' -v
+      - name: Emit source/reference witness
+        run: |
+          python hhs_runtime/pass220/pass220_ptm_exact_generator_witness_v1.py
+          python hhs_runtime/pass220/pass220_ptm_dyadic_shell_v1.py
+          python hhs_runtime/pass220/pass220_ptm_exact_euclidean_mod_v1.py
+          python hhs_runtime/pass220/pass220_ptm_orbit_factor_index_v1.py
