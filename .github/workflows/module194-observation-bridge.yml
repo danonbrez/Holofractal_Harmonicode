@@ -32,6 +32,7 @@ jobs:
           node tests/test_module194_carrier_adapter.mjs
           node tests/test_module194_live_sampler.mjs
           node tests/test_module194_graph_reader.mjs
+          node tests/test_module194_topology_reader.mjs
           node tests/test_module194_qpv_checkpoint.mjs
           node tests/test_module194_native_vm81_receipt.mjs
           node tests/test_module194_qpv_native_integration.mjs
