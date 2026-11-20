@@ -1,0 +1,136 @@
+{
+  "schema": "HHS_ADMIN_SQL_LANE5_TO_SIGNED_VM81_HANDOFF_V1",
+  "state": "CANDIDATE_READY_ADMISSION_OPEN",
+  "purposes": [
+    "GBrain-like LLM agent harness source hydration",
+    "conventional human IDE byte-fidelity ingress",
+    "native Lane5 candidate optimization"
+  ],
+  "candidate_source": {
+    "module": "hhs_backend.runtime.hhs_admin_sql_lane5_continuation_v1",
+    "function": "continue_staged_to_lane5",
+    "required_evidence": [
+      "authenticated SQL owner",
+      "STAGED upload state",
+      "source_sha256 exact bytes",
+      "native candidate receipt candidate_only true",
+      "canonical_hash216_admitted false",
+      "signed_vm81_admission_required true"
+    ]
+  },
+  "canonical_entrypoint": {
+    "header": "hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h",
+    "symbol": "hhs_exact_pass219_vm81_environment_admit_signed",
+    "inputs": [
+      "pass_number:uint32_t",
+      "signature_algorithm:uint32_t",
+      "input:const HHSExactUQCELInputV1*",
+      "candidate_frame:const HHSExactVM81Frame*",
+      "parent_hash216_reference:const HHSExactPass219Hash216TransitionViewV1*",
+      "lo_shu_group:int8_t",
+      "g243:uint16_t",
+      "feedback_lane:uint8_t",
+      "feedback_trinary:int8_t"
+    ],
+    "outputs": [
+      "out_committed_frame:HHSExactVM81Frame*",
+      "out_admission:HHSExactPass219RNAAdmissionV1*",
+      "out_firewall_receipt:HHSExactPass219VM81PQCFirewallReceiptV1*",
+      "out_signature_receipt:HHSExactPass219VM81PQCSignatureReceiptV1*",
+      "out_environment_receipt:HHSExactPass219VM81EnvironmentReceiptV1*"
+    ],
+    "success_requires": [
+      "native return HHSExactStatus OK",
+      "environment signature verified",
+      "firewall admission and signed proof verified",
+      "authorized committed frame matches canonical state",
+      "Hash72 and Hash216 recorded and replay verified"
+    ]
+  },
+  "hard_boundaries": [
+    "SQL SHA256 is source identity only",
+    "Lane5 selected_address and candidate route signature are not a VM81 frame or authorization",
+    "never synthesize parent Hash216 registry or Lo Shu group from digest without native typed constructor",
+    "never invoke hidden 1.31 firewall as direct alternate mutation authority",
+    "no source bytes retained in canonical proof metadata without explicit compatible contract",
+    "preserve existing source and knowledge hydrators",
+    "if required typed inputs cannot be constructed from existing authorized services, return OPEN and do not invoke canonical entrypoint"
+  ],
+  "verification": {
+    "native_real_library_test": "tests/test_hhs_admin_sql_lane5_native_integration_v1.py",
+    "pending": [
+      "source-bound provenance verification for UQCEL mathematical witness",
+      "current authorized parent Hash216 reference and ordered index verification",
+      "signed environmental admission with production key authority",
+      "Hash72 Hash216 canonical receipts and replay",
+      "agent and IDE knowledge readback",
+      "exact-main production deployment",
+      "reconcile main Pantheon manuscript into PR branch without altering canonical text"
+    ],
+    "state": "OPEN"
+  },
+  "typed_staged_source_inspection": {
+    "module": "hhs_backend.runtime.hhs_admin_sql_typed_vm81_source_v1",
+    "endpoint": "GET /api/runtime/admin-source-stream/uploads/{upload_id}/typed-vm81",
+    "source_constructor": "hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe",
+    "read_only": true,
+    "only_recognizes_preexisting_exact_vm81_frame": true,
+    "normal_arbitrary_file_staging_preserved": true,
+    "authorized_parent_hash216_bound": false,
+    "uqcel_math_witness_bound": false,
+    "canonical_hash216_admitted": false,
+    "tests": "tests/test_hhs_admin_sql_typed_vm81_source_v1.py",
+    "state": "INTEGRATION_COMMITTED_CI_PENDING"
+  },
+  "uqcel_witness_prevalidation": {
+    "module": "hhs_backend.runtime.hhs_admin_sql_uqcel_witness_prevalidation_v1",
+    "native_validator": "hhs_python.runtime.hhs_uqcel_ctypes_bridge.HHSUQCELRuntimeBridge.validate",
+    "requires": "owner-bound staged exact typed VM81 source and explicitly supplied exact integer UQCEL fields",
+    "read_only": true,
+    "source_to_witness_provenance_bound": false,
+    "authorized_parent_hash216_bound": false,
+    "can_commit_vm81": false,
+    "can_mint_hash216": false,
+    "test": "tests/test_hhs_admin_sql_uqcel_witness_prevalidation_v1.py",
+    "state": "COMMITTED_CI_PENDING"
+  },
+  "source_witness_candidate_association": {
+    "module": "hhs_backend.runtime.hhs_admin_sql_uqcel_source_association_v1",
+    "functions": [
+      "build_candidate_source_witness_association",
+      "replay_candidate_source_witness_association"
+    ],
+    "requires": [
+      "verified owner and finalized exact typed staged frame",
+      "successful inherited native UQCEL mathematical validation",
+      "replay of source SHA256, exact integer witness and candidate association SHA256"
+    ],
+    "source_identity_bytes": 648,
+    "arbitrary_source_staging_maximum_file_size_added": false,
+    "candidate_only": true,
+    "authorized_source_to_witness_provenance": false,
+    "authorized_parent_hash216_bound": false,
+    "canonical_hash216_admitted": false,
+    "tests": "tests/test_hhs_admin_sql_uqcel_source_association_v1.py",
+    "state": "COMMITTED_CI_PENDING"
+  },
+  "lane5_enrs_core_source_discovery": {
+    "module": "hhs_backend.runtime.hhs_pass220_lane5_enrs_core_source_discovery_v1",
+    "roles": [
+      "MATHEMATICAL_CORPUS",
+      "PARTICLE_SIMULATION",
+      "NARRATIVE_COGNITION",
+      "OPERATIONAL_GOVERNANCE"
+    ],
+    "identity": "exact staged original bytes verified against checked-out repository SHA256 and byte count",
+    "source_discovery_destination": "hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69",
+    "source_tree_gap": "Pantheon manuscript present on main but absent in PR 914 branch: report missing; do not fabricate",
+    "module194": "additional supplied HNAN local-symmetry artifact; not substituted for core sources",
+    "candidate_only": true,
+    "enrs_execution_performed": false,
+    "signed_vm81_admission_performed": false,
+    "canonical_hash216_admitted": false,
+    "test": "tests/test_hhs_pass220_lane5_enrs_core_source_discovery_v1.py",
+    "state": "COMMITTED_CI_PENDING"
+  }
+}

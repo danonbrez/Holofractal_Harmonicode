@@ -15,6 +15,7 @@ import {
 } from './visual-ide-state.mjs';
 import { renderFiles, activateFile, openBottomTab } from './visual-ide-ui.mjs';
 import { createStoredZip } from './project-zip.mjs';
+import { stageBrowserFile, continueStagedLane5Candidate } from './admin-source-stream.mjs';
 
 const encoder = new TextEncoder();
 const MAX_PROJECT_FILES = 64;
@@ -415,6 +416,8 @@ function mountControls() {
       <button id="ide-add-starter" type="button">Add starter</button>
       <button id="ide-import-folder" type="button">Import folder</button>
       <input id="ide-folder-input" type="file" multiple hidden webkitdirectory directory>
+      <button id="ide-admin-stage-source" type="button">Stage + Lane 5 (Admin)</button>
+      <input id="ide-admin-stage-input" type="file" multiple hidden>
       <button id="ide-build-project" type="button" class="primary-action">Build project</button>
       <button id="ide-export-project" type="button" disabled>Export ZIP</button>
     </div>`;
@@ -438,6 +441,43 @@ function mountControls() {
   $('#ide-create-path').onclick = createPathFile;
   $('#ide-add-starter').onclick = addStarter;
   $('#ide-import-folder').onclick = () => $('#ide-folder-input').click();
+  $('#ide-admin-stage-source').onclick = () => $('#ide-admin-stage-input').click();
+  $('#ide-admin-stage-input').onchange = async (event) => {
+    const chosen = [...(event.target.files || [])];
+    event.target.value = '';
+    const button = $('#ide-admin-stage-source');
+    if (button) button.disabled = true;
+    try {
+      // Reuse the existing Pass190 signed capability credential. It is kept
+      // only in this event handler, never stored with the project or logged.
+      const capabilityToken = window.prompt('HHS administrator upload capability token (Pass190; not saved)');
+      if (!capabilityToken) {
+        buildStatus('STAGING NOT AUTHORIZED · signed capability required', 'failed');
+        return;
+      }
+      for (const file of chosen) {
+        buildStatus(`SQL staging ${file.name}…`, 'running');
+        const receipt = await stageBrowserFile(file, { capabilityToken: capabilityToken.trim() });
+        log(`SQL source staged exactly; signed VM81 admission pending: ${file.name}.`, receipt);
+        buildStatus(`STAGED · ${file.name} · Lane 5 candidate pending`, 'running');
+        try {
+          const candidate = await continueStagedLane5Candidate(receipt.upload_id, {
+            capabilityToken: capabilityToken.trim(),
+          });
+          log(`Lane 5 native candidate verified; canonical VM81 admission still required: ${file.name}.`, candidate);
+          buildStatus(`LANE 5 CANDIDATE · ${file.name} · VM81 admission pending`, 'complete');
+        } catch (error) {
+          buildStatus(`STAGED · Lane 5 candidate rejected: ${error.message}`, 'failed');
+          log(`SQL source remains staged; Lane 5 candidate unavailable: ${error.message}`);
+        }
+      }
+    } catch (error) {
+      buildStatus(`STAGING REJECTED · ${error.message}`, 'failed');
+      log(`Administrator staging unavailable or rejected: ${error.message}`);
+    } finally {
+      if (button) button.disabled = false;
+    }
+  };
   $('#ide-folder-input').onchange = async (event) => {
     await importFolder([...event.target.files]);
     event.target.value = '';

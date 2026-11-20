@@ -18,6 +18,10 @@ on:
       - 'tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py'
       - 'tests/pass219/test_pass219_bigint_rna_native_probe.c'
       - 'tests/pass219/test_pass219_bigint_environment_admission_native_probe.c'
+      - 'tests/test_hhs_admin_sql_signed_environmental_fixture_v1.py'
+      - 'hhs_backend/runtime/hhs_admin_sql_typed_vm81_source_v1.py'
+      - 'hhs_backend/runtime/hhs_admin_sql_signed_environment_fixture_handoff_v1.py'
+      - 'hhs_backend/runtime/hhs_admin_sql_stream_staging_v1.py'
       - '.github/workflows/pass219-fold-primitive-probe.yml'
   pull_request:
     paths:
@@ -176,7 +180,8 @@ jobs:
           HHS_PASS219_BIGINT_ENVIRONMENT_NATIVE_PROBE: /tmp/test_pass219_bigint_environment_admission_native_probe
         run: |
           PYTHONPATH="$PWD" python -m pytest -q -s \
-            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py
+            tests/pass219/test_pass219_vm81_rna_bigint_environment_admission_probe.py \
+            tests/test_hhs_admin_sql_signed_environmental_fixture_v1.py
       - name: Report exact native rejection diagnostics on failed signed admission
         if: failure()
         env:
