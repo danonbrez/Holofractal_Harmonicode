@@ -21,12 +21,12 @@ function edgeIdentity(e){
 export function extractHash72Topology(graph) {
   assertGraph(graph);
   const adj=Array.from({length:PAIRS},()=>new Set());
-  const identities=new Map();
+  const identities=new Map(),edgeByPair=new Map();
   for(const e of graph.edges){
     const id=edgeIdentity(e);
     if(identities.has(id)||adj[e.source].has(e.target))
       throw Error("HHS_TOPOLOGY_DUPLICATE_EDGE");
-    identities.set(id,e);
+    identities.set(id,e);edgeByPair.set(e.source+":"+e.target,e);
     adj[e.source].add(e.target);adj[e.target].add(e.source);
   }
   if(graph.edgeCount!==graph.edges.length)
@@ -52,9 +52,9 @@ export function extractHash72Topology(graph) {
       for(const k of neighbors[i]){
         if(k<=j)continue;
         if(!adj[j].has(k))continue;
-        const e1=graph.edges.find(e=>e.source===i&&e.target===j);
-        const e2=graph.edges.find(e=>e.source===i&&e.target===k);
-        const e3=graph.edges.find(e=>e.source===j&&e.target===k);
+        const e1=edgeByPair.get(i+":"+j);
+        const e2=edgeByPair.get(i+":"+k);
+        const e3=edgeByPair.get(j+":"+k);
         triangles.push("T:"+i+","+j+","+k+"@"+
           [e1.phaseRatio,e2.phaseRatio,e3.phaseRatio].join("|"));
       }
