@@ -1,0 +1,34 @@
+name: HHS Administrator Ingress Scope Preservation
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admin-ingress-preservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout full lineage
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate scope guard and Git rename regression
+        run: python -m unittest discover -s tests -p test_admin_ingress_scope.py -v
+      - name: Detect newly imposed whole-object limits or modality allowlists
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git cat-file -e "$BASE_SHA^{commit}"
+          git cat-file -e "$HEAD_SHA^{commit}"
+          python tools/check_admin_ingress_scope.py --base "$BASE_SHA" --head "$HEAD_SHA"
