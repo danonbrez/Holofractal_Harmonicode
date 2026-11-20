@@ -1,0 +1,34 @@
+name: Pass 220 Lane 5 Native Master Closure
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/include/hhs_lane5_*.h'
+      - 'hhs_runtime/c/hhs_lane5_*.c'
+      - 'tests/pass220/test_hhs_lane5_*.c'
+      - '.github/workflows/pass220-lane5-master-closure.yml'
+  workflow_dispatch:
+jobs:
+  native-closure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run native closure unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/hhs_lane5_tests
+          cc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -I hhs_runtime/include \
+            hhs_runtime/c/hhs_lane5_master_closure.c \
+            tests/pass220/test_hhs_lane5_master_closure.c \
+            -o /tmp/hhs_lane5_tests/master_closure
+          /tmp/hhs_lane5_tests/master_closure
+          cc -std=c11 -O2 -Wall -Wextra -Werror -pedantic \
+            -I hhs_runtime/include \
+            hhs_runtime/c/hhs_lane5_master_closure.c \
+            hhs_runtime/c/hhs_lane5_pass169_closure_bridge.c \
+            tests/pass220/test_hhs_lane5_pass169_closure_bridge.c \
+            -lcrypto -o /tmp/hhs_lane5_tests/pass169_bridge
+          /tmp/hhs_lane5_tests/pass169_bridge
