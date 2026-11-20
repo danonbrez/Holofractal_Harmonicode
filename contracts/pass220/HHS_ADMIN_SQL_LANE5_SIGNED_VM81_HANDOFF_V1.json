@@ -64,7 +64,8 @@
       "signed environmental admission with production key authority",
       "Hash72 Hash216 canonical receipts and replay",
       "agent and IDE knowledge readback",
-      "exact-main production deployment"
+      "exact-main production deployment",
+      "reconcile main Pantheon manuscript into PR branch without altering canonical text"
     ],
     "state": "OPEN"
   },
@@ -111,6 +112,25 @@
     "authorized_parent_hash216_bound": false,
     "canonical_hash216_admitted": false,
     "tests": "tests/test_hhs_admin_sql_uqcel_source_association_v1.py",
+    "state": "COMMITTED_CI_PENDING"
+  },
+  "lane5_enrs_core_source_discovery": {
+    "module": "hhs_backend.runtime.hhs_pass220_lane5_enrs_core_source_discovery_v1",
+    "roles": [
+      "MATHEMATICAL_CORPUS",
+      "PARTICLE_SIMULATION",
+      "NARRATIVE_COGNITION",
+      "OPERATIONAL_GOVERNANCE"
+    ],
+    "identity": "exact staged original bytes verified against checked-out repository SHA256 and byte count",
+    "source_discovery_destination": "hhs_backend.runtime.hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69",
+    "source_tree_gap": "Pantheon manuscript present on main but absent in PR 914 branch: report missing; do not fabricate",
+    "module194": "additional supplied HNAN local-symmetry artifact; not substituted for core sources",
+    "candidate_only": true,
+    "enrs_execution_performed": false,
+    "signed_vm81_admission_performed": false,
+    "canonical_hash216_admitted": false,
+    "test": "tests/test_hhs_pass220_lane5_enrs_core_source_discovery_v1.py",
     "state": "COMMITTED_CI_PENDING"
   }
 }
