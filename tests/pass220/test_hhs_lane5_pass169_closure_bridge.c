@@ -1,8 +1,10 @@
 #include "../../hhs_runtime/include/hhs_lane5_pass169_closure_bridge.h"
 #include <assert.h>
 #include <string.h>
+#include <openssl/sha.h>
 static HHSExactPass219Pass159GlobalWitnessProvenanceV1 prov;
 static int mode=0;
+static const uint8_t sample_source[]="HARMONICODE_LANE5_MASTER_TEST_SOURCE";
 HHSExactStatus hhs_exact_pass219_pass169_bind_authority(
   const HHSExactPass219Pass159GlobalWitnessProvenanceV1 *p,
   HHSExactPass219Pass169BindingResultV1 *out) {
@@ -30,7 +32,13 @@ static HhsL5Pass169ClosureInput fixture(void) {
   memset(&x,0,sizeof(x));memset(&prov,0,sizeof(prov));
   prov.combined_source_sha256[0]=3;prov.global_symbol_environment_root[0]=4;
   x.provenance=&prov;
-  x.master.source_length=100;x.master.source_sha256[0]=1;
+  x.master_source_bytes=sample_source;
+  x.master_source_size=sizeof(sample_source)-1U;
+  x.master.source_length=(uint32_t)x.master_source_size;
+  assert(SHA256(x.master_source_bytes,x.master_source_size,
+                x.master.source_sha256)!=NULL);
+  memcpy(x.lineage_master_sha256,x.master.source_sha256,32);
+  memcpy(x.lineage_inherited_sha256,prov.combined_source_sha256,32);
   x.master.environment_sha256[0]=2;
   x.master.required_family_mask=255;
   x.master.present_family_mask=255;x.master.true_family_mask=255;
@@ -58,5 +66,11 @@ int main(void) {
   assert(hhs_lane5_pass169_closure_bridge(&x,&r)==0 && r.decision==HHS_L5_OPEN);
   mode=2;x=fixture();
   assert(hhs_lane5_pass169_closure_bridge(&x,&r)==0 && r.decision==HHS_L5_PRUNE);
+  mode=0;x=fixture();x.master.source_sha256[0]^=1U;
+  assert(hhs_lane5_pass169_closure_bridge(&x,&r)==-9);
+  x=fixture();x.lineage_inherited_sha256[0]^=1U;
+  assert(hhs_lane5_pass169_closure_bridge(&x,&r)==-10);
+  x=fixture();x.master_source_size--;
+  assert(hhs_lane5_pass169_closure_bridge(&x,&r)==-9);
   return 0;
 }
