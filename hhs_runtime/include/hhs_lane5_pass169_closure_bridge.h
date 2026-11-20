@@ -7,6 +7,12 @@ extern "C" {
 #endif
 typedef struct {
   HhsL5ClosureInput master;
+  /* Exact raw UTF-8 source; hash must match master.source_sha256. */
+  const uint8_t *master_source_bytes;
+  size_t master_source_size;
+  /* Source-bound cross-corpus lineage from the upstream constraint graph. */
+  uint8_t lineage_master_sha256[32];
+  uint8_t lineage_inherited_sha256[32];
   /* Pass159/169 provenance applies to its own frozen source identity. */
   const HHSExactPass219Pass159GlobalWitnessProvenanceV1 *provenance;
   /* Exact master-to-inherited lineage proof supplied by an upstream evaluator. */
