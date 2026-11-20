@@ -78,6 +78,10 @@ class TestSourceWitnessAssociation(unittest.TestCase):
             with self.assertRaises(ValueError):
                 replay_candidate_source_witness_association(self.stage, "owner", record)
         finally:
+            # Restore the exact staged bytes so the next negative case reaches
+            # the *native validator* rather than repeating source drift.
+            from hhs_runtime.pass219.vm81_rna_bigint_execution_binding_probe import build_execution_cases
+            path.write_bytes(build_execution_cases()[0]["raw_bytes"])
             path.chmod(0o400)
 
         def failed_native(**kwargs):
