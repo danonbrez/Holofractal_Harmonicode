@@ -36,6 +36,7 @@ jobs:
           python -m unittest discover -s tests -p test_hhs_admin_sql_typed_vm81_source_v1.py -v
           python -m unittest discover -s tests -p test_hhs_admin_sql_uqcel_witness_prevalidation_v1.py -v
           python -m unittest discover -s tests -p test_hhs_admin_sql_uqcel_source_association_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_pass220_lane5_enrs_core_source_discovery_v1.py -v
           python -m unittest discover -s tests -p test_hhs_admin_signed_vm81_handoff_contract_v1.py -v
       - name: Verify frozen Pass160 source capsule and additive OpenSSL link repair
         run: python -m unittest discover -s tests -p test_hhs_pass160_crypto_link_repair_v1.py -v
