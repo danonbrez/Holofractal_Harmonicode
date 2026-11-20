@@ -399,3 +399,29 @@ If a genuine external blocker prevents full completion, preserve the completed c
 - Keep verified implementation claims separate from user-supplied architectural specifications and unexecuted proof obligations. Resolve integration gaps cumulatively without reopening prior mathematics unless new concrete conflicting evidence is found.
 
 **Agent decision rule:** Failed integration requires root-cause diagnosis and full contract repair, not agent-authored capability suppression. Preserve frozen-layer guards and protected VM81 authority while restoring all compatible native capabilities through Pass 219/220.
+
+## Conventional IDE / native boundary contract (normative)
+
+Read [the machine-readable IDE/native boundary contract](contracts/architecture/hhs_ide_native_boundary_contract_v1.json) for changes affecting frontends, developer workflows, external LLM agent harnesses, ingress, egress, and native Lane 5 integrations. HARMONICODE is a general programming environment and agent harness, not a constrained dashboard or a tensor-themed UI demo.
+
+- Preserve standard browser engineering for the human IDE: source editor, files, projects, terminals, Git, debugging, builds, tests, deployment, and agent tooling. Continue existing working functionality, implementing gaps through existing services.
+- Keep OS/Ubuntu interfaces available while Lane 5 composes and extends the capabilities of the four inherited virtual CPU architectures; do not invent UI, source size, language, or modality restrictions from native internal representation.
+- VM81 81 × 64-bit = 648-byte native granularity does not impose a whole-file cap. Use existing unbounded ingress and optimized streaming paths where applicable.
+- Preserve external input/output types, byte identities, requested output encodings, ABI and schema compatibility through the encoder/decoder membrane.
+- Never propagate a native restriction to an external interface unless the exact contract and dependency require it. Conversely never bypass signed VM81 admission, Hash72 receipt, Hash216 lineage, or access permissions from an application boundary.
+- For changes to these boundaries, report contract, source, test, CI, main merge, and runtime/deployment evidence separately. The boundary contract is not itself evidence of a completed production IDE or canonical hydration.
+
+
+## GBrain-inspired harness first; cumulative mergeability obligations (2026-11-14)
+
+The [ordered integration and mergeability checklist](contracts/architecture/hhs_gbrain_harness_cumulative_mergeability_checklist_v1.json) is mandatory for this workstream. Its priority **P0** governs ongoing work: finish the full conventional IDE + external LLM-agent harness, Lane 5 integration, knowledge hydration, ingress/egress compatibility, and thread-local frontend/backend specification contracts first. Work through verified existing implementations; do not substitute dashboard or demo scope. Mark an item complete only with concrete source, test, CI and applicable VM81/runtime proof evidence.
+
+**After P0 is completed in full**, assume responsibility for recovery, consolidation and forward repair of the open PRs and branches recorded in P1–P7, including native dyadic ABI, course M000–M196 source/lowering/proofs, typed 144/81/59,049 carrier composition, WebGL/Runtime OS V147–V150, frozen-layer protection and DigitalOcean production repair. The cited list is a minimum historical inventory; refresh the live GitHub inventory, current main, PR head SHAs, and dependency DAG before implementing or merging.
+
+**Mergeability gate:** No blanket PR closure, abandoned branch pruning, hash-manifest rewrite to mask source drift, frozen source replacement, or merged/production claim based on a partial green check. Every applicable checklist item remains OPEN until source→test→CI→review→merge and, for production closure, deployment→runtime evidence verifies it. Preserve branch lineage and established capabilities throughout.
+
+### End-appended mandatory supply-chain gate (do not displace P0)
+
+The final **P8** section of the [mergeability checklist](contracts/architecture/hhs_gbrain_harness_cumulative_mergeability_checklist_v1.json) records the supplied WFX-loot supply-chain threat model as a **forensic investigation requirement**, not a confirmed repository breach or automatic declaration that credentials were harvested. Its twenty L0 checks cover Git provenance, historical workflow-run continuity and tampering, local object inspection, CI secret permissions, and credential usage/containment. An absent suspicious PR, a run-number gap, or a clean local `git fsck` cannot by itself prove or exclude an incident.
+
+**Scheduling:** Continue P0 GBrain-inspired harness, human IDE, Lane 5 ingress/egress and native knowledge integration without prioritizing this additional task above assigned work. **Authorization:** Before any main-branch consolidation merge or production deployment, collect and review P8 evidence, contain credible compromise, and obtain an explicit scope-bounded clearance decision. No unrelated workload stop or security assertion is authorized by merely listing this gate. Never expose credential values or auto-rotate/revoke without an appropriate scoped investigation and user authorization.

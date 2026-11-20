@@ -1,0 +1,573 @@
+{
+  "schema": "HHS_GBRAIN_HARNESS_CUMULATIVE_MERGEABILITY_CHECKLIST_V1",
+  "date": "2026-11-14",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "scope": "Priority 0 is this thread's existing GBrain-inspired agent harness, conventional IDE and unified Lane5 ingress/egress commitments. Remaining phases are assigned post-local-completion integration and repair obligations, not a license to merge incomplete candidates.",
+  "priority_rule": "No consolidation work may displace Priority 0 until its existing local thread contracts are implemented and evidence-complete; review/inventory work may proceed without diverting implementation.",
+  "mergeability_rule": "All applicable checklist items require explicit evidence and PASS at the exact relevant SHA. OPEN is not PASS. A PR cannot be declared mergeable merely because a subset of scoped CI is green; preserve frozen layers and cumulative capabilities. A mandatory P8 forensic clearance gate additionally blocks P6.4 main merge and P7 production promotion, but does not displace P0 or earlier implementation work.",
+  "evidence_fields": [
+    "main_sha",
+    "branch_head_sha",
+    "affected_service_paths",
+    "tests_or_formal_proofs",
+    "workflow_run_and_job_ids",
+    "signed_vm81_receipts",
+    "hash72_hash216_replay",
+    "browser_artifacts",
+    "review_threads",
+    "deployment_sha_and_runtime_receipts"
+  ],
+  "completion_states": [
+    "OPEN",
+    "PASS",
+    "FAIL",
+    "NOT_APPLICABLE_WITH_PROOF"
+  ],
+  "phases": [
+    {
+      "id": "P0",
+      "title": "Complete this thread's GBrain-inspired harness and professional IDE contracts",
+      "priority": 0,
+      "depends_on": [],
+      "items": [
+        {
+          "id": "P0.1",
+          "requirement": "Unify external LLM agent session, native tools, scoped workspace, knowledge search and Hash216 hydration with existing Runtime OS and Lane5; test actual agent task continuity",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P0.2",
+          "requirement": "Complete administrator arbitrary-length SQL staging -> authenticated stream -> Lane5 candidate -> signed VM81/PQC admission -> Hash72/Hash216 persistence -> RAG readback; preserve source bytes",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P0.3",
+          "requirement": "Repair ingress and egress external ABI/schema, payload, modality, reversible byte identity and 648-byte native framing separation; no arbitrary whole-file eligibility limits",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P0.4",
+          "requirement": "Complete conventional human IDE functionality using existing code: project/file lifecycle, source editing, Git, Ubuntu PTY, build, debug, test, deployment and agent collaboration",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P0.5",
+          "requirement": "Replace full-browser-memory import and output assembly with conventional stream/file-backed solutions; validate ZIP64 and large archive interoperability",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P0.6",
+          "requirement": "Restore cumulative frontend rendering, native physics, simulation and visual features without rewrites or demo-only substitutions; end-to-end human/agent browser parity",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P0.7",
+          "requirement": "Close thread-local PR #913,#914,#915,#917,#918 contracts through tests, review, protected gates and merge lineage; independently verify CI/main/runtime state before marking complete",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P1",
+      "title": "Inventory and reconciliation before consolidation",
+      "priority": 1,
+      "depends_on": [
+        "P0"
+      ],
+      "items": [
+        {
+          "id": "P1.1",
+          "requirement": "Record exact current-main SHA, branch heads, merge bases, protected source blobs, approvals and applicable source-integrity guards",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P1.2",
+          "requirement": "Inventory all open branches/PRs and deferred work: #691,#803,#892,#893,#894,#896,#898,#900,#901,#908,#909,#910,#911,#912,#916 and current thread PRs; discover any additional heads and superseding merges",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P1.3",
+          "requirement": "Read AGENTS.md, repository index, service registry, existing constructors/compilers, source proofs, native ABI and Hash216 hydration graph before any merge/rewrite",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P1.4",
+          "requirement": "Construct bottom-up ordered dependency DAG and source conflict matrix; preserve distinct proof domains, identity and all inherited features",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "Native ABI and dyadic register admission",
+      "priority": 2,
+      "depends_on": [
+        "P1"
+      ],
+      "items": [
+        {
+          "id": "P2.1",
+          "requirement": "Verify exact-head PR #909 native C/C++/Python tests and review findings; prove actual linked dyadic symbols in all required shared/static targets",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P2.2",
+          "requirement": "Verify C11/C++ sizeof/alignof, ctypes structures, exact dyadic typed arithmetic, positive and negative tests; no float coercion into canonical authority",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P2.3",
+          "requirement": "Reconcile PR #691 ingress/native ABI declarations with current Lane5 bridge without bypassing runtime mediation",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P3",
+      "title": "Course compiler, M195/M196 proofs and typed execution",
+      "priority": 3,
+      "depends_on": [
+        "P2"
+      ],
+      "items": [
+        {
+          "id": "P3.1",
+          "requirement": "Recover M000–M196 course source identities, strict module ordering, proofs, receipts, independent provenance and authoritative checksums without regenerating hashes merely to suppress drift",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P3.2",
+          "requirement": "Integrate PR #916 Pass159 source ingress, exact typed source-to-opcode lowering and an executable Pass219 64-instruction ABI-compatible course program",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P3.3",
+          "requirement": "Complete PR #911 M195 exact spectral witness D(K)=0, ordered typed provenance, Lean/native cross-check and positive/negative tests",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P3.4",
+          "requirement": "Complete PR #912 Module 196 cell-wall execution and independently validate 81/2025/59049-cell claims to their explicitly proven scope",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P3.5",
+          "requirement": "Prove shared executor -> signed VM81 admission -> Hash72 receipt -> Hash216 replay and egress for applicable composed course programs",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P3.6",
+          "requirement": "Resolve merged #888/#905 outstanding provenance, pytest discovery, executor compatibility and review findings without falsifying inherited frozen source proofs",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P4",
+      "title": "Pass219/220 composition and protected carriers",
+      "priority": 4,
+      "depends_on": [
+        "P3"
+      ],
+      "items": [
+        {
+          "id": "P4.1",
+          "requirement": "Reconcile #803 and Pass220 I021 144-cell epsilon carrier with Module196 81/59049 typed carriers without conflating denominator normalizations",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P4.2",
+          "requirement": "Run distinct registered validators and combined native/Hash216 gates with exact ordered source provenance",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P4.3",
+          "requirement": "Resolve #899 Pass219 successor identity failures; recover and integrate compatible #892,#894,#896,#898 and other unmerged native contracts without pruning",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P4.4",
+          "requirement": "Verify frozen source integrity, rename/copy/delete bypass paths, full inherited capability availability and signed admission",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P5",
+      "title": "Runtime OS, WebGL, and cumulative frontend parity",
+      "priority": 5,
+      "depends_on": [
+        "P4"
+      ],
+      "items": [
+        {
+          "id": "P5.1",
+          "requirement": "Reconcile #908 and #900/#901 branches plus V147–V150 runtime WebGL/native observation with every prior working frontend feature preserved",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P5.2",
+          "requirement": "Verify native 243/2025/59049-cell buffers and exact rational phase data at egress; no accidental floating-point canonical authority",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P5.3",
+          "requirement": "Validate native geometry, browser visual parity, continuous temporal physics and nonempty Chromium/WebGL artifacts",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P5.4",
+          "requirement": "Reconcile remaining #910 documentation, #893 supersession diagnostics and other existing open PRs according to exact lineage and verified implementation",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P6",
+      "title": "Consolidated source, CI and review closure",
+      "priority": 6,
+      "depends_on": [
+        "P5"
+      ],
+      "items": [
+        {
+          "id": "P6.1",
+          "requirement": "Build one cumulative integration head from current main using verified bottom-up merges and conflict reconciliation; never discard still-needed branches/services",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P6.2",
+          "requirement": "Run complete applicable native C/C++/Python, source-integrity, Lean, Lane5, course, Hash216, UI and source-to-runtime negative/positive CI gates against identical head SHA",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P6.3",
+          "requirement": "Resolve or explicitly supersede each review thread with precise source/CI/proof evidence; no blanket green or inferred approvals",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P6.4",
+          "requirement": "Merge to main only once all applicable protected required checks and full contracted capabilities verify; preserve provenance and PR-to-main lineage",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P7",
+      "title": "Production repair and exact-main live acceptance",
+      "priority": 7,
+      "depends_on": [
+        "P6"
+      ],
+      "items": [
+        {
+          "id": "P7.1",
+          "requirement": "Investigate previous certifi.where failure using imported certifi.__file__, distribution ownership, service venv and actual service UID; repair dependency cause without ad-hoc bypass",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P7.2",
+          "requirement": "Verify promotion and service health on exact main, public HTTPS, Chromium/WebGL parity, native Lane5/VM81, signed Hash72/Hash216 and RAG",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P7.3",
+          "requirement": "Require nonempty production capability artifact, reproducible exact-SHA receipts and backend/frontend ingress/egress round-trip tests",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P7.4",
+          "requirement": "Archive validated closure evidence while retaining historical sources and reversible lineage; only then classify consolidated production completion",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    },
+    {
+      "id": "P8",
+      "title": "END-APPENDED mandatory WFX supply-chain forensic gate before main merge and production",
+      "priority": 8,
+      "depends_on": [
+        "P0"
+      ],
+      "execution_order": "AFTER assigned thread tasks; must pass BEFORE P6.4 merge-to-main and any P7 production promotion",
+      "not_priority_override": true,
+      "mandatory_before": [
+        "P6.4",
+        "P7.2",
+        "production_deployment"
+      ],
+      "status": "OPEN",
+      "classification": "unverified threat indicators requiring investigation; no compromise, deleted-run, or credential-harvest finding asserted",
+      "reported_campaign_window": "2026-11-10 through 2026-11-14",
+      "metadata": {
+        "metadata_seed_exact": "179971.179971",
+        "unity_lock": "P^2 - pq = 1",
+        "module_type": "WFX_LOOT_SUPPLY_CHAIN_AUDIT_AND_CONSOLIDATION_HARDENING",
+        "repository_target": "danonbrez/Holofractal_Harmonicode",
+        "hash72_instruction": "PREPEND_ZERO_TRUST_WFX_LOOT_FORENSIC_GATE_BEFORE_MAIN_CONSOLIDATION"
+      },
+      "interpretation": "'PREPEND' denotes gate precedence at merger and production authorization, not immediate task scheduling; absence of search hits or workflow run-number gaps is not clearance; run gaps are investigative signals, not proof of compromise.",
+      "sections": [
+        {
+          "id": "L0.1",
+          "title": "Repository provenance",
+          "items": [
+            {
+              "id": "L0.1.1",
+              "requirement": "Inspect open and closed PRs, branches and titles for wfx-docs and dependency audit notes, preserving source and search coverage",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.1.2",
+              "requirement": "Search complete relevant commit history for injection, restore, cleanup and temporary CI helper changes; establish an independent known-good baseline",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.1.3",
+              "requirement": "Compare GitHub workflows, package and lockfile lifecycle hooks and executable scripts against the trusted baseline",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.1.4",
+              "requirement": "Inspect available GitHub audit, push, delete and force-push events; record unavailable historical retention windows",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.2",
+          "title": "Workflow execution",
+          "items": [
+            {
+              "id": "L0.2.1",
+              "requirement": "Enumerate run_number sequences separately by workflow_id with explicit page and campaign-window coverage",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.2.2",
+              "requirement": "Correlate any unexplained run-number gaps with commits, logs, audit events and legitimate deletion/retention; gaps are not independent proof of intrusion",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.2.3",
+              "requirement": "Inspect retained Actions logs for lifecycle hooks, unexpected shell execution, network egress and changed runners",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.2.4",
+              "requirement": "Prove production credentials are withheld from pull_request and untrusted ref contexts; review environment protections and OIDC trust",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.3",
+          "title": "Git object forensics",
+          "items": [
+            {
+              "id": "L0.3.1",
+              "requirement": "Preserve read-only forensic copies of reachable refs, local Git repository and available audit logs",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.3.2",
+              "requirement": "Run git fsck --full and inspect unreachable commits, trees and blobs based on payload content/behavior, not line count alone",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.3.3",
+              "requirement": "Compare local observations against available server-side history, remote refs and relevant event records",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.3.4",
+              "requirement": "Document that local object absence cannot establish absence of remote ephemeral or deleted objects",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.4",
+          "title": "Credential exposure and containment",
+          "items": [
+            {
+              "id": "L0.4.1",
+              "requirement": "Inventory GitHub PATs, Actions/environment secrets and OIDC permissions without exposing secret values",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.4.2",
+              "requirement": "Review DigitalOcean deployment tokens, SSH identities, production audit logs and affected service accounts",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.4.3",
+              "requirement": "Review OpenAI/Codex, Anthropic, Replit, Copilot and other integrated AI provider usage and credential provenance across November 10–14",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.4.4",
+              "requirement": "Contain and rotate credentials with established or credible exposure through authorized provider controls; record scope and completion without displaying secrets",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        },
+        {
+          "id": "L0.5",
+          "title": "Gate clearance",
+          "items": [
+            {
+              "id": "L0.5.1",
+              "requirement": "Resolve high-confidence indicators or document containment and remaining uncertainty",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.5.2",
+              "requirement": "Validate an independently trusted clean build and required exact-SHA CI checks after forensic review",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.5.3",
+              "requirement": "Validate deployment environment protections and artifact provenance before any production promotion",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            },
+            {
+              "id": "L0.5.4",
+              "requirement": "Attach forensic scope, coverage, limitations, findings and explicit security clearance decision to consolidation/production evidence",
+              "state": "OPEN",
+              "evidence": [],
+              "scope": "required"
+            }
+          ]
+        }
+      ],
+      "items": [
+        {
+          "id": "P8.1",
+          "requirement": "All twenty L0 forensic subchecks supported by inspectable and independently reviewed evidence before main merge or production promotion",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        },
+        {
+          "id": "P8.2",
+          "requirement": "Explicit scope-bounded forensic clearance or formally approved containment with residual-risk decision; neither missing artifacts nor no search matches prove secrets were safe",
+          "state": "OPEN",
+          "evidence": [],
+          "scope": "required"
+        }
+      ]
+    }
+  ],
+  "gate_logic": "G_main_merge = G_P0_to_P6_and_applicable_checks AND G_P8_security; G_production = G_main_merge AND G_P7_deployment_checks AND G_P8_security"
+}
