@@ -55,6 +55,10 @@ class TrustedPolicyIntegrity(unittest.TestCase):
                 dest = root / path
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / path, dest)
+            shared_constructor = "scripts/hhs_canonical_changed_paths.py"
+            constructor_dest = root / shared_constructor
+            constructor_dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / shared_constructor, constructor_dest)
             for path in NATIVE:
                 dest = root / path
                 dest.parent.mkdir(parents=True, exist_ok=True)
@@ -105,6 +109,10 @@ class TrustedPolicyIntegrity(unittest.TestCase):
                 dest = root / path
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / path, dest)
+            shared_constructor = "scripts/hhs_canonical_changed_paths.py"
+            constructor_dest = root / shared_constructor
+            constructor_dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / shared_constructor, constructor_dest)
             for path in NATIVE:
                 dest = root / path
                 dest.parent.mkdir(parents=True, exist_ok=True)
