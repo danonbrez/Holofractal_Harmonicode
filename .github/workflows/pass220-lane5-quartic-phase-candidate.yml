@@ -1,0 +1,19 @@
+name: Lane 5 Quartic Phase Validation
+on:
+  push:
+    branches: [pass220-chainalpha-lane5-hash216-hydration]
+  pull_request:
+    branches: [main]
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Native quartic phase check
+        run: |
+          c++ -std=c++17 -O2 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include tests/pass220/test_pass220_lane5_quartic_phase_carrier_v1.cpp -o /tmp/quartic_phase_check
+          /tmp/quartic_phase_check
+      - name: Python hydration test
+        run: |
+          python -m pip install pytest
+          PYTHONPATH=. python -m pytest -q tests/pass219/test_pass219_lane5_repository_hydration_knowledge_graph_1_69.py
