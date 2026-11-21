@@ -1,0 +1,52 @@
+name: Pass 220 I090 Optional RGB Particle Partition
+on:
+  pull_request:
+    paths:
+      - 'examples/ParticleSimulation.html'
+      - 'tests/pass220/test_hhs_pass220_i090_optional_rgb_cluster.py'
+      - 'tests/pass220/i090_rgb_cluster_kernel_witness.cjs'
+      - '.github/workflows/pass220-i090-rgb-cluster.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  experimental-rgb-closure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify matrix closure and opt-in default
+        run: |
+          python -m pip install --disable-pip-version-check pytest
+          python -m pytest -q tests/pass220/test_hhs_pass220_i090_optional_rgb_cluster.py
+          python -m pytest -q tests/pass220/test_hhs_pass220_i057_particle_simulation_performance.py
+      - name: Execute the actual embedded RGB clustering kernel
+        run: node tests/pass220/i090_rgb_cluster_kernel_witness.cjs
+      - name: Check standalone inline JavaScript syntax without rewriting source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import subprocess,tempfile
+          class InlineScripts(HTMLParser):
+              def __init__(self):
+                  super().__init__();self.active=False;self.chunks=[];self.scripts=[]
+              def handle_starttag(self,tag,attrs):
+                  if tag=='script':
+                      self.active=not dict(attrs).get('src');self.chunks=[]
+              def handle_data(self,data):
+                  if self.active:self.chunks.append(data)
+              def handle_endtag(self,tag):
+                  if tag=='script' and self.active:
+                      self.scripts.append(''.join(self.chunks));self.active=False
+          p=InlineScripts();p.feed(Path('examples/ParticleSimulation.html').read_text())
+          for i,s in enumerate(p.scripts):
+              if not s.strip():continue
+              with tempfile.NamedTemporaryFile(mode='w',suffix='.js') as f:
+                  f.write(s);f.flush()
+                  subprocess.run(['node','--check',f.name],check=True)
+          print('Validated',len(p.scripts),'inline script blocks')
+          PY

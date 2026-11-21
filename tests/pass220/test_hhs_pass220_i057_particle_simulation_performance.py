@@ -54,7 +54,7 @@ def test_i057_instanced_projection_keeps_logical_particle_meshes():
         "registerParticleRenderBatch(group,points,particleGeometry);",
         "for(let i=0;i<points.length;i++) points[i].visible=false;",
         "mesh.setMatrixAt(i,particleBatchMatrix);",
-        "mesh.setColorAt(i,p.material.color);",
+        "mesh.setColorAt(i,particleAudioColor);",
         "mesh.instanceMatrix.needsUpdate=true;",
         "mesh.instanceColor.needsUpdate=true;",
         'powerPreference:"high-performance"',
