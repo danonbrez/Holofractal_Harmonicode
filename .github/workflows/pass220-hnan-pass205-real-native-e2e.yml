@@ -1,0 +1,26 @@
+name: Pass 220 HNAN Pass205 Real Native E2E
+on:
+  pull_request:
+    paths:
+      - "tests/pass220/test_pass220_hnan_pass205_real_native_e2e_v1.py"
+      - "hhs_runtime/pass220/hnan_pass205_readonly_lineage_binding_v1.py"
+      - "hhs_runtime/pass220/hnan_all_branch_native_trace_v1.py"
+      - ".github/workflows/pass220-hnan-pass205-real-native-e2e.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  hnan-pass205-real-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile native ABI and exercise mixed branch trace with Pass205 replay
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q --tb=short tests/pass220/test_pass220_hnan_pass205_real_native_e2e_v1.py
