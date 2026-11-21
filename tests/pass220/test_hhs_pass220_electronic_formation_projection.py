@@ -1,0 +1,84 @@
+"""Formation projection integration: live bond topology, phasor and physics boundary."""
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+
+def test_coherent_formation_consumes_live_bonds_not_new_physics():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    assert 'function beginElectronicFormationProjection(){' in s
+    assert 'const root=ufFind(i);' in s
+    deriv=s[s.index('function beginElectronicFormationProjection(){'):s.index('function ensureFormationCanvas(){')]
+    assert 'new Int32Array(N)' not in deriv
+    assert 'for(let k=0;k<bondN;k++)' not in deriv
+    assert 'function rebuildBondIndex(){' in s
+    assert 'g.re+=m*Math.cos(phi);g.im+=m*Math.sin(phi);' in s
+    assert 'g.magnitude=Math.hypot(g.re,g.im);' in s
+    assert 'g.phase=Math.atan2(g.im,g.re);' in s
+    assert 'if(formationView.groupSizes[p.userData.hhsGroupIndex]>1)' in s
+    assert 'particleBatchMatrix.scale({x:0,y:0,z:0});' in s
+    assert 'syncElectronicFormations();' in s
+    assert 'renderer.domElement.addEventListener("click",e=>' in s
+    assert 'formationView.canvas=true; /* pointer handlers only, no screen overlay */' in s
+    assert 'physicsMutation:false' in s
+    assert 'thChg[i]=1-2*(thPh4[i]&1)' in s
+    assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in s
+
+def test_formation_backlight_is_local_3d_and_depth_tested():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    assert 'new THREE.SphereGeometry(1,16,12)' in s
+    assert 'side:THREE.BackSide,blending:THREE.NormalBlending' in s
+    assert 'transparent:true,depthTest:true,depthWrite:false' in s
+    assert 'light.shell.position.set(g.x,g.y,g.z);' in s
+    assert 'light.shell.scale.setScalar(r*1.8);' in s
+    assert 'const coherent=g.magnitude/Math.max(g.weight,1);' in s
+    assert 'ctx.createRadialGradient' not in s[s.index('function syncElectronicFormations()'):s.index('window.HHSElectronicFormations=')]
+    assert 'hhsCoherentFormationOverlay' not in s
+    assert 'const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));' in s
+
+def test_light_projection_shares_particle_frame_gate():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    assert 'beginElectronicFormationProjection();\\n        syncParticleRenderBatches();\\n        finalizeElectronicFormations();' in s
+    assert 'if(!renderGate && audioVisualFrame)' not in s
+    assert 'light.shell.material.uniforms.uOpacity.value=0.035+0.09*coherent;' in s
+    assert 'syncElectronicFormations();\\n        renderer.render(scene, camera);' in s
+
+def test_adaptive_projection_skips_light_not_particle_physics():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    assert 'const PROJECTION_BUDGET_MS=6,PROJECTION_MAX_SKIP=8;' in s
+    assert 'const PHYSICS_TICK_MS=1000/60,MAX_PHYSICS_CATCHUP=4;' in s
+    assert 'while(physicsDebtMs>=PHYSICS_TICK_MS&&advanced<MAX_PHYSICS_CATCHUP)' in s
+    assert 'const physicsBehind=physicsDebtMs>=PHYSICS_TICK_MS;' in s
+    assert 'const projectionDue=!physicsBehind && renderGate &&' in s
+    assert 'projectionLastCostMs=performance.now()-projectionStart;' in s
+    physics=s.index('function advanceExistingPhysicsTick(){')
+    gated=s.index('const projectionDue=',physics)
+    assert 'updateSpiralParticles();' in s[physics:gated]
+    assert 'updatePhaseGeometry();' in s[physics:gated]
+    assert 'collideBondMembranes();' in s[physics:gated]
+    assert 'constructorScan();' in s[physics:gated]
+
+def test_pointer_registration_waits_for_renderer_initialization():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    formation=s.index("const formationView=")
+    startup=s.index("const formationShellGeometry=",formation)
+    assert "ensureFormationCanvas();" not in s[formation:startup]
+    sync=s.index("function syncElectronicFormations()",startup)
+    assert "ensureFormationCanvas();" in s[sync:sync+100]
+
+def test_light_reuses_same_particle_position_and_phase_read_as_gpu_projection():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    render=s[s.index("function syncParticleRenderBatch(batch){"):s.index("function syncParticleRenderBatches(){")]
+    assert 'const p=points[i], q=p.position;' in render
+    assert 'accumulateElectronicFormation(p);' in render
+    assert 'particleBatchMatrix.makeTranslation(q.x,q.y,q.z);' in render
+    assert render.index('accumulateElectronicFormation(p);') < render.index('particleBatchMatrix.makeTranslation')
+    assert 'const q=p.position,v=p.userData.velocity;' in s
+    assert 'const m=thMass?thMass[index]:1,phi=p.userData.phase||0;' in s
+    assert 'function deriveElectronicFormations(){' not in s
+
+def test_sampled_light_does_not_scan_particles_or_advance_clock():
+    s=(ROOT/"examples/ParticleSimulation.html").read_text(encoding="utf8")
+    batch=s[s.index('function syncParticleRenderBatch(batch){'):s.index('function syncParticleRenderBatches()',s.index('function syncParticleRenderBatch(batch){'))]
+    assert 'accumulateElectronicFormation(p);' not in batch
+    assert 'const lightSampleDue=(Math.floor(renderTick/4)%8)===0;' in s
+    assert 'if(lightSampleDue){' in s
+    assert 'if(window.HHSLiquidLight)window.HHSLiquidLight.sync();' in s

@@ -1139,6 +1139,20 @@
       <input id="audioVizGain" type="range" min="0" max="0.05" step="0.001" value="0.020" style="width:100%;" />
       <div id="audioVizStatus" role="status" aria-live="polite">Select an audio file.</div>
       <div id="audioVizClock" role="status" style="margin-top:4px;font-size:.82em;color:#9cf;">44,100 PCM Hz / 735 samples = 60 audio frames/s | awaiting playback</div>
+      <details id="hhsCoupledTensorPanel" hidden style="margin-top:8px;font-size:.82em;">
+        <summary>Coupled reciprocal phase / fractal / ionic / curvature mapping</summary>
+        <div id="hhsCoupledTensorStatus" role="status"></div>
+        <canvas id="hhsCoupledTensorCanvas" width="576" height="256"
+          style="width:100%;max-width:576px;height:auto;display:block;pointer-events:none"
+          aria-label="Reciprocal particle groups and HNAN-centered ionic phase projection"></canvas>
+      </details>
+      <details id="hhsQuantumEpsilonPanel" hidden style="margin-top:8px;font-size:.82em;">
+        <summary>Reciprocal 17×17 quantum-epsilon spinor views (projection only)</summary>
+        <div id="hhsQuantumEpsilonStatus" aria-live="polite"></div>
+        <canvas id="hhsQuantumEpsilonCanvas" width="354" height="177"
+          style="display:block;width:100%;max-width:354px;height:auto;pointer-events:none"
+          aria-label="Two reciprocal ordered 17 by 17 phase relationship maps"></canvas>
+      </details>
     </fieldset>
     <div id="output"></div>
     <div id="stateOutput">
@@ -1297,6 +1311,163 @@
       syncParticleRenderBatch(batch);
       return batch;
     }
+    /* Coupled electronic formations: READ-ONLY connected components of the
+       existing live bond graph. No alternative distance/time bond heuristic. */
+    const formationView={byParticle:new Int32Array(10368),groups:[],groupSizes:new Uint16Array(10368),
+      selected:null,hovered:null,projected:[],overlay:null,canvas:null};
+    const formationScratch=new THREE.Vector3();
+    /* Bond identity comes from the inherited union-find; render values are
+       accumulated from the SAME particle reads used for GPU instances. */
+    const formationByRoot=new Map();
+    function beginElectronicFormationProjection(){
+      formationByRoot.clear();
+      formationView.groups.length=0;
+      formationView.groupSizes.fill(0);
+      const n=particles.length;
+      for(let i=0;i<n;i++){
+        const root=ufFind(i);
+        formationView.byParticle[i]=root;
+        formationView.groupSizes[root]++;
+      }
+      for(let i=0;i<n;i++)
+        formationView.groupSizes[i]=formationView.groupSizes[formationView.byParticle[i]];
+    }
+    function accumulateElectronicFormation(p){
+      const index=p.userData.hhsGroupIndex;
+      if(!Number.isInteger(index)||index<0||index>=particles.length)return;
+      if(formationView.groupSizes[index]<2)return;
+      const root=formationView.byParticle[index];
+      let g=formationByRoot.get(root);
+      if(!g){
+        g={members:[],root,x:0,y:0,z:0,re:0,im:0,weight:0,vx:0,vy:0,thermal:0};
+        formationByRoot.set(root,g);
+        formationView.groups.push(g);
+      }
+      const m=thMass?thMass[index]:1,phi=p.userData.phase||0;
+      const q=p.position,v=p.userData.velocity;
+      g.members.push(index);
+      g.re+=m*Math.cos(phi);g.im+=m*Math.sin(phi);
+      g.weight+=m;g.x+=q.x;g.y+=q.y;g.z+=q.z;
+      if(v){g.vx+=v.x;g.vy+=v.y;
+        g.thermal+=v.x*v.x+v.y*v.y+v.z*v.z;}
+    }
+    function finalizeElectronicFormations(){
+      for(const g of formationView.groups){
+        const n=g.members.length;
+        g.x/=n;g.y/=n;g.z/=n;g.vx/=n;g.vy/=n;g.thermal/=n;
+        g.magnitude=Math.hypot(g.re,g.im);
+        g.phase=Math.atan2(g.im,g.re);
+      }
+    }
+    function ensureFormationCanvas(){
+      if(formationView.canvas)return;
+      formationView.canvas=true; /* pointer handlers only, no screen overlay */
+      renderer.domElement.addEventListener("pointermove",e=>{
+        let nearest=null,d=Infinity;
+        for(const g of formationView.projected){
+          const v=Math.hypot(e.clientX-renderer.domElement.getBoundingClientRect().left-g.sx,e.clientY-renderer.domElement.getBoundingClientRect().top-g.sy);
+          if(v<g.radius+9&&v<d){nearest=g;d=v;}
+        }
+        formationView.hovered=nearest?nearest.root:null;
+        renderer.domElement.style.cursor=nearest?"pointer":"default";
+      });
+      renderer.domElement.addEventListener("pointerleave",()=>formationView.hovered=null);
+      renderer.domElement.addEventListener("click",e=>{
+        let nearest=null,d=Infinity;
+        for(const g of formationView.projected){
+          const v=Math.hypot(e.offsetX-g.sx,e.offsetY-g.sy);
+          if(v<g.radius+9&&v<d){nearest=g;d=v;}
+        }
+        formationView.selected=nearest?nearest.members[0]:null;
+      });
+    }
+    /* Local three-dimensional shell lighting, depth-tested and distributed
+       radially around the actual coupled barycenter. No screen overlay. */
+    const formationShellGeometry=new THREE.SphereGeometry(1,16,12);
+    const formationShellMaterial=new THREE.ShaderMaterial({
+      uniforms:{uColor:{value:new THREE.Color(0x8cbbff)},
+        uOpacity:{value:0.10}},
+      vertexShader:[
+        "varying vec3 vNormalShell;",
+        "varying vec3 vViewShell;",
+        "void main(){",
+        "vec4 v=modelViewMatrix*vec4(position,1.0);",
+        "vNormalShell=normalize(normalMatrix*normal);",
+        "vViewShell=normalize(-v.xyz);",
+        "gl_Position=projectionMatrix*v;",
+        "}"
+      ].join("\n"),
+      fragmentShader:[
+        "uniform vec3 uColor;",
+        "uniform float uOpacity;",
+        "varying vec3 vNormalShell;",
+        "varying vec3 vViewShell;",
+        "void main(){",
+        "float rim=pow(1.0-abs(dot(normalize(vNormalShell),normalize(vViewShell))),2.0);",
+        "gl_FragColor=vec4(uColor,uOpacity*(0.14+0.86*rim));",
+        "}"
+      ].join("\n"),
+      transparent:true,depthTest:true,depthWrite:false,
+      side:THREE.BackSide,blending:THREE.NormalBlending
+    });
+    const formationShells=[];
+    const formationCoreGeometry=new THREE.SphereGeometry(1,12,8);
+    function obtainFormationShell(i){
+      if(formationShells[i])return formationShells[i];
+      const shell=new THREE.Mesh(formationShellGeometry,formationShellMaterial.clone());
+      const core=new THREE.Mesh(formationCoreGeometry,
+        new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.35,
+          depthTest:true,depthWrite:true}));
+      shell.renderOrder=-2;core.renderOrder=-1;
+      shell.frustumCulled=false;core.frustumCulled=false;
+      scene.add(shell);scene.add(core);
+      return formationShells[i]={shell,core};
+    }
+    function syncElectronicFormations(){
+      ensureFormationCanvas();
+      formationView.projected=[];
+      const frame=window.HHSAudioViz&&window.HHSAudioViz.diagnostics?
+        window.HHSAudioViz.diagnostics.audioFrame:0;
+      const phaseFrame=Number.isInteger(frame)?frame:0;
+      let used=0;
+      for(const g of formationView.groups){
+        if(g.members.length<2)continue;
+        const light=obtainFormationShell(used++);
+        const coherent=g.magnitude/Math.max(g.weight,1);
+        const r=0.9+Math.min(3.2,Math.sqrt(g.members.length)*0.36);
+        const phase=((Math.round(g.phase*72/Math.PI)+phaseFrame)%144+144)%144;
+        light.shell.position.set(g.x,g.y,g.z);
+        light.core.position.copy(light.shell.position);
+        light.shell.scale.setScalar(r*1.8);
+        light.core.scale.setScalar(r*0.46);
+        light.shell.material.uniforms.uColor.value.setHSL(phase/144,0.62,0.54);
+        light.shell.material.uniforms.uOpacity.value=0.035+0.09*coherent;
+        light.core.material.color.setHSL(phase/144,0.68,0.68);
+        light.core.material.opacity=0.17+0.17*coherent;
+        light.shell.visible=true;light.core.visible=true;
+        formationScratch.set(g.x,g.y,g.z).project(camera);
+        if(formationScratch.z>=-1&&formationScratch.z<=1){
+          const rect=renderer.domElement.getBoundingClientRect();
+          formationView.projected.push({...g,
+            sx:(formationScratch.x+1)*rect.width/2,
+            sy:(1-formationScratch.y)*rect.height/2,
+            radius:Math.max(5,r*7)});
+        }
+      }
+      for(let i=used;i<formationShells.length;i++){
+        formationShells[i].shell.visible=false;
+        formationShells[i].core.visible=false;
+      }
+    }
+    window.HHSElectronicFormations=Object.freeze({
+      inspect:()=>({groupCount:formationView.groups.length,
+        coupledCount:formationView.groups.filter(g=>g.members.length>1).length,
+        selected:formationView.selected,hovered:formationView.hovered,
+        selectedMembers:formationView.selected===null?[]:
+          (formationView.groups.find(g=>g.members.includes(formationView.selected))||{members:[]}).members.slice(),
+        schema:"HHS_PASS220_BOND_DERIVED_PHASOR_FORMATION_V1",
+        physicalPopulation:particles.length,physicsMutation:false})
+    });
     function syncParticleRenderBatch(batch){
       const mesh=batch.mesh, points=batch.points, halo=batch.halo;
       const audioVisual=window.HHSAudioViz;
@@ -1316,12 +1487,16 @@
           audioVisual.projectBrownianAntiParticle(p,particleBatchMatrix);
           audioVisual.projectColor(p,particleAudioColor);
           if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,particleAudioColor);
-          mesh.setColorAt(i,particleAudioColor);
         }else{
           particleAudioColor.copy(p.material.color);
           if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.tint(p,particleAudioColor);
-          mesh.setColorAt(i,particleAudioColor);
         }
+        /* PERFORMANCE ROLLBACK: restore existing instance projection.
+           Experimental group light and scale are dormant, never per-particle. */
+        mesh.setColorAt(i,particleAudioColor);
+        /* Coupled physical constituents remain simulated but are rendered
+           through their shared sphere in the 2D formation pass. */
+        /* Preserve original particle visibility: no formation suppression. */
         mesh.setMatrixAt(i,particleBatchMatrix);
         if(halo)halo.glowStrength.array[i]=glowEnabled?
           audioVisual.projectParticleGlow(p):0;
@@ -1436,6 +1611,36 @@
             velocity: new THREE.Vector3(0,0,0), q144: (i*250+j) % 144, spiral: i, j, layer2: !!layer2 };
           group.add(particle);
           particles.push(particle);
+          particle.userData.hhsGroupIndex=particles.length-1;
+          /* Distinct native-carrier group properties, assigned once before
+             the existing interaction solver initializes. No new force law. */
+          const carrierIndex=particle.userData.hhsGroupIndex;
+          const carrierLocal=carrierIndex%5184;
+          const carrierPopulation=Math.floor(carrierIndex/5184);
+          const carrierConstraint=Math.floor(carrierLocal/648);
+          const carrierScale=Math.floor(carrierLocal/72)%9;
+          const carrierPhase=carrierLocal%72;
+          const carrierQuarter=(carrierConstraint%4);
+          const carrierChargeLayer=carrierPhase%9;
+          const carrierSpinRow=(carrierConstraint*9+carrierScale)%17;
+          const carrierSpinColumn=carrierPhase%17;
+          particle.userData.hhsCarrier=Object.freeze({
+            population:carrierPopulation,constraint:carrierConstraint,
+            scale:carrierScale,phaseAddress:carrierPhase,
+            quarterTurn:carrierQuarter,ionicLayer:carrierChargeLayer,
+            ionicCharge:carrierPopulation?4-carrierChargeLayer:carrierChargeLayer-4,
+            hnanGateAddress:carrierChargeLayer===4,
+            spinorRow:carrierPopulation?carrierSpinColumn:carrierSpinRow,
+            spinorColumn:carrierPopulation?carrierSpinRow:carrierSpinColumn,
+            reciprocalIndex:(1-carrierPopulation)*5184+carrierLocal,
+            orderedCarrier:carrierPopulation?"yxwz":"xyzw"
+          });
+          /* Rotated phase gear becomes an ordinary inherited phase property;
+             physics consumes userData.phase through its existing pathways. */
+          particle.userData.phase+=carrierQuarter*Math.PI/2+
+            carrierPopulation*Math.PI;
+          particle.userData.q144=(2*carrierPhase+18*carrierQuarter+
+            72*carrierPopulation)%144;
           points.push(particle);
         }
         spiralData.push({ group, points, index: (layer2 ? 8 : 0) + i, layer2: !!layer2 });
@@ -2063,6 +2268,10 @@
         const px=x*R+tOff[to], py=y*R+tOff[to+1], pz=z*R+tOff[to+2];
         thPos[i*3]=px; thPos[i*3+1]=py; thPos[i*3+2]=pz;
         /* reciprocal phase families carry reciprocal (inverted) mass */
+        /* The nine fractal-size addresses now control existing physical
+           inertial/gravitational mass, not merely the GPU projection.
+           Preserve reciprocal mass orientation and original [0.7,1.3] bounds. */
+        const hhsScaleGroup=Math.floor((i%5184)/72)%9;
         thMass[i]= p.userData.recip ? 1.3-0.6*((p.userData.q144%9)/8)
                                     : 0.7+0.6*((p.userData.q144%9)/8);
         thPhase[i]=p.userData.q144%72;
@@ -2151,6 +2360,7 @@
         /* softened mutual gravitation toward the barycenter, gradient
            deepening with local density (set during the neighbor pass) */
         const r2=x*x+y*y+z*z, s32=Math.pow(r2+sf2,1.5);
+        /* Softened gravity remains sourced from the existing solver. */
         const muLocal=mu*(1+FLD.gradG*(nbCount[i]/20));
         let ax=-muLocal*x/s32, ay=-muLocal*y/s32, az=-muLocal*z/s32;
         /* HYPERCUBIC PERIODICITY at c relative to the undisturbed original
@@ -4624,53 +4834,83 @@
       camera.position.copy(chase.pos);
       camera.lookAt(chase.look);
     }
-    function animate() {
-      requestAnimationFrame(animate);
-      if(!chase.on) controls.update();
-      /* GLOBAL FREQUENCY CONTROL: freqScale physics substeps per frame.
-         Each substep runs the FULL stack (phase precession + swarm coupling
-         field) at the canonical dt — symplectic structure and every receipt
-         invariant hold per substep; the interaction rate scales linearly.
-         CONTROL ONLY: no physics change at any setting. */
+    /* Adaptive presentation budget: drop costly LIGHT/RENDER frames only.
+       The canonical physics loop executes on every animation callback. */
+    let projectionSkipFactor=1,projectionLastCostMs=0,projectionSkipped=0;
+    const PROJECTION_BUDGET_MS=6,PROJECTION_MAX_SKIP=8;
+    let physicsClockLast=null,physicsDebtMs=0,physicsTicks=0;
+    const PHYSICS_TICK_MS=1000/60,MAX_PHYSICS_CATCHUP=4;
+    function advanceExistingPhysicsTick(){
       const steps=Math.max(1,Math.min(10,simParams.freqScale|0));
-      for(let s=0;s<steps;s++){ updateSpiralParticles(); time += simParams.evolutionSpeed * simParams.timeDilationFactor; }
+      for(let s=0;s<steps;s++){
+        updateSpiralParticles();
+        time += simParams.evolutionSpeed * simParams.timeDilationFactor;
+      }
       updatePhaseGeometry();
       collideBondMembranes();
       constructorScan();
-      if(chase.on) updateChaseCamera();
-      /* QUARTIC RENDER SKIP: physics advanced for ALL carriers above;
-         the projection renders on every 4th frame (base-8 periodicity +
-         quartic closure M⁴=M³+2M² — the HNAN semicomplement at projection
-         granularity: skipped renders write nothing, the clock never
-         stops). */
+      if(chase.on)updateChaseCamera();
+      physicsTicks++;
       renderTick++;
       renderGate=((renderTick%4)===0);
+      return steps;
+    }
+    function animate(timestamp) {
+      requestAnimationFrame(animate);
+      if(!chase.on)controls.update();
+      const now=Number.isFinite(timestamp)?timestamp:performance.now();
+      if(physicsClockLast===null)physicsClockLast=now-PHYSICS_TICK_MS;
+      const elapsed=Math.max(0,now-physicsClockLast);
+      physicsClockLast=now;
+      physicsDebtMs+=elapsed;
+      let advanced=0,steps=0;
+      while(physicsDebtMs>=PHYSICS_TICK_MS&&advanced<MAX_PHYSICS_CATCHUP){
+        steps=advanceExistingPhysicsTick();
+        physicsDebtMs-=PHYSICS_TICK_MS;
+        advanced++;
+      }
+      /* When behind, sacrifice light frames and preserve physics debt.
+         Never fabricate missed simulation ticks or scale physical dt. */
+      const physicsBehind=physicsDebtMs>=PHYSICS_TICK_MS;
+      if(advanced===0)return;
       /* Additional AUDIO-ONLY visual projections follow each new 735-sample
          output-clock frame. This does not advance a physics substep, native
          tick, receipt, or change the inherited quartic render gate. */
-      const audioVisualFrame=!!(window.HHSAudioViz &&
-                                window.HHSAudioViz.needsProjectionFrame());
-      if(renderGate){
+      /* Audio samples remain available to the next particle-owned render. */
+      const projectionDue=!physicsBehind && renderGate &&
+        ((Math.floor(renderTick/4)%projectionSkipFactor)===0);
+      if(renderGate&&!projectionDue)projectionSkipped++;
+      if(projectionDue){
+        const projectionStart=performance.now();
+        /* Display the existing particles directly; no formation aggregation,
+           mesh cloning, or extra spherical light pass in the hot path. */
         syncParticleRenderBatches();
-        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
-        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
+        /* Light is a probabilistic/reflective sample of existing phase and
+           location. It never drives the particle frame. Stable modulo sampling
+           bounds lighting work without another clock or random state. */
+        const lightSampleDue=(Math.floor(renderTick/4)%8)===0;
+        if(lightSampleDue){
+          if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
+          if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
+        }
         renderer.render(scene, camera);
+        projectionLastCostMs=performance.now()-projectionStart;
+        if(projectionLastCostMs>PROJECTION_BUDGET_MS)
+          projectionSkipFactor=Math.min(PROJECTION_MAX_SKIP,projectionSkipFactor+1);
+        else if(projectionLastCostMs<PROJECTION_BUDGET_MS/2)
+          projectionSkipFactor=Math.max(1,projectionSkipFactor-1);
         renderedFrames++;
         /* state JSON is a presentation surface; get_state remains fresh on demand */
         outputState();
       }
-      if(!renderGate && audioVisualFrame){
-        syncParticleRenderBatches();
-        if(window.HHSPhaseMembranes)window.HHSPhaseMembranes.sync();
-        if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
-        renderer.render(scene,camera);
-      }
+      /* No audio-only light pass: the existing quartic particle render
+         gate owns all presentation redraws; audio synthesis continues. */
       if (window.updateFunctions) {
         window.updateFunctions.forEach(fn => {
           try { fn(); } catch (e) { logDebug("Error in update function: " + e); }
         });
       }
-      if(renderGate){
+      if(projectionDue){
         let spd=0; for(let i=0;i<particles.length;i++) spd+=particles[i].userData.velocity.length();
         document.getElementById("hud").innerText =
           `HHS tick=${window.HHS.engine.tick} blocks=${window.HHS.engine.blocks} ` +
@@ -6156,24 +6396,56 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
     const right=[cx+half*s,cy-half*c,cx-half*s,cy+half*c];
     return {phase72:p,left,right,dot:c*(-s)+s*c};
   }
+  /* Four-tick interlace: derive presentation state from the PCM frame,
+     never from rAF or a new canonical VM81 clock. Geometry and light are
+     render-only; source particle positions and receipts are not touched. */
+  const INTERLACE=Object.freeze({
+    schema:"HHS_PASS220_FOUR_PHASE_LIQUID_LIGHT_V1",
+    period:4,quarterTurn72:18,projectionOnly:true,
+    canonicalMutationAuthority:false
+  });
+  function fourPhasePresentationPacket(frame){
+    if(!Number.isSafeInteger(frame)||frame<0)return null;
+    const phase=frame%INTERLACE.period;
+    const inverted=(phase&1)===1;
+    return Object.freeze({
+      frame,phase,rotationPhase72:phase*INTERLACE.quarterTurn72,
+      rotationQuarterTurns:phase,
+      colorPolarity:inverted?-1:1,
+      topology:inverted?"convex":"concave",
+      depthSign:inverted?1:-1,
+      horizontalInversion:phase===1||phase===3,
+      verticalInversion:phase===2||phase===3,
+      backlightReveal:inverted?0.6:1,
+      source:"PCM_44100_FRAME_735",
+      projectionOnly:true
+    });
+  }
   function paintGyroscopicVerticalPair(ctx,width,height,leftSample,rightSample,
                                         leftRms,rightRms,phase,leftHz=432,rightHz=432){
     const pair=verticalReciprocalGradientPair(
       phase,leftSample,rightSample,leftRms,rightRms,leftHz,rightHz);
     if(pair.alphaL<0.004 && pair.alphaR<0.004)return pair;
-    const axes=gyroscopicGradientAxes72(phase,width,height);
-    ctx.globalCompositeOperation="lighter";
+    const packet=fourPhasePresentationPacket(state.lastFrame);
+    const axes=gyroscopicGradientAxes72(
+      phase+(packet?packet.rotationPhase72:0),width,height);
+    ctx.globalCompositeOperation="source-over";
     for(let bus=0;bus<2;bus++){
       const axis=bus?axes.right:axes.left;
       const shader=ctx.createLinearGradient(axis[0],axis[1],axis[2],axis[3]);
       const hues=bus?pair.rightHues:pair.leftHues;
-      const strength=bus?pair.alphaR:pair.alphaL;
-      shader.addColorStop(0,q144Css(hues[0],0));
+      const strength=(bus?pair.alphaR:pair.alphaL)*
+        (packet?packet.backlightReveal:1);
+      const shift=packet&&packet.colorPolarity<0?72:0;
+      shader.addColorStop(0,q144Css((hues[0]+shift)%144,0));
       for(let k=0;k<4;k++){
         const d=Math.abs((k+1)/5-.5);
-        shader.addColorStop((k+1)/5,q144Css(hues[k],strength/(1+10*d*d)));
+        const curvature=packet&&packet.depthSign>0?
+          (0.35+2.6*d):(1/(1+10*d*d));
+        shader.addColorStop((k+1)/5,
+          q144Css((hues[k]+shift)%144,clamp(strength*curvature,0,BACK_LIGHT.alphaCap)));
       }
-      shader.addColorStop(1,q144Css(hues[3],0));
+      shader.addColorStop(1,q144Css((hues[3]+shift)%144,0));
       ctx.fillStyle=shader;
       ctx.fillRect(0,0,width,height);
     }
@@ -7014,7 +7286,7 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
     gyroscopicPhaseGear72,transportGyroscopicPhase72,
     gyroscopicGradientAxes72,spectralFallbackHz,
     verticalReciprocalGradientPair,paintGyroscopicVerticalPair,
-    paintGyroscopicLightBand,
+    paintGyroscopicLightBand,fourPhasePresentationPacket,interlaceContract:INTERLACE,
     prepareVisualFrame,needsProjectionFrame,frameSampleMetrics,
     frameCrossingEvents,attachLiveStereo,
     audioClock:AUDIO_CLOCK, canonicalSampleIndex,frameForSample,
@@ -7026,6 +7298,8 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
       frameSignalReady:state.frameSignalReady,
       visualSource:state.renderSource,
       palette:"Q144-full-spectrum-audio-phase",donut:false,
+       fourPhaseInterlacing:true,
+       fourPhasePacket:fourPhasePresentationPacket(state.lastFrame),
        geometryNormalizationGain:state.gain,
        geometryNormalizationGainMax:GEOMETRY_GAIN.max,
        haloEmissionGain:HALO_EMISSION_GAIN,
@@ -7442,6 +7716,288 @@ window.HHSLiquidLight=Object.freeze({sync,settings:SETTINGS,
     projectPhysicalState,validateWitnessIngress,audit
   });
 })(window);
+
+</script>
+<!-- HHS Pass 220: orthogonal spinor relationship address view; no physics mutation. -->
+<script id="hhsQuantumEpsilonInline">
+(function(global){
+  "use strict";
+  const SCHEMA="HHS_PASS220_QEPSILON_17_RECIPROCAL_PROJECTION_V1";
+  const PARTICLES_PER_VIEW=5184, PARTICLE_TOTAL=10368;
+  const CELL_COUNT=81, COORDINATES_PER_CELL=64;
+  const SPIN_STATES=17, EPSILON_POSITIONS=SPIN_STATES*SPIN_STATES;
+  const SPIN_LAYERS=CELL_COUNT*SPIN_STATES;
+  const Q_CUBED=2*CELL_COUNT*(COORDINATES_PER_CELL+SPIN_STATES);
+  if(2*PARTICLES_PER_VIEW!==PARTICLE_TOTAL ||
+     2*SPIN_LAYERS!==Q_CUBED-PARTICLE_TOTAL ||
+     EPSILON_POSITIONS!==289) throw Error("HHS quantum-epsilon cardinality");
+  /* 17 particle identities; 289 ordered phase pairs, never 289 particles.
+     Reciprocal view swaps row and column but retains their typed identity. */
+  function spinAddress(view,row,column){
+    if(!Number.isInteger(view)||(view!==0&&view!==1) ||
+       !Number.isInteger(row)||row<0||row>=SPIN_STATES ||
+       !Number.isInteger(column)||column<0||column>=SPIN_STATES)return null;
+    return Object.freeze({view,row: view?column:row,
+      column:view?row:column,particleCount:SPIN_STATES,
+      address:(view?column:row)*SPIN_STATES+(view?row:column),
+      physicalParticle:false});
+  }
+  /* 81×64 = 72×72; eight constraint groups × nine size groups × 72 phases. */
+  function particleAddress(index){
+    if(!Number.isInteger(index)||index<0||index>=PARTICLE_TOTAL)return null;
+    const view=Math.floor(index/PARTICLES_PER_VIEW);
+    const local=index%PARTICLES_PER_VIEW;
+    const phase=local%72, group=Math.floor(local/72);
+    const cell=Math.floor(local/64), coordinate=local%64;
+    return Object.freeze({index,view,cell,coordinate,
+      constraint:Math.floor(group/9),fractalScale:group%9,phase,
+      spinor:view===0?"xyzw":"yxwz",physicalParticle:true});
+  }
+  function reciprocalIndex(index){
+    const address=particleAddress(index);
+    return address===null?null:
+      (1-address.view)*PARTICLES_PER_VIEW+
+      address.constraint*9*72+address.fractalScale*72+address.phase;
+  }
+  function diagnostics(){
+    return Object.freeze({schema:SCHEMA,views:2,particles:PARTICLE_TOTAL,
+      perView:PARTICLES_PER_VIEW,phasePositions:72,
+      constraintGroups:8,fractalScales:9,spinParticleIdentities:SPIN_STATES,
+      spinRelationPositions:EPSILON_POSITIONS,spinLayersPerView:SPIN_LAYERS,
+      differenceResidue:Q_CUBED-PARTICLE_TOTAL,
+      layeredCardinality:Q_CUBED,hnanCenter:"HNAN",
+      orientationRule:"ordered reciprocal row-column swap",
+      claimedOrthogonalityValidated:false,
+      nativePhysicsMutation:false});
+  }
+  function paint(ctx,phase){
+    if(!ctx)return false;
+    const step=Number.isInteger(phase)&&phase>=0?phase%4:0;
+    ctx.clearRect(0,0,354,177);
+    for(let view=0;view<2;view++){
+      for(let i=0;i<SPIN_STATES;i++)for(let j=0;j<SPIN_STATES;j++){
+        const address=spinAddress(view,i,j);
+        const hue=(2*(address.row*17+address.column)+step*18)%144;
+        const viz=global.HHSAudioViz;
+        ctx.fillStyle=viz&&typeof viz.q144Css==="function"?
+          viz.q144Css(hue,0.65):"rgba(140,180,220,0.65)";
+        ctx.fillRect(view*178+j*10,i*10,9,9);
+      }
+    }
+    return true;
+  }
+  const api=Object.freeze({schema:SCHEMA,spinAddress,particleAddress,
+    reciprocalIndex,diagnostics,paint});
+  global.HHSQuantumEpsilon=api;
+  function boot(){
+    const details=document.getElementById("hhsQuantumEpsilonPanel");
+    const canvas=document.getElementById("hhsQuantumEpsilonCanvas");
+    const status=document.getElementById("hhsQuantumEpsilonStatus");
+    if(!details||!canvas||!status)return;
+    details.addEventListener("toggle",()=>{
+      if(!details.open)return;
+      const viz=global.HHSAudioViz;
+      const frame=viz&&viz.diagnostics?viz.diagnostics.audioFrame:-1;
+      const phase=Number.isInteger(frame)&&frame>=0?frame%4:0;
+      paint(canvas.getContext("2d"),phase);
+      status.textContent="17 identities / 289 ordered relationships per view · "+
+        "2×(81×64 + 81×17) = 13,122 layered addresses · "+
+        "2×81×64 = 10,368 particle addresses · phase "+phase+
+        " · HNAN center · projection-only";
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
+  else boot();
+})(window);
+</script>
+<!-- Pass 220 shared audio/geometry group address compositor: display-only. -->
+<script id="hhsCoupledTensorInline">
+(function(global){
+"use strict";
+const SCHEMA="HHS_PASS220_RECIPROCAL_8X9_CHARGE_CURVATURE_GROUP_PROJECTION_V1";
+const POPULATION=5184,TOTAL=10368,CHARGE=Object.freeze([-4,-3,-2,-1,"HNAN",1,2,3,4]);
+const SPINOR=Object.freeze(["xyzw","yxwz"]);
+function address(index){
+  if(!Number.isInteger(index)||index<0||index>=TOTAL)return null;
+  const population=Math.floor(index/POPULATION),n=index%POPULATION;
+  const group=Math.floor(n/72),phase=n%72;
+  const constraint=Math.floor(group/9),scale=group%9;
+  const cell=Math.floor(n/64),cellCoordinate=n%64;
+  return Object.freeze({index,population,spinor:SPINOR[population],
+    constraint,scale,phase,cell,cellCoordinate,
+    ionicLayer:phase%9,ionicCharge:population
+      ? (phase%9===4?"HNAN":-(phase%9-4))
+      : CHARGE[phase%9],
+    reciprocalIndex:(1-population)*POPULATION+n});
+}
+function reciprocal(index){
+  const a=address(index);return a?a.reciprocalIndex:null;
+}
+/* A non-authoritative graded display projection, not a new force,
+   electrochemical reaction, atomic mass, or gravitational law. */
+function bias(index,audioPhase=0){
+  const a=address(index);if(!a)return null;
+  const signedCharge=typeof a.ionicCharge==="number"?a.ionicCharge:0;
+  const phase=((a.phase+Math.trunc(Number.isFinite(audioPhase)?audioPhase:0))%72+72)%72;
+  const q144=(2*phase+(a.population?72:0))%144;
+  return Object.freeze({...a,phase72:phase,hue144:q144,
+    chargeSign:Math.sign(signedCharge),hnanCenter:a.ionicCharge==="HNAN",
+    normalizedScaleAddress:a.scale+1,projectionOnly:true});
+}
+/* Observable per-instance presentation: size, hue, phase-curvature shimmer.
+   Inputs use existing position/velocity and particle identity; no simulation feedback. */
+const displayScale={x:1,y:1,z:1};
+function projectParticle(p,matrix,color){
+  const idx=p&&p.userData?p.userData.hhsGroupIndex:undefined;
+  const a=bias(idx,0);
+  if(!a||!matrix||!color)return false;
+  /* Render radius follows the very same reciprocal mass group used by
+     thMass in the inherited gravitational, momentum and collision solver. */
+  const weight=1.5+a.scale*0.25;
+  const turn=a.phase*2*Math.PI/72;
+  const handed=a.population?-1:1;
+  const vx=p.velocity&&Number.isFinite(p.velocity.x)?p.velocity.x:0;
+  const vy=p.velocity&&Number.isFinite(p.velocity.y)?p.velocity.y:0;
+  const speed=Math.min(2,Math.sqrt(vx*vx+vy*vy));
+  const curvature=1+Math.min(0.24,speed*0.10);
+  displayScale.x=weight*curvature;
+  displayScale.y=weight/curvature;
+  displayScale.z=weight;
+  matrix.scale(displayScale);
+  matrix.elements[12]+=handed*0.10*Math.cos(turn)*speed;
+  matrix.elements[13]+=handed*0.10*Math.sin(turn)*speed;
+  const hue=((a.hue144+144)%144)/144;
+  /* Strong distinct group color is intentional; keep existing illumination. */
+  const colorTarget={r:0,g:0,b:0};
+  const h=hue*6,part=h-Math.floor(h),q=1-part;
+  switch(Math.floor(h)%6){
+    case 0:colorTarget.r=1;colorTarget.g=part;break;
+    case 1:colorTarget.r=q;colorTarget.g=1;break;
+    case 2:colorTarget.g=1;colorTarget.b=part;break;
+    case 3:colorTarget.g=q;colorTarget.b=1;break;
+    case 4:colorTarget.r=part;colorTarget.b=1;break;
+    default:colorTarget.r=1;colorTarget.b=q;
+  }
+  const blend=0.78;
+  color.r=color.r*(1-blend)+colorTarget.r*blend;
+  color.g=color.g*(1-blend)+colorTarget.g*blend;
+  color.b=color.b*(1-blend)+colorTarget.b*blend;
+  return true;
+}
+function audit(){
+  let count=0,neutral=0;
+  for(let i=0;i<TOTAL;i++){
+    const a=address(i);
+    if(!a||a.constraint>7||a.scale>8||a.phase>71||
+       a.cell>80||a.cellCoordinate>63||
+       reciprocal(reciprocal(i))!==i)throw Error("Coupled tensor address mismatch");
+    count++;if(a.ionicCharge==="HNAN")neutral++;
+  }
+  return Object.freeze({schema:SCHEMA,count,perPopulation:POPULATION,
+    constraintGroups:8,fractalScales:9,phasePositions:72,
+    chargeLayers:CHARGE.length,chargeAddressAxis:"phase mod 9",
+    hnanAddress:4,hnanMappedPositions:neutral,
+    quantumEpsilon:289,spinParticleIdentities:17,
+    layeredCardinality:13122,spinRelationshipResidue:2754,
+    nativePhysicsMutation:false,canonicalAdmission:false,
+    orthogonalityProofClaimed:false,massQuantizationProofClaimed:false});
+}
+const diagnostics=audit();
+function paint(ctx,phase){
+  if(!ctx)return false;
+  ctx.clearRect(0,0,576,256);
+  const audio=global.HHSAudioViz;
+  for(let p=0;p<2;p++)for(let r=0;r<8;r++)for(let g=0;g<9;g++){
+    const a=bias(p*POPULATION+72*(9*r+g),phase);
+    const x=p*288+g*31,y=r*31;
+    ctx.fillStyle=audio&&typeof audio.q144Css==="function"?
+      audio.q144Css(a.hue144,a.hnanCenter?0.9:0.45+0.045*g):
+      (a.hnanCenter?"#eeeeee":"#639bd0");
+    ctx.fillRect(x,y,29,29);
+  }
+  return true;
+}
+function boot(){
+  const details=document.getElementById("hhsCoupledTensorPanel");
+  const canvas=document.getElementById("hhsCoupledTensorCanvas");
+  const status=document.getElementById("hhsCoupledTensorStatus");
+  if(!details||!canvas||!status)return;
+  function draw(){
+    if(!details.open)return;
+    const audio=global.HHSAudioViz;
+    const frame=audio&&audio.diagnostics?audio.diagnostics.audioFrame:-1;
+    const phase=Number.isInteger(frame)&&frame>=0?frame%72:0;
+    paint(canvas.getContext("2d"),phase);
+    status.textContent="2 × 8 constraints × 9 scales × 72 positions = 10,368; "+
+      "ionic −4…HNAN…+4; 17² reciprocal relationship positions; "+
+      "PCM phase "+phase+"; projection only";
+    global.requestAnimationFrame(draw);
+  }
+  details.addEventListener("toggle",()=>{if(details.open)draw();});
+}
+global.HHSCoupledTensorProjection=Object.freeze({
+  schema:SCHEMA,address,reciprocal,bias,projectParticle,audit,paint,diagnostics,
+  chargeLayers:CHARGE,spinorOrientations:SPINOR
+});
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
+else boot();
+})(window);
+</script>
+<script id="hhsFourier17Embedded">
+/* Pass 220: 17-state Fourier phase basis for reciprocal particle-group properties.
+   A read-only relationship transform. Not a force solver, particle allocator,
+   or replacement for ordered native HNAN/VM81 tensors. */
+(function(root) {
+"use strict";
+const N=17, TWOPI=2*Math.PI, INV_SQRT=1/Math.sqrt(N);
+const basis=Object.freeze(Array.from({length:N},(_,j)=>
+  Object.freeze(Array.from({length:N},(_,k)=>{
+    const angle=TWOPI*((j*k)%N)/N;
+    return Object.freeze([INV_SQRT*Math.cos(angle),INV_SQRT*Math.sin(angle)]);
+  }))
+));
+function valid(a){return Array.isArray(a)&&a.length===N&&a.every(x=>Array.isArray(x)&&x.length===2&&x.every(Number.isFinite));}
+function transform(amplitudes,inverse=false){
+  if(!valid(amplitudes))throw new TypeError("Expected 17 complex amplitude pairs");
+  return Array.from({length:N},(_,j)=>{
+    let re=0,im=0;
+    for(let k=0;k<N;k++){
+      const [ur,ui]=inverse?basis[k][j]:basis[j][k];
+      const vi=inverse?-ui:ui,[ar,ai]=amplitudes[k];
+      re+=ur*ar-vi*ai;im+=ur*ai+vi*ar;
+    }
+    return [re,im];
+  });
+}
+function quarterTurn(amplitudes){
+  if(!valid(amplitudes))throw new TypeError("Expected 17 complex amplitude pairs");
+  return amplitudes.map(([re,im])=>[-im,re]);
+}
+function rotateParticleBasis(amplitudes,step){
+  if(!Number.isInteger(step))throw new TypeError("Integer phase step required");
+  /* R(theta)=U D(theta) U†, theta = 2π step /17. */
+  const spectral=transform(amplitudes,true);
+  for(let k=0;k<N;k++){
+    const [re,im]=spectral[k],angle=TWOPI*(((step%N+N)%N)*k%N)/N;
+    const c=Math.cos(angle),s=Math.sin(angle);
+    spectral[k]=[re*c-im*s,re*s+im*c];
+  }
+  return transform(spectral);
+}
+function reciprocalSlot(row,column,view=0){
+  if(!Number.isInteger(row)||row<0||row>=N||
+     !Number.isInteger(column)||column<0||column>=N||
+     (view!==0&&view!==1))return null;
+  return Object.freeze({row:view?column:row,column:view?row:column,
+    slot:(view?column:row)*N+(view?row:column),
+    quarterTurn:view===1,physicalParticle:false});
+}
+root.HHSFourier17=Object.freeze({
+  schema:"HHS_PASS220_FOURIER17_QUADRATURE_V1",size:N,relationshipSlots:N*N,
+  basis,transform,quarterTurn,rotateParticleBasis,reciprocalSlot,
+  physicsMutation:false
+});
+})(typeof window!=="undefined"?window:globalThis);
 
 </script>
 </body>
