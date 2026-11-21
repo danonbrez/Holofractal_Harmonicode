@@ -1,0 +1,122 @@
+name: Pass 220 Binary-Trinary Egress Memory Lift
+
+on:
+  pull_request:
+    paths:
+      - 'tests/pass220/test_binary_trinary_egress_memory_lift.py'
+      - 'tests/pass220/emit_binary_trinary_native_frame_fixture.py'
+      - 'tests/pass220/test_binary_trinary_native_frame_bridge.c'
+      - 'tests/pass220/test_binary_trinary_native_candidate_feedback.c'
+      - 'tests/pass220/inspect_native_candidate_egress_geometry.py'
+      - 'tests/pass220/test_binary_trinary_u72_gyroscope_recurrence.py'
+      - 'hhs_runtime/pass219/dynamic_octonion_gyroscope.py'
+      - 'hhs_runtime/pass219/gyroscope_admission_membrane.py'
+      - 'tests/pass220/test_binary_trinary_hnan_codec_crossview.py'
+      - 'tests/pass220/test_binary_trinary_projection_family_constraints.py'
+      - 'tests/pass220/test_binary_trinary_matrix_lemma_dag.py'
+      - 'hhs_runtime/hhs_recursive_global_constraint_bundle_v1.py'
+      - 'hhs_runtime/hhs_pass220_multidimensional_constraint_manifold_v1.py'
+      - 'hhs_runtime/hhs_pass220_base64_balanced_trit_v1.py'
+      - 'hhs_runtime/pass219/hnan_4x4_recursive_gate_v1.py'
+      - '.github/workflows/pass220-binary-trinary-egress-memory-lift.yml'
+      - 'hhs_backend/runtime/hhs_universal_binary_trinary_translation_v1.py'
+      - 'hhs_runtime/hhs_loshu_phase_embedding_v1.py'
+      - 'hhs_runtime/pass175/**'
+      - 'hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c'
+      - 'hhs_runtime/include/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.h'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  memory-lift-roundtrip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test runner
+        run: python -m pip install pytest pytest-asyncio cryptography
+
+      - name: Compile inherited exact VM81 ABI
+        run: |
+          mkdir -p /tmp/pass220-egress-memory
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_runtime_exact_abi.c \
+            -o /tmp/pass220-egress-memory/exact-abi.o
+      - name: Build inherited exact ABI link support
+        run: bash tools/pass219/build_exact_abi_link_support.sh /tmp/pass220-egress-memory/link-support full
+
+      - name: Verify inherited RNA candidate reconstruction, rollback, and admission
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_rna_admission_lowering_1_12.c \
+            /tmp/pass220-egress-memory/exact-abi.o \
+            /tmp/pass220-egress-memory/link-support/hhs_hash216.o \
+            /tmp/pass220-egress-memory/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass220-egress-memory/rna-admission-test
+          /tmp/pass220-egress-memory/rna-admission-test
+
+      - name: Generate recovered egress frame and provenance record
+        env:
+          PYTHONPATH: .
+        run: |
+          python tests/pass220/emit_binary_trinary_native_frame_fixture.py \
+            /tmp/pass220-egress-memory/recovered-egress.bin \
+            | tee /tmp/pass220-egress-memory/roundtrip.json
+      - name: Verify lifted egress in native VM81 candidate admission
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_binary_trinary_native_frame_bridge.c \
+            /tmp/pass220-egress-memory/exact-abi.o \
+            /tmp/pass220-egress-memory/link-support/hhs_hash216.o \
+            /tmp/pass220-egress-memory/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass220-egress-memory/native-lift-bridge
+          /tmp/pass220-egress-memory/native-lift-bridge \
+            /tmp/pass220-egress-memory/recovered-egress.bin
+      - name: Compile inherited exact VM81 source-bound candidate adapter
+        run: |
+          gcc -O2 -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            -c hhs_runtime/c/hhs_pass219_exact_vm81_candidate_adapter_1_21_3.c \
+            -o /tmp/pass220-egress-memory/candidate-adapter.o
+      - name: Execute and replay two inherited VM81 candidate cycles
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_binary_trinary_native_candidate_feedback.c \
+            /tmp/pass220-egress-memory/candidate-adapter.o \
+            /tmp/pass220-egress-memory/exact-abi.o \
+            /tmp/pass220-egress-memory/link-support/hhs_hash216.o \
+            /tmp/pass220-egress-memory/link-support/hhs_pass219_vm81_pqc_cell_wall.o \
+            -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/pass220-egress-memory/native-candidate-feedback
+          /tmp/pass220-egress-memory/native-candidate-feedback \
+            /tmp/pass220-egress-memory/recovered-egress.bin \
+            /tmp/pass220-egress-memory/native-egress-first.bin \
+            /tmp/pass220-egress-memory/native-egress-second.bin
+      - name: Inspect actual native egress in inherited Lo Shu and HNAN geometries
+        env:
+          PYTHONPATH: .
+        run: |
+          python tests/pass220/inspect_native_candidate_egress_geometry.py \
+            /tmp/pass220-egress-memory/native-egress-first.bin \
+            /tmp/pass220-egress-memory/native-egress-second.bin
+      - name: Verify full 648-byte egress trinary lift
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q \
+            tests/pass220/test_binary_trinary_egress_memory_lift.py \
+            tests/pass220/test_binary_trinary_hnan_codec_crossview.py \
+            tests/pass220/test_binary_trinary_projection_family_constraints.py \
+            tests/pass220/test_binary_trinary_matrix_lemma_dag.py \
+            tests/pass220/test_binary_trinary_u72_gyroscope_recurrence.py
