@@ -1,0 +1,82 @@
+name: Pass 220 Nucleus 81 Reciprocal Phase Inheritance
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "formal/wolfram/pass220_nucleus_81_reciprocal_phase_inheritance_v1.wl"
+      - "contracts/pass220/PASS_220_NUCLEUS_81_RECIPROCAL_PHASE_INHERITANCE_V1.json"
+      - "tests/pass220/test_pass220_nucleus_81_reciprocal_phase_inheritance_v1.py"
+      - "docs/pass220/PASS_220_NUCLEUS_81_RECIPROCAL_PHASE_INHERITANCE_V1.md"
+      - "evidence/pass220/nucleus_81_reciprocal_phase_inheritance_wolfram_20261109_v1.receipt.json"
+      - ".github/workflows/pass220-nucleus-81-reciprocal-phase-inheritance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nucleus-exact-integer-and-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependency-scoped test runner
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Compile independent Python regression tests
+        run: python -m py_compile tests/pass220/test_pass220_nucleus_81_reciprocal_phase_inheritance_v1.py
+      - name: Run exact integer, address, modulo and authority tests
+        env:
+          PYTHONPATH: .
+        run: python -m pytest -q tests/pass220/test_pass220_nucleus_81_reciprocal_phase_inheritance_v1.py
+      - name: Verify source-bound Wolfram kernel evidence
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          import subprocess
+          from pathlib import Path
+          receipt = json.loads(Path("evidence/pass220/nucleus_81_reciprocal_phase_inheritance_wolfram_20261109_v1.receipt.json").read_text())
+          source_path = receipt["source_path"]
+          source = Path(source_path).read_text()
+          source_sha = subprocess.check_output(["git", "hash-object", source_path], text=True).strip()
+          assert source_sha == receipt["source_git_blob_sha"], "WOLFRAM_PROOF_SOURCE_CHANGED_WITHOUT_NEW_KERNEL_EVIDENCE"
+          source_test_ids = re.findall(r'TestID->"([^"]+)"', source)
+          assert len(source_test_ids) == len(set(source_test_ids)) == 19
+          assert source_test_ids == receipt["test_ids"], "WOLFRAM_TEST_CENSUS_DRIFT"
+          assert receipt["status"] == "PASS"
+          assert receipt["tests_succeeded"] == 19 and receipt["tests_failed"] == 0
+          assert receipt["all_tests_succeeded"] is True
+          assert receipt["claims"]["canonical_runtime_admission"] is False
+          assert receipt["claims"]["production_native_end_to_end"] is False
+          assert receipt["receipt_is_canonical_hash72_mint"] is False
+          print("19/19 Wolfram kernel evidence matches exact immutable proof source (CI checks evidence, not kernel replay).")
+          PY
+      - name: Verify inherited native HNAN rule through real compiled C ABI
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m pytest -q --tb=short \
+            tests/pass220/test_pass220_recursive_hnan_native_rule_preflight_v1.py::test_real_compiled_native_global_rule_12
+      - name: Check Wolfram script and inherited authority references
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          contract = json.loads(Path("contracts/pass220/PASS_220_NUCLEUS_81_RECIPROCAL_PHASE_INHERITANCE_V1.json").read_text())
+          wolfram = Path(contract["formal_source"]).read_text()
+          for token in ("VerificationTest[", "40-disjoint-antipodal-address-pairs", "all-72-cross-phase-inverses", "TestReport[checks]"):
+              assert token in wolfram, token
+          for path in contract["frozen_dependencies"]:
+              assert Path(path).exists(), path
+          assert contract["authority"] == {
+              "canonical_vm81_mutation": False,
+              "canonical_hash72_mint": False,
+              "canonical_hash216_persistence": False,
+          }
+          print("Wolfram proof source and immutable dependencies verified (not a kernel replay).")
+          PY
