@@ -1,0 +1,130 @@
+name: Pass 220 Nucleus 5 MatrixTimes ABP Ingress
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_nucleus5_matrixtimes_abp_source_v1.py"
+      - "tests/test_pass220_nucleus5_matrixtimes_abp_source_v1.py"
+      - "tests/test_pass220_nucleus5_source_topology_v1.py"
+      - "hhs_runtime/hhs_pass220_nucleus5_source_topology_v1.py"
+      - "tools/pass220/nucleus5_pass159_frontend_probe.c"
+      - "tools/pass220/nucleus5_native_span_manifest.py"
+      - "tools/pass220/compare_nucleus5_pass159_identities.py"
+      - ".github/workflows/pass220-nucleus5-matrixtimes-abp-ingress.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nucleus5-source-and-inherited-hnan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run exact source, ordered A/B/P and inherited HNAN gate checks
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m unittest discover -s tests -p 'test_pass220_nucleus5_matrixtimes_abp_source_v1.py' -v
+          python -m unittest discover -s tests -p 'test_pass220_nucleus5_source_topology_v1.py' -v
+          python -m compileall -q hhs_runtime/hhs_pass220_nucleus5_matrixtimes_abp_source_v1.py
+  nucleus5-native-pass159-frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build inherited native runtime
+        run: make c-abi
+      - name: Compile native Pass159 source probe
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/src \
+            tools/pass220/nucleus5_pass159_frontend_probe.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/nucleus5_pass159_probe
+      - name: Run base and successor A/B/P circuits through native lexer, AST, graph, and VMIR
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: hhs_runtime/builds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hhs_runtime.hhs_pass220_nucleus5_matrixtimes_abp_source_v1 import Nucleus5Source
+          for mode in ("ONE_INPUT", "SUCCESSOR_INPUT"):
+              Path("/tmp/nucleus5_" + mode + ".hhs").write_bytes(
+                  Nucleus5Source().native_compilation_source_bytes(mode))
+          PY
+          python tools/pass220/nucleus5_native_span_manifest.py ONE_INPUT /tmp/nucleus5_ONE_INPUT.spans
+          python tools/pass220/nucleus5_native_span_manifest.py SUCCESSOR_INPUT /tmp/nucleus5_SUCCESSOR_INPUT.spans
+          python - <<'PY'
+          from hashlib import sha256
+          from hhs_runtime.hhs_pass220_nucleus5_matrixtimes_abp_source_v1 import Nucleus5Source
+          w=Nucleus5Source()
+          print("FROZEN_TENSOR_SHA256=" + w.exact_source_sha256)
+          for mode in ("ONE_INPUT","SUCCESSOR_INPUT"):
+              print(mode + "_CIRCUIT_SHA256=" + sha256(w.native_compilation_source_bytes(mode)).hexdigest())
+          PY
+          set -o pipefail
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_ONE_INPUT.spans | tee /tmp/nucleus5_ONE_INPUT.log
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs /tmp/nucleus5_SUCCESSOR_INPUT.spans | tee /tmp/nucleus5_SUCCESSOR_INPUT.log
+          python tools/pass220/compare_nucleus5_pass159_identities.py /tmp/nucleus5_ONE_INPUT.log /tmp/nucleus5_SUCCESSOR_INPUT.log
+      - name: Mandatory source-effect admission must reject three-step fixed VMIR
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: hhs_runtime/builds
+        run: |
+          set +e
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_ONE_INPUT.spans --require-source-effect > /tmp/nucleus5_base_admission.log 2>&1
+          base_status=$?
+          /tmp/nucleus5_pass159_probe /tmp/nucleus5_SUCCESSOR_INPUT.hhs /tmp/nucleus5_SUCCESSOR_INPUT.spans --require-source-effect > /tmp/nucleus5_successor_admission.log 2>&1
+          successor_status=$?
+          set -e
+          test "$base_status" -eq 2
+          test "$successor_status" -eq 2
+          grep -q 'NUCLEUS5_SOURCE_EFFECT_NOT_PROVED' /tmp/nucleus5_base_admission.log
+          grep -q 'NUCLEUS5_SOURCE_EFFECT_NOT_PROVED' /tmp/nucleus5_successor_admission.log
+      - name: Negative test — reject modified source and mislocated cell span
+        env:
+          PYTHONPATH: .
+          LD_LIBRARY_PATH: hhs_runtime/builds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          source=Path('/tmp/nucleus5_ONE_INPUT.hhs').read_bytes()
+          assert source.count(b'3334608') >= 1
+          Path('/tmp/nucleus5_TAMPERED.hhs').write_bytes(source.replace(b'3334608', b'3334609', 1))
+          rows=Path('/tmp/nucleus5_ONE_INPUT.spans').read_text().splitlines()
+          row=rows[1].split()
+          row[4]=str(int(row[4])+1)
+          rows[1]=' '.join(row)
+          Path('/tmp/nucleus5_BADSPAN.spans').write_text('\n'.join(rows)+'\n')
+          PY
+          if /tmp/nucleus5_pass159_probe /tmp/nucleus5_TAMPERED.hhs /tmp/nucleus5_ONE_INPUT.spans; then
+            echo "TAMPERED_SOURCE_ACCEPTED"; exit 1
+          fi
+          if /tmp/nucleus5_pass159_probe /tmp/nucleus5_ONE_INPUT.hhs /tmp/nucleus5_BADSPAN.spans; then
+            echo "MISLOCATED_MATRIX_CELL_ACCEPTED"; exit 1
+          fi
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          raw=Path("/tmp/nucleus5_TAMPERED.hhs").read_bytes()
+          lines=Path("/tmp/nucleus5_ONE_INPUT.spans").read_text().splitlines()
+          hdr=lines[0].split()
+          hdr[2]=sha256(raw).hexdigest()
+          lines[0]=" ".join(hdr)
+          first=lines[1].split()
+          start,end=int(first[4]),int(first[5])
+          first[6]=sha256(raw[start:end]).hexdigest()
+          lines[1]=" ".join(first)
+          Path("/tmp/nucleus5_FORGED.spans").write_text("\n".join(lines)+"\n")
+          PY
+          if /tmp/nucleus5_pass159_probe /tmp/nucleus5_TAMPERED.hhs /tmp/nucleus5_FORGED.spans; then
+            echo "REGENERATED_TAMPERED_MANIFEST_ACCEPTED"; exit 1
+          fi
