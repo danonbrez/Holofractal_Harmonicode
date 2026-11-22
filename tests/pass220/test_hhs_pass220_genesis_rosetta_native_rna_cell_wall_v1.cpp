@@ -104,8 +104,44 @@ int main() {
            HHS_EXACT_STATUS_OK);
     auto w=witness();
     HHSExactPass220I028Lane5RNAG3BridgeCandidateV1 candidate{};
+    // C4 bus: P=1, s=1, K=0, b^2=1, c^2=2, R=1.
+    // Four phase representatives: +1, +i, -1, -i.
+    // The unsquared gate must retain only the even phase selectors.
+    const hhs::rosetta::c4::Bus phase_bus{
+        hhs::rosetta::c4::Rational(1),hhs::rosetta::c4::Rational(1),
+        hhs::rosetta::c4::Rational(1),hhs::rosetta::c4::Rational(2),
+        hhs::rosetta::c4::Rational(0)};
+    const hhs::rosetta::c4::Complex phase_seed{
+        hhs::rosetta::c4::Rational(1),hhs::rosetta::c4::Rational(0)};
+    hhs::rosetta::c4::Witness gate{};
     assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
-        &input,&frame,&predecessor,&w,native_phases,0,1,2,&candidate)==
+        &input,&frame,&predecessor,&w,native_phases,
+        phase_bus,phase_seed,&gate,0,1,2,&candidate)==
+        HHS_EXACT_STATUS_OK);
+    assert(gate.annihilation_zero && gate.sextic_zero);
+    assert(gate.sextic_residual==hhs::rosetta::c4::Rational(0));
+    assert(gate.admitted[0] && !gate.admitted[1] &&
+           gate.admitted[2] && !gate.admitted[3]);
+    assert(gate.quartic_zero[0] && gate.quartic_zero[1] &&
+           gate.quartic_zero[2] && gate.quartic_zero[3]);
+    assert(gate.unsquared_zero[0] && !gate.unsquared_zero[1] &&
+           gate.unsquared_zero[2] && !gate.unsquared_zero[3]);
+    const auto phase_only_altered=phase_bus;
+    auto bad_bus=phase_only_altered;
+    bad_bus.c_squared=hhs::rosetta::c4::Rational(3);
+    assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
+        &input,&frame,&predecessor,&w,native_phases,
+        bad_bus,phase_seed,&gate,0,1,2,&candidate)==
+        HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
+    bad_bus=phase_bus;
+    bad_bus.K=hhs::rosetta::c4::Rational(1);
+    assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
+        &input,&frame,&predecessor,&w,native_phases,
+        bad_bus,phase_seed,&gate,0,1,2,&candidate)==
+        HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
+    assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
+        &input,&frame,&predecessor,&w,native_phases,
+        phase_bus,phase_seed,&gate,0,1,2,&candidate)==
         HHS_EXACT_STATUS_OK);
     assert(std::memcmp(&frame,&saved,sizeof(frame))==0);
     assert(candidate.struct_size==sizeof(candidate));
@@ -127,7 +163,8 @@ int main() {
     auto broken_phases=native_phases;
     broken_phases.regions[1].region_index=0;
     assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
-        &input,&frame,&predecessor,&w,broken_phases,0,1,2,&candidate)==
+        &input,&frame,&predecessor,&w,broken_phases,
+        phase_bus,phase_seed,&gate,0,1,2,&candidate)==
         HHS_EXACT_STATUS_INVALID_ARGUMENT);
     auto forged=predecessor;
     forged.transition_identity216[0]=
