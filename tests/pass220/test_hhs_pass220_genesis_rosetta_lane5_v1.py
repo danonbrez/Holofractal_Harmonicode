@@ -123,3 +123,33 @@ def test_native_cell_wall_route_requires_frozen_abi_witness():
     with pytest.raises(RosettaBoundaryError):
         lower_via_native_rna_cell_wall(genome=genesis,phase_tensor=tensor,
                                       native_bridge=None,native_request={})
+
+
+def test_inherited_palindromic_rna_5184_exact_reconstruction():
+    from hhs_runtime.hhs_pass220_genesis_rosetta_lane5_v1 import (
+        inherited_palindromic_rna_transcription,
+    )
+    from hhs_runtime.hhs_pass220_lo_shu_normalization_v1 import (
+        deserialize_offsets_5184,
+    )
+    offsets=tuple(i%9 for i in range(81))
+    witness=inherited_palindromic_rna_transcription(
+        decimal_text="179971.179971",offsets=offsets)
+    assert witness["inherited_i073_validation"] is True
+    assert len(witness["reconstructed_5184"])==5184
+    assert deserialize_offsets_5184(witness["reconstructed_5184"])==offsets
+    assert witness["candidate_only"] is True
+    assert witness["canonical_vm81_mutation_authority"] is False
+    ingress=witness["inherited_i073_generator"]["palindromic_rna_ingress"]
+    assert ingress["ieee_binary64_boundary_only"] is True
+    assert ingress["host_float_arithmetic_authority"] is False
+    assert ingress["rna_double_reverse_exact"] is True
+
+def test_inherited_rna_rejects_wrong_offsets():
+    from hhs_runtime.hhs_pass220_genesis_rosetta_lane5_v1 import (
+        inherited_palindromic_rna_transcription,
+    )
+    with pytest.raises(RosettaBoundaryError):
+        inherited_palindromic_rna_transcription(decimal_text="1",offsets=(0,)*80)
+    with pytest.raises(RosettaBoundaryError):
+        inherited_palindromic_rna_transcription(decimal_text="1",offsets=(9,)*81)
