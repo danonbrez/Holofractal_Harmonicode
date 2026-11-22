@@ -74,3 +74,52 @@ def test_missing_phase_and_route_rejected():
             source=0,ingress=lambda x:x,
             layers=(NativeLayer("x","symbolic","scalar",lambda v,g,t:v),),
             egress=lambda x:x)
+
+
+def test_native_cell_wall_route_requires_frozen_abi_witness():
+    from hhs_runtime.hhs_pass220_genesis_rosetta_lane5_v1 import (
+        lower_via_native_rna_cell_wall, validate_native_cell_wall_candidate,
+        NATIVE_LOWERING_SYMBOL,
+    )
+    valid = {
+        "surface_linux_api_abi_ingress": 1,
+        "lane5_zero_bypass_interposer": 1,
+        "cpp_rna_cell_wall_routed": 1,
+        "holo4_evidence_equivalent": 1,
+        "pqc_firewall_required_for_canonical_admission": 1,
+        "signed_environmental_vm81_required": 1,
+        "direct_environmental_opcode_canonical_authority": 0,
+        "direct_abi_canonical_authority": 0,
+        "direct_vm81_bypass_authority": 0,
+        "canonical_admission_invoked": 0,
+        "external_egress_authority": 0,
+        "rna_prepared": {"struct_size": 1},
+        "rna_decision": {"struct_size": 1},
+        "g3_candidate": {"struct_size": 1},
+    }
+    genesis=Genesis.from_words(range(9))
+    tensor=NativePhaseTensor(tuple(range(64)),"native-matrix-expression")
+    calls=[]
+    def ffi(request):
+        calls.append(request)
+        return dict(valid)
+    candidate=lower_via_native_rna_cell_wall(
+        genome=genesis,phase_tensor=tensor,native_bridge=ffi,
+        native_request={"native": "C_ABI_INPUTS"})
+    assert calls==[{"native":"C_ABI_INPUTS"}]
+    assert candidate["native_lowering_symbol"]==NATIVE_LOWERING_SYMBOL
+    assert candidate["candidate_only"] is True
+    assert candidate["external_egress_authority"] is False
+    for field in ("cpp_rna_cell_wall_routed","holo4_evidence_equivalent",
+                  "signed_environmental_vm81_required"):
+        invalid=dict(valid)
+        invalid[field]=0
+        with pytest.raises(RosettaBoundaryError):
+            validate_native_cell_wall_candidate(invalid)
+    invalid=dict(valid)
+    invalid["canonical_admission_invoked"]=1
+    with pytest.raises(RosettaBoundaryError):
+        validate_native_cell_wall_candidate(invalid)
+    with pytest.raises(RosettaBoundaryError):
+        lower_via_native_rna_cell_wall(genome=genesis,phase_tensor=tensor,
+                                      native_bridge=None,native_request={})
