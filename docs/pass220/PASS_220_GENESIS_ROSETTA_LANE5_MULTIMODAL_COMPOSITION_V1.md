@@ -83,3 +83,14 @@ translation is required; similarly native Harmonicode may project directly to
 a scalar without an x64 intermediate. This mandatory cell-wall route applies
 to the Lo Shu tensor's **cross-representation hydration/lowering boundary**,
 not to unrelated pure native execution.
+
+
+## Native C++ execution acceptance frontier (2026-11-22)
+
+Added `tests/pass220/test_hhs_pass220_genesis_rosetta_native_rna_cell_wall_v1.cpp`, which calls the actual exported `hhs_exact_pass220_i028_lane5_rna_g3_route`, with the historical I028 input/predecessor/witness fixture, and nine independent exact 64-bit test payloads carried in otherwise unused VM81 test cells. It checks quotient/remainder and 576-boundary arithmetic, native source-frame identity, RNA cell wall mediation, candidate-only authority, forged predecessor rejection, and required-constructor rejection.
+
+Added `.github/workflows/pass220-genesis-rosetta-native-rna-cell-wall.yml`: strict native ABI build, frozen Pass219 generation seal, exported symbol check, inherited membrane objects, real C++ invocation and Python regressions.
+
+This native test exercises the **inherited actual RNA cell-wall path**. The reserved nine payloads are test transport inputs and do not assert that the distinct new 64-phase imaginary Lo Shu matrix algorithm has been natively lowered or has completed compressed symbolic reconstruction. The complete native tensor operation and its internal recovery relationships remain necessary for full-system closure.
+
+Branch head at workflow introduction: `2b502c6d7bd099453a28e32f4f54667c562c3a10`. Initial PR-triggered GitHub checks were queued, not completed; no PASS is asserted. Future merge requires the head's exact native workflow receipt and protection gates.
