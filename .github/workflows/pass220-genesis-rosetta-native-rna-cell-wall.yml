@@ -1,0 +1,66 @@
+name: Pass 220 Genesis Rosetta Native RNA Cell Wall
+
+on:
+  push:
+    branches:
+      - integration/pass220-genesis-rosetta-lane5-v1
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass220_genesis_rosetta_lane5_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_genesis_loshu_quartic_native_v1.hpp'
+      - 'hhs_runtime/include/hhs_pass220_genesis_c4_zero_sum_gate_v1.hpp'
+      - 'tests/pass220/test_hhs_pass220_genesis_rosetta_lane5_v1.py'
+      - 'tests/pass220/test_hhs_pass220_genesis_rosetta_native_rna_cell_wall_v1.cpp'
+      - 'docs/pass220/PASS_220_GENESIS_ROSETTA_LANE5_MULTIMODAL_COMPOSITION_V1.md'
+      - '.github/workflows/pass220-genesis-rosetta-native-rna-cell-wall.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-rna-cell-wall:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install native compiler and crypto dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev libboost-dev
+      - name: Preserve Pass219 frozen-generation integrity
+        run: |
+          python tools/pass219/verify_generation_integrity_v1.py --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json --print-seal
+      - name: Build existing C/C++ ABI and verify exported RNA route
+        run: |
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D --defined-only hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass220_i028_lane5_rna_g3_route$'
+      - name: Build inherited membrane dependencies
+        run: |
+          mkdir -p /tmp/rosetta-link
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass188_bott_runtime/include -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_runtime.c -o /tmp/rosetta-link/pass188.o
+          gcc -c native_projects/hhs_pass188_bott_runtime/src/hhs_pass188_bott_step_x86_64.S -o /tmp/rosetta-link/pass188-x86.o
+          gcc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Inative_projects/hhs_pass189_hqlh_runtime/include -c native_projects/hhs_pass189_hqlh_runtime/src/hhs_pass189_hqlh.c -o /tmp/rosetta-link/pass189.o
+      - name: Execute native nine-nucleus RNA cell-wall regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -pthread \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass220/test_hhs_pass220_genesis_rosetta_native_rna_cell_wall_v1.cpp \
+            /tmp/rosetta-link/pass188.o /tmp/rosetta-link/pass188-x86.o /tmp/rosetta-link/pass189.o \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -o /tmp/rosetta-link/test-native-rosetta
+          /tmp/rosetta-link/test-native-rosetta
+      - name: Set up Python regression environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scoped regression dependency
+        run: python -m pip install pytest
+      - name: Exact Python Rosetta regression
+        run: |
+          python -m pytest -q tests/pass220/test_hhs_pass220_genesis_rosetta_lane5_v1.py

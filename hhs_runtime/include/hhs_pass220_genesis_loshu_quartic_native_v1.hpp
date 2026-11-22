@@ -1,0 +1,189 @@
+#ifndef HHS_PASS220_GENESIS_LOSHU_QUARTIC_NATIVE_V1_HPP
+#define HHS_PASS220_GENESIS_LOSHU_QUARTIC_NATIVE_V1_HPP
+
+/* Additive exact candidate tensor algebra. The 64 phase regions are supplied
+ * as complete ordered native objects. This module DOES NOT assign phases,
+ * equate the new 64-region tensor with the octonion product surface, mutate
+ * VM81, or create a Hash72/Hash216 receipt.
+ */
+#include "hhs_pass220_i028_lane5_rna_g3_bridge_v1.h"
+#include "hhs_pass220_genesis_c4_zero_sum_gate_v1.hpp"
+#include <array>
+#include <cstddef>
+#include <cstdint>
+
+namespace hhs::rosetta {
+
+struct Gaussian final {
+    std::int64_t real{0}, imag{0};
+};
+constexpr Gaussian operator+(Gaussian a, Gaussian b) noexcept {
+    return {a.real+b.real, a.imag+b.imag};
+}
+constexpr Gaussian operator-(Gaussian a, Gaussian b) noexcept {
+    return {a.real-b.real, a.imag-b.imag};
+}
+constexpr Gaussian operator*(Gaussian a, Gaussian b) noexcept {
+    return {a.real*b.real-a.imag*b.imag, a.real*b.imag+a.imag*b.real};
+}
+constexpr bool operator==(Gaussian a, Gaussian b) noexcept {
+    return a.real==b.real && a.imag==b.imag;
+}
+
+using Matrix3 = std::array<std::array<Gaussian, 3>, 3>;
+
+constexpr Matrix3 matrix_times(const Matrix3& a, const Matrix3& b) noexcept {
+    Matrix3 result{};
+    for (std::size_t i=0;i<3;++i)
+        for (std::size_t j=0;j<3;++j)
+            for (std::size_t k=0;k<3;++k)
+                result[i][j] = result[i][j] + a[i][k]*b[k][j];
+    return result;
+}
+
+constexpr Matrix3 elementwise_sum(const Matrix3& a, const Matrix3& b) noexcept {
+    Matrix3 result{};
+    for (std::size_t i=0;i<3;++i)
+        for (std::size_t j=0;j<3;++j)
+            result[i][j]=a[i][j]+b[i][j];
+    return result;
+}
+
+constexpr Matrix3 elementwise_difference(const Matrix3& a, const Matrix3& b) noexcept {
+    Matrix3 result{};
+    for (std::size_t i=0;i<3;++i)
+        for (std::size_t j=0;j<3;++j)
+            result[i][j]=a[i][j]-b[i][j];
+    return result;
+}
+
+constexpr Matrix3 lo_shu_shifted_two() noexcept {
+    constexpr std::int64_t l[3][3]={{4,9,2},{3,5,7},{8,1,6}};
+    Matrix3 result{};
+    for (std::size_t i=0;i<3;++i)
+        for (std::size_t j=0;j<3;++j)
+            result[i][j]={l[i][j]-2,0};
+    return result;
+}
+constexpr Matrix3 quartic_q() noexcept {
+    // i^2=-1; retain ordered phase positions as native Gaussian scalars.
+    Matrix3 q{};
+    q[0][0]={0,1}; q[0][1]={1,0}; q[0][2]={0,-1};
+    q[1][0]={1,0}; q[1][1]={-1,0}; q[1][2]={1,0};
+    q[2][0]={0,-1}; q[2][1]={1,0}; q[2][2]={0,1};
+    return q;
+}
+
+constexpr Matrix3 ordered_quartic_product() noexcept {
+    const Matrix3 x=lo_shu_shifted_two();
+    const Matrix3 q=quartic_q();
+    // Deliberately preserve the requested MatrixTimes parenthesization.
+    return matrix_times(matrix_times(elementwise_difference(x,q),
+                                     elementwise_sum(x,q)),
+                        matrix_times(x,q));
+}
+
+constexpr Gaussian determinant(const Matrix3& m) noexcept {
+    return m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])
+         - m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])
+         + m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
+}
+
+constexpr bool same_matrix(const Matrix3& a, const Matrix3& b) noexcept {
+    for (std::size_t i=0;i<3;++i)
+        for (std::size_t j=0;j<3;++j)
+            if (!(a[i][j]==b[i][j])) return false;
+    return true;
+}
+struct PhaseRegion final {
+    std::uint8_t region_index{};
+    std::array<std::uint64_t,9> ordered_nucleus_words{};
+    Matrix3 native_ordered_projection{};
+};
+struct Native64PhaseTensor final {
+    std::array<PhaseRegion,64> regions{};
+
+    bool validate() const noexcept {
+        for (std::size_t p=0;p<regions.size();++p)
+            if (regions[p].region_index!=p) return false;
+        return true;
+    }
+    bool exact_reconstruction(const Native64PhaseTensor& source) const noexcept {
+        if (!validate() || !source.validate()) return false;
+        for (std::size_t p=0;p<regions.size();++p) {
+            const auto& a=regions[p];
+            const auto& b=source.regions[p];
+            if (a.ordered_nucleus_words!=b.ordered_nucleus_words ||
+                !same_matrix(a.native_ordered_projection,b.native_ordered_projection))
+                return false;
+        }
+        return true;
+    }
+};
+
+constexpr Matrix3 expected_quartic_product() noexcept {
+    Matrix3 m{};
+    m[0][0]={128,8}; m[0][1]={368,-32}; m[0][2]={224,24};
+    m[1][0]={208,80}; m[1][1]={304,64}; m[1][2]={208,-144};
+    m[2][0]={384,-88}; m[2][1]={48,-32}; m[2][2]={288,120};
+    return m;
+}
+constexpr Matrix3 EXPECTED_QUARTIC_PRODUCT=expected_quartic_product();
+static_assert(same_matrix(ordered_quartic_product(),EXPECTED_QUARTIC_PRODUCT),
+              "ordered quartic Lo Shu MatrixTimes drift");
+static_assert(determinant(ordered_quartic_product())==
+              Gaussian{-13271040,-38707200},
+              "ordered quartic determinant drift");
+
+/* Native Rosetta candidate lowering into the existing C++ RNA cell wall.
+ * The 64 phase objects remain complete source objects; no density shortcut
+ * or inferred phase ordering is applied. The requested quartic MatrixTimes
+ * is checked as exact C++ Gaussian-integer algebra before entering the
+ * inherited Lane5 RNA/G3 route. It does NOT claim that I028 executes the
+ * new 64-region matrix internally: this bridge is the typed ingress link.
+ */
+inline HHSExactStatus route_quartic_candidate_via_rna_cell_wall(
+    const HHSExactUQCELInputV1* input,
+    const HHSExactVM81Frame* frame,
+    const HHSExactPass219Hash216TransitionViewV1* predecessor,
+    const HHSExactPass220I028Lane5ConstructorWitnessV1* witness,
+    const Native64PhaseTensor& phase_tensor,
+    const c4::Bus& phase_bus,
+    const c4::Complex& phase_seed,
+    c4::Witness* phase_witness,
+    std::uint8_t ieee, std::uint8_t p4, std::uint8_t c4,
+    HHSExactPass220I028Lane5RNAG3BridgeCandidateV1* output
+) noexcept {
+    if (output!=nullptr) *output={};
+    if (phase_witness!=nullptr) *phase_witness={};
+    if (output==nullptr || frame==nullptr || !phase_tensor.validate())
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (!same_matrix(ordered_quartic_product(),EXPECTED_QUARTIC_PRODUCT) ||
+        !(determinant(ordered_quartic_product())==
+          Gaussian{-13271040,-38707200}))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    // Additional exact C4 zero-sum/unsquared-compatibility admission boundary.
+    // A phase candidate is allowed into inherited RNA/G3 lowering only after
+    // the original unsquared equality is checked; F(s)=0 alone is insufficient.
+    const c4::Witness gate=c4::evaluate(phase_bus,phase_seed);
+    if (phase_witness!=nullptr) *phase_witness=gate;
+    bool some_phase_admitted=false;
+    for (bool accepted:gate.admitted)
+        some_phase_admitted=some_phase_admitted || accepted;
+    if (!gate.domain_defined || !gate.radial_binding ||
+        !gate.annihilation_zero || !gate.sextic_zero || !some_phase_admitted)
+        return HHS_EXACT_STATUS_CONSTRAINT_REJECTED;
+    const HHSExactStatus status=hhs_exact_pass220_i028_lane5_rna_g3_route(
+        input,frame,predecessor,witness,ieee,p4,c4,output);
+    if (status!=HHS_EXACT_STATUS_OK) return status;
+    if (output->cpp_rna_cell_wall_routed!=1U ||
+        output->lane5_zero_bypass_interposer!=1U ||
+        output->holo4_evidence_equivalent!=1U ||
+        output->canonical_admission_invoked!=0U ||
+        output->external_egress_authority!=0U ||
+        output->g3_candidate.candidate_frame_unchanged!=1U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    return HHS_EXACT_STATUS_OK;
+}
+}  // namespace hhs::rosetta
+#endif
