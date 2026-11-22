@@ -230,3 +230,40 @@ def lower_via_native_rna_cell_wall(*, genome: Genesis,
         "hash216_commit_authority": False,
         "external_egress_authority": False,
     }
+
+
+def inherited_palindromic_rna_transcription(
+    *, decimal_text: str, offsets: Sequence[int],
+    nucleus_index: int = 0, nesting_depth: int = 0,
+) -> dict:
+    """Execute actual I073 exact/dyadic/RNA/BigInt lowering constructor.
+
+    The I073 81 offsets are its typed 0..8 scientific-token source, NOT
+    substitutes for nine independent 64-bit Lo Shu raw polynomial nuclei.
+    """
+    if type(decimal_text) is not str or not decimal_text:
+        raise RosettaBoundaryError("exact decimal source text required")
+    if (len(offsets) != 81 or any(
+        type(v) is not int or not 0 <= v <= 8 for v in offsets
+    )):
+        raise RosettaBoundaryError("I073 ingress requires 81 exact offsets in 0..8")
+    from hhs_runtime.hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1 import (
+        build_generator, validate_generator, reconstruct_serialized_state,
+    )
+    generator = build_generator(
+        decimal_text=decimal_text, offsets=tuple(offsets),
+        nucleus_index=nucleus_index, nesting_depth=nesting_depth,
+    )
+    if validate_generator(generator) is not True:
+        raise RosettaBoundaryError("inherited I073 validation rejected")
+    serialized = reconstruct_serialized_state(generator)
+    if len(serialized) != LIMIT:
+        raise RosettaBoundaryError("I073 exact 5184-character reconstruction failed")
+    return {
+        "inherited_i073_generator": generator,
+        "reconstructed_5184": serialized,
+        "inherited_i073_validation": True,
+        "candidate_only": True,
+        "canonical_vm81_mutation_authority": False,
+        "hash216_commit_authority": False,
+    }
