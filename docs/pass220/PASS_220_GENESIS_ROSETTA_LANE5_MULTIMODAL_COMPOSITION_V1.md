@@ -235,3 +235,14 @@ header in the trigger frontier. Local isolated C++ header compilation,
 execution of the same root-admission sample, and an independent SymPy
 degree-six leading-coefficient check succeeded. Full GitHub native/cross-
 module acceptance is required at exact current head before merge.
+
+
+## Repair-forward — C++17 exact Gaussian matrix initialization (2026-11-22)
+
+Exact-head run `45040402010` at `209a84ac8276fc36ddab8fdb6bd5d8de3f6f11ab` failed at **new additive header compile**, after source-integrity verification, the production `make c-abi`, and the inherited membrane dependency build had succeeded.
+
+Compiler diagnosis: double-braced aggregate initializers of `std::array<std::array<Gaussian,3>,3>` in `quartic_q()` and `EXPECTED_QUARTIC_PRODUCT` were not valid under the strict C++17 build. The consequent static-assert errors were cascading from these initializations, not failed algebraic equality.
+
+Commit `be4e43810bd7c658082a2e228378d6a779e71449` corrects the two constructors with explicit typed `constexpr Matrix3` assignments. A separate strict `g++ -std=c++17 -Wall -Wextra -Werror -pedantic` standalone reproduction passed exact checks for the first and last matrix entries and the full expected Gaussian determinant. This standalone check is not the repository-linked native test.
+
+Dedicated GitHub Actions run `45060405726` for the repaired head was **queued** at inspection; exact-head pass remains unverified. The inherited runtime, C++ cell-wall, C4 gate semantics, and stored Hash216/VM81 authority were not modified by this correction.
