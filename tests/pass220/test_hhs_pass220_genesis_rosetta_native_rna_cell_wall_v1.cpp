@@ -133,6 +133,18 @@ int main() {
         &input,&frame,&predecessor,&w,native_phases,
         bad_bus,phase_seed,&gate,0,1,2,&candidate)==
         HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
+    assert(candidate.struct_size==0U);
+    // Sextic closure alone cannot select a wrong quartic root.
+    const hhs::rosetta::c4::Complex wrong_root{
+        hhs::rosetta::c4::Rational(2),hhs::rosetta::c4::Rational(0)};
+    assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
+        &input,&frame,&predecessor,&w,native_phases,
+        phase_bus,wrong_root,&gate,0,1,2,&candidate)==
+        HHS_EXACT_STATUS_CONSTRAINT_REJECTED);
+    assert(gate.sextic_zero);
+    assert(!gate.admitted[0] && !gate.admitted[1] &&
+           !gate.admitted[2] && !gate.admitted[3]);
+    assert(candidate.struct_size==0U);
     bad_bus=phase_bus;
     bad_bus.K=hhs::rosetta::c4::Rational(1);
     assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
