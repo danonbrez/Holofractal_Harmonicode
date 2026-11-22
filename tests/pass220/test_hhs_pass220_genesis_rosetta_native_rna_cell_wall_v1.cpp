@@ -1,4 +1,5 @@
 #include "hhs_pass220_i028_lane5_rna_g3_bridge_v1.h"
+#include "hhs_pass220_genesis_loshu_quartic_native_v1.hpp"
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
@@ -64,6 +65,31 @@ int main() {
         assert(begin==i*9*64 && begin==i*8*72);
         assert(end<5184);
     }
+    /* Native exact quartic Lo Shu matrix product. This is the requested
+       ordered MatrixTimes expression; no host IEEE evaluation or octonion
+       product substitution is involved. */
+    const auto matrix=hhs::rosetta::ordered_quartic_product();
+    assert(hhs::rosetta::same_matrix(
+        matrix,hhs::rosetta::EXPECTED_QUARTIC_PRODUCT));
+    const auto det=hhs::rosetta::determinant(matrix);
+    assert(det==hhs::rosetta::Gaussian{-13271040,-38707200});
+    hhs::rosetta::Native64PhaseTensor native_phases{};
+    for (std::size_t phase=0;phase<64;++phase) {
+        auto& entry=native_phases.regions[phase];
+        entry.region_index=static_cast<std::uint8_t>(phase);
+        for (std::size_t nucleus=0;nucleus<9;++nucleus)
+            entry.ordered_nucleus_words[nucleus]=payloads[nucleus];
+        entry.native_ordered_projection=matrix;
+    }
+    assert(native_phases.validate());
+    const auto reconstructed=native_phases;
+    assert(native_phases.exact_reconstruction(reconstructed));
+    auto altered=reconstructed;
+    altered.regions[63].ordered_nucleus_words[8]^=UINT64_C(1);
+    assert(!native_phases.exact_reconstruction(altered));
+    altered=reconstructed;
+    altered.regions[9].region_index=10U;
+    assert(!altered.validate());
     HHSExactVM81Frame saved=frame;
     std::uint8_t one=1;
     HHSExactUQCELInputV1 input{};
