@@ -104,18 +104,24 @@ struct Native64PhaseTensor final {
             const auto& a=regions[p];
             const auto& b=source.regions[p];
             if (a.ordered_nucleus_words!=b.ordered_nucleus_words ||
-                a.native_ordered_projection!=b.native_ordered_projection)
+                !same_matrix(a.native_ordered_projection,b.native_ordered_projection))
                 return false;
         }
         return true;
     }
 };
 
+constexpr bool same_matrix(const Matrix3& a, const Matrix3& b) noexcept {
+    for (std::size_t i=0;i<3;++i)
+        for (std::size_t j=0;j<3;++j)
+            if (!(a[i][j]==b[i][j])) return false;
+    return true;
+}
 constexpr Matrix3 EXPECTED_QUARTIC_PRODUCT =
     {{{{128,8},{368,-32},{224,24}},
       {{208,80},{304,64},{208,-144}},
       {{384,-88},{48,-32},{288,120}}}};
-static_assert(ordered_quartic_product()==EXPECTED_QUARTIC_PRODUCT,
+static_assert(same_matrix(ordered_quartic_product(),EXPECTED_QUARTIC_PRODUCT),
               "ordered quartic Lo Shu MatrixTimes drift");
 static_assert(determinant(ordered_quartic_product())==
               Gaussian{-13271040,-38707200},
