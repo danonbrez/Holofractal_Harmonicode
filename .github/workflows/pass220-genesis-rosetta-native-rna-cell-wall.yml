@@ -53,6 +53,12 @@ jobs:
             -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
             -o /tmp/rosetta-link/test-native-rosetta
           /tmp/rosetta-link/test-native-rosetta
+      - name: Set up Python regression environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scoped regression dependency
+        run: python -m pip install pytest
       - name: Exact Python Rosetta regression
         run: |
           python -m pytest -q tests/pass220/test_hhs_pass220_genesis_rosetta_lane5_v1.py
