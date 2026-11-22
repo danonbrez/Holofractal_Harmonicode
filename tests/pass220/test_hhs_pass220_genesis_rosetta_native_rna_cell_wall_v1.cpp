@@ -104,8 +104,9 @@ int main() {
            HHS_EXACT_STATUS_OK);
     auto w=witness();
     HHSExactPass220I028Lane5RNAG3BridgeCandidateV1 candidate{};
-    assert(hhs_exact_pass220_i028_lane5_rna_g3_route(
-        &input,&frame,&predecessor,&w,0,1,2,&candidate)==HHS_EXACT_STATUS_OK);
+    assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
+        &input,&frame,&predecessor,&w,native_phases,0,1,2,&candidate)==
+        HHS_EXACT_STATUS_OK);
     assert(std::memcmp(&frame,&saved,sizeof(frame))==0);
     assert(candidate.struct_size==sizeof(candidate));
     assert(candidate.surface_linux_api_abi_ingress==1);
@@ -123,6 +124,11 @@ int main() {
                        &frame,sizeof(frame))==0);
     /* The inherited membrane must refuse a forged predecessor and missing
        constructor witness instead of producing a successful candidate. */
+    auto broken_phases=native_phases;
+    broken_phases.regions[1].region_index=0;
+    assert(hhs::rosetta::route_quartic_candidate_via_rna_cell_wall(
+        &input,&frame,&predecessor,&w,broken_phases,0,1,2,&candidate)==
+        HHS_EXACT_STATUS_INVALID_ARGUMENT);
     auto forged=predecessor;
     forged.transition_identity216[0]=
         forged.transition_identity216[0]=='0'?'1':'0';
