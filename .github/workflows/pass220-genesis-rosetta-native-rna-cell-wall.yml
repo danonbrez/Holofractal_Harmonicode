@@ -7,6 +7,7 @@ on:
   pull_request:
     paths:
       - 'hhs_runtime/hhs_pass220_genesis_rosetta_lane5_v1.py'
+      - 'hhs_runtime/include/hhs_pass220_genesis_loshu_quartic_native_v1.hpp'
       - 'tests/pass220/test_hhs_pass220_genesis_rosetta_lane5_v1.py'
       - 'tests/pass220/test_hhs_pass220_genesis_rosetta_native_rna_cell_wall_v1.cpp'
       - 'docs/pass220/PASS_220_GENESIS_ROSETTA_LANE5_MULTIMODAL_COMPOSITION_V1.md'
