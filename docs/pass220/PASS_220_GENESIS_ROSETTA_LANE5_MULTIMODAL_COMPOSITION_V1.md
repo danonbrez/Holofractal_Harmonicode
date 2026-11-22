@@ -38,3 +38,48 @@ Base main SHA inspected: `8ee5dd22fcac29f99d70346c5e3b6b01842672eb`. Target: `ma
 An isolated local prototype was run with `python -m pytest -q tests/pass220/test_hhs_pass220_genesis_rosetta_lane5_v1.py`: 16 tests passed, and its Python module compiled. The GitHub-committed module is an independently authored concise version with a corresponding GitHub regression suite: its repository CI has not been executed or verified at this checkpoint. Do not conflate the local prototype receipt with committed-code validation.
 
 Authority: [AGENTS.md](../../AGENTS.md), [ARCHITECTURE.md](../../ARCHITECTURE.md), [RUNTIME_FLOW.md](../../RUNTIME_FLOW.md), [H36 contract](../pass219/PASS_219_MANDATORY_HARMONIC36_DEFAULT_STATE_INTEGRATION_1_0.md), [I042](PASS_220_I042_LANE5_MULTIMODAL_SHARED_ROOT_FABRIC.md), [I082](PASS_220_I082_NEURAL_TENSOR_GRAPH.md).
+
+
+## Corrected mandatory lowering route — C++ RNA cell wall
+
+The native lowering destination is **not** an independent tensor evaluator
+or a generic Python lowering stack. The configured route is:
+
+```text
+source modality
+ -> I038 exact decimal/IEEE binary64 bits + dyadic/residue boundary
+ -> I015 palindromic ordered x/y/z/w phase carrier
+ -> I019 exact rational-scientific 5184-character BigInt serializer
+ -> I073 / I019 bidirectional three-character RNA transcription
+ -> public Pass219 hhs_exact_pass219_rna_vm5184_route
+ -> Pass219 C++ CoreHolographicRNACellWall
+ -> Pass220 hhs_exact_pass220_i028_lane5_rna_g3_route
+ -> inherited Holo4/Lane5/G3 candidate validation and PQC membrane
+ -> existing signed VM81 admission if canonical mutation is requested
+ -> inherited Hash72 receipt and Hash216 archival
+ -> inverse RNA decoding / target-modality egress
+```
+
+Required native source references:
+
+- `hhs_runtime/cpp/hhs_pass220_i028_lane5_rna_g3_bridge_v1.cpp`
+- `hhs_runtime/include/hhs_pass220_i028_lane5_rna_g3_bridge_v1.h`
+- `hhs_runtime/include/hhs_pass219_core_holographic_rna_cell_wall_1_24.hpp`
+- `hhs_runtime/hhs_pass220_i073_palindromic_rna_fibonacci_symbolic_tensor_v1.py`
+- `docs/whitepapers/HHS_PASS_220_I073_PALINDROMIC_RNA_FIBONACCI_SYMBOLIC_TENSOR_V1.md`
+
+The additive Python bridge now demands a callable binding for the installed
+`hhs_exact_pass220_i028_lane5_rna_g3_route` ABI and rejects candidate records
+without the inherited cell-wall, Holo4 equivalence, and no-bypass flags. It
+must not synthesize a success witness in production. **The Python wrapper
+does not yet provide an installed ctypes binding or a proved native call**:
+tests use a fixture to check the guard, and actual integrated native execution
+remains an acceptance requirement. Keep the user's distinct 64-phase Lo Shu
+tensor as the native symbolic input, not the inherited octonion product table.
+Neither IEEE binary64 nor a host float kernel obtains canonical authority.
+
+A native legacy x64 opcode path may execute directly where no cross-modality
+translation is required; similarly native Harmonicode may project directly to
+a scalar without an x64 intermediate. This mandatory cell-wall route applies
+to the Lo Shu tensor's **cross-representation hydration/lowering boundary**,
+not to unrelated pure native execution.
