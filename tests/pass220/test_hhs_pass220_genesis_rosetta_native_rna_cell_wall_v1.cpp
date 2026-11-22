@@ -72,7 +72,7 @@ int main() {
     assert(hhs::rosetta::same_matrix(
         matrix,hhs::rosetta::EXPECTED_QUARTIC_PRODUCT));
     const auto det=hhs::rosetta::determinant(matrix);
-    assert(det==hhs::rosetta::Gaussian{-13271040,-38707200});
+    assert((det==hhs::rosetta::Gaussian{-13271040,-38707200}));
     hhs::rosetta::Native64PhaseTensor native_phases{};
     for (std::size_t phase=0;phase<64;++phase) {
         auto& entry=native_phases.regions[phase];
