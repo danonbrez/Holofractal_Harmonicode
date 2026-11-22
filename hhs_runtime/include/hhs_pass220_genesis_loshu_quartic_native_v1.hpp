@@ -148,6 +148,8 @@ inline HHSExactStatus route_quartic_candidate_via_rna_cell_wall(
     std::uint8_t ieee, std::uint8_t p4, std::uint8_t c4,
     HHSExactPass220I028Lane5RNAG3BridgeCandidateV1* output
 ) noexcept {
+    if (output!=nullptr) *output={};
+    if (phase_witness!=nullptr) *phase_witness={};
     if (output==nullptr || frame==nullptr || !phase_tensor.validate())
         return HHS_EXACT_STATUS_INVALID_ARGUMENT;
     if (!same_matrix(ordered_quartic_product(),EXPECTED_QUARTIC_PRODUCT) ||
