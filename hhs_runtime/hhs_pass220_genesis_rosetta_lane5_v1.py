@@ -267,3 +267,40 @@ def inherited_palindromic_rna_transcription(
         "canonical_vm81_mutation_authority": False,
         "hash216_commit_authority": False,
     }
+
+
+def inherited_loshu_i_tensor_hydration(nucleus_index: int) -> dict:
+    """Run the existing I069→I070→I065 exact ordered tensor/hydration path.
+
+    This inherits the canonical I069 verbatim MatrixTimes and E-membrane
+    source. It does not identify the distinct new 64-phase user tensor with
+    the I069 generator; both source identities remain separate.
+    """
+    exact(nucleus_index, 9, "nucleus index")
+    from hhs_runtime.hhs_pass220_i069_harmonicode_i_tensor_v1 import (
+        materialize_projection, validate_projection,
+    )
+    from hhs_runtime.hhs_pass220_i070_i_tensor_lane5_vm81_bridge_v1 import (
+        build_lane5_vm81_candidate,
+    )
+    source = materialize_projection()
+    if validate_projection(source) is not True:
+        raise RosettaBoundaryError("inherited I069 tensor source rejected")
+    candidate = build_lane5_vm81_candidate(nucleus_index)
+    if (
+        candidate.get("candidate_hydration", {}).get("roundtrip_exact") is not True
+        or candidate.get("inherited_i069_hydration", {}).get("roundtrip_exact") is not True
+        or candidate.get("authority", {}).get("canonical_vm81_mutation_authority") is not False
+    ):
+        raise RosettaBoundaryError("inherited I069/I070 native tensor hydration rejected")
+    return {
+        "nucleus_index": nucleus_index,
+        "lo_shu_nucleus_symbol": NUCLEUS_ORDER[nucleus_index],
+        "inherited_i069_source": source,
+        "inherited_i070_lane5_candidate": candidate,
+        "distinct_64_phase_tensor_required": True,
+        "candidate_only": True,
+        "canonical_vm81_mutation_authority": False,
+        "hash72_commit_authority": False,
+        "hash216_commit_authority": False,
+    }
