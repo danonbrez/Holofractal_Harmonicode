@@ -94,3 +94,30 @@ Added `.github/workflows/pass220-genesis-rosetta-native-rna-cell-wall.yml`: stri
 This native test exercises the **inherited actual RNA cell-wall path**. The reserved nine payloads are test transport inputs and do not assert that the distinct new 64-phase imaginary Lo Shu matrix algorithm has been natively lowered or has completed compressed symbolic reconstruction. The complete native tensor operation and its internal recovery relationships remain necessary for full-system closure.
 
 Branch head at workflow introduction: `2b502c6d7bd099453a28e32f4f54667c562c3a10`. Initial PR-triggered GitHub checks were queued, not completed; no PASS is asserted. Future merge requires the head's exact native workflow receipt and protection gates.
+
+
+## Repair-forward — native execution succeeded; missing pytest corrected
+
+GitHub Actions run `45035176792` for head `9ea89ce368acca3507423a80f4c6042a87b3228a`:
+- PASS: frozen Pass219 source seal, `make c-abi`, exported I028 RNA bridge, inherited membrane dependencies, and execution of the real nine-nucleus native RNA C++ regression.
+- FAIL: `/usr/bin/python: No module named pytest` in the last Python test step. This is an environment dependency error, **not** a native ABI or tensor arithmetic test failure.
+- Commit `157984958ac0d7336824fd7e8489efc83ecde057` adds `actions/setup-python@v5`, Python 3.12 and scoped pytest installation to the exact-head workflow.
+
+## Inherited I073 actual transcription bridge
+
+Commit `d161f57ffb422ebdc30f44c3556c3f5cbb75b2b5` adds
+`inherited_palindromic_rna_transcription` calling the actual I073
+`build_generator`, `validate_generator`, and
+`reconstruct_serialized_state`, preserving 81 typed offset tokens, exact
+decimal/dyadic boundary, palindrome, 1,728 RNA windows and reconstructed
+5,184-character carrier. Exact Python tests were added in commit
+`9496f110e5aaf1dd586f64f5e6f19307203e8bc5`.
+
+This composition proves the inherited I073 *when its CI validation passes*;
+it does not equate the nine raw uint64 Lo Shu nuclei to I073's 81 modulo-nine
+scientific token offsets. A registered native 64-phase tensor lowering through
+this C++ cell wall still requires independent executable closure.
+
+Next: require exact-head scoped Python/native CI green, then implement the
+registered 64-phase tensor operator/Lo Shu polynomial coupling and inverse
+reconstruction via existing Lane 5 interfaces. Do not merge while CI pending.
