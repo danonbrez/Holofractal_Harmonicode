@@ -6,6 +6,7 @@
  * equate the new 64-region tensor with the octonion product surface, mutate
  * VM81, or create a Hash72/Hash216 receipt.
  */
+#include "hhs_pass220_i028_lane5_rna_g3_bridge_v1.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -126,5 +127,40 @@ static_assert(same_matrix(ordered_quartic_product(),EXPECTED_QUARTIC_PRODUCT),
 static_assert(determinant(ordered_quartic_product())==
               Gaussian{-13271040,-38707200},
               "ordered quartic determinant drift");
+
+/* Native Rosetta candidate lowering into the existing C++ RNA cell wall.
+ * The 64 phase objects remain complete source objects; no density shortcut
+ * or inferred phase ordering is applied. The requested quartic MatrixTimes
+ * is checked as exact C++ Gaussian-integer algebra before entering the
+ * inherited Lane5 RNA/G3 route. It does NOT claim that I028 executes the
+ * new 64-region matrix internally: this bridge is the typed ingress link.
+ */
+inline HHSExactStatus route_quartic_candidate_via_rna_cell_wall(
+    const HHSExactUQCELInputV1* input,
+    const HHSExactVM81Frame* frame,
+    const HHSExactPass219Hash216TransitionViewV1* predecessor,
+    const HHSExactPass220I028Lane5ConstructorWitnessV1* witness,
+    const Native64PhaseTensor& phase_tensor,
+    std::uint8_t ieee, std::uint8_t p4, std::uint8_t c4,
+    HHSExactPass220I028Lane5RNAG3BridgeCandidateV1* output
+) noexcept {
+    if (output==nullptr || frame==nullptr || !phase_tensor.validate())
+        return HHS_EXACT_STATUS_INVALID_ARGUMENT;
+    if (!same_matrix(ordered_quartic_product(),EXPECTED_QUARTIC_PRODUCT) ||
+        !(determinant(ordered_quartic_product())==
+          Gaussian{-13271040,-38707200}))
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    const HHSExactStatus status=hhs_exact_pass220_i028_lane5_rna_g3_route(
+        input,frame,predecessor,witness,ieee,p4,c4,output);
+    if (status!=HHS_EXACT_STATUS_OK) return status;
+    if (output->cpp_rna_cell_wall_routed!=1U ||
+        output->lane5_zero_bypass_interposer!=1U ||
+        output->holo4_evidence_equivalent!=1U ||
+        output->canonical_admission_invoked!=0U ||
+        output->external_egress_authority!=0U ||
+        output->g3_candidate.candidate_frame_unchanged!=1U)
+        return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    return HHS_EXACT_STATUS_OK;
+}
 }  // namespace hhs::rosetta
 #endif
