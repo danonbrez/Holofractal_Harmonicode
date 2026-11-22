@@ -66,10 +66,12 @@ constexpr Matrix3 lo_shu_shifted_two() noexcept {
     return result;
 }
 constexpr Matrix3 quartic_q() noexcept {
-    // I^2=-1. Ordered phase roles and positions remain distinct.
-    return {{{{0,1},{1,0},{0,-1}},
-             {{1,0},{-1,0},{1,0}},
-             {{0,-1},{1,0},{0,1}}}};
+    // i^2=-1; retain ordered phase positions as native Gaussian scalars.
+    Matrix3 q{};
+    q[0][0]={0,1}; q[0][1]={1,0}; q[0][2]={0,-1};
+    q[1][0]={1,0}; q[1][1]={-1,0}; q[1][2]={1,0};
+    q[2][0]={0,-1}; q[2][1]={1,0}; q[2][2]={0,1};
+    return q;
 }
 
 constexpr Matrix3 ordered_quartic_product() noexcept {
@@ -119,10 +121,14 @@ struct Native64PhaseTensor final {
     }
 };
 
-constexpr Matrix3 EXPECTED_QUARTIC_PRODUCT =
-    {{{{128,8},{368,-32},{224,24}},
-      {{208,80},{304,64},{208,-144}},
-      {{384,-88},{48,-32},{288,120}}}};
+constexpr Matrix3 expected_quartic_product() noexcept {
+    Matrix3 m{};
+    m[0][0]={128,8}; m[0][1]={368,-32}; m[0][2]={224,24};
+    m[1][0]={208,80}; m[1][1]={304,64}; m[1][2]={208,-144};
+    m[2][0]={384,-88}; m[2][1]={48,-32}; m[2][2]={288,120};
+    return m;
+}
+constexpr Matrix3 EXPECTED_QUARTIC_PRODUCT=expected_quartic_product();
 static_assert(same_matrix(ordered_quartic_product(),EXPECTED_QUARTIC_PRODUCT),
               "ordered quartic Lo Shu MatrixTimes drift");
 static_assert(determinant(ordered_quartic_product())==
