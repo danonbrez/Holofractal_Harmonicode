@@ -181,3 +181,57 @@ Latest implementation commit before this checkpoint:
 `c400e9b1e02da3c5ee2b7763a4bc4750fc92713a`.
 The preceding CI run `45038427801` is green for the earlier head only;
 the new C++ tensor frontier still requires exact-head validation.
+
+
+## Additional C₄ zero-sum phase gate and entangled-parameter bus
+
+The following is an additive **mandatory pre-cell-wall phase admission boundary**
+for the new Rosetta/quartic ingress, preserving user-specified expressions:
+
+```text
+P = x*y
+K = (x^2-y^2)/sqrt(x^2+y^2)
+s = c^2-b^2
+R = b^2 + K/s
+(I-I^3)(I+I^3) = 0
+K/s = a^4-b^2 = (c^4-(b^2+a^2)^2)/P
+a_k = i^k R^(1/4), k = 0,1,2,3
+U = s^3+2*b^2*s^2-b^2*s-(P+1)*K
+F(s) = U^2-4*b^4*(b^2*s^2+K*s) = 0
+unsquared: U = 2*b^2*s*a_k^2
+```
+
+The exact sextic is the compatibility *surface*, not phase-selection
+authority on its own. The original cross-multiplied equality and **unsquared**
+phase equation must also hold for each candidate; preserve k and k+2 as
+distinct ordered phase representatives even if a² projections coincide.
+
+Added `hhs_runtime/include/hhs_pass220_genesis_c4_zero_sum_gate_v1.hpp`:
+an arbitrary-precision exact rational/Gaussian specialization using Boost
+`cpp_int` and rational arithmetic. The `K` input has an exact rational
+radial witness test `K²*(x²+y²)=(x²-y²)²` plus its positive-radial sign,
+without host `sqrt` or float. Undefined denominators reject. For the
+general *irrational* K case, the original symbolic radical must stay in the
+inherited HARMONICODE typed IR until a native algebraic-number witness is
+present; never approximate K to admit a phase.
+
+C++ `route_quartic_candidate_via_rna_cell_wall` now requires the C₄ bus
+and seed root, stores the exact gate witness, and rejects without calling
+I028 RNA/G3 unless at least one of the four root candidates closes
+annihilation, sextic, quartic, unsquared equality, and original equality chain.
+The candidate output and phase witness are zero-initialized on entry to
+prevent success-shaped stale data after rejection. The existing RNA/Holo4/PQC
+and singleton VM81 boundaries are unchanged.
+
+Native tests use `x=y=b²=1`, `c²=2`, `K=0` and seed `a=1`.
+The exact sextic is zero and only phase selectors `k=0,2` are admitted;
+`k=1,3` fail the unsquared constraint. A wrong seed `a=2` has the
+same sextic-zero bus but zero admissible quartic phases, so it must reject.
+Additional tests cover incompatible s, invalid K, and unchanged native
+cell-wall authority.
+
+The strict native CI workflow adds `libboost-dev` and includes the C₄
+header in the trigger frontier. Local isolated C++ header compilation,
+execution of the same root-admission sample, and an independent SymPy
+degree-six leading-coefficient check succeeded. Full GitHub native/cross-
+module acceptance is required at exact current head before merge.
