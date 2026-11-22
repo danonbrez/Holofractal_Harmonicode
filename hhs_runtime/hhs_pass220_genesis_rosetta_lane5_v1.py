@@ -154,3 +154,79 @@ def inherited_conway_hash216_frame(*, occupancy: int, frame_id: int) -> dict:
         not frame.get("inherited_hash216_index_root_sha256")):
         raise RosettaBoundaryError("inherited I085/I086 witness invalid")
     return frame
+
+
+# Mandatory native lowering: I073 exact palindromic IEEE/dyadic/RNA carrier
+# -> public Pass219 RNA VM5184 ABI -> Pass219 C++ CoreHolographicRNACellWall
+# -> inherited Lane5 Holo4/G3 candidate -> existing signed admission.
+# This binding checks the *result of the real native bridge*; it is not a
+# replacement Python interpreter for the cell wall or for native MatrixTimes.
+NATIVE_LOWERING_SYMBOL = "hhs_exact_pass220_i028_lane5_rna_g3_route"
+PALINDROMIC_INGRESS_ROOT = "PALINDROMIC_IEEE_EXACT_DYADIC_FRAME"
+RNA_TRANSCRIPTION_ROOT = "ORDERED_XYZW_RNA_5184_TRANSCRIPTION"
+CPP_CELL_WALL_ROOT = "PASS219_CPP_RNA_CELL_WALL"
+
+def validate_native_cell_wall_candidate(candidate: Any) -> dict:
+    """Validate the inherited C++ RNA cell-wall result; fail closed on bypass.
+
+    The caller must invoke the real C ABI and expose its returned candidate
+    flags. A dict is a transport view, not independent admission evidence.
+    """
+    if not isinstance(candidate, dict):
+        raise RosettaBoundaryError("native cell-wall candidate record required")
+    required_true = (
+        "surface_linux_api_abi_ingress",
+        "lane5_zero_bypass_interposer",
+        "cpp_rna_cell_wall_routed",
+        "holo4_evidence_equivalent",
+        "pqc_firewall_required_for_canonical_admission",
+        "signed_environmental_vm81_required",
+    )
+    required_zero = (
+        "direct_environmental_opcode_canonical_authority",
+        "direct_abi_canonical_authority",
+        "direct_vm81_bypass_authority",
+        "canonical_admission_invoked",
+        "external_egress_authority",
+    )
+    if any(candidate.get(field) not in (True, 1) for field in required_true):
+        raise RosettaBoundaryError("mandatory C++ RNA cell-wall route not proven")
+    if any(candidate.get(field) not in (False, 0) for field in required_zero):
+        raise RosettaBoundaryError("unapproved native admission/egress authority")
+    if not candidate.get("rna_prepared") or not candidate.get("rna_decision") or not candidate.get("g3_candidate"):
+        raise RosettaBoundaryError("missing inherited RNA/Holo4/G3 candidate evidence")
+    return candidate
+
+def lower_via_native_rna_cell_wall(*, genome: Genesis,
+                                   phase_tensor: NativePhaseTensor,
+                                   native_bridge: Callable[..., dict],
+                                   native_request: Any) -> dict:
+    """Require inherited native ABI invocation, not x64/VM81 emulation.
+
+    native_bridge is the installed FFI binding of
+    hhs_exact_pass220_i028_lane5_rna_g3_route. Its native_request contains
+    source UQCEL input, VM81 frame, Hash216 transition, mandatory constructor
+    witness and selected IEEE/P4/C4 cell positions. The FFI result MUST contain
+    the C++ RNA cell-wall evidence returned by that native ABI.
+    """
+    genome.words()
+    phase_tensor.validate()
+    if not callable(native_bridge):
+        raise RosettaBoundaryError("installed native C++ RNA bridge required")
+    candidate = validate_native_cell_wall_candidate(native_bridge(native_request))
+    return {
+        "native_lowering_symbol": NATIVE_LOWERING_SYMBOL,
+        "ingress_roots": (
+            PALINDROMIC_INGRESS_ROOT,
+            RNA_TRANSCRIPTION_ROOT,
+            CPP_CELL_WALL_ROOT,
+        ),
+        "nucleus_symbols": NUCLEUS_ORDER,
+        "native_phase_tensor_identity": phase_tensor.source_identity,
+        "ordered_native_candidate": candidate,
+        "candidate_only": True,
+        "canonical_vm81_mutation_authority": False,
+        "hash72_commit_authority": False,
+        "hash216_commit_authority": False,
+        "external_egress_authority": False,
+    }
