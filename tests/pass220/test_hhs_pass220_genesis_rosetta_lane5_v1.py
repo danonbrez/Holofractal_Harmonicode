@@ -153,3 +153,20 @@ def test_inherited_rna_rejects_wrong_offsets():
         inherited_palindromic_rna_transcription(decimal_text="1",offsets=(0,)*80)
     with pytest.raises(RosettaBoundaryError):
         inherited_palindromic_rna_transcription(decimal_text="1",offsets=(9,)*81)
+
+
+def test_existing_i069_i070_hydrated_tensor_is_inherited_without_redefinition():
+    from hhs_runtime.hhs_pass220_genesis_rosetta_lane5_v1 import (
+        inherited_loshu_i_tensor_hydration,
+    )
+    witness=inherited_loshu_i_tensor_hydration(4)
+    assert witness["lo_shu_nucleus_symbol"]==5
+    assert witness["distinct_64_phase_tensor_required"] is True
+    assert witness["inherited_i069_source"]["checks"]["a_b_pointwise_72_closure"] is True
+    candidate=witness["inherited_i070_lane5_candidate"]
+    assert candidate["vm81_addresses"]==list(range(36,45))
+    assert candidate["inherited_i069_hydration"]["roundtrip_exact"] is True
+    assert candidate["candidate_hydration"]["roundtrip_exact"] is True
+    assert candidate["authority"]["canonical_vm81_mutation_authority"] is False
+    with pytest.raises(RosettaBoundaryError):
+        inherited_loshu_i_tensor_hydration(9)
