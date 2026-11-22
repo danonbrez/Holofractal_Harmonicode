@@ -121,3 +121,28 @@ this C++ cell wall still requires independent executable closure.
 Next: require exact-head scoped Python/native CI green, then implement the
 registered 64-phase tensor operator/Lo Shu polynomial coupling and inverse
 reconstruction via existing Lane 5 interfaces. Do not merge while CI pending.
+
+
+## Inherited I069/I070 exact ordered tensor hydration composition
+
+The Rosetta runtime now exposes `inherited_loshu_i_tensor_hydration(nucleus_index)`.
+It invokes the **actual** I069 exact `MatrixTimes` source generator and proof
+validator, then the I070 Lane 5 VM81 tensor bridge and I065 Hash216 hydration.
+The exact I070 candidate checks source/candidate hydration roundtrip and
+preserves each ordered VM81 nucleus-local 9-cell address.
+
+This connects existing verified **Lo Shu phase algebra** to the Genesis
+composition without mistaking I069's exact 3x3 I-tensor for the new, distinct,
+concurrently entangled 64-phase compression tensor. That new tensor's complete
+native expression and internal inverse must still be compiled through the
+inherited cell-wall/VM81 service, not evaluated by an invented Python
+matrix engine. No independent Hash72/Hash216 authority is added.
+
+Commits `c7163f64512e77e75f977feed06e9841d5e20691` and
+`c849376236de280eb2de284a1db95a20a14a33a1` add the inherited
+runtime call and a real I069/I070 nucleus-4 hydration regression.
+
+A previous exact-head workflow `45038427801` at commit
+`157984958ac0d7336824fd7e8489efc83ecde057` completed SUCCESS,
+including native RNA cell-wall and Python regressions. Newer source commits
+need their own fresh exact-head acceptance and do not inherit that result.
