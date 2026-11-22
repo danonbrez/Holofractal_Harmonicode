@@ -7,6 +7,7 @@
  * VM81, or create a Hash72/Hash216 receipt.
  */
 #include "hhs_pass220_i028_lane5_rna_g3_bridge_v1.h"
+#include "hhs_pass220_genesis_c4_zero_sum_gate_v1.hpp"
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -141,6 +142,9 @@ inline HHSExactStatus route_quartic_candidate_via_rna_cell_wall(
     const HHSExactPass219Hash216TransitionViewV1* predecessor,
     const HHSExactPass220I028Lane5ConstructorWitnessV1* witness,
     const Native64PhaseTensor& phase_tensor,
+    const c4::Bus& phase_bus,
+    const c4::Complex& phase_seed,
+    c4::Witness* phase_witness,
     std::uint8_t ieee, std::uint8_t p4, std::uint8_t c4,
     HHSExactPass220I028Lane5RNAG3BridgeCandidateV1* output
 ) noexcept {
@@ -150,6 +154,17 @@ inline HHSExactStatus route_quartic_candidate_via_rna_cell_wall(
         !(determinant(ordered_quartic_product())==
           Gaussian{-13271040,-38707200}))
         return HHS_EXACT_STATUS_INVARIANT_FAILURE;
+    // Additional exact C4 zero-sum/unsquared-compatibility admission boundary.
+    // A phase candidate is allowed into inherited RNA/G3 lowering only after
+    // the original unsquared equality is checked; F(s)=0 alone is insufficient.
+    const c4::Witness gate=c4::evaluate(phase_bus,phase_seed);
+    if (phase_witness!=nullptr) *phase_witness=gate;
+    bool some_phase_admitted=false;
+    for (bool accepted:gate.admitted)
+        some_phase_admitted=some_phase_admitted || accepted;
+    if (!gate.domain_defined || !gate.radial_binding ||
+        !gate.annihilation_zero || !gate.sextic_zero || !some_phase_admitted)
+        return HHS_EXACT_STATUS_CONSTRAINT_REJECTED;
     const HHSExactStatus status=hhs_exact_pass220_i028_lane5_rna_g3_route(
         input,frame,predecessor,witness,ieee,p4,c4,output);
     if (status!=HHS_EXACT_STATUS_OK) return status;
