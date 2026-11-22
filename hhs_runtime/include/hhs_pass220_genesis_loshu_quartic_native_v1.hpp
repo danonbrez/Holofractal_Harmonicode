@@ -85,6 +85,12 @@ constexpr Gaussian determinant(const Matrix3& m) noexcept {
          + m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
 }
 
+constexpr bool same_matrix(const Matrix3& a, const Matrix3& b) noexcept {
+    for (std::size_t i=0;i<3;++i)
+        for (std::size_t j=0;j<3;++j)
+            if (!(a[i][j]==b[i][j])) return false;
+    return true;
+}
 struct PhaseRegion final {
     std::uint8_t region_index{};
     std::array<std::uint64_t,9> ordered_nucleus_words{};
@@ -111,12 +117,6 @@ struct Native64PhaseTensor final {
     }
 };
 
-constexpr bool same_matrix(const Matrix3& a, const Matrix3& b) noexcept {
-    for (std::size_t i=0;i<3;++i)
-        for (std::size_t j=0;j<3;++j)
-            if (!(a[i][j]==b[i][j])) return false;
-    return true;
-}
 constexpr Matrix3 EXPECTED_QUARTIC_PRODUCT =
     {{{{128,8},{368,-32},{224,24}},
       {{208,80},{304,64},{208,-144}},
