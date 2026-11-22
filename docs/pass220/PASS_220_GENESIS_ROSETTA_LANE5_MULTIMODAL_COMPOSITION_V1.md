@@ -146,3 +146,38 @@ A previous exact-head workflow `45038427801` at commit
 `157984958ac0d7336824fd7e8489efc83ecde057` completed SUCCESS,
 including native RNA cell-wall and Python regressions. Newer source commits
 need their own fresh exact-head acceptance and do not inherit that result.
+
+
+## Native ordered quartic Lo Shu ingress (2026-11-22)
+
+Added additive header `hhs_runtime/include/hhs_pass220_genesis_loshu_quartic_native_v1.hpp`.
+C++17 Gaussian-integer types execute the exact ordered `MatrixTimes`:
+`(X-Q)(X+Q)(XQ)`, with `X=L-2` entrywise, canonical Lo Shu
+`L={{4,9,2},{3,5,7},{8,1,6}}`, and quartic imaginary
+`Q={{i,1,-i},{1,i^2,1},{-i,1,i}}`.
+Compile-time exact checks preserve:
+`{{128+8i,368-32i,224+24i},{208+80i,304+64i,208-144i},{384-88i,48-32i,288+120i}}`
+and `Det=-13271040-38707200i`. No float is used for arithmetic.
+
+`Native64PhaseTensor` preserves 64 separately indexed, complete ordered native
+phase-region objects and all nine uint64 nucleus words per region without
+conflating them with the existing octonion 8×8 product table or treating the
+64 regions as 64 separate input bits. Source-region ordering and exact
+input/reconstruction equality have C++ regressions. The new
+`route_quartic_candidate_via_rna_cell_wall` verifies the exact source quartic
+matrix, typed tensor order, and invokes the existing exported I028 RNA/G3
+C++ cell-wall ABI; it requires the existing no-bypass and no-authority flags.
+
+These are **native ingress and source-algebra composition** achievements.
+No claim is made that the I028 internal G3 engine now evaluates the newly
+constructed 64-phase tensor as a single fully hydrated higher-order operation,
+or that its internal reciprocal redundancy reconstructs arbitrary lost
+regions. Complete native-phase operator lowering and inverse restoration
+remain to be integrated through existing Lane 5 constructors.
+
+The updated dedicated workflow includes the additive C++ header in its path
+frontier and compiles/runs the unified native RNA-cell-wall test.
+Latest implementation commit before this checkpoint:
+`c400e9b1e02da3c5ee2b7763a4bc4750fc92713a`.
+The preceding CI run `45038427801` is green for the earlier head only;
+the new C++ tensor frontier still requires exact-head validation.
