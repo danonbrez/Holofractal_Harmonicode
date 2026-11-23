@@ -1,0 +1,383 @@
+{
+  "schema": "HHS_PR914_G2_DEPENDENCY_CONFLICT_AND_CANDIDATE_COMPOSITION_CONTRACT_V1",
+  "specified_on": "2026-11-24",
+  "specified_at_head": "c33215f6ee1668f0e31b593b25e1915e8d0676f5",
+  "status": "SPECIFIED_REFRESH_RECONCILIATION_AND_COMPOSITION_PENDING",
+  "scope": "G2_DEPENDENCY_DAG_SEMANTIC_CONFLICT_RECONCILIATION_AND_ONE_CUMULATIVE_CANDIDATE_ONLY",
+  "role_boundary": {
+    "contract_authority": "NORMATIVE_SPECIFICATION_ONLY",
+    "implementation_execution": "SEPARATE_IMPLEMENTATION_AGENT",
+    "implementation_agent_may_write_code": true,
+    "contract_presence_is_execution_evidence": false,
+    "contract_presence_is_candidate_evidence": false,
+    "contract_presence_is_promotion_evidence": false
+  },
+  "normative_inputs": {
+    "parent_gate": {
+      "path": "contracts/architecture/HHS_PR914_CUMULATIVE_OPEN_BRANCH_INTEGRATION_GATE_V1.json",
+      "blob_sha": "a7a505d6dd43ddbdc23331bdf2a7521b179e8fc8",
+      "requirement": "G2_DEPENDENCY_DAG_AND_CONFLICT_RECONCILIATION",
+      "relaxation_permitted": false
+    },
+    "g1_contract": {
+      "path": "contracts/architecture/HHS_PR914_G1_RECONCILIATION_EVIDENCE_AND_DISPOSITION_CONTRACT_V1.json",
+      "commit": "c33215f6ee1668f0e31b593b25e1915e8d0676f5",
+      "blob_sha": "cbe39b7ad05c5bf6c983846a6e6a5d54b9ce73ca",
+      "completion_required_before_final_g2_dispositions": true
+    },
+    "source_census": {
+      "path": "contracts/architecture/HHS_PR914_G0_LIVE_CENSUS_20261123.json.xz.b64",
+      "observed_at": "2026-11-23T12:10:11.630549+00:00",
+      "main_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+      "historical_evidence_only_after_ref_drift": true
+    },
+    "mechanical_reconciliation": {
+      "encoded_path": "contracts/architecture/HHS_PR914_GIT_RECONCILIATION_EVIDENCE_20261123.json.xz.b64",
+      "generated_at": "2026-11-23T13:01:24.791410+00:00",
+      "decoded_json_sha256": "39fabbdc0ab530d72ed209ea4d430779d6c265bc06c1e839f6e2b6491c77dbbd",
+      "source_census_main_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+      "hypothetical_tree_is_integration_candidate": false
+    }
+  },
+  "specification_time_observation": {
+    "coordinating_pr": 914,
+    "coordinating_pr_head": "c33215f6ee1668f0e31b593b25e1915e8d0676f5",
+    "current_pr_base_ref": "main",
+    "current_pr_base_sha": "26fc1403bfbc0a867371d2020c995d0c4e50c28c",
+    "source_census_main_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+    "base_drift_since_source_census": true,
+    "live_ref_refresh_performed_by_this_contract": false,
+    "mergeable_state_is_release_evidence": false
+  },
+  "preserved_mechanical_observations": {
+    "historical_open_pr_count": 169,
+    "historical_unpr_branch_count": 921,
+    "historical_duplicate_tip_group_count": 16,
+    "historical_dependency_edge_count": 20,
+    "historical_dependency_cycle_count": 0,
+    "historical_current_base_path_overlap_count": 201,
+    "historical_conflicted_merges_against_census_main": 78,
+    "historical_conflicted_merges_against_census_current_bases": 57,
+    "counts_are_current_after_base_drift": false,
+    "shared_path_proves_semantic_conflict": false,
+    "clean_hypothetical_merge_proves_semantic_compatibility": false,
+    "zero_historical_cycles_proves_current_acyclicity": false
+  },
+  "known_dependency_edge_seed": {
+    "orientation": "DEPENDENT_PR_REQUIRES_PARENT_PR",
+    "topological_direction": "PARENT_BEFORE_DEPENDENT",
+    "seed_is_exhaustive_for_live_graph": false,
+    "edges": [
+      {"dependent_pr": 921, "required_parent_pr": 908},
+      {"dependent_pr": 918, "required_parent_pr": 917},
+      {"dependent_pr": 675, "required_parent_pr": 674},
+      {"dependent_pr": 665, "required_parent_pr": 660},
+      {"dependent_pr": 550, "required_parent_pr": 548},
+      {"dependent_pr": 522, "required_parent_pr": 521},
+      {"dependent_pr": 521, "required_parent_pr": 520},
+      {"dependent_pr": 520, "required_parent_pr": 519},
+      {"dependent_pr": 519, "required_parent_pr": 518},
+      {"dependent_pr": 518, "required_parent_pr": 517},
+      {"dependent_pr": 517, "required_parent_pr": 516},
+      {"dependent_pr": 516, "required_parent_pr": 515},
+      {"dependent_pr": 515, "required_parent_pr": 514},
+      {"dependent_pr": 514, "required_parent_pr": 513},
+      {"dependent_pr": 513, "required_parent_pr": 512},
+      {"dependent_pr": 512, "required_parent_pr": 511},
+      {"dependent_pr": 511, "required_parent_pr": 510},
+      {"dependent_pr": 510, "required_parent_pr": 509},
+      {"dependent_pr": 322, "required_parent_pr": 321},
+      {"dependent_pr": 321, "required_parent_pr": 320},
+      {"dependent_pr": 164, "required_parent_pr": 163}
+    ]
+  },
+  "graph_model": {
+    "node_identity_required": [
+      "node_id",
+      "entry_kind",
+      "repository",
+      "head_ref",
+      "exact_head_sha",
+      "exact_base_ref",
+      "exact_base_sha",
+      "merge_base_sha",
+      "source_census_identity",
+      "refresh_timestamp",
+      "g1_disposition",
+      "requirement_ids",
+      "capability_ids"
+    ],
+    "entry_kinds": [
+      "OPEN_PR",
+      "UNPR_BRANCH",
+      "NEWLY_DISCOVERED_PR",
+      "NEWLY_DISCOVERED_BRANCH",
+      "EXTERNAL_BASE_REF_REQUIRED_FOR_PROVENANCE"
+    ],
+    "edge_kinds": [
+      "REQUIRES_PARENT",
+      "REQUIRES_REQUIREMENT",
+      "REUSES_EQUIVALENT_CAPABILITY",
+      "REPLACED_BY_VERIFIED_REPLACEMENT"
+    ],
+    "non_ordering_relations": [
+      "SHARED_PATH_OVERLAP",
+      "DUPLICATE_TIP",
+      "TEXTUAL_CONFLICT",
+      "SEMANTIC_OVERLAP"
+    ],
+    "non_ordering_relations_may_be_silently_converted_to_dependencies": false,
+    "duplicate_tip_or_title_similarity_proves_equivalence": false
+  },
+  "requirements": [
+    {
+      "id": "G2-R1",
+      "requirement": "Refresh every live PR, branch, base, head, merge base and newly discovered entry immediately before graph finalization and again before candidate composition. Bind the graph to one exact current main SHA.",
+      "prohibits": "Composing from the historical census main or treating historical counts as current."
+    },
+    {
+      "id": "G2-R2",
+      "requirement": "Construct one complete dependency graph over every G1 entry domain. Preserve all 20 known dependency edges as a seed and discover additional contract, branch-base, runtime and requirement dependencies without assuming the seed is exhaustive.",
+      "prohibits": "Dropping un-PR'd branches, external base refs or newly discovered entries because they lack a PR node."
+    },
+    {
+      "id": "G2-R3",
+      "requirement": "Orient every REQUIRES_PARENT edge from required parent to dependent for topological execution while retaining dependent_pr and required_parent_pr in evidence. Record the exact contract, branch ancestry or requirement evidence establishing each edge.",
+      "prohibits": "Inferring dependency merely from titles, duplicate tips, shared paths or numeric adjacency."
+    },
+    {
+      "id": "G2-R4",
+      "requirement": "Detect directed cycles with complete reachable-node traversal. Preserve every strongly connected component and canonicalized cycle witness with exact node IDs and edge evidence.",
+      "on_cycle": "G2_BLOCKED_DEPENDENCY_CYCLE; no topological order or composed-candidate claim for the affected component."
+    },
+    {
+      "id": "G2-R5",
+      "requirement": "Propagate unsatisfied parent states explicitly as BLOCKED_BY_DEPENDENCY with the complete ancestor chain. A blocked parent must not cause silent deletion of dependent capabilities or conversion of the dependent into an unsupported terminal disposition.",
+      "prohibits": "Marking a dependent INTEGRATED_VALIDATED when any required parent is absent, blocked, superseded without coverage or unresolved."
+    },
+    {
+      "id": "G2-R6",
+      "requirement": "Derive a deterministic topological composition order only after the live graph is complete and acyclic. Use stable node_id ordering solely to break independent-node ties; record that tie-breaking is deterministic scheduling, not semantic or release authority.",
+      "prohibits": "Using PR number, merge button order or title priority as capability precedence."
+    },
+    {
+      "id": "G2-R7",
+      "requirement": "Resolve each shared-path and hypothetical-merge overlap semantically against requirement and capability maps. Distinguish compatible independent edits, equivalent implementations, additive alternatives, true semantic conflicts and frozen/canonical authority conflicts.",
+      "prohibits": "Treating clean text merge as semantic compatibility or textual conflict as proof of incompatible requirements."
+    },
+    {
+      "id": "G2-R8",
+      "requirement": "Create one conflict receipt for every resolved or unresolved textual, semantic, dependency, generated-artifact, frozen-layer, canonical-source, security and authority conflict. Bind before/after identities and requirement coverage to exact commits.",
+      "prohibits": "Unrecorded manual conflict resolution, choice by newest timestamp or deletion of one side's nonoverlapping behavior."
+    },
+    {
+      "id": "G2-R9",
+      "requirement": "Preserve singleton VM81 admission, Hash72-before-Hash216 authority, Lane 5 native computation, typed ingress/egress, native rejection and all frozen/canonical authorities. Conflicting alternate authorities remain blocked even when their text merges cleanly.",
+      "prohibits": "Resolving authority conflicts by duplicate engines, parallel receipt truth, floating-point canonicalization, fixture promotion or native-rejection bypass."
+    },
+    {
+      "id": "G2-R10",
+      "requirement": "Compose on a new integration branch from the exact refreshed main SHA. Do not mutate source branches, rewrite frozen authorities, force-push, commit directly to main or use a hypothetical merge-tree OID as a candidate commit.",
+      "candidate_commit_requirement": "A real immutable commit retrievable through repository APIs with exact parent, tree and head identities."
+    },
+    {
+      "id": "G2-R11",
+      "requirement": "Preserve provenance for every applied contribution: source repository, source ref, exact source head, source commit list, application operation, resulting integration commits and conflict-resolution commits. Prefer preserving original commits where compatible; otherwise record requirement-equivalent transplantation without attributing newly authored resolution to the source author.",
+      "prohibits": "Squashing away all source identity or recording an unverified source head."
+    },
+    {
+      "id": "G2-R12",
+      "requirement": "Maintain a candidate coverage matrix joining every requirement and capability to contributing entries, integration paths, preserved behavior and test obligations. Include native, frontend, backend, security, VM81, Hash72/Hash216, Lane 5, Pass 220-222, GBrain, HC-64, neural particles, platformer, professional IDE and manuscript obligations.",
+      "prohibits": "Coverage by file-name similarity, contract presence or unchecked claim."
+    },
+    {
+      "id": "G2-R13",
+      "requirement": "Record every candidate exclusion with its G1 disposition, unsatisfied evidence, blocked dependents, non-loss preservation location and required recovery action. Security-risk, blocked, superseded, equivalent and deferred entries remain visible in the candidate manifest.",
+      "prohibits": "Silent omission, CLOSED_WITHOUT_CONTENT_RECONCILIATION, or treating exclusion as capability validation."
+    },
+    {
+      "id": "G2-R14",
+      "requirement": "After each composition step, verify the expected tree and requirement slice, run focused exact-head tests for the applied behavior and record failures without bypass. Keep unresolved conflict markers, generated placeholders and unreviewed authority changes out of the candidate.",
+      "prohibits": "Continuing through native rejection, failed security validation or unresolved canonical-source conflicts."
+    },
+    {
+      "id": "G2-R15",
+      "requirement": "Declare candidate_composed=true only for an exact immutable candidate head whose manifest accounts for every live entry, whose selected contributions are present, whose allowed exclusions are explicit, whose dependency order is satisfied, whose conflicts are resolved or explicitly blocking, and whose composition-time focused checks have recorded results.",
+      "distinction": "Candidate composition is not G2 completion, G4/G5 validation, integration validation, merge authorization or deployment authorization."
+    },
+    {
+      "id": "G2-R16",
+      "requirement": "Invalidate the composition order, conflict receipts, coverage matrix and candidate validation whenever main, a selected source head, a dependency or a disposition changes. Rebase or reconstruct through a new reviewed candidate commit; never reuse earlier green checks for a moved head.",
+      "prohibits": "Labeling a stale candidate current through a comment or manifest edit alone."
+    },
+    {
+      "id": "G2-R17",
+      "requirement": "Bind all subsequent G3-G7 evidence to the exact candidate head and refreshed base. A specification, plan, clean GitHub mergeable_state or successful unrelated PR check does not discharge candidate obligations.",
+      "prohibits": "Premature main merge or production deployment."
+    }
+  ],
+  "conflict_classes": [
+    "TEXTUAL_OVERLAP",
+    "SEMANTIC_REQUIREMENT_CONFLICT",
+    "DEPENDENCY_ORDER_CONFLICT",
+    "DUPLICATE_IMPLEMENTATION_CANDIDATE",
+    "GENERATED_ARTIFACT_RECONCILIATION",
+    "FROZEN_LAYER_IMPACT",
+    "CANONICAL_SOURCE_IMPACT",
+    "SECURITY_OR_AUTHORITY_CONFLICT",
+    "BLOCKED_BY_DEPENDENCY"
+  ],
+  "resolution_operations": [
+    "APPLY_CLEAN_WITH_FOCUSED_VALIDATION",
+    "MANUAL_REQUIREMENT_PRESERVING_RESOLUTION",
+    "REUSE_VALIDATED_EQUIVALENT",
+    "APPLY_VERIFIED_REPLACEMENT_AND_PRESERVE_NONOVERLAP",
+    "REGENERATE_FROM_AUTHORIZED_SOURCE",
+    "EXCLUDE_BLOCKED_WITH_NON_LOSS_RECORD",
+    "DEFER_WITH_EXPLICIT_AUTHORIZATION_RECORD",
+    "STOP_G2_UNRESOLVED"
+  ],
+  "conflict_receipt_schema": {
+    "required_fields": [
+      "conflict_id",
+      "entry_ids",
+      "exact_source_heads",
+      "paths_or_requirement_ids",
+      "conflict_class",
+      "mechanical_evidence",
+      "semantic_assessment",
+      "resolution_operation",
+      "before_blob_or_tree_identities",
+      "after_blob_or_tree_identities",
+      "integration_commit",
+      "preserved_requirement_ids",
+      "preserved_capability_ids",
+      "nonoverlapping_behavior_disposition",
+      "frozen_and_canonical_review",
+      "security_and_authority_review",
+      "focused_test_receipts",
+      "residual_risk",
+      "review_authority",
+      "status"
+    ],
+    "permitted_statuses": [
+      "RESOLVED_FOCUSED_VALIDATION_PASSED",
+      "RESOLVED_VALIDATION_PENDING",
+      "BLOCKED_REQUIRES_REPAIR",
+      "BLOCKED_SECURITY_OR_AUTHORITY",
+      "DEFERRED_EXPLICIT_AUTHORIZATION_REQUIRED",
+      "UNRESOLVED"
+    ],
+    "resolved_requires_exact_integration_commit": true,
+    "unresolved_or_pending_conflict_can_be_hidden_by_clean_merge": false
+  },
+  "candidate_manifest_schema": {
+    "path_to_be_selected_by_implementation_agent": "contracts/architecture/HHS_PR914_G2_CUMULATIVE_CANDIDATE_MANIFEST_V1.json",
+    "required_fields": [
+      "schema",
+      "generated_at",
+      "refreshed_at",
+      "base_ref",
+      "base_sha",
+      "candidate_branch",
+      "candidate_head_sha",
+      "candidate_parent_sha",
+      "candidate_tree_sha",
+      "graph_artifact_identity",
+      "topological_order",
+      "independent_node_tie_break_rule",
+      "entries",
+      "dependency_cycle_witnesses",
+      "conflict_receipts",
+      "requirement_capability_coverage_matrix",
+      "excluded_entries_with_non_loss_records",
+      "focused_exact_head_test_receipts",
+      "unresolved_conflicts",
+      "candidate_composed",
+      "g1_complete",
+      "g2_complete",
+      "integrated_validated",
+      "main_merge",
+      "production_deploy"
+    ],
+    "entry_required_fields": [
+      "node_id",
+      "source_head_sha",
+      "g1_disposition",
+      "composition_operation",
+      "required_parent_node_ids",
+      "integration_commits",
+      "requirement_ids",
+      "capability_ids",
+      "included_in_candidate",
+      "exclusion_reason",
+      "non_loss_record",
+      "test_receipts"
+    ]
+  },
+  "state_rules": {
+    "candidate_composed": "Exact candidate commit and complete manifest exist with every selected contribution applied and every exclusion explicit; focused composition checks are recorded.",
+    "g2_complete": "Set true only when the refreshed dependency graph and every semantic conflict are reconciled, each required contribution is present and tested or explicitly blocked under the parent gate, and no unresolved required dependency or authority conflict remains.",
+    "g2_complete_does_not_imply": [
+      "G0_COMPLETE",
+      "G1_COMPLETE",
+      "G3_COMPLETE",
+      "G4_COMPLETE",
+      "G5_COMPLETE",
+      "G6_COMPLETE",
+      "G7_COMPLETE",
+      "INTEGRATED_VALIDATED_FOR_ALL_ENTRIES",
+      "MAIN_MERGE_AUTHORIZED",
+      "PRODUCTION_DEPLOY_AUTHORIZED"
+    ],
+    "g1_and_g0_must_be_independently_satisfied": true,
+    "blocked_entry_may_remain_visible_after_g2": true,
+    "blocked_required_capability_may_be_silently_omitted": false
+  },
+  "failure_states": [
+    "G2_BLOCKED_STALE_REFS",
+    "G2_BLOCKED_INCOMPLETE_GRAPH",
+    "G2_BLOCKED_DEPENDENCY_CYCLE",
+    "G2_BLOCKED_UNSATISFIED_PARENT",
+    "G2_BLOCKED_UNRESOLVED_SEMANTIC_CONFLICT",
+    "G2_BLOCKED_FROZEN_OR_CANONICAL_AUTHORITY",
+    "G2_BLOCKED_SECURITY_OR_NATIVE_REJECTION",
+    "G2_BLOCKED_UNACCOUNTED_ENTRY",
+    "G2_BLOCKED_CAPABILITY_COVERAGE_GAP",
+    "G2_BLOCKED_CANDIDATE_IDENTITY_MISMATCH",
+    "G2_BLOCKED_FOCUSED_VALIDATION_FAILED",
+    "G2_BLOCKED_STALE_CANDIDATE_HEAD"
+  ],
+  "acceptance_evidence": [
+    "Live-refresh receipt binding exact main, bases, heads, merge bases and observation timestamp.",
+    "Complete graph artifact with all entry domains, all known and discovered edges, and cycle analysis.",
+    "Deterministic topological order plus explicit independent-node tie-break record.",
+    "Semantic disposition of every shared-path and hypothetical-merge conflict, with non-loss records.",
+    "Requirement-by-requirement frozen/canonical/security/authority review.",
+    "Real candidate branch and immutable candidate commit with parent and tree identity, if composition is claimed.",
+    "Candidate manifest accounting for every selected, equivalent, superseded, blocked and deferred entry.",
+    "Focused exact-candidate-head test run and job identities; skipped jobs are not passing evidence.",
+    "Independent review of conflict resolutions and coverage matrix before G2 completion."
+  ],
+  "non_authorization": {
+    "automatic_mass_merge_authorized": false,
+    "alternate_vm81_hash72_hash216_or_receipt_authority_authorized": false,
+    "native_rejection_bypass_authorized": false,
+    "force_push_or_frozen_history_rewrite_authorized": false,
+    "fixture_or_genesis_parent_reclassified_as_production_authority": false,
+    "administrator_capability_token_in_url_body_saved_project_or_log_authorized": false,
+    "browser_token_issuing_endpoint_authorized": false,
+    "main_merge_authorized": false,
+    "production_deploy_authorized": false
+  },
+  "current_boundary": {
+    "g0_gate_passed": false,
+    "g1_complete": false,
+    "g2_complete": false,
+    "candidate_composed": false,
+    "integrated_validated": false,
+    "main_merge": "NOT_PERFORMED",
+    "production_deploy": "NOT_PERFORMED",
+    "implementation_next": "SEPARATE_AGENT_REFRESHES_REFS_BUILDS_COMPLETE_GRAPH_AND_RECONCILES_BEFORE_COMPOSITION"
+  }
+}
