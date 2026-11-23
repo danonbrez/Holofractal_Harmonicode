@@ -56,9 +56,9 @@ class TestStreamStaging(unittest.TestCase):
 
     def test_wrong_owner_denied(self):
         with self.assertRaises(StagingError):
-            self.store.append(self.ident, "another", 0, b"x")
-        with self.assertRaises(StagingError):
             self.store.status(self.ident, "another")
+        with self.assertRaises(StagingError):
+            self.store.append(self.ident, "another", 0, b"x")
 
     def test_digest_mismatch_not_admitted(self):
         self.store.append(self.ident, "root-admin", 0, b"abc")
@@ -79,6 +79,18 @@ class TestStreamStaging(unittest.TestCase):
         result = self.store.finalize(self.ident, "root-admin")
         self.assertEqual(result["received_bytes"], 0)
         self.assertEqual(result["source_sha256"], sha256(b"").hexdigest())
+
+
+def load_tests(loader, tests, pattern):
+    """Retain staging coverage and run PR914 gates in the authorized PR workflow."""
+    from test_hhs_pr914_all_open_branch_integration_gate_v1 import (
+        TestAllOpenBranchReconciliationGate,
+    )
+    from test_hhs_pr914_open_branch_census_v1 import CensusTests
+
+    tests.addTests(loader.loadTestsFromTestCase(TestAllOpenBranchReconciliationGate))
+    tests.addTests(loader.loadTestsFromTestCase(CensusTests))
+    return tests
 
 
 if __name__ == "__main__":
