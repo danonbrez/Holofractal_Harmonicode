@@ -14,6 +14,12 @@ import os
 import threading
 from typing import Any, Mapping, Sequence
 
+from hhs_backend.runtime.hhs_optimization_calibration_v1 import (
+    PASS207_CACHE_BYTES,
+    PASS207_CACHE_ENTRIES,
+    PASS208_MAX_BRANCHES,
+    calibrated_profile,
+)
 from hhs_backend.runtime.hhs_pass207_vm81_gpu_runtime_v1 import (
     Pass207GPURejected,
     Pass207VM81GPURuntime,
@@ -115,22 +121,26 @@ class Pass208GPUBranchManifold:
             else device_index
         )
         self.max_branches = int(
-            os.environ.get("HHS_PASS208_MAX_BRANCHES", "256")
+            os.environ.get("HHS_PASS208_MAX_BRANCHES", str(PASS208_MAX_BRANCHES))
             if max_branches is None
             else max_branches
         )
         self.cache_capacity_bytes = int(
-            os.environ.get("HHS_PASS207_CACHE_BYTES", str(512 * 1024 * 1024))
+            os.environ.get("HHS_PASS207_CACHE_BYTES", str(PASS207_CACHE_BYTES))
             if cache_capacity_bytes is None
             else cache_capacity_bytes
         )
         self.cache_capacity_entries = int(
-            os.environ.get("HHS_PASS207_CACHE_ENTRIES", "512")
+            os.environ.get("HHS_PASS207_CACHE_ENTRIES", str(PASS207_CACHE_ENTRIES))
             if cache_capacity_entries is None
             else cache_capacity_entries
         )
         if self.max_branches < 1:
             raise Pass208GPUManifoldRejected("HHS_PASS208_MAX_BRANCHES must be positive")
+        if self.cache_capacity_bytes < 1:
+            raise Pass208GPUManifoldRejected("HHS_PASS207_CACHE_BYTES must be positive")
+        if self.cache_capacity_entries < 1:
+            raise Pass208GPUManifoldRejected("HHS_PASS207_CACHE_ENTRIES must be positive")
         self._lock = threading.RLock()
         self._runtime: Pass207VM81GPURuntime | None = None
         if self.enabled:
@@ -164,12 +174,15 @@ class Pass208GPUBranchManifold:
             "require_physical_gpu": self.require_physical_gpu,
             "device_index": self.device_index,
             "max_branches": self.max_branches,
+            "cache_capacity_bytes": self.cache_capacity_bytes,
+            "cache_capacity_entries": self.cache_capacity_entries,
             "gpu_interpretation": "NEURAL_NETWORK_BRANCH_TREE_EXPANSION_MANIFOLD",
             "same_kernel_bytecode_hydration_lattice": True,
             "separate_model_authority": False,
             "branch_candidate_only": True,
             "gpu_may_commit_hash72": False,
             "singleton_vm81_commit_authority": True,
+            "calibrated_optimization_profile": calibrated_profile(),
             "driver": driver,
         }
 
