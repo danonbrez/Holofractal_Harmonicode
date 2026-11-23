@@ -1,0 +1,44 @@
+{
+  "schema": "HHS_PASS220_72_SHELL_ORDERED_CLOSURE_ADMISSION_V1",
+  "pass": 220,
+  "source": {
+    "path": "formal/wolfram/pass220_72_shell_ordered_closure_v1.wl",
+    "source_length_bytes": 121,
+    "source_sha256": "cd6309c3a6ad1d71a08258322b95df127e6aab7428904a5ff903449864859bb2",
+    "gate_offsets_zero_based": [
+      74,
+      89,
+      92,
+      112
+    ],
+    "inner_chain_gates": 3,
+    "outer_gate": 1,
+    "root_metadata_seed": "179971.179971",
+    "invariant_n": "1.001"
+  },
+  "execution": {
+    "existing_i162_source_locked": true,
+    "i162_reuse_without_new_native_source_proof": false,
+    "typed_native_chain_required": true,
+    "native_squaring_required": true,
+    "canonical_projection_not_native_proof": true,
+    "vm81_admission": "DENY_UNTIL_NATIVE_CLOSURE",
+    "hash72_hash216": "NO_RECEIPTS_UNTIL_NATIVE_ADMISSION"
+  },
+  "projections": {
+    "a_squared": "1",
+    "b_squared": "2",
+    "c_squared": "3",
+    "outer_constraint": "E^2==1",
+    "modular_exponent": "2752680919/10000000000"
+  },
+  "validation": {
+    "exact_source_identity": true,
+    "gate_offsets": true,
+    "operand_order": true,
+    "scalar_projection": true,
+    "native_proof": false,
+    "vm81_execution": false
+  },
+  "next": "Lower four ordered operands and four explicit == source gates into native typed AST and source-bound proof runner; verify phase and provenance before any VM81 frame."
+}
