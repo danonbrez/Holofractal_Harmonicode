@@ -115,3 +115,52 @@ def inspect_staged_core_source(
         "hash72_receipt_minted": False,
         "hash216_provenance_committed": False,
     }
+
+
+def replay_staged_core_source(
+    staging: AdminStreamStaging,
+    authenticated_owner: str,
+    prior: Mapping[str, Any],
+    repo_root: str | Path,
+) -> dict[str, Any]:
+    """Read-only replay of an earlier candidate discovery against exact custody.
+
+    Changes to either the source's staged identity or the repository's inventory
+    require a fresh discovery; replay never grants VM81/Hash authority.
+    """
+    expected_keys = {
+        "schema", "upload_id", "source_sha256", "source_bytes",
+        "matched_pillar", "matched_repo_path", "matching_method",
+        "core_inventory_complete", "unmatched_source_still_staged_and_retrievable",
+        "candidate_only", "enrs_execution_performed", "vm81_admission_performed",
+        "hash72_receipt_minted", "hash216_provenance_committed",
+    }
+    if not isinstance(prior, Mapping) or set(prior) != expected_keys:
+        raise ValueError("CORE_SOURCE_REPLAY_SHAPE_INVALID")
+    if prior["schema"] != SCHEMA or not isinstance(prior["upload_id"], str):
+        raise ValueError("CORE_SOURCE_REPLAY_SCHEMA_INVALID")
+    if prior["candidate_only"] is not True or any(
+        prior[key] is not False for key in (
+            "enrs_execution_performed", "vm81_admission_performed",
+            "hash72_receipt_minted", "hash216_provenance_committed",
+        )
+    ):
+        raise ValueError("CORE_SOURCE_REPLAY_AUTHORITY_ESCALATION_FORBIDDEN")
+    current = inspect_staged_core_source(
+        staging, prior["upload_id"], authenticated_owner, repo_root
+    )
+    if dict(prior) != current:
+        raise ValueError("CORE_SOURCE_REPLAY_IDENTITY_OR_INVENTORY_DRIFT")
+    return {
+        "schema": "HHS_PASS220_LANE5_ENRS_CORE_SOURCE_REPLAY_V1",
+        "upload_id": current["upload_id"],
+        "source_sha256": current["source_sha256"],
+        "source_bytes": current["source_bytes"],
+        "matched_pillar": current["matched_pillar"],
+        "exact_source_discovery_replayed": True,
+        "candidate_only": True,
+        "enrs_execution_performed": False,
+        "vm81_admission_performed": False,
+        "hash72_receipt_minted": False,
+        "hash216_provenance_committed": False,
+    }
