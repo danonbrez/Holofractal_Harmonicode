@@ -1,0 +1,70 @@
+{
+  "schema": "HHS_PR914_G0_LIVE_CENSUS_STATUS_V1",
+  "observed_on": "2026-11-23",
+  "coordinating_pr": 914,
+  "integration_branch": "feature/admin-resumable-sql-staging-20261114",
+  "coordinating_head_observed_before_this_commit": "7a0b89e683b8196b22a07ea52bd8bb5b00213477",
+  "main_head_observed": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+  "status": "G0_ENUMERATION_COMPLETE_COMPARISON_AND_RECONCILIATION_OPEN",
+  "open_pr_census": {
+    "populated_pages": [1, 2],
+    "page_counts": [100, 69],
+    "observed_open_pr_count": 169,
+    "matches_initial_snapshot_count": true,
+    "exact_record_comparison_complete": false
+  },
+  "branch_census": {
+    "populated_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    "page_counts": [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+    "first_empty_page": 12,
+    "observed_branch_count": 1100,
+    "open_pr_head_join_complete": false,
+    "unpr_branch_classification_complete": false,
+    "duplicate_tip_classification_complete": false
+  },
+  "verified_dependency_examples": [
+    {"parent_pr": 908, "child_pr": 921},
+    {"parent_pr": 917, "child_pr": 918},
+    {"parent_pr": 674, "child_pr": 675},
+    {"parent_pr": 660, "child_pr": 665}
+  ],
+  "verified_ancestry_examples": [
+    {
+      "pr_number": 924,
+      "head_sha": "765924789409dbe85278dd49957c885a8a131074",
+      "compared_base_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+      "merge_base_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+      "ahead_by": 34,
+      "behind_by": 0,
+      "scope": "ANCESTRY_ONLY_NOT_VALIDATION_OR_DISPOSITION"
+    }
+  ],
+  "coordinating_pr_checks_observed": {
+    "head_sha": "7a0b89e683b8196b22a07ea52bd8bb5b00213477",
+    "check_run_count": 16,
+    "all_observed_checks_successful": true,
+    "scope": "PR914_ONLY_NOT_CUMULATIVE_CANDIDATE"
+  },
+  "non_loss_rules": [
+    "Draft, historical, archive, checkpoint, backup, incident, duplicate-tip and un-PR'd branches are not silently excluded.",
+    "A duplicate SHA is a ref-identity observation, not proof of semantic redundancy or authorization for deletion.",
+    "No terminal disposition is assigned by this census-status record."
+  ],
+  "collector_execution": "NOT_RUN_AT_COMMIT_TIME",
+  "integrated": false,
+  "snapshot_is_promotion_evidence": false,
+  "automatic_mass_merge_authorized": false,
+  "requires_refresh_before_any_merge": true,
+  "release_gates": {
+    "G0": "OPEN_EXACT_RECORD_COMPARISON_REQUIRED",
+    "G1": "OPEN_ALL_ENTRIES_UNRESOLVED",
+    "G2": "OPEN",
+    "G3": "OPEN",
+    "G4": "OPEN",
+    "G5": "OPEN",
+    "G6": "OPEN",
+    "G7": "NOT_PERFORMED"
+  },
+  "main_merge": "NOT_PERFORMED",
+  "production_deploy": "NOT_PERFORMED"
+}
