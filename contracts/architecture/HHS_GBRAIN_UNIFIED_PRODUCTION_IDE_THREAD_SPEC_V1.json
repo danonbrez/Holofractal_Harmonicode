@@ -1,0 +1,161 @@
+{
+  "schema": "HHS_GBRAIN_UNIFIED_PRODUCTION_IDE_THREAD_SPEC_V1",
+  "status": "NORMATIVE_REQUIREMENTS_CAPTURED_IMPLEMENTATION_OPEN",
+  "target_repository": "danonbrez/Holofractal_Harmonicode",
+  "target_branch": "feature/admin-resumable-sql-staging-20261114",
+  "pull_request": 914,
+  "merge_target": "main",
+  "production_target": "DigitalOcean hhs-production-04",
+  "source": "User-approved cumulative requirements in HC-64 DSP, GBrain, particle simulation, production IDE and platformer thread",
+  "policy": {
+    "interface": "Existing production UI is a functional example, not a layout, visual design or bypass-logic constraint",
+    "native": "Reuse functional repository capabilities and inherited contracts; replace obsolete UI wiring and unnecessary bypass paths without bypassing VM81 authority",
+    "no_toy_templates": true,
+    "missing_dependency": "BLOCKED, never silently skipped",
+    "no_fake_success": true,
+    "authoritative_invariants": [
+      "Δe = 0",
+      "Ψ = 0",
+      "Θ15 = true",
+      "Ω = true"
+    ],
+    "exact_kernel": "No authoritative floating point; DSP uses explicit Float64 boundary; canonical state admission through existing signed VM81 / Hash72 / Hash216 and receipt/replay services",
+    "artifact": "Standalone exported artifacts contain a portable lightweight VM81 runtime and applicable Lane 5 code where contractually required",
+    "non_destructive": "Preserve native services and frozen layers while replacing obsolete public navigation and presentation"
+  },
+  "workspaces": [
+    {
+      "id": "ide",
+      "name": "Professional IDE",
+      "requirements": [
+        "Unified editable multi-file project tree, code editor, compiler/interpreter, debug and terminal/task controls",
+        "Real installable dependencies, build logs, restartable jobs, validation and execution receipts",
+        "Project persistence, import, build, preview, export and reopen, including large-file and ZIP64-capable paths",
+        "Consistent integrated navigation; design/layout may be replaced completely"
+      ]
+    },
+    {
+      "id": "audio",
+      "name": "HC-64 deterministic audio production",
+      "requirements": [
+        "Actual integrated native C++20 DSP/VST3 source and browser-compatible Float64 DSP boundary; not a standalone promotional HTML demo",
+        "Local MP3/WAV/FLAC/OGG decoding with Float64 worker processing and upcast after browser decoder; sample-rate choices source/44100/48000/88200/96000",
+        "439 Hz reference and selectable 440 Hz comparison, shared dyadic clock",
+        "Three rails M=(L+R)/2, LateralL=L-M, LateralR=R-M; phase-coherent 4-band LR4 processing",
+        "Sub harmonics 2/3/4, phase/resonance lock, midrange 300–2500 Hz isochronic ducking 4–40 Hz and 0 to -6 dB, upper-band cubic Hermite delay 0–2 ms and asymmetry",
+        "Four-band resonance/noise processing, expansion/cancel settings and wet/dry bus from uploaded extended web prototype",
+        "Continuous floor estimation, calibrated sub-dither reconstruction blend, peak ceiling and no-NaN/Inf/denormal checks",
+        "Synchronized sample-aligned dry/wet playback with click-free crossfade, A/B keyboard interaction, optional loudness match and retained playhead",
+        "Stereo, mono-collapse and low-volume headphone monitors; loop, play/pause, scrubbing; live spectrum, transient scope, phase correlation, dry/wet RMS, crest, noise-floor and true-peak audit",
+        "Offline IEEE-754 Float64 stereo WAV export with RIFF/fmt/fact/data, strict byte sizes, SHA-256 output digest and non-clipping ceiling verification",
+        "VST3 and standalone native build/export for supported JUCE hosts; automation/state persistence and plugin delay compensation"
+      ],
+      "acceptance": [
+        "A/B switching audibly changes between synchronized real paths without playback restart",
+        "Every visible parameter directly affects processing or is explicitly disabled with explanation",
+        "Export format validated by binary tests and DAW import; peak ceiling independently checked; source/sample-rate compatibility tested"
+      ]
+    },
+    {
+      "id": "particle",
+      "name": "Neural network particle simulation",
+      "sources": [
+        "examples/ParticleSimulation.html",
+        "examples/ParticleSimulationNeuralLayerBridge.js",
+        "examples/ParticleSimulationAudioBridge.js"
+      ],
+      "requirements": [
+        "Preserve original 10,368 particle projections and original working simulation, rather than replace with a separate renderer",
+        "Real physics particle updates continue independently of render rate; preserve motion continuity and smooth overlapped phase/gradient transitions",
+        "Editable particle/neural/physics parameters, inspectable graph, audio bridge, project save/replay/export",
+        "Inherit common features across simulation versions and do not reduce existing capabilities"
+      ],
+      "acceptance": [
+        "Live interactive physics—not static or prerecorded imagery",
+        "Continuous simulation behavior under lower render frame rates",
+        "Standalone export with portable embedded runtime when required"
+      ]
+    },
+    {
+      "id": "gbrain",
+      "name": "GBrain-inspired knowledge and neural harness",
+      "requirements": [
+        "Integrated model/agent harness with source provenance, knowledge hydration and retrieval; preserve external proposal versus native admission boundary",
+        "Retain all four core source roles: mathematical course Modules 0–189; ParticleSimulation.html; Pantheon complete manuscript; AGENTS.md",
+        "Retain Module194 HNAN local-symmetry artifact as additive source",
+        "Arbitrary-length resumable authenticated staged-source ingestion with exact-byte identity, source replay and SQL custody",
+        "Native Lane 5 hydration graph, typed UQCEL candidates, current parent Hash216 witness, signed environmental VM81 admission and replay",
+        "Functional neural knowledge browsing, provenance, references, user interactions and IDE integration without invented execution results"
+      ],
+      "acceptance": [
+        "Authenticated owner scope tested",
+        "Exact source readback/replay proven and all missing source paths explicitly reported",
+        "Signed canonical admission and Hash72/Hash216 provenance reported open until independently executed and verified"
+      ]
+    },
+    {
+      "id": "game",
+      "name": "Platformer Game Studio",
+      "sources": [
+        "applications/holofractal_harmonizer/src/application-templates-runtime.mjs",
+        "applications/holofractal_harmonizer/src/platformer-template.mjs",
+        "native_projects/hhs_vm81_game_level10"
+      ],
+      "requirements": [
+        "Replace Storybook Reel as PRIMARY game-development navigation/application; preserve inherited storybook rendering services if shared",
+        "Open complete playable platformer immediately rather than scripted image/reel",
+        "Editable world/levels, player physics, enemies, hazards, collectibles, checkpoints, camera and sprite/texture controls",
+        "Provide keyboard, touch, pointer controls, restart/pause/victory/lose states and deterministic replay",
+        "Compile/build/preview/export deployable full game with project files and receipt validation"
+      ],
+      "acceptance": [
+        "Browser playtest reaches victory with no runtime errors",
+        "Editing a gameplay parameter visibly changes running game",
+        "ZIP/exported project runs independently and reopens correctly"
+      ]
+    },
+    {
+      "id": "graphics",
+      "name": "Native graphics and multimodal workspace",
+      "requirements": [
+        "Interactive graphics/shader scene and independent renderer/runtime",
+        "Working audio/video/document/graphics ingestion and actual outputs, not placeholder panels",
+        "Connect native sprite, particle, game and DSP assets through shared project execution"
+      ]
+    }
+  ],
+  "end_to_end_lifecycle": [
+    "Open",
+    "Edit",
+    "Execute",
+    "Interact",
+    "Save",
+    "Validate",
+    "Export",
+    "Reopen"
+  ],
+  "production_gates": [
+    "Current branch base/main and open PR dependency conflicts inventoried before merge",
+    "Dependency scoped tests, frozen-layer preservation and source hash integrity pass",
+    "Signed VM81 authority, exact Lane 5 hydration, native ABI and receipts/replay checked",
+    "Frontend controls verified against actual backend/native execution; no optimistic fake state",
+    "DigitalOcean systemd/backend/frontend paths, public HTTPS, import/export, WebAudio and browser tests validated on deployed exact SHA",
+    "No production promotion without independently verified gates and rollback/restart checkpoint"
+  ],
+  "integration_states": {
+    "requirements_capture": "RECORDED",
+    "gbrain_source_replay": "COMMITTED_TEST_EXECUTION_PENDING",
+    "native_hc64_project": "OUTSIDE_REPOSITORY_THREAD_ARTIFACT_NOT_YET_IDE_INTEGRATED",
+    "particle_source": "EXISTS_IN_REPOSITORY_INTEGRATION_NOT_VERIFIED",
+    "platformer_template": "EXISTS_IN_REPOSITORY_PRODUCTION_NAVIGATION_REPLACEMENT_OPEN",
+    "storybook_primary_removal": "OPEN",
+    "ide_redesign": "OPEN",
+    "gbrain_signed_canonical_admission": "OPEN",
+    "production_deploy": "NOT_PERFORMED"
+  },
+  "notes": [
+    "This contract records requested behavior, not acceptance evidence.",
+    "PR #914 remains one component of cumulative effort; PR #915 independent harness mergeability checklist must be reconciled, not silently overwritten.",
+    "Backend audio/VM81 integer PCM transport is separate from requested Float64 IEEE mastering export."
+  ]
+}
