@@ -1,0 +1,21 @@
+name: Pass220 Harmonicode ordered List power parser
+on:
+  push:
+    paths:
+      - 'native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_v2.py'
+      - 'tests/pass220/test_hhs_pass220_ordered_list_power_source_v1.py'
+      - '.github/workflows/pass220-ordered-list-power-parser.yml'
+  pull_request:
+    paths:
+      - 'native_projects/hhs_harmonicode_language/hhs_harmonicode_nested_expression_ast_v2.py'
+      - 'tests/pass220/test_hhs_pass220_ordered_list_power_source_v1.py'
+      - '.github/workflows/pass220-ordered-list-power-parser.yml'
+jobs:
+  ordered-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: PYTHONPATH=. python -m unittest tests/pass220/test_hhs_pass220_ordered_list_power_source_v1.py

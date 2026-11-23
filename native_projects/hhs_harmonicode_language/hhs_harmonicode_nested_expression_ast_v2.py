@@ -138,6 +138,13 @@ def _left_atom(source: str, caret: int) -> Tuple[int, int] | None:
         start = _match_left(source, index)
         if start is None:
             return None
+        # Include the function head in List(...)^... rather than treating
+        # the parenthesized arguments as a detached scalar operand.
+        head = start - 1
+        while head >= 0 and _is_identifier_char(source[head]):
+            head -= 1
+        if head + 1 < start and _is_identifier_start(source[head + 1]):
+            start = head + 1
         return start, index + 1
 
     end = index + 1
@@ -176,6 +183,12 @@ def _right_atom(source: str, caret: int) -> Tuple[int, int] | None:
     index += 1
     while index < len(source) and _is_identifier_char(source[index]):
         index += 1
+    # A native List(...) exponent is one complete syntactic operand.
+    if index < len(source) and source[index] == "(":
+        closing = _match_right(source, index)
+        if closing is None:
+            return None
+        return start, closing + 1
     while index < len(source) and source[index] in _SUPERSCRIPT_DIGITS:
         index += 1
     return start, index
