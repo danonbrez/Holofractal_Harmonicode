@@ -56,9 +56,9 @@ class TestStreamStaging(unittest.TestCase):
 
     def test_wrong_owner_denied(self):
         with self.assertRaises(StagingError):
-            self.store.status(self.ident, "another")
-        with self.assertRaises(StagingError):
             self.store.append(self.ident, "another", 0, b"x")
+        with self.assertRaises(StagingError):
+            self.store.status(self.ident, "another")
 
     def test_digest_mismatch_not_admitted(self):
         self.store.append(self.ident, "root-admin", 0, b"abc")
