@@ -149,6 +149,45 @@ def test_lane5_browser_exposes_manual_animation_and_renderer_bypass_benchmark():
         assert token in source, token
 
 
+def test_lane5_browser_zero_loss_runtime_optimization_preserves_semantics():
+    source = HTML.read_text(encoding="utf-8")
+    for token in (
+        'schema:"HHS_PASS_220_I055_I041_ZERO_LOSS_RUNTIME_OPTIMIZATION_V1"',
+        'benchmarkReference:"artifacts/pass219b/PASS_219B_I4_FOLD7_HARDWARE_RESULT.json"',
+        'latencyPolicyReference:"contracts/pass219/PASS_219_GLOBAL_LATENCY_POLICY_25_3_1_0.json"',
+        'deviceReference:"SM-F966U"',
+        "const PHASE_WORD_CACHE_LIMIT = 128;",
+        "const q144RotationCache = new Array(Q144);",
+        "let dynamicsProjectionCache = null;",
+        "if(dynamicsProjectionCache) return dynamicsProjectionCache;",
+        "dynamicsProjectionCache=null;",
+        "const cached=q144RotationCache[q];",
+        "const key=path.seed+",
+        "phaseWordCache.size>PHASE_WORD_CACHE_LIMIT",
+        "function readDrawingBufferSize()",
+        "if(w===compositorWidth&&h===compositorHeight) return false;",
+        "function updateTesseract(t,dynamics=null)",
+        "updateTesseract(seconds,dyn);",
+        "if(text!==lastHudText)",
+        "runtimeOptimizationContract(){return ZERO_LOSS_RUNTIME_OPTIMIZATION;}",
+        "simulationLogicRemoved:false",
+        "projectionLogicRemoved:false",
+        "canonicalMutationAuthority:false",
+    ):
+        assert token in source, token
+
+    # Optimization may reuse deterministic computation/results, but it may not
+    # remove or weaken the exact scheduler, quartic gate, or authority membrane.
+    for token in (
+        "function lane5ExactSchedule(targetTick)",
+        "timeSeconds:brat(t,60n)",
+        "renderFrame:(next%QUARTIC_RENDER_PERIOD)===0",
+        "simulationTickExact=brAdd(simulationTickExact,brMul(wallTickDelta,simulationSpeedExact));",
+        "authority=projection-only; no VM81/Hash72/Hash216 mutation",
+    ):
+        assert token in source, token
+
+
 
 def test_canonical_seed_contract_repairs_are_explicit_and_fail_closed():
     source = HTML.read_text(encoding="utf-8")
