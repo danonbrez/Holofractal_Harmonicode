@@ -1,0 +1,224 @@
+name: Pass 219 Lane 5 Repository Global Visibility 1.70
+
+on:
+  push:
+    branches:
+      - repair/pass219-lane5-global-visibility-1-70-20260930
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_REPOSITORY_GLOBAL_VISIBILITY_1_70.md'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_repository_global_visibility_1_70.py'
+      - 'tools/pass219/hhs_pass219_lane5_repository_global_visibility_1_70.py'
+      - 'tests/pass219/test_pass219_lane5_repository_global_visibility_1_70.py'
+      - '.github/workflows/pass219-lane5-repository-global-visibility-1-70.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_REPOSITORY_GLOBAL_VISIBILITY_1_70_RESTART_20260930.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'contracts/pass219/PASS_219_LANE5_REPOSITORY_GLOBAL_VISIBILITY_1_70.md'
+      - 'hhs_backend/runtime/hhs_pass219_lane5_repository_global_visibility_1_70.py'
+      - 'tools/pass219/hhs_pass219_lane5_repository_global_visibility_1_70.py'
+      - 'tests/pass219/test_pass219_lane5_repository_global_visibility_1_70.py'
+      - '.github/workflows/pass219-lane5-repository-global-visibility-1-70.yml'
+      - 'docs/operations/restart/PASS_219_LANE5_REPOSITORY_GLOBAL_VISIBILITY_1_70_RESTART_20260930.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch repository-visible branch and pull-request refs as data
+        run: |
+          git fetch --force --no-tags origin \
+            '+refs/heads/*:refs/remotes/origin/*' \
+            '+refs/pull/*/head:refs/remotes/pull/*/head'
+
+      - name: Install exact runtime build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev python3-pytest python3-cryptography
+
+      - name: Compile new visibility surfaces
+        run: |
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass219_lane5_repository_global_visibility_1_70.py \
+            tools/pass219/hhs_pass219_lane5_repository_global_visibility_1_70.py \
+            tests/pass219/test_pass219_lane5_repository_global_visibility_1_70.py
+
+      - name: Static contract and no-bypass gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          contract = Path(
+              'contracts/pass219/PASS_219_LANE5_REPOSITORY_GLOBAL_VISIBILITY_1_70.md'
+          ).read_text(encoding='utf-8')
+          runtime = Path(
+              'hhs_backend/runtime/hhs_pass219_lane5_repository_global_visibility_1_70.py'
+          ).read_text(encoding='utf-8')
+          vm = Path('hhs_runtime/HARMONICODE_VM_RUNTIME.c').read_text(encoding='utf-8')
+
+          for needle in (
+              'Lane 5 is the Pass 219 composition manifold',
+              'VISIBLE',
+              'COMPOSABLE',
+              'VALIDATED',
+              'ADMITTED',
+              'MUTABLE',
+              'CannotBypassKernel(c)',
+              'configuration_state = NOT_INFERRED',
+              'adapter_state       = NOT_INFERRED',
+              'MERGED_GREEN',
+              'external ref content scan = NOT CLAIMED',
+          ):
+              assert needle in contract, needle
+
+          for needle in (
+              '"visible_to_lane5": True',
+              '"visibility_filtering_allowed": False',
+              '"classification_metadata_can_hide_nodes": False',
+              '"configuration_or_adapter_requirement_requires_evidence": True',
+              '"lane5_is_pass219_composition_manifold": True',
+              '"repository_total_historical_capability_complete": False',
+          ):
+              assert needle in runtime, needle
+
+          for needle in (
+              'mandatory_green_constructor_graph_bound',
+              'lane5_no_mutation_authority',
+              'external_egress_requires_hash216_validation',
+              'g3_lane5_context_valid',
+          ):
+              assert needle in vm, needle
+
+          print('pass219_lane5_global_visibility_static=PASS')
+          PY
+
+      - name: Build inherited cumulative exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+
+      - name: Run dependency-scoped inherited and new graph tests
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          python -m pytest -q \
+            tests/pass219/test_pass219_lane5_repository_capability_reverse_discovery_1_44.py \
+            tests/pass219/test_pass219_lane5_repository_hydration_knowledge_graph_1_69.py \
+            tests/pass219/test_pass219_lane5_repository_global_visibility_1_70.py
+
+      - name: Build open-PR provenance without executing PR code
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --paginate \
+            "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" \
+            --jq '.[] | {ref_kind:"PULL_REQUEST",ref_name:("refs/pull/"+(.number|tostring)+"/head"),head_sha:.head.sha,base_sha:.base.sha,pr_number:.number,state:"OPEN",declared_metadata:{source:"GITHUB_API_OPEN_PR",draft:.draft,content_executed:false}}' \
+            > /tmp/hhs-open-pr-provenance.jsonl
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path('/tmp/hhs-open-pr-provenance.jsonl')
+          rows = [
+              json.loads(line)
+              for line in source.read_text(encoding='utf-8').splitlines()
+              if line.strip()
+          ]
+          Path('/tmp/hhs-open-pr-provenance.json').write_text(
+              json.dumps(rows, sort_keys=True, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(f'open_pr_provenance={len(rows)}')
+          PY
+
+      - name: Hydrate actual bound repository and ref provenance through Lane 5
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+          HHS_DISABLE_C_AUTOBUILD: '1'
+        run: |
+          rm -f \
+            /tmp/hhs-pass219-170.sqlite3 \
+            /tmp/hhs-pass219-170.sqlite3-wal \
+            /tmp/hhs-pass219-170.sqlite3-shm
+
+          python tools/pass219/hhs_pass219_lane5_repository_global_visibility_1_70.py \
+            --repository-root . \
+            --provenance-json /tmp/hhs-open-pr-provenance.json \
+            --output-json /tmp/hhs-pass219-lane5-global-visibility-1-70.json \
+            --database /tmp/hhs-pass219-170.sqlite3 \
+            --receipt-json /tmp/hhs-pass219-lane5-global-visibility-1-70-receipt.json
+
+      - name: Verify repository-scale visibility receipt
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          receipt = json.loads(
+              Path('/tmp/hhs-pass219-lane5-global-visibility-1-70-receipt.json')
+              .read_text(encoding='utf-8')
+          )
+          tracked = len(
+              subprocess.check_output(['git', 'ls-files', '-z']).split(b'\0')
+          ) - 1
+          counts = receipt['counts']
+          authority = receipt['authority']
+          scope = receipt['scope']
+          database = receipt['database_status']
+
+          assert counts['repository_objects'] == tracked
+          assert counts['visibility_nodes'] >= counts['repository_objects']
+          assert counts['discovered_callables'] > 0
+          assert counts['typed_capabilities'] > 0
+          assert counts['typed_constructors'] > 0
+          assert counts['provenance_nodes'] > 0
+          assert scope['bound_repository_tracked_file_visibility_complete'] is True
+          assert scope['external_ref_content_scan_complete'] is False
+          assert scope['repository_total_historical_capability_complete'] is False
+          assert authority['lane5_is_pass219_composition_manifold'] is True
+          assert authority['visibility_filtering_allowed'] is False
+          assert authority['classification_metadata_can_hide_nodes'] is False
+          assert authority['unresolved_state_remains_visible'] is True
+          assert authority['configuration_or_adapter_requirement_requires_evidence'] is True
+          for key in (
+              'canonical_vm81_mutation_authority',
+              'canonical_hash72_authority',
+              'canonical_hash216_authority',
+              'canonical_persistence_authority',
+          ):
+              assert authority[key] is False
+          assert database['visibility_nodes'] == counts['visibility_nodes']
+          assert database['visibility_edges'] == counts['visibility_edges']
+          assert database['hash216_positions'] == (
+              counts['visibility_nodes'] + counts['visibility_edges']
+          ) * 216
+          assert receipt['external_ref_content_executed'] is False
+          assert len(receipt['projection_root_hash216']) == 216
+          print('pass219_lane5_repository_scale_visibility=PASS')
+          PY
+
+      - name: Upload restartable visibility evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass219-lane5-global-visibility-1-70-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            /tmp/hhs-pass219-lane5-global-visibility-1-70.json
+            /tmp/hhs-pass219-lane5-global-visibility-1-70-receipt.json
+            /tmp/hhs-open-pr-provenance.json
