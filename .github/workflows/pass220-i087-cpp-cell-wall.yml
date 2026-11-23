@@ -1,0 +1,39 @@
+name: Pass 220 I087 C++ Cell Wall Bridge
+on:
+  pull_request:
+    paths:
+      - "hhs_runtime/include/hhs_pass220_i087_ordered_reconciliation_v1.hpp"
+      - "hhs_runtime/include/hhs_pass220_i087_successor_preflight_v1.hpp"
+      - "hhs_runtime/include/hhs_pass219_lane5_hnan_global_constraint_1_63.h"
+      - "tests/pass220/test_pass220_i087_cpp_bridge_behavior_v1.cpp"
+      - "tests/pass220/test_pass220_i087_real_c_resolver_v1.cpp"
+      - "hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc"
+      - ".github/workflows/pass220-i087-cpp-cell-wall.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpp-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile I087 against inherited native ABI
+        run: |
+          printf '#include "hhs_pass220_i087_ordered_reconciliation_v1.hpp"\nint main() { return 0; }\n' |
+            g++ -std=c++17 -Wall -Wextra -Werror -fsyntax-only -x c++ -Ihhs_runtime/include -
+      - name: Execute ordered-candidate bridge negative and positive controls
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            tests/pass220/test_pass220_i087_cpp_bridge_behavior_v1.cpp \
+            -o /tmp/hhs_pass220_i087_bridge_test
+          /tmp/hhs_pass220_i087_bridge_test
+      - name: Execute against actual native C HNAN resolver
+        run: |
+          gcc -std=c11 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            -x c -c hhs_runtime/c/hhs_pass219_lane5_hnan_global_constraint_1_63.inc \
+            -o /tmp/hhs_i087_native_hnan.o
+          g++ -std=c++17 -Wall -Wextra -Werror -Ihhs_runtime/include \
+            tests/pass220/test_pass220_i087_real_c_resolver_v1.cpp \
+            /tmp/hhs_i087_native_hnan.o -o /tmp/hhs_i087_native_resolver_test
+          /tmp/hhs_i087_native_resolver_test

@@ -9,7 +9,7 @@ from hhs_runtime.hhs_pass220_course_module_gate_provenance_v1 import course_modu
 from hhs_runtime.hhs_pass220_whitepaper_proof_dependency_binding_v1 import build_dependency_graph,_hash
 from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
 
-SOURCE_GATE="t³−t = m²−m"
+SOURCE_GATE="t^3-t = m^2-m"
 TRIPLE="t(t−1)(t+1)"
 PAIR="m(m−1)"
 

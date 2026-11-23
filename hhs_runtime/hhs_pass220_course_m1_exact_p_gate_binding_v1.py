@@ -11,7 +11,7 @@ from hhs_runtime.hhs_pass220_course_module_gate_provenance_v1 import course_modu
 from hhs_runtime.hhs_pass220_whitepaper_proof_dependency_binding_v1 import build_dependency_graph, _hash
 from hhs_runtime.hhs_pass220_whitepaper_corpus_ingress_v1 import ProofCorpusError
 
-GATE="P² = pq + (q−p)P/(p+q)"
+GATE="P^2 = pq + (q-p)P/(p+q)"
 SOURCE_FRAGMENT="P → (p,q) → t → m → (a,b,c) → (x,y,z,w) → ∆ → 0"
 
 def execute_course_m1_exact_p_closure(P:int, root:Path=Path("."))->dict:

@@ -1,0 +1,33 @@
+{
+  "schema": "HHS_PASS220_COURSE_LANE5_BINDING_INDEX_V1",
+  "status": "CANDIDATE_METADATA_ONLY",
+  "course_module_range": [
+    0,
+    26
+  ],
+  "course_inventory": "hhs_runtime/hhs_pass220_course_module_gate_provenance_v1.py",
+  "proof_corpus": "hhs_runtime/hhs_pass220_whitepaper_corpus_ingress_v1.py",
+  "lean_root": "formal/lean/HHS.lean",
+  "lane5_knowledge_graph": "hhs_backend/runtime/hhs_pass219_lane5_repository_hydration_knowledge_graph_1_69.py",
+  "vm81_admission": false,
+  "hash216_minted": false,
+  "native_end_to_end_verified": false,
+  "bindings": [
+    {
+      "modules": [
+        0,
+        14
+      ],
+      "source": "whitepapers/Harmonicode Algebra - Course",
+      "edition": "EXPANDED_PINNED"
+    },
+    {
+      "modules": [
+        15,
+        26
+      ],
+      "source": "docs/pass220/HARMONICODE_ALGEBRA_COURSE_MODULES_13_26.md",
+      "edition": "ADDITIVE_CONTINUATION"
+    }
+  ]
+}

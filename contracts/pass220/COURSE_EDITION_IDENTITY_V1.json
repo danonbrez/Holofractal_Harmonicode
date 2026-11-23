@@ -1,0 +1,24 @@
+{
+  "schema": "HHS_PASS220_COURSE_EDITION_IDENTITY_V1",
+  "source": "whitepapers/Harmonicode Algebra - Course",
+  "historical": {
+    "module_first": 0,
+    "module_last": 12,
+    "git_blob_sha": "2744e9ecf1f260ff9a5a02870320698ee2d7dcaf",
+    "reference_commit": "48aa9b704f43e4ede87b25b9391cf4349537b123"
+  },
+  "expanded": {
+    "module_first": 0,
+    "module_last": 14,
+    "git_blob_sha": "a36b5627b50e241ba715c607d0896cea254b2f3e"
+  },
+  "continuation": {
+    "module_first": 15,
+    "module_last": 26,
+    "path": "docs/pass220/HARMONICODE_ALGEBRA_COURSE_MODULES_13_26.md",
+    "identity": "SHA256_OF_EXACT_SOURCE_BYTES"
+  },
+  "source_edition_identity_is_proof_authority": false,
+  "automatic_proof_inheritance_between_editions": false,
+  "vm81_admission": false
+}
