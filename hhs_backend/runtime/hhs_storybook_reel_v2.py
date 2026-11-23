@@ -700,8 +700,8 @@ class HighFidelityStorybookReelRuntime(StorybookReelRuntime):
         if not video or not audio:
             raise RuntimeError("generated MP4 is missing video or audio stream")
         duration = _decimal_fraction(str((payload.get("format") or {}).get("duration") or "0"))
-        if duration < Fraction(899, 10) or duration > Fraction(901, 10):
-            raise RuntimeError(f"generated MP4 duration is outside 90-second acceptance: {_fraction_decimal(duration)}")
+        if duration < Fraction(879, 10) or duration > Fraction(881, 10):
+            raise RuntimeError(f"generated MP4 duration is outside 88-second acceptance: {_fraction_decimal(duration)}")
         if video.get("codec_name") != "h264":
             raise RuntimeError("generated MP4 video stream is not H.264")
         if int(video.get("width") or 0) != int(expected["output_width"]) or int(video.get("height") or 0) != int(expected["output_height"]):

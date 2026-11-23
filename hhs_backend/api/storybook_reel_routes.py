@@ -8,6 +8,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from hhs_backend.api.runtime_routes import _contract_response, io_gateway, runtime_controller, runtime_graph
+from hhs_backend.runtime.hhs_storybook_elevenlabs_v1 import ElevenLabsVoiceoverClient
+from hhs_backend.runtime.hhs_storyboard_voice_sync_v1 import extract_storyboard_frames, validate_serialized_storyboard
 from hhs_backend.runtime.hhs_storybook_reel_v3 import (
     CLASSIFICATION,
     CONTRACT,
@@ -34,6 +36,18 @@ class StorybookResolveRequest(BaseModel):
     render: Dict[str, Any] = Field(default_factory=dict)
     native_layers: Dict[str, Any] = Field(default_factory=dict)
 
+
+class StorybookVoiceoverRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=16_384)
+    voice_id: str = Field(min_length=1, max_length=256)
+    model_id: str = Field(default="eleven_multilingual_v2", min_length=1, max_length=128)
+    initial_speed: float = Field(default=1.0, ge=0.7, le=1.2)
+    stability: float = Field(default=0.50, ge=0.0, le=1.0)
+    similarity_boost: float = Field(default=0.75, ge=0.0, le=1.0)
+    style: float = Field(default=0.0, ge=0.0, le=1.0)
+    use_speaker_boost: bool = True
+    max_attempts: int = Field(default=3, ge=1, le=5)
+    storyboard_markdown: Optional[str] = Field(default=None, max_length=64_000)
 
 class StorybookGenerateRequest(BaseModel):
     audio_id: str = Field(min_length=38, max_length=38)
@@ -142,6 +156,76 @@ def storybook_reel_defaults(request: StorybookDefaultsRequest) -> Dict[str, Any]
     return _contract_response("/api/runtime/storybook-reel/defaults", "POST", result)
 
 
+@router.post("/voiceover/sync")
+def storybook_reel_voiceover_sync(request: StorybookVoiceoverRequest) -> Dict[str, Any]:
+    frames = None
+    if request.storyboard_markdown:
+        frames = extract_storyboard_frames(request.storyboard_markdown)
+        validate_serialized_storyboard(frames)
+    client = ElevenLabsVoiceoverClient()
+    if not client.configured:
+        raise HTTPException(
+            status_code=503,
+            detail=_error(
+                "HHS_STORYBOOK_ELEVENLABS_NOT_CONFIGURED_V1",
+                "ELEVENLABS_API_KEY is not configured",
+                retryable=True,
+                remediation="Configure ELEVENLABS_API_KEY on the Storybook Reel service and retry.",
+            ),
+        )
+    try:
+        generated = client.synthesize_fitted(
+            text=request.text,
+            voice_id=request.voice_id,
+            model_id=request.model_id,
+            initial_speed=request.initial_speed,
+            stability=request.stability,
+            similarity_boost=request.similarity_boost,
+            style=request.style,
+            use_speaker_boost=request.use_speaker_boost,
+            max_attempts=request.max_attempts,
+            storyboard_frames=frames,
+        )
+        audio = STORYBOOK_REEL_RUNTIME.upload_audio(
+            generated.audio,
+            "elevenlabs-voiceover.mp3",
+            "audio/mpeg",
+        )
+        sync_urls = STORYBOOK_REEL_RUNTIME.save_voice_sync(audio["audio_id"], generated.manifest)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=_error(
+                "HHS_STORYBOOK_VOICE_SYNC_REJECTION_V1",
+                str(exc),
+                retryable=False,
+                remediation="Shorten or repace the narration, verify the exact transcript, then regenerate.",
+            ),
+        ) from exc
+    except (RuntimeError, OSError) as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=_error(
+                "HHS_STORYBOOK_ELEVENLABS_RUNTIME_ERROR_V1",
+                str(exc),
+                retryable=True,
+                remediation="Verify the ElevenLabs API key, voice ID, network access, and provider availability.",
+            ),
+        ) from exc
+    return _contract_response(
+        "/api/runtime/storybook-reel/voiceover/sync",
+        "POST",
+        {
+            "ok": True,
+            "status": "STORYBOOK_VOICEOVER_88S_SYNC_READY",
+            "audio_id": audio["audio_id"],
+            "audio_duration_seconds": audio["duration_seconds"],
+            "alignment": dict(generated.alignment),
+            "voice_sync": dict(generated.manifest),
+            **sync_urls,
+        },
+    )
+
 @router.post("/audio")
 async def storybook_reel_audio_upload(request: Request) -> Dict[str, Any]:
     data = await request.body()
@@ -246,6 +330,32 @@ def storybook_reel_generate(request: StorybookGenerateRequest) -> Dict[str, Any]
     }
     return _contract_response("/api/runtime/storybook-reel/generate", "POST", result)
 
+
+@router.get("/audio/{audio_id}/source", response_model=None)
+def storybook_reel_audio_source(audio_id: str) -> Any:
+    try:
+        path = STORYBOOK_REEL_RUNTIME.audio_asset_path(audio_id, "source")
+    except (ValueError, FileNotFoundError) as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return FileResponse(path, media_type="audio/mpeg", filename=path.name, headers={"Cache-Control": "private, no-store"})
+
+
+@router.get("/audio/{audio_id}/voice-sync.json", response_model=None)
+def storybook_reel_voice_sync_json(audio_id: str) -> Any:
+    try:
+        path = STORYBOOK_REEL_RUNTIME.audio_asset_path(audio_id, "voice_sync_json")
+    except (ValueError, FileNotFoundError) as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return FileResponse(path, media_type="application/json", filename="voice-sync.json", headers={"Cache-Control": "private, no-store"})
+
+
+@router.get("/audio/{audio_id}/voice-sync.csv", response_model=None)
+def storybook_reel_voice_sync_csv(audio_id: str) -> Any:
+    try:
+        path = STORYBOOK_REEL_RUNTIME.audio_asset_path(audio_id, "voice_sync_csv")
+    except (ValueError, FileNotFoundError) as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return FileResponse(path, media_type="text/csv", filename="voice-sync.csv", headers={"Cache-Control": "private, no-store"})
 
 @router.get("/artifacts/{artifact_id}")
 def storybook_reel_artifact(artifact_id: str) -> Dict[str, Any]:
