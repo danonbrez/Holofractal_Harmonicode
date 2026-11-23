@@ -1,0 +1,258 @@
+# Exact-main reconciliation base: e380023bd5ae2c1b6cc59382ed555c8f4d2aa84c
+name: Pass 219 Prime Memristive Fifth Lane BigInt Address I11
+
+on:
+  push:
+    branches:
+      - agent/pass219-prime-memristive-fifth-lane-i11-bigint-address-20260912
+    paths:
+      - contracts/pass219/PASS_219_PRIME_MEMRISTIVE_FIFTH_LANE_BIGINT_ADDRESS_I11.md
+      - hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_1.hpp
+      - hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_3.hpp
+      - hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_5.hpp
+      - hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_7.hpp
+      - hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_8.hpp
+      - hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_9.hpp
+      - hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_10.hpp
+      - hhs_backend/runtime/hhs_pass219_five_lane_bigint_address_v1.py
+      - tests/pass219/test_pass219_prime_memristive_fifth_lane_1_8.cpp
+      - tests/pass219/test_pass219_prime_memristive_fifth_lane_1_9.cpp
+      - tests/pass219/test_pass219_prime_memristive_fifth_lane_1_10.cpp
+      - tests/pass219/test_pass219_prime_memristive_fifth_lane_i11_hardening.cpp
+      - tests/pass219/test_pass219_prime_memristive_fifth_lane_i11_bigint_address.py
+      - .github/workflows/pass219-prime-memristive-fifth-lane-bigint-address-i11.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out I11 branch
+        uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+          openssl version -a
+
+      - name: Verify I11 Pass133 211 authority and review-hardening contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          contract = Path('contracts/pass219/PASS_219_PRIME_MEMRISTIVE_FIFTH_LANE_BIGINT_ADDRESS_I11.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_10.hpp').read_text()
+          i8 = Path('hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_7.hpp').read_text()
+          i9 = Path('hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_8.hpp').read_text()
+          i10 = Path('hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_9.hpp').read_text()
+          bridge = Path('hhs_backend/runtime/hhs_pass219_five_lane_bigint_address_v1.py').read_text()
+          holo4 = Path('hhs_runtime/include/hhs_pass219_core_holographic_four_lane_1_24.h').read_text()
+          pass133 = Path('hhs_runtime/canonical.py').read_text()
+          pass211 = Path('hhs_backend/runtime/hhs_pass211_bigint_hfc_carrier_v1.py').read_text()
+          assert '#define HHS_EXACT_PASS219_HOLO4_LANE_COUNT UINT32_C(4)' in holo4
+          assert 'def bigint_to_bytes(value: int) -> bytes:' in pass133
+          assert 'class Pass211BigIntHFCRuntime:' in pass211
+          for needle in (
+              'pass133_canonical_bigint_serialization{true}',
+              'pass211_hfc_frame_compatible{true}',
+              'mixed_radix_reversible{true}',
+              'five_lane_coordinate_address_only{true}',
+              'inherited_i10_winners_only{true}',
+              'inherited_i8_budget_debit_only{true}',
+              'inherited_i9_verified_reinforcement_only{true}',
+              'canonical_mutation_authority{false}',
+              'canonical_hash216_authority{false}',
+              'floating_point_authority{false}',
+              'class PrimeLaneFiveLaneBigIntCodecV11',
+              'class PrimeLaneSparseWinnerExecutorV11',
+              'HHS_PASS219_PRIME_LANE_I11_NAMESPACE',
+              'arbiter.winner_emitted(arbitration, winner)',
+          ):
+              assert needle in header, needle
+          for needle in (
+              'receipt_signature64',
+              'issued_receipts_',
+              'energy_receipt_signature',
+          ):
+              assert needle in i8, needle
+          for needle in (
+              'class PrimeLaneVerifiedOutcomeIssuerV9',
+              'hhs_exact_pass219_vm81_environment_admit_signed',
+              'issuer.issued(event)',
+          ):
+              assert needle in i9, needle
+          for needle in (
+              'winner_emitted(',
+              'issued_',
+              'same_issued(',
+          ):
+              assert needle in i10, needle
+          for needle in (
+              'Pass211BigIntHFCRuntime',
+              'bigint_to_bytes',
+              'int.from_bytes(raw, "big", signed=False)',
+              'PASS219_I11_ADDRESS_NONCANONICAL_LEADING_ZERO',
+              'I11_NAMESPACE = 0x21911',
+              '_validate_i11_mixed_radix',
+              'PASS219_I11_ADDRESS_NAMESPACE_MISMATCH',
+          ):
+              assert needle in bridge, needle
+          ns = {}
+          exec(compile(bridge, 'bridge', 'exec'), ns)
+          assert len(ns['PRIME_FIBRES']) == 65
+          for needle in (
+              'Pass 133',
+              'Pass 211',
+              'N\' = N * radix + digit',
+              'I11_NAMESPACE = 0x21911',
+              'HHS_EXACT_PASS219_HOLO4_LANE_COUNT = 4',
+              'Hash216/VM81 remain canonical state/transition authority.',
+          ):
+              assert needle in contract, needle
+          print('prime_memristive_fifth_lane_i11_contract_gate=PASS')
+          PY
+
+      - name: Build inherited exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_prepare'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_hash216_transition_init'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_vm81_environment_admit_signed'
+
+      - name: Run I2 I4 I6 review hardening regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -fsanitize=address,undefined -fno-omit-frame-pointer \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_i11_hardening.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-prime-lane-i11-hardening
+          /tmp/test-pass219-prime-lane-i11-hardening
+
+      - name: Run I9 inherited-verdict provenance gate on system provider
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_1_8.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-prime-lane-i9
+          /tmp/test-pass219-prime-lane-i9
+
+      - name: Run I10 sparse arbitration provenance regression
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_1_9.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-prime-lane-i10
+          /tmp/test-pass219-prime-lane-i10
+
+      - name: Run I11 native address winner and debit provenance gate
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_1_10.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-prime-memristive-fifth-lane-i11
+          /tmp/test-pass219-prime-memristive-fifth-lane-i11
+          test -s /tmp/pass219_i11_address.hex
+
+      - name: Round-trip native I11 address through Pass133 and Pass211
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tests/pass219/test_pass219_prime_memristive_fifth_lane_i11_bigint_address.py \
+            /tmp/pass219_i11_address.hex
+
+      - name: Verify inherited Pass211 reference path remains green
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python - <<'PY'
+          import math
+          from hhs_backend.runtime.hhs_pass211_bigint_hfc_carrier_v1 import Pass211BigIntHFCRuntime
+          runtime = Pass211BigIntHFCRuntime()
+          value = math.factorial(72)
+          package = runtime.encode(value)
+          decoded = runtime.decode(package)
+          assert decoded['ciphertext_hex'] == hex(value)
+          print(f'pass211_inherited_roundtrip=PASS shards={package.shard_count}')
+          PY
+
+      - name: Verify inherited four-lane authority remains green
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include \
+            tests/pass219/test_pass219_core_holographic_four_lane_1_24.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-core-holo4
+          /tmp/test-core-holo4
+
+  openssl-35-i9-positive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out I11 branch
+        uses: actions/checkout@v4
+
+      - name: Build OpenSSL 3.5.0 provider locally
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential perl curl ca-certificates
+          curl -fsSL --retry 3 --retry-delay 2 \
+            https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz \
+            -o /tmp/openssl-3.5.0.tar.gz
+          tar -C /tmp -xzf /tmp/openssl-3.5.0.tar.gz
+          cd /tmp/openssl-3.5.0
+          ./Configure --prefix=/tmp/openssl35 --libdir=lib shared no-tests
+          make -j2
+          make install_sw
+          export LD_LIBRARY_PATH="/tmp/openssl35/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+          /tmp/openssl35/bin/openssl list -signature-algorithms | grep -i 'ML-DSA'
+
+      - name: Build exact ABI against OpenSSL 3.5
+        env:
+          CFLAGS: -O2 -std=c11 -Wall -Wextra -Ihhs_runtime/include -Ihhs_runtime/c -I/tmp/openssl35/include
+          CXXFLAGS: -O2 -std=c++17 -Wall -Wextra -Werror -pedantic -Ihhs_runtime/include -Ihhs_runtime/c -Inative_projects/hhs_pass188_bott_runtime/include -Inative_projects/hhs_pass189_hqlh_runtime/include -I/tmp/openssl35/include
+          LDFLAGS: -L/tmp/openssl35/lib -Wl,-rpath,/tmp/openssl35/lib -lm -lcrypto
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          make clean
+          make c-abi
+          ldd hhs_runtime/builds/libhhs_runtime.so | grep '/tmp/openssl35/lib'
+
+      - name: Prove I9 positive reinforcement is issued only after signed 1.32 admission
+        env:
+          LD_LIBRARY_PATH: /tmp/openssl35/lib
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include -I/tmp/openssl35/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_1_8.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime \
+            -L/tmp/openssl35/lib -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -Wl,-rpath,/tmp/openssl35/lib \
+            -o /tmp/test-pass219-prime-lane-i9-positive
+          /tmp/test-pass219-prime-lane-i9-positive | tee /tmp/i9.log
+          grep -q 'provider=available' /tmp/i9.log
+          grep -q 'forged_rejected=1' /tmp/i9.log

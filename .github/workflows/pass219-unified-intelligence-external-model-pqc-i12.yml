@@ -1,0 +1,155 @@
+name: Pass 219 Unified Intelligence External Model PQC I12
+
+on:
+  push:
+    branches:
+      - agent/pass219-prime-memristive-fifth-lane-i11-bigint-address-20260912
+    paths:
+      - 'contracts/pass219/PASS_219_UNIFIED_INTELLIGENCE_EXTERNAL_MODEL_PQC_BOUNDARY_I12.md'
+      - 'contracts/pass219/PASS_219_UNIFIED_INTELLIGENCE_EXTERNAL_MODEL_PQC_BOUNDARY_I12.json'
+      - 'hhs_runtime/include/hhs_pass219_unified_intelligence_external_model_pqc_boundary_1_11.hpp'
+      - 'tests/pass219/test_pass219_unified_intelligence_external_model_pqc_boundary_1_11.cpp'
+      - 'hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_10.hpp'
+      - 'hhs_runtime/include/hhs_pass219_rna_cell_wall_alignment_training_1_26.hpp'
+      - 'hhs_runtime/include/hhs_pass219_vm81_environmental_recovery_1_32.h'
+      - 'hhs_backend/runtime/hhs_pass215_iteration1_transformer_ingestion_v1.py'
+      - 'hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py'
+      - 'hhs_backend/runtime/hhs_production_assistant_v1.py'
+      - '.github/workflows/pass219-unified-intelligence-external-model-pqc-i12.yml'
+  pull_request:
+    paths:
+      - 'contracts/pass219/PASS_219_UNIFIED_INTELLIGENCE_EXTERNAL_MODEL_PQC_BOUNDARY_I12.md'
+      - 'contracts/pass219/PASS_219_UNIFIED_INTELLIGENCE_EXTERNAL_MODEL_PQC_BOUNDARY_I12.json'
+      - 'hhs_runtime/include/hhs_pass219_unified_intelligence_external_model_pqc_boundary_1_11.hpp'
+      - 'tests/pass219/test_pass219_unified_intelligence_external_model_pqc_boundary_1_11.cpp'
+      - '.github/workflows/pass219-unified-intelligence-external-model-pqc-i12.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Parse I12 contract and inherited Python service surfaces
+        run: |
+          python -m json.tool contracts/pass219/PASS_219_UNIFIED_INTELLIGENCE_EXTERNAL_MODEL_PQC_BOUNDARY_I12.json >/dev/null
+          python -m py_compile \
+            hhs_backend/runtime/hhs_pass215_iteration1_transformer_ingestion_v1.py \
+            hhs_backend/runtime/hhs_native_litert_lm_provider_v1.py \
+            hhs_backend/runtime/hhs_production_assistant_v1.py
+
+      - name: Verify I12 static authority and residency contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest = json.loads(Path('contracts/pass219/PASS_219_UNIFIED_INTELLIGENCE_EXTERNAL_MODEL_PQC_BOUNDARY_I12.json').read_text())
+          contract = Path('contracts/pass219/PASS_219_UNIFIED_INTELLIGENCE_EXTERNAL_MODEL_PQC_BOUNDARY_I12.md').read_text()
+          header = Path('hhs_runtime/include/hhs_pass219_unified_intelligence_external_model_pqc_boundary_1_11.hpp').read_text()
+          fifth = Path('hhs_runtime/include/hhs_pass219_prime_memristive_fifth_lane_1_10.hpp').read_text()
+          holo4 = Path('hhs_runtime/include/hhs_pass219_core_holographic_four_lane_1_24.h').read_text()
+          cycle2 = Path('hhs_runtime/include/hhs_pass219_rna_cell_wall_alignment_training_1_26.hpp').read_text()
+
+          assert manifest['external_model']['frozen_source_archive_residency'] == 'OUTSIDE_PQC_CELL_WALL'
+          assert manifest['external_model']['raw_weight_blob_is_canonical_state'] is False
+          assert manifest['authority']['vm81_singleton_commit_authority'] is True
+          assert manifest['hydration']['canonical_holo4_lane_count'] == 4
+          assert manifest['hydration']['prime_memristive_fifth_lane_is_canonical_mutation_authority'] is False
+
+          assert '#define HHS_EXACT_PASS219_HOLO4_LANE_COUNT UINT32_C(4)' in holo4
+          assert 'HHS_PASS219_PRIME_LANE_I11_NAMESPACE' in fifth
+          assert 'canonical_mutation_authority{false}' in fifth
+          assert 'RNACellWallAlignmentTrainer' in cycle2
+
+          for needle in (
+              'OUTSIDE_PQC_CELL_WALL',
+              'source_model_blob_is_canonical_state{false}',
+              'provenance_anchor_required_inside_pqc{true}',
+              'verified_native_projection_required_to_cross_pqc{true}',
+              'external_model_direct_commit_forbidden{true}',
+              'vm81_singleton_commit_authority{true}',
+              'canonical_hash216_authority_created{false}',
+              'requests_external_weight_blob_crossing',
+              'requests_direct_model_commit',
+              'requests_non_vm81_canonical_commit',
+          ):
+              assert needle in header, needle
+
+          for needle in (
+              'AGI, LM, and ML are therefore service roles of one intelligence runtime',
+              'frozen source model archive = OUTSIDE the PQC cell wall',
+              'The inherited four Holo4 lanes remain exactly four canonical hydration lanes.',
+              'The prime-memristive fifth lane remains additive and candidate-only.',
+              'accelerators propose; VM81 admits or rejects',
+          ):
+              assert needle in contract, needle
+
+          print('unified_intelligence_external_model_pqc_i12_static_gate=PASS')
+          PY
+
+      - name: Build inherited exact ABI
+        run: |
+          make clean
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_vm81_environment_admit_signed'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep 'hhs_exact_pass219_holo4_prepare'
+
+      - name: Compile and run I12 executable membrane
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_unified_intelligence_external_model_pqc_boundary_1_11.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lm \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-unified-intelligence-pqc-i12
+          /tmp/test-pass219-unified-intelligence-pqc-i12
+
+      - name: Re-run inherited I11 authority hardening
+        env:
+          LD_LIBRARY_PATH: ${{ github.workspace }}/hhs_runtime/builds
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            -Inative_projects/hhs_pass188_bott_runtime/include \
+            -Inative_projects/hhs_pass189_hqlh_runtime/include \
+            tests/pass219/test_pass219_prime_memristive_fifth_lane_i11_hardening.cpp \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto \
+            -Wl,-rpath,"${GITHUB_WORKSPACE}/hhs_runtime/builds" \
+            -o /tmp/test-pass219-prime-lane-i11-hardening
+          /tmp/test-pass219-prime-lane-i11-hardening
+
+      - name: Verify generation-integrity seal remains valid
+        run: |
+          python tools/pass219/verify_generation_integrity_v1.py \
+            --manifest contracts/pass219/PASS_219_GENERATION_INTEGRITY_MANIFEST_V1.json \
+            --require-sealed
+
+      - name: Publish I12 summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## Pass 219 unified intelligence / external model PQC I12
+          - frozen source model residency: OUTSIDE PQC cell wall
+          - source identity/provenance anchor: REQUIRED inside PQC trust domain
+          - raw weight blob canonical state: FORBIDDEN
+          - AGI/LM/ML/algebra/GPU/graphics/realtime-learning roles: CANDIDATE-ONLY
+          - Holo4 canonical lane count: 4, PRESERVED
+          - prime-memristive fifth lane: ADDITIVE CANDIDATE ROUTING
+          - VM81 signed environmental successor: SINGLETON CANONICAL COMMIT AUTHORITY
+          - new Hash72/Hash216/persistence/floating-point authority: NONE
+          EOF

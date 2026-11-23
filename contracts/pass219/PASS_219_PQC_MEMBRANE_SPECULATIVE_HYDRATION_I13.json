@@ -1,0 +1,54 @@
+{
+  "contract": "PASS_219_PQC_MEMBRANE_SPECULATIVE_HYDRATION_I13",
+  "version": "0x0001000D",
+  "inherits": {
+    "i12_repair_verified_head": "3a3788216fe20ecf01a49da58cd5a88f58896d8a",
+    "main": "368aa5e281fb8c3a3e8f598622b04de199ace4a2",
+    "i12_green_workflow_run": 34733496053
+  },
+  "pqc_invariants": {
+    "PQC-W1": "EXTERNAL_WEIGHTS_OUTSIDE_PQC",
+    "PQC-W2": "VERIFIED_EXACT_PROJECTIONS_ONLY",
+    "PQC-W3": "IMMUTABLE_SOURCE_IDENTITY_RETAINED",
+    "PQC-W4": "VM81_SINGLETON_COMMIT_AUTHORITY",
+    "PQC-W5": "EVIDENCE_GATED_ORACLE_SEVERANCE"
+  },
+  "crossing_payload": {
+    "source_hash_bytes": 64,
+    "projection_root_hash216_chars": 216,
+    "projection_lane_count": 5,
+    "canonical_holo4_lane_count": 4,
+    "fifth_lane_candidate_only": true,
+    "harmonic36_max": 68719476735,
+    "probabilistic_payload_allowed": false,
+    "exact_rational_only": true,
+    "candidate_frame_hash72_binding_required": true
+  },
+  "closure": {
+    "delta_e_zero": true,
+    "psi_zero": true,
+    "omega_true": true,
+    "xy_n4_unity_verified": true,
+    "algebraic_solver_verified": true,
+    "manifold_closed": true
+  },
+  "oracle_lifecycle": [
+    "ORACLE_DEPENDENCY",
+    "CACHE_HIT_DOMINANCE",
+    "NATIVE_AUTONOMY"
+  ],
+  "authority": {
+    "public_mutation_abi": "hhs_exact_pass219_vm81_environment_admit_signed",
+    "i13_membrane_is_static_inline": true,
+    "new_dynamic_mutation_symbol": false,
+    "new_hash72_authority": false,
+    "new_hash216_authority": false,
+    "new_persistence_authority": false,
+    "model_consensus_is_proof": false
+  },
+  "implementation": {
+    "header": "hhs_runtime/include/hhs_pass219_pqc_membrane_speculative_hydration_i13.h",
+    "test": "tests/pass219/test_pass219_pqc_membrane_speculative_hydration_i13.cpp",
+    "workflow": ".github/workflows/pass219-pqc-membrane-speculative-hydration-i13.yml"
+  }
+}
