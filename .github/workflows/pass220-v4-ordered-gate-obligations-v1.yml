@@ -1,0 +1,57 @@
+name: Pass 220 V4 Ordered Gate Proof Obligations
+
+on:
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass220_v4_ordered_gate_obligations_v1.py'
+      - 'tests/pass220/test_pass220_v4_ordered_gate_obligations_v1.py'
+      - '.github/workflows/pass220-v4-ordered-gate-obligations-v1.yml'
+      - 'contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode'
+      - 'evidence/pass220/PASS220_V4_40_GATE_REPLAY_PREFLIGHT_37946520150.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ordered-proof-obligations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      PYTHONPATH: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest
+      - name: Source-copy pairing, ordered gate identity and fail-closed negative checks
+        run: python -m pytest -q tests/pass220/test_pass220_v4_ordered_gate_obligations_v1.py -k 'not test_materialized_obligation_graph_matches_runtime_bound_source'
+      - name: Materialize V4 proof obligations from actual native source-specific receipts
+        run: |
+          python -m hhs_runtime.hhs_pass220_v4_ordered_gate_obligations_v1 \
+            --source contracts/pass220/PASS_220_ORDERED_PHASE_CHAIN_V4_20261009.harmonicode \
+            --native-receipt evidence/pass220/PASS220_V4_40_GATE_REPLAY_PREFLIGHT_37946520150.json \
+            --output artifacts/pass220/v4-obligations/ordered_gate_obligations.json
+      - name: Replay every ordered source/copy dependency
+        run: python -m pytest -q tests/pass220/test_pass220_v4_ordered_gate_obligations_v1.py
+      - name: Verify no unsigned canonical authority was added
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('artifacts/pass220/v4-obligations/ordered_gate_obligations.json').read_text())
+          assert p['gate_count']==40
+          assert len(p['copy_pairs'])==18
+          assert not p['all_40_gate_truths_proven']
+          assert not p['pqc_signed_vm81_admission_verified']
+          assert p['classification']=='SOURCE_BOUND_PROOF_OBLIGATION_GRAPH_ONLY'
+          print('V4_40_GATES_18_PAIRED_OBLIGATIONS_FAIL_CLOSED')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v4-ordered-proof-obligations-${{ github.sha }}
+          path: artifacts/pass220/v4-obligations/
+          if-no-files-found: warn
+          retention-days: 90

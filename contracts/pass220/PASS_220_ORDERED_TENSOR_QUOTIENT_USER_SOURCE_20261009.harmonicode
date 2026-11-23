@@ -1,0 +1,2 @@
+List(List(List(x==-y,x+y==0,x*y,y==a^2/x),List(z==-w,z+w==0,z*w,w==a^2/w),List(c^2-b^2-a^2,a^2==c^2-b^2,b^2==c^2-a^2,c^2==a^2+b^2)/((x*y+z*w)/b^2==a^2+x+y-z-w)),-List(1,1,6,(-8)))
+xy+zw=b²

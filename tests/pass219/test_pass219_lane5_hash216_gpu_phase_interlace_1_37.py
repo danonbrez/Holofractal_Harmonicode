@@ -122,23 +122,32 @@ def test_lane5_hash216_gpu_search_uses_native_hashes_and_is_candidate_only() -> 
         assert first["requires_exact_cpu_vm81_replay"] is True
         assert len(first["hash216_segment_rankings"]) == 3
 
-        with pytest.raises(ValueError, match="unvalidated"):
-            optimizer.search_hash216(
-                query_hash216=hashes[0],
-                candidates=[Hash216CompositionCandidate("bad", hashes[1], False)],
-                tick=0,
-                cycle_index=0,
-            )
-        with pytest.raises(ValueError, match="duplicate Hash216"):
-            optimizer.search_hash216(
-                query_hash216=hashes[0],
-                candidates=[
-                    Hash216CompositionCandidate("a", hashes[1], True),
-                    Hash216CompositionCandidate("b", hashes[1], True),
-                ],
-                tick=0,
-                cycle_index=0,
-            )
+        # Hash216 state validity must not depend on JSON metadata.
+        # Both representations are the same valid canonical state.
+        with_false_metadata = optimizer.search_hash216(
+            query_hash216=hashes[0],
+            candidates=[Hash216CompositionCandidate("valid", hashes[1], False)],
+            tick=0,
+            cycle_index=0,
+        )
+        assert with_false_metadata["ranked"][0]["candidate_id"] == "valid"
+        assert with_false_metadata["legacy_validated_metadata_ignored"] is True
+        duplicate_state_refs = optimizer.search_hash216(
+            query_hash216=hashes[0],
+            candidates=[
+                Hash216CompositionCandidate("a", hashes[1], True),
+                Hash216CompositionCandidate("b", hashes[1], False),
+            ],
+            tick=0,
+            cycle_index=0,
+        )
+        assert {item["candidate_id"] for item in duplicate_state_refs["ranked"]} == {"a","b"}
+        assert duplicate_state_refs["ranked"][0]["hash216_distance"] == (
+            duplicate_state_refs["ranked"][1]["hash216_distance"]
+        )
+        assert duplicate_state_refs["composition_decision_origin"] == (
+            "NATIVE_LANE5_PRIME_ROUTE_AND_VM81_VECTOR_KERNEL"
+        )
         with pytest.raises(ValueError, match="216 symbols"):
             optimizer.search_hash216(
                 query_hash216="short",
@@ -328,3 +337,22 @@ def test_lane5_prime_quantization_seed_delta_and_modular_closure() -> None:
         }
 
     _assert_no_float_tree(geometry)
+
+def test_hash216_boolean_metadata_cannot_override_native_lane5_kernel(monkeypatch) -> None:
+    """Fail when the inherited native phase router fails, regardless of JSON flags."""
+    state = _state(911)
+    with Pass219Lane5Hash216GPUPhaseInterlaceOptimizer(backend="CPU_REFERENCE") as optimizer:
+        state_hash = optimizer.native_state_hash216(state)
+        candidate = Hash216CompositionCandidate("candidate", state_hash, validated=True)
+
+        def native_route_failed(*_args, **_kwargs):
+            raise RuntimeError("NATIVE_LANE5_PHASE_ROUTE_REJECTED")
+
+        monkeypatch.setattr(optimizer.phase, "prime_route", native_route_failed)
+        with pytest.raises(RuntimeError, match="NATIVE_LANE5_PHASE_ROUTE_REJECTED"):
+            optimizer.search_hash216(
+                query_hash216=state_hash,
+                candidates=[candidate],
+                tick=0,
+                cycle_index=0,
+            )

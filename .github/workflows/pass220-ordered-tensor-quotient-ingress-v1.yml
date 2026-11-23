@@ -1,0 +1,77 @@
+name: Pass 220 User Ordered Tensor Source Ingress
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/pass220/PASS_220_ORDERED_TENSOR_QUOTIENT_USER_SOURCE_20261009.harmonicode'
+      - 'tests/pass220/test_pass220_ordered_tensor_quotient_ingress_v1.py'
+      - 'tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c'
+      - '.github/workflows/pass220-ordered-tensor-quotient-ingress-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-ingress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check pytest fastapi httpx websockets
+      - name: Verify exact source, correction and mutation rejection
+        run: python -m pytest -q tests/pass220/test_pass220_ordered_tensor_quotient_ingress_v1.py
+      - name: Build inherited Runtime ABI
+        run: make c-abi
+      - name: Mediate exact source bytes through existing Lane 5 native ingress
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pass220/user-ordered-tensor
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          source=Path("contracts/pass220/PASS_220_ORDERED_TENSOR_QUOTIENT_USER_SOURCE_20261009.harmonicode").read_bytes()
+          receipt=Lane5IngressMediator().mediate(source, provenance="pass220:source-preserving-ordered-tensor-quotient")
+          assert receipt["candidate_only"] is True
+          assert receipt["requires_signed_environmental_vm81_admission"] is True
+          assert receipt["canonical_vm81_mutation_authority"] is False
+          assert receipt["canonical_hash216_authority"] is False
+          assert receipt["workload_sha256"] == hashlib.sha256(source).hexdigest()
+          record={
+              "source_sha256":hashlib.sha256(source).hexdigest(),
+              "lane5_route_receipt":receipt,
+              "source_specific_vm81_proof":False,
+              "source_specific_hash72_execution_receipt":False,
+          }
+          Path("artifacts/pass220/user-ordered-tensor/lane5_candidate.json").write_text(json.dumps(record,sort_keys=True,indent=2)+"\n")
+          print("LANE5_USER_SOURCE_CANDIDATE_MEDIATED")
+          PY
+      - name: Execute Pass 159 source-to-VMIR and native validation (no commit bypass)
+        run: |
+          set -euo pipefail
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Inative_projects/hhs_pass159_harmonicode_toolchain/include \
+            -Ihhs_runtime/include \
+            tools/pass220/pass220_ordered_tensor_quotient_native_frontend_probe_v1.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -lm -pthread \
+            -Wl,-rpath,"$PWD/hhs_runtime/builds" \
+            -o /tmp/pass220-tensor-probe
+          /tmp/pass220-tensor-probe \
+            contracts/pass220/PASS_220_ORDERED_TENSOR_QUOTIENT_USER_SOURCE_20261009.harmonicode \
+            | tee artifacts/pass220/user-ordered-tensor/native_probe.txt
+      - name: Upload source-specific candidate and native frontend evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass220-ordered-tensor-ingress-${{ github.sha }}
+          path: artifacts/pass220/user-ordered-tensor/
+          if-no-files-found: warn
+          retention-days: 90

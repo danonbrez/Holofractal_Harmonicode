@@ -1,0 +1,108 @@
+name: Pass 220 V7 Ordered Matrix VM81 Hash72 Geometry
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode'
+      - 'hhs_runtime/hhs_pass220_v7_ordered_matrix_geometry_v1.py'
+      - 'tools/pass220/pass220_v7_native_vm81_hash72_bijection.c'
+      - 'tests/pass220/test_pass220_v7_ordered_matrix_geometry_v1.py'
+      - '.github/workflows/pass220-v7-ordered-matrix-vm81-hash72.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v7-ordered-matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: .
+      HHS_DISABLE_C_AUTOBUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install focused dependencies
+        run: python -m pip install --disable-pip-version-check pytest fastapi httpx websockets
+      - name: Source order, 5184 bijection, fail-closed negative cases
+        run: python -m pytest -q tests/pass220/test_pass220_v7_ordered_matrix_geometry_v1.py -k 'not test_generated_graph_replays'
+      - name: Source bound 3x3 matrix positional topology
+        run: |
+          mkdir -p artifacts/pass220/v7-matrix
+          python -m hhs_runtime.hhs_pass220_v7_ordered_matrix_geometry_v1 \
+            --source contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode \
+            --output artifacts/pass220/v7-matrix/denominator_geometry.json
+      - name: Python structured proof obligation replay
+        run: python -m pytest -q tests/pass220/test_pass220_v7_ordered_matrix_geometry_v1.py
+      - name: Native C11 independent 5184-position roundtrip and source identity
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            tools/pass220/pass220_v7_native_vm81_hash72_bijection.c -lcrypto -o /tmp/pass220-v7-native-geometry
+          /tmp/pass220-v7-native-geometry contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode \
+            | tee artifacts/pass220/v7-matrix/native_bijection.txt
+          digest=$(sha256sum contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode | cut -d' ' -f1)
+          grep -Fx "source_sha256=$digest" artifacts/pass220/v7-matrix/native_bijection.txt
+          grep -Fx 'vm81_hash72_position_roundtrip=PASS' artifacts/pass220/v7-matrix/native_bijection.txt
+          grep -Fx 'bijection_positions=5184' artifacts/pass220/v7-matrix/native_bijection.txt
+          grep -Fx 'native_ordered_matrix_quotient_evaluation=UNRESOLVED' artifacts/pass220/v7-matrix/native_bijection.txt
+      - name: Rejected native reversed phase channel mutation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
+          assert b'(-xy-wz,' in src
+          Path('/tmp/pass220-v7-mutated.harmonicode').write_bytes(
+              src.replace(b'(-xy-wz,',b'(-yx-wz,',1))
+          PY
+          if /tmp/pass220-v7-native-geometry /tmp/pass220-v7-mutated.harmonicode; then
+            echo 'V7_NATIVE_SOURCE_MEMBRANE_BYPASS' >&2
+            exit 1
+          fi
+          echo V7_NATIVE_PHASE_MUTATION_FAIL_CLOSED
+      - name: Existing C/C++ Runtime ABI and actual full-source Lane5 candidate mediation
+        run: |
+          make c-abi
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import json
+          from hhs_backend.lane5_ingress_gateway import Lane5IngressMediator
+          source=Path('contracts/pass220/PASS_220_V7_VM81_ORDERED_MATRIX_QUOTIENT_20261009.harmonicode').read_bytes()
+          receipt=Lane5IngressMediator().mediate(source,provenance='pass220:v7-ordered-3x3-matrix-denominator')
+          assert receipt['workload_sha256']==sha256(source).hexdigest()
+          assert receipt['candidate_only'] is True
+          assert receipt['canonical_vm81_mutation_authority'] is False
+          assert receipt['canonical_hash216_authority'] is False
+          assert receipt['requires_signed_environmental_vm81_admission'] is True
+          Path('artifacts/pass220/v7-matrix/lane5_candidate.json').write_text(
+            json.dumps({
+              'source_sha256':sha256(source).hexdigest(),
+              'lane5_candidate':receipt,
+              'matrix_inverse_proven':False,
+              'canonical_signed_vm81_admission_verified':False,
+            },sort_keys=True,indent=2)+'\n')
+          print('V7_EXACT_SOURCE_NATIVE_LANE5_CANDIDATE_MEDIATED')
+          PY
+      - name: No unauthorized algebraic quotient or VM81 promotion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          v=json.loads(Path('artifacts/pass220/v7-matrix/denominator_geometry.json').read_text())
+          assert v['numerator_exact_integer']==5184
+          assert v['address_bijection']['bijective_positions']==5184
+          assert not v['matrix_inverse_proven']
+          assert not v['source_specific_native_tensor_truth_proven']
+          assert not v['pqc_signed_vm81_admission_verified']
+          print('V7_ORDERED_MATRIX_DIVISION_REMAINS_UNRESOLVED')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass220-v7-ordered-matrix-${{ github.sha }}
+          path: artifacts/pass220/v7-matrix/
+          if-no-files-found: warn
+          retention-days: 90

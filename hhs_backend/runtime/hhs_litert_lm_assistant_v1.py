@@ -547,10 +547,15 @@ class HHSAssistantService:
     ) -> List[Dict[str, Any]]:
         custom = normalize_custom_system_instruction(custom_system_instruction)
         mode = normalize_assistant_mode(assistant_mode)
-        system_content = (
-            f"{self.config.system_instruction.rstrip()}\n\n"
-            f"{assistant_mode_instruction(mode)}"
-        )
+        # An omitted mode is the inherited default. Preserve the original
+        # authoritative system-instruction text byte-for-byte for that case;
+        # explicitly selected modes still carry their typed mode constraints.
+        system_content = self.config.system_instruction
+        if assistant_mode is not None:
+            system_content = (
+                f"{system_content.rstrip()}\n\n"
+                f"{assistant_mode_instruction(mode)}"
+            )
         if custom:
             system_content = (
                 f"{system_content.rstrip()}\n\n"
@@ -672,7 +677,7 @@ class HHSAssistantService:
                 model_messages = self._model_messages(
                     thread,
                     custom_system_instruction=custom_instruction,
-                    assistant_mode=mode,
+                    assistant_mode=assistant_mode,
                     user_context=context,
                 )
             with timed_stage("assistant.turn.transport_chat_completion"):

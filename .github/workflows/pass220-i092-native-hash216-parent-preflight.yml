@@ -1,0 +1,75 @@
+name: Pass 220 I092 Native Hash216 Parent Index Preflight
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hhs_runtime/hhs_pass220_i092_original_native_hash216_parent_preflight_v1.py'
+      - 'tests/pass220/test_hhs_pass220_i092_original_native_hash216_parent_preflight_v1.py'
+      - 'tests/pass220/test_pass220_i092_native_hash216_parent_reference.c'
+      - 'formal/wolfram/pass220_i092_original_native_hash216_parent_preflight_v1.wl'
+      - '.github/workflows/pass220-i092-native-hash216-parent-preflight.yml'
+      - 'docs/pass220/PASS_220_I092_NATIVE_HASH216_PARENT_PREFLIGHT.md'
+      - 'hhs_runtime/c/hhs_pass219_vm81_pqc_firewall_1_30.inc'
+      - 'hhs_runtime/include/hhs_pass219_vm81_pqc_firewall_1_30.h'
+      - 'hhs_runtime/hhs_pass220_i090_original_vm81_rna_bigint_5184_ingress_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  original-native-hash216-reference-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scoped original native ABI dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential libssl-dev
+          python -m pip install --disable-pip-version-check pytest cryptography
+      - name: Compile exact source and original public native VM81 ABI
+        run: |
+          python -m py_compile \
+            hhs_runtime/hhs_pass220_i091_original_signed_vm81_environment_test_admission_v1.py \
+            hhs_runtime/hhs_pass220_i092_original_native_hash216_parent_preflight_v1.py \
+            tests/pass220/test_hhs_pass220_i092_original_native_hash216_parent_preflight_v1.py
+          make c-abi
+          test -s hhs_runtime/builds/libhhs_runtime.so
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_pqc_hash216_reference_init$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_pqc_hash216_reference_verify$'
+          nm -D hhs_runtime/builds/libhhs_runtime.so | grep ' hhs_exact_pass219_vm81_environment_admit_signed$'
+          ! nm -D hhs_runtime/builds/libhhs_runtime.so | grep -q ' hhs_exact_pass219_vm81_pqc_admit_signed$'
+      - name: Compile real ORIGINAL native Hash216 216-index reference resolver proof
+        run: |
+          cc -O2 -std=c11 -Wall -Wextra -Werror -pedantic \
+            -Ihhs_runtime/include \
+            tests/pass220/test_pass220_i092_native_hash216_parent_reference.c \
+            -Lhhs_runtime/builds -lhhs_runtime -lcrypto -lstdc++ -pthread -lm \
+            -o /tmp/test_pass220_i092_native_hash216_parent_reference
+          test -x /tmp/test_pass220_i092_native_hash216_parent_reference
+      - name: Execute original indexed Hash216 reference and invalid source negatives
+        env:
+          HHS_PASS220_I092_NATIVE_HASH216_REFERENCE_PROBE: /tmp/test_pass220_i092_native_hash216_parent_reference
+        run: |
+          export LD_LIBRARY_PATH="$PWD/hhs_runtime/builds"
+          PYTHONPATH="$PWD" python -m pytest -q \
+            tests/pass220/test_hhs_pass220_i091_original_signed_vm81_environment_test_admission_v1.py \
+            tests/pass220/test_hhs_pass220_i092_original_native_hash216_parent_preflight_v1.py
+      - name: Keep the original signed environmental / committed-parent gate closed
+        run: |
+          grep -q 'native_verified_parent_index_records_executed_by_wolfram"->False' \
+            formal/wolfram/pass220_i092_original_native_hash216_parent_preflight_v1.wl
+          grep -q 'candidate_historical_parent_committed_proven"->False' \
+            formal/wolfram/pass220_i092_original_native_hash216_parent_preflight_v1.wl
+          ! grep -q 'hhs_exact_pass219_vm81_environment_admit_signed(' \
+            tests/pass220/test_pass220_i092_native_hash216_parent_reference.c
+          echo 'Genuine original C indexed Hash216 reference verified; historical parent and signed write still held.'
