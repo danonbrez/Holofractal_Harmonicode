@@ -1,0 +1,166 @@
+name: Pass 220 I063 Canonical STEM Physics Law Objects
+
+on:
+  push:
+    paths:
+      - "hhs_runtime/hhs_pass220_i063_canonical_stem_physics_law_objects_v1.py"
+      - "hhs_runtime/include/hhs_pass220_i063_canonical_stem_physics_law_objects_1_0.hpp"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "contracts/pass220/PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS_V1.json"
+      - "tests/pass220/test_hhs_pass220_i063_canonical_stem_physics_law_objects_v1.py"
+      - "tests/pass220/test_hhs_pass220_i063_canonical_stem_physics_law_objects.cpp"
+      - "docs/pass220/PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS.md"
+      - "docs/operations/restart/PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS_RESTART_20260929.md"
+      - "HHS_PASS_178_NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME.md"
+      - ".github/workflows/pass220-i063-canonical-stem-physics-law-objects.yml"
+  pull_request:
+    paths:
+      - "hhs_runtime/hhs_pass220_i063_canonical_stem_physics_law_objects_v1.py"
+      - "hhs_runtime/include/hhs_pass220_i063_canonical_stem_physics_law_objects_1_0.hpp"
+      - "hhs_runtime/hhs_service_registry_v1.py"
+      - "contracts/pass220/PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS_V1.json"
+      - "tests/pass220/test_hhs_pass220_i063_canonical_stem_physics_law_objects_v1.py"
+      - "tests/pass220/test_hhs_pass220_i063_canonical_stem_physics_law_objects.cpp"
+      - "docs/pass220/PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS.md"
+      - "docs/operations/restart/PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS_RESTART_20260929.md"
+      - "HHS_PASS_178_NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME.md"
+      - ".github/workflows/pass220-i063-canonical-stem-physics-law-objects.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-laws:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prove inherited I061 and I062 ancestry
+        run: |
+          git merge-base --is-ancestor             8db145707a71f60015904577e2a0786e438a4c65             HEAD
+          git merge-base --is-ancestor             d6560ba13382282d8cc41fafeece1d862a2b752e             HEAD
+
+      - name: Verify Pass 178 exact source identity
+        run: |
+          test "$(git hash-object HHS_PASS_178_NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME.md)" =             "56d5599011d489f3273d4280b8e4ba0e1cfd8165"
+          grep -F 'E^2-p^2c^2=m^2c^4'             HHS_PASS_178_NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME.md
+          grep -F '\boxed{P^4=AB}'             HHS_PASS_178_NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME.md
+
+      - name: Install dependency-scoped Python test requirement
+        run: python -m pip install --disable-pip-version-check pytest
+
+      - name: Run I063 canonical law tests
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i063_canonical_stem_physics_law_objects_v1.py
+
+      - name: Re-run I061 scientific admission regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i061_unified_scientific_physics_synthesis_v1.py
+
+      - name: Re-run I060 proof-identity regression
+        env:
+          PYTHONPATH: .
+        run: >
+          python -m pytest -q
+          tests/pass220/test_hhs_pass220_i060_native_lean_exactrat_value_algebra_v1.py
+
+      - name: Compile native I063 law cell wall
+        run: |
+          mkdir -p build/pass220-i063
+          g++             -std=c++17             -O2             -Wall             -Wextra             -Werror             -pedantic             -Ihhs_runtime/include             tests/pass220/test_hhs_pass220_i063_canonical_stem_physics_law_objects.cpp             -o build/pass220-i063/test_i063_canonical_laws
+
+      - name: Run native I063 law cell wall
+        run: build/pass220-i063/test_i063_canonical_laws
+
+      - name: Re-run native I061 scientific PhysicsCellWall
+        run: |
+          g++             -std=c++17             -O2             -Wall             -Wextra             -Werror             -pedantic             -Ihhs_runtime/include             tests/pass220/test_hhs_pass220_i061_unified_scientific_physics_synthesis.cpp             -o build/pass220-i063/test_i061_scientific_physics
+          build/pass220-i063/test_i061_scientific_physics
+
+      - name: Re-run frozen I059 native foundation
+        run: |
+          g++             -std=c++17             -O2             -Wall             -Wextra             -Werror             -pedantic             -Ihhs_runtime/include             tests/pass220/test_hhs_pass220_i059_native_3d_engine_cell_wall.cpp             -o build/pass220-i063/test_i059_foundation
+          build/pass220-i063/test_i059_foundation
+
+      - name: Enforce law classification, dimensions and authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path(
+              "contracts/pass220/"
+              "PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS_V1.json"
+          ).read_text(encoding="utf-8"))
+          runtime = Path(
+              "hhs_runtime/"
+              "hhs_pass220_i063_canonical_stem_physics_law_objects_v1.py"
+          ).read_text(encoding="utf-8")
+          native = Path(
+              "hhs_runtime/include/"
+              "hhs_pass220_i063_canonical_stem_physics_law_objects_1_0.hpp"
+          ).read_text(encoding="utf-8")
+          registry = Path(
+              "hhs_runtime/hhs_service_registry_v1.py"
+          ).read_text(encoding="utf-8")
+
+          assert contract["base_main"] == (
+              "7f34d20819ddbbb8f470f6b87e92621e47b99de4"
+          )
+          assert contract["post_hoc_law_attachment_satisfies_admission"] is False
+          assert contract["authority"] == {
+              "candidate_only": True,
+              "canonical_vm81_mutation": False,
+              "canonical_hash72_commit": False,
+              "canonical_hash216_persistence": False,
+              "floating_point_canonical_authority": False,
+          }
+
+          for token in (
+              "CLASS_STANDARD_PHYSICS",
+              "CLASS_HHS_ADMISSIBILITY",
+              "CLASS_HHS_PHYSICAL_HYPOTHESIS",
+              "CLASS_PROJECTION_ONLY",
+              'SI_BASE_AXES = ("M", "L", "T", "I", "Theta", "N", "J")',
+              "PRE_SOLVER_STATE_CONSTRUCTION",
+              "post_hoc_law_attachment",
+              "law_to_i061_binding_hash72",
+          ):
+              assert token in runtime, token
+
+          for token in (
+              "class CanonicalPhysicsLawCellWall final",
+              "LawClass::StandardPhysicsEquation",
+              "LawClass::HHSAdmissibilityConstraint",
+              "LawClass::HHSPhysicalHypothesis",
+              "LawClass::ProjectionOnlyRelation",
+              "shared_5184_coordinate_valid",
+              "pre_solver_binding_valid",
+          ):
+              assert token in native, token
+
+          assert (
+              "pass220.canonical_stem_physics_law_objects.self_test"
+              in registry
+          )
+          assert "REJECT_I063_DIMENSION_MISMATCH" in registry
+          assert (
+              "REJECT_I063_HHS_ADMISSION_PROMOTED_TO_MEASURED_PHYSICS"
+              in registry
+          )
+          PY

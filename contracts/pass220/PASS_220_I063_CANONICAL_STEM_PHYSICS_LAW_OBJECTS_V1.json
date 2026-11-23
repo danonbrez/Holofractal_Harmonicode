@@ -1,0 +1,105 @@
+{
+  "schema": "HHS_PASS_220_I063_CANONICAL_STEM_PHYSICS_LAW_OBJECTS_V1",
+  "version": 1,
+  "status": "IMPLEMENTED_RESTARTABLE_CHECKPOINT",
+  "base_main": "7f34d20819ddbbb8f470f6b87e92621e47b99de4",
+  "inherits": {
+    "i061_merge": "8db145707a71f60015904577e2a0786e438a4c65",
+    "i062_merge": "d6560ba13382282d8cc41fafeece1d862a2b752e",
+    "i061_scientific_admission": "HHS_PASS_220_I061_UNIFIED_SCIENTIFIC_PHYSICS_SYNTHESIS_V1",
+    "i059_physics_cell": "hhs::game::PhysicsCellWall",
+    "i060_lean_identity": "HHS_PASS_220_I060_NATIVE_LEAN_EXACTRAT_VALUE_ALGEBRA_V1"
+  },
+  "purpose": "Canonical typed STEM/physics law objects bound before solver state construction.",
+  "law_classes": [
+    "STANDARD_PHYSICS_EQUATION",
+    "HHS_ADMISSIBILITY_CONSTRAINT",
+    "HHS_PHYSICAL_HYPOTHESIS",
+    "PROJECTION_ONLY_RELATION"
+  ],
+  "required_identity_fields": [
+    "exact source path",
+    "repository git blob identity",
+    "verbatim expression",
+    "typed variable list",
+    "unit witnesses",
+    "SI base-dimension signatures",
+    "dimensional equality witnesses",
+    "assumptions",
+    "boundary conditions",
+    "law domain",
+    "Lane 5 linear5184 coordinate",
+    "I060 theorem identity Hash72",
+    "I060 dependency identity Hash72",
+    "law formal identity Hash72",
+    "law object Hash72"
+  ],
+  "si_base_dimension_axes": ["M", "L", "T", "I", "Theta", "N", "J"],
+  "classification_policy": {
+    "standard_physics_equation": {
+      "measured_behavior_may_be_claimed": true,
+      "i061_calibration_or_experiment_required_when_measured": true
+    },
+    "hhs_admissibility_constraint": {
+      "measured_behavior_may_be_claimed_by_class_alone": false,
+      "role": "admission/indexing/closure constraint"
+    },
+    "hhs_physical_hypothesis": {
+      "measured_behavior_may_be_claimed": true,
+      "i061_calibration_or_experiment_required_when_measured": true
+    },
+    "projection_only_relation": {
+      "measured_behavior_may_be_claimed_by_class_alone": false,
+      "canonical_physics_authority": false
+    }
+  },
+  "binding_order": [
+    "construct exact law source/variables/dimensions/assumptions/boundaries",
+    "bind I060 theorem and dependency identities",
+    "compute law formal identity Hash72",
+    "compute law object Hash72",
+    "validate law",
+    "construct I061 scientific candidate at same linear5184 coordinate",
+    "compute law-to-I061 binding Hash72",
+    "only then construct solver-specific state"
+  ],
+  "post_hoc_law_attachment_satisfies_admission": false,
+  "seed_laws": [
+    {
+      "law_id": "STANDARD_RELATIVISTIC_ENERGY_MOMENTUM_V1",
+      "classification": "STANDARD_PHYSICS_EQUATION",
+      "source_path": "HHS_PASS_178_NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME.md",
+      "source_git_blob_sha": "56d5599011d489f3273d4280b8e4ba0e1cfd8165",
+      "verbatim_expression": "E^2-p^2c^2=m^2c^4",
+      "dimensional_closure": "M^2 L^4 T^-4",
+      "linear5184": 13,
+      "measured_behavior_permitted": true,
+      "measured_behavior_requires_i061_empirical_axis": true
+    },
+    {
+      "law_id": "HHS_MEMBRANE_P4_AB_V1",
+      "classification": "HHS_ADMISSIBILITY_CONSTRAINT",
+      "source_path": "HHS_PASS_178_NATIVE_EXACT_HARMONICODE_RELATIVISTIC_QUANTUM_THREEJS_PHYSICS_SIMULATION_RUNTIME.md",
+      "source_git_blob_sha": "56d5599011d489f3273d4280b8e4ba0e1cfd8165",
+      "verbatim_expression": "\\boxed{P^4=AB}",
+      "dimensional_closure": "dimensionless typed HHS projection",
+      "linear5184": 10,
+      "measured_behavior_permitted": false
+    }
+  ],
+  "native": {
+    "cell_wall": "hhs::game::physics::law::CanonicalPhysicsLawCellWall",
+    "delegates_to_i061": true,
+    "shared_linear5184_coordinate_required": true,
+    "exact_i060_identity_match_required": true,
+    "bounded_variables": 16,
+    "bounded_dimensional_equalities": 8
+  },
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation": false,
+    "canonical_hash72_commit": false,
+    "canonical_hash216_persistence": false,
+    "floating_point_canonical_authority": false
+  }
+}
