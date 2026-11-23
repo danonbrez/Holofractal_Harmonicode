@@ -5549,7 +5549,7 @@ function controls(){
   }
   get("membraneEnabled").addEventListener("change",e=>enabled=e.target.checked);
   get("membraneTheme").addEventListener("change",e=>{theme=e.target.value;
-    syncParticleRenderBatches();
+    // Palette refresh is presentation-only: never invoke the audio-wrapped render batch.
     if(window.HHSLiquidLight)window.HHSLiquidLight.sync();
     sync();renderer.render(scene,camera);
   });
@@ -5683,29 +5683,31 @@ function refreshMaterial(mesh){
   u.uOverlap.value=SETTINGS.overlap?1:0;
 }
 function setOverlapRecords(){
-  fieldBuckets.clear();
-  function key(x,y,z){return x+","+y+","+z;}
+  // Sweep by x-center with a radius-aware broad phase. Fixed adjacent-cell
+  // scans miss valid intersections whenever solid fields exceed GRID.
+  const ordered=fieldRecords.map((_,i)=>i).sort((a,b)=>
+    fieldRecords[a].x-fieldRecords[b].x||a-b);
+  const maxRadius=fieldRecords.reduce((m,r)=>Math.max(m,r.radius),0);
   for(let k=0;k<fieldRecords.length;k++){
     const r=fieldRecords[k];
-    const x=Math.floor(r.x/GRID),y=Math.floor(r.y/GRID),z=Math.floor(r.z/GRID);
-    const id=key(x,y,z);
-    if(!fieldBuckets.has(id))fieldBuckets.set(id,[]);
-    fieldBuckets.get(id).push(k);
-  }
-  for(let k=0;k<fieldRecords.length;k++){
-    const r=fieldRecords[k];
-    let best=null,bestScore=Infinity;
-    const x=Math.floor(r.x/GRID),y=Math.floor(r.y/GRID),z=Math.floor(r.z/GRID);
-    for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)for(let dz=-1;dz<=1;dz++){
-      const bucket=fieldBuckets.get(key(x+dx,y+dy,z+dz));
-      if(!bucket)continue;
-      for(const j of bucket){
-        if(j===k)continue;
-        const p=fieldRecords[j];
-        const d2=(r.x-p.x)**2+(r.y-p.y)**2+(r.z-p.z)**2;
-        if(d2>(r.radius+p.radius)**2||d2>=bestScore)continue;
-        bestScore=d2;best=p;
-      }
+    let best=null,bestScore=Infinity,bestIndex=Infinity;
+    const reach=r.radius+maxRadius;
+    let lo=0,hi=ordered.length;
+    while(lo<hi){
+      const mid=(lo+hi)>>>1;
+      if(fieldRecords[ordered[mid]].x<r.x-reach)lo=mid+1;
+      else hi=mid;
+    }
+    for(let t=lo;t<ordered.length;t++){
+      const j=ordered[t],p=fieldRecords[j];
+      if(p.x>r.x+reach)break;
+      if(j===k)continue;
+      const limit=r.radius+p.radius;
+      if(Math.abs(r.y-p.y)>limit||Math.abs(r.z-p.z)>limit)continue;
+      const d2=(r.x-p.x)**2+(r.y-p.y)**2+(r.z-p.z)**2;
+      if(d2>limit*limit||d2>bestScore||
+         (d2===bestScore&&j>=bestIndex))continue;
+      bestScore=d2;bestIndex=j;best=p;
     }
     const geo=r.mesh.geometry;
     const spheres=geo.getAttribute("partnerSphere"),colors=geo.getAttribute("partnerTint");
