@@ -86,10 +86,12 @@ def load_tests(loader, tests, pattern):
     from test_hhs_pr914_all_open_branch_integration_gate_v1 import (
         TestAllOpenBranchReconciliationGate,
     )
+    from test_hhs_pr914_git_reconciliation_evidence_v1 import GitReconciliationTests
     from test_hhs_pr914_open_branch_census_v1 import CensusTests
 
     tests.addTests(loader.loadTestsFromTestCase(TestAllOpenBranchReconciliationGate))
     tests.addTests(loader.loadTestsFromTestCase(CensusTests))
+    tests.addTests(loader.loadTestsFromTestCase(GitReconciliationTests))
     return tests
 
 

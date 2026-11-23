@@ -1,0 +1,95 @@
+{
+  "schema": "HHS_PR914_GIT_RECONCILIATION_EXECUTION_RECEIPT_V1",
+  "receipt_created_at": "2026-11-23T13:11:09.347538+00:00",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "source_census": {
+    "path": "contracts/architecture/HHS_PR914_G0_LIVE_CENSUS_20261123.json.xz.b64",
+    "decoded_json_sha256": "03c5fba925ecd6775637dcf439d50b7156384fb25393b9e9a7836be9ba3a8ec7",
+    "observed_at": "2026-11-23T12:10:11.630549+00:00",
+    "main_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+    "preserved_at_pr914_head": "1d5094c00336f00aa72db2694c10992796a4403f"
+  },
+  "collector": {
+    "path": "scripts/hhs_pr914_git_reconciliation_evidence_v1.py",
+    "executed_source_commit": null,
+    "executed_source_identity": "PRE_COMMIT_LOCAL_SOURCE_BYTES",
+    "sha256": "a367789b7366c183b06cb7c9ff32a588da297900b8915461ef94633efb3a7ec0",
+    "execution": "LOCAL_COMPLETE_GIT_OBJECTS_FROM_EXACT_PRESERVED_CENSUS",
+    "generated_at": "2026-11-23T13:01:24.791410+00:00",
+    "git_version": "2.39.5",
+    "lazy_fetch_disabled": true,
+    "offline_missing_object_inventory": {
+      "command": "GIT_NO_LAZY_FETCH=1 git rev-list --objects --all --missing=print",
+      "remaining_missing_objects": 0,
+      "complete": true
+    },
+    "command": "GIT_NO_LAZY_FETCH=1 python3 scripts/hhs_pr914_git_reconciliation_evidence_v1.py --repository /tmp/hhs-pr914-live --census /tmp/hhs-pr914-census/HHS_PR914_G0_LIVE_CENSUS_20261123.json --output /tmp/hhs-pr914-census/HHS_PR914_GIT_RECONCILIATION_EVIDENCE_20261123.json"
+  },
+  "result": {
+    "observed_open_pr_count": 169,
+    "pr_base_changed_file_record_count": 2816,
+    "current_base_changed_file_record_count": 2451,
+    "pr_base_commit_id_count": 4633,
+    "current_base_path_overlap_count": 201,
+    "dependency_cycle_count": 0,
+    "current_main_merge": {
+      "CLEAN_HYPOTHETICAL_MERGE_TREE": 91,
+      "CONFLICTED_HYPOTHETICAL_MERGE_TREE": 78
+    },
+    "current_base_merge": {
+      "CLEAN_HYPOTHETICAL_MERGE_TREE": 112,
+      "CONFLICTED_HYPOTHETICAL_MERGE_TREE": 57
+    },
+    "git_evidence_complete": true,
+    "changed_paths_and_commit_lists_complete": true,
+    "hypothetical_merge_tree_evaluation_complete": true
+  },
+  "synthetic_regression_execution": {
+    "test_path": "tests/test_hhs_pr914_git_reconciliation_evidence_v1.py",
+    "test_source_sha256": "b2087807964b892079e21998cbb2f013a59256148d0695edb6435563c6b0c2e1",
+    "command": "python3 tests/test_hhs_pr914_git_reconciliation_evidence_v1.py -v",
+    "tests_run": 4,
+    "failures": 0,
+    "errors": 0,
+    "result": "PASS",
+    "elapsed_seconds": 0.193,
+    "repository_layout_import_verified": true,
+    "real_temporary_git_histories": true,
+    "refs_unchanged_assertion": true
+  },
+  "ci_aggregation": {
+    "loader_path": "tests/test_hhs_admin_sql_stream_staging_v1.py",
+    "additive_load_tests_wiring": true,
+    "existing_staging_tests_retained": true,
+    "existing_census_and_integration_gate_tests_retained": true,
+    "exact_head_hosted_result": "PENDING_AT_RECEIPT_CREATION"
+  },
+  "complete_artifact": {
+    "path": "contracts/architecture/HHS_PR914_GIT_RECONCILIATION_EVIDENCE_20261123.json.xz.b64",
+    "encoding": "base64(xz(JSON)); base64 lines wrapped at 1800 characters",
+    "decode_command": "base64 -d HHS_PR914_GIT_RECONCILIATION_EVIDENCE_20261123.json.xz.b64 | xz -d > HHS_PR914_GIT_RECONCILIATION_EVIDENCE_20261123.json",
+    "decoded_json_bytes": 2396617,
+    "decoded_json_sha256": "39fabbdc0ab530d72ed209ea4d430779d6c265bc06c1e839f6e2b6491c77dbbd",
+    "encoded_file_bytes": 200880,
+    "encoded_file_sha256": "abb252a517b111e645d6fe14941f7956f517f7d780d3f23bab4c5f695ba32b71",
+    "xz_sha256": "24f5e23e929207bf6ae735a6cb3e753d3dc1be65de30cb4c72ee232d9554c36e",
+    "roundtrip_verified": true
+  },
+  "authority_boundary": {
+    "observation_basis": "EXACT_SOURCE_CENSUS_AND_LOCAL_GIT_OBJECTS_NOT_A_LIVE_REFRESH",
+    "live_ref_refresh_performed": false,
+    "head_moves_since_source_census": "NOT_COLLECTED",
+    "reviews_checks_and_combined_statuses_complete": false,
+    "semantic_reconciliation_complete": false,
+    "frozen_and_canonical_authority_review_complete": false,
+    "g0_gate_passed": false,
+    "g1_complete": false,
+    "integrated": false,
+    "candidate_composed": false,
+    "terminal_dispositions_assigned": false,
+    "automatic_mass_merge_authorized": false,
+    "requires_refresh_before_any_merge": true,
+    "main_merge": "NOT_PERFORMED",
+    "production_deploy": "NOT_PERFORMED"
+  }
+}
