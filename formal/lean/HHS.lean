@@ -14,6 +14,7 @@ import HHS.Pass220.LosslessEmergentCompressionHydration
 import HHS.Pass220.HNANPhase5184
 import HHS.Pass220.Base64BalancedTrit5184
 import HHS.Pass220.TheoryConstructorHash216Hydration
+import HHS.Pass220.I080DeterministicKnowledgeGraphQPU
 import HHS.Pass220.PalindromicRNAFibonacciSymbolicTensor
 import HHS.Pass220.FullTensorHNANClosureHydration
 import HHS.Pass220.NativeRectangularTensorPowerHydration
