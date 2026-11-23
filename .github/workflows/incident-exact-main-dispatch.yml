@@ -1,0 +1,29 @@
+name: Incident Dispatch Current Exact Main
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/incident-exact-main-dispatch.yml'
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Dispatch current authoritative main
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          target=$(gh api repos/danonbrez/Holofractal_Harmonicode/commits/main --jq '.sha')
+          gh workflow run digitalocean-production-main.yml \
+            --repo danonbrez/Holofractal_Harmonicode \
+            --ref main
+          echo "HHS_INCIDENT_EXACT_MAIN_DISPATCHED=1"
+          echo "HHS_INCIDENT_MAIN_AT_DISPATCH=$target"
