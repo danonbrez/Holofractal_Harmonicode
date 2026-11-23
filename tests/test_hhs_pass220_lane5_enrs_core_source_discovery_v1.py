@@ -6,7 +6,7 @@ import unittest
 
 from hhs_backend.runtime.hhs_admin_sql_stream_staging_v1 import AdminStreamStaging
 from hhs_backend.runtime.hhs_pass220_lane5_enrs_core_source_discovery_v1 import (
-    PILLARS, inspect_core_source_inventory, inspect_staged_core_source,
+    PILLARS, inspect_core_source_inventory, inspect_staged_core_source, replay_staged_core_source,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -83,6 +83,43 @@ class TestLane5ENRSCoreSources(unittest.TestCase):
             result = inspect_staged_core_source(self.stage, upload, "owner", empty)
             self.assertIsNone(result["matched_pillar"])
 
+
+    def test_replay_exact_source_and_reject_drift(self):
+        with tempfile.TemporaryDirectory() as tree:
+            root = Path(tree)
+            path = root / PILLARS[0][1]
+            path.parent.mkdir(parents=True)
+            raw = b"exact core source original"
+            path.write_bytes(raw)
+            upload = self.staged(raw)
+            prior = inspect_staged_core_source(self.stage, upload, "owner", root)
+            result = replay_staged_core_source(self.stage, "owner", prior, root)
+            self.assertTrue(result["exact_source_discovery_replayed"])
+            self.assertEqual(result["matched_pillar"], PILLARS[0][0])
+            self.assertFalse(result["vm81_admission_performed"])
+            with self.assertRaises(Exception):
+                replay_staged_core_source(self.stage, "other-owner", prior, root)
+            forged = dict(prior, hash216_provenance_committed=True)
+            with self.assertRaisesRegex(ValueError, "AUTHORITY_ESCALATION"):
+                replay_staged_core_source(self.stage, "owner", forged, root)
+            path.write_bytes(b"changed repository content")
+            with self.assertRaisesRegex(ValueError, "IDENTITY_OR_INVENTORY_DRIFT"):
+                replay_staged_core_source(self.stage, "owner", prior, root)
+            self.assertEqual(self.stage.read_staged(upload, "owner").read_bytes(), raw)
+
+    def test_replay_rejects_inventory_change_or_forged_match(self):
+        with tempfile.TemporaryDirectory() as tree:
+            root = Path(tree)
+            upload = self.staged(b"unmatched source")
+            prior = inspect_staged_core_source(self.stage, upload, "owner", root)
+            forged = dict(prior, matched_pillar="MATHEMATICAL_CORPUS")
+            with self.assertRaisesRegex(ValueError, "IDENTITY_OR_INVENTORY_DRIFT"):
+                replay_staged_core_source(self.stage, "owner", forged, root)
+            path = root / PILLARS[0][1]
+            path.parent.mkdir(parents=True)
+            path.write_bytes(b"unmatched source")
+            with self.assertRaisesRegex(ValueError, "IDENTITY_OR_INVENTORY_DRIFT"):
+                replay_staged_core_source(self.stage, "owner", prior, root)
 
 if __name__ == "__main__":
     unittest.main()
