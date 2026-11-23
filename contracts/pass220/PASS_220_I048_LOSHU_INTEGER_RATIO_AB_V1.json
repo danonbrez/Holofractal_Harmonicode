@@ -1,0 +1,34 @@
+{
+  "schema": "HHS_PASS_220_I048_LOSHU_INTEGER_RATIO_AB_V1",
+  "version": "1.0.0",
+  "status": "ADDITIVE_CANDIDATE_ONLY_LOSHU_INTEGER_RATIO_AB_OPTIMIZATION",
+  "base_commit": "ea82cf49f42c6a915a34621d1a542f6b10449d42",
+  "global_invariant_verbatim": "AB=P^4=c^4=(a^2+b^2)^2=9/Delta",
+  "reciprocal_tensor_verbatim": "(p/q)=(q/p)^-1",
+  "whole_integer_rule": "WITHOUT_XYZW_OR_HNAN_SCALAR_CLOSURE_IS_WHOLE_INTEGER;_NONINTEGER_REMAINDER_IS_TYPED_PHASE_RESIDUE",
+  "lo_shu": [[4,9,2],[3,5,7],[8,1,6]],
+  "base9_zero_cell_label": 9,
+  "ratio_triples": {
+    "A": [1,2,3], "B": [2,3,5], "C": [3,5,8], "D": [4,7,11],
+    "E": [5,8,13], "F": [3,6,9], "G": [2,4,6], "H": [7,11,18]
+  },
+  "ab_repeats": 81,
+  "arm_A": "DIRECT_EXACT_MOD9_RECOMPUTE",
+  "arm_B": "HYDRATED_EXACT_MOD9_REUSE",
+  "admission": {
+    "require_exact_payload_equality": true,
+    "optimization_metric": "COUNTED_MOD9_OPERATIONS_ONLY",
+    "wall_clock_speed_claimed": false
+  },
+  "wolfram_receipt_schema": "HHS_PASS_220_I048_LOSHU_INTEGER_RATIO_AB_WOLFRAM_V1",
+  "wolfram_checks": 28,
+  "wolfram_material_sha256": "7430d595151de3e32ada1a20b4f0e1b28b0647c51efed8b9115d9311550c63c7",
+  "authority": {
+    "candidate_only": true,
+    "canonical_vm81_mutation_authority": false,
+    "canonical_hash72_authority": false,
+    "canonical_hash216_authority": false,
+    "canonical_persistence_authority": false,
+    "floating_point_canonical_authority": false
+  }
+}
