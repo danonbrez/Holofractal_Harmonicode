@@ -1,0 +1,22 @@
+name: Pass220 transcription hydration membrane
+on:
+  push:
+    paths:
+      - 'hhs_runtime/hhs_pass220_transcription_hydration_membrane_v1.py'
+      - 'tests/pass220/test_hhs_pass220_transcription_hydration_membrane_v1.py'
+      - '.github/workflows/pass220-transcription-hydration.yml'
+  pull_request:
+    paths:
+      - 'hhs_runtime/hhs_pass220_transcription_hydration_membrane_v1.py'
+      - 'tests/pass220/test_hhs_pass220_transcription_hydration_membrane_v1.py'
+      - '.github/workflows/pass220-transcription-hydration.yml'
+jobs:
+  scoped:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m py_compile hhs_runtime/hhs_pass220_transcription_hydration_membrane_v1.py
+      - run: PYTHONPATH=. python -m unittest tests/pass220/test_hhs_pass220_transcription_hydration_membrane_v1.py
