@@ -447,3 +447,172 @@ candidate_rate * log2(72^72)
 ```
 
 This keeps the quantum-physics and quantum-computing vocabulary available for human reasoning while making every throughput statement reproducible on the ordinary hardware that actually executed the benchmark.
+
+
+---
+
+## 12. External dual-rail simulator normalization — I068/I069
+
+**Post-merge authority base:** `main @ 87c5283730d27f94ddca694ab6fc01f982c7e165`
+
+Pass 220 I068 adds a typed ingress membrane for D-Wave's Leap gate-model
+dual-rail simulator. Pass 220 I069 verifies that membrane after merge.
+
+D-Wave's current Ocean documentation defines the external simulator surface as
+`dwave.gate.leap.LeapQCDLSimulator` for QCDL programs submitted through Leap.
+The documented dual-rail measurement alphabet is:
+
+```text
+0
+1
+*   detected erasure / out-of-code-space measurement
+```
+
+with `*` numerically represented by `-1`. D-Wave also documents
+non-destructive mid-circuit erasure detection through `mced()`. The result
+API exposes `get_counts(..., post_select=False)`; leaving post-selection off
+preserves splats, while post-selection removes erasure-bearing shots.
+
+For HHS normalization these external measurements are kept separate from Lane 5
+deterministic-shot terminology.
+
+### 12.1 External simulator shot record
+
+For one external simulator measurement round define:
+
+```text
+S_total  = total executions represented in raw counts
+S_clean  = executions whose selected measurement register contains only 0/1
+S_erase  = executions containing at least one *
+Y_exact  = S_clean / S_total as an exact reduced rational
+```
+
+with invariant:
+
+```text
+S_total = S_clean + S_erase
+```
+
+No floating-point yield is needed for the HHS receipt. If a provider reports a
+floating-point runtime or timing field, that field remains observational and is
+not admitted as exact HHS identity authority.
+
+### 12.2 Ordered error-aware state normalization
+
+For the selected ordered control/target pair, I068 defines the exact internal
+transcription:
+
+```text
+code(0) = 0
+code(1) = 1
+code(*) = 2
+
+o = 3*code(control) + code(target)
+```
+
+Therefore:
+
+```text
+o in {0,1,...,8}
+```
+
+I069 proves all nine ordered states are unique. Of the nine:
+
+```text
+5 contain at least one detected erasure
+4 are clean 0/1 states
+```
+
+This is an HHS address normalization of the external result alphabet. It is not
+a claim that D-Wave defines its hardware state using HHS Lo Shu or VM81
+coordinates.
+
+### 12.3 Full VM81 address bridge
+
+The inherited I027 collapse address is:
+
+```text
+cell = 9*nucleus + o
+```
+
+with:
+
+```text
+nucleus in 0..8
+o       in 0..8
+```
+
+I069 proves the full product:
+
+```text
+9 nuclei * 9 outcomes = 81 distinct VM81 collapse addresses
+covered cell set       = {0,1,...,80}
+```
+
+The proof is exact integer combinatorics and does not create VM81 mutation
+authority for the external simulator.
+
+### 12.4 Candidate receipt normalization
+
+The external transcript is represented by three ordered Hash72 lanes:
+
+```text
+H216_candidate
+  = H72(configuration)
+ || H72(raw result + erasure/MCED evidence)
+ || H72(authority boundary)
+```
+
+This 216-glyph object is a candidate witness. The term `Hash216` here denotes
+its exact HHS three-lane shape, not canonical state-commit authority.
+
+Required authority flags remain:
+
+```text
+candidate_only                    = true
+canonical_vm81_mutation_authority = false
+canonical_hash72_commit_authority = false
+canonical_hash216_commit_authority = false
+canonical_persistence_authority   = false
+floating_point_authority          = false
+```
+
+### 12.5 Post-selection policy
+
+Raw erasure evidence is part of provenance. Consequently:
+
+```text
+ingress evidence path:
+    get_counts(post_select=False)
+
+post-selected-only transcript:
+    rejected for canonical candidate provenance
+```
+
+Post-selection may still be used by an application for downstream statistical
+analysis, but it cannot replace the unfiltered transcript in the I068/I069
+evidence chain.
+
+### 12.6 Executable proof evidence
+
+I069 dependency-scoped verification binds these statements to executable tests:
+
+```text
+all ordered pair states                 = 9
+all VM81 nucleus/outcome addresses       = 81
+all exact shot histograms for shots 1..4 = 714
+Wolfram exact proof checks                = 9/9 PASS
+```
+
+The 714 histogram cases exhaust all weak compositions of one through four shots
+over the nine ordered result states and require exact conservation of count
+mass, erasure classification, and nine-bin transcription.
+
+References:
+
+```text
+hhs_runtime/hhs_pass220_i068_dwave_dual_rail_candidate_bridge_v1.py
+tests/pass220/test_hhs_pass220_i069_dwave_dual_rail_postmerge_verification_v1.py
+formal/wolfram/pass220_i069_dwave_dual_rail_postmerge_verification_v1.wl
+evidence/pass220/i069_dwave_dual_rail_postmerge_wolfram_20261003_v1.output.json
+```
