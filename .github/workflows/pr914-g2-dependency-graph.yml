@@ -1,0 +1,43 @@
+name: PR914 G2 Dependency Graph
+
+on:
+  pull_request:
+    paths:
+      - 'tools/hhs_pr914_g2_dependency_graph.py'
+      - 'tests/test_hhs_pr914_g2_dependency_graph_v1.py'
+      - 'contracts/architecture/HHS_PR914_G2_DEPENDENCY_CONFLICT_AND_CANDIDATE_COMPOSITION_CONTRACT_V1.json'
+      - 'contracts/architecture/HHS_PR914_OPEN_BRANCH_INVENTORY_20261123.json'
+      - '.github/workflows/pr914-g2-dependency-graph.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: G2 graph deterministic and fail-closed tests
+        run: python -m unittest discover -s tests -p 'test_hhs_pr914_g2_dependency_graph_v1.py' -v
+      - name: Emit historical seed graph without claiming admission
+        run: |
+          python tools/hhs_pr914_g2_dependency_graph.py --output g2-seed-graph.json
+          python - <<'PY'
+          import json
+          with open('g2-seed-graph.json', encoding='utf-8') as handle:
+              result = json.load(handle)
+          assert result['preserved_edge_count'] == 21
+          assert result['candidate_composed'] is False
+          assert result['main_merge_authorized'] is False
+          assert 'G2_BLOCKED_STALE_REFS' in result['blocking_reasons']
+          print('G2 seed graph: 21 edges; candidate remains blocked')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr914-g2-historical-seed-graph
+          path: g2-seed-graph.json
+          retention-days: 14
