@@ -4,7 +4,9 @@ on:
   pull_request:
     paths:
       - 'tools/hhs_pr914_g2_dependency_graph.py'
+      - 'tools/hhs_pr914_g2_conflict_receipts.py'
       - 'tests/test_hhs_pr914_g2_dependency_graph_v1.py'
+      - 'tests/test_hhs_pr914_g2_conflict_receipts_v1.py'
       - 'contracts/architecture/HHS_PR914_G2_DEPENDENCY_CONFLICT_AND_CANDIDATE_COMPOSITION_CONTRACT_V1.json'
       - 'contracts/architecture/HHS_PR914_OPEN_BRANCH_INVENTORY_20261123.json'
       - '.github/workflows/pr914-g2-dependency-graph.yml'
@@ -23,6 +25,8 @@ jobs:
           python-version: '3.12'
       - name: G2 graph deterministic and fail-closed tests
         run: python -m unittest discover -s tests -p 'test_hhs_pr914_g2_dependency_graph_v1.py' -v
+      - name: G2 conflict receipt regression and forged admission rejection
+        run: python -m unittest discover -s tests -p 'test_hhs_pr914_g2_conflict_receipts_v1.py' -v
       - name: Emit historical seed graph without claiming admission
         run: |
           python tools/hhs_pr914_g2_dependency_graph.py --output g2-seed-graph.json
