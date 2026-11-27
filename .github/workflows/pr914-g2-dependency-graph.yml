@@ -7,6 +7,8 @@ on:
       - 'tools/hhs_pr914_g2_conflict_receipts.py'
       - 'tests/test_hhs_pr914_g2_dependency_graph_v1.py'
       - 'tests/test_hhs_pr914_g2_conflict_receipts_v1.py'
+      - 'tests/test_hhs_pr914_g2_scoped_overlaps_v1.py'
+      - 'contracts/architecture/HHS_PR914_G2_SCOPED_MECHANICAL_OVERLAPS_20261127.json'
       - 'contracts/architecture/HHS_PR914_G2_DEPENDENCY_CONFLICT_AND_CANDIDATE_COMPOSITION_CONTRACT_V1.json'
       - 'contracts/architecture/HHS_PR914_OPEN_BRANCH_INVENTORY_20261123.json'
       - '.github/workflows/pr914-g2-dependency-graph.yml'
@@ -27,6 +29,30 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_hhs_pr914_g2_dependency_graph_v1.py' -v
       - name: G2 conflict receipt regression and forged admission rejection
         run: python -m unittest discover -s tests -p 'test_hhs_pr914_g2_conflict_receipts_v1.py' -v
+      - name: Validate actual PR overlap evidence and generate unresolved receipts
+        run: |
+          python -m unittest discover -s tests -p 'test_hhs_pr914_g2_scoped_overlaps_v1.py' -v
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('contracts/architecture/HHS_PR914_G2_SCOPED_MECHANICAL_OVERLAPS_20261127.json')
+          src = json.loads(p.read_text(encoding='utf-8'))
+          Path('g2-scoped-events.json').write_text(json.dumps(src['events'], indent=2) + '\\n', encoding='utf-8')
+          PY
+          python tools/hhs_pr914_g2_conflict_receipts.py --mechanical-events g2-scoped-events.json --output g2-scoped-unresolved-conflicts.json
+          python - <<'PY'
+          import json
+          r = json.load(open('g2-scoped-unresolved-conflicts.json', encoding='utf-8'))
+          assert r['event_count'] == 3
+          assert not r['candidate_composed']
+          assert all(c['status'] == 'UNRESOLVED' for c in r['conflict_receipts'])
+          print('3 exact-head overlap receipts remain unresolved; no composed candidate')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr914-g2-scoped-conflict-receipts
+          path: g2-scoped-unresolved-conflicts.json
+          retention-days: 14
       - name: Emit historical seed graph without claiming admission
         run: |
           python tools/hhs_pr914_g2_dependency_graph.py --output g2-seed-graph.json
