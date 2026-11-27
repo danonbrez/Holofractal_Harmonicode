@@ -37,7 +37,7 @@ jobs:
           from pathlib import Path
           p = Path('contracts/architecture/HHS_PR914_G2_SCOPED_MECHANICAL_OVERLAPS_20261127.json')
           src = json.loads(p.read_text(encoding='utf-8'))
-          Path('g2-scoped-events.json').write_text(json.dumps(src['events'], indent=2) + '\\n', encoding='utf-8')
+          Path('g2-scoped-events.json').write_text(json.dumps(src['events'], indent=2) + chr(10), encoding='utf-8')
           PY
           python tools/hhs_pr914_g2_conflict_receipts.py --mechanical-events g2-scoped-events.json --output g2-scoped-unresolved-conflicts.json
           python - <<'PY'
