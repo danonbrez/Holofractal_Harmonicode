@@ -104,9 +104,9 @@ async def append_upload(upload_id: str, request: Request, offset: int):
     owner = _principal(request)
     # Chunk boundaries are transport details, not a limit on overall source.
     # No request.body() or multipart whole-file buffering is used.
-    current = _call(_staging().status, upload_id, owner)
-    if current["received_bytes"] != offset:
-        raise HTTPException(status_code=409, detail="OFFSET_CONFLICT")
+    # Let the existing staging adapter handle exact-byte committed-chunk retries.
+    # A duplicate transport request is not a new admission decision.
+    current = None
     read_offset = offset
     async for incoming in request.stream():
         for begin in range(0, len(incoming), 64 * 1024):
@@ -115,7 +115,9 @@ async def append_upload(upload_id: str, request: Request, offset: int):
                 continue
             current = await asyncio.to_thread(_call, _staging().append, upload_id, owner, read_offset, bytes(part))
             read_offset += len(part)
-    return current
+    return current if current is not None else await asyncio.to_thread(
+        _call, _staging().status, upload_id, owner
+    )
 
 
 @router.post("/uploads/{upload_id}/finalize")
