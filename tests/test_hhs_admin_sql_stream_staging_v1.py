@@ -1,6 +1,9 @@
 """Regression checks for arbitrary-length private SQL staging (no native admission)."""
 import tempfile
 import unittest
+import io
+import sqlite3
+from unittest.mock import patch
 from pathlib import Path
 from hashlib import sha256
 
@@ -74,6 +77,101 @@ class TestStreamStaging(unittest.TestCase):
     def test_invalid_uuid(self):
         with self.assertRaises(StagingError):
             self.store.status("../../etc/passwd", "root-admin")
+
+    def test_exact_writer_completes_repeated_partial_writes(self):
+        class ShortWriter:
+            def __init__(self):
+                self.data = bytearray()
+            def write(self, payload):
+                n = min(len(payload), 2)
+                self.data.extend(payload[:n])
+                return n
+        writer = ShortWriter()
+        AdminStreamStaging._write_exact(writer, b"abcdefgh")
+        self.assertEqual(bytes(writer.data), b"abcdefgh")
+
+    def test_exact_writer_rejects_zero_progress(self):
+        class Stalled:
+            def write(self, payload):
+                return 0
+        with self.assertRaisesRegex(OSError, "STAGING_SHORT_WRITE"):
+            AdminStreamStaging._write_exact(Stalled(), b"abc")
+
+    def test_stale_upload_tmp_does_not_block_finalization_retry(self):
+        data = b"recoverable source bytes"
+        self.store.append(self.ident, "root-admin", 0, data)
+        digest = sha256(data).hexdigest()
+        directory = Path(self.tmp.name) / "source-sha256" / digest[:2]
+        directory.mkdir(parents=True, exist_ok=True)
+        stale = directory / (self.ident + ".tmp")
+        stale.write_bytes(b"old incomplete output")
+        status = self.store.finalize(self.ident, "root-admin", digest)
+        self.assertEqual(status["state"], "STAGED")
+        self.assertEqual(self.store.read_staged(self.ident, "root-admin").read_bytes(), data)
+
+    def test_failed_create_commit_rolls_back_uncommitted_row(self):
+        class FailOnce:
+            def __init__(self, db):
+                self.delegate = db
+                self.fail = True
+            def execute(self, *args):
+                return self.delegate.execute(*args)
+            def commit(self):
+                if self.fail:
+                    self.fail = False
+                    raise sqlite3.OperationalError("injected failed commit")
+                return self.delegate.commit()
+            def rollback(self):
+                return self.delegate.rollback()
+        original = self.store.db
+        proxy = FailOnce(original)
+        self.store.db = proxy
+        with self.assertRaises(sqlite3.OperationalError):
+            self.store.create("root-admin", "failing.bin")
+        self.store.create("root-admin", "valid.bin")
+        rows = original.execute("SELECT source_name FROM intake").fetchall()
+        self.assertNotIn("failing.bin", [row["source_name"] for row in rows])
+        self.assertEqual(original.execute("SELECT count(*) FROM intake").fetchone()[0], 2)
+        self.store.db = original
+
+    def test_failed_append_commit_does_not_advance_acknowledged_offset(self):
+        class FailOnce:
+            def __init__(self, db):
+                self.delegate = db
+                self.fail = True
+            def execute(self, *args):
+                return self.delegate.execute(*args)
+            def commit(self):
+                if self.fail:
+                    self.fail = False
+                    raise sqlite3.OperationalError("injected failed commit")
+                return self.delegate.commit()
+            def rollback(self):
+                return self.delegate.rollback()
+        original = self.store.db
+        self.store.db = FailOnce(original)
+        with self.assertRaises(sqlite3.OperationalError):
+            self.store.append(self.ident, "root-admin", 0, b"uncommitted")
+        self.assertEqual(self.store.status(self.ident, "root-admin")["received_bytes"], 0)
+        self.store.append(self.ident, "root-admin", 0, b"valid")
+        self.store.finalize(self.ident, "root-admin")
+        self.assertEqual(self.store.read_staged(self.ident, "root-admin").read_bytes(), b"valid")
+        self.store.db = original
+
+    def test_finalization_directory_synced_before_staged_sql_commit(self):
+        data = b"durable bytes"
+        self.store.append(self.ident, "root-admin", 0, data)
+        digest = sha256(data).hexdigest()
+        calls = []
+        original_sync = AdminStreamStaging._fsync_directory
+        def record(directory):
+            calls.append(("fsync", Path(directory)))
+            return original_sync(directory)
+        with patch.object(AdminStreamStaging, "_fsync_directory", staticmethod(record)):
+            self.store.finalize(self.ident, "root-admin", digest)
+        target_dir = Path(self.tmp.name) / "source-sha256" / digest[:2]
+        self.assertIn(("fsync", target_dir), calls)
+        self.assertEqual(self.store.status(self.ident, "root-admin")["state"], "STAGED")
 
     def test_empty_source_allowed(self):
         result = self.store.finalize(self.ident, "root-admin")
