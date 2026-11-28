@@ -388,7 +388,7 @@ async def _http_proxy(request: Request, path: str = "") -> Response:
 
         headers = [
             (name, value) for name, value in _filtered_headers(raw_headers)
-            if name.lower() not in {b"content-length", b"host"}
+            if name.lower() != b"content-length"
         ] + _receipt_headers(receipt)
         target = _target(raw_path=raw_path, query_string=query, websocket=False)
 
