@@ -4,6 +4,8 @@ on:
     paths:
       - 'applications/holofractal_harmonizer/src/project-lifecycle.mjs'
       - 'applications/holofractal_harmonizer/tests/project-eligibility.test.mjs'
+      - 'applications/holofractal_harmonizer/tests/admin-source-stream.test.mjs'
+      - 'applications/holofractal_harmonizer/src/admin-source-stream.mjs'
       - '.github/workflows/hhs-visual-ide-project-eligibility.yml'
   workflow_dispatch:
 jobs:
@@ -17,4 +19,4 @@ jobs:
         with:
           node-version: '22'
       - name: Verify conventional IDE source eligibility and preserved lifecycle
-        run: node --test applications/holofractal_harmonizer/tests/project-eligibility.test.mjs
+        run: node --test applications/holofractal_harmonizer/tests/project-eligibility.test.mjs applications/holofractal_harmonizer/tests/admin-source-stream.test.mjs
