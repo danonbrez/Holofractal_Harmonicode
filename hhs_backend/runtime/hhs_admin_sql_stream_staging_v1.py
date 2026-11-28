@@ -203,6 +203,9 @@ class AdminStreamStaging:
                         os.fsync(dst.fileno())
                     os.replace(tmp, target)
                     target.chmod(0o400)
+                    # Persist the immutable mode along with the promoted blob.
+                    with target.open("rb") as promoted:
+                        os.fsync(promoted.fileno())
                 finally:
                     tmp.unlink(missing_ok=True)
             # Durably publish the directory entry before the SQL STAGED commit.
