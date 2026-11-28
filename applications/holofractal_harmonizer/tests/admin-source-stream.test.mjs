@@ -181,3 +181,32 @@ test('staged egress rejects canonical claims before writing any bytes', async ()
     {fetchImpl:async()=>response}), /EGRESS_RECEIPT_INVALID/);
   assert.equal(writes, 0);
 });
+
+test('destination write failure cancels staged-source response before releasing reader', async () => {
+  const uploadId = '11111111-2222-4333-8444-555555555555';
+  let cancelled = false;
+  let abortCount = 0;
+  const body = new ReadableStream({
+    start(controller) { controller.enqueue(Uint8Array.of(1, 2, 3)); },
+    cancel() { cancelled = true; },
+  });
+  const sink = new WritableStream({
+    write() { throw new Error('DISK_FULL_FIXTURE'); },
+    abort() { abortCount++; },
+  });
+  const fetchImpl = async () => ({
+    ok: true,
+    headers: new Headers({
+      'X-HHS-Source-SHA256': 'a'.repeat(64),
+      'X-HHS-Canonical-Hash216-Admitted': 'false',
+      'Content-Length': '1024',
+    }),
+    body,
+  });
+  await assert.rejects(
+    readStagedSource(uploadId, sink, { fetchImpl }),
+    /DISK_FULL_FIXTURE/,
+  );
+  assert.equal(cancelled, true, 'upstream response must be cancelled');
+  assert.ok(abortCount <= 1, 'writer abort remains best effort');
+});
