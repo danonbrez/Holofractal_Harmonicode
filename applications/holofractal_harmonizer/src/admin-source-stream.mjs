@@ -139,6 +139,9 @@ export async function readStagedSource(
       canonical_hash216_admitted: false, status: 'STAGED_NONCANONICAL',
     });
   } catch (error) {
+    // Release upstream network resources on sink failure; releaseLock() alone
+    // does not cancel the fetch response's ReadableStream.
+    await reader.cancel(error).catch(() => {});
     await writer.abort(error).catch(() => {});
     throw error;
   } finally {
