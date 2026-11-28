@@ -378,12 +378,29 @@ async def _http_proxy(request: Request, path: str = "") -> Response:
                 headers=raw_headers,
                 provenance=provenance,
             )
-        except Exception:
+        except Lane5IngressRejected:
+            # This is a native candidate-routing failure, not a VM81/ERS
+            # proof-backed canonical rejection. Never claim admission occurred.
             return Response(
-                content=b"HHS Lane 5 ingress rejected environmental request\n",
+                content=b"HHS native Lane 5 candidate mediation did not complete\n",
                 status_code=503,
                 media_type="text/plain",
-                headers={"X-HHS-Lane5-Ingress": "rejected"},
+                headers={
+                    "X-HHS-Lane5-Ingress": "native-candidate-rejected",
+                    "X-HHS-VM81-Admission": "not-performed",
+                },
+            )
+        except Exception:
+            # Transport/runtime failures are not proof-backed rejections.
+            # Do not forward an unmediated native request or invent a proof.
+            return Response(
+                content=b"HHS Lane 5 mediation temporarily unavailable\n",
+                status_code=503,
+                media_type="text/plain",
+                headers={
+                    "X-HHS-Lane5-Ingress": "unavailable",
+                    "X-HHS-VM81-Admission": "not-performed",
+                },
             )
 
         headers = [
