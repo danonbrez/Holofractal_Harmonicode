@@ -49,6 +49,25 @@ class AdminStreamStaging:
         self.db.commit()
 
     @staticmethod
+    def _fsync_directory(path: Path) -> None:
+        """Make newly created names durable before metadata promotes the blob."""
+        descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+
+    @staticmethod
+    def _write_exact(stream, payload: bytes) -> None:
+        view = memoryview(payload)
+        written = 0
+        while written < len(view):
+            count = stream.write(view[written:])
+            if not isinstance(count, int) or count <= 0:
+                raise OSError("STAGING_SHORT_WRITE")
+            written += count
+
+    @staticmethod
     def _owner(owner: str) -> str:
         if not isinstance(owner, str) or not owner.strip():
             raise StagingError("HOST_VERIFIED_OWNER_REQUIRED")
@@ -90,6 +109,7 @@ class AdminStreamStaging:
                 )
                 self.db.commit()
             except Exception:
+                self.db.rollback()
                 path.unlink(missing_ok=True)
                 raise
         return self.status(upload_id, owner)
@@ -130,14 +150,18 @@ class AdminStreamStaging:
             with path.open("r+b", buffering=0) as stream:
                 stream.truncate(expected)  # discard bytes written before an interrupted DB commit
                 stream.seek(expected)
-                stream.write(data)
+                self._write_exact(stream, data)
                 stream.flush()
                 os.fsync(stream.fileno())
-            self.db.execute(
-                "UPDATE intake SET received_bytes=? WHERE upload_id=? AND owner=? AND state='UPLOADING'",
-                (expected + len(data), upload_id, owner),
-            )
-            self.db.commit()
+            try:
+                self.db.execute(
+                    "UPDATE intake SET received_bytes=? WHERE upload_id=? AND owner=? AND state='UPLOADING'",
+                    (expected + len(data), upload_id, owner),
+                )
+                self.db.commit()
+            except Exception:
+                self.db.rollback()
+                raise
             return self.status(upload_id, owner)
 
     def finalize(self, upload_id: str, owner: str, expected_sha256: str | None = None) -> dict:
@@ -162,23 +186,36 @@ class AdminStreamStaging:
             if expected_sha256 is not None and expected_sha256 != hexdigest:
                 raise StagingError("SOURCE_DIGEST_MISMATCH")
             target_dir = self.blobs / hexdigest[:2]
+            created_dir = not target_dir.exists()
             target_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+            if created_dir:
+                self._fsync_directory(self.blobs)
             target = target_dir / hexdigest[2:]
             if not target.exists():
-                # Copy into a unique immutable source object; never execute it.
-                tmp = target_dir / (upload_id + ".tmp")
-                with path.open("rb") as src, tmp.open("xb") as dst:
-                    for chunk in iter(lambda: src.read(1024 * 1024), b""):
-                        dst.write(chunk)
-                    dst.flush()
-                    os.fsync(dst.fileno())
-                os.replace(tmp, target)
-                target.chmod(0o400)
-            self.db.execute(
-                "UPDATE intake SET state='STAGED', sha256=? WHERE upload_id=? AND owner=?",
-                (hexdigest, upload_id, owner),
-            )
-            self.db.commit()
+                # Fresh temporary identity makes interrupted finalization retryable.
+                # Never reuse a stale upload-id temporary file from an earlier pass.
+                tmp = target_dir / (upload_id + "." + uuid.uuid4().hex + ".tmp")
+                try:
+                    with path.open("rb") as src, tmp.open("xb") as dst:
+                        for chunk in iter(lambda: src.read(1024 * 1024), b""):
+                            self._write_exact(dst, chunk)
+                        dst.flush()
+                        os.fsync(dst.fileno())
+                    os.replace(tmp, target)
+                    target.chmod(0o400)
+                finally:
+                    tmp.unlink(missing_ok=True)
+            # Durably publish the directory entry before the SQL STAGED commit.
+            self._fsync_directory(target_dir)
+            try:
+                self.db.execute(
+                    "UPDATE intake SET state='STAGED', sha256=? WHERE upload_id=? AND owner=?",
+                    (hexdigest, upload_id, owner),
+                )
+                self.db.commit()
+            except Exception:
+                self.db.rollback()
+                raise
             path.unlink(missing_ok=True)
             return self.status(upload_id, owner)
 
