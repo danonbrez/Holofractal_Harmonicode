@@ -1,0 +1,138 @@
+{
+  "schema": "HHS_PR914_G2_SCOPED_MECHANICAL_OVERLAPS_V1",
+  "capture_date": "2026-11-27",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "scope": "7_PR_FOCUSED_NOT_FULL_G0_G1_CENSUS",
+  "source_prs": [
+    {
+      "number": 914,
+      "head_sha": "45c71e45cdf628a93049c8dbb26a756911b632a2",
+      "base_ref": "main",
+      "changed_paths": 56
+    },
+    {
+      "number": 917,
+      "head_sha": "5d85f49f5168be55804dde0336c1b1e976d9b4ac",
+      "base_ref": "main",
+      "changed_paths": 4
+    },
+    {
+      "number": 918,
+      "head_sha": "ac611d4f69216e0cd0c5f6b6bfd32588b484faa8",
+      "base_ref": "feature/ide-project-artificial-limits-repair-20261114",
+      "changed_paths": 4
+    },
+    {
+      "number": 900,
+      "head_sha": "fc51d5382d1aaa37aaf8a1a71ecef2a4d454a0ec",
+      "base_ref": "main",
+      "changed_paths": 3
+    },
+    {
+      "number": 901,
+      "head_sha": "06f69b453c6c2f56cfddbff1ec83547bb24bc447",
+      "base_ref": "main",
+      "changed_paths": 5
+    },
+    {
+      "number": 908,
+      "head_sha": "14129a5595bb0eb03bc166ae9b46e04498357dc7",
+      "base_ref": "main",
+      "changed_paths": 106
+    },
+    {
+      "number": 921,
+      "head_sha": "5c7a1150cb9ed3fb65ffd6909807e62f019169c8",
+      "base_ref": "dev/pass220-runtime-os-webgl-v147-native-integration",
+      "changed_paths": 16
+    }
+  ],
+  "events": [
+    {
+      "conflict_class": "TEXTUAL_OVERLAP",
+      "entry_ids": [
+        "PR:000914",
+        "PR:000917"
+      ],
+      "paths_or_requirement_ids": [
+        "applications/holofractal_harmonizer/src/project-lifecycle.mjs"
+      ],
+      "exact_source_heads": {
+        "PR:000914": "45c71e45cdf628a93049c8dbb26a756911b632a2",
+        "PR:000917": "5d85f49f5168be55804dde0336c1b1e976d9b4ac"
+      },
+      "mechanical_evidence": {
+        "source": "GITHUB_LIST_PR_CHANGED_FILENAMES_AND_FETCH_PR_METADATA_2026_11_27",
+        "pr_numbers": [
+          914,
+          917
+        ],
+        "heads": {
+          "914": "45c71e45cdf628a93049c8dbb26a756911b632a2",
+          "917": "5d85f49f5168be55804dde0336c1b1e976d9b4ac"
+        },
+        "path_count": 1,
+        "classification": "MECHANICAL_SHARED_PATH_ONLY_SEMANTIC_ASSESSMENT_PENDING"
+      }
+    },
+    {
+      "conflict_class": "TEXTUAL_OVERLAP",
+      "entry_ids": [
+        "PR:000900",
+        "PR:000901"
+      ],
+      "paths_or_requirement_ids": [
+        "examples/ParticleSimulation.html"
+      ],
+      "exact_source_heads": {
+        "PR:000900": "fc51d5382d1aaa37aaf8a1a71ecef2a4d454a0ec",
+        "PR:000901": "06f69b453c6c2f56cfddbff1ec83547bb24bc447"
+      },
+      "mechanical_evidence": {
+        "source": "GITHUB_LIST_PR_CHANGED_FILENAMES_AND_FETCH_PR_METADATA_2026_11_27",
+        "pr_numbers": [
+          900,
+          901
+        ],
+        "heads": {
+          "900": "fc51d5382d1aaa37aaf8a1a71ecef2a4d454a0ec",
+          "901": "06f69b453c6c2f56cfddbff1ec83547bb24bc447"
+        },
+        "path_count": 1,
+        "classification": "MECHANICAL_SHARED_PATH_ONLY_SEMANTIC_ASSESSMENT_PENDING"
+      }
+    },
+    {
+      "conflict_class": "TEXTUAL_OVERLAP",
+      "entry_ids": [
+        "PR:000908",
+        "PR:000921"
+      ],
+      "paths_or_requirement_ids": [
+        "hhs_runtime/hhs_pass220_remote_ref_tree_reconciliation_v1.py",
+        "tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py"
+      ],
+      "exact_source_heads": {
+        "PR:000908": "14129a5595bb0eb03bc166ae9b46e04498357dc7",
+        "PR:000921": "5c7a1150cb9ed3fb65ffd6909807e62f019169c8"
+      },
+      "mechanical_evidence": {
+        "source": "GITHUB_LIST_PR_CHANGED_FILENAMES_AND_FETCH_PR_METADATA_2026_11_27",
+        "pr_numbers": [
+          908,
+          921
+        ],
+        "heads": {
+          "908": "14129a5595bb0eb03bc166ae9b46e04498357dc7",
+          "921": "5c7a1150cb9ed3fb65ffd6909807e62f019169c8"
+        },
+        "path_count": 2,
+        "classification": "MECHANICAL_SHARED_PATH_ONLY_SEMANTIC_ASSESSMENT_PENDING"
+      }
+    }
+  ],
+  "observed_overlap_pairs": 3,
+  "semantic_resolutions_completed": 0,
+  "all_entries_reconciled": false,
+  "candidate_composed": false
+}

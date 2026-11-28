@@ -1,0 +1,103 @@
+{
+  "schema": "HHS_PASS220_221_222_CUMULATIVE_OBLIGATION_REGISTER_V1",
+  "scope": "Repository-visible contracts and outstanding work; cumulative obligations must not be silently replaced by PR914 IDE contract",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "branch": "feature/admin-resumable-sql-staging-20261114",
+  "pr": 914,
+  "audit_date": "2026-11-23",
+  "evidence_class": "SOURCE_INSPECTION_ONLY_NOT_FULL_REPOSITORY_CENSUS",
+  "canonical_ancestry": "Honor original Pass 220/221 gates, all accepted previous pass semantics and frozen runtime; new PR914 specifications are additive",
+  "passes": [
+    {
+      "pass": 220,
+      "state": "FORMALLY_CONTRACTED_IMPLEMENTATION_AND_TERMINAL_CLOSURE_NOT_VERIFIED",
+      "canonical_source": "HHS_PASS_220_HARMONICODE_UNIVERSAL_POLYGLOT_NATIVE_LINUX_VISUAL_IDE_PORTABLE_VM_COMPILER_CONTRACT.md",
+      "contract_id": "HHS-P220-HUVIDE-PVM-PCP-HOCR-ASDLC-LINUX-LSP-DAP-VM81-H72-H216-VM5184",
+      "known_normative_obligations": [
+        "Professional standards-first native Linux application; browser/mobile as remote/compatibility rather than sole native acceptance",
+        "Full polyglot language census and disposition; pinned external standards profiles, toolchain, ABI and conformance registry HHS_P220_EXTERNAL_STANDARDS_REGISTRY_V1",
+        "Common native GUI/CLI/API/agent typed action HHS_P220_ACTION_V1 and action receipt HHS_P220_ACTION_RECEIPT_V1 with no GUI-only authority",
+        "Portable VM compiler, Pass219 C++ exact compound runtime, stable C ABI, VM81 single authority and inherited Hash72/Hash216",
+        "Professional NEW/IMPORT → EDIT → BUILD → RUN → TEST → DEBUG → PROFILE → OPTIMIZE → PACKAGE → DEPLOY → OBSERVE → CHANGE → REPLAY/UNDO/BRANCH/RECOVER lifecycle",
+        "XDG, Wayland, desktop portals, accessibility, offline local capabilities, multiwindow and explicit degraded modes",
+        "Full dependency-scoped regression, zero-briefing professional UX acceptance, executable workflows and target-specific portable packaging",
+        "Integrate all applicable inherited graphical, audio, physics, database, scientific, enterprise and agent workflows"
+      ],
+      "gating": [
+        "Pass219 terminal merge and exact-head verification required before promotional Pass220 admission",
+        "Main and branch exact reconciliation plus native full acceptance required before terminal closure"
+      ],
+      "related_open_pr_examples": [
+        922,
+        924,
+        588,
+        900,
+        665,
+        911,
+        886,
+        901,
+        896
+      ],
+      "status_caution": "Examples of open PRs do not establish exhaustive Pass220 inventory; individual PR claims and merge heads require independent validation"
+    },
+    {
+      "pass": 221,
+      "state": "CONTRACT_AUTHORIZED_IMPLEMENTATION_NOT_YET_CLOSED",
+      "canonical_source": "contracts/pass221/PASS_221_INSTAGRAM_RECEIPT_BLOG_DEPLOYMENT_1_0.json",
+      "supporting_source": "docs/pass221/PASS_221_INSTAGRAM_RECEIPT_BLOG_DEPLOYMENT.md",
+      "contract_id": "HHS-P221-INSTAGRAM-RECEIPT-BLOG-DEPLOYMENT",
+      "known_normative_obligations": [
+        "Account-holder-authorized official Meta Instagram API only, for @the_jade_dynasty; no scraping/browser cookie/private API fallback",
+        "Pin supported IG_GRAPH_API_VERSION; professional account and minimum supported scopes",
+        "Cursor-complete ingestion with conservative rate limiting; durable image/video/carousel mirroring to DigitalOcean Spaces",
+        "Append-only Hash72-authoritative event ledger with INGEST/REFRESH/SUPERSEDE/TOMBSTONE/METRICS_UPDATE/AUTHORITY_FAILURE and strict replay",
+        "VM81 singleton admission, canonical security_hash72_v44 delegation, relevant Hash216 proof/archive; no new Python/JS hashing authority",
+        "Static-first receipt-verifiable blog, deterministic rebuild, HTTPS and DigitalOcean deployment with durable ledger storage",
+        "Implement acceptance T1–T8 and all negative tests; withhold publication upon mismatches or lost authority"
+      ],
+      "gating": [
+        "Pass219 terminal closure plus current-main exact-head verification",
+        "Pass220 terminal closure plus current-main exact-head verification",
+        "Authorized API credentials and deployed immutable media/ledger required for live acceptance"
+      ],
+      "status_caution": "Contract registration is not Instagram runtime implementation, successful authorized ingestion, or deployment"
+    },
+    {
+      "pass": 222,
+      "state": "NO_CANONICAL_PASS222_CONTRACT_LOCATED_IN_INSPECTED_MAIN_INDEX_AND_REPOSITORY_SEARCH",
+      "canonical_source": null,
+      "contract_id": null,
+      "known_normative_obligations": [],
+      "gating": [
+        "Locate actual authoritative Pass222 source before specifying behavior",
+        "Do not invent Pass222 requirements or interpret ordinary PR #222 as Pass 222"
+      ],
+      "status_caution": "Absence in checked search/index is not proof of global absence in remote branches, user uploads or unpublished materials; reconcile when authoritative source becomes available"
+    }
+  ],
+  "pr914_relation": {
+    "source": "contracts/architecture/HHS_GBRAIN_UNIFIED_PRODUCTION_IDE_THREAD_SPEC_V1.json",
+    "role": "ADDITIVE_THREAD_REQUIREMENTS_NOT_A_REPLACEMENT_FOR_PASS220_221_222",
+    "known_gaps": [
+      "Thread spec does not cover Pass220 full native Linux, external standard registry, polyglot conformance, common action/receipt model or zero-briefing gate",
+      "Thread spec does not cover Pass221 official Instagram custody, ledger, media mirror and blog deployment acceptance",
+      "Pass222 normative corpus not source-verified",
+      "Pass220/open PR reconciliation and Pass221 terminal closure require separate evidence and dependency ordering"
+    ]
+  },
+  "implementation_order": [
+    "Read existing canonical contracts and current exact-main/PR state; preserve byte identity and declared acceptance gates",
+    "Produce exhaustive repository-visible numbered specification and open PR inventory through Pass222; classify missing/unverified sources explicitly",
+    "Implement and test Pass220 full native workstation, polyglot, compiler, action and portability surfaces plus cumulative HC64/particle/GBrain/platformer IDE obligations",
+    "Only promote Pass221 authorized Instagram receipt-blog after its explicitly named Pass219/220 gates and live credentials/validation",
+    "Integrate any verified Pass222 contract without inventing contents; update this register with exact source references",
+    "Independently validate inherited frozen layers, signed VM81/Hash72/Hash216 and runtime replay; merge/deploy by evidence-backed exact SHA"
+  ],
+  "completion_claims": {
+    "pass220": false,
+    "pass221": false,
+    "pass222": false,
+    "pr914_full_ide": false,
+    "digitalocean_production": false
+  }
+}

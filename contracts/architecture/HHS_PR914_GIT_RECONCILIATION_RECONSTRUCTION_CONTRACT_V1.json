@@ -1,0 +1,165 @@
+{
+  "schema": "HHS_PR914_GIT_RECONCILIATION_RECONSTRUCTION_CONTRACT_V1",
+  "contract_date": "2026-11-24",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "coordinating_pr": 914,
+  "coordinating_branch": "feature/admin-resumable-sql-staging-20261114",
+  "specified_at_head": "aacddba8e1c0e3c874d8df75e1695c2c4755d1f8",
+  "status": "SPECIFIED_IMPLEMENTATION_AND_COMMIT_PENDING",
+  "scope": "LOSSLESS_RECONSTRUCTION_OR_TRANSFER_COMMIT_AND_EXACT_HEAD_VERIFICATION_ONLY",
+  "role_boundary": {
+    "contract_specification_authority": "THIS_DOCUMENT",
+    "implementation_execution": "SEPARATE_IMPLEMENTATION_AGENT",
+    "implementation_agent_may_write_code": true,
+    "implementation_agent_must_preserve_this_contract": true,
+    "contract_presence_is_execution_evidence": false,
+    "contract_presence_is_promotion_evidence": false
+  },
+  "normative_inputs": {
+    "source_census": {
+      "repository_path": "contracts/architecture/HHS_PR914_G0_LIVE_CENSUS_20261123.json.xz.b64",
+      "preserved_at_pr914_head": "1d5094c00336f00aa72db2694c10992796a4403f",
+      "decoded_json_bytes": 733287,
+      "decoded_json_sha256": "03c5fba925ecd6775637dcf439d50b7156384fb25393b9e9a7836be9ba3a8ec7",
+      "observed_at": "2026-11-23T12:10:11.630549+00:00",
+      "observed_main_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+      "observation_is_live_refresh_at_reconstruction_time": false
+    },
+    "collector": {
+      "repository_path": "scripts/hhs_pr914_git_reconciliation_evidence_v1.py",
+      "committed_at": "aacddba8e1c0e3c874d8df75e1695c2c4755d1f8",
+      "committed_blob_sha": "047dfabebe5125baa21b36fb155456a267d7e069",
+      "source_sha256": "a367789b7366c183b06cb7c9ff32a588da297900b8915461ef94633efb3a7ec0",
+      "reference_execution_identity": "PRE_COMMIT_LOCAL_SOURCE_BYTES",
+      "reference_git_version": "2.39.5",
+      "reference_lazy_fetch_disabled": true,
+      "reference_remaining_missing_objects": 0
+    },
+    "reference_execution_receipt": {
+      "repository_path": "contracts/architecture/HHS_PR914_GIT_RECONCILIATION_EXECUTION_RECEIPT_V1.json",
+      "committed_at": "aacddba8e1c0e3c874d8df75e1695c2c4755d1f8",
+      "committed_blob_sha": "1ff469a653b4dfcf6cdb89aac935dbac6b1cce8c"
+    }
+  },
+  "required_artifact_identity": {
+    "generated_at": "2026-11-23T13:01:24.791410+00:00",
+    "decoded_json_file_name": "HHS_PR914_GIT_RECONCILIATION_EVIDENCE_20261123.json",
+    "decoded_json_bytes": 2396617,
+    "decoded_json_sha256": "39fabbdc0ab530d72ed209ea4d430779d6c265bc06c1e839f6e2b6491c77dbbd",
+    "xz_bytes": 150576,
+    "xz_sha256": "24f5e23e929207bf6ae735a6cb3e753d3dc1be65de30cb4c72ee232d9554c36e",
+    "encoded_repository_path": "contracts/architecture/HHS_PR914_GIT_RECONCILIATION_EVIDENCE_20261123.json.xz.b64",
+    "encoded_file_bytes": 200880,
+    "encoded_file_sha256": "abb252a517b111e645d6fe14941f7956f517f7d780d3f23bab4c5f695ba32b71",
+    "encoding": "base64(xz(JSON))",
+    "base64_line_width": 1800,
+    "base64_line_count": 112,
+    "final_lf_required": true,
+    "reference_xz_parameters": {
+      "format": "XZ",
+      "preset": 9,
+      "extreme": true
+    },
+    "semantically_equivalent_substitute_accepted": false
+  },
+  "implementation_requirements": [
+    {
+      "id": "R1",
+      "requirement": "Decode and verify the exact preserved source census before any reconstruction. Bind all subsequent evidence to its observed timestamp and main SHA; do not represent the operation as a live-ref refresh."
+    },
+    {
+      "id": "R2",
+      "requirement": "Verify the collector source bytes against the committed blob and source SHA-256 identities. Any collector change requires a separate additive contract and must not be represented as execution of this reference source."
+    },
+    {
+      "id": "R3",
+      "requirement": "Use a complete Git object graph for the source census identities. Disable lazy fetching during the final replay and record any missing object as REPLAY_INPUT_INCOMPLETE, never as a merge conflict or test failure."
+    },
+    {
+      "id": "R4",
+      "requirement": "A deterministic replay implementation may bind generated_at to the required artifact timestamp before serialization. It must not edit evidence records, dispositions, merge results, paths, commits, hashes, or authority fields to force a match."
+    },
+    {
+      "id": "R5",
+      "requirement": "Compare the reconstructed raw JSON byte count and SHA-256 with required_artifact_identity before encoding. On any mismatch, stop with RAW_RECONSTRUCTION_MISMATCH and preserve diagnostic evidence without committing a substitute."
+    },
+    {
+      "id": "R6",
+      "requirement": "Encode the verified raw JSON using the specified lossless format and wrapping. Verify XZ size/hash and encoded size/hash independently. A different valid XZ stream is not the required artifact even when it decodes to the same JSON."
+    },
+    {
+      "id": "R7",
+      "requirement": "An exact preserved-byte transfer is an acceptable alternative to reconstruction only when the transferred encoded bytes and decoded round trip satisfy every required identity. Truncated, placeholder, recompressed-substitute, and regenerated-substitute artifacts are prohibited."
+    },
+    {
+      "id": "R8",
+      "requirement": "Commit only the verified encoded artifact at encoded_repository_path on the coordinating branch. Do not force-push, rewrite frozen authorities, alter unrelated files, or include credentials and administrator capability tokens."
+    },
+    {
+      "id": "R9",
+      "requirement": "After commit, retrieve the artifact at the immutable resulting head; record its Git blob SHA, encoded byte hash, XZ hash, decoded byte hash, and successful round trip. Branch-name retrieval alone is insufficient."
+    },
+    {
+      "id": "R10",
+      "requirement": "Observe authorized exact-head hosted checks. Record run IDs, job IDs, conclusions, and skipped states independently. Do not count skipped jobs as passing evidence and do not infer individual test enumeration solely from a job name."
+    },
+    {
+      "id": "R11",
+      "requirement": "Add a non-head-moving PR receipt only for observed results. The receipt must distinguish mechanical evidence completion from G0/G1 completion and must preserve all open release gates."
+    }
+  ],
+  "required_commit_receipt_fields": {
+    "schema": "HHS_PR914_GIT_RECONCILIATION_ARTIFACT_COMMIT_RECEIPT_V1",
+    "source_contract": "contracts/architecture/HHS_PR914_GIT_RECONCILIATION_RECONSTRUCTION_CONTRACT_V1.json",
+    "source_contract_head": "IMMUTABLE_SHA_REQUIRED",
+    "artifact_commit": "IMMUTABLE_SHA_REQUIRED",
+    "artifact_blob_sha": "GIT_BLOB_SHA_REQUIRED",
+    "encoded_file_bytes": 200880,
+    "encoded_file_sha256": "abb252a517b111e645d6fe14941f7956f517f7d780d3f23bab4c5f695ba32b71",
+    "xz_bytes": 150576,
+    "xz_sha256": "24f5e23e929207bf6ae735a6cb3e753d3dc1be65de30cb4c72ee232d9554c36e",
+    "decoded_json_bytes": 2396617,
+    "decoded_json_sha256": "39fabbdc0ab530d72ed209ea4d430779d6c265bc06c1e839f6e2b6491c77dbbd",
+    "committed_roundtrip_verified": "MUST_BE_TRUE",
+    "exact_head_hosted_checks": "EXACT_HEAD_RUN_AND_JOB_RECORDS_REQUIRED",
+    "pr_receipt_comment_id": "REQUIRED_AFTER_OBSERVED_RESULTS",
+    "g0_gate_passed": false,
+    "g1_complete": false,
+    "candidate_composed": false,
+    "main_merge": "NOT_PERFORMED",
+    "production_deploy": "NOT_PERFORMED"
+  },
+  "failure_states": [
+    "SOURCE_CENSUS_IDENTITY_MISMATCH",
+    "COLLECTOR_IDENTITY_MISMATCH",
+    "REPLAY_INPUT_INCOMPLETE",
+    "RAW_RECONSTRUCTION_MISMATCH",
+    "XZ_IDENTITY_MISMATCH",
+    "ENCODED_IDENTITY_MISMATCH",
+    "COMMITTED_ROUNDTRIP_MISMATCH",
+    "EXACT_HEAD_HOSTED_VALIDATION_PENDING",
+    "EXACT_HEAD_HOSTED_VALIDATION_FAILED"
+  ],
+  "non_loss_and_authority_boundary": {
+    "observed_open_pr_count_at_source_census": 169,
+    "observed_unpr_branch_count_at_source_census": 921,
+    "terminal_dispositions_assigned_by_this_contract": false,
+    "reviews_checks_and_combined_statuses_complete_for_all_prs": false,
+    "semantic_reconciliation_complete": false,
+    "frozen_and_canonical_authority_review_complete": false,
+    "g0_gate_passed": false,
+    "g1_complete": false,
+    "integrated": false,
+    "candidate_composed": false,
+    "automatic_mass_merge_authorized": false,
+    "snapshot_is_promotion_evidence": false,
+    "requires_refresh_before_any_merge": true,
+    "main_merge": "NOT_PERFORMED",
+    "production_deploy": "NOT_PERFORMED",
+    "no_mass_merge_by_title": true,
+    "no_dropped_capabilities": true,
+    "no_duplicate_vm81_authority": true,
+    "no_native_rejection_bypass": true,
+    "no_force_push_or_frozen_authority_rewrite": true
+  }
+}

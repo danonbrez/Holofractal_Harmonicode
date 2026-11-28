@@ -1,0 +1,90 @@
+{
+  "schema": "HHS_PR914_G2_SCOPED_SEMANTIC_RECONCILIATION_V1",
+  "date": "2026-11-28",
+  "coordinating_pr": 914,
+  "scope": "ONLY_THREE_CONFIRMED_OVERLAP_PAIRS",
+  "complete_branch_census": false,
+  "refreshed_main_and_all_heads": false,
+  "candidate_composed": false,
+  "g2_complete": false,
+  "records": [
+    {
+      "entry_ids": [
+        "PR:000914",
+        "PR:000917"
+      ],
+      "exact_source_heads": {
+        "PR:000914": "45c71e45cdf628a93049c8dbb26a756911b632a2",
+        "PR:000917": "5d85f49f5168be55804dde0336c1b1e976d9b4ac"
+      },
+      "shared_path": "applications/holofractal_harmonizer/src/project-lifecycle.mjs",
+      "mechanical_evidence": "GITHUB_FETCH_PR_FILE_PATCH",
+      "semantic_assessment": "INDEPENDENT_COMPATIBLE_BEHAVIORS_REQUIRING_NONLOSS_TRANSPLANT",
+      "contribution_from_914": "Keep authenticated admin SQL source staging and Lane5 candidate controls",
+      "contribution_from_917": "Remove arbitrary 64-file and 24MiB project limits and use operation-level validation; keep all project build stages",
+      "resolution_operation": "MANUAL_REQUIREMENT_PRESERVING_RESOLUTION",
+      "implementation_commit": "7352060593aa4ccec14e9426d5e450015a9c1e9d",
+      "source_test_blob": "bd8ce9310ba441fb5429975c78afa796ecf67662",
+      "test_copy_commit": "ae43c6f5a46c9d2623a593e7eb0304a8436c7996",
+      "ci_workflow_commit": "b5341812e612888da083ca20940ff20072be46d9",
+      "status": "RESOLVED_VALIDATION_PENDING",
+      "verified_head_review": false,
+      "focused_test_receipts": [],
+      "security_review": "PENDING",
+      "frozen_layer_review": "PENDING",
+      "blocker": "G2_BLOCKED_FOCUSED_VALIDATION_FAILED_UNTIL_TESTS_ACTUALLY_GREEN_AND_REVIEWED"
+    },
+    {
+      "entry_ids": [
+        "PR:000900",
+        "PR:000901"
+      ],
+      "exact_source_heads": {
+        "PR:000900": "fc51d5382d1aaa37aaf8a1a71ecef2a4d454a0ec",
+        "PR:000901": "06f69b453c6c2f56cfddbff1ec83547bb24bc447"
+      },
+      "shared_path": "examples/ParticleSimulation.html",
+      "mechanical_evidence": "GITHUB_FETCH_PR_FILE_PATCH",
+      "semantic_assessment": "SEPARATE_PATCH_HUNKS_BUT_RUNTIME_COMPOSITION_UNVERIFIED",
+      "contribution_from_900": "Guard optional instanceColor under USE_INSTANCING_COLOR for WebGL shader fallback",
+      "contribution_from_901": "Add optional four-quadrant RGB matrix force, UI, color projection and receipt",
+      "resolution_operation": "STOP_G2_UNRESOLVED",
+      "implementation_commit": null,
+      "status": "UNRESOLVED",
+      "focus": "Combine source without losing the 10,368-particle base physics; run shader compile and optional-force on/off regression",
+      "blocker": "G2_BLOCKED_UNRESOLVED_SEMANTIC_CONFLICT"
+    },
+    {
+      "entry_ids": [
+        "PR:000908",
+        "PR:000921"
+      ],
+      "exact_source_heads": {
+        "PR:000908": "14129a5595bb0eb03bc166ae9b46e04498357dc7",
+        "PR:000921": "5c7a1150cb9ed3fb65ffd6909807e62f019169c8"
+      },
+      "shared_paths": [
+        "hhs_runtime/hhs_pass220_remote_ref_tree_reconciliation_v1.py",
+        "tests/pass220/test_hhs_pass220_v162_module194_ordered_hnan_native_boundary_v1.py"
+      ],
+      "mechanical_evidence": "GITHUB_FETCH_PR_FILE_PATCH",
+      "semantic_assessment": "DEPENDENT_BRANCH_REPAIRS_PARENT_SOURCE_ESCAPED_NEWLINE_SYNTAX",
+      "contribution_from_908": "Introduces remote ref tree reconciliation plus V162 tests",
+      "contribution_from_921": "Repairs malformed literal backslash-newline Python source and test fixture while adding Module194 bridge",
+      "required_order": [
+        "PR:000908",
+        "PR:000921"
+      ],
+      "resolution_operation": "STOP_G2_UNRESOLVED",
+      "implementation_commit": null,
+      "status": "UNRESOLVED",
+      "focus": "Preserve child repair with parent; run Python compile, Module194 tests and native source integrity before admission",
+      "blocker": "G2_BLOCKED_UNRESOLVED_SEMANTIC_CONFLICT"
+    }
+  ],
+  "source_pr914_modified_head": "b5341812e612888da083ca20940ff20072be46d9",
+  "provenance_policy": "These source heads are from exact retrieved PR snapshots; PR914 head changes as records are committed and must be refreshed before candidate composition",
+  "no_silent_exclusion": true,
+  "main_merge": "NOT_PERFORMED",
+  "deployment": "NOT_PERFORMED"
+}

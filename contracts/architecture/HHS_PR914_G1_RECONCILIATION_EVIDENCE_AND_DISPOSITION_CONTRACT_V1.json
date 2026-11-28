@@ -1,0 +1,271 @@
+{
+  "schema": "HHS_PR914_G1_RECONCILIATION_EVIDENCE_AND_DISPOSITION_CONTRACT_V1",
+  "contract_date": "2026-11-24",
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "coordinating_pr": 914,
+  "coordinating_branch": "feature/admin-resumable-sql-staging-20261114",
+  "specified_at_head": "79560006ac4d15ec809e1be43758690293c95878",
+  "status": "SPECIFIED_COLLECTION_AND_RECONCILIATION_PENDING",
+  "parent_contract": {
+    "path": "contracts/architecture/HHS_PR914_CUMULATIVE_OPEN_BRANCH_INTEGRATION_GATE_V1.json",
+    "blob_sha_at_specified_head": "a7a505d6dd43ddbdc23331bdf2a7521b179e8fc8",
+    "parent_gate": "G1",
+    "this_contract_narrows_or_relaxes_parent_requirements": false
+  },
+  "purpose": "Define the evidence bundle, requirement/capability classification, non-loss mapping, and proof required before any PR or branch receives an assessed disposition. Mechanical Git evidence alone does not complete G1.",
+  "entry_domains": {
+    "open_pull_requests": {
+      "source_census_count": 169,
+      "entry_identity": "PR_NUMBER_PLUS_EXACT_HEAD_SHA",
+      "includes_newly_discovered_at_refresh": true
+    },
+    "unpr_branches": {
+      "source_census_count": 921,
+      "entry_identity": "BRANCH_REF_PLUS_EXACT_HEAD_SHA",
+      "requires_independent_non_loss_assessment": true
+    },
+    "duplicate_tip_groups": {
+      "source_census_group_count": 16,
+      "entry_identity": "GROUP_ID_PLUS_MEMBER_REF_SET_PLUS_EXACT_SHARED_TIP",
+      "identical_tip_proves_semantic_equivalence": false,
+      "member_refs_may_not_be_silently_collapsed": true
+    },
+    "snapshot_deltas": {
+      "entry_identity": "OLD_OBSERVATION_PLUS_NEW_OBSERVATION_PLUS_EXACT_REF_OR_PR_SET",
+      "requires_added_no_longer_open_and_head_move_records": true,
+      "historical_branch_count_discrepancy": {
+        "earlier_observed_count": 1100,
+        "live_census_observed_count": 1090,
+        "resolution_rule": "Compare exact branch refs and timestamps; do not invent branch identities or infer deletions from counts alone."
+      }
+    }
+  },
+  "required_entry_envelope": {
+    "entry_id": "STABLE_NON_EMPTY_ID_REQUIRED",
+    "entry_type": [
+      "OPEN_PR",
+      "UNPR_BRANCH",
+      "DUPLICATE_TIP_MEMBER",
+      "SNAPSHOT_ONLY_PR",
+      "SNAPSHOT_ONLY_BRANCH"
+    ],
+    "observed_at": "EXACT_OBSERVATION_TIMESTAMP_REQUIRED",
+    "source_census_sha256": "EXACT_SOURCE_IDENTITY_REQUIRED",
+    "refresh_observation": "NULL_UNTIL_LIVE_REFRESH",
+    "pr_number": "REQUIRED_FOR_PR_ENTRIES",
+    "pr_url": "REQUIRED_FOR_PR_ENTRIES",
+    "head_ref": "EXACT_REF_REQUIRED",
+    "head_sha": "EXACT_FULL_SHA_REQUIRED",
+    "base_ref": "REQUIRED_FOR_PR_ENTRIES",
+    "base_sha": "EXACT_FULL_SHA_REQUIRED_FOR_PR_ENTRIES",
+    "merge_base_sha": "EXACT_FULL_SHA_REQUIRED",
+    "head_moves_since_source_census": "EXACT_COMPARISON_OR_NOT_COLLECTED",
+    "changed_files": "COMPLETE_MERGE_BASE_TO_HEAD_RECORDS_REQUIRED",
+    "commit_ids": "COMPLETE_BASE_TO_HEAD_LIST_REQUIRED",
+    "contract_dependencies": "EXACT_PR_OR_BRANCH_DEPENDENCIES_REQUIRED",
+    "disposition": "UNASSESSED_UNTIL_DISPOSITION_PROOF_IS_COMPLETE",
+    "resolution_reason": null,
+    "integration_commit": null,
+    "preserved_capabilities": [],
+    "test_receipts": [],
+    "review_authority": null,
+    "status_at_merge_refresh": "OBSERVED_AT_SOURCE_CENSUS_NOT_RECONCILED"
+  },
+  "hosted_evidence_bundle": {
+    "reviews": {
+      "pagination_complete": "MUST_BE_TRUE",
+      "records": "REVIEW_ID_STATE_COMMIT_ID_AND_SUBMITTED_AT_REQUIRED",
+      "exact_head_review_identified": "MUST_BE_EXPLICIT",
+      "approval_from_contract_or_snapshot_forbidden": true
+    },
+    "check_runs": {
+      "pagination_complete": "MUST_BE_TRUE",
+      "head_sha": "EXACT_HEAD_REQUIRED",
+      "records": "RUN_ID_JOB_ID_NAME_STATUS_CONCLUSION_AND_TIMESTAMPS_REQUIRED",
+      "skipped_jobs_are_passing_evidence": false,
+      "stale_head_checks_are_current_evidence": false
+    },
+    "combined_status": {
+      "head_sha": "EXACT_HEAD_REQUIRED",
+      "state": "EXACT_API_STATE_REQUIRED",
+      "records": "COMPLETE_STATUS_LIST_REQUIRED",
+      "empty_legacy_status_list_is_not_check_run_failure": true,
+      "may_substitute_for_check_runs": false
+    },
+    "collection_failures": "AUTH_SCOPE_TRANSPORT_RATE_LIMIT_AND_EMPTY_RESULT_MUST_REMAIN_DISTINCT"
+  },
+  "requirement_and_capability_classification": {
+    "required": true,
+    "source_contracts": "PATH_BLOB_SHA_AND_REQUIREMENT_IDS_REQUIRED",
+    "inherited_pass_obligations": "PASS220_PASS221_AND_PASS222_PROVENANCE_RULES_REQUIRED",
+    "capability_records": [
+      {
+        "capability_id": "STABLE_ID_REQUIRED",
+        "source_requirement": "EXACT_SOURCE_LOCATION_REQUIRED",
+        "contribution_paths": "EXACT_PATH_LIST_REQUIRED",
+        "behavior": "SYSTEM_INTERNAL_BEHAVIOR_REQUIRED",
+        "shared_services": "INHERITED_SERVICE_DEPENDENCIES_REQUIRED",
+        "frozen_layer_impact": "SEPARATE_AUTHORITY_REVIEW_REQUIRED",
+        "canonical_source_impact": "SEPARATE_AUTHORITY_REVIEW_REQUIRED",
+        "preservation_target": "INTEGRATION_OR_EXPLICIT_EQUIVALENT_REQUIRED"
+      }
+    ],
+    "minimum_scope_coverage": [
+      "NATIVE_AND_FROZEN_LAYERS",
+      "VM81_SINGLETON_ADMISSION",
+      "HASH72_BEFORE_HASH216",
+      "LANE5_TYPED_INGRESS_EGRESS_AND_HYDRATION",
+      "FRONTEND_BACKEND_AND_SECURITY",
+      "HC64_FLOAT64_DSP_BOUNDARY",
+      "NEURAL_PARTICLE_SIMULATION",
+      "GBRAINSIGNED_ADMISSION_HARNESS",
+      "PLATFORMER_AND_SHARED_GAME_SERVICES",
+      "PROFESSIONAL_IDE_AND_FUNCTIONAL_TEMPLATES",
+      "PASS220_NATIVE_LINUX_IDE",
+      "PASS221_OFFICIAL_INSTAGRAM_AND_RECEIPT_BLOG",
+      "PASS222_ONLY_IF_AUTHORITATIVE_SOURCE_IS_LOCATED",
+      "PANTHEON_MANUSCRIPT_NONLOSS_RECONCILIATION"
+    ]
+  },
+  "overlap_and_conflict_assessment": {
+    "shared_path_proves_semantic_conflict": false,
+    "clean_hypothetical_merge_proves_semantic_compatibility": false,
+    "hypothetical_tree_is_integration_candidate": false,
+    "required_overlap_record": {
+      "path": "EXACT_PATH_REQUIRED",
+      "entry_ids": "COMPLETE_SHARED_PATH_OWNER_SET_REQUIRED",
+      "requirement_ids": "AFFECTED_REQUIREMENTS_REQUIRED",
+      "semantic_assessment": [
+        "UNASSESSED",
+        "INDEPENDENT_COMPATIBLE_CHANGES",
+        "SHARED_CAPABILITY_COMPATIBLE",
+        "DUPLICATE_IMPLEMENTATION_REQUIRES_EQUIVALENCE_PROOF",
+        "SEMANTIC_CONFLICT_REQUIRES_RESOLUTION",
+        "FROZEN_OR_AUTHORITY_CONFLICT_BLOCKED"
+      ],
+      "resolution_evidence": "REQUIRED_UNLESS_UNASSESSED",
+      "semantic_conflict_proven": "MUST_BE_EVIDENCE_BACKED"
+    },
+    "mechanical_conflict_reconciliation_counts_at_source_census": {
+      "current_main_conflicted_pr_count": 78,
+      "current_base_conflicted_pr_count": 57,
+      "current_base_shared_path_count": 201,
+      "dependency_cycle_count": 0,
+      "counts_are_semantic_dispositions": false
+    }
+  },
+  "security_and_authority_review": {
+    "required_before_security_sensitive_promotion": true,
+    "secret_values_must_not_be_copied_into_receipts": true,
+    "administrator_capability_tokens_forbidden_locations": [
+      "URLS",
+      "REQUEST_BODIES",
+      "SAVED_PROJECTS",
+      "LOGS",
+      "CONTRACT_RECEIPTS"
+    ],
+    "browser_token_issuing_endpoint_may_be_introduced": false,
+    "untrusted_or_malicious_changes_must_not_be_bulk_merged": true,
+    "native_rejection_must_not_be_bypassed": true,
+    "fixture_root_keys_or_genesis_fixture_parent_as_production_authority": false,
+    "frozen_layer_impact_values": [
+      "UNASSESSED",
+      "NO_IMPACT_VALIDATED",
+      "ADDITIVE_NONCANONICAL_ONLY_VALIDATED",
+      "REPAIR_REQUIRED",
+      "BLOCKED_AUTHORITY"
+    ],
+    "canonical_source_impact_values": [
+      "UNASSESSED",
+      "NO_IMPACT_VALIDATED",
+      "CANDIDATE_ONLY_NO_ADMISSION",
+      "CANONICAL_CHANGE_REQUIRES_AUTHORIZED_REVIEW",
+      "BLOCKED_AUTHORITY"
+    ]
+  },
+  "disposition_proof_requirements": {
+    "INTEGRATED_VALIDATED": {
+      "required_evidence": [
+        "EXACT_INTEGRATION_COMMIT",
+        "REQUIREMENT_BY_REQUIREMENT_PRESERVATION_MAP",
+        "EXACT_HEAD_TEST_RECEIPTS",
+        "SECURITY_AND_AUTHORITY_REVIEW",
+        "INDEPENDENT_REVIEW_AUTHORITY"
+      ],
+      "clean_merge_tree_alone_is_sufficient": false
+    },
+    "EQUIVALENT_ALREADY_PRESENT_VALIDATED": {
+      "required_evidence": [
+        "EXACT_EXISTING_IMPLEMENTATION_COMMIT",
+        "REQUIREMENT_BY_REQUIREMENT_EQUIVALENCE_MAP",
+        "NONOVERLAPPING_CAPABILITY_DISPOSITION",
+        "EXACT_HEAD_TEST_RECEIPTS"
+      ],
+      "identical_tip_alone_is_sufficient": false,
+      "title_similarity_is_sufficient": false
+    },
+    "SUPERSEDED_WITH_VERIFIED_REPLACEMENT": {
+      "required_evidence": [
+        "EXACT_REPLACEMENT_COMMIT",
+        "REPLACEMENT_REQUIREMENT_COVERAGE_MAP",
+        "ORIGINAL_NONOVERLAPPING_CAPABILITY_PRESERVATION",
+        "EXACT_HEAD_TEST_RECEIPTS"
+      ],
+      "newer_timestamp_alone_is_sufficient": false
+    },
+    "BLOCKED_REQUIRES_REPAIR": {
+      "required_evidence": [
+        "EXACT_BLOCKER",
+        "AFFECTED_REQUIREMENTS_AND_PATHS",
+        "FAILED_OR_MISSING_EVIDENCE_REFERENCE",
+        "EXPLICIT_REMEDIATION_REQUIREMENT",
+        "NONLOSS_RETENTION_RECORD"
+      ],
+      "blocked_entries_may_be_silently_omitted": false
+    },
+    "BLOCKED_SECURITY_OR_AUTHORITY": {
+      "required_evidence": [
+        "SECURITY_OR_AUTHORITY_FINDING_ID",
+        "AFFECTED_REQUIREMENTS_AND_PATHS",
+        "QUARANTINE_OR_NON_PROMOTION_RECORD",
+        "EXPLICIT_REMEDIATION_OR_AUTHORIZATION_REQUIREMENT"
+      ],
+      "secret_or_token_contents_may_be_embedded": false
+    },
+    "DEFERRED_EXPLICIT_AUTHORIZATION_REQUIRED": {
+      "required_evidence": [
+        "EXACT_DEFERRED_REQUIREMENT",
+        "MISSING_AUTHORIZATION_SCOPE",
+        "NONLOSS_RETENTION_RECORD",
+        "AUTHORIZATION_REFERENCE_WHEN_OBTAINED"
+      ],
+      "deferral_may_be_used_to_hide_unassessed_work": false
+    }
+  },
+  "aggregation_invariants": {
+    "every_observed_entry_has_stable_id": "MUST_BE_TRUE",
+    "every_entry_has_exact_identity": "MUST_BE_TRUE",
+    "every_entry_has_complete_git_evidence": "MUST_BE_TRUE",
+    "every_pr_has_complete_hosted_evidence": "MUST_BE_TRUE",
+    "every_entry_has_requirement_capability_classification": "MUST_BE_TRUE",
+    "every_overlap_has_semantic_assessment": "MUST_BE_TRUE_FOR_G1_COMPLETION",
+    "every_entry_has_disposition_proof": "MUST_BE_TRUE_FOR_G1_COMPLETION",
+    "unassessed_terminal_disposition_allowed": false,
+    "unknown_ignored_or_closed_without_content_reconciliation_allowed": false,
+    "duplicate_tip_grouping_may_drop_member_records": false,
+    "no_longer_open_may_mean_content_reconciled": false,
+    "g0_gate_passed": false,
+    "g1_complete": false
+  },
+  "g1_completion_rule": "Set g1_complete=true only when every initial and newly discovered PR and branch record has the required exact identity, hosted evidence where applicable, requirement/capability classification, semantic overlap assessment, frozen/canonical review, and evidence-backed disposition permitted by the parent contract. Any missing required evidence leaves G1 open.",
+  "downstream_boundary": {
+    "g1_completion_composes_candidate": false,
+    "g1_completion_passes_g2_g3_g4_g5_or_g6": false,
+    "candidate_composed": false,
+    "integrated": false,
+    "automatic_mass_merge_authorized": false,
+    "requires_refresh_before_any_merge": true,
+    "main_merge": "NOT_PERFORMED",
+    "production_deploy": "NOT_PERFORMED"
+  }
+}

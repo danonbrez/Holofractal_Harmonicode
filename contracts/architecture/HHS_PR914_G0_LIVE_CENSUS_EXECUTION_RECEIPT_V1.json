@@ -1,0 +1,54 @@
+{
+  "schema": "HHS_PR914_G0_LIVE_CENSUS_EXECUTION_RECEIPT_V1",
+  "observed_at": "2026-11-23T12:10:11.630549+00:00",
+  "collector": {
+    "path": "scripts/hhs_pr914_open_branch_census_v1.py",
+    "source_commit": "de2d83be781f1b632f35ecd5d02d46fb199eb6da",
+    "sha256": "c88a154b91444349ffc2ae3804511053fc436c4838f5b9fef4d1e2b13626e57f",
+    "execution": "LOCAL_FULL_GIT_CHECKOUT_WITH_LIVE_GITHUB_API_PAGINATION",
+    "fetch_retry": "TRANSIENT_TLS_FAILURES_RETRIED_NO_SOURCE_MODIFICATION"
+  },
+  "repository": "danonbrez/Holofractal_Harmonicode",
+  "main_sha": "8ee5dd22fcac29f99d70346c5e3b6b01842672eb",
+  "result": {
+    "observed_open_pr_count": 169,
+    "observed_branch_count": 1090,
+    "unpr_branch_count": 921,
+    "head_refs_verified": true,
+    "sha_and_merge_bases_verified": true,
+    "g0_collection_complete": true,
+    "g0_gate_passed": false,
+    "g1_complete": false,
+    "integrated": false,
+    "snapshot_is_promotion_evidence": false,
+    "automatic_mass_merge_authorized": false,
+    "requires_refresh_before_any_merge": true
+  },
+  "snapshot_comparison": {
+    "added_pr_numbers": [],
+    "comparison_complete": true,
+    "head_sha_changes": [],
+    "live_entry_count": 169,
+    "no_longer_open_pr_numbers": [],
+    "snapshot_entry_count": 169
+  },
+  "duplicate_tip_group_count": 16,
+  "complete_artifact": {
+    "path": "contracts/architecture/HHS_PR914_G0_LIVE_CENSUS_20261123.json.xz.b64",
+    "encoding": "base64(xz(JSON)); base64 lines wrapped at 1800 characters",
+    "decode_command": "base64 -d HHS_PR914_G0_LIVE_CENSUS_20261123.json.xz.b64 | xz -d > HHS_PR914_G0_LIVE_CENSUS_20261123.json",
+    "decoded_json_bytes": 733287,
+    "decoded_json_sha256": "03c5fba925ecd6775637dcf439d50b7156384fb25393b9e9a7836be9ba3a8ec7",
+    "encoded_file_sha256": "c0b1861cab41f0a153650fe0037bd87146de5355e92609c5b0a43e7d2ce0e65f",
+    "roundtrip_verified": true,
+    "xz_sha256": "a942a12a842bf65fba08197f0a9c5203574ea88c410801a7b2b3a4c7aea308fb"
+  },
+  "authority_boundary": {
+    "live_collection_complete": true,
+    "changed_paths_reviews_checks_and_conflicts_complete": false,
+    "terminal_dispositions_assigned": false,
+    "candidate_composed": false,
+    "main_merge": "NOT_PERFORMED",
+    "production_deploy": "NOT_PERFORMED"
+  }
+}

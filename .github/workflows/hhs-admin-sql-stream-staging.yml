@@ -1,0 +1,54 @@
+name: HHS Admin Resumable SQL Staging
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admin-sql-stream:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gateway test dependencies
+        run: python -m pip install --disable-pip-version-check fastapi httpx websockets
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile additive staging library
+        run: python -m py_compile hhs_backend/runtime/hhs_admin_sql_stream_staging_v1.py hhs_backend/runtime/hhs_admin_sql_lane5_continuation_v1.py hhs_backend/lane5_ingress_gateway.py hhs_backend/api/hhs_admin_source_stream_routes_v1.py hhs_backend/runtime/hhs_admin_sql_vm81_admission_preflight_v1.py hhs_backend/runtime/hhs_admin_sql_typed_vm81_source_v1.py hhs_backend/runtime/hhs_admin_sql_signed_environment_fixture_handoff_v1.py
+      - name: Verify staging and native Lane 5 candidate-only continuation
+        run: |
+          python -m unittest discover -s tests -p test_hhs_admin_sql_stream_staging_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_sql_lane5_continuation_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_lane5_http_stream_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_source_stream_routes_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_source_signed_asgi_roundtrip_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_sql_typed_vm81_source_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_sql_uqcel_witness_prevalidation_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_sql_uqcel_source_association_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_pass220_lane5_enrs_core_source_discovery_v1.py -v
+          python -m unittest discover -s tests -p test_hhs_admin_signed_vm81_handoff_contract_v1.py -v
+      - name: Verify frozen Pass160 source capsule and additive OpenSSL link repair
+        run: python -m unittest discover -s tests -p test_hhs_pass160_crypto_link_repair_v1.py -v
+      - name: Build existing native Pass219 shared runtime
+        run: make c-abi
+      - name: Verify exact SQL source via compiled native Lane 5 candidate bridge
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: python -m unittest discover -s tests -p test_hhs_admin_sql_lane5_native_integration_v1.py -v
+      - name: Query real native signed-admission preflight without mutation
+        env:
+          HHS_DISABLE_C_AUTOBUILD: "1"
+        run: python -m unittest discover -s tests -p test_hhs_admin_sql_vm81_admission_preflight_v1.py -v
+      - name: Validate conventional browser streaming client
+        run: node --test applications/holofractal_harmonizer/tests/admin-source-stream.test.mjs
