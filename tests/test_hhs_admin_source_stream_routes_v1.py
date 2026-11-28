@@ -168,6 +168,26 @@ class TestAdminSourceStreamRoutes(unittest.TestCase):
         finally:
             source_path.chmod(0o400)
 
+    def test_retry_of_committed_chunk_uses_existing_storage_semantics(self):
+        created = route.create_upload(route.BeginBody(source_name="retry.bin"), request(principal=self.owner))
+        upload_id = created["upload_id"]
+        payload = b"authoritative transport bytes"
+        first = asyncio.run(route.append_upload(upload_id, request([payload], principal=self.owner), 0))
+        retried = asyncio.run(route.append_upload(upload_id, request([payload], principal=self.owner), 0))
+        self.assertEqual(first["received_bytes"], len(payload))
+        self.assertEqual(retried["received_bytes"], len(payload))
+        self.assertEqual(self.stage.status(upload_id, "root")["received_bytes"], len(payload))
+        with self.assertRaises(HTTPException) as conflict:
+            asyncio.run(route.append_upload(upload_id, request([b"wrong bytes"], principal=self.owner), 0))
+        self.assertEqual(conflict.exception.status_code, 409)
+        self.assertEqual(self.stage.status(upload_id, "root")["received_bytes"], len(payload))
+
+    def test_empty_transport_body_returns_existing_status(self):
+        created = route.create_upload(route.BeginBody(source_name="empty.bin"), request(principal=self.owner))
+        status = asyncio.run(route.append_upload(created["upload_id"], request([], principal=self.owner), 0))
+        self.assertEqual(status["state"], "UPLOADING")
+        self.assertEqual(status["received_bytes"], 0)
+
     def test_conflicting_offset_rejected(self):
         created = route.create_upload(route.BeginBody(source_name="source"), request(principal=self.owner))
         with self.assertRaises(HTTPException) as raised:
