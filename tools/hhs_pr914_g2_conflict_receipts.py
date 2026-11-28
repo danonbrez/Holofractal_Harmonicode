@@ -122,8 +122,24 @@ def validate_receipt(receipt: dict, contract: dict) -> list[str]:
             blockers.append("G2_BLOCKED_UNRESOLVED_SEMANTIC_CONFLICT")
         if receipt["nonoverlapping_behavior_disposition"] in (None, "", "UNASSESSED_NONLOSS_RETENTION_REQUIRED"):
             blockers.append("G2_BLOCKED_CAPABILITY_COVERAGE_GAP")
-        if receipt["status"] == "RESOLVED_FOCUSED_VALIDATION_PASSED" and not receipt["focused_test_receipts"]:
-            blockers.append("G2_BLOCKED_FOCUSED_VALIDATION_FAILED")
+        if receipt["status"] == "RESOLVED_FOCUSED_VALIDATION_PASSED":
+            tests = receipt["focused_test_receipts"]
+            # Every cited job must be a successful exact-integration-head execution.
+            # Empty, stale, skipped, pending, failed and unbound receipts block closure.
+            if not isinstance(tests, list) or not tests or any(
+                not isinstance(t, dict)
+                or not _full_sha(t.get("commit"))
+                or t["commit"] != receipt["integration_commit"]
+                or t.get("status") != "completed"
+                or t.get("conclusion") != "success"
+                or not isinstance(t.get("run_id"), int) or isinstance(t.get("run_id"), bool)
+                or t["run_id"] <= 0
+                or not isinstance(t.get("job_id"), int) or isinstance(t.get("job_id"), bool)
+                or t["job_id"] <= 0
+                or not isinstance(t.get("name"), str) or not t["name"].strip()
+                for t in tests
+            ):
+                blockers.append("G2_BLOCKED_FOCUSED_VALIDATION_FAILED")
     else:
         blockers.append("G2_BLOCKED_UNRESOLVED_SEMANTIC_CONFLICT")
     # Security/frozen reviews must not be bypassed by a forged resolved status.
