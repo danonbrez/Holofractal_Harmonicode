@@ -79,6 +79,46 @@ class TestG2ConflictReceipts(unittest.TestCase):
         self.assertIn("G2_BLOCKED_FROZEN_OR_CANONICAL_AUTHORITY",
                       validate_receipt(receipt, self.contract))
 
+    def test_focused_receipts_require_successful_exact_head_jobs(self):
+        receipt = unresolved_receipt(self.sample(), self.contract)
+        receipt.update({
+            "status": "RESOLVED_FOCUSED_VALIDATION_PASSED",
+            "resolution_operation": "MANUAL_REQUIREMENT_PRESERVING_RESOLUTION",
+            "integration_commit": "c" * 40,
+            "before_blob_or_tree_identities": {"source": "d" * 40},
+            "after_blob_or_tree_identities": {"source": "e" * 40},
+            "preserved_requirement_ids": ["REQ-1"],
+            "preserved_capability_ids": ["CAP-1"],
+            "semantic_assessment": "COMPATIBLE_REVIEWED",
+            "nonoverlapping_behavior_disposition": "PRESERVED",
+            "frozen_and_canonical_review": {"impact": "NO_IMPACT"},
+            "security_and_authority_review": {"impact": "NO_IMPACT"},
+            "review_authority": "EXACT_HEAD_REVIEW_REQUIRED",
+        })
+        valid = {"status": "completed", "conclusion": "success",
+                 "commit": "c" * 40, "run_id": 10, "job_id": 20,
+                 "name": "focused-boundary"}
+        receipt["focused_test_receipts"] = [valid]
+        self.assertNotIn("G2_BLOCKED_FOCUSED_VALIDATION_FAILED",
+                         validate_receipt(receipt, self.contract))
+        bad = [
+            {"status": "completed", "conclusion": "failure"},
+            {"status": "completed", "conclusion": "skipped"},
+            {"status": "in_progress", "conclusion": None},
+            {"commit": "d" * 40},
+            {"run_id": None},
+            {"job_id": 0},
+            {"name": ""},
+        ]
+        for change in bad:
+            with self.subTest(change=change):
+                receipt["focused_test_receipts"] = [{**valid, **change}]
+                self.assertIn("G2_BLOCKED_FOCUSED_VALIDATION_FAILED",
+                              validate_receipt(receipt, self.contract))
+        receipt["focused_test_receipts"] = [valid, {**valid, "conclusion": "failure"}]
+        self.assertIn("G2_BLOCKED_FOCUSED_VALIDATION_FAILED",
+                      validate_receipt(receipt, self.contract))
+
     def test_exact_head_set_and_conflict_identity(self):
         event = self.sample()
         del event["exact_source_heads"]["PR:000918"]
