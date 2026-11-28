@@ -65,6 +65,28 @@ class TestNativeHTTPStream(unittest.TestCase):
         self.assertIn("_mediate_file_async", source)
         self.assertLess(source.index("_mediate_file_async"), source.index("http_client.send"))
 
+    def test_native_rejection_and_runtime_failure_are_not_vm81_proofs(self):
+        import httpx
+        from unittest.mock import patch
+
+        async def invoke(failure):
+            gateway.app.state.lane5_lock = asyncio.Lock()
+            transport = httpx.ASGITransport(app=gateway.app)
+            async with httpx.AsyncClient(transport=transport, base_url="http://example.test") as client:
+                with patch.object(gateway, "_mediate_file_async", side_effect=failure):
+                    return await client.post("/test", content=b"legacy payload")
+
+        native = asyncio.run(invoke(gateway.Lane5IngressRejected("NO_CANDIDATE")))
+        self.assertEqual(native.status_code, 503)
+        self.assertEqual(native.headers["x-hhs-lane5-ingress"], "native-candidate-rejected")
+        self.assertEqual(native.headers["x-hhs-vm81-admission"], "not-performed")
+
+        unavailable = asyncio.run(invoke(OSError("native library unavailable")))
+        self.assertEqual(unavailable.status_code, 503)
+        self.assertEqual(unavailable.headers["x-hhs-lane5-ingress"], "unavailable")
+        self.assertEqual(unavailable.headers["x-hhs-vm81-admission"], "not-performed")
+        self.assertNotIn("rejected", unavailable.text.lower())
+
     def test_request_payload_frame_width(self):
         self.assertEqual(81 * 64 // 8, 648)
 
